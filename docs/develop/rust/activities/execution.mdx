@@ -26,7 +26,7 @@ Be mindful of the size of data passed to and from Activities. Otherwise, there a
 
 To spawn an Activity Execution, use the Workflow context’s Activity execution APIs within your Workflow code.
 
-In Rust, Activities are typically executed using `ctx.start_activity(...)`, which returns a `Future` that can be awaited.
+In Rust, Activities are typically executed using `ctx.execute_activity(...)`, which returns a `Future` that can be awaited.
 
 ```rust
 #[workflow_methods]
@@ -35,11 +35,13 @@ impl GreetingWorkflow {
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
         // Execute an activity
-        let greeting = ctx.start_activity(
-            MyActivities::greet,
-            name,
-            ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
-        ).await?;
+        let greeting = ctx
+            .execute_activity(
+                MyActivities::greet,
+                name,
+                ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+            )
+            .await?;
 
         println!("{}", greeting);
 
@@ -74,11 +76,13 @@ impl GreetingWorkflow {
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
         // Execute an activity
-        let greeting = ctx.start_activity(
-            MyActivities::greet,
-            name,
-            ActivityOptions::schedule_to_close_timeout(Duration::from_secs(30))
-        ).await?;
+        let greeting = ctx
+            .execute_activity(
+                MyActivities::greet,
+                name,
+                ActivityOptions::schedule_to_close_timeout(Duration::from_secs(30)),
+            )
+            .await?;
 
         println!("{}", greeting);
         Ok(greeting)
@@ -95,7 +99,7 @@ Workflows can either:
 * `await` the result immediately (blocking progress), or
 * store the `Future` and await it later to allow concurrent execution.
 
-In Rust, calling `.await` on the Activity invocation returns the result. If you need more control (e.g., parallel execution), you can create multiple Activity futures and await them selectively.
+In Rust, calling `.await` on the Activity invocation returns the result. If you need more control (for example, parallel execution), you can create multiple Activity futures and await them selectively.
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
@@ -106,11 +110,13 @@ impl GreetingWorkflow {
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
         // Execute an activity
-        let greeting = ctx.start_activity(
-            MyActivities::greet,
-            name,
-            ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
-        ).await?;
+        let greeting = ctx
+            .execute_activity(
+                MyActivities::greet,
+                name,
+                ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+            )
+            .await?;
 
         println!("{}", greeting);
         Ok(greeting)
@@ -127,20 +133,22 @@ use temporalio_sdk::workflows::join;
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let name = ctx.state(|s| s.name.clone());
     // Execute an activity
-    let greeting = ctx.start_activity(
+    let greeting = ctx.execute_activity(
         MyActivities::greet,
         name,
-        ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
+        ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
     );
 
-    let language = ctx.start_activity(
+    let language = ctx.execute_activity(
         MyActivities::call_greeting_service,
         ActivityLanguages::English,
-        ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
+        ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
     );
 
     // Run in parallel
     let (greeting_res, language_res) = join!(greeting, language);
+
+    Ok(format!("{} ({})", greeting_res?, language_res?))
 }
 ```
 

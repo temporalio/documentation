@@ -60,6 +60,8 @@ exceptions:
   - Operations
   - Payload
   - Priority
+  - Project
+  - Projects
   - Query
   - Queries
   - Queue
@@ -113,6 +115,7 @@ exceptions:
   - Period
   - Platform
   - Policy
+  - Policies
   - Preview
   - Process
   - Program
@@ -176,6 +179,8 @@ exceptions:
   - RPO
   - SLA
   - APS
+  - TRU
+  - TRUs
   - PrivateLink
   - KMS
   # Cloud provider product names (exact phrase, not the individual words)
@@ -185,3 +190,8 @@ exceptions:
   - Terraform
   - Prometheus
   - Grafana
+  # AI vendor and model-platform proper nouns
+  - AI
+  - Google
+  - Gemini
+  - Vertex

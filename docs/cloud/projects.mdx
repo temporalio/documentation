@@ -1,0 +1,373 @@
+---
+id: projects
+title: Projects
+sidebar_label: Projects
+description: Organize Temporal Cloud resources including Namespaces and Nexus Endpoints around your organizational structure
+toc_max_heading_level: 4
+keywords:
+  - operations
+  - temporal cloud
+  - namespaces
+tags:
+  - Projects
+  - Namespaces
+  - Nexus
+  - Nexus Endpoints
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { ReleaseNoteHeader, CaptionedImage } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="projects">
+Features in pre-release are experimental. While Project-specific APIs and functionality may evolve, enabling Projects is designed to be backward compatible with existing resources, permissions, and workflows through the Default Project.
+</ReleaseNoteHeader>
+
+Projects are an organizational layer within a Temporal Cloud Account that groups related resources into a single operational boundary. With Projects, you can organize [Namespaces](/cloud/namespaces), [Nexus endpoints](/nexus/endpoints), and [Connectivity Rules](/cloud/connectivity#connectivity-rules) around how your organization operates: by team, environment, service, or business unit.
+
+Projects make it easier to delegate ownership, manage access at scale, and organize resources without creating additional Cloud Accounts. As your organization grows, Projects help align your Temporal Cloud resources with your organizational structure while reducing operational overhead.
+
+Projects are for organization and authorization. They don't change how Workflows execute inside a Namespace.
+
+<CaptionedImage
+    src="/img/cloud/projects/resource-hierarchy.png"
+    title="Temporal Cloud resource hierarchy"
+    alt="Diagram of the Temporal Cloud resource hierarchy. An Account is the global container for all resources. Each Account contains one or more Projects, which organize and delegate access across teams, apps, or environments; the diagram shows a default Project created by Temporal alongside custom Projects named Agents and Evals, plus a control to create additional Projects. Each Project contains Namespaces, which are isolated, secure runtime environments for Workflow and other executions; the default Project contains NS-prod and NS-staging, Agents contains customer-support and sales-assistant, and Evals contains benchmarks and regression."
+    width="100%"
+    zoom="true"
+/>
+
+## Enable Projects on your Account
+
+While Projects are in pre-release, they are not enabled by default. [Contact Support](/cloud/support#support-ticket) to request enabling Projects for your account.
+
+Once Projects are enabled, existing Accounts receive a Default Project, and new Accounts are created with one automatically. For existing Accounts, all existing resources are automatically placed in the Default Project. Existing role assignments and effective permissions remain unchanged. For new Accounts, the Default Project is created automatically. New resources are automatically placed in the Default Project unless you specify otherwise.
+
+
+## Default Project and Project ID
+
+Every Temporal Cloud Account includes a Default Project. The Default Project is not a special type of Project. It behaves like any other Project for managing resources. The main difference between the Default Project and any Projects you create is that the Default Project is automatically created for you as a starting point and provides backward-compatible behavior for existing resources and operations that do not specify a Project. Otherwise, it supports the same resource-management capabilities as other Projects.
+
+If you don't need the organizational boundaries offered by Projects, continue to use the Default Project for all your resources. You can always create a new Project later if you need it.
+
+Every Project has a unique, immutable `Project ID` and an editable `display name`. The Project ID is used by the Cloud Ops API, CLI, and Terraform to identify the Project when creating and managing Project-scoped resources.
+
+Namespaces cannot be moved between Projects currently, meaning all existing Namespaces will exist in the Default Project. You can create a new Project and place a new Namespace in that Project.
+
+For limitations on the number of Projects per Account and number of resources per Project, see [Project-level limitations](/cloud/limits#project-level).
+
+## Create a new Project
+
+Create a Project when a set of resources has a distinct owner or access model, separate from the Default Project. A good Project represents a stable ownership boundary, not just a folder.
+
+Start with one Project for a team or application with clear ownership. Add more only when needed.
+
+<Tabs groupID="create-project">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To create a Project using the Temporal Cloud UI:
+
+1. Select **Projects** at the top of the left navigation bar. 
+2. Click the **Create Project** button to create a new Project.
+3. On the **Create Project** page that appears, give the Project a name (limited to 64 characters) and an optional description (limited to 255 characters).
+4. Click **Create**.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`CreateProject` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects)
+to create a Project. The structure of the `CreateProjectRequest` is defined by a JSON spec, as follows:
+
+```
+"spec": {
+  "description": "",
+  "displayName": "",
+  "lifecycle": {
+    "enableDeleteProtection": true
+  }
+}
+```
+
+In this call, `description` is a string description of the Project, `displayName` is the Project name to be displayed in the UI, and `enableDeleteProtection` is a Boolean that indicates whether the Project can be deleted.
+
+  </TabItem>
+</Tabs>
+
+After creating the Project, add new Namespaces and other supported resources within it. You cannot yet migrate resources from one Project to another.
+
+
+## Add Resources to a Project {/* #add-resources-to-a-project */}
+
+After creating a Project, you can create Project-scoped resources such as Namespaces, Nexus Endpoints, or Connectivity Rules within it.
+
+<Tabs groupID="create-project">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+In Temporal Cloud UI:
+1. Open the Project. 
+2. Select **Namespaces** (or **Nexus Endpoints**) in the left navigation. 
+3. Click **Create Namespace** (or **Nexus Endpoints**) to add to the project. 
+
+**Connectivity rules** cannot currently be created via the UI. Connectivity rules and the Namespace they attach to must reside in the same Project.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+The process for creating a [Namespace](/cloud/namespaces#create-a-namespace), [Nexus Endpoint](/nexus/registry#view-and-manage-nexus-endpoints), or [Connectivity Rule](/cloud/connectivity#creating-a-connectivity-rule) with the Cloud Operations API is the same as the standard process for creating those resources, with the addition of the `projectId` for the Project in which you're creating the resource.
+
+
+Use the
+[`CreateNamespace` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces)
+to create a new Namespace within a Project. For example:
+
+```
+curl -sS -X POST "$BASE/cloud/namespaces" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "'"$PROJECT_ID"'",
+    "spec": {
+      "name": "payments-prod",
+      "regions": ["aws-us-west-2"],
+      "retentionDays": 7,
+      "apiKeyAuth": { "enabled": true }
+    }
+  }'
+```
+
+Use the
+[`CreateCreateNexusEndpoint` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints)
+to create a new Nexus Endpoint within a Project. For example:
+
+```
+curl -sS -X POST "$BASE/cloud/nexus/endpoints" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "'"$PROJECT_ID"'",
+    "spec": {
+      "name": "order-fulfillment",
+      "targetSpec": {
+        "workerTargetSpec": {
+          "namespaceId": "payments-prod.a1b2c3",
+          "taskQueue": "nexus-handler"
+        }
+      },
+      "policySpecs": [
+        {
+          "allowedCloudNamespacePolicySpec": {
+            "namespaceId": "checkout-prod.a1b2c3"
+          }
+        }
+      ]
+    }
+  }'
+```
+
+Use the
+[`CreateConnectivityRule` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules)
+to create a new Connectivity Rule within a Project. For example, for a private Connectivity Rule on AWS:
+
+```
+curl -sS -X POST "$BASE/cloud/connectivity-rules" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "'"$PROJECT_ID"'",
+    "spec": {
+      "privateRule": {
+        "connectionId": "vpce-0123456789abcdef0",
+        "region": "aws-us-west-2"
+      }
+    }
+  }'
+```
+
+Or for a public Connectivity Rule:
+
+```
+curl -sS -X POST "$BASE/cloud/connectivity-rules" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "'"$PROJECT_ID"'",
+    "spec": {
+      "publicRule": { "enableStableIps": true }
+    }
+  }'
+```
+
+Then attach the Connectivity Rule to a Namespace within the same project via [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/{namespace}). Creating the Connectivity Rule alone does not bind it to a Namespace.
+
+  </TabItem>
+</Tabs>
+
+
+
+## Manage Project Access
+
+Users, groups, and Account-scoped Service Accounts can be granted Project-level roles. Each [Project role](#project-roles) applies to the Project and, depending on the role, may grant inherited access to resources within it.
+
+<Tabs groupID="manage-project-access">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To manage Project access in the Temporal Cloud UI:
+
+1. Open the Project.
+2. Click the **Project Identities** tab in the left navigation. The Project Identities page has three tabs, for Users, Service Accounts, and Groups.
+3. Click the **Manage Identities** button to add (or remove) users, groups or service accounts, and assign desired Project Roles from the drop-down list. You can also modify or remove an existing principal's role in the same view.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`SetUserProjectAccess` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/{projectId}/users/{userId}/access)
+to add Users to a Project. 
+Use the
+[`SetUserGroupProjectAccess` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/{projectId}/user-groups/{groupId}/access)
+to add User Groups to a Project. 
+Both calls take two required parameters:
+
+- `projectId` - The ID of the Project to set permissions for.
+- `userId` or `groupId` - The ID of the User or Group to set permissions for.
+
+Use the `role` attribute to set the role for the User or Group. See [Project roles](#project-roles) for more information.
+
+```
+"access": {
+  "role": ""
+},
+```
+
+  </TabItem>
+</Tabs>
+
+Similar to [Namespace-scoped Service Accounts](/cloud/manage-access/service-accounts#scoped), a Project-scoped Service Account is an identity bound (or scoped) to a single Project. Use it for workers, CI/CD pipelines, Terraform, or operational automation that should not access resources outside that Project. Project-scoped Service Accounts are not created automatically with Project creation. Create them only when needed. 
+
+<Tabs groupID="manage-project-service-account">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To create a Project-scoped service account in this Project, click **Project Identities** in the left navigation. Then click the  **Service Accounts** tab to create a Project-scoped service account.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`SetServiceAccountProjectAccess` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/{projectId}/service-accounts/{serviceAccountId}/access)
+to add Service Accounts to a Project. 
+
+The call takes two required parameters:
+
+- `projectId` - The ID of the Project to set permissions for.
+- `serviceAccountId` - The ID of the Service Account to set permissions for.
+
+Use the `role` attribute to set the role for the User or Group. See [Project roles](#project-roles) for more information.
+
+```
+"access": {
+  "role": ""
+},
+```
+
+  </TabItem>
+</Tabs>
+
+After creating the Service Account, you can optionally create one or more API keys for it. Each API key inherits only the permissions of its associated Service Account. If the Service Account is deleted, all of its API keys are deleted automatically.Project-scoped Service Accounts count toward the Project's Service Account limit.
+
+A Project-scope Service Account:
+
+- Can only bound (or scope to) exactly one Project. Each project can contain multiple Project-scoped Service Accounts. 
+- Cannot be moved to another Project after it is created.
+- Counts toward the Project's Service Account limit.
+- Must be deleted before the Project can be deleted.
+
+Unlike an [Account-scoped Service Account](/cloud/manage-access/service-accounts), a Project-scoped Service Account cannot access resources outside its Project. For automation that needs access across multiple Projects, use an Account-scoped Service Account and grant it the appropriate Project roles.
+
+## Project roles {/* #project-roles */}
+
+The following roles are available at the Project level for users, groups, and service accounts:
+
+- **Project Admin:** Complete access to the Project resource itself and all resources in it.
+- **Project Write:** Write access to all the Namespaces and other resources in a Project, but cannot add other users.
+- **Project Read:** Read-only access to all the resources in a Project, including viewing the actual contents of a Workflow.
+- **Project Contribute:** Can create new Namespaces, and list all Project resources, but without access to Workflow contents.
+- **Project List:** List-only access to metadata for all the resources in a Project, but without access to Workflow contents.
+- **Project Member:** Minimal Project-level access; used when a user already has explicit Namespace-level access and only needs to be represented at the Project level
+
+:::warning Project Developer
+
+Project Developer is a compatibility role that is automatically inherited by users with the Account Developer role. It allows them to create Namespaces (and manage them) without automatically granting access to all existing Namespaces in the Project. This role cannot be assigned directly. For new role assignments, assign Project Write or Project Contribute as appropriate.
+
+:::
+
+A principal automatically inherits a Project-level access from their Account-level role. For example, a Global Admin automatically inherits the Project Admin access for every Project in the Account. 
+
+Project-level permissions are additive. Granting a Project-level role does not reduce permissions inherited from Account-level or Namespace-level roles. A principal's effective permissions are the union of all applicable Account-, Project-, and Namespace-level role assignments.
+
+## Modify an existing Project
+
+<Tabs groupID="modify-project">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To modify an existing Project, click **Project Settings** in the left navigation. The Project Settings page appears, with the General tab selected by default. Here, you can change the name or description of your Project. You can also access your Project's unique ID. You can copy the ID, but you can't change it.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`UpdateProject` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/{projectId})
+to add Service Accounts to a Project. 
+
+The call takes one required parameter:
+
+- `projectId` - The ID of the Project to set permissions for.
+
+The structure of the `UpdateProjectRequest` is defined by a JSON spec, as follows:
+
+```
+"spec": {
+  "description": "",
+  "displayName": "",
+  "lifecycle": {
+    "enableDeleteProtection": true
+  }
+}
+```
+
+In this call, `description` is a string description of the Project, `displayName` is the Project name to be displayed in the UI, and `enableDeleteProtection` is a Boolean that indicates whether the Project can be deleted.
+
+  </TabItem>
+</Tabs>
+
+
+## Delete a Project
+
+A Project must be empty, meaning it contains zero Namespaces, Nexus Endpoints, Connectivity Rules, or Project-scoped Service Accounts, to be deleted. 
+
+An Account must always contain at least one Project. If the Account contains two or more Projects, you can delete the Default Project. If the Default Project is deleted, Temporal does not automatically designate a new Default Project. If the Default Project is deleted, API calls that do not specify a Project (by providing a Project ID) will fail. 
+
+
+<Tabs groupID="modify-project">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+To delete a Project, click **Project Settings** in the left navigation and then click the **Delete Project** tab. Click the **Delete** button to permanently delete the Project.
+
+Use the **Deletion Prevention** slider to set the Deletion Protection flag for this Project. Once set, the Project can't be deleted unless the flag is deliberately disabled.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Use the
+[`DeleteProject` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/DELETE/cloud/projects/{projectId})
+to delete a Project. 
+
+The call takes one required parameter: 
+
+- `projectId` - The ID of the Project to delete.
+
+This call will not succeed if the delete protection flag is enabled.
+
+  </TabItem>
+</Tabs>
+
+Projects support a delete protection flag, similar to Namespaces. When this flag is enabled, the Project cannot be deleted until the flag is disabled. This flag is enabled for the Default Project. The flag is disabled for any new Project created by a user. This flag is not inherited by the Namespaces within the Project. Namespace delete protection can be managed per-Namespace. If a Project is the only one remaining in an Account, that project cannot be deleted, regardless of the status of the Deletion Protection Flag.
+
+
+

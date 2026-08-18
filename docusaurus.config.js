@@ -8,7 +8,7 @@ const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/consta
 
 module.exports = async function createConfigAsync() {
   return {
-    title: 'Temporal Platform Documentation',
+    title: 'Temporal Documentation',
     tagline: 'Build invincible applications',
     url: 'https://docs.temporal.io',
     baseUrl: '/',
@@ -152,34 +152,27 @@ module.exports = async function createConfigAsync() {
         copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.`,
         links: [
           {
+            title: 'Resources',
             items: [
               {
-                label: 'GitHub',
-                href: 'https://github.com/temporalio',
+                label: 'Glossary',
+                to: '/glossary',
               },
               {
-                label: 'Twitter',
-                href: 'https://x.com/temporalio',
+                label: 'Learn Temporal',
+                href: 'https://learn.temporal.io',
+              },
+              {
+                label: 'Code Exchange',
+                href: 'https://temporal.io/code-exchange',
+              },
+              {
+                label: 'Blog',
+                href: 'https://temporal.io/blog',
               },
               {
                 label: 'YouTube',
                 href: 'https://www.youtube.com/c/Temporalio',
-              },
-              {
-                label: 'About the docs',
-                href: 'https://github.com/temporalio/documentation/blob/main/README.md',
-              },
-            ],
-          },
-          {
-            items: [
-              {
-                label: 'Temporal Cloud',
-                href: 'https://temporal.io/cloud',
-              },
-              {
-                label: 'Meetups',
-                href: 'https://temporal.io/community#events',
               },
               {
                 label: 'Support forum',
@@ -192,42 +185,40 @@ module.exports = async function createConfigAsync() {
             ],
           },
           {
+            title: 'Company',
             items: [
               {
-                label: 'Learn Temporal',
-                href: 'https://learn.temporal.io',
+                label: 'Temporal Cloud',
+                href: 'https://temporal.io/cloud',
               },
               {
-                label: 'Blog',
-                href: 'https://temporal.io/blog',
+                label: 'GitHub',
+                href: 'https://github.com/temporalio',
               },
               {
-                label: 'Use cases',
-                href: 'https://temporal.io/in-use',
+                label: 'Trust Center',
+                href: 'https://trust.temporal.io/',
               },
               {
-                label: 'Newsletter signup',
-                href: 'https://pages.temporal.io/newsletter-subscribe',
+                label: 'Security',
+                href: 'https://temporal.io/security',
+              },
+              {
+                label: 'Changelog',
+                href: 'https://temporal.io/changelog',
               },
             ],
           },
           {
+            title: 'For agents',
             items: [
               {
-                label: 'Security',
-                to: '/security',
+                label: 'Develop with AI',
+                to: '/with-ai',
               },
               {
-                label: 'Privacy policy',
-                href: 'https://temporal.io/global-privacy-policy',
-              },
-              {
-                label: 'Terms of service',
-                href: 'https://temporal.io/terms-of-service',
-              },
-              {
-                label: "We're hiring",
-                href: 'https://temporal.io/careers',
+                label: 'llms.txt',
+                href: 'https://docs.temporal.io/llms.txt',
               },
             ],
           },
@@ -418,9 +409,16 @@ module.exports = async function createConfigAsync() {
             siteUrl: 'https://docs.temporal.io',
             title: 'Temporal Platform Documentation',
             description: 'This file is a structured index of Temporal\'s documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
+            fullDescription: 'This file is the complete text of Temporal\'s documentation, intended for bulk ingestion. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
             rootContent:
               'To fetch any page as raw Markdown, append `.md` to its URL path (e.g., `https://docs.temporal.io/workflows.md`).\n\n' +
-              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.',
+              'Every page concatenated into one file is available at `https://docs.temporal.io/llms-full.txt`. ' +
+              'It is roughly 7 MB, which exceeds most context windows. Prefer the section indexes below and fetch individual `.md` pages; ' +
+              'use the full text for bulk ingestion.\n\n' +
+              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.\n\n' +
+              '## Tools for agents\n\n' +
+              '- [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer): An agent skill covering Temporal\'s programming model, including Workflow determinism rules, Activity patterns, Retry Policies, error handling, testing, Worker configuration, and versioning. Works with Claude Code, Codex, Cursor, and other agents that support Skills.\n' +
+              '- [Temporal Docs MCP Server](https://temporal.mcp.kapa.ai): Search this documentation over MCP. Sign-in is required through MCP OAuth with Google or GitHub, which keeps the server from being used for automated bulk querying. Anonymous requests are rejected. If your client cannot complete an OAuth flow, use the `.md` URLs above instead.',
             excludePaths: ['tctl-v1'],
             sections: [
               {
@@ -461,67 +459,6 @@ module.exports = async function createConfigAsync() {
           targets: [
             { docsDir: 'docs', routeBasePath: '/' },
             { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
-          ],
-        },
-      ],
-      [
-        'docusaurus-plugin-llms',
-        {
-          // Generate both llms.txt (index) and llms-full.txt (complete content)
-          generateLLMsTxt: false,
-          generateLLMsFullTxt: true,
-          generateMarkdownFiles: false,
-
-          // Exclude imported markdown partials that should not be published as standalone LLM docs.
-          ignoreFiles: ['docs/cloud/references/regions/private-service.md', 'docs/cloud/references/regions/gcpregions.md'],
-
-          // Tell agents how to fetch individual pages as raw markdown
-          rootContent:
-            'This file contains links to documentation sections following the llmstxt.org standard.\n\n' +
-            '## Fetching individual pages\n\n' +
-            'To fetch any page as raw Markdown, append `.md` to its URL path. ' +
-            'For example, `https://docs.temporal.io/encyclopedia.md` returns the raw Markdown source for the Encyclopedia page.\n\n' +
-            'Some pages (interactive demos, landing pages) are not available as Markdown. ' +
-            'Requesting `.md` for those pages returns a short explanation instead.',
-
-          // Clean up content for better LLM consumption
-          excludeImports: true,
-          removeDuplicateHeadings: true,
-
-          // Organize content in a logical order for LLMs
-          includeOrder: [
-            'quickstarts/**',
-            'evaluate/**',
-            'develop/**',
-            'production-deployment/**',
-            'cli/**',
-            'references/**',
-            'troubleshooting/**',
-            'encyclopedia/**',
-            'security*',
-            'web-ui*',
-            'glossary*',
-          ],
-
-          // Path transformation to clean URLs
-          pathTransformation: {
-            ignorePaths: ['docs'],
-          },
-
-          // Custom LLM files for specific use cases
-          customLLMFiles: [
-            {
-              filename: 'llms-quickstart.txt',
-              includePatterns: ['docs/evaluate/**/*.mdx', 'docs/develop/**/*.mdx'],
-              fullContent: true,
-              title: 'Temporal Quickstart Guide',
-            },
-            {
-              filename: 'llms-api-reference.txt',
-              includePatterns: ['docs/references/**/*.mdx', 'docs/cli/**/*.mdx'],
-              fullContent: true,
-              title: 'Temporal API and CLI Reference',
-            },
           ],
         },
       ],

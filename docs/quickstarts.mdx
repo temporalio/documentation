@@ -6,22 +6,60 @@ description: Start building with Temporal using language-specific quickstarts.
 hide_table_of_contents: true
 ---
 
-import { QuickstartCards } from '@site/src/components';
+import { QuickstartCards, CallToAction } from '@site/src/components';
 
 # Quickstarts
 
 Choose your language to get started locally. If you're using Temporal Cloud, check out [Get started with Temporal Cloud](/cloud/get-started).
 
+## Quickstarts by SDK
+
 <QuickstartCards
   items={[
     { href: "/develop/go/set-up-your-local-go", title: "Go", description: "Install the Go SDK and run a Hello World Workflow in Go." },
     { href: "/develop/java/set-up-your-local-java", title: "Java", description: "Install the Java SDK and run a Hello World Workflow in Java." },
+    { href: "/develop/dotnet/set-up-your-local-dotnet", title: ".NET", description: "Install the .NET SDK and run a Hello World Workflow in C#." },
     { href: "/develop/php/set-up-your-local-php", title: "PHP", description: "Install the PHP SDK and run a Hello World Workflow in PHP." },
     { href: "/develop/python/set-up-your-local-python", title: "Python", description: "Install the Python SDK and run a Hello World Workflow in Python." },
     { href: "/develop/ruby/set-up-local-ruby", title: "Ruby", description: "Install the Ruby SDK and run a Hello World Workflow in Ruby." },
-    { href: "/develop/typescript/set-up-your-local-typescript", title: "TypeScript", description: "Install the TypeScript SDK and run a Hello World Workflow in TypeScript." },
-    { href: "/develop/dotnet/set-up-your-local-dotnet", title: ".NET", description: "Install the .NET SDK and run a Hello World Workflow in C#." },
     { href: "/develop/rust/quickstart", title: "Rust", description: "Install the Rust SDK and run a Hello World Workflow in Rust." },
+    { href: "/develop/typescript/set-up-your-local-typescript", title: "TypeScript", description: "Install the TypeScript SDK and run a Hello World Workflow in TypeScript." },
   ]}
 />
 
+## Quickstarts by feature
+
+Learn Temporal features with guided local walkthroughs.
+
+### Standalone Activities
+
+Run an Activity from a Temporal Client without writing a Workflow.
+
+<QuickstartCards
+  items={[
+    { href: "/develop/go/activities/standalone-activities-quickstart", title: "Go", description: "Execute a Standalone Activity with the Go SDK." },
+    { href: "/develop/java/activities/standalone-activities-quickstart", title: "Java", description: "Execute a Standalone Activity with the Java SDK." },
+    { href: "/develop/dotnet/activities/standalone-activities-quickstart", title: ".NET", description: "Execute a Standalone Activity with the .NET SDK." },
+    { href: "/develop/python/activities/standalone-activities-quickstart", title: "Python", description: "Execute a Standalone Activity with the Python SDK." },
+    { href: "/develop/ruby/activities/standalone-activities-quickstart", title: "Ruby", description: "Execute a Standalone Activity with the Ruby SDK." },
+    { href: "/develop/typescript/activities/standalone-activities-quickstart", title: "TypeScript", description: "Execute a Standalone Activity with the TypeScript SDK." },
+  ]}
+/>
+
+### Nexus
+Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces.
+
+<QuickstartCards
+  items={[
+    { href: "/develop/go/nexus/quickstart", title: "Go", description: "Build a Nexus Service with the Go SDK." },
+    { href: "/develop/java/nexus/quickstart", title: "Java", description: "Build a Nexus Service with the Java SDK." },
+    { href: "/develop/dotnet/nexus/quickstart", title: ".NET", description: "Build a Nexus Service with the .NET SDK." },
+    { href: "/develop/python/nexus/quickstart", title: "Python", description: "Build a Nexus Service with the Python SDK." },
+    { href: "/develop/typescript/nexus/quickstart", title: "TypeScript", description: "Build a Nexus Service with the TypeScript SDK." },
+  ]}
+/>
+
+<CallToAction href="/with-ai" analyticsId="quickstarts-pair-with-ai-cta">
+  <h3>Pair with an AI coding agent</h3>
+  <p>Give Claude Code, Cursor, or Codex Temporal expertise with Skills and real-time documentation access.</p>
+</CallToAction>

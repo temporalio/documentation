@@ -573,7 +573,7 @@ Here's how each component behaves during normal operation and after a failover:
 | Component | Normal operation | On failover |
 | --- | --- | --- |
 | **Workers** | Run in as many regions as you want — fleets don't have to match the Namespace's regions. Every fleet connects through the Namespace Endpoint. | Fleets in unaffected regions keep processing with no cold-start gap. Scale them up if needed to carry the full load. |
-| **Namespace** | One active replica; every other region holds a passive replica that receives replicated state. The Namespace Endpoint always routes to whichever region currently holds the active Namespace. | Temporal Cloud promotes a passive replica in another region to active. Every fleet follows automatically — no reconfiguration, nothing to bring up. |
+| **Namespace** | One active replica; every other region holds a passive replica that receives replicated state. The Namespace Endpoint always redirects via DNS to whichever region currently holds the active Namespace. | Temporal Cloud promotes a passive replica in another region to active. Every fleet follows automatically — no reconfiguration, nothing to bring up. |
 | **Workflow starters and Clients** | Run wherever convenient and connect through the Namespace Endpoint, like the Workers. | Automatically follow the Namespace Endpoint to the new active region, like the Workers. |
 | **Codec Servers and proxies** | Run in every region where Workers run. | Already running in every surviving region — no action needed. |
 | **Databases and queues** | Accessed from every Worker region, so you need a cross-region consistency story. | Promote the active region's copy, if needed, so the Workers there can read and write it. |

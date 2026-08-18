@@ -19,8 +19,6 @@ tags:
   - Temporal SDKs
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components';
-
 This page shows how to do the following:
 
 - [Start a Child Workflow Execution](#child-workflows)
@@ -28,11 +26,9 @@ This page shows how to do the following:
 
 ## Start a Child Workflow Execution {/* #child-workflows */}
 
-**How to start a Child Workflow Execution using the Temporal Python SDK.**
-
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
-When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted)) are logged in the Workflow Execution Event History.
 
 The [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event must be logged to the Event History before the Parent Workflow completes to ensure the Child Workflow has started.
 In Python, awaiting `start_child_workflow()` or `execute_child_workflow()` internally waits for this Event before returning, so the Child Workflow is guaranteed to have started once the call resolves.
@@ -48,10 +44,12 @@ This is useful if you want to do something after it has only started, or to get 
 
 :::
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_child_workflow/your_child_workflow_dacx.py" />
-
 ```python
-# ...
+from temporalio import workflow
+from dataobject import ComposeGreetingInput
+from temporalio.workflow import ParentClosePolicy
+
+
 @workflow.defn
 class ComposeGreetingWorkflow:
     @workflow.run
@@ -67,13 +65,11 @@ class GreetingWorkflow:
             ComposeGreetingWorkflow.run,
             ComposeGreetingInput("Hello", name),
             id="hello-child-workflow-workflow-child-id",
-# ...
+            parent_close_policy=ParentClosePolicy.ABANDON,
         )
 ```
 
 ### Set a Parent Close Policy {/* #parent-close-policy */}
-
-**How to set a Parent Close Policy**
 
 A [Parent Close Policy](/parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
@@ -81,12 +77,10 @@ The default Parent Close Policy option is set to terminate the Child Workflow Ex
 
 Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_child_workflow/your_child_workflow_dacx.py" />
-
-```python
+```python {1,19}
 from temporalio.workflow import ParentClosePolicy
 # ...
-# ...
+
 @workflow.defn
 class ComposeGreetingWorkflow:
     @workflow.run

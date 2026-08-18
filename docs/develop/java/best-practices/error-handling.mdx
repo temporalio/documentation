@@ -1,0 +1,287 @@
+---
+id: error-handling
+title: Error handling - Java SDK
+sidebar_label: Error handling
+description: Catch the right exception types, wrap checked exceptions, and inspect failures correctly in Temporal Java Workflows and Activities.
+toc_max_heading_level: 4
+keywords:
+  - error handling
+  - exceptions
+  - failures
+  - java sdk
+tags:
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
+  - Java SDK
+  - Temporal SDKs
+---
+
+Temporal represents failures with a small set of typed exceptions that all extend
+[`TemporalFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TemporalFailure.html).
+For what each type means and when the Temporal Service raises it, see the
+[Temporal Failures reference](/references/failures).
+This page covers the two things that Java Workflow and Activity code get wrong most often: catching a wider exception
+type than intended, and manually adding checked exceptions to method signatures instead of using the SDK's wrapping
+helpers.
+
+## Catch `Exception`, never `Throwable` or `Error` {/* #catch-exception-not-throwable */}
+
+Workflow and Activity code should only ever catch `Exception` or a narrower type.
+Never catch `Throwable` or `Error`.
+
+The Java SDK uses subclasses of `Error` as internal control signals that must reach the SDK's own code uncaught:
+
+- [`DestroyWorkflowThreadError`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/DestroyWorkflowThreadError.html)
+  interrupts a Workflow thread so the Worker can release it back to the pool, for example when the Workflow Execution
+  is evicted from the [Worker's cache](/develop/java/workers/run-worker-process). If Workflow code catches it, the
+  thread doesn't unwind and eviction can stall.
+- [`UnsupportedVersion`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/statemachines/UnsupportedVersion.html)
+  is thrown by [`Workflow.getVersion()`](/develop/java/workflows/versioning) when replayed history was produced by
+  code outside the version range the current Workflow code declares. It extends `Error` specifically so that
+  application code won't catch it by mistake.
+
+Use this rule of thumb when deciding what to catch in a Workflow, Update, or Signal handler:
+
+1. **`Error`** — never catch it. If you must run cleanup on any exit path, use a
+   [detached Cancellation Scope](/develop/java/workflows/cancellation) rather than a broad catch (see [Cancellation](#cancellation) below).
+2. **`CanceledFailure`** — rethrow it, optionally after cleanup in a detached Cancellation Scope. Don't swallow it: cancellation
+   is cooperative, and swallowing it lets the Workflow Execution finish as "Completed" instead of "Canceled."
+3. **`ActivityFailure`, `ChildWorkflowFailure`, or `ApplicationFailure`** that you recognize and can recover from — handle it.
+4. **Everything else** — rethrow it. A plain `RuntimeException` that isn't recognized above fails the current
+   [Workflow Task](/tasks#workflow-task-execution), which retries indefinitely rather than failing the Workflow Execution. To fail the
+   Workflow Execution deliberately, throw an `ApplicationFailure` (see [Fail a Workflow deliberately](#fail-a-workflow) below).
+
+### Don't swallow failures with a broad catch {/* #dont-swallow-failures */}
+
+A `catch (Throwable t)` (or `catch (Exception e)` that only logs and returns) placed around Workflow logic "to be
+safe" is the most common way this rule gets broken:
+
+```java
+// Anti-pattern: never do this in Workflow, Update, or Signal code.
+try {
+  return doWorkflowLogic();
+} catch (Throwable t) {
+  logger.error("workflow failed", t);
+  return defaultResult();
+}
+```
+
+This single catch block causes three separate problems at once:
+
+- `DestroyWorkflowThreadError` and `UnsupportedVersion` are swallowed instead of reaching the SDK, which can stall
+  Worker cache eviction and interfere with replay.
+- `CanceledFailure` is swallowed, so a canceled Workflow Execution reports "Completed" instead of "Canceled."
+- Every other exception — including real bugs — disappears with only a log line instead of failing the Workflow
+  Task or Workflow Execution, so there's no signal in the Event History that anything went wrong.
+
+Catch the narrowest type you can actually recover from, log and rethrow anything you don't recognize, and let `Error`
+and `CanceledFailure` propagate untouched:
+
+```java
+try {
+  return doWorkflowLogic();
+} catch (ActivityFailure e) {
+  if (e.getCause() instanceof ApplicationFailure appFailure
+      && "ValidationError".equals(appFailure.getType())) {
+    return defaultResult();
+  }
+  throw e; // don't recognize it — propagate
+}
+```
+
+## Wrap checked exceptions instead of adding them to method signatures {/* #wrap-checked-exceptions */}
+
+Activity and Workflow method signatures shouldn't declare `throws` for checked exceptions.
+Instead, wrap a checked exception with
+[`Activity.wrap()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/Activity.html#wrap(java.lang.Throwable)>)
+inside an Activity, or
+[`Workflow.wrap()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#wrap(java.lang.Exception)>)
+inside a Workflow, before rethrowing it:
+
+```java
+static class GreetingActivitiesImpl implements GreetingActivities {
+  @Override
+  public String composeGreeting(String greeting, String name) {
+    try {
+      return callExternalService(greeting, name); // declares `throws IOException`
+    } catch (IOException e) {
+      throw Activity.wrap(e);
+    }
+  }
+}
+```
+
+`wrap()` only does something to a checked exception. Given that, you don't need to reason about what to pass it:
+
+- If `e` is a checked exception, `wrap()` returns a `CheckedExceptionWrapper` around it. The SDK unwraps it
+  automatically while propagating the failure and attaches the original exception as the `cause` of the resulting
+  `ApplicationFailure` — so the caller still sees your original exception type and message in the cause chain.
+- If `e` already extends `RuntimeException`, `wrap()` returns it unchanged. Calling `wrap()` on an unchecked
+  exception is a safe no-op, so you don't need to check the exception type before calling it.
+- If `e` extends `Error`, `wrap()` rethrows it directly instead of wrapping it, consistent with [never catching
+  `Throwable` or `Error`](#catch-exception-not-throwable).
+
+This also answers the two questions that come up most when working with wrapped exceptions:
+
+- **Do you need to wrap exceptions you throw yourself?** Only checked exceptions need `wrap()`. Any unhandled
+  exception an Activity or Workflow throws — checked or not — is already converted to an `ApplicationFailure`
+  automatically when it crosses the Activity or Workflow boundary. `wrap()` exists to satisfy the Java compiler when
+  you want to throw a checked exception from a method that doesn't declare it, not to make the exception propagate.
+- **Do you need to re-wrap an exception after unwrapping it?** No. Once you've unwrapped a cause to inspect it,
+  either rethrow the failure you caught (`throw e;`) or throw a new `ApplicationFailure` with the original exception
+  set as its cause. There's no wrapper left to reapply — `wrap()` only matters at the point where a checked exception
+  would otherwise need a `throws` declaration.
+
+## Read a failure's cause chain {/* #read-cause-chain */}
+
+An exception thrown from an Activity or Child Workflow arrives at the caller wrapped with context about where it
+failed. A failure from an Activity called from a Child Workflow called from a parent Workflow looks like this by the
+time it reaches a synchronous client call:
+
+```text
+WorkflowFailedException           (thrown to the client)
+└─ ChildWorkflowFailure           (the child Workflow Execution failed)
+   └─ ActivityFailure             (the Activity Execution failed)
+      └─ ApplicationFailure       (what your code actually threw)
+```
+
+Each wrapper adds context — `ActivityFailure` carries the Activity Type and Activity Id, `ChildWorkflowFailure`
+carries the Workflow Type and Workflow Id — while `getCause()` on each layer moves toward what actually failed. See
+[Temporal Failures reference](/references/failures) for what each of these types means for retry behavior.
+
+Two details matter once you reach an `ApplicationFailure`:
+
+- **Read `getOriginalMessage()`, not `getMessage()`.** `getMessage()` returns a decorated string such as
+  `message='Invalid credit card number', type='ValidationError', nonRetryable=true` — meant for logs, not parsing.
+  `getOriginalMessage()` returns the exact text you threw.
+- **Match on `getType()`, a stable `String`, not `instanceof` your original exception class.** `ApplicationFailure`
+  is `final` and the original exception object doesn't survive serialization: when an Activity in another process
+  (or another SDK language) throws, the caller only ever gets an `ApplicationFailure` back, never your custom
+  exception type. `type` defaults to the thrown exception's fully qualified class name unless you set it explicitly
+  with `ApplicationFailure.newFailure(message, type, ...)`.
+
+```java
+try {
+  return activities.processCreditCard(orderId);
+} catch (ActivityFailure e) {
+  if (e.getCause() instanceof ApplicationFailure appFailure) {
+    if ("ValidationError".equals(appFailure.getType())) {
+      return Result.rejected(appFailure.getOriginalMessage());
+    }
+  }
+  throw e;
+}
+```
+
+## Handle Activity and Child Workflow failures {/* #handle-activity-failures */}
+
+Catch `ActivityFailure` (or `ChildWorkflowFailure`) around a call, not `ApplicationFailure` directly — the Activity
+or Child Workflow boundary always wraps the underlying failure. Always check for `CanceledFailure` as the cause
+before handling anything else, and rethrow it unhandled:
+
+```java
+try {
+  return activities.charge(order);
+} catch (ActivityFailure e) {
+  if (e.getCause() instanceof CanceledFailure) {
+    throw e; // never swallow cancellation
+  }
+  if (e.getCause() instanceof ApplicationFailure appFailure
+      && "PaymentDeclined".equals(appFailure.getType())) {
+    return Result.declined(appFailure.getOriginalMessage());
+  }
+  throw e; // don't recognize it — propagate
+}
+```
+
+For deciding which failures should skip retries, see [Non-Retryable Errors](/design-patterns/non-retryable-errors),
+which has a Java example for both marking a failure non-retryable at the throw site and listing non-retryable types
+in a `RetryPolicy`. For undoing the effects of Activities that already succeeded before a later step failed, see the
+[Saga Pattern](/design-patterns/saga-pattern), which has a Java example built on the SDK's `Saga` helper. For the
+full set of retry strategies, see [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns).
+
+### Cancellation {/* #cancellation */}
+
+Cancellation is cooperative — the Worker never force-stops running Workflow code. A cancellation request cancels the
+current [Cancellation Scope](/develop/java/workflows/cancellation), and the next cancelable call inside it (an
+Activity, Timer, or Child Workflow) throws `CanceledFailure`. If you need cleanup to run after a cancellation — for
+example, compensating an Activity that already applied its effect — run it in a
+[detached Cancellation Scope](/develop/java/workflows/cancellation#cancel-activity), since a normal scope is a child
+of the one that was just canceled and any call inside it would be canceled immediately:
+
+```java
+try {
+  activities.longRunningWork();
+} catch (CanceledFailure e) {
+  Workflow.newDetachedCancellationScope(() -> activities.compensate()).run();
+  throw e; // rethrow after cleanup so the Workflow Execution ends "Canceled"
+}
+```
+
+## Centralize failure conversion with a Worker Interceptor {/* #centralize-with-interceptor */}
+
+Activity code that calls several external services often ends up repeating the same `catch` blocks to convert
+domain exceptions into `ApplicationFailure` with a consistent `type` and non-retryable classification. A
+[`WorkerInterceptor`](/develop/plugins-guide#interceptors) that overrides
+[`ActivityInboundCallsInterceptor.execute()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/interceptors/ActivityInboundCallsInterceptor.html)
+centralizes that mapping in one place instead of repeating it in every Activity implementation:
+
+```java
+public final class ErrorNormalizingWorkerInterceptor extends WorkerInterceptorBase {
+  @Override
+  public ActivityInboundCallsInterceptor interceptActivity(ActivityInboundCallsInterceptor next) {
+    return new ActivityInboundCallsInterceptorBase(next) {
+      @Override
+      public ActivityOutput execute(ActivityInput input) {
+        try {
+          return super.execute(input);
+        } catch (ApplicationFailure | TimeoutFailure | CanceledFailure f) {
+          throw f; // already a well-formed Temporal failure — pass through
+        } catch (PaymentDeclinedException e) {
+          throw ApplicationFailure.newNonRetryableFailure(e.getMessage(), "PaymentDeclined", e.toDetail());
+        } catch (Exception e) {
+          throw Activity.wrap(e); // uniform fallback: type = class name, retryable
+        }
+      }
+    };
+  }
+}
+```
+
+Register it on the Worker Factory:
+
+```java
+WorkerFactoryOptions.newBuilder()
+    .setWorkerInterceptors(new ErrorNormalizingWorkerInterceptor())
+    .build();
+```
+
+Because the interceptor sees the original exception before the SDK's default conversion runs, it's the layer to
+attach `details` and a non-retryable classification consistently, rather than depending on every Activity
+implementation to do it the same way. `WorkerInterceptor` and `ActivityInboundCallsInterceptor` are marked
+`@Experimental`. For the general interceptor model — inbound versus outbound, and the other call categories you can
+intercept — see [Interceptors](/develop/plugins-guide#interceptors).
+
+## Fail a Workflow deliberately {/* #fail-a-workflow */}
+
+Throwing `ApplicationFailure` from Workflow code is the only way to fail a Workflow Execution deliberately. Any other
+unhandled exception fails only the current Workflow Task, which the Worker retries indefinitely — this is intentional:
+a plain bug should be fixable with a new deployment, not permanently fail every Workflow Execution that hit it.
+
+```java
+if (order.getTotal().compareTo(BigDecimal.ZERO) <= 0) {
+  throw ApplicationFailure.newNonRetryableFailure(
+      "Order total must be positive: " + order.getTotal(), "InvalidOrderTotal");
+}
+```
+
+If you want specific plain exception types to fail the Workflow Execution instead of retrying the Workflow Task,
+list them with
+[`WorkflowImplementationOptions.setFailWorkflowExceptionTypes()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkflowImplementationOptions.html#setFailWorkflowExceptionTypes(java.lang.Class...)>)
+when registering the Workflow implementation.
+
+Never extend `TemporalFailure` or any of its subclasses in application code — throw `ApplicationFailure` instead.
+The SDK reserves the other subclasses (`ActivityFailure`, `ChildWorkflowFailure`, `CanceledFailure`, `TimeoutFailure`,
+`TerminatedFailure`, `ServerFailure`) for its own use.

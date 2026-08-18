@@ -51,3 +51,9 @@
 ## Configure mTLS and PrivateLink for AWS
 
 ## Worker Versioning and Patching
+
+## Run against Vertex AI
+
+## Call a Gemini model from a Workflow
+
+## Authenticate to Google Cloud

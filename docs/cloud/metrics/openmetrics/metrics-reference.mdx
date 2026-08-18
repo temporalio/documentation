@@ -31,7 +31,7 @@ This document describes all metrics available from the Temporal Cloud OpenMetric
 All metrics are exposed as OpenMetrics gauges, but represent different measurement types:
 
 * *Rate Metrics*: per-second rate of the aggregated values  
-* *Value Metrics*: The most recent aggregate value within a look-back window (e.g. backlogs, limits)  
+* *Value Metrics*: The most recent aggregate value within a look-back window (for example, backlogs, limits)  
 * *Percentile Metrics*: Pre-calculated aggregated latency percentiles in seconds
 
 :::note
@@ -533,7 +533,7 @@ It can overcount because invalid or expired Tasks, like from cancelled, terminat
 
 It can also reset to zero on an idle Task Queue. If no Worker polls, no new Tasks are added, and no other Task Queue calls occur (such as `DescribeTaskQueue` or `UpdateTaskQueueConfig`) for approximately 5 minutes. The Task Queue is unloaded from memory.
 Infrequent metadata updates and database time-to-live settings can also cause this metric to drift at a smaller magnitude.
-See [backlog accuracy limitations](/develop/worker-performance#backlog-accuracy-limitations) for details.
+See [backlog accuracy limitations](/develop/worker-performance/task-queues#backlog-accuracy-limitations) for details.
 :::
 
 | Label | Description |
@@ -607,7 +607,7 @@ The total number of actions performed per second. Actions with `is_background=fa
 
 | Label | Description |
 | ----- | ----- |
-| `is_background` | Whether the action was background: `true` or `false`. Background actions (e.g. History export) do not count toward the action rate limit |
+| `is_background` | Whether the action was background: `true` or `false`. Background actions do not count toward the action rate limit |
 | `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
 :::note

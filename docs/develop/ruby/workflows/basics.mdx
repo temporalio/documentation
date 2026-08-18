@@ -91,10 +91,82 @@ Ruby Workflows. This means there are several things Workflows cannot do such as:
 - Perform IO (network, disk, stdio, etc)
 - Access/alter external mutable state
 - Do any threading
-- Do anything using the system clock (e.g. `Time.Now`)
+- Do anything using the system clock (for example, `Time.Now`)
 - Make any random calls
 - Make any not-guaranteed-deterministic calls
 
 To prevent illegal Workflow calls, a call tracer is put on the Workflow thread that raises an exception if any illegal
 calls are made.
 Which calls are illegal is configurable in the Worker options.
+
+The SDK provides replay-safe alternatives for common needs.
+
+### Logging
+
+Use [`Temporalio::Workflow.logger`](https://ruby.temporal.io/Temporalio/Workflow.html#logger-class_method) instead of
+`puts` or a `Logger` you create yourself. The `Logger` class is on the default illegal call list, and the SDK logger
+appends Workflow details to every log and skips logging during replay:
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute(name)
+    Temporalio::Workflow.logger.info("Starting workflow for #{name}")
+    # ...
+  end
+end
+```
+
+For logger configuration, see [Observability: Log from a Workflow](/develop/ruby/platform/observability#logging).
+
+### Random numbers and UUIDs
+
+Use [`Temporalio::Workflow.random`](https://ruby.temporal.io/Temporalio/Workflow.html#random-class_method) to get a
+`Random` instance seeded per Workflow Execution. The SDK requires `random/formatter`, so this instance also has the
+standard library's [`Random::Formatter#uuid`](https://rubyapi.org/4.0/o/random/formatter#method-i-uuid) method. Use it
+instead of `SecureRandom.uuid`:
+
+```ruby
+value = Temporalio::Workflow.random.rand(1..100)
+unique_id = Temporalio::Workflow.random.uuid
+```
+
+Don't use `SecureRandom`, `Kernel#rand`, `Kernel#srand`, or `Random.new` in Workflow code. They're on the default
+illegal call list, and the call tracer raises a `Temporalio::Workflow::NondeterminismError` when it detects them.
+
+Access the instance each time you need it rather than storing it in an instance variable. The SDK may recreate it with a
+different seed, such as after a Workflow reset.
+
+### Current time
+
+Use [`Temporalio::Workflow.now`](https://ruby.temporal.io/Temporalio/Workflow.html#now-class_method) instead of
+`Time.now`. It returns the UTC time of the last Workflow Task, which is consistent across replays:
+
+```ruby
+current_time = Temporalio::Workflow.now
+```
+
+To wait, use [`Temporalio::Workflow.sleep`](https://ruby.temporal.io/Temporalio/Workflow.html#sleep-class_method)
+instead of `Kernel#sleep`.
+
+### Detecting replay (advanced)
+
+Use [`Temporalio::Workflow::Unsafe.replaying?`](https://ruby.temporal.io/Temporalio/Workflow/Unsafe.html#replaying?-class_method)
+to guard code that should only run on the first execution, such as emitting metrics or sending external notifications
+from an Interceptor.
+
+:::caution
+
+Never use this to affect Workflow business logic. Branching on replay status breaks determinism.
+
+:::
+
+```ruby
+unless Temporalio::Workflow::Unsafe.replaying?
+  emit_metric('workflow_started', 1)
+end
+```
+
+If your goal is to always take action when something new is happening, check that
+[`Temporalio::Workflow::Unsafe.replaying_history_events?`](https://ruby.temporal.io/Temporalio/Workflow/Unsafe.html#replaying_history_events?-class_method)
+is false instead. That is false during read-only operations like Queries and Update validators. This is what the SDK's
+built-in logger uses internally.

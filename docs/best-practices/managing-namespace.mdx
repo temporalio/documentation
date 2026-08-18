@@ -33,10 +33,10 @@ domains, and tenants. For Cloud-specific namespace mechanics such as creation, t
 
 Related guidance:
 - [Managing Temporal Cloud access control](/best-practices/cloud-access-control)
-- [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns)
+- [Multi-tenant application patterns](/best-practices/multi-tenant-patterns)
 - [Managing Actions per Second (APS) limits in Temporal Cloud](/best-practices/managing-aps-limits)
 
-## Naming Conventions
+## Naming conventions
 
 ### Use lowercase and hyphens
 
@@ -70,10 +70,10 @@ Use a pattern like `<use-case>-<domain>-<environment>` to name Namespaces:
 
 :::tip Temporal Cloud
 Cloud Namespace names are limited to [39 characters](/cloud/namespaces#temporal-cloud-namespace-name).
-If you need to include region, use short codes (e.g., `aps1`, `use1`).
+If you need to include region, use short codes (for example, `aps1`, `use1`).
 :::
 
-## Organizational Patterns
+## Organizational patterns
 
 ### Choose your Namespace boundary intentionally
 
@@ -161,7 +161,7 @@ This is usually appropriate only for a small number of high-value tenants that r
 - independent debugging, alerting, and operational ownership
 
 For most SaaS use cases, a shared Namespace with per-tenant [Task Queues](/task-queue) is simpler and more scalable.
-See [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns) for those designs.
+See [Multi-tenant application patterns](/best-practices/multi-tenant-patterns) for those designs.
 
 ### What should cause you to split a Namespace later?
 
@@ -176,7 +176,7 @@ Revisit your topology when one or more of the following becomes true:
 Splitting a Namespace increases safety, but it also adds overhead for provisioning, tagging, credentials, and cross-Namespace coordination.
 Use [Nexus](/nexus) where possible instead of sharing Temporal primitives across team or domain boundaries.
 
-## Production Safeguards
+## Production safeguards
 
 ### Use an Authorizer (open source only) {/* #authorizer */}
 
@@ -229,7 +229,7 @@ While the name captures use case, domain, and environment, tags can capture addi
 
 For tag structure, limits, and management instructions, see [How to tag a Namespace](/cloud/namespaces#tag-a-namespace).
 
-## SDK Client Configuration
+## SDK client configuration
 
 Set Namespaces in your SDK Client to isolate your Workflow Executions.
 If you do not set a Namespace, all Workflow Executions started using the Client will be associated with the `default` Namespace.

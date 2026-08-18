@@ -63,16 +63,15 @@ support ticket.
 
 
 ### Capture cluster configurations
+Depending on your server version, use one of the following methods to capture the configuration of each cluster.
 
-Use one of the following methods to capture the configuration of each cluster.
-
-For server versions above 1.28.1, run the following command against each of your clusters:
+For server versions **above 1.28.1**, run the following command against each of your clusters:
 
 ```
 temporal operator cluster describe --address <frontend:7233> --output json
 ```
 
-For server versions 1.28.1 and prior, use one of the following alternate methods:
+For server versions **1.28.1 and prior**, use one of the following alternate methods:
 
 ```
 tctl --address <frontend:7233> admin cluster describe
@@ -120,6 +119,13 @@ When planning an automated migration, share the following estimates with your Te
 
 These estimates help Temporal plan capacity, Namespace limits, and migration timing.
 
+### Capture schedules
+Capture a list of schedules on the system. This helps to ensure backwards compatibility.
+
+```
+temporal schedule list
+```
+
 ### Prepare mTLS certificates
 
 mTLS is used to secure the [S2S Proxy](#s2s-proxy-configuration) communications channel. Provide a single certificate using the process outlined
@@ -152,6 +158,7 @@ In your ticket, please provide:
 * mTLS certificate - base64 encoded pem file works well for easy submission in the ticket
 * cluster configurations -  json output for each cluster
 * custom search attributes - CLI output for each cluster/Namespace
+* list of schedules used
 * Namespace metrics
 * cluster/Namespace mappings - use CSV format (see below)
 
@@ -444,7 +451,7 @@ The following are known limitations.
 
 - OSS server versions 1.22 or newer are required. Refer to the
   [upgrade](/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
-- History shard counts must be a power of two (eg. 512, 1024, etc...).
+- History shard counts must be a power of two (for example, 512 or 1024).
 - If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal
   uses 'active' as cluster name), they cannot be connected to a single migration server simultaneously due to cluster
   name collision. There are 2 available options:
@@ -455,8 +462,8 @@ The following are known limitations.
   this may impact your eligibility for automated migration. Specifically, whenever Global Namespace has been previously
   enabled the following restrictions apply:
   1. Initial Failover Version must be less than or equal to 1,000,000
-  2. Failover Version Increment must be a divisor of 1,000,000 (eg. 10)
-- OSS supports cross-Namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the
+  2. Failover Version Increment must be a divisor of 1,000,000 (for example, 10)
+- OSS supports cross-Namespace commands (for example, parent-child, SignalExternal, CancelExternal) through the
   `system.enableCrossNamespaceCommands` configuration. This configuration is disabled on Temporal Cloud. The
   `system.enableCrossNamespaceCommands` configuration must be disabled, and code using cross-Namespace calls must be
   updated or removed prior to migration.
