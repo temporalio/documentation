@@ -8,7 +8,7 @@ slug: /ai
 
 import PatternCards from '@site/src/components/PatternCards';
 import IntegrationsGrid from '@site/src/components/IntegrationsGrid';
-import { CookbookPreview } from '@site/src/components';
+import { CookbookPreview, GridCardList } from '@site/src/components';
 
 Temporal gives AI applications and agents Durable Execution: a Workflow resumes automatically after a crash, a
 network timeout, or a multi-day wait for a human to approve a step. Use it to keep long-running agent loops, LLM tool
@@ -30,6 +30,43 @@ Temporal integrations for the SDKs and frameworks teams use to build agents. Thi
 frameworks — browse [every integration](/integrations) for the full catalog.
 
 <IntegrationsGrid defaultTags={["Agent framework"]} hideTagFilter hideEmptyOptions />
+
+## Featured from the Code Exchange
+
+A hand-picked look at what the community is building with Temporal and AI. Browse the full
+[Code Exchange](https://temporal.io/code-exchange) for more.
+
+<GridCardList className="code-exchange-featured"
+  items={[
+  {
+    href: "https://temporal.io/code-exchange/ai-enhanced-e-commerce-application",
+    title: "AI enhanced e-commerce application",
+    description: "A sample e-commerce gift shop with hybrid full-text and vector search plus an AI-powered chat shopping assistant, built with Stripe and Temporal Workflows.",
+    tags: ["Hybrid search"],
+    sdk: "Dotnet",
+  },
+  {
+    href: "https://temporal.io/code-exchange/ai-question-planetarium",
+    title: "Temporal AI Question Planetarium",
+    description: "Runs a Hugging Face model inside Temporal Activities and Workers, streaming updates to the browser over WebSockets in real time.",
+    tags: ["Demo"],
+    sdk: "Python",
+  },
+  {
+    href: "https://temporal.io/code-exchange/document-processing-w-ai",
+    title: "Document Processing w/ AI",
+    description: "A mortgage underwriting demo that uses Gemini OCR and policy-grounded AI analysis in deterministic Workflows, with human-in-the-loop review and full traceability.",
+    tags: ["Gemini", "Mortgage"],
+    sdk: "Python",
+  },
+  {
+    href: "https://temporal.io/code-exchange/rust-confessional",
+    title: "Rust Confessional: a durable AI agent demo",
+    description: "A live demo where an AI agent judges audience programming confessions, its progress surviving a Worker crash mid-task.",
+    tags: ["Demo"],
+    sdk: "Rust",
+  },
+]} />
 
 ## Use cases
 

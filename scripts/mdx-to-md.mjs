@@ -102,6 +102,7 @@ export const COMPONENT_REGISTRY = {
   ThemedImage: "strip-block",
   PatternCards: "cards",
   QuickstartCards: "cards",
+  GridCardList: "cards",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
@@ -1276,8 +1277,8 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- QuickstartCards / PatternCards → Markdown link list from items prop ---
-    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards)\b/.test(line)) {
+    // --- QuickstartCards / PatternCards / GridCardList → Markdown link list from items prop ---
+    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards|GridCardList)\b/.test(line)) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {
         i++;

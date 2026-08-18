@@ -7,6 +7,18 @@ function isExternal(href: string): boolean {
   return href.startsWith('http://') || href.startsWith('https://');
 }
 
+// A link to temporal.io itself (e.g. the Code Exchange) still opens in a new
+// tab like any other external href, but doesn't get the external-link icon —
+// it isn't "leaving Temporal" the way a partner's docs site is.
+function isOffTemporalDomain(href: string): boolean {
+  try {
+    const { hostname } = new URL(href);
+    return hostname !== 'temporal.io' && !hostname.endsWith('.temporal.io');
+  } catch {
+    return true;
+  }
+}
+
 function ExternalLinkIcon() {
   return (
     <svg
@@ -44,6 +56,7 @@ export type GridCardProps = {
  */
 export default function GridCard({ title, description, href, tags = [], icon, analyticsId }: GridCardProps) {
   const external = isExternal(href);
+  const showExternalIcon = external && isOffTemporalDomain(href);
   return (
     <Link
       to={href}
@@ -54,7 +67,7 @@ export default function GridCard({ title, description, href, tags = [], icon, an
       <div className={styles.cardHeader}>
         <h3 className={styles.cardName}>
           {title}
-          {external && <ExternalLinkIcon />}
+          {showExternalIcon && <ExternalLinkIcon />}
         </h3>
         {icon && <div className={styles.icons}>{icon}</div>}
       </div>

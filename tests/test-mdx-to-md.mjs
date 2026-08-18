@@ -1064,9 +1064,41 @@ test("parseCardItems extracts href/title/description from an items prop", () => 
   assert(items[1].description === "Run Java.", "description parsed");
 });
 
+test("parseCardItems keeps an apostrophe inside a double-quoted description", () => {
+  const tag = `<PatternCards items={[\n  { href: "/a", title: "A", description: "Uses Temporal's Durable Execution end to end." },\n]} />`;
+  const items = parseCardItems(tag);
+  assert(items.length === 1, "expected 1 item");
+  assert(
+    items[0].description === "Uses Temporal's Durable Execution end to end.",
+    `description should not truncate at the apostrophe, got: ${items[0].description}`
+  );
+});
+
 test("cardsToMarkdown renders a link list with descriptions", () => {
   const md = cardsToMarkdown([{ href: "/a", title: "Go", description: "Run Go." }]);
   assertContains(md, "- [Go](/a): Run Go.");
+});
+
+test("parseCardItems extracts tags and sdk from a GridCardList items prop", () => {
+  const tag = `<GridCardList items={[\n  { href: "/a", title: "A", description: "Desc.", tags: ["RAG", "Demo"], sdk: "Python" },\n]} />`;
+  const items = parseCardItems(tag);
+  assert(items.length === 1, "expected 1 item");
+  assertEqual(JSON.stringify(items[0].tags), JSON.stringify(["RAG", "Demo"]), "tags array parsed");
+  assert(items[0].sdk === "Python", "sdk parsed");
+});
+
+test("parseCardItems defaults tags/sdk when absent (PatternCards items)", () => {
+  const tag = `<PatternCards items={[\n  { href: "/a", title: "A", description: "Desc." },\n]} />`;
+  const items = parseCardItems(tag);
+  assertEqual(JSON.stringify(items[0].tags), JSON.stringify([]), "tags defaults to empty array");
+  assert(items[0].sdk === "", "sdk defaults to empty string");
+});
+
+test("cardsToMarkdown appends a _(SDK · tags)_ suffix when present", () => {
+  const md = cardsToMarkdown([
+    { href: "/a", title: "Aktilot", description: "Chat with docs.", tags: ["RAG"], sdk: "Python" },
+  ]);
+  assertContains(md, "- [Aktilot](/a): Chat with docs. _(Python · RAG)_");
 });
 
 test("transformMdx renders QuickstartCards items as a list", () => {
@@ -1081,6 +1113,13 @@ test("transformMdx renders PatternCards items as a list", () => {
   const { markdown } = transformMdx(input);
   assertNotContains(markdown, "PatternCards");
   assertContains(markdown, "- [Company Security](https://x): Learn more.");
+});
+
+test("transformMdx renders GridCardList items with a SDK/tags suffix", () => {
+  const input = `<GridCardList\n  className="code-exchange-featured"\n  items={[\n  { href: "https://x", title: "Demo Project", description: "Does things.", tags: ["RAG"], sdk: "Python" },\n]} />`;
+  const { markdown } = transformMdx(input);
+  assertNotContains(markdown, "GridCardList");
+  assertContains(markdown, "- [Demo Project](https://x): Does things. _(Python · RAG)_");
 });
 
 // ---------------------------------------------------------------------------
