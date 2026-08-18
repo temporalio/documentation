@@ -178,7 +178,7 @@
     },
     {
       "source": "/cookbook/:path*",
-      "destination": "/ai/cookbook/:path*",
+      "destination": "/ai-cookbook/:path*",
       "permanent": true
     },
     {
