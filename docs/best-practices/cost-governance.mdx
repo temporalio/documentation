@@ -18,8 +18,8 @@ Enterprise platform teams consistently need to solve three problems:
   invoice closes, not after.
 - **Anomaly detection on usage**: treating a spend spike as an early operational signal, not just a finance surprise.
 
-The goal is a design you can stand up before your first production Namespace goes live, rather than a lesson you
-learn after the first "where did this bill come from" conversation.
+This guide helps you build cost visibility in from the start, rather than discover the gap after costs have already
+accumulated.
 
 ## Key tools and concepts
 
@@ -63,7 +63,7 @@ spend.
 }
 ```
 
-## Use case 1: Cost attribution
+## Attribute cost by team and workload
 
 **Goal**: give every Temporal Cloud team, use case, and application (for example, Claim, Payment, Notification) its
 own line item, sourced directly from Temporal Cloud's billing data instead of an estimate. Use this for both cost
@@ -96,7 +96,7 @@ attribution and budget tracking.
 - Feed the grouped output into your internal FinOps or budget system as a recurring Workflow, or connect Temporal
   Cloud's native Datadog Cloud Cost Management or Vantage integration if either tool is already in your FinOps stack.
 
-## Use case 2: Budget forecasting and burn-rate tracking
+## Forecast budget burn rate
 
 **Goal**: answer "where are we trending against this Namespace's budget, and will we exceed it before month end?"
 with enough lead time to act.
@@ -143,7 +143,7 @@ fees, pricing-tier calculations, some features (TRUs, Fairness), or rounding. Us
 the month, and reconcile final numbers against the Billing API or Billing Center once the billing month closes.
 :::
 
-## Use case 3: Anomaly detection on usage
+## Detect usage anomalies early
 
 **Goal**: treat a sudden spend or Action spike as an early operational signal for a runaway Workflow or bad deploy.
 
