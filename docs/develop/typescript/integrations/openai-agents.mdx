@@ -375,6 +375,16 @@ const worker = await Worker.create({
       mcpServerProviders: [...statelessProviders, ...statefulProviders],
     }),
   ],
+  bundlerOptions: {
+    webpackConfigHook: (config) => ({
+      ...config,
+      resolve: {
+        ...config.resolve,
+        conditionNames: ['require', 'browser', 'default'],
+      },
+    }),
+  },
+});
 ```
 <!--SNIPEND-->
 
@@ -643,20 +653,17 @@ import { createTracerProvider } from '@temporalio/openai-agents/otel';
 trace.setGlobalTracerProvider(createTracerProvider());
 ```
 
-Then set `useOtelInstrumentation` in the plugin's `interceptorOptions`:
+Then set `useOtelInstrumentation` to `true` in the plugin's `interceptorOptions`:
 
-<!--SNIPSTART typescript-openai-agents-tracing-worker-->
-[openai-agents/src/tracing/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/tracing/worker.ts)
 ```ts
 plugins: [
   new OpenAIAgentsPlugin({
     modelProvider: new OpenAIProvider({ apiKey }),
     modelParams: { useLocalActivity: true },
-    interceptorOptions: { useOtelInstrumentation, addTemporalSpans: true },
+    interceptorOptions: { useOtelInstrumentation: true, addTemporalSpans: true },
   }),
 ],
 ```
-<!--SNIPEND-->
 
 If you need a different provider class, configure it with `TemporalIdGenerator` and mark it with
 `markReplaySafeTracerProvider` before registering it.
