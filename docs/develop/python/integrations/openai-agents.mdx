@@ -100,7 +100,9 @@ client = await Client.connect(
 Workers built from that Client pick up the plugin automatically, so all a Worker has to do is register the Workflow.
 
 `ModelActivityParameters` controls how the model Activity is scheduled. Alongside `start_to_close_timeout`, which
-defaults to 60 seconds, it takes `retry_policy`, `task_queue`, `priority`, `summary_override`, and `use_local_activity`.
+defaults to 60 seconds, it accepts `schedule_to_close_timeout`, `schedule_to_start_timeout`, `heartbeat_timeout`,
+`retry_policy`, `cancellation_type`, `versioning_intent`, `task_queue`, `priority`, `summary_override`,
+`use_local_activity`, `streaming_topic`, and `streaming_batch_interval`.
 
 You must ensure the Worker process has access to your model-provider credentials. Most provider SDKs read credentials
 from environment variables.
@@ -474,48 +476,6 @@ class SimpleMCPWorkflow:
 ```
 <!--SNIPEND-->
 
-## Secrets for hosted tools
-
-:::caution
-
-This feature is experimental and may change before general availability.
-
-:::
-
-A hosted tool's credentials would otherwise have to be written into Workflow code, where they would land in Workflow
-history. Use `temporal_worker_env_ref()` to name an environment variable instead of passing the credential itself:
-
-```python
-from agents import HostedMCPTool
-from temporalio.contrib.openai_agents import temporal_worker_env_ref
-
-tool = HostedMCPTool(
-    tool_config={
-        "type": "mcp",
-        "server_label": "my_server",
-        "server_url": "https://example.com/mcp",
-        "authorization": temporal_worker_env_ref("MY_MCP_TOKEN"),
-    }
-)
-```
-
-Every Worker that runs model Activities must both set `MY_MCP_TOKEN` and declare it resolvable:
-
-```python
-plugin = OpenAIAgentsPlugin(resolvable_worker_env_vars=["MY_MCP_TOKEN"])
-```
-
-Names are matched exactly, with no globbing. A `"*"` anywhere in the list allows every environment variable on the
-Worker. A reference can also sit inside a larger value: in `"Bearer " + temporal_worker_env_ref("MY_MCP_TOKEN")`, the
-reference is replaced in place and the rest of the string is sent unchanged.
-
-The Worker substitutes the value in these fields and no others:
-
-- `authorization`, and the value of each entry in `headers`, in a `HostedMCPTool`'s `tool_config`
-- `value` in each entry of `network_policy.domain_secrets` under a hosted `ShellTool`'s `environment`
-- `value` in each entry of `network_policy.domain_secrets` under the `container` in a `CodeInterpreterTool`'s
-  `tool_config`
-
 ## Conversation history and human-in-the-loop
 
 Because the agent loop runs inside a Workflow, conversation history and pending approvals have to be replay safe.
@@ -673,10 +633,13 @@ The name becomes the prefix of that backend's Activity names, which is what lets
 single Workflow can target more than one by calling `temporal_sandbox_client()` once per name. Names must match the
 Worker's registration exactly.
 
-The sample above uses `UnixLocalSandboxClient`, which runs commands on the Worker host—convenient locally, but it means
-the agent gets a shell on that machine. In production, register a remote client such as `DaytonaSandboxClient` or
-`E2BSandboxClient` from `agents.extensions.sandbox` instead. Only the Worker changes; the Workflow still just names a
-provider.
+The sample above uses `UnixLocalSandboxClient`, which runs commands on the Worker host and copies the Worker's entire
+environment into each agent-run process. An agent can read values such as `OPENAI_API_KEY`. Command output returns as an
+Activity result and is stored in Workflow history unless you protect payloads with a codec.
+
+Use `UnixLocalSandboxClient` only for local development with trusted prompts. In production, register a remote client
+such as `DaytonaSandboxClient` or `E2BSandboxClient` from `agents.extensions.sandbox` instead. Only the Worker changes;
+the Workflow still names a provider.
 
 ## Streaming
 
@@ -823,6 +786,12 @@ into the Workflow.
 
 ### OpenTelemetry
 
+:::caution
+
+The OpenTelemetry integration is Public Preview and may change before general availability.
+
+:::
+
 If you already collect traces with OpenTelemetry, the integration can emit the agent's spans through your pipeline, so
 model calls, tools, and orchestration land in the same backend as the rest of your traces.
 
@@ -860,6 +829,8 @@ To call the OpenTelemetry API directly from Workflow code, allow the module thro
 agents-SDK span first, so your spans are parented rather than becoming roots:
 
 ```python
+import opentelemetry.trace
+
 from agents import custom_span
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner, SandboxRestrictions
 
