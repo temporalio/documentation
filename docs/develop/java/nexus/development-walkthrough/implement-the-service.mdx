@@ -2,7 +2,7 @@
 id: implement-the-service
 title: Step 4 - Implement the Service
 sidebar_label: 4. Implement the Service
-description: Implement the approval Nexus Service in Java using TemporalOperationHandler, backed by a Workflow, and run a Worker that hosts it.
+description: Implement the approval Nexus Service with TemporalOperationHandler, backed by a Workflow, and run a Worker that hosts it.
 toc_max_heading_level: 4
 unlisted: true
 tags:
@@ -10,11 +10,11 @@ tags:
   - Java SDK
 ---
 
-Implement the generated Service interface, back `requestApproval` with the approval Workflow, and run a Worker that hosts both.
+[Step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#build-the-operation-that-needs-no-backing) implemented the one Operation that needs no backing. This step adds the one at the center of the Service: back `requestApproval` with the approval Workflow, then run a Worker that hosts the Service, the Workflow, and the Activities.
 
 ## Write the approval Workflow
 
-The Workflow is an ordinary Temporal Workflow. Nothing in it is Nexus-specific, and it could be started directly by a Client instead.
+The Workflow is an ordinary Temporal Workflow — the interactive one chosen in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#workflow). Nothing in it is Nexus-specific, and it could be started directly by a Client instead. What makes it interactive is the message handlers added in [step 7](/develop/java/nexus/development-walkthrough/add-messaging) and a Workflow Id you can predict.
 
 For the approval, it needs to:
 
@@ -33,17 +33,13 @@ Use `TemporalOperationHandler` for every Temporal-backed Operation, including si
 
 `TemporalOperationHandler.create(...)` gives your start handler a context, a Nexus-aware Client, and the Operation input. Call `startWorkflow` on that Client and return its result. The Operation then completes when the Workflow returns, delivering the Workflow's return value to the caller.
 
-The Client is not an ordinary Temporal Client. It propagates bidirectional links and request Ids automatically, so the caller's Execution and the approval Workflow are connected in the UI. Fetching your own Client inside a handler works but gives up that linking.
+The Client is not an ordinary Temporal Client. It propagates bidirectional links and request Ids automatically, so the caller's Execution and the approval Workflow are connected in the UI without you wiring anything. Fetching your own Client inside a handler works, and the Operation behaves correctly, but you give up that linking. This is the single biggest reason to use the injected Client for anything that starts or messages an Execution.
 
 `{sample code will be here}`
 
-Set the Workflow Id from the approval id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-entity-a-stable-id).
+Set the Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id).
 
-:::note
-
-You may see older examples using `WorkflowRunOperation.fromWorkflowMethod` or a synchronous `OperationHandler`. Both still work and are not being removed, but they are de-emphasized in favor of `TemporalOperationHandler`. See [Coming from the earlier handler APIs](/nexus/temporal-operation-handler#coming-from-the-earlier-handler-apis).
-
-:::
+By default, starting a Workflow whose Id is already running **fails the Operation**. That is the right default here: the Operation has only started successfully once its completion callback is attached to a Workflow, so failing loudly beats reporting success to a caller that would then wait forever. [Step 8](/develop/java/nexus/development-walkthrough/send-messages#when-the-approval-already-exists) revisits this option, because once another Operation can create the approval first, this Operation needs to attach to it instead of failing.
 
 ## Run the Worker
 
@@ -63,7 +59,11 @@ An **application failure** — the approval cannot proceed for a business reason
 
 ## Next
 
-The Service runs but nothing can reach it yet. [Publish it in Nexus](/develop/java/nexus/development-walkthrough/publish-in-nexus).
+The Service runs but nothing can reach it yet.
+
+**[Step 5 - Publish in Nexus](/develop/java/nexus/development-walkthrough/publish-in-nexus)** - create the Endpoint that makes it reachable.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

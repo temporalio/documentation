@@ -2,7 +2,7 @@
 id: add-messaging
 title: Step 7 - Add messaging
 sidebar_label: 7. Add messaging
-description: Expose Signal, Query, and Update on the approval Workflow as Nexus Operations using the Nexus-aware Client.
+description: Expose a Signal and an Update on the approval Workflow as Nexus Operations using the Nexus-aware Client.
 toc_max_heading_level: 4
 unlisted: true
 tags:
@@ -10,70 +10,77 @@ tags:
   - Java SDK
 ---
 
-The approval blocks waiting for a decision. Now give callers a way to interact with it while it waits.
+The approval blocks waiting for a decision. **Messages** give callers a way to interact with it while it waits.
 
-Three Operations get added, one per [message](/sending-messages) type. Which message type to use is determined by what the caller needs back, not by preference.
+Two Operations get added to the workflow sample problem. Which [message](/sending-messages) type each one uses is decided by what the caller needs back, not by preference.
 
 | Operation | Message type | Why this type |
 | --- | --- | --- |
 | `remindApprover` | Signal | Fire-and-forget. The caller does not need a response, only for the nudge to happen. |
-| `getApprovalStatus` | Query | Reads state without changing it. Never blocks, never writes. |
 | `submitDecision` | Update | Changes state *and* returns a result the caller needs — confirmation the decision was recorded. |
+
+That is the whole rule. If the caller can proceed without hearing anything back, a Signal is enough. If the caller needs to know what the message did, it needs an Update.
 
 ## Add the handlers to the Workflow
 
-On the Workflow, add a Signal handler that increments the reminder count, a Query handler that returns the current progress, and an Update handler that records the decision and unblocks the wait.
+On the Workflow, add a Signal handler that increments the reminder count and an Update handler that records the decision and unblocks the wait.
 
 The Update is what ends the approval. It records `APPROVED` or `DENIED`, which satisfies the condition the Workflow is blocked on, and the Workflow then returns that decision as its result.
 
 `{sample code will be here}`
 
-Two constraints apply to the Query handler. It must not block, and it must not mutate Workflow state — a Query is served by replaying history, so anything it changes is invisible and anything it waits on stalls the Query. Return only what is already in memory.
-
 ## Expose them as Nexus Operations
 
-These use `TemporalOperationHandler`, and they divide along the line described in [The Nexus-aware Client](/nexus/temporal-operation-handler#the-nexus-aware-client): Signal is **sync messaging**, and Update is an **async backing**.
+Both use `TemporalOperationHandler`, and they divide along the line described in [The Nexus-aware Client](/nexus/temporal-operation-handler#the-nexus-aware-client): a Signal is **sync messaging**, and an Update is an **async backing**.
 
 ### Signal
 
-Reach it through `client.getWorkflowClient()` on the Nexus-aware Client, then return `TemporalOperationResult.sync(...)`. The Operation completes immediately, during the handler call.
+Send the Signal through the Client, then return a synchronous result. The Operation completes immediately, during the handler call.
 
-You can send as many messages as you want in one handler. Using the injected Client rather than your own is what gets the message linked back to the caller.
+:::caution The handler has under 10 seconds
+
+A synchronous handler must finish inside the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout), and the budget you actually get is smaller: the clock starts on the caller's side and the request still has to route through matching.
+
+Sending one Signal is comfortably inside it. A handler that sends several messages, or does slow work before returning, is not. Overrunning gives the caller a context deadline exceeded error, which it then retries with exponential backoff until the schedule-to-close timeout expires.
+
+:::
 
 `{sample code will be here}`
 
 ### Update
 
-Use `client.startWorkflowUpdate(...)`, which is an async backing: the Operation completes when the Update completes, and its result is delivered through the Nexus completion callback. If the Update happens to come back already complete — a retried request, or one that failed validation — the result returns synchronously instead.
+Start the Update on the Client. This is an async backing: the Operation completes when the Update completes, and its result is delivered through the Nexus completion callback. If the Update happens to come back already complete — a retried request, or one that failed validation — the result returns synchronously instead.
 
-Because it is an async backing, there is at most one per Operation invocation. A handler can still combine it with sync side effects.
+An Update-backed Operation carries two requirements. It targets a Workflow that already exists, so a `submitDecision` for a purchase with no approval running fails. And because it is an async backing, there is at most one per Operation invocation, though a handler can still combine it with sync side effects.
 
 `{sample code will be here}`
 
-:::caution Query is not in the pre-release
+## Do not poll for the decision
 
-`getApprovalStatus` belongs in the contract, but Query is not available as sync messaging on the Nexus-aware Client in the pre-release, so this Operation cannot be implemented yet. See [Temporal Operation Handler](/nexus/temporal-operation-handler).
+There is one design mistake worth naming, because it is the most common one in this shape: reaching for a message to fetch the final decision.
 
-Adding the Query handler to the Workflow is still worth doing — it costs nothing and the Operation can be wired up once Query lands. Until then, a caller that needs in-flight progress has to obtain it outside this Service.
+The decision is the result of `requestApproval`, and it reaches the caller without anyone asking for it.
 
-:::
+When the handler started the approval, Nexus attached a [completion callback](/glossary#nexus-async-completion-callback) to that Workflow. The moment the Workflow returns, the handler's Namespace delivers the callback to the caller's Nexus Machinery, which records a `NexusOperationCompleted` event in the caller Workflow's history. The caller Worker picks that up on its next Workflow Task, and the caller Workflow resumes with the decision. See the [asynchronous Operation lifecycle](/nexus/operations#asynchronous-operation-lifecycle) for the full sequence.
 
-## Keep the responsibilities separate
+A caller that instead asks the approval for its status in a loop is polling for something already on its way.
 
-It is worth restating why there are three Operations rather than one flexible one, because collapsing them is a common mistake.
+Messages are for changing a running approval or nudging it along, not for collecting its outcome. `remindApprover` asks the approver again. `submitDecision` supplies the decision and confirms it landed. Neither is a way to read the result.
 
-`getApprovalStatus` reports **in-flight progress only** — whether a decision is still pending, and how many reminders have gone out. It does not return the final decision. The decision is the result of `requestApproval`, which the caller is already awaiting from [step 6](/develop/java/nexus/development-walkthrough/call-the-service).
+Both also stop working the moment the approval completes. The Temporal Service accepts a Signal or an Update only while the Workflow is still running, and rejects one sent to a closed Workflow with `NOT_FOUND: workflow execution already completed`. That happens as soon as the decision lands, not when the [Retention Period](/temporal-service/temporal-server#retention-period) later expires and the Execution is deleted. A second `submitDecision` for an approval that has already been decided fails this way, and so does any attempt to use these Operations to look up a past decision.
 
-Using a Query to fetch the outcome would mean polling for something that is already being pushed, and it would break once the [Retention Period](/temporal-service/temporal-server#retention-period) expires and the history the Query replays is gone.
+If more than one system needs the outcome, see [step 8](/develop/java/nexus/development-walkthrough/send-messages#when-the-approval-already-exists) for how additional callers attach to a running approval and receive the same decision.
 
 ## Next
 
-[Send messages](/develop/java/nexus/development-walkthrough/send-messages) from the caller.
+**[Step 8 - Send messages](/develop/java/nexus/development-walkthrough/send-messages)** - call the messaging Operations, and handle an approval that may not exist yet.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 
-- [Workflow message passing](/encyclopedia/workflow-message-passing) for Signals, Queries, and Updates.
-- [Handling messages](/handling-messages) for handler constraints, including Query restrictions.
-- [Temporal Operation Handler](/nexus/temporal-operation-handler) for the sync side effect and async backing distinction.
+- [Workflow message passing](/encyclopedia/workflow-message-passing) for Signals and Updates.
+- [Handling messages](/handling-messages) for handler constraints.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for the sync messaging and async backing distinction.
 
 :::

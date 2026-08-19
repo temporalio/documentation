@@ -28,11 +28,17 @@ Endpoint names are unique within the Registry. In Temporal Cloud the Registry is
 
 ## Allow caller Namespaces
 
-This is the step people miss, because the failure looks like a routing problem rather than a permissions one.
+:::note This section applies to Temporal Cloud only
+
+Endpoint caller authorization is a Temporal Cloud feature. If you are working through this walkthrough against a development server or a self-hosted Temporal Service on your own machine, skip to [Verify it is reachable](#verify-it-is-reachable) — there is no allowed-caller list to configure.
+
+:::
+
+In Temporal Cloud this is the step people miss, because the failure looks like a routing problem rather than a permissions one.
 
 An Endpoint **rejects callers that are not on its allowed list**. Creating the Endpoint is not enough — you have to name the Namespaces permitted to call it. The caller Namespace in this walkthrough is separate from the handler Namespace, so it has to be added explicitly.
 
-In Temporal Cloud, set the allowed caller Namespaces when you create or edit the Endpoint in the UI, or with `tcld`. Add the caller Namespace, including its Account suffix.
+Set the allowed caller Namespaces when you create or edit the Endpoint in the UI, or with `tcld`. Add the caller Namespace, including its Account suffix.
 
 If a call fails as unauthorized and the Endpoint clearly exists, check this list first.
 
@@ -52,7 +58,9 @@ A Worker that is not polling is the other common cause of a call that appears to
 
 ## Next
 
-[Call the Service](/develop/java/nexus/development-walkthrough/call-the-service) from the caller Namespace.
+**[Step 6 - Call the Service](/develop/java/nexus/development-walkthrough/call-the-service)** - request an approval from the caller Namespace.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 
