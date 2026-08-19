@@ -36,7 +36,7 @@ through the Cloud Run admin API as work arrives and drains. For how the pool sca
 [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run).
 
 Cloud Run runs a standard long-lived Worker, so there is no Cloud Run-specific handler or package and any Temporal SDK
-can run on a Worker Pool. The one addition is Worker Versioning, which Serverless Workers require. The tabs below cover
+can run on a Worker Pool. The one addition is [Worker Versioning](/worker-versioning), which Serverless Workers require. The tabs below cover
 the SDKs with a Cloud Run guide today.
 
 ## Prerequisites {/* #prerequisites */}
@@ -54,8 +54,7 @@ the SDKs with a Cloud Run guide today.
   perform the GCP steps, such as the Google Cloud console or Terraform.
 - [Terraform](https://developer.hashicorp.com/terraform/install) installed. Temporal provides the IAM setup as a
   Terraform module.
-- A Temporal SDK with Worker Versioning support. Use the tabs to select your language and the rest of the page will
-  update accordingly.
+- A Temporal SDK. Use the tabs to select your language and the rest of the page will update accordingly.
 
 ## 1. Write Worker code {/* #write-worker-code */}
 
@@ -122,7 +121,7 @@ class MyWorkflow:
         ...
 ```
 
-For the Python Worker setup specific to Cloud Run, see
+For more on the Python Worker setup, see
 [Serverless Workers on GCP Cloud Run - Python SDK](/develop/python/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Python>
@@ -187,7 +186,7 @@ w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
 
 If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
 
-For the Go Worker setup specific to Cloud Run, see
+For more on the Go Worker setup, see
 [Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Go>
@@ -236,6 +235,9 @@ export async function myWorkflow(): Promise<string> {
   // ...
 }
 ```
+
+For more on the TypeScript Worker setup, see
+[Serverless Workers on GCP Cloud Run - TypeScript SDK](/develop/typescript/workers/serverless-workers/cloud-run).
 
 </SdkTabs.TypeScript>
 <SdkTabs.Java>
@@ -299,7 +301,7 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 `AUTO_UPGRADE`. Set it per Workflow with the `@WorkflowVersioningBehavior` annotation, or set a Worker-level default
 with `setDefaultVersioningBehavior` as shown above.
 
-For the Java Worker setup specific to Cloud Run, see
+For more on the Java Worker setup, see
 [Serverless Workers on GCP Cloud Run - Java SDK](/develop/java/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Java>
@@ -334,7 +336,7 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 `AutoUpgrade`. Set it per Workflow with `[Workflow(VersioningBehavior = ...)]`, or set a Worker-level default with
 `DefaultVersioningBehavior` as shown above.
 
-For the .NET Worker setup specific to Cloud Run, see
+For more on the .NET Worker setup, see
 [Serverless Workers on GCP Cloud Run - .NET SDK](/develop/dotnet/workers/serverless-workers/cloud-run).
 
 </SdkTabs.DotNet>
@@ -373,7 +375,7 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 `AUTO_UPGRADE`. Set it per Workflow by calling `workflow_versioning_behavior` in the Workflow class, or set a
 Worker-level default with `default_versioning_behavior` as shown above.
 
-For the Ruby Worker setup specific to Cloud Run, see
+For more on the Ruby Worker setup, see
 [Serverless Workers on GCP Cloud Run - Ruby SDK](/develop/ruby/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Ruby>
@@ -437,7 +439,7 @@ startup.
 Setting `api_key` does not by itself apply TLS on this connection path, so set `tls_options` as well or the Worker
 fails with `Connecting to HTTPS without TLS enabled`.
 
-For the Rust Worker setup specific to Cloud Run, see
+For more on the Rust Worker setup, see
 [Serverless Workers on GCP Cloud Run - Rust SDK](/develop/rust/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Rust>
@@ -525,11 +527,11 @@ COPY --from=build /app/lib ./lib
 CMD ["node", "lib/worker.js"]
 ```
 
-`node:22-slim` ships without a CA certificate bundle, and the Rust core of the TypeScript SDK reads TLS roots from the operating system's store. Without the `ca-certificates` step above, the Worker fails at startup with `TransportError: tonic::transport::Error(Transport, NativeCertsNotFound)`.
+Three details are required here:
 
-Use a glibc-based image such as `node:22-slim` rather than an Alpine image. Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK. See [Do not use Alpine](/develop/typescript/workers/run-worker-process#do-not-use-alpine).
-
-Set `NODE_OPTIONS=--max-old-space-size=<MB>` on the Worker Pool to about 80% of the instance's memory limit. Without it, Node.js sizes its heap from the host's total memory rather than the container limit. See [Run a Worker on Docker](/develop/typescript/workers/run-worker-process#run-a-worker-on-docker).
+- Keep the `ca-certificates` step. Without it the Worker fails at startup with `TransportError: tonic::transport::Error(Transport, NativeCertsNotFound)`.
+- Use a glibc-based image, not Alpine. See [Do not use Alpine](/develop/typescript/workers/run-worker-process#do-not-use-alpine).
+- Set `NODE_OPTIONS=--max-old-space-size=<MB>` on the Worker Pool to about 80% of the instance's memory limit. See [Run a Worker on Docker](/develop/typescript/workers/run-worker-process#run-a-worker-on-docker).
 
 </SdkTabs.TypeScript>
 <SdkTabs.Java>

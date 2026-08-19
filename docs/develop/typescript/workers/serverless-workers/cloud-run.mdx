@@ -32,7 +32,7 @@ On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-mode
 Register Workflows and Activities the same way you would with any other TypeScript Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
 A Cloud Run Worker needs no Cloud Run-specific package.
-The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
 
@@ -45,15 +45,12 @@ The following Worker reads its connection settings and Task Queue from the envir
 <!--SNIPSTART typescript-cloud-run-worker-->
 [features/snippets/worker/worker.ts](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.ts)
 ```ts
-const connection = await NativeConnection.connect({
-  address: process.env.TEMPORAL_ADDRESS,
-  apiKey: process.env.TEMPORAL_API_KEY,
-  tls: true,
-});
+const config = loadClientConnectConfig();
+const connection = await NativeConnection.connect(config.connectionOptions);
 
 const worker = await Worker.create({
   connection,
-  namespace: process.env.TEMPORAL_NAMESPACE!,
+  namespace: config.namespace,
   taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
   workflowsPath: require.resolve('./workflows'),
   workerDeploymentOptions: {
@@ -94,9 +91,7 @@ For the full list of supported variables, the config file format, and profiles, 
 
 ## Package the Worker image {/* #package-image */}
 
-Two container details are specific to the TypeScript SDK, because its Worker runs on a Rust core rather than on Node.js alone.
-
-The Rust core reads TLS roots from the operating system's certificate store, and the slim Node.js images ship without one.
+The Worker reads TLS roots from the operating system's certificate store, and the slim Node.js images ship without one.
 On `node:22-slim`, connecting with TLS fails at startup:
 
 ```

@@ -27,7 +27,7 @@ On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-mode
 Register Workflows and Activities the same way you would with any other Rust Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
 A Cloud Run Worker needs no Cloud Run-specific crate.
-The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
 
