@@ -14,7 +14,7 @@ Call `notifyRequester` once the decision is final. From the caller's side there 
 
 ## The caller cannot tell the difference
 
-`notifyRequester` is called exactly like `requestApproval`: through the same generated Service stub, with the same Endpoint, the same type checking, and the same error handling.
+`notifyRequester` is called exactly like `requestApproval`: through the same generated stub, with the same Endpoint, the same type checking, and the same error handling. A caller in any language calls it the same way, as in [step 6](/develop/java/nexus/development-walkthrough/call-the-service).
 
 Nothing in the caller reveals that this Operation is backed by an Activity and the other by a Workflow. That is the contract doing its job. The handler team could later replace the notification Activity with a Workflow that retries across providers and escalates on failure, and no caller would change.
 
@@ -22,23 +22,24 @@ Nothing in the caller reveals that this Operation is backed by an Activity and t
 
 ## Complete the flow
 
-With all ten steps in place, the caller Workflow runs the whole approval:
+With all ten steps in place, the caller runs the whole approval:
 
-1. Call `requestApproval` and await it. The Operation starts the approval Workflow in the handler Namespace.
-2. While it is pending, other systems call `remindApprover` to nudge and `getApprovalStatus` to report progress.
-3. Someone calls `submitDecision` with `APPROVED` or `DENIED`. The Update records it, confirms to that caller, and unblocks the approval Workflow.
-4. The approval Workflow returns the decision, which resolves the `requestApproval` Operation the original caller has been awaiting.
-5. The caller calls `notifyRequester` with the decision, backed by the notification Activity.
+1. Call `checkApprovalRequired`. It answers during the call, with nothing durable created. If the purchase is under the threshold, the flow stops here.
+2. Call `requestApproval` and await it. The Operation starts the approval Workflow in the handler Namespace, or attaches to one that another Operation already started.
+3. While it is pending, other systems call `remindApprover` to nudge the approver and `attachApprovalContext` to add supporting information.
+4. Someone calls `submitDecision` with `APPROVED` or `DENIED`. The Update records it, confirms to that caller, and unblocks the approval Workflow.
+5. The approval Workflow returns the decision, which resolves the `requestApproval` Operation every attached caller has been awaiting.
+6. The caller calls `notifyRequester` with the decision, backed by the notification Activity.
 
 `{sample code will be here}`
 
-Every step crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or which primitive backed any Operation.
+Every step crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or which primitive backed any Operation. One Operation ran with no durable Execution at all, one started a Workflow, two sent messages to it, one started a Workflow if it was not already running, and one started an Activity — and from the caller's side they were all just Operations.
 
 ## Trace it end to end
 
-Open the caller Workflow in the UI and follow the links. Because the handlers used the Nexus-aware Client, each Operation is connected to the Execution it started or messaged in the handler Namespace, and you can move between the two Namespaces in one view.
+Open the caller Workflow in the UI and follow the links. Because the handlers used the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) rather than constructing their own, each Operation is connected to the Execution it started or messaged in the handler Namespace, and you can move between the two Namespaces in one view.
 
-The exception is `getApprovalStatus`, which is [not implementable in the pre-release](/nexus/temporal-operation-handler) because Query is not yet available as sync messaging.
+`checkApprovalRequired` is the exception, and not because anything is wrong: it started no Execution, so there is nothing on the handler side to link to. An Operation with no backing appears as a completed Operation and nothing more.
 
 ## Where to go next
 
@@ -50,6 +51,8 @@ The Service is complete but minimal. Natural extensions:
 - **Standalone invocation.** Call an Operation from a Client with no caller Workflow. See [Standalone Nexus Operation](/standalone-nexus-operation).
 
 Before running this against anything real, read [Debugging, common pitfalls, and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips).
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

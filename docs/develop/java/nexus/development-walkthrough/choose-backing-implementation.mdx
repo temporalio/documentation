@@ -2,7 +2,7 @@
 id: choose-backing-implementation
 title: Step 3 - Choose the backing implementation
 sidebar_label: 3. Choose the backing implementation
-description: Decide whether each Nexus Operation is backed by a Standalone Activity, a Workflow, or an Entity Workflow.
+description: Decide what runs behind each Nexus Operation - nothing, a Workflow, or a Standalone Activity - and implement the Operation that needs no backing at all.
 toc_max_heading_level: 4
 unlisted: true
 tags:
@@ -12,50 +12,76 @@ tags:
 
 The contract says nothing about what runs behind an Operation. That is deliberate — it is the handler's private decision, and it can change later without touching callers.
 
-There are three shapes to choose from, and picking the wrong one is the most common source of trouble later.
+There are three choices, and picking the wrong one is the most common source of trouble later. This step makes the choice for each Operation in the walkthrough's example approval Service, then implements the simplest one.
+
+## No backing Execution
+
+The handler computes an answer and returns it. Nothing durable is created: no Workflow, no Activity, nothing to cancel, nothing in Event History.
+
+This fits work that cannot meaningfully fail and returns immediately — applying a rule to the input, deriving a value, reading configuration the handler already holds. The Operation completes during the handler call, and the caller gets the answer in the response.
+
+The limit is that you get no durability. The code runs inside the Nexus Operation handler, so it is bounded by the request deadline, and a failure fails the request rather than retrying a step. If the work can fail in a way you would want retried, it needs an Activity instead.
+
+## Workflow
+
+More than one step, any need to wait, or any need for durable intermediate state.
+
+The Operation starts a Workflow and completes when that Workflow returns, so the Workflow's return value is the Operation's result. Use this when the work orchestrates several Activities, needs a timer, needs to receive [messages](/sending-messages) while it runs, or needs to survive a Worker restart partway through.
+
+A Workflow that represents one long-lived thing and stays reachable for messages is still just a Workflow — what makes it interactive is that it has message handlers and a Workflow Id you can predict, not a different kind of primitive.
 
 ## Standalone Activity
 
 One step, no waiting, no state. Call an external API, run a computation, send a notification.
 
-The Operation starts an Activity Execution with no parent Workflow, and completes when the Activity returns. You get retries and a durable record without a wrapper Workflow that exists only to call one Activity.
+The Operation starts an Activity Execution with no parent Workflow, and completes when the Activity returns. You get retries, timeouts, and a durable record of every attempt without a wrapper Workflow that exists only to call one Activity.
 
-The tradeoff is that an Activity has no Workflow's ability to receive messages or hold state, and cancellation only works if the Activity heartbeats. See [Nexus Standalone Activity](/nexus/standalone-activity).
-
-## Workflow
-
-More than one step, or any need for durable intermediate state.
-
-The Operation starts a Workflow and completes when that Workflow returns, so the Workflow's return value is the Operation's result. Use this when the work orchestrates several Activities, needs a timer, or needs to survive a Worker restart partway through.
-
-## Entity Workflow
-
-A Workflow that represents one long-lived thing and stays available for interaction while it runs.
-
-The distinguishing feature is that it accepts [messages](/sending-messages) — Signals, Queries, and Updates — against a stable Workflow Id derived from the entity it represents. It is still a Workflow-backed Operation; "entity" describes how you use it, not a separate mechanism.
+The tradeoff is that an Activity cannot receive messages or hold state, and cancellation only works if the Activity heartbeats. See [Nexus Standalone Activity](/nexus/standalone-activity).
 
 ## The choice for the approval Service
 
-The approval problem needs both.
-
 | Operation | Backing | Why |
 | --- | --- | --- |
-| `requestApproval` | Entity Workflow | Blocks for a human decision, holds the reminder count, and must accept messages while pending |
+| `checkApprovalRequired` | None | Applies a threshold to the input. Nothing to orchestrate, nothing that can fail in a retryable way |
+| `requestApproval` | Workflow | Blocks for a human decision, holds the reminder count, and accepts messages while pending |
+| `remindApprover` | Workflow (message) | A Signal to the approval started by `requestApproval` |
+| `submitDecision` | Workflow (message) | An Update to that same approval, because the caller needs a result back |
+| `attachApprovalContext` | Workflow (message) | A Signal that also starts the approval if it does not exist yet |
 | `notifyRequester` | Standalone Activity | One outbound notification, no state, nothing to wait for |
 
-An approval is a textbook entity: it exists for a while, it has identity, and other systems interact with it during its lifetime. Backing it with an Activity would not work at all — an Activity cannot block for a human and cannot receive a Signal.
+Three of these are worth the contrast.
 
-The notification is the opposite. It is a single side effect with nothing to orchestrate, so a Workflow would add an Event History and a Workflow Id for no benefit.
+An approval has to be a Workflow. It exists for a while, it has identity, and other systems interact with it during its lifetime. Backing it with an Activity would not work at all — an Activity cannot block for a human and cannot receive a Signal.
 
-## Give the entity a stable Id
+The notification is the opposite. It is a single side effect with nothing to orchestrate, so a Workflow would add an Event History and a Workflow Id for no benefit. But it does touch the outside world and can fail, so it needs an Activity rather than nothing.
 
-An Entity Workflow needs a Workflow Id derived from the entity, not a random one, so that later messages can find it. Deriving the approval's Workflow Id from the approval id means a caller that knows the approval id can reach the right Execution.
+`checkApprovalRequired` is the case for no backing at all. Compare it against the notification: both are "one small thing," and they get opposite answers. Sending mail can fail and you want that retried with a record of each attempt. Comparing an amount to a threshold cannot fail in any way worth retrying, so an Activity Execution would be pure overhead.
 
-This also makes the start idempotent. A retried Nexus start request targets the same Workflow Id rather than starting a second approval.
+## Give the approval Workflow a stable Id
+
+The approval needs a Workflow Id derived from the purchase, not a random one, so that later messages can find it. Deriving it from the item id means a caller that knows the item id can reach the right Execution without the handler handing out Workflow Ids.
+
+This also makes the start idempotent. A retried Nexus start request targets the same Workflow Id rather than starting a second approval for one purchase.
+
+It matters again in [step 8](/develop/java/nexus/development-walkthrough/send-messages), where `attachApprovalContext` may start the approval before `requestApproval` is ever called. Both Operations derive the same Workflow Id from the same item id, which is what lets them agree on which Execution they mean.
+
+## Build the Operation that needs no backing
+
+`checkApprovalRequired` needs no Workflow, no Activity, and no Worker registration beyond the Service itself, so it is the shortest path to a working Operation.
+
+Implement it with `TemporalOperationHandler` like every other Operation, apply the threshold, and return a synchronous result. The Operation completes during the handler call.
+
+`{sample code will be here}`
+
+Using `TemporalOperationHandler` here rather than a plain synchronous handler is what lets this Operation grow later. If spend policy moves out of the handler and into a policy service, this becomes an Activity-backed Operation — and no caller changes, because the contract did not.
+
+Nothing runs this Operation yet. [Step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker) starts the Worker that hosts the Service, and [step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus) makes it reachable, so this is the first Operation you will see respond once those are in place.
 
 ## Next
 
-[Implement the Service](/develop/java/nexus/development-walkthrough/implement-the-service) with a Workflow-backed Operation.
+**[Step 4 - Implement the Service](/develop/java/nexus/development-walkthrough/implement-the-service)** - back the approval with a Workflow and run a Worker.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

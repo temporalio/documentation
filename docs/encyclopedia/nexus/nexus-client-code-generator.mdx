@@ -49,13 +49,19 @@ The generator prefers to fail loudly at generation time over emitting code that 
 ## Definition files
 
 Types are modeled with [JSON Schema 2020-12](https://json-schema.org/draft/2020-12).
-A definition file comes in two flavors.
+A definition file is one of two kinds, decided by what sits at its root.
+A file is one or the other, never both.
 
 **Pure JSON Schema.** The root of the document is itself a type, and reusable types live under `$defs`.
 Use this when you only need data models shared across languages, with no Service or Operation declarations.
 
 **Nexus document.** Add a root `nexusrpc: "1.0.0"` marker to enable a `services` section.
 The root becomes an envelope: Services and their Operations sit at the top level, and your types live under `$defs`.
+Only this kind can declare a Service.
+
+The two kinds compose across files, so a contract is not limited to one of them.
+A Service contract is often a Nexus document declaring the Services and Operations, plus pure JSON Schema files holding the types it `$ref`s by relative path.
+The [`kb/`](https://github.com/temporalio/nexgen/tree/main/samples/schemas/kb) closure described below is built that way.
 
 The examples on this page use [`samples/schemas/chat.nexusrpc.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/chat.nexusrpc.yaml) from the repository, abbreviated here:
 

@@ -2,7 +2,7 @@
 id: send-messages
 title: Step 8 - Send messages
 sidebar_label: 8. Send messages
-description: Call the Signal, Query, and Update Operations from a caller Workflow, and start an approval with Signal-with-Start.
+description: Call the Signal and Update Operations from a caller, attach information to an approval that may not exist yet with Signal-with-Start, and handle the case where the approval already exists.
 toc_max_heading_level: 4
 unlisted: true
 tags:
@@ -10,11 +10,11 @@ tags:
   - Java SDK
 ---
 
-From the caller's side, the three messaging Operations are just Operations. They are called through the same generated Service stub as `requestApproval`, with the same type checking.
+From the caller's side, the messaging Operations are just Operations. They are called through the same generated stub as `requestApproval`, with the same type checking.
 
-The caller does not know that one is a Signal, one is a Query, and one is an Update. That is the handler's implementation detail, and it can change without breaking callers.
+The caller does not know that one is a Signal and one is an Update. That is the handler's implementation detail, and it can change without breaking callers.
 
-## Nudge, check, and decide
+## Nudge and decide
 
 `{sample code will be here}`
 
@@ -22,44 +22,75 @@ What differs between them is what you get back and how long it takes.
 
 `remindApprover` returns nothing and completes as soon as the Signal is accepted. Accepted is not the same as handled — the Signal is durably recorded and the Workflow will process it, but the Operation does not wait for that. If the caller needs confirmation that the nudge took effect, it needs an Update, not a Signal.
 
-`getApprovalStatus` returns the current progress immediately. Call it when something needs to report on a pending approval; do not call it in a loop waiting for the decision. Note that this Operation is [not implementable in the pre-release](/develop/java/nexus/development-walkthrough/add-messaging#expose-them-as-nexus-operations), because Query is not yet available as sync messaging.
-
 `submitDecision` returns confirmation that the decision was recorded. This is the point of using an Update: the caller learns the outcome of its own message. Once it succeeds, the approval Workflow unblocks and completes, which resolves the `requestApproval` Operation that the original caller is still awaiting.
 
-## Start and Signal in one call
+Both require the approval to already be running. A nudge or a decision for a purchase nobody has requested approval for has nothing to reach, and the Operation fails.
 
-Sometimes a caller wants to start an approval and immediately attach information to it, without a race between the two calls.
+## Attach information before the approval exists
 
-Signal-with-Start does both atomically: if the target Workflow is not running it is started, and either way the Signal is delivered. It is a sync side effect on the Nexus-aware Client, reached through `client.getWorkflowClient()`, so a handler Operation can offer it directly.
+The next Operation does not have that requirement, and the reason is worth the detail.
 
-This is also how you make a Signal safe to send to an approval that may not exist yet. A plain Signal to a missing Workflow fails; Signal-with-Start creates it.
+Supporting information for a purchase — a justification, a link to a quote, a manager's note — comes from a different system than the one requesting approval. Those two systems run independently, so their messages arrive in whatever order the network and their schedules produce. Sometimes the context arrives first.
+
+A plain Signal cannot handle that. Sending one to a Workflow that does not exist fails, and "fail if the approval has not been requested yet" is the wrong behavior for a message whose whole job is to be available whenever it shows up.
+
+`attachApprovalContext` uses **Signal-with-Start** instead. If the approval is already running, the note is delivered to it. If it is not, the approval is started and then the note is delivered. Either order works, and the caller does not have to know which happened.
 
 `{sample code will be here}`
 
-:::caution Update-with-Start is not yet available
+Signal-with-Start is sync messaging on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client), so the Operation completes during the handler call and returns nothing. The caller gets no confirmation that a human read the note, only that it was durably attached.
 
-Update-with-Start — starting a Workflow and running an Update against it atomically — is not available in any SDK yet. See [Temporal Operation Handler](/nexus/temporal-operation-handler).
+### Input needs enough to start the Workflow
 
-Until it lands, an Operation that needs both must start the Workflow and then submit the Update as a separate call, which is not atomic. Signal-with-Start is available and covers the case where the caller does not need a response.
+Look at the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract#plan-the-operations) and `attachApprovalContext` carries more than it seems to need: the item id, the requester, the amount, *and* the note. `remindApprover` gets by with just an approval id.
+
+That is a direct consequence of Signal-with-Start. The Operation might have to start the approval Workflow, and starting it requires whatever the Workflow needs to run. An Operation that can create the thing it messages has to carry enough input to create it.
+
+This is the general rule for any with-Start message: its input is the union of what the message needs and what the Workflow's start needs.
+
+## When the approval already exists
+
+Signal-with-Start introduces a case the Service did not have before. `attachApprovalContext` can create the approval, so by the time anyone calls `requestApproval` for that purchase, a Workflow with that Id may already be running.
+
+Both Operations derive the same Workflow Id from the same item id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id). That is deliberate — it is what lets them agree on which approval they mean — and it is also what creates the collision.
+
+**By default, `requestApproval` fails in this situation.** Starting a Workflow whose Id is already running is an error, and the Nexus Operation fails with it.
+
+That default is not arbitrary strictness. A Workflow-backed Operation has only started successfully once its completion callback is attached to a Workflow. If the start quietly did nothing on a conflict, the Operation would report success with no callback attached, and the caller would wait for a decision that could never be delivered. Failing immediately is better than hanging forever.
+
+The fix is to change the Workflow Id conflict policy on `requestApproval` from its default to **use-existing**. With that set, a start against an already-running approval attaches the Operation's completion callback to that Execution instead of failing. The caller then awaits the approval that is already in flight and receives its decision when it completes.
+
+`{sample code will be here}`
+
+Two things follow from this, and both are useful.
+
+**More than one caller can await the same approval.** Every caller whose callback is attached is notified when the Workflow completes, so several systems can each call `requestApproval` for the same purchase and all receive the same decision. The first call creates the approval; the rest attach to it.
+
+**The Operation becomes idempotent for callers, not just for retries.** [Step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id) made the start idempotent against server retries of one request. Use-existing extends that to genuinely separate callers, which is what you want for a purchase that two systems might both submit.
+
+One limit to know: use-existing attaches to a *running* Execution. If the approval has already completed, there is nothing to attach to, and the call starts a fresh approval rather than returning the old decision. Whoever needs the outcome of a finished approval has to have been attached while it was open, or be told by the handler — which is what the notification in the next step does.
+
+:::note The two Workflow Id policies
+
+Two policies govern a start against a Workflow Id already in use, and they cover cases that never overlap:
+
+- The [Workflow Id conflict policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) applies while a Workflow with that Id is **running**. It defaults to failing with `Workflow execution already started` — the default this section replaces with use-existing.
+- The [Workflow Id reuse policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy) applies once the previous Workflow with that Id has **closed**. It defaults to Allow Duplicate, which permits a new Execution.
+
+Setting use-existing changes only the running case. A start against a completed approval falls to the reuse policy and opens a new one. Set the reuse policy as well if a second approval for the same item is not what you want.
 
 :::
 
-## You cannot re-attach to get a result
-
-A caller that did not start an approval cannot ask Nexus for its final decision.
-
-`requestApproval` delivers the decision to whoever awaited it. There is no Operation that attaches to an already-running approval and waits for its result, because Get Workflow Result as an async backing is [not yet available](/nexus/temporal-operation-handler) in any SDK.
-
-If several systems need the outcome, either have the caller that started the approval distribute it, or have the handler notify them — which is what the notification in the next step does.
-
 ## Next
 
-[Add a Standalone Activity](/develop/java/nexus/development-walkthrough/add-a-standalone-activity) to notify the requester once a decision is final.
+**[Step 9 - Add a Standalone Activity](/develop/java/nexus/development-walkthrough/add-a-standalone-activity)** - notify the requester with no Workflow behind it.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 
-- [Sending messages](/sending-messages) for Signal, Query, and Update semantics.
-- [Temporal Operation Handler](/nexus/temporal-operation-handler) for which capabilities are available per SDK.
+- [Sending messages](/sending-messages) for Signal and Update semantics.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for sync messaging and async backings.
 - [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
 
 :::

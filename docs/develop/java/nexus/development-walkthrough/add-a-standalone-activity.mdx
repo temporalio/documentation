@@ -18,15 +18,15 @@ This one is not a Workflow. It is a single outbound notification with no state, 
 
 The Activity is an ordinary Activity. In this walkthrough it is a placeholder that does nothing — no email is sent. Real logic would call an email provider, push to a notification service, or write to an outbox.
 
-Nothing about it is Nexus-specific. The same Activity could be called from a Workflow.
+Nothing in it is Nexus-specific. The same Activity Function can be invoked from a Workflow and started behind this Operation with no code changes — what differs is what starts it, not how it is written.
 
 `{sample code will be here}`
 
 ## Back the Operation with it
 
-Use `TemporalOperationHandler` as with every other Operation, but call `startActivity` on the Nexus-aware Client instead of `startWorkflow`. The Operation starts an Activity Execution with no parent Workflow and completes when the Activity returns.
+Use `TemporalOperationHandler` as with every other Operation, but start an Activity on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) instead of a Workflow. The Operation starts an Activity Execution with no parent Workflow and completes when the Activity returns.
 
-Before Activity-backed Operations, this Operation would have needed a Workflow whose only job was to call this one Activity — a wrapper with its own Event History and Workflow Id, providing nothing.
+This is the right shape whenever an Operation is one durable step behind a team boundary. The Activity supplies the durability — retries on the policy you set, timeouts you control, and a record of every attempt — and the Operation supplies the contract, so the notification is reachable by other teams without them sharing your code or your Namespace.
 
 `{sample code will be here}`
 
@@ -37,9 +37,11 @@ Before Activity-backed Operations, this Operation would have needed a Workflow w
 - **An Activity Id**, unique within the Namespace.
 - **A Task Queue.** It does not have to be the Endpoint's target Task Queue, so notifications can run on their own Worker fleet.
 
-Derive the Activity Id from the Nexus request Id to make the start idempotent. The server retries a Nexus start request with the same request Id, so each retry targets the same Activity Id instead of sending a second notification.
+**To keep server retries from sending a second email, derive the Activity Id from the Nexus request Id.** The server retries Nexus start requests, and the request Id travels with them, so every retry lands on the same Activity Id and the notification goes out once. Without that, a retried request is a duplicate message to a real person.
 
-That last point matters here more than usual. A duplicate Workflow start is usually harmless; a duplicate notification is a second email to a real person.
+The same pattern applies to any Operation whose work is externally visible and cannot be taken back: charging a card, posting to a webhook, creating a ticket, writing to a system with no dedup of its own. Deriving the Id from the request Id costs nothing and removes the whole class of duplicate-side-effect bugs.
+
+Deriving the Id from the Operation *input* instead is a different tool for a different job: it makes several Operations share one Activity Execution and all receive its result. See [Nexus Standalone Activity](/nexus/standalone-activity#required-options).
 
 ## Register the Activity on the Worker
 
@@ -49,15 +51,15 @@ Add the Activity implementation to the same Worker that hosts the Nexus Service.
 
 ## Cancellation needs heartbeating
 
-For this notification the point is moot — it finishes immediately. But it is worth knowing before you write a longer Activity-backed Operation, because the behavior differs from a Workflow-backed one.
+This notification finishes immediately, so cancellation never comes up for it. It does come up for any longer Activity-backed Operation, and the behavior differs from a Workflow-backed one: an Activity is not interrupted by a cancellation request, so an Activity that never heartbeats runs to completion or to its timeout no matter how many cancellations arrive.
 
-A Workflow is interrupted by a cancellation request. An Activity is not: the server records the request, and the Worker only finds out on its next heartbeat. An Activity that never heartbeats runs until it completes or hits its start-to-close timeout, however many cancellation requests arrive.
-
-Making a long-running Activity-backed Operation cancellable takes three settings together — heartbeating from the Activity, a heartbeat timeout, and maximum attempts of 1 so a cancelled attempt is not retried. See [Cancellation requires heartbeating](/nexus/standalone-activity#cancellation-requires-heartbeating).
+If you write a long-running Activity-backed Operation, read [Cancellation requires heartbeating](/nexus/standalone-activity#cancellation-requires-heartbeating) before you ship it.
 
 ## Next
 
-[Call the Standalone Activity](/develop/java/nexus/development-walkthrough/call-the-standalone-activity).
+**[Step 10 - Call the Standalone Activity](/develop/java/nexus/development-walkthrough/call-the-standalone-activity)** - complete the approval flow end to end.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 
