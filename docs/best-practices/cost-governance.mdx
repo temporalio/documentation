@@ -1,0 +1,204 @@
+---
+title: Cost governance on Temporal Cloud
+sidebar_label: Cost Governance
+description: A design framework for attributing Temporal Cloud spend to teams, forecasting budget burn rate, and detecting usage anomalies using the Billing API, Billing Center, Usage Dashboards, and OpenMetrics.
+toc_max_heading_level: 4
+keywords:
+  - cost governance
+  - cost attribution
+  - budget forecast
+  - burn rate
+  - anomaly detection
+  - billing api
+  - finops
+  - namespace tagging
+tags:
+  - Best Practices
+  - Temporal Cloud
+---
+
+This guide lays out a cost-governance framework built entirely on existing Temporal Cloud tooling: the
+[Cloud Billing API](/cloud/billing-api), [Billing Center](/cloud/billing), [Usage Dashboards](/cloud/actions-usage),
+and the [Action metric](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_billable_action_count).
+Enterprise platform teams consistently need to solve three problems:
+
+- **Cost attribution**: attributing spend to the team, environment, and workload that generated it.
+- **Budget forecasting and trend tracking**: knowing where a Namespace stands against its monthly budget before the
+  invoice closes, not after.
+- **Anomaly detection on usage**: treating a spend spike as an early operational signal, not just a finance surprise.
+
+The goal is a design you can stand up before your first production Namespace goes live, rather than a lesson you
+learn after the first "where did this bill come from" conversation.
+
+## Key tools and concepts
+
+Temporal provides tooling across Temporal Cloud, metrics, and the Cloud Operations API to address each of these use
+cases programmatically:
+
+| Tool | Grain | Best for | Who sees it |
+| :--- | :--- | :--- | :--- |
+| [Billing Center](/cloud/billing) | Monthly invoice | Summary invoices, credits, plan management | Account Owner, Finance Admin |
+| [Billing API](/cloud/billing-api) | Hourly, daily, monthly | Namespace and tag cost attribution, FinOps ingestion | Account Owner, Finance Admin |
+| [Usage Dashboards](/cloud/actions-usage) | Namespace, by Action category | At-a-glance usage in the Cloud UI | Account, Global, and Namespace Admins |
+| [Actions in Event History](/cloud/actions-usage#actions-in-workflows) | Per Workflow Execution | Estimating Actions for a specific execution | Admins, developers, read-only users |
+| [Action metric](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_billable_action_count) | 1-minute, by Workflow and Action type | Near-real-time usage behavior, alerting, debugging | Service account with the Metrics Read-Only role |
+
+### Actions
+
+Temporal Cloud bills primarily on [Actions](/cloud/actions), which are billable operations such as starting a
+Workflow, scheduling an Activity, recording a Heartbeat, sending a Signal, or receiving a Query or Update. Actions are
+grouped into categories (Workflow, Activity, Timer, Signal, Query, Update, Schedule, Nexus) plus a few billed features
+(Export, Fairness, Capacity). For background on how usage-based pricing works on Temporal Cloud, see
+[Improved cost transparency with usage-based billing](https://temporal.io/blog/improved-cost-transparency-with-usage-based-billing).
+
+:::note
+Not every Action type appears in every surface. Billing and usage data has the most complete picture; Event History
+and OpenMetrics are best used for estimation and trend analysis, not invoice reconciliation.
+:::
+
+### Namespace tags
+
+The Billing API attributes every charge to a Namespace and enriches it with [tags](/cloud/namespaces#tag-a-namespace),
+user-defined key/value pairs such as team, environment, or cost center. The Billing API reads tags in real time, so a
+Namespace that shipped last month without a tag can be tagged today and have its historical cost re-attributed
+retroactively. This solves the most common early mistake: forgetting to tag a Namespace before it starts accruing
+spend.
+
+```json
+{
+  "$tmprl_project": ["claims-platform"],
+  "team": ["map"],
+  "env": ["prod"]
+}
+```
+
+## Use case 1: Cost attribution
+
+**Goal**: give every Temporal Cloud team, use case, and application (for example, Claim, Payment, Notification) its
+own line item, sourced directly from Temporal Cloud's billing data instead of an estimate. Use this for both cost
+attribution and budget tracking.
+
+### Design artifacts
+
+- Namespace-per-tenant-per-environment as the attribution boundary. Namespace is the finest-grained unit the Billing
+  API attributes cost to.
+- A required tagging convention enforced at Namespace creation time. At minimum: team, env, and workload or product.
+- A daily pull of the Billing API report, joined on tags, feeding the internal FinOps or budget system so each tenant
+  sees its own line item.
+
+**Recommended tagging taxonomy**
+
+| Tag key | Example value | Purpose |
+| :--- | :--- | :--- |
+| team | claim-team, payment-team, notification-team | Chargeback owner |
+| env | prd, stg, dev | Separates production spend from lower environments |
+| workload | claims-processing, payment, notification | Sub-team or product-line attribution |
+| cost-center | cc-12345 | Direct feed into the finance general ledger, if required |
+
+### Implementation path
+
+- Generate a [Billing API](/cloud/billing-api) report at daily granularity for the current and prior two billing
+  months: create it with `CreateBillingReport`, poll `GetBillingReport`, then download the CSV. You can do this
+  through the Cloud UI or the [Cloud Operations API](/ops).
+- Parse the FOCUS-aligned CSV. Group by `ResourceName` (Namespace name plus Temporal Cloud account ID) and `Tags`;
+  sum `ContractedCost` by `ChargeDescription`.
+- Feed the grouped output into your internal FinOps or budget system as a recurring Workflow, or connect Temporal
+  Cloud's native Datadog Cloud Cost Management or Vantage integration if either tool is already in your FinOps stack.
+
+## Use case 2: Budget forecasting and burn-rate tracking
+
+**Goal**: answer "where are we trending against this Namespace's budget, and will we exceed it before month end?"
+with enough lead time to act.
+
+### Two data sources, two jobs
+
+Budget tracking needs both a financially accurate source and a fast, directional source, because the Billing API's
+current-month data is provisional until the billing month closes:
+
+| Source | Accuracy | Latency | Role in burn-rate tracking |
+| :--- | :--- | :--- | :--- |
+| [Billing API](/cloud/billing-api) (daily grain) | Invoice-aligned | Usage up to current time minus 24 hours; final at month close | Month-to-date actual spend per Namespace, financial source of truth |
+| [Action metric](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_billable_action_count) | Directional usage estimate | Available within about 3 minutes | Early-warning proxy for spend trajectory between billing pulls |
+
+### Burn-rate methodology
+
+- Maintain a budget table per Namespace (or per team, rolling up Namespaces) with a monthly allocation.
+- Each day, pull the Billing API daily report and compute month-to-date (MTD) actual spend per Namespace.
+- Project end-of-month (EOM) spend using a simple run-rate extrapolation: EOM projection = MTD spend ÷ days elapsed ×
+  days in month.
+- Compare the projection against the allocated budget and flag any Namespace trending to exceed it.
+- Between daily Billing API pulls, use the 24-hour Actions estimate from [OpenMetrics](/cloud/metrics/openmetrics) as
+  a same-day directional check on whether a Namespace's usage trajectory has shifted:
+
+```
+# 24-hour Actions estimate from OpenMetrics (PromQL)
+sum(
+  avg_over_time(
+    temporal_cloud_v1_billable_action_count{temporal_namespace="$namespace"}[24h:1m]
+  )
+) * 86400
+```
+
+### Alerting
+
+- Trigger a budget alert when a Namespace's EOM projection exceeds 90% (warning), 100% (target), or 110%
+  (over budget) of its allocation.
+- Route alerts to the Namespace owner and the FinOps or platform DRI.
+
+:::important
+`temporal_cloud_v1_billable_action_count` is a usage estimate, not your bill. It doesn't account for storage, support
+fees, pricing-tier calculations, some features (TRUs, Fairness), or rounding. Use it to catch trend shifts early in
+the month, and reconcile final numbers against the Billing API or Billing Center once the billing month closes.
+:::
+
+## Use case 3: Anomaly detection on usage
+
+**Goal**: treat a sudden spend or Action spike as an early operational signal for a runaway Workflow or bad deploy.
+
+### Why OpenMetrics is the right layer
+
+The `temporal_cloud_v1_billable_action_count` metric is broken down by both `action_type` and `temporal_workflow_type`
+at one-minute granularity. That combination answers the two questions that matter most during an incident: which
+Workflow is driving the spike, and what kind of Action it's doing more of.
+
+For example queries, see
+[Getting the most out of the Billable Action Count metric](https://temporal.io/blog/getting-the-most-out-of-the-billable-action-count-metric).
+For a real-world example of using this metric to validate metering, see
+[Dogfooding the Billable Actions metric](https://temporal.io/blog/dogfooding-the-billable-actions-metric-how-granular-observability-improved-our-metering-validation).
+
+### Defining and finding anomalies
+
+Establish a baseline of Actions consumption. Your workload may have seasonality across hours, days, and weeks, which
+makes setting alerts harder. Some starting points:
+
+- Alert if the number of Actions for an hour exceeds the expected maximum for all hours in a day.
+- Alert if the number of Actions for a day exceeds the expected maximum for all days in a month.
+
+When an alert triggers, or during root cause analysis, check monitoring dashboards for more nuanced anomalies,
+including:
+
+- New business generating more Action usage. Determine whether the pattern is a spike or steady growth that's now
+  exceeding typical thresholds — if it's growth, it's time to establish a new baseline.
+- Correlation with deploys. Feed deploy markers from your CI/CD pipeline into the same Datadog or Grafana dashboard
+  as your Action-rate charts; a spike that lines up with a deploy timestamp is a regression.
+
+## Guardrails to design around
+
+- `temporal_cloud_v1_billable_action_count` is a directional estimate. Don't use it for financial reconciliation —
+  use the Billing API instead.
+- Current-month billing data is provisional. It finalizes only when the billing month closes, and available data
+  lags current time by roughly 24 hours.
+- Only one billing report generates at a time per account; additional requests queue rather than fail. Use an
+  idempotency key (`async_operation_id`) on retries and poll with exponential backoff.
+- High-cardinality metrics need filtering at scale. Plan Namespace and label filtering into your
+  [OpenMetrics](/cloud/metrics/openmetrics) scrape configuration from day one, not after you hit the datapoint
+  ceiling.
+
+None of the three use cases in this guide need new Temporal Cloud features. They need a deliberate design applied to
+tooling that already exists: a tagging convention enforced at Namespace creation, a scheduled pull of the Billing
+API, and an OpenMetrics-based alerting layer tuned to your account's scale. The organizations that get the most value
+from this treat it as a platform requirement before the first tenant onboards, not as a remediation project after the
+first unexplained invoice.
+
+The result is a Temporal Cloud bill that behaves like any other well-governed enterprise OpEx line: attributable,
+forecastable, and defensible.

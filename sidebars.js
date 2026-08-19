@@ -1856,6 +1856,7 @@ module.exports = {
         'best-practices/multi-tenant-patterns',
         'best-practices/managing-aps-limits',
         'best-practices/cost-optimization',
+        'best-practices/cost-governance',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
         'best-practices/worker',
