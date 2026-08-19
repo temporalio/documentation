@@ -2,7 +2,7 @@
 id: generate-code
 title: Step 2 - Generate code from the contract
 sidebar_label: 2. Generate code
-description: Use the Nexus Client Code Generator to turn the approval contract into typed models, validators, and Service definitions for the handler and the caller.
+description: Use the Nexus Client Code Generator to turn the approval contract into typed models, validators, and Service definitions in every supported language.
 toc_max_heading_level: 4
 unlisted: true
 tags:
@@ -10,36 +10,40 @@ tags:
   - Java SDK
 ---
 
-Generate the library code before writing any implementation. Both sides of the Service use it: the handler implements against the generated Service definition, and the caller invokes against the same one.
+Generate the library code from the contract before writing any implementation. Both sides of the Service use it: the handler implements against the generated Service definition, and the caller invokes against the same one.
 
 ## What generation produces
 
-For each type in the contract, the [Nexus Client Code Generator](/nexus/client-code-generator) emits a typed model, a runtime validator, and — for a contract that declares Services — a Nexus Service definition.
+For each type in the contract, the [Nexus Client Code Generator](/nexus/client-code-generator) emits a typed model and a runtime validator. If the contract declares Services, it will also create a Nexus Service definition.
 
-In Java the Service definition is an interface annotated with `@Service`, carrying one `@Operation` method per Operation. That interface is used on both sides and in two different ways:
+The generated Service definition carries one member per Operation, in whatever form is idiomatic for the language. It is used on both sides and in two different ways:
 
 - The **handler** provides an implementation for it, which the Worker registers.
-- The **caller** uses the interface directly as a Workflow stub, so calls are type-checked against the contract.
+- The **caller** uses it to invoke Operations, so calls are type-checked against the contract.
+
+`nexgen` generates Go, Java, Python, and TypeScript, which is the set of languages this walkthrough covers.
 
 The generated validators run when a payload is parsed and again when it is serialized, so a request that violates the contract is rejected at the boundary rather than reaching your Workflow. Violations aggregate into one error naming every field that failed, which a handler maps to `BAD_REQUEST`.
 
-## Generate for Java
+## Generate the code
 
-Java generation requires a package name whose last segment matches the output directory name. See [Generate code](/nexus/client-code-generator#generate-code) for the full command shape and the per-language flags.
+Generation is one command per language, with a few per-language flags — Java, for instance, requires a package name whose last segment matches the output directory name.
 
-`{sample code will be here}`
+**[Generate code](/nexus/client-code-generator#generate-code)** has the full command shape and the flags each language takes, with examples for each.
 
-Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. If a generated name is wrong for Java, fix it in the contract with a per-language naming override rather than editing the output. See the [Nexus Client Code Generator](/nexus/client-code-generator).
+Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. When a generated name is wrong for your language, fix it in the contract with a per-language naming override rather than editing the output. See the **[Nexus Client Code Generator](/nexus/client-code-generator)** for more details.
 
-## Generate for other languages
+## One contract, four languages
 
-The same contract produces a caller in any supported language. Generating a Go, Python, or TypeScript client from this contract is one command each, and the result talks to the Java handler built in this walkthrough without any coordination beyond the contract.
+Run the generator once per language and you have that language's contract code — typed models, validators, and the Service definition. That is not a working handler or caller; you still write those. It is the part both sides have to agree on, generated from one source instead of hand-written twice, and the same generated code serves whichever side you are building. Nothing about a handler needs to know which languages its callers use, and nothing about a caller needs to know which language implements the handler.
 
-This is the step where the contract-first ordering pays off. Nothing about the handler needs to know which languages its callers use.
+This is the step where the contract-first ordering pays off, and it is what makes the cross-language call in [step 6](/develop/java/nexus/development-walkthrough/call-the-service) work without any coordination beyond the contract.
 
 ## Next
 
-With the types in hand, [choose what backs each Operation](/develop/java/nexus/development-walkthrough/choose-backing-implementation).
+**[Step 3 - Choose the backing implementation](/develop/java/nexus/development-walkthrough/choose-backing-implementation)** - decide what runs behind each Operation, and build the one that needs nothing.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 
