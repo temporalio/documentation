@@ -196,7 +196,7 @@ In another terminal, start the Workflow:
 
 ```bash
 temporal workflow execute \
-  --task-queue opentelemetry-v2 \
+  --task-queue automatic-instrumentation \
   --type Workflow \
   --input '"Temporal"'
 ```
@@ -278,7 +278,7 @@ In another terminal, start the Workflow:
 
 ```bash
 temporal workflow execute \
-  --task-queue opentelemetry-v2 \
+  --task-queue workflow-activity-propagation \
   --type Workflow \
   --input '"Temporal"'
 ```
