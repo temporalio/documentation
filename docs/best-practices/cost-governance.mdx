@@ -115,8 +115,9 @@ current-month data is provisional until the billing month closes:
 
 - Maintain a budget table per Namespace (or per team, rolling up Namespaces) with a monthly allocation.
 - Each day, pull the Billing API daily report and compute month-to-date (MTD) actual spend per Namespace.
-- Project end-of-month (EOM) spend using a simple run-rate extrapolation: EOM projection = MTD spend ÷ days elapsed ×
-  days in month.
+- Project end-of-month (EOM) spend using a simple run-rate extrapolation: EOM projection = MTD spend ÷ days
+  represented in the report × days in month. Derive the represented period from the report's charge dates so the
+  roughly 24-hour Billing API lag doesn't depress the projection.
 - Compare the projection against the allocated budget and flag any Namespace trending to exceed it.
 - Between daily Billing API pulls, use the 24-hour Actions estimate from [OpenMetrics](/cloud/metrics/openmetrics) as
   a same-day directional check on whether a Namespace's usage trajectory has shifted:
