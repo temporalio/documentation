@@ -41,6 +41,15 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
+:::tip[Use the OpenTelemetry v2 integration]
+
+New metrics setups should use the
+[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2#export-temporal-sdk-metrics) instead. It
+configures Temporal SDK metrics through the Go SDK Plugin API and is currently in
+[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
+
 - For an overview of Prometheus and Grafana integration, refer to the [Monitoring](/self-hosted-guide/monitoring) guide.
 - For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
 - For an end-to-end example that exposes metrics with the Go SDK, refer to the [samples-go](https://github.com/temporalio/samples-go/tree/main/metrics) repo.
@@ -90,6 +99,15 @@ Negative values can produce invalid or backend-dependent metric data when `UseMo
 ## Tracing {/* #tracing */}
 
 Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and Child Workflows.
+
+:::tip[Use the OpenTelemetry v2 integration]
+
+New tracing setups should use the
+[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2) instead. It uses the Go SDK Plugin API to
+propagate OpenTelemetry trace context across Temporal calls and is currently in
+[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
 
 The Go SDK provides tracing interceptors for [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing), and [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing). 
 
