@@ -21,7 +21,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 </ReleaseNoteHeader>
 
 The Rust SDK is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview), and its API can change between releases.
-The code on this page is written against `temporalio-sdk` 0.6.0.
+The code on this page is written against `temporalio-sdk` 0.7.0.
 
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
 Register Workflows and Activities the same way you would with any other Rust Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
@@ -40,13 +40,11 @@ The following Worker reads its connection settings and Task Queue from the envir
 ```rust
 use std::str::FromStr;
 
-use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions};
-use temporalio_common::telemetry::TelemetryOptions;
+use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions, Url};
 use temporalio_common::worker::{
     VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
 };
-use temporalio_sdk::{Worker, WorkerOptions};
-use temporalio_sdk_core::{CoreRuntime, RuntimeOptions, Url};
+use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -54,27 +52,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let namespace = std::env::var("TEMPORAL_NAMESPACE")?;
     let api_key = std::env::var("TEMPORAL_API_KEY")?;
 
-    let runtime = CoreRuntime::new_assume_tokio(
-        RuntimeOptions::builder()
-            .telemetry_options(TelemetryOptions::builder().build())
-            .build()?,
-    )?;
+    let runtime = Runtime::new_assume_tokio(Default::default())?;
 
     let connection_options = ConnectionOptions::new(Url::from_str(&format!("https://{address}"))?)
         .api_key(api_key)
+        .tls_options(TlsOptions::default())
         .build();
     let connection = Connection::connect(connection_options).await?;
     let client = Client::new(connection, ClientOptions::new(namespace).build())?;
 
     let worker_options = WorkerOptions::new(std::env::var("TEMPORAL_TASK_QUEUE")?)
-        .deployment_options(WorkerDeploymentOptions {
-            version: WorkerDeploymentVersion {
+        .deployment_options(
+            WorkerDeploymentOptions::new(WorkerDeploymentVersion {
                 deployment_name: "my-app".to_owned(),
                 build_id: "build-1".to_owned(),
-            },
-            use_worker_versioning: true,
-            default_versioning_behavior: Some(VersioningBehavior::Pinned),
-        })
+            })
+            .use_worker_versioning(true)
+            .default_versioning_behavior(VersioningBehavior::Pinned)
+            .build(),
+        )
         .register_workflow::<MyWorkflow>()?
         .register_activities(MyActivities)
         .build();
@@ -89,7 +85,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 `deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
 The Rust SDK sets the versioning behavior on the Worker rather than per Workflow, so `default_versioning_behavior` covers every Workflow the Worker registers.
-Setting it to `Some(VersioningBehavior::Unspecified)` is an error at startup.
+Setting it to `VersioningBehavior::Unspecified` is an error at startup.
 See [versioning behaviors](/worker-versioning#versioning-behaviors) for what `Pinned` and `AutoUpgrade` mean.
 
 For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/rust/workers/worker-process).
@@ -99,7 +95,7 @@ For general Worker setup and options that are not specific to Cloud Run, see [Ru
 Read the Namespace, address, and Task Queue from environment variables you set on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager rather than passing it in plaintext.
 The Worker above reads `TEMPORAL_ADDRESS`, `TEMPORAL_NAMESPACE`, `TEMPORAL_API_KEY`, and `TEMPORAL_TASK_QUEUE`, so the same image can run against any Namespace.
 
-Setting `api_key` turns TLS on by default, so the connection URL needs an `https://` scheme.
+Setting `api_key` alone does not enable TLS. `Connection::connect` applies TLS only when `tls_options` is set, so a Temporal Cloud connection needs `.tls_options(TlsOptions::default())` as well, or it fails with `Connecting to HTTPS without TLS enabled`.
 To rotate the key without restarting the Worker, call `set_api_key` on the connected Client.
 
 For the shared configuration format that other Temporal tools read, see [Environment configuration](/develop/environment-configuration).
@@ -147,4 +143,4 @@ For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/
 ## Add observability {/* #add-observability */}
 
 A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
-For how to configure metrics and telemetry, see `TelemetryOptions` on the runtime and the [SDK metrics reference](/references/sdk-metrics).
+For how to configure metrics and telemetry, see the runtime options you pass to `Runtime::new_assume_tokio` and the [SDK metrics reference](/references/sdk-metrics).

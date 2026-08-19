@@ -3,63 +3,77 @@ id: index
 title: Best practices
 sidebar_label: Best practices
 description:
-  Comprehensive best practices for working with Temporal, covering namespace management, security, and operational
-  excellence.
+  Prescriptive, validated guidance for platform teams and architects establishing Temporal standards, covering
+  namespace and tenancy design, Cloud security, Worker and Workflow reliability, and organizational enablement.
 toc_max_heading_level: 3
-hide_table_of_contents: true
+hide_table_of_contents: false
 keywords:
   - temporal best practices
   - operational excellence
   - security
   - namespace management
+  - multi-tenancy
+  - cost optimization
 tags:
   - Best Practices
 ---
 
-These guides outline foundational principles and best practices for using Temporal Cloud. It exists to provide a
-**validated, opinionated** framework that helps teams that either do not have an enablement plan for or want to evaluate
-and refine their use of Temporal.
+This section collects prescriptive, validated guidance for platform teams, architects, and developers establishing
+Temporal standards across an organization. Each page recommends a specific approach based on real-world deployments,
+rather than explaining how a feature works internally — for that, see [Encyclopedia](/temporal). Looking for a working
+code example instead of a principle? See [Guides](/guides) for pattern-by-pattern implementations with runnable code.
 
-## Overview
+## Namespace, tenancy, and capacity
 
-Without clearly defined Temporal standards, organizations often struggle with inconsistent Workflow implementations,
-fragmented best practices, and misaligned development approaches. This documentation framework helps developers
-establish robust Temporal standards by providing:
+Start here to decide how many Namespaces you need, how tenants share them, and what capacity model fits your traffic.
+These pages form one decision chain: draw your Namespace boundaries, decide how tenants share those boundaries, size
+your Actions-per-second capacity, and understand what it costs.
 
-- **Proven foundation principles** that have been validated across diverse use cases
-- **Standardized implementation patterns** for teams to adopt consistently across projects
-- **Confidence in alignment** with Temporal's architectural principles and recommended practices
+- **[Namespace best practices](./managing-namespace.mdx)** — naming conventions, organizational patterns for splitting
+  Namespaces, and production safeguards like deletion protection and Infrastructure as Code.
+- **[Multi-tenant application patterns](./multi-tenant-patterns.mdx)** — Task Queue and Namespace isolation patterns for
+  multi-tenant applications, with worked capacity-planning examples.
+- **[Managing Actions per Second (APS) limits](./managing-aps-limits.mdx)** — why workloads hit APS limits, how to
+  design Workflows that use Actions efficiently, and when to use Provisioned Capacity.
+- **[Cost optimization](./cost-optimization.mdx)** — common cost anti-patterns and strategies for reducing Actions and
+  Storage costs without sacrificing observability.
+- **[Cost governance](./cost-governance.mdx)** — a design framework for cost attribution, budget forecasting, and
+  anomaly detection using the Billing API and OpenMetrics.
 
-By following this guidance, developers can define comprehensive Temporal standards that ensure their workflow
-orchestration implementations are maintainable, scalable, and aligned with platform best practices from the start.
+## Security and access control
 
-## Target audience
+Temporal Cloud secures the managed service; you're responsible for how your applications authenticate to it and who can
+administer your account. These two pages cover both halves.
 
-This section is intended for:
+- **[Managing Temporal Cloud access control](./cloud-access-control.mdx)** — choosing between mTLS certificates and API
+  keys, structuring Service Accounts, and rotating credentials without downtime.
+- **[Security controls for Temporal Cloud](./security-controls.mdx)** — identity and access management, network
+  isolation, data encryption, and availability guidance for a Temporal Cloud account.
 
-- Developers responsible for building a Temporal Cloud practice within their organization.
-- Anyone building tutorials, courses, onboarding paths, or documentation
-- Partners or vendors creating Temporal-related learning materials
+## Worker and Workflow reliability
 
-## Available guides
+These pages cover the full lifecycle of running reliable Workflows in production: deploy and tune Workers correctly,
+alert on the metrics that catch failures early, handle errors correctly in Workflow and Activity code, and validate
+that all of it survives real failure conditions before you rely on it.
 
-- **[Managing a Namespace](./managing-namespace.mdx)** Best practices for configuring, managing, and optimizing Temporal
-  Namespaces.
+- **[Worker deployment and performance](./worker.mdx)** — deployment, scaling, and tuning practices for Workers,
+  illustrated with a reference application.
+- **[Alerting on Worker metrics](./worker-alerting.mdx)** — a recommended alert set with thresholds and triage links.
+- **[Error handling](./error-handling.mdx)** — categorizing failures, when to mark errors non-retryable, and
+  implementing compensation with the Saga pattern.
+- **[Pre-production testing](./pre-production-testing.mdx)** — failure injection, load testing, and a game-day runbook
+  for validating operational readiness.
 
-- **[Managing Temporal Cloud Access Control](./cloud-access-control.mdx)** Guidelines for implementing proper access
-  control and user management in Temporal Cloud.
+## Organizational enablement
 
-- **[Security Controls for Temporal Cloud](./security-controls.mdx)** Comprehensive security practices for protecting
-  your Temporal Cloud deployment.
+Once your own standards are established, the next challenge is getting every team to follow them without funneling
+every question through the platform team.
 
-- **[Worker Deployment and Performance](./worker.mdx)** Best practices for deploying and optimizing Temporal Workers for
-  performance and reliability.
+- **[Knowledge hub](./knowledge-hub.mdx)** — what belongs in an internal Temporal knowledge hub, how to measure its
+  effectiveness, and how to keep it current.
 
-- **[Cost Optimization](./cost-optimization.mdx)** Strategies for optimizing costs associated with workloads running on
-  Temporal Cloud while maintaining Workflow reliability and observability.
-  
-- **[Pre-Production Testing](./pre-production-testing.mdx)** Experience-driven testing practices covering failure
-  injection, load testing, and operational validation.
-
-- **[Knowledge Hub](./knowledge-hub.mdx)** Best practices for building and maintaining an internal Temporal knowledge hub
-  that accelerates developer onboarding, reduces platform team support load, and establishes consistent standards.
+:::note Scope
+Most of this section covers Temporal Cloud operations. Namespace best practices, Worker deployment, and error handling
+apply to self-hosted Temporal too; security controls, access control, cost optimization, cost governance, and APS
+limits are Cloud-specific. For self-hosted security guidance, see [Security (self-hosted)](/self-hosted-guide/security).
+:::

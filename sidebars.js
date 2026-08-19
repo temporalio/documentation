@@ -42,11 +42,19 @@ const developDotnetCategory = {
         items: [
           'develop/dotnet/activities/basics',
           'develop/dotnet/activities/execution',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/dotnet/activities/standalone-activities-quickstart',
+              'develop/dotnet/activities/standalone-activities',
+            ],
+          },
           'develop/dotnet/activities/timeouts',
           'develop/dotnet/activities/asynchronous-activity',
           'develop/dotnet/activities/dynamic-activity',
           'develop/dotnet/activities/benign-exceptions',
-          'develop/dotnet/activities/standalone-activities',
         ],
       },
       {
@@ -188,7 +196,15 @@ const developGoCategory = {
         items: [
           'develop/go/activities/basics',
           'develop/go/activities/execution',
-          'develop/go/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/go/activities/standalone-activities-quickstart',
+              'develop/go/activities/standalone-activities',
+            ],
+          },
           'develop/go/activities/timeouts',
           'develop/go/activities/asynchronous-activity',
           'develop/go/activities/dynamic-activity',
@@ -341,7 +357,15 @@ const developJavaCategory = {
         items: [
           'develop/java/activities/basics',
           'develop/java/activities/execution',
-          'develop/java/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/java/activities/standalone-activities-quickstart',
+              'develop/java/activities/standalone-activities',
+            ],
+          },
           'develop/java/activities/timeouts',
           'develop/java/activities/asynchronous-activity',
           'develop/java/activities/benign-exceptions',
@@ -576,7 +600,15 @@ const developPythonCategory = {
         items: [
           'develop/python/activities/basics',
           'develop/python/activities/execution',
-          'develop/python/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/python/activities/standalone-activities-quickstart',
+              'develop/python/activities/standalone-activities',
+            ],
+          },
           'develop/python/activities/timeouts',
           'develop/python/activities/asynchronous-activity',
           'develop/python/activities/benign-exceptions',
@@ -736,7 +768,15 @@ const developRubyCategory = {
         items: [
           'develop/ruby/activities/basics',
           'develop/ruby/activities/execution',
-          'develop/ruby/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/ruby/activities/standalone-activities-quickstart',
+              'develop/ruby/activities/standalone-activities',
+            ],
+          },
           'develop/ruby/activities/timeouts',
           'develop/ruby/activities/asynchronous-activity',
           'develop/ruby/activities/dynamic-activity',
@@ -969,7 +1009,15 @@ const developTypeScriptCategory = {
         items: [
           'develop/typescript/activities/basics',
           'develop/typescript/activities/execution',
-          'develop/typescript/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/typescript/activities/standalone-activities-quickstart',
+              'develop/typescript/activities/standalone-activities',
+            ],
+          },
           'develop/typescript/activities/timeouts',
           'develop/typescript/activities/asynchronous-activity',
           'develop/typescript/activities/benign-exceptions',
@@ -1831,16 +1879,17 @@ module.exports = {
         id: 'best-practices/index',
       },
       items: [
-        'best-practices/worker',
-        'best-practices/worker-alerting',
-        'best-practices/pre-production-testing',
-        'production-deployment/multi-tenant-patterns',
         'best-practices/managing-namespace',
+        'best-practices/multi-tenant-patterns',
         'best-practices/managing-aps-limits',
+        'best-practices/cost-optimization',
+        'best-practices/cost-governance',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
+        'best-practices/worker',
+        'best-practices/worker-alerting',
         'best-practices/error-handling',
-        'best-practices/cost-optimization',
+        'best-practices/pre-production-testing',
         'best-practices/knowledge-hub',
       ],
     },

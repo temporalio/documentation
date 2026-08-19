@@ -72,7 +72,7 @@ struct SleeperActivities {
 #[activities]
 impl SleeperActivities {
     #[activity]
-    async fn sleeper(
+    pub async fn sleeper(
         self: Arc<Self>,
         ctx: ActivityContext,
         _: String,
@@ -144,7 +144,9 @@ impl MyActivities {
 
         // If an error should not be retried
         if input.len() > 1000000 {
-            return Err(ApplicationFailure::non_retryable("Input too large").into());
+            return Err(
+                ApplicationFailure::non_retryable("Input too large").into(),
+            );
         }
 
         let result = ProcessedData {

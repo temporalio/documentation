@@ -359,7 +359,7 @@ This approach is more reliable than a fixed iteration count because it accounts 
 
 The Continue-As-New pattern is a good fit for periodic Workflows running indefinitely (cron-like behavior), processing unbounded data streams, long-running Workflows with repetitive patterns, Workflows that accumulate state over many iterations, and preventing event history from growing too large.
 
-It is not a good fit for short-lived Workflows (under 1000 events), Workflows that naturally complete, one-time batch processing, or Workflows that require full history for audit purposes.
+It is not a good fit for short-lived Workflows (under 1,000 events), Workflows that naturally complete, one-time batch processing, or Workflows that require full history for audit purposes.
 
 ## Benefits and trade-offs
 

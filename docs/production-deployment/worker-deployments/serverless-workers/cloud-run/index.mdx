@@ -386,23 +386,17 @@ For more on the Ruby Worker setup, see
 ```rust
 use std::str::FromStr;
 
-use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions};
-use temporalio_common::telemetry::TelemetryOptions;
+use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions, Url};
 use temporalio_common::worker::{
     VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
 };
-use temporalio_sdk::{Worker, WorkerOptions};
-use temporalio_sdk_core::{CoreRuntime, RuntimeOptions, Url};
+use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let address = std::env::var("TEMPORAL_ADDRESS")?;
 
-    let runtime = CoreRuntime::new_assume_tokio(
-        RuntimeOptions::builder()
-            .telemetry_options(TelemetryOptions::builder().build())
-            .build()?,
-    )?;
+    let runtime = Runtime::new_assume_tokio(Default::default())?;
 
     let connection_options = ConnectionOptions::new(Url::from_str(&format!("https://{address}"))?)
         .api_key(std::env::var("TEMPORAL_API_KEY")?)
@@ -415,14 +409,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?;
 
     let worker_options = WorkerOptions::new(std::env::var("TEMPORAL_TASK_QUEUE")?)
-        .deployment_options(WorkerDeploymentOptions {
-            version: WorkerDeploymentVersion {
+        .deployment_options(
+            WorkerDeploymentOptions::new(WorkerDeploymentVersion {
                 deployment_name: "my-app".to_owned(),
                 build_id: "build-1".to_owned(),
-            },
-            use_worker_versioning: true,
-            default_versioning_behavior: Some(VersioningBehavior::Pinned),
-        })
+            })
+            .use_worker_versioning(true)
+            .default_versioning_behavior(VersioningBehavior::Pinned)
+            .build(),
+        )
         .register_workflow::<MyWorkflow>()?
         .register_activities(MyActivities)
         .build();
@@ -435,7 +430,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```
 
 The Rust SDK sets the versioning behavior on the Worker rather than per Workflow, so `default_versioning_behavior`
-covers every Workflow the Worker registers. Setting it to `Some(VersioningBehavior::Unspecified)` is an error at
+covers every Workflow the Worker registers. Setting it to `VersioningBehavior::Unspecified` is an error at
 startup.
 
 Setting `api_key` does not by itself apply TLS on this connection path, so set `tls_options` as well or the Worker
