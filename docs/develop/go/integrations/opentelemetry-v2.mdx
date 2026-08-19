@@ -375,9 +375,10 @@ func Workflow(ctx workflow.Context) (string, error) {
 The Workflow waits for the Update to set its completion state and for `workflow.AllHandlersFinished` to report all
 Update handlers done before returning.
 
-From the root of a `samples-go` checkout, start the Worker:
+From the root of a `samples-go` checkout, start Jaeger and the Worker:
 
 ```bash
+docker compose -f opentelemetry-v2/docker-compose.yaml up -d
 go run opentelemetry-v2/client-update-propagation/worker/main.go
 ```
 
