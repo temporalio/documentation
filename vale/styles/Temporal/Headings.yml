@@ -163,7 +163,6 @@ exceptions:
   - Versioning
   - Patching
   - Endpoint
-  - Metric
   - Metrics
   - Account
   - Capacity
