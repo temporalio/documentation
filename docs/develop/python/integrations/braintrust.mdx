@@ -266,8 +266,8 @@ temporal server start-dev
 export BRAINTRUST_API_KEY="your-api-key"
 export OPENAI_API_KEY="your-api-key"
 export BRAINTRUST_PROJECT="deep-research"
-uv run python -m worker
+uv run worker.py
 
 # Terminal 3: Run a research query
-uv run python -m start_workflow "What are the latest advances in quantum computing?"
+uv run start_workflow.py "What are the latest advances in quantum computing?"
 ```
