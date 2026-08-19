@@ -45,12 +45,15 @@ The following Worker reads its connection settings and Task Queue from the envir
 <!--SNIPSTART typescript-cloud-run-worker-->
 [features/snippets/worker/worker.ts](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.ts)
 ```ts
-const config = loadClientConnectConfig();
-const connection = await NativeConnection.connect(config.connectionOptions);
+const connection = await NativeConnection.connect({
+  address: process.env.TEMPORAL_ADDRESS,
+  apiKey: process.env.TEMPORAL_API_KEY,
+  tls: true,
+});
 
 const worker = await Worker.create({
   connection,
-  namespace: config.namespace,
+  namespace: process.env.TEMPORAL_NAMESPACE!,
   taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
   workflowsPath: require.resolve('./workflows'),
   workerDeploymentOptions: {
@@ -83,11 +86,10 @@ For general Worker setup and options that are not specific to Cloud Run, see [Ru
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
-The `@temporalio/envconfig` package loads Temporal Client configuration from environment variables and an optional TOML config file, so the Worker code carries no Namespace or credentials.
-Set the non-secret values as environment variables on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager.
-For the full list of supported variables, the config file format, and profiles, see [Environment configuration](/develop/environment-configuration).
+Read the Namespace, address, and Task Queue from environment variables you set on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager rather than passing it in plaintext.
 
-`loadClientConnectConfig()` returns `connectionOptions` and `namespace`. Pass `connectionOptions` to `NativeConnection.connect()` and `namespace` to `Worker.create()`, as shown above.
+To load the connection settings from a TOML config file and profiles instead of reading each variable by hand, use `loadClientConnectConfig()` from `@temporalio/envconfig` and pass its `connectionOptions` and `namespace` to `NativeConnection.connect()` and `Worker.create()`.
+For the supported variables and the config file format, see [Environment configuration](/develop/environment-configuration).
 
 ## Package the Worker image {/* #package-image */}
 

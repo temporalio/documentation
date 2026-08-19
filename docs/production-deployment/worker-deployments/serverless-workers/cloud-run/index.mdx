@@ -193,17 +193,19 @@ For more on the Go Worker setup, see
 <SdkTabs.TypeScript>
 
 ```ts
-import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-  const config = loadClientConnectConfig();
-  const connection = await NativeConnection.connect(config.connectionOptions);
+  const connection = await NativeConnection.connect({
+    address: process.env.TEMPORAL_ADDRESS,
+    apiKey: process.env.TEMPORAL_API_KEY,
+    tls: true,
+  });
 
   const worker = await Worker.create({
     connection,
-    namespace: config.namespace,
+    namespace: process.env.TEMPORAL_NAMESPACE!,
     taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
     workflowsPath: require.resolve('./workflows'),
     activities,
