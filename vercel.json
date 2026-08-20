@@ -1405,6 +1405,10 @@
       "destination": "/evaluate/development-production-features/release-stages"
     },
     {
+      "source": "/evaluate/development-production-features/release-stages",
+      "destination": "/evaluate/features/release-stages"
+    },
+    {
       "source": "/concepts:path*",
       "destination": "/encyclopedia"
     },
@@ -2299,6 +2303,91 @@
     {
       "source": "/production-deployment/multi-tenant-patterns",
       "destination": "/best-practices/multi-tenant-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/index",
+      "destination": "/evaluate/features/index",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/core-application",
+      "destination": "/evaluate/features/core-application",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/failure-detection",
+      "destination": "/evaluate/features/failure-detection",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/throughput-composability",
+      "destination": "/evaluate/features/throughput-composability",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/nexus",
+      "destination": "/evaluate/features/nexus",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/workflow-message-passing",
+      "destination": "/evaluate/features/workflow-message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/debugging",
+      "destination": "/evaluate/features/debugging",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/interrupt-workflow",
+      "destination": "/evaluate/features/interrupt-workflow",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/testing-suite",
+      "destination": "/evaluate/features/testing-suite",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/observability",
+      "destination": "/evaluate/features/observability",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/data-encryption",
+      "destination": "/evaluate/features/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/schedules",
+      "destination": "/evaluate/features/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/cloud-automation",
+      "destination": "/evaluate/features/cloud-automation",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/low-latency",
+      "destination": "/evaluate/features/low-latency",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/multi-tenancy",
+      "destination": "/evaluate/features/multi-tenancy",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/job-queue",
+      "destination": "/evaluate/features/job-queue",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/serverless-workers/index",
+      "destination": "/evaluate/features/serverless-workers/index",
       "permanent": true
     }
   ]
