@@ -56,30 +56,13 @@ Install from the Codex app or CLI:
 - **Codex CLI:** Run `/plugin`, search for **temporal**, and mark it for installation.
 
 </TabItem>
-<TabItem value="npx" label="npx">
-
-This works with Claude Code, Codex, Cline, and other agents.
-
-Every skill in the bundle also has its own repository, so you can install one on its own with the `skills` CLI:
-
-```bash
-npx skills add https://github.com/temporalio/skill-temporal-developer
-```
-
-</TabItem>
-<TabItem value="manual" label="Manual">
-
-Clone a single skill's repository into your Claude skills directory. Change the target directory if you are using agents
-other than Claude:
-
-```bash
-git clone https://github.com/temporalio/skill-temporal-developer.git ~/.claude/skills/temporal-developer
-```
-
-</TabItem>
 </Tabs>
 
 Restart your coding agent after installing.
+
+Every skill in the bundle also has its own repository, linked in the sections below. If you want one skill instead of
+the bundle, install it with the `skills` CLI (`npx skills add <repository-url>`) or clone the repository into your
+agent's skills directory.
 
 ### Temporal Developer skill
 
