@@ -418,7 +418,7 @@ module.exports = async function createConfigAsync() {
               'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.\n\n' +
               '## Tools for agents\n\n' +
               '- [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer): An agent skill covering Temporal\'s programming model, including Workflow determinism rules, Activity patterns, Retry Policies, error handling, testing, Worker configuration, and versioning. Works with Claude Code, Codex, Cursor, and other agents that support Skills.\n' +
-              '- [Temporal Serverless Workers Skill](https://github.com/temporalio/skill-temporal-serverless): An agent skill for deploying and operating Temporal Workers on serverless compute, covering Worker code, deployment configuration, packaging, and troubleshooting.\n' +
+              '- [Temporal Serverless Workers Skill](https://github.com/temporalio/skill-temporal-serverless): A Public Preview agent skill for deploying and operating Temporal Serverless Workers on AWS Lambda, where support is also in Public Preview. Covers Worker code, deployment configuration, packaging, and troubleshooting.\n' +
               '- [Temporal Docs MCP Server](https://temporal.mcp.kapa.ai): Search this documentation over MCP. Sign-in is required through MCP OAuth with Google or GitHub, which keeps the server from being used for automated bulk querying. Anonymous requests are rejected. If your client cannot complete an OAuth flow, use the `.md` URLs above instead.',
             excludePaths: ['tctl-v1'],
             sections: [
