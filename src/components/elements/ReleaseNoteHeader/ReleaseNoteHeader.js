@@ -9,14 +9,14 @@ import { FEATURE_RELEASE_TYPES } from "../../../constants/featureReleaseTypes";
 export const BASE_RELEASE_STAGES = {
   prerelease: {
     label: "Pre-release",
-    descriptionLink: "/evaluate/development-production-features/release-stages#pre-release",
+    descriptionLink: "/evaluate/features/release-stages#pre-release",
     backgroundColor: "var(--release-prerelease-bg)",
     borderColor: "var(--release-prerelease-border)",
     textColor: "var(--release-prerelease-text)",
   },
   publicPreview: {
     label: "Public Preview",
-    descriptionLink: "/evaluate/development-production-features/release-stages#public-preview",
+    descriptionLink: "/evaluate/features/release-stages#public-preview",
     backgroundColor: "var(--release-public-preview-bg)",
     borderColor: "var(--release-public-preview-border)",
     textColor: "var(--release-public-preview-text)",
