@@ -113,9 +113,9 @@ module.exports = async function createConfigAsync() {
             right: 'left',
           },
           {
-            label: 'AI Cookbook',
-            to: '/ai-cookbook',
-            activeBasePath: 'ai-cookbook',
+            label: 'Durable AI',
+            to: '/ai',
+            activeBasePath: 'ai',
             position: 'left',
           },
           // hide this for now, making this a soft-launch
@@ -375,7 +375,7 @@ module.exports = async function createConfigAsync() {
         {
           id: 'ai-cookbook',
           path: 'ai-cookbook',
-          routeBasePath: 'ai-cookbook', // published at /ai-cookbook/* ✅
+          routeBasePath: 'ai/cookbook', // published at /ai/cookbook/* ✅
           sidebarPath: false, // no left nav for these pages ✅
           // optional polish:
           showLastUpdateAuthor: true,
@@ -395,7 +395,7 @@ module.exports = async function createConfigAsync() {
         require.resolve('./plugins/cookbook-index'),
         {
           docsDir: 'ai-cookbook', // change if your folder differs
-          routeBasePath: 'ai-cookbook', // change if you use a different base
+          routeBasePath: 'ai/cookbook', // change if you use a different base
         },
       ],
       [
@@ -403,7 +403,7 @@ module.exports = async function createConfigAsync() {
         {
           targets: [
             { docsDir: 'docs', routeBasePath: '/' },
-            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai/cookbook' },
           ],
           llmsTxt: {
             siteUrl: 'https://docs.temporal.io',
@@ -447,7 +447,7 @@ module.exports = async function createConfigAsync() {
               { path: 'best-practices', title: 'Best Practices', description: 'Recommended patterns for Temporal' },
               { path: 'design-patterns', title: 'Design Patterns', description: 'Reusable Workflow and Activity patterns for common orchestration problems.' },
               { path: 'guides', title: 'Guides', description: 'End-to-end walkthroughs that solve a specific problem with Temporal.' },
-              { path: 'ai-cookbook', title: 'AI Cookbook', description: 'Runnable examples for building AI and agent applications with Temporal.' },
+              { path: 'ai/cookbook', title: 'AI Cookbook', description: 'Runnable examples for building AI and agent applications with Temporal.' },
               { path: 'demos', title: 'Interactive Demos', description: 'Browser-based interactive demos. These pages are visual tools rather than prose documentation.' },
             ],
           },
@@ -458,7 +458,7 @@ module.exports = async function createConfigAsync() {
         {
           targets: [
             { docsDir: 'docs', routeBasePath: '/' },
-            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai/cookbook', footerText: 'AI COOKBOOK' },
           ],
         },
       ],

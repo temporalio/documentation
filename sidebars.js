@@ -1789,6 +1789,15 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Durable AI',
+      collapsed: true,
+      link: { type: 'doc', id: 'ai/index' },
+      items: [
+        { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+      ],
+    },
+    {
+      type: 'category',
       label: 'References',
       collapsed: true,
       link: {
