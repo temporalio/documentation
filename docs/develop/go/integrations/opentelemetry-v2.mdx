@@ -21,15 +21,12 @@ opt in to Temporal SDK operation spans and SDK metrics.
 
 This guide demonstrates two approaches:
 
-- **Automatic instrumentation:** The Worker plugin creates spans for Temporal SDK operations and reports Temporal SDK
+- [Automatic instrumentation](#enable-automatic-instrumentation): The Worker plugin creates spans for Temporal SDK operations and reports Temporal SDK
   metrics.
-- **Custom instrumentation:** The plugin propagates trace context, but you create the spans that describe your
+- [Custom instrumentation](#add-custom-instrumentation): The plugin propagates trace context, but you create the spans that describe your
   application.
 
-This guide assumes that you understand OpenTelemetry fundamentals. For OpenTelemetry concepts and exporter options,
-refer to the [OpenTelemetry documentation](https://opentelemetry.io/docs/).
-
-Code snippets in this guide are taken from the
+For OpenTelemetry concepts and exporter options, refer to the [OpenTelemetry documentation](https://opentelemetry.io/docs/). Code snippets in this guide are taken from the
 [OpenTelemetry v2 sample](https://github.com/temporalio/samples-go/tree/main/opentelemetry-v2). Refer to the sample for
 the complete, runnable code.
 
@@ -58,7 +55,7 @@ go get github.com/prometheus/client_golang@latest
 
 ## Configure tracing
 
-Create and install a replay-safe tracer provider in every process that creates the plugin or calls
+Create and install a `ReplaySafeTracerProvider` in every process that creates the plugin or calls
 `temporalotel.Tracer`. The replay-safe provider gives Workflow spans consistent identities when Workflow code replays.
 
 <!--SNIPSTART samples-go-opentelemetry-v2-tracer-provider-->
@@ -95,13 +92,13 @@ func InitializeGlobalTracerProvider(
 The samples use distinct OpenTelemetry service names for each instrumented process. This makes process boundaries clear
 when one trace contains spans from both a Client and a Worker.
 
-The OTLP exporter uses an insecure loopback connection for this local example. Configure transport security for your
+The OTLP exporter uses an insecure loopback connection for this example. Configure transport security for your
 production telemetry backend.
 
 ## Enable automatic instrumentation
 
 Set `AddTemporalSpans` to `true` to have the plugin create spans for Temporal SDK operations performed by the Worker.
-Provide `MetricsHandlerOptions` to install the plugin's Temporal SDK metrics handler. A non-nil metrics configuration
+Provide `MetricsHandlerOptions` to install the plugin's Temporal SDK metrics handler. A non-`nil` metrics configuration
 enables the complete SDK metric set.
 
 <!--SNIPSTART samples-go-opentelemetry-v2-metrics-plugin-->
@@ -183,7 +180,7 @@ func StartPrometheusEndpoint() (*http.Server, error) {
 <!--SNIPEND-->
 
 Opening the listener before starting the serving goroutine makes an address conflict fail during Worker startup. The
-endpoint at [http://127.0.0.1:9090/metrics](http://127.0.0.1:9090/metrics) returns metrics in Prometheus format for an
+endpoint at `http://127.0.0.1:9090/metrics` returns metrics in Prometheus format for an
 external Prometheus server to scrape.
 
 ### Run the automatic instrumentation sample
@@ -207,8 +204,8 @@ temporal workflow execute \
 The trace begins with the Worker's automatic spans, since only the Worker installs the plugin in this sample. These
 spans describe Temporal SDK operations that the Worker performs, such as running the Workflow and its Activity.
 
-Open the [Jaeger UI](http://127.0.0.1:16686), select `temporal-otel-v2-automatic-worker`, and inspect the Worker trace. Open
-[http://127.0.0.1:9090/metrics](http://127.0.0.1:9090/metrics) to inspect the Temporal SDK metrics.
+Open your Jaeger UI, select `temporal-otel-v2-automatic-worker`, and inspect the Worker trace. Open
+`http://127.0.0.1:9090/metrics` to inspect the Temporal SDK metrics.
 
 ## Add custom instrumentation
 
@@ -271,7 +268,7 @@ defer c.Close()
 ```
 <!--SNIPEND-->
 
-From the root of a `samples-go` checkout, start Jaeger and the Worker:
+From the root of the `samples-go` repo, start Jaeger and the Worker:
 
 ```bash
 docker compose -f opentelemetry-v2/docker-compose.yaml up -d
@@ -287,7 +284,7 @@ temporal workflow execute \
   --input '"Temporal"'
 ```
 
-Open the [Jaeger UI](http://127.0.0.1:16686), select
+Open the Jaeger UI, select
 `temporal-otel-v2-custom-workflow-activity-propagation-worker`, and find the trace
 containing the `workflow-operation` and `activity-operation` spans created by the sample.
 
@@ -332,7 +329,7 @@ func sendUpdate(
 ```
 <!--SNIPEND-->
 
-The Update validator creates a replay-safe `validate-update` span, and the handler creates a `handle-update` span,
+The Update validator creates a replay-safe `validate-update` span. The handler creates a `handle-update` span,
 changes the Workflow's completion state, and returns the result:
 
 <!--SNIPSTART samples-go-opentelemetry-v2-update-handler-span-->
@@ -381,7 +378,7 @@ func Workflow(ctx workflow.Context) (string, error) {
 The Workflow waits for the Update to set its completion state and for `workflow.AllHandlersFinished` to report all
 Update handlers done before returning.
 
-From the root of a `samples-go` checkout, start Jaeger and the Worker:
+From the root of the `samples-go` repo, start Jaeger and the Worker:
 
 ```bash
 docker compose -f opentelemetry-v2/docker-compose.yaml up -d
@@ -394,7 +391,7 @@ In another terminal, run the starter:
 go run opentelemetry-v2/client-update-propagation/starter/main.go
 ```
 
-In Jaeger, select `temporal-otel-v2-custom-client-update-propagation-client` and open the trace containing `send-update`,
+In the Jaeger UI, select `temporal-otel-v2-custom-client-update-propagation-client` and open the trace containing `send-update`,
 `validate-update`, and `handle-update`. The trace crosses into `temporal-otel-v2-custom-client-update-propagation-worker`,
 connected by the context the default plugins propagate.
 
@@ -403,10 +400,16 @@ connected by the context the default plugins propagate.
 Install the tracer and meter providers as OpenTelemetry globals before constructing the plugin or a Workflow tracer, so
 they're available to instrument every Temporal call the process makes.
 
-When the process exits, close the Temporal Client or stop the Worker first, then shut down the Prometheus-format
-endpoint, meter provider, and tracer provider, each with its own fresh, bounded context rather than one that might
-already be canceled. Shutting down the tracer provider flushes the batch span processor, so spans created earlier in
-the process still reach the exporter before it exits.
+Shut things down in this order when the process exits:
+
+1. Close the Temporal Client or stop the Worker.
+2. Shut down the Prometheus-format endpoint.
+3. Shut down the meter provider.
+4. Shut down the tracer provider.
+
+Pass each shutdown call its own new context with a timeout. A context left over from the rest of the program might
+already be canceled, which cuts the shutdown short. Shutting down the tracer provider flushes the batch span processor,
+so spans created earlier still reach the exporter before the process exits.
 
 ## Propagate trace context and baggage
 
@@ -414,7 +417,7 @@ The plugin automatically propagates OpenTelemetry trace context and baggage acro
 W3C Trace Context and Baggage propagator by default instead of the global OpenTelemetry propagator. Use
 `PluginOptions.TextMapPropagator` to provide a different propagator.
 
-Temporal headers that carry baggage can be persisted in Workflow Event Histories. Do not put credentials, tokens, or
+Temporal headers that carry baggage can be persisted in Event Histories. Do not put credentials, tokens, or
 other sensitive data in OpenTelemetry baggage. Set `PluginOptions.DisableBaggage` to `true` to turn off baggage
 propagation.
 
