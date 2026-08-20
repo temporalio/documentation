@@ -62,6 +62,7 @@ export const COMPONENT_REGISTRY = {
   SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
+  Video: "video",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
@@ -965,6 +966,21 @@ export function transformMdx(mdxContent, options = {}) {
           i = embedEnd;
           continue;
         }
+        // <Video videoId="..." title="..." /> inside a tip → Watch link, same
+        // as the Video strategy used outside admonitions.
+        if (/^\s*<Video\b/.test(line)) {
+          let tag = line;
+          while (!/\/>/.test(tag) && i + 1 < lines.length) {
+            i++;
+            tag += " " + lines[i].trim();
+          }
+          const videoId = extractProp(tag, "videoId");
+          const title = extractProp(tag, "title");
+          if (videoId && title) {
+            admonitionLines.push(`[Watch: ${title}](https://www.youtube.com/watch?v=${videoId})`);
+          }
+          continue;
+        }
         admonitionLines.push(line);
       }
       continue;
@@ -1216,6 +1232,23 @@ export function transformMdx(mdxContent, options = {}) {
         "";
       if (src) {
         outputLines.push(`![${alt}](${src})`);
+        outputLines.push("");
+      }
+      continue;
+    }
+
+    // --- Video (self-closing, may span lines) ---
+    //     <Video videoId="..." title="..." /> → [Watch: Title](https://www.youtube.com/watch?v=ID)
+    if (state === State.NORMAL && /^\s*<Video\b/.test(line)) {
+      let tag = line;
+      while (!/\/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const videoId = extractProp(tag, "videoId");
+      const title = extractProp(tag, "title");
+      if (videoId && title) {
+        outputLines.push(`[Watch: ${title}](https://www.youtube.com/watch?v=${videoId})`);
         outputLines.push("");
       }
       continue;

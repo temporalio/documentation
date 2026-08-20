@@ -646,6 +646,29 @@ Watch [What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOK
   assertNotContains(markdown, "<div");
 });
 
+test("Video component becomes a Watch markdown link", () => {
+  const input = `<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "[Watch: What is the Temporal Platform?](https://www.youtube.com/watch?v=EwweiH2rd7M)");
+  assertNotContains(markdown, "<Video");
+  assertNotContains(markdown, "videoId=");
+});
+
+test("Video (multi-line props) becomes a Watch markdown link", () => {
+  const input = `<Video\n  videoId="zLjhNrOKphE"\n  title="What Is a Workflow in Temporal?"\n/>`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "[Watch: What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE)");
+  assertNotContains(markdown, "<Video");
+});
+
+test("Video inside a :::tip admonition becomes a Watch link in the blockquote", () => {
+  const input = `:::tip\n\nWatch a short overview:\n\n<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />\n\n:::`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "> [Watch: What is the Temporal Platform?](https://www.youtube.com/watch?v=EwweiH2rd7M)");
+  assertNotContains(markdown, "<Video");
+  assertNotContains(markdown, "videoId=");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — SdkTabs
 // ---------------------------------------------------------------------------
@@ -1262,7 +1285,7 @@ console.log("\n🗂️  COMPONENT_REGISTRY checks");
 test("all known Temporal components are registered", () => {
   const requiredComponents = [
     "Tabs", "TabItem", "ZoomPanPinch", "RelatedReadList",
-    "CaptionedImage", "DocCardList", "CardList",
+    "CaptionedImage", "DocCardList", "CardList", "Video",
   ];
   for (const comp of requiredComponents) {
     assert(
@@ -1276,7 +1299,7 @@ test("all registry strategies are valid strings", () => {
   const validStrategies = [
     "tabs", "tabitem", "transparent", "related-read",
     "related-read-container", "related-read-item",
-    "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
+    "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
     "json-table", "integrations-grid", "cookbook-preview", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links",
