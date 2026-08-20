@@ -195,6 +195,6 @@ exceptions:
   - Google
   - Gemini
   - Vertex
-  # Temporal product/site section proper nouns
-  - Cookbook
+  # Temporal product/site section proper nouns (exact phrase, not the individual words)
+  - AI Cookbook
   - Code Exchange
