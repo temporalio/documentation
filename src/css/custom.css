@@ -977,6 +977,15 @@ code {
   color: var(--ifm-color-primary);
 }
 
+/* Gradient-bordered variant for a "featured" section (e.g. Code Exchange
+   picks on /ai) that should visually stand out from a plain GridCard grid on
+   the same page. GridCard already swaps in this exact gradient as a
+   border-image on hover (GridCard.module.css); this just makes that
+   permanent instead of hover-only for cards inside a featured section. */
+.code-exchange-featured .grid-card {
+  border-image: linear-gradient(255deg, #444ce7 0%, #b664ff 100%) 1;
+}
+
 .pattern-card-header {
   display: flex;
   align-items: center;

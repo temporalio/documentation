@@ -194,7 +194,7 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
         <ul className="breadcrumbs">
           <HomeBreadcrumbItem />
           <li className="breadcrumbs__item">
-            <Link className="breadcrumbs__link" to="/ai-cookbook">
+            <Link className="breadcrumbs__link" to="/ai/cookbook">
               <span>AI Cookbook</span>
             </Link>
           </li>
