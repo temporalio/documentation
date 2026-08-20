@@ -112,6 +112,38 @@ git clone https://github.com/temporalio/skill-temporal-cloud.git ~/.claude/skill
 
 Restart your coding agent after installing.
 
+### Temporal Serverless Workers Skill
+
+The [Temporal Serverless Workers Skill](https://github.com/temporalio/skill-temporal-serverless) helps your AI coding
+agent deploy and operate Temporal Workers on serverless compute, covering Worker code, deployment configuration,
+packaging, and troubleshooting Workers that aren't picking up Tasks.
+
+<Tabs groupId="skill-install" queryString>
+<TabItem value="npx" label="npx">
+
+This works with Claude Code, Codex, Cline, and other agents.
+
+Install the skill using the `skills` CLI:
+
+```bash
+npx skills add https://github.com/temporalio/skill-temporal-serverless
+```
+
+</TabItem>
+<TabItem value="manual" label="Manual">
+
+Clone the skill repository into your Claude skills directory. Change the target directory if you are using agents other
+than Claude:
+
+```bash
+git clone https://github.com/temporalio/skill-temporal-serverless.git ~/.claude/skills/temporal-serverless
+```
+
+</TabItem>
+</Tabs>
+
+Restart your coding agent after installing.
+
 ## Temporal knowledge base MCP server
 
 Connect Temporal expertise directly to your AI assistant for accurate, up-to-date answers about Temporal. The
