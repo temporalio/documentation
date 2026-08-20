@@ -7,6 +7,7 @@ description: Give your AI coding agent Temporal expertise and real-time access t
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { ReleaseNoteHeader } from '@site/src/components';
 
 Give your AI coding agent Temporal expertise with Skills, real-time documentation access with the Temporal Knowledge Base
 MCP Server, or direct access to the docs as Markdown.
@@ -88,6 +89,10 @@ error handling, testing strategies, Worker configuration, versioning, and common
 
 ### Temporal Ops skill
 
+<ReleaseNoteHeader type="publicPreview">
+  The skill's coverage and structure may change before the stable release.
+</ReleaseNoteHeader>
+
 The [Temporal Ops skill](https://github.com/temporalio/skill-temporal-ops) administers and diagnoses running Temporal
 Cloud and self-hosted environments through the `temporal` and `tcld` CLIs: Namespace management, API key and mTLS
 certificate rotation, Cloud capacity, batch cancel, terminate, and reset operations, Export, and Search Attributes. It
@@ -96,16 +101,16 @@ backlog, or a missed Schedule — until it reaches a root cause.
 
 Trigger the skill with a slash command: `/temporal:temporal-ops`.
 
-This skill is in Public Preview.
-
 ### Temporal Serverless skill
+
+<ReleaseNoteHeader type="publicPreview">
+  The skill's coverage and structure may change before the stable release.
+</ReleaseNoteHeader>
 
 The [Temporal Serverless skill](https://github.com/temporalio/skill-temporal-serverless) guides your AI coding agent
 through configuring and deploying Temporal Workers on serverless compute, and troubleshooting them once they're running.
 
 Trigger the skill with a slash command: `/temporal:temporal-serverless`.
-
-This skill is in Public Preview.
 
 ### Temporal Cloud skill
 
