@@ -92,6 +92,39 @@ The [Temporal Cloud Skill](https://github.com/temporalio/skill-temporal-cloud) h
 Temporal Cloud connectivity, authentication, and configuration issues.
 
 <Tabs groupId="skill-install" queryString>
+<TabItem value="claude-code" label="Claude Code Plugin">
+
+1. Add the Temporal skills marketplace to Claude Code:
+
+   ```bash
+   /plugin marketplace add temporalio/claude-temporal-plugin
+   ```
+
+2. Install the Temporal plugin, which includes the Temporal Cloud Skill:
+
+   ```bash
+   /plugin install temporal@temporal-marketplace
+   ```
+
+</TabItem>
+<TabItem value="cursor" label="Cursor">
+
+Install the Temporal plugin, which includes the Temporal Cloud Skill, from the
+[Cursor Marketplace](https://cursor.com/marketplace/temporal), or run the following command in Cursor's agent chat:
+
+```
+/add-plugin temporal
+```
+
+</TabItem>
+<TabItem value="codex" label="Codex">
+
+Install the Temporal plugin, which includes the Temporal Cloud Skill, from the Codex app or CLI:
+
+- **Codex app:** Open the plugins menu, search for **temporal**, then click **+** (or **Add to Codex**).
+- **Codex CLI:** Run `/plugin`, search for **temporal**, and mark it for installation.
+
+</TabItem>
 <TabItem value="npx" label="npx">
 
 This works with Claude Code, Codex, Cline, and other agents.
@@ -128,6 +161,39 @@ agent deploy and operate Temporal Serverless Workers on AWS Lambda. It covers Wo
 packaging, and troubleshooting Workers that aren't picking up Tasks.
 
 <Tabs groupId="skill-install" queryString>
+<TabItem value="claude-code" label="Claude Code Plugin">
+
+1. Add the Temporal skills marketplace to Claude Code:
+
+   ```bash
+   /plugin marketplace add temporalio/claude-temporal-plugin
+   ```
+
+2. Install the Temporal plugin, which includes the Temporal Serverless Workers skill:
+
+   ```bash
+   /plugin install temporal@temporal-marketplace
+   ```
+
+</TabItem>
+<TabItem value="cursor" label="Cursor">
+
+Install the Temporal plugin, which includes the Temporal Serverless Workers skill, from the
+[Cursor Marketplace](https://cursor.com/marketplace/temporal), or run the following command in Cursor's agent chat:
+
+```
+/add-plugin temporal
+```
+
+</TabItem>
+<TabItem value="codex" label="Codex">
+
+Install the Temporal plugin, which includes the Temporal Serverless Workers skill, from the Codex app or CLI:
+
+- **Codex app:** Open the plugins menu, search for **temporal**, then click **+** (or **Add to Codex**).
+- **Codex CLI:** Run `/plugin`, search for **temporal**, and mark it for installation.
+
+</TabItem>
 <TabItem value="npx" label="npx">
 
 This works with Claude Code, Codex, Cline, and other agents.
