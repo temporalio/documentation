@@ -67,8 +67,8 @@ agent's skills directory.
 ### Temporal Developer skill
 
 The [Temporal Developer skill](https://github.com/temporalio/skill-temporal-developer) gives your AI coding agent
-expert-level knowledge of Temporal's programming model — Workflow determinism rules, Activity patterns, Retry Policies,
-error handling, testing strategies, Worker configuration, versioning, and common gotchas.
+expert-level knowledge of Temporal's programming model, including Workflow determinism rules, Activity patterns, Retry
+Policies, error handling, testing strategies, Worker configuration, versioning, and common gotchas.
 
 ### Temporal Ops skill
 
@@ -79,8 +79,8 @@ error handling, testing strategies, Worker configuration, versioning, and common
 The [Temporal Ops skill](https://github.com/temporalio/skill-temporal-ops) administers and diagnoses running Temporal
 Cloud and self-hosted environments through the `temporal` and `tcld` CLIs: Namespace management, API key and mTLS
 certificate rotation, Cloud capacity, batch cancel, terminate, and reset operations, Export, and Search Attributes. It
-also works backwards from a symptom — a stuck Workflow, a non-determinism error, unhealthy Workers, a Task Queue
-backlog, or a missed Schedule — until it reaches a root cause.
+also works backwards from a symptom until it reaches a root cause. Symptoms include a stuck Workflow, a non-determinism
+error, unhealthy Workers, a Task Queue backlog, or a missed Schedule.
 
 Trigger the skill with a slash command: `/temporal:temporal-ops`.
 
@@ -91,7 +91,8 @@ Trigger the skill with a slash command: `/temporal:temporal-ops`.
 </ReleaseNoteHeader>
 
 The [Temporal Serverless skill](https://github.com/temporalio/skill-temporal-serverless) guides your AI coding agent
-through configuring and deploying Temporal Workers on serverless compute, and troubleshooting them once they're running.
+through configuring and deploying [Serverless Workers](/serverless-workers), and troubleshooting them once they're
+running.
 
 Trigger the skill with a slash command: `/temporal:temporal-serverless`.
 
@@ -192,7 +193,7 @@ Check your client's documentation for details on connecting to OAuth-protected M
 Every documentation page is also available as Markdown, so AI tools that fetch a URL can read the docs without an MCP
 connection or sign-in.
 
-- Append `.md` to any page's URL to fetch its Markdown version — for example, `https://docs.temporal.io/workflows.md`.
+- Append `.md` to any page's URL to fetch its Markdown version. For example, `https://docs.temporal.io/workflows.md`.
 - Each page has **Copy for LLM**, **View Markdown**, **Open in ChatGPT**, and **Open in Claude** buttons above its
   content. **Copy for LLM** copies the page's Markdown, with its source URL, to your clipboard. **Open in ChatGPT** and
   **Open in Claude** start a new chat with a prompt telling the model to read the page.
