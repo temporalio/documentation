@@ -19,6 +19,8 @@ tags:
   - API
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { CaptionedImage } from '@site/src/components';
 
 Temporal Cloud API keys offer industry-standard identity-based authentication for Temporal users and
@@ -65,7 +67,7 @@ API keys with your Namespace topology, see [Managing Temporal Cloud access contr
 API keys are used for the following scenarios:
 
 - _**Cloud operations automation**_: API keys work with Temporal Cloud operational tools, including
-  [`tcld`](/cloud/tcld), [Cloud Ops APIs](/ops), and
+  the [Temporal Cloud CLI extension](/cli/cloud), [`tcld`](/cloud/tcld), [Cloud Ops APIs](/ops), and
   [the Terraform provider](/cloud/terraform-provider). Use them to manage your Temporal Cloud
   account, Namespaces, certificates, and user identities.
 - _**Namespace authentication**_: API keys serve as an authentication mechanism for executing and managing Workflows via
@@ -75,7 +77,7 @@ API keys are used for the following scenarios:
 
 Use API keys to authenticate with:
 
-- [The Temporal CLI](/cli)
+- [The Temporal CLI](/cli), including the [Temporal Cloud extension](/cli/cloud)
 - [Temporal SDKs](/develop)
 - [`tcld`](/cloud/tcld/index.mdx)
 - [The Cloud Operations API](/cloud/operation-api.mdx)
@@ -85,7 +87,7 @@ Use API keys to authenticate with:
 
 API keys support both users and Service Accounts. Here are the differences in their permissions:
 
-- Any user can create, delete, and update their _own_ API key using the Cloud UI or `tcld`.
+- Any user can create, delete, and update their _own_ API key using the Cloud UI or the CLI.
 - Only Global Administrators and Account Owners can create, delete, and update access to API keys for all types of
   Service Accounts.
 - Namespace Admins can create, delete, and update access to API keys for the Namespace-scoped Service Accounts they
@@ -97,8 +99,8 @@ Check these setup details before using API keys:
 
 - The Global Administrator or Account Owner may need to [enable API keys access](#manage-api-keys) for your Temporal
   Account.
-- Have access to the [Temporal Cloud UI](https://cloud.temporal.io/) or Temporal Cloud CLI
-  ([tcld](/cloud/tcld/)) to create an API key.
+- Have access to the [Temporal Cloud UI](https://cloud.temporal.io/), the
+  [Temporal Cloud CLI extension](/cli/cloud), or [`tcld`](/cloud/tcld/) to create an API key.
 
 ## Global Administrator and Account Owner API key management {/* #manage-api-keys */}
 
@@ -128,7 +130,7 @@ is created and configured.
 
 ## User API key management {/* #user-api-keys */}
 
-Manage your personal API keys with the Temporal Cloud UI or `tcld`. These sections show you how to generate, manage, and
+Manage your personal API keys with the Temporal Cloud UI or the CLI. These sections show you how to generate, manage, and
 remove API keys for a user.
 
 ### Generate an API key
@@ -153,9 +155,23 @@ following information:
 
 Finish by selecting **Generate API Key**.
 
-#### Generate API keys with tcld
+#### Generate API keys with the CLI
 
 To generate an API key, log into your account and issue the following command:
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey create-for-me \
+    --display-name <api-key-name> \
+    --description "<api-key-description>" \
+    --expiry-duration <api-key-duration>
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```command
 tcld login
@@ -164,6 +180,9 @@ tcld apikey create \
     --description "<api-key-description>" \
     --duration <api-key-duration>
 ```
+
+</TabItem>
+</Tabs>
 
 Duration specifies the time until the API key expires, for example: "30d", "4d12h", etc.
 
@@ -180,15 +199,30 @@ Follow these steps:
 1. Select the vertical ellipsis menu in the API key table row.
 1. Choose **Enable** or **Disable**.
 
-#### Manage API Key State with tcld
+#### Manage API key state with the CLI
 
 To manage an API key, log into your account and use one of the following commands to enable or disable it:
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey disable --key-id <api-key-id>
+temporal cloud apikey enable --key-id <api-key-id>
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```command
 tcld login
 tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
+
+</TabItem>
+</Tabs>
 
 ### Delete an API key
 
@@ -210,14 +244,28 @@ Follow these steps to remove API keys:
 1. Select the vertical ellipsis menu in the API key table row.
 1. Choose **Delete**.
 
-#### Delete API keys with tcld
+#### Delete API keys with the CLI
 
 To delete an API key, log into your account and issue the following:
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey delete --key-id <api-key-id>
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```command
 tcld login
 tcld apikey delete --id <api-key-id>
 ```
+
+</TabItem>
+</Tabs>
 
 ### Rotate an API key
 
@@ -262,11 +310,25 @@ provide the following information:
 
 Finish by selecting **Generate API Key**.
 
-#### Generate API keys with tcld
+#### Generate API keys with the CLI
 
-To create an API key for a Service Account, use `tcld apikey create` with the `--service-account-id` flag:
+Create an API key for a Service Account by passing the Service Account ID:
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud apikey create-for-service-account \
+    --display-name <api-key-name> \
+    --description "<api-key-description>" \
+    --expiry-duration <api-key-duration> \
+    --service-account-id <service-account-id>
 ```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
+```command
 tcld apikey create \
     --name <api-key-name> \
     --description "<api-key-description>" \
@@ -274,10 +336,13 @@ tcld apikey create \
     --service-account-id <service-account-id>
 ```
 
+</TabItem>
+</Tabs>
+
 ### Enable or Disable an API key
 
 Global Administrators and Account Owners can manage API key access for any user in their account using the Temporal
-Cloud UI or `tcld`.
+Cloud UI or the CLI.
 
 #### Manage keys with Temporal Cloud UI
 
@@ -290,22 +355,37 @@ Follow these steps:
    action. There may be a delay after changing the status. Once successful, the updated API key status will be shown in
    the row.
 
-#### Manage keys with tcld
+#### Manage keys with the CLI
 
-Use the `tcld apikey disable` or `tcld apikey enable` command to disable or enable an API key:
+Use the disable or enable command to change the state of an API key:
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey disable --key-id <api-key-id>
+temporal cloud apikey enable --key-id <api-key-id>
 ```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
+```command
 tcld login
 tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
+
+</TabItem>
+</Tabs>
 
 This command is the same for users and Service Accounts.
 
 ### Delete an API key for a Service Account
 
 Global Administrators and Account Owners can delete API keys for any user or Service Account in their account using the
-Temporal Cloud UI or `tcld`. Deleting a key removes its ability to authenticate with Temporal Cloud. If you delete an
+Temporal Cloud UI or the CLI. Deleting a key removes its ability to authenticate with Temporal Cloud. If you delete an
 API key used by a Worker to run a Workflow, that Worker will fail to connect to Temporal server unless you rotate the
 API key with a new one.
 
@@ -318,15 +398,28 @@ Follow these steps:
    delay after deleting the API key.
 1. Once successful, the updated API key status will be reflected in the row.
 
-#### Delete a Service Account API key with tcld
+#### Delete a Service Account API key with the CLI
 
-Use the `tcld apikey delete` command to delete an API key. The process for deleting an API key is the same for a user or
-Service Account.
+Use the delete command to remove an API key. The process is the same for a user or Service Account.
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey delete --key-id <api-key-id>
 ```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
+```command
 tcld login
 tcld apikey delete --id <api-key-id>
 ```
+
+</TabItem>
+</Tabs>
 
 ### Rotate a Service Account API key
 
@@ -340,7 +433,7 @@ Temporal API keys automatically expire based on the specified expiration time. [
 :::tip
 
 Service Accounts can rotate their own API keys irrespective of their configured permissions. To use this feature, have
-your Service Account create a new API key using the [Cloud Ops APIs](/ops) or [`tcld`](/cloud/tcld) before the current
+your Service Account create a new API key using the [Cloud Ops APIs](/ops) or the CLI before the current
 one expires. Service Accounts cannot delete their own API keys without the requisite permissions, which helps keep
 Workflow access secure.
 
@@ -361,7 +454,7 @@ See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more informa
 
 Authenticate with Temporal Cloud using API keys with the following clients:
 
-- [Temporal CLI](/cli)
+- [Temporal CLI](/cli), including the [Temporal Cloud extension](/cli/cloud)
 - [SDKs](/develop)
 - [Temporal Cloud CLI `tcld`](/cloud/tcld/index.mdx)
 - [The Cloud Operations API](/cloud/operation-api.mdx)
@@ -410,9 +503,9 @@ To use your API key with a Temporal SDK, see the instructions in each SDK sectio
 
 [How to connect to Temporal Cloud using an API Key with the .NET SDK](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud)
 
-### tcld
+### Temporal Cloud CLI
 
-To use an API key with `tcld`, choose one of these methods:
+To use an API key with the `temporal cloud` extension or `tcld`, choose one of these methods:
 
 - Use the `--api-key` flag.
 - Set the `TEMPORAL_API_KEY` environment variable in your shell.
