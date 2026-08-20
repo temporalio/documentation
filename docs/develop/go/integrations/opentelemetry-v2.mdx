@@ -88,6 +88,7 @@ func InitializeGlobalTracerProvider(
 	otel.SetTracerProvider(provider)
 	return provider, nil
 }
+
 ```
 <!--SNIPEND-->
 
@@ -146,6 +147,7 @@ func InitializeGlobalMeterProvider(serviceName string) (*sdkmetric.MeterProvider
 	otel.SetMeterProvider(provider)
 	return provider, nil
 }
+
 ```
 <!--SNIPEND-->
 
@@ -176,6 +178,7 @@ func StartPrometheusEndpoint() (*http.Server, error) {
 	}()
 	return server, nil
 }
+
 ```
 <!--SNIPEND-->
 
@@ -246,6 +249,7 @@ func Activity(ctx context.Context, name string) (string, error) {
 
 	return fmt.Sprintf("Hello, %s!", name), nil
 }
+
 ```
 <!--SNIPEND-->
 
@@ -324,6 +328,7 @@ func sendUpdate(
 	}
 	return result, nil
 }
+
 ```
 <!--SNIPEND-->
 
@@ -369,6 +374,7 @@ func Workflow(ctx workflow.Context) (string, error) {
 	}
 	return result, nil
 }
+
 ```
 <!--SNIPEND-->
 
