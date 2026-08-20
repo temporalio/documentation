@@ -101,6 +101,18 @@ func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 }
 ```
 
+### Handle Payload Codec failures
+
+Payload Codec methods can run during Workflow Task processing or in a Client or Activity context.
+Handle transient failures within the Payload Codec when possible, such as with bounded retries.
+
+During Workflow Task processing, returning an error from `Encode` or `Decode` can fail the Workflow Execution, depending on the operation.
+To apply the Worker's configured [`WorkflowPanicPolicy`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowPanicPolicy), panic from the Payload Codec instead.
+With the default [`BlockWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/worker#BlockWorkflow) policy, the panic fails the current Workflow Task so that the Temporal Service can retry it.
+With the [`FailWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/worker#FailWorkflow) policy, the panic instead fails the Workflow Execution.
+
+Panicking outside Workflow Task processing does not request a Workflow Task retry.
+
 **Step 2: Set Data Converter to use custom Payload Codec.**
 
 Set your custom `PayloadCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client.
