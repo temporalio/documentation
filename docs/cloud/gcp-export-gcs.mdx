@@ -11,6 +11,8 @@ tags:
   - Temporal Cloud
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import * as Components from '@site/src/components';
 
 ## Prerequisites {/* #prerequisites */}
@@ -34,7 +36,7 @@ Before configuring the Export sink, complete the following steps in Google Cloud
 
 ## Configure Workflow History Export
 
-There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), [`tcld`](#using-tcld), or [`terraform`](#using-terraform).
+There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), the [CLI](#using-the-cli), or [`terraform`](#using-terraform).
 
 
 :::note Why does Temporal Cloud provision multiple service accounts for Export?
@@ -80,7 +82,39 @@ Don't forget to click Create at the end of your setup to confirm your export.
 
 :::
 
-### Using tcld
+### Using the CLI
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+1. [Install the Temporal Cloud extension](/cli/setup-cli#install-the-temporal-cloud-extension) for the Temporal CLI.
+2. Run the `temporal cloud namespace export gcs create` command and provide the following information:
+   - `--namespace`: The Namespace to configure export for.
+   - `--sink-name`: The name of the export sink.
+   - `--service-account-email`: The service account that has access to the sink.
+   - `--bucket-name`: The name of the GCP GCS bucket.
+   - `--region`: The region the GCS bucket is in.
+
+   For example:
+
+   ```bash
+   temporal cloud namespace export gcs create \
+     --namespace test.ns \
+     --sink-name test-sink \
+     --service-account-email test-sink@test-export-sink.iam.gserviceaccount.com \
+     --bucket-name test-export-validation \
+     --region us-central1
+   ```
+
+3. Check the status of this command by either viewing the Namespace Export status in the Temporal Cloud UI or by
+   retrieving the sink and looking for the state of "Active":
+
+   ```bash
+   temporal cloud namespace export get --namespace test.ns --sink-name test-sink
+   ```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 To access export-related commands in tcld, please follow these steps:
 
@@ -143,6 +177,9 @@ tcld n export gcs g -n test.ns --sink-name test-sink
 	"lastHealthCheckTime": "2024-01-23T06:40:02Z"
 }
 ```
+
+</TabItem>
+</Tabs>
 
 ### Using `terraform`
 

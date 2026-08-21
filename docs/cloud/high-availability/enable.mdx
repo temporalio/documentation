@@ -22,7 +22,7 @@ Temporal Cloud's [Pricing](/cloud/pricing) page.
 
 ## Create a Namespace with High Availability features {/* #create */}
 
-To create a new Namespace with High Availability features, you can use the Temporal Cloud UI or the tcld command line
+To create a new Namespace with High Availability features, you can use the Temporal Cloud UI or the command line
 utility.
 
 <Tabs>
@@ -36,6 +36,21 @@ utility.
 
     The web interface will present an estimated time for replication to complete.
     This time is based on your selection and the size and scale of the Workflows in your Namespace.
+
+</TabItem>
+
+<TabItem value="temporal-cloud" label="Temporal CLI">
+
+At the command line, enter:
+
+```
+temporal cloud namespace create \
+   --name <namespace_id> \
+   --region <primary_region> \
+   --region <replica_region>
+```
+
+Specify the [region codes](/cloud/regions) as arguments to the two `--region` flags.
 
 </TabItem>
 
@@ -78,6 +93,23 @@ The web interface will present an estimated time for replication to complete. Th
 the size and scale of the Workflows in your Namespace.
 
 Temporal Cloud sends an email alert to all Namespace Admins once your Namespace replica is ready for use.
+
+</TabItem>
+
+<TabItem value="temporal-cloud" label="Temporal CLI">
+
+At the command line, enter:
+
+```
+temporal cloud namespace ha region add \
+   --namespace <namespace_id>.<account_id> \
+   --region <replica_region>
+```
+
+Specify the region name (for example, `us-east-1`) of the region where you want to create the replica as an argument to
+the `--region` flag. See [Regions](/cloud/regions) for available region names.
+
+Temporal Cloud sends an email alert once your Namespace is ready for use.
 
 </TabItem>
 
@@ -241,6 +273,18 @@ With automatic failovers disabled, Temporal Cloud cannot fail your Namespace ove
 
 </TabItem>
 
+<TabItem value="temporal-cloud" label="Temporal CLI">
+
+To disable automatic failovers, run the following command in your terminal:
+
+```
+temporal cloud namespace ha update \
+    --namespace <namespace_id>.<account_id> \
+    --disable-auto-failover
+```
+
+</TabItem>
+
 <TabItem value="tcldcli" label="tcld">
 
 To disable automatic failovers, run the following command in your terminal:
@@ -258,7 +302,7 @@ If using API key authentication with the `--api-key` flag, you must add it direc
 
 </Tabs>
 
-To restore the default behavior, unselect the option in the Web UI or change `true` to `false` in the CLI command.
+To restore the default behavior, unselect the option in the Web UI or pass `--disable-auto-failover=false` in the CLI command.
 
 :::note Automatic failovers are always enabled for Same-region Replication
 
@@ -290,6 +334,20 @@ Follow these steps to remove a replica from a Namespace:
 
 1. Navigate to the Namespace details page in Temporal Cloud
 1. Select the option to "Remove Replica" on the "Region" card.
+
+</TabItem>
+
+<TabItem value="temporal-cloud" label="Temporal CLI">
+
+Run the following command to remove the replica:
+
+```
+temporal cloud namespace ha region delete \
+    --namespace <namespace_id>.<account_id> \
+    --region <replica_region_name>
+```
+
+See [Regions](/cloud/regions) for available region names.
 
 </TabItem>
 
