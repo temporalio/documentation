@@ -34,9 +34,20 @@ Build the Worker as you would any long-running Java Worker, then set `WorkerDepl
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
-<!--SNIPSTART java-cloud-run-worker-->
-[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.java)
 ```java
+package example;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerDeploymentOptions;
+import io.temporal.worker.WorkerFactory;
+import io.temporal.worker.WorkerOptions;
+
 String apiKey = System.getenv("TEMPORAL_API_KEY");
 
 WorkflowServiceStubs service =
@@ -73,7 +84,6 @@ worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 
 factory.start();
 ```
-<!--SNIPEND-->
 
 The two arguments to `WorkerDeploymentVersion` are the deployment name and the build ID, and together they identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 

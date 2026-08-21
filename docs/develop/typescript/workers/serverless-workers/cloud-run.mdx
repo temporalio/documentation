@@ -42,9 +42,9 @@ Build the Worker as you would any long-running TypeScript Worker, then pass `wor
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
-<!--SNIPSTART typescript-cloud-run-worker-->
-[features/snippets/worker/worker.ts](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.ts)
 ```ts
+import { NativeConnection, Worker } from '@temporalio/worker';
+
 const connection = await NativeConnection.connect({
   address: process.env.TEMPORAL_ADDRESS,
   apiKey: process.env.TEMPORAL_API_KEY,
@@ -65,7 +65,6 @@ const worker = await Worker.create({
 
 await worker.run();
 ```
-<!--SNIPEND-->
 
 `deploymentName` and `buildId` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 

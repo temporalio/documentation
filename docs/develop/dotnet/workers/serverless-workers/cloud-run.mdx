@@ -34,9 +34,11 @@ Build the Worker as you would any long-running .NET Worker, then set `Deployment
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
-<!--SNIPSTART dotnet-cloud-run-worker-->
-[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/worker-docs-snippets/features/snippets/worker/worker.cs)
-```cs
+```csharp
+using Temporalio.Client;
+using Temporalio.Common;
+using Temporalio.Worker;
+
 var client = await TemporalClient.ConnectAsync(
     new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
     {
@@ -59,7 +61,6 @@ options.AddAllActivities(typeof(GreetingActivities), null);
 using var worker = new TemporalWorker(client, options);
 await worker.ExecuteAsync(CancellationToken.None);
 ```
-<!--SNIPEND-->
 
 The two arguments to `WorkerDeploymentVersion` are the deployment name and the build ID, and together they identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
