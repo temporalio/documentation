@@ -309,7 +309,10 @@ const developGoCategory = {
           type: 'doc',
           id: 'develop/go/integrations/index',
         },
-        items: ['develop/go/integrations/google-adk'],
+        items: [
+          'develop/go/integrations/google-adk',
+          'develop/go/integrations/opentelemetry-v2',
+        ],
       },
     ],
 };
