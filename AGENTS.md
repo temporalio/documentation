@@ -208,7 +208,6 @@ Do not review:
 - Pull requests opened by the `temporal-cicd` app. These regenerate content from a source of truth
   outside this repository: snipsync snippets, the CLI command reference, the Cloud permissions table,
   and SDK version chips. Nothing in them can be fixed here.
-- Draft pull requests. A draft is waiting on something outside the docs team's control.
 - Reverts.
 - Pull requests from authors outside the `temporalio` organization, unless a maintainer asks for a
   review on the pull request.
