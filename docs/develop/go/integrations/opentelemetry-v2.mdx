@@ -74,6 +74,14 @@ Your application owns the Tracer Provider for the life of the process. Shut it
 down before exit so remaining spans can flush through the
 [trace exporter](https://opentelemetry.io/docs/concepts/signals/traces/#trace-exporters).
 
+## Set up the meter provider
+
+A [Meter Provider](https://opentelemetry.io/docs/concepts/signals/metrics/#meter-provider)
+is the factory for Meters. If you enable `MetricsHandlerOptions`, install a
+configured Meter Provider with `otel.SetMeterProvider` before you create the
+plugin, or pass a Meter via `MetricsHandlerOptions.Meter`. OpenTelemetry's
+default global Meter Provider is a no-op.
+
 ## Add the plugin
 
 Pass the plugin to your Temporal Client when you create it. Workers made from
@@ -187,11 +195,6 @@ across Clients, Workflows, Activities, and Nexus Operations.
 
 Set `MetricsHandlerOptions` to a non-`nil` value to emit
 [Temporal SDK metrics](/references/sdk-metrics) through OpenTelemetry.
-`UseMonotonicCounters` controls whether counters are monotonic.
-
-By default the handler uses a Meter from the global
-[Meter Provider](https://opentelemetry.io/docs/concepts/signals/metrics/#meter-provider).
-Set `MetricsHandlerOptions.Meter` to use a specific Meter.
 
 ## Configure context propagation
 
@@ -203,7 +206,9 @@ The plugin propagates
 [Span Context](https://opentelemetry.io/docs/concepts/signals/traces/#span-context),
 which keeps spans linked into one trace, and
 [baggage](https://opentelemetry.io/docs/concepts/signals/baggage/): optional
-key-value data that travels with the context.
+key-value data that travels with the context. Do not put credentials, tokens,
+or personal data in baggage. The plugin serializes baggage into Temporal
+headers that can be persisted in Workflow Event History.
 
 ### `TextMapPropagator`
 
