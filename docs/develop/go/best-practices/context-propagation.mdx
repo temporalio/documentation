@@ -18,13 +18,11 @@ description: How to propagate custom key-value data across Workflow, Activity, a
 
 Context propagation lets you pass custom key-value data from a Client to Workflows, and from Workflows to Activities and Child Workflows, without threading it through every function signature. Common use cases include propagating tenant identifiers, auth tokens, or other request-scoped metadata.
 
-{/* TODO: Link to /encyclopedia/context-propagation once that page lands */}
-
 :::tip
 
-For OpenTelemetry tracing, use the [OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2). The plugin
-handles OpenTelemetry trace-context propagation automatically, so you do not need a custom Temporal context propagator
-for trace identifiers.
+If you want to propagate tracing context, the Go SDK provides tracing integrations that handle propagation for you.
+[Choose a tracing integration](/develop/go/platform/observability#tracing) before implementing a custom context
+propagator.
 
 :::
 

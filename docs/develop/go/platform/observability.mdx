@@ -43,14 +43,13 @@ For a complete list of metrics capable of being emitted, see the [SDK metrics re
 
 :::tip[Use the OpenTelemetry v2 integration]
 
-For new metrics setups that use OpenTelemetry, use the
-[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2#export-temporal-sdk-metrics). It
-configures Temporal SDK metrics through the Go SDK Plugin API and is currently in
-[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
 
 :::
-
-- For an overview of Prometheus and Grafana integration, refer to the [Monitoring](/self-hosted-guide/monitoring) guide.
 - For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
 - For an end-to-end example that exposes metrics with the Go SDK, refer to the [samples-go](https://github.com/temporalio/samples-go/tree/main/metrics) repo.
 
@@ -102,10 +101,11 @@ Tracing allows you to view the call graph of a Workflow along with its Activitie
 
 :::tip[Use the OpenTelemetry v2 integration]
 
-For new tracing setups that use OpenTelemetry, use the
-[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2). It uses the Go SDK Plugin API to
-propagate OpenTelemetry trace context across Temporal calls and is currently in
-[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
 
 :::
 
