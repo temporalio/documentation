@@ -121,8 +121,8 @@ the [Style guide](#style-guide) above (terminology, filler, intensifiers, word c
 
 - Target roughly 120-155 characters, with the page's most important term in the first 60.
 - Complement the title; don't restate it. Search engines render the title directly above the description, so wording
-  carried over from the title wastes that space and search engines replace such a description with a body excerpt
-  instead. Sharing the primary term with the title is fine — reusing the title's phrasing is not. If the title and
+  carried over from the title wastes that space. Search engines may also replace an unhelpful description with a body
+  excerpt. Sharing the primary term with the title is fine — reusing the title's phrasing is not. If the title and
   description read as the same sentence twice, rewrite the description.
 - Never open with a word that carries no information: "Learn," "Discover," "Explore," "Understand," "Find out," "Read
   about," "This page," or similar throat-clearing verbs. Open with the substance the reader gets.
