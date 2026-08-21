@@ -195,3 +195,73 @@ noisier suggestion-level rules that are not enforced in CI and are not a require
 `.vale-ci.ini` enables only the small set of high-confidence rules (`Temporal.Headings`, `Temporal.RelativeLinks`) used
 as a CI gate in `.github/workflows/vale-ci.yml`. `.vale.ini` (the default config) runs the full style set, which
 includes noisier suggestion-level rules not enforced in CI.
+
+## Code Review Rules
+
+Guidance for automated reviewers on pull requests. Review a pull request when it changes files under
+`docs/`. Skip Dependabot pull requests, lockfiles, and changes outside `docs/`.
+
+Check the three things below. Each one needs judgment that a lint rule cannot supply, which is why
+they are the whole scope of the review. Findings are advisory: the human reviewer decides what to act
+on and owns the merge.
+
+### 1. Collateral changes
+
+The same fact usually appears on several pages, and a pull request that changes it in one place often
+misses the others.
+
+- Search the rest of `docs/` for pages that state the same fact, and name the ones that should
+  probably change too. Give paths.
+- When a page documents something belonging to a larger feature, check whether the parent, summary,
+  and index pages for that feature need the same addition.
+
+Name specific files. A general reminder to check other pages is not a finding.
+
+### 2. Structural fit
+
+- Does a new or moved page belong in the section it was put in? Use
+  [INFORMATION-ARCHITECTURE.md](./readme/INFORMATION-ARCHITECTURE.md).
+- Does a large part of the page cover content that belongs on another page or in another section?
+- Is the page long enough to split? Aim for fewer than 10 top-level headings and fewer than 15
+  headings in total.
+- Do the frontmatter `tags` match the sibling pages in the same section?
+
+### 3. Text tone
+
+Flag the writing, never the author. Say nothing about who wrote the text or how it was produced.
+
+Generated register:
+
+- Long sentences carrying little information, such as "That distinction matters because ...".
+- Software jargon used as casual speech: "cross-cutting", "load-bearing".
+- "Quietly" or similar words added to a sentence that does not need them.
+- Junk drawer lists, meaning bullets collected under one heading with no shared idea holding them
+  together.
+
+Marketing register:
+
+- Opening a page with a leading question.
+- Repeated, eager mentions of paid features where they are not the subject.
+- Vague intensifiers standing in for a fact. See [Writing style](#writing-style) above.
+
+Pages under `docs/evaluate/` are allowed some marketing register. Hold reference, develop, and
+production-deployment pages to a stricter line.
+
+### What not to flag
+
+- Anything CI already reports. Redirects, orphaned pages, broken links, build failures, Mermaid
+  syntax, and the Vale rules in `.vale-ci.ini` all run on every pull request. See
+  [AUTOMATIONS.md](./readme/AUTOMATIONS.md).
+- Terminology, capitalization, and word choice. Vale owns these. Rules that Vale does not enforce
+  today get added to Vale, not to this review.
+- Content inside `<!--SNIPSTART-->` and `<!--SNIPEND-->` blocks. That code comes from a sample
+  repository and cannot be fixed here. A snippet that disappeared, or prose that no longer matches
+  the snippet it describes, is still worth flagging.
+- Product behavior you cannot confirm from this repository. Ask instead of guessing.
+
+### How to leave comments
+
+- Anchor a finding to a line when it has one. Put the rest, such as a page in the wrong section, in
+  the review body.
+- One finding per comment, with the path and the fix you are suggesting.
+- Group nits rather than posting each one separately, and keep them few.
