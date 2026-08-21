@@ -201,9 +201,7 @@ includes noisier suggestion-level rules not enforced in CI.
 Guidance for automated reviewers on pull requests. Review a pull request when it changes files under
 `docs/`. Skip Dependabot pull requests, lockfiles, and changes outside `docs/`.
 
-Check the three things below. Each one needs judgment that a lint rule cannot supply, which is why
-they are the whole scope of the review. Findings are advisory: the human reviewer decides what to act
-on and owns the merge.
+Check the three things below, and nothing else.
 
 ### 1. Collateral changes
 
@@ -264,4 +262,5 @@ production-deployment pages to a stricter line.
 - Anchor a finding to a line when it has one. Put the rest, such as a page in the wrong section, in
   the review body.
 - One finding per comment, with the path and the fix you are suggesting.
+- State the finding and the fix. Do not say whether it should block the merge.
 - Group nits rather than posting each one separately, and keep them few.
