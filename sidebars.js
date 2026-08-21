@@ -718,6 +718,7 @@ const developPythonCategory = {
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
+          'develop/python/integrations/openai-agents',
           'develop/python/integrations/strands-agents',
         ],
       },
@@ -1784,6 +1785,15 @@ module.exports = {
             'design-patterns/activity-dependency-injection',
           ],
         },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Durable AI',
+      collapsed: true,
+      link: { type: 'doc', id: 'ai/index' },
+      items: [
+        { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
       ],
     },
     {

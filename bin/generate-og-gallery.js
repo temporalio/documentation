@@ -20,7 +20,7 @@ const OUT_FILE = path.join(BUILD_DIR, '__og-gallery.html');
 // docusaurus.config.js — every docs plugin instance it renders cards for.
 const DOC_TARGETS = [
   { dir: DOCS_DIR, routeBasePath: '/' },
-  { dir: AI_COOKBOOK_DIR, routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+  { dir: AI_COOKBOOK_DIR, routeBasePath: 'ai/cookbook', footerText: 'AI COOKBOOK' },
 ];
 
 // Section grouping/labeling is purely a gallery-review concern now — the
@@ -108,13 +108,13 @@ async function main() {
     }
   }
 
-  // /ai-cookbook (src/pages/ai-cookbook.tsx) is a plain page, not an MDX doc,
+  // /ai/cookbook (src/pages/ai/cookbook.tsx) is a plain page, not an MDX doc,
   // so it's invisible to the DOC_TARGETS walk above — added manually so the
   // gallery still shows every card the site actually ships.
-  const cookbookHomeHtmlPath = path.join(BUILD_DIR, 'ai-cookbook', 'index.html');
+  const cookbookHomeHtmlPath = path.join(BUILD_DIR, 'ai', 'cookbook', 'index.html');
   if (fs.existsSync(cookbookHomeHtmlPath)) {
     cards.push({
-      urlPath: '/ai-cookbook',
+      urlPath: '/ai/cookbook',
       section: 'AI Cookbook',
       title: 'AI Cookbook (landing page)',
       isOverride: true,
