@@ -66,7 +66,7 @@ install it as the OpenTelemetry global before you create the plugin or call
 ```
 <!--SNIPEND-->
 
-`NewReplaySafeTracerProvider` keeps span IDs stable across retries and replay when
+`NewReplaySafeTracerProvider` keeps span IDs stable across replay when
 instrumenting Workflows. A standard OpenTelemetry Tracer Provider is not safe for
 creating spans in Workflows.
 
@@ -114,7 +114,7 @@ can cross Temporal boundaries.
 
 A [Tracer](https://opentelemetry.io/docs/concepts/signals/traces/#tracer)
 creates spans. In Workflows, use `Tracer` instead of `otel.Tracer`. It keeps
-span IDs and start times accurate across retries and replay. A standard
+span IDs and start times accurate across replay. A standard
 OpenTelemetry Tracer is not safe for creating spans in Workflows.
 
 As in
