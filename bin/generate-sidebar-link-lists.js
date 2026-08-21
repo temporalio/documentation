@@ -322,6 +322,41 @@ function filesWithMarkers() {
   });
 }
 
+// Markers are opt-in, so coverage quietly erodes: add a section index page,
+// don't add markers, and this check stays green while that page drifts. So
+// report pages that look like they should be covered but aren't.
+//
+// A warning, not a failure. A page with real prose is allowed to keep a
+// hand-written list, and the absence of a marker is how it says so — the same
+// reason this needs no baseline file.
+function unmarkedCandidates(tree) {
+  const candidates = [];
+  for (const filePath of walkDir(DOCS_DIR)) {
+    const rel = path.relative(DOCS_DIR, filePath);
+    if (isExcludedDocPath(rel)) continue;
+
+    const posix = rel.replace(/\\/g, '/');
+    if (!posix.startsWith('develop/') || !/\/index\.mdx?$/.test(posix)) continue;
+
+    const text = fs.readFileSync(filePath, 'utf8');
+    if (/SIDEBAR-LIST-START/.test(text)) continue;
+
+    // Only pages that already hand-maintain a list of internal links.
+    const bullets = [...text.matchAll(/^-\s*\[[^\]]+\]\((\/[^)]+)\)\s*$/gm)];
+    if (bullets.length < 2) continue;
+
+    const category = findOwningCategory(tree, computeDocId(filePath));
+    if (!category) continue;
+
+    candidates.push({
+      file: path.relative(process.cwd(), filePath),
+      section: category.label,
+      bullets: bullets.length,
+    });
+  }
+  return candidates;
+}
+
 function main(argv) {
   const check = argv.includes('--check');
   const asJson = argv.includes('--json');
@@ -331,9 +366,13 @@ function main(argv) {
   const tree = buildSidebarTree(docs);
   const files = filesWithMarkers();
 
+  const unmarked = unmarkedCandidates(tree);
+
   if (listOnly) {
     console.log(`${files.length} file(s) with sidebar-list markers:`);
     for (const f of files) console.log(`  ${path.relative(process.cwd(), f)}`);
+    console.log(`\n${unmarked.length} page(s) hand-maintaining a list with no markers:`);
+    for (const c of unmarked) console.log(`  ${c.file}  [${c.section}, ${c.bullets} links]`);
     return 0;
   }
 
@@ -347,7 +386,7 @@ function main(argv) {
   const stale = results.flatMap((r) => r.regions.filter((x) => x.stale).map((x) => ({ ...x, file: r.file })));
 
   if (asJson) {
-    console.log(JSON.stringify({ files: results.length, stale }, null, 2));
+    console.log(JSON.stringify({ files: results.length, stale, unmarked }, null, 2));
     return stale.length && check ? 2 : 0;
   }
 
@@ -356,9 +395,19 @@ function main(argv) {
     return 0;
   }
 
+  // Printed on both paths: a green check with low coverage is the misleading
+  // case this warning exists to prevent.
+  const warnUnmarked = () => {
+    if (!unmarked.length) return;
+    console.error(`\nNote: ${unmarked.length} page(s) still hand-maintain a link list with no markers, so this check does not cover them:`);
+    for (const c of unmarked) console.error(`  ${c.file}  [${c.section}, ${c.bullets} links]`);
+    console.error('Add markers to bring them under the check, or leave them if the list is deliberately hand-written.');
+  };
+
   if (check) {
     if (!stale.length) {
       console.log(`Sidebar link lists are up to date (${results.length} file(s) checked).`);
+      warnUnmarked();
       return 0;
     }
     console.error(`${stale.length} sidebar link list(s) are out of date:\n`);
@@ -369,6 +418,7 @@ function main(argv) {
       console.error('');
     }
     console.error('Run `yarn sidebar-links` to update them.');
+    warnUnmarked();
     return 2;
   }
 
@@ -388,6 +438,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  unmarkedCandidates,
   buildDocIndex,
   buildSidebarTree,
   processFile,
