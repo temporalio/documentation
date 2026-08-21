@@ -60,7 +60,7 @@ While the approval is still running, additional callers can attach with the use-
 
 ### An Activity-backed Operation that will not cancel
 
-An Activity is not interrupted by cancellation the way a Workflow is. Without heartbeating from the Activity and a heartbeat timeout, a cancellation request has no effect and the Operation runs to its timeout. Let the resulting cancellation exception propagate: a cancelled Activity is not retried, but one that swallows the cancellation and throws an ordinary failure instead is. See [Cancellation requires heartbeating](/nexus/standalone-activity#cancellation-requires-heartbeating).
+An Activity is not interrupted by cancellation the way a Workflow is. Without heartbeating from the Activity and a heartbeat timeout, a cancellation request has no effect and the Operation runs to its timeout. Let the resulting cancellation exception propagate: a cancelled Activity is not retried, but one that swallows the cancellation and throws an ordinary failure instead is. See [Activity cancellation](/activity-execution#cancellation).
 
 ### Duplicate side effects on retry
 
