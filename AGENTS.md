@@ -245,6 +245,27 @@ Marketing register:
 Pages under `docs/evaluate/` are allowed some marketing register. Hold reference, develop, and
 production-deployment pages to a stricter line.
 
+Before. Two rhetorical questions, then a paragraph restating the premise, and the actual capability
+arrives last:
+
+> Temporal keeps your Workflows running even when a Worker crashes. But what happens when a whole
+> data center crashes? Or a region?
+>
+> In the cloud, outages are commonplace. An outage can bring down a whole data center, cluster,
+> region, or cloud provider. To be durable in the cloud, Workflows and applications must handle
+> these outages smoothly, just like Temporal handles a Worker crash.
+>
+> Temporal Cloud's High Availability features add extra reliability to Temporal Cloud Namespaces by
+> handling cloud outages. Using asynchronous replication between multiple regions or cloud
+> providers, combined with automatic outage detection and failover, High Availability keeps your
+> Workflows running even during a cloud region outage.
+
+After. Same facts, leading with what the feature does:
+
+> Temporal Cloud High Availability uses asynchronous replication between multiple regions or cloud
+> providers, with automatic outage detection and failover, to keep your Workflows running during a
+> cloud region outage.
+
 ### What not to flag
 
 - Anything CI already reports. Redirects, orphaned pages, broken links, build failures, Mermaid
