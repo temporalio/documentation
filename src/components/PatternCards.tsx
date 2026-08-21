@@ -11,6 +11,8 @@ type PatternCardItem = {
 
 type PatternCardsProps = {
   items: PatternCardItem[];
+  /** Extra class on the grid container, e.g. for a one-off visual variant. */
+  className?: string;
 };
 
 const ICON_BASE = '/img/design-patterns/icons/';
@@ -20,9 +22,9 @@ function CardIcon({ icon, title }: { icon: string; title: string }) {
   return <img src={src} alt={title} />;
 }
 
-export default function PatternCards({ items }: PatternCardsProps) {
+export default function PatternCards({ items, className }: PatternCardsProps) {
   return (
-    <div className="pattern-grid">
+    <div className={className ? `pattern-grid ${className}` : 'pattern-grid'}>
       {items.map((item) => (
         <a
           key={item.href}

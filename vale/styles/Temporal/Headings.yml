@@ -115,6 +115,7 @@ exceptions:
   - Period
   - Platform
   - Policy
+  - Policies
   - Preview
   - Process
   - Program
@@ -178,6 +179,8 @@ exceptions:
   - RPO
   - SLA
   - APS
+  - TRU
+  - TRUs
   - PrivateLink
   - KMS
   # Cloud provider product names (exact phrase, not the individual words)
@@ -192,3 +195,6 @@ exceptions:
   - Google
   - Gemini
   - Vertex
+  # Temporal product/site section proper nouns (exact phrase, not the individual words)
+  - AI Cookbook
+  - Code Exchange
