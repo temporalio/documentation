@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 type PatternCardItem = {
@@ -26,9 +27,9 @@ export default function PatternCards({ items, className }: PatternCardsProps) {
   return (
     <div className={className ? `pattern-grid ${className}` : 'pattern-grid'}>
       {items.map((item) => (
-        <a
+        <Link
           key={item.href}
-          href={item.href}
+          to={item.href}
           className="pattern-card"
           {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         >
@@ -43,7 +44,7 @@ export default function PatternCards({ items, className }: PatternCardsProps) {
             )}
             <p>{item.description}</p>
           </div>
-        </a>
+        </Link>
       ))}
     </div>
   );
