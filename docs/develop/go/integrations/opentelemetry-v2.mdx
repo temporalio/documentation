@@ -18,19 +18,29 @@ of Temporal applications across Clients, Workflows, Activities, and Nexus
 Operations by instrumenting them with
 [OpenTelemetry](https://opentelemetry.io/docs/what-is-opentelemetry/).
 
-Temporal provides [durable execution](/temporal#durable-execution). OpenTelemetry
-is the vendor-neutral framework for generating and exporting telemetry
-to your backend.
-
-The OpenTelemetry plugin is what connects the two. It propagates OpenTelemetry
-context across Temporal boundaries. It can also create spans and emit metrics
-for Temporal SDK operations.
+OpenTelemetry instruments your applications to give you insight into your
+deployed environments. Temporal Workflows complicate that picture because a
+trace can span across different Workers over long stretches of time, which
+can scatter a trace into disconnected fragments. The OpenTelemetry plugin
+solves this by propagating OpenTelemetry context across those Temporal
+boundaries, keeping a trace intact end to end. It can also generate spans and
+emit metrics for Temporal SDK operations automatically.
 
 <ReleaseNoteHeader type="prerelease" />
 
 All code snippets in this guide are taken from the
 [OpenTelemetry v2 sample](https://github.com/temporalio/samples-go/tree/main/opentelemetry-v2).
 Refer to the sample for complete code.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with OpenTelemetry. If you aren't, refer to the
+  [OpenTelemetry documentation](https://opentelemetry.io/docs/) for more details.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking the
+  [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local development environment](/develop/go/set-up-your-local-go) guide. When you're done, leave the
+  Temporal Development Server running if you want to test your code locally.
 
 ## Install
 
@@ -46,9 +56,15 @@ backend requires.
 ## Set up the tracer provider
 
 A [Tracer Provider](https://opentelemetry.io/docs/concepts/signals/traces/#tracer-provider)
-is the factory for Tracers. Create Temporal's replay-safe Tracer Provider and
+is a factory for Tracers, and it configures the Tracers it creates, including
+how they generate span IDs. A standard Tracer Provider assigns a new random
+span ID each time a span is created, but Temporal Workflows replay,
+re-executing the same code and recreating what should be the same span with a
+different random ID each time. Temporal's replay-safe Tracer Provider avoids
+this by generating span IDs from a deterministic source tied to the
+Workflow, so the same span gets the same ID on every replay. Create it and
 install it as the OpenTelemetry global before you create the plugin or call
-`Tracer`:
+`Tracer`.
 
 <!--SNIPSTART samples-go-opentelemetry-v2-tracer-provider {"selectedLines": ["14-22"]}-->
 [opentelemetry-v2/setup.go](https://github.com/temporalio/samples-go/blob/main/opentelemetry-v2/setup.go)
@@ -66,10 +82,6 @@ install it as the OpenTelemetry global before you create the plugin or call
 ```
 <!--SNIPEND-->
 
-`NewReplaySafeTracerProvider` keeps span IDs stable across replay when
-instrumenting Workflows. A standard OpenTelemetry Tracer Provider is not safe for
-creating spans in Workflows.
-
 Your application owns the Tracer Provider for the life of the process. Shut it
 down before exit so remaining spans can flush through the
 [trace exporter](https://opentelemetry.io/docs/concepts/signals/traces/#trace-exporters).
@@ -77,10 +89,11 @@ down before exit so remaining spans can flush through the
 ## Set up the meter provider
 
 A [Meter Provider](https://opentelemetry.io/docs/concepts/signals/metrics/#meter-provider)
-is the factory for Meters. If you enable `MetricsHandlerOptions`, install a
-configured Meter Provider with `otel.SetMeterProvider` before you create the
-plugin, or pass a Meter via `MetricsHandlerOptions.Meter`. OpenTelemetry's
-default global Meter Provider is a no-op.
+is a factory for Meters. OpenTelemetry's default global Meter Provider is a
+no-op, so if you enable `MetricsHandlerOptions`, you need to supply a
+configured one yourself, either by installing it with `otel.SetMeterProvider`
+before you create the plugin, or by passing a Meter directly through
+`MetricsHandlerOptions.Meter`.
 
 ## Add the plugin
 
@@ -113,15 +126,14 @@ can cross Temporal boundaries.
 ### In Workflows
 
 A [Tracer](https://opentelemetry.io/docs/concepts/signals/traces/#tracer)
-creates spans. In Workflows, use `Tracer` instead of `otel.Tracer`. It keeps
-span IDs and start times accurate across replay. A standard
-OpenTelemetry Tracer is not safe for creating spans in Workflows.
-
-As in
-[OpenTelemetry Go](https://opentelemetry.io/docs/languages/go/instrumentation/),
-`Start` returns a context that contains the active span. Pass that
-`workflow.Context` to downstream Temporal calls so later spans nest under it as
-children:
+creates spans that capture information about a given operation. A standard
+Tracer stamps a span with the current time and emits it as soon as it
+completes, but Temporal Workflows replay, re-executing the same code and
+stamping what should be the same span with a new time and emitting a
+duplicate span. Temporal's replay-safe `Tracer` avoids this by stamping a
+span with `workflow.Now`, Temporal's replay-safe clock, and skipping a span
+that already completed on a previous successful execution. Use it instead
+of `otel.Tracer` in Workflows.
 
 <!--SNIPSTART samples-go-opentelemetry-v2-application-spans {"selectedLines": ["3-18"]}-->
 [opentelemetry-v2/workflow-activity-propagation/opentelemetry.go](https://github.com/temporalio/samples-go/blob/main/opentelemetry-v2/workflow-activity-propagation/opentelemetry.go)
@@ -146,6 +158,12 @@ func Workflow(ctx workflow.Context, name string) (string, error) {
 ```
 <!--SNIPEND-->
 
+As in
+[OpenTelemetry Go](https://opentelemetry.io/docs/languages/go/instrumentation/),
+`Start` returns a context that contains the active span. Pass that
+`workflow.Context` to downstream Temporal calls so later spans nest under it as
+children.
+
 ### Outside Workflows
 
 In Clients, Activities, and other non-Workflow code, use an ordinary OpenTelemetry
@@ -165,9 +183,6 @@ func Activity(ctx context.Context, name string) (string, error) {
 <!--SNIPEND-->
 
 ## Enable automatic instrumentation
-
-Set options on `PluginOptions` to create spans and emit metrics for Temporal
-SDK operations:
 
 <!--SNIPSTART samples-go-opentelemetry-v2-metrics-plugin-->
 [opentelemetry-v2/automatic-instrumentation/worker/main.go](https://github.com/temporalio/samples-go/blob/main/opentelemetry-v2/automatic-instrumentation/worker/main.go)
@@ -199,16 +214,17 @@ Set `MetricsHandlerOptions` to a non-`nil` value to emit
 ## Configure context propagation
 
 [Context propagation](https://opentelemetry.io/docs/concepts/context-propagation/)
-is how OpenTelemetry moves context across process boundaries: inject on the way
-out, extract on the way in.
-
-The plugin propagates
+is how OpenTelemetry moves context across process boundaries, injecting it
+on the way out and extracting it on the way in. The plugin performs this
+propagation for you across Temporal boundaries, carrying
 [Span Context](https://opentelemetry.io/docs/concepts/signals/traces/#span-context),
 which keeps spans linked into one trace, and
-[baggage](https://opentelemetry.io/docs/concepts/signals/baggage/): optional
-key-value data that travels with the context. Do not put credentials, tokens,
-or personal data in baggage. The plugin serializes baggage into Temporal
-headers that can be persisted in Workflow Event History.
+[baggage](https://opentelemetry.io/docs/concepts/signals/baggage/), optional
+key-value data that travels with the context.
+
+Do not put credentials, tokens, or personal data in baggage since the
+plugin serializes it into Temporal headers that can be persisted in
+Workflow Event History.
 
 ### `TextMapPropagator`
 
