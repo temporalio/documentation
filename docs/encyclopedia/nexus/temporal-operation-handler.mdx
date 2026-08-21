@@ -37,7 +37,7 @@ Whichever you choose, the handler is the same shape, and every Execution it touc
 
 **Cancel through the same handler.** The Operation token records which kind of Execution backs the Operation, so a cancellation request reaches the right place. The default behavior is usually what you want, and each kind can be overridden when it is not.
 
-**Grow a handler without rewriting it.** An Operation that starts out completing inline can later gain an async backing, or pick up a Signal, without changing handler type or breaking its contract.
+**Grow a handler without rewriting it.** An Operation that starts out completing inline can later gain an async backing, or send a Signal, without changing handler type or breaking its contract.
 
 ## The Nexus-aware Client
 
