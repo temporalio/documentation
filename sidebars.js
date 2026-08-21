@@ -2080,6 +2080,9 @@ module.exports = {
           },
           items: [
             'encyclopedia/nexus/nexus-services',
+            'encyclopedia/nexus/temporal-operation-handler',
+            'encyclopedia/nexus/nexus-client-code-generator',
+            'encyclopedia/nexus/nexus-standalone-activity',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',

@@ -1,0 +1,95 @@
+---
+id: call-the-service
+title: Step 6 - Call the Service
+sidebar_label: 6. Call the Service
+description: Call the approval Nexus Service from a caller Workflow in another Namespace, using the generated Service interface, and run the callers from other languages against the same handler.
+toc_max_heading_level: 4
+unlisted: true
+tags:
+  - Nexus
+  - Java SDK
+---
+
+Call the approval Operations from a Workflow in the caller Namespace. The caller knows two things — the Endpoint name and the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract) — and nothing else about the handler.
+
+The caller built here is Java, the same language as the handler, but nothing about the handler requires that. [Call it from another language](#call-it-from-another-language) covers the cross-language case, which is the same call against the same Endpoint.
+
+## What the caller gets from the contract
+
+The caller does not hand-write request types, response types, or Operation names. [Step 2](/develop/java/nexus/development-walkthrough/generate-code) generated all of it from the contract, and the caller works against that generated code:
+
+- **A Service definition** naming the Service and its Operations, so an Operation name is a symbol rather than a string you can misspell.
+- **Typed models** for every input and output in the contract.
+- **Runtime validators** that reject a payload violating the contract before it reaches the wire.
+
+The practical effect is that the contract is enforced twice. A field the contract does not have fails at build time in a typed language, and a payload the contract forbids fails at the boundary rather than inside the handler's Workflow.
+
+## Call the Operations from a caller Workflow
+
+The flow follows the walkthrough sample problem. Check whether the purchase needs approval at all; if it does, request one and wait for the decision.
+
+In Java, the generated Service interface works directly as a Nexus Service stub. Create it inside the caller Workflow with the Endpoint name and Operation options, then call its methods as if they were local.
+
+`{sample code will be here}`
+
+Nothing in this caller is aware of how the handler is built. It does not know which Task Queue the handler's Worker polls, or that `requestApproval` is backed by a Workflow while `checkApprovalRequired` is backed by nothing at all. It knows the Endpoint name and the contract.
+
+That is the property worth pausing on: the handler team can change what backs an Operation, move the handler to another Namespace, or rewrite it in another language, and this caller keeps working.
+
+## Await the decision
+
+`requestApproval` returns `APPROVED` or `DENIED`. That value is the approval Workflow's return value, delivered to the caller through the Nexus completion callback when the Workflow finishes.
+
+The caller does not poll. It awaits the Operation, and the wait is durable — the caller Workflow can be evicted, the Worker can restart, and the result still arrives.
+
+`checkApprovalRequired` behaves differently and it is worth noticing the contrast. It returns during the call, because nothing durable backs it. There is no callback, no Operation token, and nothing to await.
+
+### Set timeouts
+
+A caller sets three timeouts on a Nexus Operation, each bounding a different stage:
+
+- **Schedule-to-close** bounds the whole Operation, from scheduling to completion. Set it to reflect how long an approval can legitimately take — a human approval measured in days needs a timeout in days, and the default is not going to be right.
+- **Schedule-to-start** bounds how long the caller waits for the handler to pick the Operation up. Set it when you want a handler that is down to fail fast, even though the approval itself may run for days.
+- **Start-to-close** bounds an asynchronous Operation after it has started. Synchronous Operations like `checkApprovalRequired` ignore it, because they complete as part of the start request.
+
+See [Nexus Operations](/nexus/operations#timeouts) for the full timeout model.
+
+## Call it from another language
+
+The caller does not have to be written in the same language as the handler. Each language has a sample repository that builds this same approval Service from this same contract, and each one carries a working caller as well as a working handler:
+
+| Language | Sample |
+| --- | --- |
+| Go | `{sample repo link}` |
+| Python | `{sample repo link}` |
+| TypeScript | `{sample repo link}` |
+
+Check the README in each repository for how to run its client. Point it at the Endpoint created in [step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus) and it drives the Java handler built here, with no changes on either side.
+
+The interop runs both directions. Every one of those clients can call this Java Service, and the Java caller built in this step can call the Service from any of those repositories. The contract is the only thing the two sides share, so neither side needs to know the other's language, Namespace, or deployment.
+
+To generate a caller for another language from this contract yourself rather than running a sample, see [Generate code](/nexus/client-code-generator#generate-code).
+
+## Calling without a caller Workflow
+
+A caller Workflow is the usual pattern and the one this walkthrough uses, because a Workflow gives the call durability and lets you orchestrate around it.
+
+If you only need to run one Operation and have nothing to orchestrate, a Client can start an Operation directly with no caller Workflow at all. That is a [Standalone Nexus Operation](/standalone-nexus-operation), and it uses the same Service contract, the same handler, and the same Endpoint — only the caller side differs. See [Java: Standalone Operations](/develop/java/nexus/standalone-operations).
+
+`checkApprovalRequired` is a natural fit for this. A caller that only wants to know whether approval is needed has nothing to orchestrate and no result to await.
+
+## Next
+
+The Service can start an approval and return a decision.
+
+**[Step 7 - Add messaging](/develop/java/nexus/development-walkthrough/add-messaging)** - let callers interact with an approval while it is pending.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
+
+:::tip RESOURCES
+
+- [Nexus Operations](/nexus/operations) for the Operation lifecycle and timeouts.
+- [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
+- [Nexus Client Code Generator](/nexus/client-code-generator) for generating callers in other languages.
+
+:::

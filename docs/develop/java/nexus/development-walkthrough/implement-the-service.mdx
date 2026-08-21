@@ -1,0 +1,74 @@
+---
+id: implement-the-service
+title: Step 4 - Implement the Service
+sidebar_label: 4. Implement the Service
+description: Implement the approval Nexus Service with TemporalOperationHandler, backed by a Workflow, and run a Worker that hosts it.
+toc_max_heading_level: 4
+unlisted: true
+tags:
+  - Nexus
+  - Java SDK
+---
+
+[Step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#build-the-operation-that-needs-no-backing) implemented the one Operation that needs no backing. This step adds the one at the center of the Service: back `requestApproval` with the approval Workflow, then run a Worker that hosts the Service, the Workflow, and the Activities.
+
+## Write the approval Workflow
+
+The Workflow is an ordinary Temporal Workflow — the interactive one chosen in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#workflow). Nothing in it is Nexus-specific, and it could be started directly by a Client instead. What makes it interactive is the message handlers added in [step 7](/develop/java/nexus/development-walkthrough/add-messaging) and a Workflow Id you can predict.
+
+For the approval, it needs to:
+
+1. Run an Activity that evaluates whether the request can be auto-decided. In this walkthrough it is a placeholder that does nothing — real logic would apply policy, check limits, or call a risk service.
+2. Run an Activity that tells a human the request is waiting. Also a placeholder.
+3. Block until a decision arrives.
+4. Return `APPROVED` or `DENIED`.
+
+The blocking step is the reason this is a Workflow. It may wait weeks, across Worker restarts and deployments, and the wait costs nothing while it is idle.
+
+`{sample code will be here}`
+
+## Implement the Operation with TemporalOperationHandler
+
+Use `TemporalOperationHandler` for every Temporal-backed Operation, including simple ones. It is the entry point to the [Temporal Operation Handler](/nexus/temporal-operation-handler) programming model, and starting with it means an Operation can later gain a Signal or change its backing without changing shape.
+
+`TemporalOperationHandler.create(...)` gives your start handler a context, a Nexus-aware Client, and the Operation input. Call `startWorkflow` on that Client and return its result. The Operation then completes when the Workflow returns, delivering the Workflow's return value to the caller.
+
+The Client is not an ordinary Temporal Client. It propagates bidirectional links and request Ids automatically, so the caller's Execution and the approval Workflow are connected in the UI without you wiring anything. Fetching your own Client inside a handler works, and the Operation behaves correctly, but you give up that linking. This is the single biggest reason to use the injected Client for anything that starts or messages an Execution.
+
+`{sample code will be here}`
+
+Set the Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id).
+
+By default, starting a Workflow whose Id is already running **fails the Operation**. That is the right default here: the Operation has only started successfully once its completion callback is attached to a Workflow, so failing loudly beats reporting success to a caller that would then wait forever. [Step 8](/develop/java/nexus/development-walkthrough/send-messages#when-the-approval-already-exists) revisits this option, because once another Operation can create the approval first, this Operation needs to attach to it instead of failing.
+
+## Run the Worker
+
+One Worker hosts the Nexus Service implementation, the Workflow implementation, and the Activity implementations. Its Task Queue has to match the Task Queue the Nexus Endpoint targets, which you create in the next step.
+
+`{sample code will be here}`
+
+A Worker registering a Nexus Service does not need to be the same Worker that runs the backing Workflow. Splitting them is a normal choice for larger deployments — see [Nexus patterns](/nexus/patterns).
+
+## Handle failures
+
+Two failure categories behave differently, and callers can tell them apart.
+
+A **contract violation** — a payload the generated validator rejects — should surface as `BAD_REQUEST`. It is the caller's fault and retrying will not help. The generated validators aggregate every violation into one error, so the caller learns everything that was wrong in a single response.
+
+An **application failure** — the approval cannot proceed for a business reason — is a failed Operation. Whether it retries depends on the error type you raise. See [Nexus error handling](/nexus/error-handling).
+
+## Next
+
+The Service runs but nothing can reach it yet.
+
+**[Step 5 - Publish in Nexus](/develop/java/nexus/development-walkthrough/publish-in-nexus)** - create the Endpoint that makes it reachable.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
+
+:::tip RESOURCES
+
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for the handler type and the Nexus-aware Client.
+- [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the full handler and Worker API.
+- [Nexus error handling](/nexus/error-handling) for mapping failures to Nexus errors.
+
+:::

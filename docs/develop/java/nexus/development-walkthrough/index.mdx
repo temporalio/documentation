@@ -1,0 +1,106 @@
+---
+id: index
+title: Nexus Microservice Development Walkthrough - Java SDK
+sidebar_label: Microservice Development Walkthrough
+description: Build a Nexus Service end to end in Java, starting from a data contract and adding one Nexus capability at a time to solve a purchase approval problem.
+toc_max_heading_level: 4
+unlisted: true
+tags:
+  - Nexus
+  - Java SDK
+  - Temporal SDKs
+---
+
+:::caution
+
+This walkthrough covers the [Temporal Operation Handler](/nexus/temporal-operation-handler), which is pre-release.
+APIs are experimental and may change in backwards-incompatible ways.
+
+Please do NOT review the documents under this page past the high level structure. Once we agree on the structure and form I will be working on the docs to match. For now those subpage contents should be considered placeholder text.
+
+:::
+
+This walkthrough builds one Nexus Service from nothing to a complete API, adding a single Nexus capability at each step.
+
+## Nexus
+
+A [Nexus Service](/evaluate/nexus) is a contract that one team publishes and other teams call, across [Namespace](/namespaces) boundaries, without sharing code or a deployment.
+
+## The walkthrough problem
+
+This guide is easier to follow grounded in a real problem. So this walkthrough builds a Service that solves a common problem, a purchase approval workflow. In the process of building that Service, the capabilities of Nexus can be fully demonstrated.
+
+**A purchase request needs approval before it can proceed.**
+
+Approval is slow and human-driven: someone has to look at the request and decide. The system needs to survive that wait, which may be minutes or weeks. While a request is pending, other systems might need to nudge the approver or attach information to the request. Eventually a decision arrives, and the requesting system needs the outcome.
+
+Human-in-the-loop approval is a good reference problem because it is a scenario customers frequently use Temporal and Nexus to solve.
+
+Concretely, the Service needs to:
+
+- Tell a caller whether a purchase needs approval at all, before any durable work starts
+- Start an approval and, eventually, return `APPROVED` or `DENIED`
+- Accept a nudge that asks the approver again, and count how many have been sent
+- Accept supporting information for a purchase, whether or not its approval exists yet
+- Accept a decision from the caller and confirm it was recorded
+- Send a notification when the decision is final
+
+Each of those needs a different Nexus capability which will be introduced and demonstrated.
+
+## One contract, every language
+
+The walkthrough begins with the data contract, before any implementation, and that ordering is the point.
+
+**This walkthrough builds the Service in Java.** The same contract has a sample implementation in every language the generator supports, and the reasoning at each step — what the contract should say, what backs each Operation, which message type to reach for — is the same in all of them.
+
+Working sample code, all built from the one contract:
+
+| Language | Sample |
+| --- | --- |
+| Java (this walkthrough) | `{sample repo link}` |
+| Go | `{sample repo link}` |
+| Python | `{sample repo link}` |
+| TypeScript | `{sample repo link}` |
+
+**Any caller can call any handler, because the contract is the only thing the two sides share.** A Go caller can drive the Python handler; the TypeScript caller can drive the Java handler. Handler and caller do not need to agree on a language, only on the contract. [Step 6](/develop/java/nexus/development-walkthrough/call-the-service) builds the Java caller and then points at the other languages' samples, which call the Java handler built here without changes on either side.
+
+
+:::note
+
+The idea is that we write a sample repo for each language that implements this project. Then we should be able to run the client from any sample project against the handler from any sample project. The code will come as soon as the docs are (mostly) done, I didn't want to have to keep rewriting the code to match changing docs.
+
+This set of docs is for Java, one question is where this will live - if it's in the develop section, then we should have a matching set of docs for each language. If it is in the Encyclopedia, then we can have a single doc with code tabs for the sample code in each language.
+
+:::
+The [Nexus Client Code Generator](/nexus/client-code-generator) makes this easy. It takes the contract and emits typed models, runtime validators, and Service definitions for Go, Java, Python, and TypeScript, so neither side hand-writes the types and neither side can drift from the contract.
+
+## Steps
+
+Each step adds one capability to the approval Service.
+
+1. [Define the data contract](/develop/java/nexus/development-walkthrough/define-the-data-contract) - plan the Operations callers need and write them down
+2. [Generate code from the contract](/develop/java/nexus/development-walkthrough/generate-code) - produce typed models and Service definitions for both sides
+3. [Choose the backing implementation](/develop/java/nexus/development-walkthrough/choose-backing-implementation) - decide what runs behind each Operation, and build the one that needs nothing
+4. [Implement the Service](/develop/java/nexus/development-walkthrough/implement-the-service) - back the approval with a Workflow
+5. [Publish in Nexus](/develop/java/nexus/development-walkthrough/publish-in-nexus) - make the Service reachable from another Namespace
+6. [Call the Service](/develop/java/nexus/development-walkthrough/call-the-service) - request an approval from a caller Workflow, and from the other languages' samples
+7. [Add messaging](/develop/java/nexus/development-walkthrough/add-messaging) - nudge a pending approval and submit its decision
+8. [Send messages](/develop/java/nexus/development-walkthrough/send-messages) - call those Operations, and attach information to an approval that may not exist yet
+9. [Add a Standalone Activity](/develop/java/nexus/development-walkthrough/add-a-standalone-activity) - notify the requester with no Workflow behind it
+10. [Call the Standalone Activity](/develop/java/nexus/development-walkthrough/call-the-standalone-activity) - complete the flow end to end
+
+Then: [Debugging, common pitfalls, and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips).
+
+## Before you start
+
+You need two Namespaces, one for the handler and one for the caller, so the walkthrough crosses a real Namespace boundary. A [local development server](/develop/run-a-development-server) with two Namespaces is enough for steps 1 through 4; step 5 covers both the development server and Temporal Cloud.
+
+If you do not already have Namespaces you want to work in, create them:
+
+`{sample code will be here}`
+
+If you have not used Nexus before, read [Nexus Services](/nexus/services) and [Nexus Operations](/nexus/operations) first, or work through the shorter [Java Nexus quickstart](/develop/java/nexus/quickstart).
+
+## Start
+
+**[Step 1 - Define the data contract](/develop/java/nexus/development-walkthrough/define-the-data-contract)** - plan the Operations callers need and write them down.
