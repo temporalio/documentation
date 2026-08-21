@@ -199,9 +199,21 @@ includes noisier suggestion-level rules not enforced in CI.
 ## Code Review Rules
 
 Guidance for automated reviewers on pull requests. Review a pull request when it changes files under
-`docs/`. Skip Dependabot pull requests, lockfiles, and changes outside `docs/`.
+`docs/`. Check the three things below, and nothing else.
 
-Check the three things below, and nothing else.
+Do not review:
+
+- Dependabot pull requests, and lockfile-only changes.
+- Pull requests that change no files under `docs/`.
+- Pull requests opened by the `temporal-cicd` app. These regenerate content from a source of truth
+  outside this repository: snipsync snippets, the CLI command reference, the Cloud permissions table,
+  and SDK version chips. Nothing in them can be fixed here.
+- Draft pull requests. A draft is waiting on something outside the docs team's control.
+- Reverts.
+- Pull requests from authors outside the `temporalio` organization, unless a maintainer asks for a
+  review on the pull request.
+
+When a pull request is out of scope, stop without commenting.
 
 ### 1. Collateral changes
 
