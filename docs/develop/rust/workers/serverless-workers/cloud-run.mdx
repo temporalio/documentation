@@ -1,0 +1,146 @@
+---
+id: cloud-run
+title: Serverless Workers on GCP Cloud Run - Rust SDK
+sidebar_label: GCP Cloud Run
+description: Run a Temporal Worker on a GCP Cloud Run worker pool using the Rust SDK.
+slug: /develop/rust/workers/serverless-workers/cloud-run
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Rust SDK
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+  Create a [support ticket](/cloud/support#support-ticket) or contact your account team for access, and
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
+The Rust SDK is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview), and its API can change between releases.
+The code on this page is written against `temporalio-sdk` 0.7.0.
+
+On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
+Register Workflows and Activities the same way you would with any other Rust Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
+
+A Cloud Run Worker needs no Cloud Run-specific crate.
+The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
+
+For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
+
+## Create a versioned Worker {/* #versioned-worker */}
+
+Build the Worker as you would any long-running Rust Worker, then set `deployment_options` on `WorkerOptions` to declare the Worker Deployment Version and turn versioning on.
+
+The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
+
+```rust
+use std::str::FromStr;
+
+use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions, Url};
+use temporalio_common::worker::{
+    VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
+};
+use temporalio_sdk::{Runtime, Worker, WorkerOptions};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let address = std::env::var("TEMPORAL_ADDRESS")?;
+    let namespace = std::env::var("TEMPORAL_NAMESPACE")?;
+    let api_key = std::env::var("TEMPORAL_API_KEY")?;
+
+    let runtime = Runtime::new_assume_tokio(Default::default())?;
+
+    let connection_options = ConnectionOptions::new(Url::from_str(&format!("https://{address}"))?)
+        .api_key(api_key)
+        .tls_options(TlsOptions::default())
+        .build();
+    let connection = Connection::connect(connection_options).await?;
+    let client = Client::new(connection, ClientOptions::new(namespace).build())?;
+
+    let worker_options = WorkerOptions::new(std::env::var("TEMPORAL_TASK_QUEUE")?)
+        .deployment_options(
+            WorkerDeploymentOptions::new(WorkerDeploymentVersion {
+                deployment_name: "my-app".to_owned(),
+                build_id: "build-1".to_owned(),
+            })
+            .use_worker_versioning(true)
+            .default_versioning_behavior(VersioningBehavior::Pinned)
+            .build(),
+        )
+        .register_workflow::<MyWorkflow>()?
+        .register_activities(MyActivities)
+        .build();
+
+    let mut worker = Worker::new(&runtime, client, worker_options)?;
+    worker.run().await?;
+
+    Ok(())
+}
+```
+
+`deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
+
+The Rust SDK sets the versioning behavior on the Worker rather than per Workflow, so `default_versioning_behavior` covers every Workflow the Worker registers.
+Setting it to `VersioningBehavior::Unspecified` is an error at startup.
+See [versioning behaviors](/worker-versioning#versioning-behaviors) for what `Pinned` and `AutoUpgrade` mean.
+
+For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/rust/workers/worker-process).
+
+## Configure the Temporal connection {/* #configure-connection */}
+
+Read the Namespace, address, and Task Queue from environment variables you set on the Worker Pool, and mount the Temporal Cloud API key or TLS material from Secret Manager rather than passing it in plaintext.
+The Worker above reads `TEMPORAL_ADDRESS`, `TEMPORAL_NAMESPACE`, `TEMPORAL_API_KEY`, and `TEMPORAL_TASK_QUEUE`, so the same image can run against any Namespace.
+
+Setting `api_key` alone does not enable TLS. `Connection::connect` applies TLS only when `tls_options` is set, so a Temporal Cloud connection needs `.tls_options(TlsOptions::default())` as well, or it fails with `Connecting to HTTPS without TLS enabled`.
+To rotate the key without restarting the Worker, call `set_api_key` on the connected Client.
+
+For the shared configuration format that other Temporal tools read, see [Environment configuration](/develop/environment-configuration).
+
+## Package the Worker image {/* #package-image */}
+
+Compile the Worker in one stage and copy the binary into a runtime image:
+
+```dockerfile
+FROM rust:1.92-slim AS build
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends pkg-config libssl-dev protobuf-compiler libprotobuf-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
+COPY Cargo.toml ./
+COPY src ./src
+RUN cargo build --release
+
+FROM debian:bookworm-slim
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY --from=build /src/target/release/my-worker /app/worker
+CMD ["/app/worker"]
+```
+
+The build stage needs `libprotobuf-dev` as well as `protobuf-compiler`. The compiler package alone installs `protoc` without the well-known type definitions, and the build then fails with `google/protobuf/duration.proto: File not found`.
+
+The runtime stage needs `ca-certificates`. The Worker reads TLS roots from the operating system's certificate store, and `debian:bookworm-slim` ships without one.
+
+## Keep Activities safe across scale-in {/* #scale-in */}
+
+The WCI decides when to remove an instance from Task Queue activity, not from what an individual instance is doing.
+An instance running a long Activity can be stopped mid-execution.
+
+Use [Activity Heartbeats](/develop/rust/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over.
+
+For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
+
+## Add observability {/* #add-observability */}
+
+A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
+For how to configure metrics and telemetry, see the runtime options you pass to `Runtime::new_assume_tokio` and the [SDK metrics reference](/references/sdk-metrics).

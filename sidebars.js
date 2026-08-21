@@ -78,6 +78,7 @@ const developDotnetCategory = {
             },
             items: [
               'develop/dotnet/workers/serverless-workers/aws-lambda',
+              'develop/dotnet/workers/serverless-workers/cloud-run',
             ],
           },
         ]
@@ -393,6 +394,7 @@ const developJavaCategory = {
             },
             items: [
               'develop/java/workers/serverless-workers/aws-lambda',
+              'develop/java/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -794,7 +796,19 @@ const developRubyCategory = {
           id: 'develop/ruby/workers/index',
         },
         items: [
-          'develop/ruby/workers/run-worker-process'
+          'develop/ruby/workers/run-worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/ruby/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/ruby/workers/serverless-workers/cloud-run',
+            ],
+          },
         ],
       },
       {
@@ -915,7 +929,19 @@ const developRustCategory = {
           id: 'develop/rust/workers/index',
         },
         items: [
-          'develop/rust/workers/worker-process'
+          'develop/rust/workers/worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/rust/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/rust/workers/serverless-workers/cloud-run',
+            ],
+          },
         ],
       },
       {
@@ -1022,6 +1048,7 @@ const developTypeScriptCategory = {
             },
             items: [
               'develop/typescript/workers/serverless-workers/aws-lambda',
+              'develop/typescript/workers/serverless-workers/cloud-run',
             ],
           },
         ],

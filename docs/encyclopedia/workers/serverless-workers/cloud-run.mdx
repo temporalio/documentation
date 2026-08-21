@@ -36,6 +36,11 @@ On Cloud Run, a Serverless Worker runs in a Worker Pool: a set of long-lived ins
 Each instance runs standard Worker code and processes Tasks for its whole lifetime.
 The [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) controls how many instances run; each instance manages its own polling and Task processing.
 
+Serverless Workers on Cloud Run use standard long-lived Worker processes, with scaling managed by the WCI.
+Some SDKs add GCP-specific conveniences, such as helpers for configuring OpenTelemetry.
+These are optional.
+Where an SDK provides them, they're documented in the corresponding developer guide for that SDK.
+
 ## Autoscaling {/* #autoscaling */}
 
 The WCI keeps the Worker Pool sized to the amount of work arriving on the Task Queue. It combines two mechanisms:
