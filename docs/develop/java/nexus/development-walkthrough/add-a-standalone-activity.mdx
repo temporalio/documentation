@@ -32,10 +32,9 @@ This is the right shape whenever an Operation is one durable step behind a team 
 
 ### Options an Activity-backed Operation requires
 
-`StartActivityOptions` needs two things that a Workflow-called Activity does not, because there is no parent Workflow to supply them:
+`StartActivityOptions` needs an **Activity Id**, unique within the Namespace, which a Workflow-called Activity does not, because there is no parent Workflow to scope it.
 
-- **An Activity Id**, unique within the Namespace.
-- **A Task Queue.** It does not have to be the Endpoint's target Task Queue, so notifications can run on their own Worker fleet.
+The Task Queue is optional and defaults to the one the Operation is running on. Set it explicitly to run notifications on their own Worker fleet rather than the one the Endpoint targets.
 
 **To keep server retries from sending a second email, derive the Activity Id from the Nexus request Id.** The server retries Nexus start requests, and the request Id travels with them, so every retry lands on the same Activity Id and the notification goes out once. Without that, a retried request is a duplicate message to a real person.
 
@@ -53,7 +52,7 @@ Add the Activity implementation to the same Worker that hosts the Nexus Service.
 
 This notification finishes immediately, so cancellation never comes up for it. It does come up for any longer Activity-backed Operation, and the behavior differs from a Workflow-backed one: an Activity is not interrupted by a cancellation request, so an Activity that never heartbeats runs to completion or to its timeout no matter how many cancellations arrive.
 
-If you write a long-running Activity-backed Operation, read [Cancellation requires heartbeating](/nexus/standalone-activity#cancellation-requires-heartbeating) before you ship it.
+If you write a long-running Activity-backed Operation, read [Activity cancellation](/activity-execution#cancellation) before you ship it. None of the mechanics are Nexus-specific.
 
 ## Next
 

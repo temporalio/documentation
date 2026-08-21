@@ -110,7 +110,6 @@ var greetOp = temporalnexus.MustNewTemporalOperation(
 		) (temporalnexus.TemporalOperationResult[GreetingOutput], error) {
 			return temporalnexus.StartActivity(ctx, nc, client.StartActivityOptions{
 				ID:                  "greet-" + opts.RequestID,
-				TaskQueue:           TaskQueueName,
 				StartToCloseTimeout: 10 * time.Second,
 			}, Greet, input)
 		},
@@ -134,7 +133,6 @@ public class GreetingNexusServiceImpl {
                 input,
                 StartActivityOptions.newBuilder()
                     .setId("greet-" + context.getRequestId())
-                    .setTaskQueue(HandlerWorker.TASK_QUEUE_NAME)
                     .setStartToCloseTimeout(Duration.ofSeconds(10))
                     .build()));
   }
@@ -161,7 +159,6 @@ class GreetingNexusServiceHandler:
             activities.greet,
             input,
             id=f"greet-{ctx.request_id}",
-            task_queue=TASK_QUEUE_NAME,
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
@@ -176,7 +173,6 @@ export const greetingServiceHandler = nexus.serviceHandler(greetingService, {
       return await client.typedActivity<typeof activities>().startActivity('greet', {
         id: `greet-${ctx.requestId}`,
         args: [input],
-        taskQueue: TASK_QUEUE_NAME,
         startToCloseTimeout: '10s',
       });
     },
@@ -201,7 +197,6 @@ public class GreetingNexusServiceHandler
             new()
             {
                 Id = $"greet-{ctx.RequestId}",
-                TaskQueue = HandlerWorker.TaskQueueName,
                 StartToCloseTimeout = TimeSpan.FromSeconds(10),
             });
 }
@@ -274,7 +269,8 @@ Starting an Activity this way needs values that a Workflow-called Activity does 
 
 - **An Activity Id**, unique within the Namespace. There is no parent Workflow to scope it.
 - **A timeout.** At least one of start-to-close or schedule-to-close.
-- **A Task Queue.** Java requires it. Go, Python, TypeScript, and .NET default it to the Task Queue the Operation is running on. Setting it explicitly lets the Activity run on its own Worker fleet rather than the one the Endpoint targets.
+
+The Task Queue is optional. It defaults to the Task Queue the Operation is running on, which is what the samples above rely on. Set it explicitly to run the Activity on its own Worker fleet rather than the one the Endpoint targets.
 
 Deriving the Id from the Nexus request Id makes the start idempotent.
 The server retries a Nexus start request using the same request Id, so each retry targets the same Activity Id rather than starting a second Activity.
@@ -347,89 +343,13 @@ using var worker = new TemporalWorker(
   </SdkTabs.DotNet>
 </SdkTabs>
 
-## Cancellation requires heartbeating
+## Cancellation
 
-This is the biggest behavioral difference from a Workflow-backed Operation, and the easiest thing to get wrong.
+Worth remembering, because it is the one behavioral difference from a Workflow-backed Operation that surprises people.
 
-A Workflow is interrupted by a cancellation request: a blocking call throws and, if the failure propagates, the Workflow and its Operation both end as cancelled.
-An Activity is not interrupted.
-The server records the cancellation request, and the Worker only learns about it on the next heartbeat.
+A Workflow is interrupted by a cancellation request. An Activity is not: the Worker only learns about it on the next heartbeat, so an Activity that never heartbeats runs until it completes or hits its timeout, no matter how many cancellation requests the caller sends.
 
-So an Activity that never heartbeats runs until it completes or hits its start-to-close timeout, no matter how many cancellation requests the caller sends.
-For a long-running Activity-backed Operation to be cancellable at all:
-
-- Heartbeat from the Activity, so it learns that cancellation was requested.
-- Let the resulting cancellation exception propagate. A cancelled Activity is not retried, but one that swallows the cancellation and throws an ordinary failure instead is.
-- Set a heartbeat timeout so the server notices a Worker that has stopped heartbeating.
-
-<SdkTabs hideUnsupportedLanguages>
-  <SdkTabs.Go>
-
-```go
-client.StartActivityOptions{
-	ID:                  "greet-" + opts.RequestID,
-	TaskQueue:           TaskQueueName,
-	StartToCloseTimeout: 10 * time.Minute,
-	HeartbeatTimeout:    5 * time.Second,
-}
-```
-
-  </SdkTabs.Go>
-  <SdkTabs.Java>
-
-```java
-StartActivityOptions.newBuilder()
-    .setId("greet-" + context.getRequestId())
-    .setTaskQueue(HandlerWorker.TASK_QUEUE_NAME)
-    .setStartToCloseTimeout(Duration.ofMinutes(10))
-    .setHeartbeatTimeout(Duration.ofSeconds(5))
-    .build();
-```
-
-  </SdkTabs.Java>
-  <SdkTabs.Python>
-
-```python
-await client.start_activity(
-    activities.greet,
-    input,
-    id=f"greet-{ctx.request_id}",
-    task_queue=TASK_QUEUE_NAME,
-    start_to_close_timeout=timedelta(minutes=10),
-    heartbeat_timeout=timedelta(seconds=5),
-)
-```
-
-  </SdkTabs.Python>
-  <SdkTabs.TypeScript>
-
-```typescript
-await client.typedActivity<typeof activities>().startActivity('greet', {
-  id: `greet-${ctx.requestId}`,
-  args: [input],
-  taskQueue: TASK_QUEUE_NAME,
-  startToCloseTimeout: '10m',
-  heartbeatTimeout: '5s',
-});
-```
-
-  </SdkTabs.TypeScript>
-  <SdkTabs.DotNet>
-
-```csharp
-new StartActivityOptions
-{
-    Id = $"greet-{ctx.RequestId}",
-    TaskQueue = HandlerWorker.TaskQueueName,
-    StartToCloseTimeout = TimeSpan.FromMinutes(10),
-    HeartbeatTimeout = TimeSpan.FromSeconds(5),
-}
-```
-
-  </SdkTabs.DotNet>
-</SdkTabs>
-
-For a short Activity that finishes well inside its timeout, none of this applies.
+Nothing about this is Nexus-specific. See [Activity cancellation](/activity-execution#cancellation) for how to heartbeat, what to do with the resulting cancellation exception, and why a heartbeat timeout matters. For a short Activity that finishes well inside its timeout and doesn't have the risk of hanging, however, a heartbeat is not needed.
 
 ## Choose between an Activity and a Workflow
 
