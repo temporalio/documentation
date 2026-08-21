@@ -143,11 +143,14 @@ const startGreeting = new temporalnexus.TemporalOperationHandler<GreetingInput, 
   <SdkTabs.DotNet>
 
 ```csharp
-TemporalOperationHandler.FromHandleFactory<GreetingInput, GreetingOutput>(
-    async (context, client, input) =>
-        await client.StartWorkflowAsync(
-            (GreetingWorkflow wf) => wf.RunAsync(input),
-            new() { Id = $"greeting-{input.Name}" }));
+[TemporalOperation]
+public Task<TemporalOperationResult<GreetingOutput>> StartGreeting(
+    TemporalOperationStartContext ctx,
+    ITemporalNexusClient client,
+    GreetingInput input) =>
+    client.StartWorkflowAsync(
+        (GreetingWorkflow wf) => wf.RunAsync(input),
+        new() { Id = $"greeting-{input.Name}" });
 ```
 
   </SdkTabs.DotNet>
@@ -241,12 +244,15 @@ const updateShippingAddressOp = new temporalnexus.TemporalOperationHandler<
   <SdkTabs.DotNet>
 
 ```csharp
-TemporalOperationHandler.FromHandleFactory<UpdateAddressInput, AddressOutput>(
-    async (context, client, input) =>
-        await client.StartWorkflowUpdateAsync<OrderWorkflow, AddressOutput>(
-            $"order-{input.OrderId}",
-            wf => wf.UpdateShippingAddressAsync(input),
-            new() { WaitForStage = WorkflowUpdateStage.Accepted }));
+[TemporalOperation]
+public Task<TemporalOperationResult<AddressOutput>> UpdateShippingAddress(
+    TemporalOperationStartContext ctx,
+    ITemporalNexusClient client,
+    UpdateAddressInput input) =>
+    client.StartWorkflowUpdateAsync<OrderWorkflow, AddressOutput>(
+        $"order-{input.OrderId}",
+        wf => wf.UpdateShippingAddressAsync(input),
+        new() { WaitForStage = WorkflowUpdateStage.Accepted });
 ```
 
   </SdkTabs.DotNet>
@@ -254,8 +260,7 @@ TemporalOperationHandler.FromHandleFactory<UpdateAddressInput, AddressOutput>(
 
 Three constraints apply to Update-backed Operations, and the first two fail the Operation rather than degrading:
 
-- **Only the accepted stage is supported.** A Nexus Operation can only back an asynchronous Update, so the wait-for-stage must be "accepted". Go, Java, and .NET require you to set it and fail the Operation if it is anything else. Python and TypeScript set it for you.
-- **A callback URL is required.** The Operation is how the Update's result reaches the caller, so a caller that provided no callback URL gets a `BAD_REQUEST` handler error.
+- **Only the accepted stage is supported.** A Nexus Operation can only back an asynchronous Update, so the wait-for-stage must be "accepted".
 - **The Update Id defaults to the Nexus request Id.** Leaving it unset is what you usually want: a retried start request carries the same request Id, so it targets the same Update rather than running a second one.
 
 The result is async in the normal case, carrying an update-workflow Operation token. If the Update has already completed by the time it is accepted — a retried request with the same Update Id, or an Update that completes immediately — you get a synchronous result instead.
@@ -336,14 +341,17 @@ const cancelOrder = new temporalnexus.TemporalOperationHandler<CancelOrderInput,
   <SdkTabs.DotNet>
 
 ```csharp
-TemporalOperationHandler.FromHandleFactory<CancelOrderInput, NoValue>(
-    async (context, client, input) =>
-    {
-        await client.TemporalClient
-            .GetWorkflowHandle($"order-{input.OrderId}")
-            .SignalAsync("requestCancellation", new object?[] { input });
-        return TemporalOperationResult<NoValue>.SyncResult(default);
-    });
+[TemporalOperation]
+public async Task<TemporalOperationResult<NoValue>> CancelOrder(
+    TemporalOperationStartContext ctx,
+    ITemporalNexusClient client,
+    CancelOrderInput input)
+{
+    await client.TemporalClient
+        .GetWorkflowHandle($"order-{input.OrderId}")
+        .SignalAsync("requestCancellation", new object?[] { input });
+    return TemporalOperationResult<NoValue>.SyncResult(default);
+}
 ```
 
   </SdkTabs.DotNet>
@@ -353,7 +361,7 @@ The same Client also offers Signal-with-Start, and a handler may send several me
 
 ### Back an Operation with an Activity
 
-Call `startActivity` when the work is a single durable step. The Activity runs with no parent Workflow, so the options require an Activity Id and at least one timeout. Java also requires a Task Queue; the other SDKs default it to the Task Queue the Operation is running on. See [Nexus Standalone Activity](/nexus/standalone-activity).
+Call `startActivity` when the work is a single durable step. The Activity runs with no parent Workflow, so the options require an Activity Id and at least one timeout. See [Nexus Standalone Activity](/nexus/standalone-activity).
 
 <SdkTabs hideUnsupportedLanguages>
   <SdkTabs.Go>
@@ -437,16 +445,18 @@ const greet = new temporalnexus.TemporalOperationHandler<GreetingInput, Greeting
   <SdkTabs.DotNet>
 
 ```csharp
-TemporalOperationHandler.FromHandleFactory<GreetingInput, GreetingOutput>(
-    async (context, client, input) =>
-        await client.StartActivityAsync<GreetingOutput>(
-            () => GreetingActivities.GreetAsync(input),
-            new()
-            {
-                Id = $"greet-{context.RequestId}",
-                TaskQueue = TaskQueueName,
-                StartToCloseTimeout = TimeSpan.FromSeconds(10),
-            }));
+[TemporalOperation]
+public Task<TemporalOperationResult<GreetingOutput>> Greet(
+    TemporalOperationStartContext ctx,
+    ITemporalNexusClient client,
+    GreetingInput input) =>
+    client.StartActivityAsync<GreetingOutput>(
+        () => GreetingActivities.GreetAsync(input),
+        new()
+        {
+            Id = $"greet-{ctx.RequestId}",
+            StartToCloseTimeout = TimeSpan.FromSeconds(10),
+        });
 ```
 
   </SdkTabs.DotNet>
@@ -457,6 +467,8 @@ TemporalOperationHandler.FromHandleFactory<GreetingInput, GreetingOutput>(
 Skip this section if you are new to Nexus.
 
 Earlier SDK versions had a separate helper per pattern. Existing handlers will keep working, there is no forced migration.
+
+Operations already in progress are not a concern either. If you need to cancel one, for example, a Workflow-backed Operation started by one of the earlier APIs is cancelled by `TemporalOperationHandler` just as it would have been before.
 
 | If you used | Use instead |
 | --- | --- |
