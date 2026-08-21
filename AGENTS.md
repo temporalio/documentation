@@ -109,10 +109,25 @@ tags:
 ---
 ```
 
-- Write `description` as a single clear sentence.
+- Write `description` as a single clear sentence. See [Meta descriptions](#meta-descriptions) below.
 - Do not change `id` or `slug` without a redirect plan.
 - Match `tags` to sibling pages in the same section. Use existing tags; don't add new ones unless it's a new feature.
 - Do not add a `keywords` field. It isn't used by the site.
+
+### Meta descriptions
+
+The `description` field becomes the search-result snippet, so it has its own bar beyond "one sentence." It must follow
+the [Style guide](#style-guide) above (terminology, filler, intensifiers, word choice, tense) and additionally:
+
+- Target roughly 120-155 characters, with the page's most important term in the first 60.
+- Complement the title; don't restate it. Search engines render the title directly above the description, so wording
+  carried over from the title wastes that space. Search engines may also replace an unhelpful description with a body
+  excerpt. Sharing the primary term with the title is fine — reusing the title's phrasing is not. If the title and
+  description read as the same sentence twice, rewrite the description.
+- Never open with a word that carries no information: "Learn," "Discover," "Explore," "Understand," "Find out," "Read
+  about," "This page," or similar throat-clearing verbs. Open with the substance the reader gets.
+- No keyword stuffing, and no placeholder or boilerplate text.
+- Describe what this specific page covers, not the section or product in general.
 
 ## MDX and components
 
