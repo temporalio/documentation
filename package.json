@@ -74,7 +74,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.4",
     "@vercel/functions": "^3.7.5",
-    "algoliasearch": "^5.55.1",
+    "algoliasearch": "^5.56.0",
     "chart.js": "^4.4.1",
     "clsx": "^2.1.1",
     "comlink": "^4.4.2",
@@ -97,7 +97,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.62.0",
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.1.2",
     "dprint": "^0.55.1",
     "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.23.2",

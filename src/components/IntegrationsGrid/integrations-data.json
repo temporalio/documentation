@@ -69,7 +69,7 @@
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "https://adk.dev/integrations/temporal/"
+    "href": "/develop/python/integrations/google-adk"
   },
   {
     "name": "Google ADK",
@@ -159,7 +159,7 @@
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md"
+    "href": "/develop/python/integrations/openai-agents"
   },
   {
     "name": "OpenAI Agents SDK",

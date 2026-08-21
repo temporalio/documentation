@@ -718,6 +718,7 @@ const developPythonCategory = {
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
+          'develop/python/integrations/openai-agents',
           'develop/python/integrations/strands-agents',
         ],
       },
@@ -1788,6 +1789,15 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Durable AI',
+      collapsed: true,
+      link: { type: 'doc', id: 'ai/index' },
+      items: [
+        { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+      ],
+    },
+    {
+      type: 'category',
       label: 'References',
       collapsed: true,
       link: {
@@ -1856,6 +1866,7 @@ module.exports = {
         'best-practices/multi-tenant-patterns',
         'best-practices/managing-aps-limits',
         'best-practices/cost-optimization',
+        'best-practices/cost-governance',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
         'best-practices/worker',
