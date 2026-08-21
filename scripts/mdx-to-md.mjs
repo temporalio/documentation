@@ -35,6 +35,7 @@
 
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
+import { cookbookPreviewToMarkdown } from "./component-handlers/cookbook-preview.mjs";
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
@@ -71,6 +72,7 @@ export const COMPONENT_REGISTRY = {
   SetupStep: "setup-step",
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
+  CookbookPreview: "cookbook-preview",
   SdkOverviewCards: "sdk-overview-cards",
   ViewSourceCodeNotice: "view-source-code-notice",
 
@@ -101,6 +103,7 @@ export const COMPONENT_REGISTRY = {
   ThemedImage: "strip-block",
   PatternCards: "cards",
   QuickstartCards: "cards",
+  GridCardList: "cards",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
@@ -210,6 +213,15 @@ export function extractProp(tagStr, propName) {
   if (mb) return mb[1];
 
   return null;
+}
+
+/**
+ * Extract a bare numeric JSX prop, e.g. extractNumberProp('<X limit={4} />', 'limit') => 4.
+ * Returns undefined if the prop isn't present or isn't a plain number literal.
+ */
+export function extractNumberProp(tagStr, propName) {
+  const m = tagStr.match(new RegExp(`${propName}=\\{(-?\\d+(?:\\.\\d+)?)\\}`));
+  return m ? Number(m[1]) : undefined;
 }
 
 /**
@@ -1264,7 +1276,22 @@ export function transformMdx(mdxContent, options = {}) {
         tag += " " + lines[i].trim();
       }
       const defaultSdks = parseStringArrayProp(tag, "defaultSdks");
-      const md = integrationsGridToMarkdown(defaultSdks, { projectRoot, warnings, sourceFile });
+      const defaultTags = parseStringArrayProp(tag, "defaultTags");
+      const md = integrationsGridToMarkdown(defaultSdks, defaultTags, { projectRoot, warnings, sourceFile });
+      outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
+    // --- CookbookPreview (self-closing) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<CookbookPreview\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const limit = extractNumberProp(tag, "limit") ?? 4;
+      const md = cookbookPreviewToMarkdown(limit, { projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
       continue;
@@ -1283,8 +1310,8 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- QuickstartCards / PatternCards → Markdown link list from items prop ---
-    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards)\b/.test(line)) {
+    // --- QuickstartCards / PatternCards / GridCardList → Markdown link list from items prop ---
+    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards|GridCardList)\b/.test(line)) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {
         i++;
