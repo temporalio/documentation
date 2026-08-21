@@ -6,11 +6,6 @@ description:
   Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for
   patching to support multiple code paths.
 toc_max_heading_level: 4
-keywords:
-  - scaling
-  - workers
-  - versioning
-  - deploys
 tags:
   - Temporal Service
   - Durable Execution
@@ -185,4 +180,3 @@ If you run [Serverless Workers](/serverless-workers), each Worker Deployment Ver
 specific Lambda function. In production, configure it with a qualified versioned ARN so Pinned Workflows remain truly
 pinned to the code they started against, regardless of whether your default behavior is Pinned or Auto-Upgrade. See
 [Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers).
-
