@@ -327,7 +327,9 @@ handle = client.get_activity_handle(
 
 ## Step 8: Migrate task retries to a Retry Policy
 
-In Celery, retries are your responsibility: you set `max_retries` and call `self.retry()` inside the task. With Temporal, retries are automatic and declarative. The default [Retry Policy](/develop/python/activities/timeouts#activity-retries) for Standalone Activities retries indefinitely with exponential backoff, which is sufficient in most cases, and doesn't need adjusting. However, if you want to replicate the Celery workflow exactly, migrating means adding a limit back in to match Celery's `max_retries`. In this step, you will attach a retry policy to the invocation. Note that Celery counts *retries* after the first attempt, whereas Temporal counts total attempts. Therefore, you'll set `maximum_attempts` to 6, which mimic's Celery's `max_retries` of 5.
+In Celery, retries are your responsibility: you set `max_retries` and call `self.retry()` inside the task. With Temporal, retries are automatic and declarative. The default [Retry Policy](/develop/python/activities/timeouts#activity-retries) for Activities retries indefinitely with exponential backoff. This is sufficient in most cases, and typically doesn't need adjusting. 
+
+However, if you want to replicate the Celery workflow exactly, migrating means adding a limit back in to match Celery's `max_retries`. In this step, you will attach a retry policy to the invocation. Note that Celery counts *retries* after the first attempt, whereas Temporal counts total attempts. Therefore, you'll set `maximum_attempts` to 6, which mimics Celery's `max_retries` of 5.
 
 Update `execute_activity.py` to pass a `retry_policy`:
 
