@@ -33,14 +33,19 @@ exceptions:
   # Temporal primitives and proper nouns
   - Activity
   - Activities
+  - Application
+  - Applications
   - Archival
   - Cloud
   - Codec
+  - Command
+  - Commands
   - Converter
   - Cron
   - Data
   - Durable
   - Event
+  - Events
   - Execution
   - Executions
   - Failure
@@ -163,7 +168,15 @@ exceptions:
   - Capacity
   - Connectivity
   - Continue-As-New
+  - Plugin
+  - Plugins
+  # Exact phrases; "Audit Logging" is the canonical term in Temporal/terms.yml,
+  # so keep "Log"/"Logs" out of the single-word list above.
+  - Audit Log
+  - Audit Logs
+  - Audit Logging
   # Cloud provider / networking / industry acronyms
+  - Amazon
   - AWS
   - GCP
   - DNS
@@ -183,10 +196,13 @@ exceptions:
   - TRUs
   - PrivateLink
   - KMS
+  - CA
   # Cloud provider product names (exact phrase, not the individual words)
   - Azure Key Vault
   - Azure Workload Identity
   - GCP Workload Identity
+  - Private Service Connect
+  - Cloud Ops API
   - Terraform
   - Prometheus
   - Grafana
