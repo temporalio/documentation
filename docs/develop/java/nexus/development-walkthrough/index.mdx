@@ -97,7 +97,10 @@ You need two Namespaces, one for the handler and one for the caller, so the walk
 
 If you do not already have Namespaces you want to work in, create them:
 
-`{sample code will be here}`
+```bash
+temporal operator namespace create --namespace approval-handler-namespace
+temporal operator namespace create --namespace approval-caller-namespace
+```
 
 If you have not used Nexus before, read [Nexus Services](/nexus/services) and [Nexus Operations](/nexus/operations) first, or work through the shorter [Java Nexus quickstart](/develop/java/nexus/quickstart).
 
