@@ -31,6 +31,20 @@ Generation is one command per language, with a few per-language flags — Java, 
 
 **[Generate code](/nexus/client-code-generator#generate-code)** has the full command shape and the flags each language takes, with examples for each.
 
+For the approval contract, generating the Java code is one command:
+
+```bash
+nexgen java \
+  --output core/src/main/java/io/temporal/samples/nexuswalkthrough/generatedservice \
+  --package-name io.temporal.samples.nexuswalkthrough.generatedservice \
+  core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml
+```
+
+Two things to know. Java requires the package name's last segment to match the output directory's
+name, which is why both end in `generatedservice`. And generation **clears the output directory**,
+so keep the contract outside it — a schema stored in the output directory is deleted the first time
+you regenerate.
+
 Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. When a generated name is wrong for your language, fix it in the contract with a per-language naming override rather than editing the output. See the **[Nexus Client Code Generator](/nexus/client-code-generator)** for more details.
 
 ## One contract, four languages

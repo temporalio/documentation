@@ -30,7 +30,14 @@ The flow follows the walkthrough sample problem. Check whether the purchase need
 
 In Java, the generated Service interface works directly as a Nexus Service stub. Create it inside the caller Workflow with the Endpoint name and Operation options, then call its methods as if they were local.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-caller-workflow-->
+<!--SNIPEND-->
+
+The Endpoint name is not in the Workflow. It is bound once when the caller Worker registers the
+Workflow, so the Workflow refers to the Service by its contract alone:
+
+<!--SNIPSTART samples-java-nexus-walkthrough-caller-worker-->
+<!--SNIPEND-->
 
 Nothing in this caller is aware of how the handler is built. It does not know which Task Queue the handler's Worker polls, or that `requestApproval` is backed by a Workflow while `checkApprovalRequired` is backed by nothing at all. It knows the Endpoint name and the contract.
 
