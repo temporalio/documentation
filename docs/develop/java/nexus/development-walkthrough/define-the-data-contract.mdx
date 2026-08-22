@@ -32,10 +32,10 @@ For the approval problem, callers need to check whether a purchase needs approva
 | --- | --- | --- | --- |
 | `checkApprovalRequired` | Item id, requester, amount | Whether approval is needed, and the threshold applied | Step 3 |
 | `requestApproval` | Item id, requester, amount | `APPROVED` or `DENIED` | Step 4 |
-| `remindApprover` | Approval id | Nothing | Step 7 |
-| `submitDecision` | Approval id, decision | Confirmation of the recorded decision | Step 7 |
+| `remindApprover` | Item id | Nothing | Step 7 |
+| `submitDecision` | Item id, decision | The decision recorded, and how many reminders preceded it | Step 7 |
 | `attachApprovalContext` | Item id, requester, amount, note | Nothing | Step 8 |
-| `notifyRequester` | Requester, decision | Nothing | Step 9 |
+| `notifyRequester` | Requester, decision | Where the notification was delivered | Step 9 |
 
 Three of those are worth explaining now, because they are easy to get wrong. They also introduce the three shapes an Operation can take, named here and chosen per Operation in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation):
 
@@ -62,7 +62,12 @@ A file is one or the other, never both. A contract can span several files, with 
 
 The approval contract declares a Service with six Operations, so its entry file is a Nexus document.
 
-**[Definition files](/nexus/client-code-generator#definition-files)** documents both flavors in full, with the supported subset of JSON Schema and a worked example to model this contract on. Read it before writing the approval contract.
+**[Definition files](/nexus/client-code-generator#definition-files)** documents both flavors in full, with the supported subset of JSON Schema and a worked example to model this contract on.
+
+Here is the approval contract in full. Every Operation the walkthrough builds is declared here, before any implementation exists:
+
+<!--SNIPSTART samples-java-nexus-walkthrough-contract-->
+<!--SNIPEND-->
 
 ## Next
 

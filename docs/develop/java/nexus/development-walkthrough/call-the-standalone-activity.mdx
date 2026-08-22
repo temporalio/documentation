@@ -18,7 +18,7 @@ Call `notifyRequester` once the decision is final. From the caller's side there 
 
 Nothing in the caller reveals that this Operation is backed by an Activity and the other by a Workflow. That is the contract doing its job. The handler team could later replace the notification Activity with a Workflow that retries across providers and escalates on failure, and no caller would change.
 
-`{sample code will be here}`
+The call sits alongside the others in the caller Workflow from [step 6](/develop/java/nexus/development-walkthrough/call-the-service#call-the-operations-from-a-caller-workflow) — same stub, same shape, no hint of what runs behind it.
 
 ## Complete the flow
 
@@ -31,7 +31,8 @@ With all ten steps in place, the caller runs the whole approval:
 5. The approval Workflow returns the decision, which resolves the `requestApproval` Operation every attached caller has been awaiting.
 6. The caller calls `notifyRequester` with the decision, backed by the notification Activity.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-caller-starter-->
+<!--SNIPEND-->
 
 Every step crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or which primitive backed any Operation. One Operation ran with no durable Execution at all, one started a Workflow, two sent messages to it, one started a Workflow if it was not already running, and one started an Activity — and from the caller's side they were all just Operations.
 

@@ -25,7 +25,8 @@ For the approval, it needs to:
 
 The blocking step is the reason this is a Workflow. It may wait weeks, across Worker restarts and deployments, and the wait costs nothing while it is idle.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-impl-->
+<!--SNIPEND-->
 
 ## Implement the Operation with TemporalOperationHandler
 
@@ -35,7 +36,8 @@ Use `TemporalOperationHandler` for every Temporal-backed Operation, including si
 
 The Client is not an ordinary Temporal Client. It propagates bidirectional links and request Ids automatically, so the caller's Execution and the approval Workflow are connected in the UI without you wiring anything. Fetching your own Client inside a handler works, and the Operation behaves correctly, but you give up that linking. This is the single biggest reason to use the injected Client for anything that starts or messages an Execution.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
+<!--SNIPEND-->
 
 Set the Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id).
 
@@ -45,7 +47,8 @@ By default, starting a Workflow whose Id is already running **fails the Operatio
 
 One Worker hosts the Nexus Service implementation, the Workflow implementation, and the Activity implementations. Its Task Queue has to match the Task Queue the Nexus Endpoint targets, which you create in the next step.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-handler-worker-->
+<!--SNIPEND-->
 
 A Worker registering a Nexus Service does not need to be the same Worker that runs the backing Workflow. Splitting them is a normal choice for larger deployments — see [Nexus patterns](/nexus/patterns).
 

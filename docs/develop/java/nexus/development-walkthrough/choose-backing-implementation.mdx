@@ -63,6 +63,11 @@ The approval needs a Workflow Id derived from the purchase, not a random one, so
 
 This also makes the start idempotent. A retried Nexus start request targets the same Workflow Id rather than starting a second approval for one purchase.
 
+Deriving it in one place keeps the two Operations that need it from drifting apart:
+
+<!--SNIPSTART samples-java-nexus-walkthrough-workflow-id-->
+<!--SNIPEND-->
+
 It matters again in [step 8](/develop/java/nexus/development-walkthrough/send-messages), where `attachApprovalContext` may start the approval before `requestApproval` is ever called. Both Operations derive the same Workflow Id from the same item id, which is what lets them agree on which Execution they mean.
 
 ## Build the Operation that needs no backing
@@ -71,7 +76,8 @@ It matters again in [step 8](/develop/java/nexus/development-walkthrough/send-me
 
 Implement it with `TemporalOperationHandler` like every other Operation, apply the threshold, and return a synchronous result. The Operation completes during the handler call.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-check-approval-required-->
+<!--SNIPEND-->
 
 Using `TemporalOperationHandler` here rather than a plain synchronous handler is what lets this Operation grow later. If spend policy moves out of the handler and into a policy service, this becomes an Activity-backed Operation — and no caller changes, because the contract did not.
 

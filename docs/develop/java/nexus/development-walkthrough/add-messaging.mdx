@@ -27,7 +27,8 @@ On the Workflow, add a Signal handler that increments the reminder count and an 
 
 The Update is what ends the approval. It records `APPROVED` or `DENIED`, which satisfies the condition the Workflow is blocked on, and the Workflow then returns that decision as its result.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-->
+<!--SNIPEND-->
 
 ## Expose them as Nexus Operations
 
@@ -45,7 +46,8 @@ Sending one Signal is comfortably inside it. A handler that sends several messag
 
 :::
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-remind-approver-->
+<!--SNIPEND-->
 
 ### Update
 
@@ -53,7 +55,16 @@ Start the Update on the Client. This is an async backing: the Operation complete
 
 An Update-backed Operation carries two requirements. It targets a Workflow that already exists, so a `submitDecision` for a purchase with no approval running fails. And because it is an async backing, there is at most one per Operation invocation, though a handler can still combine it with sync side effects.
 
-`{sample code will be here}`
+### Reject a bad Update before it changes anything
+
+An Update can also refuse a request, which is the other thing a Signal cannot do. By the time a Signal handler runs the message has already been accepted and written to history; there is nowhere left to say no.
+
+The approval uses that. A **validator** runs before the handler and rejects a second decision for an approval that has already been decided — without it, the later decision would silently overwrite the earlier one. A rejected Update never runs the handler, never reaches Event History, and surfaces to the caller as a failed Operation.
+
+The validator is the method annotated `@UpdateValidatorMethod` in the Workflow interface above. It takes the same arguments as the handler, returns nothing, and must not change Workflow state.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-submit-decision-->
+<!--SNIPEND-->
 
 ## Do not poll for the decision
 

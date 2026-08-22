@@ -20,7 +20,13 @@ An Endpoint needs three things: a unique name, the target Namespace where the ha
 
 On a development server, create it with the CLI:
 
-`{sample code will be here}`
+```bash
+temporal operator nexus endpoint create \
+  --name approval-endpoint \
+  --target-namespace approval-handler-namespace \
+  --target-task-queue approval-handler-task-queue \
+  --description-file description.md
+```
 
 In Temporal Cloud, create it in the UI under Nexus, or with `tcld`. See [Create a Nexus Endpoint](/nexus/registry#create-a-nexus-endpoint).
 
@@ -48,7 +54,10 @@ On a development server there is nothing to configure. Both Namespaces are local
 
 For Temporal Cloud, the caller and handler connect as separate clients, each to its own Namespace. Generate an API key with access to both Namespaces, or use mTLS certificates. The SDK's [environment configuration](/develop/environment-configuration) support lets you keep one profile per Namespace and select between them with an environment variable, which is cleaner than passing connection options in code.
 
-`{sample code will be here}`
+```bash
+temporal workflow list --namespace approval-handler-namespace
+temporal activity list --namespace approval-handler-namespace
+```
 
 ## Verify it is reachable
 

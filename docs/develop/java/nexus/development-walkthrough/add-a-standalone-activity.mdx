@@ -20,7 +20,8 @@ The Activity is an ordinary Activity. In this walkthrough it is a placeholder th
 
 Nothing in it is Nexus-specific. The same Activity Function can be invoked from a Workflow and started behind this Operation with no code changes — what differs is what starts it, not how it is written.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-activities-->
+<!--SNIPEND-->
 
 ## Back the Operation with it
 
@@ -28,7 +29,8 @@ Use `TemporalOperationHandler` as with every other Operation, but start an Activ
 
 This is the right shape whenever an Operation is one durable step behind a team boundary. The Activity supplies the durability — retries on the policy you set, timeouts you control, and a record of every attempt — and the Operation supplies the contract, so the notification is reachable by other teams without them sharing your code or your Namespace.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-notify-requester-->
+<!--SNIPEND-->
 
 ### Options an Activity-backed Operation requires
 
@@ -46,7 +48,8 @@ Deriving the Id from the Operation *input* instead is a different tool for a dif
 
 Add the Activity implementation to the same Worker that hosts the Nexus Service. An Activity-backed Operation needs no Workflow implementation registered for it.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-handler-worker-->
+<!--SNIPEND-->
 
 ## Cancellation needs heartbeating
 

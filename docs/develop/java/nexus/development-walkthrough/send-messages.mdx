@@ -16,7 +16,7 @@ The caller does not know that one is a Signal and one is an Update. That is the 
 
 ## Nudge and decide
 
-`{sample code will be here}`
+The caller calls both Operations exactly like any other, as shown in the caller Workflow in [step 6](/develop/java/nexus/development-walkthrough/call-the-service#call-the-operations-from-a-caller-workflow). `remindApprover` returns nothing, so there is nothing to assign; `submitDecision` returns the confirmation the Update produced.
 
 What differs between them is what you get back and how long it takes.
 
@@ -36,13 +36,14 @@ A plain Signal cannot handle that. Sending one to a Workflow that does not exist
 
 `attachApprovalContext` uses **Signal-with-Start** instead. If the approval is already running, the note is delivered to it. If it is not, the approval is started and then the note is delivered. Either order works, and the caller does not have to know which happened.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-attach-context-->
+<!--SNIPEND-->
 
 Signal-with-Start is sync messaging on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client), so the Operation completes during the handler call and returns nothing. The caller gets no confirmation that a human read the note, only that it was durably attached.
 
 ### Input needs enough to start the Workflow
 
-Look at the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract#plan-the-operations) and `attachApprovalContext` carries more than it seems to need: the item id, the requester, the amount, *and* the note. `remindApprover` gets by with just an approval id.
+Look at the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract#plan-the-operations) and `attachApprovalContext` carries more than it seems to need: the item id, the requester, the amount, *and* the note. `remindApprover` gets by with just the item id.
 
 That is a direct consequence of Signal-with-Start. The Operation might have to start the approval Workflow, and starting it requires whatever the Workflow needs to run. An Operation that can create the thing it messages has to carry enough input to create it.
 
@@ -60,7 +61,8 @@ That default is not arbitrary strictness. A Workflow-backed Operation has only s
 
 The fix is to change the Workflow Id conflict policy on `requestApproval` from its default to **use-existing**. With that set, a start against an already-running approval attaches the Operation's completion callback to that Execution instead of failing. The caller then awaits the approval that is already in flight and receives its decision when it completes.
 
-`{sample code will be here}`
+<!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
+<!--SNIPEND-->
 
 Two things follow from this, and both are useful.
 
