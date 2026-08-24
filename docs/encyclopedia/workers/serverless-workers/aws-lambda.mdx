@@ -50,6 +50,15 @@ Each invocation is independent.
 The Worker starts, creates a fresh client connection, processes multiple Tasks until near the execution time limit, and then shuts down gracefully.
 There is no shared state across invocations.
 
+### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
+
+A Lambda Worker exists only for the duration of an invocation, and sync match failure is the primary signal that starts
+one. Between invocations no Lambda Worker is polling, so an available long-lived Worker receives the Task by sync match
+first. The Serverless Workers act as spillover capacity for the long-lived fleet.
+
+See [Scaling with long-lived Workers](/serverless-workers#scaling-with-long-lived-workers) for the scaling settings to
+avoid on the long-lived Workers.
+
 ## Worker Versioning {/* #worker-versioning */}
 
 Serverless Workers require [Worker Versioning](/worker-versioning), and the compute provider must invoke a stable,

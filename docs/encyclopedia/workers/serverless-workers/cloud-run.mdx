@@ -68,6 +68,16 @@ Scale-in is more conservative than scale-out.
 The WCI holds capacity while sync match failures are still occurring, and it applies a cooldown before reducing the pool, so it does not remove instances that are about to be needed again.
 When there is no work, the WCI can scale the pool to zero; the next sync match failure or backlog scales it back up.
 
+### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
+
+A Worker Pool instance polls the Task Queue continuously for as long as it stays in the pool. While the pool is running
+instances, the Matching Service can sync match Tasks to them directly, so the pool takes a share of the Task Queue's
+work rather than only the overflow. A Cloud Run pool acts as spillover capacity for a long-lived fleet only while it
+sits at zero instances.
+
+See [Scaling with long-lived Workers](/serverless-workers#scaling-with-long-lived-workers) for the scaling settings to
+avoid on the long-lived Workers.
+
 ## Worker Versioning {/* #worker-versioning */}
 
 Serverless Workers require [Worker Versioning](/worker-versioning). Create one Worker Pool for each Worker Deployment

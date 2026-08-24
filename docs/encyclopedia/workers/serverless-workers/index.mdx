@@ -155,16 +155,10 @@ Refer to the autoscaling section for your compute provider:
 ## Scaling with long-lived Workers {/* #scaling-with-long-lived-workers */}
 
 Serverless Workers can share a Task Queue with long-lived Workers. How the two divide the work depends on the compute
-provider's execution model.
+provider's execution model, so refer to the section for your compute provider:
 
-On AWS Lambda, a Worker exists only for the duration of an invocation, and sync match failure is the primary signal that
-starts one. Between invocations no Lambda Worker is polling, so an available long-lived Worker receives the Task by sync
-match first. The Serverless Workers act as spillover capacity for the long-lived fleet.
-
-On GCP Cloud Run, a Worker Pool instance polls the Task Queue continuously for as long as it stays in the pool. While the
-pool is running instances, the Matching Service can sync match Tasks to them directly, so the pool takes a share of the
-Task Queue's work rather than only the overflow. A Cloud Run pool acts as spillover capacity only while it sits at zero
-instances.
+- [AWS Lambda](/serverless-workers/aws-lambda#sharing-a-task-queue)
+- [GCP Cloud Run](/serverless-workers/cloud-run#sharing-a-task-queue)
 
 :::caution
 
