@@ -22,16 +22,12 @@ Nexus provides SDK metrics, Cloud metrics, and OSS Cluster metrics in addition t
 
 ## Cloud Metrics
 
-[Cloud metrics](/cloud/metrics/reference) are emitted by Temporal Cloud, including:
+Temporal Cloud emits [OpenMetrics metrics](/cloud/metrics/openmetrics/metrics-reference#nexus-metrics) for both sides of a Nexus call:
 
-- Caller Namespace
-  - RespondWorkflowTaskCompleted \- schedule a Nexus Operation.
-- Handler Namespace
-  - PollNexusTaskQueue \- get a [Nexus Task](/tasks#nexus-task) to process, for example to start a Nexus Operation.
-  - RespondNexusTaskCompleted \- report the Nexus Task was successful.
-  - RespondNexusTaskFailed \- report the Nexus Task failed.
+- Caller-side Nexus Operation metrics report completion outcomes and schedule-to-close, schedule-to-start, and start-to-close latency.
+- Handler-side Nexus request metrics report request rates, errors, and latency.
 
-## OSS Cluster Metrics
+## Self-hosted metrics
 
 [Cluster metrics](/references/cluster-metrics#nexus-metrics) are emitted from an OSS Cluster, including:
 
