@@ -70,13 +70,21 @@ When there is no work, the WCI can scale the pool to zero; the next sync match f
 
 ### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
 
-A Worker Pool instance polls the Task Queue continuously for as long as it stays in the pool. While the pool is running
-instances, the Matching Service can sync match Tasks to them directly, so the pool takes a share of the Task Queue's
-work rather than only the overflow. A Cloud Run pool acts as spillover capacity for a long-lived fleet only while it
-sits at zero instances.
+A Worker Pool sharing a Task Queue with long-lived Workers scales up to cover the Task Queue's full workload, even when
+the long-lived Workers are already handling all of it. The result is pool instances that duplicate capacity you already
+run and pay for.
 
-See [Scaling with long-lived Workers](/serverless-workers#scaling-with-long-lived-workers) for the scaling settings to
-avoid on the long-lived Workers.
+The WCI sizes the pool from the rate of Tasks arriving on the Worker Deployment Version's Task Queues, and nothing in
+that measurement accounts for the long-lived Workers. Tasks they process raise the pool's target instance count exactly
+as unhandled Tasks would. Sync matching to a long-lived Worker suppresses the immediate scale-up when a Task arrives, but
+the periodic re-sizing scales the pool up regardless.
+
+:::caution
+
+Give the Serverless Workers their own Task Queue unless you intend to run both fleets. A Worker Pool does not take a
+spillover role behind a long-lived fleet.
+
+:::
 
 ## Worker Versioning {/* #worker-versioning */}
 

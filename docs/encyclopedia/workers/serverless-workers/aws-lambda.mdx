@@ -52,12 +52,16 @@ There is no shared state across invocations.
 
 ### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
 
-A Lambda Worker exists only for the duration of an invocation, and sync match failure is the primary signal that starts
-one. Between invocations no Lambda Worker is polling, so an available long-lived Worker receives the Task by sync match
-first. The Serverless Workers act as spillover capacity for the long-lived fleet.
+The WCI invokes a Lambda Worker when a sync match fails, or when the Worker Deployment Version's Task Queues have a
+backlog. A long-lived fleet that keeps up with the work leaves neither, so no Lambda Workers are invoked. The Serverless
+Workers act as spillover capacity for the long-lived fleet.
 
-See [Scaling with long-lived Workers](/serverless-workers#scaling-with-long-lived-workers) for the scaling settings to
-avoid on the long-lived Workers.
+:::caution
+
+Do not enable dynamic scaling on the long-lived Workers sharing the Task Queue. Both scalers react to the same backlog,
+so the long-lived Workers may add capacity for the Tasks Temporal is already invoking Lambda Workers to handle.
+
+:::
 
 ## Worker Versioning {/* #worker-versioning */}
 

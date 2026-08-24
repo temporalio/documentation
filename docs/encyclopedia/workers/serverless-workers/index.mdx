@@ -154,20 +154,12 @@ Refer to the autoscaling section for your compute provider:
 
 ## Scaling with long-lived Workers {/* #scaling-with-long-lived-workers */}
 
-Serverless Workers can share a Task Queue with long-lived Workers. How the two divide the work depends on the compute
-provider's execution model, so refer to the section for your compute provider:
+Serverless Workers can share a Task Queue with long-lived Workers. What the WCI does with the Tasks the long-lived
+Workers are already handling depends on the compute provider, and so does the guidance. Refer to the section for your
+compute provider:
 
 - [AWS Lambda](/serverless-workers/aws-lambda#sharing-a-task-queue)
 - [GCP Cloud Run](/serverless-workers/cloud-run#sharing-a-task-queue)
-
-:::caution
-
-If you configure Serverless and long-lived Workers on the same Task Queue, do not enable dynamic scaling on the
-long-lived Workers. The two groups cannot coordinate their scaling behavior. If both scale dynamically, the long-lived
-Workers may add capacity for the same Tasks that Temporal is simultaneously scaling Serverless Workers to handle,
-leading to surplus Workers on both sides and unpredictable scaling.
-
-:::
 
 ## Worker lifecycle {/* #worker-lifecycle */}
 
