@@ -96,7 +96,7 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.0",
+    "@playwright/test": "^1.62.1",
     "@types/node": "^26.1.2",
     "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.23.2",
