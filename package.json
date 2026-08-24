@@ -92,7 +92,7 @@
     "sharp": "^0.35.3",
     "snipsync": "^1.13.0",
     "uuid": "^14.0.1",
-    "wait-on": "^9.0.10",
+    "wait-on": "^9.1.0",
     "yaml": "^2.9.0"
   },
   "devDependencies": {
