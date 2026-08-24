@@ -1,0 +1,91 @@
+---
+id: core-primitives
+title: Core primitives
+description: Discover Temporal's Workflow, Activity, and Worker framework; orchestrate steps, encapsulate business logic, and execute code efficiently using the Temporal SDK in your favorite language.
+sidebar_label: Core primitives
+tags:
+  - Workflows
+  - Activities
+  - Workers
+  - Temporal SDKs
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+[Workflows](/workflows), [Activities](/activities), [Standalone Activities](/standalone-activity), and [Workers](/workers) form the core parts of a Temporal Application.
+
+**[Workflows](/workflows)**: A Workflow defines the overall flow of the application.
+You write it in your programming language of choice using the Temporal SDK.
+Conceptually, a Workflow specifies a sequence of steps and orchestrates the execution of Activities.
+
+**[Activities](/activities)**: An Activity is a method or function that encapsulates business logic prone to failure (for example, calling a service that may go down).
+The system can automatically retry these Activities upon some failures.
+Activities perform a single, well-defined action, such as calling another service, transcoding a media file, or sending an email message.
+
+**[Standalone Activities](/standalone-activity)**: A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a [Client](/encyclopedia/temporal-client), without using a Workflow. Use a [Workflow](/workflows) to orchestrate multiple Activities, but if you just need to execute a single Activity, use a [Standalone Activity](/standalone-activity). Standalone Activities are Temporal's job queue.
+
+**[Workers](/workers)**: A Worker executes your Workflow and Activity code.
+
+## Resources
+
+Follow one of our [tutorials](https://learn.temporal.io/getting_started/) to develop Workflows and Activities and run them in Worker Processes, or enroll in one of [our courses](https://learn.temporal.io/courses/).
+
+Read the Temporal Encyclopedia pages for each core primitive:
+
+- [Temporal Workflows](/workflows)
+- [Temporal Activities](/activities)
+- [Temporal Standalone Activities](/standalone-activity)
+- [Temporal Workers](/workers)
+
+Or jump straight to a Temporal SDK develop docs:
+
+<PatternCards items={[
+  {
+    href: "/develop/dotnet",
+    title: ".NET SDK",
+    description: "Write Workflows, Activities, and Workers in C# and .NET.",
+    icon: "/img/sdks/svgs/dotnet.svg",
+  },
+  {
+    href: "/develop/go",
+    title: "Go SDK",
+    description: "Write Workflows, Activities, and Workers in Go.",
+    icon: "/img/sdks/svgs/golang.svg",
+  },
+  {
+    href: "/develop/java",
+    title: "Java SDK",
+    description: "Write Workflows, Activities, and Workers in Java and other JVM languages.",
+    icon: "/img/sdks/svgs/java.svg",
+  },
+  {
+    href: "/develop/php",
+    title: "PHP SDK",
+    description: "Write Workflows, Activities, and Workers in PHP.",
+    icon: "/img/sdks/svgs/php.svg",
+  },
+  {
+    href: "/develop/python",
+    title: "Python SDK",
+    description: "Write Workflows, Activities, and Workers in Python.",
+    icon: "/img/sdks/svgs/python.svg",
+  },
+  {
+    href: "/develop/ruby",
+    title: "Ruby SDK",
+    description: "Write Workflows, Activities, and Workers in Ruby.",
+    icon: "/img/sdks/svgs/ruby.svg",
+  },
+  {
+    href: "/develop/rust",
+    title: "Rust SDK",
+    description: "Write Workflows, Activities, and Workers in Rust.",
+    icon: "/img/sdks/svgs/rust.svg",
+  },
+  {
+    href: "/develop/typescript",
+    title: "TypeScript SDK",
+    description: "Write Workflows, Activities, and Workers in TypeScript and JavaScript.",
+    icon: "/img/sdks/svgs/typescript.svg",
+  },
+]} />
