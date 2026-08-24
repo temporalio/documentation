@@ -106,7 +106,7 @@ For supported Control Plane operations, the `status` field describes the outcome
 Audit logs do not capture authentication failures.
 
 For an asynchronous operation, `OK` means that Temporal Cloud accepted the API call.
-The operation can fail after the Audit Log event is emitted, and the event is not updated with the final outcome.
+The operation can fail after the audit log event is emitted, and the event is not updated with the final outcome.
 Use [`GetAsyncOperation`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/operations/GET/cloud/operations/%7BasyncOperationId%7D) to check the operation state and failure reason.
 
 The `async_operation_id` field can contain a request identifier or an async operation identifier.
