@@ -2326,7 +2326,7 @@
     },
     {
       "source": "/evaluate/development-production-features/core-application",
-      "destination": "/evaluate/features/core-application",
+      "destination": "/evaluate/features/core-primitives",
       "permanent": true
     },
     {
