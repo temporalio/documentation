@@ -98,7 +98,6 @@
   "devDependencies": {
     "@playwright/test": "^1.62.0",
     "@types/node": "^26.1.2",
-    "dprint": "^0.55.1",
     "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.23.2",
     "global-jsdom": "^29.0.0",
