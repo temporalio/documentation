@@ -4,6 +4,9 @@ title: Temporal CLI cloud user-group command reference
 sidebar_label: user-group
 description: User Group Management Commands
 toc_max_heading_level: 4
+keywords:
+  - user-group
+  - management
 tags:
   - user-groups
 ---
@@ -61,13 +64,15 @@ using the add-member and remove-member commands.
 
 Account roles: owner, admin, developer, finance-admin, read, metrics-read.
 Namespace access format: 'namespace=permission' where permission is one of: admin, write, read.
+Project access format: 'project-id=role' where role is one of: admin, write, read, list, contribute, member.
 
 Example:
 
 ```
 temporal cloud user-group create-cloud-group --display-name "Engineering" \
   --account-role developer \
-  --namespace-access my-namespace.my-account=write
+  --namespace-access my-namespace.my-account=write \
+  --project-access my-project-id=write
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -83,6 +88,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace-access` | No | **string[]** Namespace access to grant, in the format 'namespace=permission'. Permission must be one of: admin, write, read. Can be repeated. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-access` | No | **string[]** Project access to grant, in the format 'project-id=role'. Role must be one of: admin, write, read, list, contribute, member. Can be repeated. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## create-google-group
@@ -92,13 +98,15 @@ via the Google Group itself.
 
 Account roles: owner, admin, developer, finance-admin, read, metrics-read.
 Namespace access format: 'namespace=permission' where permission is one of: admin, write, read.
+Project access format: 'project-id=role' where role is one of: admin, write, read, list, contribute, member.
 
 Example:
 
 ```
 temporal cloud user-group create-google-group --display-name "Platform" \
   --google-group-email platform@example.com \
-  --account-role developer
+  --account-role developer \
+  --project-access my-project-id=write
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -115,6 +123,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace-access` | No | **string[]** Namespace access to grant, in the format 'namespace=permission'. Permission must be one of: admin, write, read. Can be repeated. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-access` | No | **string[]** Project access to grant, in the format 'project-id=role'. Role must be one of: admin, write, read, list, contribute, member. Can be repeated. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## create-scim-group
@@ -124,13 +133,15 @@ Members are managed via the upstream identity provider.
 
 Account roles: owner, admin, developer, finance-admin, read, metrics-read.
 Namespace access format: 'namespace=permission' where permission is one of: admin, write, read.
+Project access format: 'project-id=role' where role is one of: admin, write, read, list, contribute, member.
 
 Example:
 
 ```
 temporal cloud user-group create-scim-group --display-name "Security" \
   --scim-idp-id idp-group-id-123 \
-  --account-role read
+  --account-role read \
+  --project-access my-project-id=read
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -146,6 +157,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace-access` | No | **string[]** Namespace access to grant, in the format 'namespace=permission'. Permission must be one of: admin, write, read. Can be repeated. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-access` | No | **string[]** Project access to grant, in the format 'project-id=role'. Role must be one of: admin, write, read, list, contribute, member. Can be repeated. |
 | `--scim-idp-id` | Yes | **string** The identity provider ID for the SCIM group. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -240,6 +252,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace` | No | **string** Filter user groups by the namespace they have access to. |
 | `--page-size` | No | **int** Number of user groups to return per page. Use for paginated results. |
 | `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--project-id` | No | **string** List user groups with access to the project ID. Cannot be combined with --namespace, --display-name, --google-group-email-address, or --scim-group-idp-id. |
 | `--scim-group-idp-id` | No | **string** Filter user groups by SCIM group IDP ID. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -320,6 +333,31 @@ Use the following options to change the behavior of this command. You can also u
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
 | `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
+
+## remove-project-access
+
+Remove a Temporal Cloud user group's direct project-level access.
+
+Example:
+
+```
+temporal cloud user-group remove-project-access --group-id my-group-id \
+  --project-id my-project-id
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--group-id` | Yes | **string** The ID of the user group. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | Yes | **string** The ID of the project. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## set-account-role
 
@@ -404,11 +442,39 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
+## set-project-access
+
+Set project-level access for a Temporal Cloud user group.
+
+Project roles: admin, write, read, list, contribute, member.
+
+Example:
+
+```
+temporal cloud user-group set-project-access --group-id my-group-id \
+  --project-id my-project-id --project-role write
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--group-id` | Yes | **string** The ID of the user group. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | Yes | **string** The ID of the project. |
+| `--project-role` | Yes | **string** The project-level role to assign. Valid values: admin, write, read, list, contribute, member. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
 ## update
 
 Update an existing Temporal Cloud user group's access settings.
 
-Provide at least one of --account-role, --namespace-access, or --custom-role.
+Provide at least one of --account-role, --namespace-access, --project-access, or --custom-role.
 
 Example:
 
@@ -416,9 +482,12 @@ Example:
 temporal cloud user-group update --group-id my-group-id --account-role developer
 temporal cloud user-group update --group-id my-group-id \
   --namespace-access my-namespace.my-account=write
+temporal cloud user-group update --group-id my-group-id \
+  --project-access my-project-id=write
 temporal cloud user-group update --group-id my-group-id --account-role admin \
   --namespace-access my-namespace.my-account=write \
-  --namespace-access other-namespace.my-account=read
+  --namespace-access other-namespace.my-account=read \
+  --project-access my-project-id=read
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -434,6 +503,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace-access` | No | **string[]** Namespace access change in the format 'namespace=permission'. Permission must be one of: admin, write, read. Can be repeated. Use an empty permission (e.g. 'testns=') to remove access to a namespace. Changes are additive: namespaces not listed are left unchanged. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-access` | No | **string[]** Project access change in the format 'project-id=role'. Role must be one of: admin, write, read, list, contribute, member. Can be repeated. Use an empty role (e.g. 'project-id=') to remove access to a project. Changes are additive: projects not listed are left unchanged. |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -448,3 +518,4 @@ The following options can be used with any command.
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
+
