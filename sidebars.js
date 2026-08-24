@@ -1174,7 +1174,7 @@ module.exports = {
             id: 'evaluate/features/index',
           },
           items: [
-            'evaluate/features/core-application',
+            'evaluate/features/core-primitives',
             'evaluate/features/failure-detection',
             'evaluate/features/throughput-composability',
             'evaluate/features/nexus',
