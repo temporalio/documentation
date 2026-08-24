@@ -66,6 +66,15 @@ This also makes the start idempotent. A retried Nexus start request targets the 
 Deriving it in one place keeps the two Operations that need it from drifting apart:
 
 <!--SNIPSTART samples-java-nexus-walkthrough-workflow-id-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java)
+
+```java
+  public static String forItem(String itemId) {
+    return "approval-" + itemId;
+  }
+```
+
 <!--SNIPEND-->
 
 It matters again in [step 8](/develop/java/nexus/development-walkthrough/send-messages), where `attachApprovalContext` may start the approval before `requestApproval` is ever called. Both Operations derive the same Workflow Id from the same item id, which is what lets them agree on which Execution they mean.
@@ -77,9 +86,36 @@ It matters again in [step 8](/develop/java/nexus/development-walkthrough/send-me
 Implement it with `TemporalOperationHandler` like every other Operation, apply the threshold, and return a synchronous result. The Operation completes during the handler call.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-check-approval-required-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<CheckApprovalRequiredInput, CheckApprovalRequiredOutput>
+      checkApprovalRequired() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) ->
+            TemporalOperationResult.sync(
+                new CheckApprovalRequiredOutput(
+                    input.getAmount() >= APPROVAL_THRESHOLD, APPROVAL_THRESHOLD)));
+  }
+```
+
 <!--SNIPEND-->
 
-Using `TemporalOperationHandler` here rather than a plain synchronous handler is what lets this Operation grow later. If spend policy moves out of the handler and into a policy service, this becomes an Activity-backed Operation — and no caller changes, because the contract did not.
+### Why build it this way?
+
+Nothing about this choice is permanent, and that is the point of making it with `TemporalOperationHandler` rather than a plain synchronous handler.
+
+What backs an Operation is private to the handler, so it can change while the contract stays exactly where it is. If spend policy moves out of the handler and into a policy service, `checkApprovalRequired` becomes Activity-backed. If it grows into something with several steps — checking a budget, consulting delegation rules, waiting on a policy engine that is slow — it becomes Workflow-backed, the same shape as `requestApproval`. In every case the handler changes and no caller does, because the contract did not.
+
+That is the reason to reach for `TemporalOperationHandler` even for an Operation this small. It is the single entry point for all three backings, so replacing a threshold comparison with a full Workflow later is an edit inside one method rather than a new Operation and a contract change.
+
+:::caution For Reviewers
+The next paragraph is about cost. I thought it was relevant as a big differentiator for opersations with no backing so I put it in - but I'm not sure I should?
+:::
+
+In Temporal Cloud there is a cost argument too. Starting any Nexus Operation costs one [Action](/cloud/pricing) in the caller's Namespace, whatever backs it — that much is fixed. What varies is the handler side: an Operation with no backing Execution adds nothing, while a Workflow or Activity backing bills Actions of its own, retries included. Handling the Nexus Operation itself is not billed. For work as small as a threshold comparison that is the difference between one Action and several, which is worth knowing when the Operation is called on every purchase. See [Nexus pricing](/cloud/nexus/pricing).
 
 Nothing runs this Operation yet. [Step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker) starts the Worker that hosts the Service, and [step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus) makes it reachable, so this is the first Operation you will see respond once those are in place.
 

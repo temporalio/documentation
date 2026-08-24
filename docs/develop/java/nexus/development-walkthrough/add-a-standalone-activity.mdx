@@ -21,6 +21,30 @@ The Activity is an ordinary Activity. In this walkthrough it is a placeholder th
 Nothing in it is Nexus-specific. The same Activity Function can be invoked from a Workflow and started behind this Operation with no code changes — what differs is what starts it, not how it is written.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-activities-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalActivities.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalActivities.java)
+
+```java
+public interface ApprovalActivities {
+
+  /** STEP 4 placeholder - real logic would apply policy, check limits, or call a risk service. */
+  @ActivityMethod
+  void evaluateAutoDecision(String itemId, double amount);
+
+  /** STEP 4 placeholder - real logic would page an approver or open a ticket. */
+  @ActivityMethod
+  void notifyApproverOfPendingRequest(String itemId, String requester);
+
+  /**
+   * STEP 9 - The Standalone Activity behind the notifyRequester Operation. One outbound
+   * notification, no state, nothing to wait for. In this sample it only logs; real logic would call
+   * an email provider, push to a notification service, or write to an outbox.
+   */
+  @ActivityMethod
+  NotifyRequesterOutput notifyRequester(String requester, NotifyRequesterInput.Decision decision);
+}
+```
+
 <!--SNIPEND-->
 
 ## Back the Operation with it
@@ -30,6 +54,32 @@ Use `TemporalOperationHandler` as with every other Operation, but start an Activ
 This is the right shape whenever an Operation is one durable step behind a team boundary. The Activity supplies the durability — retries on the policy you set, timeouts you control, and a record of every attempt — and the Operation supplies the contract, so the notification is reachable by other teams without them sharing your code or your Namespace.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-notify-requester-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<NotifyRequesterInput, NotifyRequesterOutput> notifyRequester() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) ->
+            client.startActivity(
+                ApprovalActivities.class,
+                ApprovalActivities::notifyRequester,
+                input.getRequester(),
+                input.getDecision(),
+                StartActivityOptions.newBuilder()
+                    // Deriving the Activity Id from the request Id keeps a retried Nexus start
+                    // request targeting the same Activity Execution instead of sending a second
+                    // notification.
+                    .setId("notify-" + ctx.getRequestId())
+                    .setTaskQueue(HandlerWorker.DEFAULT_TASK_QUEUE_NAME)
+                    .setStartToCloseTimeout(Duration.ofSeconds(10))
+                    .setScheduleToCloseTimeout(Duration.ofMinutes(5))
+                    .setRetryOptions(RetryOptions.newBuilder().setMaximumAttempts(3).build())
+                    .build()));
+  }
+```
+
 <!--SNIPEND-->
 
 ### Options an Activity-backed Operation requires
@@ -49,6 +99,24 @@ Deriving the Id from the Operation *input* instead is a different tool for a dif
 Add the Activity implementation to the same Worker that hosts the Nexus Service. An Activity-backed Operation needs no Workflow implementation registered for it.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-handler-worker-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/HandlerWorker.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/HandlerWorker.java)
+
+```java
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    Worker worker = factory.newWorker(DEFAULT_TASK_QUEUE_NAME);
+
+    worker.registerWorkflowImplementationTypes(ApprovalWorkflowImpl.class);
+    worker.registerActivitiesImplementations(new ApprovalActivitiesImpl());
+    worker.registerNexusServiceImplementation(new ApprovalServiceImpl());
+
+    factory.start();
+  }
+```
+
 <!--SNIPEND-->
 
 ## Cancellation needs heartbeating
