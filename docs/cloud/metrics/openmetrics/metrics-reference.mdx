@@ -512,11 +512,14 @@ The 99th percentile activity schedule-to-close latency in seconds.
 Nexus operation metrics measure calls from the caller side. For these metrics, `temporal_namespace` identifies the caller Namespace.
 Nexus request metrics measure requests on the handler side. For these metrics, `temporal_namespace` identifies the handler Namespace.
 
-:::note Request latency compared with operation latency
+:::note Nexus latency intervals
 
-Nexus request latency measures how long the handler takes to process one Nexus request. It ends when that request finishes processing, so it doesn't measure how long an asynchronous Nexus Operation takes to complete.
+- Request latency measures how long the handler takes to process one Nexus request. For a synchronous start request, it ends when the handler returns the result. For an asynchronous start request, it ends when the handler finishes the start request and doesn't continue until the Operation completes.
+- Schedule-to-close latency measures from when the caller schedules an Operation until it reaches a terminal state. It includes Operations that complete synchronously and asynchronously.
+- Schedule-to-start latency measures from when the caller schedules an Operation until it starts asynchronously. For an Operation that completes synchronously or closes without starting, Temporal records this latency when the Operation closes, and it equals schedule-to-close latency.
+- Start-to-close latency measures from when an asynchronous Operation starts until it reaches a terminal state. Temporal doesn't record this latency for an Operation that completes synchronously or closes without starting.
 
-Nexus Operation schedule-to-close latency measures the time from when the caller schedules an Operation until the Operation reaches a terminal state. Start-to-close latency measures the time from when an asynchronous Operation starts until it reaches a terminal state.
+The Operation metric labels don't distinguish synchronous from asynchronous Operations. Schedule-to-close and schedule-to-start series can contain both, so you can't filter their samples by completion type.
 
 :::
 
@@ -535,7 +538,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 50th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds.
+The 50th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
 
 | Label | Description |
 | ----- | ----- |
@@ -554,7 +557,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 95th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds.
+The 95th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
 
 | Label | Description |
 | ----- | ----- |
@@ -573,7 +576,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 99th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds.
+The 99th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
 
 | Label | Description |
 | ----- | ----- |
@@ -592,7 +595,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 50th percentile Nexus Operation schedule-to-start latency in seconds.
+The 50th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
 
 | Label | Description |
 | ----- | ----- |
@@ -611,7 +614,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 95th percentile Nexus Operation schedule-to-start latency in seconds.
+The 95th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
 
 | Label | Description |
 | ----- | ----- |
@@ -630,7 +633,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 99th percentile Nexus Operation schedule-to-start latency in seconds.
+The 99th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
 
 | Label | Description |
 | ----- | ----- |
@@ -649,7 +652,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 50th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds.
+The 50th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
 
 | Label | Description |
 | ----- | ----- |
@@ -668,7 +671,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 95th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds.
+The 95th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
 
 | Label | Description |
 | ----- | ----- |
@@ -687,7 +690,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 99th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds.
+The 99th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
 
 | Label | Description |
 | ----- | ----- |
@@ -800,7 +803,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 50th percentile time the handler takes to process one Nexus request, in seconds. This metric doesn't measure how long an asynchronous Nexus Operation takes to complete.
+The 50th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
 
 | Label | Description |
 | ----- | ----- |
@@ -820,7 +823,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 95th percentile time the handler takes to process one Nexus request, in seconds. This metric doesn't measure how long an asynchronous Nexus Operation takes to complete.
+The 95th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
 
 | Label | Description |
 | ----- | ----- |
@@ -840,7 +843,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 99th percentile time the handler takes to process one Nexus request, in seconds. This metric doesn't measure how long an asynchronous Nexus Operation takes to complete.
+The 99th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
 
 | Label | Description |
 | ----- | ----- |
