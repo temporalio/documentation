@@ -512,6 +512,14 @@ The 99th percentile activity schedule-to-close latency in seconds.
 Nexus operation metrics measure calls from the caller side. For these metrics, `temporal_namespace` identifies the caller Namespace.
 Nexus request metrics measure requests on the handler side. For these metrics, `temporal_namespace` identifies the handler Namespace.
 
+:::note Request latency compared with operation latency
+
+Nexus request latency measures how long the handler takes to process one Nexus request. It ends when that request finishes processing, so it doesn't measure how long an asynchronous Nexus Operation takes to complete.
+
+Nexus Operation schedule-to-close latency measures the time from when the caller schedules an Operation until the Operation reaches a terminal state. Start-to-close latency measures the time from when an asynchronous Operation starts until it reaches a terminal state.
+
+:::
+
 :::caution High Cardinality
 
 Nexus metrics could have high cardinality depending on the number of Nexus Endpoints, Services, Operations, and callers.
@@ -527,7 +535,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 50th percentile Nexus Operation schedule-to-close latency in seconds.
+The 50th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds.
 
 | Label | Description |
 | ----- | ----- |
@@ -546,7 +554,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 95th percentile Nexus Operation schedule-to-close latency in seconds.
+The 95th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds.
 
 | Label | Description |
 | ----- | ----- |
@@ -565,7 +573,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 99th percentile Nexus Operation schedule-to-close latency in seconds.
+The 99th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds.
 
 | Label | Description |
 | ----- | ----- |
@@ -641,7 +649,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 50th percentile Nexus Operation start-to-close latency in seconds.
+The 50th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds.
 
 | Label | Description |
 | ----- | ----- |
@@ -660,7 +668,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 95th percentile Nexus Operation start-to-close latency in seconds.
+The 95th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds.
 
 | Label | Description |
 | ----- | ----- |
@@ -679,7 +687,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 99th percentile Nexus Operation start-to-close latency in seconds.
+The 99th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds.
 
 | Label | Description |
 | ----- | ----- |
@@ -792,7 +800,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 50th percentile Nexus request latency in seconds.
+The 50th percentile time the handler takes to process one Nexus request, in seconds. This metric doesn't measure how long an asynchronous Nexus Operation takes to complete.
 
 | Label | Description |
 | ----- | ----- |
@@ -812,7 +820,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 95th percentile Nexus request latency in seconds.
+The 95th percentile time the handler takes to process one Nexus request, in seconds. This metric doesn't measure how long an asynchronous Nexus Operation takes to complete.
 
 | Label | Description |
 | ----- | ----- |
@@ -832,7 +840,7 @@ Avoid aggregating this metric across dimensions because the percentile won't be 
 
 :::
 
-The 99th percentile Nexus request latency in seconds.
+The 99th percentile time the handler takes to process one Nexus request, in seconds. This metric doesn't measure how long an asynchronous Nexus Operation takes to complete.
 
 | Label | Description |
 | ----- | ----- |
