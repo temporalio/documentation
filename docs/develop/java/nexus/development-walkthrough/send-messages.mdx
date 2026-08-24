@@ -37,6 +37,37 @@ A plain Signal cannot handle that. Sending one to a Workflow that does not exist
 `attachApprovalContext` uses **Signal-with-Start** instead. If the approval is already running, the note is delivered to it. If it is not, the approval is started and then the note is delivered. Either order works, and the caller does not have to know which happened.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-attach-context-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<AttachApprovalContextInput, Void> attachApprovalContext() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) -> {
+          WorkflowClient workflowClient = client.getWorkflowClient();
+          ApprovalWorkflow stub =
+              workflowClient.newWorkflowStub(
+                  ApprovalWorkflow.class,
+                  WorkflowOptions.newBuilder()
+                      .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
+                      .setTaskQueue(HandlerWorker.DEFAULT_TASK_QUEUE_NAME)
+                      .build());
+
+          // signalWithStart delivers the Signal, starting the Workflow first if it is not already
+          // running. When the approval already exists, only the Signal is delivered.
+          BatchRequest request = workflowClient.newSignalWithStartRequest();
+          request.add(stub::attachContext, input.getNote());
+          request.add(
+              stub::runApproval,
+              new RequestApprovalInput(input.getItemId(), input.getRequester(), input.getAmount()));
+          workflowClient.signalWithStart(request);
+
+          return TemporalOperationResult.sync(null);
+        });
+  }
+```
+
 <!--SNIPEND-->
 
 Signal-with-Start is sync messaging on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client), so the Operation completes during the handler call and returns nothing. The caller gets no confirmation that a human read the note, only that it was durably attached.
@@ -62,6 +93,26 @@ That default is not arbitrary strictness. A Workflow-backed Operation has only s
 The fix is to change the Workflow Id conflict policy on `requestApproval` from its default to **use-existing**. With that set, a start against an already-running approval attaches the Operation's completion callback to that Execution instead of failing. The caller then awaits the approval that is already in flight and receives its decision when it completes.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<RequestApprovalInput, RequestApprovalOutput> requestApproval() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) ->
+            client.startWorkflow(
+                ApprovalWorkflow.class,
+                ApprovalWorkflow::runApproval,
+                input,
+                WorkflowOptions.newBuilder()
+                    .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
+                    .setWorkflowIdConflictPolicy(
+                        WorkflowIdConflictPolicy.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING)
+                    .build()));
+  }
+```
+
 <!--SNIPEND-->
 
 Two things follow from this, and both are useful.

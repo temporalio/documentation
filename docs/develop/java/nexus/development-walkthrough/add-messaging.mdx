@@ -28,6 +28,64 @@ On the Workflow, add a Signal handler that increments the reminder count and an 
 The Update is what ends the approval. It records `APPROVED` or `DENIED`, which satisfies the condition the Workflow is blocked on, and the Workflow then returns that decision as its result.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflow.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflow.java)
+
+```java
+public interface ApprovalWorkflow {
+
+  /**
+   * The Update handler's name on the wire. The Update-backed Operation has to name the Update
+   * explicitly when it starts one, so the name is declared once here and reused there rather than
+   * being spelled as a literal in two places.
+   */
+  String SUBMIT_DECISION_UPDATE = "submitDecision";
+
+  /**
+   * STEP 4 - The Workflow method. Its return value is the result of the requestApproval Operation:
+   * the Operation completes when this Workflow returns, and the caller receives this value through
+   * the Nexus completion callback.
+   *
+   * <p>Because the Workflow's return value is delivered straight to the caller as the Operation
+   * result, it has to be the Operation's declared output type.
+   */
+  @WorkflowMethod
+  RequestApprovalOutput runApproval(RequestApprovalInput input);
+
+  /**
+   * STEP 7 - A Signal. Fire-and-forget: the caller gets no result back, which is why a Signal is
+   * the right message type for a nudge, and why the contract declares no output for it.
+   */
+  @SignalMethod
+  void remindApprover();
+
+  /**
+   * STEP 8 - A Signal that also carries supporting information. Reached through Signal-with-Start,
+   * so it may be the message that creates this Workflow.
+   */
+  @SignalMethod
+  void attachContext(String note);
+
+  /**
+   * STEP 7 - An Update. The caller needs a result back - confirmation that the decision was
+   * recorded - which is what makes this an Update rather than a Signal.
+   */
+  @UpdateMethod(name = ApprovalWorkflow.SUBMIT_DECISION_UPDATE)
+  SubmitDecisionOutput submitDecision(SubmitDecisionInput.Decision decision);
+
+  /**
+   * STEP 7 - The Update's validator. An Update can reject a request before it changes anything,
+   * which a Signal cannot: a Signal has already been accepted by the time the handler runs.
+   *
+   * <p>Here it rejects a second decision for an approval that has already been decided. Without it
+   * the later decision would silently overwrite the earlier one. A rejected Update does not appear
+   * in Event History and does not run the handler.
+   */
+  @UpdateValidatorMethod(updateName = ApprovalWorkflow.SUBMIT_DECISION_UPDATE)
+  void validateSubmitDecision(SubmitDecisionInput.Decision decision);
+}
+```
+
 <!--SNIPEND-->
 
 ## Expose them as Nexus Operations
@@ -47,6 +105,24 @@ Sending one Signal is comfortably inside it. A handler that sends several messag
 :::
 
 <!--SNIPSTART samples-java-nexus-walkthrough-remind-approver-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<RemindApproverInput, Void> remindApprover() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) -> {
+          client
+              .getWorkflowClient()
+              .newWorkflowStub(
+                  ApprovalWorkflow.class, ApprovalWorkflowId.forItem(input.getItemId()))
+              .remindApprover();
+          return TemporalOperationResult.sync(null);
+        });
+  }
+```
+
 <!--SNIPEND-->
 
 ### Update
@@ -64,6 +140,33 @@ The approval uses that. A **validator** runs before the handler and rejects a se
 The validator is the method annotated `@UpdateValidatorMethod` in the Workflow interface above. It takes the same arguments as the handler, returns nothing, and must not change Workflow state.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-submit-decision-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<SubmitDecisionInput, SubmitDecisionOutput> submitDecision() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) ->
+            client.startWorkflowUpdate(
+                ApprovalWorkflow.class,
+                ApprovalWorkflowId.forItem(input.getItemId()),
+                ApprovalWorkflow::submitDecision,
+                input.getDecision(),
+                UpdateOptions.<SubmitDecisionOutput>newBuilder()
+                    .setResultClass(SubmitDecisionOutput.class)
+                    // The Update to invoke has to be named explicitly; the method reference above
+                    // supplies the argument types but not the wire name.
+                    .setUpdateName(ApprovalWorkflow.SUBMIT_DECISION_UPDATE)
+                    // An Update-backed Operation must wait for the ACCEPTED stage. The Operation
+                    // completes later, when the Update completes, through the completion callback.
+                    // Any other stage is rejected with "nexus op workflow updates only support
+                    // WorkflowUpdateStageAccepted for async updates".
+                    .setWaitForStage(WorkflowUpdateStage.ACCEPTED)
+                    .build()));
+  }
+```
+
 <!--SNIPEND-->
 
 ## Do not poll for the decision
