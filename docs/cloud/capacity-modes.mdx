@@ -53,7 +53,7 @@ RPS and OPS  are lower-level measures to control and balance request rates at th
 
 :::
 
-### What happens when my Actions Rate exceeds my Limit?
+### What happens when my Actions rate exceeds my limit?
 
 When your Action rate exceeds your quota, Temporal Cloud throttles Actions.
 Throttling limits the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
@@ -85,7 +85,7 @@ Actions that are external to the core Temporal service do not contribute to your
 * Capacity Related Actions
 :::
 
-## On-Demand Capacity {/* #on-demand-capacity */}
+## On-demand capacity {/* #on-demand-capacity */}
 
 Using On-Demand Capacity, your rate limit grows automatically along with your usage.
 Each Namespace has an Actions per second (APS), Requests per second (RPS), and Operations per second (OPS) limit that scales automatically with usage. Your APS limit never falls below its [default limit](/cloud/limits#actions-per-second). If Temporal Support has manually set your Namespace's limit, that value becomes your floor in place of the default, and it persists across capacity mode changes.
@@ -164,7 +164,7 @@ You can also automate changes in capacity if you have a known event or a recurri
 Sustained usage well below your provisioned limit can mean you are paying for capacity you are not using, since each TRU beyond the first carries a minimum hourly charge (see [Capacity Mode Pricing](/cloud/pricing#capacity-modes-pricing)).
 For the metrics to watch and how to alert on utilization, see [Provisioned capacity utilization](/cloud/service-health#provisioned-capacity-utilization).
 
-## Setting Capacity Modes
+## Set capacity modes
 Capacity Modes and TRUs can be set via the Temporal Cloud UI, CLI, or API. 
 Capacity modes can be set and adjusted by Global Admin and Namespace Admin. 
 
@@ -196,7 +196,7 @@ See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits
 
 ![Manage Capacity panel in the Temporal UI](/img/cloud/provisioned-capacity/manage_capacity_panel.png)
 
-### Setting Capacity Modes from the CLI
+### Set capacity modes from the CLI
 
 <Tabs groupId="cloud-cli" queryString>
 <TabItem value="temporal-cloud" label="Temporal CLI" default>
@@ -204,14 +204,22 @@ See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits
 ```command
 temporal cloud namespace capacity update \
   --namespace <namespace_name> \
-  --capacity-mode <on_demand|provisioned> \
+  --capacity-mode provisioned \
   --capacity-value <tru_value>
 ```
 
 Use this command to specify the Namespace name and configure the capacity settings:
 
-* `--capacity-mode` sets the billing mode for the Namespace. Use `on_demand` for automatic scaling or `provisioned` for a fixed capacity allocation.
-* `--capacity-value` sets the throughput value in TRUs (Temporal Resource Units).
+* `--capacity-mode provisioned` sets a fixed capacity allocation for the Namespace.
+* `--capacity-value` sets the provisioned throughput value in TRUs (Temporal Resource Units).
+
+To switch to on-demand capacity, omit `--capacity-value`:
+
+```command
+temporal cloud namespace capacity update \
+  --namespace <namespace_name> \
+  --capacity-mode on_demand
+```
 
 Optional flags:
 

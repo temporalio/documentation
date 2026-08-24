@@ -41,7 +41,7 @@ Available Namespace permissions: `admin` | `write` | `read`.
 temporal cloud user invite \
   --email <user@example.com> \
   --account-role <role> \
-  --namespace-access <namespace>=<permission>
+  --namespace-access <namespace.account>=<permission>
 ```
 
 Repeat `--namespace-access` to grant permissions on more than one Namespace. `--email` takes a single address, so invite
@@ -51,8 +51,8 @@ one user per command:
 temporal cloud user invite \
   --email user1@example.com \
   --account-role developer \
-  --namespace-access ns1=admin \
-  --namespace-access ns2=write
+  --namespace-access ns1.my-account=admin \
+  --namespace-access ns2.my-account=write
 ```
 
 </TabItem>
@@ -89,7 +89,7 @@ tcld user invite \
 
 </Tabs>
 
-### Frequently Asked Questions
+### Frequently asked questions
 
 #### Can multiple Temporal Cloud accounts share the same email domain?
 

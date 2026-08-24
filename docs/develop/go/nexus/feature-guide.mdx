@@ -651,6 +651,7 @@ temporal cloud nexus endpoint create \
   --name <my-nexus-endpoint-name> \
   --target-task-queue my-handler-task-queue \
   --target-namespace <my-target-namespace.account> \
+  --allow-namespace <my-caller-namespace.account> \
   --description-file description.md
 ```
 </TabItem>
@@ -661,10 +662,13 @@ tcld nexus endpoint create \
   --name <my-nexus-endpoint-name> \
   --target-task-queue my-handler-task-queue \
   --target-namespace <my-target-namespace.account> \
+  --allow-namespace <my-caller-namespace.account> \
   --description-file description.md
 ```
 </TabItem>
 </Tabs>
+
+The `--allow-namespace` flag adds caller Namespaces that can use the Nexus Endpoint to its allowlist.
 
 Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
 

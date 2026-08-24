@@ -34,7 +34,7 @@ Before configuring the Export sink, complete the following steps in Google Cloud
    - Automated Setup:
      - Use the [Terraform template](https://github.com/temporalio/terraform-modules/tree/main/modules/export-sa) to create the service account.
 
-## Configure Workflow History Export
+## Configure Workflow History export
 
 There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), the [CLI](#using-the-cli), or [`terraform`](#using-terraform).
 
@@ -186,7 +186,7 @@ tcld n export gcs g -n test.ns --sink-name test-sink
 See the [Terraform export support](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace_export_sink) for setup instructions.
 
 
-### Next Steps
+### Next steps
 
 - [Verify export setup](/cloud/export#verify)
 - [Monitor export progress](/cloud/export#monitor)

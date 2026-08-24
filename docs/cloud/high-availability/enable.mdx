@@ -106,7 +106,7 @@ temporal cloud namespace ha region add \
    --region <replica_region>
 ```
 
-Specify the region name (for example, `us-east-1`) of the region where you want to create the replica as an argument to
+Specify the region ID (for example, `aws-us-east-1`) of the region where you want to create the replica as an argument to
 the `--region` flag. See [Regions](/cloud/regions) for available region names.
 
 Temporal Cloud sends an email alert once your Namespace is ready for use.
@@ -280,7 +280,7 @@ To disable automatic failovers, run the following command in your terminal:
 ```
 temporal cloud namespace ha update \
     --namespace <namespace_id>.<account_id> \
-    --disable-auto-failover
+    --auto-failover disabled
 ```
 
 </TabItem>
@@ -302,7 +302,8 @@ If using API key authentication with the `--api-key` flag, you must add it direc
 
 </Tabs>
 
-To restore the default behavior, unselect the option in the Web UI or pass `--disable-auto-failover=false` in the CLI command.
+To restore the default behavior, unselect the option in the Web UI, pass `--auto-failover enabled` with the Temporal CLI,
+or pass `--disable-auto-failover=false` with `tcld`.
 
 :::note Automatic failovers are always enabled for Same-region Replication
 
@@ -367,4 +368,3 @@ See [Regions](/cloud/regions) for available region names.
 </TabItem>
 
 </Tabs>
-

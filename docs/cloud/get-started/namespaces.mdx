@@ -318,7 +318,7 @@ For accessing the Temporal Web UI, use the HTTPS endpoint in the form:
 `https://cloud.temporal.io/namespaces/<namespace>.<account>`. For example:
 `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
 
-### Accessing Namespaces with Encryption and Private Connectivity
+### Access Namespaces with encryption and private connectivity
 
 To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.3. 
 
@@ -460,7 +460,7 @@ tcld namespace lifecycle set \
 Tags are key-value metadata pairs that can be attached to namespaces in Temporal Cloud to help operators organize,
 track, and manage namespaces more easily.
 
-### Tag Structure and Limits
+### Tag structure and limits
 
 - Each namespace can have a maximum of 10 tags
 - Each key must be unique for a given namespace (for example, a namespace cannot have both `team:foo` and `team:bar` tags)
