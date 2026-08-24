@@ -90,6 +90,17 @@ This document describes the purpose, audience, and content type for each top-lev
 - **Content type:** Reference
 - **Description:** Alphabetical listing of Temporal-specific terms. Each entry should be a concise definition with a link to the page that covers the concept in depth.
 
+## Durable AI
+
+- **Audience:** Developers and architects building AI applications and agents on Temporal.
+- **Content type:** Explanation with curated links.
+- **Description:** Landing page (`/ai`) for building AI systems with Temporal — agents, processing pipelines,
+  internal agent platforms, and model training. Links out to the AI Cookbook (`/ai/cookbook`), relevant Design
+  Patterns, and SDK agent-framework integrations rather than duplicating their content.
+
+    Distinct from "Develop with AI" below: this section is about using Temporal to build AI products, not about using
+    AI tooling to write Temporal code. Don't merge the two.
+
 ## Develop with AI
 
 - **Audience:** Developers using AI coding assistants who want Temporal-aware tooling.

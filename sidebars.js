@@ -78,6 +78,7 @@ const developDotnetCategory = {
             },
             items: [
               'develop/dotnet/workers/serverless-workers/aws-lambda',
+              'develop/dotnet/workers/serverless-workers/cloud-run',
             ],
           },
         ]
@@ -309,7 +310,10 @@ const developGoCategory = {
           type: 'doc',
           id: 'develop/go/integrations/index',
         },
-        items: ['develop/go/integrations/google-adk'],
+        items: [
+          'develop/go/integrations/google-adk',
+          'develop/go/integrations/opentelemetry-v2',
+        ],
       },
     ],
 };
@@ -390,6 +394,7 @@ const developJavaCategory = {
             },
             items: [
               'develop/java/workers/serverless-workers/aws-lambda',
+              'develop/java/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -718,6 +723,7 @@ const developPythonCategory = {
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
+          'develop/python/integrations/openai-agents',
           'develop/python/integrations/strands-agents',
         ],
       },
@@ -790,7 +796,19 @@ const developRubyCategory = {
           id: 'develop/ruby/workers/index',
         },
         items: [
-          'develop/ruby/workers/run-worker-process'
+          'develop/ruby/workers/run-worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/ruby/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/ruby/workers/serverless-workers/cloud-run',
+            ],
+          },
         ],
       },
       {
@@ -911,7 +929,19 @@ const developRustCategory = {
           id: 'develop/rust/workers/index',
         },
         items: [
-          'develop/rust/workers/worker-process'
+          'develop/rust/workers/worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/rust/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/rust/workers/serverless-workers/cloud-run',
+            ],
+          },
         ],
       },
       {
@@ -1018,6 +1048,7 @@ const developTypeScriptCategory = {
             },
             items: [
               'develop/typescript/workers/serverless-workers/aws-lambda',
+              'develop/typescript/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -1788,6 +1819,15 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Durable AI',
+      collapsed: true,
+      link: { type: 'doc', id: 'ai/index' },
+      items: [
+        { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+      ],
+    },
+    {
+      type: 'category',
       label: 'References',
       collapsed: true,
       link: {
@@ -1856,6 +1896,7 @@ module.exports = {
         'best-practices/multi-tenant-patterns',
         'best-practices/managing-aps-limits',
         'best-practices/cost-optimization',
+        'best-practices/cost-governance',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
         'best-practices/worker',
