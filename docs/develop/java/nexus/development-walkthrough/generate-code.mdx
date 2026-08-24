@@ -31,7 +31,20 @@ Generation is one command per language, with a few per-language flags — Java, 
 
 **[Generate code](/nexus/client-code-generator#generate-code)** has the full command shape and the flags each language takes, with examples for each.
 
-For the approval contract, generating the Java code is one command:
+This walkthrough has a companion sample project,
+[nexuswalkthrough](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough)
+in the `samples-java` repository. Its contract is
+[approval.nexusrpc.yaml](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml),
+the same file shown in [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract#write-the-contract).
+
+:::caution For reviewers
+
+The two links above, and the code samples throughout this walkthrough, point at a sample project
+that is not on GitHub yet. They will not resolve until the `samples-java` pull request is merged.
+
+:::
+
+For that project, generating the Java code is one command, run from the repository root:
 
 ```bash
 nexgen java \

@@ -32,6 +32,39 @@ With all ten steps in place, the caller runs the whole approval:
 6. The caller calls `notifyRequester` with the decision, backed by the notification Activity.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-caller-starter-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java)
+
+```java
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkflowOptions options =
+        WorkflowOptions.newBuilder().setTaskQueue(CallerWorker.DEFAULT_TASK_QUEUE_NAME).build();
+
+    // A small purchase. checkApprovalRequired returns false and nothing durable is created.
+    ApprovalCallerWorkflow small = client.newWorkflowStub(ApprovalCallerWorkflow.class, options);
+    String smallResult =
+        small.runApprovalFlow(
+            "laptop-charger-" + UUID.randomUUID(),
+            "dana@example.com",
+            49.99,
+            "Replacement charger");
+    logger.info("Small purchase result: {}", smallResult);
+
+    // A large purchase. Runs the whole flow: context attached first, approval requested, approver
+    // reminded, decision submitted, decision awaited, requester notified.
+    ApprovalCallerWorkflow large = client.newWorkflowStub(ApprovalCallerWorkflow.class, options);
+    String largeResult =
+        large.runApprovalFlow(
+            "standing-desk-" + UUID.randomUUID(),
+            "dana@example.com",
+            1250.00,
+            "Approved in the Q3 ergonomics budget");
+    logger.info("Large purchase result: {}", largeResult);
+  }
+```
+
 <!--SNIPEND-->
 
 Every step crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or which primitive backed any Operation. One Operation ran with no durable Execution at all, one started a Workflow, two sent messages to it, one started a Workflow if it was not already running, and one started an Activity — and from the caller's side they were all just Operations.
