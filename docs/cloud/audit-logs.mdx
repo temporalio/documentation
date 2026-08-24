@@ -103,7 +103,7 @@ For supported Control Plane operations, the `status` field describes the outcome
 - `OK`: The API call returned successfully.
 - `ERROR`: The API call returned an error. This includes authorization failures, such as when the authenticated principal does not have permission to perform the operation.
 
-Audit Logs do not capture authentication failures.
+Audit logs do not capture authentication failures.
 
 For an asynchronous operation, `OK` means that Temporal Cloud accepted the API call.
 The operation can fail after the Audit Log event is emitted, and the event is not updated with the final outcome.
