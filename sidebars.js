@@ -1675,6 +1675,7 @@ module.exports = {
                 'cli/command-reference/cloud/logout',
                 'cli/command-reference/cloud/namespace',
                 'cli/command-reference/cloud/nexus',
+                'cli/command-reference/cloud/project',
                 'cli/command-reference/cloud/region',
                 'cli/command-reference/cloud/service-account',
                 'cli/command-reference/cloud/user',
