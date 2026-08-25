@@ -137,9 +137,8 @@ In the example above, the ca.pem file will be provided to Temporal where the cli
 
 ### Create Cloud Namespaces
 
-Create your cloud-side Namespaces noting current [naming requirements](/cloud/namespaces#temporal-cloud-namespace-name).
-
-Apply any required custom Search Attributes and adjust the [rate limits](/cloud/capacity-modes) as needed.
+1. Create your cloud-side Namespaces noting current [naming requirements](/cloud/namespaces#temporal-cloud-namespace-name).
+2. Apply any required custom Search Attributes and adjust the [rate limits](/cloud/capacity-modes) as needed.
 
 Migration cannot proceed into a Namespace that is already in use. Please ensure that these Namespaces remain empty (no Workflows).
 
@@ -195,7 +194,7 @@ Use the following procedure to deploy the proxy:
 1. Obtain the latest Docker image from the
    [temporalio/s2s-proxy repository](https://hub.docker.com/r/temporalio/s2s-proxy/tags).
 2. Gather the mTLS certs generated in the previous step.
-3. Deploy 3 replicas of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
+3. Deploy **3 replicas** of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
    [helm chart example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/README.md) as a reference.
    See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file
    as a reference. Note that the number of replicas must match on both sides of the connection. If your replica count differs
@@ -204,7 +203,7 @@ Use the following procedure to deploy the proxy:
 ```yaml
 aclPolicy:
   allowedNamespaces:
-   - temporal-system
+   - temporal-system  # required - do not remove
    - namespace1
    - namespace2
    - etc...
@@ -216,13 +215,11 @@ namespaceTranslation:
     remote: "cloud-namespace2.wxyz"
   - etc...
 ```
-5. Test access using the command below. It should display the information of the migration server.
+5. Test access using the command below. It should display the information of the cloud-side migration server.
 
 ```
 temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
 ```
-
-Once connectivity has been verified, notify Temporal so that connectivity may be validated from the cloud-side proxy.
 
 There are multiple metrics available on the S2S proxy (prometheus endpoint: _proxy-pod-ip_:9090/metrics). These are
 helpful for monitoring the overall health of the proxy. In particular, the metric
@@ -234,31 +231,31 @@ will monitor connectivity to the cloud-side proxy.
 
 ### Modify cluster configuration
 
-The [dynamic configuration](/references/dynamic-configuration) of your self-hosted cluster must be modified to
-facilitate the migration.
-
 :::warning
 
-Coordinate closely with Temporal for this step of the process.
+Coordinate closely with Temporal before completing this process.
 
 :::
 
-Adjust the maximum connection keepalive time to match the setting in cloud.
+The [dynamic configuration](/references/dynamic-configuration) of your self-hosted cluster must be modified to
+facilitate the migration.
+
+Complete the following process.
+
+1. Adjust the maximum connection keepalive time to match the setting in cloud.
 
 ```yaml
 frontend.keepAliveMaxConnectionAge:
   - value: '2h'
 ```
 
-If you have previously enabled [Global Namespace](/global-namespace), the Failover Version Increment must be approved by
-Temporal. This is **critical**, since the value may only be set once and cannot change.
+2. For server versions 1.22.6 - 1.23.x, apply this [extra required setting](#special-dynamic-configuration-for-version-1226---123x).
 
-If you've never enabled Global Namespace, then you may enable it and set the Initial Failover Version to a unique value
-in the range of 2-99. Enable by updating the _clusterMetadata_ and the _dcRedirectionPolicy_. 
+3. If [Global Namespace](/global-namespace) **is already enabled**, then skip to step 5.
 
-For server versions 1.22 - 1.23, note this [extra required setting](#special-dynamic-configuration-for-version-122x-123x).
-
-When complete, restart all Temporal services (frontend, history, matching, worker), starting with the frontend.
+4. If [Global Namespace](/global-namespace) **is not enabled**, then enable it and set _failoverVersionIncrement_ and _initialFailoverVersion_
+   to the values provided by Temporal. Pay close attention when setting these values. They **cannot be changed** once Global Namespace has 
+   been enabled. See the sample configuration below for a reference.
 
 ```yaml
 dcRedirectionPolicy:
@@ -266,22 +263,24 @@ dcRedirectionPolicy:
 
 clusterMetadata:
 enableGlobalNamespace: true # add this
-failoverVersionIncrement: CHANGEME # usually 1000000, but coordinate with Temporal. must match cloud-side migration server
+failoverVersionIncrement: CHANGEME # use value provided by Temporal
 masterClusterName: _NO_CHANGE_
 currentClusterName: _NO_CHANGE_
 clusterInformation:
   _NO_CHANGE_:
     enabled: true
-    initialFailoverVersion: CHANGEME # set in the range 2-99. use a unique number per cluster
+    initialFailoverVersion: CHANGEME # use value provided by Temporal
     rpcName: _NO_CHANGE_
     rpcAddress: _NO_CHANGE_
 
-# for versions 1.22 - 1.23 only
+# for versions 1.22.6 - 1.23 only
 #history.enableReplicationStream:
 #  - value: true
 ```
 
-After all services have restarted, verify the configuration using:
+5. Verify your configuration and restart all Temporal services (frontend, history, matching, worker), starting with the frontend.
+
+6. After all services have restarted, verify the configuration using:
 
 ```
 temporal operator cluster describe
@@ -290,8 +289,8 @@ temporal operator cluster describe
 The following sample output is expected:
 
 ```yaml
-"failoverVersionIncrement": "1000000",
-"initialFailoverVersion": "the number you picked"
+"failoverVersionIncrement": "nnn",
+"initialFailoverVersion": "nnn"
 "isGlobalNamespaceEnabled": true
 ```
 
@@ -301,10 +300,21 @@ it is important to verify that your persistence/database layer has plenty of CPU
 
 
 ## Phase 3: Testing
+Once the proxy is deployed and the cluster configuration changes have been applied, then final testing may begin.
 
-Testing should proceed using either a newly created Namespace or else one that is considered to be non-production. In
-either case, test Workflows should be utilized. It is ideal to have a mix of completed, active, and new Workflows to use
-during testing.
+### Verifying the proxy
+Temporal will validate the proxy from the cloud side of the connection.  Temporal will validate
+1. the stability of the proxy connection
+2. that all required permissions are allowed on the self-hosted proxy
+3. that all cluster configuration changes have been applied
+4. that all to-be-migrated Namespaces are visible
+5. the presence of Custom Search Attributes
+
+One the self-hosted setup has been verified, the next step will be to perform test migrations.
+
+### Complete test migrations
+Migration testing should use either a newly created Namespace or else one that is considered to be non-production. 
+It is ideal to have a mix of completed and running Workflows to use during testing.
 
 Testing uses the following process:
 
@@ -312,6 +322,7 @@ Testing uses the following process:
 2. Create target cloud-side Namespace and add the Namespace definition to the S2S Proxy configuration.
 3. Run test Workflows against the Namespace.
 4. Perform a complete end-to-end migration for the Namespace (see remaining phases for full process).
+5. Optionally, test [transferring clients](#transfer-clients-to-cloud) to the cloud.
 
 Testing is considered successful if all data from the self-hosted deployment is migrated to cloud.
 
@@ -445,7 +456,7 @@ ensure that all workers maintain connectivity to cloud to avoid this scenario. T
 
 The following are known limitations.
 
-- OSS server versions 1.22 or newer are required. Refer to the
+- OSS server versions 1.22.6 or newer are required. Refer to the
   [upgrade](/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
 - History shard counts must be a power of two (for example, 512 or 1024).
 - If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal
@@ -464,11 +475,11 @@ The following are known limitations.
   `system.enableCrossNamespaceCommands` configuration must be disabled, and code using cross-Namespace calls must be
   updated or removed prior to migration.
 
-### Special dynamic configuration for Version 1.22.x-1.23.x
+### Special dynamic configuration for Version 1.22.6 - 1.23.x
 
-Temporal versions 1.22.x and 1.23.x include support for stream-based replication, but it is disabled by default. Since
+Temporal versions 1.22.6 and 1.23.x include support for stream-based replication, but it is disabled by default. Since
 those releases, stream-based replication has been validated as more reliable than the poll-based replication that
-remained the default in 1.22 and 1.23.
+remained the default in 1.22.6 and 1.23.
 
 When preparing for an S2C migration on these versions, configure the following dynamic settings to enable stream-based
 replication:
