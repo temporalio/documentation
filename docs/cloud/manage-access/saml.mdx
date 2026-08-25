@@ -177,9 +177,8 @@ Configure the SAML connection to:
 
 - Use SAML 2.0 with HTTP POST binding.
 - Use an RSA X.509 signing certificate and RSA-SHA256 signing.
-- Send the user's full email address as the subject `NameID`.
-- Use the `emailAddress` `NameID` format.
-- Include the user's email address and name as attributes.
+- Use a stable, non-transient subject `NameID`.
+- Include attributes named `email` and `name`.
 
 The following examples show how to apply the same configuration to two additional identity providers. They do not
 represent the complete set of compatible providers.
@@ -187,9 +186,9 @@ represent the complete set of compatible providers.
 ### PingOne configuration example
 
 Create a SAML application in PingOne using the Temporal Cloud entity identifier and Assertion Consumer Service URL
-shown above. Configure the application with an RSA signing certificate, the required subject and attributes, and access
-for the appropriate users or groups. If users will launch Temporal Cloud from the PingOne application portal, make the
-application visible there.
+shown above. Configure the application with an RSA signing certificate, a stable subject `NameID`, the required `email`
+and `name` attributes, and access for the appropriate users or groups. If users will launch Temporal Cloud from the
+PingOne application portal, make the application visible there.
 
 For detailed instructions, see:
 
@@ -199,8 +198,8 @@ For detailed instructions, see:
 ### PingFederate configuration example
 
 Create a SAML 2.0 Browser SSO service provider connection in PingFederate using the Temporal Cloud entity identifier
-and Assertion Consumer Service URL shown above. Configure the connection with an RSA signing certificate and the
-required subject and attributes.
+and Assertion Consumer Service URL shown above. Configure the connection with an RSA signing certificate, a stable
+subject `NameID`, and the required `email` and `name` attributes.
 
 For IdP-initiated SSO, publish the connection-specific `/idp/startSSO.ping` URL in your organization's application
 portal.
