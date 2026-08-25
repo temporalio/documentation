@@ -180,20 +180,8 @@ Configure the SAML connection to:
 - Use a stable, non-transient subject `NameID`.
 - Include attributes named `email` and `name`.
 
-The following examples show how to apply the same configuration to two additional identity providers. They do not
+The following example shows how to apply the same configuration to an additional identity provider. It does not
 represent the complete set of compatible providers.
-
-### PingOne configuration example
-
-Create a SAML application in PingOne using the Temporal Cloud entity identifier and Assertion Consumer Service URL
-shown above. Configure the application with an RSA signing certificate, a stable subject `NameID`, the required `email`
-and `name` attributes, and access for the appropriate users or groups. If users will launch Temporal Cloud from the
-PingOne application portal, make the application visible there.
-
-For detailed instructions, see:
-
-- [Add an application in PingOne](https://docs.pingidentity.com/pingone/applications/p1_applications_add_applications.html)
-- [Edit a SAML application](https://docs.pingidentity.com/pingone/applications/p1_edit_application_saml.html)
 
 ### PingFederate configuration example
 
