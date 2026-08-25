@@ -2320,8 +2320,13 @@
       "permanent": true
     },
     {
+      "source": "/evaluate/development-production-features",
+      "destination": "/evaluate/features",
+      "permanent": true
+    },
+    {
       "source": "/evaluate/development-production-features/index",
-      "destination": "/evaluate/features/index",
+      "destination": "/evaluate/features",
       "permanent": true
     },
     {
@@ -2331,7 +2336,7 @@
     },
     {
       "source": "/evaluate/development-production-features/failure-detection",
-      "destination": "/evaluate/features/failure-detection",
+      "destination": "/evaluate/features/timeouts-and-retries",
       "permanent": true
     },
     {

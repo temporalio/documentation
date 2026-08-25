@@ -1175,7 +1175,7 @@ module.exports = {
           },
           items: [
             'evaluate/features/core-primitives',
-            'evaluate/features/failure-detection',
+            'evaluate/features/timeouts-and-retries',
             'evaluate/features/throughput-composability',
             'evaluate/features/nexus',
             'evaluate/features/workflow-message-passing',
