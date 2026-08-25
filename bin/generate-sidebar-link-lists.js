@@ -149,10 +149,18 @@ function findOwningCategory(tree, docId) {
   return found;
 }
 
-function findNamedDescendant(category, label) {
+// Matches a sidebar label or the category's own URL. The URL form exists
+// because a landing page's heading text often isn't the sidebar label —
+// "## [Temporal Client](/develop/python/client)" sits above the category
+// labelled "Client" — and the heading already carries the URL, so an author
+// can copy it rather than having to go read sidebars.js.
+function findNamedDescendant(category, nameOrUrl) {
+  const wanted = String(nameOrUrl).replace(/\/$/, '');
   let found = null;
   eachCategory(category.children, (cat) => {
-    if (!found && cat.label === label) found = cat;
+    if (found) return;
+    if (cat.label === nameOrUrl) found = cat;
+    else if (cat.url && cat.url.replace(/\/$/, '') === wanted) found = cat;
   });
   return found;
 }
