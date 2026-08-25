@@ -249,7 +249,7 @@ frontend.keepAliveMaxConnectionAge:
   - value: '2h'
 ```
 
-2. For server versions 1.22.6 - 1.23.x, apply this [extra required setting](#special-dynamic-configuration-for-version-1226---123x).
+2. For server versions 1.22.6 - 1.23.x, apply this [extra required setting](#special-dynamic-configuration-for-version-122---123).
 
 3. If [Global Namespace](/global-namespace) **is already enabled**, then skip to step 5.
 
@@ -273,7 +273,7 @@ clusterInformation:
     rpcName: _NO_CHANGE_
     rpcAddress: _NO_CHANGE_
 
-# for versions 1.22.6 - 1.23 only
+# for versions 1.22 - 1.23 only
 #history.enableReplicationStream:
 #  - value: true
 ```
@@ -475,11 +475,11 @@ The following are known limitations.
   `system.enableCrossNamespaceCommands` configuration must be disabled, and code using cross-Namespace calls must be
   updated or removed prior to migration.
 
-### Special dynamic configuration for Version 1.22.6 - 1.23.x
+### Special dynamic configuration for Version 1.22 - 1.23
 
-Temporal versions 1.22.6 and 1.23.x include support for stream-based replication, but it is disabled by default. Since
+Temporal versions 1.22 and 1.23 include support for stream-based replication, but it is disabled by default. Since
 those releases, stream-based replication has been validated as more reliable than the poll-based replication that
-remained the default in 1.22.6 and 1.23.
+remained the default in 1.22 and 1.23.
 
 When preparing for an S2C migration on these versions, configure the following dynamic settings to enable stream-based
 replication:
