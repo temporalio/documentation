@@ -156,13 +156,24 @@ function findOwningCategory(tree, docId) {
 // can copy it rather than having to go read sidebars.js.
 function findNamedDescendant(category, nameOrUrl) {
   const wanted = String(nameOrUrl).replace(/\/$/, '');
-  let found = null;
+  const byUrl = [];
+  const byLabel = [];
   eachCategory(category.children, (cat) => {
-    if (found) return;
-    if (cat.label === nameOrUrl) found = cat;
-    else if (cat.url && cat.url.replace(/\/$/, '') === wanted) found = cat;
+    if (cat.url && cat.url.replace(/\/$/, '') === wanted) byUrl.push(cat);
+    else if (cat.label === nameOrUrl) byLabel.push(cat);
   });
-  return found;
+
+  // A URL is unique, so prefer it and don't let a same-named category elsewhere
+  // in the tree interfere.
+  if (byUrl.length) return byUrl[0];
+
+  // Labels are not unique — "Quickstart" appears under several sections — so
+  // refuse rather than silently picking whichever came first in traversal.
+  if (byLabel.length > 1) {
+    const urls = byLabel.map((c) => c.url || '(no link)').join(', ');
+    throw new Error(`"${nameOrUrl}" matches ${byLabel.length} categories under "${category.label}" (${urls}); use the category URL instead of its label`);
+  }
+  return byLabel[0] || null;
 }
 
 // ---------------------------------------------------------------------------
@@ -213,12 +224,13 @@ const BULLET = /^\s*-\s*\[(?<label>[^\]]+)\]\((?<url>[^)]+)\)\s*$/;
 // isn't in this category at all (an external tutorial link, say) is preserved
 // rather than deleted.
 function reconcileList(category, existingLines, indent) {
-  const existing = [];
-  for (const line of existingLines) {
+  // Every line is kept, blank ones included. Dropping blanks would make this
+  // silently destructive on a region that had deliberate spacing, which is
+  // exactly what "insert-only" promises not to do.
+  const existing = existingLines.map((line) => {
     const m = line.match(BULLET);
-    if (m) existing.push({ line, url: m.groups.url, label: m.groups.label });
-    else if (line.trim() !== '') existing.push({ line, url: null, label: null });
-  }
+    return m ? { line, url: m.groups.url, label: m.groups.label } : { line, url: null, label: null };
+  });
 
   const generated = renderList(category, indent).map((line) => {
     const m = line.match(BULLET);
@@ -257,7 +269,8 @@ function reconcileList(category, existingLines, indent) {
     added.push(g.url);
   });
 
-  return { lines: out, added, preserved: existing.length - sidebarUrls.size };
+  const preserved = existing.filter((e) => e.url && !sidebarUrls.has(e.url)).length;
+  return { lines: out, added, preserved };
 }
 
 function parseAttrs(raw) {
@@ -296,10 +309,10 @@ function processFile(filePath, tree, docs) {
     }
     const target = section ? findNamedDescendant(owning, section) : owning;
     if (!target) {
-      throw new Error(`${path.relative(process.cwd(), filePath)}: no category labelled "${section}" under "${owning.label}"`);
+      throw new Error(`${path.relative(process.cwd(), filePath)}: no category matching "${section}" (by label or URL) under "${owning.label}"`);
     }
 
-    const actual = lines.slice(i + 1, close).filter((l) => l.trim() !== '');
+    const actual = lines.slice(i + 1, close);
     const { lines: expected, added, preserved } = reconcileList(target, actual, indent);
     regions.push({
       section: section || owning.label,
@@ -349,9 +362,12 @@ function unmarkedCandidates(tree) {
     const text = fs.readFileSync(filePath, 'utf8');
     if (/SIDEBAR-LIST-START/.test(text)) continue;
 
-    // Only pages that already hand-maintain a list of internal links.
+    // Any page that already hand-maintains internal links qualifies. A single
+    // link counts: a Workers page listing one entry is likelier to be missing
+    // something than one listing ten, and an earlier `< 2` cutoff hid exactly
+    // those pages — four workers/index.mdx among them.
     const bullets = [...text.matchAll(/^-\s*\[[^\]]+\]\((\/[^)]+)\)\s*$/gm)];
-    if (bullets.length < 2) continue;
+    if (bullets.length < 1) continue;
 
     const category = findOwningCategory(tree, computeDocId(filePath));
     if (!category) continue;

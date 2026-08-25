@@ -1,5 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const {
   reconcileList,
@@ -7,6 +9,8 @@ const {
   buildDocIndex,
   buildSidebarTree,
   findOwningCategory,
+  findNamedDescendant,
+  processFile,
 } = require('./generate-sidebar-link-lists');
 
 // Synthetic categories keep these cases stable as the real docs change.
@@ -115,4 +119,81 @@ test('every SDK section index page resolves to a sidebar category', () => {
   }
 
   assert.deepStrictEqual(missing, [], 'these pages have no owning sidebar category');
+});
+
+// ---------------------------------------------------------------------------
+// processFile: marker parsing and the error paths. These run against a real
+// temporary page under docs/ because the doc id -> sidebar category lookup
+// only means anything against the real sidebars.js.
+// ---------------------------------------------------------------------------
+
+const TMP_DIR = path.join(process.cwd(), 'docs', 'develop', '_sidebar_link_list_fixture');
+
+function withFixture(body, run) {
+  fs.mkdirSync(TMP_DIR, { recursive: true });
+  const file = path.join(TMP_DIR, 'index.mdx');
+  fs.writeFileSync(file, body);
+  try {
+    return run(file);
+  } finally {
+    fs.rmSync(TMP_DIR, { recursive: true, force: true });
+  }
+}
+
+test('processFile rejects a region with no closing marker', () => {
+  const docs = buildDocIndex();
+  const tree = buildSidebarTree(docs);
+  withFixture('---\nid: index\n---\n\n{/* SIDEBAR-LIST-START */}\n- [A](/a)\n', (file) => {
+    assert.throws(() => processFile(file, tree, docs), /no matching SIDEBAR-LIST-END/);
+  });
+});
+
+test('processFile rejects a page no sidebar category links to', () => {
+  const docs = buildDocIndex();
+  const tree = buildSidebarTree(docs);
+  withFixture('---\nid: index\n---\n\n{/* SIDEBAR-LIST-START */}\n{/* SIDEBAR-LIST-END */}\n', (file) => {
+    assert.throws(() => processFile(file, tree, docs), /no sidebars\.js category links to this page/);
+  });
+});
+
+test('processFile leaves everything outside the markers untouched', () => {
+  const docs = buildDocIndex();
+  const tree = buildSidebarTree(docs);
+  const real = path.join(process.cwd(), 'docs', 'develop', 'python', 'index.mdx');
+  const before = fs.readFileSync(real, 'utf8');
+  const { content, regions } = processFile(real, tree, docs);
+
+  assert.ok(regions.length > 0, 'the Python landing page should have marked regions');
+
+  // Compare everything that is not inside a marked region.
+  const strip = (text) => {
+    const out = [];
+    let inside = false;
+    for (const line of text.split('\n')) {
+      if (/SIDEBAR-LIST-START/.test(line)) { inside = true; out.push(line); continue; }
+      if (/SIDEBAR-LIST-END/.test(line)) { inside = false; out.push(line); continue; }
+      if (!inside) out.push(line);
+    }
+    return out.join('\n');
+  };
+  assert.strictEqual(strip(content), strip(before), 'content outside the markers must not change');
+});
+
+test('processFile is a no-op on an already-current page', () => {
+  const docs = buildDocIndex();
+  const tree = buildSidebarTree(docs);
+  const real = path.join(process.cwd(), 'docs', 'develop', 'python', 'index.mdx');
+  const { changed } = processFile(real, tree, docs);
+  assert.strictEqual(changed, false, 'run `yarn sidebar-links` — the committed page is stale');
+});
+
+test('a marker keyed by category URL resolves even when the heading text differs', () => {
+  // "## [Temporal Client](/develop/python/client)" sits above the category
+  // labelled "Client", which is why the URL form exists.
+  const docs = buildDocIndex();
+  const tree = buildSidebarTree(docs);
+  const own = findOwningCategory(tree, 'develop/python/index');
+  assert.ok(own, 'the Python SDK category should link develop/python/index');
+  assert.strictEqual(findNamedDescendant(own, '/develop/python/client').label, 'Client');
+  assert.strictEqual(findNamedDescendant(own, 'Temporal Client'), null, 'heading text is not a sidebar label');
 });
