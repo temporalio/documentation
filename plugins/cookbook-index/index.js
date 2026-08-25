@@ -102,7 +102,7 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
       setGlobalData({ items: content.items });
     },
 
-    // The /ai-cookbook landing page (src/pages/ai-cookbook.tsx) is a plain
+    // The /ai/cookbook landing page (src/pages/ai/cookbook.tsx) is a plain
     // React page, not an MDX doc, so it's invisible to plugins/markdown-pages
     // (which only walks docsDir trees). It links to a markdown alternate
     // (<link rel="alternate" type="text/markdown">) same as every recipe
@@ -127,8 +127,10 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
         '',
       ];
 
-      fs.writeFileSync(path.join(outDir, 'ai-cookbook.md'), lines.join('\n'));
-      console.log(`[cookbook-index] Generated ai-cookbook.md index (${sorted.length} recipe(s))`);
+      const aiCookbookMdDir = path.join(outDir, 'ai');
+      fs.mkdirSync(aiCookbookMdDir, { recursive: true });
+      fs.writeFileSync(path.join(aiCookbookMdDir, 'cookbook.md'), lines.join('\n'));
+      console.log(`[cookbook-index] Generated ai/cookbook.md index (${sorted.length} recipe(s))`);
 
       // Same reasoning as the .md file above: this page is invisible to
       // plugins/og-image's docsDir walk, so nothing else renders it a card.

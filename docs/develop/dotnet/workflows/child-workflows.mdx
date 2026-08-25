@@ -3,25 +3,6 @@ id: child-workflows
 title: Child Workflows - .NET SDK
 sidebar_label: Child Workflows
 description: Start a Child Workflow Execution and set a Parent Close Policy using Temporal .NET SDK. Discover methods like ExecuteChildWorkflowAsync and manage Workflow behaviors.
-keywords:
-  - start child workflow execution
-  - temporal .net sdk
-  - child workflow api
-  - child workflow events
-  - startchildworkflowexecutioninitiated
-  - childworkflowexecutionstarted
-  - childworkflowexecutioncompleted
-  - workflow execution event history
-  - parent close policy
-  - executechildworkflowasync
-  - startchildworkflowasync
-  - workflow run id
-  - signal child workflow
-  - temporal .net examples
-  - manage child workflows
-  - child workflow options
-  - parentclosepolicy
-  - child workflow in .net
 tags:
   - Workflows
   - .Net SDK
@@ -38,7 +19,7 @@ This page shows how to do the following:
 
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
-When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted)) are logged in the Workflow Execution Event History.
 
 The [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event must be logged to the Event History before the Parent Workflow completes to ensure the Child Workflow has started.
 In .NET, awaiting `StartChildWorkflowAsync()` or `ExecuteChildWorkflowAsync()` internally waits for this Event before returning, so the Child Workflow is guaranteed to have started once the call resolves.

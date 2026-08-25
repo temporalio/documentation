@@ -4,10 +4,6 @@ title: Workflow Id and Run Id
 sidebar_label: Workflow Id and Run Id
 description: A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.
 slug: /workflow-execution/workflowid-runid
-keywords:
-  - workflow id
-  - run id
-  - identifiers
 tags:
   - Concepts
   - Workflows
@@ -26,6 +22,13 @@ Temporal guarantees that there can be at most one Workflow Execution with a give
 In some cases, such as when running the same Workflow at recurring intervals using the Schedules features, there can be multiple "runs" of a single Workflow Execution over a period of time.
 In this case, all runs will have the same Workflow ID.
 However, each run will have a unique system-generated [Run ID](#run-id).
+
+:::note Workflow Id uniqueness and High Availability
+
+This uniqueness constraint is enforced within the active [Namespace](/namespaces).
+On a [High Availability](/cloud/high-availability) Namespace, replication is asynchronous, and a failover preserves the constraint through Temporal Cloud's [conflict resolution](/cloud/high-availability/failovers#conflict-resolution) process.
+
+:::
 
 ## What is a Run Id? {/* #run-id */}
 
@@ -143,4 +146,3 @@ The Workflow Id Conflict Policy can have one of the following values:
   **This is the default policy, if one isn't specified.**
 - **Use Existing:** Prevents the Workflow Execution from spawning and returns a successful response with the Open Workflow Execution's Run Id.
 - **Terminate Existing:** Terminates the Open Workflow Execution then spawns the new Workflow Execution with the same Workflow Id.
-

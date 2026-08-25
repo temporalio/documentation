@@ -54,13 +54,22 @@
     "href": "https://docs.datadoghq.com/integrations/temporal-cloud-costs/"
   },
   {
+    "name": "Deep Agents",
+    "description": "Make LangChain Deep Agents durable with Temporal Workflows and Activities.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/deepagents"
+  },
+  {
     "name": "Google ADK",
     "description": "Orchestrate Google ADK agents with durable Temporal Workflows.",
     "tags": [
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "https://adk.dev/integrations/temporal/"
+    "href": "/develop/python/integrations/google-adk"
   },
   {
     "name": "Google ADK",
@@ -97,6 +106,15 @@
     ],
     "sdk": "Python",
     "href": "/develop/python/integrations/langgraph"
+  },
+  {
+    "name": "Langfuse",
+    "description": "Trace and debug LLM calls in Temporal Workflows with Langfuse.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "https://langfuse.com/integrations/frameworks/temporal"
   },
   {
     "name": "LangSmith",
@@ -141,7 +159,7 @@
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md"
+    "href": "/develop/python/integrations/openai-agents"
   },
   {
     "name": "OpenAI Agents SDK",
@@ -161,6 +179,15 @@
     ],
     "sdk": "Python",
     "href": "https://docs.openbox.ai/getting-started/temporal"
+  },
+  {
+    "name": "OpenTelemetry v2",
+    "description": "Export tracing and metrics from Temporal Go SDK applications with OpenTelemetry.",
+    "tags": [
+      "Observability"
+    ],
+    "sdk": "Go",
+    "href": "/develop/go/integrations/opentelemetry-v2"
   },
   {
     "name": "Parseable",

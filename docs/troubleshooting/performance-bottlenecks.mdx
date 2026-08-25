@@ -4,12 +4,6 @@ title: Performance bottlenecks troubleshooting guide
 sidebar_label: Performance bottlenecks
 description: Diagnose and resolve performance bottlenecks using Temporal SDK metrics
 toc_max_heading_level: 4
-keywords:
-  - temporal cloud 
-  - temporal cloud metrics
-  - metrics monitoring 
-  - monitoring temporal metrics
-  - temporal cloud dashboards
 tags:
   - Metrics
   - Observability
@@ -41,7 +35,7 @@ This metric represents the time between when a [Workflow Task](/tasks#workflow-t
 To diagnose and address high `temporal_workflow_task_schedule_to_start_latency`, you should:
 
 1. Check Worker CPU and memory usage.
-1. Review Worker configuration (number of pollers, Task slots, etc.).
+1. Review Worker configuration (such as number of pollers and Task slots).
 1. Look for any spikes in Workflow or Activity starts that might be overwhelming the system.
 1. Ensure Workers are in the same region as the Temporal cluster if possible.
 
@@ -59,7 +53,7 @@ Here are some potential causes:
 To diagnose and address high `temporal_activity_schedule_to_start_latency`:
 
 1. Check Worker CPU and memory usage.
-1. Review Worker configuration (number of pollers, Task slots, etc.).
+1. Review Worker configuration (such as number of pollers and Task slots).
 1. Look for any spikes in Workflow or Activity starts that might be overwhelming the system.
 1. Ensure Workers are in the same region as the Temporal cluster if possible.
 

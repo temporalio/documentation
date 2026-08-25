@@ -4,10 +4,6 @@ title: Sunset and garbage collection
 sidebar_label: Sunset and GC
 description: Drain and sunset old Worker Deployment Versions, then garbage-collect unused versions.
 toc_max_heading_level: 4
-keywords:
-  - workers
-  - versioning
-  - deploys
 tags:
   - Temporal Service
   - Durable Execution
@@ -168,7 +164,7 @@ which is currently set to 100 in Temporal Cloud, but that's a conservative numbe
 For example, when you deploy your 101st Worker Version in a Worker Deployment, the server looks at the oldest drained
 version in the Worker deployment. If it has had no pollers in the last 5 minutes, the server deletes it. If that version
 still has pollers, the server will try the next oldest version. If none of the 100 versions are eligible for deletion
-(ie. none of them are drained with no pollers), then no version will be deleted and the poll from the 101st version
+(that is, none of them are drained with no pollers), then no version will be deleted and the poll from the 101st version
 would fail.
 
 At that point, to successfully deploy your 101st version, you would need to increase `matching.maxVersionsInDeployment`

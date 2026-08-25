@@ -3,15 +3,8 @@ id: multi-tenant-patterns
 title: Multi-tenant application patterns
 sidebar_label: Multi-tenant patterns
 description: Learn how to build multi-tenant applications using Temporal with task queue isolation patterns, worker design, and best practices.
-slug: /production-deployment/multi-tenant-patterns
+slug: /best-practices/multi-tenant-patterns
 toc_max_heading_level: 4
-keywords:
-  - multi-tenant
-  - task queues
-  - worker patterns
-  - SaaS
-  - fairness
-  - task queue fairness
 tags:
   - Multitenancy
   - Best Practices
@@ -155,7 +148,7 @@ This section details the recommended pattern for most multi-tenant applications.
 When a [Worker](/workers) starts up:
 
 1. **Load tenant configuration** - Retrieve the list of tenants this Worker should handle (from config file, API, or database)
-2. **Create [Task Queues](/task-queue)** - For each tenant, generate a unique Task Queue name (e.g., `customer-{tenant-id}`)
+2. **Create [Task Queues](/task-queue)** - For each tenant, generate a unique Task Queue name (for example, `customer-{tenant-id}`)
 3. **Register [Workflows](/workflows) and [Activities](/activities)** - Register your Workflow and Activity implementations once, passing the tenant-specific Task Queue name
 4. **Poll multiple Task Queues** - A single Worker process polls all assigned tenant Task Queues
 

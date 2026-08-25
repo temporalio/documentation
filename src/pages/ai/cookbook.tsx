@@ -17,7 +17,7 @@ export default function CookbookLanding() {
           React page, not an MDX doc, so it's outside the automatic per-doc
           pipeline and needs these tags set explicitly. */}
       <Head>
-        <link rel="alternate" type="text/markdown" href="/ai-cookbook.md" title="AI Cookbook" />
+        <link rel="alternate" type="text/markdown" href="/ai/cookbook.md" title="AI Cookbook" />
         <meta property="og:image" content={ogImageUrl} />
         <meta name="twitter:image" content={ogImageUrl} />
       </Head>

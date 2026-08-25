@@ -5,12 +5,6 @@ sidebar_label: GCP Cloud Run
 description: Deploy a Temporal Serverless Worker to a GCP Cloud Run Worker Pool.
 slug: /production-deployment/worker-deployments/serverless-workers/cloud-run
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - cloud run
-  - gcp
-  - worker
-  - deployment
 tags:
   - Workers
   - Deploy
@@ -35,6 +29,10 @@ A Cloud Run Worker Pool runs long-lived instances that poll the Task Queue conti
 through the Cloud Run admin API as work arrives and drains. For how the pool scales and how instances are shut down, see
 [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run).
 
+Cloud Run runs a standard long-lived Worker, so there is no Cloud Run-specific handler or package and any Temporal SDK
+can run on a Worker Pool. The one addition is [Worker Versioning](/worker-versioning), which Serverless Workers require. The tabs below cover
+the SDKs with a Cloud Run guide today.
+
 ## Prerequisites {/* #prerequisites */}
 
 - A Temporal Cloud account with a GCP-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
@@ -50,8 +48,7 @@ through the Cloud Run admin API as work arrives and drains. For how the pool sca
   perform the GCP steps, such as the Google Cloud console or Terraform.
 - [Terraform](https://developer.hashicorp.com/terraform/install) installed. Temporal provides the IAM setup as a
   Terraform module.
-- The [Go SDK](/develop/go), [Python SDK](/develop/python), or [TypeScript SDK](/develop/typescript), depending on which
-  language you are using. Use the tabs to select your language and the rest of the page will update accordingly.
+- A Temporal SDK. Use the tabs to select your language and the rest of the page will update accordingly.
 
 ## 1. Write Worker code {/* #write-worker-code */}
 
@@ -118,7 +115,7 @@ class MyWorkflow:
         ...
 ```
 
-For the Python Worker setup specific to Cloud Run, see
+For more on the Python Worker setup, see
 [Serverless Workers on GCP Cloud Run - Python SDK](/develop/python/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Python>
@@ -183,24 +180,26 @@ w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
 
 If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
 
-For the Go Worker setup specific to Cloud Run, see
+For more on the Go Worker setup, see
 [Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Go>
 <SdkTabs.TypeScript>
 
 ```ts
-import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-  const config = loadClientConnectConfig();
-  const connection = await NativeConnection.connect(config.connectionOptions);
+  const connection = await NativeConnection.connect({
+    address: process.env.TEMPORAL_ADDRESS,
+    apiKey: process.env.TEMPORAL_API_KEY,
+    tls: true,
+  });
 
   const worker = await Worker.create({
     connection,
-    namespace: config.namespace,
+    namespace: process.env.TEMPORAL_NAMESPACE!,
     taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
     workflowsPath: require.resolve('./workflows'),
     activities,
@@ -233,7 +232,208 @@ export async function myWorkflow(): Promise<string> {
 }
 ```
 
+For more on the TypeScript Worker setup, see
+[Serverless Workers on GCP Cloud Run - TypeScript SDK](/develop/typescript/workers/serverless-workers/cloud-run).
+
 </SdkTabs.TypeScript>
+<SdkTabs.Java>
+
+```java
+package example;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerDeploymentOptions;
+import io.temporal.worker.WorkerFactory;
+import io.temporal.worker.WorkerOptions;
+
+public class WorkerMain {
+  public static void main(String[] args) {
+    String apiKey = System.getenv("TEMPORAL_API_KEY");
+
+    WorkflowServiceStubs service =
+        WorkflowServiceStubs.newServiceStubs(
+            WorkflowServiceStubsOptions.newBuilder()
+                .setTarget(System.getenv("TEMPORAL_ADDRESS"))
+                .setEnableHttps(true)
+                .addApiKey(() -> apiKey)
+                .build());
+
+    WorkflowClient client =
+        WorkflowClient.newInstance(
+            service,
+            WorkflowClientOptions.newBuilder()
+                .setNamespace(System.getenv("TEMPORAL_NAMESPACE"))
+                .build());
+
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+
+    Worker worker =
+        factory.newWorker(
+            System.getenv("TEMPORAL_TASK_QUEUE"),
+            WorkerOptions.newBuilder()
+                .setDeploymentOptions(
+                    WorkerDeploymentOptions.newBuilder()
+                        .setUseVersioning(true)
+                        .setVersion(new WorkerDeploymentVersion("my-app", "build-1"))
+                        .setDefaultVersioningBehavior(VersioningBehavior.PINNED)
+                        .build())
+                .build());
+
+    worker.registerWorkflowImplementationTypes(MyWorkflowImpl.class);
+    worker.registerActivitiesImplementations(new MyActivitiesImpl());
+
+    factory.start();
+  }
+}
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or
+`AUTO_UPGRADE`. Set it per Workflow with the `@WorkflowVersioningBehavior` annotation, or set a Worker-level default
+with `setDefaultVersioningBehavior` as shown above.
+
+For more on the Java Worker setup, see
+[Serverless Workers on GCP Cloud Run - Java SDK](/develop/java/workers/serverless-workers/cloud-run).
+
+</SdkTabs.Java>
+<SdkTabs.DotNet>
+
+```csharp
+using Temporalio.Client;
+using Temporalio.Worker;
+
+var client = await TemporalClient.ConnectAsync(new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
+{
+    Namespace = Environment.GetEnvironmentVariable("TEMPORAL_NAMESPACE")!,
+    ApiKey = Environment.GetEnvironmentVariable("TEMPORAL_API_KEY"),
+    Tls = new(),
+});
+
+var options = new TemporalWorkerOptions(Environment.GetEnvironmentVariable("TEMPORAL_TASK_QUEUE")!)
+{
+    DeploymentOptions = new(new("my-app", "build-1"), useWorkerVersioning: true)
+    {
+        DefaultVersioningBehavior = Temporalio.Common.VersioningBehavior.Pinned,
+    },
+};
+options.AddWorkflow<MyWorkflow>();
+options.AddActivity(MyActivities.Greet);
+
+using var worker = new TemporalWorker(client, options);
+await worker.ExecuteAsync(CancellationToken.None);
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `Pinned` or
+`AutoUpgrade`. Set it per Workflow with `[Workflow(VersioningBehavior = ...)]`, or set a Worker-level default with
+`DefaultVersioningBehavior` as shown above.
+
+For more on the .NET Worker setup, see
+[Serverless Workers on GCP Cloud Run - .NET SDK](/develop/dotnet/workers/serverless-workers/cloud-run).
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+require 'temporalio/client'
+require 'temporalio/worker'
+
+client = Temporalio::Client.connect(
+  ENV.fetch('TEMPORAL_ADDRESS'),
+  ENV.fetch('TEMPORAL_NAMESPACE'),
+  api_key: ENV.fetch('TEMPORAL_API_KEY'),
+  tls: true
+)
+
+worker = Temporalio::Worker.new(
+  client:,
+  task_queue: ENV.fetch('TEMPORAL_TASK_QUEUE'),
+  workflows: [MyWorkflow],
+  activities: [Greet],
+  deployment_options: Temporalio::Worker::DeploymentOptions.new(
+    version: Temporalio::WorkerDeploymentVersion.new(
+      deployment_name: 'my-app',
+      build_id: 'build-1'
+    ),
+    use_worker_versioning: true,
+    default_versioning_behavior: Temporalio::VersioningBehavior::PINNED
+  )
+)
+
+worker.run
+```
+
+Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or
+`AUTO_UPGRADE`. Set it per Workflow by calling `workflow_versioning_behavior` in the Workflow class, or set a
+Worker-level default with `default_versioning_behavior` as shown above.
+
+For more on the Ruby Worker setup, see
+[Serverless Workers on GCP Cloud Run - Ruby SDK](/develop/ruby/workers/serverless-workers/cloud-run).
+
+</SdkTabs.Ruby>
+<SdkTabs.Rust>
+
+```rust
+use std::str::FromStr;
+
+use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions, Url};
+use temporalio_common::worker::{
+    VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
+};
+use temporalio_sdk::{Runtime, Worker, WorkerOptions};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let address = std::env::var("TEMPORAL_ADDRESS")?;
+
+    let runtime = Runtime::new_assume_tokio(Default::default())?;
+
+    let connection_options = ConnectionOptions::new(Url::from_str(&format!("https://{address}"))?)
+        .api_key(std::env::var("TEMPORAL_API_KEY")?)
+        .tls_options(TlsOptions::default())
+        .build();
+    let connection = Connection::connect(connection_options).await?;
+    let client = Client::new(
+        connection,
+        ClientOptions::new(std::env::var("TEMPORAL_NAMESPACE")?).build(),
+    )?;
+
+    let worker_options = WorkerOptions::new(std::env::var("TEMPORAL_TASK_QUEUE")?)
+        .deployment_options(
+            WorkerDeploymentOptions::new(WorkerDeploymentVersion {
+                deployment_name: "my-app".to_owned(),
+                build_id: "build-1".to_owned(),
+            })
+            .use_worker_versioning(true)
+            .default_versioning_behavior(VersioningBehavior::Pinned)
+            .build(),
+        )
+        .register_workflow::<MyWorkflow>()?
+        .register_activities(MyActivities)
+        .build();
+
+    let mut worker = Worker::new(&runtime, client, worker_options)?;
+    worker.run().await?;
+
+    Ok(())
+}
+```
+
+The Rust SDK sets the versioning behavior on the Worker rather than per Workflow, so `default_versioning_behavior`
+covers every Workflow the Worker registers. Setting it to `VersioningBehavior::Unspecified` is an error at
+startup.
+
+Setting `api_key` does not by itself apply TLS on this connection path, so set `tls_options` as well or the Worker
+fails with `Connecting to HTTPS without TLS enabled`.
+
+For more on the Rust Worker setup, see
+[Serverless Workers on GCP Cloud Run - Rust SDK](/develop/rust/workers/serverless-workers/cloud-run).
+
+</SdkTabs.Rust>
 </SdkTabs>
 
 :::tip
@@ -306,6 +506,10 @@ RUN npm run build
 
 FROM node:22-slim
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
@@ -314,11 +518,108 @@ COPY --from=build /app/lib ./lib
 CMD ["node", "lib/worker.js"]
 ```
 
-Use a glibc-based image such as `node:22-slim` rather than an Alpine image. Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK. See [Do not use Alpine](/develop/typescript/workers/run-worker-process#do-not-use-alpine).
+Three details are required here:
 
-Set `NODE_OPTIONS=--max-old-space-size=<MB>` on the Worker Pool to about 80% of the instance's memory limit. Without it, Node.js sizes its heap from the host's total memory rather than the container limit. See [Run a Worker on Docker](/develop/typescript/workers/run-worker-process#run-a-worker-on-docker).
+- Keep the `ca-certificates` step. Without it the Worker fails at startup with `TransportError: tonic::transport::Error(Transport, NativeCertsNotFound)`.
+- Use a glibc-based image, not Alpine. See [Do not use Alpine](/develop/typescript/workers/run-worker-process#do-not-use-alpine).
+- Set `NODE_OPTIONS=--max-old-space-size=<MB>` on the Worker Pool to about 80% of the instance's memory limit. See [Run a Worker on Docker](/develop/typescript/workers/run-worker-process#run-a-worker-on-docker).
 
 </SdkTabs.TypeScript>
+<SdkTabs.Java>
+
+Build a fat jar in one stage and run it on a JRE image:
+
+```dockerfile
+FROM maven:3.9-eclipse-temurin-21 AS build
+
+WORKDIR /src
+COPY pom.xml ./
+RUN mvn -B -q dependency:go-offline
+COPY src ./src
+RUN mvn -B -q package -DskipTests
+
+FROM eclipse-temurin:21-jre-noble
+
+WORKDIR /app
+COPY --from=build /src/target/my-worker.jar /app/worker.jar
+CMD ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/worker.jar"]
+```
+
+The JVM reads the container's memory limit but defaults its maximum heap to 25% of it, so set `-XX:MaxRAMPercentage` to
+give the Worker more of the instance.
+
+</SdkTabs.Java>
+<SdkTabs.DotNet>
+
+Publish in one stage and run on a .NET runtime image:
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
+WORKDIR /src
+COPY *.csproj ./
+RUN dotnet restore
+COPY . .
+RUN dotnet publish -c Release -o /out
+
+FROM mcr.microsoft.com/dotnet/runtime:9.0
+
+WORKDIR /app
+COPY --from=build /out ./
+CMD ["dotnet", "MyWorker.dll"]
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+Install the precompiled gem rather than building the native extension from source:
+
+```dockerfile
+FROM ruby:3.3-slim
+
+WORKDIR /app
+RUN gem install temporalio --no-document
+COPY worker.rb ./
+
+CMD ["ruby", "worker.rb"]
+```
+
+Installing through Bundler in a container can select the source gem, which then fails to build without a Rust
+toolchain. If you use Bundler, add the target platform to the lockfile with `bundle lock --add-platform x86_64-linux`.
+
+</SdkTabs.Ruby>
+<SdkTabs.Rust>
+
+Compile the Worker in one stage and copy the binary into a runtime image:
+
+```dockerfile
+FROM rust:1.92-slim AS build
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends pkg-config libssl-dev protobuf-compiler libprotobuf-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
+COPY Cargo.toml ./
+COPY src ./src
+RUN cargo build --release
+
+FROM debian:bookworm-slim
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY --from=build /src/target/release/my-worker /app/worker
+CMD ["/app/worker"]
+```
+
+The build stage needs `libprotobuf-dev` alongside `protobuf-compiler`, because the compiler package alone installs
+`protoc` without the well-known type definitions. The runtime stage needs `ca-certificates`, which
+`debian:bookworm-slim` does not ship.
+
+</SdkTabs.Rust>
 </SdkTabs>
 
 ### ii. Build and push the image {/* #build-and-push */}
