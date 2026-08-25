@@ -177,8 +177,8 @@ Configure the SAML connection to:
 
 - Use SAML 2.0 with HTTP POST binding.
 - Use an RSA X.509 signing certificate and RSA-SHA256 signing.
-- Use a stable, non-transient subject `NameID`.
-- Include attributes named `email` and `name`.
+- Provide a stable subject `NameID` that uniquely identifies each user.
+- Include the user's email address and name as attributes.
 
 The following example shows how to apply the same configuration to an additional identity provider. It does not
 represent the complete set of compatible providers.
