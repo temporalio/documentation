@@ -2341,7 +2341,7 @@
     },
     {
       "source": "/evaluate/development-production-features/throughput-composability",
-      "destination": "/evaluate/features/throughput-composability",
+      "destination": "/evaluate/features/child-workflows",
       "permanent": true
     },
     {
@@ -2406,7 +2406,7 @@
     },
     {
       "source": "/evaluate/development-production-features/serverless-workers/index",
-      "destination": "/evaluate/features/serverless-workers/index",
+      "destination": "/evaluate/features/serverless-workers",
       "permanent": true
     }
   ]
