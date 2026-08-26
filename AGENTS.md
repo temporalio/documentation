@@ -173,6 +173,18 @@ yarn check-links  # Broken link check (run after build)
 yarn snipsync     # Refresh Snipsync code snippets
 ```
 
+Formatting (required):
+
+```bash
+npx --yes prettier@3 --write path/to/changed-file
+npx --yes prettier@3 --check path/to/changed-file
+```
+
+Before finishing, run Prettier from the repository root on every changed file it supports, replacing the example path
+with the files you changed. This loads the repository's `.prettierrc`; do not pass options that override it. Pass
+explicit file paths instead of `.` or a broad directory, and inspect the diff so the pull request contains no unrelated
+formatting changes.
+
 Reference page checks:
 
 ```bash
