@@ -250,6 +250,10 @@ frontend.keepAliveMaxConnectionAge:
 ```
 
 2. For server versions 1.22.6 - 1.23.x, apply this [extra required setting](#special-dynamic-configuration-for-version-122---123).
+```yaml
+history.enableReplicationStream:
+  - value: true
+```
 
 3. If [Global Namespace](/global-namespace) **is already enabled**, then skip to step 5.
 
