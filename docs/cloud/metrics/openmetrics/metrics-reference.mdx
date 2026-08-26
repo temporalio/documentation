@@ -61,7 +61,7 @@ When an opt-in label is enabled, it is populated on **all metrics** that support
 | `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment Version Build ID |
 | `nexus_service` | Nexus metrics | The Nexus Service name |
 | `nexus_operation` | Nexus metrics | The Nexus Operation name |
-| `nexus_caller` | Nexus request metrics | The Nexus caller name |
+| `nexus_caller` | Nexus request metrics | The Nexus caller Namespace |
 
 For example, to include `temporal_activity_type` in your scrape results:
 
@@ -509,6 +509,13 @@ The 99th percentile activity schedule-to-close latency in seconds.
 
 ### Nexus metrics
 
+:::note Public Preview
+
+The Temporal Cloud Nexus metrics in this section are in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
 Nexus operation metrics measure calls from the caller side. For these metrics, `temporal_namespace` identifies the caller Namespace.
 Nexus request metrics measure requests on the handler side. For these metrics, `temporal_namespace` identifies the handler Namespace.
 
@@ -777,7 +784,7 @@ Nexus requests received by the Nexus Endpoint per second.
 | `nexus_caller_type` | The Nexus caller type |
 | `nexus_service` | The Nexus Service name (opt-in) |
 | `nexus_operation` | The Nexus Operation name (opt-in) |
-| `nexus_caller` | The Nexus caller name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
 
 **Type**: Rate
 
@@ -791,7 +798,7 @@ Failed Nexus requests per second.
 | `nexus_caller_type` | The Nexus caller type |
 | `nexus_service` | The Nexus Service name (opt-in) |
 | `nexus_operation` | The Nexus Operation name (opt-in) |
-| `nexus_caller` | The Nexus caller name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
 
 **Type**: Rate
 
@@ -811,7 +818,7 @@ The 50th percentile time the handler takes to process one Nexus request, in seco
 | `nexus_caller_type` | The Nexus caller type |
 | `nexus_service` | The Nexus Service name (opt-in) |
 | `nexus_operation` | The Nexus Operation name (opt-in) |
-| `nexus_caller` | The Nexus caller name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
 
 **Type**: Latency
 
@@ -831,7 +838,7 @@ The 95th percentile time the handler takes to process one Nexus request, in seco
 | `nexus_caller_type` | The Nexus caller type |
 | `nexus_service` | The Nexus Service name (opt-in) |
 | `nexus_operation` | The Nexus Operation name (opt-in) |
-| `nexus_caller` | The Nexus caller name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
 
 **Type**: Latency
 
@@ -851,7 +858,7 @@ The 99th percentile time the handler takes to process one Nexus request, in seco
 | `nexus_caller_type` | The Nexus caller type |
 | `nexus_service` | The Nexus Service name (opt-in) |
 | `nexus_operation` | The Nexus Operation name (opt-in) |
-| `nexus_caller` | The Nexus caller name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
 
 **Type**: Latency
 
