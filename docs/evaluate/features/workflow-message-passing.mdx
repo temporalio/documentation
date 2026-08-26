@@ -1,50 +1,153 @@
 ---
 id: workflow-message-passing
-title: Workflow message passing - Temporal feature
-description: Enhance your Workflows with Signals and Queries, allowing dynamic responses to external events and real-time state access for comprehensive monitoring and tracking.
+title: Workflow message passing
+description: Signals write to a running Workflow without waiting, Queries read its current state, and Updates do both and return a result to the caller.
 sidebar_label: Workflow message passing
 tags:
   - Signals
   - Queries
   - Updates
   - Workflows
-  - Activities
-  - Workers
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+import PatternCards from '@site/src/components/PatternCards';
 
-Need to interact with your Workflow from outside of it? Think about use cases like these:
+A running [Workflow Execution](/workflow-execution) can receive messages from outside itself.
+Its message handlers act on the Workflow's current state, which makes a Workflow behave like a stateful service with its own endpoints.
+Temporal has three message types: **Signals** are asynchronous write requests, **Queries** are read requests, and **Updates** are synchronous write requests that return a result.
 
-- Your shipment-tracking Workflow needs to know when the item leaves the warehouse and is loaded into their truck. **Signal** your Workflow when the truck driver scans the barcode.
-- Folks in your company want to track the progress of their data migration Workflows. **Query** your running batch Workflow to get the data for the progress bar.
-- Your eCommerce shopping cart Workflow needs to know when a new item is added. **Update** it to add the item and receive back the current items to render.
+Each one fits a different job:
 
-Temporal provides Signals, Queries, and Updates to allow rich interactivity with your running Workflows.
+- Your shipment-tracking Workflow needs to know when an item leaves the warehouse. **Signal** the Workflow when the driver scans the barcode.
+- Your team wants to track the progress of a data migration. **Query** the running batch Workflow for the numbers behind a progress bar.
+- Your shopping cart Workflow needs to add an item and render the cart. **Update** it to add the item and get the current contents back in the same call.
 
-**Signals**: Signal to send messages asynchronously to a running Workflow, changing its state or controlling its flow in real-time.
+## Choose a message type
 
-**Queries**: Query to check the progress of your Workflow or debug the internal state in real-time.
+|                                                        | Signal            | Query | Update              |
+| ------------------------------------------------------ | ----------------- | ----- | ------------------- |
+| Reads Workflow state                                   | No                | Yes   | Yes                 |
+| Changes Workflow state                                 | Yes               | No    | Yes                 |
+| Caller waits for the handler                           | No                | Yes   | Yes                 |
+| Returns a value to the caller                          | No                | Yes   | Yes                 |
+| Recorded in the [Event History](/workflow-execution/event#event-history) | Yes | No    | Yes, once accepted  |
+| Handler can block                                      | Yes               | No    | Yes                 |
 
-**Updates**: Update to send synchronous requests to your Workflow and track it in real-time.
+For **write requests**, the choice is whether the caller needs to know the outcome.
+Send a Signal when the caller can move on without a result and shouldn't depend on a Worker being available to accept the request.
+Send an Update when the caller needs a result or an error, wants low end-to-end latency, or should be rejected up front by a validator before the request enters the Workflow's Event History.
 
-To learn more about using these powerful primitives, see our encyclopedia entry:
+For **read requests**, start with a Query.
+Queries never add Events to the Event History, and they work against completed Workflow Executions.
+Because a Query handler cannot block, reading a value that only exists once the Workflow reaches a certain state means either polling with Queries or writing the read as an Update, which is more efficient but does write to the Event History.
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/encyclopedia/workflow-message-passing" text="Workflow message passing (Signals, Queries, & Updates)" archetype="encyclopedia" />
-</RelatedReadContainer>
+For **combined read and write requests**, use an Update.
+If the request has to be asynchronous, send a Signal and poll with a Query.
 
-For a deeper dive into Workflow message passing, enroll in one of [our courses](https://learn.temporal.io/courses/interacting_with_workflows).
+To stream a sequence of events out of a Workflow rather than answer a single request, see [Workflow Streams](/workflow-streams).
 
-If you want to jump straight to implementation details, see the SDK feature guides.
+## When not to use a message
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/dotnet/workflows/message-passing" text=".NET SDK Workflow message passing feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/go/workflows/message-passing" text="Go SDK Workflow message passing feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/workflows/message-passing" text="Java SDK Workflow message passing feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/workflows/message-passing" text="PHP SDK Workflow message passing feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/workflows/message-passing" text="Python SDK Workflow message passing feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/ruby/workflows/message-passing" text="Ruby SDK Workflow message passing feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/rust/workflows/message-passing" text="Rust SDK Workflow message passing feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/workflows/message-passing" text="TypeScript SDK Workflow message passing feature guide" archetype="feature-guide" />
-</RelatedReadContainer>
+- **To change state from a Query.** A Query handler can inspect Workflow state but must not mutate it. Use a Signal or an Update.
+- **To carry data that's known at start time.** Pass it as a Workflow argument instead of sending a message after the Workflow starts.
+- **To reach a Child Workflow from inside a Workflow.** Send Updates from an Activity using a Temporal Client, not from Workflow code.
+- **For high fan-in with Updates.** A Workflow Execution can have only a small number of Updates in flight at once, while Signals have no equivalent per-message concurrency cap. See [Limits to plan for](#limits-to-plan-for).
+- **To stop a Workflow.** Cancellation and Termination are their own operations. See [Interrupt a Workflow](/evaluate/features/interrupt-workflow).
+
+## Send a message and start a Workflow in one call
+
+Both write types have a variant that starts a Workflow Execution if one isn't already running under the given [Workflow Id](/workflow-execution/workflowid-runid):
+
+- **[Signal-With-Start](/sending-messages#signal-with-start)** Signals a running Workflow Execution, or starts one and immediately Signals it. The operation is atomic, which makes it a way to lazily initialize a Workflow.
+- **[Update-With-Start](/sending-messages#update-with-start)** sends an Update and starts the Workflow if needed, in a single round trip, and requires a [Workflow Id conflict policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy). Unlike Signal-With-Start it is not atomic: the SDK retries the request, but the Update is not guaranteed to succeed. Self-hosted deployments should run [Temporal Server v1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) or later.
+
+## Limits to plan for
+
+These figures are for Temporal Cloud. Self-hosted deployments configure their own, starting from the [self-hosted defaults](/self-hosted-guide/defaults).
+
+- A Workflow Execution can receive up to 10,000 Signals. It stops processing Signals after that.
+- A Workflow Execution can have at most 10 in-flight Updates, and 2,000 Updates total in its Event History.
+- A Workflow Execution can have at most 2,000 incomplete `SignalExternalWorkflowExecution` Commands at a time, which bounds how many Signals it can send to other Workflows at once.
+- A single request payload is capped at 2 MB, and any one Event History transaction at 4 MB. Offload larger payloads to [External Storage](/external-storage).
+
+See [System limits](/cloud/limits) for the full set.
+
+## Resources
+
+For conceptual depth on the three message types, read the Temporal Encyclopedia or enroll in one of [our courses](https://learn.temporal.io/courses/interacting_with_workflows).
+
+<PatternCards items={[
+  {
+    href: "/encyclopedia/workflow-message-passing",
+    title: "Workflow message passing",
+    description: "How Signals, Queries, and Updates are delivered and handled, and the guarantees each one carries.",
+  },
+  {
+    href: "/sending-messages",
+    title: "Sending messages",
+    description: "Sending Signals, Queries, and Updates from a Client, the Temporal CLI, or another Workflow.",
+  },
+  {
+    href: "/handling-messages",
+    title: "Handling messages",
+    description: "Writing handlers, validating Updates, and processing a message exactly once.",
+  },
+  {
+    href: "/design-patterns/workflow-messaging-patterns",
+    title: "Workflow messaging patterns",
+    description: "Which pattern to reach for when a caller sends data into a running Workflow and waits on a response.",
+  },
+]} />
+
+Or jump straight to the SDK feature guide for implementation details:
+
+<PatternCards items={[
+  {
+    href: "/develop/dotnet/workflows/message-passing",
+    title: ".NET SDK",
+    description: "Send and handle Signals, Queries, and Updates in C# and .NET.",
+    icon: "/img/sdks/svgs/dotnet.svg",
+  },
+  {
+    href: "/develop/go/workflows/message-passing",
+    title: "Go SDK",
+    description: "Send and handle Signals, Queries, and Updates in Go.",
+    icon: "/img/sdks/svgs/golang.svg",
+  },
+  {
+    href: "/develop/java/workflows/message-passing",
+    title: "Java SDK",
+    description: "Send and handle Signals, Queries, and Updates in Java and other JVM languages.",
+    icon: "/img/sdks/svgs/java.svg",
+  },
+  {
+    href: "/develop/php/workflows/message-passing",
+    title: "PHP SDK",
+    description: "Send and handle Signals, Queries, and Updates in PHP.",
+    icon: "/img/sdks/svgs/php.svg",
+  },
+  {
+    href: "/develop/python/workflows/message-passing",
+    title: "Python SDK",
+    description: "Send and handle Signals, Queries, and Updates in Python.",
+    icon: "/img/sdks/svgs/python.svg",
+  },
+  {
+    href: "/develop/ruby/workflows/message-passing",
+    title: "Ruby SDK",
+    description: "Send and handle Signals, Queries, and Updates in Ruby.",
+    icon: "/img/sdks/svgs/ruby.svg",
+  },
+  {
+    href: "/develop/rust/workflows/message-passing",
+    title: "Rust SDK",
+    description: "Send and handle Signals, Queries, and Updates in Rust.",
+    icon: "/img/sdks/svgs/rust.svg",
+  },
+  {
+    href: "/develop/typescript/workflows/message-passing",
+    title: "TypeScript SDK",
+    description: "Send and handle Signals, Queries, and Updates in TypeScript and JavaScript.",
+    icon: "/img/sdks/svgs/typescript.svg",
+  },
+]} />
