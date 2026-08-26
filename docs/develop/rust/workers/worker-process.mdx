@@ -11,7 +11,7 @@ tags:
 ---
 
 The Rust SDK is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview), and its API can change between releases.
-The code on this page is written against `temporalio-sdk` 0.5.0.
+The code on this page is written against `temporalio-sdk` 0.7.0.
 
 ## Create and run a Worker {/* #run-a-dev-worker */}
 
@@ -20,35 +20,27 @@ The `#[workflow]` and `#[activities]` macros expand to code that refers to the `
 
 ```toml
 [dependencies]
-temporalio-sdk = "0.5.0"
-temporalio-client = "0.5.0"
-temporalio-sdk-core = "0.5.0"
-temporalio-common = "0.5.0"
-temporalio-macros = "0.5.0"
-temporalio-workflow = "0.5.0"
+temporalio-sdk = "0.7.0"
+temporalio-client = "0.7.0"
+temporalio-common = "0.7.0"
+temporalio-macros = "0.7.0"
+temporalio-workflow = "0.7.0"
 futures = "0.3"
 tokio = { version = "1", features = ["full"] }
-url = "2"
 ```
 
-A Worker needs a `CoreRuntime` and a connected [Temporal Client](/develop/rust/client/temporal-client).
+A Worker needs a `Runtime` and a connected [Temporal Client](/develop/rust/client/temporal-client).
 Build `WorkerOptions` with the Task Queue to poll, register the Workflows and Activities the Worker can execute, then call `run()`:
 
 ```rust
 use std::str::FromStr;
 
-use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions};
-use temporalio_common::telemetry::TelemetryOptions;
-use temporalio_sdk::{Worker, WorkerOptions};
-use temporalio_sdk_core::{CoreRuntime, RuntimeOptions, Url};
+use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, Url};
+use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let runtime = CoreRuntime::new_assume_tokio(
-        RuntimeOptions::builder()
-            .telemetry_options(TelemetryOptions::builder().build())
-            .build()?,
-    )?;
+    let runtime = Runtime::new_assume_tokio(Default::default())?;
 
     let connection_options =
         ConnectionOptions::new(Url::from_str("http://localhost:7233")?).build();
@@ -107,27 +99,27 @@ To tune these values against real load, see [Worker performance](/develop/worker
 Set a Worker Deployment Version and enable versioning in `deployment_options`, then set the default versioning behavior for the Workflows on the Worker.
 
 ```rust
-use temporalio_common::{
-    protos::temporal::api::enums::v1::VersioningBehavior,
-    worker::{WorkerDeploymentOptions, WorkerDeploymentVersion},
+use temporalio_common::worker::{
+    VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
 };
 
 let worker_options = WorkerOptions::new("my-task-queue")
-    .deployment_options(WorkerDeploymentOptions {
-        version: WorkerDeploymentVersion {
+    .deployment_options(
+        WorkerDeploymentOptions::new(WorkerDeploymentVersion {
             deployment_name: "my-app".to_owned(),
             build_id: "1.0".to_owned(),
-        },
-        use_worker_versioning: true,
-        default_versioning_behavior: Some(VersioningBehavior::Pinned),
-    })
+        })
+        .use_worker_versioning(true)
+        .default_versioning_behavior(VersioningBehavior::Pinned)
+        .build(),
+    )
     .register_workflow::<GreetingWorkflow>()?
     .register_activities(GreetingActivities)
     .build();
 ```
 
 The Rust SDK sets the versioning behavior on the Worker, not per Workflow, so `default_versioning_behavior` covers every Workflow the Worker registers.
-Setting it to `Some(VersioningBehavior::Unspecified)` is an error at startup.
+Setting it to `VersioningBehavior::Unspecified` is an error at startup.
 
 See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
 

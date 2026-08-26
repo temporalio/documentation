@@ -4,18 +4,6 @@ title: Workflow message passing - Go SDK
 sidebar_label: Messages
 description: Develop with Queries, Signals, and Updates with the Temporal Go SDK.
 toc_max_heading_level: 3
-keywords:
-  - temporal go signals
-  - send signal from client
-  - send signal from workflow
-  - signal with start
-  - workflow queries
-  - sending queries
-  - workflow updates
-  - dynamic workflows
-  - dynamic activities
-  - dynamic signals
-  - dynamic queries
 tags:
   - Workflows
   - Messages
@@ -349,7 +337,7 @@ You must provide a `WaitForStage` when calling `UpdateWorkflow()`.
 This parameter controls the stage the update must reach before returning a handle to the caller:
 
 - If `WaitForStage` is set to `WorkflowUpdateStageCompleted`, the handle is returned after the Update completes.
-- If `WaitForStage` is set to `WorkflowUpdateStageAccepted`, the handle is returned after the Update is accepted (i.e. after the validator has run, if there is a validator).
+- If `WaitForStage` is set to `WorkflowUpdateStageAccepted`, the handle is returned after the Update is accepted (that is, after the validator has run, if there is a validator).
 
 You can't send Updates directly from one Workflow to another. If you need to send Updates across Workflows, like to Child Workflows, use an Activity.
 

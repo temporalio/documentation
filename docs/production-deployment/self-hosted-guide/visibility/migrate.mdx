@@ -1,0 +1,133 @@
+---
+id: migrate
+title: Migrate Visibility database
+sidebar_label: Migrate database
+slug: /self-hosted-guide/visibility/migrate
+description: How to migrate a Visibility database for a self-hosted Temporal Service.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Visibility
+---
+
+To migrate your Visibility database, [set up a secondary Visibility store](/self-hosted-guide/visibility/dual-visibility) to enable
+[Dual Visibility](/dual-visibility), and update the dynamic configuration in your Temporal Service to update the read
+and write operations for the Visibility store.
+
+Dual Visibility setup is optional but useful in gradually migrating your Visibility data to another database.
+
+Before you begin, verify [supported databases and versions](/self-hosted-guide/visibility) for a Visibility store.
+
+The following steps describe how to migrate your Visibility database.
+
+After you make any changes to your [Temporal Service configuration](/temporal-service/configuration), ensure that you
+restart your services.
+
+## Set up secondary Visibility store
+
+1. In your Temporal Service configuration,
+   [add a secondary Visibility store](/references/configuration#secondaryvisibilitystore) to your Visibility setup under
+   the Persistence configuration.
+
+   Example: To migrate from Cassandra to Elasticsearch, add Elasticsearch as your secondary database and set it up. For
+   details, see [secondary Visibility database schema and setup](/self-hosted-guide/visibility/dual-visibility).
+
+   ```yaml
+   persistence:
+   visibilityStore: cass-visibility
+   secondaryVisibilityStore: es-visibility
+   datastores:
+     cass-visibility:
+     cassandra:
+       hosts: '127.0.0.1'
+       keyspace: 'temporal_visibility'
+     es-visibility:
+     elasticsearch:
+       version: 'v7'
+       logLevel: 'error'
+       url:
+       scheme: 'http'
+       host: '127.0.0.1:9200'
+       indices:
+       visibility: temporal_visibility_v1_dev
+       closeIdleConnectionsInterval: 15s
+   ```
+
+1. Update the [dynamic configuration](/temporal-service/configuration#dynamic-configuration) keys on your self-hosted
+   Temporal Service to enable write operations to the secondary store and disable read operations. Example:
+
+   ```yaml
+   system.secondaryVisibilityWritingMode:
+   - value: "dual"
+   constraints: {}
+   system.enableReadFromSecondaryVisibility:
+   - value: false
+   constraints: {}
+   ```
+
+At this point, Visibility data is read from the primary store, and all Visibility data is written to both the primary
+and secondary store. This setting applies only to new Visibility data generated after Dual Visibility is enabled. It
+does not migrate any existing data in the primary store to the secondary store.
+
+For details on write options to the secondary store, see
+[Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings).
+
+## Run in dual mode
+
+When you enable a secondary store, only new Visibility data is written to both primary and secondary stores. The primary
+store still holds the Workflow Execution data from before the secondary store was set up.
+
+Running in dual mode lets you plan for closed and open Workflow Executions data from before the secondary store was set
+up in your self-hosted Temporal Service.
+
+Example:
+
+- To manage closed Workflow Executions data, run in dual mode until the Namespace
+  [Retention Period](/temporal-service/temporal-server#retention-period) is reached. After the Retention Period,
+  Workflow Execution data is removed from the Persistence and Visibility stores. If you want to keep the closed Workflow
+  Executions data after the set Retention Period, you must set up [Archival](/self-hosted-guide/archival).
+- To manage data for all open Workflow Executions, run in dual mode until all the Workflow Executions started before
+  enabling Dual Visibility mode are closed. After the Workflow Executions are closed, verify the Retention Period and
+  set up Archival if you need to keep the data beyond the Retention Period.
+
+You can run your Visibility setup in dual mode for an indefinite period, or until you are ready to deprecate the primary
+store and move completely to the secondary store without losing data.
+
+## Deprecate primary Visibility store
+
+When you are ready to deprecate your primary store, follow these steps.
+
+1. Update the dynamic configuration YAML to enable read operations from the secondary store. Example:
+
+   ```yaml
+   system.secondaryVisibilityWritingMode:
+   - value: "dual"
+   constraints: {}
+   system.enableReadFromSecondaryVisibility:
+   - value: true
+   constraints: {}
+   ```
+
+   At this point, Visibility data is read from the secondary store only. Verify whether data on the secondary store is
+   correct.
+
+1. When the secondary store is vetted and ready to replace your current primary store, change your Temporal Service
+   configuration to set the secondary store as your primary, and remove the dynamic configuration set in the previous
+   steps. Example:
+
+   ```yaml
+   persistence:
+   visibilityStore: es-visibility
+   datastores:
+     es-visibility:
+     elasticsearch:
+       version: 'v7'
+       logLevel: 'error'
+       url:
+       scheme: 'http'
+       host: '127.0.0.1:9200'
+       indices:
+       visibility: temporal_visibility_v1_dev
+       closeIdleConnectionsInterval: 15s
+   ```

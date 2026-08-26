@@ -3,12 +3,6 @@ id: google-genai
 title: Google GenAI integration
 sidebar_label: Google GenAI
 toc_max_heading_level: 2
-keywords:
-  - ai
-  - agents
-  - google genai
-  - gemini
-  - vertex ai
 tags:
   - Google GenAI
   - Python SDK
@@ -33,7 +27,7 @@ History entry, and your credentials stay on the Worker.
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader
-  type="prerelease"
+  type="publicPreview"
 />
 
 Code snippets in this guide come from the
@@ -224,16 +218,15 @@ no default, and the tool call fails without one.
 
 Register the Activity on the Worker alongside the Workflow.
 
-{/* SNIPSTART python-google-genai-tools-worker {"selectedLines": ["21-26"]} */}
+{/* SNIPSTART python-google-genai-tools-worker */}
 [google_genai/tools/run_worker.py](https://github.com/temporalio/samples-python/blob/main/google_genai/tools/run_worker.py)
 ```py
-# ...
-    worker = Worker(
-        client,
-        task_queue="google-genai-tools",
-        workflows=[ToolsWorkflow],
-        activities=[get_weather],
-    )
+worker = Worker(
+    client,
+    task_queue="google-genai-tools",
+    workflows=[ToolsWorkflow],
+    activities=[get_weather],
+)
 ```
 {/* SNIPEND */}
 
@@ -315,10 +308,9 @@ the Worker and runs `list_tools` and `call_tool` as Activities against it.
 
 Register each server with a factory that yields a connected, initialized `mcp.ClientSession`.
 
-{/* SNIPSTART python-google-genai-mcp-worker {"selectedLines": ["20-32"]} */}
+{/* SNIPSTART python-google-genai-mcp-worker */}
 [google_genai/mcp/run_worker.py](https://github.com/temporalio/samples-python/blob/main/google_genai/mcp/run_worker.py)
 ```py
-# ...
 @asynccontextmanager
 async def echo_session() -> AsyncIterator[ClientSession]:
     """Yield a connected, initialized session to the stdio echo MCP server."""
@@ -419,10 +411,21 @@ class StreamingWorkflow:
 A consumer subscribes to the topic with `WorkflowStreamClient`. The published chunks are Pydantic
 `GenerateContentResponse` objects, so the subscribing Client needs `pydantic_data_converter`.
 
-{/* SNIPSTART python-google-genai-streaming-run-workflow {"selectedLines": ["29-42"]} */}
+{/* SNIPSTART python-google-genai-streaming-run-workflow */}
 [google_genai/streaming/run_workflow.py](https://github.com/temporalio/samples-python/blob/main/google_genai/streaming/run_workflow.py)
 ```py
-# ...
+async def consume(client: Client, workflow_id: str) -> None:
+    """Subscribe to the "gemini" topic and print chunks as the model produces them."""
+    stream = WorkflowStreamClient.create(client, workflow_id)
+    async for item in stream.subscribe(
+        ["gemini"],
+        from_offset=0,
+        result_type=types.GenerateContentResponse,
+        poll_cooldown=timedelta(milliseconds=50),
+    ):
+        chunk: types.GenerateContentResponse = item.data
+        if chunk.text:
+            print(chunk.text, end="", flush=True)
         if chunk.candidates and chunk.candidates[0].finish_reason:
             print()
             return
@@ -435,8 +438,6 @@ async def main() -> None:
         os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
         data_converter=pydantic_data_converter,
     )
-    workflow_id = "google-genai-streaming"
-
 ```
 {/* SNIPEND */}
 
@@ -545,16 +546,15 @@ class VertexAIWorkflow:
 The Worker's `genai.Client` uses Application Default Credentials instead of an API key. Run
 `gcloud auth application-default login`, or set `GOOGLE_APPLICATION_CREDENTIALS` to a service account key file.
 
-{/* SNIPSTART python-google-genai-vertex-ai-worker {"selectedLines": ["13-18"]} */}
+{/* SNIPSTART python-google-genai-vertex-ai-worker */}
 [google_genai/vertex_ai/run_worker.py](https://github.com/temporalio/samples-python/blob/main/google_genai/vertex_ai/run_worker.py)
 ```py
-# ...
-    genai_client = genai.Client(
-        vertexai=True,
-        project=os.environ["GOOGLE_CLOUD_PROJECT"],
-        location=os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1"),
-    )
-    plugin = GoogleGenAIPlugin(genai_client)
+genai_client = genai.Client(
+    vertexai=True,
+    project=os.environ["GOOGLE_CLOUD_PROJECT"],
+    location=os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1"),
+)
+plugin = GoogleGenAIPlugin(genai_client)
 ```
 {/* SNIPEND */}
 

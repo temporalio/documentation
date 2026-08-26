@@ -2,7 +2,7 @@
 id: event-accumulator
 title: "Event Accumulator Pattern"
 sidebar_label: "Event Accumulator"
-description: "Event Accumulator Pattern"
+description: "Durably collect and deduplicate signals from multiple senders, then process the batch after a sliding inactivity timeout."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -360,7 +360,7 @@ Producers in all SDKs call Signal-With-Start to atomically start the workflow if
 
 The Accumulator pattern is well suited when events related to the same entity or group arrive from multiple producers — including a single consumer (for example, a Kafka consumer) polling a topic that carries events for multiple groups simultaneously — and can be processed together as batches, when downstream systems prefer batched calls rather than one call per event, and when at-least-once event delivery makes deduplication necessary at the collection layer.
 
-It is not a good fit for use cases that require processing every event individually in _strict order_, for cases where the batch size is known in advance and all events arrive within a short deterministic window (a standard workflow is sufficient), or when events for different keys must be correlated at processing time (consider fan-in with e.g. Child Workflows or multiple levels of Accumulator).
+It is not a good fit for use cases that require processing every event individually in _strict order_, for cases where the batch size is known in advance and all events arrive within a short deterministic window (a standard workflow is sufficient), or when events for different keys must be correlated at processing time (consider fan-in with for example Child Workflows or multiple levels of Accumulator).
 
 ## Benefits and trade-offs
 

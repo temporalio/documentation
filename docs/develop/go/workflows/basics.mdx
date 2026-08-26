@@ -4,14 +4,10 @@ title: Workflow basics - Go SDK
 sidebar_label: Workflow basics
 description: This section explains Workflow basics with the Go SDK
 toc_max_heading_level: 4
-keywords:
-  - Go SDK
 tags:
   - Go SDK
   - Temporal SDKs
 ---
-
-import { ViewSourceCodeNotice } from '@site/src/components';
 
 ## How to develop a basic Workflow {/* #develop-workflows */}
 
@@ -224,3 +220,63 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
   Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/develop/go/platform/observability#tracing) for more information about context propagation.
+
+#### Logging
+
+Use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) instead of the standard
+`log` package or `fmt.Println`. The SDK logger skips log messages during replay to avoid duplicates:
+
+```go
+func MyWorkflow(ctx workflow.Context, name string) (string, error) {
+	logger := workflow.GetLogger(ctx)
+	logger.Info("Starting workflow", "name", name)
+	// ...
+}
+```
+
+For logger configuration, see [Observability: Log from a Workflow](/develop/go/platform/observability#logging).
+
+#### Random numbers and UUIDs
+
+The Go SDK does not provide a seeded random source or a UUID helper. Generate these inside a
+[Side Effect](/develop/go/workflows/side-effects), which records the result in the Event History and returns the
+recorded value on replay:
+
+```go
+var id string
+encodedID := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
+	return uuid.New().String()
+})
+encodedID.Get(&id)
+```
+
+An Activity works for this too, and is the better choice when the value comes from an external system. A Side Effect is
+cheaper for purely local generation.
+
+#### Current time
+
+Use [`workflow.Now(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Now) instead of `time.Now()`. It returns the
+time of the last Workflow Task, which is consistent across replays:
+
+```go
+currentTime := workflow.Now(ctx)
+```
+
+To wait, use [`workflow.Sleep(ctx, d)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) instead of `time.Sleep`.
+
+#### Detecting replay (advanced)
+
+Use [`workflow.IsReplaying(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#IsReplaying) to guard code that should
+only run on the first execution, such as emitting metrics or sending external notifications from an Interceptor.
+
+:::caution
+
+Never use this to affect Workflow business logic. Branching on replay status breaks determinism.
+
+:::
+
+```go
+if !workflow.IsReplaying(ctx) {
+	emitMetric("workflow_started", 1)
+}
+```

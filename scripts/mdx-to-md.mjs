@@ -35,6 +35,7 @@
 
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
+import { cookbookPreviewToMarkdown } from "./component-handlers/cookbook-preview.mjs";
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
@@ -61,7 +62,7 @@ export const COMPONENT_REGISTRY = {
   SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
-  PhotoCarousel: "photo-carousel",
+  Video: "video",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
@@ -71,6 +72,7 @@ export const COMPONENT_REGISTRY = {
   SetupStep: "setup-step",
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
+  CookbookPreview: "cookbook-preview",
   SdkOverviewCards: "sdk-overview-cards",
   ViewSourceCodeNotice: "view-source-code-notice",
 
@@ -101,10 +103,15 @@ export const COMPONENT_REGISTRY = {
   ThemedImage: "strip-block",
   PatternCards: "cards",
   QuickstartCards: "cards",
+  GridCardList: "cards",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
   ServerlessWorkerDemo: "strip-block",
+  CodeToCommandsDemo: "strip-block",
+  CommandsToEventsDemo: "strip-block",
+  HistoryReplayDemo: "strip-block",
+  NonDeterminismDemo: "strip-block",
   OperationsTable: "strip-block",
   InvitationContent: "strip-block",
   AnnotatedCode: "strip-tag",
@@ -206,6 +213,15 @@ export function extractProp(tagStr, propName) {
   if (mb) return mb[1];
 
   return null;
+}
+
+/**
+ * Extract a bare numeric JSX prop, e.g. extractNumberProp('<X limit={4} />', 'limit') => 4.
+ * Returns undefined if the prop isn't present or isn't a plain number literal.
+ */
+export function extractNumberProp(tagStr, propName) {
+  const m = tagStr.match(new RegExp(`${propName}=\\{(-?\\d+(?:\\.\\d+)?)\\}`));
+  return m ? Number(m[1]) : undefined;
 }
 
 /**
@@ -950,6 +966,21 @@ export function transformMdx(mdxContent, options = {}) {
           i = embedEnd;
           continue;
         }
+        // <Video videoId="..." title="..." /> inside a tip → Watch link, same
+        // as the Video strategy used outside admonitions.
+        if (/^\s*<Video\b/.test(line)) {
+          let tag = line;
+          while (!/\/>/.test(tag) && i + 1 < lines.length) {
+            i++;
+            tag += " " + lines[i].trim();
+          }
+          const videoId = extractProp(tag, "videoId");
+          const title = extractProp(tag, "title");
+          if (videoId && title) {
+            admonitionLines.push(`[Watch: ${title}](https://www.youtube.com/watch?v=${videoId})`);
+          }
+          continue;
+        }
         admonitionLines.push(line);
       }
       continue;
@@ -1206,19 +1237,20 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- PhotoCarousel (images + captions arrays) → list of images ---
-    if (state === State.NORMAL && /^\s*<PhotoCarousel\b/.test(line)) {
+    // --- Video (self-closing, may span lines) ---
+    //     <Video videoId="..." title="..." /> → [Watch: Title](https://www.youtube.com/watch?v=ID)
+    if (state === State.NORMAL && /^\s*<Video\b/.test(line)) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {
         i++;
-        tag += "\n" + lines[i];
+        tag += " " + lines[i].trim();
       }
-      const images = parseStringArrayProp(tag, "images");
-      const captions = parseStringArrayProp(tag, "captions");
-      for (let k = 0; k < images.length; k++) {
-        outputLines.push(`![${captions[k] || ""}](${images[k]})`);
+      const videoId = extractProp(tag, "videoId");
+      const title = extractProp(tag, "title");
+      if (videoId && title) {
+        outputLines.push(`[Watch: ${title}](https://www.youtube.com/watch?v=${videoId})`);
+        outputLines.push("");
       }
-      if (images.length) outputLines.push("");
       continue;
     }
 
@@ -1244,7 +1276,22 @@ export function transformMdx(mdxContent, options = {}) {
         tag += " " + lines[i].trim();
       }
       const defaultSdks = parseStringArrayProp(tag, "defaultSdks");
-      const md = integrationsGridToMarkdown(defaultSdks, { projectRoot, warnings, sourceFile });
+      const defaultTags = parseStringArrayProp(tag, "defaultTags");
+      const md = integrationsGridToMarkdown(defaultSdks, defaultTags, { projectRoot, warnings, sourceFile });
+      outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
+    // --- CookbookPreview (self-closing) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<CookbookPreview\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const limit = extractNumberProp(tag, "limit") ?? 4;
+      const md = cookbookPreviewToMarkdown(limit, { projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
       continue;
@@ -1263,8 +1310,8 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- QuickstartCards / PatternCards → Markdown link list from items prop ---
-    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards)\b/.test(line)) {
+    // --- QuickstartCards / PatternCards / GridCardList → Markdown link list from items prop ---
+    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards|GridCardList)\b/.test(line)) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {
         i++;

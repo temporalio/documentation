@@ -1,0 +1,263 @@
+---
+id: upgrade-on-continue-as-new
+title: Upgrade on Continue-as-New
+sidebar_label: Upgrade on Continue-as-New
+description: Upgrade pinned Workflows to a new Worker Deployment Version by Continue-as-New when a Target Version becomes available.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Durable Execution
+---
+
+import { SdkTabs, AnnotatedCode } from '@site/src/components';
+
+This page covers how to upgrade pinned Workflows to a new Worker Deployment Version with Continue-as-New.
+
+## Upgrading on Continue-as-New {/* #upgrade-on-continue-as-new */}
+
+Long-running Workflows that use [Continue-as-New](/workflow-execution/continue-as-new) can upgrade to newer Worker
+Deployment Versions at Continue-as-New boundaries without requiring patching.
+
+This pattern is ideal for:
+
+- **Entity Workflows** that run for months or years
+- **Batch processing** Workflows that checkpoint with Continue-as-New
+- **AI agent Workflows** with long sleeps waiting for user input
+
+:::note Public Preview
+
+This feature is in Public Preview as an experimental SDK-level option.
+
+:::
+
+### How it works {/* #upgrade-on-can-how-it-works */}
+
+By default, Pinned Workflows stay on their original Worker Deployment Version even when they Continue-as-New. With the
+upgrade option enabled:
+
+1. Each Workflow run remains pinned to its version (no patching needed during a run)
+2. The Temporal Server tells the workflow when a new [Target Version](/worker-versioning#versioning-definitions) becomes available
+3. When the Workflow performs Continue-as-New with the upgrade option, the new run starts on the [Target Version](/worker-versioning#versioning-definitions)
+
+### Checking for new versions {/* #checking-for-new-versions */}
+
+When a new Worker Deployment Version becomes Current or Ramping, active Workflows can detect this through
+`target_worker_deployment_version_changed`:
+
+<SdkTabs>
+<SdkTabs.Go>
+
+```go
+func (w *Workflows) ContinueAsNewWithVersionUpgradeV1(
+  ctx workflow.Context,
+  attempt int,
+) (string, error) {
+  if attempt > 0 {
+    return "v1.0", nil
+  }
+
+	// Check GetTargetWorkerDeploymentVersionChanged periodically.
+	// GetTargetWorkerDeploymentVersionChanged is refreshed after each WFT completes.
+  for {
+	// Trigger a WFT when timer expires, thereby refreshing the GetTargetWorkerDeploymentVersionChanged flag.
+	// Since this is just a test workflow, we aren't doing any real work. In a real workflow regularly
+	// doing non-sleep workflow tasks, you would not need to artificially trigger a WFT to refresh the
+	// GetTargetWorkerDeploymentVersionChanged flag. You could choose to check the field periodically, or you
+	// might want to check before accepting updates, starting activities, or starting child workflows.
+	err := workflow.Sleep(ctx, 10*time.Millisecond)
+	if err != nil {
+	  return "", err
+	}
+	info := workflow.GetInfo(ctx)
+	if info.GetTargetWorkerDeploymentVersionChanged() {
+	  return "", workflow.NewContinueAsNewErrorWithOptions(
+		ctx,
+		workflow.ContinueAsNewErrorOptions{
+		  // Pass InitialVersioningBehavior=workflow.ContinueAsNewVersioningBehaviorAutoUpgrade
+		  // to make the new run start with AutoUpgrade behavior and use the Target Version of
+		  // its Worker Deployment.
+		  InitialVersioningBehavior: workflow.ContinueAsNewVersioningBehaviorAutoUpgrade,
+		},
+		"ContinueAsNewWithVersionUpgrade",
+		attempt+1,
+	  )
+	}
+  }
+}
+
+func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
+  ctx workflow.Context,
+  attempt int,
+) (string, error) {
+  return "v2.0", nil
+}
+```
+
+</SdkTabs.Go>
+<SdkTabs.Java>
+
+```java
+public class ContinueAsNewWithVersionUpgradeImpl implements ContinueAsNewWithVersionUpgrade {
+  @Override
+  public String run(int attempt) {
+    if (attempt > 0) {
+      return "v1.0";
+    }
+
+    // isTargetWorkerDeploymentVersionChanged is refreshed after each Workflow Task completes.
+    // In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an artificial
+    // timer; you could check the flag periodically, or before accepting Updates, starting
+    // Activities, or starting child Workflows.
+    while (true) {
+      Workflow.sleep(Duration.ofMillis(10));
+      if (Workflow.getInfo().isTargetWorkerDeploymentVersionChanged()) {
+        // Set InitialVersioningBehavior to AUTO_UPGRADE so the new run starts with AutoUpgrade
+        // behavior and uses the Target Version of its Worker Deployment.
+        Workflow.continueAsNew(
+            ContinueAsNewOptions.newBuilder()
+                .setInitialVersioningBehavior(InitialVersioningBehavior.AUTO_UPGRADE)
+                .build(),
+            attempt + 1);
+      }
+    }
+  }
+}
+```
+
+</SdkTabs.Java>
+<SdkTabs.Python>
+
+```python
+@workflow.defn
+class ContinueAsNewWithVersionUpgrade:
+    @workflow.run
+    async def run(self, attempt: int) -> str:
+        if attempt > 0:
+            return "v1.0"
+
+        # is_target_worker_deployment_version_changed() is refreshed after each Workflow Task
+        # completes. In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need
+        # an artificial timer; you could check the flag periodically, or before accepting Updates,
+        # starting Activities, or starting child Workflows.
+        while True:
+            await workflow.sleep(timedelta(milliseconds=10))
+            if workflow.info().is_target_worker_deployment_version_changed():
+                # Set initial_versioning_behavior to AUTO_UPGRADE so the new run starts with
+                # AutoUpgrade behavior and uses the Target Version of its Worker Deployment.
+                workflow.continue_as_new(
+                    attempt + 1,
+                    initial_versioning_behavior=ContinueAsNewVersioningBehavior.AUTO_UPGRADE,
+                )
+```
+
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+
+```ts
+import * as wf from '@temporalio/workflow';
+import { InitialVersioningBehavior } from '@temporalio/common';
+
+export async function continueAsNewWithVersionUpgrade(attempt: number): Promise<string> {
+  if (attempt > 0) {
+    return 'v1.0';
+  }
+
+  // targetWorkerDeploymentVersionChanged is refreshed after each Workflow Task completes.
+  // In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an artificial
+  // timer; you could check the flag periodically, or before accepting Updates, starting
+  // Activities, or starting child Workflows.
+  for (;;) {
+    await wf.sleep('10ms');
+    if (wf.workflowInfo().targetWorkerDeploymentVersionChanged) {
+      // Set initialVersioningBehavior to AUTO_UPGRADE so the new run starts with AutoUpgrade
+      // behavior and uses the Target Version of its Worker Deployment.
+      return await wf.makeContinueAsNewFunc<typeof continueAsNewWithVersionUpgrade>({
+        initialVersioningBehavior: InitialVersioningBehavior.AUTO_UPGRADE,
+      })(attempt + 1);
+    }
+  }
+}
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```csharp
+[Workflow]
+public class ContinueAsNewWithVersionUpgrade
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(int attempt)
+    {
+        if (attempt > 0)
+        {
+            return "v1.0";
+        }
+
+        // TargetWorkerDeploymentVersionChanged is refreshed after each Workflow Task completes.
+        // In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an
+        // artificial timer; you could check the flag periodically, or before accepting Updates,
+        // starting Activities, or starting child Workflows.
+        while (true)
+        {
+            await Workflow.DelayAsync(TimeSpan.FromMilliseconds(10));
+            if (Workflow.TargetWorkerDeploymentVersionChanged)
+            {
+                // Set InitialVersioningBehavior to AutoUpgrade so the new run starts with
+                // AutoUpgrade behavior and uses the Target Version of its Worker Deployment.
+                throw Workflow.CreateContinueAsNewException(
+                    (ContinueAsNewWithVersionUpgrade wf) => wf.RunAsync(attempt + 1),
+                    new ContinueAsNewOptions
+                    {
+                        InitialVersioningBehavior = InitialVersioningBehavior.AutoUpgrade,
+                    });
+            }
+        }
+    }
+}
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+class ContinueAsNewWithVersionUpgrade < Temporalio::Workflow::Definition
+  workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED
+
+  def execute(attempt)
+    return 'v1.0' if attempt.positive?
+
+    # target_worker_deployment_version_changed? is refreshed after each Workflow Task completes.
+    # In a Workflow that regularly does non-sleep Workflow Tasks you wouldn't need an artificial
+    # timer; you could check the flag periodically, or before accepting Updates, starting
+    # Activities, or starting child Workflows.
+    loop do
+      Temporalio::Workflow.sleep(0.01)
+      next unless Temporalio::Workflow.target_worker_deployment_version_changed?
+
+      # Set initial_versioning_behavior to AUTO_UPGRADE so the new run starts with AutoUpgrade
+      # behavior and uses the Target Version of its Worker Deployment.
+      raise Temporalio::Workflow::ContinueAsNewError.new(
+        attempt + 1,
+        initial_versioning_behavior: Temporalio::ContinueAsNewVersioningBehavior::AUTO_UPGRADE
+      )
+    end
+  end
+end
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+### Limitations {/* #upgrade-on-can-limitations */}
+
+:::caution Current Limitations
+
+- **Lazy moving only:** Workflows must execute a step to receive the target-version-changed information. Sleeping
+  Workflows won't proactively get it. If you have idle Workflows that you want to wake up so they can check the
+  target-version-changed flag, you can send them a Signal.
+- **Interface compatibility:** When continuing as new to a different version, ensure your Workflow input provided by the
+  previous version's workflow definition is compatible with the new version's workflow definition. If incompatible, the
+  new run may fail on its first Workflow Task.
+
+:::

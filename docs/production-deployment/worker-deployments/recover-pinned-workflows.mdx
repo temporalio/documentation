@@ -5,13 +5,6 @@ sidebar_label: Recover pinned Workflows
 description: Roll back, identify, and recover pinned Workflows affected by a faulty Worker Deployment Version using Versioning Override and Reset-with-Move.
 slug: /production-deployment/worker-deployments/recover-pinned-workflows
 toc_max_heading_level: 4
-keywords:
-  - versioning
-  - recovery
-  - reset
-  - pinned
-  - rollback
-  - workers
 tags:
   - Temporal Service
   - Durable Execution
@@ -125,7 +118,7 @@ For Workflows still retrying without state corruption, you may need to use the [
 
 ## Recover Workflows
 
-Temporal exposes two recovery primitives, both available through the CLI or directly through the Worker Versioning APIs (see [Moving a pinned Workflow](/production-deployment/worker-deployments/worker-versioning#moving-a-pinned-workflow)):
+Temporal exposes two recovery primitives, both available through the CLI or directly through the Worker Versioning APIs (see [Moving a pinned Workflow](/production-deployment/worker-deployments/worker-versioning/roll-out-and-pin#moving-a-pinned-workflow)):
 
 - **Versioning Override** — forces the next retried Workflow Task to execute on a different pinned Version. Use [`temporal workflow update-options`](/cli/command-reference/workflow#update-options).
 - **Reset-with-Move** — atomically resets a Workflow's Event History and applies a Versioning Override. Use [`temporal workflow reset with-workflow-update-options`](/cli/command-reference/workflow#with-workflow-update-options).
@@ -234,7 +227,7 @@ Recommended approach:
 1. Repeat the idempotent recovery commands on `Running` Workflows until the drainage status reports `drained`. The Temporal Service refreshes drainage status periodically, so it may take a few minutes after the last running Workflow closes.
 2. Once the Version is drained, run the non-idempotent Reset-with-Move command against closed Workflows once.
 
-See [Sunsetting an old Deployment Version](/production-deployment/worker-deployments/worker-versioning#sunsetting-an-old-deployment-version) for more on drainage states.
+See [Sunsetting an old Deployment Version](/production-deployment/worker-deployments/worker-versioning/sunset-and-gc#sunsetting-an-old-deployment-version) for more on drainage states.
 
 ## Clean up the drained Version
 

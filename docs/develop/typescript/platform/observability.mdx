@@ -4,10 +4,6 @@ title: Observability - TypeScript SDK
 sidebar_label: Observability
 description: Enhance the observability of your Temporal Application with metrics, tracing, logging, and visibility features. View Workflow state, set up OpenTelemetry, and customize logging for seamless monitoring and insights.
 toc_max_heading_level: 3
-keywords:
-  - client
-  - observability
-  - metrics
 tags:
   - Observability
   - Workflows
@@ -186,7 +182,7 @@ A Temporal Worker may emit logs in various ways, including:
 - Messages emitted by the underlying Temporal Core SDK (native code).
 
 All of these messages are internally routed to a single logger object, called the Runtime's Logger.
-By default, the Runtime's Logger simply writes messages to the console (i.e. the process's `STDOUT`).
+By default, the Runtime's Logger simply writes messages to the console (that is, the process's `STDOUT`).
 
 #### How to customize the Runtime's Logger
 

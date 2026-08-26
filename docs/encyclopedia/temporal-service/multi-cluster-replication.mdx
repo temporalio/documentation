@@ -5,13 +5,6 @@ sidebar_label: Multi-Cluster Replication
 description: Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 slug: /temporal-service/multi-cluster-replication
 toc_max_heading_level: 4
-keywords:
-  - multi-cluster-replication
-  - namespace-versions
-  - version-history
-  - conflict-resolution
-  - zombie-workflows
-  - workflow-task-processing
 tags:
   - Concepts
   - Temporal Service
@@ -66,9 +59,9 @@ When there is a data conflict, a comparison will be made and Workflow Execution 
 When a cluster is trying to mutate a Workflow Execution History, the version will be checked.
 A cluster can mutate a Workflow Execution History only if the following is true:
 
-- The version in the Namespace belongs to this cluster, i.e.
+- The version in the Namespace belongs to this cluster, that is
   `(version in namespace) % (shared version increment) == (this cluster's initial version)`
-- The version of this Workflow Execution History's last entry (event) is equal or less than the version in the Namespace, i.e.
+- The version of this Workflow Execution History's last entry (event) is equal or less than the version in the Namespace, that is
   `(last event's version) <= (version in namespace)`
 
 <details>
