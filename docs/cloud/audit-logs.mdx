@@ -27,49 +27,85 @@ Instead, explore the [Export](/cloud/export) feature, which does let you send cl
 
 ## Which events are supported by Audit Logs? {/* #supported-events */}
 
+The `operation` field can contain the following event values:
+
 - Account
-  - `ChangeAccountPlanType`: Change Account Plan Type
-  - `UpdateAccountAPI`: Configure Audit Logs, Configure Observability Endpoint
-- API Keys
-  - `CreateAPIKey`: Create API Key
-  - `DeleteAPIKey`: Delete API Key
-  - `UpdateAPIKey`: Update API Key
-- Connectivity Rules
-  - `CreateConnectivityRule`: Create Connectivity Rule
-  - `DeleteConnectivityRule`: Delete Connectivity Rule
+  - `ChangeAccountPlanType`
+  - `CreateAccountAuditLogSink`
+  - `DeleteAccountAuditLogSink`
+  - `OffboardAccount`
+  - `SelfServiceOffboardAccount`
+  - `UpdateAccount`
+  - `UpdateAccountAuditLogSink`
+- API keys
+  - `CreateAPIKey`
+  - `CreateApiKey`
+  - `CreateServiceAccountAPIKey`
+  - `DeleteAPIKey`
+  - `DeleteApiKey`
+  - `UpdateAPIKey`
+  - `UpdateApiKey`
+- Billing
+  - `CreateBillingReport`
+- Connectivity rules
+  - `CreateConnectivityRule`
+  - `DeleteConnectivityRule`
+- Custom roles
+  - `CreateCustomRole`
+  - `DeleteCustomRole`
+  - `UpdateCustomRole`
 - Namespace
-  - `CreateNamespaceAPI`: Create Namespace
-  - `DeleteNamespaceAPI`: Delete Namespace
-  - `FailoverNamespacesAPI`: Failover (for High Availability Namespaces)
-  - `RenameCustomSearchAttributeAPI`: Rename Custom Search Attribute
-  - `UpdateNamespaceAPI`: Includes retention period changes, replica edits, authentication method updates, custom search attribute updates, and connectivity rule bindings
-- Namespace Export
-  - `CreateNamespaceExportSink`: Create Namespace Export Sink
-  - `DeleteNamespaceExportSink`: Delete Namespace Export Sink
-  - `UpdateNamespaceExportSink`: Update Namespace Export Sink
-  - `ValidateNamespaceExportSink`: Validate Namespace Export Sink
-- Nexus Endpoint
-  - `CreateNexusEndpoint`: Create Nexus Endpoint
-  - `DeleteNexusEndpoint`: Delete Nexus Endpoint
-  - `UpdateNexusEndpoint`: Update Nexus Endpoint
-- Service Accounts
-  - `CreateServiceAccount`: Create Service Account
-  - `CreateServiceAccountAPIKey`: Create Service Account API Key
-  - `DeleteServiceAccount`: Delete Service Account
-  - `UpdateServiceAccount`: Update Service Account
-- User
-  - `CreateUserAPI`: Create Users
-  - `DeleteUserAPI`: Delete Users
-  - `InviteUsersAPI`: Invite Users
-  - `SetUserNamespaceAccessAPI`: Set User Namespace Access
-  - `UpdateIdentityNamespacePermissionsAPI`: Update Identity Namespace Permissions
-  - `UpdateUserAPI`: Update User Account-level Roles
-  - `UpdateUserNamespacePermissionsAPI`: Update User Namespace Permissions
-- User Groups
-  - `CreateUserGroup`: Create User Group
-  - `DeleteUserGroup`: Delete User Group
-  - `SetUserGroupNamespaceAccess`: Set User Group Namespace Access
-  - `UpdateUserGroup`: Update User Group
+  - `CreateNamespace`
+  - `DeleteNamespace`
+  - `FailoverNamespaces`
+  - `RenameCustomSearchAttribute`
+  - `UpdateNamespace`
+  - `UpdateNamespaceTags`
+  - `UpdateSearchAttributes`
+- Namespace export
+  - `CreateNamespaceExportSink`
+  - `DeleteNamespaceExportSink`
+  - `UpdateNamespaceExportSink`
+  - `ValidateNamespaceExportSink`
+- Nexus endpoints
+  - `CreateNexusEndpoint`
+  - `DeleteNexusEndpoint`
+  - `UpdateNexusEndpoint`
+- Projects
+  - `CreateProject`
+  - `DeleteProject`
+  - `SetServiceAccountProjectAccess`
+  - `SetUserGroupProjectAccess`
+  - `SetUserProjectAccess`
+  - `UpdateProject`
+- Security
+  - `SecretFound`
+- Service accounts
+  - `CreateServiceAccount`
+  - `DeleteServiceAccount`
+  - `SetServiceAccountNamespaceAccess`
+  - `UpdateServiceAccount`
+- Users
+  - `CreateJITUser`
+  - `CreateUser`
+  - `DeleteUser`
+  - `InviteUsers`
+  - `SetUserNamespaceAccess`
+  - `UpdateIdentityNamespacePermissions`
+  - `UpdateUser`
+  - `UpdateUserNamespacePermissions`
+  - `UserAcceptInvitation`
+  - `UserLogin`
+  - `UserSignup`
+- User groups
+  - `AddUserGroupMember`
+  - `CreateUserGroup`
+  - `DeleteUserGroup`
+  - `RemoveUserGroupMember`
+  - `SetUserGroupNamespaceAccess`
+  - `UpdateUserGroup`
+
+The API key event names are case-sensitive. Temporal Cloud emits the `APIKey` or `ApiKey` variant depending on which Control Plane service processes the request.
 
 ### Audit log format
 
