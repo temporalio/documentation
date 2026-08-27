@@ -2356,7 +2356,7 @@
     },
     {
       "source": "/evaluate/development-production-features/interrupt-workflow",
-      "destination": "/evaluate/features/interrupt-workflow",
+      "destination": "/evaluate/features/cancellation-and-termination",
       "permanent": true
     },
     {
