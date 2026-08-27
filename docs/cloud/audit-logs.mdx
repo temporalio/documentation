@@ -30,80 +30,80 @@ Instead, explore the [Export](/cloud/export) feature, which does let you send cl
 The `operation` field can contain the following event values:
 
 - Account
-  - `ChangeAccountPlanType`
-  - `CreateAccountAuditLogSink`
-  - `DeleteAccountAuditLogSink`
-  - `OffboardAccount`
-  - `SelfServiceOffboardAccount`
-  - `UpdateAccount`
-  - `UpdateAccountAuditLogSink`
+  - `ChangeAccountPlanType`: Change Account Plan Type
+  - `CreateAccountAuditLogSink`: Create Account Audit Log Sink
+  - `DeleteAccountAuditLogSink`: Delete Account Audit Log Sink
+  - `OffboardAccount`: Offboard Account
+  - `SelfServiceOffboardAccount`: Self-Service Offboard Account
+  - `UpdateAccount`: Update Account
+  - `UpdateAccountAuditLogSink`: Update Account Audit Log Sink
 - API keys
-  - `CreateAPIKey`
-  - `CreateApiKey`
-  - `CreateServiceAccountAPIKey`
-  - `DeleteAPIKey`
-  - `DeleteApiKey`
-  - `UpdateAPIKey`
-  - `UpdateApiKey`
+  - `CreateAPIKey`: Create API Key
+  - `CreateApiKey`: Create API Key
+  - `CreateServiceAccountAPIKey`: Create Service Account API Key
+  - `DeleteAPIKey`: Delete API Key
+  - `DeleteApiKey`: Delete API Key
+  - `UpdateAPIKey`: Update API Key
+  - `UpdateApiKey`: Update API Key
 - Billing
-  - `CreateBillingReport`
+  - `CreateBillingReport`: Create Billing Report
 - Connectivity rules
-  - `CreateConnectivityRule`
-  - `DeleteConnectivityRule`
+  - `CreateConnectivityRule`: Create Connectivity Rule
+  - `DeleteConnectivityRule`: Delete Connectivity Rule
 - Custom roles
-  - `CreateCustomRole`
-  - `DeleteCustomRole`
-  - `UpdateCustomRole`
+  - `CreateCustomRole`: Create Custom Role
+  - `DeleteCustomRole`: Delete Custom Role
+  - `UpdateCustomRole`: Update Custom Role
 - Namespace
-  - `CreateNamespace`
-  - `DeleteNamespace`
-  - `FailoverNamespaces`
-  - `RenameCustomSearchAttribute`
-  - `UpdateNamespace`
-  - `UpdateNamespaceTags`
-  - `UpdateSearchAttributes`
+  - `CreateNamespace`: Create Namespace
+  - `DeleteNamespace`: Delete Namespace
+  - `FailoverNamespaces`: Failover Namespaces
+  - `RenameCustomSearchAttribute`: Rename Custom Search Attribute
+  - `UpdateNamespace`: Update Namespace
+  - `UpdateNamespaceTags`: Update Namespace Tags
+  - `UpdateSearchAttributes`: Update Search Attributes
 - Namespace export
-  - `CreateNamespaceExportSink`
-  - `DeleteNamespaceExportSink`
-  - `UpdateNamespaceExportSink`
-  - `ValidateNamespaceExportSink`
+  - `CreateNamespaceExportSink`: Create Namespace Export Sink
+  - `DeleteNamespaceExportSink`: Delete Namespace Export Sink
+  - `UpdateNamespaceExportSink`: Update Namespace Export Sink
+  - `ValidateNamespaceExportSink`: Validate Namespace Export Sink
 - Nexus endpoints
-  - `CreateNexusEndpoint`
-  - `DeleteNexusEndpoint`
-  - `UpdateNexusEndpoint`
+  - `CreateNexusEndpoint`: Create Nexus Endpoint
+  - `DeleteNexusEndpoint`: Delete Nexus Endpoint
+  - `UpdateNexusEndpoint`: Update Nexus Endpoint
 - Projects
-  - `CreateProject`
-  - `DeleteProject`
-  - `SetServiceAccountProjectAccess`
-  - `SetUserGroupProjectAccess`
-  - `SetUserProjectAccess`
-  - `UpdateProject`
+  - `CreateProject`: Create Project
+  - `DeleteProject`: Delete Project
+  - `SetServiceAccountProjectAccess`: Set Service Account Project Access
+  - `SetUserGroupProjectAccess`: Set User Group Project Access
+  - `SetUserProjectAccess`: Set User Project Access
+  - `UpdateProject`: Update Project
 - Security
-  - `SecretFound`
+  - `SecretFound`: Secret Found
 - Service accounts
-  - `CreateServiceAccount`
-  - `DeleteServiceAccount`
-  - `SetServiceAccountNamespaceAccess`
-  - `UpdateServiceAccount`
+  - `CreateServiceAccount`: Create Service Account
+  - `DeleteServiceAccount`: Delete Service Account
+  - `SetServiceAccountNamespaceAccess`: Set Service Account Namespace Access
+  - `UpdateServiceAccount`: Update Service Account
 - Users
-  - `CreateJITUser`
-  - `CreateUser`
-  - `DeleteUser`
-  - `InviteUsers`
-  - `SetUserNamespaceAccess`
-  - `UpdateIdentityNamespacePermissions`
-  - `UpdateUser`
-  - `UpdateUserNamespacePermissions`
-  - `UserAcceptInvitation`
-  - `UserLogin`
-  - `UserSignup`
+  - `CreateJITUser`: Create JIT User
+  - `CreateUser`: Create User
+  - `DeleteUser`: Delete User
+  - `InviteUsers`: Invite Users
+  - `SetUserNamespaceAccess`: Set User Namespace Access
+  - `UpdateIdentityNamespacePermissions`: Update Identity Namespace Permissions
+  - `UpdateUser`: Update User
+  - `UpdateUserNamespacePermissions`: Update User Namespace Permissions
+  - `UserAcceptInvitation`: User Accept Invitation
+  - `UserLogin`: User Login
+  - `UserSignup`: User Signup
 - User groups
-  - `AddUserGroupMember`
-  - `CreateUserGroup`
-  - `DeleteUserGroup`
-  - `RemoveUserGroupMember`
-  - `SetUserGroupNamespaceAccess`
-  - `UpdateUserGroup`
+  - `AddUserGroupMember`: Add User Group Member
+  - `CreateUserGroup`: Create User Group
+  - `DeleteUserGroup`: Delete User Group
+  - `RemoveUserGroupMember`: Remove User Group Member
+  - `SetUserGroupNamespaceAccess`: Set User Group Namespace Access
+  - `UpdateUserGroup`: Update User Group
 
 The API key event names are case-sensitive. Temporal Cloud emits the `APIKey` or `ApiKey` variant depending on which Control Plane service processes the request.
 
