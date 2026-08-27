@@ -1180,7 +1180,6 @@ module.exports = {
             'evaluate/features/nexus',
             'evaluate/features/workflow-message-passing',
             'evaluate/features/interrupt-workflow',
-            'evaluate/features/testing-suite',
             'evaluate/features/observability',
             'evaluate/features/data-encryption',
             'evaluate/features/schedules',
