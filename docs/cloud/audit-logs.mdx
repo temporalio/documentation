@@ -79,7 +79,7 @@ The `operation` field can contain the following event values:
   - `SetUserProjectAccess`: Set User Project Access
   - `UpdateProject`: Update Project
 - Security
-  - `SecretFound`: Secret Found
+  - `SecretFound`: Detect Exposed API Key
 - Service accounts
   - `CreateServiceAccount`: Create Service Account
   - `DeleteServiceAccount`: Delete Service Account
@@ -104,8 +104,6 @@ The `operation` field can contain the following event values:
   - `RemoveUserGroupMember`: Remove User Group Member
   - `SetUserGroupNamespaceAccess`: Set User Group Namespace Access
   - `UpdateUserGroup`: Update User Group
-
-The API key event names are case-sensitive. Temporal Cloud emits the `APIKey` or `ApiKey` variant depending on which Control Plane service processes the request.
 
 ### Audit log format
 
