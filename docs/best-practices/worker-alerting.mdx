@@ -135,6 +135,7 @@ For triage, see [Execution failures](/troubleshooting/execution-failures).
 | --- | --- | --- | --- | --- | --- |
 | [Non-determinism error](/troubleshooting/execution-failures#non-determinism-error) | `workflow_task_execution_failed` | `failure_reason=NonDeterminismError` | Any occurrence | 1m | Critical |
 | [gRPC message too large](/troubleshooting/execution-failures#grpc-message-too-large) | `workflow_task_execution_failed` | `failure_reason=GrpcMessageTooLarge` | Any occurrence | 1m | Critical |
+| [Request too large](/troubleshooting/execution-failures#request-too-large) | `workflow_task_execution_failed` | `failure_reason=RequestTooLarge` | Any occurrence | 1m | Critical |
 | [Workflow Task execution failures elevated](/troubleshooting/execution-failures#workflow-task-execution-failures-elevated) | `workflow_task_execution_failed` | `failure_reason=WorkflowError` | Rate above 10/s | 2m | Warning |
 | [Workflow Task execution latency high](/troubleshooting/execution-failures#workflow-task-execution-latency-high) | `workflow_task_execution_latency` | `task_queue`, `workflow_type` | p99 above 10s | 5m | Critical |
 | [Activity execution failures elevated](/troubleshooting/execution-failures#activity-execution-failures-elevated) | `activity_execution_failed` | `activity_type` | Rate above 10/s | 2m | Warning |
