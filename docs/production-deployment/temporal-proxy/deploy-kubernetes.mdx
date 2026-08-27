@@ -4,10 +4,6 @@ title: Deploy Temporal Proxy to Kubernetes
 sidebar_label: Deploy to Kubernetes
 description: Deploy the Temporal Proxy with the Helm chart, including configuration, secrets, TLS, and KMS access.
 toc_max_heading_level: 4
-keywords:
-  - temporal-proxy
-  - kubernetes
-  - helm
 tags:
   - Temporal Service
   - Self-hosting
@@ -18,8 +14,8 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="prerelease">
   Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
-  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
-  and the definitive configuration schema.
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
+  the definitive configuration schema.
 </ReleaseNoteHeader>
 
 The [Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) provisions everything the
@@ -88,7 +84,7 @@ config:
 That renders `apiKey: ${TP_UPSTREAM_CLOUD_API_KEY}` into the ConfigMap and adds a matching environment variable backed
 by the `temporal-cloud` Secret's `api-key` entry.
 
-## Supply TLS material {/* #supply-tls-material */}
+## Supply TLS material {/*#supply-tls-material*/}
 
 The gateway's `config.tls` block and each `upstreams[].tls` block accept a `secretName`. The chart mounts that Secret at
 `/etc/temporal-proxy/certs/gateway` or `/etc/temporal-proxy/certs/upstream-<name>` and fills in the file paths for you:
@@ -100,8 +96,8 @@ The gateway's `config.tls` block and each `upstreams[].tls` block accept a `secr
 | `ca`              | `<mount>/<caKey>`, only when `caKey` is set                   |
 
 `ca` is opt-in because it changes behavior rather than just adding material. On the gateway, a `ca` enforces mutual TLS,
-so only set `caKey` on `config.tls` when you intend to require client certificates. See [Configure TLS](/production-deployment/temporal-proxy/configure#configure-tls)
-for what each combination means.
+so only set `caKey` on `config.tls` when you intend to require client certificates. See
+[Configure TLS](/production-deployment/temporal-proxy/configure#configure-tls) for what each combination means.
 
 ```yaml
 config:
@@ -121,23 +117,59 @@ Keep upstream `name` values DNS-safe, meaning lowercase alphanumeric characters 
 name from them. To manage certificate files yourself instead, skip `secretName` and mount them with the chart's generic
 `volumes` and `volumeMounts` values.
 
+## Probe the gateway
+
+The gateway serves the standard gRPC health service, so a Kubernetes gRPC probe can read it directly. The chart passes
+`livenessProbe` and `readinessProbe` through to the container as written, and its defaults are HTTP GETs against the
+gateway port, which a gRPC listener does not answer:
+
+```yaml
+livenessProbe:
+  grpc:
+    port: 8443 # Must be numeric. Match service.port.
+readinessProbe:
+  grpc:
+    port: 8443
+    service: temporal.api.workflowservice.v1.WorkflowService
+```
+
+Naming a service is optional; omit it to check the empty service name. Either way the answer is the same, because the
+proxy's health is process-wide, and a service your configuration does not allow returns `NOT_FOUND`. See
+[Health checks](/production-deployment/temporal-proxy/configure#health-checks) for what the gateway publishes.
+
+Kubernetes gRPC probes connect in plaintext, so they cannot reach a gateway that terminates TLS. When `config.tls` is
+set, probe the proxy some other way, such as an exec probe running a client that presents the right certificate.
+
+## Shut down cleanly
+
+On `SIGTERM` the proxy stops accepting connections and drains in-flight RPCs. Each serving tier, meaning the gateway and
+each upstream proxy, drains within five seconds, and the whole stop sequence is bounded at 30 seconds. Long-poll methods
+block for much longer than that, so a rollout normally cuts some of them short: the proxy logs a warning naming the
+deadline that ended the drain and still exits zero, because the callers re-poll. Treat that warning as ordinary on a
+restart rather than a failed shutdown.
+
+An ordinary drain finishes in about five seconds, well inside the Kubernetes default `terminationGracePeriodSeconds`
+of 30.
+
 ## Grant access to your KMS key
 
 The one thing the chart cannot do for you is grant the proxy access to your cloud KMS key. When you enable
-[payload encryption](/production-deployment/temporal-proxy/encrypt-payloads), the proxy needs a cloud identity that holds the encrypt and decrypt permissions
-on the key. Bind the chart's Kubernetes ServiceAccount to that identity with workload identity, so the proxy
-authenticates to your KMS with no static credentials. If you do not use encryption, you can skip this: API keys and TLS
-material come from the configuration and mounted Secrets, so the proxy needs no cloud identity.
+[payload encryption](/production-deployment/temporal-proxy/encrypt-payloads), the proxy needs a cloud identity that
+holds the encrypt and decrypt permissions on the key. Bind the chart's Kubernetes ServiceAccount to that identity with
+workload identity, so the proxy authenticates to your KMS with no static credentials. If you do not use encryption, you
+can skip this: API keys and TLS material come from the configuration and mounted Secrets, so the proxy needs no cloud
+identity.
 
 Grant the cloud identity the encrypt and decrypt permissions first, as described under
-[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads), then bind it to the ServiceAccount as shown below. The bindings reference the
-ServiceAccount by name, so set `serviceAccount.name` in your values to keep it stable and matching what you bind on the
-cloud side.
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads), then bind it to the ServiceAccount as shown
+below. The bindings reference the ServiceAccount by name, so set `serviceAccount.name` in your values to keep it stable
+and matching what you bind on the cloud side.
 
 ### AWS IRSA and Pod Identity
 
 Create an IAM role whose trust policy lets your cluster's OIDC provider assume it from the proxy's ServiceAccount, and
-attach the KMS policy from [AWS KMS](/production-deployment/temporal-proxy/encrypt-payloads#aws-kms). Then annotate the ServiceAccount with the role ARN:
+attach the KMS policy from [AWS KMS](/production-deployment/temporal-proxy/encrypt-payloads#aws-kms). Then annotate the
+ServiceAccount with the role ARN:
 
 ```yaml
 serviceAccount:
@@ -195,4 +227,3 @@ serviceAccount:
   annotations:
     iam.gke.io/gcp-service-account: proxy@my-project.iam.gserviceaccount.com
 ```
-

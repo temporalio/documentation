@@ -8,14 +8,6 @@ tags:
   - Temporal Cloud
   - Production
   - Connectivity
-keywords:
-  - availability
-  - explanation
-  - failover
-  - replication
-  - namespaces
-  - temporal-cloud
-  - term
 ---
 
 import { CaptionedImage, SdkTabs } from '@site/src/components';
@@ -223,16 +215,16 @@ We strongly recommend using private DNS instead of updating client server and TL
 
 If you are unable to configure private DNS, you must update two settings in your Temporal clients:
 
-1. Set the endpoint server address to the PrivateLink or Private Service Connect endpoint (e.g. `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233` or `<GCP PSC IP address>:7233`).
-2. Set TLS configuration to override the TLS server name (the Namespace Endpoint, e.g., `my-namespace.my-account.tmprl.cloud`).
+1. Set the endpoint server address to the PrivateLink or Private Service Connect endpoint (for example, `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233` or `<GCP PSC IP address>:7233`).
+2. Set TLS configuration to override the TLS server name (the Namespace Endpoint, for example, `my-namespace.my-account.tmprl.cloud`).
 
 The TLS server name override depends on your authentication method:
 
 | Authentication | TLS server name to use |
 | -------------- | ---------------------- |
-| mTLS (single-region Namespace) | The Namespace Endpoint, e.g. `my-namespace.my-account.tmprl.cloud` |
-| API key (single-region Namespace) | The regional API endpoint, e.g. `us-east-1.aws.api.temporal.io` or `us-central1.gcp.api.temporal.io` |
-| Multi-region Namespace (mTLS or API key) | The active region endpoint, e.g. `us-east-1.aws.api.temporal.io` |
+| mTLS (single-region Namespace) | The Namespace Endpoint, for example `my-namespace.my-account.tmprl.cloud` |
+| API key (single-region Namespace) | The regional API endpoint, for example `us-east-1.aws.api.temporal.io` or `us-central1.gcp.api.temporal.io` |
+| Multi-region Namespace (mTLS or API key) | The active region endpoint, for example `us-east-1.aws.api.temporal.io` |
 
 If you authenticate with an API key over PrivateLink/PSC and use the wrong server name, the TLS handshake will fail with errors such as `connection reset by peer` even though `nc` reports the port as open.
 

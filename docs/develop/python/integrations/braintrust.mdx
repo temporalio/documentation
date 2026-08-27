@@ -3,13 +3,6 @@ id: braintrust
 title: Braintrust integration
 sidebar_label: Braintrust
 toc_max_heading_level: 2
-keywords:
-  - ai
-  - agents
-  - braintrust
-  - observability
-  - tracing
-  - prompts
 tags:
   - Braintrust
   - Python SDK
@@ -56,7 +49,7 @@ Follow the steps below to configure your Worker.
 1. Install the Braintrust SDK with Temporal support.
 
    ```bash
-   uv pip install "braintrust[temporal]"
+   uv add "braintrust[temporal]"
    ```
 
 2. Initialize the Braintrust logger before creating your Worker. The logger must be initialized first so that spans are
@@ -103,7 +96,7 @@ Follow the steps below to configure your Worker.
 
    ```bash
    export BRAINTRUST_API_KEY="your-api-key"
-   python worker.py
+   uv run worker.py
    ```
 
    :::tip
@@ -266,8 +259,8 @@ temporal server start-dev
 export BRAINTRUST_API_KEY="your-api-key"
 export OPENAI_API_KEY="your-api-key"
 export BRAINTRUST_PROJECT="deep-research"
-uv run python -m worker
+uv run worker.py
 
 # Terminal 3: Run a research query
-uv run python -m start_workflow "What are the latest advances in quantum computing?"
+uv run start_workflow.py "What are the latest advances in quantum computing?"
 ```

@@ -8,14 +8,6 @@ tags:
   - Temporal Cloud
   - Production
   - High Availability
-keywords:
-  - availability
-  - explanation
-  - failover
-  - high-availability
-  - replication
-  - namespaces
-  - temporal-cloud
 ---
 
 import { ToolTipTerm, CaptionedImage } from '@site/src/components';
@@ -81,7 +73,7 @@ list, and it may change over time.
 You can also [manually trigger a failover](/cloud/high-availability/failovers/manage#trigger-failover) based on your own
 monitoring or for failover testing.
 
-Most Namespaces with High Availability are well-served by automatic failovers. The cases where a manual failover (i.e.,
+Most Namespaces with High Availability are well-served by automatic failovers. The cases where a manual failover (that is,
 a failover triggered by a user) is warranted are:
 
 - **Testing failover or migrating to a new region.** A manual failover is the standard way to exercise your failover
@@ -158,7 +150,7 @@ non-graceful failover, replication lag causes a temporary setback in Workflow pr
 failover:
 
 - Operations that had already replicated remain durable in the replica.
-- Operations that had not yet replicated (i.e., that are still in the replication backlog) are reconciled when the
+- Operations that had not yet replicated (that is, that are still in the replication backlog) are reconciled when the
   region recovers, according to the conflict resolution process.
 
 :::caution Conflict resolution requires a recoverable region

@@ -9,16 +9,6 @@ tags:
   - Connectivity
   - Production
   - Temporal Cloud
-keywords:
-  - availability
-  - explanation
-  - failover
-  - high-availability
-  - multi-region
-  - multi-region namespace
-  - namespaces
-  - temporal-cloud
-  - term
 ---
 
 import { CaptionedImage, JsonTable } from '@site/src/components';
@@ -94,8 +84,8 @@ The next step is to [configure private DNS](#configuring-private-dns-for-aws-pri
 
 When you connect to Temporal Cloud through AWS PrivateLink you normally must:
 
-1. **Point your SDKs/Workers at the PrivateLink DNS name** for the VPC Endpoint (e.g., `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`), **and**
-2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (e.g., `my-namespace.my-account.tmprl.cloud`).
+1. **Point your SDKs/Workers at the PrivateLink DNS name** for the VPC Endpoint (for example, `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`), **and**
+2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (for example, `my-namespace.my-account.tmprl.cloud`).
 
 By creating a Route 53 **private hosted zone (PHZ)** that maps the public Temporal Cloud hostname (or region hostname) to your VPC Endpoint, you can:
 
@@ -154,7 +144,7 @@ Save the **`vpce-*.amazonaws.com`** value — you will target it in the CNAME re
 #### 2. Create a Route 53 Private Hosted Zone (do not yet attach Worker VPCs)
 
 a. Open _Route 53 → Hosted zones → Create hosted zone_.
-b. Enter the domain chosen from the table above, e.g., `payments.abcde.tmprl.cloud`.
+b. Enter the domain chosen from the table above, for example, `payments.abcde.tmprl.cloud`.
 c. Type: _Private hosted zone for Temporal Cloud_.
 d. Leave VPC associations empty for now (you'll add them in step 4).
 e. Create the hosted zone.
@@ -165,7 +155,7 @@ Inside the new PHZ:
 
 | Field           | Value                                                                                 |
 | --------------- | ------------------------------------------------------------------------------------- |
-| **Record name** | the Namespace Endpoint (e.g., `payments.abcde.tmprl.cloud`).                          |
+| **Record name** | the Namespace Endpoint (for example, `payments.abcde.tmprl.cloud`).                          |
 | **Record type** | `CNAME`                                                                               |
 | **Value**       | Your VPC Endpoint DNS name (`vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`) |
 | **TTL**         | 60s is typical; 15s for Namespaces with High Availability (to minimize recovery time after failover). |
@@ -214,8 +204,8 @@ You can avoid creating DNS records for each Namespace by pointing Workers direct
 
 1. Create the PrivateLink VPC Endpoint (one per region — all Namespaces in that region share it).
 2. Configure each Worker with:
-   - **Endpoint**: the DNS name of the VPC Endpoint in the region where the Worker runs (e.g., `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233`)
-   - **Server name** (SNI override): the Namespace Endpoint value (e.g., `my-namespace.my-account.tmprl.cloud`)
+   - **Endpoint**: the DNS name of the VPC Endpoint in the region where the Worker runs (for example, `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233`)
+   - **Server name** (SNI override): the Namespace Endpoint value (for example, `my-namespace.my-account.tmprl.cloud`)
 
 With this approach, new Namespaces do not require new DNS records. Workers set their **Endpoint** to the VPC Endpoint DNS name and their **Server name** to the Namespace Endpoint, so the client SDK accepts the TLS handshake from Temporal Cloud.
 

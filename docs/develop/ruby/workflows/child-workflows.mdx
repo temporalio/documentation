@@ -3,14 +3,6 @@ id: child-workflows
 title: Child Workflows - Ruby SDK
 sidebar_label: Child Workflows
 description: Start a Child Workflow Execution and set a Parent Close Policy using Temporal Ruby SDK.
-keywords:
-  - start child workflow execution
-  - temporal ruby sdk
-  - parent close policy
-  - child workflow
-  - child workflow options
-  - signal child workflow
-  - ruby examples
 tags:
   - Workflows
   - Ruby SDK
@@ -27,7 +19,7 @@ This page shows how to do the following:
 
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
-When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted)) are logged in the Workflow Execution Event History.
 
 The [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event must be logged to the Event History before the Parent Workflow completes to ensure the Child Workflow has started.
 In Ruby, calling `start_child_workflow` or `execute_child_workflow` internally waits for this Event before returning, so the Child Workflow is guaranteed to have started once the call returns.

@@ -9,16 +9,6 @@ tags:
   - GCP
   - Production
   - Temporal Cloud
-keywords:
-  - availability
-  - explanation
-  - failover
-  - high-availability
-  - multi-region
-  - multi-region namespace
-  - namespaces
-  - temporal-cloud
-  - term
 ---
 
 import { JsonTable } from '@site/src/components';
@@ -110,7 +100,7 @@ See [configuring private DNS for GCP Private Service Connect](#configuring-priva
 When you connect to Temporal Cloud through GCP Private Service Connect you normally must:
 
 1. **Point your SDKs/Workers at the Private Service Connect endpoint IP address** _and_
-2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (e.g., `my-namespace.my-account.tmprl.cloud`).
+2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (for example, `my-namespace.my-account.tmprl.cloud`).
 
 By creating a **private Cloud DNS zone (PZ)** that maps the public Temporal Cloud hostname (or the region hostname) directly to the PSC endpoint IP address, you can:
 
@@ -155,8 +145,8 @@ Save the internal IP -- you will point the A record at it.
 
 1. Open _Network Services → Cloud DNS → Create zone_.
 2. Select zone type **Private**.
-3. Enter a **Zone name** (e.g., `temporal-cloud`).
-4. Enter a **DNS name** based on the table above (e.g., `payments.abcde.tmprl.cloud` or `us-east-1.aws.api.temporal.io`).
+3. Enter a **Zone name** (for example, `temporal-cloud`).
+4. Enter a **DNS name** based on the table above (for example, `payments.abcde.tmprl.cloud` or `us-east-1.aws.api.temporal.io`).
 5. Select **Add networks** and choose the Project and Network that contains your PSC endpoint.
 6. Click **Create**.
 
@@ -166,10 +156,10 @@ Inside the new zone, add a _standard A record_:
 
 | Field                | Value                                                          |
 | -------------------- | -------------------------------------------------------------- |
-| DNS name             | the namespace endpoint (e.g. `payments.abcde.tmprl.cloud`)     |
+| DNS name             | the namespace endpoint (for example, `payments.abcde.tmprl.cloud`)     |
 | Resource record type | A                                                              |
 | TTL                  | 60s is typical, but you can adjust as needed.                  |
-| IPv4 Address         | the internal IP address of your PSC endpoint (e.g. `10.1.2.3`) |
+| IPv4 Address         | the internal IP address of your PSC endpoint (for example, `10.1.2.3`) |
 
 #### 4. Verify DNS resolution from inside the Network
 

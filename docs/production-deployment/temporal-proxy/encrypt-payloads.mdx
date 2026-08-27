@@ -4,10 +4,6 @@ title: Encrypt payloads with Temporal Proxy
 sidebar_label: Encrypt payloads
 description: Configure Temporal Proxy payload encryption with envelope encryption and cloud or custom KMS backends.
 toc_max_heading_level: 4
-keywords:
-  - temporal-proxy
-  - encryption
-  - security
 tags:
   - Temporal Service
   - Self-hosting
@@ -129,7 +125,7 @@ from every region. How you express that differs by provider:
 - **Azure:** Key Vault keys are regional. Use a separate vault per region (or geo-replication), and, because each vault
   gives the key a distinct URI, set each proxy's `uri` to its local vault and list the other vaults' keys in
   `decryptURIs`.
-- **GCP:** create the key in a multi-region location (for example `locations/us`) or in `global`. The resource name is
+- **GCP:** create the key in a multi-region location (for example, `locations/us`) or in `global`. The resource name is
   the same everywhere, so every proxy uses the identical `uri` and no `decryptURIs` are needed:
   `gcpkms://projects/my-project/locations/us/keyRings/codec/cryptoKeys/my-key`.
 
@@ -303,4 +299,3 @@ it later if a payload still needs opening, whereas a deleted key is gone for goo
 while leaving decrypt in place also lets you stop new encryption without stranding existing payloads.
 
 :::
-

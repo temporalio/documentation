@@ -1,0 +1,122 @@
+---
+id: index
+title: Durable AI
+sidebar_label: Overview
+description: Build durable AI agents and systems on Temporal, with runnable cookbook recipes, SDK integrations, and design patterns for agent workloads.
+slug: /ai
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+import IntegrationsGrid from '@site/src/components/IntegrationsGrid';
+import { CookbookPreview, GridCardList } from '@site/src/components';
+
+Temporal gives AI applications and agents Durable Execution: a Workflow resumes automatically after a crash, a
+network timeout, or a multi-day wait for a human to approve a step. Temporal shows up in four recurring types of AI
+system:
+
+**Agents.** Long-running, stateful agent loops that call LLMs and tools, wait on humans, and pick up exactly where
+they left off after a failure. Start with the [AI Cookbook](/ai/cookbook) and the
+[Approval](/design-patterns/approval) and [Entity Workflow](/design-patterns/entity-workflow) patterns.
+
+**Processing pipelines.** Multi-step data and document pipelines, such as extraction, embedding, or batch inference,
+that need to fan out, retry failed steps in isolation, and resume without reprocessing completed work. See the
+[batch processing patterns](/design-patterns#batch-processing-patterns).
+
+**Internal agent platforms.** Teams building a shared runtime for many agents reuse Temporal's Worker and Task Queue
+primitives instead of building their own scheduler. See the
+[worker configuration patterns](/design-patterns#worker-configuration-patterns) for routing and isolating agent
+workloads.
+
+**Model training.** Long-running training and fine-tuning jobs coordinated across GPU resources, with checkpointing
+and recovery handled by Temporal's Event History instead of custom orchestration code. Start with the [long-running activity](/design-patterns/long-running-activity) and [parallel-execution](/design-patterns/parallel-execution) patterns. 
+
+> Looking to use an AI coding assistant to write Temporal code instead? See [Develop with AI](/with-ai).
+
+## AI Cookbook
+
+Runnable, step-by-step recipes for building AI systems and agents with Temporal: tool calling, MCP, structured
+output, human-in-the-loop, and more.
+
+<CookbookPreview limit={4} />
+
+## Agent framework integrations
+
+Temporal integrations for the SDKs and frameworks teams use to build agents. This view is pre-filtered to agent
+frameworks — browse [every integration](/integrations) for the full catalog.
+
+<IntegrationsGrid defaultTags={["Agent framework"]} hideTagFilter hideEmptyOptions />
+
+## Featured from the Code Exchange
+
+A hand-picked look at samples built with Temporal and AI. Browse the full
+[Code Exchange](https://temporal.io/code-exchange) for more.
+
+<GridCardList className="code-exchange-featured"
+  items={[
+  {
+    href: "https://temporal.io/code-exchange/ai-enhanced-e-commerce-application",
+    title: "AI enhanced e-commerce application",
+    description: "A sample e-commerce gift shop with hybrid full-text and vector search plus an AI-powered chat shopping assistant, built with Stripe and Temporal Workflows.",
+    tags: ["Hybrid search"],
+    sdk: "Dotnet",
+  },
+  {
+    href: "https://temporal.io/code-exchange/ai-question-planetarium",
+    title: "Temporal AI Question Planetarium",
+    description: "Runs a Hugging Face model inside Temporal Activities and Workers, streaming updates to the browser over WebSockets in real time.",
+    tags: ["Demo"],
+    sdk: "Python",
+  },
+  {
+    href: "https://temporal.io/code-exchange/document-processing-w-ai",
+    title: "Document Processing w/ AI",
+    description: "A mortgage underwriting demo that uses Gemini OCR and policy-grounded AI analysis in deterministic Workflows, with human-in-the-loop review and full traceability.",
+    tags: ["Gemini", "Mortgage"],
+    sdk: "Python",
+  },
+  {
+    href: "https://temporal.io/code-exchange/rust-confessional",
+    title: "Rust Confessional: a durable AI agent demo",
+    description: "A live demo where an AI agent judges audience programming confessions, its progress surviving a Worker crash mid-task.",
+    tags: ["Demo"],
+    sdk: "Rust",
+  },
+]} />
+
+## Design patterns for AI agents
+
+<PatternCards items={[
+  {
+    href: "/design-patterns/approval",
+    icon: "approval-icon.svg",
+    title: "Approval",
+    description: "Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata.",
+  },
+  {
+    href: "/design-patterns/saga-pattern",
+    icon: "saga-icon.svg",
+    title: "Saga Pattern",
+    description: "Manages distributed transactions with compensating actions. Each step has a compensation that undoes its effects if subsequent steps fail.",
+  },
+  {
+    href: "/design-patterns/long-running-activity",
+    icon: "long-running-activity-icon.svg",
+    title: "Long-Running Activity",
+    description: "Long-running Activities report progress via heartbeats and enable resumption after failures with cancellation support.",
+  },
+  {
+    href: "/design-patterns/entity-workflow",
+    icon: "entity-workflow-icon.svg",
+    title: "Entity Workflow",
+    description: "Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.",
+  },
+  {
+    href: "/design-patterns/local-activities",
+    icon: "local-activities-icon.svg",
+    title: "Local Activities",
+    description: "Run Activity functions in-process inside the Workflow Task, eliminating all server scheduling round-trips. Best for short, idempotent Activities on a latency-sensitive path.",
+  },
+]} />
+
+Browse the full [Design Patterns catalog](/design-patterns) for more, or jump straight into the
+[AI Cookbook](/ai/cookbook) for runnable code.

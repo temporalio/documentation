@@ -6,12 +6,6 @@ description:
   Learn how Serverless Workers work, how Temporal invokes them, and how they differ from traditional long-lived Workers.
 slug: /serverless-workers
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - workers
-  - lambda
-  - cloud run
-  - compute provider
 tags:
   - Workers
   - Concepts
@@ -54,6 +48,14 @@ Serverless Workers require [Worker Versioning](/worker-versioning). Each Serverl
 
 To deploy a Serverless Worker, see
 [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+
+:::tip Use the Serverless Workers Skill
+
+The [Temporal Serverless Workers Skill](https://github.com/temporalio/skill-temporal-serverless) gives your AI coding
+agent the knowledge to write, package, deploy, and troubleshoot Serverless Workers. See
+[Develop with AI](/with-ai#skills) for installation instructions.
+
+:::
 
 ### Compute providers {/* #compute-providers */}
 
@@ -152,18 +154,12 @@ Refer to the autoscaling section for your compute provider:
 
 ## Scaling with long-lived Workers {/* #scaling-with-long-lived-workers */}
 
-Serverless Workers can share a Task Queue with long-lived Workers. Because Serverless Workers are only invoked on
-sync match failure, Serverless Workers only pick up Tasks that no long-lived Worker was available
-to handle. In practice, the Serverless Workers act as spillover capacity for the long-lived fleet.
+Serverless Workers can share a Task Queue with long-lived Workers. What the WCI does with the Tasks the long-lived
+Workers are already handling depends on the compute provider, and so does the guidance. Refer to the section for your
+compute provider:
 
-:::caution
-
-If you configure Serverless and long-lived Workers on the same Task Queue, do not enable dynamic scaling on the
-long-lived Workers. The two groups cannot coordinate their scaling behavior. If both scale dynamically, the long-lived
-Workers may scale up to handle the same Tasks that Temporal is simultaneously invoking Serverless Workers for, leading
-to unnecessary invocations and unpredictable scaling.
-
-:::
+- [AWS Lambda](/serverless-workers/aws-lambda#sharing-a-task-queue)
+- [GCP Cloud Run](/serverless-workers/cloud-run#sharing-a-task-queue)
 
 ## Worker lifecycle {/* #worker-lifecycle */}
 
