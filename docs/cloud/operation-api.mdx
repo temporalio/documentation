@@ -10,12 +10,6 @@ tags:
   - Temporal Cloud
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  type="publicPreview"
-/>
-
 The Temporal Cloud Operations API, or the Cloud Ops API, is an open source, public [HTTP API](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction) and [gRPC API](https://github.com/temporalio/cloud-api/tree/main) for programmatically managing Temporal Cloud Control Plane resources, including [Namespaces](/cloud/namespaces), [Users](/cloud/manage-access/users), [Service Accounts](/cloud/manage-access/service-accounts), [API keys](/cloud/api-keys), and others. The Temporal Cloud [Terraform Provider](/cloud/terraform-provider), [tcld CLI](/cloud/tcld), and Web UI all use the Cloud Ops API.
 
 ## Develop applications with the Cloud Ops API
@@ -141,6 +135,18 @@ For HTTP clients, the version header is optional. If omitted, the HTTP gateway d
 
 For production HTTP automation, still pin an explicit version so behavior does not change when the gateway’s latest version advances.
 
+### API versioning and deprecation
+
+Use the latest Cloud Ops API version for new integrations, and keep your `temporal-cloud-api-version` header on a supported version.
+
+Temporal supports each Cloud Ops API version for at least one year after its release. When an API version is scheduled for deprecation:
+
+- Temporal provides at least six months' notice before the version becomes unsupported.
+- The minimum supported API version and deprecation timeline are published in the [Cloud Ops API repository](https://github.com/temporalio/cloud-api).
+- Temporal provides migration guidance when an API change requires you to update your integration.
+
+After the deprecation period, requests that use a version older than the minimum supported version can be rejected.
+
 ### Connection URL
 
 - gRPC: `saas-api.tmprl.cloud:443`
@@ -151,6 +157,14 @@ For production HTTP automation, still pin an explicit version so behavior does n
 1. Generate an [API Key for authentication](/cloud/api-keys#manage-api-keys). Required permissions vary by operation; see [roles and permissions](/cloud/manage-access/roles-and-permissions).
 2. Establish a secure connection. For Go, see [Cloud Ops API client setup](https://github.com/temporalio/cloud-samples-go/blob/main/client/api/client.go).
 3. Execute operations. For request and response messages, see `cloudservice/v1/request_response.proto`. For services, see `cloudservice/v1/service.proto`.
+
+## Availability
+
+Temporal targets 99.99% monthly availability for the Cloud Ops API across its HTTP and gRPC interfaces.
+
+Availability measures whether valid Cloud Ops API requests can be successfully served. Server-side failures count against this objective. Client errors, such as invalid requests and authentication or authorization failures, do not. Documented rate-limit responses (`ResourceExhausted`) also do not count against availability.
+
+This availability objective applies only to Temporal Cloud control-plane operations. It is not a contractual service-level agreement and does not change the Temporal Cloud [SLA](/cloud/sla). Workflow and Activity execution are data-plane operations covered by that SLA.
 
 ## Rate limits
 
