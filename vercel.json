@@ -2360,11 +2360,6 @@
       "permanent": true
     },
     {
-      "source": "/evaluate/development-production-features/testing-suite",
-      "destination": "/evaluate/features/testing-suite",
-      "permanent": true
-    },
-    {
       "source": "/evaluate/development-production-features/observability",
       "destination": "/evaluate/features/observability",
       "permanent": true
