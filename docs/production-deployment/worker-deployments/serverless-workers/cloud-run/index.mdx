@@ -50,6 +50,18 @@ the SDKs with a Cloud Run guide today.
   Terraform module.
 - A Temporal SDK. Use the tabs to select your language and the rest of the page will update accordingly.
 
+## Check Cloud Run known issues {/* #check-known-issues */}
+
+Google lists current Cloud Run defects and limitations on
+[Cloud Run known issues](https://cloud.google.com/run/docs/known-issues). Check it before you choose a region for the
+Worker Pool.
+
+{/* Remove the paragraph below once the deployment latency entry leaves the Cloud Run known issues page. */}
+
+One entry affects this guide today. Creating and updating Cloud Run resources is slower than expected in some regions,
+including `us-central1`. Creating the Worker Pool and the scaling calls Temporal makes against it both take longer
+there. Google recommends deploying to a different region when the added latency is a problem.
+
 ## 1. Write Worker code {/* #write-worker-code */}
 
 A Cloud Run Serverless Worker is a standard long-running Worker. It connects to Temporal, registers its Workflows and

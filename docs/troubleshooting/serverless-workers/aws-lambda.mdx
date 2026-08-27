@@ -35,6 +35,8 @@ When a Serverless Worker invocation works correctly, the following sequence happ
 
 Start by determining whether the Lambda function is being invoked at all, then narrow down from there.
 
+If no check below matches what you are seeing, or they all pass, [check for AWS-side issues](#check-aws-issues).
+
 ## Is the Lambda function being invoked? {/* #is-lambda-invoked */}
 
 Check the Lambda function's CloudWatch metrics or invocation logs.
@@ -140,3 +142,18 @@ deployment version than the WCI expects, the Task is not processed, and the WCI 
 
 To fix the loop, update the deployment name and build ID in the Worker code to match the Worker Deployment Version, then
 redeploy the Lambda function.
+
+## Check for AWS-side issues {/* #check-aws-issues */}
+
+Some symptoms come from Lambda rather than from your configuration. Before spending time on the checks above, or after
+they all pass, rule out a provider-side cause:
+
+- [AWS Health Dashboard service history](https://health.aws.amazon.com/health/status) reports active incidents by
+  service and region.
+- [Your account health events](https://health.aws.amazon.com/health/home) reports events scoped to your own resources,
+  such as approaching service quotas.
+
+If an incident explains what you are seeing, the fix is usually to wait it out or move to another region. Temporal
+addresses a function by ARN, which includes the region, so changing region means deploying a new function and updating
+the [compute configuration](/production-deployment/worker-deployments/serverless-workers/aws-lambda#create-worker-deployment-version)
+on the Worker Deployment Version.
