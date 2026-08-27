@@ -1,0 +1,102 @@
+---
+id: cancellation-and-termination
+title: Cancellation and termination
+description:
+  Stop a Workflow already in progress, either by asking it to unwind the work it has done or by closing it outright when
+  it can't respond.
+sidebar_label: Cancellation and termination
+tags:
+  - Workflows
+  - Activities
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+A business process that's already running sometimes has to stop: an order is retracted, a customer closes an account, a
+deploy goes wrong. Temporal gives you two ways to stop a
+[Workflow Execution](/workflow-execution), and the difference between them is whether your code gets to clean up after
+itself.
+
+**Cancellation** asks the Workflow to stop. The Workflow receives the request, so it can release resources, undo steps it
+has already taken, and notify other systems before closing. The steps it takes are your code, so you decide what
+unwinding a half-finished process means.
+
+**Termination** closes the Workflow Execution immediately. Workflow code never sees the request and no cleanup runs. It
+works on a Workflow that can't respond to anything, which is what makes it the fallback when Cancellation won't land.
+
+## What this means for your design
+
+- **You write the cleanup.** Temporal delivers the Cancellation request and
+  schedules a Workflow Task so your code can act on it. You can specify what to undo, and in what order. If your
+  process reserves inventory, charges cards, or provisions infrastructure, plan the unwind path alongside the forward
+  one. See the [Saga Pattern](/design-patterns/saga-pattern) for the usual structure.
+- **Long-running Activities need Heartbeats to be cancellable.** Cancellation reaches an Activity when it Heartbeats, so
+  an Activity that never Heartbeats runs to completion regardless. This shapes how you write anything long-running.
+- **You always have a way out.** A Workflow blocked by a bug, a bad deploy, or a missing Worker can still be terminated,
+  so a stuck process is never permanently stuck.
+- **The record survives the stop.** Both operations are recorded in
+  [Event History](/workflow-execution/event#event-history) with who requested it and why, which matters for audit and
+  incident review.
+
+Cancellation and Termination close a Workflow for good. To hold one in place and resume it later, see
+[Workflow Pause](/encyclopedia/workflow/workflow-pause).
+
+## Resources
+
+Read the Temporal Encyclopedia for conceptual depth:
+
+- [Cancellation and Termination](/cancellation-and-termination)
+- [Parent Close Policy](/parent-close-policy)
+
+Or jump straight to the SDK feature guide for implementation details:
+
+<PatternCards items={[
+  {
+    href: "/develop/dotnet/workflows/cancellation",
+    title: ".NET SDK",
+    description: "Handle Cancellation and Termination in C# and .NET.",
+    icon: "/img/sdks/svgs/dotnet.svg",
+  },
+  {
+    href: "/develop/go/workflows/cancellation",
+    title: "Go SDK",
+    description: "Handle Cancellation and Termination in Go.",
+    icon: "/img/sdks/svgs/golang.svg",
+  },
+  {
+    href: "/develop/java/workflows/cancellation",
+    title: "Java SDK",
+    description: "Handle Cancellation and Termination in Java and other JVM languages.",
+    icon: "/img/sdks/svgs/java.svg",
+  },
+  {
+    href: "/develop/php/workflows/cancellation",
+    title: "PHP SDK",
+    description: "Handle Cancellation and Termination in PHP.",
+    icon: "/img/sdks/svgs/php.svg",
+  },
+  {
+    href: "/develop/python/workflows/cancellation",
+    title: "Python SDK",
+    description: "Handle Cancellation and Termination in Python.",
+    icon: "/img/sdks/svgs/python.svg",
+  },
+  {
+    href: "/develop/ruby/workflows/cancellation",
+    title: "Ruby SDK",
+    description: "Handle Cancellation and Termination in Ruby.",
+    icon: "/img/sdks/svgs/ruby.svg",
+  },
+  {
+    href: "/develop/rust/workflows/cancellation",
+    title: "Rust SDK",
+    description: "Handle Cancellation and Termination in Rust.",
+    icon: "/img/sdks/svgs/rust.svg",
+  },
+  {
+    href: "/develop/typescript/workflows/cancellation",
+    title: "TypeScript SDK",
+    description: "Handle Cancellation and Termination in TypeScript and JavaScript.",
+    icon: "/img/sdks/svgs/typescript.svg",
+  },
+]} />
