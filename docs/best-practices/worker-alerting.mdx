@@ -137,7 +137,8 @@ For triage, see [Execution failures](/troubleshooting/execution-failures).
 | [gRPC message too large](/troubleshooting/execution-failures#grpc-message-too-large) | `workflow_task_execution_failed` | `failure_reason=GrpcMessageTooLarge` | Any occurrence | 1m | Critical |
 | [Workflow Task execution failures elevated](/troubleshooting/execution-failures#workflow-task-execution-failures-elevated) | `workflow_task_execution_failed` | `failure_reason=WorkflowError` | Rate above 10/s | 2m | Warning |
 | [Workflow Task execution latency high](/troubleshooting/execution-failures#workflow-task-execution-latency-high) | `workflow_task_execution_latency` | `task_queue`, `workflow_type` | p99 above 10s | 5m | Critical |
-| [Activity execution failures elevated](/troubleshooting/execution-failures#activity-execution-failures-elevated) | `activity_execution_failed` | `activity_type` | Rate above 10/s | 2m | Warning |
+| [Activity execution failures elevated](/troubleshooting/execution-failures#activity-execution-failures-elevated) | `activity_execution_failed` | `failure_reason=ActivityError`, `activity_type` | Rate above 10/s | 2m | Warning |
+| [Activity Payloads too large](/troubleshooting/execution-failures#activity-payloads-too-large) | `activity_execution_failed` | `failure_reason=PayloadsTooLarge`, `activity_type` | Any occurrence | 1m | Critical |
 | [Unregistered Activity invocation](/troubleshooting/execution-failures#unregistered-activity-invocation) (Go SDK only) | `unregistered_activity_invocation` | `activity_type`, `task_queue`, `workflow_type` | Any occurrence | 1m | Critical |
 | [Local Activity latency exceeds the heartbeat timeout](/troubleshooting/execution-failures#local-activity-latency-exceeds-the-heartbeat-timeout) | `local_activity_execution_latency` | `activity_type` | p99 above 30m | 5m | Critical |
 
