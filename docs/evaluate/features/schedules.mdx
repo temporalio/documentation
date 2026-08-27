@@ -1,41 +1,121 @@
 ---
 id: schedules
-title: Schedules - Temporal feature
-description: Learn the benefits of scheduling Temporal Workflows and explore best practices to ensure timely and efficient execution of your business processes.
+title: Schedules
+description: A Schedule starts Workflows on an interval or calendar expression, with Overlap Policy, Catchup Window, backfill, and pause controls the Temporal Service runs for you.
 sidebar_label: Schedules
 tags:
   - Schedules
   - Workflows
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+import PatternCards from '@site/src/components/PatternCards';
 
-Temporal Schedules is a feature that allows you to "schedule" Temporal Workflows at specified times or intervals, adjusting for peak use.
+A [Schedule](/schedule) starts a [Workflow Execution](/workflow-execution) at times you define: on an interval, on a calendar expression, or on a combination of both.
 
-It offers a flexible way to automate and manage your Temporal Workflows, ensuring your business processes run smoothly and efficiently especially when handling time-sensitive tasks.
+A Schedule is its own object in the Temporal Service with its own Id, separate from the Workflow Executions it starts.
+You can update, pause, backfill, or trigger it without changing or redeploying the Workflow code it runs.
 
-1. **Automate Repetitive Tasks:**
-   Schedules automate repetitive tasks, reducing manual intervention and ensuring timely execution of business processes.
-2. **Enhanced Workflow Control and Observability:**
-   Gain complete control over your automation processes. With Schedules, you can create, backfill, delete, describe, list, pause, trigger, and update Workflow Executions.
-3. **Flexible Timing:**
-   Schedule Workflow Executions to run at regular intervals or specific future times, ensuring they execute precisely when needed.
-4. **Reliable and Scalable:**
-   Designed for reliability and scalability, Temporal Schedules handle the complexities of distributed systems while ensuring your Workflows run as intended, even during failures.
-5. **Eliminate External Dependencies:**
-   Schedules remove the need to integrate external scheduling systems.
+That separation is what you get instead of running a scheduler alongside your application.
+There's no second system to deploy, monitor, and reconcile with your Workers, and every start the Schedule makes is an ordinary Workflow Execution with the same durability, retries, and [Event History](/workflow-execution/event#event-history) as one you start by hand.
 
-If a Workflow Execution started by a Schedule is [Paused](/cli/command-reference/workflow#pause), it remains open and can affect future scheduled starts through the Schedule's Overlap Policy.
-For policy-specific behavior, see [Overlap Policy](/schedule#overlap-policy).
+## What a Schedule controls
 
-Jump straight to a Temporal SDK feature guide.
+- **Spec.** When Actions happen: an interval (`45m`, or `6h/5h` for every six hours offset into the fifth hour) or a calendar expression, given as a cron string (`0 8 * * 1-5`, weekdays at 8:00 UTC) or as JSON with named fields (`{"dayOfMonth": "1,15", "hour": "11-14"}`). One Spec can combine several of each and add start and end times, exclusions, jitter, and a time zone. Exclusions and embedded time zone data are available through the SDKs and API, but not the CLI or Web UI.
+- **[Overlap Policy](/schedule#overlap-policy).** What happens when it's time to start and the previous Execution is still running: `Skip` (the default), `BufferOne`, `BufferAll`, `CancelOther`, `TerminateOther`, or `AllowAll`.
+- **[Catchup Window](/schedule#catchup-window).** Which missed Actions to take when the Temporal Service was unavailable at the scheduled time. The default is one year; the minimum is ten seconds.
+- **[Pause-on-failure](/schedule#pause-on-failure).** Pause the Schedule automatically when a scheduled Execution ends in failure or timeout.
+- **[Backfill](/schedule#backfill).** Run every Action for a past time range now, including a range from before the Schedule existed.
+- **[Action limit](/schedule#limit-number-of-actions).** Stop after a set number of scheduled Actions, after which the Schedule behaves as paused.
 
-<RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/workflows/schedules" text="Schedules using the Go SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/workflows/schedules" text="Schedules using the Java SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/workflows/schedules" text="Schedules using the PHP SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/workflows/schedules" text="Schedules using the Python SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/workflows/schedules" text="Schedules using the TypeScript SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/workflows/schedules" text="Schedules using the .NET SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/ruby/workflows/schedules" text="Schedules using the Ruby SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+Every Execution a Schedule starts carries the `TemporalScheduledStartTime` and `TemporalScheduledById` [Search Attributes](/search-attribute), so you can query scheduled runs with a [List Filter](/list-filter) the same way you query anything else.
+
+## What a Schedule doesn't do
+
+- **Pausing a Schedule doesn't pause what's already running.** It stops future Actions. Executions the Schedule already started keep going.
+- **A Paused Workflow Execution still counts as running.** When the Schedule evaluates its Overlap Policy, a Paused Execution is an open Execution, so `Skip` skips and `BufferOne` buffers behind it. See [Interaction with Workflow Pause](/schedule#workflow-pause).
+- **Listing Schedules is eventually consistent.** `ListSchedules` and `CountSchedules` are served by [Visibility](/visibility#operations-that-use-visibility) and share its rate limit, so a Schedule you just created or deleted may not appear right away.
+
+## How to choose between a Schedule, a Cron Job, and Start Delay
+
+- **Use a Schedule when the same Workflow has to run more than once.** It's the right choice as soon as you need to pause the series during an incident, change the timing without a deploy, or run the Actions an outage skipped. Use it for new applications even when the timing is a plain cron expression, because you get those controls whether or not you need them yet.
+- **Use [Start Delay](/workflow-execution/timers-delays#delay-workflow-execution) when there's exactly one run, at a time you know when you start it.** A trial expiry, a cancellation deadline, a reminder. It isn't recurring, and it's incompatible with both Schedules and Cron Jobs, so it's not a way to hold off the first Action of a Schedule. Set a start time on the Schedule Spec for that.
+- **Keep a [Temporal Cron Job](/cron-job) if you have one running, but don't write new ones.** A cron string is a property of the Workflow Execution rather than a separate object, so the next Run starts only after the current one closes, and changing or stopping the series means terminating the Workflow. A Schedule covers the same cases and lets you update it in place.
+
+If the waiting happens inside a Workflow that's already running, none of these apply. Use a [Timer](/workflow-execution/timers-delays#timer).
+
+## Resources
+
+<PatternCards items={[
+  {
+    href: "/schedule",
+    title: "Schedule",
+    description: "Full reference for Spec, Policies, Backfill, last completion result, and the limitations of Schedules.",
+  },
+  {
+    href: "/cron-job",
+    title: "Temporal Cron Job",
+    description: "How Cron Schedules behave, the supported cron syntax, time zone caveats, and how to stop a Cron Job.",
+  },
+  {
+    href: "/workflow-execution/timers-delays",
+    title: "Timers and Start Delay",
+    description: "Durable Timers inside a Workflow, and Start Delay for a one-time start at a future point.",
+  },
+  {
+    href: "/cli/command-reference/schedule",
+    title: "temporal schedule",
+    description: "CLI commands to create, backfill, delete, describe, list, pause, trigger, and update a Schedule.",
+  },
+  {
+    href: "/troubleshooting/schedule-missed-actions",
+    title: "Missed Schedule Actions",
+    description: "Alert on the missed catchup window metric, then narrow down which Schedule skipped an Action and why.",
+  },
+]} />
+
+Or jump straight to the SDK feature guide for implementation details:
+
+<PatternCards items={[
+  {
+    href: "/develop/dotnet/workflows/schedules",
+    title: ".NET SDK",
+    description: "Create, backfill, delete, describe, list, pause, trigger, and update Schedules in C# and .NET.",
+    icon: "/img/sdks/svgs/dotnet.svg",
+  },
+  {
+    href: "/develop/go/workflows/schedules",
+    title: "Go SDK",
+    description: "Create, backfill, delete, describe, list, pause, trigger, and update Schedules in Go.",
+    icon: "/img/sdks/svgs/golang.svg",
+  },
+  {
+    href: "/develop/java/workflows/schedules",
+    title: "Java SDK",
+    description: "Create, backfill, delete, describe, list, pause, trigger, and update Schedules in Java and other JVM languages.",
+    icon: "/img/sdks/svgs/java.svg",
+  },
+  {
+    href: "/develop/php/workflows/schedules",
+    title: "PHP SDK",
+    description: "Create, backfill, delete, describe, list, pause, trigger, and update Schedules in PHP.",
+    icon: "/img/sdks/svgs/php.svg",
+  },
+  {
+    href: "/develop/python/workflows/schedules",
+    title: "Python SDK",
+    description: "Create, backfill, delete, describe, list, pause, trigger, and update Schedules in Python.",
+    icon: "/img/sdks/svgs/python.svg",
+  },
+  {
+    href: "/develop/ruby/workflows/schedules",
+    title: "Ruby SDK",
+    description: "Create, backfill, delete, describe, list, pause, trigger, and update Schedules in Ruby.",
+    icon: "/img/sdks/svgs/ruby.svg",
+  },
+  {
+    href: "/develop/typescript/workflows/schedules",
+    title: "TypeScript SDK",
+    description: "Create, backfill, delete, describe, list, pause, trigger, and update Schedules in TypeScript.",
+    icon: "/img/sdks/svgs/typescript.svg",
+  },
+]} />
