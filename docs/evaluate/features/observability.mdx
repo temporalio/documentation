@@ -1,7 +1,7 @@
 ---
 id: observability
-title: Observability - Temporal feature
-description: Explore the observability and visibility features of Temporal, including Metrics, Tracing, Logging, and Visibility.
+title: Observability
+description: Query live and closed Workflow Executions by your own business identifiers, export Prometheus-compatible metrics, and trace Executions across Worker processes.
 sidebar_label: Observability
 tags:
   - Observability
@@ -10,37 +10,126 @@ tags:
   - Visibility
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+import PatternCards from '@site/src/components/PatternCards';
 
-Temporal's observability feature helps you track the state of your Workflows in real-time, providing tools for detailed metrics, tracing, comprehensive logging, and visibility into your application state.
+Temporal records every Workflow Execution as a durable [Event History](/workflow-execution/event#event-history): the inputs, every Activity result, every timer, and every message, in order.
+Logs and metrics tell you what a process reported while it was running.
+The Event History lets you replay what a Workflow actually did, including one that finished last week.
 
-Monitor performance, trace Activity and Workflow Executions, debug, and filter Workflow Executions to gain deeper insights into your Workflows.
+Around that history, Temporal gives you three things you would otherwise assemble yourself.
 
-**Key Components of Temporal's Observability and Visibility**
+## Query Executions by your own identifiers
 
-- **Metrics**: Detailed performance metrics to track the health and efficiency of your Temporal Service and Workflows.
-- **Tracing**: End-to-end tracing of Workflow and Activity Executions to understand the flow and timing of operations.
-- **Logging**: Comprehensive logging capabilities for debugging and auditing purposes.
-- **Search Attributes**: Custom attributes that can be used to enhance searchability and provide additional context to Workflow Executions.
-- **Web UI**: A user-friendly interface for visualizing and interacting with your Workflows and Temporal Service state.
+[Visibility](/visibility) indexes running and closed Workflow Executions so you can list, filter, and count them with a SQL-like [List Filter](/list-filter).
+[Custom Search Attributes](/search-attribute#custom-search-attribute) put your own identifiers into that index like, an order Id, customer, region, or tier.
+An operator can then answer "which orders are stuck in payment retry" from the [Web UI](/web-ui) or the [CLI](/cli), without querying your application database.
 
-**Benefits of Temporal's Observability and Visibility Features**
+Visibility is a search index that Temporal updates asynchronously, so a List or Count query can return results that are a few seconds stale.
+It's built for finding Executions across many, not for reading the authoritative state of one.
 
-- **Real-time Monitoring**: Track the state and progress of your Workflows as they execute.
-- **Performance Optimization**: Identify bottlenecks and optimize your Workflow and Activity implementations.
-- **Effective Debugging**: Quickly locate and diagnose issues in your Temporal applications.
-- **Compliance and Auditing**: Maintain detailed records of all Workflow executions for compliance and auditing purposes.
-- **Operational Insights**: Gain a deep understanding of your application's behavior and usage patterns.
-- **Scalability Management**: Monitor and manage the scalability of your Temporal Service effectively.
+## Metrics from both sides of the connection
 
-Jump straight into the Temporal SDK feature guide.
+Temporal emits two independent, Prometheus-compatible metric sets, and you need both:
 
-<RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/platform/observability" text="Observability using the Go SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/platform/observability" text="Observability using the .NET SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/platform/observability" text="Observability using the Java SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/platform/observability" text="Observability using the PHP SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/platform/observability" text="Observability using the Python SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/platform/observability" text="Observability using the TypeScript SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/ruby/platform/observability" text="Observability using the Ruby SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+- **[SDK metrics](/references/sdk-metrics)** come from your Workers and Clients: task slot availability, Schedule-To-Start latency, Activity failures. They tell you whether your Workers are keeping up with the work.
+- **Temporal Service metrics** come from the Service: request rates, latencies, and errors. On Temporal Cloud these stream from the [OpenMetrics endpoint](/cloud/metrics/openmetrics) into Datadog, Grafana Cloud, New Relic, or your own Prometheus. Self-hosted deployments scrape [Temporal Service metrics](/references/cluster-metrics) directly.
+
+Watching one side alone hides the most common failure mode: the Service is accepting and serving work normally while Tasks pile up in a Task Queue because the Workers are under-provisioned.
+
+## Tracing and logs that survive process boundaries
+
+A Workflow Execution can span days, several Activities, and multiple Worker restarts, which is where hand-rolled tracing usually loses the thread.
+Temporal SDKs ship OpenTelemetry interceptors that propagate trace context from the Client into the Workflow and out to each Activity, across Worker processes, so one trace covers the whole Execution.
+
+SDKs also expose a logger for Workflow and Activity code that suppresses duplicate output during replay, so a retried or resumed Workflow doesn't repeat every log line it already emitted.
+
+## What you operate
+
+What you run yourself depends on where the Temporal Service runs:
+
+- **Temporal Cloud.** Visibility is enabled by default, and metrics come from the OpenMetrics endpoint. There's no Visibility store to size or upgrade. Both the [number of custom Search Attributes](/cloud/limits#number-of-custom-search-attributes) and the [Visibility API rate limit](/cloud/limits#visibility-api-rate-limit) are scoped per Namespace.
+- **Self-hosted.** You choose and operate the [Visibility store](/self-hosted-guide/visibility): MySQL v8.0.17+ or PostgreSQL v12+ on Temporal Server v1.20 and later, or Elasticsearch and OpenSearch. [Dual Visibility](/dual-visibility) covers migrating between them without downtime.
+
+On both, the Namespace [Retention Period](/temporal-service/temporal-server#retention-period) bounds how long closed Workflow Executions stay queryable. To keep Event Histories past that window, configure [Archival](/temporal-service/archival).
+
+## Resources
+
+<PatternCards items={[
+  {
+    href: "/visibility",
+    title: "Visibility",
+    description: "How Temporal indexes Workflow Executions, what the index can answer, and when to use something else.",
+  },
+  {
+    href: "/search-attribute",
+    title: "Search Attributes",
+    description: "Default and custom Search Attributes, supported types, and the limits on how many you can define.",
+  },
+  {
+    href: "/list-filter",
+    title: "List Filter",
+    description: "The SQL-like query syntax for filtering Workflow Executions, and the operators it supports.",
+  },
+  {
+    href: "/cloud/metrics/",
+    title: "Set up metrics for Temporal Cloud",
+    description: "Stream Cloud and SDK metrics into Datadog, Grafana Cloud, New Relic, or self-hosted Prometheus.",
+  },
+  {
+    href: "/best-practices/worker-alerting",
+    title: "Worker alerting",
+    description: "A recommended alert set for Temporal Workers, with tag filters, thresholds, and triage guidance.",
+  },
+  {
+    href: "/troubleshooting/performance-bottlenecks",
+    title: "Performance bottlenecks",
+    description: "Which metric to read when Workflows are slow, and what each symptom points to.",
+  },
+]} />
+
+Or jump straight to the SDK feature guide for implementation details:
+
+<PatternCards items={[
+  {
+    href: "/develop/dotnet/platform/observability",
+    title: ".NET SDK",
+    description: "Emit metrics, set up tracing, configure logging, and use Search Attributes in C# and .NET.",
+    icon: "/img/sdks/svgs/dotnet.svg",
+  },
+  {
+    href: "/develop/go/platform/observability",
+    title: "Go SDK",
+    description: "Emit metrics, set up tracing, configure logging, and use Search Attributes in Go.",
+    icon: "/img/sdks/svgs/golang.svg",
+  },
+  {
+    href: "/develop/java/platform/observability",
+    title: "Java SDK",
+    description: "Emit metrics, set up tracing, configure logging, and use Search Attributes in Java and other JVM languages.",
+    icon: "/img/sdks/svgs/java.svg",
+  },
+  {
+    href: "/develop/php/platform/observability",
+    title: "PHP SDK",
+    description: "Emit metrics, set up tracing, configure logging, and use Search Attributes in PHP.",
+    icon: "/img/sdks/svgs/php.svg",
+  },
+  {
+    href: "/develop/python/platform/observability",
+    title: "Python SDK",
+    description: "Emit metrics, set up tracing, configure logging, and use Search Attributes in Python.",
+    icon: "/img/sdks/svgs/python.svg",
+  },
+  {
+    href: "/develop/ruby/platform/observability",
+    title: "Ruby SDK",
+    description: "Emit metrics, set up tracing, configure logging, and use Search Attributes in Ruby.",
+    icon: "/img/sdks/svgs/ruby.svg",
+  },
+  {
+    href: "/develop/typescript/platform/observability",
+    title: "TypeScript SDK",
+    description: "Emit metrics, set up tracing, configure logging, and use Search Attributes in TypeScript and JavaScript.",
+    icon: "/img/sdks/svgs/typescript.svg",
+  },
+]} />
