@@ -52,7 +52,7 @@ To stream a sequence of events out of a Workflow rather than answer a single req
 - **To carry data that's known at start time.** Pass it as a Workflow argument instead of sending a message after the Workflow starts.
 - **To reach a Child Workflow from inside a Workflow.** Send Updates from an Activity using a Temporal Client, not from Workflow code.
 - **For high fan-in with Updates.** A Workflow Execution can have only a small number of Updates in flight at once, while Signals have no equivalent per-message concurrency cap. See [Limits to plan for](#limits-to-plan-for).
-- **To stop a Workflow.** Cancellation and Termination are their own operations. See [Interrupt a Workflow](/evaluate/features/interrupt-workflow).
+- **To stop a Workflow.** Cancellation and Termination are their own operations. See [Cancellation and Termination](/evaluate/features/cancellation-and-termination).
 
 ## Send a message and start a Workflow in one call
 
