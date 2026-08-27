@@ -158,7 +158,7 @@ Exceptions to these timelines may be necessary for critical security, legal, or 
 
 Temporal targets 99.99% monthly availability for the Cloud Ops API across its HTTP and gRPC interfaces.
 
-Availability measures whether valid Cloud Ops API requests can be successfully served. Server-side failures count against this objective. Client errors, such as invalid requests and authentication or authorization failures, do not. Documented rate-limit responses (`ResourceExhausted`) also do not count against availability.
+Availability measures whether valid Cloud Ops API requests can be successfully served. Server-side failures count against this objective. Client errors, such as invalid requests and authentication or authorization failures, do not. Documented rate-limit responses (`ResourceExhausted` for gRPC, HTTP 429) do not count against availability.
 
 This availability objective applies only to Temporal Cloud control-plane operations. It is not a contractual service-level agreement and does not change the Temporal Cloud [SLA](/cloud/sla). Workflow and Activity execution are data-plane operations covered by that SLA.
 
