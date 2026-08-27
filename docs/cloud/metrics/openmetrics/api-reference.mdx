@@ -3,17 +3,6 @@ id: api-reference
 title: OpenMetrics API reference
 sidebar_label: API reference
 description: Detailed API documentation for the Temporal Cloud OpenMetrics endpoint.
-keywords:
-  - temporal cloud metrics configuration
-  - configure metrics endpoint
-  - temporal cloud observability
-  - tcld CLI guide
-  - temporal cloud UI setup
-  - grafana temporal integration
-  - prometheus metrics endpoint
-  - openmetrics endpoint
-  - observability tools integration
-  - openmetrics api
 tags:
   - Metrics
   - OpenMetrics
@@ -70,8 +59,8 @@ A metric is a numeric attribute measured at a specific point in time, labeled wi
 
 All Temporal Cloud metrics are exposed as *gauges* in OpenMetrics format, but represent different measurement types:
 
-* **Rate metrics**: Pre-computed per-second rates with delta temporality (e.g., `temporal_cloud_v1_workflow_success_count` \- workflows completed per second)  
-* **Value metrics**: Current or instantaneous values (e.g., `temporal_cloud_v1_approximate_backlog_count` \- current number of tasks in queue)
+* **Rate metrics**: Pre-computed per-second rates with delta temporality (for example, `temporal_cloud_v1_workflow_success_count` \- workflows completed per second)  
+* **Value metrics**: Current or instantaneous values (for example, `temporal_cloud_v1_approximate_backlog_count` \- current number of tasks in queue)
 
 The list of metrics and their labels are available via the [List Descriptors](/cloud/metrics/openmetrics/api-reference#list-metric-descriptors) endpoint or in the [Metrics Reference](/cloud/metrics/openmetrics/metrics-reference).
 
@@ -90,7 +79,7 @@ Common labels include:
 
 Each metric has its own set of applicable labels. See the Metrics Reference for complete details.
 
-### Metric Family
+### Metric family
 
 A [Metric Family](https://github.com/prometheus/OpenMetrics/blob/main/specification/OpenMetrics.md#metricfamily) may have zero or more metrics.  The set of metrics returned will vary based on actual system activity.  Metrics only appear in a Metric Family if they were reported during the aggregation window.
 
@@ -164,7 +153,7 @@ To account for metric data latency, this endpoint returns metrics from the curre
 
 | Parameter | Type | Description |
 | ----- | ----- | ----- |
-| `namespaces` | string array | Filter to specific Namespaces. Supports wildcards (e.g., `production-*`) |
+| `namespaces` | string array | Filter to specific Namespaces. Supports wildcards (for example, `production-*`) |
 | `metrics` | string array | Filter to specific metrics |
 
 Array parameters use repeated keys. To pass multiple values, repeat the parameter name once per value:
@@ -220,7 +209,15 @@ temporal_cloud_v1_approximate_backlog_count{temporal_namespace="production",temp
 
 `GET /v1/descriptors`
 
-Lists all metric descriptors including metadata, data types, and available dimensions (a.k.a. labels).
+Lists all metric descriptors, including help text, available dimensions (labels), and release stages.
+
+Each descriptor includes a `release_stage` field that reports the metric's lifecycle status. The supported values are:
+
+| Value | Description |
+| ----- | ----- |
+| `public-preview` | The metric is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) |
+| `general-availability` | The metric is in [General Availability](/evaluate/development-production-features/release-stages#general-availability) |
+| `deprecated` | The metric is deprecated |
 
 #### Query parameters
 
@@ -258,7 +255,8 @@ Response:
         "temporal_workflow_type", 
         "temporal_task_queue",
         "region"
-      ]
+      ],
+      "release_stage": "general-availability"
     }
   ]
 }

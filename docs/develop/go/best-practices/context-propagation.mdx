@@ -3,12 +3,6 @@ id: context-propagation
 title: Context Propagation - Go SDK
 sidebar_label: Context Propagation
 toc_max_heading_level: 4
-keywords:
-  - context propagation
-  - context propagators
-  - go sdk
-  - headers
-  - tracing
 tags:
   - Context Propagation
   - Go SDK
@@ -16,13 +10,13 @@ tags:
 description: How to propagate custom key-value data across Workflow, Activity, and Child Workflow boundaries using the Temporal Go SDK.
 ---
 
-Context propagation lets you pass custom key-value data from a Client to Workflows, and from Workflows to Activities and Child Workflows, without threading it through every function signature. Common use cases include propagating tracing IDs, tenant IDs, auth tokens, or other request-scoped metadata.
-
-{/* TODO: Link to /encyclopedia/context-propagation once that page lands */}
+Context propagation lets you pass custom key-value data from a Client to Workflows, and from Workflows to Activities and Child Workflows, without threading it through every function signature. Common use cases include propagating tenant identifiers, auth tokens, or other request-scoped metadata.
 
 :::tip
 
-If you want to propagate tracing context, check if there is a [built-in tracing interceptor](/develop/go/platform/observability#tracing) for your library before building a custom context propagator.
+If you want to propagate tracing context, the Go SDK provides tracing integrations that handle propagation for you.
+[Choose a tracing integration](/develop/go/platform/observability#tracing) before implementing a custom context
+propagator.
 
 :::
 

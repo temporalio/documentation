@@ -4,8 +4,6 @@ title: Workflow basics - Rust SDK
 sidebar_label: Workflow basics
 description: This section explains how to implement Workflows with the Rust SDK
 toc_max_heading_level: 4
-keywords:
-  - Rust SDK
 tags:
   - Rust SDK
   - Temporal SDKs
@@ -20,8 +18,8 @@ In the Temporal Rust SDK programming model, a Workflow Definition is made of a W
 A Workflow is defined by:
 
 1. A struct that holds the Workflow state
-3. A `#[run]` method that contains the main Workflow logic
-2. An optional `#[init]` method that initializes the Workflow
+2. A `#[run]` method that contains the main Workflow logic
+3. An optional `#[init]` method that initializes the Workflow
 4. Optional `#[signal]`, `#[query]`, and `#[update]` methods for external interaction
 
 ```rust
@@ -60,11 +58,11 @@ The `#[init]` method is optional and is called when the Workflow first starts. I
 
 ```rust
 #[init]
-fn new(_ctx: &WorkflowContextView, name: String, age: u32) -> Self {
+fn new(ctx: &WorkflowContextView, name: String, age: u32) -> Self {
     Self {
         name,
         age,
-        started_at: Instant::now(),
+        started_at: ctx.start_time(),
     }
 }
 ```
@@ -95,7 +93,8 @@ impl WorkflowRunSeesWorkflowInitWorkflow {
         ctx: &mut WorkflowContext<Self>,
         _workflow_input: MyWorkflowInput,
     ) -> WorkflowResult<String> {
-        ctx.wait_condition(|state| state.title_has_been_checked).await;
+        ctx.wait_condition(|state| state.title_has_been_checked)
+            .await?;
 
         let name_with_title = ctx.state(|state| state.name_with_title.clone());
         Ok(format!("Hello, {}", name_with_title))
@@ -117,11 +116,13 @@ The `#[run]` method is required and contains the main Workflow logic. It:
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Execute activities, timers, child workflows, etc.
-    let result = ctx.start_activity(
-        MyActivities::greet,
-        name,
-        ActivityOptions::start_to_close_timeout(Duration::from_secs(30))
-    ).await?;
+    let result = ctx
+        .execute_activity(
+            MyActivities::greet,
+            name,
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+        )
+        .await?;
 
     Ok(result)
 }
@@ -189,12 +190,20 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult
 
 ## Customize your Workflow Type {/* #workflow-type */}
 
-Workflows have a Type that is referred to as the Workflow name. By default, the Workflow type is the name of the Workflow struct. You can customize it by providing a `name` parameter to the `#[workflow]` macro:
+Workflows have a Type that is referred to as the Workflow name. By default, the Workflow type is the name of the Workflow struct. You can customize it by providing a `name` parameter to the `#[run]` macro:
 
 ```rust
-#[workflow(name = "my-custom-workflow")]
+#[workflow]
 pub struct GreetingWorkflow {
     name: String,
+}
+
+#[workflow_methods]
+impl GreetingWorkflow {
+    #[run(name = "my-custom-workflow")]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        Ok(ctx.state(|s| format!("Hello, {}!", s.name)))
+    }
 }
 ```
 
@@ -216,9 +225,9 @@ Workflow code must be deterministic because the Temporal Server may replay your 
 ### Don't use nondeterministic functions
 
 - No direct system time access - use `ctx.workflow_time()` instead of `SystemTime::now()`
-- No random number generation - use `ctx.random_seed()` instead
+- No nondeterministic random number generation - use `ctx.random()` instead
 - No external I/O (network, filesystem, etc.) - perform these in Activities instead
-- No UUID generation via random means - the SDK doesn't have a direct UUID function, but you can use Activities for non-deterministic operations
+- No UUID generation via random means - use `ctx.uuid4()` instead
 - Do not use `tokio` or `futures` concurrency primitives directly in Workflow code. Many of them, like `tokio::select!`, `tokio::spawn`, `futures::select!`, introduce non-deterministic behavior that will break Workflow replay.
 
 Instead, use the deterministic wrappers provided in `temporalio_sdk::workflows`:
@@ -233,10 +242,10 @@ The Rust SDK provides:
 - `ctx.timer()` - Wait for a duration
 - `ctx.wait_condition(closure)` - Wait until a condition is true
 - `workflows::select!` - Deterministic select statement
-- `ctx.start_activity()` - Execute Activities
-- `ctx.start_local_activity()` - Execute local Activities
-- `ctx.child_workflow()` - Execute child Workflows
-- `ctx.cancelled()` - Check if Workflow is cancelled
+- `ctx.execute_activity()` - Execute Activities
+- `ctx.execute_local_activity()` - Execute local Activities
+- `ctx.start_child_workflow()` - Start Child Workflows
+- `ctx.cancelled()` - Wait for Workflow cancellation
 
 ```rust
 use std::time::Duration;
@@ -244,13 +253,15 @@ use std::time::Duration;
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Good - deterministic timer
-    ctx.timer(TimerOptions {
-        duration: Duration::from_secs(60),
-        summary: Some("important timer".into())
-    }).await;
+    ctx.timer(
+        TimerOptions::builder(Duration::from_secs(60))
+            .summary("important timer".to_owned())
+            .build(),
+    )
+    .await;
 
     // Good - deterministic wait for condition
-    ctx.wait_condition(|s| s.data.len() >= 3).await;
+    ctx.wait_condition(|s| s.data.len() >= 3).await?;
 
     // Bad - nondeterministic sleep
     // tokio::time::sleep(Duration::from_secs(10)).await;

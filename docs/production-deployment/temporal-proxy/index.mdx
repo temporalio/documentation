@@ -6,11 +6,6 @@ description:
   Route requests between Temporal SDK clients and Workers and one or more upstream Temporal Services with the Temporal
   Proxy, a gRPC proxy that handles namespace translation, TLS, authentication, and payload encryption.
 toc_max_heading_level: 4
-keywords:
-  - guide-context
-  - how-to
-  - production-readiness
-  - security
 tags:
   - Temporal Service
   - Self-hosting
@@ -21,8 +16,8 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="prerelease">
   Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
-  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
-  and the definitive configuration schema.
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
+  the definitive configuration schema.
 </ReleaseNoteHeader>
 
 The Temporal Proxy is a gRPC proxy that sits between your Temporal SDK Clients, Workers, and the Temporal Web UI on one
@@ -74,11 +69,13 @@ flowchart LR
 
 For each request, the gateway:
 
-1. peeks the target Namespace without parsing the payload; it is codec-transparent and relays raw frames in both
+1. refuses the call if its gRPC service is not one the configuration allows, before any upstream work. By default that
+   allows `WorkflowService` and `OperatorService` and nothing else.
+2. peeks the target Namespace without parsing the payload; it is codec-transparent and relays raw frames in both
    directions.
-2. picks an upstream: the first matching routing rule, otherwise the system upstream for Namespace-less calls, otherwise
+3. picks an upstream: the first matching routing rule, otherwise the system upstream for Namespace-less calls, otherwise
    the default.
-3. hands the request to that upstream's proxy over a unix socket.
+4. hands the request to that upstream's proxy over a unix socket.
 
 The per-upstream proxy then rewrites the local Namespace to the name the upstream expects, attaches that upstream's TLS
 and credentials, forwards to the Temporal Service, and translates the Namespace back on responses. When payload
@@ -92,7 +89,7 @@ stores ciphertext.
 | gateway          | The single inbound gRPC endpoint that every SDK Client, Worker, and the Web UI connects to. It routes each request to an upstream by Namespace and request metadata, and never parses payloads. |
 | upstream         | A configured destination the proxy forwards to: a Temporal Service (local dev, self-hosted, or Temporal Cloud), or another Temporal Proxy.                                                      |
 | system upstream  | The upstream that handles Namespace-less requests, such as the SDK's `GetSystemInfo` call on connect.                                                                                           |
-| extension server | A gRPC service you run that the proxy calls out to for a capability it has no built-in backend for. Today that means wrapping data encryption keys as a key management backend.                 |
+| extension server | A gRPC service you run that the proxy calls out to for a capability it has no built-in backend for: wrapping data encryption keys, or deciding whether an inbound call may proceed.             |
 | Temporal Service | A Temporal frontend the proxy connects to.                                                                                                                                                      |
 
 ## Prerequisites
@@ -147,8 +144,12 @@ mounted configuration. See [Observability](#observability) for the remaining fla
 
 ## Observability {/* #observability */}
 
-The proxy serves Prometheus metrics at `/metrics` on `:9090` and logs JSON to stderr. Both the metrics listener and the
-log level are set with flags on `proxy serve`, each with an environment variable equivalent:
+The proxy serves Prometheus metrics at `/metrics` on `:9090` and logs JSON to stderr. The gateway also serves the
+standard gRPC health service, with an entry for every allowed service, which is what a Client health check or a liveness
+probe reads. See [Health checks](/production-deployment/temporal-proxy/configure#health-checks) for what it reports.
+
+Both the metrics listener and the log level are set with flags on `proxy serve`, each with an environment variable
+equivalent:
 
 | Flag                  | Environment variable | Default       | Sets                                         |
 | --------------------- | -------------------- | ------------- | -------------------------------------------- |
@@ -177,8 +178,8 @@ Metric names are `<namespace>_<subsystem>_<name>`, so with the default namespace
 | `encryption` | `dek_cache_misses_total`   | none                               | Reads that required a KMS unwrap                  |
 | `encryption` | `dek_cache_size`           | none                               | Current entries in the decrypted-DEK cache        |
 
-The `encryption` metrics only move when [payload encryption](/production-deployment/temporal-proxy/encrypt-payloads) is configured. They are layered, so pick
-the one that matches the question you are asking:
+The `encryption` metrics only move when [payload encryption](/production-deployment/temporal-proxy/encrypt-payloads) is
+configured. They are layered, so pick the one that matches the question you are asking:
 
 - `vault_ops_*` is the whole envelope operation end to end, including any KEK call and cache lookup, and is the pair to
   alert on. It carries the local Namespace.
@@ -192,7 +193,6 @@ the one that matches the question you are asking:
 pre-rotation, and `on_demand` for a DEK replaced at request time because no fresh one was ready. A rising `on_demand`
 rate means rotation is falling behind, so raise `renewBefore`. Compare the cache counters against `cacheSize` to see
 whether the cache is absorbing read traffic.
-
 
 ## Related
 

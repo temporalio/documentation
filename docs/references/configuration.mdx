@@ -4,8 +4,6 @@ title: Temporal Cluster configuration reference
 sidebar_label: Cluster configuration
 description: Configure a Temporal Cluster using the development.yaml file to set global parameters, metrics, security, persistence, and service roles, ensuring a streamlined setup and management process.
 toc_max_heading_level: 4
-keywords:
-  - reference
 tags:
   - Reference
 ---
@@ -253,7 +251,7 @@ Configures the source of signing keys used by the default `ClaimMapper` to verif
 
 - `keySourceURIs` - _list of strings_.
   URLs to fetch JWKS-formatted public keys from. The default `ClaimMapper` fetches and caches the union of keys returned by each URI.
-- `refreshInterval` - _Go duration string_ (for example `1m`, `5m`) - _Default:_ `0`.
+- `refreshInterval` - _Go duration string_ (for example, `1m`, `5m`) - _Default:_ `0`.
   How often the key set is refetched. Zero (the default) disables periodic refresh, so keys are loaded once at startup and never rotated.
 
 #### remoteClusterAuth
@@ -348,7 +346,7 @@ Data store definitions must be either `cassandra` or `sql`.
 
 A `cassandra` data store definition can contain the following values:
 
-- `hosts`: _Required_ - "," separated Cassandra endpoints, e.g. "192.168.1.2,192.168.1.3,192.168.1.4".
+- `hosts`: _Required_ - "," separated Cassandra endpoints, for example "192.168.1.2,192.168.1.3,192.168.1.4".
 - `port`: Default: 9042 - Cassandra port used for connection by `gocql` client.
 - `user`: Cassandra username used for authentication by `gocql` client.
 - `password`: Cassandra password used for authentication by `gocql` client.
@@ -366,7 +364,7 @@ A `sql` data store definition can contain the following values:
 - `pluginName`: _Required_ - SQL database type.
   - _Valid values_: `mysql` or `postgres`.
 - `databaseName` - _required_ - the name of SQL database to connect to.
-- `connectAddr` - _required_ - the remote address of the database, e.g. "192.168.1.2".
+- `connectAddr` - _required_ - the remote address of the database, for example "192.168.1.2".
 - `connectProtocol` - _required_ - the protocol that goes with the `connectAddr`
   - _Valid values_: `tcp` or `unix`
 - `connectAttributes` - an optional map of key-value attributes to be sent as part of connect `data_source_name` url.

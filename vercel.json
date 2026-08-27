@@ -7,6 +7,17 @@
     {
       "source": "/img/og/:path*",
       "destination": "/img/assets/open-graph-shiny.jpg"
+    },
+    {
+      "source": "/:path((?!api/).*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*text/markdown.*"
+        }
+      ],
+      "destination": "/api/markdown-not-found"
     }
   ],
   "headers": [
@@ -47,8 +58,6 @@
     {
       "source": "/llms-api-reference.txt",
       "destination": "/llms.txt",
-      "source": "/develop/typescript/workers/serverless-workers/cloud-run",
-      "destination": "/develop/typescript/workers/serverless-workers",
       "permanent": true
     },
     {
@@ -183,27 +192,67 @@
     },
     {
       "source": "/cookbook",
-      "destination": "/ai-cookbook",
+      "destination": "/ai/cookbook",
+      "permanent": true
+    },
+    {
+      "source": "/cookbook.md",
+      "destination": "/ai/cookbook.md",
       "permanent": true
     },
     {
       "source": "/ai-cookbook/basic-python",
-      "destination": "/ai-cookbook/hello-world-openai-responses-python",
+      "destination": "/ai/cookbook/hello-world-openai-responses-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/basic-python.md",
+      "destination": "/ai/cookbook/hello-world-openai-responses-python.md",
       "permanent": true
     },
     {
       "source": "/ai-cookbook/deep-research-python",
-      "destination": "/ai-cookbook/basic-openai-python",
+      "destination": "/ai/cookbook/basic-openai-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/deep-research-python.md",
+      "destination": "/ai/cookbook/basic-openai-python.md",
       "permanent": true
     },
     {
       "source": "/ai-cookbook/durable-agent-with-tools",
-      "destination": "/ai-cookbook/openai-agents-sdk-python",
+      "destination": "/ai/cookbook/openai-agents-sdk-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/durable-agent-with-tools.md",
+      "destination": "/ai/cookbook/openai-agents-sdk-python.md",
       "permanent": true
     },
     {
       "source": "/ai-cookbook/tool-calling-python",
-      "destination": "/ai-cookbook/tool-call-openai-python",
+      "destination": "/ai/cookbook/tool-call-openai-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/tool-calling-python.md",
+      "destination": "/ai/cookbook/tool-call-openai-python.md",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook",
+      "destination": "/ai/cookbook",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook.md",
+      "destination": "/ai/cookbook.md",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/:path*",
+      "destination": "/ai/cookbook/:path*",
       "permanent": true
     },
     {
@@ -2254,6 +2303,11 @@
     {
       "source": "/develop/typescript/converters-and-encryption",
       "destination": "/develop/typescript/best-practices/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/multi-tenant-patterns",
+      "destination": "/best-practices/multi-tenant-patterns",
       "permanent": true
     }
   ]

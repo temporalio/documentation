@@ -418,7 +418,7 @@ public class NodeWorkflowImpl implements NodeWorkflow {
 ## Best practices
 
 - **Set a `leafThreshold` to control tree depth.** A threshold of 3–10 records per leaf is typical. Too small a threshold creates excessive Workflow overhead; too large prevents full parallelism.
-- **Set a `MAX_DEPTH` guard.** Recursive fan-out without a depth limit can produce extremely deep trees for large record sets. Fail fast if depth exceeds your expected maximum (e.g. `log2(totalRecords / leafThreshold) + 2`).
+- **Set a `MAX_DEPTH` guard.** Recursive fan-out without a depth limit can produce extremely deep trees for large record sets. Fail fast if depth exceeds your expected maximum (for example, `log2(totalRecords / leafThreshold) + 2`).
 - **Avoid external writes in Node Workflows.** Node Workflows only aggregate results from children. Leaf Workflows perform the actual work. Keeping the roles separate prevents duplicate external writes if a Node is retried.
 - **Use signals for result aggregation, not return values.** A parent cannot directly await a child started in a previous Workflow run. Signals decouple the result delivery from the parent-child lifetime, making the pattern resilient to replays.
 - **Skip the reduce phase if results are not needed.** If you only need the side effects of processing each record (writes to a database, messages sent), omit the signal-back entirely and set `PARENT_CLOSE_POLICY_ABANDON` on all children.

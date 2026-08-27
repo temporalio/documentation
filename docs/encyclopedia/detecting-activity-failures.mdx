@@ -4,10 +4,6 @@ title: Detecting Activity failures
 sidebar_label: Detecting Activity failures
 description: Understand Activity Execution timeouts in Temporal; Schedule-To-Start, Start-To-Close, Schedule-To-Close, and Activity Heartbeats, for effective Workflow management.
 toc_max_heading_level: 4
-keywords:
-  - explanation
-  - term
-  - timeouts
 tags:
   - Concepts
   - Activities
@@ -195,7 +191,7 @@ Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-ti
 Activity Heartbeats are implemented within the Activity Definition.
 Custom progress information can be included in the Heartbeat which can then be used by the Activity Execution should a retry occur.
 
-An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
+An Activity Heartbeat can be recorded as often as needed (for example, once a minute or every loop iteration).
 It is often a good practice to Heartbeat on anything but the shortest Activity Execution.
 Temporal SDKs control the rate at which Heartbeats are sent to the Temporal Service.
 

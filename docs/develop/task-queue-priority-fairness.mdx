@@ -2,13 +2,8 @@
 id: task-queue-priority-fairness
 title: Task Queue Priority and Fairness
 sidebar_label: Task queue priority and fairness
-description: How the Task Queue Priority and Fairness features can be used.
+description: Control execution order within a Task Queue using priority levels, and use Fairness to stop tenants from blocking each other.
 toc_max_heading_level: 4
-keywords:
-  - task queue
-  - task queue priority
-  - task queue fairness
-  - task queue priority and fairness
 tags:
   - Task Queues
   - Priority and Fairness
@@ -282,7 +277,7 @@ You can set fairness keys and weights for a Workflow within the SDK like so. Sel
     {
       label: 'Fairness key',
       description:
-        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+        'Groups Tasks into a virtual queue (for example, by tenant or workload type) so no single group monopolizes the Task Queue.',
       lines: [6],
     },
     {
@@ -319,7 +314,7 @@ we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, MyWorkflow)
     {
       label: 'Fairness key',
       description:
-        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+        'Groups Tasks into a virtual queue (for example, by tenant or workload type) so no single group monopolizes the Task Queue.',
       lines: [5],
     },
     {
@@ -357,7 +352,7 @@ workflow.run();
     {
       label: 'Fairness key',
       description:
-        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+        'Groups Tasks into a virtual queue (for example, by tenant or workload type) so no single group monopolizes the Task Queue.',
       lines: [8],
     },
     {
@@ -395,7 +390,7 @@ await client.start_workflow(
     {
       label: 'Fairness key',
       description:
-        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+        'Groups Tasks into a virtual queue (for example, by tenant or workload type) so no single group monopolizes the Task Queue.',
       lines: [7],
     },
     {
@@ -432,7 +427,7 @@ client.start_workflow(
     {
       label: 'Fairness key',
       description:
-        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+        'Groups Tasks into a virtual queue (for example, by tenant or workload type) so no single group monopolizes the Task Queue.',
       lines: [5],
     },
     {
@@ -467,7 +462,7 @@ const handle = await startWorkflow(workflows.priorityWorkflow, {
     {
       label: 'Fairness key',
       description:
-        'Groups Tasks into a virtual queue (for example by tenant or workload type) so no single group monopolizes the Task Queue.',
+        'Groups Tasks into a virtual queue (for example, by tenant or workload type) so no single group monopolizes the Task Queue.',
       lines: [9],
     },
     {

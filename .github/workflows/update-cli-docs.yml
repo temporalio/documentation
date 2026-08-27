@@ -88,18 +88,14 @@ jobs:
           mkdir -p docs/cli/command-reference
           cp -R ../cli/dist/docs/* docs/cli/command-reference/
 
-          # gen-docs intentionally does not emit index.mdx landing pages: those
-          # are hand-maintained (custom ordering, embedded components such as
-          # ReleaseNoteHeader). Restore them after regeneration so they are not
-          # lost by the rm -rf above.
-          git checkout HEAD -- docs/cli/command-reference/index.mdx
-          git checkout HEAD -- docs/cli/command-reference/cloud/index.mdx
+          # gen-docs intentionally does not emit index.mdx landing pages. The
+          # post-processing step below recreates them from the generated pages.
 
       - name: Post-process generated CLI docs
         working-directory: docs
-        # Injects the ReleaseNoteHeader banner into cloud CLI pages and keeps
-        # command-reference/index.mdx and sidebars.js in sync with the
-        # generated commands. Not previously called from this workflow.
+        # Recreates command-reference indexes, injects the ReleaseNoteHeader
+        # banner into cloud CLI pages, and keeps sidebars.js in sync with the
+        # generated commands.
         run: node bin/post-process-cli-docs.js
 
       - name: Publish generated docs to documentation repo
@@ -118,7 +114,7 @@ jobs:
 
           branch_name="update-cli-docs-$CLI_RELEASE_TAG"
           git checkout -b "$branch_name"
-          git add -A docs/cli/command-reference
+          git add -A docs/cli/command-reference sidebars.js
           git commit -m "$COMMIT_MESSAGE"
           git push origin "$branch_name"
 
