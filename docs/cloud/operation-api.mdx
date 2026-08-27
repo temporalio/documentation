@@ -137,15 +137,9 @@ For production HTTP automation, still pin an explicit version so behavior does n
 
 ### API versioning and deprecation
 
-Use the latest Cloud Ops API version for new integrations, and keep your `temporal-cloud-api-version` header on a supported version.
+Use the latest Cloud Ops API version for new integrations, and keep your `temporal-cloud-api-version` header up to date.
 
-Temporal supports each Cloud Ops API version for at least one year after its release. When an API version is scheduled for deprecation:
-
-- Temporal provides at least six months' notice before the version becomes unsupported.
-- The minimum supported API version and deprecation timeline are published in the [Cloud Ops API repository](https://github.com/temporalio/cloud-api).
-- Temporal provides migration guidance when an API change requires you to update your integration.
-
-After the deprecation period, requests that use a version older than the minimum supported version can be rejected.
+Temporal currently supports all Cloud Ops API versions. Each version is supported for at least one year after its release. When an API version is scheduled for deprecation, Temporal provides at least six months' notice before the version becomes unsupported, and provides migration guidance when an API change requires you to update your integration.
 
 ### Connection URL
 
