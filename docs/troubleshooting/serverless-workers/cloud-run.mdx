@@ -190,8 +190,8 @@ For how scale-in decisions are made, see
 
 ## Check for GCP-side issues {/* #check-gcp-issues */}
 
-Some symptoms come from Cloud Run rather than from your configuration. Before spending time on the checks above, or
-after they all pass, rule out a provider-side cause:
+If the checks above all pass, the cause may be in Cloud Run rather than in your configuration.
+Rule out a provider-side cause:
 
 - [Cloud Run known issues](https://cloud.google.com/run/docs/known-issues) lists current defects and limitations,
   including ones that affect how long Worker Pool operations take.
