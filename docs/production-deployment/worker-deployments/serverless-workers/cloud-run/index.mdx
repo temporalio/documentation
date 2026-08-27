@@ -52,12 +52,14 @@ the SDKs with a Cloud Run guide today.
 
 {/* Remove this admonition once the high deployment latency entry leaves the Cloud Run known issues page. */}
 
-:::caution Choose your region carefully
+:::caution Open Google Cloud issue: high deployment latency in some regions
 
-Creating or updating Cloud Run resources is slower than expected in some regions, including `us-central1`. This affects creating the
-Worker Pool and the scaling calls Temporal makes against it. If latency is a problem in a particular region, Google
-recommends deploying to another region. See
-[High deployment latency in some regions](https://cloud.google.com/run/docs/known-issues#deployment-latency).
+Google currently reports that creating or updating Cloud Run resources takes longer than expected in some regions,
+including `us-central1`. The delay is in Cloud Run, not in Temporal, and it applies to creating the Worker Pool and to
+the scaling calls Temporal makes against it. Google recommends deploying to another region while the issue is open. For
+the current status, see
+[High deployment latency in some regions](https://cloud.google.com/run/docs/known-issues#deployment-latency) in the
+Cloud Run known issues.
 
 :::
 
