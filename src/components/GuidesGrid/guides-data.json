@@ -78,7 +78,14 @@
     "tags": ["Workflow Management"],
     "sdk": "Python",
     "href": "/guides/lock-shared-resources"
+  },
+
+  {
+    "name": "Migrate Celery to Temporal",
+    "description":
+      "Migrate Celery tasks to Temporal Workflows and Activities.",
+    "tags": ["Migration"],
+    "sdk": "Python",
+    "href": "/guides/celery-to-workflow"
   }
-
-
 ]
