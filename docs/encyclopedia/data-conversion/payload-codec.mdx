@@ -5,14 +5,6 @@ sidebar_label: Payload Codec
 description: A Payload Codec performs bytes-to-bytes transformations on Temporal Payloads, often for compression and encryption.
 slug: /payload-codec
 toc_max_heading_level: 4
-keywords:
-  - encryption
-  - explanation
-  - keys
-  - payloads
-  - secrets
-  - data-converters
-  - payload-codec
 tags:
   - Concepts
   - Encryption
@@ -34,7 +26,7 @@ Use a custom Payload Codec to transform your Payloads; for example, implementing
 
 ### Operational Chain
 
-In practice, the [Payload Converter](/payload-converter) and Payload Codex operate in a chain to handle data securely. Incoming data first passes through a Payload Converter through the `toPayload` method, turning application objects into Payloads. These Payloads are then processed by the Payload Codec through the `encode` method, which adjusts the Payload according to the required security or efficiency needs before it is sent to the Temporal Cluster.
+In practice, the [Payload Converter](/payload-converter) and Payload Codec operate in a chain to handle data securely. Incoming data first passes through a Payload Converter through the `toPayload` method, turning application objects into Payloads. These Payloads are then processed by the Payload Codec through the `encode` method, which adjusts the Payload according to the required security or efficiency needs before it is sent to the Temporal Cluster.
 
 The process is symmetric for outgoing data. Payloads retrieved from the Temporal Cluster first pass through the Payload Codec through the `decode` method, which reverses any transformations applied during encoding. Finally, the resulting Payload is converted back into an application object by the Payload Converter through the `fromPayload` method, making it ready for use within the application.
 

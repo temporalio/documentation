@@ -7,14 +7,6 @@ description:
   lifecycle.
 slug: /serverless-workers/cloud-run
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - workers
-  - cloud run
-  - gcp
-  - autoscaling
-  - worker versioning
-  - worker pools
 tags:
   - Workers
   - Concepts
@@ -35,6 +27,11 @@ This page covers how Serverless Workers work on GCP Cloud Run, including the ins
 On Cloud Run, a Serverless Worker runs in a Worker Pool: a set of long-lived instances that poll the Task Queue continuously for as long as they remain in the pool.
 Each instance runs standard Worker code and processes Tasks for its whole lifetime.
 The [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) controls how many instances run; each instance manages its own polling and Task processing.
+
+Serverless Workers on Cloud Run use standard long-lived Worker processes, with scaling managed by the WCI.
+Some SDKs add GCP-specific conveniences, such as helpers for configuring OpenTelemetry.
+These are optional.
+Where an SDK provides them, they're documented in the corresponding developer guide for that SDK.
 
 ## Autoscaling {/* #autoscaling */}
 
@@ -70,6 +67,17 @@ When arrivals and backlog fall, the WCI lowers the target instance count and Clo
 Scale-in is more conservative than scale-out.
 The WCI holds capacity while sync match failures are still occurring, and it applies a cooldown before reducing the pool, so it does not remove instances that are about to be needed again.
 When there is no work, the WCI can scale the pool to zero; the next sync match failure or backlog scales it back up.
+
+### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
+
+Do not share a Task Queue between a Worker Pool and long-lived Workers. The pool scales up to cover the Task Queue's
+full workload even when the long-lived Workers are already handling all of it, so you run and pay for pool instances
+that duplicate capacity you already have.
+
+The WCI sizes the pool from the rate of Tasks arriving on the Worker Deployment Version's Task Queues, and nothing in
+that measurement accounts for the long-lived Workers. Tasks they process raise the pool's target instance count exactly
+as unhandled Tasks would. Sync matching to a long-lived Worker suppresses the immediate scale-up when a Task arrives,
+but the periodic re-sizing scales the pool up regardless.
 
 ## Worker Versioning {/* #worker-versioning */}
 

@@ -181,6 +181,15 @@
     "href": "https://docs.openbox.ai/getting-started/temporal"
   },
   {
+    "name": "OpenTelemetry v2",
+    "description": "Export tracing and metrics from Temporal Go SDK applications with OpenTelemetry.",
+    "tags": [
+      "Observability"
+    ],
+    "sdk": "Go",
+    "href": "/develop/go/integrations/opentelemetry-v2"
+  },
+  {
     "name": "Parseable",
     "description": "Stream Temporal Workflow and Activity execution events to Parseable for observability and analysis.",
     "tags": [
