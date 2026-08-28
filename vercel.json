@@ -2309,6 +2309,11 @@
       "source": "/production-deployment/multi-tenant-patterns",
       "destination": "/best-practices/multi-tenant-patterns",
       "permanent": true
+    },
+    {
+      "source": "/develop/python/integrations/braintrust",
+      "destination": "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#python",
+      "permanent": true
     }
   ]
 }
