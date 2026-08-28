@@ -198,9 +198,9 @@ Add a new entry to the `integrations` array with the following shape:
 | `description` | `string` | Yes | One-sentence summary shown on the card. |
 | `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
 | `sdk` | `SDK` | No | The language SDK this integration targets. Omit for language-agnostic integrations (such as Temporal Cloud metrics exporters). |
-| `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/braintrust`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
+| `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/langsmith`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
 
-**Multi-SDK integrations:** If an integration supports multiple SDKs with different guide pages, add a separate entry for each SDK. Both entries can share the same `name`. For example, Braintrust has one entry for Python and one for TypeScript, each with a different `href`.
+**Multi-SDK integrations:** If an integration supports multiple SDKs with different guide pages, add a separate entry for each SDK. Both entries can share the same `name`. For example, LangSmith has one entry for Python and one for TypeScript, each with a different `href`.
 
 **Language-agnostic integrations:** Omit the `sdk` field. These integrations appear when the "Language-agnostic" SDK filter is selected and do not display a language icon on the card.
 
