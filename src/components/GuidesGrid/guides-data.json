@@ -87,6 +87,14 @@
     "tags": ["Migration"],
     "sdk": "Python",
     "href": "/guides/celery-to-standalone-activity"
+  },
+
+  {
+    "name": "Migrate from Sidekiq",
+    "description": "Move Sidekiq background jobs to a Temporal Standalone Activity, no Workflow required.",
+    "tags": ["Migration"],
+    "sdk": "Ruby",
+    "href": "/guides/sidekiq-to-standalone-activity"
   }
 
 
