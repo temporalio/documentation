@@ -742,6 +742,10 @@ provider that points to your Lambda function. The compute configuration tells Te
 provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume. The deployment name and build ID must
 match the values in your Worker code.
 
+A Namespace runs at most 100 Worker Deployment Versions with a compute configuration by default. Creating a version
+past that limit fails with `reached maximum worker controller instances in namespace`. See
+[Max Worker Controller Instances limits](/cloud/limits#max-worker-controller-instances-limits).
+
 You can create the version using the Temporal UI or the Temporal CLI.
 
 <Tabs groupId="create-version-approach">

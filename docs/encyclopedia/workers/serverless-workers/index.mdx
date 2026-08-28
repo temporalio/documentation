@@ -90,6 +90,11 @@ The Worker Controller Instance (WCI) is a system Workflow that scales Serverless
 One WCI Workflow runs per Worker Deployment Version that has a compute provider configured. The WCI runs in the same
 Namespace as your Worker Deployment.
 
+A Namespace runs at most 100 WCI Workflows by default, which caps how many Worker Deployment Versions in the Namespace
+can have a compute provider at once. A version's WCI runs until the version is deleted, so drained versions count
+against the limit. See
+[Max Worker Controller Instances limits](/cloud/limits#max-worker-controller-instances-limits).
+
 The WCI adjusts the Worker count based on Task Queue conditions. Sync match failures and Task Queue backlog signal that
 more capacity is needed, and the WCI adds Workers by triggering the configured compute provider. It also removes
 capacity as work drains. How often the WCI re-evaluates the count, and how it sizes the pool, depends on the compute

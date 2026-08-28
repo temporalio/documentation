@@ -398,3 +398,13 @@ The maximum number of versions that the server allows to be registered in a sing
 ### Max Task Queues In Deployment Version limits {/* #max-task-queues-in-deployment-version-limits */}
 
 The maximum number of Task Queues that the server allows to be registered in a single Worker Deployment Version. Defaults to 100.
+
+### Max Worker Controller Instances limits {/* #max-worker-controller-instances-limits */}
+
+The maximum number of [Worker Controller Instances](/serverless-workers#worker-controller-instance) that the server allows to run in a single Namespace. Defaults to 100. [Contact support](/cloud/support#support-ticket) to increase it.
+
+This limit applies only to [Serverless Workers](/serverless-workers). Temporal runs one Worker Controller Instance for each Worker Deployment Version that has a compute configuration, and the count covers every Worker Deployment in the Namespace. Drained versions still count, because the Worker Controller Instance runs until the version itself is deleted.
+
+Creating or updating a Worker Deployment Version with a compute configuration past the limit fails with `reached maximum worker controller instances in namespace`. To make room without raising the limit, delete Worker Deployment Versions you no longer need.
+
+This limit is separate from [Max versions in deployment limits](#max-versions-in-deployment-limits), which counts versions within one Worker Deployment rather than Worker Controller Instances across the Namespace.
