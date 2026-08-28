@@ -44,6 +44,7 @@ Before you start, it helps to know which Temporal building block replaces each C
 Before you begin, you will need the following:
 
 - Python 3.9 or higher installed on your machine.
+- Temporal Server v1.31.0 or higher (for Standalone Activities)
 - The Temporal Python SDK, version 1.23.0 or higher (installed in Step 2).
 - The Temporal CLI, version 1.7.0 or higher (installed in Step 2).
 - An existing Celery task you want to migrate, or the sample task shown in Step 4 if you are following along from scratch.
@@ -275,7 +276,7 @@ A few details map directly from Celery. You pass the Activity's arguments throug
 
 ## Step 7: Start an Activity in place of `.delay()`
 
-Celery's `.delay()` is fire-and-forget: it enqueues the task and returns immediately. The Temporal equivalent is `start_activity`, which durably enqueues the Activity and hands back a handle you can use later to fetch the result. In this step, you will start an Activity without blocking on it.
+Celery's `.delay()` is fire-and-forget: it enqueues the task and returns immediately. The Temporal equivalent is `start_activity`, which durably enqueues the Activity and hands back a handle you can use later to fetch the result. In this step, you will start an Activity without blocking on it. (Note that the activity ID is changed to avoid deduplication effects.)
 
 Create `start_activity.py`:
 
@@ -295,7 +296,7 @@ async def main():
     handle = await client.start_activity(
         send_welcome_email,
         args=[WelcomeEmailInput(42)],
-        id="welcome-email-42",
+        id="welcome-email-delay",
         task_queue="email-tasks",
         start_to_close_timeout=timedelta(seconds=30),
     )
@@ -366,7 +367,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Here, `maximum_attempts=5` mirrors Celery's `max_retries`, and `maximum_interval` caps the backoff between attempts. The `non_retryable_error_types` list names errors that should fail immediately without retrying — the equivalent of *not* calling `self.retry()` for a permanent failure. To raise such an error from the Activity, use `ApplicationError` with `non_retryable=True` in `my_activity.py`:
+Here, `maximum_attempts=6` is similar to Celery's `max_retries`, and `maximum_interval` caps the backoff between attempts. The `non_retryable_error_types` list names errors that should fail immediately without retrying — the equivalent of *not* calling `self.retry()` for a permanent failure. To raise such an error from the Activity, use `ApplicationError` with `non_retryable=True` in `my_activity.py`:
 
 ```python
 # my_activity.py (excerpt)
