@@ -1,0 +1,54 @@
+---
+id: nexus-standalone-activity
+title: Nexus Standalone Activity
+sidebar_label: Nexus Standalone Activity
+description: Back a Nexus Operation with a Standalone Activity when the work is a single durable step, with no Workflow wrapped around it.
+toc_max_heading_level: 4
+slug: /nexus/standalone-activity
+tags:
+  - Nexus
+  - Concepts
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript", ".NET"]}>
+  APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
+
+:::note Not the same as a Standalone Nexus Operation
+
+The two names are close and describe opposite ends of the call.
+A [Standalone Nexus Operation](/standalone-nexus-operation) is about the **caller**: a Client starts an Operation directly, with no caller Workflow around it.
+A Nexus Standalone Activity is about the **handler**: an Operation is backed by a single Activity, with no Workflow behind it.
+They are independent choices, and either can be used without the other.
+
+:::
+
+An Activity-backed [Nexus Operation](/nexus/operations) runs a [Standalone Activity](/standalone-activity) and completes when that Activity returns.
+Use it when the work behind an Operation is one durable step rather than a process: calling an external API, running a computation, writing to another system.
+
+Two things combine to make this happen.
+The [Activity](/activities) supplies durability — retries on the policy you set, timeouts you control, and a record of every attempt.
+The Operation supplies a typed contract and a [Namespace](/namespaces) boundary, so another team can call it without sharing your code, your deployment, or write access to your Namespace.
+
+Because the Activity carries the durability, no Workflow is needed behind the Operation.
+A Workflow wrapping a single Activity costs two [Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud — one to start the Workflow, one to start the Activity — where a Standalone Activity costs one.
+Retries and heartbeats are billed the same way in either shape.
+
+## Required options
+
+Starting an Activity this way needs values a Workflow-called Activity does not, because there is no parent Workflow to supply them:
+
+- **An Activity Id**, unique within the Namespace. Deriving it from the Nexus request Id makes the start idempotent, so a retried request targets the same Activity Execution instead of sending a second notification or charge.
+- **A timeout.** At least one of start-to-close or schedule-to-close.
+
+The Task Queue is optional and defaults to the one the Operation is running on. Set it explicitly to run the Activity on its own Worker fleet.
+
+## Cancellation
+
+An Activity is not interrupted by a cancellation request the way a Workflow is.
+The Worker only learns about it on the next Heartbeat, so an Activity that never Heartbeats runs until it completes or times out.
+Nothing here is Nexus-specific — see [Activity Cancellation](/activity-execution#cancellation).
+
+Back an Operation with a **Workflow** instead when the work has more than one step, needs to wait for something, needs to receive [messages](/sending-messages), or needs durable intermediate state.
