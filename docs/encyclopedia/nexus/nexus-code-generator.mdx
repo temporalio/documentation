@@ -1,0 +1,49 @@
+---
+id: nexus-code-generator
+title: Nexus Code Generator
+sidebar_label: Nexus Code Generator
+description: The Nexus Code Generator turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
+toc_max_heading_level: 4
+slug: /nexus/code-generator
+tags:
+  - Nexus
+  - Concepts
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript"]}>
+  APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
+
+The Nexus Code Generator, [`nexgen`](https://github.com/temporalio/nex-gen), turns one schema into client code for Go, Java, Python, and TypeScript.
+Both sides of a [Nexus Service](/nexus/services) generate from the same file, so neither hand-writes the types and neither can drift from the contract.
+
+For each type it emits:
+
+- **A typed model** — an idiomatic struct, class, interface, or dataclass, with doc comments carried over from the schema.
+- **A runtime validator**, applied when a value is parsed off the wire and again when it is serialized onto it.
+- **A [Nexus Service](/nexus/services) definition**, for a file that declares Services. The handler implements it; the caller uses it to invoke Operations.
+
+## How it works
+
+You write the contract once, as a JSON definition file, and run `nexgen` against it.
+The generator emits client code in Go, Java, Python, or TypeScript.
+
+Both sides use that generated code: the handler implements the Service, and the caller invokes its Operations.
+Because both were generated from the same file, they agree on the contract by construction, and the generated validators enforce it at runtime on every payload.
+
+This is what makes a Nexus Service polyglot.
+A Python handler and a Go caller never share code — they share a definition file.
+Generate from it in each language and they interoperate, with no coordination between the teams beyond the contract itself.
+
+## Data validation
+
+The generated validators check every payload against the contract, when a value is parsed off the wire and again when it is serialized onto it.
+Bad data is rejected at the boundary instead of reaching your Workflow.
+
+Failures aggregate into a single error listing every violation, each naming the offending field and the bound it broke.
+A handler maps that to a `BAD_REQUEST` [Nexus error](/nexus/error-handling), so a malformed request tells the caller everything that was wrong in one response.
+
+A value is validated identically in every language, which is what lets a caller and a handler written in different ones trust the same contract.
+Keeping that promise is why the supported schema subset is deliberately strict: anything ambiguous, or anything that cannot be expressed the same way everywhere, is rejected at generation time rather than becoming code that validates differently in one language than another.
