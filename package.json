@@ -78,7 +78,7 @@
     "chart.js": "^4.4.1",
     "clsx": "^2.1.1",
     "comlink": "^4.4.2",
-    "concurrently": "^10.0.4",
+    "concurrently": "^10.0.5",
     "docusaurus-pushfeedback": "^1.0.3",
     "gray-matter": "^4.0.3",
     "js-yaml": "^5.2.2",
