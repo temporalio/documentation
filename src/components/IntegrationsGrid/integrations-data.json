@@ -9,6 +9,15 @@
     "href": "/develop/typescript/integrations/ai-sdk"
   },
   {
+    "name": "Arize AX",
+    "description": "Observe, troubleshoot, and evaluate Temporal AI agents with OpenTelemetry traces in Arize AX.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "https://arize.com/docs/ax/integrations/python-agent-frameworks/temporal/temporal-tracing"
+  },
+  {
     "name": "Braintrust",
     "description": "Monitor and evaluate AI application performance with Braintrust observability.",
     "tags": [
