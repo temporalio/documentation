@@ -1,8 +1,8 @@
 ---
 id: basics
-title: Workflow Basics - Python SDK
+title: Workflow basics - Python SDK
 sidebar_label: Workflow basics
-description: This section explains Workflow Basics with the Python SDK
+description: Develop a basic Workflow with the Temporal Python SDK. Define Workflow parameters, return values, and a custom Workflow Type.
 toc_max_heading_level: 4
 tags:
   - Python SDK
@@ -41,7 +41,7 @@ class YourWorkflow:
         )
 ```
 
-### Define Workflow parameters {/* #workflow-parameters */}
+## Define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as
 parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All
@@ -61,7 +61,7 @@ class YourParams:
     name: str
 ```
 
-### Define Workflow return parameters {/* #workflow-return-values */}
+## Define Workflow return values {/* #workflow-return-values */}
 
 Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly
 idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow
@@ -98,7 +98,7 @@ class YourWorkflow:
         )
 ```
 
-### Customize your Workflow Type {/* #workflow-type */}
+## Customize Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -126,7 +126,7 @@ class YourWorkflow:
         )
 ```
 
-### Use Workflow constructors
+## Use Workflow constructors
 
 Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflow `__init__` method won't have any parameters. However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same Workflow parameters as your `@workflow.run` method.
 
@@ -155,7 +155,7 @@ class WorkflowRunSeesWorkflowInitWorkflow:
     # other Workflow code
 ```
 
-### Develop Workflow logic {/* #workflow-logic-requirements */}
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Each Temporal SDK provides a
@@ -176,7 +176,7 @@ _deterministic_.
 
 The SDK provides replay-safe alternatives for common needs:
 
-#### Logging
+### Logging
 
 Use [`workflow.logger`](https://python.temporal.io/temporalio.workflow.html#logger) instead of `print()` or the standard `logging` module.
 The SDK logger automatically suppresses log messages during replay to avoid duplicates:
@@ -192,7 +192,7 @@ class MyWorkflow:
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/python/platform/observability#logging).
 
-#### Random numbers and UUIDs
+### Random numbers and UUIDs
 
 Use [`workflow.random()`](https://python.temporal.io/temporalio.workflow.html#random) to get a deterministic `random.Random` instance seeded per Workflow Execution. Never use `random.random()` or other `random` module functions directly.
 For UUIDs, use [`workflow.uuid4()`](https://python.temporal.io/temporalio.workflow.html#uuid4) instead of `uuid.uuid4()`:
@@ -202,7 +202,7 @@ value = workflow.random().randint(1, 100)
 unique_id = workflow.uuid4()
 ```
 
-#### Current time
+### Current time
 
 Use [`workflow.now()`](https://python.temporal.io/temporalio.workflow.html#now) instead of `datetime.now()` or `time.time()`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
 
@@ -210,7 +210,7 @@ Use [`workflow.now()`](https://python.temporal.io/temporalio.workflow.html#now) 
 current_time = workflow.now()
 ```
 
-#### Detecting replay (advanced)
+### Detecting replay (advanced)
 
 Use [`workflow.unsafe.is_replaying`](https://python.temporal.io/temporalio.workflow.html#is_replaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/python/workers/interceptors).
 :::caution

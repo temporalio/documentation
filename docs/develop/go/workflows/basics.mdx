@@ -2,14 +2,14 @@
 id: basics
 title: Workflow basics - Go SDK
 sidebar_label: Workflow basics
-description: This section explains Workflow basics with the Go SDK
+description: Develop a basic Workflow with the Temporal Go SDK. Define Workflow parameters, return values, and a custom Workflow Type.
 toc_max_heading_level: 4
 tags:
   - Go SDK
   - Temporal SDKs
 ---
 
-## How to develop a basic Workflow {/* #develop-workflows */}
+## Develop a basic Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -30,7 +30,7 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 }
 ```
 
-### How to define Workflow parameters {/* #workflow-parameters */}
+## Define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -86,7 +86,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to define Workflow return parameters {/* #workflow-return-values */}
+## Define Workflow return values {/* #workflow-return-values */}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -142,7 +142,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to customize Workflow Type in Go {/* #customize-workflow-type */}
+## Customize Workflow Type {/* #workflow-type */}
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
@@ -196,7 +196,7 @@ func main() {
 }
 ```
 
-### How to develop Workflow logic {/* #workflow-logic-requirements */}
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with application code outside the Workflow.
 
@@ -221,7 +221,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/develop/go/platform/observability#tracing) for more information about context propagation.
 
-#### Logging
+### Logging
 
 Use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) instead of the standard
 `log` package or `fmt.Println`. The SDK logger skips log messages during replay to avoid duplicates:
@@ -236,7 +236,7 @@ func MyWorkflow(ctx workflow.Context, name string) (string, error) {
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/go/platform/observability#logging).
 
-#### Random numbers and UUIDs
+### Random numbers and UUIDs
 
 The Go SDK does not provide a seeded random source or a UUID helper. Generate these inside a
 [Side Effect](/develop/go/workflows/side-effects), which records the result in the Event History and returns the
@@ -253,7 +253,7 @@ encodedID.Get(&id)
 An Activity works for this too, and is the better choice when the value comes from an external system. A Side Effect is
 cheaper for purely local generation.
 
-#### Current time
+### Current time
 
 Use [`workflow.Now(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Now) instead of `time.Now()`. It returns the
 time of the last Workflow Task, which is consistent across replays:
@@ -264,7 +264,7 @@ currentTime := workflow.Now(ctx)
 
 To wait, use [`workflow.Sleep(ctx, d)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) instead of `time.Sleep`.
 
-#### Detecting replay (advanced)
+### Detecting replay (advanced)
 
 Use [`workflow.IsReplaying(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#IsReplaying) to guard code that should
 only run on the first execution, such as emitting metrics or sending external notifications from an Interceptor.

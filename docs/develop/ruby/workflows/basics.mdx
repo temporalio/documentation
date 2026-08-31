@@ -2,14 +2,14 @@
 id: basics
 title: Workflow basics - Ruby SDK
 sidebar_label: Workflow basics
-description: This section explains Workflow basics with the Ruby SDK
+description: Develop a basic Workflow with the Temporal Ruby SDK. Define Workflow parameters, return values, and a custom Workflow Type.
 toc_max_heading_level: 4
 tags:
   - Ruby SDK
   - Temporal SDKs
 ---
 
-## Develop a Workflow {/* #develop-workflow */}
+## Develop a basic Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -34,7 +34,7 @@ end
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that hashes or objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 
-### Customize Workflow Type {/* #workflow-type */}
+## Customize Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -58,7 +58,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-### Use Workflow constructors
+## Use Workflow constructors
 
 Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). The `workflow_init` class method above `initialize` gives it access to [Workflow input](/handling-messages#workflow-initializers). When you use the `workflow_init` on your constructor, you give the constructor the same Workflow parameters as your `execute` method.
 
