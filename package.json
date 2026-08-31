@@ -85,7 +85,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-icons": "^5.7.0",
-    "react-instantsearch": "^7.41.0",
+    "react-instantsearch": "^7.44.1",
     "react-markdown": "^10.1.0",
     "satori": "^0.29.0",
     "search-insights": "^2",
