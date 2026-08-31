@@ -12,7 +12,7 @@ This reference lists possible [Workflow Task](/tasks#workflow-task) errors and h
 
 > For other types of errors, see [Temporal Failures](/references/failures).
 
-Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://api-docs.temporal.io/#temporal.api.enums.v1.WorkflowTaskFailedCause), which appears in [Events](/workflow-execution/event#event) under `workflow_task_failed_event_attributes`.
+Most of the below errors correspond to a [WorkflowTaskFailedCause](https://api-docs.temporal.io/#temporal.api.enums.v1.WorkflowTaskFailedCause), which appears in [Events](/workflow-execution/event#event) under `workflow_task_failed_event_attributes`. The Resource Exhausted Cause errors are the exception: they correspond to a separate `ResourceExhaustedCause` value carried on a gRPC `RESOURCE_EXHAUSTED` response, not a Workflow Task failure event.
 
 ## Bad Cancel Timer Attributes {/* #bad-cancel-timer-attributes */}
 
@@ -89,7 +89,7 @@ A Child Workflow cannot perform both actions in the same Workflow Task.
 
 ## Bad Schedule Activity Attributes {/* #bad-schedule-activity-attributes */}
 
-This error indicates unset or invalid attributes for [`ScheduleActivityTask`](/references/commands#scheduleactivitytask) or [`CompleteWorkflowExecution`](/references/commands#completeworkflowexecution).
+This error indicates unset or invalid attributes for [`ScheduleActivityTask`](/references/commands#scheduleactivitytask).
 
 Reset any unset or empty attributes.
 Adjust the size of the received payload to stay within the given size limit.
@@ -147,9 +147,9 @@ This error indicates that the [Worker](/workers) deployment returned a bad binar
 
 {/* TODO: add link to Workflow Update page when written */}
 
-This error indicates that a [Workflow Execution](/workflow-execution) tried to complete before receiving an Update.
+This error indicates that a Workflow Update message (Acceptance, Rejection, or Response) has an invalid format or is missing required fields.
 
-`BadUpdate` can happen when a [Worker](/workers#worker) generates a [Workflow Task Completed](/references/events#workflowtaskcompleted) message with missing fields or an invalid Update response format.
+`WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE` can happen when a [Worker](/workers#worker) generates a malformed Update message.
 
 This error might indicate usage of an unsupported SDK.
 Make sure you're using a [supported SDK](/encyclopedia/architecture/temporal-sdks).
