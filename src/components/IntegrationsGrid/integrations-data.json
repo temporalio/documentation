@@ -90,6 +90,15 @@
     "href": "/develop/go/integrations/google-adk"
   },
   {
+    "name": "Google ADK",
+    "description": "Run Google ADK agents as durable Temporal Workflows with the TypeScript SDK.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "TypeScript",
+    "href": "/develop/typescript/integrations/google-adk-agents"
+  },
+  {
     "name": "Google GenAI",
     "description": "Call Google Gemini models durably from Temporal Workflows with the Google Gen AI SDK.",
     "tags": [
