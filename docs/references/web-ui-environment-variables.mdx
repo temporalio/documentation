@@ -154,15 +154,17 @@ Specifies a set of scopes for auth. Typically, this is `openid`, `profile`, `ema
 
 The path for the Transport Layer Security (TLS) Certificate Authority file.
 
-In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a CA certificate issued
-by a trusted Certificate Authority. Set this variable to properly locate and use the file.
+In order to [configure TLS for the Web UI Server](/references/web-ui-configuration#tls), you'll need a CA certificate
+issued by a trusted Certificate Authority, used to verify the Temporal Service's Frontend when the Web UI Server
+connects to it. Set this variable to properly locate and use the file.
 
 ## `TEMPORAL_TLS_CERT`
 
 The path for the Transport Layer Security (TLS) Certificate.
 
-In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a self-signed
-certificate. Set the path to allow the environment to locate and use the certificate.
+In order to [configure TLS for the Web UI Server](/references/web-ui-configuration#tls), you'll need a self-signed
+certificate that identifies the Web UI Server as an mTLS client to the Temporal Service's Frontend. Set the path to
+allow the environment to locate and use the certificate.
 
 ## `TEMPORAL_TLS_KEY`
 
