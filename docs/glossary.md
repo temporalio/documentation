@@ -814,7 +814,7 @@ Workflow Execution.
 
 #### [Workflow cache](/workflow-execution#workflow-cache)
 
-An in-memory cache on a Worker that holds the state of Workflow Executions it has processed so later Workflow Tasks can avoid a full Event History replay. Used with [Sticky Execution](/sticky-execution). See also [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning).
+An in-memory cache on a Worker that holds the state of Workflow Executions it has processed so later Workflow Tasks can avoid a full Event History replay. Used with [Sticky Execution](/sticky-execution). See also [Workflow Cache Tuning](/develop/worker-performance/workflow-cache).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 

@@ -3,17 +3,6 @@ id: metrics-reference
 title: OpenMetrics metrics reference
 sidebar_label: Metrics reference
 description: Detailed API documentation for the Temporal Cloud OpenMetrics endpoint.
-keywords:
-  - temporal cloud metrics configuration
-  - configure metrics endpoint
-  - temporal cloud observability
-  - tcld CLI guide
-  - temporal cloud UI setup
-  - grafana temporal integration
-  - prometheus metrics endpoint
-  - openmetrics endpoint
-  - observability tools integration
-  - openmetrics api
 tags:
   - Metrics
   - OpenMetrics
@@ -31,7 +20,7 @@ This document describes all metrics available from the Temporal Cloud OpenMetric
 All metrics are exposed as OpenMetrics gauges, but represent different measurement types:
 
 * *Rate Metrics*: per-second rate of the aggregated values  
-* *Value Metrics*: The most recent aggregate value within a look-back window (e.g. backlogs, limits)  
+* *Value Metrics*: The most recent aggregate value within a look-back window (for example, backlogs, limits)  
 * *Percentile Metrics*: Pre-calculated aggregated latency percentiles in seconds
 
 :::note
@@ -533,7 +522,7 @@ It can overcount because invalid or expired Tasks, like from cancelled, terminat
 
 It can also reset to zero on an idle Task Queue. If no Worker polls, no new Tasks are added, and no other Task Queue calls occur (such as `DescribeTaskQueue` or `UpdateTaskQueueConfig`) for approximately 5 minutes. The Task Queue is unloaded from memory.
 Infrequent metadata updates and database time-to-live settings can also cause this metric to drift at a smaller magnitude.
-See [backlog accuracy limitations](/develop/worker-performance#backlog-accuracy-limitations) for details.
+See [backlog accuracy limitations](/develop/worker-performance/task-queues#backlog-accuracy-limitations) for details.
 :::
 
 | Label | Description |
@@ -607,7 +596,7 @@ The total number of actions performed per second. Actions with `is_background=fa
 
 | Label | Description |
 | ----- | ----- |
-| `is_background` | Whether the action was background: `true` or `false`. Background actions (e.g. History export) do not count toward the action rate limit |
+| `is_background` | Whether the action was background: `true` or `false`. Background actions do not count toward the action rate limit |
 | `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
 :::note
@@ -667,25 +656,35 @@ Operations throttled due to rate limits per second. See [Monitoring Trends Again
 
 #### temporal\_cloud\_v1\_schedule\_action\_success\_count
 
-Successfully executed scheduled workflows per second.
+Successful scheduled executions per second.
 
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_schedule\_buffer\_overruns\_count
 
-The rate of schedule buffer overruns when using `BUFFER_ALL` overlap policy.
+Scheduled executions dropped per second because the Schedule's internal Action buffer is full.
 
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_schedule\_missed\_catchup\_window\_count
 
-The rate of missed schedule executions outside the catchup window.
+Scheduled executions permanently dropped per second because they fell outside the Catchup Window. This metric is not emitted for backfills.
 
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_schedule\_rate\_limited\_count
 
-The rate of scheduled workflows delayed due to rate limiting.
+[DEPRECATED] Scheduled executions delayed per second due to rate limiting. This metric is in the process of being replaced by standard request per second rate limit monitoring with dynamic scaling. This metric will be removed when this change is rolled out to all of Temporal Cloud.
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_schedule\_overlap\_skipped\_count
+
+Schedule executions dropped per second due to the overlap policy. This metric is emitted for `SKIP` when another execution is running or already selected, and for `BUFFER_ONE` when its single buffered slot is occupied. It can also be emitted during backfills that use `SKIP` or `BUFFER_ONE`. A sustained rate can indicate that executions are generated faster than they complete.
+
+| Label | Description |
+| ----- | ----- |
+| `schedule_overlap_policy` | The overlap policy that caused the execution to be dropped |
 
 **Type**: Rate
 
@@ -782,4 +781,3 @@ Does not include the `region` label. Provisioned capacity is scoped to the Names
 :::
 
 **Type**: Value
-

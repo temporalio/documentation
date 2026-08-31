@@ -37,13 +37,13 @@
   font-size: 0.95rem;
 }
 
-.actionsRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: var(--ifm-spacing-sm, 0.75rem);
+.breadcrumbsContainer {
+  --ifm-breadcrumb-size-multiplier: 0.8;
+  margin-bottom: 0.8rem;
+}
+
+.githubSection {
+  margin-top: var(--ifm-spacing-lg, 1.5rem);
   margin-bottom: var(--ifm-spacing-lg, 1.5rem);
 }
 
@@ -73,22 +73,10 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ifm-color-emphasis-800) 18%, transparent);
 }
 
-.actionGithub {
-  margin-left: auto;
-}
-
-.actionGithub[aria-disabled='true'] {
-  opacity: 0.5;
-}
-
 .actionIcon {
   width: 1em;
   height: 1em;
   fill: currentColor;
-}
-
-.actionsRow :is(.actionLink, .actionGithub) {
-  white-space: nowrap;
 }
 
 .tocMobile {
@@ -112,18 +100,3 @@
   }
 }
 
-@media (max-width: 600px) {
-  .actionsRow {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .actionGithub {
-    margin-left: 0;
-  }
-
-  .actionsRow :is(.actionLink, .actionGithub) {
-    width: 100%;
-    text-align: center;
-  }
-}

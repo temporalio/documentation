@@ -3,21 +3,6 @@ id: observability
 title: Observability - Go SDK
 sidebar_label: Observability
 toc_max_heading_level: 4
-keywords:
-  - go sdk
-  - interceptor
-  - list filter
-  - list filters
-  - logging and metrics
-  - observability
-  - search attributes
-  - temporal client
-  - tracing
-  - visibility
-  - workflow definition
-  - workflow execution
-  - workflow executions
-  - workflows
 tags:
   - Search Attributes
   - Observability
@@ -41,7 +26,15 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-- For an overview of Prometheus and Grafana integration, refer to the [Monitoring](/self-hosted-guide/monitoring) guide.
+:::tip[Use the OpenTelemetry v2 integration]
+
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
+
+:::
 - For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
 - For an end-to-end example that exposes metrics with the Go SDK, refer to the [samples-go](https://github.com/temporalio/samples-go/tree/main/metrics) repo.
 
@@ -91,6 +84,16 @@ Negative values can produce invalid or backend-dependent metric data when `UseMo
 
 Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and Child Workflows.
 
+:::tip[Use the OpenTelemetry v2 integration]
+
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
+
+:::
+
 The Go SDK provides tracing interceptors for [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing), and [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing). 
 
 First, create a tracing interceptor for Client instantiation.
@@ -119,7 +122,7 @@ You can also register interceptors through a [Plugin](/develop/plugins-guide#int
 Each tracing interceptor uses its library's native propagation mechanism to serialize trace spans into Temporal headers. For example, OpenTelemetry uses its `TextMapPropagator` with the W3C TraceContext format. The SDK carries these headers across Workflow, Activity, and Child Workflow boundaries, so the tracing library can reconstruct the call graph.
 For more information, see the documentation for [OpenTelemetry](https://opentelemetry.io/), [OpenTracing](https://opentracing.io), and [Datadog](https://docs.datadoghq.com/tracing/).
 
-To build custom context propagation (e.g., tenant IDs, auth tokens), see [Context Propagation](/develop/go/best-practices/context-propagation).
+To build custom context propagation (for example, tenant IDs, auth tokens), see [Context Propagation](/develop/go/best-practices/context-propagation).
 
 ## Log from a Workflow {/* #logging */}
 

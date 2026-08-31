@@ -1,7 +1,7 @@
 ---
 id: worker-health
-title: Monitor worker health
-sidebar_label: Monitor worker health
+title: Monitor Worker health
+sidebar_label: Monitor Worker health
 description: Detect and configure for Task backlogs, greedy Worker resources, misconfigured Workers, and Sticky cache settings. Optimize alert systems and get actionable insights on metrics like Schedule-To-Start latency, Sync Match Rate, and Poll Success Rate for improved application health.
 toc_max_heading_level: 4
 tags:
@@ -9,22 +9,6 @@ tags:
   - Observability
   - Temporal Cloud
   - Workers
-keywords:
-  - temporal workflow optimization
-  - detect task backlog
-  - greedy worker resources
-  - detect misconfigured workers
-  - sticky cache configuration
-  - sync match rate
-  - workflow task latency
-  - temporal cloud metrics
-  - temporal task queue management
-  - prometheus queries for temporal
-  - worker configuration
-  - workflow performance tuning
-  - optimize temporal workflows
-  - workflow task execution size
-  - temporal worker resources
 ---
 import { ReleaseNoteHeader, SdkTabs } from '@site/src/components';
 import Tabs from '@theme/Tabs';
@@ -197,7 +181,7 @@ There are three typical causes for this:
 
 - There are not enough workers to perform work
 - Each worker is either under resourced, or is misconfigured, to handle enough work
-- There is congestion caused by the environment (eg., network) hosting the worker(s) and Temporal Cloud
+- There is congestion caused by the environment (for example, network) hosting the worker(s) and Temporal Cloud
 
 Consider
 
@@ -242,9 +226,9 @@ temporal_cloud_v1_approximate_backlog_count{temporal_namespace=~"$namespace", te
 - Verify that your Worker setup is optimized for your instance:
   - Check the system CPU usage against `task_slots` and adjust `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` settings as necessary.
   - Check the system memory usage against `sticky_cache_size` and adjust sticky cache size as necessary.
-  - For a detailed explanation of settings, see the [Worker Performance](/develop/worker-performance#task-queues-processing-tuning) section.
+  - For a detailed explanation of settings, see the [Worker Performance](/develop/worker-performance/task-queues#task-queues-processing-tuning) section.
 - Increase the Worker config for concurrent pollers for Workflow or Activity `task_slots`, if your Worker resources can accommodate the increased load.
-  - Reference [Worker Performance > Poller Count](/develop/worker-performance#poller-count).
+  - Reference [Worker Performance > Poller Count](/develop/worker-performance/task-queues#poller-count).
 - Increase the number of available Workers.
 
 :::warning

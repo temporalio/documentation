@@ -5,13 +5,6 @@ sidebar_label: Worker Controller
 description: Use Temporal's provided Kubernetes controller to programmatically scale your Worker deployments.
 slug: /production-deployment/worker-deployments/kubernetes-controller
 toc_max_heading_level: 4
-keywords:
-  - kubernetes
-  - scaling
-  - helm
-  - workers
-  - scaling
-  - versioning
 tags:
   - Temporal Service
   - Durable Execution
@@ -31,7 +24,7 @@ Over time these checks can become a source of technical debt, as safely removing
 Using pinning, you will not need to add branching to your Workflows to avoid non-determinism errors.
 This allows you to bypass the other Versioning APIs.
 
-The Worker Controller gives you direct, programmatic control over your Worker deployments, and integrates with the [Temporal CLI](/production-deployment/worker-deployments/worker-versioning#rolling-out-changes-with-the-cli).
+The Worker Controller gives you direct, programmatic control over your Worker deployments, and integrates with the [Temporal CLI](/production-deployment/worker-deployments/worker-versioning/roll-out-and-pin#rolling-out-changes-with-the-cli).
 You do not need to use the Worker Controller to use Worker Versioning, but when used together, Worker Versioning and the Worker Controller can provide more graceful deployments and upgrades, and less need to manually tune your Workers.
 
 Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deployment**, but since the Worker Controller makes significant references to Kubernetes Deployment resource, within this page we will stick to these terms:

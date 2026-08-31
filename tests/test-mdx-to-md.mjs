@@ -14,6 +14,7 @@ import {
   transformMdx,
   parseFrontmatter,
   extractProp,
+  extractNumberProp,
   parseTabValues,
   parseReadList,
   parseSdkGuideLinks,
@@ -26,6 +27,11 @@ import {
   selectIntegrations,
   integrationsToMarkdownList,
 } from "../scripts/component-handlers/integrations.mjs";
+import {
+  readCookbookRecipes,
+  cookbookRecipesToMarkdownList,
+  cookbookPreviewToMarkdown,
+} from "../scripts/component-handlers/cookbook-preview.mjs";
 import { parseCardItems, cardsToMarkdown } from "../scripts/component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "../scripts/component-handlers/sdk-overview-cards.mjs";
 
@@ -316,6 +322,55 @@ test("converts :::tip to blockquote with tip label", () => {
   assertContains(markdown, "> **💡 Tip:**");
 });
 
+test("uses a custom [title] in place of the type word, keeping the icon", () => {
+  const { markdown } = transformMdx(":::info[TLDR]\nShort version.\n:::");
+  assertContains(markdown, "> **ℹ️ TLDR:**");
+  assertContains(markdown, "> Short version.");
+  assertNotContains(markdown, ":::");
+});
+
+test("converts :::important", () => {
+  const { markdown } = transformMdx(":::important\nRead this.\n:::");
+  assertContains(markdown, "> **❗ Important:**");
+  assertNotContains(markdown, ":::");
+});
+
+test("handles a four-colon fence", () => {
+  const { markdown } = transformMdx("::::note\nNested-capable body.\n::::");
+  assertContains(markdown, "> **📝 Note:**");
+  assertContains(markdown, "> Nested-capable body.");
+  assertNotContains(markdown, "::::");
+});
+
+test("a shorter inner fence does not close a longer outer one", () => {
+  const { markdown } = transformMdx("::::note\nOuter\n\n:::tip\nInner\n:::\n\nStill outer\n::::");
+  assertContains(markdown, "> **📝 Note:**");
+  assertContains(markdown, "> Still outer");
+  assertNotContains(markdown, "::::");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — MDX comments
+// ---------------------------------------------------------------------------
+
+test("strips an MDX comment spanning multiple lines", () => {
+  const { markdown } = transformMdx("{/* NOTE: auto-generated.\nDo not edit. */}\n\nReal content.");
+  assertContains(markdown, "Real content.");
+  assertNotContains(markdown, "{/*");
+  assertNotContains(markdown, "auto-generated");
+});
+
+test("strips an MDX comment with a space before the closing brace", () => {
+  const { markdown } = transformMdx("Before {/* #patching */ } after");
+  assertNotContains(markdown, "{/*");
+  assertContains(markdown, "Before");
+});
+
+test("leaves a {/* inside a code fence alone", () => {
+  const { markdown } = transformMdx("```jsx\n{/* keep me */}\n```");
+  assertContains(markdown, "{/* keep me */}");
+});
+
 test("admonition does not bleed into surrounding content", () => {
   const input = `Before\n\n:::note\nNote content\n:::\n\nAfter`;
   const { markdown } = transformMdx(input);
@@ -591,12 +646,27 @@ Watch [What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOK
   assertNotContains(markdown, "<div");
 });
 
-test("PhotoCarousel emits one image per entry with captions", () => {
-  const input = `<PhotoCarousel\n  images={[\n    'https://x/a.jpeg',\n    'https://x/b.jpeg',\n  ]}\n  captions={[\n    'First',\n    'Second',\n  ]}\n/>`;
+test("Video component becomes a Watch markdown link", () => {
+  const input = `<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "![First](https://x/a.jpeg)");
-  assertContains(markdown, "![Second](https://x/b.jpeg)");
-  assertNotContains(markdown, "PhotoCarousel");
+  assertContains(markdown, "[Watch: What is the Temporal Platform?](https://www.youtube.com/watch?v=EwweiH2rd7M)");
+  assertNotContains(markdown, "<Video");
+  assertNotContains(markdown, "videoId=");
+});
+
+test("Video (multi-line props) becomes a Watch markdown link", () => {
+  const input = `<Video\n  videoId="zLjhNrOKphE"\n  title="What Is a Workflow in Temporal?"\n/>`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "[Watch: What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE)");
+  assertNotContains(markdown, "<Video");
+});
+
+test("Video inside a :::tip admonition becomes a Watch link in the blockquote", () => {
+  const input = `:::tip\n\nWatch a short overview:\n\n<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />\n\n:::`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "> [Watch: What is the Temporal Platform?](https://www.youtube.com/watch?v=EwweiH2rd7M)");
+  assertNotContains(markdown, "<Video");
+  assertNotContains(markdown, "videoId=");
 });
 
 // ---------------------------------------------------------------------------
@@ -873,6 +943,18 @@ test("selectIntegrations filters to the given SDK(s)", () => {
   assert(!out.some((i) => i.name === "Datadog"), "agnostic entry should be excluded");
 });
 
+test("selectIntegrations filters to the given tag(s)", () => {
+  const out = selectIntegrations(SAMPLE_INTEGRATIONS, [], ["Agent framework"]);
+  assert(out.length === 2, "expected 2 Agent framework integrations");
+  assert(out[0].name === "LangGraph" && out[1].name === "Spring AI", "expected LangGraph then Spring AI (alphabetical)");
+});
+
+test("selectIntegrations combines defaultSdks and defaultTags (AND across groups)", () => {
+  const out = selectIntegrations(SAMPLE_INTEGRATIONS, ["Java"], ["Agent framework"]);
+  assert(out.length === 1, "expected only the Java + Agent framework integration");
+  assert(out[0].name === "Spring AI", "expected Spring AI");
+});
+
 test("integrationsToMarkdownList renders link + description + meta", () => {
   const md = integrationsToMarkdownList([SAMPLE_INTEGRATIONS[0]]);
   assertContains(md, "- [Spring Boot](/a)");
@@ -888,11 +970,75 @@ test("transformMdx resolves <IntegrationsGrid> to a real list (with projectRoot)
   assertContains(markdown, "- [Spring AI](/develop/java/integrations/spring-ai)");
 });
 
+test("transformMdx resolves <IntegrationsGrid defaultTags> to a real, tag-filtered list", () => {
+  const input = `<IntegrationsGrid defaultTags={["Agent framework"]} />`;
+  const { markdown } = transformMdx(input, { projectRoot: PROJECT_ROOT });
+  assertNotContains(markdown, "<IntegrationsGrid");
+  assertContains(markdown, "- [Spring AI]");
+  assertNotContains(markdown, "- [Braintrust]");
+});
+
 test("transformMdx IntegrationsGrid without projectRoot degrades to a comment", () => {
   const input = `<IntegrationsGrid />`;
   const { markdown } = transformMdx(input);
   assertNotContains(markdown, "<IntegrationsGrid");
   assertContains(markdown, "IntegrationsGrid (not resolved)");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: cookbook-preview handler
+// Uses fixtures/ai-cookbook/ (not the real, gitignored, build-time-synced
+// ai-cookbook/ directory) so these tests don't depend on that sync having run.
+// ---------------------------------------------------------------------------
+console.log("\n📦 component-handlers/cookbook-preview");
+
+test("readCookbookRecipes sorts by priority (desc), then title, and excludes the index page", () => {
+  const items = readCookbookRecipes(FIXTURES_DIR);
+  assert(items.length === 3, `expected 3 recipes, got ${items.length}`);
+  assert(items[0].title === "High priority recipe", "expected the prioritized recipe first");
+  assert(items[1].title === "A recipe" && items[2].title === "B recipe", "expected no-priority recipes alphabetically after");
+  assert(!items.some((it) => it.title === "AI Cookbook"), "index page should be excluded");
+});
+
+test("readCookbookRecipes builds /ai/cookbook permalinks from the file slug", () => {
+  const items = readCookbookRecipes(FIXTURES_DIR);
+  const highPriority = items.find((it) => it.title === "High priority recipe");
+  assert(highPriority.permalink === "/ai/cookbook/high-priority", `got ${highPriority.permalink}`);
+});
+
+test("cookbookRecipesToMarkdownList renders link + description", () => {
+  const md = cookbookRecipesToMarkdownList([
+    { title: "Hello world", description: "Do a thing.", permalink: "/ai/cookbook/hello-world" },
+  ]);
+  assertContains(md, "- [Hello world](/ai/cookbook/hello-world) — Do a thing.");
+});
+
+test("cookbookPreviewToMarkdown respects limit and links to the full Cookbook", () => {
+  const md = cookbookPreviewToMarkdown(2, { projectRoot: FIXTURES_DIR });
+  assertContains(md, "- [High priority recipe]");
+  assertContains(md, "- [A recipe]");
+  assertNotContains(md, "- [B recipe]");
+  assertContains(md, "[Browse all recipes](/ai/cookbook)");
+});
+
+test("transformMdx resolves <CookbookPreview limit={2} /> to a real, sorted list", () => {
+  const input = `<CookbookPreview limit={2} />`;
+  const { markdown } = transformMdx(input, { projectRoot: FIXTURES_DIR, sourceFile: "test" });
+  assertNotContains(markdown, "<CookbookPreview");
+  assertContains(markdown, "- [High priority recipe]");
+  assertNotContains(markdown, "- [B recipe]");
+});
+
+test("transformMdx CookbookPreview without projectRoot degrades to a comment", () => {
+  const input = `<CookbookPreview limit={4} />`;
+  const { markdown } = transformMdx(input);
+  assertNotContains(markdown, "<CookbookPreview");
+  assertContains(markdown, "CookbookPreview (not resolved)");
+});
+
+test("extractNumberProp reads a bare numeric prop", () => {
+  assertEqual(extractNumberProp(`<CookbookPreview limit={4} />`, "limit"), 4);
+  assertEqual(extractNumberProp(`<CookbookPreview />`, "limit"), undefined);
 });
 
 // ---------------------------------------------------------------------------
@@ -941,9 +1087,41 @@ test("parseCardItems extracts href/title/description from an items prop", () => 
   assert(items[1].description === "Run Java.", "description parsed");
 });
 
+test("parseCardItems keeps an apostrophe inside a double-quoted description", () => {
+  const tag = `<PatternCards items={[\n  { href: "/a", title: "A", description: "Uses Temporal's Durable Execution end to end." },\n]} />`;
+  const items = parseCardItems(tag);
+  assert(items.length === 1, "expected 1 item");
+  assert(
+    items[0].description === "Uses Temporal's Durable Execution end to end.",
+    `description should not truncate at the apostrophe, got: ${items[0].description}`
+  );
+});
+
 test("cardsToMarkdown renders a link list with descriptions", () => {
   const md = cardsToMarkdown([{ href: "/a", title: "Go", description: "Run Go." }]);
   assertContains(md, "- [Go](/a): Run Go.");
+});
+
+test("parseCardItems extracts tags and sdk from a GridCardList items prop", () => {
+  const tag = `<GridCardList items={[\n  { href: "/a", title: "A", description: "Desc.", tags: ["RAG", "Demo"], sdk: "Python" },\n]} />`;
+  const items = parseCardItems(tag);
+  assert(items.length === 1, "expected 1 item");
+  assertEqual(JSON.stringify(items[0].tags), JSON.stringify(["RAG", "Demo"]), "tags array parsed");
+  assert(items[0].sdk === "Python", "sdk parsed");
+});
+
+test("parseCardItems defaults tags/sdk when absent (PatternCards items)", () => {
+  const tag = `<PatternCards items={[\n  { href: "/a", title: "A", description: "Desc." },\n]} />`;
+  const items = parseCardItems(tag);
+  assertEqual(JSON.stringify(items[0].tags), JSON.stringify([]), "tags defaults to empty array");
+  assert(items[0].sdk === "", "sdk defaults to empty string");
+});
+
+test("cardsToMarkdown appends a _(SDK · tags)_ suffix when present", () => {
+  const md = cardsToMarkdown([
+    { href: "/a", title: "Aktilot", description: "Chat with docs.", tags: ["RAG"], sdk: "Python" },
+  ]);
+  assertContains(md, "- [Aktilot](/a): Chat with docs. _(Python · RAG)_");
 });
 
 test("transformMdx renders QuickstartCards items as a list", () => {
@@ -958,6 +1136,13 @@ test("transformMdx renders PatternCards items as a list", () => {
   const { markdown } = transformMdx(input);
   assertNotContains(markdown, "PatternCards");
   assertContains(markdown, "- [Company Security](https://x): Learn more.");
+});
+
+test("transformMdx renders GridCardList items with a SDK/tags suffix", () => {
+  const input = `<GridCardList\n  className="code-exchange-featured"\n  items={[\n  { href: "https://x", title: "Demo Project", description: "Does things.", tags: ["RAG"], sdk: "Python" },\n]} />`;
+  const { markdown } = transformMdx(input);
+  assertNotContains(markdown, "GridCardList");
+  assertContains(markdown, "- [Demo Project](https://x): Does things. _(Python · RAG)_");
 });
 
 // ---------------------------------------------------------------------------
@@ -1100,7 +1285,7 @@ console.log("\n🗂️  COMPONENT_REGISTRY checks");
 test("all known Temporal components are registered", () => {
   const requiredComponents = [
     "Tabs", "TabItem", "ZoomPanPinch", "RelatedReadList",
-    "CaptionedImage", "DocCardList", "CardList",
+    "CaptionedImage", "DocCardList", "CardList", "Video",
   ];
   for (const comp of requiredComponents) {
     assert(
@@ -1114,9 +1299,9 @@ test("all registry strategies are valid strings", () => {
   const validStrategies = [
     "tabs", "tabitem", "transparent", "related-read",
     "related-read-container", "related-read-item",
-    "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
+    "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "cookbook-preview", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {

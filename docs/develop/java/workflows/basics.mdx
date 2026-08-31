@@ -4,8 +4,6 @@ title: Workflow basics - Java SDK
 sidebar_label: Workflow basics
 description: This section explains how to implement Workflows with the Java SDK
 toc_max_heading_level: 4
-keywords:
-  - Java SDK
 tags:
   - Java SDK
   - Temporal SDKs
@@ -253,7 +251,7 @@ When defining Workflows using the Temporal Java SDK, the Workflow code must be w
 The following constraints apply when writing Workflow Definitions:
 
 - Do not use mutable global variables in your Workflow implementations. This will ensure that multiple Workflow instances are fully isolated.
-- Workflow code must be deterministic. If you need to call non-deterministic functions (such as non-seeded random or `UUID.randomUUID()`) directly from the Workflow code, the Temporal SDK provides specific API for calling non-deterministic code in your Workflows.
+- Workflow code must be deterministic. If you need to call non-deterministic functions (such as non-seeded random or `UUID.randomUUID()`) directly from the Workflow code, the Temporal SDK provides replay-safe replacements. See [Random numbers and UUIDs](#random-numbers-and-uuids).
   - For operations like calling external APIs, invoking LLMs, querying databases, or performing I/O, use Activities. Activities run outside Workflow replay and are retried reliably.
 - Use Temporal-provided functions instead of that rely on system time. For example, use only `Workflow.currentTimeMillis()` to get the current time inside a Workflow.
 - Use `Async.function` or `Async.procedure`, provided by the Temporal SDK, to execute code asynchronously instead of native Java `Thread` or any other multi-threaded classes like `ThreadPoolExecutor`.
@@ -264,5 +262,72 @@ The following constraints apply when writing Workflow Definitions:
 - Use `Workflow.getVersion` when making any changes to the Workflow code to avoid deployment of updated Workflow code interfering with already-running Workflows.
 - Do not access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path. Instead, pass it as an argument to a Workflow function or use an Activity to load it.
 - Use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker. A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source. All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
+
+The SDK provides replay-safe alternatives for common needs.
+
+### Logging
+
+Use [`Workflow.getLogger()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html)
+instead of `System.out.println` or a logger you create yourself. The SDK logger skips log messages during replay to
+avoid duplicates:
+
+```java
+public class MyWorkflowImpl implements MyWorkflow {
+  private static final Logger logger = Workflow.getLogger(MyWorkflowImpl.class);
+
+  @Override
+  public String execute(String name) {
+    logger.info("Starting workflow for {}", name);
+    // ...
+  }
+}
+```
+
+For logger configuration, see [Observability: Log from a Workflow](/develop/java/platform/observability#logging).
+
+### Random numbers and UUIDs
+
+Use [`Workflow.newRandom()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html)
+to get a `Random` instance seeded per Workflow Execution, and
+[`Workflow.randomUUID()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html)
+instead of `UUID.randomUUID()`:
+
+```java
+int value = Workflow.newRandom().nextInt(100);
+UUID uniqueId = Workflow.randomUUID();
+```
+
+### Current time
+
+Use [`Workflow.currentTimeMillis()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html)
+instead of `System.currentTimeMillis()` or `Instant.now()`. It returns the time of the last Workflow Task, which is
+consistent across replays:
+
+```java
+long currentTime = Workflow.currentTimeMillis();
+```
+
+To wait, use [`Workflow.sleep()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html)
+instead of `Thread.sleep()`.
+
+### Detecting replay (advanced)
+
+Use [`WorkflowUnsafe.isReplaying()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/unsafe/WorkflowUnsafe.html)
+to guard code that should only run on the first execution, such as emitting metrics or sending external notifications
+from an Interceptor. `Workflow.isReplaying()` is deprecated in favor of this method.
+
+:::caution
+
+Never use this to affect Workflow business logic. Branching on replay status breaks determinism.
+
+:::
+
+```java
+import io.temporal.workflow.unsafe.WorkflowUnsafe;
+
+if (!WorkflowUnsafe.isReplaying()) {
+  emitMetric("workflow_started", 1);
+}
+```
 
 Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)

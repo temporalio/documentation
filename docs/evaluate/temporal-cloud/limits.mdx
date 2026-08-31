@@ -5,23 +5,13 @@ sidebar_label: Limits
 slug: /cloud/limits
 description: Learn about Temporal Cloud limits, including accounts, namespaces, throughput, retention, task pollers, batch jobs, gRPC, search attributes, and more.
 toc_max_heading_level: 3
-keywords:
-  - capacity
-  - configuration
-  - defaults
-  - limits
-  - quotas
-  - rate limits
-  - scaling
-  - settings
-  - temporal cloud
-  - throttling
 tags:
   - Temporal Cloud
   - Limits
 ---
 
 import { CaptionedImage } from '@site/src/components';
+import { ReleaseNoteHeader } from '@site/src/components';
 
 Temporal Cloud enforces a variety of limits to keep the service reliable, including rate limits (how often something may occur in a unit of time), resource limits (how many of a given resource may exist at any one time), and configuration limits (minimum or maximum values for a setting)
 
@@ -39,16 +29,48 @@ The following limits apply at the Temporal Cloud Account level (per account).
 ### Users
 
 - Scope: Account
-- Default limit: 300 users
+- Default limit: 300 Users
 - How to increase: [Contact support](/cloud/support#support-ticket) 
+
+### Projects
+
+- Scope: Account
+- Default limit: 5 Projects
+- How to increase: [Contact support](/cloud/support#support-ticket)
 
 ### Namespaces
 
 - Scope: Account
-- Default limit: 10 namespaces
+- Default limit: 10 Namespaces
 - How to increase:
-  - Automatically increased as you start creating namespaces
+  - Automatically increased as you start creating Namespaces
   - [Contact support](/cloud/support#support-ticket) for large-scale needs
+
+## Project level {/* #project-level */}
+
+<ReleaseNoteHeader
+  featureName="projects"
+/>
+
+The following limits apply at the Project level for any new Project created. The Default Project uses the Account-level resource limits rather than the per-Project defaults shown above. For example, the Default Project inherits the Account's Namespace quota and Account-level limits for Service Accounts, Nexus Endpoints, and Connectivity Rules.
+
+### Namespaces and Project-scoped Service accounts
+
+- Scope: Project
+- Default: 10
+- How to increase: [Contact support](/cloud/support#support-ticket)
+
+### Nexus Endpoints
+
+- Scope: Project
+- Default: 5
+- How to increase: [Contact support](/cloud/support#support-ticket)
+
+### Connectivity rules
+
+- Scope: Project. Each non-default Project supports up to one Public Connectivity Rule.
+- Default: 6
+- How to increase: [Contact support](/cloud/support#support-ticket)
 
 ## Namespace level
 
@@ -102,10 +124,35 @@ When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests.
 - Default limit: 10 schedule requests per second (RPS)
 - How to increase: [Contact support](/cloud/support#support-ticket)
 
-To avoid throttling, don't schedule all your Workflow Executions to start at the same time (daily, weekly, monthly, etc.).
+To avoid throttling, don't schedule all your Workflow Executions to start at the same time (such as daily, weekly, or monthly).
 Every Temporal SDK supports jittering, which adds small random delays to Schedule specifications, helping to reduce load at any specific moment.
 Set the `jitter` value to the largest delay you will permit before your Workflow Execution must begin.
 This approach uniformly distributes the scheduled Workflow Execution launches through that period and reduces your Schedule Workflow Execution RPS load.
+
+### Per-primitive Id reuse rate limits {/* #per-primitive-id-reuse-rate-limits */}
+
+- Scope: Namespace, primitive type, and Id
+- Primitives covered: Workflows, Standalone Activities, Schedules, and Nexus Operations
+- Default limit: 1 new Execution per second with a burst allowance
+- Not configurable
+
+When executing [Workflows](/workflows), [Standalone Activities](/standalone-activity), and [Nexus Operations](/standalone-nexus-operation), and when creating [Schedules](/schedule), the system enforces a per-primitive limit on successive Executions with the same Id.
+
+Every operation that creates an Execution counts toward the limit:
+
+- `StartWorkflowExecution`
+- `SignalWithStartWorkflowExecution`
+- `ExecuteMultiOperation` (Update)
+- `ResetWorkflowExecution`
+- [Continue-As-New](/workflow-execution/continue-as-new), whether requested by the Workflow or triggered by a [Retry Policy](/encyclopedia/retry-policies) or [Cron Job](/cron-job)
+- `CreateSchedule`
+- `StartActivityExecution`
+- `StartNexusOperationExecution`
+
+This limit applies only to requests that will create new Executions, and so this limit applies after the deduplication check.
+A duplicate start that returns `WorkflowExecutionAlreadyStarted` has no effect on the limit.
+
+Exceeding this limit returns a `ResourceExhausted` error.
 
 ### Visibility API Rate Limit
 
@@ -207,8 +254,8 @@ The UI can display up to 100 Custom Roles.
 A single principal (such as a user) can be assigned up to 10 Custom Roles.
 
 A Custom Role can contain up 20 permissions. Each permission is a pair of
-- A list of resource IDs of a single type (e.g., specific Namespace IDs)
-- A list of actions that apply to those resources (e.g., cloud.namespace.get, cloud.namespace.update)
+- A list of resource IDs of a single type (for example, specific Namespace IDs)
+- A list of actions that apply to those resources (for example, cloud.namespace.get, cloud.namespace.update)
 For example, 
 - 1 permission: Namespaces [ns-prod, ns-staging] with actions [cloud.namespace.get, cloud.namespace.update] 
 - 2 permissions: Namespace [ns-prod] with action [cloud.namespace.get]; Namespace [ns-staging] with action [cloud.namespace.update] defined separately.

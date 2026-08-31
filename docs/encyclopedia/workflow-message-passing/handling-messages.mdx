@@ -10,24 +10,6 @@ tags:
 - Queries
 - Updates
 - Messages
-keywords:
-- temporal workflow signals
-- temporal workflow queries
-- temporal workflow updates
-- temporal workflow execution
-- message passing temporal
-- signal-with-start temporal
-- temporal query handler
-- temporal signal handler
-- temporal update handler
-- temporal update validator
-- temporal message passing
-- workflow state temporal
-- synchronous operation temporal
-- asynchronous request temporal
-- temporal service events
-- temporal client methods
-- temporal sdk message passing
 ---
 
 import { RelatedReadContainer, RelatedReadItem, CaptionedImage } from '@site/src/components';
@@ -74,7 +56,7 @@ In Go and TypeScript, register any message handlers only after completing initia
 
 ### Message handler patterns {/* #message-handler-patterns */}
 
-Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](/handling-messages#update-validators):
+Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, that is Queries or [Update Validators](/handling-messages#update-validators):
 
 - Returning immediately from a handler
 - Waiting for the Workflow to be ready to process them

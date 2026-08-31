@@ -257,7 +257,7 @@ class RedemptionResult:
     reward: str
 ```
 
-`LoyaltyState` holds only what's needed to reconstruct the entity after a Continue-As-New transition. `processed_event_ids` enables idempotent Signal processing — in production, limit this to a recent window (e.g. last 1,000 IDs) and rely on an external store for long-term deduplication. `pending_events` carries any Signals that arrived but weren't processed before the transition.
+`LoyaltyState` holds only what's needed to reconstruct the entity after a Continue-As-New transition. `processed_event_ids` enables idempotent Signal processing — in production, limit this to a recent window (for example, last 1,000 IDs) and rely on an external store for long-term deduplication. `pending_events` carries any Signals that arrived but weren't processed before the transition.
 
 ### Phase 2: Implement the Activities
 

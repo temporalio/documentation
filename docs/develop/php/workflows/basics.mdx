@@ -4,8 +4,6 @@ title: Workflow Basics - PHP SDK
 sidebar_label: Workflow Basics
 description: This section explains Workflow Basics with the PHP SDK
 toc_max_heading_level: 4
-keywords:
-  - PHP SDK
 tags:
   - PHP SDK
   - Temporal SDKs
@@ -148,7 +146,7 @@ Always do the following in the Workflow implementation code:
 - Don't perform any IO or service calls as they are not usually deterministic. Use Activities for this.
 - Only use `Workflow::now()` to get the current time inside a Workflow.
 - Call `yield Workflow::timer()` instead of `sleep()`.
-- Do not use any blocking SPL provided by PHP (i.e. `fopen`, `PDO`, etc) in **Workflow code**.
+- Do not use any blocking SPL provided by PHP (that is, `fopen`, `PDO`, etc) in **Workflow code**.
 - Use `yield Workflow::getVersion()` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
   might break already open Workflows.
 - Don't access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.

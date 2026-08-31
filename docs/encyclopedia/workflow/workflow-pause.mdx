@@ -4,12 +4,6 @@ title: Workflow Pause
 sidebar_label: Workflow Pause
 description: Pause and Unpause a Workflow Execution to stop new progress without terminating the Workflow or losing state.
 toc_max_heading_level: 4
-keywords:
-  - Workflow
-  - Workflow Pause
-  - pause
-  - unpause
-  - operations
 tags:
   - Concepts
   - Workflows
@@ -194,7 +188,9 @@ Workflow Pause and [Activity Operations](/activity-operations) are separate cont
 Workflow Pause stops progress for a Workflow Execution. Activity Operations act on a specific Activity Execution.
 
 If a Workflow is Paused, Activity retries in that Workflow are blocked. If an individual Activity is also Paused, both
-the Workflow and the Activity must be Unpaused before that Activity can proceed.
+the Workflow and the Activity must be Unpaused before that Activity can proceed. If a Workflow is Unpaused, all pending
+Activities will have available retries dispatched, if the Activity is Paused it has to be Unpaused before any new
+attempts are dispatched.
 
 Workflow Pause doesn't interrupt Activity attempts that are already running. To interrupt a Heartbeating Activity
 attempt, use [Activity Pause](/activity-operations#pause).

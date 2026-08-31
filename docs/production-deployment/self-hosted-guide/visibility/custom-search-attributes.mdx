@@ -1,0 +1,152 @@
+---
+id: custom-search-attributes
+title: Manage custom Search Attributes
+sidebar_label: Custom Search Attributes
+slug: /self-hosted-guide/visibility/custom-search-attributes
+description: Create or rename custom Search Attributes with tcld on Temporal Cloud; contact Support to delete them. Use Temporal CLI to create or remove them when self-hosting.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Visibility
+---
+
+To manage custom Search Attributes on Temporal Cloud, use the [`tcld`](/cloud/tcld/namespace#search-attributes) CLI tool.
+With Temporal Cloud, you can create and rename custom Search Attributes. If you need to delete a custom Search Attribute, contact Support at [support.temporal.io](https://support.temporal.io).
+To manage custom Search Attributes on a self-hosted Temporal Service, use the [Temporal CLI](/cli/command-reference/operator#search-attribute).
+With a self-hosted Temporal Service, you can create and remove custom Search Attributes.
+
+If you're self-hosting, verify whether your [Visibility database](/self-hosted-guide/visibility#supported-databases) version supports custom Search Attributes before proceeding.
+
+:::caution Do not use sensitive data or PII in Search Attributes
+
+Do not include sensitive data, secrets, or personally identifiable information (PII) in Search Attribute **names or values**.
+Search Attribute values are stored unencrypted in the Visibility store and are not processed by a custom [Payload Codec](/payload-codec#payload-codec).
+The Temporal Server must be able to read these values in plain text to support filtering and ordering, so encryption is not possible without breaking search functionality.
+
+Attribute names are also visible in Namespace configuration, query expressions, and Temporal UI.
+Using sensitive data in either names or values risks exposure to anyone with Namespace access and may violate data protection regulations such as GDPR, HIPAA, or SOC 2.
+
+:::
+
+## How to create custom Search Attributes {/* #create-custom-search-attributes */}
+
+Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and
+[List Filters](/list-filter).
+
+**On Temporal Cloud**
+
+To create custom Search Attributes on Temporal Cloud, use
+[`tcld namespace search-attributes add`](/cloud/tcld/namespace/#search-attributes). For example, to add a custom Search
+Attributes "CustomSA" to your Temporal Cloud Namespace "YourNamespace", run the following command.
+`tcld namespace search-attributes add --namespace YourNamespace --search-attribute "CustomSA"`
+
+**On self-hosted Temporal Service**
+
+To create custom Search Attributes in your self-hosted Temporal Service Visibility store, use
+`temporal operator search-attribute create` with `--name` and `--type` command options.
+
+For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run the following command:
+
+```
+temporal operator search-attribute create --name="CustomSA" --type="Keyword"
+```
+
+Note that if you use a SQL database with advanced Visibility capabilities, you are required to specify a Namespace when
+creating a custom Search Attribute. For example:
+
+```
+temporal operator search-attribute create --name="CustomSA" --type="Keyword" --namespace="yournamespace"
+```
+
+You can also create multiple custom Search Attributes when you set up your Visibility store.
+
+The following example shows how custom Search Attributes can be created during Visibility store setup for SQL databases.
+For setup examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server)
+
+```bash
+add_custom_search_attributes() {
+    until temporal operator search-attribute list --namespace "${DEFAULT_NAMESPACE}"; do
+      echo "Waiting for namespace cache to refresh..."
+      sleep 1
+    done
+    echo "Namespace cache refreshed."
+
+    echo "Adding Custom*Field search attributes."
+
+    temporal operator search-attribute create --namespace "${DEFAULT_NAMESPACE}" --yes \
+        --name="CustomKeywordField" --type="Keyword" \
+        --name="CustomStringField" --type="Text" \
+        --name="CustomTextField" --type="Text" \
+        --name="CustomIntField" --type="Int" \
+        --name="CustomDatetimeField" --type="Datetime" \
+        --name="CustomDoubleField" --type="Double" \
+        --name="CustomBoolField" --type="Bool"
+}
+```
+
+For Temporal Server v1.19 and earlier, or if using Elasticsearch for advanced Visibility, you can create custom Search
+Attributes without a Namespace association, as shown in the following example.
+
+{/* CHECK FOR ACCURACY */}
+
+```bash
+add_custom_search_attributes() {
+       echo "Adding Custom*Field search attributes."
+       temporal operator search-attribute create \
+        --name="CustomKeywordField" --type="Keyword" \
+        --name="CustomStringField" --type="Text" \
+        --name="CustomTextField" --type="Text" \
+        --name="CustomIntField" --type="Int" \
+        --name="CustomDatetimeField" --type="Datetime" \
+        --name="CustomDoubleField" --type="Double" \
+        --name="CustomBoolField" --type="Bool"
+}
+```
+
+When your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow
+code.
+
+## How to remove custom Search Attributes {/* #remove-custom-search-attributes */}
+
+To remove a Search Attribute key from your self-hosted Temporal Service Visibility store, use the command
+`temporal operator search-attribute remove`. Removing Search Attributes is not supported on Temporal Cloud.
+
+For example, if using Elasticsearch for advanced Visibility, to remove a custom Search Attribute called `CustomSA` of
+type Keyword use the following command:
+
+```
+temporal operator search-attribute remove \
+    --name="your_custom_attribute"
+```
+
+If you use a SQL database for advanced Visibility on Temporal Server v1.20 and later, you need to specify the Namespace
+in your command, as shown in the following command:
+
+```
+temporal operator search-attribute remove \
+    --name="your_custom_attribute" \
+    --namespace="your_namespace"
+```
+
+To check whether the Search Attribute was removed, run
+
+```
+temporal operator search-attribute list
+```
+
+and check the list.
+
+If you're on Temporal Server v1.20 and later, specify the Namespace from which you removed the Search Attribute. For
+example,
+
+```
+temporal search-attribute list --namespace="yournamespace"
+```
+
+Note that if you use [SQL databases](/self-hosted-guide/visibility) with Temporal Server v1.20 and later, a new custom
+Search Attribute is mapped to a database field name in the Visibility store `custom_search_attributes` table. Removing
+this custom Search Attribute removes the mapping with the database field name but does not remove the data. If you
+remove a custom Search Attribute and add a new one, the new custom Search Attribute might be mapped to the database
+field of the one that was recently removed. This might cause unexpected results when you use the List API to retrieve
+results using the new custom Search Attribute. These constraints do not apply if you use Elasticsearch.

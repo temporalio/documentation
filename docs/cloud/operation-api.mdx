@@ -5,18 +5,10 @@ sidebar_label: Cloud Ops API
 description: The Temporal Cloud Operations API (Cloud Ops) allows programmatic management of Temporal Cloud Control Plane resources.
 slug: /ops
 toc_max_heading_level: 4
-keywords:
-  - explanation
 tags:
   - API
   - Temporal Cloud
 ---
-
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  type="publicPreview"
-/>
 
 The Temporal Cloud Operations API, or the Cloud Ops API, is an open source, public [HTTP API](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction) and [gRPC API](https://github.com/temporalio/cloud-api/tree/main) for programmatically managing Temporal Cloud Control Plane resources, including [Namespaces](/cloud/namespaces), [Users](/cloud/manage-access/users), [Service Accounts](/cloud/manage-access/service-accounts), [API keys](/cloud/api-keys), and others. The Temporal Cloud [Terraform Provider](/cloud/terraform-provider), [tcld CLI](/cloud/tcld), and Web UI all use the Cloud Ops API.
 
@@ -143,6 +135,14 @@ For HTTP clients, the version header is optional. If omitted, the HTTP gateway d
 
 For production HTTP automation, still pin an explicit version so behavior does not change when the gateway’s latest version advances.
 
+### API versioning and deprecation
+
+We recommend using the latest Cloud Ops API version for new integrations, and keeping your client version up to date to within one year of the latest release instead of pinning to an older version indefinitely.
+
+Temporal supports each Cloud Ops API version for at least one year after its release. Before a version becomes unsupported, Temporal provides at least six months’ notice and migration guidance if you need to update your integration.
+
+Exceptions to these timelines may be necessary for critical security, legal, or service-integrity reasons. Temporal provides notice whenever practicable.
+
 ### Connection URL
 
 - gRPC: `saas-api.tmprl.cloud:443`
@@ -153,6 +153,14 @@ For production HTTP automation, still pin an explicit version so behavior does n
 1. Generate an [API Key for authentication](/cloud/api-keys#manage-api-keys). Required permissions vary by operation; see [roles and permissions](/cloud/manage-access/roles-and-permissions).
 2. Establish a secure connection. For Go, see [Cloud Ops API client setup](https://github.com/temporalio/cloud-samples-go/blob/main/client/api/client.go).
 3. Execute operations. For request and response messages, see `cloudservice/v1/request_response.proto`. For services, see `cloudservice/v1/service.proto`.
+
+## Availability
+
+Temporal targets 99.99% monthly availability for the Cloud Ops API across its HTTP and gRPC interfaces.
+
+Availability measures whether valid Cloud Ops API requests are successfully served. Server-side failures count against this objective; client-caused errors, including invalid requests and authentication or authorization failures, do not. Responses due to documented rate limits (`ResourceExhausted` for gRPC and HTTP 429) are also excluded because they represent intentional throttling rather than service unavailability.
+
+This availability objective applies only to the Cloud Ops API. It is not a contractual service-level agreement and does not change the Temporal Cloud [SLA](/cloud/sla). Temporal Service operations, including Workflow and Activity execution, are covered separately by the Temporal Cloud SLA.
 
 ## Rate limits
 
@@ -176,7 +184,7 @@ This limit applies to all requests made by each service account through any clie
 
 **Asynchronous operations: 10 concurrent operations at a time**
 
-By default, each account can have up to 10 long-running (asynchronous) mutating operations in flight at once. This limit applies to a subset of create, update, and delete operations (for example Namespace, User, API Key, Export Sink, and Service Account mutations), not every RPC that returns an async operation.
+By default, each account can have up to 10 long-running (asynchronous) mutating operations in flight at once. This limit applies to a subset of create, update, and delete operations (for example, Namespace, User, API Key, Export Sink, and Service Account mutations), not every RPC that returns an async operation.
 
 ### Important considerations
 

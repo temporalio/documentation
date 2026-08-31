@@ -4,8 +4,6 @@ title: Temporal Events reference
 sidebar_label: Events
 description: Events in a Temporal Service respond to external occurrences and Workflow Commands. Workflow Execution Event History includes WorkflowExecutionStarted, WorkflowExecutionCompleted, WorkflowExecutionFailed, and many more.
 toc_max_heading_level: 4
-keywords:
-  - reference
 tags:
   - Reference
 ---
@@ -299,7 +297,7 @@ This [Event](/workflow-execution/event#event) type indicates that the Activity h
 | scheduled_event_id | The Id of the [ActivityTaskScheduled](#activitytaskscheduled) Event that this timeout Event corresponds to. |
 | started_event_id   | The Id of the [ActivityTaskStarted](#activitytaskstarted) Event that this timeout corresponds to.           |
 | retry_state        | The reason provided for whether the Task should or shouldn't be retried.                                    |
-| timeout_type       | The type of timeout that led to this Event, e.g., Start-to-Close, Schedule-to-Close, Schedule-to-Start.     |
+| timeout_type       | The type of timeout that led to this Event, for example, Start-to-Close, Schedule-to-Close, Schedule-to-Start.     |
 
 You can run a Workflow containing an Activity Execution that takes longer than the Start-to-Close Timeout you set and use a RetryPolicy that sets MaxAttempts to 1 so it does not retry indefinitely.
 When the Activity times out, you will observe that the `ActivityTaskTimedOut` Event contains other attributes missing from the documentation, including the type of timeout that led to the Event.

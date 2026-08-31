@@ -1,0 +1,110 @@
+---
+id: mysql
+title: Set up MySQL Visibility store
+sidebar_label: MySQL
+slug: /self-hosted-guide/visibility/mysql
+description: How to set up a MySQL Visibility store for a self-hosted Temporal Service.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Visibility
+---
+
+:::tip Support, stability, and dependency info
+
+- MySQL v5.7 and later.
+- Advanced Visibility is available on MySQL v8.0.17 and later with Temporal Server v1.20 and later.
+- MySQL v5.7 support applied to older standard Visibility deployments before Temporal Server v1.24.
+
+:::
+
+You can set MySQL as your [Visibility store](/temporal-service/visibility). Verify
+[supported versions](/self-hosted-guide/visibility) before you proceed.
+
+If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any
+[custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a
+Namespace in that Temporal Service.
+
+## Persistence configuration
+
+Set your MySQL Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
+define the Visibility store configuration under `datastores`.
+
+The following example shows how to set a Visibility store `mysql-visibility` and define the datastore configuration in
+your Temporal Service configuration YAML.
+
+```yaml
+#...
+persistence:
+  #...
+  visibilityStore: mysql-visibility
+  #...
+  datastores:
+    default:
+      #...
+    mysql-visibility:
+      sql:
+        pluginName: 'mysql8' # For MySQL v8.0.17 and later. For earlier versions, use "mysql" plugin.
+        databaseName: 'temporal_visibility'
+        connectAddr: ' ' # Remote address of this database; for example, 127.0.0.0:3306
+        connectProtocol: ' ' # Protocol example: tcp
+        user: 'username_for_auth'
+        password: 'password_for_auth'
+        maxConns: 2
+        maxIdleConns: 2
+        maxConnLifetime: '1h'
+#...
+```
+
+For details on the configuration parameters and values, see
+[Temporal Service configuration](/references/configuration#sql).
+
+To enable advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal
+Server v1.20 or later. See [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server) on how to upgrade your
+Temporal Server and database schemas.
+
+For example configuration templates, see
+[MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/main/config/development-mysql8.yaml).
+
+## Database schema and setup
+
+Visibility data is stored in a database table called `executions_visibility` and must be created using the schema for
+[MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/main/schema/mysql/v8/visibility).
+
+The following example shows how to set up your MySQL as both your persistence and Visibility store using
+`temporal-sql-tool`. Refer to the
+[samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts) for more examples
+with different databases.
+
+{/* SNIPSTART compose-mysql-setup */}
+[compose/scripts/setup-mysql.sh](https://github.com/temporalio/samples-server/blob/main/compose/scripts/setup-mysql.sh)
+```sh
+set -eu
+
+# Validate required environment variables
+: "${MYSQL_SEEDS:?ERROR: MYSQL_SEEDS environment variable is required}"
+: "${MYSQL_USER:?ERROR: MYSQL_USER environment variable is required}"
+
+echo 'Starting MySQL schema setup...'
+echo 'Waiting for MySQL port to be available...'
+nc -z -w 10 ${MYSQL_SEEDS} ${DB_PORT:-3306}
+echo 'MySQL port is available'
+
+# Create and setup temporal database
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
+
+# Create and setup visibility database
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility create
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep ${MYSQL_SEEDS} -u ${MYSQL_USER} -p ${DB_PORT:-3306} --db temporal_visibility update-schema -d /etc/temporal/schema/mysql/v8/visibility/versioned
+
+echo 'MySQL schema setup complete'
+```
+{/* SNIPEND */}
+
+Note that the script uses
+[temporal-sql-tool](https://github.com/temporalio/temporal/blob/main/tools/sql/main.go)
+to run the setup.

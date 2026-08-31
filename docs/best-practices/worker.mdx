@@ -3,11 +3,6 @@ title: Worker deployment and performance
 sidebar_label: Worker deployment and performance
 description: Best practices for deploying and optimizing Temporal Workers for performance and reliability.
 toc_max_heading_level: 4
-keywords:
-  - temporal worker
-  - worker deployment
-  - performance optimization
-  - best practices
 tags:
   - Best Practices
   - Workers
@@ -174,7 +169,7 @@ safer rollouts, clearer rollback behavior, and a cleaner operational model than 
 Workflow definition.
 
 To learn more about versioning Workflows, see the
-[Workflow Versioning](/production-deployment/worker-deployments/worker-versioning.mdx) guide or take our
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) guide or take our
 [Worker Versioning course](https://learn.temporal.io/courses/worker_versioning/).
 
 :::tip
@@ -233,11 +228,11 @@ To get started, focus on these key Worker options:
   how Task slots are assigned to different Task types. Refer to
   [Slot Suppliers](/develop/worker-performance#slot-suppliers) for more details.
 - **Sticky cache size**: Controls the size of the sticky cache for Workflow Executions. Larger caches reduce replay
-  overhead but consume more memory. Refer to [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning)
+  overhead but consume more memory. Refer to [Workflow Cache Tuning](/develop/worker-performance/workflow-cache)
   for more details.
 - **Poller counts**: Controls the number of pollers for Tasks. We recommend you use the Poller Autoscaling feature to
   automatically adjust the number of pollers based on your workload. Refer to
-  [Configuring Poller Options](/develop/worker-performance#configuring-poller-options) for more details.
+  [Configuring Poller Options](/develop/worker-performance/configuration#configuring-poller-options) for more details.
 
 Use the metrics listed in [Interpret metrics as a whole](#interpret-metrics-as-a-whole) to guide your tuning decisions.
 

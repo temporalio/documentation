@@ -42,11 +42,19 @@ const developDotnetCategory = {
         items: [
           'develop/dotnet/activities/basics',
           'develop/dotnet/activities/execution',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/dotnet/activities/standalone-activities-quickstart',
+              'develop/dotnet/activities/standalone-activities',
+            ],
+          },
           'develop/dotnet/activities/timeouts',
           'develop/dotnet/activities/asynchronous-activity',
           'develop/dotnet/activities/dynamic-activity',
           'develop/dotnet/activities/benign-exceptions',
-          'develop/dotnet/activities/standalone-activities',
         ],
       },
       {
@@ -70,6 +78,7 @@ const developDotnetCategory = {
             },
             items: [
               'develop/dotnet/workers/serverless-workers/aws-lambda',
+              'develop/dotnet/workers/serverless-workers/cloud-run',
             ],
           },
         ]
@@ -187,7 +196,15 @@ const developGoCategory = {
         items: [
           'develop/go/activities/basics',
           'develop/go/activities/execution',
-          'develop/go/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/go/activities/standalone-activities-quickstart',
+              'develop/go/activities/standalone-activities',
+            ],
+          },
           'develop/go/activities/timeouts',
           'develop/go/activities/asynchronous-activity',
           'develop/go/activities/dynamic-activity',
@@ -293,7 +310,10 @@ const developGoCategory = {
           type: 'doc',
           id: 'develop/go/integrations/index',
         },
-        items: ['develop/go/integrations/google-adk'],
+        items: [
+          'develop/go/integrations/google-adk',
+          'develop/go/integrations/opentelemetry-v2',
+        ],
       },
     ],
 };
@@ -340,7 +360,15 @@ const developJavaCategory = {
         items: [
           'develop/java/activities/basics',
           'develop/java/activities/execution',
-          'develop/java/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/java/activities/standalone-activities-quickstart',
+              'develop/java/activities/standalone-activities',
+            ],
+          },
           'develop/java/activities/timeouts',
           'develop/java/activities/asynchronous-activity',
           'develop/java/activities/benign-exceptions',
@@ -366,6 +394,7 @@ const developJavaCategory = {
             },
             items: [
               'develop/java/workers/serverless-workers/aws-lambda',
+              'develop/java/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -413,6 +442,7 @@ const developJavaCategory = {
           id: 'develop/java/best-practices/index',
         },
         items: [
+          'develop/java/best-practices/error-handling',
           'develop/java/best-practices/testing-suite',
           'develop/java/best-practices/debugging',
           {
@@ -573,7 +603,15 @@ const developPythonCategory = {
         items: [
           'develop/python/activities/basics',
           'develop/python/activities/execution',
-          'develop/python/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/python/activities/standalone-activities-quickstart',
+              'develop/python/activities/standalone-activities',
+            ],
+          },
           'develop/python/activities/timeouts',
           'develop/python/activities/asynchronous-activity',
           'develop/python/activities/benign-exceptions',
@@ -679,11 +717,12 @@ const developPythonCategory = {
           id: 'develop/python/integrations/index',
         },
         items: [
-          'develop/python/integrations/braintrust',
+          'develop/python/integrations/deepagents',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
+          'develop/python/integrations/openai-agents',
           'develop/python/integrations/strands-agents',
         ],
       },
@@ -732,7 +771,15 @@ const developRubyCategory = {
         items: [
           'develop/ruby/activities/basics',
           'develop/ruby/activities/execution',
-          'develop/ruby/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/ruby/activities/standalone-activities-quickstart',
+              'develop/ruby/activities/standalone-activities',
+            ],
+          },
           'develop/ruby/activities/timeouts',
           'develop/ruby/activities/asynchronous-activity',
           'develop/ruby/activities/dynamic-activity',
@@ -748,7 +795,19 @@ const developRubyCategory = {
           id: 'develop/ruby/workers/index',
         },
         items: [
-          'develop/ruby/workers/run-worker-process'
+          'develop/ruby/workers/run-worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/ruby/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/ruby/workers/serverless-workers/cloud-run',
+            ],
+          },
         ],
       },
       {
@@ -869,7 +928,19 @@ const developRustCategory = {
           id: 'develop/rust/workers/index',
         },
         items: [
-          'develop/rust/workers/worker-process'
+          'develop/rust/workers/worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/rust/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/rust/workers/serverless-workers/cloud-run',
+            ],
+          },
         ],
       },
       {
@@ -941,7 +1012,15 @@ const developTypeScriptCategory = {
         items: [
           'develop/typescript/activities/basics',
           'develop/typescript/activities/execution',
-          'develop/typescript/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/typescript/activities/standalone-activities-quickstart',
+              'develop/typescript/activities/standalone-activities',
+            ],
+          },
           'develop/typescript/activities/timeouts',
           'develop/typescript/activities/asynchronous-activity',
           'develop/typescript/activities/benign-exceptions',
@@ -1163,8 +1242,23 @@ module.exports = {
       items: [
         ...SDKS.map(({ id }) => developSdkCategoriesById[id]),
         'develop/environment-configuration',
-        'develop/worker-performance',
-        'develop/worker-tuning-reference',
+        {
+          type: 'category',
+          label: 'Worker performance',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'develop/worker-performance/index',
+          },
+          items: [
+            'develop/worker-performance/metrics',
+            'develop/worker-performance/configuration',
+            'develop/worker-performance/runtime-tuning',
+            'develop/worker-performance/workflow-cache',
+            'develop/worker-performance/task-queues',
+            'develop/worker-tuning-reference',
+          ],
+        },
         'develop/safe-deployments',
         'develop/plugins-guide',
         'develop/task-queue-priority-fairness',
@@ -1210,47 +1304,6 @@ module.exports = {
             'cloud/manage-access/saml',
             'cloud/manage-access/scim',
             'cloud/manage-access/permissions-reference',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Metrics',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/metrics/index',
-          },
-          items: [
-            {
-              type: 'category',
-              label: 'OpenMetrics',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'cloud/metrics/openmetrics/index',
-              },
-              items: [
-                'cloud/metrics/openmetrics/metrics-integrations',
-                'cloud/metrics/openmetrics/migration-guide',
-                'cloud/metrics/openmetrics/api-reference',
-                'cloud/metrics/openmetrics/metrics-reference',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'PromQL',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'cloud/metrics/promql',
-              },
-              items: [
-                'cloud/metrics/general-setup',
-                'cloud/metrics/reference',
-                'cloud/metrics/prometheus-grafana'
-              ],
-            },
-            'cloud/metrics/sdk-metrics-setup',
           ],
         },
         {
@@ -1340,10 +1393,63 @@ module.exports = {
             'cloud/migrate/estimate-actions',
           ],
         },
+        'cloud/projects',
         'cloud/capacity-modes',
-        'cloud/worker-health',
-        'cloud/service-health',
-        'cloud/notifications',
+        {
+          type: 'category',
+          label: 'Monitor',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/monitor/index',
+          },
+          items: [
+            {
+              type: 'category',
+              label: 'Set up metrics',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/metrics/index',
+              },
+              items: [
+                {
+                  type: 'category',
+                  label: 'Set up Cloud metrics',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'cloud/metrics/openmetrics/index',
+                  },
+                  items: [
+                    'cloud/metrics/openmetrics/metrics-integrations',
+                    'cloud/metrics/openmetrics/migration-guide',
+                    'cloud/metrics/openmetrics/api-reference',
+                    'cloud/metrics/openmetrics/metrics-reference',
+                  ],
+                },
+                'cloud/metrics/sdk-metrics-setup',
+                {
+                  type: 'category',
+                  label: 'Legacy PromQL endpoint (deprecated)',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'cloud/metrics/promql',
+                  },
+                  items: [
+                    'cloud/metrics/general-setup',
+                    'cloud/metrics/reference',
+                    'cloud/metrics/prometheus-grafana'
+                  ],
+                },
+              ],
+            },
+            'cloud/worker-health',
+            'cloud/service-health',
+            'cloud/notifications',
+          ],
+        },
         'cloud/operation-api',
         'cloud/terraform-provider',
         {
@@ -1425,7 +1531,25 @@ module.exports = {
             'production-deployment/self-hosted-guide/namespaces',
             'production-deployment/self-hosted-guide/security',
             'production-deployment/self-hosted-guide/monitoring',
-            'production-deployment/self-hosted-guide/visibility',
+            {
+              type: 'category',
+              label: 'Visibility',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/self-hosted-guide/visibility/index',
+              },
+              items: [
+                'production-deployment/self-hosted-guide/visibility/mysql',
+                'production-deployment/self-hosted-guide/visibility/postgresql',
+                'production-deployment/self-hosted-guide/visibility/sqlite',
+                'production-deployment/self-hosted-guide/visibility/legacy-standard',
+                'production-deployment/self-hosted-guide/visibility/elasticsearch',
+                'production-deployment/self-hosted-guide/visibility/dual-visibility',
+                'production-deployment/self-hosted-guide/visibility/migrate',
+                'production-deployment/self-hosted-guide/visibility/custom-search-attributes',
+              ],
+            },
             'production-deployment/self-hosted-guide/upgrade-server',
             'production-deployment/self-hosted-guide/archival',
             'production-deployment/self-hosted-guide/multi-cluster-replication',
@@ -1442,11 +1566,25 @@ module.exports = {
             id: 'production-deployment/worker-deployments/index',
           },
           items: [
-            'production-deployment/worker-deployments/worker-versioning',
-            'production-deployment/worker-deployments/recover-pinned-workflows',
+            {
+              type: 'category',
+              label: 'Worker Versioning',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/worker-deployments/worker-versioning/index',
+              },
+              items: [
+                'production-deployment/worker-deployments/worker-versioning/configure-worker',
+                'production-deployment/worker-deployments/worker-versioning/roll-out-and-pin',
+                'production-deployment/worker-deployments/worker-versioning/upgrade-on-continue-as-new',
+                'production-deployment/worker-deployments/worker-versioning/sunset-and-gc',
+                'production-deployment/worker-deployments/recover-pinned-workflows',
+                'production-deployment/worker-deployments/unversioned-to-versioned-migration',
+              ],
+            },
             'production-deployment/worker-deployments/kubernetes-controller',
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
-            'production-deployment/worker-deployments/unversioned-to-versioned-migration',
             {
               type: 'category',
               label: 'Serverless Workers',
@@ -1486,7 +1624,20 @@ module.exports = {
           ],
         },
         'production-deployment/data-encryption',
-        'production-deployment/temporal-proxy/index',
+        {
+          type: 'category',
+          label: 'Temporal Proxy',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'production-deployment/temporal-proxy/index',
+          },
+          items: [
+            'production-deployment/temporal-proxy/configure',
+            'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/deploy-kubernetes',
+          ],
+        },
       ],
     },
     {
@@ -1524,6 +1675,7 @@ module.exports = {
                 'cli/command-reference/cloud/logout',
                 'cli/command-reference/cloud/namespace',
                 'cli/command-reference/cloud/nexus',
+                'cli/command-reference/cloud/project',
                 'cli/command-reference/cloud/region',
                 'cli/command-reference/cloud/service-account',
                 'cli/command-reference/cloud/user',
@@ -1668,6 +1820,15 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Durable AI',
+      collapsed: true,
+      link: { type: 'doc', id: 'ai/index' },
+      items: [
+        { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+      ],
+    },
+    {
+      type: 'category',
       label: 'References',
       collapsed: true,
       link: {
@@ -1732,16 +1893,17 @@ module.exports = {
         id: 'best-practices/index',
       },
       items: [
-        'best-practices/worker',
-        'best-practices/worker-alerting',
-        'best-practices/pre-production-testing',
-        'production-deployment/multi-tenant-patterns',
         'best-practices/managing-namespace',
+        'best-practices/multi-tenant-patterns',
         'best-practices/managing-aps-limits',
+        'best-practices/cost-optimization',
+        'best-practices/cost-governance',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
+        'best-practices/worker',
+        'best-practices/worker-alerting',
         'best-practices/error-handling',
-        'best-practices/cost-optimization',
+        'best-practices/pre-production-testing',
         'best-practices/knowledge-hub',
       ],
     },
@@ -2024,6 +2186,7 @@ module.exports = {
         'guides/rate-limit-downstream-apis',
         'guides/durable-gaming-sessions',
         'guides/lock-shared-resources',
+        'guides/celery-to-standalone-activity',
       ],
     },
     'integrations',
@@ -2047,4 +2210,3 @@ module.exports = {
     'tctl-v1/workflow',
   ],
 };
-

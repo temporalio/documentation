@@ -3,23 +3,12 @@ id: migrate-within-cloud
 title: Migrate between regions
 sidebar_label: Migrate between regions
 slug: /cloud/migrate/migrate-within-cloud
-description: Use Temporal Cloud's High Availability features to migrate between regions.
+description: Add a Namespace replica in a new region, wait for it to activate, then fail over for a zero-downtime Temporal Cloud migration.
 tags:
   - Temporal Cloud
   - Production
   - High Availability
   - Migration
-keywords:
-  - availability
-  - explanation
-  - failover
-  - high-availability
-  - migration
-  - multi-cloud replication
-  - multi-region replication
-  - namespaces
-  - same-region replication
-  - temporal-cloud
 ---
 
 import { CaptionedImage } from '@site/src/components';
@@ -66,11 +55,6 @@ If the Namespace uses Private Connectivity, the steps below need additional DNS 
 />
 
 5. Remove the Namespace replica in the region you are migrating from.
-
-:::note
-If using [API keys](/cloud/api-keys) for worker authentication, you must open a [support ticket](/cloud/support#support-ticket) to remove the replica.
-
-:::
 
 <CaptionedImage
     src="/img/cloud/high-availability/migrate/4-remove-replica.png"

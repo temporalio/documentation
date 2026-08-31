@@ -4,12 +4,6 @@ title: Spring AI integration - Java SDK
 sidebar_label: Spring AI
 slug: /develop/java/integrations/spring-ai
 toc_max_heading_level: 2
-keywords:
-  - ai
-  - agents
-  - spring ai
-  - java
-  - integrations
 tags:
   - Spring AI
   - Java SDK
@@ -254,7 +248,7 @@ public class TimestampTools {
 
 ### Plain tools
 
-Any class with `@Tool` methods that isn't an Activity stub, Nexus stub, or `@SideEffectTool` runs directly on the Workflow thread. Use this for inherently deterministic tools (such as updating in-memory agent state), or for orchestration of durable primitives as you need, e.g. calling multiple Activities, child Workflows, wait conditions, or other Temporal durable primitives.
+Any class with `@Tool` methods that isn't an Activity stub, Nexus stub, or `@SideEffectTool` runs directly on the Workflow thread. Use this for inherently deterministic tools (such as updating in-memory agent state), or for orchestration of durable primitives as you need, for example calling multiple Activities, child Workflows, wait conditions, or other Temporal durable primitives.
 
 <!--SNIPSTART samples-java-spring-ai-plain-tool-->
 [springai/basic/src/main/java/io/temporal/samples/springai/chat/StringTools.java](https://github.com/temporalio/samples-java/blob/main/springai/basic/src/main/java/io/temporal/samples/springai/chat/StringTools.java)

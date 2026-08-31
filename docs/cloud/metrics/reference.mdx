@@ -1,29 +1,13 @@
 ---
 id: reference
 title: Temporal Cloud metrics reference
-sidebar_label: Available metrics
+sidebar_label: Legacy metrics reference
 description: Explore Temporal Cloud metrics to query with PromQL or scrape via OpenMetrics, supporting rate and latency calculations.
 toc_max_heading_level: 4
 tags:
   - Metrics
   - Observability
   - Temporal Cloud
-keywords:
-  - temporal cloud metrics
-  - promql temporal metrics
-  - prometheus temporal monitoring
-  - temporal cloud observability
-  - workflow latency metrics
-  - workflow state transition metrics
-  - analyze temporal cloud metrics
-  - metric labels for temporal
-  - workflow execution metrics
-  - temporal cloud latency analysis
-  - temporal cloud promql
-  - histogram metrics analysis
-  - metric filtering with labels
-  - workflow success metrics
-  - gRPC error count
 ---
 
 :::danger PromQL endpoint deprecated
@@ -219,7 +203,7 @@ Use the following labels to filter metrics:
 | `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                                          |
 | `temporal_namespace`       | Temporal Namespace.                                                                                                                                                                                                                                                                        |
 | `temporal_service_type`    | Frontend or Matching or History or Worker.                                                                                                                                                                                                                                                 |
-| `is_background`            | This label on `temporal_cloud_v0_total_action_count` indicates when actions are produced by a Temporal background job, for example: hourly Workflow Export.                                                                                                                                |
+| `is_background`            | This label on `temporal_cloud_v0_total_action_count` indicates when actions are produced by a Temporal background job.                                                                                                                                |
 | `namespace_mode`           | This label on `temporal_cloud_v0_total_action_count` indicates if actions are produced by an active vs a standby Namespace. For a regular Namespace, `namespace_mode` will always be “active”.                                                                                             |
 
 The following is an example of how you can filter metrics using labels:
