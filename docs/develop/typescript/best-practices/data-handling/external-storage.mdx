@@ -181,7 +181,7 @@ A custom driver implements the `StorageDriver` interface, which has two readonly
 
 The following methods batch the storage operations and stop outstanding work if one operation fails:
 
-<!--SNIPSTART typescript-custom-storage-driver @https://github.com/temporalio/samples-typescript/external-storage/src/filesystem-storage-driver.ts -->
+<!--SNIPSTART typescript-custom-storage-driver-->
 [external-storage/src/filesystem-storage-driver.ts](https://github.com/temporalio/samples-typescript/blob/extstore/initial-sample/external-storage/src/filesystem-storage-driver.ts)
 ```ts
 async store(context: StorageDriverStoreContext, payloads: Payload[]): Promise<StorageDriverClaim[]> {
@@ -226,7 +226,7 @@ Pass your driver to an `ExternalStorage` instance on the Data Converter, and use
 Client and Worker. Both sides need it: a Client without External Storage configured cannot read an offloaded result. You
 can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
 
-<!--SNIPSTART typescript-custom-driver-data-converter @https://github.com/temporalio/samples-typescript/external-storage/src/data-converter.ts -->
+<!--SNIPSTART typescript-custom-driver-data-converter-->
 [external-storage/src/data-converter.ts](https://github.com/temporalio/samples-typescript/blob/extstore/initial-sample/external-storage/src/data-converter.ts)
 ```ts
 export function createDataConverter(rootDir: string = STORAGE_ROOT): DataConverter {
