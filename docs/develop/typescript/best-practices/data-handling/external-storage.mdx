@@ -72,6 +72,7 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
    The AWS SDK reads environment variables, an IAM role, or your AWS config file.
 
    <!--SNIPSTART typescript-s3-driver-create-->
+   [features/snippets/external_storage/s3_setup/s3_driver_create.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.ts)
    ```ts
    import { S3Client } from '@aws-sdk/client-s3';
    import { S3StorageDriver } from '@temporalio/external-storage-s3';
@@ -92,6 +93,7 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
    The Google Cloud SDK reads Application Default Credentials.
 
    <!--SNIPSTART typescript-gcs-driver-create-->
+   [features/snippets/external_storage/gcs_setup/gcs_driver_create.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/gcs_setup/gcs_driver_create.ts)
    ```ts
    import { Storage } from '@google-cloud/storage';
    import { GcsStorageDriver } from '@temporalio/external-storage-gcs';
@@ -118,6 +120,7 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
    requires:
 
    <!--SNIPSTART typescript-s3-external-storage-setup-->
+   [features/snippets/external_storage/s3_setup/s3_external_storage_setup.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.ts)
    ```ts
    import { Client, Connection } from '@temporalio/client';
    import { ExternalStorage } from '@temporalio/common';
@@ -176,6 +179,27 @@ A custom driver implements the `StorageDriver` interface, which has two readonly
   string key-value pairs that the driver uses to locate the payload later.
 - `retrieve()` receives the claims that `store()` produced and returns the original payloads.
 
+The following methods batch the storage operations and stop outstanding work if one operation fails:
+
+<!--SNIPSTART typescript-custom-storage-driver @https://github.com/temporalio/samples-typescript/external-storage/src/filesystem-storage-driver.ts -->
+[external-storage/src/filesystem-storage-driver.ts](https://github.com/temporalio/samples-typescript/blob/extstore/initial-sample/external-storage/src/filesystem-storage-driver.ts)
+```ts
+async store(context: StorageDriverStoreContext, payloads: Payload[]): Promise<StorageDriverClaim[]> {
+  const keyPrefix = buildKeyPrefix(context.target);
+  return runAllAbortingOnFirstError(context.abortSignal, (signal) =>
+    payloads.map((payload) => this.storePayload(payload, keyPrefix, signal)),
+  );
+}
+
+/** Inverse of {@link store}: one payload per claim, in the same order. */
+async retrieve(context: StorageDriverRetrieveContext, claims: StorageDriverClaim[]): Promise<Payload[]> {
+  return runAllAbortingOnFirstError(context.abortSignal, (signal) =>
+    claims.map((claim) => this.retrievePayload(claim, signal)),
+  );
+}
+```
+<!--SNIPEND-->
+
 ### 2. Store payloads
 
 In `store()`, serialize each Payload protobuf message to bytes and write the bytes to your storage system. The
@@ -202,7 +226,8 @@ Pass your driver to an `ExternalStorage` instance on the Data Converter, and use
 Client and Worker. Both sides need it: a Client without External Storage configured cannot read an offloaded result. You
 can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
 
-<!--SNIPSTART typescript-custom-driver-data-converter -->
+<!--SNIPSTART typescript-custom-driver-data-converter @https://github.com/temporalio/samples-typescript/external-storage/src/data-converter.ts -->
+[external-storage/src/data-converter.ts](https://github.com/temporalio/samples-typescript/blob/extstore/initial-sample/external-storage/src/data-converter.ts)
 ```ts
 export function createDataConverter(rootDir: string = STORAGE_ROOT): DataConverter {
   return {
@@ -232,6 +257,7 @@ externalize all payloads regardless of size. Payloads smaller than the threshold
 compared against the threshold is that of the serialized Payload, which includes its metadata, not just your data.
 
 <!--SNIPSTART typescript-external-storage-threshold-->
+[features/snippets/external_storage/threshold/threshold_config.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.ts)
 ```ts
 const dataConverter = {
   externalStorage: new ExternalStorage({
@@ -265,6 +291,7 @@ The following example registers two drivers but always selects `preferredDriver`
 is only registered so the Worker can retrieve payloads that were previously stored with it:
 
 <!--SNIPSTART typescript-external-storage-multiple-drivers-->
+[features/snippets/external_storage/multiple_drivers/multiple_drivers.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/multiple_drivers/multiple_drivers.ts)
 ```ts
 const preferredDriver = new S3StorageDriver({
   client: new AwsSdkS3StorageDriverClient(s3Client),
