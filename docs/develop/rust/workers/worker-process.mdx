@@ -119,7 +119,7 @@ let worker_options = WorkerOptions::new("my-task-queue")
 ```
 
 The Rust SDK sets the versioning behavior on the Worker, not per Workflow, so `default_versioning_behavior` covers every Workflow the Worker registers.
-Setting it to `Some(VersioningBehavior::Unspecified)` is an error at startup.
+Setting it to `VersioningBehavior::Unspecified` is an error at startup.
 
 See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
 

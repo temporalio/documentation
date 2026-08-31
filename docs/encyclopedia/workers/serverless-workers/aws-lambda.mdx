@@ -7,13 +7,6 @@ description:
   invocation lifecycle.
 slug: /serverless-workers/aws-lambda
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - workers
-  - lambda
-  - aws
-  - autoscaling
-  - worker versioning
 tags:
   - Workers
   - Concepts
@@ -56,6 +49,19 @@ The WCI does not need to actively remove capacity.
 Each invocation is independent.
 The Worker starts, creates a fresh client connection, processes multiple Tasks until near the execution time limit, and then shuts down gracefully.
 There is no shared state across invocations.
+
+### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
+
+The WCI invokes a Lambda Worker when a sync match fails, or when the Worker Deployment Version's Task Queues have a
+backlog. A long-lived fleet that keeps up with the work leaves neither, so no Lambda Workers are invoked. The Serverless
+Workers act as spillover capacity for the long-lived fleet.
+
+:::caution
+
+Do not enable dynamic scaling on the long-lived Workers sharing the Task Queue. Both scalers react to the same backlog,
+so the long-lived Workers may add capacity for the Tasks Temporal is already invoking Lambda Workers to handle.
+
+:::
 
 ## Worker Versioning {/* #worker-versioning */}
 

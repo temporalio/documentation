@@ -7,13 +7,6 @@ description:
   instances stopped mid-Activity.
 slug: /troubleshooting/serverless-workers/cloud-run
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - cloud run
-  - gcp
-  - troubleshooting
-  - worker
-  - worker pool
 tags:
   - Workers
   - Serverless
@@ -47,6 +40,8 @@ Temporal changes how many instances the pool runs. When the flow works correctly
    the count, potentially to zero.
 
 Start by determining whether the pool is running instances at all.
+
+If no check below matches what you are seeing, or they all pass, [check for GCP-side issues](#check-gcp-issues).
 
 ## Is the Worker Pool running instances? {/* #is-pool-running */}
 
@@ -192,3 +187,17 @@ resumes from its last recorded progress instead of restarting.
 
 For how scale-in decisions are made, see
 [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#scale-in).
+
+## Check for GCP-side issues {/* #check-gcp-issues */}
+
+If the checks above all pass, the cause may be in Cloud Run rather than in your configuration.
+Rule out a provider-side cause:
+
+- [Cloud Run known issues](https://cloud.google.com/run/docs/known-issues) lists current defects and limitations,
+  including ones that affect how long Worker Pool operations take.
+- [Google Cloud Service Health](https://status.cloud.google.com/) reports active incidents by product and region.
+
+If a known issue or incident explains what you are seeing, the fix is usually to wait it out or move to another region.
+Temporal addresses a Worker Pool by project, region, and name, so changing region means creating a new pool and updating
+the [compute configuration](/production-deployment/worker-deployments/serverless-workers/cloud-run#create-worker-deployment-version)
+on the Worker Deployment Version.

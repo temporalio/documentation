@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 type PatternCardItem = {
@@ -11,6 +12,8 @@ type PatternCardItem = {
 
 type PatternCardsProps = {
   items: PatternCardItem[];
+  /** Extra class on the grid container, e.g. for a one-off visual variant. */
+  className?: string;
 };
 
 const ICON_BASE = '/img/design-patterns/icons/';
@@ -20,13 +23,13 @@ function CardIcon({ icon, title }: { icon: string; title: string }) {
   return <img src={src} alt={title} />;
 }
 
-export default function PatternCards({ items }: PatternCardsProps) {
+export default function PatternCards({ items, className }: PatternCardsProps) {
   return (
-    <div className="pattern-grid">
+    <div className={className ? `pattern-grid ${className}` : 'pattern-grid'}>
       {items.map((item) => (
-        <a
+        <Link
           key={item.href}
-          href={item.href}
+          to={item.href}
           className="pattern-card"
           {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         >
@@ -41,7 +44,7 @@ export default function PatternCards({ items }: PatternCardsProps) {
             )}
             <p>{item.description}</p>
           </div>
-        </a>
+        </Link>
       ))}
     </div>
   );
