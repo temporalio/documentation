@@ -5,11 +5,6 @@ sidebar_label: Availability
 description: Temporal Cloud offers high availability and low latency across multiple cloud provider regions with adjustable throughput limits and robust latency targets. Contact us for more details.
 slug: /cloud/service-availability
 toc_max_heading_level: 4
-keywords:
-  - explanation
-  - operations
-  - temporal cloud
-  - throughput
 tags:
   - Temporal Cloud
 ---
@@ -39,6 +34,14 @@ The same SLO for normal Worker requests (commands and polling) apply to Nexus in
 ### Historical latency data
 
 Latency over a week-long period for starting and signaling Workflow Executions was as follows:
+
+#### August 2026
+
+| Operation                          | p50  | p90  |  p99 |
+| :--------------------------------- | :--: | :--: | ---: |
+| `StartWorkflowExecution`           | 20ms | 32ms | 78ms |
+| `SignalWorkflowExecution`          | 19ms | 42ms | 91ms |
+| `SignalWithStartWorkflowExecution` | 30ms | 47ms | 109ms |
 
 #### January 2026
 

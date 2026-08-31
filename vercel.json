@@ -7,6 +7,17 @@
     {
       "source": "/img/og/:path*",
       "destination": "/img/assets/open-graph-shiny.jpg"
+    },
+    {
+      "source": "/:path((?!api/).*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*text/markdown.*"
+        }
+      ],
+      "destination": "/api/markdown-not-found"
     }
   ],
   "headers": [
@@ -47,8 +58,6 @@
     {
       "source": "/llms-api-reference.txt",
       "destination": "/llms.txt",
-      "source": "/develop/typescript/workers/serverless-workers/cloud-run",
-      "destination": "/develop/typescript/workers/serverless-workers",
       "permanent": true
     },
     {
@@ -2299,6 +2308,11 @@
     {
       "source": "/production-deployment/multi-tenant-patterns",
       "destination": "/best-practices/multi-tenant-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/integrations/braintrust",
+      "destination": "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#python",
       "permanent": true
     }
   ]
