@@ -4,7 +4,7 @@ title: Temporal Web UI environment variables reference
 sidebar_label: Web UI env vars
 description:
   Dynamically configure Temporal Web UI with environment variables in Docker for settings like TEMPORAL_ADDRESS,
-  authentication, TLS, OpenAPI, and more.
+  authentication, TLS, and more.
 toc_max_heading_level: 4
 tags:
   - Reference
@@ -53,7 +53,7 @@ described in more detail below.
 
 ## `TEMPORAL_ADDRESS`
 
-The [Frontend Service](/temporal-service/temporal-server#frontend-service) address for the Temporal Cluster. This
+The [Frontend Service](/temporal-service/temporal-server#frontend-service) address for the Temporal Service. This
 variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using
 `temporalGrpcAddress`.
 
@@ -63,7 +63,7 @@ This variable is required for setting other environment variables.
 
 The port used by the Temporal WebUI Server and the HTTP API.
 
-This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
+This variable is needed for all auth-related settings to work properly.
 
 ## `TEMPORAL_UI_PUBLIC_PATH`
 
@@ -71,7 +71,7 @@ Stores a value such as "" or "/custom-path" that allows the UI to be served from
 
 ## `TEMPORAL_UI_ENABLED`
 
-Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
+Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Service.
 
 Enabling the browser UI allows the Server to be accessed from your web browser. If disabled, the server cannot be viewed
 on the web, but the UI server APIs remain available for use.
