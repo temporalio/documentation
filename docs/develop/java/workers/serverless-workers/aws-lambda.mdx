@@ -195,7 +195,7 @@ Bundle the following `otel-collector-config.yaml` in your Lambda deployment pack
 
 <!--SNIPSTART java-lambda-worker-otel-collector-config-->
 [lambda-worker/otel-collector-config.template.yaml](https://github.com/temporalio/samples-java/blob/main/lambda-worker/otel-collector-config.template.yaml)
-```sample
+```yaml
 receivers:
   otlp:
     protocols:
@@ -249,4 +249,6 @@ Add `xray:PutTraceSegments`, `xray:PutTelemetryRecords`, and `cloudwatch:PutMetr
 Without these permissions, the Collector fails silently and no telemetry appears.
 
 If you only need metrics or tracing, use `OtelLambdaWorkerConfigurationHelper.configureMetrics`, `OtelLambdaWorkerConfigurationHelper.configureTracing`, or `OtelLambdaWorkerConfigurationHelper.configureFlushHook` individually.
-To use an application-owned OpenTelemetry provider, call `builder.setOpenTelemetry(...)` instead. In that path, no exporters are created and the helper only installs the metrics scope, interceptors, and per-invocation flush hook.
+To use an application-owned OpenTelemetry provider, pass a customizer to the two-argument `configure` overload: `OtelLambdaWorkerConfigurationHelper.configure(builder, b -> b.setOpenTelemetry(openTelemetry))`.
+`setOpenTelemetry` is defined on the helper's own builder, not on `LambdaWorkerOptions.Builder`.
+In that path, no exporters are created and the helper only installs the metrics scope, interceptors, and per-invocation flush hook.
