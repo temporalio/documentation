@@ -143,15 +143,6 @@ it scales differ by provider. See [Autoscaling](#autoscaling).
 Whether a Worker handles a single burst of Tasks and exits, or stays running to process Tasks over a long lifetime,
 depends on the compute provider's execution model. See [Worker lifecycle](#worker-lifecycle).
 
-### Network access {/* #network-access */}
-
-The WCI starts and scales Workers through the compute provider's public API, not through a connection into your network.
-On AWS Lambda it assumes an IAM role in your account and calls the Lambda invoke API. On GCP Cloud Run it impersonates a
-service account in your project and calls the Cloud Run Admin API. Neither path reaches your Workers directly, so you do
-not need to open inbound ports, peer networks, or allow Temporal source addresses.
-
-Workers still need outbound access to your Temporal Service.
-
 ## Autoscaling {/* #autoscaling */}
 
 The [WCI](#worker-controller-instance) automatically scales Serverless Workers up and down based on Task Queue conditions, including sync match failures and Task Queue backlog.
