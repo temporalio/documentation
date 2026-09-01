@@ -4,7 +4,7 @@ title: Authenticate with mTLS certificates
 sidebar_label: Authenticate with mTLS certificates
 description:
   Temporal Cloud supports mTLS, which requires CA certificates for secure communication. Keep certificates updated to
-  avoid disruptions in Workflow Execution. Manage and update certificates easily via the Temporal Cloud UI or tcld tool.
+  avoid disruptions in Workflow Execution. Manage and update certificates using the Temporal Cloud UI or Temporal CLI.
 slug: /cloud/certificates
 toc_max_heading_level: 4
 tags:
@@ -165,7 +165,7 @@ CA, and they are used by clients to authenticate themselves to Temporal Cloud.
 
 Create a self-signed CA certificate and use it to issue an end-entity certificate for your Temporal Cloud namespace.
 
-##### 1. Create a Certificate Authority (CA)
+##### 1. Create a certificate authority (CA)
 
 Create a new Certificate Authority (CA) using step CLI:
 
@@ -202,7 +202,7 @@ set NAMESPACE_NAME=your-namespace
 
 Replace `your-namespace` with the name of your Temporal Cloud namespace.
 
-##### 3. Create and Sign an End-Entity Certificate
+##### 3. Create and sign an end-entity certificate
 
 Create and sign an end-entity certificate with a common name equal to the Namespace Name:
 
@@ -212,7 +212,7 @@ step certificate create ${NAMESPACE_NAME} ${NAMESPACE_NAME}.crt ${NAMESPACE_NAME
 
 This command creates an end-entity certificate (`your-namespace.crt`) and private key (`your-namespace.key`) that is signed by your CA (`CertAuth`).
 
-##### 4. (optional) Convert to PKCS8 Format for Java SDK
+##### 4. Convert to PKCS8 format for Java SDK (optional)
 
 If you are using the Temporal Java SDK, you will need to convert the PKCS1 file format to PKCS8 file format. Export the
 end-entity's private key to a PKCS8 file:
@@ -243,7 +243,7 @@ Each certificate must belong to a chain up to the root CA certificate. Temporal 
 trusted authority for access to your Namespaces.
 
 1. Ensure that your certificates meet the [certificate requirements](#certificate-requirements).
-1. [Add client CA certificates to a Cloud Namespace](/cloud/tcld/namespace/#add).
+1. [Add client CA certificates to a Cloud Namespace](/cli/command-reference/cloud/namespace#mtls-cert-ca-create).
 
 ### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
 
@@ -325,7 +325,7 @@ permission for that Namespace.
 :::
 
 To manage certificates for Temporal Cloud Namespaces, use the **Namespaces** page in Temporal Cloud UI or the
-[tcld namespace accepted-client-ca](/cloud/tcld/namespace/#accepted-client-ca) commands.
+[`temporal cloud namespace mtls cert-ca` commands](/cli/command-reference/cloud/namespace#mtls-cert-ca).
 
 Don't let your certificates expire! Add reminders to your calendar to issue new CA certificates well before the
 expiration dates of the existing ones. Temporal Cloud begins sending notifications 15 days before expiration. For
@@ -363,6 +363,28 @@ Updating certificates using the following strategy allows for a zero-downtime ro
 10. In the certificates box, delete the old certificate, leaving the new one in place.
 
 11. Select **Save**.
+
+### Update certificates using the Temporal CLI
+
+Updating certificates using the following strategy allows for a zero-downtime rotation of certificates.
+
+1. Add the new CA certificate alongside the existing certificate:
+
+   ```command
+   temporal cloud namespace mtls cert-ca create \
+     --namespace <namespace>.<account> \
+     --ca-certificate-file <new-ca-certificate.pem>
+   ```
+
+1. Monitor traffic to the old certificate until it ceases.
+
+1. Remove the old CA certificate:
+
+   ```command
+   temporal cloud namespace mtls cert-ca delete \
+     --namespace <namespace>.<account> \
+     --ca-certificate-file <old-ca-certificate.pem>
+   ```
 
 {/* How to update certificates in Temporal Cloud using tcld */}
 
@@ -461,6 +483,14 @@ To add or remove a certificate filter, follow these steps:
    - To add a certificate filter, click **Add a Certificate Filter** and enter values in one or more fields.
    - To remove a certificate filter, click the **×** in the upper-right corner of the filter details.
 1. To cancel your changes, click **Back to Namespace**. To save your changes, click **Save**.
+
+### Manage certificate filters using the Temporal CLI
+
+Use the following commands to add, remove, or list certificate filters:
+
+- [`temporal cloud namespace mtls cert-filter create`](/cli/command-reference/cloud/namespace#mtls-cert-filter-create)
+- [`temporal cloud namespace mtls cert-filter delete`](/cli/command-reference/cloud/namespace#mtls-cert-filter-delete)
+- [`temporal cloud namespace mtls cert-filter list`](/cli/command-reference/cloud/namespace#mtls-cert-filter-list)
 
 {/* How to manage certificate filters in Temporal Cloud using tcld */}
 
