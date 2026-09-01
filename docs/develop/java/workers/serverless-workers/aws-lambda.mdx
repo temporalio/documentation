@@ -25,12 +25,12 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 
 ## Create and run a Worker in Lambda {/* #create-and-run */}
 
-Create a class that implements AWS Lambda's `RequestHandler` interface and delegates to `LambdaWorker.run` in a static field.
+Create a class that implements AWS Lambda's `RequestHandler` interface and delegates to `LambdaWorker.define` in a static field.
 Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
 Assign the handler to a static field so it is created once during Lambda cold start and reused across invocations.
 
 <!--SNIPSTART java-lambda-worker {"highlightedLines": "11-15"}-->
-[lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java)
+[lambda-worker/worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java](https://github.com/temporalio/samples-java/blob/main/lambda-worker/worker/src/main/java/io/temporal/samples/lambdaworker/LambdaFunction.java)
 ```java {11-15}
 package io.temporal.samples.lambdaworker;
 
@@ -43,7 +43,7 @@ import io.temporal.common.WorkerDeploymentVersion;
 public class LambdaFunction implements RequestHandler<Object, Void> {
 
   private static final RequestHandler<Object, Void> WORKER =
-      LambdaWorker.run(
+      LambdaWorker.define(
           new WorkerDeploymentVersion(
               LambdaWorkerSample.deploymentName(), LambdaWorkerSample.buildId()),
           LambdaWorkerSample::configure);
@@ -62,7 +62,7 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 Set it per-Workflow with the `@WorkflowVersioningBehavior` annotation on the Workflow method, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
 
 <!--SNIPSTART java-lambda-worker-workflow {"highlightedLines": "21"}-->
-[lambda-worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/ea/aws-lambda/lambda-worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java)
+[lambda-worker/worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/lambda-worker/worker/src/main/java/io/temporal/samples/lambdaworker/SampleWorkflowImpl.java)
 ```java {21}
 package io.temporal.samples.lambdaworker;
 
@@ -144,7 +144,7 @@ For guidance on how these values relate, see [Tuning for long-running Activities
 
 ## Add observability with OpenTelemetry {/* #add-observability */}
 
-The `OtelLambdaWorker` class provides OpenTelemetry integration with defaults configured for the [AWS Distro for OpenTelemetry (ADOT)](https://aws-otel.github.io/docs/getting-started/lambda) Lambda layer.
+The `OtelLambdaWorkerConfigurationHelper` class provides OpenTelemetry integration with defaults configured for the [AWS Distro for OpenTelemetry (ADOT)](https://aws-otel.github.io/docs/getting-started/lambda) Lambda layer.
 With this enabled, the Worker emits SDK metrics and distributed traces for Workflow and Activity executions.
 The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ray and metrics to Amazon CloudWatch.
 
@@ -161,15 +161,15 @@ Traces are currently produced through a compatibility shim, not native OpenTelem
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.temporal.aws.lambda.LambdaWorker;
-import io.temporal.aws.lambda.OtelLambdaWorker;
+import io.temporal.aws.lambda.OtelLambdaWorkerConfigurationHelper;
 import io.temporal.common.WorkerDeploymentVersion;
 
 public final class Handler implements RequestHandler<Object, Void> {
   private static final RequestHandler<Object, Void> WORKER =
-      LambdaWorker.run(
+      LambdaWorker.define(
           new WorkerDeploymentVersion("my-app", "build-1"),
           builder -> {
-            OtelLambdaWorker.configure(builder);
+            OtelLambdaWorkerConfigurationHelper.configure(builder);
             builder.setTaskQueue("serverless-task-queue-1");
             builder.registerWorkflowImplementationTypes(SampleWorkflowImpl.class);
             builder.registerActivitiesImplementations(new SampleActivitiesImpl());
@@ -182,7 +182,7 @@ public final class Handler implements RequestHandler<Object, Void> {
 }
 ```
 
-`OtelLambdaWorker.configure` configures OpenTelemetry with OTLP trace and metric exporters, uses AWS X-Ray-compatible trace ID generation, installs an OpenTelemetry-backed metrics scope, and registers per-invocation flush hooks.
+`OtelLambdaWorkerConfigurationHelper.configure` configures OpenTelemetry with OTLP trace and metric exporters, uses AWS X-Ray-compatible trace ID generation, installs an OpenTelemetry-backed metrics scope, and registers per-invocation flush hooks.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 The endpoint can be overridden with the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
 
@@ -248,5 +248,5 @@ The Lambda execution role must have permissions to write to X-Ray and CloudWatch
 Add `xray:PutTraceSegments`, `xray:PutTelemetryRecords`, and `cloudwatch:PutMetricData` permissions to the execution role.
 Without these permissions, the Collector fails silently and no telemetry appears.
 
-If you only need metrics or tracing, use `OtelLambdaWorker.configureMetrics`, `OtelLambdaWorker.configureTracing`, or `OtelLambdaWorker.configureFlushHook` individually.
+If you only need metrics or tracing, use `OtelLambdaWorkerConfigurationHelper.configureMetrics`, `OtelLambdaWorkerConfigurationHelper.configureTracing`, or `OtelLambdaWorkerConfigurationHelper.configureFlushHook` individually.
 To use an application-owned OpenTelemetry provider, call `builder.setOpenTelemetry(...)` instead. In that path, no exporters are created and the helper only installs the metrics scope, interceptors, and per-invocation flush hook.
