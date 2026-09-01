@@ -15,6 +15,8 @@
  *   - <CodeSnippet language="x">  → fenced code block
  *   - <CallToAction href>         → markdown link (h3 title + p description)
  *   - <ReleaseNoteHeader>         → availability blockquote + body
+ *   - <FeatureStageLabel />       → inline `[Public Preview](...)` link
+ *   - <FeatureStageTable />       → Markdown tables resolved from FEATURE_RELEASE_TYPES
  *   - <RelatedReadContainer>      → markdown link list from <RelatedReadItem>s
  *   - <RelatedReadList>           → markdown link list from readList prop
  *   - <SdkGuideLinks>             → markdown link list, one per SDK (path/filter/title or links prop)
@@ -39,7 +41,8 @@ import { cookbookPreviewToMarkdown } from "./component-handlers/cookbook-preview
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
-import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
+import { featureStageTableToMarkdown } from "./component-handlers/feature-stage-table.mjs";
+import { FEATURE_RELEASE_TYPES, STAGE_LABELS, resolveFeatureStage } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 
@@ -75,6 +78,8 @@ export const COMPONENT_REGISTRY = {
   CookbookPreview: "cookbook-preview",
   SdkOverviewCards: "sdk-overview-cards",
   ViewSourceCodeNotice: "view-source-code-notice",
+  FeatureStageLabel: "inline-feature-stage-label",
+  FeatureStageTable: "feature-stage-table",
 
   // Homepage hero (docs/index.mdx). Copy is authored in the MDX and composed
   // from presentational components in src/components/elements/HomePageHero.js.
@@ -141,9 +146,9 @@ const RELEASE_NOTE_LABELS = {
   deprecated: "Deprecated",
 };
 
-/** Mirrors ReleaseNoteHeader.getResolvedType — featureName lookup, then type, then default. */
-function resolveReleaseNoteType(featureName, type) {
-  return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
+/** Thin call-through to the shared resolver in featureReleaseTypes.js. */
+function resolveReleaseNoteType(featureName, type, language) {
+  return resolveFeatureStage(featureName, { type, language });
 }
 
 function releaseNoteLabelFromType(resolvedType) {
@@ -357,6 +362,16 @@ export function applyInlineTransforms(line) {
     /<ToolTipTerm\b[^>]*>([\s\S]*?)<\/ToolTipTerm>/g,
     (m, inner) => extractProp(m, "term") || inner
   );
+
+  // Inline <FeatureStageLabel featureName="x" /> → [Public Preview](descriptionLink)
+  out = out.replace(/<FeatureStageLabel\b[^>]*\/>/g, (m) => {
+    const featureName = extractProp(m, "featureName") || "";
+    const language = extractProp(m, "language");
+    const type = extractProp(m, "type");
+    const stage = resolveFeatureStage(featureName, { type, language });
+    const meta = STAGE_LABELS[stage] || STAGE_LABELS.publicPreview;
+    return `[${meta.label}](${meta.descriptionLink})`;
+  });
 
   // Collapse a line left whitespace-only (e.g. after a comment was stripped)
   // to a true blank line — an indented blank could otherwise read as code.
@@ -1109,8 +1124,9 @@ export function transformMdx(mdxContent, options = {}) {
       }
       const featureName = extractProp(tag, "featureName") || "";
       const type = extractProp(tag, "type");
+      const language = extractProp(tag, "language");
       const labelOverride = extractProp(tag, "label");
-      const resolvedType = resolveReleaseNoteType(featureName, type);
+      const resolvedType = resolveReleaseNoteType(featureName, type, language);
       releaseNoteLabel = labelOverride || releaseNoteLabelFromType(resolvedType);
       const langsMatch = tag.match(/languages=\{(\[[^\]]*\])\}/);
       if (langsMatch) {
@@ -1306,6 +1322,18 @@ export function transformMdx(mdxContent, options = {}) {
       }
       const md = sdkOverviewCardsToMarkdown({ projectRoot, warnings, sourceFile });
       outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
+    // --- FeatureStageTable (self-closing, no props) → resolved Markdown tables ---
+    if (state === State.NORMAL && /^\s*<FeatureStageTable\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      outputLines.push(featureStageTableToMarkdown(FEATURE_RELEASE_TYPES, STAGE_LABELS));
       outputLines.push("");
       continue;
     }

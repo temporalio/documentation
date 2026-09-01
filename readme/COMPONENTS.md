@@ -27,6 +27,8 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using SdkGuideLinks](#using-sdkguidelinks)
 - [Using AnnotatedCode](#using-annotatedcode)
 - [Using ReleaseNoteHeader](#using-release-note-header)
+- [Using FeatureStageLabel](#using-featurestagelabel)
+- [Using FeatureStageTable](#using-featurestagetable)
 
 ## Finding Components
 
@@ -521,9 +523,22 @@ Role: To provide a consistent component for adding, updating, and removing relea
 
 Usage:
 
-In `/src/constants`, update the [`featureReleaseTypes.js`](../src/constants/featureReleaseTypes.js) file to include the release stage for the feature you want.
+In `/src/constants`, update the [`featureReleaseTypes.js`](../src/constants/featureReleaseTypes.js) file to include the feature you want, its stage, and its display metadata (used by the `FeatureStageTable` on the [release stages page](../docs/evaluate/development-production-features/release-stages.mdx)).
 
-Example: `serverlessWorkers: "prerelease"`
+```js
+serverlessWorkers: {
+  stage: "prerelease",
+  name: "Serverless Workers",
+  description: "Run a Temporal Worker as a serverless function invoked by Temporal Cloud.",
+  infoLink: "/serverless-workers",
+  // Optional — only add this when a feature's stage genuinely differs by SDK
+  // language. Keys must match ReleaseNoteHeader's SDK language vocabulary
+  // (".NET" | "Go" | "Java" | "PHP" | "Python" | "Ruby" | "Rust" | "TypeScript").
+  languageOverrides: {
+    Java: "publicPreview",
+  },
+},
+```
 
 Then on the pages you want it to show, add this to the top of the content, right below the frontmatter. The `featureName` prop is how you share the release stages you add to `featureReleaseTypes.js` across pages.
 
@@ -570,3 +585,41 @@ Use the `href` prop to make the `children` content a link.
   Sign up for updates to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
 ```
+
+If a feature's `languageOverrides` includes the SDK this page is about, add the `language` prop so the badge resolves to that language's stage instead of the feature's default.
+```js
+<ReleaseNoteHeader
+  featureName="serverlessWorkers"
+  language="Java"
+/>
+```
+
+## Using FeatureStageLabel
+
+Role: The inline sibling of `ReleaseNoteHeader`, for mentioning a feature's stage mid-sentence in prose instead of as a page-level banner. Sourced from the same [`featureReleaseTypes.js`](../src/constants/featureReleaseTypes.js) registry, so these mentions can't drift out of sync with the banner the way a hand-written `[Public Preview](/evaluate/development-production-features/release-stages#public-preview)` link can.
+
+Usage:
+
+```js
+import { FeatureStageLabel } from '@site/src/components';
+
+The Rust SDK is in <FeatureStageLabel featureName="rustSdk" />, and its API can change between releases.
+```
+
+Accepts the same `featureName`, `language`, and `type` props as `ReleaseNoteHeader`, resolved the same way. Renders a plain prose link — no pill/badge styling — since it's meant to sit inline in a sentence.
+
+## Using FeatureStageTable
+
+Role: Renders every feature currently in `featureReleaseTypes.js`, grouped by stage, as a Markdown-style table. Used on the [release stages page](../docs/evaluate/development-production-features/release-stages.mdx) to give a single, always-current view of what's non-GA — no separate list to hand-maintain.
+
+Usage:
+
+```js
+import { FeatureStageTable } from '@site/src/components';
+
+<FeatureStageTable />
+```
+
+Takes no props — it reads `featureReleaseTypes.js` directly, so a feature appears here automatically once it has a registry entry with `name`, `description`, and `infoLink`. Each stage section (Pre-release, Public Preview) is its own table with two columns, Feature and Details — there's no separate Stage column, since the section heading already says it. The Details cell is the feature's `description`; a feature with a `languageOverrides` entry gets a bolded note appended (e.g. "…without a Workflow orchestrating it. **Note:** Java support is in Pre-release.") instead of a separate row per language.
+
+Write `description` as its own brief, feature-specific summary — what the feature actually does, in one sentence — rather than reusing the target page's meta `description` verbatim. A page's meta description is written for the whole page and SEO, so it's often too broad (e.g. a general SDK setup page) or too generic ("Learn how...") for a table row about one specific feature.

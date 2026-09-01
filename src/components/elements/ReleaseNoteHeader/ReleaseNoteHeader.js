@@ -4,19 +4,17 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import SdkSvg from '../SdkSvgs/SdkSvg';
 import styles from "./ReleaseNoteHeader.module.css";
-import { FEATURE_RELEASE_TYPES } from "../../../constants/featureReleaseTypes";
+import { resolveFeatureStage, STAGE_LABELS } from "../../../constants/featureReleaseTypes";
 
 export const BASE_RELEASE_STAGES = {
   prerelease: {
-    label: "Pre-release",
-    descriptionLink: "/evaluate/development-production-features/release-stages#pre-release",
+    ...STAGE_LABELS.prerelease,
     backgroundColor: "var(--release-prerelease-bg)",
     borderColor: "var(--release-prerelease-border)",
     textColor: "var(--release-prerelease-text)",
   },
   publicPreview: {
-    label: "Public Preview",
-    descriptionLink: "/evaluate/development-production-features/release-stages#public-preview",
+    ...STAGE_LABELS.publicPreview,
     backgroundColor: "var(--release-public-preview-bg)",
     borderColor: "var(--release-public-preview-border)",
     textColor: "var(--release-public-preview-text)",
@@ -45,8 +43,8 @@ const LANGUAGE_TO_SDK_SLUG = {
   "TypeScript": "typescript",
 }
 
-function getResolvedType({ featureName, type }) {
-  return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
+function getResolvedType({ featureName, type, language }) {
+  return resolveFeatureStage(featureName, { type, language });
 }
 
 function getTheme(type, overrides = {}) {
@@ -63,6 +61,10 @@ export default function ReleaseNoteHeader({
   type = "publicPreview",
   // name of the feature being released
   featureName,
+  // If featureName has a languageOverrides entry for this language, it wins
+  // over the feature's default stage. Distinct from `languages` below, which
+  // only controls which SDK icons are rendered.
+  language,
   // If there is anything specific to say about the release, it can be passed as a child to the component. It can also be a link if href is provided.
   children = "APIs and configuration may change before the stable release.",
   // If child is a link, this is where the link can be passed.
@@ -74,7 +76,7 @@ export default function ReleaseNoteHeader({
   // If you want to override the default label for the release type, you can pass it here. This is useful for cases like "generalAvailability" where you might want to just say "Stable".
   label,
 }) {
-  const resolvedType = getResolvedType({ featureName, type });
+  const resolvedType = getResolvedType({ featureName, type, language });
   const theme = getTheme(resolvedType);
 
   const releaseLabel = label || theme.label;
@@ -91,7 +93,7 @@ export default function ReleaseNoteHeader({
       style={style}
       role="note"
       aria-label={releaseLabel}
-      data-release-type={type}
+      data-release-type={resolvedType}
     >
       <div className={styles.accent} aria-hidden="true" />
       <div className={styles.content}>

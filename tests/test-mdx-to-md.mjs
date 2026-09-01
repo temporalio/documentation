@@ -764,6 +764,60 @@ test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => 
   assertContains(markdown, "> **Pre-release**");
 });
 
+test("ReleaseNoteHeader language override resolves the per-language stage", () => {
+  const input = `<ReleaseNoteHeader featureName="standaloneActivity" language="Java" />\n\nJava-specific content.`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "> **Pre-release**");
+  assertContains(markdown, "Java-specific content.");
+});
+
+test("ReleaseNoteHeader language with no override falls back to the feature's base stage", () => {
+  const input = `<ReleaseNoteHeader featureName="standaloneActivity" language="Go" />\n\nGo-specific content.`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "> **Public Preview**");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — FeatureStageLabel
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — FeatureStageLabel");
+
+test("FeatureStageLabel resolves an inline stage link from featureName", () => {
+  const input = `The Rust SDK is in <FeatureStageLabel featureName="serverlessWorkersCloudRun" />.`;
+  const { markdown } = transformMdx(input);
+  assertContains(
+    markdown,
+    "[Pre-release](/evaluate/development-production-features/release-stages#pre-release)"
+  );
+  assertNotContains(markdown, "FeatureStageLabel");
+});
+
+test("FeatureStageLabel resolves a language override inline", () => {
+  const input = `Java support for this feature is in <FeatureStageLabel featureName="standaloneActivity" language="Java" />.`;
+  const { markdown } = transformMdx(input);
+  assertContains(
+    markdown,
+    "[Pre-release](/evaluate/development-production-features/release-stages#pre-release)"
+  );
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — FeatureStageTable
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — FeatureStageTable");
+
+test("FeatureStageTable resolves both stage groups with a Details column and language-override note", () => {
+  const input = `<FeatureStageTable />`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "### Pre-release features");
+  assertContains(markdown, "### Public Preview features");
+  assertContains(markdown, "| Feature | Details |");
+  assertContains(markdown, "[Standalone Activities](/standalone-activity)");
+  assertContains(markdown, "**Note:** Java support is in Pre-release.");
+  assertNotContains(markdown, "| Stage |");
+  assertNotContains(markdown, "FeatureStageTable");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — CallToAction
 // ---------------------------------------------------------------------------
@@ -1302,7 +1356,7 @@ test("all registry strategies are valid strings", () => {
     "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
     "json-table", "integrations-grid", "cookbook-preview", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
-    "sdk-guide-links",
+    "sdk-guide-links", "inline-feature-stage-label", "feature-stage-table",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(

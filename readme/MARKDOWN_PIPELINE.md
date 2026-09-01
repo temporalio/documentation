@@ -130,6 +130,8 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | YouTube/`<iframe>` embeds (often in a styled `<div>`) | strip | Removed; keep a markdown Watch link in surrounding tip/prose for LLMs |
 | `CallToAction` | `call-to-action` | `- [h3 title](href): p description` |
 | `ReleaseNoteHeader` | `release-note-header` | `> **Public Preview** — Go, Java…` availability note + body blockquote. The self-closing form (`<ReleaseNoteHeader … />`) emits just the note and leaves the page body intact. |
+| `FeatureStageLabel` | `inline-feature-stage-label` | Inline: replaced with `[Public Preview](…#public-preview)` (or Pre-release), resolved from `featureReleaseTypes.js` the same way as `ReleaseNoteHeader` |
+| `FeatureStageTable` | `feature-stage-table` | Two Markdown tables (Pre-release, then Public Preview) listing every registered feature, resolved from `featureReleaseTypes.js` |
 | `RelatedReadContainer` / `RelatedReadItem` | `related-read-container` / `related-read-item` | `**Related:**` Markdown link list |
 | `RelatedReadList` | `related-read` | Link list from the `readList` prop |
 | `ToolTipTerm` | `tooltip-term` | Inline: replaced with the bare `term` text |
