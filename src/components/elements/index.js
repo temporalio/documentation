@@ -1,3 +1,4 @@
+export * from './FeatureStageLabel'
 export * from './HomePageHero'
 export * from './Images'
 export * from './RelatedRead'
