@@ -58,7 +58,7 @@ The default can be used from the `go.temporal.io/server/temporal` package.
 
 ```go
 s, err := temporal.NewServer(
-    temporal.ForServices(temporal.Services),
+    temporal.ForServices(temporal.DefaultServices),
 )
 ```
 
@@ -107,8 +107,9 @@ s, err := temporal.NewServer(
   temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
       logger := getYourLogger() // Replace with how you retrieve or initialize your logger
     return authorization.NewDefaultJWTClaimMapper(
-      authorization.NewDefaultTokenKeyProvider(cfg, logger),
-      cfg
+      authorization.NewDefaultTokenKeyProvider(&cfg.Global.Authorization, logger),
+      &cfg.Global.Authorization,
+      logger,
     )
   }),
 )
@@ -125,14 +126,12 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithCustomMetricsReporter
+### WithCustomMetricsHandler
 
-Sets a custom tally metric reporter.
+Sets a custom implementation of the `metrics.Handler` interface for publishing metric events.
 
 ```go
 s, err := temporal.NewServer(
-    temporal.WithCustomMetricsReporter(myReporter),
+    temporal.WithCustomMetricsHandler(myHandler),
 )
 ```
-
-You can see the [Uber tally docs on custom reporter](https://github.com/uber-go/tally#report-your-metrics) and see a community implementation of [a reporter for Datadog's `dogstatsd` format](https://github.com/temporalio/temporal/pull/998#issuecomment-857884983).
