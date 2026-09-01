@@ -745,7 +745,7 @@ test("self-closing ReleaseNoteHeader does NOT swallow the page body", () => {
 test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
   const input = `<ReleaseNoteHeader featureName="cloudCli" />\n\nCommand reference content.`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Pre-release**");
+  assertContains(markdown, "> **Public Preview**");
   assertContains(markdown, "Command reference content.");
   assertNotContains(markdown, "ReleaseNoteHeader");
 });

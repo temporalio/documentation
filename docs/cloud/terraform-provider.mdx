@@ -12,6 +12,8 @@ ssdi:
   - The Terraform Provider is in a Public Preview release status for Temporal Cloud.
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { CaptionedImage } from '@site/src/components';
 
 The Terraform Temporal Cloud provider allows you to use Terraform to manage resources for Temporal Cloud. The Terraform
@@ -67,7 +69,7 @@ Follow these examples to use an environment variable to pass in your API Key to 
 Export your environment variable for secure access to the API Keys.
 
 ```bash
-# replace <your-secret-key> with the "secretKey": output from tcld apikey create command
+# Replace <your-secret-key> with the token output from `temporal cloud apikey create-for-me` or `tcld apikey create`.
 export TEMPORAL_CLOUD_API_KEY=<your-secret-key>
 ```
 
@@ -82,7 +84,7 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 Export your environment variable for secure access to the API Keys.
 
 ```bash
-# replace <your-secret-key> with the "secretKey": output from tcld apikey create command
+# Replace <your-secret-key> with the token output from `temporal cloud apikey create-for-me` or `tcld apikey create`.
 set TEMPORAL_CLOUD_API_KEY=<your-secret-key>
 ```
 
@@ -171,7 +173,7 @@ with API Key based authentication.
 
 **How do I validate the creation of the Namespace?**
 
-You can validate the creation of the Namespace through the Temporal Web UI or through the `tcld namespace get` command.
+You can validate the creation of the Namespace through the Temporal Web UI or through the CLI.
 
 **Using the Temporal Web UI**
 
@@ -179,16 +181,29 @@ You can validate the creation of the Namespace through the Temporal Web UI or th
 1. Navigate to the Namespaces page.
 1. Search for the Namespace you created.
 
-**Using the tcld CLI utility**
+**Using the CLI**
 
 Validate the creation of your Namespace through the Terraform provider. To validate see your Namespace in the Cloud UI
-or through the `tcld namespace get` command. Run the `tcld namespace get` command and pass in your
+or through the `namespace get` command. Run the command and pass in your
 [Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and
 [Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id):
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```bash
+temporal cloud namespace get -n "<your-namespace>.<your-account-id>"
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```bash
 tcld namespace get -n "<your-namespace>.<your-account-id>"
 ```
+
+</TabItem>
+</Tabs>
 
 **How do I update a Temporal Cloud Namespace?**
 
@@ -406,8 +421,7 @@ with API Key based authentication.
 
 **How do I validate the creation of the Nexus Endpoint?**
 
-You can validate the creation of the Nexus Endpoint through the Temporal Web UI or through the `tcld nexus endpoint get`
-command.
+You can validate the creation of the Nexus Endpoint through the Temporal Web UI or through the CLI.
 
 **Using the Temporal Web UI**
 
@@ -415,16 +429,29 @@ command.
 1. Navigate to [the Nexus page](https://cloud.temporal.io/nexus).
 1. Search for the Nexus Endpoint you created, using only the Nexus Endpoint Name (without an account suffix).
 
-**Using the tcld CLI utility**
+**Using the CLI**
 
 Validate the creation of your Nexus Endpoint through the Terraform provider. To validate see your Nexus Endpoint in the
-Cloud UI or through the `tcld nexus endpoint get` command.
+Cloud UI or through the `nexus endpoint get` command.
 
 Run the below command using your Nexus Endpoint Name. Do not use the account ID suffix with this endpoint name:
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```bash
+temporal cloud nexus endpoint get --name "<your-nexus-endpoint-name-without-account-suffix>"
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```bash
 tcld nexus endpoint get -n "<your-nexus-endpoint-name-without-account-suffix>"
 ```
+
+</TabItem>
+</Tabs>
 
 **How do I update a Nexus Endpoint?**
 
@@ -465,7 +492,7 @@ For example, to change the allowed caller Namespaces on a Nexus Endpoint:
    ```
 
    Upon completion, you will see a success message indicating your Nexus Endpoint has been updated. It may take several
-   seconds to update a Nexus Endpoint in the Control Plane which is visible from the Temporal UI or tcld CLI.
+   seconds to update a Nexus Endpoint in the Control Plane which is visible from the Temporal UI or the CLI.
    Propagation of Nexus Endpoint changes to the data plane may take longer, but usually complete in less than one
    minute.
 
@@ -557,7 +584,7 @@ Cautions about Temporal User management:
 - Follow Terraform best practices for resource management. Manage a specific user in one and only one .tf file. There's
   a risk that you may overwrite a user's permissions if you don't.
 - To Import a user, you'll need the User's ID which is currently not available in the Temporal Cloud UI. You can fetch
-  current User ID by running the `tcld user list` command.
+  current User ID by running the `temporal cloud user list` or `tcld user list` command.
 
 :::
 
@@ -692,7 +719,7 @@ using the `terraform import` command.
    resource "temporalcloud_user" "user" { }
    ```
 
-1. Run the `terraform import` command and pass in the User ID. Your User ID is available using the Temporal Cloud CLI `tcld u l` command.
+1. Run the `terraform import` command and pass in the User ID. Your User ID is available by running `temporal cloud user list` or `tcld u l`.
 
  ```bash
  terraform import temporalcloud_user.user 72360058153949edb2f1d47019c1e85f
