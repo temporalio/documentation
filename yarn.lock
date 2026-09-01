@@ -4083,10 +4083,10 @@
   resolved "https://registry.npmjs.org/@types/ms/-/ms-2.1.0.tgz"
   integrity sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==
 
-"@types/node@*", "@types/node@^26.1.2":
-  version "26.1.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.1.2.tgz#da79708f1f9c6294f4cdec8f455a3032b028808a"
-  integrity sha512-Vu4a5UFA9rIIFJ7rB/Vaafh9lrCQszopTCx6KjFboXTGQbPNasehVR5TEiithSDGyd1DEiUByggTZsg8jukeIg==
+"@types/node@*", "@types/node@^26.2.0":
+  version "26.2.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.2.0.tgz#5a4875a862fda8fdc57de8faa579bb81ecba1685"
+  integrity sha512-5IviulTZeRNp2vAJ514cc/HUlY5nZ9fCbq9DMyC52BrhFZACo3nI0R7qBxhQmo/d27NFe96ur/b7Wwxklda+kg==
   dependencies:
     undici-types "~8.3.0"
 
@@ -4146,10 +4146,10 @@
     "@types/history" "^4.7.11"
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^19.2.17":
-  version "19.2.17"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.2.17.tgz#dccac365baa0f1734ec270ff4b51c89465e8dc7f"
-  integrity sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw==
+"@types/react@*", "@types/react@^19.2.18":
+  version "19.2.18"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.2.18.tgz#eb0b6a1fb635d1a9692d5f84a3495bd8ad153707"
+  integrity sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==
   dependencies:
     csstype "^3.2.2"
 
@@ -4258,10 +4258,10 @@
     d3-selection "^3.0.0"
     d3-transition "^3.0.1"
 
-"@vercel/cli-config@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@vercel/cli-config/-/cli-config-0.2.2.tgz#2e146af1056f05bba1ce6f5284552a4dd3950260"
-  integrity sha512-kAy35eymNzRBfmcqEViVQge0KJ59FYEKsPqGNCSJQ7M9HTuFGWd3qPcZos1A5cZpAWRBdiYe82Bcz9P7pIZvUQ==
+"@vercel/cli-config@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@vercel/cli-config/-/cli-config-0.2.3.tgz#617881e9de809f70edc48905d09014633541bd9e"
+  integrity sha512-Ggh0Wmi92TUkUexmSUPkkDtvJmbjUr7IvF5T3FkSsWrXXs3GFzOujfxFpECdJZpux1JG4SWDv9BT4w++TDgD6A==
   dependencies:
     xdg-app-paths "5"
     zod "4.1.11"
@@ -4273,19 +4273,19 @@
   dependencies:
     execa "5.1.1"
 
-"@vercel/functions@^3.9.1":
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/@vercel/functions/-/functions-3.9.1.tgz#8aadd653e1f0892cbeaeafa60ee9793c0b7dbc7d"
-  integrity sha512-RhrIZvQ0Jfgeq0pCaeZ/E19OujpGEyB2BDO//6F91Z8VC5JJ5H4ckLLswaKnM7vOutRswU/MO6UQMGhtm7fA/Q==
+"@vercel/functions@^3.9.3":
+  version "3.9.3"
+  resolved "https://registry.yarnpkg.com/@vercel/functions/-/functions-3.9.3.tgz#2bdfc128874c135ce85fbef18dc980d21d1c3958"
+  integrity sha512-cbzTdASCZDnufrABc8oO00e/FqlqFFSdld+iGZPhrWBDHP4Pu8ESKKYIzASqYvbYYUIWujBvEa5LLCcZzm7WEw==
   dependencies:
-    "@vercel/oidc" "3.8.2"
+    "@vercel/oidc" "3.8.4"
 
-"@vercel/oidc@3.8.2":
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/@vercel/oidc/-/oidc-3.8.2.tgz#116b182bdae8e794f0c5ed89b784d5507fa7e861"
-  integrity sha512-nmVSeQ7tewCkqYBNB/MNL8aPB9sTvtjvqIE6+U17U4IuTyehuWVERDlWrSn0DVfiFAstRlRkGLHBlKHB2FyzbQ==
+"@vercel/oidc@3.8.4":
+  version "3.8.4"
+  resolved "https://registry.yarnpkg.com/@vercel/oidc/-/oidc-3.8.4.tgz#6598e8ac639047b0a209bc36737a4ef78f9f3572"
+  integrity sha512-FGNvVZ5pgX9FaBqkPt6VkYFZ6bWAMDzYi7nxW+1Xt+Z4fn5PuTULVwsxjKc+0uKhysyWBQmvsmM50Oh6C2/oMA==
   dependencies:
-    "@vercel/cli-config" "0.2.2"
+    "@vercel/cli-config" "0.2.3"
     "@vercel/cli-exec" "1.0.1"
     jose "^5.9.6"
 
@@ -4537,10 +4537,10 @@ ajv@^8.0.0, ajv@^8.9.0:
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
 
-algoliasearch-helper@3.29.2:
-  version "3.29.2"
-  resolved "https://registry.yarnpkg.com/algoliasearch-helper/-/algoliasearch-helper-3.29.2.tgz#ceb699ae6ec9bb088f8a2b781b66868222e9c23a"
-  integrity sha512-SaV+rZM3drExb0punEYYjT+sNcH74YFwN8ocjya7IDOyQvKWeQpEaSMVG3+IGTVos+feuatj7ljQ4BXlXdUp3w==
+algoliasearch-helper@3.29.3:
+  version "3.29.3"
+  resolved "https://registry.yarnpkg.com/algoliasearch-helper/-/algoliasearch-helper-3.29.3.tgz#dc21f119320acbdd5890a21021846b5730d11e03"
+  integrity sha512-gVOMbbPVrCO3Xs+B+BLAIGFqIQow6qHMTYCEeBqLQB9m4ZmKUqMwkEumlal2iyyezHEd4Y0FvFTLbCRutCutIQ==
   dependencies:
     "@algolia/events" "^4.0.1"
 
@@ -5552,10 +5552,10 @@ concat-map@0.0.1:
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
-concurrently@^10.0.4:
-  version "10.0.4"
-  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-10.0.4.tgz#68ee55d60cbc3fee705958508fd5905acfc7514a"
-  integrity sha512-trZql+7l/0+WRAsAnEdctr4+iiOS6ZrViI6H8QWcCF9MFS/LT0dKpe8vluB1to6it+OxSI4VospFTIFMW8DJRw==
+concurrently@^10.0.5:
+  version "10.0.5"
+  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-10.0.5.tgz#5dd22464ad37f77136a02f4d0f05ddd912fe5c80"
+  integrity sha512-JaP/CoftUrCcAFW/g//RbgEGwlelnEae6cfBLgH6ZdO6s8jPkn6p9SB9u6pdVxYXoiSnFqseOlHfrEfF82TVOg==
   dependencies:
     chalk "5.6.2"
     rxjs "7.8.2"
@@ -8422,18 +8422,18 @@ inline-style-parser@0.2.7:
   resolved "https://registry.yarnpkg.com/inline-style-parser/-/inline-style-parser-0.2.7.tgz#b1fc68bfc0313b8685745e4464e37f9376b9c909"
   integrity sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==
 
-instantsearch-ui-components@0.33.2:
-  version "0.33.2"
-  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.33.2.tgz#648d195ae238a802e5f25862259889493f8f746b"
-  integrity sha512-q8WdUd2BmAEg6iXs8h3nc2FDZvwdVmLYpyp/psDK0ELP7rQiQKOCZjnH1rQZn/mVNM6CxNfcGVDc0i6mKb1K/g==
+instantsearch-ui-components@0.35.1:
+  version "0.35.1"
+  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.35.1.tgz#4ecfb3b02415d228d4c963fa46ce61d22d6e977e"
+  integrity sha512-n8sCod1pOeaMMZzzqoK3MNFYqyw3IjWXP97zwXyjPFhbx+B7SEN+pmFmALdOagm2K2qzTcFF08ZlA13Xm8I6rg==
   dependencies:
     "@swc/helpers" "0.5.18"
     markdown-to-jsx "^7.7.15"
 
-instantsearch.js@4.108.0:
-  version "4.108.0"
-  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.108.0.tgz#db29140da47633c7530e6b4964bd39abcce0f2e1"
-  integrity sha512-KGFRvujVi55kFqu+LDSoeeHfpKP/k8IvEec9Q2oLLh9/PghMPkO9hKPk1pa02h/85cZJSv5l4Wa4p4HkFfIZ7A==
+instantsearch.js@4.111.1:
+  version "4.111.1"
+  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.111.1.tgz#ec12045872f48eb65788edd24cd668d40cf9808f"
+  integrity sha512-DMuvb2koPHhe5PTGMGbWI5t+i9OHWLKny5312vygdYvUvVygnsZ6axtMXfz7FDtjAgkBRm675R5sGkGjF9o/sQ==
   dependencies:
     "@algolia/events" "^4.0.1"
     "@swc/helpers" "0.5.18"
@@ -8441,10 +8441,10 @@ instantsearch.js@4.108.0:
     "@types/google.maps" "^3.55.12"
     "@types/hogan.js" "^3.0.0"
     "@types/qs" "^6.5.3"
-    algoliasearch-helper "3.29.2"
+    algoliasearch-helper "3.29.3"
     hogan.js "^3.0.2"
     htm "^3.0.0"
-    instantsearch-ui-components "0.33.2"
+    instantsearch-ui-components "0.35.1"
     preact "^10.10.0"
     qs "^6.5.1"
     react ">= 0.14.0"
@@ -8969,10 +8969,10 @@ js-yaml@^4.1.0, js-yaml@^4.1.1:
   dependencies:
     argparse "^2.0.1"
 
-js-yaml@^5.2.2:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-5.2.2.tgz#497bfe63f0b0db11c7bbc5ce8bc568e836c8b08c"
-  integrity sha512-dayzUzKkJ1MkuUtZglSebU43utNXH0OWQByK9rKOOuYIO8M5TV1y+n8ALMdG0rdzBnfNkOmZEqrURepb0ejqBw==
+js-yaml@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-5.3.0.tgz#526430a6da31065127528ae695ce168cfc5f91f0"
+  integrity sha512-muutsYr+e2+d3rTgUGslq5rxbBlUy3cJ61IsHag2QNDQV+7zXWjkUpmALIajhrlLlrgRUiymj6U3zUr/TMK84Q==
   dependencies:
     argparse "^2.0.1"
 
@@ -11935,25 +11935,25 @@ react-icons@^5.7.0:
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.7.0.tgz#8969db00968ffdfc57fdc2ec9dd1ed88e35b3de9"
   integrity sha512-LBLy340Rzqy6+/yVhZKT3B/QpP1BZaesGqasf09HPOBzRarcDIFH0WwXlXQfE7q7ipxK4MSiC5DIBWURCny6fw==
 
-react-instantsearch-core@7.41.0:
-  version "7.41.0"
-  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.41.0.tgz#e6684ab99912f2b28303baf9e0b129d980f23db4"
-  integrity sha512-NY4acx1Hv7Bmu6IApMEaHdi8s2DRpo5vEsvBCUy17SBteRgXHAqeeuGEhbyzjySxXkT0CRLg2UxTVJwJDxsgQA==
+react-instantsearch-core@7.44.1:
+  version "7.44.1"
+  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.44.1.tgz#7f5ff6e935dd1a697e4ba266c28a38b9a610c7ae"
+  integrity sha512-2pb73h7TqNzHDtcLAPcvxUOiG9Wt0hayNCiJJ+yCUs9Vw5S1n2PxdDnEaU/CvkkqT/RLcimnVQDmyf6yfNiMsA==
   dependencies:
     "@swc/helpers" "0.5.18"
-    algoliasearch-helper "3.29.2"
-    instantsearch.js "4.108.0"
+    algoliasearch-helper "3.29.3"
+    instantsearch.js "4.111.1"
     use-sync-external-store "^1.0.0"
 
-react-instantsearch@^7.41.0:
-  version "7.41.0"
-  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.41.0.tgz#2c152c51c99a0160de9e509503cb10834197f0a9"
-  integrity sha512-/XAlUDZvlMiNbP1s2TjXtk/Rvq48poE5VN0On9VOixxNSWWjLmcp1SxoxCpCGUYX2TNXqdGHnPYfCeuInysVFw==
+react-instantsearch@^7.44.1:
+  version "7.44.1"
+  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.44.1.tgz#aff88aa8ae7403827ab46be2e49f563e00a80385"
+  integrity sha512-nS5ko45HwzSbSCdL2MLrzui9YkBps+6r1DECjmIPx3BHiOicv0JpFnuxc4azXJKEuDig8p1QXc8JvqexUzpOXA==
   dependencies:
     "@swc/helpers" "0.5.18"
-    instantsearch-ui-components "0.33.2"
-    instantsearch.js "4.108.0"
-    react-instantsearch-core "7.41.0"
+    instantsearch-ui-components "0.35.1"
+    instantsearch.js "4.111.1"
+    react-instantsearch-core "7.44.1"
 
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"

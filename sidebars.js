@@ -717,7 +717,6 @@ const developPythonCategory = {
           id: 'develop/python/integrations/index',
         },
         items: [
-          'develop/python/integrations/braintrust',
           'develop/python/integrations/deepagents',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
@@ -1675,6 +1674,7 @@ module.exports = {
                 'cli/command-reference/cloud/logout',
                 'cli/command-reference/cloud/namespace',
                 'cli/command-reference/cloud/nexus',
+                'cli/command-reference/cloud/project',
                 'cli/command-reference/cloud/region',
                 'cli/command-reference/cloud/service-account',
                 'cli/command-reference/cloud/user',
@@ -2185,6 +2185,7 @@ module.exports = {
         'guides/rate-limit-downstream-apis',
         'guides/durable-gaming-sessions',
         'guides/lock-shared-resources',
+        'guides/celery-to-standalone-activity',
       ],
     },
     'integrations',

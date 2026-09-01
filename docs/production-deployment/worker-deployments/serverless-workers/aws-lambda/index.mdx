@@ -180,7 +180,7 @@ import io.temporal.common.WorkerDeploymentVersion;
 
 public final class Handler implements RequestHandler<Object, Void> {
   private static final RequestHandler<Object, Void> WORKER =
-      LambdaWorker.run(
+      LambdaWorker.define(
           new WorkerDeploymentVersion("my-app", "build-1"),
           builder -> {
             builder.setTaskQueue("my-task-queue");
