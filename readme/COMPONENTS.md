@@ -328,7 +328,7 @@ Usage:
 ```
 
 Archetypes:
-- encyclopedia
+- `encyclopedia` (displayed as **concepts**)
 - feature-guide
 - feature-summary
 

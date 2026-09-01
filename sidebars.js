@@ -1908,7 +1908,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Encyclopedia',
+      label: 'Concepts',
       collapsed: true,
       link: {
         type: 'doc',

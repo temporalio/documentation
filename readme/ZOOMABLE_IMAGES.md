@@ -167,7 +167,7 @@ Pages that did **not** previously have any zoom but contain raster images ≥ 80
 - [/develop/typescript/nexus/feature-guide](https://docs.temporal.io/develop/typescript/nexus/feature-guide) — _max 3542px_
 - [/develop/typescript/best-practices/debugging](https://docs.temporal.io/develop/typescript/best-practices/debugging) — _max 2702px_
 
-#### Encyclopedia
+#### Concepts
 
 - [/nexus/operations](https://docs.temporal.io/nexus/operations) — _max 3304px_
 - [/handling-messages](https://docs.temporal.io/handling-messages) — _max 2006px_

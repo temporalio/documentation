@@ -16,7 +16,7 @@ This document describes the purpose, audience, and content type for each top-lev
     - Temporal's value proposition, feature inventory, use cases
     - Temporal Cloud's operational characteristics (pricing, SLA, regions, limits).
 
-    Content here should help the reader make a decision, not build something. Avoid code examples beyond brief illustrations. Link to Develop for implementation details and to Encyclopedia for conceptual details.
+    Content here should help the reader make a decision, not build something. Avoid code examples beyond brief illustrations. Link to Develop for implementation details and to Concepts for conceptual details.
 
 ## Develop
 
@@ -24,7 +24,7 @@ This document describes the purpose, audience, and content type for each top-lev
 - **Content type:** How-to
 - **Description:** Each SDK section follows a consistent structure: installation, Workflows, Activities, Workers, Clients, message passing, testing, observability, and Nexus. Pages should show how to accomplish specific tasks with working code.
 
-    Cross-link to Encyclopedia for conceptual depth, but keep each page focused on "how do I do X in language Y."
+    Cross-link to Concepts for conceptual depth, but keep each page focused on "how do I do X in language Y."
 
     Use canonical verb as headings. If you find yourself having to group headings together using topics/nouns, consider breaking up the page.
 
@@ -74,7 +74,7 @@ This document describes the purpose, audience, and content type for each top-lev
 - **Content type:** Mostly explanation with some how-to content.
 - **Description:** Prescriptive guidance and validated patterns. They recommend specific approaches based on real-world deployments.
 
-## Encyclopedia
+## Concepts
 
 - **Audience:** Architects, advanced developers, and anyone who needs deep understanding of Temporal's internals and design.
 - **Content type:** Explanations.
@@ -83,6 +83,8 @@ This document describes the purpose, audience, and content type for each top-lev
     Link here from Develop when a concept needs more explanation than a how-to page should carry. These pages should be heavy on text and diagrams, and light on code.
 
     Nouns as headings are not discouraged in this section.
+
+    Content lives under `docs/encyclopedia/`; URLs use clean slugs (for example, `/workflows`) rather than a `/concepts` prefix.
 
 ## Glossary
 
@@ -120,7 +122,7 @@ This document describes the purpose, audience, and content type for each top-lev
   knowledge.
 - **Features:** A catalog of 17+ feature pages (core application, failure detection, Nexus, message passing, schedules,
   serverless, etc.) that each describe what a feature does and why it matters. Each page links out to Develop for
-  implementation and Encyclopedia for conceptual depth.
+  implementation and Concepts for conceptual depth.
 - **Temporal Cloud (evaluation):** Positioning content for the managed offering: pricing, SLA, regions, limits, security
   model, and support tiers. Helps readers decide between Cloud and self-hosted.
 - **Use cases and design patterns:** Real-world examples (Stripe, Coinbase, Netflix, etc.) and architectural patterns
@@ -208,11 +210,11 @@ These cross-cutting pages live outside any SDK folder:
   content is distinct (self-hosted configuration vs. Cloud configuration), but the structural echo can confuse readers
   looking for "how do I set up namespaces."
 
-## Encyclopedia: internal structure and issues
+## Concepts: internal structure and issues
 
 ### Internal structure
 
-The Encyclopedia contains roughly 75 pages organized into these concept groups:
+The Concepts section contains roughly 75 pages organized into these topic groups:
 
 - **Temporal / Temporal SDKs** — Top-level overviews of the platform and SDK architecture.
 - **Workflows** (8 pages) — Definitions, execution model, WorkflowID/RunID, continue-as-new, limits, timers, dynamic
@@ -237,12 +239,10 @@ The Encyclopedia contains roughly 75 pages organized into these concept groups:
 ### Issues
 
 - **Event History has SDK-specific pages.** The Go, Java, .NET, Python, and TypeScript Event History pages are
-  walkthroughs tied to specific SDKs. This is the only place in Encyclopedia where content is language-specific. These
-  pages could belong in Develop instead, or they could link from Develop into Encyclopedia. Currently they sit alongside
+  walkthroughs tied to specific SDKs. This is the only place in Concepts where content is language-specific. These
+  pages could belong in Develop instead, or they could link from Develop into Concepts. Currently they sit alongside
   the language-agnostic concept page.
 - **Overlap with Evaluate.** Both sections explain what Workflows, Activities, and Workers are. Evaluate does it at a
-  high level for decision-makers. Encyclopedia does it in depth for builders. The separation is reasonable, but some
-  Encyclopedia pages (like `temporal.mdx`) cover similar ground to `evaluate/understanding-temporal.mdx`. A reader
+  high level for decision-makers. Concepts does it in depth for builders. The separation is reasonable, but some
+  Concepts pages (like `temporal.mdx`) cover similar ground to `evaluate/understanding-temporal.mdx`. A reader
   arriving from search could land on either without context about which one they want.
-- **"Encyclopedia" as a name** does not follow common documentation conventions. Readers unfamiliar with the site would
-  not know to look here for conceptual documentation. "Concepts" or "Architecture" might be more discoverable.

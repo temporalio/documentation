@@ -6,6 +6,11 @@ import { v4 as uuidv4 } from "uuid";
 import { LANGUAGE_SVGS } from "../../../constants/sdkLanguages";
 import styles from "./RelatedRead.module.css";
 
+const archetypeLabels = {
+  encyclopedia: "concepts",
+  "feature-guide": "feature-guide",
+  "feature-summary": "feature-summary",
+};
 const archetypeClasses = {
   encyclopedia: "archetype-tag-encyclopedia-article",
   "feature-guide": "archetype-tag-feature-guide",
@@ -55,7 +60,11 @@ export function RelatedReadItem({ path, text, archetype }) {
         {languageIcon && <img src={languageIcon} alt="" className={styles.languageIcon} />}
         {text}
       </Link>
-      {tagClass && <span className={clsx(styles.archetypeTag, styles[tagClass])}>{archetype}</span>}
+      {tagClass && (
+        <span className={clsx(styles.archetypeTag, styles[tagClass])}>
+          {archetypeLabels[archetype] ?? archetype}
+        </span>
+      )}
     </div>
   );
 }
