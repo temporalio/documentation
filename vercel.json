@@ -2418,6 +2418,11 @@
       "source": "/evaluate/development-production-features/testing-suite",
       "destination": "/evaluate/features",
       "permanent": true
+    },
+    {
+      "source": "/evaluate/features/cloud-automation",
+      "destination": "/cloud",
+      "permanent": true
     }
   ]
 }

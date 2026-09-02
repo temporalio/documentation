@@ -1183,7 +1183,6 @@ module.exports = {
             'evaluate/features/observability',
             'evaluate/features/data-encryption',
             'evaluate/features/schedules',
-            'evaluate/features/cloud-automation',
             'evaluate/features/low-latency',
             'evaluate/features/multi-tenancy',
             'evaluate/features/job-queue',
