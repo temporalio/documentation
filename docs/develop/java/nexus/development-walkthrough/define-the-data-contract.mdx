@@ -4,7 +4,6 @@ title: Step 1 - Define the data contract
 sidebar_label: 1. Define the data contract
 description: Plan a purchase approval Nexus Service and write its data contract before any implementation, so every language shares one definition.
 toc_max_heading_level: 4
-unlisted: true
 tags:
   - Nexus
   - Java SDK
@@ -62,7 +61,7 @@ A file is one or the other, never both. A contract can span several files, with 
 
 The approval contract declares a Service with six Operations, so its entry file is a Nexus document.
 
-**[Definition files](/nexus/client-code-generator#definition-files)** documents both flavors in full, with the supported subset of JSON Schema and a worked example to model this contract on.
+**[Definition files](/develop/nexus/client-code-generator#definition-files)** documents both flavors in full, with the supported subset of JSON Schema and a worked example to model this contract on.
 
 Here is the approval contract in full. Every Operation the walkthrough builds is declared here, before any implementation exists:
 
@@ -226,7 +225,7 @@ Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/
 
 :::tip RESOURCES
 
-- [Nexus Client Code Generator](/nexus/client-code-generator) for the contract format and the supported JSON Schema subset.
+- [Nexus Client Code Generator](/develop/nexus/client-code-generator) for the contract format and the supported JSON Schema subset.
 - [Nexus Services](/nexus/services) for what a Service contract is and how it is shared.
 
 :::
