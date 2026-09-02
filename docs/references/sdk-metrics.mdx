@@ -146,7 +146,12 @@ This does not include local Activity Failures in the Go and Java SDKs (see [loca
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`, `failure_reason`
+
+Valid values for the `failure_reason` tag:
+
+- `PayloadsTooLarge`: A Payload in the Activity Task response exceeded the Namespace size limit, so the Worker proactively failed the Activity Task as retryable. See [Activity Payloads too large](/troubleshooting/execution-failures#activity-payloads-too-large).
+- `ActivityError`: The Activity Task failed for any other reason.
 
 ### `activity_execution_latency`
 
@@ -214,7 +219,12 @@ A Local Activity Execution failed.
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
+- Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`, `failure_reason`
+
+Valid values for the `failure_reason` tag:
+
+- `timeout`: The Local Activity exceeded its schedule-to-close or start-to-close timeout.
+- `ActivityError`: The Local Activity failed for any other reason.
 
 ### `local_activity_execution_latency`
 
