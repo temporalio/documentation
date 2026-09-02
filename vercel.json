@@ -2398,6 +2398,26 @@
       "source": "/evaluate/development-production-features/serverless-workers/index",
       "destination": "/evaluate/features/serverless-workers",
       "permanent": true
+    },
+    {
+      "source": "/evaluate/nexus",
+      "destination": "/evaluate/features/nexus",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/cloud-vs-self-hosted-features",
+      "destination": "/evaluate/features/cloud-vs-self-hosted-features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/debugging",
+      "destination": "/evaluate/features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/testing-suite",
+      "destination": "/evaluate/features",
+      "permanent": true
     }
   ]
 }
