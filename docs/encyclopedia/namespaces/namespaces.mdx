@@ -13,7 +13,7 @@ tags:
 :::info Open source and Temporal Cloud
 This page covers core namespace concepts that apply to both open source Temporal and Temporal Cloud.
 
-Temporal Cloud namespaces include additional capabilities, such as [API key](/cloud/api-keys) and [mTLS authentication](/cloud/certificates), [built-in role-based access controls](/cloud/manage-access/roles-and-permissions#namespace-level-permissions), [high availability replication](/cloud/high-availability), and [namespace tags](/cloud/namespaces#tag-a-namespace).
+Temporal Cloud namespaces include additional capabilities, such as [API key](/cloud/api-keys) and [mTLS authentication](/cloud/certificates), [built-in role-based access controls](/cloud/manage-access/roles-and-permissions#namespace-level-permissions), [separate rate limits](/cloud/limits#namespace-level), [high availability replication](/cloud/high-availability), and [namespace tags](/cloud/namespaces#tag-a-namespace).
 
 Moving from self-hosting to Cloud, or the reverse, requires zero code changes and incurs zero downtime.
 :::
@@ -31,8 +31,13 @@ When a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Configuration boundaries**: Options like the [Retention Period](/temporal-service/temporal-server#retention-period) and [Archival](/temporal-service/archival) destination are configured per Namespace.
 - **Default Namespace**: If no Namespace is specified, the Temporal Service uses the Namespace "default" for all Temporal SDKs and the Temporal CLI.
   You must create a Namespace before using it in your Client.
+- **Access control**: In self-hosted Temporal, use a custom [Authorizer](/self-hosted-guide/security#authorization) on your Frontend Service to restrict who can access each Namespace.
+  Temporal Cloud provides [role-based access controls](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) instead.
+- **Inter-Namespace communication**: Namespaces are isolated by default.
+  [Nexus](/nexus) is the controlled path for Workflows in one Namespace to call operations in another.
 - **Multi-tenancy**: A single Namespace is still multi-tenant.
   Multiple applications or teams can share a Namespace, but must coordinate on Workflow ID and Task Queue naming to avoid conflicts.
+  For architectural guidance, see [Multi-tenant application patterns](/best-practices/multi-tenant-patterns).
 
 ## Namespace operations
 

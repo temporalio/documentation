@@ -2386,7 +2386,7 @@
     },
     {
       "source": "/evaluate/development-production-features/multi-tenancy",
-      "destination": "/evaluate/features/multi-tenancy",
+      "destination": "/namespaces",
       "permanent": true
     },
     {
