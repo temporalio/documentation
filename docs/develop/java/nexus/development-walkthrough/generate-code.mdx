@@ -4,7 +4,6 @@ title: Step 2 - Generate code from the contract
 sidebar_label: 2. Generate code
 description: Use the Nexus Client Code Generator to turn the approval contract into typed models, validators, and Service definitions in every supported language.
 toc_max_heading_level: 4
-unlisted: true
 tags:
   - Nexus
   - Java SDK
@@ -14,7 +13,7 @@ Generate the library code from the contract before writing any implementation. B
 
 ## What generation produces
 
-For each type in the contract, the [Nexus Client Code Generator](/nexus/client-code-generator) emits a typed model and a runtime validator. If the contract declares Services, it will also create a Nexus Service definition.
+For each type in the contract, the [Nexus Client Code Generator](/develop/nexus/client-code-generator) emits a typed model and a runtime validator. If the contract declares Services, it will also create a Nexus Service definition.
 
 The generated Service definition carries one member per Operation, in whatever form is idiomatic for the language. It is used on both sides and in two different ways:
 
@@ -29,7 +28,7 @@ The generated validators run when a payload is parsed and again when it is seria
 
 Generation is one command per language, with a few per-language flags — Java, for instance, requires a package name whose last segment matches the output directory name.
 
-**[Generate code](/nexus/client-code-generator#generate-code)** has the full command shape and the flags each language takes, with examples for each.
+**[Generate code](/develop/nexus/client-code-generator#generate-code)** has the full command shape and the flags each language takes, with examples for each.
 
 This walkthrough has a companion sample project,
 [nexuswalkthrough](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough)
@@ -58,7 +57,7 @@ name, which is why both end in `generatedservice`. And generation **clears the o
 so keep the contract outside it — a schema stored in the output directory is deleted the first time
 you regenerate.
 
-Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. When a generated name is wrong for your language, fix it in the contract with a per-language naming override rather than editing the output. See the **[Nexus Client Code Generator](/nexus/client-code-generator)** for more details.
+Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. When a generated name is wrong for your language, fix it in the contract with a per-language naming override rather than editing the output. See the **[Nexus Client Code Generator](/develop/nexus/client-code-generator)** for more details.
 
 ## One contract, four languages
 
@@ -74,7 +73,7 @@ Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/
 
 :::tip RESOURCES
 
-- [Nexus Client Code Generator](/nexus/client-code-generator) for installation, per-language commands, and the supported JSON Schema subset.
-- [Use the generated code](/nexus/client-code-generator#use-the-generated-code) for how validation is wired in each language.
+- [Nexus Client Code Generator](/develop/nexus/client-code-generator) for installation, per-language commands, and the supported JSON Schema subset.
+- [Use the generated code](/develop/nexus/client-code-generator#use-the-generated-code) for how validation is wired in each language.
 
 :::

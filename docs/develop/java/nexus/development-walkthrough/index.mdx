@@ -4,7 +4,6 @@ title: Nexus Microservice Development Walkthrough - Java SDK
 sidebar_label: Microservice Development Walkthrough
 description: Build a Nexus Service end to end in Java, starting from a data contract and adding one Nexus capability at a time to solve a purchase approval problem.
 toc_max_heading_level: 4
-unlisted: true
 tags:
   - Nexus
   - Java SDK
@@ -15,8 +14,6 @@ tags:
 
 This walkthrough covers the [Temporal Operation Handler](/nexus/temporal-operation-handler), which is pre-release.
 APIs are experimental and may change in backwards-incompatible ways.
-
-Please do NOT review the documents under this page past the high level structure. Once we agree on the structure and form I will be working on the docs to match. For now those subpage contents should be considered placeholder text.
 
 :::
 
@@ -72,7 +69,7 @@ The idea is that we write a sample repo for each language that implements this p
 This set of docs is for Java, one question is where this will live - if it's in the develop section, then we should have a matching set of docs for each language. If it is in the Encyclopedia, then we can have a single doc with code tabs for the sample code in each language.
 
 :::
-The [Nexus Client Code Generator](/nexus/client-code-generator) makes this easy. It takes the contract and emits typed models, runtime validators, and Service definitions for Go, Java, Python, and TypeScript, so neither side hand-writes the types and neither side can drift from the contract.
+The [Nexus Client Code Generator](/develop/nexus/client-code-generator) makes this easy. It takes the contract and emits typed models, runtime validators, and Service definitions for Go, Java, Python, and TypeScript, so neither side hand-writes the types and neither side can drift from the contract.
 
 ## Steps
 

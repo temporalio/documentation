@@ -4,7 +4,6 @@ title: Step 9 - Add a Standalone Activity
 sidebar_label: 9. Add a Standalone Activity
 description: Back the notification Nexus Operation with a Standalone Activity instead of a Workflow, with no wrapper Workflow required.
 toc_max_heading_level: 4
-unlisted: true
 tags:
   - Nexus
   - Java SDK
@@ -92,7 +91,7 @@ The Task Queue is optional and defaults to the one the Operation is running on. 
 
 The same pattern applies to any Operation whose work is externally visible and cannot be taken back: charging a card, posting to a webhook, creating a ticket, writing to a system with no dedup of its own. Deriving the Id from the request Id costs nothing and removes the whole class of duplicate-side-effect bugs.
 
-Deriving the Id from the Operation *input* instead is a different tool for a different job: it makes several Operations share one Activity Execution and all receive its result. See [Nexus Standalone Activity](/nexus/standalone-activity#required-options).
+Deriving the Id from the Operation *input* instead is a different tool for a different job: it makes several Operations share one Activity Execution and all receive its result. See [Nexus Standalone Activity](/develop/nexus/activity-backed-operations#required-options).
 
 ## Register the Activity on the Worker
 
