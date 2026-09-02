@@ -3,7 +3,15 @@ const path = require('path');
 const matter = require('gray-matter');
 const { renderCard } = require('./render');
 const { walkDir, resolveUrlPath } = require('../shared/docsRouting');
-const { extractTitle, hasManualOverride, overrideImageFor, hashFor, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT } = require('./shared');
+const {
+  extractTitle,
+  hasManualOverride,
+  overrideImageFor,
+  hashFor,
+  resolveImageOrigin,
+  IMAGE_EXTENSION,
+  DEFAULT_FOOTER_TEXT,
+} = require('./shared');
 
 const CACHE_DIR = path.join(__dirname, '../../node_modules/.cache/og-images');
 
@@ -130,6 +138,7 @@ ogImagePlugin.extractTitle = extractTitle;
 ogImagePlugin.hashFor = hashFor;
 ogImagePlugin.hasManualOverride = hasManualOverride;
 ogImagePlugin.overrideImageFor = overrideImageFor;
+ogImagePlugin.resolveImageOrigin = resolveImageOrigin;
 ogImagePlugin.IMAGE_EXTENSION = IMAGE_EXTENSION;
 
 module.exports = ogImagePlugin;
