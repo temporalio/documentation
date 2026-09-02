@@ -16,8 +16,11 @@ import { ReleaseNoteHeader } from '@site/src/components';
   APIs are experimental and may be subject to backwards-incompatible changes.
 </ReleaseNoteHeader>
 
-The Nexus Code Generator, [`nexgen`](https://github.com/temporalio/nex-gen), turns one schema into client code for Go, Java, Python, and TypeScript.
-Both sides of a [Nexus Service](/nexus/services) generate from the same file, so neither hand-writes the types and neither can drift from the contract.
+A [Nexus Service](/nexus/services) is called across a team boundary, often by a caller written in a different language and deployed on its own schedule.
+When each side hand-writes its own request and response types, the two copies drift, and nothing catches it until a call fails.
+
+The Nexus Code Generator, [`nexgen`](https://github.com/temporalio/nex-gen), generates client code for Go, Java, Python, and TypeScript from a schema file that defines the contract.
+Both sides can then use code generated from the same file, which gives data validation and type safety across the languages and helps prevent drift.
 
 For each type it emits:
 
