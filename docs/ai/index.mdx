@@ -1,7 +1,6 @@
 ---
 id: index
 title: Durable AI
-sidebar_label: Overview
 description: Build durable AI agents and systems on Temporal, with runnable cookbook recipes, SDK integrations, and design patterns for agent workloads.
 slug: /ai
 ---
@@ -19,8 +18,11 @@ they left off after a failure. Start with the [AI Cookbook](/ai/cookbook) and th
 [Approval](/design-patterns/approval) and [Entity Workflow](/design-patterns/entity-workflow) patterns.
 
 **Processing pipelines.** Multi-step data and document pipelines, such as extraction, embedding, or batch inference,
-that need to fan out, retry failed steps in isolation, and resume without reprocessing completed work. See the
-[batch processing patterns](/design-patterns#batch-processing-patterns).
+that need to fan out, retry failed steps in isolation, and resume without reprocessing completed work. When pipelines
+share Workers across models, tenants, or urgency levels, use
+[Task Queue Priority and Fairness](/develop/task-queue-priority-fairness) to run urgent work ahead of bulk work and
+keep one tenant from starving the others. See the [batch processing](/design-patterns#batch-processing-patterns) and
+[QoS and throughput](/design-patterns/qos-throughput-patterns) patterns.
 
 **Internal agent platforms.** Teams building a shared runtime for many agents reuse Temporal's Worker and Task Queue
 primitives instead of building their own scheduler. See the

@@ -27,47 +27,81 @@ Instead, explore the [Export](/cloud/export) feature, which does let you send cl
 
 ## Which events are supported by Audit Logs? {/* #supported-events */}
 
+The `operation` field can contain the following event values:
+
 - Account
   - `ChangeAccountPlanType`: Change Account Plan Type
-  - `UpdateAccountAPI`: Configure Audit Logs, Configure Observability Endpoint
-- API Keys
+  - `CreateAccountAuditLogSink`: Create Account Audit Log Sink
+  - `DeleteAccountAuditLogSink`: Delete Account Audit Log Sink
+  - `OffboardAccount`: Offboard Account
+  - `SelfServiceOffboardAccount`: Self-Service Offboard Account
+  - `UpdateAccount`: Update Account
+  - `UpdateAccountAuditLogSink`: Update Account Audit Log Sink
+- API keys
   - `CreateAPIKey`: Create API Key
+  - `CreateApiKey`: Create API Key
+  - `CreateServiceAccountAPIKey`: Create Service Account API Key
   - `DeleteAPIKey`: Delete API Key
+  - `DeleteApiKey`: Delete API Key
   - `UpdateAPIKey`: Update API Key
-- Connectivity Rules
+  - `UpdateApiKey`: Update API Key
+- Billing
+  - `CreateBillingReport`: Create Billing Report
+- Connectivity rules
   - `CreateConnectivityRule`: Create Connectivity Rule
   - `DeleteConnectivityRule`: Delete Connectivity Rule
+- Custom roles
+  - `CreateCustomRole`: Create Custom Role
+  - `DeleteCustomRole`: Delete Custom Role
+  - `UpdateCustomRole`: Update Custom Role
 - Namespace
-  - `CreateNamespaceAPI`: Create Namespace
-  - `DeleteNamespaceAPI`: Delete Namespace
-  - `FailoverNamespacesAPI`: Failover (for High Availability Namespaces)
-  - `RenameCustomSearchAttributeAPI`: Rename Custom Search Attribute
-  - `UpdateNamespaceAPI`: Includes retention period changes, replica edits, authentication method updates, custom search attribute updates, and connectivity rule bindings
-- Namespace Export
+  - `CreateNamespace`: Create Namespace
+  - `DeleteNamespace`: Delete Namespace
+  - `FailoverNamespaces`: Failover Namespaces
+  - `RenameCustomSearchAttribute`: Rename Custom Search Attribute
+  - `UpdateNamespace`: Update Namespace
+  - `UpdateNamespaceTags`: Update Namespace Tags
+  - `UpdateSearchAttributes`: Update Search Attributes
+- Namespace export
   - `CreateNamespaceExportSink`: Create Namespace Export Sink
   - `DeleteNamespaceExportSink`: Delete Namespace Export Sink
   - `UpdateNamespaceExportSink`: Update Namespace Export Sink
   - `ValidateNamespaceExportSink`: Validate Namespace Export Sink
-- Nexus Endpoint
+- Nexus endpoints
   - `CreateNexusEndpoint`: Create Nexus Endpoint
   - `DeleteNexusEndpoint`: Delete Nexus Endpoint
   - `UpdateNexusEndpoint`: Update Nexus Endpoint
-- Service Accounts
+- Projects
+  - `CreateProject`: Create Project
+  - `DeleteProject`: Delete Project
+  - `SetServiceAccountProjectAccess`: Set Service Account Project Access
+  - `SetUserGroupProjectAccess`: Set User Group Project Access
+  - `SetUserProjectAccess`: Set User Project Access
+  - `UpdateProject`: Update Project
+- Security
+  - `SecretFound`: Detect Exposed API Key
+- Service accounts
   - `CreateServiceAccount`: Create Service Account
-  - `CreateServiceAccountAPIKey`: Create Service Account API Key
   - `DeleteServiceAccount`: Delete Service Account
+  - `SetServiceAccountNamespaceAccess`: Set Service Account Namespace Access
   - `UpdateServiceAccount`: Update Service Account
-- User
-  - `CreateUserAPI`: Create Users
-  - `DeleteUserAPI`: Delete Users
-  - `InviteUsersAPI`: Invite Users
-  - `SetUserNamespaceAccessAPI`: Set User Namespace Access
-  - `UpdateIdentityNamespacePermissionsAPI`: Update Identity Namespace Permissions
-  - `UpdateUserAPI`: Update User Account-level Roles
-  - `UpdateUserNamespacePermissionsAPI`: Update User Namespace Permissions
-- User Groups
+- Users
+  - `CreateJITUser`: Create JIT User
+  - `CreateUser`: Create User
+  - `DeleteUser`: Delete User
+  - `InviteUsers`: Invite Users
+  - `SetUserNamespaceAccess`: Set User Namespace Access
+  - `UpdateIdentityNamespacePermissions`: Update Identity Namespace Permissions
+  - `UpdateUser`: Update User
+  - `UpdateUserNamespacePermissions`: Update User Namespace Permissions
+  - `UserAcceptInvitation`: User Accept Invitation
+  - `UserLogin`: User Login
+  - `UserSignup`: User Signup
+- User groups
+  - `AddUserGroupMember`: Add User Group Member
   - `CreateUserGroup`: Create User Group
   - `DeleteUserGroup`: Delete User Group
+  - `RemoveUserGroupMember`: Remove User Group Member
   - `SetUserGroupNamespaceAccess`: Set User Group Namespace Access
   - `UpdateUserGroup`: Update User Group
 

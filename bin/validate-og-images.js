@@ -16,14 +16,14 @@
 // pages, etc.) still falls back to the site-wide default, which remains the
 // Phase 1 regression floor for everything outside the plugin's reach.
 //
-// Generated-image expectations resolve against config.url directly. The
-// image path now comes from real front matter (injected by
-// plugins/og-image/remarkPlugin.js during MDX compilation) and is rendered
-// by Docusaurus's own metadata pipeline, which always resolves relative
-// image paths against config.url — there's no VERCEL_URL-based override for
-// preview deployments anymore (a known, accepted limitation of moving off
-// the old postBuild HTML-patch approach; see plugins/og-image/remarkPlugin.js
-// for why that approach had to change).
+// Generated-image expectations use ogImagePlugin.resolveImageOrigin(),
+// which substitutes VERCEL_URL on non-production Vercel deployments — see
+// the comment on that function in plugins/og-image/shared.js. The image
+// path itself comes from real front matter (injected by
+// plugins/og-image/remarkPlugin.js during MDX compilation, as a full
+// absolute URL for exactly this reason) and is rendered by Docusaurus's own
+// metadata pipeline, which leaves an already-absolute image URL untouched
+// rather than re-resolving it against config.url.
 
 const fs = require('fs');
 const path = require('path');
@@ -122,7 +122,7 @@ async function main() {
       const hash = ogImagePlugin.hashFor(title, description, footerText);
       const expectedImage = new URL(
         path.posix.join(config.baseUrl, 'img/og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`),
-        config.url,
+        ogImagePlugin.resolveImageOrigin(),
       ).toString();
       const expectedImagePath = path.join(BUILD_DIR, 'img', 'og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`);
 

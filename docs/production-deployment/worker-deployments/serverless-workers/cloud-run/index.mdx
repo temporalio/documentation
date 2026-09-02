@@ -50,6 +50,18 @@ the SDKs with a Cloud Run guide today.
   Terraform module.
 - A Temporal SDK. Use the tabs to select your language and the rest of the page will update accordingly.
 
+{/* Remove this admonition once the high deployment latency entry leaves the Cloud Run known issues page. */}
+
+:::caution Open Google Cloud issue: high deployment latency in some regions
+
+Google currently reports that creating or updating Cloud Run resources takes longer than expected in some regions,
+including `us-central1`. Google recommends deploying to another region while the issue is open. For the current status,
+see
+[High deployment latency in some regions](https://cloud.google.com/run/docs/known-issues#deployment-latency) in the
+Cloud Run known issues.
+
+:::
+
 ## 1. Write Worker code {/* #write-worker-code */}
 
 A Cloud Run Serverless Worker is a standard long-running Worker. It connects to Temporal, registers its Workflows and
@@ -650,9 +662,7 @@ scale the pool but never runs it.
 
 Use a dedicated service account for the pool, and
 [create one](https://cloud.google.com/iam/docs/service-accounts-create) if you do not already have a suitable account.
-If you omit `--service-account`, Cloud Run falls back to the
-[default Compute Engine service account](https://cloud.google.com/run/docs/securing/service-identity), which holds
-`roles/editor`. You need the email twice: here, and in [Step 3](#configure-iam) as `runner_service_account_email`.
+You need the email twice: here, and in [Step 3](#configure-iam) as `runner_service_account_email`.
 
 Store the Temporal Cloud API key (or TLS material) in Secret Manager rather than passing it as a plaintext environment
 variable.
@@ -695,7 +705,8 @@ This section applies to Temporal Cloud. For self-hosted Temporal Service deploym
 [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup).
 
 Temporal Cloud scales the Worker Pool by [impersonating a service account](https://docs.cloud.google.com/docs/authentication/use-service-account-impersonation) you create, called the *invoker service account*. The invoker service account
-reads and scales the pool through the Cloud Run admin API. It does not run the pool.
+reads and scales the pool through the Cloud Run admin API. It does not run the pool. Temporal calls that API from
+outside your network, so you do not need to open inbound ports.
 
 :::caution
 
@@ -703,7 +714,7 @@ This guide uses two service accounts, and they are not interchangeable:
 
 - The **runner service account** is the identity the Worker Pool runs as. You set it in
   [Step 2](#create-worker-pool) with `gcloud run worker-pools deploy --service-account`, and it can be an account you
-  already have. Omit the flag and Cloud Run uses the project's default Compute Engine service account.
+  already have.
 - The **invoker service account** is the identity Temporal impersonates to read and scale the pool. The Terraform module
   below creates it, and its email is the `invoker_email` output you give Temporal in
   [Step 4](#create-worker-deployment-version).
@@ -740,7 +751,7 @@ Set these variables:
 | `project_id` | Yes | The GCP project that hosts the Worker Pool and the invoker service account. |
 | `invoker_account_id` | Yes | A name for the invoker service account the module creates. The full email becomes `<invoker_account_id>@<project_id>.iam.gserviceaccount.com`. The template supplies a name, so change it only if you want a different one. |
 | `impersonator_service_account_emails` | Yes | Temporal Cloud's service accounts, granted `roles/iam.serviceAccountTokenCreator` on the invoker service account so they can impersonate it. Filled in by the template in the UI. |
-| `runner_service_account_email` | No | The [runner service account](#runner-service-account) from [Step 2](#create-worker-pool). The module grants the invoker service account `roles/iam.serviceAccountUser` on it, which Cloud Run requires to attach that identity when it scales the pool. Leave it unset and the invoker service account gets that grant on the default Compute Engine service account instead. |
+| `runner_service_account_email` | Yes | The [runner service account](#runner-service-account) from [Step 2](#create-worker-pool). The module grants the invoker service account `roles/iam.serviceAccountUser` on it, which Cloud Run requires to attach that identity when it scales the pool. |
 | `invoker_display_name` | No | Display name for the invoker service account. Defaults to `Temporal Serverless Worker Pool Invoker`. |
 | `deploy_roles` | No | Project-level Cloud Run roles granted to the invoker service account. Defaults to `roles/run.developer`. Any role you use instead must include `run.workerPools.get` and `run.workerPools.update`. |
 

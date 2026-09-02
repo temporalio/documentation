@@ -504,7 +504,34 @@ module.exports = async function createConfigAsync() {
     themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
-      faster: true,
+      // `faster: true` turns on every Faster flag (SWC loader/minifier,
+      // lightningcss, rspack, mdxCrossCompilerCache, worker threads, eager
+      // VCS) at once. rspackPersistentCache is carved out and forced off:
+      // Vercel restores node_modules/** (including rspack's persistent
+      // cache) between builds, keyed in part by git branch — a brand-new
+      // preview branch's first build inherits the *last production
+      // deployment's* cache. Since plugins/og-image/remarkPlugin.js bakes
+      // an environment-dependent absolute og:image URL into each page's
+      // compiled front matter (see resolveImageOrigin() in
+      // plugins/og-image/shared.js), and that persistent cache's key
+      // doesn't account for VERCEL_ENV/VERCEL_URL, an unchanged page could
+      // silently keep serving a stale environment's resolved URL baked in
+      // at a previous build. Every other Faster flag is content-hash-keyed
+      // in a way that's safe to cache across environments; only this one
+      // needed to go. Confirmed empirically: two back-to-back local builds
+      // with different VERCEL_ENV/VERCEL_URL only picked up the new value
+      // once node_modules/.cache/rspack and .docusaurus were cleared.
+      faster: {
+        swcJsLoader: true,
+        swcJsMinimizer: true,
+        swcHtmlMinimizer: true,
+        lightningCssMinimizer: true,
+        mdxCrossCompilerCache: true,
+        rspackBundler: true,
+        rspackPersistentCache: false,
+        ssgWorkerThreads: true,
+        gitEagerVcs: true,
+      },
     },
   };
 
