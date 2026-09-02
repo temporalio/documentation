@@ -1,17 +1,6 @@
----
-id: add-a-standalone-activity
-title: Step 9 - Add a Standalone Activity
-sidebar_label: 9. Add a Standalone Activity
-description: Back the notification Nexus Operation with a Standalone Activity instead of a Workflow, with no wrapper Workflow required.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
 The last Operation is `notifyRequester`, which tells the requester their approval was `APPROVED` or `DENIED`.
 
-This one is not a Workflow. It is a single outbound notification with no state, nothing to wait for, and nothing to orchestrate — the [Standalone Activity](/nexus/standalone-activity) shape chosen in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation).
+This one is not a Workflow. It is a single outbound notification with no state, nothing to wait for, and nothing to orchestrate — the [Standalone Activity](/nexus/standalone-activity) shape chosen in [step 3](/develop/java/nexus/development-walkthrough?step=backing).
 
 ## Write the Activity
 
@@ -91,7 +80,7 @@ The Task Queue is optional and defaults to the one the Operation is running on. 
 
 The same pattern applies to any Operation whose work is externally visible and cannot be taken back: charging a card, posting to a webhook, creating a ticket, writing to a system with no dedup of its own. Deriving the Id from the request Id costs nothing and removes the whole class of duplicate-side-effect bugs.
 
-Deriving the Id from the Operation *input* instead is a different tool for a different job: it makes several Operations share one Activity Execution and all receive its result. See [Nexus Standalone Activity](/develop/nexus/activity-backed-operations#required-options).
+Deriving the Id from the Operation *input* instead is a different tool for a different job: it makes several Operations share one Activity Execution and all receive its result. See [Nexus Standalone Activity](/develop/java/nexus/activity-backed-operations#required-options).
 
 ## Register the Activity on the Worker
 
@@ -124,11 +113,6 @@ This notification finishes immediately, so cancellation never comes up for it. I
 
 If you write a long-running Activity-backed Operation, read [Activity cancellation](/activity-execution#cancellation) before you ship it. None of the mechanics are Nexus-specific.
 
-## Next
-
-**[Step 10 - Call the Standalone Activity](/develop/java/nexus/development-walkthrough/call-the-standalone-activity)** - complete the approval flow end to end.
-
-Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

@@ -23,7 +23,7 @@ A [Nexus Service](/nexus/services) publishes Operations that other teams call ac
 It is a single handler type that can back an Operation with any Temporal primitive — start a Workflow, run an Update, start an Activity — or complete the Operation inline with no backing Execution at all.
 Whichever you choose, the handler is the same shape, and every Execution it touches is connected back to the caller automatically.
 
-For language-specific examples, migration from earlier handler APIs, and Worker registration, see [How to use the Temporal Operation Handler](/develop/nexus/temporal-operation-handler).
+For language-specific examples, migration from earlier handler APIs, and Worker registration, see [How to use the Temporal Operation Handler](/develop/java/nexus/temporal-operation-handler).
 
 ## What you can do with it
 
@@ -64,7 +64,12 @@ A handler that only sends messages returns a synchronous result, and the Operati
 
 ## Related
 
-- [How to use the Temporal Operation Handler](/develop/nexus/temporal-operation-handler) — SDK examples and migration
+- How to use the Temporal Operation Handler:
+  [Go](/develop/go/nexus/temporal-operation-handler) ·
+  [Java](/develop/java/nexus/temporal-operation-handler) ·
+  [.NET](/develop/dotnet/nexus/temporal-operation-handler) ·
+  [Python](/develop/python/nexus/temporal-operation-handler) ·
+  [TypeScript](/develop/typescript/nexus/temporal-operation-handler)
 - [Nexus Standalone Activity](/nexus/standalone-activity) — Activity-backed Operations
 - [Nexus Client Code Generator](/nexus/client-code-generator) — contract-first typed clients
 - [Microservice Development Walkthrough](/develop/java/nexus/development-walkthrough) — end-to-end Java guide

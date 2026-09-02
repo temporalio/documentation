@@ -1,23 +1,12 @@
----
-id: call-the-standalone-activity
-title: Step 10 - Call the Standalone Activity
-sidebar_label: 10. Call the Standalone Activity
-description: Call the Activity-backed notification Operation from a caller Workflow and complete the approval flow end to end.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
 Call `notifyRequester` once the decision is final. From the caller's side there is nothing new to learn, which is the point of this step.
 
 ## The caller cannot tell the difference
 
-`notifyRequester` is called exactly like `requestApproval`: through the same generated stub, with the same Endpoint, the same type checking, and the same error handling. A caller in any language calls it the same way, as in [step 6](/develop/java/nexus/development-walkthrough/call-the-service).
+`notifyRequester` is called exactly like `requestApproval`: through the same generated stub, with the same Endpoint, the same type checking, and the same error handling. A caller in any language calls it the same way, as in [step 6](/develop/java/nexus/development-walkthrough?step=call).
 
 Nothing in the caller reveals that this Operation is backed by an Activity and the other by a Workflow. That is the contract doing its job. The handler team could later replace the notification Activity with a Workflow that retries across providers and escalates on failure, and no caller would change.
 
-The call sits alongside the others in the caller Workflow from [step 6](/develop/java/nexus/development-walkthrough/call-the-service#call-the-operations-from-a-caller-workflow) — same stub, same shape, no hint of what runs behind it.
+The call sits alongside the others in the caller Workflow from [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow) — same stub, same shape, no hint of what runs behind it.
 
 ## Complete the flow
 
@@ -80,10 +69,10 @@ The Service is complete but minimal. Natural extensions:
 
 - **Timeouts and escalation.** Give the approval a deadline and escalate or auto-deny when it passes.
 - **Split the Workers.** Run the Nexus Service, the approval Workflow, and the notification Activity on separate Worker fleets. See [Nexus patterns](/nexus/patterns).
-- **Callers in other languages.** Generate a caller from the same contract in Go, Python, or TypeScript. See [Nexus Client Code Generator](/develop/nexus/client-code-generator).
+- **Callers in other languages.** Generate a caller from the same contract in Go, Python, or TypeScript. See [Nexus Client Code Generator](/develop/java/nexus/client-code-generator).
 - **Standalone invocation.** Call an Operation from a Client with no caller Workflow. See [Standalone Nexus Operation](/standalone-nexus-operation).
 
-Before running this against anything real, read [Debugging, common pitfalls, and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips).
+Before running this against anything real, read [Debugging, common pitfalls, and tips](/develop/java/nexus/development-walkthrough?step=tips).
 
 Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 

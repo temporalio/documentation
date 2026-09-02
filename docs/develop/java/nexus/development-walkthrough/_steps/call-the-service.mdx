@@ -1,21 +1,10 @@
----
-id: call-the-service
-title: Step 6 - Call the Service
-sidebar_label: 6. Call the Service
-description: Call the approval Nexus Service from a caller Workflow in another Namespace, using the generated Service interface, and run the callers from other languages against the same handler.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
-Call the approval Operations from a Workflow in the caller Namespace. The caller knows two things — the Endpoint name and the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract) — and nothing else about the handler.
+Call the approval Operations from a Workflow in the caller Namespace. The caller knows two things — the Endpoint name and the contract from [step 1](/develop/java/nexus/development-walkthrough?step=contract) — and nothing else about the handler.
 
 The caller built here is Java, the same language as the handler, but nothing about the handler requires that. [Call it from another language](#call-it-from-another-language) covers the cross-language case, which is the same call against the same Endpoint.
 
 ## What the caller gets from the contract
 
-The caller does not hand-write request types, response types, or Operation names. [Step 2](/develop/java/nexus/development-walkthrough/generate-code) generated all of it from the contract, and the caller works against that generated code:
+The caller does not hand-write request types, response types, or Operation names. [Step 2](/develop/java/nexus/development-walkthrough?step=generate) generated all of it from the contract, and the caller works against that generated code:
 
 - **A Service definition** naming the Service and its Operations, so an Operation name is a symbol rather than a string you can misspell.
 - **Typed models** for every input and output in the contract.
@@ -216,11 +205,11 @@ The caller does not have to be written in the same language as the handler. Each
 | Python | `{sample repo link}` |
 | TypeScript | `{sample repo link}` |
 
-Check the README in each repository for how to run its client. Point it at the Endpoint created in [step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus) and it drives the Java handler built here, with no changes on either side.
+Check the README in each repository for how to run its client. Point it at the Endpoint created in [step 5](/develop/java/nexus/development-walkthrough?step=publish) and it drives the Java handler built here, with no changes on either side.
 
 The interop runs both directions. Every one of those clients can call this Java Service, and the Java caller built in this step can call the Service from any of those repositories. The contract is the only thing the two sides share, so neither side needs to know the other's language, Namespace, or deployment.
 
-To generate a caller for another language from this contract yourself rather than running a sample, see [Generate code](/develop/nexus/client-code-generator#generate-code).
+To generate a caller for another language from this contract yourself rather than running a sample, see [Generate code](/develop/java/nexus/client-code-generator#generate-code).
 
 ## Calling without a caller Workflow
 
@@ -230,18 +219,11 @@ If you only need to run one Operation and have nothing to orchestrate, a Client 
 
 `checkApprovalRequired` is a natural fit for this. A caller that only wants to know whether approval is needed has nothing to orchestrate and no result to await.
 
-## Next
-
-The Service can start an approval and return a decision.
-
-**[Step 7 - Add messaging](/develop/java/nexus/development-walkthrough/add-messaging)** - let callers interact with an approval while it is pending.
-
-Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 
 - [Nexus Operations](/nexus/operations) for the Operation lifecycle and timeouts.
 - [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
-- [Nexus Client Code Generator](/develop/nexus/client-code-generator) for generating callers in other languages.
+- [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) for generating callers in other languages.
 
 :::
