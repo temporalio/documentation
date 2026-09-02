@@ -4,6 +4,9 @@ title: Temporal CLI cloud namespace command reference
 sidebar_label: namespace
 description: Namespace Management Commands
 toc_max_heading_level: 4
+keywords:
+  - namespace
+  - management
 tags:
   - namespaces
 ---
@@ -119,6 +122,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the namespace already matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--project-id` | No | **string** The ID of the project to create the namespace in. If omitted, the namespace is created in the account's default project. |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--spec` | Yes | **string** Namespace configuration in JSON format. Provide inline JSON directly, or use '@path/to/file.json' to load from a file. |
@@ -361,12 +365,14 @@ Use the following options to change the behavior of this command. You can also u
 | `--codec-include-cross-origin-credentials` | No | **bool** Include cross-origin credentials in codec server requests. |
 | `--codec-pass-access-token` | No | **bool** Pass the user access token to the codec server endpoint. |
 | `--connection-rule-id` | No | **string[]** Private connectivity rule ID. Repeat to specify multiple. |
+| `--description` | No | **string** The description is a human-readable description of the namespace. Must be at most 255 printable ASCII characters plus whitespace. Optional, default is empty. |
 | `--enable-delete-protection` | No | **bool** Prevent accidental deletion of this namespace. |
 | `--enable-task-queue-fairness` | No | **bool** Enable task queue fairness for the namespace. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--mtls-auth-enabled` | No | **bool** Enable mTLS authentication for the namespace. |
 | `--name`, `-n` | Yes | **string** The name for the new namespace (becomes part of the namespace ID). |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | No | **string** The ID of the project to create the namespace in. If omitted, the namespace is created in the account's default project. |
 | `--region` | Yes | **string[]** Cloud region where the namespace will be hosted. Repeat to specify multiple regions for High Availability (e.g. --region aws-us-east-1 --region aws-us-west-2). |
 | `--retention-days` | No | **int** Number of days to retain closed workflow history. If not specified, the server default applies. |
 | `--search-attribute` | No | **string[]** Custom search attribute as 'name=Type' (e.g. --search-attribute myAttr=Keyword). Valid types: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. Repeat to add multiple. |
@@ -395,6 +401,59 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## description
+
+Commands for viewing and updating the description of a Temporal Cloud
+namespace. The description is a human-readable description of the
+namespace. Must be at most 255 printable ASCII characters plus
+whitespace. Optional, default is empty.
+
+### description get
+
+Retrieve the current description for a Temporal Cloud namespace. The
+description is a human-readable description of the namespace.
+
+Example:
+
+```
+temporal cloud namespace description get --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### description set
+
+Set the description for a Temporal Cloud namespace without changing other
+namespace settings. The description is a human-readable description of
+the namespace. Must be at most 255 printable ASCII characters
+plus whitespace. Pass an empty string to clear the description.
+
+Example:
+
+```
+temporal cloud namespace description set --namespace my-namespace.my-account --value "Updated namespace description"
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--value` | Yes | **string** New description for the namespace. Must be at most 255 printable ASCII characters plus whitespace. Pass an empty string to clear it. |
 
 ## edit
 
@@ -1107,6 +1166,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--name` | No | **string** Filter namespaces by the name as defined in the specification of the namespace. |
 | `--page-size` | No | **int** Number of namespaces to return per page. Use for paginated results. |
 | `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--project-id` | No | **string** Filter namespaces by project ID. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## mtls
@@ -1644,3 +1704,4 @@ The following options can be used with any command.
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
+

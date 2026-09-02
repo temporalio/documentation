@@ -4,6 +4,9 @@ title: Temporal CLI cloud user command reference
 sidebar_label: user
 description: User Management Commands
 toc_max_heading_level: 4
+keywords:
+  - user
+  - management
 tags:
   - users
 ---
@@ -135,16 +138,18 @@ Use the following options to change the behavior of this command. You can also u
 ## invite
 
 Invite a user to Temporal Cloud by email. Optionally assign an account-level
-role and namespace-level access permissions.
+role, namespace-level access permissions, and project-level access roles.
 
 Account roles: owner, admin, developer, finance-admin, read, metrics-read.
 Namespace access format: 'namespace=permission' where permission is one of: admin, write, read.
+Project access format: 'project-id=role' where role is one of: admin, write, read, list, contribute, member.
 
 Example:
 
 ```
 temporal cloud user invite --email alice@example.com --account-role developer \
-  --namespace-access my-namespace.my-account=write
+  --namespace-access my-namespace.my-account=write \
+  --project-access my-project-id=write
 ```
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
@@ -160,6 +165,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--namespace-access` | No | **string[]** Namespace access to grant, in the format 'namespace=permission'. Permission must be one of: admin, write, read. Can be repeated. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-access` | No | **string[]** Project access to grant, in the format 'project-id=role'. Role must be one of: admin, write, read, list, contribute, member. Can be repeated. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## list
@@ -182,7 +188,36 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace` | No | **string** Filter users by the namespace they have access to. |
 | `--page-size` | No | **int** Number of users to return per page. Use for paginated results. |
 | `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--project-id` | No | **string** List users with access to the project ID. Cannot be combined with --email or --namespace. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## remove-project-access
+
+Remove a Temporal Cloud user's direct project-level access.
+
+Specify the user with either --user-id or --user-email (not both).
+
+Example:
+
+```
+temporal cloud user remove-project-access --user-id my-user-id \
+  --project-id my-project-id
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | Yes | **string** The ID of the project. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
+| `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
 
 ## set-account-role
 
@@ -282,6 +317,37 @@ Use the following options to change the behavior of this command. You can also u
 | `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
 | `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
 
+## set-project-access
+
+Set project-level access for a Temporal Cloud user.
+
+Project roles: admin, write, read, list, contribute, member.
+
+Specify the user with either --user-id or --user-email (not both).
+
+Example:
+
+```
+temporal cloud user set-project-access --user-id my-user-id \
+  --project-id my-project-id --project-role write
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | Yes | **string** The ID of the project. |
+| `--project-role` | Yes | **string** The project-level role to assign. Valid values: admin, write, read, list, contribute, member. |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--user-email` | No | **string** The email address of the user. Mutually exclusive with --user-id. |
+| `--user-id` | No | **string** The ID of the user. Mutually exclusive with --user-email. |
+
 ## Global Flags
 
 The following options can be used with any command.
@@ -293,3 +359,4 @@ The following options can be used with any command.
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
+

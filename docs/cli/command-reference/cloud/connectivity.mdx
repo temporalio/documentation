@@ -4,6 +4,9 @@ title: Temporal CLI cloud connectivity command reference
 sidebar_label: connectivity
 description: Connectivity Management Commands
 toc_max_heading_level: 4
+keywords:
+  - connectivity
+  - connectivity-rule
 tags:
   - connectivity
 ---
@@ -78,6 +81,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | No | **string** Filter connectivity rules by namespace (e.g., 'my-namespace.my-account'). |
 | `--page-size` | No | **int** Number of connectivity rules to return per page. |
 | `--page-token` | No | **string** Page token for pagination. |
+| `--project-id` | No | **string** Filter connectivity rules by project ID. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## private
@@ -109,11 +113,12 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
-| `--azure-pe-resource-id` | No | **string** The ARM resource ID of the Azure Private Endpoint (only for Azure private connectivity). Example: `/subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Network/privateEndpoints/{name}`. |
+| `--azure-pe-resource-id` | No | **string** The ARM resource ID of the Azure Private Endpoint (only for Azure private connectivity). Example: /subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Network/privateEndpoints/{name}. |
 | `--connection-id` | No | **string** The connection ID for private connectivity (AWS VPC endpoint ID or GCP PSC connection ID). |
 | `--gcp-project-id` | No | **string** The GCP project ID (only for GCP private connectivity). |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | No | **string** The ID of the project to create the connectivity rule in. |
 | `--region` | Yes | **string** The region for private connectivity. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -141,6 +146,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--enable-stable-ips` | No | **bool** Connect the namespace via a predictable set of IPs on the public internet. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | No | **string** The ID of the project to create the connectivity rule in. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## Global Flags
@@ -154,3 +160,4 @@ The following options can be used with any command.
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
+

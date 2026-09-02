@@ -4,6 +4,8 @@ title: Temporal CLI cloud nexus command reference
 sidebar_label: nexus
 description: Nexus Operations Management Commands
 toc_max_heading_level: 4
+keywords:
+  - nexus
 tags:
   - nexus
 ---
@@ -122,6 +124,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--name` | Yes | **string** The name of the Nexus Endpoint to create. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | No | **string** The ID of the project to create the Nexus Endpoint in. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--target-namespace` | Yes | **string** The namespace in which a handler worker will be polling for Nexus tasks. |
 | `--target-task-queue` | Yes | **string** The task queue on which a handler worker will be polling for Nexus tasks. |
@@ -170,6 +173,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--page-size` | No | **int** Number of endpoints to return per page. If no page size is provided, it will default to 100. A maximum of 1000 endpoints can be fetched at a time. |
 | `--page-token` | No | **string** Token for retrieving the next page of results. Initial value is empty string. |
+| `--project-id` | No | **string** Filter Nexus Endpoints by project ID. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ### endpoint update
@@ -217,3 +221,4 @@ The following options can be used with any command.
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
+

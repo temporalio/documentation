@@ -4,6 +4,26 @@ title: Temporal CLI activity command reference
 sidebar_label: activity
 description: Learn how to use Temporal Activity commands to perform operations on Activity Executions.
 toc_max_heading_level: 4
+keywords:
+  - activity
+  - activity start
+  - activity execute
+  - activity describe
+  - activity list
+  - activity count
+  - activity cancel
+  - activity terminate
+  - activity execution
+  - activity complete
+  - activity update-options
+  - activity fail
+  - activity pause
+  - activity unpause
+  - activity reset
+  - cli reference
+  - cli-feature
+  - command-line-interface-cli
+  - temporal cli
 tags:
   - Activities
   - Temporal CLI
@@ -218,10 +238,9 @@ Use the following options to change the behavior of this command. You can also u
 ## reset
 
 Reset an activity. Not supported for Standalone Activities.
-This restarts the activity as if it were first being
-scheduled. That is, it will reset both the number of attempts and the
-activity timeout, as well as, optionally, the
-[heartbeat details](#reset-heartbeats).
+This restarts the activity as if it were first being scheduled: the
+attempt count returns to one, its per-attempt timeouts are re-armed, and
+its [heartbeat details](#reset-heartbeats) are cleared.
 
 If the activity may be executing (i.e. it has not yet timed out), the
 reset will take effect the next time it fails, heartbeats, or times out.
@@ -274,7 +293,6 @@ Use the following options to change the behavior of this command. You can also u
 | `--keep-paused` | No | **bool** If the activity was paused, it will stay paused. |
 | `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. Note: Using --query for batch activity operations is an experimental feature and may change in the future. |
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
-| `--reset-attempts` | No | **bool** Reset the activity attempts. |
 | `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. |
 | `--restore-original-options` | No | **bool** Restore the original options of the activity. |
 | `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
@@ -480,19 +498,19 @@ The following options can be used with any command.
 | `--address` | No | **string** Temporal Service gRPC endpoint. | `localhost:7233` |
 | `--api-key` | No | **string** API key for request. |  |
 | `--client-authority` | No | **string** Temporal gRPC client :authority pseudoheader. |  |
-| `--client-connect-timeout` | No | **duration** The client connection timeout. 0s means no timeout. |  |
+| `--client-connect-timeout` | No | **duration** Client connection timeout. |  |
 | `--codec-auth` | No | **string** Authorization header for Codec Server requests. |  |
 | `--codec-endpoint` | No | **string** Remote Codec Server endpoint. |  |
-| `--codec-header` | No | **string[]** HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. |  |
+| `--codec-header` | No | **string[]** HTTP headers for codec server (KEY=VALUE, repeatable). |  |
 | `--color` | No | **string-enum** Output coloring. Accepted values: always, never, auto. | `auto` |
-| `--command-timeout` | No | **duration** The command execution timeout. 0s means no timeout. |  |
-| `--config-file` | No | **string** File path to read TOML config from, defaults to `$CONFIG_PATH/temporalio/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, `$HOME/Library/Application Support` on macOS, and `%AppData%` on Windows. |  |
-| `--disable-config-env` | No | **bool** If set, disables loading environment config from environment variables. |  |
-| `--disable-config-file` | No | **bool** If set, disables loading environment config from config file. |  |
+| `--command-timeout` | No | **duration** Command execution timeout. |  |
+| `--config-file` | No | **string** TOML config file path. |  |
+| `--disable-config-env` | No | **bool** Disable loading config from environment variables. |  |
+| `--disable-config-file` | No | **bool** Disable loading config from file. |  |
 | `--env` | No | **string** Active environment name (`ENV`). | `default` |
-| `--env-file` | No | **string** Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`. |  |
-| `--grpc-meta` | No | **string[]** HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`. |  |
-| `--identity` | No | **string** The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST". |  |
+| `--env-file` | No | **string** Path to environment settings file. |  |
+| `--grpc-meta` | No | **string[]** HTTP headers for requests (KEY=VALUE, repeatable). |  |
+| `--identity` | No | **string** Identity of the client submitting requests. |  |
 | `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
 | `--log-level` | No | **string-enum** Log level. Default is "never" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `never` |
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
@@ -500,12 +518,13 @@ The following options can be used with any command.
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
 | `--profile` | No | **string** Profile to use for config file. |  |
 | `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
-| `--tls` | No | **bool** Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable. |  |
-| `--tls-ca-data` | No | **string** Data for server CA certificate. Can't be used with --tls-ca-path. |  |
-| `--tls-ca-path` | No | **string** Path to server CA certificate. Can't be used with --tls-ca-data. |  |
-| `--tls-cert-data` | No | **string** Data for x509 certificate. Can't be used with --tls-cert-path. |  |
-| `--tls-cert-path` | No | **string** Path to x509 certificate. Can't be used with --tls-cert-data. |  |
+| `--tls` | No | **bool** Enable base TLS encryption. Auto-enabled when api-key or TLS options are set. |  |
+| `--tls-ca-data` | No | **string** Inline server CA certificate data. |  |
+| `--tls-ca-path` | No | **string** Path to server CA certificate. |  |
+| `--tls-cert-data` | No | **string** Inline x509 certificate data. |  |
+| `--tls-cert-path` | No | **string** Path to x509 certificate. |  |
 | `--tls-disable-host-verification` | No | **bool** Disable TLS host-name verification. |  |
-| `--tls-key-data` | No | **string** Private certificate key data. Can't be used with --tls-key-path. |  |
-| `--tls-key-path` | No | **string** Path to x509 private key. Can't be used with --tls-key-data. |  |
+| `--tls-key-data` | No | **string** Inline x509 private key data. |  |
+| `--tls-key-path` | No | **string** Path to x509 private key. |  |
 | `--tls-server-name` | No | **string** Override target TLS server name. |  |
+
