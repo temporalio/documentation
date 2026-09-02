@@ -4,7 +4,6 @@ title: Step 6 - Call the Service
 sidebar_label: 6. Call the Service
 description: Call the approval Nexus Service from a caller Workflow in another Namespace, using the generated Service interface, and run the callers from other languages against the same handler.
 toc_max_heading_level: 4
-unlisted: true
 tags:
   - Nexus
   - Java SDK
@@ -221,7 +220,7 @@ Check the README in each repository for how to run its client. Point it at the E
 
 The interop runs both directions. Every one of those clients can call this Java Service, and the Java caller built in this step can call the Service from any of those repositories. The contract is the only thing the two sides share, so neither side needs to know the other's language, Namespace, or deployment.
 
-To generate a caller for another language from this contract yourself rather than running a sample, see [Generate code](/nexus/client-code-generator#generate-code).
+To generate a caller for another language from this contract yourself rather than running a sample, see [Generate code](/develop/nexus/client-code-generator#generate-code).
 
 ## Calling without a caller Workflow
 
@@ -243,6 +242,6 @@ Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/
 
 - [Nexus Operations](/nexus/operations) for the Operation lifecycle and timeouts.
 - [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
-- [Nexus Client Code Generator](/nexus/client-code-generator) for generating callers in other languages.
+- [Nexus Client Code Generator](/develop/nexus/client-code-generator) for generating callers in other languages.
 
 :::
