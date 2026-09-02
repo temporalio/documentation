@@ -5,13 +5,6 @@ sidebar_label: Serverless Workers on AWS Lambda
 description: Write a Temporal Worker that runs on AWS Lambda using the .NET SDK Temporalio.Extensions.Aws.Lambda package.
 slug: /develop/dotnet/workers/serverless-workers/aws-lambda
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - lambda
-  - aws
-  - dotnet sdk
-  - worker
-  - serverless worker
 tags:
   - Workers
   - .NET SDK
@@ -42,36 +35,31 @@ Use `TemporalLambdaWorker.CreateHandler` to create a Lambda handler that runs a 
 Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
 Assign the result to a static field so the handler is created once during Lambda cold start and reused across invocations.
 
-<!--SNIPSTART dotnet-lambda-worker {"selectedLines": ["1-5", "7-22", "24-25"], "highlightedLines": "10-15"}-->
-[src/LambdaWorker/Function.cs](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/Function.cs)
-```cs {10-15}
-namespace TemporalioSamples.LambdaWorker;
+```csharp {10-17}
+namespace MyApp;
 
 using Amazon.Lambda.Core;
 using Temporalio.Common;
 using Temporalio.Extensions.Aws.Lambda;
-// ...
 
 public class LambdaFunction
 {
     private static readonly Func<object?, ILambdaContext, Task> WorkerHandler =
         TemporalLambdaWorker.CreateHandler(
-            new WorkerDeploymentVersion(
-                LambdaWorkerSample.DeploymentName,
-                LambdaWorkerSample.BuildId),
-            Configure);
+            new WorkerDeploymentVersion("my-app", "build-1"),
+            config =>
+            {
+                config.WorkerOptions.TaskQueue = "my-task-queue";
+                config.WorkerOptions.AddWorkflow<SampleWorkflow>();
+                config.WorkerOptions.AddActivity(Activities.HelloActivity);
+            });
 
     public Task HandlerAsync(Stream input, ILambdaContext context) =>
         WorkerHandler(input, context);
-
-    private static void Configure(LambdaWorkerConfig config)
-    {
-        LambdaWorkerSample.ConfigureWorkerOptions(config.WorkerOptions);
-// ...
-    }
 }
 ```
-<!--SNIPEND-->
+
+For a complete project, see the [Lambda Worker sample](https://github.com/temporalio/samples-dotnet/tree/main/src/LambdaWorker).
 
 The `WorkerDeploymentVersion` is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
@@ -79,10 +67,9 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 Set it per-Workflow with the `[Workflow]` attribute, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
 The default versioning behavior is `AutoUpgrade`.
 
-<!--SNIPSTART dotnet-lambda-worker-workflow {"highlightedLines": "7"}-->
-[src/LambdaWorker/SampleWorkflow.workflow.cs](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/SampleWorkflow.workflow.cs)
-```cs {7}
-namespace TemporalioSamples.LambdaWorker;
+[src/LambdaWorker/Worker/SampleWorkflow.workflow.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/LambdaWorker/Worker/SampleWorkflow.workflow.cs)
+```csharp {7}
+namespace TemporalioSamples.LambdaWorker.Worker;
 
 using Microsoft.Extensions.Logging;
 using Temporalio.Common;
@@ -103,7 +90,6 @@ public class SampleWorkflow
     }
 }
 ```
-<!--SNIPEND-->
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
@@ -168,12 +154,11 @@ Add the OpenTelemetry extension package:
 dotnet add package Temporalio.Extensions.Aws.Lambda.OpenTelemetry
 ```
 
-Call `LambdaWorkerOpenTelemetry.ApplyDefaults` in the configure callback:
+Call `ApplyOpenTelemetryDefaults` on the options in the configure callback:
 
-<!--SNIPSTART dotnet-lambda-worker {"highlightedLines": "23"}-->
-[src/LambdaWorker/Function.cs](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/Function.cs)
-```cs {23}
-namespace TemporalioSamples.LambdaWorker;
+[src/LambdaWorker/Worker/Function.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/LambdaWorker/Worker/Function.cs)
+```csharp {17}
+namespace TemporalioSamples.LambdaWorker.Worker;
 
 using Amazon.Lambda.Core;
 using Temporalio.Common;
@@ -187,29 +172,25 @@ public class LambdaFunction
             new WorkerDeploymentVersion(
                 LambdaWorkerSample.DeploymentName,
                 LambdaWorkerSample.BuildId),
-            Configure);
+            config =>
+            {
+                config.ApplyOpenTelemetryDefaults();
+                LambdaWorkerSample.ConfigureWorkerOptions(config.WorkerOptions);
+            });
 
     public Task HandlerAsync(Stream input, ILambdaContext context) =>
         WorkerHandler(input, context);
-
-    private static void Configure(LambdaWorkerConfig config)
-    {
-        LambdaWorkerSample.ConfigureWorkerOptions(config.WorkerOptions);
-        LambdaWorkerOpenTelemetry.ApplyDefaults(config);
-    }
 }
 ```
-<!--SNIPEND-->
 
-`ApplyDefaults` configures Temporal tracing with `TracingInterceptor`, creates an OTLP trace exporter and tracer provider, configures Core SDK OTLP metrics, uses AWS X-Ray-compatible trace IDs, and registers a per-invocation shutdown hook that force-flushes traces.
+`ApplyOpenTelemetryDefaults` configures Temporal tracing with `TracingInterceptor`, creates an OTLP trace exporter and tracer provider, configures Core SDK OTLP metrics, uses AWS X-Ray-compatible trace IDs, and registers a per-invocation shutdown hook that force-flushes traces.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 The endpoint can be overridden with the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
 
 You can customize the defaults by passing a `LambdaWorkerOpenTelemetryOptions` object:
 
 ```csharp
-LambdaWorkerOpenTelemetry.ApplyDefaults(
-    config,
+config.ApplyOpenTelemetryDefaults(
     new LambdaWorkerOpenTelemetryOptions
     {
         CollectorEndpoint = "http://localhost:4317",
@@ -227,9 +208,8 @@ The default Collector configuration does not route OpenTelemetry Protocol (OTLP)
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
-<!--SNIPSTART dotnet-lambda-worker-otel-collector-config-->
-[src/LambdaWorker/otel-collector-config.yaml.sample](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/otel-collector-config.yaml.sample)
-```sample
+[src/LambdaWorker/otel-collector-config.template.yaml](https://github.com/temporalio/samples-dotnet/blob/main/src/LambdaWorker/otel-collector-config.template.yaml)
+```yaml
 receivers:
     otlp:
         protocols:
@@ -239,7 +219,6 @@ receivers:
                 endpoint: "localhost:4318"
 
 exporters:
-    debug:
     awsxray:
         region: ${env:AWS_REGION}
     awsemf:
@@ -254,17 +233,16 @@ service:
     pipelines:
         traces:
             receivers: [otlp]
-            exporters: [awsxray, debug]
+            exporters: [awsxray]
         metrics:
             receivers: [otlp]
             exporters: [awsemf]
     telemetry:
         logs:
-            level: debug
+            level: info
         metrics:
             address: localhost:8888
 ```
-<!--SNIPEND-->
 
 Set the following environment variable on the Lambda function to point the Collector at the bundled config:
 

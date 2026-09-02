@@ -33,14 +33,19 @@ exceptions:
   # Temporal primitives and proper nouns
   - Activity
   - Activities
+  - Application
+  - Applications
   - Archival
   - Cloud
   - Codec
+  - Command
+  - Commands
   - Converter
   - Cron
   - Data
   - Durable
   - Event
+  - Events
   - Execution
   - Executions
   - Failure
@@ -115,6 +120,7 @@ exceptions:
   - Period
   - Platform
   - Policy
+  - Policies
   - Preview
   - Process
   - Program
@@ -151,6 +157,11 @@ exceptions:
   - PHP
   - Rust
   - .NET
+  # Vale tokenizes the leading dot away, so ".NET" above never matches the
+  # word it actually sees. Without this, every sentence-case heading naming
+  # the SDK is flagged — "Temporal .NET technical resources" is reported
+  # while the identical Go heading is not.
+  - NET
   # Identifier casing per this repo's style guide (Id, not ID)
   - Id
   # Temporal feature / primitive names
@@ -162,7 +173,15 @@ exceptions:
   - Capacity
   - Connectivity
   - Continue-As-New
+  - Plugin
+  - Plugins
+  # Exact phrases; "Audit Logging" is the canonical term in Temporal/terms.yml,
+  # so keep "Log"/"Logs" out of the single-word list above.
+  - Audit Log
+  - Audit Logs
+  - Audit Logging
   # Cloud provider / networking / industry acronyms
+  - Amazon
   - AWS
   - GCP
   - DNS
@@ -178,12 +197,17 @@ exceptions:
   - RPO
   - SLA
   - APS
+  - TRU
+  - TRUs
   - PrivateLink
   - KMS
+  - CA
   # Cloud provider product names (exact phrase, not the individual words)
   - Azure Key Vault
   - Azure Workload Identity
   - GCP Workload Identity
+  - Private Service Connect
+  - Cloud Ops API
   - Terraform
   - Prometheus
   - Grafana
@@ -192,3 +216,6 @@ exceptions:
   - Google
   - Gemini
   - Vertex
+  # Temporal product/site section proper nouns (exact phrase, not the individual words)
+  - AI Cookbook
+  - Code Exchange

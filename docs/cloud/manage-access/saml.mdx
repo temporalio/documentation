@@ -3,14 +3,8 @@ id: saml
 title: SAML authentication
 sidebar_label: SAML authentication
 description:
-  Integrate SAML 2.0 with your Temporal Cloud account for secure user authentication. Connect via Microsoft Entra ID or
-  Okta and ensure seamless SSO. Charges apply.
+  Integrate a SAML 2.0 identity provider with your Temporal Cloud account for secure user authentication. Charges apply.
 toc_max_heading_level: 4
-keywords:
-  - how-to
-  - introduction
-  - security
-  - temporal cloud
 tags:
   - Security
   - Temporal Cloud
@@ -33,9 +27,10 @@ SAML is a paid feature. See the [pricing page](/cloud/pricing) for details.
    [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id). The Account Id is the five or six characters following
    the period (.), such as `f45a2`. You will need the Account Id to construct your callback URL and your entity
    identifier.
-1. Configure SAML with your IdP by following one of these sets of instructions:
-   - [Microsoft Entra ID](#configure-saml-with-azure-ad)
-   - [Okta](#configure-saml-with-okta)
+1. Configure SAML with your IdP:
+   - [Microsoft Entra ID example](#configure-saml-with-azure-ad)
+   - [Okta example](#configure-saml-with-okta)
+   - [Generic SAML 2.0 configuration](#configure-saml-with-other-identity-providers)
 1. [Share your connection information with us and test your connection.](#finish-saml-configuration)
 
 ## How to configure SAML with Microsoft Entra ID {/* #configure-saml-with-azure-ad */}
@@ -155,8 +150,54 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    - Copy the IdP settings.
    - Download the active certificate.
 
-To finish setting up Okta as your SAML IdP, see the next section,
+To finish setting up Okta as your SAML IdP, see
 [Finish SAML configuration](#finish-saml-configuration).
+
+## How to configure SAML with another identity provider {/* #configure-saml-with-other-identity-providers */}
+
+Temporal Cloud works with identity providers that meet the SAML 2.0 requirements described below. Provider names in
+this documentation are configuration examples, not an exhaustive compatibility list. An identity provider does not
+need to be listed to work with Temporal Cloud.
+
+Configure your IdP with the following values, replacing `ACCOUNT_ID` with your Temporal Cloud Account Id:
+
+- **Service provider entity identifier:**
+
+  ```text
+  urn:auth0:prod-tmprl:ACCOUNT_ID-saml
+  ```
+
+- **Assertion Consumer Service URL:**
+
+  ```text
+  https://login.tmprl.cloud/login/callback?connection=ACCOUNT_ID-saml
+  ```
+
+Configure the SAML connection to:
+
+- Use SAML 2.0 with HTTP POST binding.
+- Use an RSA X.509 signing certificate and RSA-SHA256 signing.
+- Provide a stable subject `NameID` that uniquely identifies each user.
+- Include the user's email address and name as attributes.
+
+The following example shows how to apply the same configuration to an additional identity provider. It does not
+represent the complete set of compatible providers.
+
+### PingFederate configuration example
+
+Create a SAML 2.0 Browser SSO service provider connection in PingFederate using the Temporal Cloud entity identifier
+and Assertion Consumer Service URL shown above. Configure the connection with an RSA signing certificate, a stable
+subject `NameID`, and the required `email` and `name` attributes.
+
+For IdP-initiated SSO, publish the connection-specific `/idp/startSSO.ping` URL in your organization's application
+portal.
+
+For detailed instructions, see:
+
+- [Configure IdP Browser SSO](https://docs.pingidentity.com/pingfederate/13.1/administrators_reference_guide/help_spconnectionconfigtasklet_spbrowserssostate.html)
+- [PingFederate IdP endpoints](https://docs.pingidentity.com/pingfederate/13.1/developers_reference_guide/pf_idp_endpoints.html)
+
+After configuring your IdP, continue to [Finish SAML configuration](#finish-saml-configuration).
 
 ## How to finish your SAML configuration {/* #finish-saml-configuration */}
 

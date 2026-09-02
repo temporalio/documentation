@@ -7,18 +7,14 @@ description:
   identifiers, and gRPC endpoints in Temporal Cloud.
 slug: /cloud/namespaces
 toc_max_heading_level: 4
-keywords:
-  - explanation
-  - how-to
-  - introduction
-  - namespaces
-  - temporal cloud
 tags:
   - Concepts
   - Namespaces
   - Temporal Cloud
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { CaptionedImage, EnlargeImage } from '@site/src/components';
 
 :::info Temporal Cloud
@@ -56,7 +52,7 @@ The Namespace Name alone is not sufficient to connect to or reference a Namespac
 
 For example: `accounting-production.123de`
 
-The full Namespace ID is shown in the Namespace list in the Temporal Cloud UI and in the output of `tcld namespace list`. See [Cloud Namespace ID](#temporal-cloud-namespace-id) for details.
+The full Namespace ID is shown in the Namespace list in the Temporal Cloud UI and in the output of the `namespace list` command. See [Cloud Namespace ID](#temporal-cloud-namespace-id) for details.
 :::
 
 ## What is a Temporal Cloud Account ID? {/* #temporal-cloud-account-id */}
@@ -65,8 +61,8 @@ A Temporal Cloud Account ID is a unique customer identifier assigned by Temporal
 of numbers and letters like `f45a2`, at least five characters long. This account identifier is part of every Namespace ID
 in your account and is retained while you use Temporal Cloud.
 
-You can retrieve your Account ID from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld`
-utility at a command line interface (CLI). Follow these steps.
+You can retrieve your Account ID from the [Temporal Cloud](https://cloud.temporal.io) Web UI or from the command line.
+Follow these steps.
 
 <Tabs>
 
@@ -83,6 +79,25 @@ utility at a command line interface (CLI). Follow these steps.
        />
 
     In this example, the Account ID is `123de`.
+
+    </TabItem>
+
+    <TabItem value="temporal-cloud" label="Temporal CLI">
+    1. Use the Temporal Cloud extension to log into an account.
+
+       ```
+       temporal cloud login
+       ```
+
+       Complete the interactive login in the browser window that opens.
+
+    1. Return to the command line and list your Namespaces.
+
+       ```
+       temporal cloud namespace list
+       ```
+
+       Each Namespace uses an Account ID suffix, the same as in the Temporal Cloud Web UI Namespaces list.
 
     </TabItem>
 
@@ -226,6 +241,12 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 </TabItem>
 
+<TabItem value="namespace-temporal-cloud" label="Temporal CLI">
+
+See the [`temporal cloud namespace create`](/cli/command-reference/cloud/namespace#create) command reference for details.
+
+</TabItem>
+
 <TabItem value="namespace-tcld" label="tcld">
 
 See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command reference for details.
@@ -297,7 +318,7 @@ For accessing the Temporal Web UI, use the HTTPS endpoint in the form:
 `https://cloud.temporal.io/namespaces/<namespace>.<account>`. For example:
 `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
 
-### Accessing Namespaces with Encryption and Private Connectivity
+### Access Namespaces with encryption and private connectivity
 
 To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.3. 
 
@@ -341,19 +362,21 @@ To add a user to a Namespace, scroll to the bottom of the page and select **Add 
 
 After you make changes, select **Save** in the top-right or bottom-left portion of the page.
 
-{/* How to manage Namespaces in Temporal Cloud using tcld */}
+{/* How to manage Namespaces in Temporal Cloud from the CLI */}
 
-### Manage Namespaces in Temporal Cloud using tcld
+### Manage Namespaces in Temporal Cloud from the CLI
 
-To list Namespaces and get information about them, use the following [tcld](/cloud/tcld/) commands:
+To list Namespaces and get information about them, use the following commands:
 
-- [tcld namespace list](/cloud/tcld/namespace/#list)
-- [tcld namespace get](/cloud/tcld/namespace/#get)
+- [`temporal cloud namespace list`](/cli/command-reference/cloud/namespace#list) or [tcld namespace list](/cloud/tcld/namespace/#list)
+- [`temporal cloud namespace get`](/cli/command-reference/cloud/namespace#get) or [tcld namespace get](/cloud/tcld/namespace/#get)
 
-To manage certificates, use the [tcld namespace accepted-client-ca](/cloud/tcld/namespace/#accepted-client-ca) commands.
+To manage certificates, use the [`temporal cloud namespace mtls cert-ca`](/cli/command-reference/cloud/namespace#mtls-cert-ca)
+or [tcld namespace accepted-client-ca](/cloud/tcld/namespace/#accepted-client-ca) commands.
 For more information, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
 
-To manage certificate filters, use the [tcld namespace certificate-filters](/cloud/tcld/namespace/#certificate-filters)
+To manage certificate filters, use the [`temporal cloud namespace mtls cert-filter`](/cli/command-reference/cloud/namespace#mtls-cert-filter)
+or [tcld namespace certificate-filters](/cloud/tcld/namespace/#certificate-filters)
 commands. For more information, see
 [How to manage certificate filters in Temporal Cloud](/cloud/certificates#manage-certificate-filters).
 
@@ -385,9 +408,10 @@ reflects the policy in effect when the Workflow Execution was closed.
 
 For further questions or concerns, contact [Support](/cloud/support#support-ticket).
 
-### Delete a Namespace using tcld
+### Delete a Namespace from the CLI
 
-See the [tcld namespace delete](/cloud/tcld/namespace/#delete) command reference for details.
+See the [`temporal cloud namespace delete`](/cli/command-reference/cloud/namespace#delete) or
+[tcld namespace delete](/cloud/tcld/namespace/#delete) command reference for details.
 
 ### Namespace deletion protection {/* #delete-protection */}
 
@@ -407,8 +431,20 @@ Follow these steps:
   title="Deletion Protection is enabled by toggling the switch"
 />
 
-To enable or disable this feature using [`tcld`](/cloud/tcld), use the following command. Set the value to `true` to
+To enable or disable this feature from the CLI, use the following command. Set the value to `true` to
 enable or `false` to disable:
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```
+temporal cloud namespace lifecycle set \
+    --namespace <namespace_id.account_id> \
+    --enable-delete-protection <Boolean>
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```
 tcld namespace lifecycle set \
@@ -416,12 +452,15 @@ tcld namespace lifecycle set \
     --enable-delete-protection <Boolean>
 ```
 
+</TabItem>
+</Tabs>
+
 ## How to tag a Namespace in Temporal Cloud {/* #tag-a-namespace */}
 
 Tags are key-value metadata pairs that can be attached to namespaces in Temporal Cloud to help operators organize,
 track, and manage namespaces more easily.
 
-### Tag Structure and Limits
+### Tag structure and limits
 
 - Each namespace can have a maximum of 10 tags
 - Each key must be unique for a given namespace (for example, a namespace cannot have both `team:foo` and `team:bar` tags)
@@ -437,9 +476,10 @@ track, and manage namespaces more easily.
 - Only [**Account Admins** and **Account Owners**](/cloud/manage-access/roles-and-permissions#account-level-roles) can create and edit tags
 - All users with access to a namespace can view its tags
 
-### tcld
+### Temporal Cloud CLI
 
-See the [tcld namespace tags](/cloud/tcld/namespace/#tags) command reference for details.
+See the [`temporal cloud namespace tag`](/cli/command-reference/cloud/namespace#tag) or
+[tcld namespace tags](/cloud/tcld/namespace/#tags) command reference for details.
 
 ### Terraform
 

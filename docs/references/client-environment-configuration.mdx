@@ -72,8 +72,8 @@ API key for authentication. When set, TLS is enabled by default.
 
 ### `TEMPORAL_CLIENT_AUTHORITY`
 
-Overrides the `:authority` gRPC header. This is a Go SDK extension with no equivalent in other clients and no CLI flag
-of its own.
+Overrides the `:authority` gRPC header. This is a Go SDK extension with no equivalent in other clients. The CLI has a
+global `--client-authority` flag, but it isn't wired into this environment variable/TOML config mechanism.
 
 - TOML key: `profile.<name>.authority`
 - CLI flag: none
@@ -163,7 +163,7 @@ Sets gRPC headers. The part after `_META_` becomes the header key, so `TEMPORAL_
 
 - TOML key: `profile.<name>.grpc_meta`
 - CLI flag: `--grpc-meta`
-- Read by: every client
+- Read by: every client except CLI
 
 ## Codec Server variables
 

@@ -14,23 +14,58 @@ function runTransform({ frontMatter, value, path: filePath = '/docs/example.mdx'
 
 describe('ogImageRemarkPlugin', () => {
   let originalNodeEnv;
+  let originalVercelEnv;
+  let originalVercelUrl;
 
   beforeEach(() => {
     originalNodeEnv = process.env.NODE_ENV;
+    originalVercelEnv = process.env.VERCEL_ENV;
+    originalVercelUrl = process.env.VERCEL_URL;
     process.env.NODE_ENV = 'production';
+    delete process.env.VERCEL_ENV;
+    delete process.env.VERCEL_URL;
   });
 
   afterEach(() => {
     process.env.NODE_ENV = originalNodeEnv;
+    if (originalVercelEnv === undefined) delete process.env.VERCEL_ENV;
+    else process.env.VERCEL_ENV = originalVercelEnv;
+    if (originalVercelUrl === undefined) delete process.env.VERCEL_URL;
+    else process.env.VERCEL_URL = originalVercelUrl;
   });
 
-  it('injects the same hash-based path postBuild would render for a normal page', () => {
+  it('injects the same hash-based absolute URL postBuild would render for a normal page', () => {
     const frontMatter = runTransform({
       frontMatter: { title: 'Approval Pattern', description: 'Human-in-the-loop workflows.' },
       value: '---\ntitle: Approval Pattern\n---\n\nSome body content.',
     });
     const expectedHash = hashFor('Approval Pattern', 'Human-in-the-loop workflows.');
-    assert.strictEqual(frontMatter.image, `/img/og/${expectedHash}.jpg`);
+    assert.strictEqual(frontMatter.image, `https://docs.temporal.io/img/og/${expectedHash}.jpg`);
+  });
+
+  it('points at the Vercel preview origin instead of production on a non-production Vercel deployment', () => {
+    process.env.VERCEL_ENV = 'preview';
+    process.env.VERCEL_URL = 'documentation-git-my-branch.vercel.app';
+    const frontMatter = runTransform({
+      frontMatter: { title: 'Approval Pattern', description: 'Human-in-the-loop workflows.' },
+      value: '---\ntitle: Approval Pattern\n---\n\nSome body content.',
+    });
+    const expectedHash = hashFor('Approval Pattern', 'Human-in-the-loop workflows.');
+    assert.strictEqual(
+      frontMatter.image,
+      `https://documentation-git-my-branch.vercel.app/img/og/${expectedHash}.jpg`,
+    );
+  });
+
+  it('keeps the production origin when VERCEL_ENV is "production"', () => {
+    process.env.VERCEL_ENV = 'production';
+    process.env.VERCEL_URL = 'docs.temporal.io';
+    const frontMatter = runTransform({
+      frontMatter: { title: 'Approval Pattern', description: 'Human-in-the-loop workflows.' },
+      value: '---\ntitle: Approval Pattern\n---\n\nSome body content.',
+    });
+    const expectedHash = hashFor('Approval Pattern', 'Human-in-the-loop workflows.');
+    assert.strictEqual(frontMatter.image, `https://docs.temporal.io/img/og/${expectedHash}.jpg`);
   });
 
   it('does nothing outside a production build (yarn start)', () => {
@@ -71,14 +106,14 @@ Body.`;
       frontMatter: {},
       value: '---\n---\n\n# My Heading\n\nBody.',
     });
-    assert.strictEqual(withHeading.image, `/img/og/${hashFor('My Heading', undefined)}.jpg`);
+    assert.strictEqual(withHeading.image, `https://docs.temporal.io/img/og/${hashFor('My Heading', undefined)}.jpg`);
 
     const withNeither = runTransform({
       frontMatter: {},
       value: '---\n---\n\nBody with no heading.',
       path: '/docs/design-patterns/my-page.mdx',
     });
-    assert.strictEqual(withNeither.image, `/img/og/${hashFor('My Page', undefined)}.jpg`);
+    assert.strictEqual(withNeither.image, `https://docs.temporal.io/img/og/${hashFor('My Page', undefined)}.jpg`);
   });
 
   it('does nothing when frontMatter data is missing', () => {

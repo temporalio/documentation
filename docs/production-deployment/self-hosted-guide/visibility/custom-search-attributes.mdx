@@ -3,18 +3,15 @@ id: custom-search-attributes
 title: Manage custom Search Attributes
 sidebar_label: Custom Search Attributes
 slug: /self-hosted-guide/visibility/custom-search-attributes
-description: How to manage custom Search Attributes in a self-hosted Visibility store.
+description: Create or rename custom Search Attributes with the Temporal CLI on Temporal Cloud; contact Support to delete them. Use Temporal CLI to create or remove them when self-hosting.
 toc_max_heading_level: 4
-keywords:
-  - visibility
-  - self-hosting
 tags:
   - Temporal Service
   - Self-hosting
   - Visibility
 ---
 
-To manage custom Search Attributes on Temporal Cloud, use the [`tcld`](/cloud/tcld/namespace#search-attributes) CLI tool.
+To manage custom Search Attributes on Temporal Cloud, use the [Temporal CLI](/cli/command-reference/cloud/namespace#search-attribute).
 With Temporal Cloud, you can create and rename custom Search Attributes. If you need to delete a custom Search Attribute, contact Support at [support.temporal.io](https://support.temporal.io).
 To manage custom Search Attributes on a self-hosted Temporal Service, use the [Temporal CLI](/cli/command-reference/operator#search-attribute).
 With a self-hosted Temporal Service, you can create and remove custom Search Attributes.
@@ -40,9 +37,15 @@ Creating a custom Search Attribute in your Visibility store makes it available t
 **On Temporal Cloud**
 
 To create custom Search Attributes on Temporal Cloud, use
-[`tcld namespace search-attributes add`](/cloud/tcld/namespace/#search-attributes). For example, to add a custom Search
-Attributes "CustomSA" to your Temporal Cloud Namespace "YourNamespace", run the following command.
-`tcld namespace search-attributes add --namespace YourNamespace --search-attribute "CustomSA"`
+[`temporal cloud namespace search-attribute create`](/cli/command-reference/cloud/namespace#search-attribute-create).
+For example, to add a custom Search Attribute named `CustomSA` of type `Keyword` to your Namespace, run:
+
+```
+temporal cloud namespace search-attribute create \
+  --namespace <namespace>.<account> \
+  --name CustomSA \
+  --type Keyword
+```
 
 **On self-hosted Temporal Service**
 

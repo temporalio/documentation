@@ -4,12 +4,6 @@ title: Managing Temporal Cloud access control
 sidebar_label: Managing Cloud access control
 description: Best practices for managing access control, permissions, and user management in Temporal Cloud.
 toc_max_heading_level: 4
-keywords:
-  - temporal cloud
-  - access control
-  - permissions
-  - user management
-  - best practices
 tags:
   - Best Practices
   - Temporal Cloud
@@ -27,7 +21,7 @@ mechanics, see [Manage API keys](/cloud/api-keys) and [Manage service accounts](
 
 Related guidance:
 - [Namespace best practices](/best-practices/managing-namespace)
-- [Multi-tenant application patterns](/production-deployment/multi-tenant-patterns)
+- [Multi-tenant application patterns](/best-practices/multi-tenant-patterns)
 
 The high-level end-to-end rotation process is:
 
@@ -52,7 +46,7 @@ In the case that you are using multiple certificates signed by the same CA, and 
 
 One convention is to give certificates a common name that matches the namespace. If you do this when using the same CA for dev and prod, then you can leverage Certificate Filters to prevent access to production environments. This is described in detail under the [authorization section](/cloud/certificates#control-authorization) of the documentation. 
 
-## Best practices
+## Recommendations
 
 ### Establish clear guidelines on authentication methods
 
@@ -96,7 +90,7 @@ The way you partition Namespaces should usually match the way you partition mach
   granular.
 
 For more on topology tradeoffs, see [Namespace best practices](/best-practices/managing-namespace) and
-[Multi-tenant application patterns](/production-deployment/multi-tenant-patterns).
+[Multi-tenant application patterns](/best-practices/multi-tenant-patterns).
 
 ### Rotate credentials without downtime
 

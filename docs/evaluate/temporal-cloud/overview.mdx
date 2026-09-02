@@ -5,13 +5,6 @@ sidebar_label: Overview
 description: Temporal Cloud is a fully managed, globally distributed durable execution platform built on cell-based architecture. Available on AWS and GCP with consumption-based pricing and zero-downtime migration from self-hosted deployments.
 slug: /cloud/overview
 toc_max_heading_level: 4
-keywords:
-  - temporal cloud
-  - managed service
-  - durable execution
-  - cell-based architecture
-  - multi-cloud
-  - high availability
 tags:
   - Temporal Cloud
 ---
@@ -129,7 +122,9 @@ Deploy a [Codec Server](/production-deployment/data-encryption) to decrypt data 
 ### Compliance
 
 Temporal Technologies maintains SOC 2 Type 2 certification and complies with GDPR and HIPAA regulations.
-Audit logs capture all API operations and can be exported to your security monitoring systems.
+Audit logs capture supported operations in the Temporal Cloud Control Plane and can be exported to your security
+monitoring systems.
+See [audit logs](/cloud/audit-logs) for the supported operations and coverage details.
 
 See [Security model](/cloud/security) for complete details.
 
@@ -184,6 +179,7 @@ The same migration tooling works in any direction.
 Temporal Cloud is designed for self-service:
 
 - **Web UI**: Create Namespaces, manage users, configure settings at [cloud.temporal.io](https://cloud.temporal.io)
+- **[Temporal CLI Cloud extension](/cli/cloud)**: Automate operations from the Temporal CLI.
 - **CLI (`tcld`)**: Automate operations from the command line
 - **Terraform provider**: Infrastructure-as-code for Namespaces, users, and configuration
 - **Cloud Ops API**: Programmatic access for custom tooling and automation

@@ -3,21 +3,6 @@ id: observability
 title: Observability - Go SDK
 sidebar_label: Observability
 toc_max_heading_level: 4
-keywords:
-  - go sdk
-  - interceptor
-  - list filter
-  - list filters
-  - logging and metrics
-  - observability
-  - search attributes
-  - temporal client
-  - tracing
-  - visibility
-  - workflow definition
-  - workflow execution
-  - workflow executions
-  - workflows
 tags:
   - Search Attributes
   - Observability
@@ -41,7 +26,15 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-- For an overview of Prometheus and Grafana integration, refer to the [Monitoring](/self-hosted-guide/monitoring) guide.
+:::tip[Use the OpenTelemetry v2 integration]
+
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
+
+:::
 - For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
 - For an end-to-end example that exposes metrics with the Go SDK, refer to the [samples-go](https://github.com/temporalio/samples-go/tree/main/metrics) repo.
 
@@ -56,7 +49,7 @@ client.Options{
 }
 ```
 
-The Go SDK provides metrics handlers for [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) and [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry). Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
+The Go SDK provides metrics handlers for [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) and [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry). Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsHandler`](/references/server-options#withcustommetricshandler) API.
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 
@@ -90,6 +83,16 @@ Negative values can produce invalid or backend-dependent metric data when `UseMo
 ## Tracing {/* #tracing */}
 
 Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and Child Workflows.
+
+:::tip[Use the OpenTelemetry v2 integration]
+
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/go/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
+
+:::
 
 The Go SDK provides tracing interceptors for [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing), and [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing). 
 

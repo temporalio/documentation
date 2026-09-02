@@ -113,9 +113,9 @@ module.exports = async function createConfigAsync() {
             right: 'left',
           },
           {
-            label: 'AI Cookbook',
-            to: '/ai-cookbook',
-            activeBasePath: 'ai-cookbook',
+            label: 'Durable AI',
+            to: '/ai',
+            activeBasePath: 'ai',
             position: 'left',
           },
           // hide this for now, making this a soft-launch
@@ -234,15 +234,7 @@ module.exports = async function createConfigAsync() {
         searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
         searchParameters: {
-          attributesToRetrieve: [
-            'hierarchy',
-            'content',
-            'anchor',
-            'url',
-            'url_without_anchor',
-            'type',
-            'sdk_language',
-          ],
+          attributesToRetrieve: ['hierarchy', 'content', 'anchor', 'url', 'url_without_anchor', 'type', 'sdk_language'],
         },
       },
       mermaid: {
@@ -263,12 +255,7 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve('./sidebars.js'),
             routeBasePath: '/',
-            exclude: [
-              '**/_*.{js,jsx,ts,tsx,md,mdx}',
-              '**/_*/**',
-              '**/clusters/**',
-              '**/ai-cookbook/**',
-            ], // partials (underscore-prefixed) + context content we don't render
+            exclude: ['**/_*.{js,jsx,ts,tsx,md,mdx}', '**/_*/**', '**/clusters/**', '**/ai-cookbook/**'], // partials (underscore-prefixed) + context content we don't render
             editUrl: 'https://github.com/temporalio/documentation/blob/main/',
             /**
              * Whether to display the author who last updated the doc.
@@ -375,14 +362,13 @@ module.exports = async function createConfigAsync() {
         {
           id: 'ai-cookbook',
           path: 'ai-cookbook',
-          routeBasePath: 'ai-cookbook', // published at /ai-cookbook/* ✅
+          routeBasePath: 'ai/cookbook', // published at /ai/cookbook/* ✅
           sidebarPath: false, // no left nav for these pages ✅
           // optional polish:
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           // use a custom item to center the content:
           docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
-          docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
           // Same remark plugin the main docs preset uses (see the `docs` preset
           // option above) — injects the generated og:image path as real front
           // matter during MDX compilation so it survives client hydration.
@@ -395,7 +381,7 @@ module.exports = async function createConfigAsync() {
         require.resolve('./plugins/cookbook-index'),
         {
           docsDir: 'ai-cookbook', // change if your folder differs
-          routeBasePath: 'ai-cookbook', // change if you use a different base
+          routeBasePath: 'ai/cookbook', // change if you use a different base
         },
       ],
       [
@@ -403,27 +389,32 @@ module.exports = async function createConfigAsync() {
         {
           targets: [
             { docsDir: 'docs', routeBasePath: '/' },
-            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai/cookbook' },
           ],
           llmsTxt: {
             siteUrl: 'https://docs.temporal.io',
             title: 'Temporal Platform Documentation',
-            description: 'This file is a structured index of Temporal\'s documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
-            fullDescription: 'This file is the complete text of Temporal\'s documentation, intended for bulk ingestion. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
+            description:
+              "This file is a structured index of Temporal's documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.",
+            fullDescription:
+              "This file is the complete text of Temporal's documentation, intended for bulk ingestion. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.",
             rootContent:
               'To fetch any page as raw Markdown, append `.md` to its URL path (e.g., `https://docs.temporal.io/workflows.md`).\n\n' +
               'Every page concatenated into one file is available at `https://docs.temporal.io/llms-full.txt`. ' +
               'It is roughly 7 MB, which exceeds most context windows. Prefer the section indexes below and fetch individual `.md` pages; ' +
               'use the full text for bulk ingestion.\n\n' +
-              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.\n\n' +
+              "This documentation reflects the latest Temporal SDK and Platform behavior. If you're working with an older SDK version, verify API compatibility before applying suggestions from this content.\n\n" +
               '## Tools for agents\n\n' +
-              '- [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer): An agent skill covering Temporal\'s programming model, including Workflow determinism rules, Activity patterns, Retry Policies, error handling, testing, Worker configuration, and versioning. Works with Claude Code, Codex, Cursor, and other agents that support Skills.\n' +
+              "- [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer): An agent skill covering Temporal's programming model, including Workflow determinism rules, Activity patterns, Retry Policies, error handling, testing, Worker configuration, and versioning. Works with Claude Code, Codex, Cursor, and other agents that support Skills.\n" +
+              '- [Temporal Cloud Skill](https://github.com/temporalio/skill-temporal-cloud): An agent skill for troubleshooting Temporal Cloud connectivity, authentication, and configuration issues.\n' +
+              '- [Temporal Serverless Workers Skill](https://github.com/temporalio/skill-temporal-serverless): An agent skill for deploying and operating Temporal Serverless Workers. Covers Worker code, deployment configuration, packaging, and troubleshooting.\n' +
               '- [Temporal Docs MCP Server](https://temporal.mcp.kapa.ai): Search this documentation over MCP. Sign-in is required through MCP OAuth with Google or GitHub, which keeps the server from being used for automated bulk querying. Anonymous requests are rejected. If your client cannot complete an OAuth flow, use the `.md` URLs above instead.',
             excludePaths: ['tctl-v1'],
             sections: [
               {
                 title: 'Core Primitives',
-                description: 'Fundamental building blocks of the Temporal Platform. Read this section first for foundational concepts referenced everywhere else.',
+                description:
+                  'Fundamental building blocks of the Temporal Platform. Read this section first for foundational concepts referenced everywhere else.',
                 inline: true,
                 autoDiscoverSubsections: 'encyclopedia',
               },
@@ -431,24 +422,62 @@ module.exports = async function createConfigAsync() {
                 title: 'Concepts',
                 description: 'What Temporal is and how it works.',
                 inline: true,
-                pages: [
-                  'temporal', 'glossary',
-                ],
+                pages: ['temporal', 'glossary'],
               },
-              { autoDiscover: 'develop', title: 'SDK Development Guides', description: 'Each SDK guide is organized by topic (e.g., workflows, activities, testing). All SDKs follow the same structure, with minor differences depending on language-specific features. Use these for language-specific implementation details.' },
-              { path: 'develop', title: 'Cross-SDK Development Guides', description: 'Development guidance that applies across SDKs (worker performance, safe deployments, plugins).' },
+              {
+                autoDiscover: 'develop',
+                title: 'SDK Development Guides',
+                description:
+                  'Each SDK guide is organized by topic (e.g., workflows, activities, testing). All SDKs follow the same structure, with minor differences depending on language-specific features. Use these for language-specific implementation details.',
+              },
+              {
+                path: 'develop',
+                title: 'Cross-SDK Development Guides',
+                description:
+                  'Development guidance that applies across SDKs (worker performance, safe deployments, plugins).',
+              },
               { path: 'cloud', title: 'Temporal Cloud', description: 'Deploy and manage Temporal Cloud' },
-              { path: 'evaluate', title: 'Evaluating Temporal', description: 'Background for deciding whether and how to adopt Temporal, including feature comparisons and use cases.' },
-              { path: 'production-deployment', title: 'Production Deployment', description: 'Deploy Temporal to production' },
-              { path: 'self-hosted-guide', title: 'Self-Hosted Service Guide', description: 'Deploy, configure, and operate a self-hosted Temporal Service.' },
+              {
+                path: 'evaluate',
+                title: 'Evaluating Temporal',
+                description:
+                  'Background for deciding whether and how to adopt Temporal, including feature comparisons and use cases.',
+              },
+              {
+                path: 'production-deployment',
+                title: 'Production Deployment',
+                description: 'Deploy Temporal to production',
+              },
+              {
+                path: 'self-hosted-guide',
+                title: 'Self-Hosted Service Guide',
+                description: 'Deploy, configure, and operate a self-hosted Temporal Service.',
+              },
               { path: 'cli', title: 'CLI Reference', description: 'Temporal CLI command reference' },
               { path: 'references', title: 'References', description: 'Configuration and API references' },
               { path: 'troubleshooting', title: 'Troubleshooting', description: 'Common issues and solutions' },
               { path: 'best-practices', title: 'Best Practices', description: 'Recommended patterns for Temporal' },
-              { path: 'design-patterns', title: 'Design Patterns', description: 'Reusable Workflow and Activity patterns for common orchestration problems.' },
-              { path: 'guides', title: 'Guides', description: 'End-to-end walkthroughs that solve a specific problem with Temporal.' },
-              { path: 'ai-cookbook', title: 'AI Cookbook', description: 'Runnable examples for building AI and agent applications with Temporal.' },
-              { path: 'demos', title: 'Interactive Demos', description: 'Browser-based interactive demos. These pages are visual tools rather than prose documentation.' },
+              {
+                path: 'design-patterns',
+                title: 'Design Patterns',
+                description: 'Reusable Workflow and Activity patterns for common orchestration problems.',
+              },
+              {
+                path: 'guides',
+                title: 'Guides',
+                description: 'End-to-end walkthroughs that solve a specific problem with Temporal.',
+              },
+              {
+                path: 'ai/cookbook',
+                title: 'AI Cookbook',
+                description: 'Runnable examples for building AI and agent applications with Temporal.',
+              },
+              {
+                path: 'demos',
+                title: 'Interactive Demos',
+                description:
+                  'Browser-based interactive demos. These pages are visual tools rather than prose documentation.',
+              },
             ],
           },
         },
@@ -458,7 +487,7 @@ module.exports = async function createConfigAsync() {
         {
           targets: [
             { docsDir: 'docs', routeBasePath: '/' },
-            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai/cookbook', footerText: 'AI COOKBOOK' },
           ],
         },
       ],
@@ -474,7 +503,34 @@ module.exports = async function createConfigAsync() {
     themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
-      faster: true,
+      // `faster: true` turns on every Faster flag (SWC loader/minifier,
+      // lightningcss, rspack, mdxCrossCompilerCache, worker threads, eager
+      // VCS) at once. rspackPersistentCache is carved out and forced off:
+      // Vercel restores node_modules/** (including rspack's persistent
+      // cache) between builds, keyed in part by git branch — a brand-new
+      // preview branch's first build inherits the *last production
+      // deployment's* cache. Since plugins/og-image/remarkPlugin.js bakes
+      // an environment-dependent absolute og:image URL into each page's
+      // compiled front matter (see resolveImageOrigin() in
+      // plugins/og-image/shared.js), and that persistent cache's key
+      // doesn't account for VERCEL_ENV/VERCEL_URL, an unchanged page could
+      // silently keep serving a stale environment's resolved URL baked in
+      // at a previous build. Every other Faster flag is content-hash-keyed
+      // in a way that's safe to cache across environments; only this one
+      // needed to go. Confirmed empirically: two back-to-back local builds
+      // with different VERCEL_ENV/VERCEL_URL only picked up the new value
+      // once node_modules/.cache/rspack and .docusaurus were cleared.
+      faster: {
+        swcJsLoader: true,
+        swcJsMinimizer: true,
+        swcHtmlMinimizer: true,
+        lightningCssMinimizer: true,
+        mdxCrossCompilerCache: true,
+        rspackBundler: true,
+        rspackPersistentCache: false,
+        ssgWorkerThreads: true,
+        gitEagerVcs: true,
+      },
     },
   };
 

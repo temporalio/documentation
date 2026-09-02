@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import SdkSvg from '../../elements/SdkSvgs/SdkSvg';
 import { SDKS } from '../../../constants/sdks';
 import styles from './QuickstartCards.module.css';
@@ -25,7 +26,7 @@ export default function QuickstartCards({ items, className }: QuickstartCardsPro
       {items.map((item) => {
         const sdk = SDK_BY_LABEL.get(item.title);
         return (
-          <a key={item.href} className={styles.card} href={item.href}>
+          <Link key={item.href} className={styles.card} to={item.href}>
             <div className={styles.cardHeader}>
               {sdk && (
                 <span className={styles.iconWrapper}>
@@ -35,7 +36,7 @@ export default function QuickstartCards({ items, className }: QuickstartCardsPro
               <h3 className={styles.cardTitle}>{item.title}</h3>
             </div>
             <p className={styles.cardDesc}>{item.description}</p>
-          </a>
+          </Link>
         );
       })}
     </div>

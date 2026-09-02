@@ -3,8 +3,6 @@ id: child-workflows
 title: Child Workflows - Rust SDK
 sidebar_label: Child Workflows
 toc_max_heading_level: 4
-keywords:
-  - child-workflows
 tags:
   - Workflows
   - Child Workflows
@@ -25,12 +23,11 @@ A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is s
 When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted)) are logged in the Workflow Execution Event History.
 
 The [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event must be logged to the Event History before the Parent Workflow completes to ensure the Child Workflow has started.
-In Rust, awaiting `ctx.child_workflow()` internally waits for this Event before returning, so the Child Workflow is guaranteed to have started once the call resolves.
+In Rust, awaiting `ctx.start_child_workflow()` waits for this Event before returning, so the Child Workflow is guaranteed to have started once the call resolves.
 
-To start a Child Workflow in Rust, use `ctx.child_workflow()`:
+To start a Child Workflow in Rust, use `ctx.start_child_workflow()`:
 
 ```rust
-use temporalio_common::protos::temporal::api::common::v1::Payload;
 use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::{ChildWorkflowOptions, WorkflowContext, WorkflowContextView, WorkflowResult};
 
@@ -71,24 +68,17 @@ impl GreetingWorkflow {
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
 
-        let input = vec![
-            Payload {
-                data: name.as_bytes().to_vec(),
-                ..Default::default()
-            }
-        ];
-        let started = ctx.child_workflow(
-            ComposeGreetingWorkflow::run,
-            name.clone(),
-            ChildWorkflowOptions {
-                workflow_id: format!("greeting-child-en"),
-                ..Default::default()
-            },
-        ).await?;
+        let started = ctx
+            .start_child_workflow(
+                ComposeGreetingWorkflow::run,
+                name,
+                ChildWorkflowOptions::workflow_id("greeting-child-en".to_string()),
+            )
+            .await?;
 
-        let result = started.result().await;
+        let result = started.result().await?;
 
-        Ok(format!("ComposeGreetingWorkflow result: {:?}", result))
+        Ok(format!("ComposeGreetingWorkflow result: {result}"))
     }
 }
 ```
@@ -96,7 +86,7 @@ impl GreetingWorkflow {
 
 ### Specify Child Workflow options
 
-Use [`ChildWorkflowOptions`](https://docs.rs/temporalio-sdk/0.2.0/temporalio_sdk/struct.ChildWorkflowOptions.html) to customize Child Workflow behavior.
+Use [`ChildWorkflowOptions`](https://docs.rs/temporalio-sdk/0.7.0/temporalio_sdk/struct.ChildWorkflowOptions.html) to customize Child Workflow behavior.
 
 ### Execute multiple Child Workflows in parallel
 
@@ -106,23 +96,21 @@ You can start multiple Child Workflows and wait for all of them:
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<Option<String>>> {
     let name = ctx.state(|s| s.name.clone());
 
-    let en_greeting_child = ctx.child_workflow(
-        ComposeEnGreetingWorkflow::run,
-        name.clone(),
-        ChildWorkflowOptions {
-            workflow_id: format!("greeting-child-en"),
-            ..Default::default()
-        },
-    ).await?;
+    let en_greeting_child = ctx
+        .start_child_workflow(
+            ComposeEnGreetingWorkflow::run,
+            name.clone(),
+            ChildWorkflowOptions::workflow_id("greeting-child-en".to_string()),
+        )
+        .await?;
     
-    let es_greeting_child = ctx.child_workflow(
-        ComposeEsGreetingWorkflow::run,
-        name.clone(),
-        ChildWorkflowOptions {
-            workflow_id: format!("greeting-child-es"),
-            ..Default::default()
-        },
-    ).await?;
+    let es_greeting_child = ctx
+        .start_child_workflow(
+            ComposeEsGreetingWorkflow::run,
+            name,
+            ChildWorkflowOptions::workflow_id("greeting-child-es".to_string()),
+        )
+        .await?;
     
     let en_result = en_greeting_child.result().await;
     let es_result = es_greeting_child.result().await;
@@ -143,23 +131,24 @@ A [Parent Close Policy](/parent-close-policy) determines what happens to a Child
 
 The default Parent Close Policy is set to terminate the Child Workflow Execution.
 
-Set Parent Close Policy using the [`parent_close_policy`](https://docs.rs/temporalio-common/0.2.0/temporalio_common/protos/temporal/api/enums/v1/enum.ParentClosePolicy.html) field in `ChildWorkflowOptions`:
+Set Parent Close Policy using the [`parent_close_policy`](https://docs.rs/temporalio-sdk/0.7.0/temporalio_sdk/enum.ParentClosePolicy.html) field in `ChildWorkflowOptions`:
 
 ```rust
-use temporalio_common::protos::temporal::api::{enums::v1::ParentClosePolicy};
+use temporalio_sdk::ParentClosePolicy;
 
-let es_greeting_child = ctx.child_workflow(
-    ComposeEsGreetingWorkflow::run,
-    name.clone(),
-    ChildWorkflowOptions {
-        workflow_id: format!("greeting-child-es"),
-        parent_close_policy: ParentClosePolicy::Abandon,
-        ..Default::default()
-    },
-).await?;
+let es_greeting_child = ctx
+    .start_child_workflow(
+        ComposeEsGreetingWorkflow::run,
+        name,
+        ChildWorkflowOptions::builder()
+            .workflow_id("greeting-child-es".to_string())
+            .parent_close_policy(ParentClosePolicy::Abandon)
+            .build(),
+    )
+    .await?;
 ```
 
-### Parent Close Policy Options
+### Parent Close Policy options
 
 - `Terminate` (default) - The Child Workflow will be terminated immediately when the parent closes
 - `Abandon` - The Child Workflow will continue running even if the parent closes

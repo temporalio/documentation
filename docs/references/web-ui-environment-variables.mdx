@@ -4,13 +4,8 @@ title: Temporal Web UI environment variables reference
 sidebar_label: Web UI env vars
 description:
   Dynamically configure Temporal Web UI with environment variables in Docker for settings like TEMPORAL_ADDRESS,
-  authentication, TLS, OpenAPI, and more.
+  authentication, TLS, and more.
 toc_max_heading_level: 4
-keywords:
-  - docker
-  - reference
-  - ui server
-  - webui
 tags:
   - Reference
   - Temporal Web UI
@@ -58,7 +53,7 @@ described in more detail below.
 
 ## `TEMPORAL_ADDRESS`
 
-The [Frontend Service](/temporal-service/temporal-server#frontend-service) address for the Temporal Cluster. This
+The [Frontend Service](/temporal-service/temporal-server#frontend-service) address for the Temporal Service. This
 variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using
 `temporalGrpcAddress`.
 
@@ -68,7 +63,7 @@ This variable is required for setting other environment variables.
 
 The port used by the Temporal WebUI Server and the HTTP API.
 
-This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
+This variable is needed for all auth-related settings to work properly.
 
 ## `TEMPORAL_UI_PUBLIC_PATH`
 
@@ -76,7 +71,7 @@ Stores a value such as "" or "/custom-path" that allows the UI to be served from
 
 ## `TEMPORAL_UI_ENABLED`
 
-Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
+Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Service.
 
 Enabling the browser UI allows the Server to be accessed from your web browser. If disabled, the server cannot be viewed
 on the web, but the UI server APIs remain available for use.
@@ -159,15 +154,17 @@ Specifies a set of scopes for auth. Typically, this is `openid`, `profile`, `ema
 
 The path for the Transport Layer Security (TLS) Certificate Authority file.
 
-In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a CA certificate issued
-by a trusted Certificate Authority. Set this variable to properly locate and use the file.
+In order to [configure TLS for the Web UI Server](/references/web-ui-configuration#tls), you'll need a CA certificate
+issued by a trusted Certificate Authority, used to verify the Temporal Service's Frontend when the Web UI Server
+connects to it. Set this variable to properly locate and use the file.
 
 ## `TEMPORAL_TLS_CERT`
 
 The path for the Transport Layer Security (TLS) Certificate.
 
-In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a self-signed
-certificate. Set the path to allow the environment to locate and use the certificate.
+In order to [configure TLS for the Web UI Server](/references/web-ui-configuration#tls), you'll need a self-signed
+certificate that identifies the Web UI Server as an mTLS client to the Temporal Service's Frontend. Set the path to
+allow the environment to locate and use the certificate.
 
 ## `TEMPORAL_TLS_KEY`
 
@@ -231,4 +228,3 @@ If enabled, does not print logs from the Temporal Service.
 ## `TEMPORAL_DISABLE_NEWS_FETCH`
 
 Disables the news feed feature in the Web UI. If set to `true`, the Web UI will not request the news feed, and the button used to open the news feed panel will be hidden.
-

@@ -4,13 +4,13 @@ title: Troubleshoot the failed reaching server error
 sidebar_label: Failed reaching server error
 description: Troubleshoot server connection errors often caused by expired TLS certificates. Verify, renew, and update server configurations to resolve temporal client request issues effectively.
 toc_max_heading_level: 4
-keywords:
-  - cloud
-  - namespaces
 tags:
   - Temporal Cloud
   - Namespaces
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 The message `Failed reaching server: last connection error` can often result from an expired TLS certificate or during the Server startup process, in which the Client requests reach the Server before the roles are fully initialized.
 
@@ -31,11 +31,27 @@ Choose one of the following methods to verify the expiration date of the TLS cer
 
 List the expiration date with the following command:
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud namespace mtls cert-ca list \
+    --namespace <namespace_id>.<account_id>
+```
+
+Read the expiration date from the certificate details in the output.
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
 ```command
 tcld namespace accepted-client-ca list \
     --namespace <namespace_id>.<account_id> | \
     jq -r '.[0].notAfter'
 ```
+
+</TabItem>
+</Tabs>
 
 If the returned date is in the past, the certificate has expired.
 

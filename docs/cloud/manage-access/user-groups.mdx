@@ -2,14 +2,8 @@
 id: user-groups
 title: Manage user groups
 sidebar_label: Manage user groups
-description: Learn how to manage user groups, members, and roles
+description: Assign account-level roles and Namespace permissions to a group of users at once, and see how SCIM groups interact with them.
 toc_max_heading_level: 4
-keywords:
-  - explanation
-  - how-to
-  - temporal cloud
-  - temporal cloud account
-  - user groups
 tags:
   - Users
   - User groups
@@ -68,6 +62,14 @@ User group names must be 3-64 characters long and can only contain lowercase let
 
 </TabItem>
 
+<TabItem value="create-group-cli" label="Temporal CLI">
+Use the command that matches how the group is backed:
+
+- [`temporal cloud user-group create-cloud-group`](/cli/command-reference/cloud/user-group#create-cloud-group) for a group managed in Temporal Cloud
+- [`temporal cloud user-group create-google-group`](/cli/command-reference/cloud/user-group#create-google-group) for a group backed by a Google group
+- [`temporal cloud user-group create-scim-group`](/cli/command-reference/cloud/user-group#create-scim-group) for a group backed by SCIM
+</TabItem>
+
 <TabItem value="create-group-tcld" label="tcld">
 See the [`tcld` user-group create](/cloud/tcld/user-group/#create) command reference for details.
 </TabItem>
@@ -108,6 +110,13 @@ To edit or remove namespace permissions from a group:
 
 </TabItem>
 
+<TabItem value="assign-roles-cli" label="Temporal CLI">
+Account-level roles and Namespace-level permissions are set separately:
+
+- [`temporal cloud user-group set-account-role`](/cli/command-reference/cloud/user-group#set-account-role)
+- [`temporal cloud user-group set-namespace-permissions`](/cli/command-reference/cloud/user-group#set-namespace-permissions)
+</TabItem>
+
 <TabItem value="assign-roles-tcld" label="tcld">
 See the [`tcld` user-group set-access](/cloud/tcld/user-group/#set-access) command reference for details.
 </TabItem>
@@ -137,6 +146,12 @@ To remove a user from the group:
 
 </TabItem>
 
+<TabItem value="assign-group-members-cli" label="Temporal CLI">
+See the [`temporal cloud user-group members add`](/cli/command-reference/cloud/user-group#members-add),
+[`temporal cloud user-group members remove`](/cli/command-reference/cloud/user-group#members-remove), and
+[`temporal cloud user-group members list`](/cli/command-reference/cloud/user-group#members-list) command reference for details.
+</TabItem>
+
 <TabItem value="assign-group-members-tcld" label="tcld">
 See the [`tcld` user-group add-users](/cloud/tcld/user-group/#add-users) and the [`tcld` user-group remove-users](/cloud/tcld/user-group/#remove-users) command reference for details.
 </TabItem>
@@ -160,6 +175,10 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 
 </TabItem>
 
+<TabItem value="delete-group-cli" label="Temporal CLI">
+See the [`temporal cloud user-group delete`](/cli/command-reference/cloud/user-group#delete) command reference for details.
+</TabItem>
+
 <TabItem value="delete-group-tcld" label="tcld">
 See the [`tcld` user-group delete](/cloud/tcld/user-group/#delete) command reference for details.
 </TabItem>
@@ -169,6 +188,5 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 </TabItem>
 
 </Tabs>
-
 
 

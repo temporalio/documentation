@@ -4,8 +4,6 @@ title: Temporal Commands reference
 sidebar_label: Commands
 description: Discover the range of Commands Workers can issue to the Temporal Service after Workflow Task Execution, from Completing Workflow Execution to Start Timer and Signal External Workflow Execution.
 toc_max_heading_level: 4
-keywords:
-  - reference
 tags:
   - Reference
 ---
@@ -71,7 +69,7 @@ This Command is triggered by a call to request cancellation of another Workflow 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [RequestCancelExternalWorkflowExecutionInitiated](/references/events#requestcancelexternalworkflowexecutioninitiated)
 
-By default, you cannot have more than 2,000 pending Signals to other Workflows.
+By default, you cannot have more than 2,000 pending Cancellation Requests to other Workflows.
 
 ### ScheduleActivityTask
 
@@ -133,7 +131,7 @@ This Command is triggered by a call to execute a Nexus Operation in the caller W
 
 By default, you can't schedule more than 30 Nexus Operations concurrently, see [Limits](/workflow-execution/limits#workflow-execution-nexus-operation-limits) for details.
 
-### CancelNexusOperation
+### RequestCancelNexusOperation
 
 This Command is triggered by a call to request the cancellation of a Nexus Operation.
 
