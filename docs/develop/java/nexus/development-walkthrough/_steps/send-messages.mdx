@@ -1,21 +1,10 @@
----
-id: send-messages
-title: Step 8 - Send messages
-sidebar_label: 8. Send messages
-description: Call the Signal and Update Operations from a caller, attach information to an approval that may not exist yet with Signal-with-Start, and handle the case where the approval already exists.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
 From the caller's side, the messaging Operations are just Operations. They are called through the same generated stub as `requestApproval`, with the same type checking.
 
 The caller does not know that one is a Signal and one is an Update. That is the handler's implementation detail, and it can change without breaking callers.
 
 ## Nudge and decide
 
-The caller calls both Operations exactly like any other, as shown in the caller Workflow in [step 6](/develop/java/nexus/development-walkthrough/call-the-service#call-the-operations-from-a-caller-workflow). `remindApprover` returns nothing, so there is nothing to assign; `submitDecision` returns the confirmation the Update produced.
+The caller calls both Operations exactly like any other, as shown in the caller Workflow in [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow). `remindApprover` returns nothing, so there is nothing to assign; `submitDecision` returns the confirmation the Update produced.
 
 What differs between them is what you get back and how long it takes.
 
@@ -73,7 +62,7 @@ Signal-with-Start is sync messaging on the [Client](/nexus/temporal-operation-ha
 
 ### Input needs enough to start the Workflow
 
-Look at the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract#plan-the-operations) and `attachApprovalContext` carries more than it seems to need: the item id, the requester, the amount, *and* the note. `remindApprover` gets by with just the item id.
+Look at the contract from [step 1](/develop/java/nexus/development-walkthrough?step=contract#plan-the-operations) and `attachApprovalContext` carries more than it seems to need: the item id, the requester, the amount, *and* the note. `remindApprover` gets by with just the item id.
 
 That is a direct consequence of Signal-with-Start. The Operation might have to start the approval Workflow, and starting it requires whatever the Workflow needs to run. An Operation that can create the thing it messages has to carry enough input to create it.
 
@@ -83,7 +72,7 @@ This is the general rule for any with-Start message: its input is the union of w
 
 Signal-with-Start introduces a case the Service did not have before. `attachApprovalContext` can create the approval, so by the time anyone calls `requestApproval` for that purchase, a Workflow with that Id may already be running.
 
-Both Operations derive the same Workflow Id from the same item id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id). That is deliberate — it is what lets them agree on which approval they mean — and it is also what creates the collision.
+Both Operations derive the same Workflow Id from the same item id, as decided in [step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id). That is deliberate — it is what lets them agree on which approval they mean — and it is also what creates the collision.
 
 **By default, `requestApproval` fails in this situation.** Starting a Workflow whose Id is already running is an error, and the Nexus Operation fails with it.
 
@@ -118,7 +107,7 @@ Two things follow from this, and both are useful.
 
 **More than one caller can await the same approval.** Every caller whose callback is attached is notified when the Workflow completes, so several systems can each call `requestApproval` for the same purchase and all receive the same decision. The first call creates the approval; the rest attach to it.
 
-**The Operation becomes idempotent for callers, not just for retries.** [Step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id) made the start idempotent against server retries of one request. Use-existing extends that to genuinely separate callers, which is what you want for a purchase that two systems might both submit.
+**The Operation becomes idempotent for callers, not just for retries.** [Step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id) made the start idempotent against server retries of one request. Use-existing extends that to genuinely separate callers, which is what you want for a purchase that two systems might both submit.
 
 One limit to know: use-existing attaches to a *running* Execution. If the approval has already completed, there is nothing to attach to, and the call starts a fresh approval rather than returning the old decision. Whoever needs the outcome of a finished approval has to have been attached while it was open, or be told by the handler — which is what the notification in the next step does.
 
@@ -133,11 +122,6 @@ Setting use-existing changes only the running case. A start against a completed 
 
 :::
 
-## Next
-
-**[Step 9 - Add a Standalone Activity](/develop/java/nexus/development-walkthrough/add-a-standalone-activity)** - notify the requester with no Workflow behind it.
-
-Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

@@ -1,13 +1,13 @@
 ---
 id: client-code-generator
-title: Nexus Client Code Generator
+title: Nexus Client Code Generator - TypeScript SDK
 sidebar_label: Client Code Generator
-description: How to install nexgen and generate typed Nexus models, validators, and Service definitions for Go, Java, Python, and TypeScript.
+description: How to install nexgen and generate typed Nexus models and Service definitions for TypeScript.
 toc_max_heading_level: 4
-slug: /develop/nexus/client-code-generator
+slug: /develop/typescript/nexus/client-code-generator
 tags:
   - Nexus
-  - Temporal SDKs
+  - TypeScript SDK
 ---
 
 A [Nexus Service](/nexus/services) is a contract meant to be shared across team boundaries.
@@ -19,7 +19,7 @@ You describe your types and [Nexus Operations](/nexus/operations) once in a defi
 The generator is a command-line tool named `nexgen`, distributed from the [temporalio/nexgen](https://github.com/temporalio/nexgen) repository.
 
 For a short overview of what the generator produces and why, see [Nexus Client Code Generator](/nexus/client-code-generator).
-This page covers installation, schema authoring, generation, and using the output.
+This page covers installation, schema authoring, and generating and using TypeScript output.
 
 :::caution
 
@@ -47,7 +47,7 @@ The generator prefers to fail loudly at generation time over emitting code that 
 
 ## Supported languages
 
-`nexgen` generates Go, Java, Python, and TypeScript.
+This page covers the TypeScript output from `nexgen`.
 
 ## Definition files
 
@@ -201,72 +201,6 @@ Pointing `--output` at a directory named `go` produces `package go`, which is no
 
 :::
 
-### Go
-
-```bash
-nexgen go samples/schemas/chat.nexusrpc.yaml --output ./chat
-```
-
-Place the output directory inside your Go module.
-The package name is the directory name, so the example above generates `package chat` in `./chat/chat.go` alongside `./chat/definitions.go`.
-
-### Java
-
-Java requires `--package-name`. Point `--output` at the **full package path** beneath your source root, not just a directory named after the last segment:
-
-```bash
-nexgen java samples/schemas/chat.nexusrpc.yaml \
-  --output ./src/main/java/com/example/chat \
-  --package-name com.example.chat
-```
-
-The generator checks only that the package name's last dot-separated segment matches the output directory's name. If they disagree, generation stops and tells you how to reconcile them:
-
-```
-`--package-name com.example.wrong` must end with the output directory name `chat`,
-but its last segment is `wrong`; point `--output` at a directory named `wrong` or
-change the package's last segment to `chat`
-```
-
-:::caution Passing that check is not enough to compile
-
-The check compares one segment; Java requires the file's location to match its whole package declaration. `--output ./src/chat --package-name com.example.chat` passes, because `chat` matches `chat`, and still produces files that declare `package com.example.chat` while sitting at `src/chat/`.
-
-Nothing fails at generation time, and nothing necessarily fails when you compile the generated files on their own. It breaks when something imports them:
-
-```
-Main.java:1: error: package com.example.chat does not exist
-import com.example.chat.ChatService;
-```
-
-Always give `--output` the entire package path beneath your source root — `./src/main/java/com/example/chat` for `com.example.chat`. If files land in the wrong place, delete them and generate again with a corrected `--output`, rather than editing the `package` line to match.
-
-:::
-
-### Python
-
-```bash
-nexgen python samples/schemas/chat.nexusrpc.yaml --output ./chat
-```
-
-This writes an importable package: `models.py`, `services.py`, and an `__init__.py` that re-exports both. Place it where the code that imports it can reach it — the output directory *is* the package.
-
-That also means the directory name becomes an importable module name, so pick one that does not collide with the standard library. `./chat` is safe, but a Service whose subject happens to share a name with a stdlib module is not: `./email`, `./queue`, and `./calendar` each shadow one for anything on that path. Qualify those — `./calendar_v1`.
-
-:::note Python output needs Pydantic
-
-Generated models are [Pydantic](https://docs.pydantic.dev/) models. Installing the Python SDK on its own does not bring Pydantic with it, so importing the generated package fails with `ModuleNotFoundError: No module named 'pydantic'` until you add it. The SDK ships an extra for this:
-
-```bash
-pip install 'temporalio[pydantic]'
-```
-
-Your Worker and Client then need the Pydantic Data Converter — see [Use Pydantic models](/develop/python/data-handling/data-conversion#use-pydantic-models) for the setup.
-
-That converter is not optional if your schema uses any temporal `format`. `datetime.date`, `datetime.time`, and `datetime.datetime` can only be converted by it, and the generator maps `date`, `time`, and `date-time` onto those types.
-
-:::
-
 ### TypeScript
 
 ```bash
@@ -320,129 +254,6 @@ For code that catches and logs a violation, see the per-language examples in [Us
 **Whether the code is generated or written by hand, you use it the same way.** It is a Service definition and a set of types: register it on a Worker, and call it from a caller Workflow exactly as described in your SDK's Nexus guide. The one difference is that generated types validate themselves, so a call can fail with a contract violation for you to catch.
 
 Each example below registers a handler, calls the Operation from a caller Workflow, and catches a validation failure.
-
-### Go
-
-The generated `ChatService` value carries the Service name and one typed Operation reference per Operation.
-Register handlers on a Worker:
-
-```go
-service := nexus.NewService(chat.ChatService.ServiceName)
-
-sendMessage := nexus.NewSyncOperation(chat.ChatService.SendMessage.Name(),
-    func(ctx context.Context, input chat.SendMessageInput, _ nexus.StartOperationOptions) (chat.SendMessageOutput, error) {
-        return chat.SendMessageOutput{MessageId: store(input)}, nil
-    })
-
-if err := service.Register(sendMessage); err != nil {
-    return err
-}
-w.RegisterNexusService(service)
-```
-
-Call it from a caller Workflow, passing the generated Operation reference so the SDK type-checks the request and response. A payload that violates the contract fails at the call, so that is where you catch it:
-
-```go
-client := workflow.NewNexusClient("chat-endpoint", chat.ChatService.ServiceName)
-
-var output chat.SendMessageOutput
-err := client.ExecuteOperation(
-    ctx,
-    chat.ChatService.SendMessage,
-    chat.SendMessageInput{RoomId: "r1", Message: chat.Message{Kind: "text", Body: "hi"}},
-    workflow.NexusOperationOptions{},
-).Get(ctx, &output)
-
-if err != nil {
-    var validationErr *chat.ValidationError
-    if errors.As(err, &validationErr) {
-        for _, v := range validationErr.Violations {
-            logger.Error("contract violation", "path", v.Path, "reason", v.Reason)
-        }
-    } else {
-        logger.Error("Nexus call failed", "error", err)
-    }
-    return err
-}
-```
-
-`ValidationError` carries every violation as a `Violation` with a `Path` and a `Reason`. Reach it with `errors.As` rather than a type assertion, because the error arrives wrapped by the JSON encoder. It is generated into each package, so a consumer of two generated Services needs one `errors.As` per package.
-
-### Java
-
-The generator emits `ChatService` as an interface annotated with `@Service`, with one `@Operation` method per Operation.
-On the handler side, write a separate implementation class that points at the generated interface with `@ServiceImpl`, and return an `OperationHandler` from each `@OperationImpl` method:
-
-```java
-@ServiceImpl(service = ChatService.class)
-public final class ChatServiceImpl {
-    @OperationImpl
-    public OperationHandler<SendMessageInput, SendMessageOutput> sendMessage() {
-        return OperationHandler.sync((ctx, details, input) -> new SendMessageOutput(store(input)));
-    }
-}
-```
-
-Register it on a Worker with `worker.registerNexusServiceImplementation(new ChatServiceImpl())`.
-
-On the caller side, the same interface works directly as a Workflow stub. A payload that violates the contract fails at the call, so that is where you catch it:
-
-```java
-ChatService chat = Workflow.newNexusServiceStub(
-        ChatService.class,
-        NexusServiceOptions.newBuilder()
-                .setEndpoint("chat-endpoint")
-                .setOperationOptions(NexusOperationOptions.newBuilder()
-                        .setScheduleToCloseTimeout(Duration.ofSeconds(10))
-                        .build())
-                .build());
-
-try {
-    SendMessageOutput output = chat.sendMessage(new SendMessageInput("r1", message));
-} catch (DataConverterException e) {
-    if (e.getCause() instanceof ValidationException ve) {
-        ve.getViolations().forEach(v -> log.error("{}: {}", v.getPath(), v.getReason()));
-    } else {
-        log.error("Payload conversion failed", e);
-    }
-    throw e;
-}
-```
-
-`ValidationException` extends Jackson's `JsonMappingException`, so it is checked and always arrives wrapped. Converting the payload is what triggers it, so it reaches you as the cause of a `DataConverterException`, with the violation list intact.
-
-It is generated into each package, so a consumer of two generated Services has two unrelated exception types of the same name and needs a `catch` per package.
-
-### Python
-
-The generator emits `ChatService` as a `@service`-decorated class whose attributes are typed `Operation` declarations.
-Bind a handler to it:
-
-```python
-@service_handler(service=ChatService)
-class ChatServiceHandler:
-    @sync_operation
-    async def send_message(
-        self, ctx: StartOperationContext, input: SendMessageInput
-    ) -> SendMessageOutput:
-        return SendMessageOutput(messageId=store(input))
-```
-
-Pass the handler to your Worker as `nexus_service_handlers=[ChatServiceHandler()]`, then call it from a caller Workflow:
-
-```python
-client = workflow.create_nexus_client(service=ChatService, endpoint="chat-endpoint")
-
-output = await client.execute_operation(
-    ChatService.send_message,
-    SendMessageInput(roomId="r1", message=Message(kind="text", body="hi")),
-)
-```
-
-Generated Python fields are snake_case with the wire name as an alias.
-Construct models with either name, and read them with the snake_case attribute: `SendMessageInput(roomId="r1", ...)` constructs, and `output.message_id` reads.
-
-There is nothing to catch at the call. Pydantic validates when the model is constructed, so an invalid `SendMessageInput` raises `pydantic.ValidationError` at the constructor and never reaches the Nexus client. Handle it where you build the model.
 
 ### TypeScript
 

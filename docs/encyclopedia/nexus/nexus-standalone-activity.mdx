@@ -27,7 +27,7 @@ An [Activity](/activities) gives that step automatic retries, timeouts, and a du
 Exposing it as a Nexus Operation puts a typed contract and a [Namespace](/namespaces) boundary in front of it, so another team can call it without sharing your code, your deployment, or write access to your Namespace.
 Because the Activity carries the durability, the Operation needs no Workflow behind it, and uses fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud than running the same single step through one.
 
-For how to implement Activity-backed Operations in each SDK, see [Activity-backed Nexus Operations](/develop/nexus/activity-backed-operations).
+For how to implement Activity-backed Operations in each SDK, see [Activity-backed Nexus Operations](/develop/java/nexus/activity-backed-operations).
 
 ## When to use an Activity-backed Operation
 
@@ -56,7 +56,12 @@ Prefer a Workflow-backed Operation when the work is a multi-step process, needs 
 
 ## Related
 
-- [Activity-backed Nexus Operations](/develop/nexus/activity-backed-operations) — SDK how-to
+- Activity-backed Nexus Operations:
+  [Go](/develop/go/nexus/activity-backed-operations) ·
+  [Java](/develop/java/nexus/activity-backed-operations) ·
+  [.NET](/develop/dotnet/nexus/activity-backed-operations) ·
+  [Python](/develop/python/nexus/activity-backed-operations) ·
+  [TypeScript](/develop/typescript/nexus/activity-backed-operations)
 - [Temporal Operation Handler](/nexus/temporal-operation-handler) — handler model
 - [Standalone Activity](/standalone-activity) — Activities without a parent Workflow
 - [Microservice Development Walkthrough](/develop/java/nexus/development-walkthrough) — end-to-end Java guide

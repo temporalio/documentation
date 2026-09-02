@@ -1,21 +1,10 @@
----
-id: publish-in-nexus
-title: Step 5 - Publish in Nexus
-sidebar_label: 5. Publish in Nexus
-description: Create a Nexus Endpoint for the approval Service, allow caller Namespaces to reach it, and set up credentials for Temporal Cloud.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
 The Service is implemented and a Worker is polling, but no caller can reach it. A [Nexus Endpoint](/nexus/endpoints) is what makes it reachable, and the [Nexus Registry](/nexus/registry) is where Endpoints live.
 
 An Endpoint routes incoming Operation requests to a target Namespace and Task Queue. Callers address the Endpoint by name and never learn the Namespace or Task Queue behind it, which is what lets you move the handler later without changing caller code.
 
 ## Create the Endpoint
 
-An Endpoint needs three things: a unique name, the target Namespace where the handler runs, and the target Task Queue the handler's Worker polls. The Task Queue must match what your Worker registered in [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker), or requests arrive and nothing picks them up.
+An Endpoint needs three things: a unique name, the target Namespace where the handler runs, and the target Task Queue the handler's Worker polls. The Task Queue must match what your Worker registered in [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker), or requests arrive and nothing picks them up.
 
 On a development server, create it with the CLI:
 
@@ -64,11 +53,6 @@ Before writing a caller, confirm the wiring independently. Check that the Endpoi
 
 A Worker that is not polling is the other common cause of a call that appears to hang: the request is accepted and queued, and nothing serves it.
 
-## Next
-
-**[Step 6 - Call the Service](/develop/java/nexus/development-walkthrough/call-the-service)** - request an approval from the caller Namespace.
-
-Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

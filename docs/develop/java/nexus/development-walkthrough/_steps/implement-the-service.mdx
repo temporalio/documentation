@@ -1,19 +1,8 @@
----
-id: implement-the-service
-title: Step 4 - Implement the Service
-sidebar_label: 4. Implement the Service
-description: Implement the approval Nexus Service with TemporalOperationHandler, backed by a Workflow, and run a Worker that hosts it.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
-[Step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#build-the-operation-that-needs-no-backing) implemented the one Operation that needs no backing. This step adds the one at the center of the Service: back `requestApproval` with the approval Workflow, then run a Worker that hosts the Service, the Workflow, and the Activities.
+[Step 3](/develop/java/nexus/development-walkthrough?step=backing#build-the-operation-that-needs-no-backing) implemented the one Operation that needs no backing. This step adds the one at the center of the Service: back `requestApproval` with the approval Workflow, then run a Worker that hosts the Service, the Workflow, and the Activities.
 
 ## Write the approval Workflow
 
-The Workflow is an ordinary Temporal Workflow — the interactive one chosen in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#workflow). Nothing in it is Nexus-specific, and it could be started directly by a Client instead. What makes it interactive is the message handlers added in [step 7](/develop/java/nexus/development-walkthrough/add-messaging) and a Workflow Id you can predict.
+The Workflow is an ordinary Temporal Workflow — the interactive one chosen in [step 3](/develop/java/nexus/development-walkthrough?step=backing#workflow). Nothing in it is Nexus-specific, and it could be started directly by a Client instead. What makes it interactive is the message handlers added in [step 7](/develop/java/nexus/development-walkthrough?step=messaging) and a Workflow Id you can predict.
 
 For the approval, it needs to:
 
@@ -141,9 +130,9 @@ The Client is not an ordinary Temporal Client. It propagates bidirectional links
 
 <!--SNIPEND-->
 
-Set the Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id).
+Set the Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id).
 
-By default, starting a Workflow whose Id is already running **fails the Operation**. That is the right default here: the Operation has only started successfully once its completion callback is attached to a Workflow, so failing loudly beats reporting success to a caller that would then wait forever. [Step 8](/develop/java/nexus/development-walkthrough/send-messages#when-the-approval-already-exists) revisits this option, because once another Operation can create the approval first, this Operation needs to attach to it instead of failing.
+By default, starting a Workflow whose Id is already running **fails the Operation**. That is the right default here: the Operation has only started successfully once its completion callback is attached to a Workflow, so failing loudly beats reporting success to a caller that would then wait forever. [Step 8](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists) revisits this option, because once another Operation can create the approval first, this Operation needs to attach to it instead of failing.
 
 ## Run the Worker
 
@@ -180,13 +169,6 @@ A **contract violation** — a payload the generated validator rejects — shoul
 
 An **application failure** — the approval cannot proceed for a business reason — is a failed Operation. Whether it retries depends on the error type you raise. See [Nexus error handling](/nexus/error-handling).
 
-## Next
-
-The Service runs but nothing can reach it yet.
-
-**[Step 5 - Publish in Nexus](/develop/java/nexus/development-walkthrough/publish-in-nexus)** - create the Endpoint that makes it reachable.
-
-Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

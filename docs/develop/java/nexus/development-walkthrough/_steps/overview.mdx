@@ -1,0 +1,63 @@
+:::caution
+
+This walkthrough covers the [Temporal Operation Handler](/nexus/temporal-operation-handler), which is pre-release.
+APIs are experimental and may change in backwards-incompatible ways.
+
+:::
+
+This walkthrough builds one Nexus Service from nothing to a complete API, adding a single Nexus capability at each step.
+
+A [Nexus Service](/evaluate/nexus) is a contract that one team publishes and other teams call, across [Namespace](/namespaces) boundaries, without sharing code or a deployment.
+
+## The walkthrough problem
+
+This guide is grounded in a purchase approval Workflow — a common Temporal and Nexus use case.
+
+**A purchase request needs approval before it can proceed.**
+
+Approval is slow and human-driven: someone has to look at the request and decide. The system needs to survive that wait, which may be minutes or weeks. While a request is pending, other systems might need to nudge the approver or attach information to the request. Eventually a decision arrives, and the requesting system needs the outcome.
+
+Concretely, the Service needs to:
+
+- Tell a caller whether a purchase needs approval at all, before any durable work starts
+- Start an approval and, eventually, return `APPROVED` or `DENIED`
+- Accept a nudge that asks the approver again, and count how many have been sent
+- Accept supporting information for a purchase, whether or not its approval exists yet
+- Accept a decision from the caller and confirm it was recorded
+- Send a notification when the decision is final
+
+Each of those needs a different Nexus capability, introduced one step at a time.
+
+## One contract, every language
+
+**This walkthrough builds the Service in Java.** The same contract has a sample implementation in every language the generator supports. The reasoning at each step — what the contract should say, what backs each Operation, which message type to reach for — is the same in all of them.
+
+Working sample code, all built from the one contract:
+
+| Language | Sample |
+| --- | --- |
+| Java (this walkthrough) | `{sample repo link}` |
+| Go | `{sample repo link}` |
+| Python | `{sample repo link}` |
+| TypeScript | `{sample repo link}` |
+
+**Any caller can call any handler, because the contract is the only thing the two sides share.** A Go caller can drive the Python handler; the TypeScript caller can drive the Java handler. [Call](/develop/java/nexus/development-walkthrough?step=call) builds the Java caller and then points at the other languages' samples.
+
+:::note
+
+Sample repos for each language will land once the docs settle. The idea is that you can run the client from any sample against the handler from any other sample.
+
+:::
+
+The [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) takes the contract and emits typed models, validators, and Service definitions for Go, Java, Python, and TypeScript.
+
+## Before you start
+
+You need two Namespaces — one for the handler and one for the caller — so the walkthrough crosses a real Namespace boundary. A [local development server](/develop/run-a-development-server) with two Namespaces is enough through Implement; Publish covers both the development server and Temporal Cloud.
+
+```bash
+temporal operator namespace create --namespace approval-handler-namespace
+temporal operator namespace create --namespace approval-caller-namespace
+```
+
+New to Nexus? Read [Nexus Services](/nexus/services) and [Nexus Operations](/nexus/operations), or work through the shorter [Java Nexus quickstart](/develop/java/nexus/quickstart).
