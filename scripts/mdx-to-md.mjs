@@ -35,7 +35,7 @@
 
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
-import { cookbookPreviewToMarkdown } from "./component-handlers/cookbook-preview.mjs";
+import { cookbookPreviewToMarkdown, cookbookHomeToMarkdown } from "./component-handlers/cookbook-preview.mjs";
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
@@ -73,6 +73,7 @@ export const COMPONENT_REGISTRY = {
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
   CookbookPreview: "cookbook-preview",
+  CookbookHome: "cookbook-home",
   SdkOverviewCards: "sdk-overview-cards",
   ViewSourceCodeNotice: "view-source-code-notice",
 
@@ -1292,6 +1293,19 @@ export function transformMdx(mdxContent, options = {}) {
       }
       const limit = extractNumberProp(tag, "limit") ?? 4;
       const md = cookbookPreviewToMarkdown(limit, { projectRoot, warnings, sourceFile });
+      outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
+    // --- CookbookHome (self-closing, no props) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<CookbookHome\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const md = cookbookHomeToMarkdown({ projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
       continue;

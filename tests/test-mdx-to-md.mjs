@@ -1301,7 +1301,7 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "cookbook-preview", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
