@@ -1,14 +1,3 @@
----
-id: choose-backing-implementation
-title: Step 3 - Choose the backing implementation
-sidebar_label: 3. Choose the backing implementation
-description: Decide what runs behind each Nexus Operation - nothing, a Workflow, or a Standalone Activity - and implement the Operation that needs no backing at all.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
 The contract says nothing about what runs behind an Operation. That is deliberate — it is the handler's private decision, and it can change later without touching callers.
 
 There are three choices, and picking the wrong one is the most common source of trouble later. This step makes the choice for each Operation in the walkthrough's example approval Service, then implements the simplest one.
@@ -76,7 +65,7 @@ Deriving it in one place keeps the two Operations that need it from drifting apa
 
 <!--SNIPEND-->
 
-It matters again in [step 8](/develop/java/nexus/development-walkthrough/send-messages), where `attachApprovalContext` may start the approval before `requestApproval` is ever called. Both Operations derive the same Workflow Id from the same item id, which is what lets them agree on which Execution they mean.
+It matters again in [step 8](/develop/java/nexus/development-walkthrough?step=send), where `attachApprovalContext` may start the approval before `requestApproval` is ever called. Both Operations derive the same Workflow Id from the same item id, which is what lets them agree on which Execution they mean.
 
 ## Build the Operation that needs no backing
 
@@ -116,13 +105,8 @@ The next paragraph is about cost. I thought it was relevant as a big differentia
 
 In Temporal Cloud there is a cost argument too. Starting any Nexus Operation costs one [Action](/cloud/pricing) in the caller's Namespace, whatever backs it — that much is fixed. What varies is the handler side: an Operation with no backing Execution adds nothing, while a Workflow or Activity backing bills Actions of its own, retries included. Handling the Nexus Operation itself is not billed. For work as small as a threshold comparison that is the difference between one Action and several, which is worth knowing when the Operation is called on every purchase. See [Nexus pricing](/cloud/nexus/pricing).
 
-Nothing runs this Operation yet. [Step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker) starts the Worker that hosts the Service, and [step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus) makes it reachable, so this is the first Operation you will see respond once those are in place.
+Nothing runs this Operation yet. [Step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker) starts the Worker that hosts the Service, and [step 5](/develop/java/nexus/development-walkthrough?step=publish) makes it reachable, so this is the first Operation you will see respond once those are in place.
 
-## Next
-
-**[Step 4 - Implement the Service](/develop/java/nexus/development-walkthrough/implement-the-service)** - back the approval with a Workflow and run a Worker.
-
-Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

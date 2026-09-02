@@ -1,14 +1,3 @@
----
-id: define-the-data-contract
-title: Step 1 - Define the data contract
-sidebar_label: 1. Define the data contract
-description: Plan a purchase approval Nexus Service and write its data contract before any implementation, so every language shares one definition.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
 Start with the contract, not the code.
 
 The contract is the only thing a caller and a handler share. Everything else — which language each side is written in, whether an Operation is backed by a Workflow or an Activity, which Task Queue the Worker polls — is private to one side and can change without the other side knowing.
@@ -36,13 +25,13 @@ For the approval problem, callers need to check whether a purchase needs approva
 | `attachApprovalContext` | Item id, requester, amount, note | Nothing | Step 8 |
 | `notifyRequester` | Requester, decision | Where the notification was delivered | Step 9 |
 
-Three of those are worth explaining now, because they are easy to get wrong. They also introduce the three shapes an Operation can take, named here and chosen per Operation in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation):
+Three of those are worth explaining now, because they are easy to get wrong. They also introduce the three shapes an Operation can take, named here and chosen per Operation in [step 3](/develop/java/nexus/development-walkthrough?step=backing):
 
 **`checkApprovalRequired` answers a question without starting anything.** A small purchase may not need approval, and finding that out should not create an approval, a Workflow, or any durable record. This is the synchronous case: the Operation applies a spend threshold and returns the answer during the call, so a caller can skip the rest of this Service entirely.
 
 **`requestApproval` returns the final decision.** It does not return an approval id for the caller to poll. The Operation is Workflow-backed, so it completes when that Workflow returns, and the Workflow's return value *is* the Operation's result. The caller awaits the Operation and receives `APPROVED` or `DENIED`.
 
-**`attachApprovalContext` does not require the approval to exist.** Supporting information — a justification, a link to a quote, a manager's note — is produced by a different system than the one requesting approval, and the two messages can arrive in either order. The Operation is written so that either order works, which means both might have to start the approval workflow. Since this message might have to start the workflow, its input needs to include the purchase details so that the workflow has enough information to start. [Step 8](/develop/java/nexus/development-walkthrough/send-messages#attach-information-before-the-approval-exists) covers this in detail.
+**`attachApprovalContext` does not require the approval to exist.** Supporting information — a justification, a link to a quote, a manager's note — is produced by a different system than the one requesting approval, and the two messages can arrive in either order. The Operation is written so that either order works, which means both might have to start the approval workflow. Since this message might have to start the workflow, its input needs to include the purchase details so that the workflow has enough information to start. [Step 8](/develop/java/nexus/development-walkthrough?step=send#attach-information-before-the-approval-exists) covers this in detail.
 
 ## Contract design rules
 
@@ -61,7 +50,7 @@ A file is one or the other, never both. A contract can span several files, with 
 
 The approval contract declares a Service with six Operations, so its entry file is a Nexus document.
 
-**[Definition files](/develop/nexus/client-code-generator#definition-files)** documents both flavors in full, with the supported subset of JSON Schema and a worked example to model this contract on.
+**[Definition files](/develop/java/nexus/client-code-generator#definition-files)** documents both flavors in full, with the supported subset of JSON Schema and a worked example to model this contract on.
 
 Here is the approval contract in full. Every Operation the walkthrough builds is declared here, before any implementation exists:
 
@@ -217,15 +206,10 @@ $defs:
 
 <!--SNIPEND-->
 
-## Next
-
-**[Step 2 - Generate code from the contract](/develop/java/nexus/development-walkthrough/generate-code)** - turn the contract into the typed code both sides use.
-
-Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 
-- [Nexus Client Code Generator](/develop/nexus/client-code-generator) for the contract format and the supported JSON Schema subset.
+- [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) for the contract format and the supported JSON Schema subset.
 - [Nexus Services](/nexus/services) for what a Service contract is and how it is shared.
 
 :::

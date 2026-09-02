@@ -1,14 +1,3 @@
----
-id: add-messaging
-title: Step 7 - Add messaging
-sidebar_label: 7. Add messaging
-description: Expose a Signal and an Update on the approval Workflow as Nexus Operations using the Nexus-aware Client.
-toc_max_heading_level: 4
-tags:
-  - Nexus
-  - Java SDK
----
-
 The approval blocks waiting for a decision. **Messages** give callers a way to interact with it while it waits.
 
 Two Operations get added to the workflow sample problem. Which [message](/sending-messages) type each one uses is decided by what the caller needs back, not by preference.
@@ -182,13 +171,8 @@ Messages are for changing a running approval or nudging it along, not for collec
 
 Both also stop working the moment the approval completes. The Temporal Service accepts a Signal or an Update only while the Workflow is still running, and rejects one sent to a closed Workflow with `NOT_FOUND: workflow execution already completed`. That happens as soon as the decision lands, not when the [Retention Period](/temporal-service/temporal-server#retention-period) later expires and the Execution is deleted. A second `submitDecision` for an approval that has already been decided fails this way, and so does any attempt to use these Operations to look up a past decision.
 
-If more than one system needs the outcome, see [step 8](/develop/java/nexus/development-walkthrough/send-messages#when-the-approval-already-exists) for how additional callers attach to a running approval and receive the same decision.
+If more than one system needs the outcome, see [step 8](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists) for how additional callers attach to a running approval and receive the same decision.
 
-## Next
-
-**[Step 8 - Send messages](/develop/java/nexus/development-walkthrough/send-messages)** - call the messaging Operations, and handle an approval that may not exist yet.
-
-Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 
 :::tip RESOURCES
 

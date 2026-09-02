@@ -1,0 +1,179 @@
+---
+id: activity-backed-operations
+title: Activity-backed Nexus Operations - .NET SDK
+sidebar_label: Activity-backed Operations
+description: How to back a Nexus Operation with a Standalone Activity using TemporalOperationHandler in the .NET SDK.
+toc_max_heading_level: 4
+slug: /develop/dotnet/nexus/activity-backed-operations
+tags:
+  - Nexus
+  - .NET SDK
+  - Activities
+---
+
+:::caution
+
+Activity-backed Nexus Operations are pre-release and built on the [Temporal Operation Handler](/nexus/temporal-operation-handler).
+`TemporalOperationHandler` is marked experimental in the SDKs and may change in backwards-incompatible ways.
+
+:::
+
+A Nexus Operation can be backed by a [Standalone Activity](/standalone-activity) as well as a Workflow.
+Starting the Operation starts an Activity Execution that has no parent Workflow, and the Operation completes when that Activity returns.
+
+For the conceptual model, see [Nexus Standalone Activity](/nexus/standalone-activity).
+This page shows how to implement Activity-backed Operations with `TemporalOperationHandler` in the .NET SDK.
+
+## When to use an Activity-backed Operation
+
+The shape fits work that is one durable step sitting behind a team boundary.
+You get all of the following without building any of it yourself:
+
+- **Durability per call.** Retries on the policy you set, timeouts you control, and a record of every attempt including the last error.
+- **Deduplicated starts.** A stable Activity Id means a retried or redelivered request targets the same Activity Execution instead of starting a second one, so you do not need a separate store of processed Ids.
+- **Protection from a failing dependency.** Repeated retryable failures trip the [circuit breaker](/nexus/operations#circuit-breaking) rather than piling retries onto a system that is already struggling.
+- **A boundary between teams.** Callers get scoped access to named Operations, not write access to your Namespace, and they never see your Task Queues, your Workers, or your implementation.
+- **Room to change your mind.** As long as the contract holds you can rewrite what runs behind an Operation, including replacing the Activity with a Workflow later, and no caller changes.
+
+Either calling style works: a caller Workflow can invoke the Operation as one step of a larger process, or a Client can start it directly as a [Standalone Nexus Operation](/standalone-nexus-operation) with no Workflow on either side.
+
+A sampling of customer use cases this was built to address follows.
+
+### Durable webhook and event processing without running a queue
+
+A service ingests webhooks from third-party providers — payment events, repository pushes, delivery receipts, CRM change notifications.
+Each one needs to trigger a single durable task: update a downstream system, kick off a notification, index into search, sync into a warehouse.
+
+Providers retry aggressively if you do not return `200` within seconds, so the receiver has to accept fast and do the work elsewhere.
+The usual way to get there is to assemble it yourself: a queue, a consumer fleet, hand-written retry and dead-letter handling, and a separate store holding processed event Ids for deduplication.
+That is a lot of infrastructure whose only job is to run one function reliably.
+
+An Activity-backed Operation replaces the whole assembly.
+The receiver starts the Operation and returns `200` immediately; Temporal owns delivery from that point.
+The provider's own event Id becomes the Activity Id, so a redelivered webhook targets the same Activity Execution instead of starting a second one, and the deduplication store disappears.
+Retries, backoff, and the record of every attempt come from the Activity.
+When a downstream dependency starts failing, the [circuit breaker](/nexus/operations#circuit-breaking) trips rather than letting retries pile up against it.
+
+The team that owns the receiver is usually not the team that owns the processing, and the Nexus Endpoint is where that boundary lands: scoped access to specific Operations rather than write access to a Namespace.
+
+### Sandboxing a tool call
+
+An agent needs to call a tool — an MCP tool, an internal API, something that executes untrusted input.
+You want that call to run somewhere with its own credentials, its own network reach, and its own blast radius, not inside the process orchestrating the agent.
+
+An Activity-backed Operation puts a Namespace boundary between the two.
+The tool runs on Workers in the Namespace that owns it, under that Namespace's credentials, and the caller only ever sees the Operation contract.
+The call is still durable and retried, and it is still traceable end to end, but the caller cannot reach past the contract into the environment the tool runs in.
+See [Build AI applications with Temporal](/with-ai) for how this fits alongside the rest of the agent stack.
+
+### A durable front door to another system
+
+Any system you call can fail, time out, or be down when you need it — a third-party API, a legacy internal service, an unreliable piece of infrastructure.
+Wrapping that call in an Activity-backed Operation makes every call against it durable: retried on your policy, bounded by your timeouts, and recorded whether it succeeded or not.
+
+Written once and published as a Nexus Service, it becomes a connector that every team calls instead of each writing its own integration.
+The team that owns it can fix a bug or change the implementation behind the contract, without a coordinated rollout across every consumer.
+
+### Related patterns
+
+The same shape fits anything that is an external trigger, one durable step, and a team boundary.
+
+- **Asynchronous user actions from a backend-for-frontend.** A user clicks "export my data" or "revoke my sessions"; the BFF starts the Operation and hands the client a handle to poll.
+- **Consumer offload.** A Kafka or event-stream consumer starts an Operation, commits its offset, and lets Temporal own durability from there. The event Id is the deduplication key.
+- **Platform actions triggered by CI/CD.** A pipeline step requests a compliance scan, a canary step, or a credential rotation. The platform team owns the handler; consumer teams get scoped Endpoint access.
+- **Scheduled platform tasks.** A scheduler fires an Operation and a shared platform team's Workers run the task.
+
+## How it works
+
+Use `TemporalOperationHandler` and call `startActivity` on the injected Nexus-aware Client.
+The handler returns an async result carrying an activity-execution Operation token, and the server delivers the Activity's result to the caller through the Nexus completion callback when the Activity finishes.
+
+```csharp
+[NexusServiceHandler(typeof(IGreetingNexusService))]
+public class GreetingNexusServiceHandler
+{
+    [TemporalOperation]
+    public Task<TemporalOperationResult<GreetingOutput>> Greet(
+        TemporalOperationStartContext ctx,
+        ITemporalNexusClient client,
+        GreetingInput input) =>
+        client.StartActivityAsync<GreetingOutput>(
+            () => GreetingActivities.GreetAsync(input),
+            new()
+            {
+                Id = $"greet-{ctx.RequestId}",
+                StartToCloseTimeout = TimeSpan.FromSeconds(10),
+            });
+}
+```
+
+
+You write the Activity the same way whichever side calls it.
+The same Activity Function can be executed by a Workflow and started behind a Nexus Operation with no code changes — nothing in its definition is Nexus-specific.
+What differs is how it is started, not what it is.
+
+```csharp
+public class GreetingActivities
+{
+    [Activity]
+    public static Task<GreetingOutput> GreetAsync(GreetingInput input) =>
+        Task.FromResult(new GreetingOutput($"Hello, {input.Name}"));
+}
+```
+
+
+### Required options
+
+Starting an Activity this way needs values that a Workflow-called Activity does not.
+
+- **An Activity Id**, unique within the Namespace. There is no parent Workflow to scope it.
+- **A timeout.** At least one of start-to-close or schedule-to-close.
+
+The Task Queue is optional. It defaults to the Task Queue the Operation is running on, which is what the samples above rely on. Set it explicitly to run the Activity on its own Worker fleet rather than the one the Endpoint targets.
+
+Deriving the Id from the Nexus request Id makes the start idempotent.
+The server retries a Nexus start request using the same request Id, so each retry targets the same Activity Id rather than starting a second Activity.
+
+Setting the Activity Id conflict policy to use-existing attaches to an already-running Activity with that Id instead of failing.
+Combined with an Id derived from the Operation *input* rather than the request Id, this lets several Nexus Operations share one Activity Execution and all receive its result.
+
+### Register the Worker
+
+Register the Activity implementations and the Nexus Service implementation on a Worker polling the Endpoint's target Task Queue.
+There is no Workflow implementation to register.
+
+```csharp
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions(TaskQueueName).
+        AddActivity(GreetingActivities.GreetAsync).
+        AddNexusService(new GreetingNexusServiceHandler()));
+```
+
+
+## Cancellation
+
+Worth remembering, because it is the one behavioral difference from a Workflow-backed Operation that surprises people.
+
+A Workflow is interrupted by a cancellation request. An Activity is not: the Worker only learns about it on the next heartbeat, so an Activity that never heartbeats runs until it completes or hits its timeout, no matter how many cancellation requests the caller sends.
+
+Nothing about this is Nexus-specific. See [Activity cancellation](/activity-execution#cancellation) for how to heartbeat, what to do with the resulting cancellation exception, and why a heartbeat timeout matters. For a short Activity that finishes well inside its timeout and doesn't have the risk of hanging, however, a heartbeat is not needed.
+
+## Choose between an Activity and a Workflow
+
+Back an Operation with an **Activity** when the work is a single step: one external call, one computation, one notification.
+You get retries, timeouts, and a durable record of the step, without an Event History tracking orchestration you are not doing.
+
+Back an Operation with a **Workflow** when the work has more than one step, needs to wait for something, needs to receive [messages](/sending-messages), or needs durable intermediate state.
+For example, an approval that blocks for a human decision is a Workflow, not an Activity.
+
+Sample code: `{code not yet live}`
+
+:::tip RESOURCES
+
+- [Nexus Standalone Activity](/nexus/standalone-activity) for the conceptual model.
+- [Temporal Operation Handler](/develop/dotnet/nexus/temporal-operation-handler) for the handler type and the Nexus-aware Client.
+- [Standalone Activity](/standalone-activity) for the underlying concept.
+- [Standalone Nexus Operation](/standalone-nexus-operation) for starting Operations without a caller Workflow.
+
+:::
