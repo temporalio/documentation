@@ -14,7 +14,9 @@ import { OperationsTable } from '@site/src/components';
 
 # Operations
 
-Temporal Cloud [rate limits operations per second (OPS)](/cloud/limits#operations-per-second) per namespace. An operation is anything 1. a user does directly, or 2. Temporal does on behalf of the user in the background that results in load on Temporal Server. The exception is visibility queries: they do hit the Server (the query is passed from the server to the visibility store), but primarily the load is on the visibility system. Visibility rate limits are separate from OPS rate limits.
+Temporal Cloud rate limits Namespaces using three related measures. [Actions per second (APS)](/cloud/actions) is the primary limit and the one [Capacity Modes](/cloud/capacity-modes) are expressed in; Requests per second (RPS) and [operations per second (OPS)](/cloud/limits#operations-per-second) are lower-level measures that protect the underlying services. This page covers OPS specifically.
+
+An operation is anything 1. a user does directly, or 2. Temporal does on behalf of the user in the background that results in load on Temporal Server. The exception is visibility queries: they do hit the Server (the query is passed from the server to the visibility store), but primarily the load is on the visibility system. Visibility rate limits are separate from OPS rate limits.
 
 Below is the list of operations, including:
 - operation name

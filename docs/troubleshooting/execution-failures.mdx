@@ -136,10 +136,13 @@ At scale this compounds: more timeouts cause more cold replays, cold replays dri
 
 ## Activity execution failures elevated {/* #activity-execution-failures-elevated */}
 
-**Recommended alert:** [`temporal_activity_execution_failed`](/references/sdk-metrics#activity_execution_failed), tagged `activity_type`
+**Recommended alert:** [`temporal_activity_execution_failed`](/references/sdk-metrics#activity_execution_failed) with `failure_reason=ActivityError`, tagged `activity_type`
 Fires when the rate goes above 10/s, held for 2m. Routed Warning by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
 
 Activities are failing outright at a sustained rate: returning failures, not timing out.
+
+Filter on `failure_reason=ActivityError` so this alert tracks Activity code and its dependencies.
+The other reasons on this metric are Worker-side size limits with different triage, covered in [Activity Payloads too large](#activity-payloads-too-large).
 
 `ApplicationFailure` instances marked with category `BENIGN` don't increment this counter, so how well this metric tracks only the unexpected failures depends on how consistently your application marks the expected ones.
 
@@ -157,6 +160,30 @@ At scale, sustained retry bursts put real pressure on Task matching and the data
 1. **Mark expected failures as benign.** If your design fails Activities on purpose, as polling patterns, Saga compensations, and flow control through exceptions all do, mark those `ApplicationFailure` instances with category `BENIGN`. That keeps them out of this metric and lets the alert track only the failures you didn't expect, without tuning a threshold per `activity_type`. Check that your SDK version supports the category before you rely on it.
 
 One caveat: internal failures increment this counter no matter what category you set. Those are things like a context propagation error or a context timeout, rather than an Activity returning a failure.
+
+## Activity Payloads too large {/* #activity-payloads-too-large */}
+
+**Recommended alert:** [`temporal_activity_execution_failed`](/references/sdk-metrics#activity_execution_failed) with `failure_reason=PayloadsTooLarge`, tagged `activity_type`
+Fires on any occurrence, held for 1m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
+
+A Payload in the Activity Task response was bigger than the Namespace Payload size limit.
+The Worker failed the Activity Task itself rather than send a completion the Temporal Service was going to reject, so the Activity fails with an explicit error instead of timing out silently.
+
+The Worker marks this failure retryable on purpose: the point of catching it on the Worker is to turn something the Temporal Service would hard-fail into an Activity failure you can fix and redeploy past.
+
+For the limits themselves and the ways to stay under them, see [Troubleshoot the BlobSizeLimitError](/troubleshooting/blob-size-limit-error#payload-size-limit).
+
+**Why it matters.**
+The Activity retries under its Retry Policy and produces the same oversized result every time, so it cannot succeed until the code changes.
+The Workflow Execution stays blocked on that Activity until its schedule-to-close timeout expires, and each attempt is wasted work on a Worker.
+This will not clear up on its own, which is why it is worth alerting on any occurrence rather than on a rate.
+
+**Triage.**
+
+1. **Identify which Activity is oversized.** The `activity_type` tag narrows it down. Worker logs for that type record the size and the limit that was exceeded.
+1. **Find which Payload is too large.** Usually the Activity result. Large collections, embedded files, and full API responses returned verbatim are the common causes.
+1. **Move the Payload out of band.** Store it and return a reference instead, using [External Storage](/external-storage) or a custom [Payload Codec](/payload-codec). Compression buys headroom but does not remove the ceiling.
+1. **Deploy the fix.** Because the failure is retryable, affected Activities succeed on their next attempt once the corrected Worker is running, as long as the Workflow has not already hit its schedule-to-close timeout.
 
 ## Unregistered Activity invocation {/* #unregistered-activity-invocation */}
 

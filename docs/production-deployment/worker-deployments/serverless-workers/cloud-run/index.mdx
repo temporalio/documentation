@@ -705,7 +705,8 @@ This section applies to Temporal Cloud. For self-hosted Temporal Service deploym
 [Self-hosted setup](/production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup).
 
 Temporal Cloud scales the Worker Pool by [impersonating a service account](https://docs.cloud.google.com/docs/authentication/use-service-account-impersonation) you create, called the *invoker service account*. The invoker service account
-reads and scales the pool through the Cloud Run admin API. It does not run the pool.
+reads and scales the pool through the Cloud Run admin API. It does not run the pool. Temporal calls that API from
+outside your network, so you do not need to open inbound ports.
 
 :::caution
 

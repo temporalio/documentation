@@ -45,7 +45,7 @@ export type GridCardProps = {
   description: string;
   href: string;
   tags?: string[];
-  /** Rendered top-right of the header, e.g. an SDK logo. */
+  /** Rendered bottom-right, alongside the tags, e.g. an SDK logo. */
   icon?: React.ReactNode;
   analyticsId?: string;
 };
@@ -69,16 +69,20 @@ export default function GridCard({ title, description, href, tags = [], icon, an
           {title}
           {showExternalIcon && <ExternalLinkIcon />}
         </h3>
-        {icon && <div className={styles.icons}>{icon}</div>}
       </div>
       <p className={styles.cardDescription}>{description}</p>
-      {tags.length > 0 && (
-        <div className={styles.cardMeta}>
-          {tags.map((tag) => (
-            <span key={tag} className={styles.badge}>
-              {tag}
-            </span>
-          ))}
+      {(tags.length > 0 || icon) && (
+        <div className={styles.cardFooter}>
+          {tags.length > 0 && (
+            <div className={styles.cardMeta}>
+              {tags.map((tag) => (
+                <span key={tag} className={styles.badge}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          {icon && <div className={styles.icons}>{icon}</div>}
         </div>
       )}
     </Link>
