@@ -43,14 +43,16 @@ If you only ingest Cloud metrics, you will miss many worker-side bottlenecks. Fo
 
 ### Elastic
 
-Elastic provides a Temporal (OpenTelemetry) integration that scrapes the OpenMetrics endpoint and stores metrics in Elastic Observability.
+The Elastic [Temporal (OpenTelemetry) integration](https://www.elastic.co/docs/reference/integrations/temporal) scrapes the OpenMetrics endpoint, stores metrics in Elasticsearch, and automatically installs dashboards, alert templates, and SLO templates in Kibana.
 
-1. In Kibana, go to **Management → Integrations**, enable **Display beta integrations** if needed, and search for **Temporal (OpenTelemetry)**.
-2. Add the integration. Keep the default Cloud endpoint (`metrics.temporal.io:443`) and path (`/v1/metrics`).
-3. Paste your Temporal Cloud API key into **Temporal Cloud API Key**.
-4. Confirm metrics in Discover with `data_stream.dataset: "temporal.cloud_metrics.otel"`.
+Setup
 
-For full setup details, see the [Elastic Temporal (OpenTelemetry) integration](https://www.elastic.co/docs/reference/integrations/temporal).
+1. In Kibana, go to Management → Integrations and search for Temporal (OpenTelemetry).
+2. Add the integration. The default Cloud endpoint (metrics.temporal.io:443) and path (/v1/metrics) are pre-configured.
+3. Enter your Temporal Cloud API key in the Temporal Cloud API Key field.
+4. Verify metrics are flowing in Discover using the filter data_stream.dataset: "temporal.cloud_metrics.otel".
+
+Dashboards, alert rules, and SLO templates are installed automatically.
 
 ### Grafana Cloud
 
