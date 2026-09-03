@@ -73,7 +73,7 @@
   },
   {
     "name": "Google ADK",
-    "description": "Orchestrate Google ADK agents with durable Temporal Workflows.",
+    "description": "Run Google ADK agents as durable Temporal Workflows.",
     "tags": [
       "Agent framework"
     ],
@@ -82,7 +82,7 @@
   },
   {
     "name": "Google ADK",
-    "description": "Run Google ADK agents with durable execution using the Temporal Go SDK.",
+    "description": "Run Google ADK agents as durable Temporal Workflows.",
     "tags": [
       "Agent framework"
     ],
@@ -91,7 +91,7 @@
   },
   {
     "name": "Google ADK",
-    "description": "Run Google ADK agents as durable Temporal Workflows with the TypeScript SDK.",
+    "description": "Run Google ADK agents as durable Temporal Workflows.",
     "tags": [
       "Agent framework"
     ],
