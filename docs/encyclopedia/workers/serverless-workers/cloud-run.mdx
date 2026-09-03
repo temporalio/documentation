@@ -54,6 +54,7 @@ It sizes the pool to a target utilization (80% by default), so there is room to 
 When Tasks are already waiting in the backlog, the WCI adds more instances on top to work through them faster.
 
 It applies the resulting count to the pool through the Cloud Run admin API, and keeps the count within a minimum and maximum bound.
+Temporal calls that API from outside your network, so no inbound connection to the pool is needed.
 
 ### Scale-out {/* #scale-out */}
 
