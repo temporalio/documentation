@@ -48,11 +48,11 @@ impl GreetingWorkflow {
 
 The `#[workflow]` macro marks the struct as a Workflow. The `#[workflow_methods]` macro is applied to the `impl` block containing the Workflow methods.
 
-## Workflow struct {/* #workflow-struct */}
+### Workflow struct {/* #workflow-struct */}
 
 The Workflow struct holds the state of your Workflow Execution. This state is persisted and recovered during replays. All fields in a Workflow struct should be serializable.
 
-## Workflow initialization {/* #init-method */}
+### Workflow initialization {/* #init-method */}
 
 The `#[init]` method is optional and is called when the Workflow first starts. It receives the initial Workflow input parameters and initializes the Workflow struct:
 
