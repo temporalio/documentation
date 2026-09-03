@@ -138,14 +138,95 @@ Model and MCP calls appear as Activities in Temporal Event History even when Ope
 attributes can contain prompts and model responses, so send them only to an approved destination or remove sensitive
 attributes in your span processor.
 
-## Understand replay safety and operational behavior
+## Reference and troubleshooting
 
-- `TemporalModel` disables nested model SDK retries so Temporal Activity retry policies control retries and backoff.
-- Model calls and MCP operations are not repeated during Workflow replay. A failed Activity attempt can be retried
-  according to its retry policy.
-- Regular ADK function tools run inside the Workflow and must remain deterministic. Use `activityAsTool` for I/O.
-- Live bidirectional streaming through `BaseLlm.connect` is not supported inside Workflows.
-- Configure a heartbeat timeout for long model Activities when you need cancellation delivery and progress detection.
+### Feature support
+
+The integration supports ADK agents and runners, Activity-backed model calls, deterministic function tools,
+Activity-backed tools, MCP tool discovery and calls, server-sent event (SSE) model streaming, test doubles, and ADK
+OpenTelemetry spans.
+
+Live bidirectional streaming through `BaseLlm.connect` isn't supported inside Workflows. ADK extension points that
+perform I/O must run in Activities. `TemporalMCPToolset` accepts a list of tool names as its filter, but it doesn't
+support ADK's `ToolPredicate` filter.
+
+### Composing with other plugins
+
+Register observability and governance plugins before `GoogleAdkPlugin`. For example, placing `OpenTelemetryPlugin` first
+installs the Workflow tracer provider before ADK creates spans.
+
+Custom payload and failure converter modules load before the plugin's polyfills. If either module imports `@google/adk`
+or `@google/genai`, import `@temporalio/google-adk-agents/workflow` first in that module.
+
+### Replay safety
+
+The ADK runner, agent graph, regular function tools, and `summary` callback run in Workflow code and must remain
+deterministic. Model calls, MCP operations, and tools created with `activityAsTool` run as Activities. Their completed
+results come from Event History during replay instead of executing again.
+
+Streaming publishes an at-least-once side channel, but the complete Activity result remains the deterministic value
+returned to the Workflow. OpenTelemetry span export is also at-least-once: replay doesn't emit spans again, but a
+Workflow Task retry can.
+
+### Configuration
+
+The following tables cover the integration-specific options. Options under `activity` accept the standard TypeScript SDK
+`ActivityOptions` fields.
+
+| API               | Option                   | Default                                        | Behavior                                                                                                                                          |
+| ----------------- | ------------------------ | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GoogleAdkPlugin` | `modelProvider`          | ADK `LLMRegistry`                              | Resolves a model name in the model Activities. Use it to configure another provider, a proxy, or a test double.                                   |
+| `GoogleAdkPlugin` | `mcpToolsets`            | `{}`                                           | Maps each name to an MCP factory and registers `<name>-listTools` and `<name>-callTool` Activities.                                               |
+| `TemporalModel`   | `activity`               | `startToCloseTimeout: '1 minute'`              | Configures every model Activity. An explicit `startToCloseTimeout` overrides the default.                                                         |
+| `TemporalModel`   | `summary`                | ADK agent name, then `adk.invokeModel <model>` | Sets the Activity summary. A function receives the model request and must be deterministic. This option takes precedence over `activity.summary`. |
+| `TemporalModel`   | `streamingTopic`         | None                                           | Publishes SSE response chunks to this workflow-streams topic when streaming is requested.                                                         |
+| `TemporalModel`   | `streamingBatchInterval` | `'100 milliseconds'`                           | Sets how frequently streaming chunks are batched for publication.                                                                                 |
+
+| API                  | Option             | Default                           | Behavior                                                                                                              |
+| -------------------- | ------------------ | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `TemporalMCPToolset` | `name`             | Required                          | Selects the Worker-registered factory and names its Activity pair.                                                    |
+| `TemporalMCPToolset` | `toolFilter`       | All tools                         | Advertises only the listed tool names. Names are matched after applying `prefix`.                                     |
+| `TemporalMCPToolset` | `prefix`           | None                              | Advertises each tool as `<prefix>_<name>` without changing its name on the MCP server.                                |
+| `TemporalMCPToolset` | `activity`         | `startToCloseTimeout: '1 minute'` | Configures both tool discovery and tool-call Activities.                                                              |
+| `TemporalMCPToolset` | `connectionParams` | None                              | Creates a real MCP toolset only when used outside a Workflow. Worker-side MCP configuration belongs in `mcpToolsets`. |
+| `activityAsTool`     | `name`             | Required                          | Names both the tool and the registered Activity it calls.                                                             |
+| `activityAsTool`     | `description`      | Required                          | Describes the tool to the model.                                                                                      |
+| `activityAsTool`     | `parameters`       | Empty object schema               | Defines the arguments passed to the Activity as its single input.                                                     |
+| `activityAsTool`     | `activity`         | `startToCloseTimeout: '1 minute'` | Configures the Activity call.                                                                                         |
+| `FakeLlm`            | `model`            | `'fake-model'`                    | Sets the model name used by the test double.                                                                          |
+| `FakeLlm`            | `responses`        | One canned text response          | Sets the responses yielded in order by the test double.                                                               |
+| `fakeModelProvider`  | `responses`        | One canned text response          | Creates a model provider that returns a `FakeLlm` for every model name.                                               |
+| `mockMCPToolset`     | `definitions`      | Required                          | Creates an MCP factory from tool declarations and handlers.                                                           |
+
+An MCP factory can return connection parameters or a `BaseToolset`. Connection parameters create and close one MCP
+session per Activity. A `BaseToolset` remains owned by the factory, isn't closed by the plugin, and can open separate
+sessions for discovery and the tool call.
+
+When `heartbeatTimeout` is set, model and MCP Activities heartbeat on a timer at half the timeout. Streaming model
+Activities also heartbeat for each chunk. These heartbeats deliver cancellation and detect a stopped Worker, but they
+don't detect a hung model or MCP call; `startToCloseTimeout` bounds that call.
+
+### Failure behavior
+
+The plugin exports constants for its public `ApplicationFailure.type` values. Model and MCP failures originate in
+Activities, so catch the surrounding `ActivityFailure` and inspect its cause chain for these types.
+
+| Failure type                      | Meaning                                                                                                                                                                                                                                                              |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GoogleAdkModelError[.<status>]`  | A model call failed. Statuses 408, 409, 429, and 5xx are retryable; other HTTP statuses are non-retryable. A failure without a status is retryable. `x-should-retry` overrides this classification, and `retry-after` or `retry-after-ms` sets the next retry delay. |
+| `GoogleAdkMCPError[.<status>]`    | MCP discovery or a tool call failed. It uses the same status classification as model errors. Failures without a status are retryable, so set `activity.retry.maximumAttempts` to bound retries.                                                                      |
+| `GoogleAdkMCPToolNotFound`        | A factory-provided `BaseToolset` didn't contain the requested tool. This failure is non-retryable.                                                                                                                                                                   |
+| `GoogleAdkStreamingTopicRequired` | SSE streaming was requested without `streamingTopic`. This failure is non-retryable and is thrown directly in the Workflow.                                                                                                                                          |
+| `GoogleAdkUnsupported`            | `BaseLlm.connect` was called in a Workflow. This failure is non-retryable and is thrown directly in the Workflow.                                                                                                                                                    |
+
+ADK normally converts an error from an agent's model call into an event. The integration records that absorbed failure
+and re-raises it after the Workflow or handler frame that ran the agent turn returns. To recover in an ADK
+`onModelErrorCallback`, pass the received error to `markModelFailureHandled` and return a substitute event created with
+ADK's `createEvent`. Cancellation can't be handled this way.
+
+If a model call fails with a sandbox error such as `fetch is not defined`, check that the agent uses
+`new TemporalModel(...)` instead of a raw model string. A raw model makes ADK attempt the network call inside the
+Workflow instead of routing it to an Activity.
 
 ## Resources
 
