@@ -72,6 +72,15 @@
     "href": "/develop/python/integrations/deepagents"
   },
   {
+    "name": "Elastic",
+    "description": "Export Temporal Cloud metrics to Elastic Observability with the Temporal (OpenTelemetry) integration.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://www.elastic.co/docs/reference/integrations/temporal"
+  },
+  {
     "name": "Google ADK",
     "description": "Orchestrate Google ADK agents with durable Temporal Workflows.",
     "tags": [

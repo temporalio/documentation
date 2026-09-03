@@ -41,6 +41,17 @@ For Datadog users, treat the OpenMetrics integration as the Cloud-side half of y
 If you only ingest Cloud metrics, you will miss many worker-side bottlenecks. For recommended Worker monitors, see
 [Monitor worker health](/cloud/worker-health).
 
+### Elastic
+
+Elastic provides a Temporal (OpenTelemetry) integration that scrapes the OpenMetrics endpoint and stores metrics in Elastic Observability.
+
+1. In Kibana, go to **Management → Integrations**, enable **Display beta integrations** if needed, and search for **Temporal (OpenTelemetry)**.
+2. Add the integration. Keep the default Cloud endpoint (`metrics.temporal.io:443`) and path (`/v1/metrics`).
+3. Paste your Temporal Cloud API key into **Temporal Cloud API Key**.
+4. Confirm metrics in Discover with `data_stream.dataset: "temporal.cloud_metrics.otel"`.
+
+For full setup details, see the [Elastic Temporal (OpenTelemetry) integration](https://www.elastic.co/docs/reference/integrations/temporal).
+
 ### Grafana Cloud
 
 Grafana Cloud provides a serverless integration that scrapes the OpenMetrics endpoint, stores metrics in Grafana Cloud, and ships a prebuilt **Temporal overview** dashboard.
