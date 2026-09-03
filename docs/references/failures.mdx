@@ -2,7 +2,7 @@
 id: failures
 title: Temporal Failures reference
 sidebar_label: Failures
-description: A Failure in Temporal represents different types of errors in the system, categorized and managed uniquely within SDKs and protobuf messages, impacting Workflow and Activity operations.
+description: Reference for Temporal's Failure types, covering Workflow, Activity, and Nexus Operation errors and each SDK's corresponding class or exception.
 toc_max_heading_level: 4
 tags:
   - Reference
@@ -186,7 +186,7 @@ By default, Application Failures thrown from a Nexus Operation handler will be m
 | false (default) | HandlerErrorTypeInternal   | 500 Internal Server Error |
 | true            | UnsuccessfulOperationError | 424 Failed Dependency     |
 
-#### Use Nexus Errors directly
+#### Use Nexus errors directly
 
 For improved semantics and mapping to HTTP status codes for external Nexus callers (when supported), we recommend that Nexus Operation handlers throw a Nexus Error directly, which includes the list below with associated retry semantics.
 
