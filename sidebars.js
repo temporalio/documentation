@@ -1603,6 +1603,7 @@ module.exports = {
                     id: 'production-deployment/worker-deployments/serverless-workers/aws-lambda/index',
                   },
                   items: [
+                    'production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development',
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
                   ],
                 },
