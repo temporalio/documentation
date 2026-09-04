@@ -2,7 +2,7 @@
 id: request-response-via-updates
 title: "Request-Response via Updates"
 sidebar_label: "Request-Response via Updates"
-description: "Synchronous request-response with validation. Updates modify state and return results directly."
+description: "Uses a Workflow Update to validate a request, modify Workflow state, and return a typed result to the caller synchronously, with strong consistency."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -268,7 +268,7 @@ Trade-offs:
 - The Update handler blocks Workflow Task execution and consumes Workflow Task execution time.
 - For fire-and-forget messages that need no response, Updates require more machinery than Signals.
 - Update arguments and return values are limited by the Workflow history event size (typically 2 MB per event).
-- Each Update adds events to Workflow history, contributing to the 50K event limit.
+- Each Update adds events to Workflow history, contributing to the 51,200 event limit.
 - There is a maximum of 10 in-flight Updates per Workflow execution and a maximum of 2,000 total Updates in Workflow history.
 
 ## Comparison with alternatives

@@ -34,19 +34,19 @@ These patterns control how Temporal retries Activities, surfaces persistent fail
     href: "/design-patterns/delayed-retry",
     icon: "delayed-retry-icon.svg",
     title: "Delayed Retry",
-    description: "Override the next retry interval for a specific failure using nextRetryDelay on ApplicationFailure. Use when an error carries information about how long to wait before retrying.",
+    description: "Override one failure's retry interval with nextRetryDelay on ApplicationFailure, matching the wait time the error reports.",
   },
   {
     href: "/design-patterns/fast-slow-retries",
     icon: "fast-slow-retries-icon.svg",
     title: "Fast/Slow Retries",
-    description: "Retries aggressively with a short interval first, then shifts to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers.",
+    description: "Retries fast with a short interval first, then shifts to a slow, unlimited interval so the Workflow outlasts an extended downstream outage.",
   },
   {
     href: "/design-patterns/retry-metrics",
     icon: "retry-metrics-icon.svg",
     title: "Retry Alerting via Metrics",
-    description: "Emits a custom metric from inside the Activity when the attempt count crosses a threshold, surfacing silent persistent failures to on-call teams before an SLA breach.",
+    description: "Emits a metric from the Activity when attempts cross a threshold, so on-call teams see persistent failures before an SLA breach.",
   },
   {
     href: "/design-patterns/resumable-activity",

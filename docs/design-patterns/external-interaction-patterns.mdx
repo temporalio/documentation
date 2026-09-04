@@ -2,7 +2,7 @@
 id: external-interaction-patterns
 title: "External Interaction Patterns"
 sidebar_label: "External Interaction Patterns"
-description: "Pattern selection guide for waiting on or interacting with systems and actors outside the Workflow."
+description: "Compares five patterns for waiting on external systems and human decisions: polling, heartbeating Activities, delayed start, webhooks, and approval."
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
@@ -40,7 +40,7 @@ These patterns cover how a Workflow waits on or interacts with the world outside
     href: "/design-patterns/delayed-callback",
     icon: "webhooks-icon.svg",
     title: "Delayed Callback (Webhooks)",
-    description: "Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens.",
+    description: "Webhooks become durable: inbound calls arrive as Signals, outbound calls fire after a durable sleep, and Activities complete later via task tokens.",
   },
 ]} />
 

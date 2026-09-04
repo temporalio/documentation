@@ -18,7 +18,7 @@ The Fan-Out pattern distributes a large record set across multiple independent c
 
 ## Problem
 
-A single Workflow run can have at most 2,000 in-flight Activities (aim for 500) and at most 50,000 history events. Processing millions of records in a single Workflow run is therefore not possible.
+A single Workflow run can have at most 2,000 in-flight Activities (aim for 500) and at most 51,200 history events. Processing millions of records in a single Workflow run is therefore not possible.
 
 You need a way to partition a large record set, process each partition independently, and coordinate the overall job while keeping each Workflow's history within safe bounds.
 
