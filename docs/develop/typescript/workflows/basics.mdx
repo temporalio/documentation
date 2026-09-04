@@ -1,9 +1,8 @@
 ---
 id: basics
 title: Workflow basics - TypeScript SDK
-description: Shows how to create a Workflow with the TypeScript SDK
+description: Develop a basic Workflow with the Temporal TypeScript SDK. Define Workflow parameters, return values, and a custom Workflow Type.
 sidebar_label: Workflow basics
-slug: /develop/typescript/workflows/basics
 toc_max_heading_level: 3
 tags:
   - TypeScript SDK
@@ -11,7 +10,7 @@ tags:
   - Workflow
 ---
 
-## How to develop a Workflow {/* #develop-workflows */}
+## Develop a basic Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -30,7 +29,7 @@ export async function example(args: ExampleArgs): Promise<{ greeting: string }> 
 }
 ```
 
-## How to define Workflow parameters {/* #workflow-parameters */}
+## Define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as
 parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All
@@ -71,7 +70,7 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
 }
 ```
 
-## How to define Workflow return parameters {/* #workflow-return-values */}
+## Define Workflow return values {/* #workflow-return-values */}
 
 Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly
 idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow
@@ -92,7 +91,7 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
 }
 ```
 
-## How to customize your Workflow Type {/* #workflow-type */}
+## Customize Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -112,7 +111,7 @@ export async function helloWorld(): Promise<string> {
 ```
 <!--SNIPEND-->
 
-## How to develop Workflow logic {/* #workflow-logic-requirements */}
+## Workflow logic requirements {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Each Temporal SDK provides a
@@ -141,7 +140,7 @@ and [WeakRef](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/
 
 The following sections describe the replay-safe APIs available in the sandbox.
 
-#### Logging
+### Logging
 
 Use [`log`](https://typescript.temporal.io/api/namespaces/workflow#log) from `@temporalio/workflow` instead of `console.log`. The SDK logger automatically suppresses messages during replay to avoid duplicates:
 
@@ -156,7 +155,7 @@ export async function myWorkflow(name: string): Promise<string> {
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/typescript/platform/observability#logging).
 
-#### Random numbers and UUIDs
+### Random numbers and UUIDs
 
 `Math.random()` is replaced by a deterministic version in the sandbox, so you can use it directly. It produces the same sequence of values on replay.
 
@@ -171,7 +170,7 @@ const id = uuid4();
 
 Third-party UUID libraries that rely on `Math.random()` (such as the `uuid` package) are also safe, but the built-in avoids the dependency.
 
-#### Current time
+### Current time
 
 `Date.now()` and `new Date()` are replaced by deterministic versions that return the time of the last Workflow Task completion. The value only advances when you `await` something (like `sleep()`):
 
@@ -190,7 +189,7 @@ for (let x = 0; x < 10; ++x) {
 }
 ```
 
-#### Detecting replay (advanced)
+### Detecting replay (advanced)
 
 Use [`workflowInfo().unsafe.isReplaying`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#isreplaying) to guard code that should only run on the first execution, such as emitting metrics or sending external notifications from an [Interceptor](/develop/typescript/workers/interceptors).
 :::caution

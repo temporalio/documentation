@@ -2,14 +2,14 @@
 id: basics
 title: Workflow basics - Java SDK
 sidebar_label: Workflow basics
-description: This section explains how to implement Workflows with the Java SDK
+description: Develop a basic Workflow with the Temporal Java SDK. Define Workflow parameters, return values, and a custom Workflow Type.
 toc_max_heading_level: 4
 tags:
   - Java SDK
   - Temporal SDKs
 ---
 
-## How to develop a Workflow {/* #develop-workflows */}
+## Develop a basic Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
@@ -158,7 +158,7 @@ public interface YourWorkflow {
 }
 ```
 
-## Define Workflow return parameters {/* #workflow-return-values */}
+## Define Workflow return values {/* #workflow-return-values */}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -174,7 +174,7 @@ Related references:
 - [Data Converter](/dataconversion)
 - [Java DataConverter reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
-## Customize your Workflow Type {/* #workflow-type */}
+## Customize Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that is referred to as the Workflow name.
 
