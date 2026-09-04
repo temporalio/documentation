@@ -1,0 +1,173 @@
+---
+id: timeouts-and-retries
+title: Timeouts and Retry Policies
+description: Detect Workflow and Activity failures with timeouts, then mitigate them with automatic retries. Configuration guides for every Temporal SDK.
+sidebar_label: Timeouts and retries
+tags:
+  - Workflows
+  - Activities
+  - Timeouts
+  - Failures
+  - Errors
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+In Temporal, timeouts detect application failures.
+The system can then automatically mitigate these failures through retries.
+Both major application function primitives, **[Workflows](/workflows)** and **[Activities](/activities)**, have dedicated **timeout configurations** and can be configured with a **[Retry Policy](/encyclopedia/retry-policies)**.
+
+Follow one of our tutorials to [Get started](https://learn.temporal.io/getting_started/) exploring timeouts and Retry Policies.
+
+## Workflow timeouts
+
+Each Workflow timeout limits a different aspect of a [Workflow Execution](/workflow-execution), and you set them when you start the Workflow Execution.
+
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)**: the maximum time a Workflow Execution can stay Open, including retries and any use of [Continue-As-New](/workflow-execution/continue-as-new). The default is infinite.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout)**: the maximum duration of a single [Workflow Run](/workflow-execution/workflowid-runid#run-id), which excludes retries and Continue-As-New. The default matches the Workflow Execution Timeout.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout)**: the maximum time a [Worker](/workers#worker) has to execute a [Workflow Task](/tasks#workflow-task) after picking it up from the [Task Queue](/task-queue). The default is 10 seconds, with a maximum of 120 seconds.
+
+Workflows are built to run for long periods and to survive failures, so most applications don't need a Workflow Execution Timeout or Workflow Run Timeout.
+A timeout limits how long a Workflow can absorb delays. To act after a set period inside a Workflow, use a [Timer](/workflow-execution/timers-delays) instead.
+Workflow Execution and Workflow Run Timeouts are most often used to bound a [Temporal Cron Job](/cron-job).
+
+Set Workflow timeouts and Retry Policies in your language:
+
+<PatternCards items={[
+  {
+    href: "/develop/dotnet/workflows/timeouts",
+    title: ".NET SDK",
+    description: "Set Workflow timeouts and Retry Policies in C# and .NET.",
+    icon: "/img/sdks/svgs/dotnet.svg",
+  },
+  {
+    href: "/develop/go/workflows/timeouts",
+    title: "Go SDK",
+    description: "Set Workflow timeouts and Retry Policies in Go.",
+    icon: "/img/sdks/svgs/golang.svg",
+  },
+  {
+    href: "/develop/java/workflows/timeouts",
+    title: "Java SDK",
+    description: "Set Workflow timeouts and Retry Policies in Java and other JVM languages.",
+    icon: "/img/sdks/svgs/java.svg",
+  },
+  {
+    href: "/develop/php/workflows/timeouts",
+    title: "PHP SDK",
+    description: "Set Workflow timeouts and Retry Policies in PHP.",
+    icon: "/img/sdks/svgs/php.svg",
+  },
+  {
+    href: "/develop/python/workflows/timeouts",
+    title: "Python SDK",
+    description: "Set Workflow timeouts and Retry Policies in Python.",
+    icon: "/img/sdks/svgs/python.svg",
+  },
+  {
+    href: "/develop/ruby/workflows/timeouts",
+    title: "Ruby SDK",
+    description: "Set Workflow timeouts and Retry Policies in Ruby.",
+    icon: "/img/sdks/svgs/ruby.svg",
+  },
+  {
+    href: "/develop/rust/workflows/timeouts",
+    title: "Rust SDK",
+    description: "Set Workflow timeouts and Retry Policies in Rust.",
+    icon: "/img/sdks/svgs/rust.svg",
+  },
+  {
+    href: "/develop/typescript/workflows/timeouts",
+    title: "TypeScript SDK",
+    description: "Set Workflow timeouts and Retry Policies in TypeScript and JavaScript.",
+    icon: "/img/sdks/svgs/typescript.svg",
+  },
+]} />
+
+## Activity timeouts
+
+Activity timeouts tell a Workflow which kind of Activity failure occurred, and the Activity's [Retry Policy](/encyclopedia/retry-policies) decides what happens next.
+
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**: the maximum time an [Activity Task](/tasks#activity-task) can sit in the Task Queue before a Worker picks it up. The default is infinite, and this timeout never triggers a retry, because a retry would return the Activity Task to the same Task Queue.
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**: the maximum time for a single [Activity Task Execution](/tasks#activity-task-execution). The default matches the Schedule-To-Close Timeout.
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)**: the maximum time for the whole [Activity Execution](/activity-execution), from the first Activity Task being scheduled to the last one closing. The default is infinite.
+- **[Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout)**: the maximum time between [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat), the pings a Worker sends to report that an Activity Execution is still making progress.
+
+Every Activity Execution needs either a Start-To-Close or a Schedule-To-Close Timeout.
+Set Start-To-Close: the [Temporal Service](/temporal-service) can't tell when a Worker crashes or loses contact, so it relies on this timeout to retry the Activity.
+Long-running Activities should also Heartbeat and set a Heartbeat Timeout, which detects a lost Worker sooner than a long Start-To-Close Timeout can.
+
+Set Activity timeouts and Retry Policies in your language:
+
+<PatternCards items={[
+  {
+    href: "/develop/dotnet/activities/timeouts",
+    title: ".NET SDK",
+    description: "Set Activity timeouts and Retry Policies in C# and .NET.",
+    icon: "/img/sdks/svgs/dotnet.svg",
+  },
+  {
+    href: "/develop/go/activities/timeouts",
+    title: "Go SDK",
+    description: "Set Activity timeouts and Retry Policies in Go.",
+    icon: "/img/sdks/svgs/golang.svg",
+  },
+  {
+    href: "/develop/java/activities/timeouts",
+    title: "Java SDK",
+    description: "Set Activity timeouts and Retry Policies in Java and other JVM languages.",
+    icon: "/img/sdks/svgs/java.svg",
+  },
+  {
+    href: "/develop/php/activities/timeouts",
+    title: "PHP SDK",
+    description: "Set Activity timeouts and Retry Policies in PHP.",
+    icon: "/img/sdks/svgs/php.svg",
+  },
+  {
+    href: "/develop/python/activities/timeouts",
+    title: "Python SDK",
+    description: "Set Activity timeouts and Retry Policies in Python.",
+    icon: "/img/sdks/svgs/python.svg",
+  },
+  {
+    href: "/develop/ruby/activities/timeouts",
+    title: "Ruby SDK",
+    description: "Set Activity timeouts and Retry Policies in Ruby.",
+    icon: "/img/sdks/svgs/ruby.svg",
+  },
+  {
+    href: "/develop/rust/activities/timeouts",
+    title: "Rust SDK",
+    description: "Set Activity timeouts and Retry Policies in Rust.",
+    icon: "/img/sdks/svgs/rust.svg",
+  },
+  {
+    href: "/develop/typescript/activities/timeouts",
+    title: "TypeScript SDK",
+    description: "Set Activity timeouts and Retry Policies in TypeScript and JavaScript.",
+    icon: "/img/sdks/svgs/typescript.svg",
+  },
+]} />
+
+## Resources
+
+For a deep dive into timeouts and Retry Policies visit the following Temporal Encyclopedia pages or enroll in one of [our courses](https://learn.temporal.io/courses/).
+
+<PatternCards items={[
+  {
+    href: "/encyclopedia/detecting-workflow-failures",
+    title: "Detecting Workflow failures",
+    description: "Workflow Execution, Workflow Run, and Workflow Task Timeouts in detail, plus how to find Workflows with failed Workflow Tasks.",
+  },
+  {
+    href: "/encyclopedia/detecting-activity-failures",
+    title: "Detecting Activity failures",
+    description: "Schedule-To-Start, Start-To-Close, Schedule-To-Close, and Heartbeat Timeouts in detail, plus which Activities should Heartbeat.",
+  },
+  {
+    href: "/encyclopedia/retry-policies",
+    title: "Retry Policies",
+    description: "How attempts, intervals, backoff coefficients, and non-retryable errors shape a retry.",
+  },
+]} />

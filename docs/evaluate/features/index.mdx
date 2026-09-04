@@ -1,0 +1,85 @@
+---
+id: index
+title: Temporal development and production features
+description: Leverage a Temporal SDK to develop robust applications featuring Workflows, Activities, Workers, testing suites, Temporal Clients, Scheduled Workflows, and advanced observability tools.
+sidebar_label: Features
+keywords:
+  - temporal sdk
+  - core application primitives
+  - workflows in temporal
+  - activities and workers
+  - temporal testing suite
+  - temporal clients
+  - scheduled workflows
+  - workflow cancellation
+  - runtime safeguards
+  - failure detection in temporal
+  - automatic retries
+  - temporal messages
+  - business process versioning
+  - observability in workflows
+  - debugging temporal applications
+  - data encryption in applications
+  - throughput composability
+  - signals
+  - queries
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+Through a Temporal SDK, Temporal provides a wide range of features that enable developers to build applications that serve a wide range of use cases.
+
+<PatternCards items={[
+  {
+    href: "/evaluate/features/core-primitives",
+    title: "Core primitives",
+    description: "Develop and run your application with Workflows, Activities, and Workers.",
+  },
+  {
+    href: "/evaluate/features/schedules",
+    title: "Scheduled Workflows",
+    description: "Start a business process at a specific time or on a given time interval.",
+  },
+  {
+    href: "/evaluate/features/cancellation-and-termination",
+    title: "Cancellation and termination",
+    description: "Cancel or terminate a business process (Workflow) that is already in progress and compensate for any steps already taken.",
+  },
+  {
+    href: "/evaluate/features/timeouts-and-retries",
+    title: "Timeouts and retries",
+    description: "Detect failures with timeouts and configure automatic retries to mitigate them.",
+  },
+  {
+    href: "/evaluate/features/nexus",
+    title: "Temporal Nexus",
+    description: "Connect Temporal Applications across (and within) isolated Namespaces for improved modularity, security, debugging, and fault isolation. Nexus supports cross-team, cross-domain, and multi-region use cases.",
+  },
+  {
+    href: "/evaluate/features/workflow-message-passing",
+    title: "Workflow message passing",
+    description: "Build responsive applications that react to events at runtime and enable data retrieval from ongoing Workflows.",
+  },
+  {
+    href: "/evaluate/features/observability",
+    title: "Observability",
+    description: "List business processes, view their state, and set up dashboards with metrics.",
+  },
+  {
+    href: "/evaluate/features/data-encryption",
+    title: "Data encryption",
+    description: "Transform data and protect the privacy of the users of your application.",
+  },
+  {
+    href: "/evaluate/features/child-workflows",
+    title: "Child Workflows",
+    description: "Break up business processes by data streams, team ownership, or other organization factors.",
+  },
+]} />
+
+Temporal also provides these features:
+
+- **Runtime safeguards**: Prevent avoidable errors and issues from executing during runtime.
+- **Versioning**: Support multiple versions of your business logic for long-running business processes.
+
+For detailed information on Temporal feature release stages and criteria, see this [Product Release Stages Guide](/evaluate/features/release-stages).

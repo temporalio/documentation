@@ -61,3 +61,18 @@ Latency over a week-long period for starting and signaling Workflow Executions w
 
 Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
 Also, concurrent operations on the same Workflow Execution may result in higher latency.
+
+### Custom persistence layer
+
+Temporal Cloud runs a custom persistence layer rather than the persistence stores available to self-hosted deployments.
+Three components of that layer account for most of the difference in latency:
+
+- **Sharding:** Distributes load across multiple databases and resizes them independently, so a traffic spike in one shard doesn't become a bottleneck for the rest.
+- **Write-ahead log (WAL):** Batches updates in an append-only log before writing them to the database, which reduces write latency and database size.
+- **Tiered storage of Event History:** Moves the Event History of closed Workflow Executions to cheaper storage, which keeps the primary database smaller and faster for running Executions.
+
+## Related
+
+- [Higher throughput and lower latency: Temporal Cloud's custom persistence layer](https://temporal.io/blog/higher-throughput-and-lower-latency-temporal-clouds-custom-persistence-layer): How sharding, the write-ahead log, and tiered storage are built.
+- [Benchmarking latency: Temporal Cloud vs. self-hosted Temporal](https://temporal.io/blog/benchmarking-latency-temporal-cloud-vs-self-hosted-temporal): Measured comparison of the two deployment options.
+- [Replay conference talk: Custom persistence layer](https://www.youtube.com/watch?v=SQv9ot-jB6o&list=PLl9kRkvFJrlREHL7fiEKBWTp5QuFeYS2r&index=5): Walkthrough of the persistence design.
