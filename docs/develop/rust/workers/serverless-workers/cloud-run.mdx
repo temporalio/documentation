@@ -20,8 +20,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
   [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
 </ReleaseNoteHeader>
 
-The Rust SDK is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview), and its API can change between releases.
-The code on this page is written against `temporalio-sdk` 0.7.0.
+The code on this page is written against `temporalio-sdk` 1.0.0.
 
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
 Register Workflows and Activities the same way you would with any other Rust Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
@@ -52,7 +51,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let namespace = std::env::var("TEMPORAL_NAMESPACE")?;
     let api_key = std::env::var("TEMPORAL_API_KEY")?;
 
-    let runtime = Runtime::new_assume_tokio(Default::default())?;
+    let runtime = Runtime::from_current_tokio(Default::default())?;
 
     let connection_options = ConnectionOptions::new(Url::from_str(&format!("https://{address}"))?)
         .api_key(api_key)
@@ -63,10 +62,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let worker_options = WorkerOptions::new(std::env::var("TEMPORAL_TASK_QUEUE")?)
         .deployment_options(
-            WorkerDeploymentOptions::new(WorkerDeploymentVersion {
-                deployment_name: "my-app".to_owned(),
-                build_id: "build-1".to_owned(),
-            })
+            WorkerDeploymentOptions::new(
+                WorkerDeploymentVersion::builder()
+                    .deployment_name("my-app")
+                    .build_id("build-1")
+                    .build(),
+            )
             .use_worker_versioning(true)
             .default_versioning_behavior(VersioningBehavior::Pinned)
             .build(),
@@ -143,4 +144,4 @@ For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/
 ## Add observability {/* #add-observability */}
 
 A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
-For how to configure metrics and telemetry, see the runtime options you pass to `Runtime::new_assume_tokio` and the [SDK metrics reference](/references/sdk-metrics).
+For how to configure metrics and telemetry, see the runtime options you pass to `Runtime::from_current_tokio` and the [SDK metrics reference](/references/sdk-metrics).
