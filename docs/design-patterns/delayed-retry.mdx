@@ -3,6 +3,9 @@ id: delayed-retry
 title: "Delayed Retry"
 sidebar_label: "Delayed Retry"
 description: "Override one failure's retry interval with nextRetryDelay on ApplicationFailure, matching the wait time the error reports."
+tags:
+  - Design Patterns
+  - Errors
 ---
 
 import Tabs from '@theme/Tabs';
@@ -66,6 +69,61 @@ Extract the wait duration from the error or response and pass it to `Application
 The RetryPolicy's `MaximumAttempts` and `ScheduleToCloseTimeout` still apply — only the interval for the next retry is overridden.
 
 <Tabs groupId="language" queryString>
+<TabItem value="python" label="Python">
+
+```python
+# activities.py
+from datetime import timedelta
+from temporalio import activity
+from temporalio.exceptions import ApplicationError
+
+@activity.defn
+async def call_api(endpoint: str) -> str:
+    response = await http_client.get(endpoint)
+
+    if response.status_code == 429:
+        retry_after = response.headers.get("Retry-After")
+        if retry_after is not None:
+            raise ApplicationError(
+                f"Rate limited — retrying after {retry_after}s",
+                type="RateLimitError",
+                next_retry_delay=timedelta(seconds=int(retry_after)),
+            )
+        raise ApplicationError(
+            "Rate limited — retrying per RetryPolicy", type="RateLimitError"
+        )
+
+    return response.text
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// rate_limited_activity.go
+func CallApi(ctx context.Context, endpoint string) (string, error) {
+    response, err := httpClient.Get(endpoint)
+    if err != nil {
+        return "", err
+    }
+
+    if response.StatusCode == 429 {
+        if retryAfter := response.Header.Get("Retry-After"); retryAfter != "" {
+            seconds, _ := strconv.Atoi(retryAfter)
+            return "", temporal.NewApplicationErrorWithOptions(
+                fmt.Sprintf("Rate limited — retrying after %ds", seconds),
+                "RateLimitError",
+                temporal.ApplicationErrorOptions{NextRetryDelay: time.Duration(seconds) * time.Second},
+            )
+        }
+        return "", temporal.NewApplicationError("Rate limited — retrying per RetryPolicy", "RateLimitError")
+    }
+
+    return response.Body, nil
+}
+```
+
+</TabItem>
 <TabItem value="java" label="Java">
 
 ```java
@@ -132,6 +190,54 @@ export async function callApi(endpoint: string): Promise<string> {
 You can also set the delay dynamically based on the attempt number — for example, to implement a custom backoff that differs from exponential, or to add a known base delay on top of the standard backoff.
 
 <Tabs groupId="language" queryString>
+<TabItem value="python" label="Python">
+
+```python
+# activities.py
+from datetime import timedelta
+from temporalio import activity
+from temporalio.exceptions import ApplicationError
+
+@activity.defn
+async def process(input: str) -> str:
+    attempt = activity.info().attempt
+
+    try:
+        return await downstream_service.call(input)
+    except ServiceUnavailableError as e:
+        # Custom delay: 3 seconds × attempt number (3s, 6s, 9s, …)
+        raise ApplicationError(
+            f"Service unavailable on attempt {attempt}",
+            type="ServiceUnavailable",
+            next_retry_delay=timedelta(seconds=3 * attempt),
+        ) from e
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// backoff_activity.go
+func Process(ctx context.Context, input string) (string, error) {
+    attempt := activity.GetInfo(ctx).Attempt
+
+    result, err := downstreamService.Call(input)
+    if err != nil {
+        // Custom delay: 3 seconds × attempt number (3s, 6s, 9s, …)
+        return "", temporal.NewApplicationErrorWithOptions(
+            fmt.Sprintf("Service unavailable on attempt %d", attempt),
+            "ServiceUnavailable",
+            temporal.ApplicationErrorOptions{
+                Cause:          err,
+                NextRetryDelay: 3 * time.Second * time.Duration(attempt),
+            },
+        )
+    }
+    return result, nil
+}
+```
+
+</TabItem>
 <TabItem value="java" label="Java">
 
 ```java
@@ -193,6 +299,56 @@ The Workflow sets a normal `RetryPolicy`.
 The `nextRetryDelay` set in the Activity overrides the interval only for the retry following that specific failure — subsequent attempts fall back to the RetryPolicy schedule if `nextRetryDelay` is not set again.
 
 <Tabs groupId="language" queryString>
+<TabItem value="python" label="Python">
+
+```python
+# workflows.py
+from datetime import timedelta
+from temporalio import workflow
+from temporalio.common import RetryPolicy
+
+with workflow.unsafe.imports_passed_through():
+    from activities import call_api
+
+@workflow.defn
+class ApiWorkflow:
+    @workflow.run
+    async def run(self, endpoint: str) -> str:
+        return await workflow.execute_activity(
+            call_api,
+            endpoint,
+            start_to_close_timeout=timedelta(seconds=10),
+            retry_policy=RetryPolicy(
+                initial_interval=timedelta(seconds=1),
+                backoff_coefficient=2.0,
+                maximum_attempts=10,
+            ),
+        )
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// api_workflow.go
+func ApiWorkflow(ctx workflow.Context, endpoint string) (string, error) {
+    ao := workflow.ActivityOptions{
+        StartToCloseTimeout: 10 * time.Second,
+        RetryPolicy: &temporal.RetryPolicy{
+            InitialInterval:    time.Second,
+            BackoffCoefficient: 2.0,
+            MaximumAttempts:    10,
+        },
+    }
+    ctx = workflow.WithActivityOptions(ctx, ao)
+
+    var result string
+    err := workflow.ExecuteActivity(ctx, CallApi, endpoint).Get(ctx, &result)
+    return result, err
+}
+```
+
+</TabItem>
 <TabItem value="java" label="Java">
 
 ```java

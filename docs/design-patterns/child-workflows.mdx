@@ -3,6 +3,9 @@ id: child-workflows
 title: "Child Workflows Pattern"
 sidebar_label: "Child Workflows"
 description: "Decomposes complex Workflows into smaller, reusable units. Each child has an independent Workflow ID, history, and lifecycle."
+tags:
+  - Design Patterns
+  - Child Workflows
 ---
 
 import Tabs from '@theme/Tabs';
@@ -764,7 +767,7 @@ Starting a Child Workflow has more overhead than starting an Activity.
 ## Common pitfalls
 
 - **Treating Child Workflows like Activities.** Child Workflows are for orchestration, not for executing external code. If you only need to call an API or run a function, use an Activity instead.
-- **Spawning unbounded children in a loop.** Starting thousands of Child Workflows without batching can overwhelm the Temporal Service and bloat the parent's event history. Use fixed-size batches or a sliding window.
+- **Spawning unbounded children in a loop.** Starting thousands of Child Workflows without batching can overwhelm the Temporal Service and bloat the parent's event history. Temporal enforces a hard limit of 2,000 pending (in-flight) children per parent, but the [recommended cap](/child-workflows#when-to-use-child-workflows) is lower: a single parent should not spawn more than 1,000 Child Workflow Executions in total, since each one adds more history to the parent than an Activity would. Use fixed-size batches or a sliding window.
 - **Ignoring the Parent Close Policy.** The default policy is TERMINATE, which kills children when the parent closes. If children must outlive the parent, set the policy to ABANDON explicitly.
 - **Using synchronous calls when async is needed.** Calling a Child Workflow synchronously blocks the parent until the child completes. For long-running children, use the async API (`Async.function()` in Java, `startChild()` in TypeScript, `start_child_workflow()` in Python, or collect Futures without calling `.Get()` in Go) to avoid stalling the parent.
 - **Omitting Workflow IDs.** Without explicit Workflow IDs, you lose the ability to deduplicate or look up Child Workflows by a meaningful identifier. Generate deterministic IDs based on business keys.

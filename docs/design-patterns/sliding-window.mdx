@@ -3,6 +3,9 @@ id: sliding-window
 title: "Sliding Window"
 sidebar_label: "Sliding Window"
 description: "Maintains a fixed number of concurrently active Child Workflows, starting a new one each time an existing one completes."
+tags:
+  - Design Patterns
+  - Child Workflows
 ---
 
 import Tabs from '@theme/Tabs';
@@ -488,7 +491,7 @@ public interface SlidingWindowWorkflow {
 
 - **Preserve the parent Workflow ID across Continue-as-New.** The parent's Workflow ID is stable across `continueAsNew` runs — do not generate a new one. Children read the parent's Workflow ID from their own Workflow metadata (`workflowInfo().parent` in TypeScript, `workflow.info().parent` in Python, `workflow.GetInfo(ctx).ParentWorkflowExecution` in Go, `Workflow.getInfo().getParentWorkflowId()` in Java) rather than receiving it as an argument, then signal by Workflow ID (with no run ID) so they always reach the current run.
 - **Use `PARENT_CLOSE_POLICY_ABANDON` on child Workflows.** This lets children that were started by a previous run complete normally even after the parent has continued as new.
-- **Size the window conservatively at first.** Each in-flight child counts toward the 2,000 unfinished-actions limit for the parent. A window of 50–200 is a reasonable starting point depending on child duration and downstream capacity.
+- **Size the window conservatively at first.** Each in-flight child counts toward the 2,000 unfinished-actions limit for the parent, and Temporal's own guidance recommends staying well under that: a single parent should not spawn more than 1,000 Child Workflow Executions in total. A window of 50–200 is a reasonable starting point depending on child duration and downstream capacity.
 - **Pass only IDs (not full records) to child Workflows.** Workflow inputs are stored in event history. Keep them small.
 - **Carry minimal state into `continueAsNew`.** Pass `windowSize`, `startIndex`, the live in-flight count (`active`), a running `totalProcessed`, and the record ID list (or a reference to it). Do not accumulate results in the parent — collect them out-of-band if needed.
 

@@ -3,6 +3,8 @@ id: batch-processing-patterns
 title: "Batch Processing Patterns"
 sidebar_label: "Batch Processing Patterns"
 description: "Compare Fan-Out, Batch Iterator, Sliding Window, and MapReduce Tree patterns for processing large record sets reliably at scale."
+tags:
+  - Design Patterns
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
@@ -14,7 +16,7 @@ These patterns process large volumes of records reliably, at scale, and without 
 | Pattern | Record set size | Parallelism model | Workflow-based rate control |
 |---|---|---|---|
 | [Basic Workflow](#basic-workflow-single-tier-fan-out) | Small (up to a few hundred records) | Sequential or parallel activities in one Workflow | No |
-| [Fan-Out with Child Workflows](/design-patterns/fanout-child-workflows) | Up to ~4M records | Fixed concurrency (one child per chunk) | No |
+| [Fan-Out with Child Workflows](/design-patterns/fanout-child-workflows) | Up to ~500K records | Fixed concurrency (one child per chunk) | No |
 | [Batch Iterator](/design-patterns/batch-iterator) | Unlimited | Limited (activities per page) | Yes — fixed page rate |
 | [Sliding Window](/design-patterns/sliding-window) | Unlimited | Bounded window of concurrent children | Yes — configurable window |
 | [MapReduce Tree](/design-patterns/mapreduce-tree) | Unlimited | Fully parallel recursive tree | No — maximum speed |
@@ -26,7 +28,7 @@ These patterns process large volumes of records reliably, at scale, and without 
     href: "/design-patterns/fanout-child-workflows",
     icon: "fanout-child-workflows-icon.svg",
     title: "Fan-Out with Child Workflows",
-    description: "Splits a record set into fixed-size chunks and assigns each to an independent child Workflow. Direct to reason about; best for record sets up to ~4M items.",
+    description: "Splits a record set into fixed-size chunks and assigns each to an independent child Workflow. Direct to reason about; best for record sets up to ~500K items.",
   },
   {
     href: "/design-patterns/batch-iterator",
