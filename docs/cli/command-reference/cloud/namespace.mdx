@@ -4,6 +4,9 @@ title: Temporal CLI cloud namespace command reference
 sidebar_label: namespace
 description: Namespace Management Commands
 toc_max_heading_level: 4
+keywords:
+  - namespace
+  - management
 tags:
   - namespaces
 ---
@@ -119,6 +122,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
 | `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
 | `--idempotent` | No | **bool** Succeed silently if the namespace already matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--project-id` | No | **string** The ID of the project to create the namespace in. If omitted, the namespace is created in the account's default project. |
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--spec` | Yes | **string** Namespace configuration in JSON format. Provide inline JSON directly, or use '@path/to/file.json' to load from a file. |
@@ -367,6 +371,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--mtls-auth-enabled` | No | **bool** Enable mTLS authentication for the namespace. |
 | `--name`, `-n` | Yes | **string** The name for the new namespace (becomes part of the namespace ID). |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | No | **string** The ID of the project to create the namespace in. If omitted, the namespace is created in the account's default project. |
 | `--region` | Yes | **string[]** Cloud region where the namespace will be hosted. Repeat to specify multiple regions for High Availability (e.g. --region aws-us-east-1 --region aws-us-west-2). |
 | `--retention-days` | No | **int** Number of days to retain closed workflow history. If not specified, the server default applies. |
 | `--search-attribute` | No | **string[]** Custom search attribute as 'name=Type' (e.g. --search-attribute myAttr=Keyword). Valid types: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. Repeat to add multiple. |
@@ -1107,6 +1112,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--name` | No | **string** Filter namespaces by the name as defined in the specification of the namespace. |
 | `--page-size` | No | **int** Number of namespaces to return per page. Use for paginated results. |
 | `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--project-id` | No | **string** Filter namespaces by project ID. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## mtls
@@ -1644,3 +1650,4 @@ The following options can be used with any command.
 | `--config-dir` | No | **string** Directory path where CLI configuration files are stored, including authentication tokens and settings. |  |
 | `--disable-pop-up` | No | **bool** Prevent the CLI from opening a browser window during authentication. Useful for headless environments or when using alternative auth methods. |  |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. | `saas-api.tmprl.cloud:443` |
+
