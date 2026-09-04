@@ -24,6 +24,7 @@ Projects are an organizational layer within a Temporal Cloud Account that groups
 Projects make it easier to delegate ownership, manage access at scale, and organize resources without creating additional Cloud Accounts. As your organization grows, Projects help align your Temporal Cloud resources with your organizational structure while reducing operational overhead.
 
 Projects are for organization and authorization. They don't change how Workflows execute inside a Namespace.
+They also don't restrict which Namespaces can call a Nexus Endpoint. See [Use Nexus across Projects](#use-nexus-across-projects).
 
 <CaptionedImage
     src="/img/cloud/projects/resource-hierarchy.png"
@@ -159,6 +160,10 @@ curl -sS -X POST "$BASE/cloud/nexus/endpoints" \
   }'
 ```
 
+In this example, `payments-prod.a1b2c3` is the target Namespace (handler) and `checkout-prod.a1b2c3` is an allowed caller Namespace.
+Those Namespaces can be in different Projects from each other and from the Endpoint. Runtime access is the caller allowlist, not Project membership.
+See [Use Nexus across Projects](#use-nexus-across-projects).
+
 Use the
 [`CreateConnectivityRule` API call](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules)
 to create a new Connectivity Rule within a Project. For example, for a private Connectivity Rule on AWS:
@@ -195,7 +200,17 @@ Then attach the Connectivity Rule to a Namespace within the same project via [Up
   </TabItem>
 </Tabs>
 
+## Use Nexus across Projects {/* #use-nexus-across-projects */}
 
+Projects group Nexus Endpoints for organization and authorization. They do not change how Nexus Operations run.
+
+- A Nexus Endpoint lives in one Project. That Project controls who can [create, list, update, and delete](/cloud/manage-access/permissions-reference#cloud-ops-api-permissions-2) the Endpoint.
+- Runtime access is unchanged: the Endpoint [allowlist of caller Namespaces](/nexus/security#runtime-access-controls). A caller Namespace in another Project can invoke the Endpoint if it is on that allowlist.
+- The target Namespace (handler) does not have to be in the same Project as the Endpoint. Unlike [Connectivity Rules](/cloud/connectivity#connectivity-rules), Nexus does not require the Endpoint and its Namespaces to share a Project.
+
+Example: an Endpoint in Project `payments`, a target Namespace in `payments`, and a caller Namespace in `checkout`.
+That call is allowed when the `checkout` Namespace is on the Endpoint allowlist.
+A user who can only list Endpoints in `checkout` will not see the Endpoint in `payments`.
 
 ## Manage Project Access
 

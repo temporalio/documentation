@@ -17,7 +17,9 @@ Developers can advertise available Endpoints and Services, so others can find an
 Adding an Endpoint to the Registry deploys it for immediate runtime use.
 Endpoint names must be unique within the Registry.
 In Temporal Cloud, the Registry is global across your entire Account, spanning all Namespaces.
-In self-hosted deployments, it is scoped to a Cluster.
+Endpoint names remain unique Account-wide, and caller Workflows in any Namespace can use an Endpoint if they are on its allowlist.
+The Endpoint resource is Project-scoped: listing and updating it requires access to that Project. See [Use Nexus across Projects](/cloud/projects#use-nexus-across-projects).
+In self-hosted deployments, the Registry is scoped to a Cluster.
 
 ## View and manage Nexus Endpoints
 
