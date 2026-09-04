@@ -59,6 +59,9 @@ When an opt-in label is enabled, it is populated on **all metrics** that support
 | `temporal_activity_type` | Activity metrics | The activity type name |
 | `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment name |
 | `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment Version Build ID |
+| `nexus_service` | Nexus metrics | The Nexus Service name |
+| `nexus_operation` | Nexus metrics | The Nexus Operation name |
+| `nexus_caller` | Nexus request metrics | The Nexus caller Namespace |
 
 For example, to include `temporal_activity_type` in your scrape results:
 
@@ -501,6 +504,361 @@ The 99th percentile activity schedule-to-close latency in seconds.
 | Label | Description |
 | ----- | ----- |
 | `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+### Nexus metrics
+
+:::note Public Preview
+
+The Temporal Cloud Nexus metrics in this section are in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+Nexus operation metrics measure calls from the caller side. For these metrics, `temporal_namespace` identifies the caller Namespace.
+Nexus request metrics measure requests on the handler side. For these metrics, `temporal_namespace` identifies the handler Namespace.
+
+:::note Nexus latency intervals
+
+- Request latency measures how long the handler takes to process one Nexus request. For a synchronous start request, it ends when the handler returns the result. For an asynchronous start request, it ends when the handler finishes the start request and doesn't continue until the Operation completes.
+- Schedule-to-close latency measures from when the caller schedules an Operation until it reaches a terminal state. It includes Operations that complete synchronously and asynchronously.
+- Schedule-to-start latency measures from when the caller schedules an Operation until it starts asynchronously. For an Operation that completes synchronously or closes without starting, Temporal records this latency when the Operation closes, and it equals schedule-to-close latency.
+- Start-to-close latency measures from when an asynchronous Operation starts until it reaches a terminal state. Temporal doesn't record this latency for an Operation that completes synchronously or closes without starting.
+
+The Operation metric labels don't distinguish synchronous from asynchronous Operations. Schedule-to-close and schedule-to-start series can contain both, so you can't filter their samples by completion type.
+
+:::
+
+:::caution High Cardinality
+
+Nexus metrics could have high cardinality depending on the number of Nexus Endpoints, Services, Operations, and callers.
+The `nexus_service`, `nexus_operation`, and `nexus_caller` labels are [opt-in](#opt-in-labels) to help manage cardinality.
+
+:::
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_start\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_start\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_start\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_start\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_start\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_start\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_success\_count
+
+Successfully completed Nexus Operations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_operation\_cancel\_count
+
+Canceled Nexus Operations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_operation\_terminate\_count
+
+Nexus Operations terminated before successful completion per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_operation\_fail\_count
+
+Failed Nexus Operations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_operation\_timeout\_count
+
+Nexus Operations that timed out before completing execution per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `timeout_type` | The timeout type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_request\_count
+
+Nexus requests received by the Nexus Endpoint per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_request\_error\_count
+
+Failed Nexus requests per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_request\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_request\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_request\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+| `nexus_caller` | The Nexus caller Namespace (opt-in) |
 
 **Type**: Latency
 
