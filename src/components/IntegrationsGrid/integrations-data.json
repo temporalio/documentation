@@ -37,7 +37,7 @@
   },
   {
     "name": "Elastic",
-    "description": "Export Temporal Cloud metrics to Elastic Observability with the Temporal (OpenTelemetry) integration.",
+    "description": "Export Temporal Cloud metrics to Elastic with the Elastic Managed Temporal integration and get OOTB dashboards, alerts and slo templates.",
     "tags": [
       "Observability",
       "Temporal Cloud"
