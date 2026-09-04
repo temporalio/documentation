@@ -52,6 +52,28 @@ This document describes the purpose, audience, and content type for each top-lev
 - **Content type:** Mostly reference, and a few how-tos
 - **Description:** Covers installation, configuration, use with Temporal Cloud and the full command tree. Each command page lists subcommands, flags, and representative examples.
 
+## Design patterns
+
+- **Audience:** Developers who already know what they're building and need a proven, reusable technique for a specific
+  mechanical problem — fan out work across Child Workflows, rate-limit a downstream call, pick the right retry shape
+  for an error type.
+- **Content type:** Reference-style pattern catalog. Each leaf page follows a fixed template: Overview, Problem,
+  Solution, Implementation (with runnable code across multiple SDKs), When to use, Benefits and trade-offs, Comparison
+  with alternatives, Best practices, Common pitfalls, Related. Each sub-category has its own short "pattern selection
+  guide" index page.
+- **Description:** A catalog of Temporal-specific design patterns (`/design-patterns`), grouped by problem domain: task
+  orchestration, workflow messaging, entity lifecycle, external interaction, distributed transactions, error handling
+  and retry, batch processing, QoS and throughput, performance and latency, and worker configuration.
+
+    Distinct from Guides: a Guide is a full, use-case-specific implementation walkthrough; a Design Pattern is a
+    shorter, reusable building block that a Guide (or a reader's own application) builds on top of. Guides link out to
+    the relevant pattern page rather than re-explaining the underlying mechanism; pattern pages should link back to any
+    Guide that showcases a deeper, real-world implementation.
+
+    Distinct from Best Practices: Best Practices are operational and organizational recommendations (namespace
+    management, cost governance, worker tuning) for running Temporal at scale. Design Patterns are code-level
+    implementation techniques for a Workflow or Activity.
+
 ## References
 
 - **Audience:** Developers, operators, and architects looking up specific technical details.
