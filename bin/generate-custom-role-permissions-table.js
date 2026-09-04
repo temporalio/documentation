@@ -38,6 +38,7 @@ const CLOUD_OPS_API_LINKS = {
   DeleteUser: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/DELETE/cloud/users/%7BuserId%7D",
   ResendUserInvite: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users",
   SetUserNamespaceAccess: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/namespaces/%7Bnamespace%7D/users/%7BuserId%7D/access",
+  GetUserNamespaceAssignments: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/namespaces/%7Bnamespace%7D/user-assignments",
   CreateNamespace: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces",
   GetNamespaces: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces",
   GetNamespaceIDs: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces",

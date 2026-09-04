@@ -70,11 +70,11 @@ configured per user.
 | [GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/manage-access/service-accounts/%7BserviceAccountId%7D)           |    ✅†     |    ✅†     |      ✅†       |      ✅†      |      ✅†       |
 | [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/manage-access/service-accounts)          |    ✅†     |    ✅†     |      ✅†       |      ✅†      |      ✅†       |
 | [GetUsage](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/usage)                    |           |           |       ✅       |      ✅       |       ✅       |
-| [GetUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users/%7BuserId%7D)                     |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
+| [GetUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users/%7BuserId%7D)                     |    ✅‡     |    ✅‡     |      ✅‡       |     ✅‡       |      ✅‡       |
 | [GetUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D)                |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetUserGroupMembers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D/members)         |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetUserGroups](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups)               |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
-| [GetUsers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users)                    |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
+| [GetUsers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users)                    |    ✅‡     |    ✅‡     |      ✅‡       |     ✅‡       |      ✅‡       |
 | [RemoveUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/remove-member)       |           |           |               |      ✅       |       ✅       |
 | [UpdateAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/account)               |           |           |               |      ✅       |       ✅       |
 | [UpdateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks/%7Bspec.name%7D)   |           |           |               |      ✅       |       ✅       |
@@ -88,6 +88,7 @@ configured per user.
 
 - \* See [API Key Authorization Behavior](#api-key-authorization-behavior)
 - † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
+- ‡ See [User authorization behavior](#user-authorization-behavior)
 
 {/* ### Additional account-level capabilities
 
@@ -147,6 +148,7 @@ configured per Namespace per user.
 | [GetNamespaceCapacityInfo](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D/capacity-info)         |  ✅   |   ✅   |        ✅        |
 | [GetNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bname%7D)           |  ✅   |   ✅   |        ✅        |
 | [GetNamespaceExportSinks](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks)          |  ✅   |   ✅   |        ✅        |
+| [GetUserNamespaceAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/namespaces/%7Bnamespace%7D/user-assignments) |      |       |        ✅        |
 | [RenameCustomSearchAttribute](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/rename-custom-search-attribute)      |      |       |        ✅        |
 | [SetServiceAccountNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/namespaces/%7Bnamespace%7D/service-accounts/%7BserviceAccountId%7D/access) |      |       |        ✅        |
 | [SetUserGroupNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/namespaces/%7Bnamespace%7D/user-groups/%7BgroupId%7D/access)      |      |       |        ✅        |
@@ -376,3 +378,16 @@ they hold Project Admin on that Project.
 
 **Affected APIs:** CreateServiceAccount, GetServiceAccount, GetServiceAccounts, UpdateServiceAccount,
 DeleteServiceAccount
+
+### User authorization behavior
+
+Every account-level role can call GetUser and GetUsers. The response includes the user's ID, email, and state.
+
+Another user's access (account role, Namespace permissions, Project access, and Custom Roles) and invitation are
+returned only to Account Owner and Global Admin. Namespace Admin does not change this.
+
+GetUser of the caller always includes that caller's own access.
+
+To list who has access to a Namespace, use GetUserNamespaceAssignments.
+
+**Affected APIs:** GetUser, GetUsers
