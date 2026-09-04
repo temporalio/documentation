@@ -2,7 +2,7 @@
 id: web-ui-configuration
 title: Temporal Web UI configuration reference
 sidebar_label: Web UI config
-description:  Manage your Temporal Server efficiently with development.yaml. Set parameters for Auth, TLS, ports, and more.
+description: Reference for the development.yaml settings that configure the Temporal Web UI Server, including Auth, TLS, and Cloud UI options.
 toc_max_heading_level: 4
 tags:
   - Reference
@@ -17,7 +17,7 @@ Multiple configuration files can be created for configuring specific areas of th
 
 ## auth
 
-Configures authorization for the Temporal Server.
+Configures authorization for the Temporal Web UI Server — controlling who can access the Web UI itself, not authorization against the Temporal Service.
 Settings apply when Auth is enabled.
 
 ```yaml
@@ -62,7 +62,6 @@ codec:
   endpoint: http://your-codec-server-endpoint
   passAccessToken: false
   includeCredentials: false
-  decodeEventHistoryDownload: false
 ```
 
 ## cors
@@ -145,14 +144,6 @@ Hides any errors resulting from a Query to the Workflow.
 hideWorkflowQueryErrors: false
 ```
 
-## notifyOnNewVersion
-
-When enabled—that is, when set to `true`—a notification appears in the UI when a newer version of the [Temporal Server](/temporal-service/temporal-server) is available.
-
-```yaml
-notifyOnNewVersion: true
-```
-
 ## port
 
 The port used by the Temporal Web UI Server and any APIs.
@@ -199,7 +190,7 @@ temporalGrpcAddress: default
 
 ## tls
 
-Transport Layer Security (TLS) configuration for the Temporal Server.
+Transport Layer Security (TLS) configuration for the Web UI Server's outbound connection to the Temporal Service's frontend — not the Temporal Service's own listener.
 Settings apply when TLS is enabled.
 
 ```yaml
