@@ -2,9 +2,10 @@
 id: client-environment-configuration
 title: Environment configuration
 sidebar_label: Environment configuration
-description: Reference for the environment variables that configure Temporal Clients, including the Temporal CLI.
+description: Reference for every environment variable that configures a Temporal Client or the Temporal CLI, including TOML keys and CLI flag equivalents.
 toc_max_heading_level: 3
 tags:
+  - Reference
   - Temporal Client
   - Configuration
   - Environment Variables
@@ -72,8 +73,8 @@ API key for authentication. When set, TLS is enabled by default.
 
 ### `TEMPORAL_CLIENT_AUTHORITY`
 
-Overrides the `:authority` gRPC header. This is a Go SDK extension with no equivalent in other clients and no CLI flag
-of its own.
+Overrides the `:authority` gRPC header. This is a Go SDK extension with no equivalent in other clients. The CLI has a
+global `--client-authority` flag, but it isn't wired into this environment variable/TOML config mechanism.
 
 - TOML key: `profile.<name>.authority`
 - CLI flag: none

@@ -2,7 +2,7 @@
 id: events
 title: Temporal Events reference
 sidebar_label: Events
-description: Events in a Temporal Service respond to external occurrences and Workflow Commands. Workflow Execution Event History includes WorkflowExecutionStarted, WorkflowExecutionCompleted, WorkflowExecutionFailed, and many more.
+description: Reference for every Event that can appear in a Workflow Execution's history, from WorkflowExecutionStarted to Nexus Operation events.
 toc_max_heading_level: 4
 tags:
   - Reference
@@ -359,7 +359,7 @@ This [Event](/workflow-execution/event#event) type indicates that a [Workflow](/
 | Field                            | Description                                                                                     |
 | -------------------------------- | ----------------------------------------------------------------------------------------------- |
 | workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with. |
-| namespace                        | [Namespace](/namespaces) of the Workflow that`s going to be signaled for execution.             |
+| namespace                        | [Namespace](/namespaces) of the Workflow that's going to be signaled for execution.             |
 | workflow_execution               | Identifies the Workflow and the run of the [Workflow Execution](/workflow-execution).           |
 | child_workflow_only              | Set to true if this Workflow is a child of the Workflow which issued the cancelation request.   |
 | reason                           | Information provided by the user or client for Workflow cancelation.                            |
@@ -374,7 +374,7 @@ This is usually because the target Workflow could not be found.
 | workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with. |
 | namespace                        | [Namespace](/namespaces) of the Workflow that failed to cancel.                                 |
 | workflow_execution               | Identifies the Workflow and the run of the [Workflow Execution](/workflow-execution).           |
-| initiated_event_id               | Id of the [RequestCancelExternalWorkflowExecutionInitiated] Event this failure corresponds to.  |
+| initiated_event_id               | Id of the [RequestCancelExternalWorkflowExecutionInitiated](#requestcancelexternalworkflowexecutioninitiated) Event this failure corresponds to.  |
 
 ### ExternalWorkflowExecutionCancelRequested
 
@@ -492,7 +492,7 @@ This would also cause the [WorkflowExecutionCanceled](#workflowexecutioncanceled
 ### ChildWorkflowExecutionTimedOut
 
 This Event type indicates that the [Child Workflow Execution](/child-workflows) has timed out by the [Temporal Server](/temporal-service/temporal-server).
-This would also cause the [WorkflowExecutionTimeOut](#workflowexecutiontimedout) to be recorded for the Workflow that timed out.
+This would also cause the [WorkflowExecutionTimedOut](#workflowexecutiontimedout) to be recorded for the Workflow that timed out.
 
 | Field              | Description                                                                                                              |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
@@ -578,7 +578,7 @@ This [Event](/workflow-execution/event#event) type indicates that a [Workflow Ex
 
 This Event type indicates that a Nexus Operation scheduled by a caller Workflow.
 The caller's [Nexus Machinery](/glossary#nexus-machinery) will attempt to start the Nexus Operation.
-This Event type contains Nexus Operation input and the Operation request ID.
+This Event type contains Nexus Operation input and the Operation request Id.
 
 | Field                            | Description                                                                                                                                                                                                                                                                                               |
 | :------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -588,9 +588,9 @@ This Event type contains Nexus Operation input and the Operation request ID.
 | input                            | Input for the operation. The server converts this into Nexus request content and the appropriate content headers internally when sending the StartOperation request. On the handler side, if it is also backed by Temporal, the content is transformed back to the original Payload stored in this event. |
 | schedule_to_close_timeout        | Schedule-to-close timeout for this operation. Indicates how long the caller is willing to wait for operation completion. Calls are retried internally by the server.                                                                                                                                      |
 | nexus_header                     | Header to attach to the Nexus request. Note these headers are not the same as Temporal headers on internal activities and child Workflows, these are transmitted to Nexus operations that may be external and are not traditional payloads.                                                               |
-| workflow_task_completed_event_id | The ID of the [WorkflowTaskCompleted](#workflowtaskcompleted) event that the corresponding ScheduleNexusOperation command was reported with.                                                                                                                                                              |
-| request_id                       | A unique ID generated by the History Service upon creation of this event. The ID will be transmitted with all Nexus StartOperation requests and is used as an idempotency key.                                                                                                                            |
-| endpoint_id                      | Endpoint ID as resolved in the endpoint registry at the time this event was generated. This is stored on the event and used internally by the server in case the endpoint is renamed from the time the event was originally scheduled.                                                                    |
+| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) event that the corresponding ScheduleNexusOperation command was reported with.                                                                                                                                                              |
+| request_id                       | A unique Id generated by the History Service upon creation of this event. The Id will be transmitted with all Nexus StartOperation requests and is used as an idempotency key.                                                                                                                            |
+| endpoint_id                      | Endpoint Id as resolved in the endpoint registry at the time this event was generated. This is stored on the event and used internally by the server in case the endpoint is renamed from the time the event was originally scheduled.                                                                    |
 
 ### NexusOperationStarted
 
@@ -600,9 +600,9 @@ The Event is not added to the caller's Event History for Synchronous Nexus Opera
 
 | Field              | Description                                                                                                                                       |
 | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
-| scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled) event this task corresponds to.                                                 |
+| scheduled_event_id | The Id of the [NexusOperationScheduled](#nexusoperationscheduled) event this task corresponds to.                                                 |
 | operation_token    | The operation token returned by the Nexus handler in the response to the StartOperation request. This token is used when canceling the operation. |
-| request_id         | The request ID allocated at schedule time.                                                                                                        |
+| request_id         | The request Id allocated at schedule time.                                                                                                        |
 
 ### NexusOperationCompleted
 
@@ -612,9 +612,9 @@ This Event type contains Nexus Operation results.
 
 | Field              | Description                                                                                                                                                          |
 | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled) event. Uniquely identifies this operation.                                                         |
+| scheduled_event_id | The Id of the [NexusOperationScheduled](#nexusoperationscheduled) event. Uniquely identifies this operation.                                                         |
 | result             | Serialized result of the Nexus operation. The response of the Nexus handler. Delivered either via a completion callback or as a response to a synchronous operation. |
-| request_id         | The request ID allocated at schedule time.                                                                                                                           |
+| request_id         | The request Id allocated at schedule time.                                                                                                                           |
 
 ### NexusOperationFailed
 
@@ -626,32 +626,35 @@ This Event type contains a Nexus Operation failure.
 
 | Field              | Description                                                                                                   |
 | :----------------- | :------------------------------------------------------------------------------------------------------------ |
-| scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled)` event. Uniquely identifies this operation. |
+| scheduled_event_id | The Id of the [NexusOperationScheduled](#nexusoperationscheduled) event. Uniquely identifies this operation. |
 | failure            | Failure details. A NexusOperationFailureInfo wrapping an ApplicationFailureInfo.                              |
-| request_id         | The request ID allocated at schedule time.                                                                    |
+| request_id         | The request Id allocated at schedule time.                                                                    |
 
 ### NexusOperationTimedOut
 
 This Event type indicates that a Nexus Operation has timed out according to the Temporal Server, due to one of these Nexus Operation timeouts: Schedule-to-Close Timeout.
+
 | Field | Description |
 | :---- | :---- |
-| scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled)` event. Uniquely identifies this operation. |
+| scheduled_event_id | The Id of the [NexusOperationScheduled](#nexusoperationscheduled) event. Uniquely identifies this operation. |
 | failure | Failure details. A NexusOperationFailureInfo wrapping a CanceledFailureInfo. |
-| request_id | The request ID allocated at schedule time. |
+| request_id | The request Id allocated at schedule time. |
 
 ### NexusOperationCancelRequested
 
 This Event type indicates that the Workflow that scheduled a Nexus Operation requested to cancel it.
+
 | Field | Description |
 | :---- | :---- |
-| scheduled_event_id | The id of the [NexusOperationScheduled](#nexusoperationscheduled)` event this cancel request corresponds to. |
-| workflow_task_completed_event_id | The [WorkflowTaskCompleted](#workflowtaskcompleted) event that the corresponding RequestCancelNexusOperation command was reported with. |
+| scheduled_event_id | The Id of the [NexusOperationScheduled](#nexusoperationscheduled) event this cancel request corresponds to. |
+| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) event that the corresponding RequestCancelNexusOperation command was reported with. |
 
 ### NexusOperationCanceled
 
 This Event type indicates that a Nexus Operation has resolved as canceled.
+
 | Field | Description |
 | :---- | :---- |
-| scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled)` event. Uniquely identifies this operation. |
+| scheduled_event_id | The Id of the [NexusOperationScheduled](#nexusoperationscheduled) event. Uniquely identifies this operation. |
 | failure | Cancellation details. |
-| request_id | The request ID allocated at schedule time. |
+| request_id | The request Id allocated at schedule time. |

@@ -11,6 +11,8 @@ tags:
   - Temporal Cloud
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import * as Components from '@site/src/components';
 
 ## Prerequisites
@@ -20,12 +22,12 @@ Before configuring the Export Sink, ensure you have the following:
 - An AWS S3 bucket.
    - The S3 bucket must reside in the same region as your Namespace.
 - (Optional) An IAM role that has write permission to the above S3 bucket.
-   - You can follow the automation in the UI to create the IAM role. Please pre-create the role if setting up Export via terraform/tcld.
+   - You can follow the automation in the UI to create the IAM role. Please pre-create the role if setting up Export via Terraform or the CLI.
 - (Optional) A KMS ARN associated with the S3 bucket.
 
 ## Configure Workflow History export
 
-There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), [`tcld`](#using-tcld), or [`terraform`](#using-terraform).
+There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), the [CLI](#using-the-cli), or [`terraform`](#using-terraform).
 
 ### Using Temporal Cloud UI
 
@@ -87,7 +89,42 @@ You can manually configure a CloudFormation stack using the provided template.
    - Configure the CloudFormation template for your export sink.
    - Follow the steps in the [AWS documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-console-create-stack-template.html) by uploading the template to the CloudFormation console.
 
-### Using `tcld`
+### Using the CLI
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+Run the `temporal cloud namespace export s3 create` command and provide the following information:
+
+- `--namespace`: The Namespace to configure export for.
+- `--sink-name`: The name of the export sink.
+- `--role-arn`: The ARN of the AWS IAM role to use for the CloudFormation stack that has write permission to the S3 bucket.
+- `--bucket-name`: The name of the AWS S3 bucket.
+- `--region`: The AWS region the S3 bucket is in.
+
+For example:
+
+```command
+temporal cloud namespace export s3 create \
+  --namespace "your-namespace.your-account" \
+  --sink-name "your-sink-name" \
+  --role-arn "arn:aws:iam::123456789012:role/test-sink" \
+  --bucket-name "your-aws-s3-bucket-name" \
+  --region "us-east-1"
+```
+
+Retrieve the status of this command by running the `temporal cloud namespace export get` command.
+
+For example:
+
+```command
+temporal cloud namespace export get \
+  --namespace "your-namespace.your-account" \
+  --sink-name "your-sink-name"
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 Run the `tcld namespace export s3 create` command and provide the following information:
 
@@ -109,6 +146,9 @@ For example:
 ```command
 tcld namespace export s3 get --namespace "your-namespace.your-account" --sink-name "your-sink-name"
 ```
+
+</TabItem>
+</Tabs>
 
 The following is an example of the output:
 
