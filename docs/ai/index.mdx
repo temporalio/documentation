@@ -110,13 +110,13 @@ A hand-picked look at samples built with Temporal and AI. Browse the full
     href: "/design-patterns/entity-workflow",
     icon: "entity-workflow-icon.svg",
     title: "Entity Workflow",
-    description: "Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.",
+    description: "A long-lived business entity — a user account, device, or order — gets one Workflow per instance, with Signals and Updates driving every state transition.",
   },
   {
     href: "/design-patterns/local-activities",
     icon: "local-activities-icon.svg",
     title: "Local Activities",
-    description: "Run Activity functions in-process inside the Workflow Task, eliminating all server scheduling round-trips. Best for short, idempotent Activities on a latency-sensitive path.",
+    description: "Local Activities run inside the Worker process, skipping server round-trips for short, idempotent Activities on a latency-sensitive path.",
   },
 ]} />
 

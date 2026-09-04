@@ -18,7 +18,7 @@ The Batch Iterator pattern processes a large record set one page at a time. Each
 
 ## Problem
 
-A single Workflow run is limited to 50,000 history events (aim for 2,000) and 2,000 in-flight Activities. Processing millions of records in one run is not possible within these bounds.
+A single Workflow run is limited to 51,200 history events (aim for 2,000) and 2,000 in-flight Activities. Processing millions of records in one run is not possible within these bounds.
 
 You need a way to process an arbitrarily large record set reliably, with the ability to resume from a checkpoint if the Workflow is interrupted, and without overwhelming downstream systems with a burst of concurrent requests.
 
