@@ -1,0 +1,85 @@
+Call `notifyRequester` once the decision is final. From the caller's side there is nothing new to learn, which is the point of this step.
+
+## The caller cannot tell the difference
+
+`notifyRequester` is called exactly like `requestApproval`: through the same generated stub, with the same Endpoint, the same type checking, and the same error handling. A caller in any language calls it the same way, as in [step 6](/develop/java/nexus/development-walkthrough?step=call).
+
+Nothing in the caller reveals that this Operation is backed by an Activity and the other by a Workflow. That is the contract doing its job. The handler team could later replace the notification Activity with a Workflow that retries across providers and escalates on failure, and no caller would change.
+
+The call sits alongside the others in the caller Workflow from [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow) — same stub, same shape, no hint of what runs behind it.
+
+## Complete the flow
+
+With all ten steps in place, the caller runs the whole approval:
+
+1. Call `checkApprovalRequired`. It answers during the call, with nothing durable created. If the purchase is under the threshold, the flow stops here.
+2. Call `requestApproval` and await it. The Operation starts the approval Workflow in the handler Namespace, or attaches to one that another Operation already started.
+3. While it is pending, other systems call `remindApprover` to nudge the approver and `attachApprovalContext` to add supporting information.
+4. Someone calls `submitDecision` with `APPROVED` or `DENIED`. The Update records it, confirms to that caller, and unblocks the approval Workflow.
+5. The approval Workflow returns the decision, which resolves the `requestApproval` Operation every attached caller has been awaiting.
+6. The caller calls `notifyRequester` with the decision, backed by the notification Activity.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-caller-starter-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java)
+
+```java
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkflowOptions options =
+        WorkflowOptions.newBuilder().setTaskQueue(CallerWorker.DEFAULT_TASK_QUEUE_NAME).build();
+
+    // A small purchase. checkApprovalRequired returns false and nothing durable is created.
+    ApprovalCallerWorkflow small = client.newWorkflowStub(ApprovalCallerWorkflow.class, options);
+    String smallResult =
+        small.runApprovalFlow(
+            "laptop-charger-" + UUID.randomUUID(),
+            "dana@example.com",
+            49.99,
+            "Replacement charger");
+    logger.info("Small purchase result: {}", smallResult);
+
+    // A large purchase. Runs the whole flow: context attached first, approval requested, approver
+    // reminded, decision submitted, decision awaited, requester notified.
+    ApprovalCallerWorkflow large = client.newWorkflowStub(ApprovalCallerWorkflow.class, options);
+    String largeResult =
+        large.runApprovalFlow(
+            "standing-desk-" + UUID.randomUUID(),
+            "dana@example.com",
+            1250.00,
+            "Approved in the Q3 ergonomics budget");
+    logger.info("Large purchase result: {}", largeResult);
+  }
+```
+
+<!--SNIPEND-->
+
+Every step crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or which primitive backed any Operation. One Operation ran with no durable Execution at all, one started a Workflow, two sent messages to it, one started a Workflow if it was not already running, and one started an Activity — and from the caller's side they were all just Operations.
+
+## Trace it end to end
+
+Open the caller Workflow in the UI and follow the links. Because the handlers used the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) rather than constructing their own, each Operation is connected to the Execution it started or messaged in the handler Namespace, and you can move between the two Namespaces in one view.
+
+`checkApprovalRequired` is the exception, and not because anything is wrong: it started no Execution, so there is nothing on the handler side to link to. An Operation with no backing appears as a completed Operation and nothing more.
+
+## Where to go next
+
+The Service is complete but minimal. Natural extensions:
+
+- **Timeouts and escalation.** Give the approval a deadline and escalate or auto-deny when it passes.
+- **Split the Workers.** Run the Nexus Service, the approval Workflow, and the notification Activity on separate Worker fleets. See [Nexus patterns](/nexus/patterns).
+- **Callers in other languages.** Generate a caller from the same contract in Go, Python, or TypeScript. See [Nexus Client Code Generator](/develop/java/nexus/client-code-generator).
+- **Standalone invocation.** Call an Operation from a Client with no caller Workflow. See [Standalone Nexus Operation](/standalone-nexus-operation).
+
+Before running this against anything real, read [Debugging, common pitfalls, and tips](/develop/java/nexus/development-walkthrough?step=tips).
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
+
+:::tip RESOURCES
+
+- [Nexus execution debugging](/nexus/execution-debugging) for tracing across Namespaces.
+- [Nexus patterns](/nexus/patterns) for Worker and Service topology.
+- [Nexus Standalone Activity](/nexus/standalone-activity) for Activity-backed Operations.
+
+:::

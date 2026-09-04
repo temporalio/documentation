@@ -1,0 +1,63 @@
+Generate the library code from the contract before writing any implementation. Both sides of the Service use it: the handler implements against the generated Service definition, and the caller invokes against the same one.
+
+## What generation produces
+
+For each type in the contract, the [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) emits a typed model and a runtime validator. If the contract declares Services, it will also create a Nexus Service definition.
+
+The generated Service definition carries one member per Operation, in whatever form is idiomatic for the language. It is used on both sides and in two different ways:
+
+- The **handler** provides an implementation for it, which the Worker registers.
+- The **caller** uses it to invoke Operations, so calls are type-checked against the contract.
+
+`nexgen` generates Go, Java, Python, and TypeScript, which is the set of languages this walkthrough covers.
+
+The generated validators run when a payload is parsed and again when it is serialized, so a request that violates the contract is rejected at the boundary rather than reaching your Workflow. Violations aggregate into one error naming every field that failed, which a handler maps to `BAD_REQUEST`.
+
+## Generate the code
+
+Generation is one command per language, with a few per-language flags — Java, for instance, requires a package name whose last segment matches the output directory name.
+
+**[Generate code](/develop/java/nexus/client-code-generator#generate-code)** has the full command shape and the flags each language takes, with examples for each.
+
+This walkthrough has a companion sample project,
+[nexuswalkthrough](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough)
+in the `samples-java` repository. Its contract is
+[approval.nexusrpc.yaml](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml),
+the same file shown in [step 1](/develop/java/nexus/development-walkthrough?step=contract#write-the-contract).
+
+:::caution For reviewers
+
+The two links above, and the code samples throughout this walkthrough, point at a sample project
+that is not on GitHub yet. They will not resolve until the `samples-java` pull request is merged.
+
+:::
+
+For that project, generating the Java code is one command, run from the repository root:
+
+```bash
+nexgen java \
+  --output core/src/main/java/io/temporal/samples/nexuswalkthrough/generatedservice \
+  --package-name io.temporal.samples.nexuswalkthrough.generatedservice \
+  core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml
+```
+
+Two things to know. Java requires the package name's last segment to match the output directory's
+name, which is why both end in `generatedservice`. And generation **clears the output directory**,
+so keep the contract outside it — a schema stored in the output directory is deleted the first time
+you regenerate.
+
+Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. When a generated name is wrong for your language, fix it in the contract with a per-language naming override rather than editing the output. See the **[Nexus Client Code Generator](/develop/java/nexus/client-code-generator)** for more details.
+
+## One contract, four languages
+
+Run the generator once per language and you have that language's contract code — typed models, validators, and the Service definition. That is not a working handler or caller; you still write those. It is the part both sides have to agree on, generated from one source instead of hand-written twice, and the same generated code serves whichever side you are building. Nothing about a handler needs to know which languages its callers use, and nothing about a caller needs to know which language implements the handler.
+
+This is the step where the contract-first ordering pays off, and it is what makes the cross-language call in [step 6](/develop/java/nexus/development-walkthrough?step=call) work without any coordination beyond the contract.
+
+
+:::tip RESOURCES
+
+- [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) for installation, per-language commands, and the supported JSON Schema subset.
+- [Use the generated code](/develop/java/nexus/client-code-generator#use-the-generated-code) for how validation is wired in each language.
+
+:::

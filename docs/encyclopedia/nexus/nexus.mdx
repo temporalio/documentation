@@ -125,3 +125,25 @@ Each step is a separate, durable Operation with its own retries and failure hand
 - [Nexus execution debugging](/nexus/execution-debugging) - Bi-directional linking, pending Operations, and tracing.
 - [Nexus error handling](/nexus/error-handling) - Error types and how they surface in caller Workflows.
 - [Nexus metrics](/nexus/metrics) - SDK, Cloud, and OSS cluster metrics.
+
+## Pre-release: the new Nexus developer experience
+
+A new way of building Nexus Services is in pre-release. It combines a contract-first approach, where one schema generates typed models and Service definitions for every language, with a single handler type that can back an Operation with a Workflow, an Update, or an Activity.
+
+The APIs are experimental, so expect them to change.
+
+**Concepts**
+
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) — single handler type, bidirectional linking across Namespace boundaries
+- [Nexus Client Code Generator](/nexus/client-code-generator) — one schema for typed models, validators, and Service definitions
+- [Nexus Standalone Activity](/nexus/standalone-activity) — Activity-backed Operations for a single durable step
+
+**How-to**
+
+- Temporal Operation Handler: [Go](/develop/go/nexus/temporal-operation-handler) · [Java](/develop/java/nexus/temporal-operation-handler) · [.NET](/develop/dotnet/nexus/temporal-operation-handler) · [Python](/develop/python/nexus/temporal-operation-handler) · [TypeScript](/develop/typescript/nexus/temporal-operation-handler)
+- Client Code Generator: [Go](/develop/go/nexus/client-code-generator) · [Java](/develop/java/nexus/client-code-generator) · [Python](/develop/python/nexus/client-code-generator) · [TypeScript](/develop/typescript/nexus/client-code-generator)
+- Activity-backed Operations: [Go](/develop/go/nexus/activity-backed-operations) · [Java](/develop/java/nexus/activity-backed-operations) · [.NET](/develop/dotnet/nexus/activity-backed-operations) · [Python](/develop/python/nexus/activity-backed-operations) · [TypeScript](/develop/typescript/nexus/activity-backed-operations)
+- [Microservice Development Walkthrough (Java)](/develop/java/nexus/development-walkthrough) — build a Nexus Service end to end, adding one capability at a time
+
+
+

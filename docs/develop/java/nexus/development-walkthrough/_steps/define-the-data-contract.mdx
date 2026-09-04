@@ -1,0 +1,215 @@
+Start with the contract, not the code.
+
+The contract is the only thing a caller and a handler share. Everything else — which language each side is written in, whether an Operation is backed by a Workflow or an Activity, which Task Queue the Worker polls — is private to one side and can change without the other side knowing.
+
+## Why the contract comes first
+
+Writing the contract first is what makes the Service polyglot.
+
+**Every sample in this walkthrough, in every language, is generated from this one contract.** A Go caller can call a Java handler. A TypeScript caller can call a Python handler. What language a side is written in has no bearing on whether the two can talk — the only thing that has to match is the contract they were both generated from. Each side picks whatever language suits it, and as long as both were built against this contract, they interoperate.
+
+That is why the contract comes before any implementation. It is written once, in no particular language, and every implementation in this walkthrough is generated from it.
+
+## Plan the Operations
+
+As with all API design, work backwards from what callers need, not from what your Workflow happens to do.
+
+For the approval problem, callers need to check whether a purchase needs approval at all, start an approval and learn its outcome, nudge a pending approval, attach supporting information to a purchase, submit a decision, and be notified when the decision is final. That produces six Operations:
+
+| Operation | Input | Output | Added in |
+| --- | --- | --- | --- |
+| `checkApprovalRequired` | Item id, requester, amount | Whether approval is needed, and the threshold applied | Step 3 |
+| `requestApproval` | Item id, requester, amount | `APPROVED` or `DENIED` | Step 4 |
+| `remindApprover` | Item id | Nothing | Step 7 |
+| `submitDecision` | Item id, decision | The decision recorded, and how many reminders preceded it | Step 7 |
+| `attachApprovalContext` | Item id, requester, amount, note | Nothing | Step 8 |
+| `notifyRequester` | Requester, decision | Where the notification was delivered | Step 9 |
+
+Three of those are worth explaining now, because they are easy to get wrong. They also introduce the three shapes an Operation can take, named here and chosen per Operation in [step 3](/develop/java/nexus/development-walkthrough?step=backing):
+
+**`checkApprovalRequired` answers a question without starting anything.** A small purchase may not need approval, and finding that out should not create an approval, a Workflow, or any durable record. This is the synchronous case: the Operation applies a spend threshold and returns the answer during the call, so a caller can skip the rest of this Service entirely.
+
+**`requestApproval` returns the final decision.** It does not return an approval id for the caller to poll. The Operation is Workflow-backed, so it completes when that Workflow returns, and the Workflow's return value *is* the Operation's result. The caller awaits the Operation and receives `APPROVED` or `DENIED`.
+
+**`attachApprovalContext` does not require the approval to exist.** Supporting information — a justification, a link to a quote, a manager's note — is produced by a different system than the one requesting approval, and the two messages can arrive in either order. The Operation is written so that either order works, which means both might have to start the approval workflow. Since this message might have to start the workflow, its input needs to include the purchase details so that the workflow has enough information to start. [Step 8](/develop/java/nexus/development-walkthrough?step=send#attach-information-before-the-approval-exists) covers this in detail.
+
+## Contract design rules
+
+An Operation's input and output are each optional, but when present each must be an **object type**. If the input is only a single variable a class wrapping that is still required. This allows you to add a field later without breaking the wire format. Conversely, though, returning nothing at all is fine, which `remindApprover` does.
+
+Keep the types **forward-compatible** if you change the contract. Callers and handlers deploy independently and will run different versions of the contract at the same time. Adding an optional field is safe; making an existing field required, or removing one, is not.
+
+## Write the contract
+
+Contracts are modeled with JSON Schema 2020-12. Each definition file is one of two kinds, decided by what sits at its root:
+
+- **Nexus document** - the root carries a `nexusrpc: '1.0.0'` marker and acts as an envelope, with Services and their Operations at the top level and types under `$defs`. Only this kind can declare a Service.
+- **Pure JSON Schema** - the root is itself a type, with reusable types under `$defs`. No Service or Operation declarations, just data models shared across languages.
+
+A file is one or the other, never both. A contract can span several files, with a Nexus document pulling in types from pure-schema files through `$ref`.
+
+The approval contract declares a Service with six Operations, so its entry file is a Nexus document.
+
+**[Definition files](/develop/java/nexus/client-code-generator#definition-files)** documents both flavors in full, with the supported subset of JSON Schema and a worked example to model this contract on.
+
+Here is the approval contract in full. Every Operation the walkthrough builds is declared here, before any implementation exists:
+
+<!--SNIPSTART samples-java-nexus-walkthrough-contract-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml)
+
+```yaml
+nexusrpc: "1.0.0"
+$schema: https://json-schema.org/draft/2020-12/schema
+description: Purchase approval service built by the Nexus Microservice Development Walkthrough.
+
+services:
+  ApprovalService:
+    fqn: temporal.samples.approval.v1.ApprovalService
+    description: Start a purchase approval, message it while it is pending, and learn the outcome.
+    operations:
+
+      # Answers a question without starting anything. Backed by nothing at all - see step 3.
+      checkApprovalRequired:
+        description: Report whether a purchase needs approval, before any durable work starts.
+        input: { $ref: "#/$defs/CheckApprovalRequiredInput" }
+        output: { $ref: "#/$defs/CheckApprovalRequiredOutput" }
+
+      # Backed by a Workflow. The Workflow's return value is this Operation's result - see step 4.
+      requestApproval:
+        description: Start an approval and return the decision once it is made.
+        input: { $ref: "#/$defs/RequestApprovalInput" }
+        output: { $ref: "#/$defs/RequestApprovalOutput" }
+
+      # A Signal. Fire-and-forget, so it declares no output - see step 7.
+      remindApprover:
+        description: Ask the approver again. Returns nothing.
+        input: { $ref: "#/$defs/RemindApproverInput" }
+
+      # An Update. The caller needs confirmation back, which is what makes this an Update rather
+      # than a Signal - see step 7.
+      submitDecision:
+        description: Supply the decision and confirm it was recorded.
+        input: { $ref: "#/$defs/SubmitDecisionInput" }
+        output: { $ref: "#/$defs/SubmitDecisionOutput" }
+
+      # Signal-with-Start. Its input repeats the purchase details because it may have to create the
+      # approval it is messaging - see step 8.
+      attachApprovalContext:
+        description: Attach supporting information to a purchase, whether or not its approval exists yet.
+        input: { $ref: "#/$defs/AttachApprovalContextInput" }
+
+      # Backed by a Standalone Activity - one durable step, no Workflow - see step 9.
+      notifyRequester:
+        description: Notify the requester once the decision is final.
+        input: { $ref: "#/$defs/NotifyRequesterInput" }
+        output: { $ref: "#/$defs/NotifyRequesterOutput" }
+
+# The APPROVED | DENIED value set is declared inline on each property that carries it, rather than
+# once under $defs. A named enum under $defs is rejected by the generator today, so each Operation
+# gets its own nested value class; handler/Decisions.java converts between them.
+$defs:
+
+  CheckApprovalRequiredInput:
+    type: object
+    additionalProperties: false
+    properties:
+      itemId: { description: Identifier of the purchase., type: string }
+      requester: { description: Who is asking., type: string }
+      amount: { description: Purchase amount., type: number }
+    required: [itemId, requester, amount]
+
+  CheckApprovalRequiredOutput:
+    type: object
+    additionalProperties: false
+    properties:
+      approvalRequired: { description: Whether an approval has to be started., type: boolean }
+      threshold: { description: The spend threshold that was applied., type: number }
+    required: [approvalRequired, threshold]
+
+  RequestApprovalInput:
+    type: object
+    additionalProperties: false
+    properties:
+      itemId: { type: string }
+      requester: { type: string }
+      amount: { type: number }
+    required: [itemId, requester, amount]
+
+  RequestApprovalOutput:
+    type: object
+    additionalProperties: false
+    properties:
+      decision:
+        description: The outcome of the approval.
+        type: string
+        enum: [APPROVED, DENIED]
+    required: [decision]
+
+  RemindApproverInput:
+    type: object
+    additionalProperties: false
+    properties:
+      itemId: { type: string }
+    required: [itemId]
+
+  SubmitDecisionInput:
+    type: object
+    additionalProperties: false
+    properties:
+      itemId: { type: string }
+      decision:
+        description: The decision being submitted.
+        type: string
+        enum: [APPROVED, DENIED]
+    required: [itemId, decision]
+
+  SubmitDecisionOutput:
+    type: object
+    additionalProperties: false
+    properties:
+      recorded:
+        description: The decision that was recorded.
+        type: string
+        enum: [APPROVED, DENIED]
+      remindersSent: { description: How many reminders were sent before the decision., type: integer }
+    required: [recorded, remindersSent]
+
+  AttachApprovalContextInput:
+    type: object
+    additionalProperties: false
+    properties:
+      itemId: { type: string }
+      requester: { type: string }
+      amount: { type: number }
+      note: { description: The supporting information to attach., type: string }
+    required: [itemId, requester, amount, note]
+
+  NotifyRequesterInput:
+    type: object
+    additionalProperties: false
+    properties:
+      requester: { type: string }
+      decision:
+        description: The final decision.
+        type: string
+        enum: [APPROVED, DENIED]
+    required: [requester, decision]
+
+  NotifyRequesterOutput:
+    type: object
+    additionalProperties: false
+    properties:
+      deliveredTo: { description: Where the notification was sent., type: string }
+    required: [deliveredTo]
+```
+
+<!--SNIPEND-->
+
+
+:::tip RESOURCES
+
+- [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) for the contract format and the supported JSON Schema subset.
+- [Nexus Services](/nexus/services) for what a Service contract is and how it is shared.
+
+:::
