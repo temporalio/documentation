@@ -16,7 +16,7 @@ These patterns control how fast work executes, protect downstream services from 
     href: "/design-patterns/downstream-rate-limiting",
     icon: "downstream-rate-limiting-icon.svg",
     title: "Downstream Rate Limiting",
-    description: "Caps the Activity execution rate against a downstream service by routing throttled Activities to a dedicated Task Queue whose Workers enforce a throughput limit.",
+    description: "Rate-limits calls to a downstream service by routing throttled Activities to a dedicated Task Queue with a server-enforced throughput cap.",
   },
   {
     href: "/design-patterns/priority-task-queues",

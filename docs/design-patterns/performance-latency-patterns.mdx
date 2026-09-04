@@ -56,19 +56,19 @@ Eager Workflow Start is not available in the TypeScript SDK, but the latency gap
     href: "/design-patterns/local-activities",
     icon: "local-activities-icon.svg",
     title: "Local Activities",
-    description: "Run Activity functions in-process inside the Workflow Task, eliminating all server scheduling round-trips. Best for short, idempotent Activities on a latency-sensitive path.",
+    description: "Local Activities run inside the Worker process, skipping server round-trips for short, idempotent Activities on a latency-sensitive path.",
   },
   {
     href: "/design-patterns/early-return-local-activities",
     icon: "early-return-local-activities-icon.svg",
     title: "Early Return + Local Activities",
-    description: "Extends Early Return by running Phase 1 Activities as Local Activities. The client receives its response after Phase 1 completes entirely in-process, achieving the lowest possible first-response latency.",
+    description: "Extends Early Return by running Phase 1 as Local Activities, so the client's first response comes from in-process work, not a server call.",
   },
   {
     href: "/design-patterns/eager-workflow-start",
     icon: "eager-workflow-start-icon.svg",
     title: "Eager Workflow Start",
-    description: "Dispatch the first Workflow Task directly to a co-located Worker, bypassing the Temporal Matching Service. Requires the starter and Worker to share the same process and client connection.",
+    description: "Eager Workflow Start sends the first Workflow Task directly to a co-located Worker, skipping the Matching Service to cut startup latency.",
   },
 ]} />
 

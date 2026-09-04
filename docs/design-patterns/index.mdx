@@ -30,7 +30,7 @@ Having these patterns in your toolbox helps you solve recurring problems in a ba
     href: "/design-patterns/pick-first",
     icon: "pick-first-icon.svg",
     title: "Pick First (Race)",
-    description: "Starts multiple Activities in parallel and uses the first result, cancelling the rest.",
+    description: "Races multiple Activities in parallel, returns the first completed result, and cancels the remaining Activities using SDK cancellation scopes.",
   },
 ]} />
 
@@ -47,7 +47,13 @@ Having these patterns in your toolbox helps you solve recurring problems in a ba
     href: "/design-patterns/request-response-via-updates",
     icon: "request-response-icon.svg",
     title: "Request-Response via Updates",
-    description: "Synchronous request-response with validation. Updates modify state and return results directly.",
+    description: "Uses a Workflow Update to validate a request, modify Workflow state, and return a typed result to the caller synchronously, with strong consistency.",
+  },
+  {
+    href: "/design-patterns/event-accumulator",
+    icon: "event-accumulator-icon.svg",
+    title: "Event Accumulator",
+    description: "Durably collect and deduplicate signals from multiple senders, then process the batch after a sliding inactivity timeout.",
   },
 ]} />
 
@@ -58,7 +64,7 @@ Having these patterns in your toolbox helps you solve recurring problems in a ba
     href: "/design-patterns/entity-workflow",
     icon: "entity-workflow-icon.svg",
     title: "Entity Workflow",
-    description: "Models long-lived business entities as individual Workflows that persist for the entity's entire lifetime, handling all state transitions through Signals and Updates.",
+    description: "A long-lived business entity — a user account, device, or order — gets one Workflow per instance, with Signals and Updates driving every state transition.",
   },
   {
     href: "/design-patterns/continue-as-new",
@@ -99,7 +105,7 @@ Having these patterns in your toolbox helps you solve recurring problems in a ba
     href: "/design-patterns/delayed-callback",
     icon: "webhooks-icon.svg",
     title: "Delayed Callback (Webhooks)",
-    description: "Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens.",
+    description: "Webhooks become durable: inbound calls arrive as Signals, outbound calls fire after a durable sleep, and Activities complete later via task tokens.",
   },
   {
     href: "/design-patterns/approval",
@@ -151,19 +157,19 @@ Having these patterns in your toolbox helps you solve recurring problems in a ba
     href: "/design-patterns/delayed-retry",
     icon: "delayed-retry-icon.svg",
     title: "Delayed Retry",
-    description: "Override the next retry interval for a specific failure using nextRetryDelay on ApplicationFailure. Use when an error carries information about how long to wait before retrying.",
+    description: "Override one failure's retry interval with nextRetryDelay on ApplicationFailure, matching the wait time the error reports.",
   },
   {
     href: "/design-patterns/fast-slow-retries",
     icon: "fast-slow-retries-icon.svg",
     title: "Fast/Slow Retries",
-    description: "Try aggressively with a short interval first, then shift to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers.",
+    description: "Retry fast with a short interval first, then shift to a slow, unlimited interval so the Workflow outlasts an extended downstream outage.",
   },
   {
     href: "/design-patterns/retry-metrics",
     icon: "retry-metrics-icon.svg",
     title: "Retry Alerting via Metrics",
-    description: "Emit a custom metric from inside the Activity when the attempt count crosses a threshold, surfacing silent persistent failures to on-call teams before an SLA breach.",
+    description: "Emit a metric from the Activity when attempts cross a threshold, so on-call teams see persistent failures before an SLA breach.",
   },
   {
     href: "/design-patterns/resumable-activity",
@@ -209,7 +215,7 @@ Having these patterns in your toolbox helps you solve recurring problems in a ba
     href: "/design-patterns/downstream-rate-limiting",
     icon: "downstream-rate-limiting-icon.svg",
     title: "Downstream Rate Limiting",
-    description: "Caps Activity execution rate against a downstream service by routing throttled Activities to a dedicated Task Queue backed by Workers configured with a throughput limit.",
+    description: "Rate-limits calls to a downstream service by routing throttled Activities to a dedicated Task Queue with a server-enforced throughput cap.",
   },
   {
     href: "/design-patterns/priority-task-queues",
@@ -232,19 +238,19 @@ Having these patterns in your toolbox helps you solve recurring problems in a ba
     href: "/design-patterns/local-activities",
     icon: "local-activities-icon.svg",
     title: "Local Activities",
-    description: "Run Activity functions in-process inside the Workflow Task, eliminating all server scheduling round-trips. Best for short, idempotent Activities on a latency-sensitive path.",
+    description: "Local Activities run inside the Worker process, skipping server round-trips for short, idempotent Activities on a latency-sensitive path.",
   },
   {
     href: "/design-patterns/early-return-local-activities",
     icon: "early-return-local-activities-icon.svg",
     title: "Early Return + Local Activities",
-    description: "Extends Early Return by running Phase 1 Activities as Local Activities. The client receives its response after Phase 1 completes entirely in-process, achieving the lowest possible first-response latency.",
+    description: "Extends Early Return by running Phase 1 as Local Activities, so the client's first response comes from in-process work, not a server call.",
   },
   {
     href: "/design-patterns/eager-workflow-start",
     icon: "eager-workflow-start-icon.svg",
     title: "Eager Workflow Start",
-    description: "Dispatch the first Workflow Task directly to a co-located Worker, bypassing the Temporal Matching Service. Requires the starter and Worker to share the same process and client connection.",
+    description: "Eager Workflow Start sends the first Workflow Task directly to a co-located Worker, skipping the Matching Service to cut startup latency.",
   },
 ]} />
 

@@ -2,7 +2,7 @@
 id: task-orchestration-patterns
 title: "Task Orchestration Patterns"
 sidebar_label: "Task Orchestration Patterns"
-description: "Pattern selection guide for composing and coordinating multiple units of work within a Workflow."
+description: "Compares Child Workflows, Parallel Execution, and Pick First (Race) for decomposing, running concurrently, and racing work inside a single Workflow."
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
@@ -28,7 +28,7 @@ These patterns compose and coordinate multiple units of work within a Workflow â
     href: "/design-patterns/pick-first",
     icon: "pick-first-icon.svg",
     title: "Pick First (Race)",
-    description: "Starts multiple Activities in parallel, takes the first result to arrive, and cancels the rest.",
+    description: "Races multiple Activities in parallel, takes the first result to arrive, and cancels the rest.",
   },
 ]} />
 

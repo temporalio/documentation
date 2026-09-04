@@ -2,7 +2,7 @@
 id: fast-slow-retries
 title: "Fast/Slow Retries"
 sidebar_label: "Fast/Slow Retries"
-description: "Try aggressively with a short interval first, then shift to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers."
+description: "Retry fast with a short interval first, then shift to a slow, unlimited interval so the Workflow outlasts an extended downstream outage."
 ---
 
 import Tabs from '@theme/Tabs';

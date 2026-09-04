@@ -2,7 +2,7 @@
 id: delayed-callback
 title: "Delayed Callback (Webhooks)"
 sidebar_label: "Delayed Callback"
-description: "Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens."
+description: "Webhooks become durable: inbound calls arrive as Signals, outbound calls fire after a durable sleep, and Activities complete later via task tokens."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -753,4 +753,3 @@ func CompleteJob(ctx context.Context, c client.Client, jobID string, result stri
 - [Polling External Services](/design-patterns/polling) — alternative to callbacks when the external system does not support webhooks
 - [Delayed Start](/design-patterns/delayed-start) — defer Workflow execution to a future time without `workflow.sleep()`
 - [Long-Running Activity](/design-patterns/long-running-activity) — heartbeating pattern for activities that run for extended periods
-- **In the future** - Org-to-Org Nexus, stay tuned.
