@@ -177,6 +177,27 @@ Proceed only when your request has been approved by Temporal.
 
 :::
 
+### Plan migration endpoints
+
+A migration endpoint is a cloud-side resource that connects one of your self-hosted servers to Temporal Cloud. Temporal
+creates the endpoints and provides the `endpoint-id` values used with the `tcld migration` commands in later phases.
+
+Each self-hosted server you migrate from needs its own S2S Proxy deployment and its own migration endpoint. You can
+migrate from more than one self-hosted server at the same time, such as separate development and production servers,
+provided each self-hosted server has a unique cluster name and Initial Failover Version. Temporal uses `active` as the
+default cluster name, so servers that still use the default will collide. See
+[Modify cluster configuration](#modify-cluster-configuration) for setting these values.
+
+If your self-hosted servers cannot use unique cluster names, migrate one server at a time, or contact Temporal to
+discuss the available options.
+
+Namespaces migrating from the same self-hosted server share that server's proxy and endpoint. You can migrate more than
+one Namespace from a server at the same time, provided each source Namespace and its cloud-side target are listed in
+the `namespaceTranslation` mappings of that server's proxy configuration. See
+[S2S Proxy configuration](#s2s-proxy-configuration).
+
+Tell Temporal how many self-hosted servers you plan to migrate from, and whether you intend to migrate from them in
+parallel, so that the required cloud-side resources are in place.
 
 ### S2S Proxy configuration
 
@@ -216,6 +237,9 @@ namespaceTranslation:
   - etc...
 ```
 5. Test access using the command below. It should display the information of the cloud-side migration server.
+
+   The address is your own proxy's external address, not a cloud-side address. It's the same value you set as
+   `replicationEndpoint` under `clusterConnections` in your proxy configuration file.
 
 ```
 temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
@@ -513,6 +537,17 @@ The answer depends on your specific situation. However, automated migration is m
 * When there is a need to migrate Schedules.
 
 In contrast, automated migration may not be the best solution if your self-hosted clusters do not meet the [minimum requirements](#limitations).
+
+### Can I migrate from multiple self-hosted servers at the same time?
+
+Yes. Each self-hosted server needs its own S2S Proxy deployment and its own migration endpoint, and each must have a
+unique cluster name and Initial Failover Version. See [Plan migration endpoints](#plan-migration-endpoints).
+
+### Can I migrate multiple Namespaces from the same self-hosted server at the same time?
+
+Yes. Those Namespaces share the server's proxy and endpoint, so no additional cloud-side resources are needed. Include
+each source Namespace and its cloud-side target in the `namespaceTranslation` mappings of that server's proxy
+configuration. See [S2S Proxy configuration](#s2s-proxy-configuration).
 
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
 No. All Workflows will be migrated.
