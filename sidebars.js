@@ -106,7 +106,6 @@ const developDotnetCategory = {
         items: [
           'develop/dotnet/nexus/quickstart',
           'develop/dotnet/nexus/feature-guide',
-          'develop/dotnet/nexus/developer-experience',
           'develop/dotnet/nexus/standalone-operations',
         ],
       },
@@ -259,7 +258,6 @@ const developGoCategory = {
         items: [
           'develop/go/nexus/quickstart',
           'develop/go/nexus/feature-guide',
-          'develop/go/nexus/developer-experience',
           'develop/go/nexus/standalone-operations',
         ],
       },
@@ -422,7 +420,6 @@ const developJavaCategory = {
         items: [
           'develop/java/nexus/quickstart',
           'develop/java/nexus/feature-guide',
-          'develop/java/nexus/developer-experience',
           'develop/java/nexus/standalone-operations',
         ],
       },
@@ -667,7 +664,6 @@ const developPythonCategory = {
         items: [
           'develop/python/nexus/quickstart',
           'develop/python/nexus/feature-guide',
-          'develop/python/nexus/developer-experience',
           'develop/python/nexus/standalone-operations',
         ],
       },
@@ -1080,7 +1076,6 @@ const developTypeScriptCategory = {
         items: [
           'develop/typescript/nexus/quickstart',
           'develop/typescript/nexus/feature-guide',
-          'develop/typescript/nexus/developer-experience',
           'develop/typescript/nexus/standalone-operations',
         ],
       },
