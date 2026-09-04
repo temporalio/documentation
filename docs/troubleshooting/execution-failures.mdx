@@ -20,7 +20,7 @@ If you got here from a firing alert, the section you landed on is the runbook fo
 For metric definitions, see the [Temporal SDK metrics reference](/references/sdk-metrics).
 
 [`temporal_workflow_task_execution_failed`](/references/sdk-metrics#workflow_task_execution_failed) carries a `failure_reason` tag along with `namespace`, `task_queue`, and `workflow_type`.
-The reason decides what the Temporal Service does next, and the difference is worth knowing: two of the three retry forever, one terminates the Execution on the spot.
+The reason decides what the Temporal Service does next, and the difference is worth knowing: three of the four retry forever, one terminates the Execution on the spot.
 Alert on each `failure_reason` separately.
 
 ## Non-determinism error {/* #non-determinism-error */}
@@ -80,6 +80,32 @@ This is the one `failure_reason` on this page that kills Executions instead of r
 Check the Workflow terminate rate on your server dashboard. A spike alongside this metric confirms Executions are being terminated in bulk.
 
 :::
+
+## Request too large {/* #request-too-large */}
+
+**Recommended alert:** `temporal_workflow_task_execution_failed` with `failure_reason=RequestTooLarge`
+Fires on any occurrence, held for 1m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
+
+The whole Workflow Task completion was bigger than the Namespace limit on a single `RespondWorkflowTaskCompleted` request.
+This is not one oversized Payload, it is the total: every command, Payload, message, and piece of metadata the Worker produced for that one Workflow Task, added together.
+
+Workers that support command pagination split a large completion across several requests, but the recombined size still has to fit the limit.
+When it does not, the Worker fails the Workflow Task itself with cause `WORKFLOW_TASK_FAILED_CAUSE_REQUEST_TOO_LARGE` rather than sending pages the Temporal Service is going to reject.
+
+**Why it matters.**
+The Temporal Service retries the Workflow Task, so unlike [gRPC message too large](#grpc-message-too-large) the Execution is not terminated.
+Replay produces the same oversized completion every time, so affected Executions stop making progress and stay that way until the cause is fixed.
+The retries consume Workflow Worker capacity and can start affecting healthy Executions on the same Task Queue.
+
+**Triage.**
+
+1. **Identify the affected Executions.** This metric does not carry a Workflow Id. Worker logs record the Workflow Id and Run Id. In the Temporal UI you can also find affected Executions by querying the `TemporalReportedProblems` Search Attribute, which the Temporal Service sets on Executions experiencing repeated Workflow Task failures.
+1. **Find what made the completion large.** The limit applies to the sum, so look for what the Workflow produced in a single step:
+   - **A large fan-out.** Scheduling many Activities, Child Workflows, or Timers in one Workflow Task. Break the fan-out into smaller batches across multiple Workflow Tasks.
+   - **Accumulated Signals or Updates.** A large number buffered into one Workflow Task. Rate-limit senders or batch them.
+   - **Large Payloads in aggregate.** Individually under the Payload limit, but large once combined. Move them out of band with [External Storage](/external-storage).
+1. **Check the Namespace limit.** The limit is a Namespace setting on the size of a single Workflow Task completion, separate from the Payload and gRPC message limits. On Temporal Cloud, contact support if the workload legitimately needs a higher limit. Self-hosted operators can adjust it in dynamic config.
+1. **Fix and redeploy.** Affected Executions resume on their next Workflow Task retry once the corrected Worker is running. They do not need to be restarted, because they were never terminated.
 
 ## Workflow Task execution failures elevated {/* #workflow-task-execution-failures-elevated */}
 
