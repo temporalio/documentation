@@ -38,7 +38,7 @@ Use the Workflow itself as a retry orchestrator across two phases:
 
 **Phase 2 — Slow retries**: When the fast retry policy is exhausted, catch the `ActivityError` in the Workflow and execute the Activity again with a long `InitialInterval` and unlimited `MaximumAttempts`. The Temporal Service owns the slow retry management; the Workflow blocks until the Activity eventually succeeds.
 
-This design is invisible in conventional retry libraries because it requires the retry orchestrator to be a durable, resumable process — exactly what a Temporal Workflow is.
+Conventional retry libraries can't implement this two-phase design, because the retry orchestrator needs to survive across the entire fast-then-slow window — hours or days — without staying resident in a process. A Temporal Workflow persists its state between retries, so it can hold that phase transition durably.
 
 ```mermaid
 flowchart TD
@@ -310,5 +310,6 @@ If the business process has a maximum wait time, add a `ScheduleToCloseTimeout` 
 
 ### References
 
+- [Temporal Retry Policies](/encyclopedia/retry-policies)
 - [Understanding Workflow Retries and Failures](https://community.temporal.io/t/understanding-workflow-retries-and-failures/122)
 - [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice)

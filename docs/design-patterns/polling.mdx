@@ -18,9 +18,9 @@ It enables Workflows to wait for asynchronous operations in third-party services
 
 ## Problem
 
-In distributed systems, you often need Workflows that wait for external jobs to complete, poll REST APIs that do not provide webhooks, check the status of long-running operations in third-party systems, handle varying poll frequencies, and avoid overwhelming external services with requests.
+Workflows often need to wait on an external system that has no way to push a notification back: a REST API with no webhook, a long-running job in a third-party system, a status check that has to be repeated until it changes. Doing that well means picking the right poll frequency for the situation without overwhelming the external service.
 
-Without proper polling strategies, you must implement complex retry logic manually, risk unbounded Workflow history growth, choose between responsiveness and resource efficiency, and handle heartbeating and timeout management yourself.
+Without a deliberate polling strategy, you're left building retry logic by hand, choosing between responsiveness and resource efficiency with no way to have both, and managing heartbeating and timeouts yourself — while Workflow history grows with every poll.
 
 ## Solution
 
@@ -723,6 +723,10 @@ Periodic sequence is the most flexible but adds complexity through Child Workflo
 
 - **[Long-Running Activity](/design-patterns/long-running-activity)**: Reporting progress in long Activities.
 - **[Continue-As-New](/design-patterns/continue-as-new)**: Managing unbounded Workflow history.
+
+### References
+
+- [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat): Canonical reference for heartbeats, heartbeat timeouts, and throttling — the mechanism the frequent-polling variant relies on.
 
 ### Sample code
 

@@ -733,23 +733,38 @@ Both Workers receive the same Activity implementation, but only the host-specifi
 
 ## When to use
 
-The Worker-Specific Task Queues pattern is a good fit for file processing Workflows (download, process, upload on the same host), database connection pooling (maintain a connection across Activities), GPU-bound operations (route to Workers with specific hardware), session-based external API calls, and temporary resource management (cache, temp files, locks).
+**Good fit:**
 
-It is not a good fit for stateless Activities that can run anywhere, Activities that use shared storage (S3, databases), high-availability requirements (host failure blocks the Workflow), or Workflows without local state dependencies.
+- File processing Workflows (download, process, upload on the same host)
+- Database connection pooling (maintain a connection across Activities)
+- GPU-bound operations (route to Workers with specific hardware)
+- Session-based external API calls
+- Temporary resource management (cache, temp files, locks)
+
+**Poor fit:**
+
+- Stateless Activities that can run anywhere
+- Activities that use shared storage (S3, databases)
+- High-availability requirements (a host failure blocks the Workflow)
+- Workflows without local state dependencies
 
 ## Benefits and trade-offs
 
-Activities access local files and state without network overhead.
-You do not need distributed file systems or state management.
-Data transfer between Workers is eliminated.
-The first Activity can run on any Worker; only subsequent ones are pinned.
-Task Queue routing is recorded in Workflow history, ensuring deterministic behavior.
+**Benefits:**
 
-The trade-offs to consider are that if the specific Worker crashes, Activities cannot proceed until the ScheduleToStartTimeout expires.
-Host-specific queues may have uneven load distribution.
-You must manage multiple Task Queues per Worker.
-You must set ScheduleToStartTimeout to handle Worker unavailability.
-You need to handle cleanup if the Workflow fails mid-process.
+- Activities access local files and state without network overhead
+- No distributed file systems or state management needed
+- Data transfer between Workers is eliminated
+- The first Activity can run on any Worker; only subsequent ones are pinned
+- Task Queue routing is recorded in Workflow history, ensuring deterministic behavior
+
+**Trade-offs:**
+
+- If the specific Worker crashes, Activities cannot proceed until the `ScheduleToStartTimeout` expires
+- Host-specific queues may have uneven load distribution
+- You must manage multiple Task Queues per Worker
+- You must set `ScheduleToStartTimeout` to handle Worker unavailability
+- You need to handle cleanup if the Workflow fails mid-process
 
 ## Comparison with alternatives
 

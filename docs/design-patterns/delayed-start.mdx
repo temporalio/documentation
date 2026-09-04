@@ -18,9 +18,9 @@ The Workflow execution is registered in Temporal right away, but the first Workf
 
 ## Problem
 
-In business processes, you often need Workflows that start execution at a future time, are created immediately for tracking but execute later, avoid external scheduling systems or cron jobs for one-time delays, and maintain Workflow identity and queryability before execution begins.
+Some business processes need a Workflow that exists and is queryable immediately, but doesn't actually start executing until a specific time in the future — a one-time delay, not a recurring schedule.
 
-Without delayed start, you must use external schedulers to trigger Workflow creation later, start Workflows immediately and sleep as the first operation (which wastes resources), implement complex queueing systems for deferred execution, or use Temporal Schedules for one-time delays (which is more than you need).
+Without delayed start, the alternatives are all a worse fit: trigger Workflow creation from an external scheduler, start the Workflow immediately and make `sleep()` its first operation (wasting a Workflow slot for no reason), build a custom queueing system for deferred execution, or reach for [Temporal Schedules](/schedule) — built for recurring executions, more machinery than a single delay needs.
 
 ## Solution
 
@@ -448,7 +448,7 @@ Regular Signals sent during the delay are not delivered until the first Workflow
 
 ### Patterns
 
-- **Temporal Schedules**: For recurring Workflow execution.
+- **[Temporal Schedules](/schedule)**: For recurring Workflow execution.
 - **[Updatable Timer](/design-patterns/updatable-timer)**: For dynamically adjustable delays within Workflows.
 - **[Signal with Start](/design-patterns/signal-with-start)**: Interacting with Workflows before execution.
 
