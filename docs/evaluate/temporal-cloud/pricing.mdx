@@ -26,28 +26,28 @@ For more information, visit the [Billing](/cloud/billing) page.
 ## Temporal Cloud pricing model {/* #pricing-model */}
 
 This section explains the basis of the Temporal Cloud pricing model and how it works.
-Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a [Temporal Cloud Plan](#base_plans) that includes [Support](/cloud/support#support).
+Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a [Temporal Cloud Support Plan](#base_plans).
 
-### Temporal Cloud plans {/* #base_plans */}
+### Temporal Cloud Support plans {/* #base_plans */}
 
 **How plans work**
 
 
-Each Temporal Cloud account includes a plan with Support, Actions, Active Storage, Retained Storage and platform features.
+Each Temporal Cloud account includes a plan with Support. Higher tiers include Actions, Active Storage, Retained Storage and add-on features for the platform.
 Base allocations help you get started with the Temporal platform, so you can better estimate costs.
 
 - Temporal Cloud Plans are charged monthly.
 - Action and Storage allocations are reset each calendar month.
 
-Temporal offers four plans: Essentials, Business, Enterprise, Mission Critical.
+Temporal offers four support plans: Developer, Business, Enterprise, Mission Critical.
 Prices are outlined in the following table:
 
-|                   | Essentials                                                                     | Business                                                                                                                          | Enterprise                                                                                                                                                 | Mission Critical                                                                                                                                           |
+|                   | Developer                                                                      | Business                                                                                                                          | Enterprise                                                                                                                                                 | Mission Critical                                                                                                                                           |
 | ----------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Support Targeting | Basic use                                                                      | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                                                     | Mission-critical applications<br />w/ the highest support needs                                                                                            |
-| Support Features  | Access to Support                                                              | - P0 Response Times                                                                                                                        | - P0: \<30 Min, 24/7<br />- Private Slack                                                                                                                           | - P0: \<15 Min, 24/7<br />- Private Slack<br />- Dedicated Platform Architect                                                                                                      |
-| Product Features  | - 1M Actions<br />- 1 GB Active Storage<br />- 40 GB Retained Storage          | - Commit discounts<br />- SAML included<br />- SCIM (Add-on)<br />- 2.5M Actions<br />- 2.5 GB Active Storage<br />- 100 GB Retained Storage | - Commit discounts<br />- SAML included<br />- SCIM included<br />- 10M Actions<br />- 10 GB Active Storage<br />- 400 GB Retained Storage                      | - Commit discounts<br />- SAML included<br />- SCIM included<br />- 10M Actions<br />- 10 GB Active Storage<br />- 400 GB Retained Storage                      |
-| Plan Pricing      | Greater of<br />- &#36;100/mo or<br />- 5% of Usage Spend                      | Greater of<br />- &#36;500/mo or<br />- 10% of Usage Spend                                                                                  | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               |
+| Support Features  | Access to Support                                                              | - P0 Response Times                                                                                                               | - P0: \<30 Min, 24/7<br />- Private Slack                                                                                                                  | - P0: \<15 Min, 24/7<br />- Private Slack<br />- Dedicated Platform Architect                                                                              |
+| Product Features  | - All Core Features<br />- SAML Included<br />-(SCIM Add-on)                   | - Commit discounts<br />- SAML included<br />- SCIM (Add-on)<br />- 2.5M Actions<br />- 2.5 GB Active Storage<br />- 100 GB Retained Storage | - Commit discounts<br />- SAML included<br />- SCIM included<br />- 10M Actions<br />- 10 GB Active Storage<br />- 400 GB Retained Storage      | - Commit discounts<br />- SAML included<br />- SCIM included<br />- 10M Actions<br />- 10 GB Active Storage<br />- 400 GB Retained Storage                 |
+| Plan Pricing      | No base fee justf<br />- 10% of Usage Spend                                    | Greater of<br />- &#36;500/mo or<br />- 10% of Usage Spend                                                                        | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               |
 | Usage Pricing     | [Pay-As-You-Go](#payg) Pricing                                                 | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                            | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                                                     | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                                                     |
 
 Please note, partial months are prorated to the day.
@@ -108,7 +108,7 @@ This section explains how you're billed each calendar month and gives examples.
 ### Action pricing {/* #payg-action-pricing */}
 
 Actions pricing starts at &#36;50 per million Actions (&#36;0.00005 per Action).
-You gain progressive volume discounts as you scale.
+You gain progressive volume discounts as you scale on the Business, Enterprise and Mission Critical Plans. Greater idscounts are available through commitments.
 Discounts are based on your account's total usage, metered and billed for each calendar month:
 
 | Actions               | Price per Million Actions                                                                 |
@@ -135,8 +135,7 @@ $250 (First Tier) + $225 (Second Tier) + $50 (Third Tier) = $525
 
 ### Storage pricing {/* #payg-storage-pricing */}
 
-Most accounts’ storage needs are met by our Temporal Cloud Plans.
-For additional storage within a calendar month, you are billed for Active and Retained Storage as follows:
+You are billed for Active and Retained Storage as follows:
 | **Storage** | **Price per GBh (USD)** |
 | ----------- | ----------------------- |
 | Retained | &#36;0.00105 |
@@ -165,7 +164,7 @@ Total Storage Bill: $30.24 Active Storage + $3.78 Retained Storage = $34.02
 
 Your Temporal Cloud Plan pricing is the greater of the minimum monthly price or a percent (%) of your consumption spend:
 
-- The Essentials tier is priced at the greater of &#36;100/month or 5% of your Temporal Cloud consumption.
+- The Developer tier is priced at the greater of &#36;0/month or 10% of your Temporal Cloud consumption.
 - The Business tier is priced at the greater of &#36;500/month or 10% of Temporal Cloud consumption.
 - The Enterprise and Mission Critical Support plans must be paid annually. Contact [Sales](mailto:sales@temporal.io) to discuss your needs.
 
@@ -173,10 +172,10 @@ Your Temporal Cloud consumption combines the costs of Actions and Storage.
 
 **Example**
 
-If you are signed up for Essentials, with &#36;3,000 of monthly spend, your bill will be:
+If you are signed up for Business, with &#36;6,000 of monthly spend, your bill will be:
 
 ```
-Greater of $100 or 5% ⨉ $3,000 = $150, so $150.
+Greater of $500 or 10% ⨉ $6,000 = $600, so $600.
 ```
 
 ## Commitment Pricing {/* #commitment-pricing */}
@@ -355,11 +354,11 @@ If each queue generates 5,000 Actions in a given hour (10,000 total), Fairness A
 
 **What costs are associated with SSO/SAML use?**
 
-Single sign-on (SSO) integration using SAML is included for all customers on the Business, Enterprise, and Mission Critical Plans.
+Single sign-on (SSO) integration using SAML is included for all customers on the Developer, Business, Enterprise, and Mission Critical Plans.
 
 **What costs are associated with SCIM?**
 
-To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan or an add-on for the Business plan (+$500/month in addition to the Business plan).
+SCIM (System for Cross-domain Identity Management) is included in the Enterprise or Mission Critical support plans. SCIM is available as an add-on for the Developer or Business plan (+$500/month).
 Please note that you must configure SSO via SAML to use SCIM.
 
 ### Use case cost estimates {/* #pricing-estimates */}
@@ -405,14 +404,14 @@ You can purchase Temporal Cloud credits by contacting our team at [sales@tempora
 
 **What's the minimum cost to run Temporal Cloud?**
 
-The Essentials plan starts at &#36;100/month.
-Consumption in excess of your plan's allocations are billed on a consumption basis.
+The Developer plan starts at &#36;0/month. This means you only pay for what you use. For exaple, running a test workflow with 10,000 Actions would cost 10,000 x $50 Per Million Actions= $0.50 + 10% support = $0.55
+Tiers with included Actions/Storage, consumption in excess of your plan's allocations are billed on a consumption basis.
 
 **Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform Marketplace?**
 
 There are two ways to purchase Temporal Cloud through AWS Marketplace:
 
-- Pay-As-You-Go available [here](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo)
+- Pay-As-You-Go available from [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo) and [GCP Marketplace](https://console.cloud.google.com/marketplace/product/temporal-public/temporal-cloud-pay-as-you-go)
 - Credits: available via private offer, please contact our team at [sales@temporal.io](mailto:sales@temporal.io)
 
 To purchase Temporal Cloud on the Google Cloud Marketplace, please contact our team at [sales@temporal.io](mailto:sales@temporal.io).
