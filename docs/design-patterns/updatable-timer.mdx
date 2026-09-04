@@ -18,9 +18,9 @@ It enables Workflows to wait for deadlines that can be extended or shortened bas
 
 ## Problem
 
-In business processes, you often need Workflows that wait for a deadline (approval timeout, SLA expiration, grace period), allow the deadline to be extended or shortened dynamically, react immediately when the deadline changes, and continue waiting with the new deadline without restarting.
+A Workflow waiting on a deadline — an approval timeout, an SLA expiration, a grace period — often needs that deadline to move: extended, shortened, or reset in reaction to something that happens while it's waiting, without restarting the wait from scratch.
 
-Without an updatable timer, you must use fixed timeouts that cannot be adjusted, cancel and restart Workflows to change deadlines, poll frequently to check for deadline changes, or implement complex state machines to handle timing updates.
+Without an updatable timer, a fixed timeout can't be adjusted once it's set. The alternatives are all worse: cancel and restart the Workflow to change the deadline, poll frequently to check whether it changed, or build a state machine to manage the timing updates yourself.
 
 ## Solution
 
@@ -608,6 +608,10 @@ You must calculate absolute timestamps rather than relative durations.
 
 - **[Signal with Start](/design-patterns/signal-with-start)**: Receiving external events to modify behavior.
 - **[Approval Pattern](/design-patterns/approval)**: Approval Workflows with adjustable deadlines.
+
+### References
+
+- [Timers (TypeScript)](/develop/typescript/workflows/timers): Covers the same `UpdatableTimer` class, built on the [`temporal-time-utils`](https://www.npmjs.com/package/temporal-time-utils) package.
 
 ### Sample code
 

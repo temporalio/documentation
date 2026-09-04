@@ -19,9 +19,9 @@ By archiving old event history and starting fresh, Continue-As-New also reduces 
 
 ## Problem
 
-In long-running Workflows, you often need to execute periodic tasks indefinitely, process unbounded streams of data without accumulating history, implement infinite loops that run for months or years, avoid hitting the 51,200 event history limit, and maintain Workflow state across logical restarts.
+Long-running Workflows — periodic tasks that run indefinitely, infinite loops spanning months or years, or Workflows processing an unbounded stream of data — accumulate Event History with every iteration. Left unchecked, that history eventually hits the 51,200-event limit, and the Workflow still needs to keep its state across whatever comes next.
 
-Without Continue-As-New, you must manually stop and restart Workflows (losing continuity), risk hitting history limits and Workflow failures, implement external orchestration to manage Workflow lifecycle, and accept degraded performance as history grows large.
+Without Continue-As-New, the alternatives are all worse: manually stop and restart Workflows and lose continuity, build external orchestration to manage the Workflow's lifecycle, or accept degraded performance as history grows — and risk failure once it hits the limit.
 
 ## Solution
 
@@ -397,7 +397,7 @@ You cannot undo Continue-As-New once triggered.
 - **Version carefully.** Ensure new code can handle state from old executions.
 - **Monitor history size.** Track event count and continue before hitting limits.
 - **Use typed APIs.** In Java, prefer `newContinueAsNewStub()` over untyped `continueAsNew()`. In TypeScript, use the generic `continueAsNew<typeof myWorkflow>()` for type safety.
-- **Consider cron.** For fixed Schedules, use Temporal Schedules instead.
+- **Consider cron.** For fixed Schedules, use [Temporal Schedules](/schedule) instead.
 - **Test state transfer.** Verify state correctly passes between executions.
 
 ## Common pitfalls

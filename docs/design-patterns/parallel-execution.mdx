@@ -529,6 +529,11 @@ You may overwhelm external services without throttling, and storing many Futures
 - **[Child Workflows](/design-patterns/child-workflows)**: For complex parallel operations with their own state.
 - **[Saga Pattern](/design-patterns/saga-pattern)**: Parallel operations with compensation.
 
+### References
+
+- [Blob Size Limit Error](/troubleshooting/blob-size-limit-error): Diagnosing and fixing the 4 MB gRPC message limit this pattern's pitfalls mention.
+- [Workflow Execution limits](/workflow-execution/limits): Canonical reference for the 2,000-pending-operations limit, which applies to Activities, Child Workflows, Signals, and Cancellation requests together, not just Activities.
+
 ### Sample code
 
 **Java:**

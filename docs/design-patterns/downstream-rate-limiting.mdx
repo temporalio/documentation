@@ -23,7 +23,7 @@ The Temporal matching service enforces this limit before dispatching tasks, so t
 
 ## Problem
 
-Many downstream systems — LLM providers, payment processors, third-party REST APIs — enforce requests-per-second limits. Some systems cannot handle more than a defined level of requests per second.
+Many downstream systems — LLM providers, payment processors, third-party REST APIs — enforce requests-per-second limits.
 When many Temporal Workflows schedule Activities concurrently, the resulting burst can saturate those limits, causing request failures, cascading retries, and increased latency for all callers.
 
 Without centralized throttling, each Activity implementation must manage backpressure independently, which scatters policy across the codebase and provides no enforcement at the Temporal scheduling layer.

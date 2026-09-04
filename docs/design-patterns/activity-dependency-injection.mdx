@@ -743,9 +743,17 @@ Because the breaker counts failures, size the Activity retry policy accordingly.
 
 ## When to use
 
-This pattern is a good fit when your Activities access external services such as databases, message queues, or third-party APIs. It is appropriate when you want to initialize expensive resources once per Worker process, when you need to test Activity logic without connecting to real services, or when you operate in multiple environments (development, staging, production) that require different dependency configurations.
+**Good fit:**
 
-This pattern is not necessary for Activities that are pure functions with no external dependencies, or for Activities that only use Temporal-provided context like heartbeating and logging.
+- Activities access external services such as databases, message queues, or third-party APIs
+- You want to initialize expensive resources once per Worker process
+- You need to test Activity logic without connecting to real services
+- You operate in multiple environments (development, staging, production) that require different dependency configurations
+
+**Poor fit:**
+
+- Activities are pure functions with no external dependencies
+- Activities only use Temporal-provided context, such as heartbeating and logging
 
 ## Benefits and trade-offs
 
@@ -775,6 +783,12 @@ The trade-off is that all Activity executions on a given Worker share the same d
 
 - **[Entity Workflow](/design-patterns/entity-workflow)**: Long-lived Workflows that manage stateful entities, often using Activities with injected dependencies.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Routing Activities to specific Workers, which can have different injected dependencies.
+
+### References
+
+- [Activities (Go)](/develop/go/activities/basics): Struct-based Activities sharing a DB pool, client connection, or other process-level resources.
+- [Activities (TypeScript)](/develop/typescript/activities/basics): The factory-function pattern for sharing dependencies between Activities.
+- [Worker deployment and performance](/best-practices/worker): A reference-app example of registering an Activity struct with injected configuration.
 
 ### Sample code
 
