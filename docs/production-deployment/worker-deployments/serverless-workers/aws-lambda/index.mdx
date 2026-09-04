@@ -537,6 +537,9 @@ your AWS account with a handful of Lambda permissions scoped to your Worker func
 includes an External ID condition to prevent
 [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks.
 
+Temporal calls the Lambda API with this role and does not connect to your network, so you do not need to open inbound
+ports.
+
 The Temporal Cloud UI provides a **Launch Stack** button on the **Create Worker Deployment** page that opens the AWS CloudFormation console with the template and parameters pre-filled. Click it to create the role without downloading or configuring the template manually.
 
 You can also create the role using the templates below.

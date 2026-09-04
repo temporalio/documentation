@@ -2,7 +2,7 @@
 id: configuration
 title: Temporal Service configuration reference
 sidebar_label: Service configuration
-description: Configure a Temporal Service using the development.yaml file to set global parameters, metrics, security, persistence, and service roles, ensuring a streamlined setup and management process.
+description: Reference for the development.yaml file that configures a Temporal Service, covering global settings, persistence, service roles, and archival.
 toc_max_heading_level: 4
 tags:
   - Reference
@@ -200,7 +200,7 @@ global:
 
 **Note:** In the case that client authentication is enabled, the `internode.server` certificate is used as the client certificate among services. This adds the following requirements:
 
-- The `internode.server` certificate must be specified on all roles, even for a frontend-only configuration.
+- The `internode.server` certificate must be specified on all roles, even for a Frontend-only configuration.
 - Internode server certificates must be minted with either **no** Extended Key Usages or **both** ServerAuth and ClientAuth EKUs.
 - If your Certificate Authorities are untrusted, such as in the previous example, the internode server Ca will need to be specified in the following places:
 
@@ -324,7 +324,7 @@ Please ensure you set this value appropriately high enough to scale with the wor
 
 ### defaultStore
 
-_Required_ - The name of the data store definition that should be used by the Temporal server.
+_Required_ - The name of the data store definition that should be used by the Temporal Server.
 
 ### visibilityStore
 
@@ -369,7 +369,7 @@ A `sql` data store definition can contain the following values:
   - _Valid values_: `tcp` or `unix`
 - `connectAttributes` - an optional map of key-value attributes to be sent as part of connect `data_source_name` url.
   - `cache`: This is a standard parameter to set the SQLite shared-cache mode. `private` means each database connection uses its own private cache (as opposed to "shared", where connections share a cache). This is the recommended setting for Temporal's SQLite usage.
-  - `setup`: Instructs the Temporal server to automatically initialize a SQLite database schema on startup.
+  - `setup`: Instructs the Temporal Server to automatically initialize a SQLite database schema on startup.
 - `maxConns` - the max number of connections to this data store.
 - `maxIdleConns` - the max number of idle connections to this data store
 - `maxConnLifetime` - is the maximum time a connection can be alive.
@@ -422,7 +422,7 @@ clusterMetadata:
 - `enableGlobalNamespace` - _Default:_ `false`.
 - `replicationConsumer` - determines which method to use to consume replication tasks. The type may be either `kafka` or `rpc`.
 - `failoverVersionIncrement` - the increment of each cluster version when failover happens.
-- `masterClusterName` - the master cluster name, only the master cluster can register/update namespace. All clusters can do namespace failover.
+- `masterClusterName` - the master cluster name, only the master cluster can register/update Namespace. All clusters can do Namespace failover.
 - `clusterInformation` - contains the local cluster name to `ClusterInformation` definition. The local cluster name should be consistent with `currentClusterName`. `ClusterInformation` sections consist of:
   - `enabled` - _boolean_ - whether a remote cluster is enabled for replication.
   - `initialFailoverVersion`

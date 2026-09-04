@@ -1,20 +1,22 @@
 /**
  * component-handlers/cookbook-preview.mjs
  *
- * Handler for <CookbookPreview limit={N} />.
- * Component: src/components/Cookbook/Preview/CookbookPreview.tsx.
+ * Handlers for <CookbookPreview limit={N} /> and <CookbookHome />.
+ * Components: src/components/Cookbook/Preview/CookbookPreview.tsx and
+ * src/components/Cookbook/Home/CookbookHome.tsx.
  *
- * CookbookPreview renders, in the browser, a strip of the top-N AI Cookbook
- * recipes (via useCookbookItems, sourced from plugins/cookbook-index's
- * plugin data) plus a "Browse all recipes" link. The LLM markdown pipeline
- * runs outside a live Docusaurus plugin instance, so instead of reaching
- * into that plugin's data we read the same ai-cookbook/*.mdx front matter
- * directly and mirror the sort plugins/cookbook-index/index.js's postBuild
- * uses for its own generated index: priority (front matter, descending),
- * then title alphabetically. Keep both in sync if either changes.
+ * Both render, in the browser, AI Cookbook recipes sourced via
+ * useCookbookItems (plugins/cookbook-index's plugin data) — CookbookPreview
+ * a top-N strip plus a "Browse all recipes" link, CookbookHome the full list
+ * (it's what renders at /ai/cookbook, the browse-all page itself). The LLM
+ * markdown pipeline runs outside a live Docusaurus plugin instance, so
+ * instead of reaching into that plugin's data both handlers read the same
+ * ai-cookbook/*.mdx front matter directly and mirror plugins/cookbook-index's
+ * own sort: priority (front matter, descending), then title alphabetically.
+ * Keep all three in sync if any changes.
  *
  * Degrades gracefully: if the recipes directory can't be resolved (e.g. no
- * projectRoot in a unit test) it returns a short placeholder and pushes a
+ * projectRoot in a unit test) each returns a short placeholder and pushes a
  * warning.
  */
 
@@ -107,5 +109,36 @@ export function cookbookPreviewToMarkdown(limit, options = {}) {
   } catch (err) {
     if (warnings) warnings.push(`[${sourceFile}] CookbookPreview parse error — ${err.message}`);
     return "<!-- CookbookPreview (parse error) -->";
+  }
+}
+
+/**
+ * Resolve a <CookbookHome /> to a Markdown list of every AI Cookbook recipe.
+ * Takes no props — CookbookHome (ai-cookbook/index.mdx, the /ai/cookbook
+ * landing page) always renders the full set, unlike CookbookPreview's
+ * top-N strip, so there's no "Browse all recipes" link to append here.
+ *
+ * @param {object} options
+ * @param {string} [options.projectRoot]
+ * @param {string[]} [options.warnings]
+ * @param {string}   [options.sourceFile]
+ * @returns {string}
+ */
+export function cookbookHomeToMarkdown(options = {}) {
+  const { projectRoot, warnings, sourceFile = "<unknown>" } = options;
+
+  if (!projectRoot) {
+    return "<!-- CookbookHome (not resolved) -->";
+  }
+
+  try {
+    const items = readCookbookRecipes(projectRoot);
+    if (items.length === 0) {
+      return "<!-- CookbookHome (no recipes found) -->";
+    }
+    return cookbookRecipesToMarkdownList(items);
+  } catch (err) {
+    if (warnings) warnings.push(`[${sourceFile}] CookbookHome parse error — ${err.message}`);
+    return "<!-- CookbookHome (parse error) -->";
   }
 }
