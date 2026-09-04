@@ -296,6 +296,10 @@ Cloud Ops API endpoints they can call.
 This table provides API-level details for permissions granted through Project-level roles. These permissions are
 configured per Project per user.
 
+These permissions control who can manage Nexus Endpoints in the Project.
+They do not restrict which Namespaces can call an Endpoint at runtime, which continues to be controlled by the Endpoint [allowlist](/nexus/security#runtime-access-controls).
+See [Use Nexus across Projects](/cloud/projects#use-nexus-across-projects).
+
 | Permission                          | Member | List | Read | Contribute | Write | Project Admin |
 | ----------------------------------- | :----: | :--: | :--: | :--------: | :---: | :-----------: |
 | [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules) |        |      |      |     ✅      |   ✅   |       ✅       |
