@@ -476,6 +476,7 @@ try {
 - **Using the error message instead of a type name.** `RetryPolicy.NonRetryableErrorTypes` matches on type names, not message strings. Without a type name, the policy cannot identify the error.
 - **Swallowing the `ActivityError` without logging.** Non-retryable errors fail fast and silently if you do not catch and log them. Always log the failure before re-raising or returning an error result.
 - **Confusing non-retryable errors with Workflow failures.** A non-retryable `ActivityError` fails the Activity and delivers the error to the Workflow. The Workflow itself does not fail unless it re-raises the error without catching it.
+- **Losing the flag by wrapping the error.** The SDK inspects only the **outermost** error to decide how to represent the failure to the Temporal Service — the Server's retry decision looks only at that top-level failure info, not at the `cause` chain. If your Activity catches a non-retryable `ApplicationFailure` and re-throws it wrapped in a plain language error or exception (for example, Go's `fmt.Errorf("...: %w", err)`), the SDK converts that outer error into a new, retryable failure and the `non_retryable` flag is silently lost. To add context without losing it, wrap the error in another Application Failure that carries the same non-retryable flag — see [The outermost error type determines retryability](/encyclopedia/application-failures#outermost-error-type).
 
 ## Related
 

@@ -21,7 +21,7 @@ The Fan-Out pattern distributes a large record set across multiple independent c
 
 ## Problem
 
-A single Workflow run can have at most 2,000 in-flight Activities (aim for 500) and at most 50,000 history events. Processing millions of records in a single Workflow run is therefore not possible.
+A single Workflow run can have at most 2,000 in-flight Activities (aim for 500) and at most 51,200 history events. Processing millions of records in a single Workflow run is therefore not possible.
 
 You need a way to partition a large record set, process each partition independently, and coordinate the overall job while keeping each Workflow's history within safe bounds.
 
@@ -316,7 +316,7 @@ public class RecordBatchWorkflowImpl implements RecordBatchWorkflow {
 
 ## Common pitfalls
 
-- **Starting too many children at once.** Each child start adds to the parent's history. Temporal enforces a default limit of 2,000 pending (in-flight) child Workflows per parent; keep well under it. See [Temporal guidance](/child-workflows#when-to-use-child-workflows). If you need more children, switch to [MapReduce Tree](/design-patterns/mapreduce-tree) or [Sliding Window](/design-patterns/sliding-window).
+- **Starting too many children at once.** Each child start adds to the parent's history. Temporal enforces a default limit of 2,000 pending (in-flight) child Workflows per parent, but the recommended cap is lower still: a single parent should not spawn more than 1,000 Child Workflow Executions, since each one adds more history to the parent than an Activity would. See [Temporal guidance](/child-workflows#when-to-use-child-workflows). If you need more children, switch to [MapReduce Tree](/design-patterns/mapreduce-tree) or [Sliding Window](/design-patterns/sliding-window).
 - **Passing large lists of IDs.** Workflow inputs are stored in event history. Passing millions of record IDs as a list will blow the history size limit. Use offset + length instead.
 - **Ignoring child failures.** A failed child does not automatically fail the parent unless you await all results. Always await child handles and handle errors explicitly.
 

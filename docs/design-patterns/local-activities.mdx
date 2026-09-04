@@ -197,7 +197,7 @@ public class Impl implements TransactionWorkflow {
 
 ## Common pitfalls
 
-- **Exceeding the Workflow Task timeout.** If a Local Activity takes longer than the Workflow Task timeout (default 10 seconds), the entire task times out and retries—including any Local Activities that already completed in memory during that task.
+- **Exceeding the Workflow Task timeout.** If a Local Activity takes longer than the Workflow Task timeout (default 10 seconds) and Workflow Task heartbeating doesn't cover it, the entire task times out and retries—including any Local Activities that already completed in memory during that task. The SDK mitigates this automatically: once a running Local Activity passes about 80% of the Workflow Task timeout, the Worker heartbeats by completing the current Workflow Task and requesting a new one, so a single long Local Activity (or a chain of them) can run past one Workflow Task's timeout without the whole task failing. Heartbeating adds Events to history and delays processing of incoming Signals until the Local Activity finishes — see [Local Activity](/local-activity#workflow-task-heartbeating) for the full mechanism.
 - **Assuming exactly-once semantics.** Unlike regular Activities, a Local Activity does not get its own persisted history event until the Workflow Task completes. A crashed Worker causes the whole task to re-run. This compounds when Local Activities are chained: if a Worker crashes after the third of five sequential Local Activities, all five re-execute on the next attempt. If you need a durable checkpoint between each step, use regular Activities instead.
 - **Long retry intervals.** Each retry attempt with back-off creates a server-side timer event. For truly short Activities, use a tight `scheduleToCloseTimeout` and allow immediate retries rather than spaced-out back-off.
 
@@ -209,3 +209,7 @@ public class Impl implements TransactionWorkflow {
 - [Early Return](/design-patterns/early-return) — returns a response to the caller before the Workflow finishes, independent of Local Activities
 - [Eager Workflow Start](/design-patterns/eager-workflow-start) — eliminates the server Matching step when starting a Workflow for additional latency reduction
 - [Long Running Activity](/design-patterns/long-running-activity) — the right choice when Activities need heartbeating and long execution windows
+
+### References
+
+- [Local Activity](/local-activity) — canonical concept reference, including durability guarantees and Workflow Task heartbeating
