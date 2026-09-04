@@ -10,8 +10,7 @@ tags:
   - Worker
 ---
 
-The Rust SDK is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview), and its API can change between releases.
-The code on this page is written against `temporalio-sdk` 0.7.0.
+The code on this page is written against `temporalio-sdk` 1.0.0.
 
 ## Create and run a Worker {/* #run-a-dev-worker */}
 
@@ -20,11 +19,11 @@ The `#[workflow]` and `#[activities]` macros expand to code that refers to the `
 
 ```toml
 [dependencies]
-temporalio-sdk = "0.7.0"
-temporalio-client = "0.7.0"
-temporalio-common = "0.7.0"
-temporalio-macros = "0.7.0"
-temporalio-workflow = "0.7.0"
+temporalio-sdk = "1.0.0"
+temporalio-client = "1.0.0"
+temporalio-common = "1.0.0"
+temporalio-macros = "1.0.0"
+temporalio-workflow = "1.0.0"
 futures = "0.3"
 tokio = { version = "1", features = ["full"] }
 ```
@@ -40,7 +39,7 @@ use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let runtime = Runtime::new_assume_tokio(Default::default())?;
+    let runtime = Runtime::from_current_tokio(Default::default())?;
 
     let connection_options =
         ConnectionOptions::new(Url::from_str("http://localhost:7233")?).build();
@@ -105,10 +104,12 @@ use temporalio_common::worker::{
 
 let worker_options = WorkerOptions::new("my-task-queue")
     .deployment_options(
-        WorkerDeploymentOptions::new(WorkerDeploymentVersion {
-            deployment_name: "my-app".to_owned(),
-            build_id: "1.0".to_owned(),
-        })
+        WorkerDeploymentOptions::new(
+            WorkerDeploymentVersion::builder()
+                .deployment_name("my-app")
+                .build_id("1.0")
+                .build(),
+        )
         .use_worker_versioning(true)
         .default_versioning_behavior(VersioningBehavior::Pinned)
         .build(),

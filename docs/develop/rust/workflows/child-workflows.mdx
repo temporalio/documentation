@@ -86,7 +86,7 @@ impl GreetingWorkflow {
 
 ### Specify Child Workflow options
 
-Use [`ChildWorkflowOptions`](https://docs.rs/temporalio-sdk/0.7.0/temporalio_sdk/struct.ChildWorkflowOptions.html) to customize Child Workflow behavior.
+Use [`ChildWorkflowOptions`](https://docs.rs/temporalio-sdk/latest/temporalio_sdk/struct.ChildWorkflowOptions.html) to customize Child Workflow behavior.
 
 ### Execute multiple Child Workflows in parallel
 
@@ -131,7 +131,7 @@ A [Parent Close Policy](/parent-close-policy) determines what happens to a Child
 
 The default Parent Close Policy is set to terminate the Child Workflow Execution.
 
-Set Parent Close Policy using the [`parent_close_policy`](https://docs.rs/temporalio-sdk/0.7.0/temporalio_sdk/enum.ParentClosePolicy.html) field in `ChildWorkflowOptions`:
+Set Parent Close Policy using the [`parent_close_policy`](https://docs.rs/temporalio-sdk/latest/temporalio_sdk/enum.ParentClosePolicy.html) field in `ChildWorkflowOptions`:
 
 ```rust
 use temporalio_sdk::ParentClosePolicy;
