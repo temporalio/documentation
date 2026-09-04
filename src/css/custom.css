@@ -33,20 +33,42 @@
   --gray-600: #576e8f;
   --slate-200: #aebed9;
   --gray-900: #243349;
+  --ifm-global-radius: 0;
 }
 
 html[data-theme='dark']:root {
-  --ifm-color-primary: #bfdbfe;
+  --ifm-color-primary: #787ded;
+  --ifm-color-primary-dark: #666ac9;
+  --ifm-color-primary-darker: #5a5eb2;
+  --ifm-color-primary-light: #8c91f0;
+  --ifm-color-primary-lighter: #a1a4f2;
+  --ifm-color-primary-contrast-background: #242647;
+  --ifm-color-primary-contrast-foreground: #f2f2fd;
+  --ifm-color-success: #00e175;
+  --ifm-color-success-dark: #26e68a;
+  --ifm-color-success-contrast-background: #004423;
+  --ifm-color-success-contrast-foreground: #e6fcf1;
+  --ifm-color-danger: #ff643c;
+  --ifm-color-danger-dark: #ff7b59;
+  --ifm-color-danger-contrast-background: #4d1e12;
+  --ifm-color-danger-contrast-foreground: #fff0ec;
+  --ifm-color-warning: #fec118;
+  --ifm-color-warning-dark: #feca3b;
+  --ifm-color-warning-contrast-background: #4c3a07;
+  --ifm-color-warning-contrast-foreground: #fff9e8;
+  --ifm-color-info: #444ce7;
+  --ifm-color-info-dark: #6067eb;
+  --ifm-color-info-contrast-background: #141745;
+  --ifm-color-info-contrast-foreground: #ecedfd;
   --ifm-background-color: #141414;
   --ifm-footer-background-color: #000000;
   --ifm-navbar-background-color: #000000;
   --ifm-color: #f9fafb;
   --ifm-preview-text: #f9fafb;
-  --ifm-link-color: #f9fafb;
+  --ifm-link-color: #787ded;
   --ifm-link-hover-color: var(--ifm-color-primary);
   --alert--competency-background: #00474a;
   --alert--copycode-background: #29005e;
-  --alert--info-background: #353536;
   --feedback-primary-color: #fff; /* submit button, accents */
   --feedback-light-color: #2a2a2a; /* canvas/tool backgrounds */
   --feedback-dark-color: #1a1a1a; /* modal background */
@@ -85,17 +107,38 @@ html[data-theme='dark']:root {
 
 
 html[data-theme='light']:root {
-  --ifm-color-primary: #1d4ed8;
+  --ifm-color-primary: #444ce7;
+  --ifm-color-primary-dark: #3a41c4;
+  --ifm-color-primary-darker: #3339ad;
+  --ifm-color-primary-light: #6067eb;
+  --ifm-color-primary-lighter: #7c82ee;
+  --ifm-color-primary-contrast-background: #ecedfd;
+  --ifm-color-primary-contrast-foreground: #141745;
+  --ifm-color-success: #00e175;
+  --ifm-color-success-dark: #00924c;
+  --ifm-color-success-contrast-background: #e6fcf1;
+  --ifm-color-success-contrast-foreground: #004423;
+  --ifm-color-danger: #ff643c;
+  --ifm-color-danger-dark: #d95533;
+  --ifm-color-danger-contrast-background: #fff0ec;
+  --ifm-color-danger-contrast-foreground: #4d1e12;
+  --ifm-color-warning: #fec118;
+  --ifm-color-warning-dark: #a57d10;
+  --ifm-color-warning-contrast-background: #fff9e8;
+  --ifm-color-warning-contrast-foreground: #4c3a07;
+  --ifm-color-info: #444ce7;
+  --ifm-color-info-dark: #3d44d0;
+  --ifm-color-info-contrast-background: #ecedfd;
+  --ifm-color-info-contrast-foreground: #141745;
   --ifm-background-color: #f9fafb;
   --ifm-footer-background-color: #ffffff;
   --ifm-navbar-background-color: #ffffff;
   /* --ifm-color: var(--ifm-color-primary-dark); */
-  --ifm-link-color: #111827;
+  --ifm-link-color: #444ce7;
   --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-preview-text: #141414;
   --alert--competency-background: #a8fcff;
   --alert--copycode-background: #e0cdfa;
-  --alert--info-background: #ebeded;
   --last-updated-color: #465a78;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary);
@@ -126,7 +169,7 @@ a:hover {
 }
 
 .alert {
-  border-radius: 3px !important;
+  border-radius: 0 !important;
   border-width: 1px;
   border-style: solid;
 }
@@ -139,8 +182,20 @@ a:hover {
   background-color: var(--alert--copycode-background);
 }
 
+.alert--success {
+  --ifm-alert-background-color-highlight: rgba(0, 225, 117, 0.15);
+}
+
+.alert--danger {
+  --ifm-alert-background-color-highlight: rgba(255, 100, 60, 0.15);
+}
+
+.alert--warning {
+  --ifm-alert-background-color-highlight: rgba(254, 193, 24, 0.15);
+}
+
 .alert--info {
-  background-color: var(--alert--info-background);
+  --ifm-alert-background-color-highlight: rgba(68, 76, 231, 0.15);
 }
 
 /* If we scope things with .tailwindcss we can attach to the tailwind styles on only the intro page */
@@ -750,7 +805,7 @@ h3 {
   padding: 0.05rem 0.2rem;
   background-color: var(--color-indigo, #444ce7);
   color: white;
-  border-radius: 0.2rem;
+  border-radius: 0;
 }
 
 @media (min-width: 768px) {
@@ -851,7 +906,7 @@ h3 {
   padding: 0;
   background-color: #ffffff;
   border: 1px solid #dbdbdb;
-  border-radius: 3px;
+  border-radius: 0;
 }
 
 .tditw {
@@ -902,7 +957,7 @@ a.tdlp:hover .tdlpc {
   position: absolute;
   background-color: var(--ifm-background-color);
   border: 1px solid #dbdbdb;
-  border-radius: 3px;
+  border-radius: 0;
   z-index: 5;
 }
 
@@ -917,7 +972,7 @@ a.tdlp:hover .tdlpc {
 
 .dacx-source-link {
   background-color: #161616 !important;
-  border-radius: 3px;
+  border-radius: 0;
   border: 1px solid #ffffff;
   padding: 3px 7px;
   color: #ffffff !important;
@@ -1773,7 +1828,7 @@ code {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 0;
   padding: 8px 12px;
   font-size: 13px;
   font-weight: 500;

@@ -63,7 +63,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.45rem 0.85rem;
-  border-radius: 6px;
+  border-radius: 0;
   background: transparent;
   color: var(--ifm-color-emphasis-800);
   font-weight: 600;
