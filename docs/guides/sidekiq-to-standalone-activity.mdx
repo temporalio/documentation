@@ -1,0 +1,407 @@
+---
+id: sidekiq-to-standalone-activity
+title: Migrate a Sidekiq job queue to a Temporal Standalone Activity
+sidebar_label: Migrate from Sidekiq
+description: Migrate Sidekiq background jobs to a Temporal Standalone Activity.
+keywords:
+  - sidekiq
+  - standalone activities
+  - ruby
+  - migration
+  - background jobs
+  - temporal
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader
+  featureName="standaloneActivity"
+/>
+
+[Sidekiq](https://sidekiq.org/wiki/Home) is a background job framework for Ruby that runs work by pushing jobs through Redis to a pool of worker threads. Most Sidekiq jobs are self-contained: send one email, resize one image, call one API. For that kind of single-step job, you want durable execution and automatic retries without having to stand up an orchestration layer around each job.
+
+[**Standalone Activities**](/standalone-activity) fit that need. A Standalone Activity is an Activity you start directly from a Temporal Client, without wrapping it in a Workflow. You get Temporal's durability, retries, timeouts, and visibility for an individual unit of work, which maps almost one-to-one onto a Sidekiq job. Because there is no Workflow to run a single Activity, Standalone Activities also use fewer resources than orchestrating one Activity through a Workflow.
+
+> **Note:** Standalone Activities are in **Public Preview** and marked experimental in the Ruby SDK. The APIs shown here may change before the stable release.
+
+In this guide, you will migrate a Sidekiq job to a Temporal Standalone Activity. You will convert the job into an Activity, run a Worker to process it, start it fire-and-forget in place of `perform_async`, retrieve a return value (something Sidekiq cannot do), migrate its retries to a Retry Policy, and inspect running Activities in place of the Sidekiq Web UI. By the end, you will have a working Temporal application that reproduces the behavior of your Sidekiq app with no Workflow code.
+
+## How Sidekiq concepts map to Standalone Activities
+
+Before you start, it helps to know which Temporal building block replaces each Sidekiq concept. You will implement each row of this table in the steps that follow.
+
+| Sidekiq | Temporal Standalone Activity | Purpose |
+|---|---|---|
+| Job (`include Sidekiq::Job`, `perform`) | Activity (`Temporalio::Activity::Definition`, `execute`) | A single unit of work (I/O, API calls) |
+| `sidekiq` process | Worker (activities only, no Workflows) | Process that executes your code |
+| Redis | Temporal Service | Durably stores queue state and results |
+| `Job.perform_async(...)` | `client.start_activity(...)` | Kick off work without waiting |
+| *(no result support)* | `client.execute_activity(...)` or `handle.result` | Retrieve the return value |
+| `sidekiq_options retry: N` | `RetryPolicy` | Automatic retries |
+| Sidekiq Web UI / API | `client.list_activities` / `client.count_activities` | Monitor jobs |
+
+One difference stands out in that table: Sidekiq has no result backend, so a job cannot return a value to its caller. Temporal can, which is why the `execute_activity` row has no Sidekiq equivalent. You will see this pay off in Step 6.
+
+## Prerequisites
+
+Before you begin, you will need the following:
+
+- Ruby 3.2 or higher installed on your machine (3.3 or higher is recommended, since the Worker can then run on fibers).
+- The `temporalio` gem (the Temporal Ruby SDK). Standalone Activities are a recent addition, so install the latest version (added in Step 2).
+- Temporal Server v1.31.0 or higher (bundled with a recent Temporal CLI's development server).
+- The Temporal CLI, version 1.7.0 or higher (installed in Step 2).
+- An existing Sidekiq job you want to migrate, or the sample job shown in Step 4 if you are following along from scratch.
+
+## Step 1: Set up your project directory
+
+In this step, you will create a small project layout. Because Standalone Activities need no Workflow code, the structure is flat: one file for the Activity, one Worker, and one script for each way of invoking the Activity.
+
+Create a new project directory and move into it:
+
+```bash
+mkdir temporal-standalone && cd temporal-standalone
+```
+
+Your project will grow into the following files as you work through the tutorial:
+
+```text
+temporal-standalone/
+├── my_activity.rb        # The Activity (your former Sidekiq job)
+├── worker.rb             # Runs the Worker
+├── execute_activity.rb   # Runs the Activity and waits for the result
+├── start_activity.rb     # Starts the Activity without waiting
+└── inspect_activities.rb # Lists and counts Activities
+```
+
+With the directory in place, you can install the tools you need.
+
+## Step 2: Install the Temporal SDK and CLI
+
+In this step, you will install the Ruby SDK your code depends on and the Temporal CLI you will use to run a local server.
+
+Install the Temporal Ruby SDK with `gem`:
+
+```bash
+gem install temporalio
+```
+
+If you use Bundler, add it to your `Gemfile` instead and run `bundle install`:
+
+```ruby
+# Gemfile
+gem "temporalio"
+```
+
+Next, install the Temporal CLI (version 1.7.0 or higher, which bundles a compatible development server). On macOS or Linux with [Homebrew](https://brew.sh/), run:
+
+```bash
+brew install temporal
+```
+
+If you aren't using Homebrew, download the binary for your platform from the [Temporal CLI install guide](/cli/setup-cli) and add it to your `PATH`.
+
+Verify the CLI version, since Standalone Activities require 1.7.0 or higher:
+
+```bash
+temporal --version
+```
+
+Confirm the printed version is at least 1.7.0. With the tools installed, you can start a local Temporal Service.
+
+## Step 3: Start the Temporal Development Server
+
+In Sidekiq, work flows through Redis. In Temporal, work flows through the Temporal Service, which also stores each Activity's durable state. In this step, you will start a local development server that stands in for Redis.
+
+Start the development server:
+
+```bash
+temporal server start-dev
+```
+
+You will see output confirming the server is running, including two addresses:
+
+```bash
+Server:  localhost:7233
+UI:      http://localhost:8233
+```
+
+Your application code will connect to `localhost:7233`. The Web UI at `http://localhost:8233` lets you inspect Activities and their results, much like the Sidekiq Web UI; Standalone Activities appear under their own item in the navigation. Leave this process running and open a new terminal for the remaining steps.
+
+## Step 4: Convert a Sidekiq job into an Activity
+
+In this step, you will take a Sidekiq job and rewrite it as a Temporal Activity. The work inside (network calls, database writes, file I/O) stays the same. You write a Standalone Activity exactly the way you would write any Temporal Activity; nothing about the class marks it as "standalone." What makes it standalone is how you invoke it, which you will do in Step 6.
+
+Consider a typical Sidekiq job that sends a welcome email. Its `welcome_email_job.rb` might look like this:
+
+```ruby
+# Sidekiq version — welcome_email_job.rb
+class WelcomeEmailJob
+  include Sidekiq::Job
+  sidekiq_options queue: "default", retry: 5
+
+  def perform(user_id)
+    user = User.find(user_id)
+    UserMailer.welcome(user).deliver_now
+  end
+end
+```
+
+Create `my_activity.rb` and add the Temporal equivalent:
+
+```ruby
+# my_activity.rb
+require "temporalio/activity"
+
+# A tiny stand-in for your user model.
+User = Struct.new(:user_id, :email)
+
+class SendWelcomeEmail < Temporalio::Activity::Definition
+  # Sidekiq jobs take simple, JSON-safe arguments. Here we accept a single
+  # hash so you can add fields later without breaking callers. Use string
+  # keys so values round-trip cleanly through Temporal's JSON conversion.
+  def execute(input)
+    user = get_user(input["user_id"])
+    deliver_email(user.email, "Welcome!")
+    "sent to #{user.email}"
+  end
+
+  private
+
+  # --- Mock helpers -------------------------------------------------------
+  # Replace these with your real user lookup and mailer when you adapt this.
+  def get_user(user_id)
+    User.new(user_id, "user#{user_id}@example.com")
+  end
+
+  def deliver_email(address, subject)
+    puts "Delivering '#{subject}' to #{address}"
+  end
+  # ------------------------------------------------------------------------
+end
+```
+
+Two changes are worth noting. First, the retry configuration is gone: you no longer set `retry: 5`, because Temporal retries a failed Activity automatically. You will configure how it retries in Step 8. Second, the Activity is a class that extends `Temporalio::Activity::Definition` and implements `execute`, in place of a class that includes `Sidekiq::Job` and implements `perform`.
+
+The `User` struct and the two mock helpers let this file run end to end without a database or mailer. When you migrate your own job, swap `get_user` and `deliver_email` for your real implementations; the Activity itself does not change. Now you need a Worker to run it.
+
+## Step 5: Run a Worker to process the Activity
+
+Just as the `sidekiq` process pulls jobs from Redis, a Temporal Worker polls a Task Queue for work. A Worker for Standalone Activities is an ordinary Temporal Worker with your Activities registered and no Workflows. In this step, you will create and start that Worker.
+
+Create `worker.rb`:
+
+```ruby
+# worker.rb
+require "temporalio/client"
+require "temporalio/worker"
+require_relative "my_activity"
+
+client = Temporalio::Client.connect("localhost:7233", "default")
+
+worker = Temporalio::Worker.new(
+  client: client,
+  task_queue: "email-tasks",
+  activities: [SendWelcomeEmail]
+)
+
+puts "Worker running..."
+worker.run(shutdown_signals: ["SIGINT"])
+```
+
+The `task_queue` name is the routing key that ties your Worker and your invocation scripts together, similar to a Sidekiq queue name. By default the Ruby SDK runs Activities in a thread pool, so your synchronous `execute` method works without extra configuration; the pool size controls how many Activities run at once, much like Sidekiq's concurrency setting.
+
+Start the Worker:
+
+```bash
+ruby worker.rb
+```
+
+The Worker begins polling the `email-tasks` Task Queue and waits for work. Leave it running and open another terminal to invoke it. You can stop it later with `Ctrl+C`.
+
+## Step 6: Execute an Activity and get its result
+
+Sidekiq jobs are fire-and-forget: `perform_async` enqueues a job but never returns its result, because Sidekiq has no result backend. Temporal can return a result directly. In this step, you will run your Activity and print what it returns — a capability you did not have with Sidekiq.
+
+The client call is `execute_activity`, which durably enqueues the Activity, waits for a Worker to run it, and returns the result. Create `execute_activity.rb`:
+
+```ruby
+# execute_activity.rb
+require "temporalio/client"
+require_relative "my_activity"
+
+client = Temporalio::Client.connect("localhost:7233", "default")
+
+result = client.execute_activity(
+  SendWelcomeEmail,
+  { "user_id" => 42 },
+  id: "welcome-email-42",
+  task_queue: "email-tasks",
+  start_to_close_timeout: 30
+)
+
+puts "Result: #{result}"
+```
+
+Run it:
+
+```bash
+ruby execute_activity.rb
+```
+
+You will see the Activity's return value:
+
+```bash
+Result: sent to user42@example.com
+```
+
+A couple of details are worth calling out. The `id` you provide is a business identifier you choose (an order number, a user identifier); Temporal uses it, along with the Id reuse and conflict policies, to guarantee the same Activity is not started twice, which is a built-in form of deduplication. Every Activity also requires a timeout — `start_to_close_timeout` (in seconds) caps how long one attempt may run, a safety net Sidekiq leaves to you.
+
+## Step 7: Start an Activity in place of `perform_async`
+
+`perform_async` is Sidekiq's core call: it enqueues a job and returns immediately. The Temporal equivalent is `start_activity`, which durably enqueues the Activity and hands back a handle you can use later. In this step, you will start an Activity without blocking on it. (Note that the activity ID differs from Step 6 to avoid the deduplication effect described there.)
+
+Create `start_activity.rb`:
+
+```ruby
+# start_activity.rb
+require "temporalio/client"
+require_relative "my_activity"
+
+client = Temporalio::Client.connect("localhost:7233", "default")
+
+handle = client.start_activity(
+  SendWelcomeEmail,
+  { "user_id" => 42 },
+  id: "welcome-email-async",
+  task_queue: "email-tasks",
+  start_to_close_timeout: 30
+)
+
+puts "Activity started"
+
+# Later, when you actually need the value, block on the handle:
+puts "Result: #{handle.result}"
+```
+
+Run it:
+
+```bash
+ruby start_activity.rb
+```
+
+`start_activity` corresponds to `perform_async` and returns a handle immediately. Unlike Sidekiq, you can then call `handle.result` to wait for the outcome if you ever need it. If you need to reconnect to an Activity from a different process — for example, a web request started it and a later request checks on it — recreate the handle from the Activity's Id and Run Id (the Run Id is available on the handle returned by `start_activity`):
+
+```ruby
+handle = client.activity_handle("welcome-email-async", activity_run_id: run_id)
+```
+
+To delay execution the way Sidekiq's `perform_in` or `perform_at` does, pass `start_delay:` (in seconds) to `start_activity`.
+
+## Step 8: Migrate job retries to a Retry Policy
+
+In Sidekiq, you cap retries with `sidekiq_options retry: 5`. With Temporal, retries are automatic and declarative. The default Retry Policy for Activities retries indefinitely with exponential backoff, which is sufficient in most cases and typically doesn't need adjusting.
+
+If you want to replicate the Sidekiq behavior exactly, migrating means adding a limit back in. Note the counting difference: Sidekiq's `retry: 5` means five *retries* after the first attempt, whereas Temporal's `max_attempts` counts *total attempts*. To match `retry: 5`, set `max_attempts` to 6.
+
+Update `execute_activity.rb` to pass a `retry_policy`:
+
+```ruby
+# execute_activity.rb (updated)
+require "temporalio/client"
+require "temporalio/retry_policy"
+require_relative "my_activity"
+
+client = Temporalio::Client.connect("localhost:7233", "default")
+
+result = client.execute_activity(
+  SendWelcomeEmail,
+  { "user_id" => 42 },
+  id: "welcome-email-42",
+  task_queue: "email-tasks",
+  start_to_close_timeout: 30,
+  retry_policy: Temporalio::RetryPolicy.new(
+    max_attempts: 6,
+    max_interval: 60,
+    non_retryable_error_types: ["InvalidUserError"]
+  )
+)
+
+puts "Result: #{result}"
+```
+
+Here, `max_attempts: 6` matches Sidekiq's `retry: 5`, and `max_interval` (in seconds) caps the backoff between attempts. The `non_retryable_error_types` list names errors that should fail immediately without retrying — useful for permanent failures such as a missing record, where retrying cannot help. To raise such an error from the Activity, use `Temporalio::Error::ApplicationError` with `non_retryable: true` in `my_activity.rb`:
+
+```ruby
+# my_activity.rb (excerpt)
+require "temporalio/error"
+
+def execute(input)
+  user = get_user(input["user_id"])
+  raise Temporalio::Error::ApplicationError.new(
+    "No such user", type: "InvalidUserError", non_retryable: true
+  ) if user.nil?
+
+  deliver_email(user.email, "Welcome!")
+  "sent to #{user.email}"
+end
+```
+
+Because the mock `deliver_email` in this tutorial never fails, the happy path completes on the first attempt. To watch a retry happen, make `deliver_email` raise an exception on its first call or two; Temporal will re-run the Activity automatically according to the policy above. The same `retry_policy:` argument works on `start_activity` as well.
+
+## Step 9: Inspect Activities in place of the Sidekiq Web UI
+
+Sidekiq users reach for the Web UI or the Sidekiq API to see what is running. Temporal provides equivalent visibility directly through the client: you can list and count Standalone Activities that match a filter, the same way you would query Workflow Executions. In this step, you will write a small script to inspect your Activities.
+
+Create `inspect_activities.rb`:
+
+```ruby
+# inspect_activities.rb
+require "temporalio/client"
+
+client = Temporalio::Client.connect("localhost:7233", "default")
+
+query = "TaskQueue = 'email-tasks'"
+
+# List: like the Sidekiq Web UI's job list, but durable and queryable.
+client.list_activities(query).each do |info|
+  puts "#{info.activity_id} | #{info.activity_type} | #{info.task_queue}"
+end
+
+# Count: total executions (running, completed, failed), not queued jobs.
+count = client.count_activities(query).count
+puts "Total activities: #{count}"
+```
+
+Run it:
+
+```bash
+ruby inspect_activities.rb
+```
+
+You will see one line per Activity execution, followed by a total count:
+
+```bash
+welcome-email-42 | SendWelcomeEmail | email-tasks
+welcome-email-async | SendWelcomeEmail | email-tasks
+Total activities: 2
+```
+
+The `query` uses the same [List Filter](/list-filter) syntax as Workflow visibility, so you can filter by attributes such as `ActivityType` and `Status` — for example, `"ActivityType = 'SendWelcomeEmail' AND Status = 'Running'"`. Each `info` also exposes `status`, `schedule_time`, `close_time`, and `execution_duration` if you need them. These calls return only Standalone Activities; Activities running inside Workflows are excluded. The Temporal CLI offers the same views with `temporal activity list` and `temporal activity count`.
+
+## Step 10: When to use a Workflow
+
+Standalone Activities replace the common case: a Sidekiq job that does one independent thing. They deliberately have no orchestration, so there is one situation they do not cover — multi-step pipelines.
+
+If you coordinate several jobs — chaining them so one result feeds the next, fanning work out in parallel, or running a callback after a group finishes (the kind of thing Sidekiq Pro Batches or hand-rolled job chaining handle) — that coordination logic needs somewhere to live durably. A Standalone Activity cannot call another Activity or guarantee progress across several steps. For those pipelines, wrap your Activities in a Temporal **Workflow**, where sequencing is ordinary Ruby and parallelism uses the SDK's futures. See the [Temporal Ruby documentation](/develop/ruby) for building Workflows.
+
+A rule of thumb: migrate a job to a Standalone Activity when it stands on its own, and to a Workflow when it coordinates other jobs. Most Sidekiq jobs are the former.
+
+## Conclusion
+
+In this tutorial, you migrated a Sidekiq job to a Temporal Standalone Activity. You converted the job into an Activity, ran a Worker to execute it, started it fire-and-forget in place of `perform_async`, retrieved a return value that Sidekiq could never give you, replaced `sidekiq_options retry:` with a Retry Policy, and inspected your Activities in place of the Sidekiq Web UI — all without writing a single Workflow. Your jobs now survive Worker crashes, retry on well-defined policies, and remain queryable through the client and Web UI.
+
+Because Standalone Activities are in Public Preview, review the Temporal [Standalone Activity overview](/standalone-activity) for the latest API details before relying on them in production. Useful next topics include:
+
+- The [Temporal Ruby SDK developer guide](/develop/ruby) for Activities, Workers, and Clients.
+- [Activity timeouts and retries](/develop/ruby/activities/execution) for tuning `start_to_close_timeout` and related limits.
+- The original [Sidekiq wiki](https://sidekiq.org/wiki/Home) for confirming the exact behavior of the jobs you are migrating.
