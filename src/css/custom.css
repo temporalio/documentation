@@ -1928,3 +1928,15 @@ code {
   background: transparent;
   cursor: pointer;
 }
+
+/* Secondary nav: --ifm-navbar-height must cover both header rows. */
+
+:root {
+  --navbar-primary-height: 3.75rem;
+  --secondary-nav-height: 4.25rem;
+  --ifm-navbar-height: calc(var(--navbar-primary-height) + var(--secondary-nav-height));
+}
+
+.navbar {
+  height: var(--navbar-primary-height);
+}

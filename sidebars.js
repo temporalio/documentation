@@ -2209,3 +2209,56 @@ module.exports = {
     'tctl-v1/workflow',
   ],
 };
+
+// ---------------------------------------------------------------------------
+// Secondary navigation bar (proof of concept)
+//
+// Moves four sections out of the single `documentation` sidebar and gives each
+// one its own sidebar, so a reader inside a section sees only that section's
+// tree. src/components/SecondaryNav renders the tabs and works out which
+// section the reader is in from the URL.
+//
+// Every other section stays in `documentation` and keeps today's sidebar.
+// To undo the proof of concept, delete this block and the SecondaryNav import
+// in src/theme/Navbar/index.js.
+// ---------------------------------------------------------------------------
+
+const NAV_TAB_SECTIONS = [
+  { sidebar: 'develop', category: 'Develop' },
+  { sidebar: 'cloud', category: 'Temporal Cloud' },
+  { sidebar: 'guides', category: 'Guides' },
+  // The AI tab carries the Durable AI tree plus the standalone "Develop with
+  // AI" page, which lives at the top level of the documentation sidebar today.
+  { sidebar: 'ai', category: 'Durable AI', extraDocs: ['with-ai'] },
+];
+
+// The tab label already names the section, so drop the wrapping category and
+// promote its overview page to the first sidebar entry.
+function flattenSection(category) {
+  const overview = category.link && category.link.type === 'doc' ? [category.link.id] : [];
+  return [...overview, ...category.items];
+}
+
+(function buildSectionSidebars(sidebars) {
+  const mainSidebar = sidebars.documentation;
+  const moved = new Set();
+
+  for (const section of NAV_TAB_SECTIONS) {
+    const category = mainSidebar.find((item) => item && item.type === 'category' && item.label === section.category);
+
+    if (!category) {
+      throw new Error(
+        `Secondary nav: no "${section.category}" category found in the documentation sidebar. ` +
+          `Update NAV_TAB_SECTIONS in sidebars.js if the section was renamed or removed.`
+      );
+    }
+
+    const extraDocs = section.extraDocs || [];
+    moved.add(category);
+    extraDocs.forEach((id) => moved.add(id));
+
+    sidebars[section.sidebar] = [...flattenSection(category), ...extraDocs];
+  }
+
+  sidebars.documentation = mainSidebar.filter((item) => !moved.has(item));
+})(module.exports);
