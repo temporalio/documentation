@@ -1,0 +1,98 @@
+---
+id: job-queue
+title: Job queues
+sidebar_label: Job queues
+description: Run background jobs as Standalone Activities with durable retries, timeouts, priority and fairness dispatch, and per-job visibility without a Workflow.
+tags:
+  - Activities
+  - Standalone Activities
+---
+
+import PatternCards from '@site/src/components/PatternCards';
+
+A job is a single, discrete unit of work that runs asynchronously in the background such as sending an email, processing a webhook, syncing data, or executing a single function reliably.
+
+A job queue is the system that manages these jobs: accepting work, dispatching it to workers, retrying on failure, and providing visibility into what's running and what failed.
+
+**[Standalone Activities](/standalone-activity) are Temporal's job queue.**
+
+They let you use Temporal Activities as background jobs, in addition to using the same Activities as steps inside a Workflow. You write an Activity once and can run it either as a background job or as part of a multi-step Workflow.
+
+Under the hood, Standalone Activities use Temporal's [Task Queues](/task-queue) for dispatching work to Workers.
+
+## What you get that a queue library doesn't give you
+
+Each job is a durably persisted [Activity Execution](/activity-execution), not a message in a broker you also have to run.
+
+That changes four things a job queue usually leaves to you:
+
+- **Delivery semantics you choose.** At-least-once by default, with a [Retry Policy](/encyclopedia/retry-policies), timeouts, and exponential backoff enforced by the Temporal Service. Set retry maximum attempts to 1 for at-most-once.
+- **Addressable jobs.** Every job has an Activity Id and Run Id. Use them to fetch the result, cancel, or terminate a specific job, rather than searching a log for it.
+- **Deduplication at submit time.** A conflict policy and a reuse policy decide what happens when a job with the same Id is already running or has already run, so a retried submit doesn't create a second job.
+- **Dispatch under load.** Jobs carry priority and fairness weights, and a slow job doesn't block dispatch of the ones behind it.
+
+For queries, `temporal activity list` and [List Filters](/list-filter) search Executions by type, status, and Task Queue, and standard [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) cover scheduled, started, completed, failed, timed out, and canceled counts.
+
+## When to use a Standalone Activity instead of a Workflow
+
+Use a Standalone Activity to run **one** Activity. Use a [Workflow](/workflows) to orchestrate **several**, or to hold state between steps.
+
+Running a single Activity as a Standalone Activity rather than wrapping it in a Workflow costs fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) on Temporal Cloud, and for short jobs it's lower latency, because there are fewer Worker round-trips.
+
+You don't have to decide up front. The same Activity Function runs both ways with no code changes, so a job that later becomes one step of a longer process moves into a Workflow without a rewrite.
+
+## What you still operate
+
+Temporal doesn't replace your compute. You run and scale the Workers that poll [Task Queues](/task-queue) and execute the Activities; the Temporal Service handles persistence, dispatch, retries, and timeouts.
+
+Long jobs also stay your responsibility to instrument: heartbeats are optional, and without them a job that dies mid-run isn't detected until its Start-To-Close Timeout expires.
+
+## Public Preview limitations
+
+Standalone Activities are in [Public Preview](/evaluate/product-release-stages#public-preview), which affects what you can do to a job in flight:
+
+- Pause, unpause, reset, and update are not supported yet. Cancel and terminate are.
+- The `TerminateExisting` conflict policy and `TerminateIfRunning` reuse policy are not supported yet.
+
+## Resources
+
+Read about [Standalone Activity concepts, features, and limitations](/standalone-activity), or jump to a language-specific quickstart:
+
+<PatternCards items={[
+  {
+    href: "/develop/dotnet/activities/standalone-activities-quickstart",
+    title: ".NET SDK",
+    description: "Start and manage a Standalone Activity Execution in C# and .NET, with a runnable code sample.",
+    icon: "/img/sdks/svgs/dotnet.svg",
+  },
+  {
+    href: "/develop/go/activities/standalone-activities-quickstart",
+    title: "Go SDK",
+    description: "Start and manage a Standalone Activity Execution in Go, with a runnable code sample.",
+    icon: "/img/sdks/svgs/golang.svg",
+  },
+  {
+    href: "/develop/java/activities/standalone-activities-quickstart",
+    title: "Java SDK",
+    description: "Start and manage a Standalone Activity Execution in Java and other JVM languages, with a runnable code sample.",
+    icon: "/img/sdks/svgs/java.svg",
+  },
+  {
+    href: "/develop/python/activities/standalone-activities-quickstart",
+    title: "Python SDK",
+    description: "Start and manage a Standalone Activity Execution in Python, with a runnable code sample.",
+    icon: "/img/sdks/svgs/python.svg",
+  },
+  {
+    href: "/develop/ruby/activities/standalone-activities-quickstart",
+    title: "Ruby SDK",
+    description: "Start and manage a Standalone Activity Execution in Ruby, with a runnable code sample.",
+    icon: "/img/sdks/svgs/ruby.svg",
+  },
+  {
+    href: "/develop/typescript/activities/standalone-activities-quickstart",
+    title: "TypeScript SDK",
+    description: "Start and manage a Standalone Activity Execution in TypeScript, with a runnable code sample.",
+    icon: "/img/sdks/svgs/typescript.svg",
+  },
+]} />

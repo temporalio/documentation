@@ -192,7 +192,7 @@ requirements:
   meaning it produces the same commands and results when replayed. For example, don't call system time APIs, generate
   random values, or perform direct network and file I/O from Workflow-context code; move that work to Activities or
   Nexus Operations.
-- See [observability](/evaluate/development-production-features/observability) to avoid duplicating observation side
+- See [observability](/evaluate/features/observability) to avoid duplicating observation side
   effects when Workflows replay.
 - Put other side effects inside of Activities or [Local Activities](/local-activity). This helps your Workflow handle
   being restarted, resumed, or executed in a different process from where it originally began without losing correctness
@@ -209,7 +209,7 @@ queues and Workers.
 Users use Workflows for:
 
 - Orchestration and decision-making
-- Interactivity via [message-passing](/evaluate/development-production-features/workflow-message-passing)
+- Interactivity via [message-passing](/evaluate/features/workflow-message-passing)
 - Tracing and observability
 
 #### Making changes to your library
