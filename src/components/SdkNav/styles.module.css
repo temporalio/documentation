@@ -24,32 +24,17 @@
   display: none;
 }
 
-/* border-image-source cannot follow a border-radius, so the 1px ring is a
- * padded gradient masked to its own edge. */
+/* Keep the two-background ring: a masked pseudo-element fills solid in
+ * production, autoprefixer drops mask-composite. */
 .group {
-  position: relative;
   display: inline-flex;
   gap: 0.375rem;
   padding: 0.3125rem;
+  border: 1px solid transparent;
   border-radius: 999px;
-}
-
-.group::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: var(--sdk-nav-gradient);
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  pointer-events: none;
+  background:
+    linear-gradient(var(--ifm-navbar-background-color), var(--ifm-navbar-background-color)) padding-box,
+    var(--sdk-nav-gradient) border-box;
 }
 
 .sdk {

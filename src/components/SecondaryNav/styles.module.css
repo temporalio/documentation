@@ -1,6 +1,7 @@
 .secondaryNav {
   --secondary-nav-accent: var(--interactive-primary-surface, #444ce7);
   --secondary-nav-gradient: linear-gradient(255.4deg, #444ce7 0%, #b664ff 100%);
+  --secondary-nav-surface: var(--ifm-navbar-background-color);
 
   position: sticky;
   top: var(--navbar-primary-height);
@@ -86,35 +87,18 @@
   border-bottom-color: var(--ifm-color-primary);
 }
 
-/* B. Segmented ------------------------------------------------------------
- * border-image-source cannot follow a border-radius, so the 1px ring is a
- * padded gradient masked to its own edge.
- */
+/* B. Segmented. Keep the two-background ring: a masked pseudo-element fills
+ * solid in production, autoprefixer drops mask-composite. */
 
 .segmented .group {
-  position: relative;
   display: inline-flex;
   gap: 0.5rem;
   padding: 0.3125rem;
+  border: 1px solid transparent;
   border-radius: 999px;
-}
-
-.segmented .group::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: var(--secondary-nav-gradient);
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  pointer-events: none;
+  background:
+    linear-gradient(var(--secondary-nav-surface), var(--secondary-nav-surface)) padding-box,
+    var(--secondary-nav-gradient) border-box;
 }
 
 .segmented .tab {
@@ -134,31 +118,38 @@
 
 /* Surfaces --------------------------------------------------------------- */
 
+/* Surfaces stay opaque: the bar is sticky over the doc sidebar's right border
+ * and the page content. Each sets --secondary-nav-surface so the segmented
+ * ring's inner fill matches the bar. */
+
 .surfaceFlush {
-  background: var(--ifm-navbar-background-color);
+  --secondary-nav-surface: var(--ifm-navbar-background-color);
+
+  background: var(--secondary-nav-surface);
 }
 
 .surfaceRaised {
-  background: #f4f5f7;
+  --secondary-nav-surface: #f4f5f7;
+
+  background: var(--secondary-nav-surface);
 }
 
-/* Tints composite over an opaque base. The bar is sticky and sits above the
- * doc sidebar's right border, so any transparency lets both show through. */
-
 .surfaceTint {
-  background:
-    linear-gradient(rgb(68 76 231 / 5%), rgb(68 76 231 / 5%)),
-    var(--ifm-navbar-background-color);
+  --secondary-nav-surface: #f6f6fe;
+
+  background: var(--secondary-nav-surface);
 }
 
 .surfaceGradient {
-  background:
-    linear-gradient(90deg, rgb(68 76 231 / 10%) 0%, rgb(182 100 255 / 5%) 100%),
-    var(--ifm-navbar-background-color);
+  --secondary-nav-surface: #ecedfd;
+
+  background: linear-gradient(90deg, #ecedfd 0%, #fbf5ff 100%);
 }
 
 .surfaceInk {
-  background: #0d0f1c;
+  --secondary-nav-surface: #0d0f1c;
+
+  background: var(--secondary-nav-surface);
   border-bottom-color: transparent;
 }
 
@@ -181,17 +172,15 @@
 }
 
 [data-theme='dark'] .surfaceRaised {
-  background: #14141a;
+  --secondary-nav-surface: #14141a;
 }
 
 [data-theme='dark'] .surfaceTint {
-  background:
-    linear-gradient(rgb(68 76 231 / 16%), rgb(68 76 231 / 16%)),
-    var(--ifm-navbar-background-color);
+  --secondary-nav-surface: #0b0c25;
 }
 
 [data-theme='dark'] .surfaceGradient {
-  background:
-    linear-gradient(90deg, rgb(68 76 231 / 28%) 0%, rgb(182 100 255 / 14%) 100%),
-    var(--ifm-navbar-background-color);
+  --secondary-nav-surface: #131541;
+
+  background: linear-gradient(90deg, #131541 0%, #1a0f26 100%);
 }
