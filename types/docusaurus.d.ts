@@ -25,6 +25,17 @@ declare module '*.module.css' {
 }
 declare module '*.css';
 
+declare global {
+  interface Window {
+    amplitude?: {
+      getUserId: () => string | undefined;
+      setUserId: (userId: string) => void;
+      setSessionId: (sessionId: number) => void;
+      track: (eventName: string, eventProperties?: Record<string, unknown>) => void;
+    };
+  }
+}
+
 // <temporal-consent-banner> from @temporalio-web/consent-banner (src/theme/Root.tsx,
 // src/theme/Footer/Copyright). React 19's automatic JSX runtime resolves
 // intrinsic elements from React.JSX, not the legacy global JSX namespace.
