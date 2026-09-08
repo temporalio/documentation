@@ -67,6 +67,9 @@ Since a new instance takes time to start and connect before it can poll for Task
 When arrivals and backlog fall, the WCI lowers the target instance count and Cloud Run stops surplus instances.
 Scale-in is more conservative than scale-out.
 The WCI holds capacity while sync match failures are still occurring, and it applies a cooldown before reducing the pool, so it does not remove instances that are about to be needed again.
+The cooldown starts at the most recent sync match failure and defaults to 90 seconds.
+Set it with `--gcp-cloud-run-scale-down-stabilization-duration` on `temporal worker deployment create-version` or `update-version`, which requires Temporal CLI v1.8.3 or later.
+Raise it to keep the pool from shrinking while long-running Activities are still executing, or set `0s` to scale in as soon as demand drops.
 When there is no work, the WCI can scale the pool to zero; the next sync match failure or backlog scales it back up.
 
 ### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
@@ -112,7 +115,8 @@ run through its [scaling operations](#autoscaling).
 
 An instance's lifetime is bounded by scale-in. The WCI decides when to remove an instance from Task Queue activity, not
 from what any individual instance is doing. It waits a set amount of time after the most recent sync match failure, and
-applies a cooldown between successive reductions, before lowering the target instance count. It does not track how long a
+applies a cooldown between successive reductions, before lowering the target instance count. That wait is the
+[scale-down stabilization duration](#scale-in). It does not track how long a
 given instance has been running or whether that instance is mid-Activity, so the instance Cloud Run stops may be one that
 is still executing work.
 

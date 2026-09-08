@@ -819,6 +819,14 @@ temporal worker deployment create-version \
 | `--gcp-cloud-run-worker-pool`    | Name of the Worker Pool created in [Step 2](#create-worker-pool).                                               |
 | `--gcp-cloud-run-service-account`| The invoker service account Temporal impersonates to read and scale the pool. This is the `invoker_email` output (or the invoker service account you created manually) from [Step 3](#configure-iam). |
 
+The scaling flags are optional, and the defaults suit most Worker Pools. If your Workers run long-running Activities,
+raise `--gcp-cloud-run-scale-down-stabilization-duration` (default `90s`) so the pool does not shrink while those
+Activities are still executing. On `create-version`, that flag has to be passed together with
+`--gcp-cloud-run-min-instances`, `--gcp-cloud-run-max-instances`, `--gcp-cloud-run-initial-instances`, and
+`--gcp-cloud-run-utilization-target`. You can also change it later on its own with `temporal worker deployment
+update-version`. Both require Temporal CLI v1.8.3 or later. See
+[Scale-in](/serverless-workers/cloud-run#scale-in).
+
 </TabItem>
 </Tabs>
 
