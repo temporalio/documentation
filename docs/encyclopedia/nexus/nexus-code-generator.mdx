@@ -12,7 +12,7 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript"]}>
+<ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript"]} guidePath="nexus/feature-guide">
   APIs are experimental and may be subject to backwards-incompatible changes.
 </ReleaseNoteHeader>
 
@@ -50,3 +50,6 @@ A handler maps that to a `BAD_REQUEST` [Nexus handler error](/nexus/error-handli
 
 A value is validated identically in every language, which is what lets a caller and a handler written in different ones trust the same contract.
 Keeping that promise is why the supported schema subset is deliberately strict: anything ambiguous, or anything that cannot be expressed the same way everywhere, is rejected at generation time rather than becoming code that validates differently in one language than another.
+
+Three numeric and timestamp edge cases do not yet behave the same way in every language, covering negative zero, very large fractional integers, and nanosecond precision in Python.
+See [Known cross-language divergences](https://github.com/temporalio/nexgen#known-cross-language-divergences) in the `nexgen` README for what each language does.
