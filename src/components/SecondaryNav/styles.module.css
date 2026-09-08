@@ -32,6 +32,7 @@
 .tab {
   display: inline-flex;
   align-items: center;
+  gap: 0.5rem;
   white-space: nowrap;
   font-weight: 500;
   color: var(--ifm-navbar-link-color);
@@ -68,7 +69,7 @@
 /* A. Underline ----------------------------------------------------------- */
 
 .underline .tabs {
-  gap: 2.25rem;
+  gap: 1.75rem;
 }
 
 .underline .tab {
