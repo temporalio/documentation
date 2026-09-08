@@ -22,7 +22,7 @@ What runs behind an Operation remains private to the handler, so you can change 
 
 ## The Nexus-aware Client
 
-The start handler receives a context, the Operation input, and a Client.
+The Operation handler receives a context, the Operation input, and a Client.
 
 That Client is not an ordinary Temporal Client.
 It propagates [bidirectional links](/nexus/execution-debugging#bi-directional-linking) and request Ids on every call, so caller-side and handler-side Executions are connected in the UI and in [Event History](/encyclopedia/event-history) without wiring anything.
