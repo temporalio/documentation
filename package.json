@@ -71,6 +71,7 @@
     "@docusaurus/types": "^3.10.2",
     "@mdx-js/react": "^3.0.0",
     "@resvg/resvg-js": "^2.6.2",
+    "@temporalio-web/consent-banner": "^1.0.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vercel/functions": "^3.9.3",
@@ -91,7 +92,7 @@
     "search-insights": "^2",
     "sharp": "^0.35.3",
     "snipsync": "^1.13.0",
-    "uuid": "^14.0.1",
+    "uuid": "^14.0.2",
     "wait-on": "^9.1.0",
     "yaml": "^2.9.0"
   },
