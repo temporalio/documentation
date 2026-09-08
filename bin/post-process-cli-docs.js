@@ -3,6 +3,7 @@
 // Post-processes generated CLI docs before committing.
 //
 // - Regenerates the command-reference indexes from the generated command pages.
+// - Removes generated keyword metadata and escapes literal brace placeholders.
 // - Injects a ReleaseNoteHeader component into cloud CLI reference pages.
 //
 // Gen-docs must be run twice because the main CLI and cloud CLI have
@@ -23,6 +24,10 @@
 
 const fs = require("fs");
 const path = require("path");
+const {
+  escapeGeneratedMdxPlaceholders,
+  stripKeywordsFromFrontmatter,
+} = require("./escape-generated-mdx-placeholders.js");
 
 const CMD_REF_DIR = path.join(
   __dirname,
@@ -37,6 +42,14 @@ const CLOUD_DIR = path.join(CMD_REF_DIR, "cloud");
 const IMPORT_LINE = `import { ReleaseNoteHeader } from '@site/src/components';`;
 
 const COMPONENT_BLOCK = `<ReleaseNoteHeader featureName="cloudCli" />`;
+
+function getMdxFiles(directory) {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) return getMdxFiles(entryPath);
+    return entry.name.endsWith(".mdx") ? [entryPath] : [];
+  });
+}
 
 // ---------------------------------------------------------------------------
 // 1. Regenerate command-reference indexes
@@ -120,7 +133,27 @@ fs.writeFileSync(path.join(CLOUD_DIR, "index.mdx"), cloudIndexLines.join("\n"));
 console.log(`[post-process] regenerated cloud command-reference index with ${cloudSubcommands.length} entries`);
 
 // ---------------------------------------------------------------------------
-// 3. Inject ReleaseNoteHeader into each cloud command page
+// 3. Normalize generated command pages
+// ---------------------------------------------------------------------------
+let strippedKeywordsCount = 0;
+let escapedPlaceholderCount = 0;
+
+for (const filePath of getMdxFiles(CMD_REF_DIR)) {
+  const originalContent = fs.readFileSync(filePath, "utf-8");
+  const withoutKeywords = stripKeywordsFromFrontmatter(originalContent);
+  const content = escapeGeneratedMdxPlaceholders(withoutKeywords);
+  if (content === originalContent) continue;
+
+  fs.writeFileSync(filePath, content);
+  if (withoutKeywords !== originalContent) strippedKeywordsCount++;
+  if (content !== withoutKeywords) escapedPlaceholderCount++;
+}
+
+console.log(`[post-process] removed keywords from ${strippedKeywordsCount} command page(s)`);
+console.log(`[post-process] escaped literal MDX placeholders in ${escapedPlaceholderCount} command page(s)`);
+
+// ---------------------------------------------------------------------------
+// 4. Inject ReleaseNoteHeader into each cloud command page
 // ---------------------------------------------------------------------------
 const cloudFiles = fs.readdirSync(CLOUD_DIR).filter((f) => f.endsWith(".mdx"));
 let count = 0;
@@ -186,7 +219,7 @@ for (const file of cloudFiles) {
 console.log(`[post-process] injected ReleaseNoteHeader into ${count} cloud page(s)`);
 
 // ---------------------------------------------------------------------------
-// 4. Update sidebars.js command-reference section
+// 5. Update sidebars.js command-reference section
 // ---------------------------------------------------------------------------
 const SIDEBARS_PATH = path.join(__dirname, "..", "sidebars.js");
 const sidebarsContent = fs.readFileSync(SIDEBARS_PATH, "utf-8");
