@@ -210,17 +210,16 @@ await Workflow.ExecuteChildWorkflowAsync(
 
 Task Queue Fairness lets you distribute Tasks based on _fairness keys_ and _fairness weights_ within a Task Queue.
 
-Each fairness key creates its own "virtual queue", allowing you to organize Tasks into logical groups like tenants, applications, or workload types. These virtual queues operate using a round-robin dispatch mechanism, meaning the system cycles through each fairness key in turn when selecting the next Task to dispatch. This prevents any single fairness key from hogging Worker capacity, even if one key has a much larger backlog than the others.
+Fairness keys organize Tasks into groups such as tenants, applications, or workload types. Weighted fair dispatch selects among groups that have backlogged Tasks. This keeps a group that fills the backlog from dominating dispatch.
 
-By default, each fairness key is weighted equally in the round-robin, with a _fairness weight_ of 1.0. This behavior can be customized by assigning a different fairness weight to a key. For example, Tasks belonging to a fairness key with a weight of 2.0 will be dispatched twice as often as keys with the default weight.
+Each fairness key has a default _fairness weight_ of 1.0. You can assign a different weight to a key. When two groups have backlogged Tasks, a group with a weight of 2.0 receives approximately twice as many dispatches as a group with a weight of 1.0.
 
 ### When to use Fairness
 
 Fairness is intended to address common situations like:
 
 - Multi-tenant applications with big and small tenants where small tenants shouldn't be blocked by big ones.
-- Assigning Tasks to different capacity bands and then, for example, dispatching 80% from one band and 20% from another
-  without limiting overall capacity when one band is empty.
+- Assigning Tasks to weighted groups and dispatching approximately 80% from one group and 20% from another when both have backlogged Tasks.
 
 It sequences Tasks in the Task Queue probabilistically using a weighted distribution based on:
 
@@ -231,7 +230,7 @@ It sequences Tasks in the Task Queue probabilistically using a weighted distribu
 As an example, imagine a workload with three tenants, _tenant-big_, _tenant-mid_, _tenant-small_, that have varying
 numbers of Tasks at all times. Your _tenant-big_ has a large number of Tasks that can overwhelm your Task Queue and
 prevent _tenant-mid_ and _tenant-small_ from running their Tasks. With Fairness, you can give each tenant a different
-fairness key to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others. In this case,
+fairness key to make sure _tenant-big_ doesn't dominate dispatch and block the others. In this case,
 _tenant-mid_ and _tenant-small_ will have Tasks run in between _tenant-big_ Tasks so that they are executed "fairly".
 
 ### How to use Fairness
@@ -242,11 +241,11 @@ To enable Fairness for a Namespace in Temporal Cloud, navigate to the Namespace'
 
 If you're self-hosting Temporal, set `matching.enableFairness` to `true` in the [dynamic config](/temporal-service/configuration#dynamic-configuration) on the relevant Task Queues or Namespaces.
 
-To use Fairness, you need to set fairness keys and optionally fairness weights at the Workflow, Activity, or Child Workflow level. Tasks with different fairness keys are dispatched in proportion to their fairness weights. For example, if you weight _premium-tier_ at 5.0, _basic-tier_ at 3.0, and _free-tier_ at 2.0, then 50% of dispatched Tasks come from _premium-tier_, 30% from _basic-tier_, and 20% from _free-tier_. If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in [FIFO order](/task-queue#task-ordering).
+To use Fairness, set fairness keys and optionally fairness weights at the Workflow, Activity, or Child Workflow level. Tasks with different fairness keys are dispatched in proportion to their fairness weights. For example, weights of 5.0 for _premium-tier_, 3.0 for _basic-tier_, and 2.0 for _free-tier_ cause approximately 50% of dispatched Tasks to come from _premium-tier_, 30% from _basic-tier_, and 20% from _free-tier_ when all three groups have backlogged Tasks. Within the same priority level and Task Queue partition, Tasks in the backlog with the same fairness key are dispatched in [FIFO order](/task-queue#task-ordering).
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/fairness-details.png"
-  alt="Flowchart of how Fairness selects a virtual queue weighted by fairness weight when the backlog has Tasks"
+  alt="Flowchart of how Fairness selects a backlogged group according to its fairness weight"
 />
 
 You can set a Workflow's fairness key and weight via the CLI like so:
@@ -653,7 +652,7 @@ var handle = await Client.StartWorkflowAsync(
 </SdkTabs.DotNet>
 </SdkTabs>
 
-Tasks that do not have a `fairness_key` set are grouped together under an implicit empty-string key. All unkeyed Tasks share this single default bucket and participate in the same round-robin dispatch alongside named fairness keys, with a default weight of 1.0. This means Fairness adoption can be incremental: you can assign fairness keys to some tenants but not others. Unkeyed Tasks do not bypass Fairness; they compete as one group alongside all explicitly keyed Tasks.
+Tasks that do not have a `fairness_key` set are grouped under an implicit empty-string key with a default weight of 1.0. The group participates in weighted fair dispatch alongside named fairness keys. This lets you adopt Fairness incrementally.
 
 :::info
 
@@ -664,20 +663,20 @@ There should only be one fairness weight assigned to each fairness key within a 
 ### Choosing between Priority, Fairness, and both
 
 - **Priority alone** when you need strict priority ordering - for example, separating real-time Tasks from batch Tasks.
-- **Fairness alone** when you need tier or tenant isolation so no group is starved, but you don't need to preempt any group ahead of another.
+- **Fairness alone** when you need weighted dispatch among tiers or tenants without ordering one group ahead of another.
 - **Both** when you have a tiered SLA hierarchy - Priority for the broad tier (for example, paid vs. free), Fairness for per-tenant equity within a tier.
 
 When you use Priority and Fairness together, the next Task to dispatch is chosen by walking three rules in order:
 
 1. **Priority tier (strict).** Tasks at a higher priority always dispatch before tasks at lower priorities, regardless of fairness keys or weights.
-2. **Fairness key within a tier (weighted).** Within a priority tier, each fairness key is a virtual queue. Keys are dispatched proportional to their weights - a key with weight 2.0 is dispatched twice as often as one with weight 1.0.
+2. **Fairness key within a tier (weighted).** Within a priority tier, Tasks are dispatched according to the weights of their fairness keys. When both groups are backlogged, a key with weight 2.0 receives approximately twice as many dispatches as a key with weight 1.0.
 3. **FIFO within a key.** Tasks that share a priority tier _and_ fairness key dispatch in the order they were enqueued.
 
 These rules apply within a Task Queue partition.
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
-  alt="Flowchart of how Priority and Fairness combine: poller checks priority levels in order, then within each level Fairness selects a virtual queue weighted by fairness weight"
+  alt="Flowchart of how Priority and Fairness combine: a poller checks priority levels in order, then Fairness selects a backlogged group according to its weight"
 />
 
 ### Inheritance
@@ -730,12 +729,11 @@ temporal task-queue config set \
 
 **Whole queue rate limits:** applies to the whole queue regardless of the fairness key. This is the same setting as is exposed through the [Worker Options](/develop/worker-tuning-reference#io-configuration-options) in the SDKs, and when set via the API, takes precedence over the limit set through Worker Options.
 
-**Fairness key rate limits:** The per-fairness-key rate limit works in conjunction with Task Queue Fairness. If you think of Fairness as dividing the queue into one virtual queue for each key, then the per-fairness-key rate limit is a limit on each individual virtual queue. Some important notes on the per-fairness-key limit:
+**Fairness key rate limits:** The per-fairness-key rate limit caps the dispatch rate for each fairness key. Some important notes on the per-fairness-key limit:
 
 - The whole queue limit and per-fairness-key limit may be set independently: none, one or the other, or both may be set. If both are set, then the more restrictive one applies.
-- The per-fairness-key limit for a key is scaled by the fairness weight assigned to that key. So if the per-fairness-key limit for a queue is set to 10, then all keys with the default weight (1.0) will have a limit of 10 tasks/second. But if a particular key is given a weight of 2.5, then the per-key rate limit for that key will be 25 tasks/second.
-- Since the dispatch rate for each key should be proportional to its weight, if any key is hitting the per-key limit, then nearly all of them are. The way it works is if the next Task to be dispatched hits the per-key limit, then dispatch will wait until it can go.
-- Usually there isn't actually any blocking, but there can be when the fairness weight for a key is changed between when a Task is scheduled and when it's dispatched. If the fairness weight for a key is lowered, for example, the new lower per-key rate limit will be respected. Since those Tasks were originally scheduled with the higher rate, they will block other Tasks as they're dispatched. This limitation will be improved in the future.
+- The per-fairness-key limit for a key is scaled by the fairness weight assigned to that key. If the default limit is 10 Tasks per second, a key with weight 1.0 has a limit of 10 Tasks per second and a key with weight 2.5 has a limit of 25 Tasks per second.
+- When a Task would exceed its key's rate limit, matching can skip it and dispatch another eligible Task.
 
 ### Fairness weight overrides
 
@@ -760,7 +758,8 @@ To unset a single key's override, pass `key=default`. To clear all overrides on 
 
 - There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more.
 - Fairness is enforced within a single Task Queue [partition](/task-queue#task-ordering). When a Task Queue's partitions are imbalanced, Fairness may not appear to hold, since it applies only within individual partitions. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.
-- The fairness weight applies at schedule time, not at dispatch time. So it only affects newly-scheduled Tasks, not currently backlogged ones. This means if you need to throttle a single fairness key in the existing backlog of Tasks, you won't be able to.
+- A Task's fairness weight is recorded when the Task is scheduled. Changing a weight in application code affects newly scheduled Tasks, not the current backlog.
 - When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from _alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
-- During server restarts, Temporal preserves fairness state for the top 100 keys. Other keys rebuild their fairness state as new Tasks arrive, which can temporarily distort weighted dispatch. Fairness pass dithering reduces this distortion by spreading keys' initial positions according to their weights. It can reduce FIFO-like ordering among equal-weight keys. To enable fairness pass dithering, [contact Temporal Support](/cloud/support#support-ticket).
+- When a Task Queue partition reloads or changes ownership, Temporal restores fairness state for up to 100 keys by default. Other keys rebuild their state as new Tasks arrive, which can temporarily distort weighted dispatch. Fairness pass dithering spreads the initial positions of these keys according to their weights. It can reduce FIFO-like ordering among equal-weight keys. To enable fairness pass dithering, [contact Temporal Support](/cloud/support#support-ticket).
 - Fairness doesn't consider Task executions that have already been dispatched to Workers. As a result, fair dispatch may not be immediately visible in the mix of Tasks currently running on Workers.
+- Tasks that synchronously match an available poller can bypass backlog ordering. [Eagerly dispatched Tasks](/develop/worker-performance#eager-task-execution) also bypass matching.

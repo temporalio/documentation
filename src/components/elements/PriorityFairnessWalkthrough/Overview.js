@@ -62,7 +62,7 @@ export default function Overview({ onNext }) {
           </div>
           <p className={styles.featureCardBody}>
             Without Fairness, tasks at the same priority dispatch in FIFO order, so a backlog-heavy
-            tenant can hog Worker capacity and delay everyone else at that level. Fairness groups
+            tenant can fill the backlog and dominate dispatch at that level. Fairness groups
             tasks by a fairness key and dispatches them proportionally by fairness weight. A key with
             weight 2.0 is dispatched twice as often as a key with the default weight of 1.0.
           </p>
