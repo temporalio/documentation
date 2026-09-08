@@ -369,7 +369,6 @@ module.exports = async function createConfigAsync() {
           showLastUpdateTime: true,
           // use a custom item to center the content:
           docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
-          docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
           // Same remark plugin the main docs preset uses (see the `docs` preset
           // option above) — injects the generated og:image path as real front
           // matter during MDX compilation so it survives client hydration.

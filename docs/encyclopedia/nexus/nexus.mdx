@@ -83,6 +83,10 @@ Callers never need to know the handler's Namespace, Task Queue, or internal impl
 
 Endpoints are managed in the [Nexus Registry](/nexus/registry) using the UI, CLI, or Cloud Ops API.
 
+In Temporal Cloud, each Endpoint also belongs to a [Project](/cloud/projects#use-nexus-across-projects).
+The Project controls who can manage the Endpoint in the Cloud Ops API and UI.
+It does not restrict cross-Namespace Nexus calls. Runtime access remains the Endpoint allowlist of caller Namespaces.
+
 ### Queue-based Worker architecture
 
 Nexus uses the same queue-based Worker architecture as the rest of Temporal.

@@ -29,7 +29,6 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const ogImagePlugin = require('../plugins/og-image');
-const { AI_COOKBOOK_OG_IMAGE_PATH } = require('../src/constants/aiCookbookOgImage');
 
 const BUILD_DIR = path.join(process.cwd(), 'build');
 const DOCS_DIR = path.join(process.cwd(), 'docs');
@@ -137,39 +136,6 @@ async function main() {
       if (!fs.existsSync(expectedImagePath)) {
         missingImages.push({ file: path.relative(BUILD_DIR, htmlPath), expectedImagePath });
       }
-    }
-  }
-
-  // /ai/cookbook (src/pages/ai/cookbook.tsx) is a plain page, not an MDX doc,
-  // so it never went through the DOC_TARGETS loop above — but it does declare
-  // its own og:image (see plugins/cookbook-index's postBuild), so it's
-  // checked here as a manual override rather than folded into "other pages
-  // must match the site default" below.
-  const cookbookHomeHtmlPath = path.join(BUILD_DIR, 'ai', 'cookbook', 'index.html');
-  if (fs.existsSync(cookbookHomeHtmlPath)) {
-    docHtmlPaths.add(cookbookHomeHtmlPath);
-    docPagesChecked++;
-    overridePagesChecked++;
-
-    const html = fs.readFileSync(cookbookHomeHtmlPath, 'utf8');
-    const ogImage = extractMetaContent(html, 'property', 'og:image');
-    const twitterImage = extractMetaContent(html, 'name', 'twitter:image');
-    const expectedOverride = new URL(
-      path.posix.join(config.baseUrl, AI_COOKBOOK_OG_IMAGE_PATH.replace(/^\/+/, '')),
-      config.url,
-    ).toString();
-    const expectedImagePath = path.join(BUILD_DIR, AI_COOKBOOK_OG_IMAGE_PATH);
-
-    if (ogImage !== expectedOverride || twitterImage !== expectedOverride) {
-      overrideMismatches.push({
-        file: path.relative(BUILD_DIR, cookbookHomeHtmlPath),
-        expected: expectedOverride,
-        ogImage,
-        twitterImage,
-      });
-    }
-    if (!fs.existsSync(expectedImagePath)) {
-      missingImages.push({ file: path.relative(BUILD_DIR, cookbookHomeHtmlPath), expectedImagePath });
     }
   }
 

@@ -87,8 +87,9 @@ See the [Connectivity](/cloud/connectivity) page for more information and detail
 
 ### Temporal Nexus
 
-Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account.
-Any Developer role (or higher) in an account, who is also a Namespace Admin on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus Endpoint.
+Like Namespaces, the Nexus Registry is account-scoped and global within a Temporal Cloud account.
+Nexus Endpoint names remain unique Account-wide, but each Endpoint is Project-scoped for management.
+An Account Developer (or higher), or a user with Project Contribute (or higher) on the Endpoint's Project, can manage (create, update, or delete) an Endpoint only when they also have Namespace Admin on its target Namespace.
 All users with a Read-only role (or higher) in an account, can view and browse the full list of Endpoints.
 
 Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry.
