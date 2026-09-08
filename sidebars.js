@@ -2262,3 +2262,35 @@ function flattenSection(category) {
 
   sidebars.documentation = mainSidebar.filter((item) => !moved.has(item));
 })(module.exports);
+
+// Develop splits one level further: each SDK gets its own sidebar, so a reader
+// on /develop/go sees the Go tree instead of all eight. src/components/SdkNav
+// renders the SDKs as a third row, shown only inside Develop. What is left in
+// `develop` is the language-agnostic material.
+(function buildSdkSidebars(sidebars) {
+  const developSidebar = sidebars.develop;
+  const moved = new Set();
+  const sdkLinks = [];
+
+  for (const { id } of SDKS) {
+    const category = developSidebar.find(
+      (item) => item && item.type === 'category' && item.link && item.link.id === `develop/${id}/index`
+    );
+
+    if (!category) {
+      throw new Error(`Secondary nav: no sidebar category found for the ${id} SDK (expected link develop/${id}/index).`);
+    }
+
+    moved.add(category);
+    sidebars[`develop-${id}`] = flattenSection(category);
+
+    // The SDKs stay listed in Develop as plain links. A doc can belong to only
+    // one sidebar, and its pages now live in the per-SDK sidebar above.
+    sdkLinks.push({ type: 'link', label: category.label, href: `/develop/${id}` });
+  }
+
+  const remaining = developSidebar.filter((item) => !moved.has(item));
+  const afterOverview = remaining.indexOf('develop/index') + 1;
+
+  sidebars.develop = [...remaining.slice(0, afterOverview), ...sdkLinks, ...remaining.slice(afterOverview)];
+})(module.exports);

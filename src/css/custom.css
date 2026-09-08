@@ -1929,7 +1929,8 @@ code {
   cursor: pointer;
 }
 
-/* Secondary nav: --ifm-navbar-height must cover both header rows. */
+/* Secondary nav: --ifm-navbar-height must cover both header rows. The second
+ * row is either the section tabs or the SDK row, never both. */
 
 :root {
   --navbar-primary-height: 3.75rem;

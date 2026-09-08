@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from '@docusaurus/Link';
 import { useLocation } from '@docusaurus/router';
+import { findActiveSdk } from '@site/src/components/SdkNav/activeSdk';
 import styles from './styles.module.css';
 
 const TABS = [
@@ -69,6 +70,9 @@ export default function SecondaryNav() {
   const { pathname } = useLocation();
   const [variant, chooseVariant] = useChoice('poc-secondary-nav-variant', VARIANTS, 'underline');
   const [surface, chooseSurface] = useChoice('poc-secondary-nav-surface', SURFACES, 'surfaceFlush');
+
+  // Inside an SDK guide the SDK row takes this row's place.
+  if (findActiveSdk(pathname)) return null;
 
   const current = TABS.find((tab) => isActive(pathname, tab.match));
 
