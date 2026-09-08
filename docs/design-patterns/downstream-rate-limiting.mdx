@@ -285,7 +285,7 @@ The concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkf
 ### Patterns
 
 - **[Priority Task Queues](/design-patterns/priority-task-queues)**: Route work to separate queues by urgency, with different concurrency budgets per tier.
-- **[Fairness](/design-patterns/fairness)**: Give each tenant an equal throughput share when multiple tenants share capacity.
+- **[Fairness](/design-patterns/fairness)**: Distribute Task dispatches among tenants that share a Task Queue.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Route Activities to a specific Worker host for resource or data affinity.
 
 ### Guides

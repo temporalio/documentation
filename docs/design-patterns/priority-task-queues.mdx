@@ -201,7 +201,7 @@ temporal workflow start \
 
 This pattern is a good fit when your system mixes time-sensitive operations (payment processing, user-facing requests) with background or batch work (reporting, data imports, inventory management), and you want urgent tasks to proceed even during periods of high load. It also works well when you need to mark urgent tasks that should override normal processing—for example, triggering immediate re-runs of failed critical tasks.
 
-It is not a good fit when all work is effectively equal in urgency, when a continuously replenished high-priority backlog could starve lower-priority work indefinitely, or when you need hard capacity isolation between tiers (see dedicated queues per tier as a supplementary measure). If your concern is prioritizing work amongst tenants or customers, consider the [Fairness](/design-patterns/fairness) pattern, which distributes capacity proportionally using weighted fairness keys rather than strict ordering.
+It is not a good fit when all work is effectively equal in urgency, when a continuously replenished high-priority backlog could starve lower-priority work indefinitely, or when you need hard capacity isolation between tiers (see dedicated queues per tier as a supplementary measure). For tenant-aware dispatch, use the [Fairness](/design-patterns/fairness) pattern.
 
 ## Benefits and trade-offs
 
@@ -238,7 +238,7 @@ Lower-priority tasks are blocked until all higher-priority tasks have started. I
 
 ### Patterns
 
-- **[Fairness](/design-patterns/fairness)**: Distribute capacity proportionally across tenants within a priority level using fairness keys.
+- **[Fairness](/design-patterns/fairness)**: Distribute dispatches proportionally across tenants within a priority level using fairness keys.
 - **[Downstream Rate Limiting](/design-patterns/downstream-rate-limiting)**: Cap absolute throughput to a downstream service regardless of task priority.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Route Activities to a specific Worker host for resource or data affinity.
 

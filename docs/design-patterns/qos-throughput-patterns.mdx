@@ -1,12 +1,12 @@
 ---
 id: qos-throughput-patterns
 title: "QoS & Throughput Patterns"
-description: "Pattern selection guide for controlling execution rate, protecting downstream services from overload, and ensuring fair capacity distribution across tenants."
+description: "Pattern selection guide for controlling execution rate, protecting downstream services from overload, and distributing dispatch across tenants."
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
 
-These patterns control how fast work executes, protect downstream services from overload, and make sure no single caller or tenant monopolizes Worker capacity at the expense of others.
+These patterns control how fast work executes, protect downstream services from overload, and keep one caller or tenant from dominating dispatch.
 
 ## Patterns in this section
 
@@ -27,7 +27,7 @@ These patterns control how fast work executes, protect downstream services from 
     href: "/design-patterns/fairness",
     icon: "fairness-icon.svg",
     title: "Fairness",
-    description: "Distributes Worker capacity evenly across tenants or users so a burst from one caller does not starve the others.",
+    description: "Distributes Task dispatches across tenants or users so a burst from one caller does not starve the others.",
   },
 ]} />
 
