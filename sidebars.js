@@ -1185,22 +1185,6 @@ module.exports = {
             'evaluate/features/schedules',
             'evaluate/features/job-queue',
             'evaluate/features/serverless-workers/index',
-            {
-              type: 'category',
-              label: 'Product release stages',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'evaluate/features/release-stages',
-              },
-              items: [
-                {
-                  type: 'link',
-                  label: 'Changelog',
-                  href: 'https://temporal.io/change-log',
-                },
-              ],
-            },
           ],
         },
         {
@@ -1220,6 +1204,22 @@ module.exports = {
             'evaluate/temporal-cloud/pricing',
             'evaluate/temporal-cloud/actions',
             'evaluate/temporal-cloud/support',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Product release stages',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'evaluate/product-release-stages',
+          },
+          items: [
+            {
+              type: 'link',
+              label: 'Changelog',
+              href: 'https://temporal.io/change-log',
+            },
           ],
         },
         'security',

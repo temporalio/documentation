@@ -1407,15 +1407,19 @@
     },
     {
       "source": "/temporal/release-stages",
-      "destination": "/evaluate/development-production-features/release-stages"
+      "destination": "/evaluate/product-release-stages"
     },
     {
       "source": "/evaluate/release-stages",
-      "destination": "/evaluate/development-production-features/release-stages"
+      "destination": "/evaluate/product-release-stages"
     },
     {
       "source": "/evaluate/development-production-features/release-stages",
-      "destination": "/evaluate/features/release-stages"
+      "destination": "/evaluate/product-release-stages"
+    },
+    {
+      "source": "/evaluate/features/release-stages",
+      "destination": "/evaluate/product-release-stages"
     },
     {
       "source": "/concepts:path*",
