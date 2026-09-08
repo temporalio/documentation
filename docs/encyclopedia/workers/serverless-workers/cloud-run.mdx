@@ -68,7 +68,7 @@ When arrivals and backlog fall, the WCI lowers the target instance count and Clo
 Scale-in is more conservative than scale-out.
 The WCI holds capacity while sync match failures are still occurring, and it applies a cooldown before reducing the pool, so it does not remove instances that are about to be needed again.
 The cooldown starts at the most recent sync match failure and defaults to 90 seconds.
-Set it with `--gcp-cloud-run-scale-down-stabilization-duration` on `temporal worker deployment create-version` or `update-version`, which requires Temporal CLI v1.8.3 or later.
+Set it with `--gcp-cloud-run-scale-down-stabilization-duration` on `temporal worker deployment create-version` or `update-version`, alongside the other four scaling flags, which requires Temporal CLI v1.8.3 or later.
 Raise it to keep the pool from shrinking while long-running Activities are still executing, or set `0s` to scale in as soon as demand drops.
 When there is no work, the WCI can scale the pool to zero; the next sync match failure or backlog scales it back up.
 
