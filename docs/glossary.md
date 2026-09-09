@@ -2,7 +2,6 @@
 id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
-sidebar_label: Glossary
 sidebar_position: 13
 toc_max_heading_level: 4
 tags:

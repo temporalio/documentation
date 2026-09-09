@@ -233,12 +233,26 @@
   color: var(--ifm-color-emphasis-800);
 }
 
-.bullets {
-  margin: 0;
+/* MDX-authored step bodies (see parseWalkthroughChildren) can render several
+   paragraphs/lists inside `.note`; give the nested elements the same rhythm
+   the old flat note+bullets rendering had. */
+.note :global(p),
+.note :global(ul),
+.note :global(ol) {
+  margin: 0 0 0.5rem;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.note :global(ul),
+.note :global(ol) {
   padding-left: 1.1rem;
-  font-size: 0.84rem;
-  line-height: 1.6;
-  color: var(--ifm-color-emphasis-800);
+}
+
+.note :global(p):last-child,
+.note :global(ul):last-child,
+.note :global(ol):last-child {
+  margin-bottom: 0;
 }
 
 /* Ledger columns */
