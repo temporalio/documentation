@@ -123,6 +123,8 @@ module "serverless-worker-cloud-run" {
   project_id         = "<YOUR_GCP_PROJECT>"
   invoker_account_id = "temporal-serverless-worker"
 
+  runner_service_account_email = "<REPLACE-WITH-WORKER-POOL-RUNNER-SERVICE-ACCOUNT-EMAIL>"
+
   impersonator_service_account_emails = [
     "<TEMPORAL_SERVICE_GCP_IDENTITY>",
   ]

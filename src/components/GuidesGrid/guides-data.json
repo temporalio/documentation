@@ -78,6 +78,15 @@
     "tags": ["Workflow Management"],
     "sdk": "Python",
     "href": "/guides/lock-shared-resources"
+  },
+
+  {
+    "name": "Migrate from Celery",
+    "description":
+      "Convert a Celery task queue to Temporal Standalone Activities, with retries and monitoring.",
+    "tags": ["Migration"],
+    "sdk": "Python",
+    "href": "/guides/celery-to-standalone-activity"
   }
 
 

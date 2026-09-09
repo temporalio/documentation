@@ -29,6 +29,7 @@ Sync match failure is the primary control signal, and backlog aids sizing.
 
 When the [WCI](/serverless-workers#worker-controller-instance) needs more capacity, it calls the Lambda `InvokeFunction` API to start new Workers.
 Each call is a discrete action ("invoke N more functions"), not a target state.
+Temporal calls that API from outside your network, so no inbound connection to the function is needed.
 The WCI does not manage a fleet of instances.
 
 ### Scale-out {/* #scale-out */}

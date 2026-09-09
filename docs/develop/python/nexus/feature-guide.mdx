@@ -10,6 +10,8 @@ tags:
   - Python SDK
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { CaptionedImage } from '@site/src/components';
 
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
@@ -356,11 +358,12 @@ See the [Nexus cancellation sample](https://github.com/temporalio/samples-python
 ## Make Nexus calls across Namespaces in Temporal Cloud {/* #nexus-calls-across-namespaces-temporal-cloud */}
 
 This section assumes you are already familiar with how to connect a Worker to Temporal Cloud.
-The `tcld` CLI is used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.
+The Temporal Cloud CLI is used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.
 
-### Install the latest `tcld` CLI and generate certificates
+### Install `tcld` and generate certificates
 
-To install the latest version of the `tcld` CLI, run the following command (on macOS):
+Certificate generation is only available in `tcld`. To install the latest version of `tcld`, run the following command
+(on macOS):
 
 ```
 brew install temporalio/brew/tcld
@@ -379,6 +382,27 @@ These certificates will be valid for one year.
 Before deploying to Temporal Cloud, ensure that the appropriate Namespaces are created for both the caller and handler.
 If you already have these Namespaces, you don't need to do this.
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```
+temporal cloud login
+
+temporal cloud namespace create \
+	--name <your-caller-namespace> \
+	--region aws-us-west-2 \
+	--ca-certificate-file 'path/to/your/ca.pem' \
+	--retention-days 1
+
+temporal cloud namespace create \
+	--name <your-target-namespace> \
+	--region aws-us-west-2 \
+	--ca-certificate-file 'path/to/your/ca.pem' \
+	--retention-days 1
+```
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
 ```
 tcld login
 
@@ -396,12 +420,28 @@ tcld namespace create \
 	--ca-certificate-file 'path/to/your/ca.pem' \
 	--retention-days 1
 ```
+</TabItem>
+</Tabs>
 
 Alternatively, you can create Namespaces through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces).
 
 ### Create a Nexus Endpoint to route requests from caller to handler
 
 To create a Nexus Endpoint you must have a Developer account role or higher, and have NamespaceAdmin permission on the `--target-namespace`.
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```
+temporal cloud nexus endpoint create \
+  --name <my-nexus-endpoint-name> \
+  --target-task-queue my-handler-task-queue \
+  --target-namespace <my-target-namespace.account> \
+  --allow-namespace <my-caller-namespace.account> \
+  --description-file hello_nexus/endpoint_description.md
+```
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```
 tcld nexus endpoint create \
@@ -411,6 +451,8 @@ tcld nexus endpoint create \
   --allow-namespace <my-caller-namespace.account> \
   --description-file hello_nexus/endpoint_description.md
 ```
+</TabItem>
+</Tabs>
 
 The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in Runtime Access Control.
 
