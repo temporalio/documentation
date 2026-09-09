@@ -56,7 +56,7 @@ See [Task Queue Priority and Fairness](/develop/task-queue-priority-fairness#tas
 
 Use this pattern when multiple tenants or workload groups share a Task Queue and need weighted dispatch under load. It works well when tenants are added often because Fairness keys do not require separate Task Queues or Worker configuration.
 
-Fairness does not provide exact dispatch ratios, concurrency limits, or compute isolation. Use Activity Task Queue rate limits for throughput caps. Use separate Task Queues with dedicated Worker pools and compute resources for hard isolation. Use [Priority Task Queues](/design-patterns/priority-task-queues) to order urgent work ahead of less urgent work.
+Fairness does not provide exact dispatch ratios, concurrency limits, or compute isolation. Use Activity Task Queue rate limits for throughput caps. Use separate Task Queues with dedicated Worker pools and compute resources for hard isolation. Use Priority to order urgent work ahead of less urgent work.
 
 ## Benefits and trade-offs
 
