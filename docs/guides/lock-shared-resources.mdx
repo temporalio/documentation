@@ -44,7 +44,7 @@ Encapsulating the resource and slot into the Workflow ID (`permit:{resource}:{sl
 
 If the parent Workflow closes for any reason without sending the release Signal (operator termination, execution timeout, unhandled exception), the default `ParentClosePolicy.TERMINATE` cancels the permit child immediately and the slot frees right away. The permit Workflow also runs a `wait_condition` with a lease timeout for cases where the holder is alive but went silent, and `start_child_workflow` sets `execution_timeout=lease` as a server-side backstop for permits that no Worker ever picks up. Together these mechanisms handle orphan recovery internally, eliminating the need for a separate cleanup process.
 
-The `Semaphore` pins the release Signal to the specific run started at acquire time by holding the `ChildWorkflowHandle` from `start_child_workflow` and signalling on that handle. Without this pin, a late release Signal from a holder whose lease already expired could revoke a subsequent acquirer's permit. The `Semaphore` shuffles its slot list using `workflow.random()` so Workflows always probe in a random order. The shuffle produces the same order on every replay, as Workflow code requires, and is uniform across callers. This spreads contention across the pool rather than concentrating on slot 0, for example.
+The `Semaphore` pins the release Signal to the specific run started at acquire time by holding the `ChildWorkflowHandle` from `start_child_workflow` and signalling on that handle. Without this pin, a late release Signal from a holder whose lease already expired could revoke a subsequent acquirer's permit. The `Semaphore` shuffles its slot list using `workflow.random()` so Workflows always probe in a random order. The shuffle produces the same order on every replay, as the Workflow Definition requires, and is uniform across callers. This spreads contention across the pool rather than concentrating on slot 0, for example.
 
 Three operational characteristics matter before adopting the pattern:
 
@@ -80,7 +80,7 @@ To complete the implementation plan, you will need:
     - Familiarity with Temporal Workflows and Activities ([docs](/workflows)).
     - Child Workflows and parent close policies ([docs](/child-workflows)).
     - Signals and Queries ([docs](/encyclopedia/workflow-message-passing)).
-    - Workflow code determinism ([docs](/workflow-definition#deterministic-constraints)).
+    - Workflow Definition determinism ([docs](/workflow-definition#deterministic-constraints)).
 
 ## Architecture diagram
 

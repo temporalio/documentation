@@ -112,9 +112,9 @@ Long-running Activities, such as maintaining a WebSocket connection to a game ro
 
 Configure a short Heartbeat Timeout (for example, 30 seconds) and emit heartbeats frequently (for example, every 5 to 10 seconds). The SDK throttles Heartbeat calls to avoid overwhelming the Temporal Service, so you can call `activity.heartbeat()` as often as needed without performance concern.
 
-### Workflow code determinism
+### Workflow Definition determinism
 
-In Temporal, your Activities can include non-deterministic code, but the Workflow's code must remain deterministic. This is because Temporal restores Workflow state through *replay*. When a Worker restarts, it re-executes the Workflow code from the beginning, matching Commands against Events stored in the history. If the code produces different Commands than what the history contains, the Worker raises a `NondeterminismError`.
+In Temporal, your Activities can include non-deterministic code, but the Workflow Definition must remain deterministic. This is because Temporal restores Workflow state through *replay*. When a Worker restarts, it re-executes the Workflow code from the beginning, matching Commands against Events stored in the history. If the code produces different Commands than what the history contains, the Worker raises a `NondeterminismError`.
 
 In practice, this means:
 

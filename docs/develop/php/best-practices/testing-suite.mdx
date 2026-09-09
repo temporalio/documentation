@@ -199,7 +199,7 @@ The following are examples of fetching and replaying Event Histories:
 To replay Workflow Executions, use the `\Temporal\Testing\Replay\WorkflowReplayer` class.
 
 In the following example, Event Histories are fetching from the Temporal, and then replayed.
-If the Workflow's code is non-deterministic, a `NonDeterministicWorkflowException` will be thrown.
+If the Workflow Definition is non-deterministic, a `NonDeterministicWorkflowException` will be thrown.
 Note that this requires [Advanced Visibility](/visibility#advanced-visibility) to be enabled.
 
 ```php

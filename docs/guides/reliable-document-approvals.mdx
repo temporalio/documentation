@@ -63,9 +63,9 @@ Temporal's Event History has a hard limit of 51,200 events or 50 MB ([Workflow E
 
 A single approval with reminders and escalation generates roughly 40–80 events — well within limits. If your process supports resubmission loops or runs for months, use `workflow.info().is_continue_as_new_suggested()` to detect when the Server recommends a Continue-As-New, and act on it at a safe boundary.
 
-### Workflow code determinism
+### Workflow Definition determinism
 
-Workflow code must be deterministic because Temporal uses *history replay* to reconstruct state after Worker restarts. If the code generates different commands on replay, the SDK raises a `NondeterminismError`.
+The Workflow Definition must be deterministic because Temporal uses *history replay* to reconstruct state after Worker restarts. If the code generates different commands on replay, the SDK raises a `NondeterminismError`.
 
 Key rules:
 
