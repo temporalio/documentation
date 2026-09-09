@@ -94,6 +94,6 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 
 ### Patterns
 
-- **[Priority Task Queues](/design-patterns/priority-task-queues)**: Order Tasks by urgency within the same Task Queue using `PriorityKey`.
+- **[Priority](/design-patterns/priority-task-queues)**: Order Task dispatches by urgency within the same Task Queue using a Priority key.
 - **[Downstream Rate Limiting](/design-patterns/downstream-rate-limiting)**: Cap dispatch throughput to a downstream service with a Task Queue RPS setting.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Route Activities to a specific Worker host for resource or data affinity.

@@ -20,8 +20,8 @@ These patterns control how fast work executes, protect downstream services from 
   {
     href: "/design-patterns/priority-task-queues",
     icon: "priority-task-queues-icon.svg",
-    title: "Priority Task Queues",
-    description: "Assigns a priority level to Workflows and Activities so time-sensitive work runs ahead of lower-priority work on the same Task Queue.",
+    title: "Priority",
+    description: "Orders Task dispatches so urgent work moves ahead of lower-priority work on the same Task Queue.",
   },
   {
     href: "/design-patterns/fairness",
@@ -35,7 +35,7 @@ These patterns control how fast work executes, protect downstream services from 
 
 **A downstream dependency has a fixed rate limit**: use [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting) to cap throughput at the Worker.
 
-**Urgent work must not wait behind bulk work**: use [Priority Task Queues](/design-patterns/priority-task-queues).
+**Urgent work should move ahead of bulk work**: use [Priority](/design-patterns/priority-task-queues).
 
 **Multiple tenants share the same Workers**: use [Fairness](/design-patterns/fairness) to keep one tenant's burst from starving others.
 
