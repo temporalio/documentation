@@ -1,11 +1,11 @@
 ---
 id: priority-task-queues
 title: "Priority"
-description: "Orders Task dispatches so urgent work moves ahead of lower-priority work on the same Task Queue."
+description: "Assigns a priority level to Workflows and Activities so that time-sensitive work dispatches ahead of lower-priority work within a single Task Queue."
 ---
 
 :::info[TLDR]
-Assign a Priority key from 1 to 5 to Workflows and Activities so high-priority work dispatches ahead of lower-priority work on a shared Task Queue. Use this when a flood of batch or background Tasks would otherwise delay high-urgency requests.
+Assign a Priority key from 1 to 5 to Workflows and Activities so **high-priority work dispatches ahead of lower-priority work** on a shared Task Queue. Use this when a flood of batch or background Tasks would otherwise delay high-urgency requests.
 :::
 
 ## Overview
@@ -30,13 +30,13 @@ flowchart TD
     TQ --> P1["Priority 1\nsub-queue"]
     TQ --> P3["Priority 3\nsub-queue"]
     TQ --> P5["Priority 5\nsub-queue"]
-    P1 -->|dispatch first| W["Shared Workers"]
-    P3 -->|dispatch next| W
-    P5 -->|dispatch last| W
+    P1 -->|dispatched first| W["Shared Workers"]
+    P3 -->|dispatched second| W
+    P5 -->|dispatched last| W
     W --> DS["Downstream\nService"]
 ```
 
-The diagram assumes all three levels have backlogged Tasks in the same Task Queue partition and Worker Deployment Version.
+The following describes each step in the diagram. The example assumes all three levels have backlogged Tasks in the same Task Queue partition and Worker Deployment Version.
 
 1. Workflows start with a Priority key in their start options. Payment Workflows use Priority `1`. Routine Workflows default to Priority `3`. Nightly batch reports use Priority `5`.
 2. The Matching Service routes each Task to the corresponding Priority sub-queue inside the Task Queue.
@@ -53,13 +53,13 @@ See [Task Queue Priority](/develop/task-queue-priority-fairness#task-queue-prior
 
 This pattern is a good fit when your system mixes time-sensitive operations (payment processing, user-facing requests) with background or batch work (reporting, data imports, inventory management), and you want urgent Tasks to dispatch first during periods of high load. It also works well when you need to mark urgent Tasks that should dispatch ahead of normal processing, for example, triggering immediate reruns of failed critical Tasks.
 
-It is not a good fit when all work is effectively equal in urgency, when a continuously replenished high-priority backlog could starve lower-priority work indefinitely, or when you need hard capacity isolation between tiers. Use separate Task Queues with dedicated Worker pools and compute resources for hard capacity isolation. If your concern is prioritizing work among tenants or customers, consider [Fairness](/design-patterns/fairness), which distributes dispatches proportionally using weighted Fairness keys.
+It is not a good fit when all work is effectively equal in urgency, when a continuously replenished high-priority backlog could starve lower-priority work indefinitely, or when you need hard capacity isolation between tiers. Use separate Task Queues with dedicated Worker pools and compute resources for hard capacity isolation. If your concern is prioritizing work among tenants or customers, consider the [Fairness](/design-patterns/fairness) pattern, which distributes dispatches proportionally using weighted Fairness keys rather than strict ordering.
 
 ## Benefits and trade-offs
 
-Native Priority requires no extra queues, routing logic, or additional Worker pools. A single pool of Workers serves all Priority levels, so idle Worker capacity is shared across all levels.
+Native Priority requires no extra queues, routing logic, or additional Worker pools. A single pool of Workers serves all Priority levels, so idle Worker capacity is available to every level without additional configuration.
 
-Lower-priority Tasks wait while higher-priority Tasks remain backlogged. In an environment with a continuously replenished high-priority backlog, low-priority Tasks may be delayed indefinitely. The built-in Priority key range is 1 to 5. The feature does not support more than five levels.
+Lower-priority Tasks are blocked while higher-priority Tasks remain backlogged. In an environment with a continuously replenished high-priority backlog, low-priority Tasks may be significantly delayed. The built-in Priority key range is 1 to 5. The feature does not support more than five levels.
 
 ## Comparison with alternatives
 
