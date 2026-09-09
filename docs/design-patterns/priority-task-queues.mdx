@@ -72,19 +72,18 @@ Lower-priority Tasks wait while higher-priority Tasks remain backlogged. In an e
 
 ## Best practices
 
-- **Use no more than five Priority levels.** Keep levels coarse. For example, use `1` for urgent work, `3` for normal work, and `5` for batch work.
-- **Reserve Priority `1` for urgent work.** When every caller uses the highest Priority, the feature provides no ordering benefit.
-- **Set the initial Priority key in Workflow start options.** Activities and Child Workflows inherit it unless they set their own.
-- **Override Activity Priority deliberately.** Use a different Priority key only when an Activity should dispatch at a different level than its Workflow.
+- **Use no more than five Priority levels.** The Priority key range is 1 to 5. Keep levels coarse. For example, use `1` for urgent work, `3` for normal work, and `5` for batch work.
+- **Reserve Priority `1` for genuinely urgent work.** When every caller uses Priority `1`, the highest level fills with routine work and the feature provides no benefit. The default is `3` when no key is set.
+- **Set the initial Priority key at Workflow start.** Set the Priority in the start options before execution begins. Activities and Child Workflows inherit it unless they set their own.
+- **Override Activity Priority deliberately.** Activities inherit the parent Workflow's Priority by default. Override it only when a specific Activity must dispatch at a different level than its Workflow.
+- **Monitor queue depth per Priority level.** Sustained backlog growth at a level means Tasks are arriving faster than they are being dispatched.
 
 ## Common pitfalls
 
 - **Assigning Priority `1` to all work by default.** When every caller sets the highest Priority, the feature provides no ordering benefit. Establish an explicit policy for which work types qualify for each level.
 - **Neglecting low-priority starvation.** Under sustained high load, Priority `5` Tasks may wait indefinitely. Use a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) on low-priority Activities to surface starvation as a visible failure.
+- **Assuming Priority cannot change after scheduling.** Use `UpdateWorkflowExecutionOptions` to change a Workflow Execution's Priority and `UpdateActivityOptions` to change a pending Activity's Priority.
 - **Assuming hard isolation between Priority levels.** Priority controls dispatch order, not Worker capacity allocation. A Priority `5` Task may still occupy a Worker slot when a Priority `1` Task arrives.
-- **Expecting Priority across Task Queue partitions.** Each partition orders its backlog independently.
-- **Expecting Priority across Worker Deployment Versions.** Each version has a separate backlog. Priority applies within each version's backlog.
-- **Expecting every Task to pass through priority dispatch.** Synchronous matching can send a Task directly to an idle poller. [Eager Task Execution](/develop/worker-performance#eager-task-execution) bypasses matching.
 
 ## Related
 
