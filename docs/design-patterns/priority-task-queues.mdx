@@ -79,12 +79,12 @@ Lower-priority Tasks wait while higher-priority Tasks remain backlogged. In an e
 
 ## Common pitfalls
 
-- **Assigning Priority key `1` to all work.** Priority cannot order Tasks when they all use the same key.
+- **Assigning Priority `1` to all work by default.** When every caller sets the highest Priority, the feature provides no ordering benefit. Establish an explicit policy for which work types qualify for each level.
+- **Neglecting low-priority starvation.** Under sustained high load, Priority `5` Tasks may wait indefinitely. Use a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) on low-priority Activities to surface starvation as a visible failure.
+- **Assuming hard isolation between Priority levels.** Priority controls dispatch order, not Worker capacity allocation. A Priority `5` Task may still occupy a Worker slot when a Priority `1` Task arrives.
 - **Expecting Priority across Task Queue partitions.** Each partition orders its backlog independently.
 - **Expecting Priority across Worker Deployment Versions.** Each version has a separate backlog. Priority applies within each version's backlog.
-- **Expecting FIFO order within a Priority level when using Fairness.** Fairness controls dispatch within each Priority level.
 - **Expecting every Task to pass through priority dispatch.** Synchronous matching can send a Task directly to an idle poller. [Eager Task Execution](/develop/worker-performance#eager-task-execution) bypasses matching.
-- **Ignoring lower-priority starvation.** A sustained higher-priority backlog can prevent lower-priority Tasks from dispatching.
 
 ## Related
 
