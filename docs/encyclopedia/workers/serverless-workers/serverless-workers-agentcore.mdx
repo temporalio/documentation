@@ -76,7 +76,13 @@ state that a Workflow needs in the Workflow or another durable store.
 Unlike an AWS Lambda Worker, an AgentCore Worker does not have a fixed Lambda invocation deadline. Your Runtime handler
 starts the Worker as background work. The Worker polls until it drains or AgentCore ends its compute.
 
-AgentCore has two lifecycle settings:
+Two sets of controls determine when that Worker stops:
+
+- **Worker idle and graceful-shutdown policy**: Your Worker implementation decides when it has been idle, stops
+  polling, and waits for in-flight Activities to complete.
+- **AgentCore lifecycle settings**: AgentCore can end the session or its compute before the Worker policy does.
+
+The AgentCore lifecycle settings are:
 
 - **Idle Runtime session timeout**: Ends a Runtime session after it has not received an AgentCore Runtime invocation for
   the configured duration. The default is 15 minutes. This is not a Temporal Worker idle timer: polling the Temporal
@@ -84,10 +90,10 @@ AgentCore has two lifecycle settings:
 - **Maximum lifetime**: Ends the compute running a Runtime session after the configured duration. The default and
   maximum is 8 hours. AgentCore can resume the session on new compute after that.
 
-Implement a separate idle policy in the Worker to release capacity before either AgentCore limit. The AgentCore Runtime
-sample starts a Worker on invocation, then waits for 60 seconds with no Activity starting or completing. It stops
-polling, allows up to two minutes for in-flight Activities to complete, and then returns from the Runtime handler.
-Choose values that fit your workload, and keep them within the AgentCore maximum lifetime.
+Implement the Worker idle policy to release capacity before either AgentCore limit. The AgentCore Runtime sample starts
+a Worker on invocation, then waits for 60 seconds with no Activity starting or completing. It stops polling, allows up
+to two minutes for in-flight Activities to complete, and then returns from the Runtime handler. Choose values that fit
+your workload, and keep them within the AgentCore maximum lifetime.
 
 Configure Activity timeouts and, for long-running Activities,
 [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so a retry can recover if AgentCore
