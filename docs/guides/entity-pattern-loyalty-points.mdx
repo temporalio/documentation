@@ -929,7 +929,7 @@ The `_do_continue_as_new` method handles the transition in three steps:
 
 After the transition, clients continue interacting with the same Workflow Id. Temporal automatically routes Signals, Queries, and Updates to the latest Run. Do not specify a Run Id when obtaining a Workflow handle, or your interactions will target a stale Execution.
 
-### Phase 7: Ensure Workflow determinism
+### Phase 7: Ensure Workflow code determinism
 
 Temporal replays Event History to resume a Workflow after a crash. The code must produce the same sequence of Commands on every replay.
 
