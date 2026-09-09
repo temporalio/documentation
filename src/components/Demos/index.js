@@ -1,8 +1,8 @@
 export {
-  CodeToCommandsDemo,
-  CommandsToEventsDemo,
-  HistoryReplayDemo,
-  NonDeterminismDemo,
+  WalkthroughDemo,
+  WalkthroughStep,
+  WalkthroughCommand,
+  WalkthroughEvent,
 } from './EventHistoryWalkthrough';
 export { default as RetrySimulator } from './RetrySimulator/RetrySimulator';
 export { default as ServerlessWorkerDemo } from './ServerlessWorker/ServerlessWorkerDemo';
