@@ -322,12 +322,7 @@ This results in loss of some progress made by the Workflow Execution in the prev
 During such conflict resolution, Temporal re-injects any external Events like Signals in the new Event History before discarding replication tasks.
 Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won't get stuck and will continue to make forward progress.
 
-Namespace metadata replication and Namespace cache refresh are separate. A direct failover update is applied first in
-the Temporal Service that receives the request and is then replicated asynchronously. Until that replication completes,
-both Temporal Services can temporarily consider the Namespace active or both can consider it passive, depending on which
-Temporal Service received the request. After a Temporal Service observes the failover, task processing compares a
-task's Event Id and failover version with the current mutable state and rejects tasks from a superseded history branch,
-even if the local Namespace cache entry is stale.
+Namespace metadata replication and Namespace cache refresh are separate. If you change the active Cluster directly (for example with `temporal operator namespace update --active-cluster` or the `UpdateNamespace` API), the Temporal Service that receives the request applies it locally first and then replicates it asynchronously. Until that replication completes, both Temporal Services can temporarily consider the Namespace active or both can consider it passive, depending on which Temporal Service received the request. After a Temporal Service observes the failover, task processing compares a task's Event Id and failover version with the current mutable state and rejects tasks from a superseded history branch, even if the local Namespace cache entry is stale.
 
 Activity Execution completions are not forwarded across Clusters.
 Any outstanding Activities will eventually time out based on the configuration.
