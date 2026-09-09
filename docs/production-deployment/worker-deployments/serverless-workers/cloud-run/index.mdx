@@ -77,6 +77,7 @@ import os
 
 from temporalio.client import Client
 from temporalio.common import VersioningBehavior, WorkerDeploymentVersion
+from temporalio.contrib.gcp.cloud_run.worker_id import WorkerIDPlugin
 from temporalio.worker import Worker, WorkerDeploymentConfig
 
 from my_workflows import MyWorkflow
@@ -88,6 +89,7 @@ async def main() -> None:
         os.environ["TEMPORAL_ADDRESS"],
         namespace=os.environ["TEMPORAL_NAMESPACE"],
         api_key=os.environ.get("TEMPORAL_API_KEY"),
+        plugins=[WorkerIDPlugin()],
         tls=True,
     )
     worker = Worker(
@@ -127,8 +129,8 @@ class MyWorkflow:
         ...
 ```
 
-For more on the Python Worker setup, see
-[Serverless Workers on GCP Cloud Run - Python SDK](/develop/python/workers/serverless-workers/cloud-run).
+The example uses the Cloud Run Worker Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+Python Worker setup, see [Serverless Workers on GCP Cloud Run - Python SDK](/develop/python/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Python>
 <SdkTabs.Go>
@@ -142,6 +144,7 @@ import (
 
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/contrib/envconfig"
+	"go.temporal.io/sdk/contrib/gcp/cloudrun/workerid"
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
 
@@ -149,7 +152,9 @@ import (
 )
 
 func main() {
-	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	clientOptions := envconfig.MustLoadDefaultClientOptions()
+	clientOptions.Plugins = append(clientOptions.Plugins, workerid.NewPlugin(workerid.PluginOptions{}))
+	c, err := client.Dial(clientOptions)
 	if err != nil {
 		log.Fatalln("Unable to create client", err)
 	}
@@ -192,8 +197,8 @@ w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
 
 If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
 
-For more on the Go Worker setup, see
-[Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
+The example uses the Cloud Run Worker Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+Go Worker setup, see [Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Go>
 <SdkTabs.TypeScript>
@@ -257,6 +262,8 @@ import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
 import io.temporal.common.VersioningBehavior;
 import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.gcp.cloudrun.workerid.GoogleCloudRunMetadata;
+import io.temporal.gcp.cloudrun.workerid.WorkerIdPlugin;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import io.temporal.worker.Worker;
@@ -276,11 +283,13 @@ public class WorkerMain {
                 .addApiKey(() -> apiKey)
                 .build());
 
+    GoogleCloudRunMetadata metadata = GoogleCloudRunMetadata.fetch();
     WorkflowClient client =
         WorkflowClient.newInstance(
             service,
             WorkflowClientOptions.newBuilder()
                 .setNamespace(System.getenv("TEMPORAL_NAMESPACE"))
+                .setPlugins(new WorkerIdPlugin(metadata))
                 .build());
 
     WorkerFactory factory = WorkerFactory.newInstance(client);
@@ -309,20 +318,22 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 `AUTO_UPGRADE`. Set it per Workflow with the `@WorkflowVersioningBehavior` annotation, or set a Worker-level default
 with `setDefaultVersioningBehavior` as shown above.
 
-For more on the Java Worker setup, see
-[Serverless Workers on GCP Cloud Run - Java SDK](/develop/java/workers/serverless-workers/cloud-run).
+The example uses the Cloud Run Worker Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+Java Worker setup, see [Serverless Workers on GCP Cloud Run - Java SDK](/develop/java/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Java>
 <SdkTabs.DotNet>
 
 ```csharp
 using Temporalio.Client;
+using Temporalio.Extensions.Gcp.CloudRun.WorkerId;
 using Temporalio.Worker;
 
 var client = await TemporalClient.ConnectAsync(new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
 {
     Namespace = Environment.GetEnvironmentVariable("TEMPORAL_NAMESPACE")!,
     ApiKey = Environment.GetEnvironmentVariable("TEMPORAL_API_KEY"),
+    Plugins = new[] { new WorkerIdPlugin() },
     Tls = new(),
 });
 
@@ -344,8 +355,8 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 `AutoUpgrade`. Set it per Workflow with `[Workflow(VersioningBehavior = ...)]`, or set a Worker-level default with
 `DefaultVersioningBehavior` as shown above.
 
-For more on the .NET Worker setup, see
-[Serverless Workers on GCP Cloud Run - .NET SDK](/develop/dotnet/workers/serverless-workers/cloud-run).
+The example uses the Cloud Run Worker Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+.NET Worker setup, see [Serverless Workers on GCP Cloud Run - .NET SDK](/develop/dotnet/workers/serverless-workers/cloud-run).
 
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
@@ -447,16 +458,6 @@ For more on the Rust Worker setup, see
 
 </SdkTabs.Rust>
 </SdkTabs>
-
-:::tip
-
-Workers on Cloud Run use the same code as a traditional long-lived Worker, so the SDK defaults the
-[Worker Identity](/workers#worker-identity) to the process ID and hostname. On Cloud Run that resolves to
-`1@localhost`, which makes a Worker harder to identify in the Temporal UI. Set your own Worker Identity, built from the
-[Cloud Run environment variables](https://cloud.google.com/run/docs/container-contract#worker-pools-env-vars), to help
-identify your Serverless Workers.
-
-:::
 
 ## 2. Deploy to a Cloud Run Worker Pool {/* #deploy-worker-pool */}
 
