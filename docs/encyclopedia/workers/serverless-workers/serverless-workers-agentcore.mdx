@@ -69,8 +69,9 @@ endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-r
 
 ## Lifecycle {/* #lifecycle */}
 
-The Runtime session provides the compute that hosts a Worker. It is not the durable identity of a Workflow, and Temporal
-can route a later Workflow or Activity Task to another Worker.
+An AgentCore Runtime session is only the compute that runs a Worker. It can end because of its idle timeout or maximum
+lifetime. A later Task for the same Workflow can run on another Worker in another Runtime session. Keep state that the
+Workflow needs in the Workflow or another durable store, not only in the Runtime session.
 
 Unlike an AWS Lambda Worker, an AgentCore Worker does not run within a fixed Lambda invocation deadline. Your Runtime
 handler starts the Worker as background work, and the Worker continues polling until it drains or AgentCore terminates
