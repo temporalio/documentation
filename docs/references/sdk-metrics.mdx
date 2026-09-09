@@ -552,6 +552,7 @@ Valid values for the `failure_reason` tag:
 - `NonDeterminismError`: The Workflow Task failed due to a non-determinism error.
 - `GrpcMessageTooLarge`: The Workflow Task response exceeded the gRPC message size limit and could not be delivered. The Temporal Service terminates the Workflow Execution in response. See [Troubleshoot the BlobSizeLimitError](/troubleshooting/blob-size-limit-error).
 - `PayloadsTooLarge`: A Payload or Memo in the Workflow Task response exceeded the Namespace size limit, so the Worker proactively failed the Workflow Task as retryable. See [Troubleshoot the BlobSizeLimitError](/troubleshooting/blob-size-limit-error#payload-size-limit).
+- `RequestTooLarge`: The whole Workflow Task completion exceeded the Namespace limit on the size of a single request, so the Worker proactively failed the Workflow Task rather than send a request the Temporal Service would reject. The Temporal Service retries the Workflow Task. See [Request too large](/troubleshooting/execution-failures#request-too-large).
 - `WorkflowError`: The Workflow Task failed for any other reason.
 
 ### `workflow_task_execution_latency`
