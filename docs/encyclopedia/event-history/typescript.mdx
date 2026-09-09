@@ -95,10 +95,10 @@ The walkthrough covers four phases:
 
 ## Example of a Non-Deterministic Workflow {/* #Example-of-Non-Deterministic-Workflow */}
 
-Now that Replay has been covered, this section will explain why Workflow code needs to be
+Now that Replay has been covered, this section will explain why a Workflow Definition needs to be
 [deterministic](/workflow-definition#deterministic-constraints) in order for Replay to work.
 
-A Workflow's code is deterministic if every execution of its Workflow Definition produces the same Commands in the same
+A Workflow Definition is deterministic if every execution of it produces the same Commands in the same
 sequence given the same input.
 
 As mentioned in the [`How History Replay Provides Durable Execution`](#How-History-Replay-Provides-Durable-Execution)
@@ -107,7 +107,7 @@ the Workflow code again to produce a set of Commands which is compared against t
 History. When there’s a mismatch between the expected sequence of Commands the Worker expects based on the Event History
 and the actual sequence produced during Replay (due to non-determinism), Replay will be unable to continue.
 
-To better understand why Workflow code needs to be deterministic, it's helpful to look at a Workflow Definition that violates
+To better understand why a Workflow Definition needs to be deterministic, it's helpful to look at one that violates
 it. In this case, this code will walk through a Workflow Definition that breaks the determinism constraint with a random
 number generator.
 
@@ -130,7 +130,7 @@ explanation, check out our free, self-paced courses: [Temporal 102](https://lear
 
 ## Temporal Applications Support Non-Deterministic Operations
 
-We want to emphasize that although your Workflow code needs to be deterministic, your application itself does not!
+We want to emphasize that although your Workflow Definition needs to be deterministic, your application itself does not!
 
 Remember that pretty much anything that interacts with the external world is inherently non-deterministic:
 
@@ -139,7 +139,7 @@ Remember that pretty much anything that interacts with the external world is inh
 - Reading or writing files
 - Making HTTP requests to external services
 
-**Good news**: Your Temporal application can absolutely handle all of these operations. While your Workflow code must be
+**Good news**: Your Temporal application can absolutely handle all of these operations. While your Workflow Definition must be
 deterministic, your application absolutely can handle any type of non-deterministic operation, including those listed
 above. This gives you the best of both worlds—the crash-proof reliability of a Workflow and the resiliency of Activities
 which have built-in support for retries.
