@@ -68,7 +68,7 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 
 | Approach | Per-tenant dispatch | Dynamic tenants | Shares idle capacity | Complexity |
 | :--- | :--- | :--- | :--- | :--- |
-| Temporal Fairness (native) | Weighted virtual queues | Yes | Yes | Low |
+| Temporal Fairness (native) | Weighted fair dispatch | Yes | Yes | Low |
 | Dedicated Task Queue per tenant | Separate | No | No | Medium |
 | Single shared Task Queue (no control) | None | Yes | Yes | Lowest |
 | External queue with per-tenant consumer groups | Separate | Yes | No | High |
