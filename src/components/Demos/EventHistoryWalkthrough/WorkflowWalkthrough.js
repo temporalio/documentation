@@ -201,15 +201,7 @@ function StepPanel({ step, total, columns, steps }) {
       </div>
 
       <h4 className={styles.stepTitle}>{step.title}</h4>
-      <p className={styles.note}>{step.note}</p>
-
-      {step.bullets && (
-        <ul className={styles.bullets}>
-          {step.bullets.map((bullet) => (
-            <li key={bullet}>{bullet}</li>
-          ))}
-        </ul>
-      )}
+      <div className={styles.note}>{step.body}</div>
 
       <div className={`${styles.columns} ${columns.length > 1 ? styles.columnsSplit : ''}`}>
         {columns.map((column) => (
