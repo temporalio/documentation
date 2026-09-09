@@ -80,15 +80,13 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 
 ## Common pitfalls
 
-- **Expecting exact ratios.** Weights shape dispatch proportions over time when multiple groups have backlogs. Results vary across partitions and short time windows.
-- **Expecting Fairness to reorder the backlog.** Temporal records each Task's Fairness weight when the Task is scheduled. Enabling Fairness or changing weights affects only newly scheduled Tasks.
-- **Expecting Tasks without a Fairness key to bypass Fairness.** These Tasks share an implicit empty-string key with a weight of 1.0.
-- **Expecting Fairness across Task Queue partitions.** Each partition calculates Fairness independently. Imbalanced partitions can change overall dispatch proportions.
-- **Expecting Fairness across Worker Deployment Versions.** Each version has a separate backlog. Fairness applies within each version's backlog.
-- **Expecting Fairness state to be fully restored after a server restart.** By default, Temporal restores state for up to 100 Fairness keys. Other keys rebuild state as Tasks arrive.
-- **Treating Fairness as Worker capacity control.** Fairness considers only dispatch. A group with longer-running Tasks can consume more Worker time than its dispatch share suggests.
+- **Expecting Fairness to reorder the existing backlog.** Fairness weight is evaluated at schedule time. When Fairness is enabled for a Namespace with an existing backlog, that backlog drains in its original order before fairness-aware dispatch applies to new Tasks.
 - **Using Fairness as a hard rate limiter.** Fairness by itself doesn't cap throughput. Use [Fairness key rate limits](/develop/task-queue-priority-fairness#set-rate-limits-at-the-task-queue-level) for per-key limits.
-- **Expecting every Task to pass through fair dispatch.** Synchronous matching can send a Task directly to an idle poller. [Eager Task Execution](/develop/worker-performance#eager-task-execution) bypasses matching.
+- **Unkeyed Tasks bypassing Fairness.** Tasks without a Fairness key are grouped under an implicit empty-string key and participate in weighted fair dispatch alongside named Fairness keys with a default weight of 1.0. They do not bypass Fairness and compete as one group.
+- **Task Queue partitioning reducing accuracy.** Task Queues are internally partitioned, and Tasks are distributed to partitions randomly. This can interfere with fair dispatch proportions. If your workload requires higher accuracy, contact Temporal Support to configure a single-partition Task Queue.
+- **Assuming Fairness applies across Worker Versioning boundaries.** Worker Deployment Versions have separate backlogs. Fairness applies within each version's backlog.
+- **Expecting consistent Fairness immediately after a server restart.** Fairness ordering is preserved across restarts for the most active keys. Less active keys may briefly dispatch new Tasks ahead of their existing backlog until ordering normalizes.
+- **Expecting the running Task mix to immediately reflect fair dispatch.** Fairness governs which Task is dispatched next. It does not account for Tasks already running on Workers. A group with longer-running Tasks can consume more Worker time than its dispatch share suggests.
 
 ## Related
 
