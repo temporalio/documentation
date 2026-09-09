@@ -90,10 +90,11 @@ The AgentCore lifecycle settings are:
 - **Maximum lifetime**: Ends the compute running a Runtime session after the configured duration. The default and
   maximum is 8 hours. AgentCore can resume the session on new compute after that.
 
-Implement the Worker idle policy to release capacity before either AgentCore limit. The AgentCore Runtime sample starts
-a Worker on invocation, then waits for 60 seconds with no Activity starting or completing. It stops polling, allows up
-to two minutes for in-flight Activities to complete, and then returns from the Runtime handler. Choose values that fit
-your workload, and keep them within the AgentCore maximum lifetime.
+The Worker can use an idle policy based on Temporal work rather than on AgentCore Runtime invocations. The AgentCore
+Runtime sample starts a Worker on invocation, then waits for 60 seconds with no Activity starting or completing. It
+stops polling, allows up to two minutes for in-flight Activities to complete, and then returns from the Runtime handler.
+This is the sample's policy, not a required setting. Choose values that fit your workload and account for the AgentCore
+maximum lifetime.
 
 Configure Activity timeouts and, for long-running Activities,
 [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so a retry can recover if AgentCore
