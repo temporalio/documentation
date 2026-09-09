@@ -1,27 +1,26 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Layout from '@theme/Layout';
 import { useLocation, useHistory } from '@docusaurus/router';
-import {
-  InstantSearch,
-  useInfiniteHits,
-  useSearchBox,
-  useStats,
-  Highlight,
-  Configure,
-} from 'react-instantsearch';
+import { InstantSearch, useInfiniteHits, useSearchBox, useStats, Highlight, Configure } from 'react-instantsearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import aa from '../theme/SearchBar/algoliaInsights';
+import { useAnalyticsConsent } from '../theme/SearchBar/useAnalyticsConsent';
 import { trackSearchClick, trackNoResults } from '../theme/SearchBar/trackSearchEvent';
-import { SDK_LANGUAGES, getInitialLanguageFilter, SDK_LANGUAGE_STORAGE_KEY } from '../theme/SearchBar/SDKLanguageFilter';
+import {
+  SDK_LANGUAGES,
+  getInitialLanguageFilter,
+  SDK_LANGUAGE_STORAGE_KEY,
+} from '../theme/SearchBar/SDKLanguageFilter';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } from '../constants/algolia';
 import '../theme/SearchBar/styles.css';
 
 const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY);
 
-// Stable reference: an inline `{ insightsClient: aa }` object literal would be
-// a new object on every render, which resets the insights middleware's
-// dedup cache and re-fires "Hits Viewed" for results it already reported.
-const INSIGHTS_CONFIG = { insightsClient: aa };
+// Stable references: an inline object literal would be a new object on every
+// render, which resets the insights middleware's dedup cache and re-fires
+// "Hits Viewed" for results it already reported.
+const INSIGHTS_CONFIG_ENABLED = { insightsClient: aa };
+const INSIGHTS_CONFIG_DISABLED = { insightsClient: undefined };
 
 // Get the appropriate hierarchy attribute based on hit type
 function getHierarchyAttribute(hit: any): string {
@@ -55,7 +54,13 @@ function getBreadcrumbPath(hit: any): string[] {
   return path;
 }
 
-function SearchResultItem({ hit, sendEvent }: { hit: any; sendEvent: (eventType: string, hit: any, eventName: string) => void }) {
+function SearchResultItem({
+  hit,
+  sendEvent,
+}: {
+  hit: any;
+  sendEvent: (eventType: string, hit: any, eventName: string) => void;
+}) {
   const history = useHistory();
   const hierarchyAttr = getHierarchyAttribute(hit);
   const breadcrumbs = getBreadcrumbPath(hit);
@@ -78,11 +83,7 @@ function SearchResultItem({ hit, sendEvent }: { hit: any; sendEvent: (eventType:
   };
 
   return (
-    <a
-      href={hit.url || hit.objectID}
-      onClick={handleClick}
-      className="search-page-result"
-    >
+    <a href={hit.url || hit.objectID} onClick={handleClick} className="search-page-result">
       <div className="search-page-result-title">
         <Highlight attribute={hierarchyAttr} hit={hit} />
       </div>
@@ -108,11 +109,7 @@ function SearchResultsSection() {
   const { query } = useSearchBox();
 
   if (!query) {
-    return (
-      <div className="search-page-empty">
-        Enter a search term to find documentation
-      </div>
-    );
+    return <div className="search-page-empty">Enter a search term to find documentation</div>;
   }
 
   return <SearchResultsList query={query} />;
@@ -150,18 +147,12 @@ function SearchResultsList({ query }: { query: string }) {
   }, [query, items.length]);
 
   if (items.length === 0) {
-    return (
-      <div className="search-page-no-results">
-        No results found for "{query}"
-      </div>
-    );
+    return <div className="search-page-no-results">No results found for "{query}"</div>;
   }
 
   return (
     <>
-      <div className="search-page-stats">
-        {nbHits.toLocaleString()} documents found
-      </div>
+      <div className="search-page-stats">{nbHits.toLocaleString()} documents found</div>
       <div className="search-page-results">
         {items.map((hit: any) => (
           <SearchResultItem key={hit.objectID} hit={hit} sendEvent={sendEvent} />
@@ -169,9 +160,7 @@ function SearchResultsList({ query }: { query: string }) {
       </div>
       {/* Sentinel element for infinite scroll */}
       <div ref={sentinelRef} className="search-page-sentinel">
-        {!isLastPage && (
-          <div className="search-page-loading">Loading more results...</div>
-        )}
+        {!isLastPage && <div className="search-page-loading">Loading more results...</div>}
       </div>
     </>
   );
@@ -222,7 +211,10 @@ function SearchInput() {
   );
 }
 
-function LanguageFilter({ selectedLanguages, onLanguageChange }: {
+function LanguageFilter({
+  selectedLanguages,
+  onLanguageChange,
+}: {
   selectedLanguages: string[];
   onLanguageChange: (languages: string[]) => void;
 }) {
@@ -238,7 +230,7 @@ function LanguageFilter({ selectedLanguages, onLanguageChange }: {
   };
 
   const selectedLabels = selectedLanguages
-    .map(id => SDK_LANGUAGES.find(lang => lang.id === id)?.label)
+    .map((id) => SDK_LANGUAGES.find((lang) => lang.id === id)?.label)
     .filter(Boolean)
     .join(', ');
 
@@ -247,11 +239,7 @@ function LanguageFilter({ selectedLanguages, onLanguageChange }: {
       <div className="search-page-language-filter-header">
         <span className="search-page-language-filter-title">Filter by SDK</span>
         {selectedLanguages.length > 0 && (
-          <button
-            className="search-page-language-filter-clear"
-            onClick={clearAll}
-            type="button"
-          >
+          <button className="search-page-language-filter-clear" onClick={clearAll} type="button">
             Clear all
           </button>
         )}
@@ -269,9 +257,7 @@ function LanguageFilter({ selectedLanguages, onLanguageChange }: {
         ))}
       </div>
       {selectedLanguages.length > 0 && (
-        <div className="search-page-language-filter-note">
-          Showing {selectedLabels} and language-agnostic content
-        </div>
+        <div className="search-page-language-filter-note">Showing {selectedLabels} and language-agnostic content</div>
       )}
     </div>
   );
@@ -283,6 +269,9 @@ function SearchPageContent() {
   const initialQuery = params.get('q') || '';
 
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>(() => getInitialLanguageFilter());
+  // Without analytics consent, InstantSearch's insights middleware never
+  // fires (no insightsClient), so no "Hits Viewed"/click events reach Algolia.
+  const hasAnalyticsConsent = useAnalyticsConsent();
 
   const handleLanguageChange = (languages: string[]) => {
     setSelectedLanguages(languages);
@@ -294,21 +283,18 @@ function SearchPageContent() {
   };
 
   // Build facet filters based on selected languages
-  const facetFilters = selectedLanguages.length > 0
-    ? SDK_LANGUAGES
-        .filter(lang => !selectedLanguages.includes(lang.id))
-        .map(lang => `sdk_language:-${lang.id}`)
-    : undefined;
+  const facetFilters =
+    selectedLanguages.length > 0
+      ? SDK_LANGUAGES.filter((lang) => !selectedLanguages.includes(lang.id)).map((lang) => `sdk_language:-${lang.id}`)
+      : undefined;
 
   return (
     <div className="search-page-container">
-      <h1 className="search-page-title">
-        Search results{initialQuery && <> for "{initialQuery}"</>}
-      </h1>
+      <h1 className="search-page-title">Search results{initialQuery && <> for "{initialQuery}"</>}</h1>
       <InstantSearch
         searchClient={searchClient}
         indexName={ALGOLIA_INDEX_NAME}
-        insights={INSIGHTS_CONFIG}
+        insights={hasAnalyticsConsent ? INSIGHTS_CONFIG_ENABLED : INSIGHTS_CONFIG_DISABLED}
         initialUiState={{
           [ALGOLIA_INDEX_NAME]: {
             query: initialQuery,
@@ -318,21 +304,10 @@ function SearchPageContent() {
         <Configure
           hitsPerPage={50}
           facetFilters={facetFilters}
-          attributesToRetrieve={[
-            'hierarchy',
-            'content',
-            'anchor',
-            'url',
-            'url_without_anchor',
-            'type',
-            'sdk_language',
-          ]}
+          attributesToRetrieve={['hierarchy', 'content', 'anchor', 'url', 'url_without_anchor', 'type', 'sdk_language']}
         />
         <SearchInput />
-        <LanguageFilter
-          selectedLanguages={selectedLanguages}
-          onLanguageChange={handleLanguageChange}
-        />
+        <LanguageFilter selectedLanguages={selectedLanguages} onLanguageChange={handleLanguageChange} />
         <SearchResultsSection />
       </InstantSearch>
     </div>

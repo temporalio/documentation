@@ -78,6 +78,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--namespace`, `-n` | No | **string** Filter connectivity rules by namespace (e.g., 'my-namespace.my-account'). |
 | `--page-size` | No | **int** Number of connectivity rules to return per page. |
 | `--page-token` | No | **string** Page token for pagination. |
+| `--project-id` | No | **string** Filter connectivity rules by project ID. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## private
@@ -114,6 +115,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--gcp-project-id` | No | **string** The GCP project ID (only for GCP private connectivity). |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | No | **string** The ID of the project to create the connectivity rule in. |
 | `--region` | Yes | **string** The region for private connectivity. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
@@ -141,6 +143,7 @@ Use the following options to change the behavior of this command. You can also u
 | `--enable-stable-ips` | No | **bool** Connect the namespace via a predictable set of IPs on the public internet. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--project-id` | No | **string** The ID of the project to create the connectivity rule in. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## Global Flags
