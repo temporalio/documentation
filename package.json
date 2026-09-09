@@ -73,7 +73,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@temporalio-web/consent-banner": "^1.0.1",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
+    "@types/react-dom": "^19.2.5",
     "@vercel/functions": "^3.9.3",
     "algoliasearch": "^5.57.0",
     "chart.js": "^4.4.1",
