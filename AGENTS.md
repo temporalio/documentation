@@ -260,6 +260,11 @@ Generated register:
 
 - Long sentences carrying little information, such as "That distinction matters because ...".
 - Software jargon used as casual speech: "cross-cutting", "load-bearing".
+- Operational shorthand that names a technique without stating the action the reader must take. For example, replace
+  "move the data out of band" with "store the data in external storage and pass a reference through Event History."
+- In procedural or triage guidance, lead with the reader's action and then give the reason or constraint. For example,
+  prefer "Find the Workflow Id and Run Id in Worker logs because the metric does not carry a Workflow Id" over
+  describing the metric's limitation before saying what the reader should do.
 - "Quietly" or similar words added to a sentence that does not need them.
 - Junk drawer lists, meaning bullets collected under one heading with no shared idea holding them
   together.
