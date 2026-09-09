@@ -89,6 +89,7 @@ docs/**/*.mdx ──(postBuild)──▶ markdown-pages plugin ──▶ transfo
 | `scripts/component-handlers/sdk-overview-cards.mjs` | Handler for `<SdkOverviewCards>` — reads `src/data/sdk-versions.json` for version numbers and emits a Markdown list, one bullet per SDK. |
 | `scripts/component-handlers/hero.mjs` | Handler for the homepage hero cards (`<ActionCard>` / `<CommunityCard>`) — parses `title`/`href` props and children into a Markdown link-list item. Copy lives in `docs/index.mdx`; layout wrappers strip generically. |
 | `scripts/component-handlers/cards.mjs` | Handler for `<QuickstartCards>` / `<PatternCards>` — parses the inline `items={[{href,title,description}]}` prop into a Markdown link list. |
+| `scripts/component-handlers/event-history-walkthrough.mjs` | Handler for the Event History walkthrough demos (`<CodeToCommandsDemo>` etc. + `<WalkthroughStep>`/`<WalkthroughCommand>`/`<WalkthroughEvent>`) — renders each authored step to a `#### Step N` heading with its Command/Event ledger entries. |
 | `scripts/audit-components.mjs` | Inventory/coverage tool. Scans all docs, reports per-component coverage, writes `readme/COMPONENT_REGISTRY.md`. |
 | `src/components/LLMActions/LLMActions.tsx` | On-page actions (Copy, View as Markdown, Open in ChatGPT/Claude). Points at the generated `/<path>.md` (not the raw MDX). |
 | `tests/` | Zero-framework test suites. Fixtures in `fixtures/docs/`, golden snapshots in `tests/snapshots/`. |

@@ -2,7 +2,6 @@
 id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
-sidebar_label: Glossary
 sidebar_position: 13
 toc_max_heading_level: 4
 tags:
@@ -749,7 +748,7 @@ The Temporal Web UI provides users with Workflow Execution state and metadata fo
 
 #### [Timer](/workflow-execution/timers-delays)
 
-Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
+Temporal SDKs offer Timer APIs so that the Workflow Definition is deterministic in its handling of time values.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
