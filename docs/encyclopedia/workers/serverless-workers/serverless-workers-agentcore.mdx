@@ -28,8 +28,11 @@ Runtime session. When the [Worker Controller Instance (WCI)](/serverless-workers
 capacity, it invokes an AgentCore Runtime endpoint. The Runtime starts a Worker, which connects to the Temporal Service
 and polls its Task Queue.
 
+## Autoscaling {/* #autoscaling */}
+
 AgentCore Runtime uses the same event-driven autoscaling model as AWS Lambda. The WCI invokes individual Runtime
-sessions when it needs more capacity; it does not manage a target-sized pool of Runtime sessions.
+sessions when it needs more capacity; it does not manage a target-sized pool of Runtime sessions. For the shared
+autoscaling behavior, see [Autoscaling for Serverless Workers on AWS Lambda](/serverless-workers/aws-lambda#autoscaling).
 
 ## Worker Versioning {/* #worker-versioning */}
 
