@@ -1,7 +1,7 @@
 ---
 id: timers-delays
 title: Timers and Start Delays
-description: Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
+description: Temporal SDKs offer Timer APIs so that the Workflow Definition is deterministic in its handling of time values.
 slug: /workflow-execution/timers-delays
 tags:
   - Concepts
@@ -12,7 +12,7 @@ This page discusses [Timer](#timer) and [Start Delay](#delay-workflow-execution)
 
 ## What is a Timer? {/* #timer */}
 
-Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
+Temporal SDKs offer Timer APIs so that the Workflow Definition is deterministic in its handling of time values.
 
 Timers in Temporal are persisted, meaning that even if your Worker or Temporal Service is down when the time period completes, as soon as your Worker and Temporal Service become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed.
 Timers are reliable and efficient.
