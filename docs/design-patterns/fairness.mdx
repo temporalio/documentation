@@ -80,12 +80,15 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 
 ## Common pitfalls
 
-- **Expecting exact ratios.** Weights control dispatch proportions over time when multiple groups have backlogged Tasks. Results vary across partitions and short time windows.
-- **Treating Fairness as Worker capacity control.** Fairness does not account for running Tasks or their resource use. A group with longer-running Tasks can consume more Worker time than its dispatch share suggests.
-- **Using Fairness as a hard rate limiter.** Fairness does not cap absolute throughput. Use whole-queue or per-fairness-key RPS limits on Activity Task Queues for dispatch-rate caps.
-- **Expecting every Task to pass through fair dispatch.** A Task can dispatch immediately when it synchronously matches an idle poller. Eagerly dispatched Tasks bypass matching.
-
-See [Limitations of Fairness](/develop/task-queue-priority-fairness#limitations-of-fairness) for partitioning, Worker Versioning, backlog migration, and Task Queue reload behavior.
+- **Expecting exact ratios.** Weights shape dispatch proportions over time when multiple groups have backlogs. Results vary across partitions and short time windows.
+- **Expecting Fairness to reorder the backlog.** Temporal records each Task's Fairness weight when the Task is scheduled. Enabling Fairness or changing weights affects only newly scheduled Tasks.
+- **Expecting Tasks without a Fairness key to bypass Fairness.** These Tasks share an implicit empty-string key with a weight of 1.0.
+- **Expecting Fairness across Task Queue partitions.** Each partition calculates Fairness independently. Imbalanced partitions can change overall dispatch proportions.
+- **Expecting Fairness across Worker Deployment Versions.** Each version has a separate backlog. Fairness applies within each version's backlog.
+- **Expecting Fairness state to be fully restored after a server restart.** By default, Temporal restores state for up to 100 Fairness keys. Other keys rebuild state as Tasks arrive.
+- **Treating Fairness as Worker capacity control.** Fairness considers only dispatch. A group with longer-running Tasks can consume more Worker time than its dispatch share suggests.
+- **Using Fairness as a hard rate limiter.** Fairness does not cap throughput. Use [rate limits](/develop/task-queue-priority-fairness#set-rate-limits-at-the-task-queue-level) for dispatch caps.
+- **Expecting every Task to pass through fair dispatch.** Synchronous matching can send a Task directly to an idle poller. [Eager Task Execution](/develop/worker-performance#eager-task-execution) bypasses matching.
 
 ## Related
 
