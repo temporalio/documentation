@@ -20,7 +20,7 @@ In order to understand how Workflow Replay works, this page will go through the 
 1. [How Workflow Code Maps to Commands](#How-Workflow-Code-Maps-To-Commands)
 2. [How Workflow Commands Map to Events](#How-Workflow-Commands-Map-To-Events)
 3. [How History Replay Provides Durable Execution](#How-History-Replay-Provides-Durable-Execution)
-4. [Example of a Non-Deterministic Workflow](#Example-of-Non-Deterministic-Workflow)
+4. [Example of a non-deterministic Workflow Definition](#Example-of-Non-Deterministic-Workflow)
 
 ## How Workflow Code Maps to Commands {/* #How-Workflow-Code-Maps-To-Commands */}
 
@@ -92,7 +92,7 @@ The walkthrough covers four phases:
    Commands for real again until the Workflow Execution completes. The result is identical to an execution that never
    crashed.
 
-## Example of a Non-Deterministic Workflow {/* #Example-of-Non-Deterministic-Workflow */}
+## Example of a non-deterministic Workflow Definition {/* #Example-of-Non-Deterministic-Workflow */}
 
 Now that Replay has been covered, this section will explain why a Workflow Definition needs to be
 [deterministic](/workflow-definition#deterministic-constraints) in order for Replay to work.
