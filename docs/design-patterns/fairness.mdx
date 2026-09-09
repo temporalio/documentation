@@ -54,7 +54,9 @@ See [Task Queue Priority and Fairness](/develop/task-queue-priority-fairness#tas
 
 ## When to use
 
-Use this pattern when multiple tenants or workload groups share a Task Queue and need weighted dispatch under load. It works well when tenants are added often because Fairness keys do not require separate Task Queues or Worker configuration.
+This pattern is a good fit for multi-tenant applications where large tenants should not block small tenants. It also fits workloads that need proportional Task dispatch across groups without hard per-group limits, and applications where tenants or groups change often. New Fairness keys can be introduced without deploying new Workers.
+
+For a broader look at multi-tenancy strategies in Temporal, see [Multi-Tenant Patterns](/best-practices/multi-tenant-patterns).
 
 Fairness does not provide exact dispatch ratios, concurrency limits, or compute isolation. Use Activity Task Queue rate limits for throughput caps. Use separate Task Queues with dedicated Worker pools and compute resources for hard isolation. Use Priority to order urgent work ahead of less urgent work.
 

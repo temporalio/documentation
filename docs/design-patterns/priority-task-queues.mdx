@@ -49,13 +49,17 @@ See [Task Queue Priority](/develop/task-queue-priority-fairness#task-queue-prior
 
 ## When to use
 
-Use Priority when urgent and routine work share a Task Queue and Worker pool. For example, payment Tasks can dispatch ahead of inventory updates or batch reports.
+Use Priority when a Task Queue handles work with different levels of urgency. Common examples include payments or user-facing requests sharing Workers with reports, data imports, or inventory updates. When Tasks back up, Priority dispatches urgent Tasks ahead of routine Tasks.
 
-Priority is a poor fit when high-priority work remains continuously backlogged because lower-priority Tasks can starve. Use separate Task Queues and Worker pools for capacity isolation. Use [Fairness](/design-patterns/fairness) for tenant-aware dispatch within a Priority level.
+Priority also works well for exceptional Tasks that should dispatch ahead of normal work, such as an operator-triggered recovery Task.
+
+Priority adds little when all work has the same urgency. A sustained high-priority backlog can starve lower-priority Tasks. Use separate Task Queues with dedicated Workers and compute for capacity isolation. Use [Fairness](/design-patterns/fairness) when tenants within a Priority level need weighted shares of dispatches.
 
 ## Benefits and trade-offs
 
-Priority uses one Task Queue and Worker pool without additional routing. It supports five priority levels. Strict ordering can starve lower-priority Tasks and does not provide Worker capacity isolation.
+Priority keeps work on one Task Queue and Worker pool. Urgency levels require no separate routing or Workers. All levels share idle Worker capacity. When one level has no backlog, Tasks at other levels can use the available dispatches.
+
+Priority applies only to Tasks waiting for dispatch. It does not preempt Tasks that are already running. A sustained higher-priority backlog can delay lower-priority Tasks indefinitely. Priority supports five levels, from `1` for the highest priority to `5` for the lowest.
 
 ## Comparison with alternatives
 
