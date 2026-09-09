@@ -266,10 +266,10 @@ When an External Signal is sent:
 - A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
 - A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
 
-The `getExternalWorkflowHandle` method helps ensure that Workflows remain deterministic.
-Recall that one aspect of deterministic Workflows means not directly making network calls from the Workflow.
+The `getExternalWorkflowHandle` method helps ensure that Workflow code remains deterministic.
+Recall that one aspect of deterministic Workflow code means not directly making network calls from the Workflow.
 This means that developers cannot use a Temporal Client directly within the Workflow code to send Signals or start other Workflows.
-Instead, to communicate between Workflows, we use `getExternalWorkflowHandle` to both ensure that Workflows remain deterministic and also that these interactions are recorded as Events in the Workflow's Event History.
+Instead, to communicate between Workflows, we use `getExternalWorkflowHandle` to both ensure that Workflow code remains deterministic and also that these interactions are recorded as Events in the Workflow's Event History.
 
 ### Signal-With-Start {/* #signal-with-start */}
 

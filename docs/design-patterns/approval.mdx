@@ -812,7 +812,7 @@ The Approval pattern captures rich context — approver identity, reasons, and t
 All approval data is recorded in the Workflow history as Signal events, giving you a built-in audit trail.
 Timeout handling is automatic: you define the maximum wait time and the Workflow handles the fallback.
 The pattern supports multi-level, conditional, and escalating approval chains, and you can check approval status at any time through Query methods without modifying Workflow state.
-Because all decisions are recorded in the event history, the Workflow is deterministic and replay-safe.
+Because all decisions are recorded in the event history, the Workflow's code is deterministic and replay-safe.
 
 The trade-offs to consider are that the pattern requires an external system to send approval Signals, which means you need a separate approval interface.
 The Workflow blocks until the approval arrives or the timeout expires, so you must define a maximum wait time.
