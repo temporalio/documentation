@@ -192,7 +192,8 @@ don't build in production at all, which 404s any inbound links). A page that's a
 belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See
 [UTILITIES.md](./readme/UTILITIES.md) for details.
 
-Vale linting (style):
+Vale linting (style). Requires Vale 3.20+ (CI already runs 3.20.0; upgrade a local install with
+`brew upgrade vale`) — `vale/styles/Std` needs it for its nested rule directories.
 
 ```bash
 yarn lint:py                          # Example: lint Python SDK docs
