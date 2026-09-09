@@ -66,12 +66,12 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 
 ## Comparison with alternatives
 
-| Approach | Backlog dispatch | Shares idle capacity | Tenant onboarding |
-| :--- | :--- | :--- | :--- |
-| Fairness on a shared Task Queue | Weighted across backlogged groups | Yes | Assign a Fairness key |
-| Task Queue per tenant with shared compute | Separate tenant backlogs | Yes | Add Task Queue and Worker configuration |
-| Task Queue per tenant with dedicated compute | Separate tenant backlogs | No | Deploy and configure dedicated Workers |
-| Shared Task Queue without Fairness | No tenant-aware ordering | Yes | No additional configuration |
+| Approach | Per-tenant dispatch | Dynamic tenants | Shares idle capacity | Complexity |
+| :--- | :--- | :--- | :--- | :--- |
+| Temporal Fairness (native) | Weighted | Yes | Yes | Low |
+| Dedicated Task Queue per tenant | Separate | No | No | Medium |
+| Single shared Task Queue (no control) | None | Yes | Yes | Lowest |
+| External queue with per-tenant consumer groups | Separate | Yes | No | High |
 
 ## Best practices
 
