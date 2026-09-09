@@ -82,7 +82,7 @@ Lower-priority Tasks are blocked while higher-priority Tasks remain backlogged. 
 
 - **Assigning Priority `1` to all work by default.** When every caller sets the highest Priority, the feature provides no ordering benefit. Establish an explicit policy for which work types qualify for each level.
 - **Neglecting low-priority starvation.** Under sustained high load, Priority `5` Tasks may wait indefinitely. Use a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) on low-priority Activities to surface starvation as a visible failure.
-- **Assuming Priority cannot change after scheduling.** Use `UpdateWorkflowExecutionOptions` to change a Workflow Execution's Priority and `UpdateActivityOptions` to change a pending Activity's Priority.
+- **Changing priority after scheduling.** The Priority key is evaluated when a Task enters the queue and cannot be changed while it waits. To re-prioritize an already-queued Task, cancel it and reschedule with the new priority.
 - **Assuming hard isolation between Priority levels.** Priority controls dispatch order, not Worker capacity allocation. A Priority `5` Task may still occupy a Worker slot when a Priority `1` Task arrives.
 
 ## Related
