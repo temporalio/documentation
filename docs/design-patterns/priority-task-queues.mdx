@@ -5,26 +5,22 @@ description: "Orders Task dispatches so urgent work moves ahead of lower-priorit
 ---
 
 :::info[TLDR]
-Assign a Priority key from 1 to 5 to Workflows, Activities, and Child Workflows so higher-priority Tasks dispatch ahead of lower-priority Tasks on a shared Task Queue. Use this when a flood of batch or background Tasks would otherwise delay urgent work.
+Assign a Priority key from 1 to 5 to Workflows and Activities so high-priority work dispatches ahead of lower-priority work on a shared Task Queue. Use this when a flood of batch or background Tasks would otherwise delay high-urgency requests.
 :::
 
 ## Overview
 
-The Priority pattern orders Task dispatches within a shared Task Queue so that time-sensitive work can move ahead of lower-priority work without separate queues or routing logic. Lower Priority key values represent higher priority, so `1` is the highest priority and `5` is the lowest.
+The Priority pattern assigns a Priority key to Workflows, Activities, and Child Workflows so that time-sensitive work dispatches ahead of lower-priority work within a single Task Queue, without requiring separate queues or routing logic.
 
 Priority applies to dispatch. It does not preempt running Tasks or reserve Worker capacity.
 
 ## Problem
 
-In a shared Task Queue, backlogged Tasks are generally dispatched in first-in-first-out (FIFO) order within a partition. When a large batch of low-priority work, such as nightly reports, bulk imports, or background processing, fills the backlog before time-sensitive requests arrive, the urgent work waits behind the batch.
-
-A Task Queue without Priority gives the same dispatch preference to all Tasks, regardless of business urgency.
+In a shared Task Queue, backlogged Tasks are generally dispatched in first-in-first-out (FIFO) order within a partition. When a large batch of low-priority work, such as nightly reports, bulk imports, or background processing, fills the backlog before time-sensitive requests arrive, the higher-priority requests wait behind the entire batch. A single Task Queue with no ordering mechanism gives the same dispatch preference to all Tasks, regardless of business urgency.
 
 ## Solution
 
-Temporal's Priority feature lets you assign a Priority key from 1 to 5 to any Workflow, Activity, or Child Workflow. Within a Task Queue partition and Worker Deployment Version, the Matching Service maintains a sub-queue for each Priority level and dispatches the highest-priority backlogged Tasks first. Without Fairness, Tasks at the same Priority level are dispatched in FIFO order.
-
-Tasks use Priority key `3` by default. Activities and Child Workflows inherit the parent Workflow's Priority key unless they set their own.
+Temporal's native Priority feature lets you assign a Priority key (an integer from 1 to 5, where 1 is the highest priority and 5 is the lowest) to any Workflow, Activity, or Child Workflow. The Matching Service maintains a sub-queue for each Priority level and exhausts all backlogged Tasks at a given level before dispatching to the next. Tasks default to Priority `3` when no key is set. Activities and Child Workflows inherit the parent Workflow's Priority unless they set their own.
 
 ```mermaid
 flowchart TD
@@ -40,12 +36,12 @@ flowchart TD
     W --> DS["Downstream\nService"]
 ```
 
-The diagram assumes all three levels have backlogged Tasks in the same partition and Worker Deployment Version.
+The diagram assumes all three levels have backlogged Tasks in the same Task Queue partition and Worker Deployment Version.
 
-1. Workflows start with a Priority key in their start options. Payment Workflows use Priority `1`, routine Workflows use the default Priority `3`, and nightly batch reports use Priority `5`.
-2. The Matching Service routes each Task to its Priority sub-queue within the Task Queue.
+1. Workflows start with a Priority key in their start options. Payment Workflows use Priority `1`. Routine Workflows default to Priority `3`. Nightly batch reports use Priority `5`.
+2. The Matching Service routes each Task to the corresponding Priority sub-queue inside the Task Queue.
 3. Workers poll the Task Queue and receive the highest-priority backlogged Tasks first.
-4. Activities and Child Workflows inherit the parent Workflow's Priority key unless they set their own.
+4. Activities and Child Workflows inherit the parent Workflow's Priority unless they set their own.
 
 ## Implementation
 
@@ -55,17 +51,15 @@ See [Task Queue Priority](/develop/task-queue-priority-fairness#task-queue-prior
 
 ## When to use
 
-Use Priority when a Task Queue handles work with different levels of urgency. Common examples include payments or user-facing requests sharing Workers with reports, data imports, or inventory updates. When Tasks back up, Priority dispatches urgent Tasks ahead of routine Tasks.
+This pattern is a good fit when your system mixes time-sensitive operations (payment processing, user-facing requests) with background or batch work (reporting, data imports, inventory management), and you want urgent Tasks to dispatch first during periods of high load. It also works well when you need to mark urgent Tasks that should dispatch ahead of normal processing, for example, triggering immediate reruns of failed critical Tasks.
 
-Priority also works well for exceptional Tasks that should dispatch ahead of normal work, such as an operator-triggered recovery Task.
-
-Priority adds little when all work has the same urgency. A sustained high-priority backlog can starve lower-priority Tasks. Use separate Task Queues with dedicated Workers and compute for capacity isolation. Use [Fairness](/design-patterns/fairness) when tenants within a Priority level need weighted shares of dispatches.
+It is not a good fit when all work is effectively equal in urgency, when a continuously replenished high-priority backlog could starve lower-priority work indefinitely, or when you need hard capacity isolation between tiers. Use separate Task Queues with dedicated Worker pools and compute resources for hard capacity isolation. If your concern is prioritizing work among tenants or customers, consider [Fairness](/design-patterns/fairness), which distributes dispatches proportionally using weighted Fairness keys.
 
 ## Benefits and trade-offs
 
 Native Priority requires no extra queues, routing logic, or additional Worker pools. A single pool of Workers serves all Priority levels, so idle Worker capacity is shared across all levels.
 
-Priority applies only to Tasks waiting for dispatch. It does not preempt Tasks that are already running. A sustained higher-priority backlog can delay lower-priority Tasks indefinitely. Priority supports five levels, from `1` for the highest priority to `5` for the lowest.
+Lower-priority Tasks wait while higher-priority Tasks remain backlogged. In an environment with a continuously replenished high-priority backlog, low-priority Tasks may be delayed indefinitely. The built-in Priority key range is 1 to 5. The feature does not support more than five levels.
 
 ## Comparison with alternatives
 
@@ -78,7 +72,7 @@ Priority applies only to Tasks waiting for dispatch. It does not preempt Tasks t
 
 ## Best practices
 
-- **Keep Priority levels coarse.** For example, use `1` for urgent work, `3` for normal work, and `5` for batch work.
+- **Use no more than five Priority levels.** Keep levels coarse. For example, use `1` for urgent work, `3` for normal work, and `5` for batch work.
 - **Reserve Priority `1` for urgent work.** When every caller uses the highest Priority, the feature provides no ordering benefit.
 - **Set the initial Priority key in Workflow start options.** Activities and Child Workflows inherit it unless they set their own.
 - **Override Activity Priority deliberately.** Use a different Priority key only when an Activity should dispatch at a different level than its Workflow.
