@@ -31,9 +31,9 @@ flowchart TD
     WA["Workflow\nfairness_key=tenant-big\nweight=1.0"] --> TQ["my-task-queue"]
     WB["Workflow\nfairness_key=tenant-mid\nweight=1.0"] --> TQ
     WC["Workflow\nfairness_key=tenant-small\nweight=1.0"] --> TQ
-    TQ --> VQ1["Fairness key\ntenant-big"]
-    TQ --> VQ2["Fairness key\ntenant-mid"]
-    TQ --> VQ3["Fairness key\ntenant-small"]
+    TQ --> VQ1["Virtual queue\ntenant-big"]
+    TQ --> VQ2["Virtual queue\ntenant-mid"]
+    TQ --> VQ3["Virtual queue\ntenant-small"]
     VQ1 -->|weighted dispatch| W["Shared Workers"]
     VQ2 -->|weighted dispatch| W
     VQ3 -->|weighted dispatch| W
