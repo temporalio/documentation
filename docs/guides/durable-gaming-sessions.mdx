@@ -83,7 +83,7 @@ Modeling each player as an Actor Workflow gives you a single authoritative repre
 
 ### Event History and Continue-As-New
 
-Every Workflow Execution in Temporal produces an append-only Event History. This history has a limit of 50,000 Events or 50 MB. For actor Workflows that run indefinitely, Event History growth must be managed proactively.
+Every Workflow Execution in Temporal produces an append-only Event History. This history has a limit of 51,200 Events or 50 MB. For actor Workflows that run indefinitely, Event History growth must be managed proactively.
 
 Continue-As-New atomically completes the current Workflow Execution and starts a new one with the same Workflow Id, carrying forward any state you provide as arguments. From the perspective of external callers, the Workflow Id remains the same. Signals sent during the transition are not lost; the Temporal Service buffers them for the new execution.
 
@@ -518,7 +518,7 @@ PLAYER_LEVEL_KEY = SearchAttributeKey.for_int("PlayerLevel")
 # Threshold for triggering Continue-As-New.
 # Each Signal/Update handler execution and each Activity execution
 # generates Events in the history. A conservative threshold of
-# 10,000 events provides ample headroom below the 50,000 limit.
+# 10,000 events provides ample headroom below the 51,200 limit.
 CONTINUE_AS_NEW_THRESHOLD = 10_000
 
 # Default Retry Policy for Activities in this Workflow.

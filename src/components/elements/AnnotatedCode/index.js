@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { usePrismTheme } from '@docusaurus/theme-common';
+import { extractFenceText } from '../../utils/extractElementText';
 import styles from './annotated-code.module.css';
 
 const TONES = ['indigo', 'magenta', 'blue', 'amber'];
@@ -15,15 +16,6 @@ function resolveTone(annotation, index) {
   const requested = annotation?.color;
   if (requested && TONE_CLASS[requested]) return requested;
   return TONES[index % TONES.length];
-}
-
-/** Pull plain text out of MDX/Docusaurus code-block children. */
-function extractText(node) {
-  if (node == null || typeof node === 'boolean') return '';
-  if (typeof node === 'string' || typeof node === 'number') return String(node);
-  if (Array.isArray(node)) return node.map(extractText).join('');
-  if (React.isValidElement(node)) return extractText(node.props.children);
-  return '';
 }
 
 /**
@@ -43,10 +35,7 @@ export default function AnnotatedCode({
   const prismTheme = usePrismTheme();
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const code = useMemo(() => {
-    const raw = extractText(children);
-    return raw.replace(/^\n/, '').replace(/\n$/, '');
-  }, [children]);
+  const code = useMemo(() => extractFenceText(children), [children]);
 
   const lines = code ? code.split('\n') : [];
   const active = activeIndex !== null ? annotations[activeIndex] : null;
