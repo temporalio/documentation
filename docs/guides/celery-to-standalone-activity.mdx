@@ -442,7 +442,7 @@ A rule of thumb: migrate a task to a Standalone Activity when it stands on its o
 
 In this tutorial, you migrated a Celery task to a Temporal Standalone Activity. You converted the task into an Activity, ran a Worker to execute it, invoked it both synchronously and fire-and-forget in place of your `.get()` and `.delay()` calls, replaced hand-written retries with a retry policy, and inspected your Activities in place of Flower — all without writing a single Workflow. Your jobs now survive Worker crashes, retry on well-defined policies, and remain queryable through the client and Web UI.
 
-Because Standalone Activities are in Public Preview, review the [Standalone Activities feature guide](/develop/python/activities/standalone-activities) for the latest API details before relying on them in production. Useful next topics include:
+For the full API surface, see the [Standalone Activities feature guide](/develop/python/activities/standalone-activities). Useful next topics include:
 
 - The [Standalone Activities Quickstart](/develop/python/activities/standalone-activities-quickstart) for the runnable reference sample.
 - [Activity timeouts](/develop/python/activities/timeouts) for tuning `start_to_close` and related limits.

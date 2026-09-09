@@ -1,7 +1,7 @@
 ---
 id: standalone-activity
 title: Standalone Activity
-description: Learn about Standalone Activities in Temporal, their benefits, execution model, and when to use them.
+description: Standalone Activities run a single Activity from a Temporal Client, without a Workflow, for durable job processing with retries, timeouts, and visibility.
 slug: /standalone-activity
 toc_max_heading_level: 4
 tags:
@@ -10,17 +10,11 @@ tags:
   - Durable Execution
 ---
 
-import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
-<ReleaseNoteHeader
-  featureName="standaloneActivity"
-  languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
-  guidePath="activities/standalone-activities"
->
-  Available in [Temporal Cloud](#temporal-cloud-support) and in Temporal Server v1.31.0 or higher (included in [Temporal CLI](#temporal-cli-support) v1.7.0 or higher).
-</ReleaseNoteHeader>
-
-See [limitations](#public-preview-limitations) below.
+Standalone Activities require Temporal Server v1.31.0 or higher (included in [Temporal
+CLI](#temporal-cli-support) v1.7.0 or higher). In [Temporal Cloud](#temporal-cloud-support), they are
+in Public Preview. See [limitations](#limitations) below.
 
 ## What is a Standalone Activity? {/* #standalone-activity */}
 
@@ -95,12 +89,13 @@ task queue, and other attributes using the SDK or the `temporal activity list` C
 analogous to counting Workflow Executions. This is the total count of executions (running, completed,
 failed, etc.) - not the number of queued tasks.
 
-## Public Preview limitations
+## Limitations
 
-The Public Preview of Standalone Activities has some known limitations:
+Standalone Activities have the following limitations:
 
-- Pause, reset, and update options are not supported in Public Preview but scheduled for GA.
-- `TerminateExisting` conflict policy / `TerminateIfRunning` reuse policy is not supported yet.
+- [Activity Operations](/activity-operations) - Pause, Unpause, Reset, and Update Options - don't
+  apply to Standalone Activities.
+- The `TerminateExisting` conflict policy and the `TerminateIfRunning` reuse policy aren't supported.
 
 ## Temporal CLI support
 
@@ -132,4 +127,5 @@ The Temporal Dev Server has Standalone Activities enabled by default for local t
 
 ## Temporal Cloud support
 
-Standalone Activities in Temporal Cloud is available as a Public Preview feature.
+Standalone Activities in Temporal Cloud are in [Public
+Preview](/evaluate/development-production-features/release-stages#public-preview).
