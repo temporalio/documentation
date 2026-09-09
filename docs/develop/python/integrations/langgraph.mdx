@@ -480,7 +480,7 @@ Use `execute_in: "activity"` when a node does any of the following:
 - **Makes network calls** — LLM calls, HTTP requests, database queries, or any I/O. Activities can do I/O; Workflows
   cannot.
 - **Has non-deterministic behavior** — anything that can return different results on re-execution (random numbers,
-  current time, external data). Workflows must be deterministic.
+  current time, external data). Workflow code must be deterministic.
 - **Is long-running or may fail** — Activities get configurable timeouts, automatic retries, and heartbeating. If an LLM
   call times out or a service is unavailable, Temporal retries the Activity without re-running the entire Workflow.
 - **Calls `interrupt()`** — LangGraph's `interrupt()` is supported in Activity nodes. The plugin serializes the
@@ -512,7 +512,7 @@ Not all LangGraph primitives are node functions. Some run in the Workflow contex
 | --- | --- | --- |
 | Node functions | Activity or Workflow | Controlled by `execute_in` in node `metadata` (required) |
 | `@task` functions | Activity or Workflow | Controlled by `execute_in` in `activity_options` (required) |
-| Conditional edge functions (`add_conditional_edges`) | Workflow | Always runs in the Workflow. Must be **deterministic** and **async** (sync functions trigger `run_in_executor`, which is not allowed in the Temporal sandbox). |
+| Conditional edge functions (`add_conditional_edges`) | Workflow | Always runs in the Workflow. Must be **deterministic code** and **async** (sync functions trigger `run_in_executor`, which is not allowed in the Temporal sandbox). |
 | `interrupt()` | Activity | Call `interrupt()` inside Activity nodes. The plugin serializes the interrupt and propagates it to the Workflow. |
 | `Command(resume=...)` | Workflow | Used from Workflow code to resume after an interrupt. |
 | `InMemorySaver` checkpointer | Workflow | Runs in-process. Temporal handles durability — external checkpointers are not needed. |

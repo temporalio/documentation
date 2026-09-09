@@ -23,7 +23,7 @@ You keep building agents the native ADK way — `llmagent.New(...)` with a `mode
 2. Pass `googleadk.NewContext(workflowCtx)` to `r.Run`, which installs Temporal-deterministic time, UUID, and
    task-fan-out providers so the agent loop replays deterministically.
 
-Tools run **in-workflow by default** (the idiomatic Temporal model: the Workflow is deterministic, and anything touching
+Tools run **in-workflow by default** (the idiomatic Temporal model: the Workflow's code is deterministic, and anything touching
 the network, clock, or disk goes through an Activity). Opt a tool into an Activity with `googleadk.ActivityAsTool`, or
 use `googleadk.NewMCPToolset` for MCP.
 
