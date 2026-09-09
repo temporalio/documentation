@@ -20,8 +20,9 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 The proxy can encrypt Workflow and Activity payloads on the hop to an upstream and decrypt them on responses, set under
 the top-level `encryption` block. It is off by default. Workers and Clients keep exchanging cleartext with the gateway;
-the proxy seals payloads before they leave and opens them on the way back, so the upstream Temporal Service only ever
-stores ciphertext. Encryption is transparent, requiring no change to Worker or Client code.
+the proxy seals codec-capable Payloads before they leave and opens them on the way back. New Payloads sent through the
+proxy reach the upstream Temporal Service as ciphertext. Encryption is transparent, requiring no change to Worker or
+Client code.
 
 It uses envelope encryption: a short-lived data encryption key (DEK) encrypts each payload with AES-256-GCM, and a KMS
 key you own wraps the DEK. The wrapped DEK and a reference to the key that wrapped it travel with the payload, so the
@@ -76,6 +77,26 @@ encryption:
   keep a tenant's key in its own region or provider.
 - `cacheSize` bounds the in-memory cache of decrypted DEKs, which avoids a KMS call on every message. It must be
   non-negative.
+
+:::note Scope of fail-closed behavior
+
+Fail-closed applies to outbound codec-capable Payloads on calls that pass through a proxy where `encryption.enabled` is
+`true`. If the proxy cannot encrypt one of these Payloads, such as when the KMS is unavailable, it fails the request
+before sending it upstream. It does not fall back to plaintext.
+
+The proxy cannot enforce encryption for a Client, Worker, Web UI, or CLI that connects directly to the upstream Temporal
+Service. Restrict credentials and network paths when all application traffic must pass through the proxy.
+
+On responses, the proxy decrypts Payloads that carry its encryption metadata. It passes other Payloads through unchanged
+so data written before proxy adoption remains readable during a migration. This behavior continues until existing
+plaintext data ages out under the Namespace's retention period.
+
+Fail-closed does not mean that every request field is encrypted. Search Attributes remain unencrypted so the Temporal
+Service can index them. Failure messages and call stacks are not codec-capable Payloads by default. See
+[Codecs and Encryption](/production-deployment/data-encryption) for encryption coverage and
+[Failure Converter](/failure-converter) for failure encoding.
+
+:::
 
 `default` and each `overrides` entry are key policies with the same shape:
 
