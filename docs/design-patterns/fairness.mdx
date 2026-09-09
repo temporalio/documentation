@@ -5,12 +5,12 @@ description: "Distributes Task dispatches across tenants or users so that a burs
 ---
 
 :::info[TLDR]
-Assign a fairness key and weight to Workflows and Activities so each tenant or group receives a proportional share of Task dispatches on a shared Task Queue. Use this when a high-volume caller would otherwise starve other tenants.
+Assign a Fairness key and weight to Workflows and Activities so each tenant or group receives a proportional share of Task dispatches on a shared Task Queue. Use this when a high-volume caller would otherwise starve other tenants.
 :::
 
 ## Overview
 
-The Fairness pattern distributes Task dispatches across tenants or user groups within a shared Task Queue. Each group has a fairness key and an optional weight. The Temporal matching service uses weighted fair dispatch to select the next Task within a priority level.
+The Fairness pattern distributes Task dispatches across tenants or user groups within a shared Task Queue. Each group has a Fairness key and an optional weight. The Temporal matching service uses weighted fair dispatch to select the next Task within a priority level.
 
 Fairness applies only to Task dispatch. It does not account for Task duration or resource use.
 
@@ -22,9 +22,9 @@ Using one Task Queue per tenant avoids a shared backlog, but adds Task Queue, Wo
 
 ## Solution
 
-Assign a fairness key to each tenant or group and, when needed, a fairness weight. Tasks with the same fairness key compete for dispatch as a group. A single Worker pool can serve all keys.
+Assign a Fairness key to each tenant or group and, when needed, a Fairness weight. Tasks with the same Fairness key compete for dispatch as a group. A single Worker pool can serve all keys.
 
-For example, assigning weights of 5.0, 3.0, and 2.0 causes approximately 50% of dispatched Tasks to come from `premium`, 30% from `basic`, and 20% from `free` when all three groups have backlogged Tasks. Within a fairness key, Tasks at the same priority are dispatched in first-in-first-out (FIFO) order.
+For example, assigning weights of 5.0, 3.0, and 2.0 causes approximately 50% of dispatched Tasks to come from `premium`, 30% from `basic`, and 20% from `free` when all three groups have backlogged Tasks. Within a Fairness key, Tasks at the same priority are dispatched in first-in-first-out (FIFO) order.
 
 ```mermaid
 flowchart TD
@@ -41,20 +41,20 @@ flowchart TD
 
 The following describes each step in the diagram:
 
-1. Workflows start with a fairness key that identifies their tenant or group.
-2. Tasks with the same fairness key form a fairness group within the Task Queue.
+1. Workflows start with a Fairness key that identifies their tenant or group.
+2. Tasks with the same Fairness key form a fairness group within the Task Queue.
 3. When more than one group has backlogged Tasks, the matching service dispatches Tasks according to their weights.
 4. A group can use all available dispatches when the other groups have no backlogged Tasks.
 
 ## Implementation
 
-Fairness must be enabled for the Namespace. Set fairness keys and weights on Workflows, Activities, or Child Workflows. Activities and Child Workflows inherit these values unless you override them.
+Fairness must be enabled for the Namespace. Set Fairness keys and weights on Workflows, Activities, or Child Workflows. Activities and Child Workflows inherit these values unless you override them.
 
 See [Task Queue Priority and Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) for setup, SDK examples, inheritance, Task Queue configuration, and limitations.
 
 ## When to use
 
-Use this pattern when multiple tenants or workload groups share a Task Queue and need weighted dispatch under load. It works well when tenants are added often because fairness keys do not require separate Task Queues or Worker configuration.
+Use this pattern when multiple tenants or workload groups share a Task Queue and need weighted dispatch under load. It works well when tenants are added often because Fairness keys do not require separate Task Queues or Worker configuration.
 
 Fairness does not provide exact dispatch ratios, concurrency limits, or compute isolation. Use Activity Task Queue rate limits for throughput caps. Use separate Task Queues with dedicated Worker pools and compute resources for hard isolation. Use [Priority Task Queues](/design-patterns/priority-task-queues) to order urgent work ahead of less urgent work.
 
@@ -68,14 +68,14 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 
 | Approach | Backlog dispatch | Worker capacity isolation | Tenant onboarding |
 | :--- | :--- | :--- | :--- |
-| Fairness on a shared Task Queue | Weighted across backlogged groups | None | Assign a fairness key |
+| Fairness on a shared Task Queue | Weighted across backlogged groups | None | Assign a Fairness key |
 | Task Queue per tenant with shared compute | Separate tenant backlogs | None | Add Task Queue and Worker configuration |
 | Task Queue per tenant with dedicated compute | Separate tenant backlogs | Yes | Deploy and configure dedicated Workers |
 | Shared Task Queue without Fairness | No tenant-aware ordering | None | No additional configuration |
 
 ## Best practices
 
-- **Use stable fairness keys.** Use account identifiers or tenant slugs instead of display names.
+- **Use stable Fairness keys.** Use account identifiers or tenant slugs instead of display names.
 - **Use one weight for each key.** Conflicting weights for the same key have unspecified behavior.
 - **Combine Priority and Fairness for mixed workloads.** Use Priority for urgency classes and Fairness for tenants within each class.
 - **Measure results by tenant.** Track submitted, started, and completed Tasks and latency in application telemetry.
