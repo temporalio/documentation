@@ -75,7 +75,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "@vercel/functions": "^3.9.3",
-    "algoliasearch": "^5.56.0",
+    "algoliasearch": "^5.57.0",
     "chart.js": "^4.4.1",
     "clsx": "^2.1.1",
     "comlink": "^4.4.2",
