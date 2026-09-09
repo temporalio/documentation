@@ -60,9 +60,9 @@ This is the recommended pattern for most use cases. Each tenant gets dedicated T
 
 **Use a single [Task Queue](/task-queue) with [Fairness keys](/develop/task-queue-priority-fairness#task-queue-fairness) to distribute work across tenants.**
 
-This pattern uses [Task Queue Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) to manage multi-tenant workloads within a single Task Queue. Each tenant is assigned a fairness key, and fairness weights control its share of Task dispatches when multiple tenants have backlogged Tasks.
+This pattern uses [Task Queue Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) to manage multi-tenant workloads within a single Task Queue. Each tenant is assigned a fairness key, and fairness weights control how much of the Task Queue's capacity each tenant receives.
 
-You can also set per-fairness-key rate limits to cap an individual tenant's dispatch rate.
+You can also set per-fairness-key rate limits (requests per second) to cap individual tenant throughput, preventing any single tenant from consuming too much capacity.
 
 **Pros:**
 - Priority and Fairness keys and weights can be adjusted without redeployment
@@ -130,8 +130,8 @@ need its own service accounts, API keys, dashboards, or rate limits. If that is 
 
 | | Task Queues per tenant | Fairness-based | Shared Workflow / Separate Activity TQs | Namespace per tenant |
 |---|---|---|---|---|
-| **Isolation** | Task Queue level | Weighted dispatch | Activity-level only | Complete |
-| **Noisy neighbor protection** | Strong | Dispatch-based | Activity-level | Full, with separate rate limits |
+| **Isolation** | Task Queue level | Probabilistic (weighted) | Activity-level only | Complete |
+| **Noisy neighbor protection** | Strong | Weight-based throttling | Activity-level | Full — separate rate limits |
 | **Worker management** | Moderate — config per tenant | Simple — single Task Queue | Moderate | High — Worker pool per tenant |
 | **Onboarding new tenants** | Config update and restart | Set fairness and priority values (no new Workers) | Config update and Worker restart | New Namespace and Worker pool |
 | **Observability** | Per-Task Queue metrics | Per-Task Queue metrics | Mixed | Per-Namespace |
