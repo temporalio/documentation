@@ -2014,6 +2014,7 @@ module.exports = {
               link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
               items: [
                 'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-agentcore',
                 'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
               ],
             },
