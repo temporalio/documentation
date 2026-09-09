@@ -19,6 +19,12 @@ Temporal Cloud supports private connectivity to Namespaces via AWS PrivateLink o
 
 Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of how you choose to connect.
 
+:::info "Private Endpoint" in this documentation
+
+On pages that cover more than one cloud provider, **Private Endpoint** means the endpoint you create and own in your own network to reach Temporal Cloud over a private connection. Each provider names it differently: it is a **VPC Endpoint** on AWS and a **Private Service Connect endpoint** on GCP. Pages specific to one provider use that provider's term.
+
+:::
+
 For information about IP address stability and allowlisting, see [IP addresses](/cloud/connectivity/ip-addresses). If your security team requires allowlisting specific IP addresses for firewall rules, Temporal Cloud also offers a [Stable IPs configuration option](/cloud/connectivity/ip-addresses) that provides non-changing IP addresses for your Namespace endpoint.
 
 ### Required steps
@@ -44,6 +50,18 @@ Without this step, your clients may connect to the Namespace over the internet i
 If that's not an option for you, refer to [our guide for updating the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
 
 :::
+
+### Recommended: keep Clients on the Namespace Endpoint
+
+For step 2, we recommend private DNS that resolves your [Namespace Endpoint](/cloud/namespaces#access-namespaces) (`<namespace>.<account>.tmprl.cloud`) to your Private Endpoint, rather than reconfiguring Clients to dial the Private Endpoint directly. Two things follow from that:
+
+- **Clients keep the settings they already use.** The address and TLS configuration are the same as they would be over the public internet, so every SDK sample, demo, and existing deployment works unchanged, and no TLS server name (SNI) override is needed. The hostname the Client dials is still the hostname on the certificate Temporal Cloud presents.
+- **Namespaces with High Availability features can follow a failover.** Temporal Cloud repoints the Namespace Endpoint at the active region, so Workers reach whichever region is active without a configuration change. Getting that behavior over a private connection depends on which private DNS pattern you choose.
+
+There is more than one way to build that private DNS, and the right choice depends on whether the Namespaces reached from that network use [High Availability features](/cloud/high-availability). Compare the patterns for your provider:
+
+- [Choose a private DNS pattern for AWS PrivateLink](/cloud/connectivity/aws-connectivity#choose-a-private-dns-pattern)
+- [Choose a private DNS pattern for GCP Private Service Connect](/cloud/connectivity/gcp-connectivity#choose-a-private-dns-pattern)
 
 For step 3, keep reading for details on [Connectivity Rules](/cloud/connectivity#connectivity-rules).
 
@@ -289,7 +307,7 @@ tcld connectivity-rule list -n "my-namespace.abc123"
 
 ## Update DNS or clients to use private connectivity
 
-We strongly recommend using private DNS instead of updating client server and TLS settings:
+We strongly recommend using private DNS instead of updating client server and TLS settings, so that Clients [keep using the Namespace Endpoint](#recommended-keep-clients-on-the-namespace-endpoint):
 
 - [How to set up private DNS in AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink)
 - [How to set up private DNS in GCP](/cloud/connectivity/gcp-connectivity#configuring-private-dns-for-gcp-private-service-connect)
