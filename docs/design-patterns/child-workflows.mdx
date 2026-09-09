@@ -12,7 +12,7 @@ import { AnnotatedCode } from '@site/src/components';
 ## Overview
 
 Child Workflows enable decomposition of complex business logic into smaller, reusable Workflow units.
-Each child executes as an independent Workflow with its own Workflow ID, event history (50K event limit), and lifecycle.
+Each child executes as an independent Workflow with its own Workflow ID, event history (51,200 event limit), and lifecycle.
 Unlike Activities which execute code, Child Workflows orchestrate processes and provide Workflow-level semantics: independent tracking, querying, timeouts, and the ability to outlive the parent.
 
 Key capabilities:
@@ -730,7 +730,7 @@ The key distinction is that Activities are for executing code (especially extern
 ## Benefits and trade-offs
 
 Child Workflows provide modularity by breaking complex logic into reusable units.
-Each child is a first-class Workflow with its own ID for tracking, its own 50K event history limit, and its own execution timeout configuration.
+Each child is a first-class Workflow with its own ID for tracking, its own 51,200-event history limit, and its own execution timeout configuration.
 Children can outlive parents with the ABANDON policy, and you can start multiple children concurrently.
 Child failures do not automatically fail the parent, and the same Child Workflow can be reused by multiple parents.
 

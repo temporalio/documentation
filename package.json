@@ -90,7 +90,7 @@
     "react-markdown": "^10.1.0",
     "satori": "^0.29.0",
     "search-insights": "^2",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.4",
     "snipsync": "^1.13.0",
     "uuid": "^14.0.2",
     "wait-on": "^9.1.0",
