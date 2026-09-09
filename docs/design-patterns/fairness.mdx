@@ -22,7 +22,7 @@ Using one Task Queue per tenant avoids a shared backlog, but adds Task Queue, Wo
 
 ## Solution
 
-Assign a Fairness key to each tenant or group and, when needed, a Fairness weight. Tasks with the same Fairness key compete for dispatch as a group. A single Worker pool can serve all keys.
+Assign a Fairness key to each tenant or group and, when needed, a Fairness weight. A useful mental model is one virtual queue per Fairness key, with weighted round-robin dispatch across the queues. Temporal approximates this model with stride scheduling and a count-min sketch for larger key sets. A single Worker pool can serve all keys.
 
 For example, assigning weights of 5.0, 3.0, and 2.0 causes approximately 50% of dispatched Tasks to come from `premium`, 30% from `basic`, and 20% from `free` when all three groups have backlogged Tasks. Within a Fairness key, Tasks at the same priority are dispatched in first-in-first-out (FIFO) order.
 
@@ -42,9 +42,9 @@ flowchart TD
 The following describes each step in the diagram:
 
 1. Workflows start with a Fairness key that identifies their tenant or group.
-2. Tasks with the same Fairness key form a fairness group within the Task Queue.
-3. When more than one group has backlogged Tasks, the matching service dispatches Tasks according to their weights.
-4. A group can use all available dispatches when the other groups have no backlogged Tasks.
+2. Tasks with the same Fairness key enter the same virtual queue.
+3. When multiple virtual queues have backlogged Tasks, the Matching Service uses weighted round robin to choose between them.
+4. One virtual queue can use all available dispatches when the others have no backlogged Tasks.
 
 ## Implementation
 
