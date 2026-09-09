@@ -99,11 +99,11 @@ The retries consume Workflow Worker capacity and can start affecting healthy Exe
 
 **Triage.**
 
-1. **Identify the affected Executions.** This metric does not carry a Workflow Id. Worker logs record the Workflow Id and Run Id. In the Temporal UI you can also find affected Executions by querying the `TemporalReportedProblems` Search Attribute, which the Temporal Service sets on Executions experiencing repeated Workflow Task failures.
-1. **Find what made the completion large.** The limit applies to the sum, so look for what the Workflow produced in a single step:
-   - **A large fan-out.** Scheduling many Activities, Child Workflows, or Timers in one Workflow Task. Break the fan-out into smaller batches across multiple Workflow Tasks.
-   - **Accumulated Signals or Updates.** A large number buffered into one Workflow Task. Rate-limit senders or batch them.
-   - **Large Payloads in aggregate.** Individually under the Payload limit, but large once combined. Move them out of band with [External Storage](/external-storage).
+1. **Identify the affected Executions.** Find the Workflow Id and Run Id in Worker logs because the metric does not carry a Workflow Id. In the Temporal UI, you can also find affected Executions by querying the `TemporalReportedProblems` Search Attribute, which the Temporal Service sets on Executions experiencing repeated Workflow Task failures.
+1. **Find and fix what made the completion large.** The limit applies to the sum. Identify what the Workflow produced in a single step, then change the Workflow to produce less in each Workflow Task:
+   - **A large fan-out.** Scheduling many Activities, Child Workflows, or Timers in one Workflow Task can make the completion too large. Break the fan-out into smaller batches across multiple Workflow Tasks.
+   - **Accumulated Signals or Updates.** Handling a large number of buffered Signals or Updates in one Workflow Task can make the completion too large. Limit how many senders send at once, or batch their requests.
+   - **Large Payloads in aggregate.** Payloads can each be under the Payload limit but make the completion too large when combined. Store the data in [External Storage](/external-storage) and pass a reference through Event History instead.
 1. **Check the Namespace limit.** The limit is a Namespace setting on the size of a single Workflow Task completion, separate from the Payload and gRPC message limits. On Temporal Cloud, contact support if the workload legitimately needs a higher limit. Self-hosted operators can adjust it in dynamic config.
 1. **Fix and redeploy.** Affected Executions resume on their next Workflow Task retry once the corrected Worker is running. They do not need to be restarted, because they were never terminated.
 
