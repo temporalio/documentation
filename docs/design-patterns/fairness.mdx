@@ -5,24 +5,24 @@ description: "Distributes Task dispatches across tenants or users so that a burs
 ---
 
 :::info[TLDR]
-Assign a Fairness key and weight to Workflows and Activities so each tenant or group receives a proportional share of Task dispatches on a shared Task Queue. Use this when a high-volume caller would otherwise starve other tenants.
+Assign a Fairness key and weight to Workflows and Activities so each tenant or group receives a proportional share of Task dispatches on a shared Task Queue. Use this when a high-volume caller would otherwise starve other tenants, without requiring a separate Task Queue per tenant.
 :::
 
 ## Overview
 
-The Fairness pattern distributes Task dispatches across tenants or user groups within a shared Task Queue. Each group has a Fairness key and an optional weight. The Temporal matching service uses weighted fair dispatch to select the next Task within a priority level.
+The Fairness pattern distributes Task dispatches proportionally across tenants or user groups within a shared Task Queue so that a burst from one caller cannot starve others. Each group has a Fairness key and an optional weight. The Matching Service uses weighted fair dispatch to select the next Task within a Priority level.
 
 Fairness applies only to Task dispatch. It does not account for Task duration or resource use.
 
 ## Problem
 
-When multiple tenants share a Task Queue, a high-volume tenant can fill the backlog and dominate dispatch. Tasks from other tenants can wait behind that backlog, which makes their latency unpredictable under load.
+When multiple tenants, such as customers, share a Task Queue, a high-volume tenant can fill the backlog and dominate dispatch. Tasks from other tenants can wait behind that backlog, making their latency unpredictable during bursts.
 
-Using one Task Queue per tenant avoids a shared backlog, but adds Task Queue, Worker, and routing configuration for every tenant.
+The classic workaround is one Task Queue per tenant. This adds Task Queue, Worker, and routing configuration for every tenant. It can also strand idle capacity when Workers are dedicated to individual tenants.
 
 ## Solution
 
-Assign a Fairness key to each tenant or group and, when needed, a Fairness weight. A useful mental model is one virtual queue per Fairness key, with weighted round-robin dispatch across the queues. Temporal approximates this model with stride scheduling and a count-min sketch for larger key sets. A single Worker pool can serve all keys.
+Temporal's Fairness feature lets you assign a Fairness key, such as a tenant name or tier, and an optional Fairness weight to Workflows, Activities, and Child Workflows. A useful mental model is one virtual queue per Fairness key, with weighted round-robin dispatch across the queues. Temporal approximates this model with stride scheduling and a count-min sketch for larger key sets. A single shared Worker pool serves all keys, with no extra queues or routing logic.
 
 For example, assigning weights of 5.0, 3.0, and 2.0 causes approximately 50% of dispatched Tasks to come from `premium`, 30% from `basic`, and 20% from `free` when all three groups have backlogged Tasks. Within a Fairness key, Tasks at the same priority are dispatched in first-in-first-out (FIFO) order.
 
@@ -54,17 +54,15 @@ See [Task Queue Priority and Fairness](/develop/task-queue-priority-fairness#tas
 
 ## When to use
 
-This pattern is a good fit for multi-tenant applications where large tenants should not block small tenants. It also fits workloads that need proportional Task dispatch across groups without hard per-group limits, and applications where tenants or groups change often. New Fairness keys can be introduced without deploying new Workers.
-
-For a broader look at multi-tenancy strategies in Temporal, see [Multi-Tenant Patterns](/best-practices/multi-tenant-patterns).
+This pattern is a good fit for multi-tenant applications where large tenants should not block small tenants, for workloads that need proportional Task dispatch across groups without hard rate limits, and when the set of tenants or groups is dynamic. New Fairness keys can be introduced without deploying new Workers. For a broader look at multi-tenancy strategies in Temporal, see [Multi-Tenant Patterns](/best-practices/multi-tenant-patterns).
 
 Fairness does not provide exact dispatch ratios, concurrency limits, or compute isolation. Use Activity Task Queue rate limits for throughput caps. Use separate Task Queues with dedicated Worker pools and compute resources for hard isolation. Use Priority to order urgent work ahead of less urgent work.
 
 ## Benefits and trade-offs
 
-Fairness is work-conserving. A group can use all available dispatches when no other group has a backlog. New groups can start using the same Task Queue without changes to the Worker deployment.
+A single Worker pool serves all tenants, so idle capacity from a low-traffic tenant is available to high-traffic tenants. New tenants require no Worker deployment. Add a Fairness key and Temporal starts dispatching their Tasks. Fairness weights can be updated through Task Queue configuration without redeploying application code.
 
-Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, Worker Versioning, and short time windows. Tasks with different runtimes can consume different amounts of Worker capacity even when their dispatch shares match their weights.
+Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, Worker Versioning, and short time windows. Accuracy can degrade with a large number of Fairness keys. Fairness weights apply when Tasks are scheduled, so changing a weight does not reorder Tasks already in the backlog. Tasks with different runtimes can consume different amounts of Worker capacity even when their dispatch shares match their weights.
 
 ## Comparison with alternatives
 
@@ -77,8 +75,8 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 
 ## Best practices
 
-- **Use stable Fairness keys.** Use account identifiers or tenant slugs instead of display names.
-- **Combine Priority and Fairness for mixed workloads.** Use Priority for urgency classes and Fairness for tenants within each class.
+- **Use stable, consistent Fairness keys.** Use account identifiers or tenant slugs instead of display names. Key changes do not reorder Tasks already in the backlog.
+- **Combine Priority and Fairness for multi-class, multi-tenant workloads.** Priority separates urgent work from batch work. Fairness prevents a single tenant from dominating within each Priority level.
 
 ## Common pitfalls
 
