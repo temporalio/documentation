@@ -87,7 +87,7 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 - **Expecting Fairness across Worker Deployment Versions.** Each version has a separate backlog. Fairness applies within each version's backlog.
 - **Expecting Fairness state to be fully restored after a server restart.** By default, Temporal restores state for up to 100 Fairness keys. Other keys rebuild state as Tasks arrive.
 - **Treating Fairness as Worker capacity control.** Fairness considers only dispatch. A group with longer-running Tasks can consume more Worker time than its dispatch share suggests.
-- **Using Fairness as a hard rate limiter.** Fairness does not cap throughput. Use [rate limits](/develop/task-queue-priority-fairness#set-rate-limits-at-the-task-queue-level) for dispatch caps.
+- **Using Fairness as a hard rate limiter.** Fairness by itself doesn't cap throughput. Use [Fairness key rate limits](/develop/task-queue-priority-fairness#set-rate-limits-at-the-task-queue-level) for per-key limits.
 - **Expecting every Task to pass through fair dispatch.** Synchronous matching can send a Task directly to an idle poller. [Eager Task Execution](/develop/worker-performance#eager-task-execution) bypasses matching.
 
 ## Related
