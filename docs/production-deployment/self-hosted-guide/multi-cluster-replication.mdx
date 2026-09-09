@@ -26,7 +26,88 @@ This enables [Temporal UI](/web-ui) to work seamlessly for Global Namespaces.
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
-#### Namespace Versions
+## How to fail over a Global Namespace
+
+For a planned failover, run the built-in `namespace-handover` Workflow against the currently active Temporal Service.
+The handover Workflow:
+
+1. Waits for the destination Temporal Service to approach the configured replication-lag thresholds.
+2. Puts the Namespace into the `handover` replication state, which pauses Workflow mutations and task processing.
+3. Waits for the destination Temporal Service to acknowledge every replication task created before the pause.
+4. Makes the destination Temporal Service active and restores the Namespace to the `normal` replication state.
+
+This process creates a brief availability gap while traffic is paused, but it prevents Workflow progress from rolling
+back at the cutover. If the destination cannot catch up during the handover timeout, the Workflow restores the `normal`
+replication state without changing the active Temporal Service.
+
+Connect Temporal CLI to the currently active Temporal Service, then run the handover Workflow in the `temporal-system`
+Namespace. Use a unique Workflow Id for each handover:
+
+```bash
+temporal workflow execute \
+  --address ActiveClusterFrontendAddress \
+  --namespace temporal-system \
+  --task-queue default-worker-tq \
+  --workflow-id YourHandoverWorkflowId \
+  --type namespace-handover \
+  --input '{"Namespace":"YourNamespaceName","RemoteCluster":"NewActiveCluster","AllowedLaggingSeconds":10,"AllowedLaggingTasks":0,"HandoverTimeoutSeconds":10}'
+```
+
+`RemoteCluster` is the configured name of the destination Temporal Service. `AllowedLaggingSeconds` and
+`AllowedLaggingTasks` control when the Workflow can begin pausing traffic. `HandoverTimeoutSeconds` controls how long
+it waits for complete replication after the pause and is capped at 30 seconds.
+
+### Force a failover when the active Temporal Service is unavailable
+
+Use a forced failover only when the active Temporal Service cannot complete a handover. Connect Temporal CLI to the
+destination Temporal Service and change the active Temporal Service directly:
+
+```bash
+temporal operator namespace update \
+  --address NewActiveClusterFrontendAddress \
+  --namespace YourNamespaceName \
+  --active-cluster NewActiveCluster
+```
+
+Namespace metadata is stored separately in each Temporal Service and replicated asynchronously. The Temporal Service
+that receives the update applies it locally before the other Temporal Services receive it:
+
+- If the destination Temporal Service receives the update, both Temporal Services can temporarily consider the
+  Namespace active.
+- If the source Temporal Service receives the update, both Temporal Services can temporarily consider the Namespace
+  passive.
+
+For this reason, send an emergency failover to the destination when the source is unavailable. When both Temporal
+Services are available, use the handover Workflow instead of choosing either side for a forced failover.
+
+The Namespace cache refresh interval does not add another data-consistency window after a Temporal Service observes the
+failover. Tasks record the failover version of the Workflow state that created them. Task processing compares that
+version and the Event Id with the current mutable state and rejects a task from a superseded history branch, even if a
+local Namespace cache entry is stale.
+
+This task-version check does not make a forced failover lossless. Before the failover metadata reaches the former active
+Temporal Service, both Temporal Services can create different history branches. [Conflict
+resolution](#conflict-resolution) selects the branch with the highest failover version, which can roll back Workflow
+progress that had not replicated.
+
+### Prevent duplicate Activity effects
+
+A forced failover can cause an Activity to execute again. For example, an Activity can complete in the former active
+Temporal Service, but its completion Event might not reach the destination before conflict resolution selects the
+destination's history branch. The new active Temporal Service then dispatches the Activity again.
+
+Design Activities that create external side effects to be
+[idempotent](/best-practices/error-handling#idempotence). Use an idempotency key, a transactional version check, or a
+conditional database update so that repeated executions produce one effect. Setting an Activity Retry Policy to one
+attempt does not provide exactly-once execution because a Worker can finish the side effect without recording the
+completion Event.
+
+Stopping Workers that poll the source Temporal Service is not a correctness mechanism. It can reduce new Activity
+starts when the source is reachable, but it cannot cancel side effects that have already started or prevent an Activity
+from being dispatched again after history rollback. It also increases the availability gap. Use the handover Workflow
+for planned failovers and idempotent Activities for both planned and forced failovers.
+
+#### Namespace versions
 
 A _version_ is a concept in Multi-Cluster Replication that describes the chronological order of events per Namespace.
 
