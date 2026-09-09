@@ -81,7 +81,7 @@ Fairness is best effort. Dispatch ratios can vary across Task Queue partitions, 
 ## Common pitfalls
 
 - **Expecting exact ratios.** Weights control dispatch proportions over time when multiple groups have backlogged Tasks. Results vary across partitions and short time windows.
-- **Treating Fairness as Worker capacity control.** Fairness does not account for running Tasks or their resource use. A group with longer Tasks can consume more Worker time than its dispatch share suggests.
+- **Treating Fairness as Worker capacity control.** Fairness does not account for running Tasks or their resource use. A group with longer-running Tasks can consume more Worker time than its dispatch share suggests.
 - **Using Fairness as a hard rate limiter.** Fairness does not cap absolute throughput. Use whole-queue or per-fairness-key RPS limits on Activity Task Queues for dispatch-rate caps.
 - **Expecting every Task to pass through fair dispatch.** A Task can dispatch immediately when it synchronously matches an idle poller. Eagerly dispatched Tasks bypass matching.
 
