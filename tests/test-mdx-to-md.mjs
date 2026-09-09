@@ -34,6 +34,10 @@ import {
 } from "../scripts/component-handlers/cookbook-preview.mjs";
 import { parseCardItems, cardsToMarkdown } from "../scripts/component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "../scripts/component-handlers/sdk-overview-cards.mjs";
+import {
+  extractQuotedProp,
+  renderWalkthroughStep,
+} from "../scripts/component-handlers/event-history-walkthrough.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
@@ -881,6 +885,219 @@ test("SetupStep unwraps {`...`} template literals in CodeSnippet bodies", () => 
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: extractQuotedProp
+// ---------------------------------------------------------------------------
+console.log("\n📦 extractQuotedProp");
+
+test("extracts a single-quoted value containing double quotes", () => {
+  const tag = `<WalkthroughCommand label="ScheduleActivityTask" details='("pizza-tasks", GetDistance, { Line1: "123 Oak St.", Line2: "", ... })' tone="command" />`;
+  assertEqual(
+    extractQuotedProp(tag, "details"),
+    '("pizza-tasks", GetDistance, { Line1: "123 Oak St.", Line2: "", ... })'
+  );
+  assertEqual(extractQuotedProp(tag, "label"), "ScheduleActivityTask");
+});
+
+test("extracts a double-quoted value", () => {
+  assertEqual(extractQuotedProp('<WalkthroughEvent label="TimerFired" tone="indirect" />', "tone"), "indirect");
+});
+
+test("returns null when the prop is absent", () => {
+  assertEqual(extractQuotedProp('<WalkthroughCommand label="Foo" />', "expected"), null);
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: renderWalkthroughStep
+// ---------------------------------------------------------------------------
+console.log("\n📦 renderWalkthroughStep");
+
+test("renders a step with a single command", () => {
+  const md = renderWalkthroughStep(
+    { number: 5, title: "Request the GetDistance Activity", kind: "command", phase: null, body: "Some prose.", commands: [{ label: "ScheduleActivityTask", details: "(GetDistance)", tone: "command" }], events: [] },
+    { commandsLabel: "Commands issued", eventsLabel: null },
+    { previousPhase: null }
+  );
+  assertContains(md, "#### Step 5: Request the GetDistance Activity");
+  assertContains(md, "*Sends a Command*");
+  assertContains(md, "Some prose.");
+  assertContains(md, "**Commands issued:** `ScheduleActivityTask` (GetDistance)");
+});
+
+test("renders multiple entries as a bulleted list, not the single-line form", () => {
+  const md = renderWalkthroughStep(
+    {
+      number: 1,
+      title: "Two events",
+      kind: "service",
+      phase: null,
+      body: "",
+      commands: [],
+      events: [
+        { label: "ActivityTaskScheduled", tone: "direct" },
+        { label: "ActivityTaskStarted", tone: "indirect" },
+      ],
+    },
+    { commandsLabel: "Commands", eventsLabel: "Events" },
+    { previousPhase: null }
+  );
+  assertContains(md, "**Events:**\n- `ActivityTaskScheduled`\n- `ActivityTaskStarted`");
+});
+
+test("renders a divider and a mismatch/expected entry", () => {
+  const md = renderWalkthroughStep(
+    {
+      number: 8,
+      title: "The next Command does not match",
+      kind: "crash",
+      phase: "History Replay",
+      body: "",
+      commands: [
+        { label: "ScheduleActivityTask", details: "(RunDailyReport) — created during Replay", tone: "command", status: "mismatch", expected: "StartTimer (4 hours)" },
+        { divider: "Event History at the time of the crash" },
+      ],
+      events: [],
+    },
+    { commandsLabel: "Commands created", eventsLabel: "Relevant History Events" },
+    { previousPhase: null }
+  );
+  assertContains(md, "✗ `ScheduleActivityTask` (RunDailyReport) — created during Replay (expected: StartTimer (4 hours))");
+  assertContains(md, "*— Event History at the time of the crash —*");
+});
+
+test("emits one phase heading per phase, not per step", () => {
+  const ctx = { previousPhase: null };
+  const labels = { commandsLabel: "Commands", eventsLabel: "Event History" };
+  const step1 = renderWalkthroughStep(
+    { number: 1, title: "A", kind: null, phase: "History Replay", body: "", commands: [], events: [] },
+    labels,
+    ctx
+  );
+  const step2 = renderWalkthroughStep(
+    { number: 2, title: "B", kind: null, phase: "History Replay", body: "", commands: [], events: [] },
+    labels,
+    ctx
+  );
+  assertContains(step1, "### History Replay");
+  assertNotContains(step2, "### History Replay");
+});
+
+test("omits the Events group when eventsLabel is absent, even if events were somehow passed", () => {
+  const md = renderWalkthroughStep(
+    { number: 1, title: "A", kind: null, phase: null, body: "", commands: [], events: [{ label: "Foo" }] },
+    { commandsLabel: "Commands", eventsLabel: null },
+    { previousPhase: null }
+  );
+  assertNotContains(md, "Foo");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — Event History walkthrough demos
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — Event History walkthrough demos");
+
+test("WalkthroughDemo renders the code fence and each step, using its commandsLabel/eventsLabel", () => {
+  const input = [
+    '<WalkthroughDemo ariaLabel="Test walkthrough" commandsLabel="Commands issued">',
+    "",
+    "```csharp",
+    "var x = 1;",
+    "```",
+    "",
+    '<WalkthroughStep title="A basic Workflow Definition">',
+    "",
+    "Some intro prose.",
+    "",
+    "- Bullet one",
+    "- Bullet two",
+    "",
+    "</WalkthroughStep>",
+    "",
+    '<WalkthroughStep title="Request the GetDistance Activity" kind="command" lines="10-12">',
+    "",
+    "Issues a Command.",
+    "",
+    "<WalkthroughCommand",
+    '  label="ScheduleActivityTask"',
+    "  details='(\"pizza-tasks\", GetDistance, { Line1: \"123 Oak St.\" })'",
+    '  tone="command"',
+    "/>",
+    "",
+    "</WalkthroughStep>",
+    "",
+    "</WalkthroughDemo>",
+  ].join("\n");
+  const { markdown, warnings } = transformMdx(input);
+  assertEqual(warnings.length, 0, `Expected no warnings, got: ${JSON.stringify(warnings)}`);
+  assertContains(markdown, "```csharp");
+  assertContains(markdown, "var x = 1;");
+  assertContains(markdown, "#### Step 1: A basic Workflow Definition");
+  assertContains(markdown, "Some intro prose.");
+  assertContains(markdown, "- Bullet one");
+  assertContains(markdown, "#### Step 2: Request the GetDistance Activity");
+  assertContains(markdown, "*Sends a Command*");
+  assertContains(
+    markdown,
+    '**Commands issued:** `ScheduleActivityTask` ("pizza-tasks", GetDistance, { Line1: "123 Oak St." })'
+  );
+  assertNotContains(markdown, "WalkthroughStep");
+  assertNotContains(markdown, "WalkthroughCommand");
+  assertNotContains(markdown, 'lines="10-12"');
+  assertNotContains(markdown, "ariaLabel");
+});
+
+test("a self-closing WalkthroughDemo (no content) strips cleanly rather than swallowing the rest of the file", () => {
+  const input = [
+    '<WalkthroughDemo ariaLabel="Empty" />',
+    "",
+    "Text after the empty demo.",
+  ].join("\n");
+  const { markdown, warnings } = transformMdx(input);
+  assertEqual(warnings.length, 0, `Expected no warnings, got: ${JSON.stringify(warnings)}`);
+  assertContains(markdown, "Text after the empty demo.");
+  assertNotContains(markdown, "WalkthroughDemo");
+});
+
+test("two WalkthroughDemo instances on one page each keep their own commandsLabel/eventsLabel", () => {
+  const input = [
+    '<WalkthroughDemo ariaLabel="First" commandsLabel="Commands issued">',
+    "",
+    "```go",
+    "code",
+    "```",
+    "",
+    '<WalkthroughStep title="Only step">',
+    "",
+    "Body.",
+    "",
+    "<WalkthroughCommand label=\"Foo\" />",
+    "",
+    "</WalkthroughStep>",
+    "",
+    "</WalkthroughDemo>",
+    "",
+    '<WalkthroughDemo ariaLabel="Second" commandsLabel="Commands" eventsLabel="Events">',
+    "",
+    "```go",
+    "code2",
+    "```",
+    "",
+    '<WalkthroughStep title="Only other step">',
+    "",
+    "Body 2.",
+    "",
+    "<WalkthroughEvent label=\"Bar\" />",
+    "",
+    "</WalkthroughStep>",
+    "",
+    "</WalkthroughDemo>",
+  ].join("\n");
+  const { markdown, warnings } = transformMdx(input);
+  assertEqual(warnings.length, 0, `Expected no warnings, got: ${JSON.stringify(warnings)}`);
+  assertContains(markdown, "**Commands issued:** `Foo`");
+  assertContains(markdown, "**Events:** `Bar`");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: transformMdx — JsonTable (graceful degradation without root)
 // ---------------------------------------------------------------------------
 console.log("\n📦 transformMdx — JsonTable");
@@ -1302,7 +1519,7 @@ test("all registry strategies are valid strings", () => {
     "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
     "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
-    "sdk-guide-links",
+    "sdk-guide-links", "event-history-demo", "walkthrough-step", "walkthrough-entry",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(
