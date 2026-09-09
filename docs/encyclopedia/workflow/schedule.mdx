@@ -187,10 +187,10 @@ The following options are available:
 - `BufferOne`: Starts the Workflow Execution as soon as the current one completes.
   The buffer is limited to one.
   If another Workflow Execution is supposed to start, but one is already in the buffer, only the one in the buffer eventually starts.
-- `BufferAll`: Allows an unlimited number of Workflows to buffer.
-  They are started sequentially.
+- `BufferAll`: Buffers Actions while another Workflow Execution is running.
+  They are started sequentially, subject to the Catchup Window and internal buffer limits.
 - `CancelOther`: Cancels the running Workflow Execution, and then starts the new one after the old one completes cancellation.
-- `TerminateOther`: Terminates the running Workflow Execution and starts the new one immediately.
+- `TerminateOther`: Terminates the running Workflow Execution and then starts the new one without waiting for Workflow cooperation.
 - `AllowAll` Starts any number of concurrent Workflow Executions.
   With this policy (and only this policy), more than one Workflow Execution, started by the Schedule, can run simultaneously.
 
@@ -208,10 +208,10 @@ This affects regularly scheduled Actions, manual triggers, and Backfills:
 
 - With `Skip`, each new scheduled Action is skipped while the previous scheduled Workflow Execution remains Paused.
 - With `BufferOne`, one Action can wait behind the Paused Workflow Execution. Additional Actions are skipped while the buffer is full.
-- With `BufferAll`, every matching Action is buffered and won't start until the Paused Workflow Execution closes.
+- With `BufferAll`, matching Actions are buffered, subject to the Catchup Window and internal buffer limits, and won't start until the Paused Workflow Execution closes.
 - With `AllowAll`, new Workflow Executions can start even while the earlier Workflow Execution is Paused.
 - With `CancelOther`, the Schedule requests cancellation of the Paused Workflow Execution and starts the next Workflow Execution only after the canceled Workflow Execution closes. If the Paused Workflow Execution can't process cancellation until it is unpaused, the next start still waits.
-- With `TerminateOther`, the Schedule terminates the Paused Workflow Execution and starts the next Workflow Execution immediately.
+- With `TerminateOther`, the Schedule terminates the Paused Workflow Execution and then starts the next Workflow Execution without waiting for Workflow cooperation.
 
 If you pause a Workflow Execution for investigation and don't want the Schedule to skip or buffer future Actions, pause the Schedule too.
 When you're ready to resume the automation, unpause the Workflow Execution and then unpause the Schedule.
@@ -219,11 +219,105 @@ If Actions were skipped while the Workflow Execution was Paused, use [Backfill](
 
 #### Catchup Window
 
-The Temporal Service might be down or unavailable at the time when a Schedule should take an Action.
-When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
+The Temporal Service might be down or unavailable, or an Overlap Policy might delay an Action past its scheduled time.
+The Catchup Window controls how late an automated Action can be taken.
 The default is one year, meaning Actions will be taken unless over one year late.
-If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
+If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage or other delay longer than the window could lead to missed Actions.
+The window is measured from the jitter-adjusted Action time, if jitter is configured.
+Manual triggers and Backfills are not restricted by the Catchup Window.
 (But you can always [Backfill](#backfill).)
+
+#### Common pitfalls
+
+A scheduled time does not guarantee that a Workflow Execution starts.
+An Action can be skipped by an Overlap Policy, expire outside the Catchup Window, exceed an internal buffer limit, or fail when the Service attempts to start the Workflow Execution.
+
+##### `Skip` is the default Overlap Policy
+
+With `Skip`, every Action that overlaps an open Workflow Execution is intentionally discarded.
+Skipped Actions are not retained for later execution.
+
+For example, suppose a Schedule runs every five minutes and its first Workflow Execution takes 22 minutes:
+
+```text
+09:00  starts
+09:05  overlaps and is skipped
+09:10  overlaps and is skipped
+09:15  overlaps and is skipped
+09:20  overlaps and is skipped
+09:22  the 09:00 Workflow Execution closes
+09:25  starts
+```
+
+Only the `09:00` and `09:25` Actions start.
+Use `BufferOne` or `BufferAll` if overlapping Actions must be retained, or `AllowAll` if they can run concurrently.
+
+##### `BufferOne` preserves the oldest waiting Action
+
+`BufferOne` retains the first Action that overlaps an open Workflow Execution.
+It does not replace that Action with the most recent one.
+Additional Actions are skipped while the buffer is occupied.
+
+```text
+09:00  starts
+09:05  is buffered
+09:10  is skipped because the buffer is occupied
+09:15  is skipped because the buffer is occupied
+09:20  is skipped because the buffer is occupied
+09:22  the 09:00 Workflow Execution closes
+09:22  the 09:05 Action becomes eligible to start
+```
+
+The buffered Action must still be inside its Catchup Window when it becomes eligible on the current Scheduler implementation.
+Older Scheduler implementations differ in this edge case and might still attempt to start an Action after it has waited beyond the window.
+Configure the Catchup Window to include the maximum expected overlap delay.
+
+##### `BufferAll` can create a backlog
+
+`BufferAll` starts only one non-overlapping Action after each preceding Workflow Execution closes.
+If Workflow Executions take longer than the Schedule interval, the backlog grows faster than it drains.
+Buffered Actions are subject to an internal safety limit of approximately 1,000 per Schedule by default.
+The effective limit can vary by deployment and Scheduler implementation.
+Actions can also expire outside the Catchup Window, so `BufferAll` should not be treated as an unlimited durable queue.
+
+For example, with a five-minute Catchup Window:
+
+```text
+09:00  starts
+09:05  is buffered
+09:10  is buffered
+09:15  is buffered
+09:20  is buffered
+09:22  the 09:00 Workflow Execution closes
+```
+
+At `09:22`, only the `09:20` Action is still inside the five-minute window.
+On the current Scheduler implementation, the `09:05`, `09:10`, and `09:15` Actions expire, and the `09:20` Action starts.
+
+##### Cancellation is asynchronous
+
+`CancelOther` requests cancellation and waits for the running Workflow Execution to close.
+The Workflow must process the cancellation before the replacement can start.
+If more Actions become due while cancellation is pending, the most recent waiting Action is selected after the running Workflow Execution closes.
+
+```text
+09:00  starts
+09:05  requests cancellation of 09:00 and waits
+09:10  becomes the newest waiting Action
+09:15  becomes the newest waiting Action
+09:20  becomes the newest waiting Action
+09:22  the 09:00 Workflow Execution closes
+09:22  the 09:20 Action becomes eligible to start
+```
+
+A slow or cancellation-resistant Workflow can therefore delay the replacement beyond its Catchup Window.
+`TerminateOther` does not require Workflow cooperation, but task processing and closure-notification latency can still delay the replacement.
+
+##### `AllowAll` can create unbounded concurrency
+
+`AllowAll` produces the fewest policy-related misses because every Action can start concurrently.
+However, when Workflow Executions take longer than the Schedule interval, concurrency continually increases until executions begin to close.
+Ensure that Workers, downstream systems, and Namespace limits can handle the maximum expected concurrency.
 
 #### Pause-on-failure
 
