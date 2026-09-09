@@ -59,12 +59,12 @@ Priority uses one Task Queue and Worker pool without additional routing. It supp
 
 ## Comparison with alternatives
 
-| Approach | Backlog dispatch | Worker capacity isolation |
+| Approach | Backlog dispatch | Shares idle capacity |
 | :--- | :--- | :--- |
-| Priority on a shared Task Queue | Higher-priority Tasks first | None |
-| [Fairness](/design-patterns/fairness) on a shared Task Queue | Weighted across groups within a Priority level | None |
-| Separate Task Queues with shared compute | Independent backlogs | None |
-| Separate Task Queues with dedicated compute | Independent backlogs | Yes |
+| Priority on a shared Task Queue | Higher-priority Tasks first | Yes |
+| [Fairness](/design-patterns/fairness) on a shared Task Queue | Weighted across groups within a Priority level | Yes |
+| Separate Task Queues with shared compute | Independent backlogs | Yes |
+| Separate Task Queues with dedicated compute | Independent backlogs | No |
 
 ## Best practices
 
