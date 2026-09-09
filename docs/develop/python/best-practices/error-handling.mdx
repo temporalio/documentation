@@ -333,7 +333,7 @@ await workflow.execute_activity(
 ### Don't use Workflow Retry Policies
 
 Unlike Activities, Workflows don't retry by default, and you usually shouldn't add a Retry Policy.
-Workflow code is deterministic and not designed for failure-prone operations.
+Workflow code produces the same result every time, so it isn't designed for failure-prone operations.
 A Workflow failure typically indicates a code bug or bad input data—retrying the entire Workflow repeats the same logic without fixing the underlying issue.
 
 If you need retry logic for specific Workflow operations, implement it in your Workflow code rather than using a Workflow Retry Policy.
