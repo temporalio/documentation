@@ -71,7 +71,7 @@ my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 
 #### Choose a tag set
 
-Tags group metrics only when every Worker across your organization emits the same keys, so decide on the set before teams adopt it.
+Tags group metrics work best when standardized across the organization. Every Worker across your organization emits the same keys, so decide on the set before teams adopt it.
 These five suit most organizations:
 
 | Tag           | Example            | Question it answers                                    |
@@ -85,11 +85,11 @@ These five suit most organizations:
 The built-in tags identify where a metric came from inside Temporal.
 `namespace` and `task_queue` do not record which team runs the Workers behind them, so a dashboard grouped only by those tags cannot answer an ownership question.
 
-That gap shows up during an incident.
-When several Namespaces degrade at the same time, the cause is usually either the Temporal Service or a deploy by one team.
-Grouped only by Temporal tags, the two look the same, and the investigation starts by asking whether the Temporal Service is at fault.
+That gap costs you time during an incident.
+When several Namespaces degrade at once, what you need first is the name of the team that owns the affected Workers, so you can ask whether they deployed recently.
+Standardized tags put that name on the dashboard, which turns a broad question about the Temporal Service into a direct message to one team.
 
-A `team` tag separates the two cases on the dashboard itself:
+Grouping by `team` also tells you which case you are looking at:
 
 - The affected Workers share one `team` value. Check that team's recent deploys first, because a deploy that restarts a Worker fleet causes a short disturbance in its metrics.
 - The affected Workers span several `team` values. A single team's deploy no longer explains the pattern, so you can rule it out and look for a shared cause.
