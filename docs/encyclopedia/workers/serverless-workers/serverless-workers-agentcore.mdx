@@ -31,7 +31,7 @@ and polls its Task Queue.
 ## Autoscaling {/* #autoscaling */}
 
 AgentCore Runtime uses the same event-driven autoscaling model as AWS Lambda. The WCI invokes individual Runtime
-sessions when it needs more capacity; it does not manage a target-sized pool of Runtime sessions. For the shared
+sessions when it needs more capacity. It does not manage a target-sized pool of Runtime sessions. For the shared
 autoscaling behavior, see [Autoscaling for Serverless Workers on AWS Lambda](/serverless-workers/aws-lambda#autoscaling).
 
 ## Worker Versioning {/* #worker-versioning */}
