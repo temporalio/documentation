@@ -638,6 +638,7 @@ const developPythonCategory = {
             },
             items: [
               'develop/python/workers/serverless-workers/aws-lambda',
+              'develop/python/workers/serverless-workers/agentcore',
               'develop/python/workers/serverless-workers/cloud-run',
             ],
           },
