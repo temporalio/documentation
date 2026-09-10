@@ -42,30 +42,17 @@ Serverless Workers require [Worker Versioning](/worker-versioning). Create the W
 Python Worker, then set `deployment_config` to declare its Worker Deployment Version and enable versioning:
 
 ```python
-import os
-
-from temporalio.client import Client
-from temporalio.common import VersioningBehavior, WorkerDeploymentVersion
-from temporalio.worker import Worker, WorkerDeploymentConfig
-
-from my_activities import my_activity
-from my_workflows import MyWorkflow
-
-def create_worker(client: Client) -> Worker:
-    return Worker(
-        client,
-        task_queue=os.environ["TEMPORAL_TASK_QUEUE"],
-        workflows=[MyWorkflow],
-        activities=[my_activity],
-        deployment_config=WorkerDeploymentConfig(
-            version=WorkerDeploymentVersion(
-                deployment_name=os.environ["TEMPORAL_DEPLOYMENT_NAME"],
-                build_id=os.environ["TEMPORAL_BUILD_ID"],
-            ),
-            use_worker_versioning=True,
-            default_versioning_behavior=VersioningBehavior.PINNED,
+worker = Worker(
+    # ...
+    deployment_config=WorkerDeploymentConfig(
+        version=WorkerDeploymentVersion(
+            deployment_name=DEPLOYMENT_NAME,
+            build_id=BUILD_ID,
         ),
-    )
+        use_worker_versioning=True,
+        default_versioning_behavior=VersioningBehavior.PINNED,
+    ),
+)
 ```
 
 `TEMPORAL_DEPLOYMENT_NAME` and `TEMPORAL_BUILD_ID` must match the Worker Deployment Version that you create with
@@ -80,8 +67,29 @@ Worker. To set the behavior per Workflow instead, pass `versioning_behavior` to 
 ## Start the Worker from the Runtime handler {/* #runtime-handler */}
 
 AgentCore Runtime invokes an HTTP handler. Use `BedrockAgentCoreApp` to provide that handler, and use `async_task` so
-AgentCore keeps the Runtime active while the Worker polls. The complete handler in
-[Stop and drain the Worker](#stop-and-drain-the-worker) shows how to add a retirement policy.
+AgentCore keeps the Runtime active while the Worker polls:
+
+```python
+@app.entrypoint
+@app.async_task
+async def invoke(payload: dict) -> dict:
+    client = await Client.connect(...)
+    tracker = ActivityTracker()
+    worker = Worker(
+        client,
+        task_queue=task_queue,
+        workflows=[MyWorkflow],
+        activities=[my_activity],
+        interceptors=[tracker],
+        graceful_shutdown_timeout=DRAIN,
+        deployment_config=deployment_config,
+    )
+
+    async with worker:
+        await tracker.wait_until_idle(DEBOUNCE)
+
+    return {"message": "Worker drained"}
+```
 
 The payload does not represent a Workflow input. The Worker Controller Instance invokes the endpoint to add Worker
 capacity. Applications start Workflows through the Temporal Client, as usual.
@@ -98,33 +106,22 @@ For the supported connection variables, config-file format, and profiles, see
 
 ## Stop and drain the Worker {/* #stop-and-drain-the-worker */}
 
-Decide what condition means that a Worker can retire. Observe that condition in the Runtime handler. When it remains
-true for an idle period, stop polling and drain the Worker. The Temporal Python SDK handles the draining after you leave
-the `async with worker` block.
+The `async_task` decorator reports the Runtime as busy while the handler is running. If a Worker continues polling after
+the available Temporal work is complete, AgentCore cannot tell from the handler status that the Worker is no longer
+needed. The compute can remain active until it reaches its maximum lifetime, which is eight hours by default.
 
-The following example defines an `ActivityTracker`. It uses an
-[Activity inbound Interceptor](/develop/python/workers/interceptors) to count running Activities.
+To release unused capacity sooner, decide how the Worker recognizes that it has no useful work. Observe that condition
+in the Runtime handler.
+
+When the condition remains true for an idle period, leave the `async with worker` block. The Worker stops polling for
+new Tasks and gives in-flight Activities time to complete before the Runtime handler returns.
+
+The following example from the
+[AgentCore sample Worker](https://github.com/temporalio/samples-python/blob/77768ed87676359823736a40b68ca988a7344543/bedrock_agentcore/strands-agent/agentcore_worker.py)
+defines an `ActivityTracker`. It uses an [Activity inbound Interceptor](/develop/python/workers/interceptors) to count
+running Activities.
 
 ```python
-import asyncio
-import os
-from datetime import timedelta
-
-from bedrock_agentcore.runtime import BedrockAgentCoreApp
-from temporalio.client import Client
-from temporalio.common import VersioningBehavior, WorkerDeploymentVersion
-from temporalio.envconfig import ClientConfig
-from temporalio.worker import (
-    ActivityInboundInterceptor,
-    ExecuteActivityInput,
-    Interceptor,
-    Worker,
-    WorkerDeploymentConfig,
-)
-
-from my_activities import my_activity
-from my_workflows import MyWorkflow
-
 DEBOUNCE = float(os.environ.get("AGENTCORE_DEBOUNCE_SECONDS", "60"))
 DRAIN = timedelta(seconds=120)
 
@@ -162,37 +159,21 @@ class TrackedActivity(ActivityInboundInterceptor):
         finally:
             self.tracker.inflight -= 1
             self.tracker.changed.set()
+```
 
+Register the tracker as a Worker Interceptor and wait for it inside the Worker context:
 
-app = BedrockAgentCoreApp()
+```python
+tracker = ActivityTracker()
+worker = Worker(
+    client,
+    # ...
+    interceptors=[tracker],
+    graceful_shutdown_timeout=DRAIN,
+)
 
-
-@app.entrypoint
-@app.async_task
-async def invoke(_: dict) -> dict:
-    client = await Client.connect(**ClientConfig.load_client_connect_config())
-    tracker = ActivityTracker()
-    worker = Worker(
-        client,
-        task_queue=os.environ["TEMPORAL_TASK_QUEUE"],
-        workflows=[MyWorkflow],
-        activities=[my_activity],
-        interceptors=[tracker],
-        graceful_shutdown_timeout=DRAIN,
-        deployment_config=WorkerDeploymentConfig(
-            version=WorkerDeploymentVersion(
-                deployment_name=os.environ["TEMPORAL_DEPLOYMENT_NAME"],
-                build_id=os.environ["TEMPORAL_BUILD_ID"],
-            ),
-            use_worker_versioning=True,
-            default_versioning_behavior=VersioningBehavior.PINNED,
-        ),
-    )
-
-    async with worker:
-        await tracker.wait_until_idle(DEBOUNCE)
-
-    return {"message": "Worker drained"}
+async with worker:
+    await tracker.wait_until_idle(DEBOUNCE)
 ```
 
 `ActivityTracker` retires the Worker only after 60 seconds without an Activity starting or completing and with no
