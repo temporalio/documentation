@@ -2,9 +2,10 @@
 id: basics
 title: Activity basics - Java SDK
 sidebar_label: Activity basics
-description: This section explains how to implement Activities with the Java SDK
+description: Define an Activity with the Temporal Java SDK, pass a single parameter object within Payload size limits, and customize the Activity Type name.
 toc_max_heading_level: 4
 tags:
+  - Activities
   - Java SDK
   - Temporal SDKs
 ---
@@ -157,7 +158,7 @@ public interface GreetingActivities {
 - Method Name: `composeGreeting`
 - Activity Type: `ComposeGreeting`
 
-### Custom Prefix
+### Custom prefix
 
 Using the `namePrefix` parameter in the `@ActivityInterface` annotation adds a prefix to each Activity Type name mentioned in the interface, unless the prefix is specifically overridden:
 
@@ -178,7 +179,7 @@ public interface GreetingActivities {
 
 The Activity Type is capitalized, even when using a prefix.
 
-### Custom Name
+### Custom name
 
 To override the default name and any inherited prefixes, use the `name` parameter in the `@ActivityMethod` annotation:
 

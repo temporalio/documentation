@@ -2,9 +2,10 @@
 id: basics
 title: Activity basics - Python SDK
 sidebar_label: Activity basics
-description: This section explains Activity Basics with the Python SDK
+description: Define an Activity with the Temporal Python SDK, pass a single parameter object within Payload size limits, and customize the Activity Type name.
 toc_max_heading_level: 4
 tags:
+  - Activities
   - Python SDK
   - Temporal SDKs
 ---
@@ -56,7 +57,7 @@ async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-### Develop Activity Parameters {/* #activity-parameters */}
+### Develop Activity parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may
 support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.

@@ -2,7 +2,7 @@
 id: timeouts
 title: Activity Timeouts - Rust SDK
 sidebar_label: Timeouts
-description: Optimize Workflow Execution with the Temporal Rust SDK by configuring Activity Timeouts, Retry Policies, and Heartbeats.
+description: Set Activity Timeouts and a Retry Policy with the Temporal Rust SDK, override the next retry delay, and Heartbeat long-running Activities.
 toc_max_heading_level: 4
 tags:
   - Activities
@@ -103,7 +103,7 @@ impl TestGreetActivities {
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a signal from the [Worker Process](/workers#worker-process) executing the Activity to the [Temporal Service](/temporal-service). Each heartbeat tells the service that the [Activity Execution](/activity-execution) is still making progress and that the Worker has not crashed. If the service does not receive a heartbeat within the configured [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), the Activity can time out and be retried according to its Retry Policy.
 
-Heartbeats may be throttled by the Worker, so not every heartbeat call is necessarily sent immediately to the Temporal Service. Activity cancellation is also delivered through heartbeat processing, which means Activities that don't heartbeat cannot receive cancellation promptly. ([Temporal Docs][3])
+Heartbeats may be throttled by the Worker, so not every heartbeat call is necessarily sent immediately to the Temporal Service. Activity cancellation is also delivered through heartbeat processing, which means Activities that don't heartbeat cannot receive cancellation promptly.
 
 Heartbeats can include `details` that describe current progress. If the Activity fails and is retried, the retried attempt can retrieve the details from the most recently recorded heartbeat. The Rust SDK exposes activity context support for heartbeat details.
 
