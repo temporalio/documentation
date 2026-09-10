@@ -12,7 +12,7 @@ tags:
   - Amazon Bedrock AgentCore
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
+import { ReleaseNoteHeader } from '@site/src/components'
 
 <ReleaseNoteHeader type="prerelease">
   Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
@@ -42,22 +42,70 @@ Serverless Workers require [Worker Versioning](/worker-versioning). Create the W
 Python Worker, then set `deployment_config` to declare its Worker Deployment Version and enable versioning:
 
 ```python
+import asyncio
 import os
+from datetime import timedelta
 
 from temporalio.client import Client
 from temporalio.common import VersioningBehavior, WorkerDeploymentVersion
-from temporalio.worker import Worker, WorkerDeploymentConfig
+from temporalio.worker import (
+    ActivityInboundInterceptor,
+    ExecuteActivityInput,
+    Interceptor,
+    Worker,
+    WorkerDeploymentConfig,
+)
 
 from my_activities import my_activity
 from my_workflows import MyWorkflow
 
+DEBOUNCE = float(os.environ.get("AGENTCORE_DEBOUNCE_SECONDS", "60"))
+DRAIN = timedelta(seconds=120)
 
-def create_worker(client: Client) -> Worker:
+
+class ActivityTracker(Interceptor):
+    def __init__(self) -> None:
+        self.inflight = 0
+        self.changed = asyncio.Event()
+
+    def intercept_activity(
+        self, next: ActivityInboundInterceptor
+    ) -> ActivityInboundInterceptor:
+        return TrackedActivity(next, self)
+
+    async def wait_until_idle(self, debounce: float) -> None:
+        while True:
+            self.changed.clear()
+            try:
+                await asyncio.wait_for(self.changed.wait(), timeout=debounce)
+            except asyncio.TimeoutError:
+                if self.inflight == 0:
+                    return
+
+
+class TrackedActivity(ActivityInboundInterceptor):
+    def __init__(self, next: ActivityInboundInterceptor, tracker: ActivityTracker):
+        super().__init__(next)
+        self.tracker = tracker
+
+    async def execute_activity(self, input: ExecuteActivityInput):
+        self.tracker.inflight += 1
+        self.tracker.changed.set()
+        try:
+            return await self.next.execute_activity(input)
+        finally:
+            self.tracker.inflight -= 1
+            self.tracker.changed.set()
+
+
+def create_worker(client: Client, tracker: ActivityTracker) -> Worker:
     return Worker(
         client,
         task_queue=os.environ["TEMPORAL_TASK_QUEUE"],
         workflows=[MyWorkflow],
         activities=[my_activity],
+        interceptors=[tracker],
+        graceful_shutdown_timeout=DRAIN,
         deployment_config=WorkerDeploymentConfig(
             version=WorkerDeploymentVersion(
                 deployment_name=os.environ["TEMPORAL_DEPLOYMENT_NAME"],
@@ -81,8 +129,7 @@ Worker. To set the behavior per Workflow instead, pass `versioning_behavior` to 
 ## Start the Worker from the Runtime handler {/* #runtime-handler */}
 
 AgentCore Runtime invokes an HTTP handler. Use `BedrockAgentCoreApp` to provide that handler, and use `async_task` so
-AgentCore keeps the Runtime active while the Worker polls. The following is a handler pattern; its idle policy is
-application-specific:
+AgentCore keeps the Runtime active while the Worker polls:
 
 ```python
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
@@ -96,20 +143,17 @@ app = BedrockAgentCoreApp()
 @app.async_task
 async def invoke(_: dict) -> dict:
     client = await Client.connect(**ClientConfig.load_client_connect_config())
-    worker = create_worker(client)
+    tracker = ActivityTracker()
+    worker = create_worker(client, tracker)
 
     async with worker:
-        # Implement how your application decides that this Worker is idle.
-        await wait_until_idle()
+        await tracker.wait_until_idle(DEBOUNCE)
 
     return {"message": "Worker drained"}
 ```
 
 The payload does not represent a Workflow input. The Worker Controller Instance invokes the endpoint to add Worker
 capacity. Applications start Workflows through the Temporal Client, as usual.
-
-`wait_until_idle()` represents the idle policy that you define for the Worker. See
-[Stop and drain the Worker](#stop-and-drain-the-worker).
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
@@ -123,13 +167,18 @@ For the supported connection variables, config-file format, and profiles, see
 
 ## Stop and drain the Worker {/* #stop-and-drain-the-worker */}
 
-An AgentCore Runtime invocation is not a measure of Task Queue idleness. Add an idle policy that decides when the
-Worker should stop polling. When that condition is met, leave the `async with worker` block. The Python SDK stops
-polling and waits for in-flight Activities to finish before the handler returns.
+The example uses `ActivityTracker` as its idle policy. It starts a 60-second timer when no Activity is running. Starting
+or completing an Activity resets the timer. When the timer expires, the Worker leaves the `async with` block, stops
+polling, and waits up to two minutes for in-flight Activities to complete.
 
-Set `graceful_shutdown_timeout` on `Worker()` to limit how long the Worker waits for in-flight Activities. Choose an
-idle period and shutdown timeout that fit the workload, and account for AgentCore's maximum Runtime lifetime. For the
-AgentCore lifecycle settings, see [Lifecycle](/serverless-workers/agentcore#lifecycle).
+This policy is appropriate when Activities represent the work that should keep the Worker available. For example, the
+AgentCore sample runs model and tool calls as Activities. It is not a universal definition of idleness. If your Worker
+has a different signal for useful work, use that signal instead.
+
+`AGENTCORE_DEBOUNCE_SECONDS` controls the idle period. `graceful_shutdown_timeout` controls how long the Worker waits
+for in-flight Activities after it stops polling. Choose both values for your workload, and account for AgentCore's
+maximum Runtime lifetime. For the AgentCore lifecycle settings, see
+[Lifecycle](/serverless-workers/agentcore#lifecycle).
 
 ## Keep Activities safe across Worker termination {/* #activity-recovery */}
 
