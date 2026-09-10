@@ -102,10 +102,8 @@ Decide what condition means that a Worker can retire. Observe that condition in 
 true for an idle period, stop polling and drain the Worker. The Temporal Python SDK handles the draining after you leave
 the `async with worker` block.
 
-`ActivityTracker` is one example. It is custom code from the AgentCore sample. It uses an
-[Activity inbound Interceptor](/develop/python/workers/interceptors) to count running Activities. This is appropriate
-when Activities represent work that should keep the Worker available, such as the model and tool calls in the AgentCore
-sample.
+The following example defines an `ActivityTracker`. It uses an
+[Activity inbound Interceptor](/develop/python/workers/interceptors) to count running Activities.
 
 ```python
 import asyncio
@@ -197,9 +195,10 @@ async def invoke(_: dict) -> dict:
     return {"message": "Worker drained"}
 ```
 
-`ActivityTracker` starts a 60-second timer when no Activity is running. Starting or completing an Activity resets the
-timer. When the timer expires, the Worker leaves the `async with` block, stops polling, and waits up to two minutes for
-in-flight Activities to complete.
+`ActivityTracker` retires the Worker only after 60 seconds without an Activity starting or completing and with no
+Activity running. A long-running Activity keeps the count above zero, so the Worker continues polling. After that
+Activity completes, the tracker waits another 60 seconds before it retires the Worker. The two-minute
+`graceful_shutdown_timeout` is a safety limit for any Activity still in flight when shutdown starts.
 
 Memory pressure can be another retirement condition. For example, the Runtime handler can monitor process memory and
 initiate the same graceful shutdown when usage crosses a threshold. Memory usage is not an idle signal. It tells you
