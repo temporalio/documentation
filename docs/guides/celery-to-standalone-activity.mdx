@@ -428,7 +428,7 @@ welcome-email-42 | send_welcome_email | Completed
 Total activities: 1
 ```
 
-The `query` uses the same [List Filter](/list-filter) syntax as Workflow visibility, so you can filter by attributes such as `ActivityType` and `Status` — for example, `"ActivityType = 'send_welcome_email' AND Status = 'Running'"`. These calls return only Standalone Activities; Activities running inside Workflows are excluded. The Temporal CLI offers the same views with `temporal activity list` and `temporal activity count`.
+The `query` uses the same [List Filter](/list-filter) syntax as Workflow visibility, so you can filter by attributes such as `ActivityType` and `ExecutionStatus` — for example, `"ActivityType = 'send_welcome_email' AND ExecutionStatus = 'Running'"`. These calls return only Standalone Activities; Activities running inside Workflows are excluded. The Temporal CLI offers the same views with `temporal activity list` and `temporal activity count`.
 
 ## Step 10: When to use a Workflow
 
