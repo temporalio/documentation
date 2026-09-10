@@ -1,0 +1,30 @@
+# Extracted from errata-ai/Google and errata-ai/IBM (MIT). See NOTICE.
+#
+# Google's boundary style (the lookahead doesn't swallow the following comma
+# or space, and `$` catches abbreviations ending a heading or table cell),
+# extended over IBM's larger list.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: suggestion
+ignorecase: true
+nonword: true
+action:
+  name: replace
+swap:
+  '\b(?:eg|e\.g\.)(?=[\s,;]|$)': for example
+  '\b(?:ie|i\.e\.)(?=[\s,;]|$)': that is
+  '\betc\.(?=[\s,;]|$)': and so on
+  '\bvs\.(?=[\s,;]|$)': versus
+tests:
+  - name: fires
+    input: >
+      Use a tunnel, e.g. SSH, for internal services, i.e. anything private, etc.
+    want: |
+      1:15:Std.Abbreviations.Latin:Use 'for example' instead of 'e.g.'.
+      1:48:Std.Abbreviations.Latin:Use 'that is' instead of 'i.e.'.
+      1:71:Std.Abbreviations.Latin:Use 'and so on' instead of 'etc.'.
+
+  - name: clean
+    input: >
+      Use a tunnel, for example SSH, for internal services.
+    want: ""

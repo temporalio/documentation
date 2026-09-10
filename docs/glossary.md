@@ -748,7 +748,7 @@ The Temporal Web UI provides users with Workflow Execution state and metadata fo
 
 #### [Timer](/workflow-execution/timers-delays)
 
-Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
+Temporal SDKs offer Timer APIs so that the Workflow Definition is deterministic in its handling of time values.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
