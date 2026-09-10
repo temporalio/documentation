@@ -69,27 +69,50 @@ Worker. To set the behavior per Workflow instead, pass `versioning_behavior` to 
 AgentCore Runtime invokes an HTTP handler. Use `BedrockAgentCoreApp` to provide that handler, and use `async_task` so
 AgentCore keeps the Runtime active while the Worker polls:
 
-```python
+<!--SNIPSTART python-agentcore-runtime-handler-->
+[bedrock_agentcore/strands-agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/5b0fe65efe934388d35eda430fb11df6899ce1d3/bedrock_agentcore/strands-agent/agentcore_worker.py)
+```py
 @app.entrypoint
-@app.async_task
+@app.async_task  # keeps /ping on "HealthyBusy" until this returns
 async def invoke(payload: dict) -> dict:
-    client = await Client.connect(...)
-    tracker = ActivityTracker()
-    worker = Worker(
-        client,
-        task_queue=task_queue,
-        workflows=[MyWorkflow],
-        activities=[my_activity],
-        interceptors=[tracker],
-        graceful_shutdown_timeout=DRAIN,
-        deployment_config=deployment_config,
+    """Poll until idle, then drain. The payload is unused: every call is a new session and new worker."""
+    api_key = os.environ.get("TEMPORAL_API_KEY") or None
+    client = await Client.connect(
+        os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+        namespace=os.environ.get("TEMPORAL_NAMESPACE", "default"),
+        api_key=api_key,
+        tls=bool(api_key),
+        plugins=[StrandsPlugin()],
     )
 
-    async with worker:
-        await tracker.wait_until_idle(DEBOUNCE)
+    task_queue = os.environ.get("TEMPORAL_TASK_QUEUE", workflows.TASK_QUEUE)
+    tracker = ActivityTracker()
 
-    return {"message": "Worker drained"}
+    log.info("polling %s as %s/%s", task_queue, DEPLOYMENT_NAME, BUILD_ID)
+    # execute_code is a sync Activity, so it needs an executor to block on.
+    with ThreadPoolExecutor(max_workers=4) as activity_executor:
+        worker = Worker(
+            client,
+            task_queue=task_queue,
+            workflows=[workflows.StrandsAgentWorkflow],
+            activities=[execute_code],
+            activity_executor=activity_executor,
+            interceptors=[tracker],
+            deployment_config=WorkerDeploymentConfig(
+                version=WorkerDeploymentVersion(
+                    deployment_name=DEPLOYMENT_NAME, build_id=BUILD_ID
+                ),
+                use_worker_versioning=True,
+                default_versioning_behavior=VersioningBehavior.PINNED,
+            ),
+            graceful_shutdown_timeout=DRAIN,
+        )
+        async with worker:
+            await tracker.wait_until_idle(DEBOUNCE)
+    log.info("worker idle for %ss; drained", DEBOUNCE)
+    return {"message": "worker drained", "task_queue": task_queue}
 ```
+<!--SNIPEND-->
 
 The payload does not represent a Workflow input. The Worker Controller Instance invokes the endpoint to add Worker
 capacity. Applications start Workflows through the Temporal Client, as usual.
@@ -117,16 +140,22 @@ When the condition remains true for an idle period, leave the `async with worker
 new Tasks and gives in-flight Activities time to complete before the Runtime handler returns.
 
 The following example from the
-[AgentCore sample Worker](https://github.com/temporalio/samples-python/blob/77768ed87676359823736a40b68ca988a7344543/bedrock_agentcore/strands-agent/agentcore_worker.py)
+[AgentCore sample Worker](https://github.com/temporalio/samples-python/blob/5b0fe65efe934388d35eda430fb11df6899ce1d3/bedrock_agentcore/strands-agent/agentcore_worker.py)
 defines an `ActivityTracker`. It uses an [Activity inbound Interceptor](/develop/python/workers/interceptors) to count
 running Activities.
 
-```python
+<!--SNIPSTART python-agentcore-activity-tracker-->
+[bedrock_agentcore/strands-agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/5b0fe65efe934388d35eda430fb11df6899ce1d3/bedrock_agentcore/strands-agent/agentcore_worker.py)
+```py
+# How long the Worker keeps polling after it goes idle.
 DEBOUNCE = float(os.environ.get("AGENTCORE_DEBOUNCE_SECONDS", "60"))
+# How long the drain waits for in-flight Activities (a model or tool call).
 DRAIN = timedelta(seconds=120)
 
 
 class ActivityTracker(Interceptor):
+    """Tracks in-flight activities and blocks until AGENTCORE_DEBOUNCE_SECONDS elapses with no events."""
+
     def __init__(self) -> None:
         self.inflight = 0
         self.changed = asyncio.Event()
@@ -134,32 +163,39 @@ class ActivityTracker(Interceptor):
     def intercept_activity(
         self, next: ActivityInboundInterceptor
     ) -> ActivityInboundInterceptor:
-        return TrackedActivity(next, self)
+        return _TrackedActivity(next, self)
 
     async def wait_until_idle(self, debounce: float) -> None:
+        """Return once no Activity has run for ``debounce`` seconds."""
         while True:
             self.changed.clear()
             try:
+                # Wake the moment an Activity starts or finishes; a timeout
+                # instead means nothing has happened for the whole window.
                 await asyncio.wait_for(self.changed.wait(), timeout=debounce)
             except asyncio.TimeoutError:
                 if self.inflight == 0:
                     return
 
 
-class TrackedActivity(ActivityInboundInterceptor):
-    def __init__(self, next: ActivityInboundInterceptor, tracker: ActivityTracker):
+class _TrackedActivity(ActivityInboundInterceptor):
+    def __init__(
+        self, next: ActivityInboundInterceptor, tracker: ActivityTracker
+    ) -> None:
         super().__init__(next)
-        self.tracker = tracker
+        self._tracker = tracker
 
     async def execute_activity(self, input: ExecuteActivityInput):
-        self.tracker.inflight += 1
-        self.tracker.changed.set()
+        self._tracker.inflight += 1
+        self._tracker.changed.set()
+        log.info("activity in flight: %d", self._tracker.inflight)
         try:
             return await self.next.execute_activity(input)
         finally:
-            self.tracker.inflight -= 1
-            self.tracker.changed.set()
+            self._tracker.inflight -= 1
+            self._tracker.changed.set()
 ```
+<!--SNIPEND-->
 
 Register the tracker as a Worker Interceptor and wait for it inside the Worker context:
 
