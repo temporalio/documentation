@@ -1,0 +1,227 @@
+---
+id: secure-connections
+title: Secure connections and authorize requests
+sidebar_label: Secure connections
+description: Protect Temporal Proxy traffic with service restrictions, TLS, inbound authentication, authorization, and upstream credentials.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+Temporal Proxy can restrict which Temporal gRPC services it forwards, protect inbound and outbound connections with
+TLS, admit callers at the gateway, and present proxy-managed credentials to an upstream. Configure each control at the
+trust boundary it protects.
+
+## Design the enforcement boundary
+
+Proxy controls apply only to traffic that enters the proxy gateway. A Client, Worker, CLI, or Web UI that can reach a
+Temporal Service directly can bypass the proxy's service allowlist, authentication, authorization, routing, Namespace
+translation, and Payload encryption.
+
+If the proxy is an enforcement point, combine its configuration with network controls that prevent application traffic
+from reaching the upstream directly. Keep upstream credentials out of application configuration, restrict access to
+the proxy's configuration and mounted secrets, and treat the proxy and its extension servers as trusted infrastructure.
+See [Plan a Temporal Proxy deployment](/production-deployment/temporal-proxy/plan-deployment) for deployment topology
+and availability considerations.
+
+The available controls protect different boundaries:
+
+| Boundary                     | Configuration                                     | Effect                                                                 |
+| ---------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
+| Caller to proxy              | Top-level `tls`                                   | Encrypts the connection and optionally verifies client certificates   |
+| Request admission            | `allowedServices` and top-level `auth`            | Limits services and admits or denies inbound calls                     |
+| Proxy to extension server    | `extensionServers[].tls` and `credentials`        | Protects delegated authorization or key-management calls               |
+| Proxy to Temporal Service    | `upstreams[].tls` and `credentials`               | Encrypts the connection and supplies a proxy-managed upstream identity |
+| Temporal Payload persistence | Top-level `encryption`                            | Encrypts supported Payloads before the upstream stores them            |
+
+Transport TLS does not encrypt Payloads after the Temporal Service receives them. For that separate control, see
+[Encrypt Payloads with Temporal Proxy](/production-deployment/temporal-proxy/encrypt-payloads).
+
+## Restrict forwarded services
+
+The top-level `allowedServices` list names each gRPC service the proxy forwards by its protobuf full name. If you omit
+the list, the proxy forwards Workflow Service and Operator Service. An explicit empty list selects the same defaults;
+it does not deny every service.
+
+```yaml
+allowedServices:
+  - temporal.api.workflowservice.v1.WorkflowService
+  - temporal.api.operatorservice.v1.OperatorService
+  - grpc.reflection.v1.ServerReflection
+```
+
+| Service                                           | Used by                                                                         | In the default set |
+| ------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------ |
+| `temporal.api.workflowservice.v1.WorkflowService` | SDK Clients, Workers, the CLI, and self-hosted Temporal Web UI                   | Yes                |
+| `temporal.api.operatorservice.v1.OperatorService` | `temporal operator` commands and self-hosted Web UI Search Attribute and Nexus Endpoint views | Yes                |
+| `grpc.reflection.v1.ServerReflection`             | Service discovery for tools such as `grpcurl`                                   | No                 |
+
+These are the services the proxy currently supports. An unknown or duplicate entry fails configuration validation at
+startup. A call to a service you leave out fails with `UNIMPLEMENTED` before the proxy performs routing or contacts an
+upstream.
+
+Reflection is opt-in. Allowing `grpc.reflection.v1.ServerReflection` also supports the superseded
+`grpc.reflection.v1alpha.ServerReflection` endpoint used as a fallback by some clients.
+
+`allowedServices` works at service granularity, not at individual RPC or Namespace granularity. Use external
+authorization to make decisions for a specific method, Namespace, or caller.
+
+## Secure inbound connections
+
+The top-level `tls` block protects connections from applications to the proxy gateway. `cert`, `key`, and `ca` are file
+paths to PEM material on the proxy's filesystem.
+
+Configure server TLS with a certificate and its private key:
+
+```yaml
+hostPort: 0.0.0.0:7233
+tls:
+  cert: /etc/temporal-proxy/tls/server.pem
+  key: /etc/temporal-proxy/tls/server-key.pem
+```
+
+Add `ca` to require mutual TLS. Each connecting application must then present a client certificate signed by that CA.
+
+```yaml
+tls:
+  ca: /etc/temporal-proxy/tls/client-ca.pem
+  cert: /etc/temporal-proxy/tls/server.pem
+  key: /etc/temporal-proxy/tls/server-key.pem
+```
+
+Omit the top-level `tls` block to accept plaintext connections. If you include the block, `cert` and `key` are required
+and must be set together. On Kubernetes, mount this material from a Secret as described in
+[Supply TLS material](/production-deployment/temporal-proxy/deploy-kubernetes#supply-tls-material).
+
+Mutual TLS verifies that a client certificate chains to the configured CA. It does not replace a method- or
+Namespace-aware authorization policy.
+
+## Authenticate inbound requests
+
+Inbound authentication is disabled when you omit the top-level `auth` block. When present, `auth` must select exactly
+one of `staticToken`, `jwks`, or `external`. The proxy makes the decision before routing and strips the credential
+header consumed by the authenticator before forwarding an admitted request.
+
+Use `staticToken` to compare a bearer token against one configured value:
+
+```yaml
+auth:
+  staticToken:
+    token: ${GATEWAY_TOKEN}
+    header: authorization
+    scheme: Bearer
+```
+
+Use `jwks` to verify JWT signatures and claims against an HTTPS JWKS endpoint:
+
+```yaml
+auth:
+  jwks:
+    url: https://issuer.example.com/.well-known/jwks.json
+    audiences:
+      - temporal-proxy
+    issuer: https://issuer.example.com/
+    header: authorization
+    scheme: Bearer
+```
+
+`header` defaults to `authorization`, and `scheme` defaults to `Bearer`. A JWT must contain an expiration time. The
+proxy checks `issuer` and whether the token contains one of `audiences` only when you configure those fields. A missing,
+malformed, expired, or unverifiable token is not forwarded.
+
+These built-in authenticators determine whether a token is valid; they do not assign different permissions by method
+or Namespace. Delegate the decision to an extension server when you need request-level authorization.
+
+## Delegate authorization to an extension server
+
+Configure `auth.external` to ask an operator-run server that implements `api.auth.v1.AuthService` about every inbound
+stream. The extension server address must be static; templates are not supported for `extensionServers.hostPort`.
+
+```yaml
+extensionServers:
+  - name: authz
+    hostPort: authz.internal.example.com:9444
+    tls:
+      ca: /etc/temporal-proxy/tls/authz-ca.pem
+      cert: /etc/temporal-proxy/tls/authz-client.pem
+      key: /etc/temporal-proxy/tls/authz-client-key.pem
+    credentials:
+      static:
+        apiKey: ${AUTHZ_API_KEY}
+
+auth:
+  external:
+    name: authz
+    credentialHeaders:
+      - authorization
+```
+
+`name` must identify an entry in `extensionServers`. Each authorization request contains:
+
+| Field              | Value                                                                                                    |
+| ------------------ | -------------------------------------------------------------------------------------------------------- |
+| `target.full_name` | The gRPC full method name, including its leading slash                                                    |
+| `target.namespace` | The local Namespace extracted before routing and translation, or empty when the Namespace is unknown      |
+| `credentials`      | Every value received in each header named by `credentialHeaders`                                         |
+
+The proxy also forwards the caller's remaining metadata to the extension server. It removes every declared credential
+header before an admitted request is sent upstream. If `credentialHeaders` is empty, no caller header is identified as
+a credential and no header is stripped.
+
+Only `DECISION_ALLOW` admits the request. `DECISION_DENY`, an unspecified or unrecognized decision, and an extension
+server error all deny it. A denial returns `PERMISSION_DENIED`; an extension server error preserves its gRPC status
+code so a Client or Worker can distinguish a retryable service failure from a rejected caller.
+
+Treat an empty `target.namespace` as unknown, not as a Namespace named with an empty string. Combine Namespace rules
+with `target.full_name` so a Namespace-less or unreadable request cannot match a Namespace-scoped permission by
+accident. The [authorization example](https://github.com/temporalio/temporal-proxy/tree/main/examples/authz) includes a
+provider that maps a JWT to permissions for methods and Namespaces.
+
+Credentials on an extension server use the same static provider as upstream credentials. They require TLS. The proxy
+removes any caller-supplied value in that credential header and sends its configured value instead.
+
+## Secure upstream connections
+
+Configure `tls` and `credentials` independently on each upstream:
+
+```yaml
+upstreams:
+  - name: cloud
+    hostPort: my-namespace.my-account.tmprl.cloud:7233
+    tls: {}
+    credentials:
+      static:
+        apiKey: ${TEMPORAL_API_KEY}
+        header: authorization
+        scheme: Bearer
+```
+
+An upstream TLS block supports these modes:
+
+- `tls: {}` verifies the upstream certificate with the system root certificates and does not present a client
+  certificate. Use this mode for Temporal Cloud with an API key.
+- `ca` verifies the upstream against the CA or pinned trust anchor at that file path.
+- `ca`, `cert`, and `key` enable mutual TLS. `cert` and `key` must be set together, and an outbound client certificate
+  requires `ca`.
+
+Set `serverName` when the address you dial does not match the DNS name on the upstream certificate. Both `hostPort` and
+`tls.serverName` can use the per-request templates described in
+[Resolve templated upstreams](/production-deployment/temporal-proxy/route-translate#resolve-templated-upstreams).
+
+`credentials.static` is the supported outbound credential provider. `apiKey` is required; `header` defaults to
+`authorization`, and `scheme` defaults to `Bearer`. Credentials require TLS, and invalid combinations prevent the proxy
+from starting. Before adding its credential, the proxy removes any caller-supplied value from the same outbound header.
+
+The upstream sees the proxy's configured identity, not the caller's consumed gateway credential. Preserve caller
+identity in an independently trusted header only when the upstream is designed to validate it; forwarding an
+unverified caller-supplied header does not establish identity.

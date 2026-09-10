@@ -1,0 +1,136 @@
+---
+id: plan-deployment
+title: Plan a Temporal Proxy deployment
+sidebar_label: Plan a deployment
+description:
+  Choose a Temporal Proxy topology and plan traffic coverage, trust boundaries, availability, capacity, and operations
+  before deployment.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+Plan where the proxy runs, which callers must use it, and how those callers keep access to the Temporal Service when a
+proxy instance fails. Temporal Proxy becomes an additional gRPC hop for every connection routed through it. Use this
+guidance for evaluation and preproduction design while the project remains prerelease, and check the repository's
+current release status before production use.
+
+## Determine traffic coverage and trust boundaries
+
+List every Worker, SDK Client, CLI process, and self-hosted Web UI that connects to each upstream Temporal Service. For
+each caller, decide whether the proxy provides convenience, such as Namespace translation, or enforces a required
+control, such as payload encryption or inbound authorization.
+
+Proxy controls apply only to requests that pass through the proxy. A caller that retains an upstream endpoint and valid
+upstream credentials can bypass its routing, authorization, and payload encryption. When a control is mandatory:
+
+- Give upstream credentials to the proxy rather than to application processes.
+- Restrict network paths so application workloads can reach the gateway but cannot connect directly to the upstream.
+- Configure every in-scope caller to use the gateway endpoint.
+- Protect the gateway with network policy, inbound TLS or mTLS, and authentication appropriate to its callers.
+
+Plan the controls on each connection separately:
+
+| Connection | Data that crosses it | Controls to plan |
+| ---------- | -------------------- | ---------------- |
+| Application to gateway | Temporal gRPC requests and cleartext Payloads when proxy encryption is enabled | Network reachability, gateway TLS or mTLS, and inbound authentication and authorization |
+| Proxy to upstream | Forwarded gRPC requests, upstream credentials, and optionally encrypted Payloads | Outbound TLS, upstream credential scope, routing, and Namespace translation |
+| Proxy to KMS or extension server | Data encryption keys or authorization requests when those features are configured | Private reachability, TLS, service credentials, latency, and dependency availability |
+
+Payload encryption fails the outbound request when the proxy cannot encrypt a codec-capable Payload, but it does not
+cover a direct connection to the upstream or every request field. Review the scope of
+[fail-closed encryption](/production-deployment/temporal-proxy/encrypt-payloads#understand-fail-closed-behavior) before treating the proxy as a data
+boundary.
+
+## Choose a deployment topology
+
+Use a shared service when several application deployments should use one gateway and configuration. Use a sidecar when
+each Worker deployment should own its proxy instance and local connection. Both shapes run the same proxy binary, and
+you can use different shapes for different workloads.
+
+| Consideration | Shared service | Sidecar with each Worker deployment |
+| ------------- | -------------- | ----------------------------------- |
+| Client endpoint | A stable network endpoint shared by many callers | A loopback or Pod-local endpoint |
+| Configuration | Central rollout for all attached callers | Versioned and rolled out with each Worker deployment |
+| Failure scope | A gateway outage can affect many workloads | A proxy outage is isolated to its Worker Pod |
+| Scaling | Scale proxy replicas and the gateway path independently | Scale proxy instances with Worker replicas |
+| Network security | Secure an application-to-gateway network hop | Keep the application-to-gateway hop inside the Pod |
+| Other callers | SDK Clients, CLI processes, and a self-hosted Web UI can share the endpoint | Callers outside the Worker Pod need another proxy endpoint |
+| Operational cost | Fewer instances and caches to operate | More instances, configuration copies, connections, and KMS caches |
+
+For a shared service, run more than one proxy replica behind an endpoint that supports long-lived gRPC connections. Use
+the same routing, credentials, and encryption policies on every replica so a caller sees the same behavior after it
+reconnects. For a sidecar, treat the Worker and proxy as one release unit and configure the Worker to connect or retry
+only after the sidecar gateway is reachable.
+
+## Design for failures on the request path
+
+The proxy is on the request path. If callers cannot reach a healthy proxy instance, Workers cannot poll or complete
+Tasks and Clients cannot send commands until connectivity returns. Existing Workflow state remains durable in the
+Temporal Service, but Workflow progress can pause while the proxy path is unavailable.
+
+Design the failure behavior for the topology you selected:
+
+- Place shared replicas across the failure domains used by the attached applications, and maintain capacity while one
+  replica or domain is unavailable.
+- Configure readiness, graceful termination, and disruption budgets so deployments remove an instance from service
+  before stopping it. Long-poll requests can reconnect to another healthy instance.
+- Test proxy restarts, upstream connection failures, expired credentials, and invalid configuration before a cutover.
+- Treat a KMS or external authorization service as part of the request path when you enable it. KMS cache hits reduce
+  calls to the KMS, but a request that needs a failed key operation does not fall back to plaintext.
+- Keep configuration and secret rollouts reversible. The proxy reads its configuration at startup, so a change takes
+  effect when instances restart with the new version.
+
+If applications and a highly available upstream can move between regions, place a reachable proxy path in every region
+where those applications can run. Every regional proxy that decrypts Payloads must be able to use the keys that other
+regions used to encrypt them. See
+[Manage encryption keys](/production-deployment/temporal-proxy/manage-encryption-keys) for multi-region key planning and
+[Deploy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes) for replicas, probes, and shutdown
+behavior.
+
+## Plan capacity and operations
+
+Size the proxy with a representative workload before a cutover. Include the number of Worker and Client connections,
+concurrent long polls, request rate, Payload sizes, Namespace and upstream count, and the KMS operations generated by
+cache misses and key rotation. No single request-per-second value represents every configuration.
+
+Establish an operating baseline and alert on changes in:
+
+- End-to-end request latency and gRPC error codes.
+- Routing decisions and forwarding failures by upstream.
+- Payload encryption failures, KMS errors and latency, and data encryption key cache misses.
+- Proxy process availability, resource use, and replica count.
+
+The gateway's gRPC health service reports process-wide health. It does not replace a test that verifies the full path
+through routing, upstream authentication, and any KMS or extension server. Use both health probes and a synthetic
+request appropriate to your environment. For the available logs, metrics, and response checks, see
+[Operate and troubleshoot Temporal Proxy](/production-deployment/temporal-proxy/operate-troubleshoot).
+
+Plan how you will rotate API keys, certificates, gateway tokens, and KMS permissions without updating application code.
+Store credentials outside the proxy configuration file, limit access to them, and roll proxy instances after a change.
+
+## Complete the deployment checklist
+
+Use this checklist before directing an application workload through the proxy:
+
+- [ ] Record every caller, local Namespace, upstream Namespace, and upstream endpoint in scope.
+- [ ] Decide which proxy controls are required and prevent in-scope callers from bypassing them.
+- [ ] Choose a shared service, sidecar, or workload-specific combination and document its failure scope.
+- [ ] Provide more than one proxy path wherever the application requires proxy fault tolerance.
+- [ ] Configure inbound network controls, TLS, authentication, and the forwarded gRPC service allowlist.
+- [ ] Scope upstream credentials to the Namespaces and actions each proxy deployment needs.
+- [ ] Confirm that every replica has the same routing, translation, and encryption policies.
+- [ ] Protect encryption keys from deletion and verify that every regional proxy can decrypt existing Payloads.
+- [ ] Load test long polls, Payload sizes, KMS operations, and a replica or dependency failure.
+- [ ] Configure health probes, metrics, logs, alerts, graceful shutdown, and a rollback procedure.
+- [ ] Migrate callers in stages and verify the complete request path before removing direct upstream access.

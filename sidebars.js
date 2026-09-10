@@ -1632,9 +1632,26 @@ module.exports = {
             id: 'production-deployment/temporal-proxy/index',
           },
           items: [
-            'production-deployment/temporal-proxy/configure',
-            'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/get-started-cloud',
+            'production-deployment/temporal-proxy/plan-deployment',
+            {
+              type: 'category',
+              label: 'Configure',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'production-deployment/temporal-proxy/configure',
+              },
+              items: [
+                'production-deployment/temporal-proxy/route-translate',
+                'production-deployment/temporal-proxy/secure-connections',
+                'production-deployment/temporal-proxy/encrypt-payloads',
+                'production-deployment/temporal-proxy/manage-encryption-keys',
+              ],
+            },
             'production-deployment/temporal-proxy/deploy-kubernetes',
+            'production-deployment/temporal-proxy/operate-troubleshoot',
+            'production-deployment/temporal-proxy/reference',
           ],
         },
       ],

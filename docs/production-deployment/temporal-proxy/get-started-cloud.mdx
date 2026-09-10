@@ -1,0 +1,171 @@
+---
+id: get-started-cloud
+title: Get started with Temporal Proxy and Temporal Cloud
+sidebar_label: Get started with Temporal Cloud
+description:
+  Run the checked-in Temporal Proxy example to route a Worker to Temporal Cloud with TLS, credentials, and Namespace
+  translation handled by the proxy.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+Run the checked-in [Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud) to
+connect a Worker and an SDK Client to Temporal Cloud through a local proxy. The Worker and Client use a short Namespace
+name and carry no Temporal Cloud endpoint, TLS, or API key configuration. The proxy adds those settings before it sends
+each request to Temporal Cloud.
+
+## Prerequisites
+
+Before you run the example, prepare the Temporal Cloud resources and local tools it uses:
+
+- A [Temporal Cloud Namespace](/cloud/namespaces) that allows API key authentication. Note its fully qualified name,
+  `<namespace-name>.<account-identifier>`.
+- A [Temporal Cloud API key](/cloud/api-keys) whose identity can access the Namespace.
+- [Git](https://git-scm.com/) and [Go](https://go.dev/) installed locally.
+- Three terminal windows or tabs.
+
+The example runs the proxy from source and downloads its Go dependencies the first time you start it.
+
+## Get the example
+
+Clone the Temporal Proxy repository:
+
+```bash
+git clone https://github.com/temporalio/temporal-proxy.git
+```
+
+The example is in the repository's `examples/cloud` directory. Its
+[`config.yaml`](https://github.com/temporalio/temporal-proxy/blob/main/examples/cloud/config.yaml) defines a local
+gateway on `127.0.0.1:7233`, a namespaced Temporal Cloud upstream, and a separate upstream for Namespace-less system
+calls.
+
+## Run the example
+
+Run the proxy, Worker, and starter in separate terminals. Keeping the API key only in the proxy terminal demonstrates
+that the application processes do not need the Temporal Cloud credential.
+
+### Start the proxy
+
+In the first terminal, set the short part of your fully qualified Namespace name. For example, use `quickstart` for
+`quickstart.a1b2c`:
+
+```bash
+export TEMPORAL_NAMESPACE=quickstart
+```
+
+Set the account identifier, which is the part after the dot in the fully qualified Namespace name:
+
+```bash
+export TEMPORAL_ACCOUNT=a1b2c
+```
+
+Set the API key:
+
+```bash
+export TEMPORAL_API_KEY='<your-api-key>'
+```
+
+Change to the repository root:
+
+```bash
+cd temporal-proxy
+```
+
+Start the proxy with the example configuration:
+
+```bash
+go run ./cmd/proxy serve -c examples/cloud/config.yaml
+```
+
+The gateway-to-application connection and the proxy's internal sockets are plaintext in this local example. The
+outbound connection from the proxy to Temporal Cloud uses TLS.
+
+### Start the Worker
+
+In the second terminal, change to the example directory:
+
+```bash
+cd temporal-proxy/examples/cloud
+```
+
+Set only the short Namespace name. Do not set `TEMPORAL_ACCOUNT` or `TEMPORAL_API_KEY` in this terminal:
+
+```bash
+export TEMPORAL_NAMESPACE=quickstart
+```
+
+Start the Worker:
+
+```bash
+go run ./worker
+```
+
+The Worker connects to `localhost:7233` and polls the `cloud-example` Task Queue through the proxy.
+
+### Start a Workflow
+
+In the third terminal, change to the example directory:
+
+```bash
+cd temporal-proxy/examples/cloud
+```
+
+Set only the short Namespace name:
+
+```bash
+export TEMPORAL_NAMESPACE=quickstart
+```
+
+Run the starter:
+
+```bash
+go run ./starter
+```
+
+The starter waits for the Workflow result and prints:
+
+```text
+Hello, Temporal!
+```
+
+Press `CTRL+C` in the Worker and proxy terminals when you finish the example.
+
+## Verify the request path
+
+The greeting confirms that the starter, Worker, proxy, and Temporal Cloud completed a request-response cycle. You can
+also open the Namespace in the [Temporal Cloud UI](https://cloud.temporal.io) and find the Workflow Id
+`cloud-example-greeting`.
+
+The example separates application configuration from upstream configuration:
+
+| Process | Address and Namespace | Temporal Cloud TLS | Temporal Cloud API key |
+| ------- | --------------------- | ------------------ | ---------------------- |
+| Worker and starter | `localhost:7233`, short Namespace name | None | None |
+| Temporal Proxy | Namespace endpoint derived from the translated Namespace name | Enabled | Read from `TEMPORAL_API_KEY` |
+
+For namespaced calls, the proxy appends `.$TEMPORAL_ACCOUNT` to the local Namespace and derives the endpoint from the
+translated value. For Namespace-less calls such as `GetSystemInfo`, it uses the fixed `system` upstream. This split lets
+one configuration serve more than one Namespace while still giving system calls an endpoint.
+
+## Continue configuring the proxy
+
+The example gateway accepts plaintext connections without inbound authentication, which is appropriate only for this
+local evaluation. Before you place the gateway on a network,
+[plan the deployment](/production-deployment/temporal-proxy/plan-deployment) and
+[configure the proxy](/production-deployment/temporal-proxy/configure) for the callers and upstreams in your
+environment.
+
+To keep new Workflow and Activity Payloads encrypted at the upstream, configure a production KMS provider under
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads). To run replicated proxy instances with
+Kubernetes, see [Deploy Temporal Proxy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes).
