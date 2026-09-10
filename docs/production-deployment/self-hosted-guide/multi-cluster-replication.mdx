@@ -77,8 +77,7 @@ that receives the update applies it locally before the other Temporal Services r
 - If the source Temporal Service receives the update, both Temporal Services can temporarily consider the Namespace
   passive.
 
-For this reason, send an emergency failover to the destination when the source is unavailable. When both Temporal
-Services are available, use the handover Workflow instead of choosing either side for a forced failover.
+For this reason, send an emergency failover to the destination when the source is unavailable.
 
 The Namespace cache refresh interval does not add another data-consistency window after a Temporal Service observes the
 failover. Tasks record the failover version of the Workflow state that created them. Task processing compares that
