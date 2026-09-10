@@ -756,3 +756,7 @@ func CompleteJob(ctx context.Context, c client.Client, jobID string, result stri
 - [Polling External Services](/design-patterns/polling) — alternative to callbacks when the external system does not support webhooks
 - [Delayed Start](/design-patterns/delayed-start) — defer Workflow execution to a future time without `workflow.sleep()`
 - [Long-Running Activity](/design-patterns/long-running-activity) — heartbeating pattern for activities that run for extended periods
+
+### References
+
+- [Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion) — canonical reference for Pattern 3's task-token mechanism, including when to prefer it over Signals
