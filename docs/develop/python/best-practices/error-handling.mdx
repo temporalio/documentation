@@ -40,8 +40,6 @@ This page shows how to:
 
 ## Make Activities idempotent {/* #make-activities-idempotent */}
 
-**How to make Activities idempotent using the Temporal Python SDK**
-
 Because Activities may be retried due to failures, it's strongly recommended to make them idempotent.
 An idempotent operation produces the same result whether executed once or multiple times.
 
@@ -90,8 +88,6 @@ You might split this into three separate Activities so only the failed step retr
 
 ## Raise exceptions from Activities {/* #raise-exceptions-from-activities */}
 
-**How to raise exceptions from Activities using the Temporal Python SDK**
-
 Use `ApplicationError` to communicate application-specific failures from Activities. Raising it explicitly gives you more control.
 
 :::note
@@ -133,8 +129,6 @@ The `ActivityError` provides context including:
 - Original cause (the [`ApplicationError`](https://python.temporal.io/temporalio.exceptions.ApplicationError.html) you raised, or `TimeoutError`, [`CancelledError`](https://python.temporal.io/temporalio.exceptions.CancelledError.html), etc.)
 
 ## Raise exceptions from Workflows {/* #raise-exceptions-from-workflows */}
-
-**How to raise exceptions from Workflows using the Temporal Python SDK**
 
 The behavior depends on what exception you raise:
 
@@ -187,8 +181,6 @@ Regular Python exceptions are treated as bugs that can be fixed with a code depl
 The Workflow Task retries indefinitely, letting you fix the bug and redeploy without losing Workflow state.
 
 ## Handle exceptions in Workflows {/* #handle-exceptions-in-workflows */}
-
-**How to handle exceptions in Workflows using the Temporal Python SDK**
 
 Use Python's `try/except` blocks to handle Activity failures in your Workflow:
 
@@ -251,8 +243,6 @@ Common Temporal exceptions you can catch in Workflows:
 If these exceptions propagate unhandled, the Workflow Execution fails (or enters "Canceled" state for `CancelledError`).
 
 ## Configure custom Retry Policies {/* #configure-custom-retry-policies */}
-
-**How to configure custom Retry Policies using the Temporal Python SDK**
 
 Activities have a default Retry Policy with unlimited attempts and exponential backoff.
 Customize this to match your expected failure patterns.
@@ -340,8 +330,6 @@ If you need retry logic for specific Workflow operations, implement it in your W
 
 ## Mark specific errors as non-retryable {/* #mark-errors-as-non-retryable */}
 
-**How to mark specific errors as non-retryable using the Temporal Python SDK**
-
 Some failures are permanent and won't resolve through retries.
 Mark these as non-retryable to fail fast instead of waiting for timeouts.
 
@@ -383,8 +371,6 @@ Use non-retryable errors for:
 In most cases, it's better to let the Retry Policy handle when to stop retrying based on time or attempts.
 
 ## Specify non-retryable error types {/* #specify-non-retryable-error-types */}
-
-**How to specify non-retryable error types in Retry Policies using the Temporal Python SDK**
 
 Sometimes you want the Workflow (caller) to decide which error types shouldn't retry, rather than the Activity (implementer).
 
@@ -432,8 +418,6 @@ This enforces the constraint for all callers.
 This lets different Workflows make different decisions about the same Activity.
 
 ## Implement rollback logic with the Saga pattern {/* #implement-saga-pattern */}
-
-**How to implement the Saga pattern using the Temporal Python SDK**
 
 The [Saga pattern](/design-patterns/saga-pattern) coordinates a sequence of operations where each operation has a compensating action to undo its effects.
 If any operation fails, execute compensating actions in reverse order to roll back previous operations.
