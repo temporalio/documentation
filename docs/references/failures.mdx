@@ -2,7 +2,7 @@
 id: failures
 title: Temporal Failures reference
 sidebar_label: Failures
-description: A Failure in Temporal represents different types of errors in the system, categorized and managed uniquely within SDKs and protobuf messages, impacting Workflow and Activity operations.
+description: Reference for Temporal's Failure types, covering Workflow, Activity, and Nexus Operation errors and their corresponding SDK class or exception.
 toc_max_heading_level: 4
 tags:
   - Reference
@@ -99,7 +99,7 @@ By default, errors are considered retryable, unless specified below:
 
 - Non retryable Application Failures
 - Unsuccessful Operation errors that can resolve an operation as either failed or canceled
-- [Handler errors](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) with the following types: `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, and `RESOURCE_EXHAUSTED`
+- [Handler errors](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) with the following types: `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, and `NOT_IMPLEMENTED`
 
 #### Nexus Operation Task Failures
 
@@ -186,7 +186,7 @@ By default, Application Failures thrown from a Nexus Operation handler will be m
 | false (default) | HandlerErrorTypeInternal   | 500 Internal Server Error |
 | true            | UnsuccessfulOperationError | 424 Failed Dependency     |
 
-#### Use Nexus Errors directly
+#### Use Nexus errors directly
 
 For improved semantics and mapping to HTTP status codes for external Nexus callers (when supported), we recommend that Nexus Operation handlers throw a Nexus Error directly, which includes the list below with associated retry semantics.
 
@@ -201,7 +201,6 @@ For example the Nexus Go SDK provides
 | :-------------------------------- | :-------------- |
 | HandlerErrorTypeResourceExhausted | false           |
 | HandlerErrorTypeInternal          | false           |
-| HandlerErrorTypeNotImplemented    | false           |
 | HandlerErrorTypeUnavailable       | false           |
 
 #### Non-retryable Nexus errors
@@ -212,6 +211,7 @@ For example the Nexus Go SDK provides
 | HandlerErrorTypeUnauthenticated | true            |
 | HandlerErrorTypeUnauthorized    | true            |
 | HandlerErrorTypeNotFound        | true            |
+| HandlerErrorTypeNotImplemented  | true            |
 | UnsuccessfulOperationError      | true            |
 
 ## Cancelled Failure

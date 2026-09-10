@@ -198,9 +198,9 @@ Add a new entry to the `integrations` array with the following shape:
 | `description` | `string` | Yes | One-sentence summary shown on the card. |
 | `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
 | `sdk` | `SDK` | No | The language SDK this integration targets. Omit for language-agnostic integrations (such as Temporal Cloud metrics exporters). |
-| `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/braintrust`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
+| `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/langsmith`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
 
-**Multi-SDK integrations:** If an integration supports multiple SDKs with different guide pages, add a separate entry for each SDK. Both entries can share the same `name`. For example, Braintrust has one entry for Python and one for TypeScript, each with a different `href`.
+**Multi-SDK integrations:** If an integration supports multiple SDKs with different guide pages, add a separate entry for each SDK. Both entries can share the same `name`. For example, LangSmith has one entry for Python and one for TypeScript, each with a different `href`.
 
 **Language-agnostic integrations:** Omit the `sdk` field. These integrations appear when the "Language-agnostic" SDK filter is selected and do not display a language icon on the card.
 
@@ -514,6 +514,126 @@ Registered as `strip-tag` in the MDX → Markdown pipeline: wrapper tags are rem
 - Environment configuration — TOML Cloud profile fields
 - Task Queue Priority and Fairness — priority / fairness options
 - Child Workflows design pattern — async start concepts
+
+## Using EventHistoryWalkthrough
+
+Role: Step-by-step interactive walkthrough of a Workflow Definition, showing which statements the Worker handles
+internally and which send a Command to the Temporal Service (and, for demos with an Events column, the Events those
+Commands produce). Used on the `docs/encyclopedia/event-history/*.mdx` pages — four walkthroughs per page (how code
+maps to Commands, how Commands map to Events, how History Replay works, and a non-determinism example), all built
+from the single `WalkthroughDemo` component parameterized by props.
+
+Content is authored directly in the MDX page, not in a data file: a Markdown code fence, followed by one
+`<WalkthroughStep>` per step. This keeps the code sample and the steps describing it in the same file, and lets the
+LLM markdown pipeline render real content instead of an opaque placeholder.
+
+How to import:
+
+```
+import { WalkthroughDemo, WalkthroughStep, WalkthroughCommand, WalkthroughEvent } from '@site/src/components';
+```
+
+`WalkthroughStep`/`WalkthroughCommand`/`WalkthroughEvent` never render anything themselves — they're read for their
+props/children by the parent `WalkthroughDemo`.
+
+### Usage
+
+```
+<WalkthroughDemo ariaLabel="How Workflow code maps to Commands" commandsLabel="Commands issued">
+
+```csharp
+[Workflow]
+public class PizzaWorkflow
+{
+    // ...
+}
+```
+
+<WalkthroughStep title="A basic Workflow Definition">
+
+Prose describing this step. Plain Markdown — paragraphs, lists, links, and inline code all work.
+
+- A bullet
+- Another bullet
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Request the GetDistance Activity" kind="command" lines="10-12">
+
+The Worker issues a Command here.
+
+<WalkthroughCommand
+  label="ScheduleActivityTask"
+  details='("pizza-tasks", GetDistance, { Line1: "123 Oak St." })'
+  tone="command"
+/>
+
+</WalkthroughStep>
+
+</WalkthroughDemo>
+```
+
+A demo with an Events column also passes `eventsLabel`, e.g.
+`<WalkthroughDemo ariaLabel="..." commandsLabel="Commands" eventsLabel="Event History">` — omit `eventsLabel` for a
+Commands-only demo (no Events column renders). `commandsLabel`/`eventsLabel` are exactly the ledger column headers
+shown in the UI, so they're what differentiate one walkthrough from another; the four pages' walkthroughs use:
+
+| Walkthrough | `ariaLabel` | `commandsLabel` | `eventsLabel` |
+| --- | --- | --- | --- |
+| Code maps to Commands | How Workflow code maps to Commands | Commands issued | _(omitted)_ |
+| Commands map to Events | How Workflow Commands map to Events | Commands | Events |
+| History Replay | How History Replay provides Durable Execution | Commands | Event History |
+| Non-determinism example | Example of a non-deterministic Workflow | Commands created | Relevant History Events |
+
+`lines` is a comma-separated list of 1-based line numbers/ranges into the fence (`"7-8,14-17,21-25"`), highlighted
+while that step is active. Omit it for a step that highlights nothing.
+
+`kind` (optional) is one of `internal`, `command`, `service`, `crash`, `replay` — drives the step's badge.
+
+`phase` (optional, used by the History Replay and non-determinism walkthroughs) groups consecutive steps under a
+shared label, e.g. `phase="History Replay"`.
+
+A `<WalkthroughCommand>`/`<WalkthroughEvent>` value containing a `"` should use single quotes for the JSX attribute
+(`details='...'`), matching the example above — the transformer's prop parser tracks the specific quote character
+used, so a double quote inside a single-quoted value (or vice versa) is safe.
+
+### Props
+
+| `WalkthroughDemo` prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `ariaLabel` | `string` | Yes | Accessible label for the demo region. |
+| `commandsLabel` | `string` | No | Commands column header. Defaults to `Commands`. |
+| `eventsLabel` | `string` | No | Events column header. Omit for a Commands-only demo. |
+| `children` | Markdown + JSX | Yes | A code fence followed by `<WalkthroughStep>` elements. |
+
+| `WalkthroughStep` prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | Yes | Step heading. |
+| `kind` | `string` | No | `internal` \| `command` \| `service` \| `crash` \| `replay`. |
+| `phase` | `string` | No | Groups this step under a shared phase label. |
+| `lines` | `string` | No | Line numbers/ranges to highlight, e.g. `"7-8,14-17"`. |
+| `children` | Markdown | Yes | The step's prose body, plus any `WalkthroughCommand`/`WalkthroughEvent` entries. |
+
+| `WalkthroughCommand`/`WalkthroughEvent` prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | Yes\* | The Command/Event name. |
+| `details` | `string` | No | Extra detail shown after the label. |
+| `tone` | `string` | No | Visual tone (`command`, `direct`, `indirect`, `plain`). |
+| `status` | `string` | No | `matched` or `mismatch` (History Replay/non-determinism ledger). |
+| `expected` | `string` | No | What was expected instead, shown alongside a `mismatch` status. |
+| `divider` | `string` | No\* | Renders a labeled divider instead of an entry (\*`label` not required when set). |
+
+### LLM markdown
+
+Registered as `event-history-demo`/`walkthrough-step`/`walkthrough-entry` in the MDX → Markdown pipeline
+(`scripts/component-handlers/event-history-walkthrough.mjs`): the fence passes through verbatim, and each step
+renders as a `#### Step N: Title` heading with its kind, prose, and any Command/Event entries, using the enclosing
+tag's `commandsLabel`/`eventsLabel` as the ledger group headers.
+
+### Where the component is used
+
+- Event History walkthroughs (`docs/encyclopedia/event-history/{go,java,python,typescript,dotnet}.mdx`) — all four
+  walkthroughs on all five pages.
 
 ## Using ReleaseNoteHeader
 

@@ -1,0 +1,26 @@
+# Extracted from errata-ai/Microsoft (MIT). See NOTICE.
+#
+# Microsoft's token set: the period case requires a lowercase-initial word so
+# dotted identifiers ('System.Text.Json') aren't flagged; '?' and '!' don't
+# occur in identifiers, so they stay permissive.
+extends: existence
+message: "'%s' should have one space."
+level: suggestion
+nonword: true
+tokens:
+  - '[a-z][.?!] {2,}[A-Z]'
+  - '\b[a-z]\w*\.[A-Z]'
+  - '\w[?!][A-Z]'
+tests:
+  - name: fires
+    input: >
+      Restart the host.Then check the logs.  Every time!Always.
+    want: |
+      1:13:Std.Punctuation.Spacing:'host.T' should have one space.
+      1:36:Std.Punctuation.Spacing:'s.  E' should have one space.
+      1:49:Std.Punctuation.Spacing:'e!A' should have one space.
+
+  - name: clean
+    input: >
+      Restart the host. Then check the logs.
+    want: ""

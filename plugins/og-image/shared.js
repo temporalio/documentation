@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const matter = require('gray-matter');
-const { TEMPLATE_VERSION, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT } = require('./constants');
+const { TEMPLATE_VERSION, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT, PRODUCTION_SITE_URL } = require('./constants');
 
 // Shared by plugins/og-image/index.js (postBuild: renders the actual image
 // bytes) and plugins/og-image/remarkPlugin.js (build-time MDX compilation:
@@ -60,6 +60,25 @@ function hashFor(title, description, footerText = DEFAULT_FOOTER_TEXT) {
     .slice(0, 16);
 }
 
+// The origin a generated og:image URL should point at. On a Vercel preview
+// (or branch) deployment, the rendered card only exists on that
+// deployment's own domain — production never has this build's images. If
+// the URL pointed at production anyway, a link-unfurler (Slack, etc.) that
+// fetches it while the page is only staged would 404, and that 404 gets
+// cached against the image URL itself, not the page URL. Because the hash
+// is derived from page content (title/description/footerText), production
+// mints the exact same image URL once the page ships unchanged — inheriting
+// whatever Slack already cached for it, with no new hash to bust that
+// cache. VERCEL_URL is Vercel's reachable hostname for the current
+// deployment; only substitute it for non-production deployments, so
+// production keeps resolving to the stable custom domain.
+function resolveImageOrigin() {
+  if (process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production' && process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return PRODUCTION_SITE_URL;
+}
+
 // The remark plugin gets raw MDX source straight from Docusaurus's compiler
 // (frontmatter block still attached), unlike postBuild/bin scripts which
 // read files directly through gray-matter and already have it split into
@@ -76,6 +95,7 @@ module.exports = {
   hasManualOverride,
   overrideImageFor,
   hashFor,
+  resolveImageOrigin,
   stripFrontmatter,
   IMAGE_EXTENSION,
   DEFAULT_FOOTER_TEXT,
