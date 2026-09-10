@@ -42,21 +42,21 @@ samples for the complete code.
 
 ## Install the plugin
 
-Install the Temporal Python SDK with Deep Agents support (`temporalio` 1.32.0 or later):
+Install the Temporal Python SDK with Deep Agents support:
 
 ```bash
-uv add "temporalio[deepagents]"
+uv add "temporalio[deepagents]>=1.32.0"
 ```
 
 or with pip:
 
 ```bash
-pip install "temporalio[deepagents]"
+pip install "temporalio[deepagents]>=1.32.0"
 ```
 
 Requires Python 3.11 or newer, the same floor that `deepagents` sets.
 
-## Hello World
+## Hello world
 
 A Deep Agent becomes durable without changing the agent code itself. The Workflow below builds a vanilla
 `create_deep_agent(...)` and drives it with `await agent.ainvoke(...)` — exactly the code you would write outside
