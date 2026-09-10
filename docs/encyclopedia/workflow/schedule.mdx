@@ -293,6 +293,10 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 ### Limitations
 
 Internally, a Schedule is implemented as a Workflow.
+This backing Workflow Execution stays open for as long as the Schedule exists, so each running Schedule contributes to [Active Storage](/cloud/pricing#storage).
+Deleting a Schedule you no longer need reduces this Active Storage footprint, but its closed history still counts toward [Retained Storage](/cloud/pricing#storage) for your Namespace's retention period afterward.
+See [Cost optimization: Storage](/best-practices/cost-optimization#active-storage) for more.
+
 If you're using Elasticsearch, these Workflow Executions are hidden from normal views.
 
 `ListSchedules` and `CountSchedules` are served by the Visibility subsystem. They share the [Visibility API rate limit](/cloud/limits#visibility-api-rate-limit) and are eventually consistent, so a newly created or deleted schedule may not appear in the list right away. For more detail, see [Operations that use Visibility](/visibility#operations-that-use-visibility).

@@ -144,7 +144,7 @@ For additional storage within a calendar month, you are billed for Active and Re
 
 :::tip Storage costs are also affected by Temporal System Workflows that back features such as:
 
-- [Schedules](/schedule): Each Scheduled Workflow contributes to storage usage. Supplied inputs, outputs, and failures all account for the storage usage incurred from Scheduled Workflows.
+- [Schedules](/schedule): Each Schedule keeps its own backing Workflow Execution open for as long as the Schedule exists, so running Schedules contribute to Active Storage. Deleting a Schedule you no longer need reduces this Active Storage footprint, but the closed Workflow Execution still counts toward Retained Storage for your Namespace's retention period. Supplied inputs, outputs, and failures all add to the storage usage a Schedule incurs.
 - [Batch jobs](/cli/command-reference/batch): Batch Workflow executions also consume storage.
 
 These Workflow executions contribute to overall active and retained storage consumption.
