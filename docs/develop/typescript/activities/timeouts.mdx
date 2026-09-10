@@ -23,8 +23,6 @@ This page shows how to do the following:
 
 ## Activity Timeouts {/* #activity-timeouts */}
 
-**How to set Activity Timeouts using the Temporal TypeScript SDK**
-
 Each Activity Timeout controls the maximum duration of a different aspect of an Activity Execution.
 
 The following Timeouts are available in the Activity Options:
@@ -51,8 +49,6 @@ const { myActivity } = proxyActivities<typeof activities>({
 
 ## Activity Retry Policy {/* #activity-retries */}
 
-**How to set an Activity Retry Policy using the Temporal TypeScript SDK**
-
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 Activity Executions are automatically associated with a default [Retry Policy](/encyclopedia/retry-policies) if a custom one is not provided.
@@ -71,8 +67,6 @@ const { myActivity } = proxyActivities<typeof activities>({
 
 ## Activity next Retry delay {/* #activity-next-retry-delay */}
 
-**How to override the next Retry delay following an Activity failure using the Temporal TypeScript SDK**
-
 The time to wait after a retryable Activity failure until the next retry is attempted is normally determined by that Activity's Retry Policy.
 However, an Activity may override that duration when explicitly failing with an [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure) by setting a next Retry delay.
 
@@ -86,8 +80,6 @@ throw ApplicationFailure.create({
 ```
 
 ## Heartbeat an Activity {/* #activity-heartbeats */}
-
-**How to Heartbeat an Activity using the Temporal TypeScript SDK**
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/temporal-service).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activity-execution) is making progress and the Worker has not crashed.
@@ -144,8 +136,6 @@ export async function myActivity(): Promise<void> {
 ```
 
 ## Activity Heartbeat Timeout {/* #activity-heartbeat-timeout */}
-
-**How to set a Heartbeat Timeout using the Temporal TypeScript SDK**
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 If the Temporal Server doesn't receive a Heartbeat before expiration of the Heartbeat Timeout, the Activity is considered as timed out and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
