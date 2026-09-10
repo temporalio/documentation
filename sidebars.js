@@ -2179,6 +2179,7 @@ module.exports = {
         id: 'guides/index',
       },
       items: [
+        'guides/durable-agent-on-agentcore',
         'guides/entity-pattern-loyalty-points',
         'guides/recover-without-restart',
         'guides/route-specialized-workloads',

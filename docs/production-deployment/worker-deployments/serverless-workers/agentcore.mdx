@@ -2,7 +2,7 @@
 id: agentcore
 title: Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime
 sidebar_label: Amazon Bedrock AgentCore
-description: Deploy a Python Serverless Worker to AgentCore Runtime and configure Temporal Cloud to invoke its endpoint.
+description: Deploy an existing Python Worker to AgentCore Runtime and configure Temporal Cloud to start capacity when Task Queue demand increases.
 slug: /production-deployment/worker-deployments/serverless-workers/agentcore
 toc_max_heading_level: 4
 tags:
@@ -20,20 +20,24 @@ import TabItem from '@theme/TabItem';
   Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
 </ReleaseNoteHeader>
 
-This guide walks through deploying a Python [Serverless Worker](/serverless-workers) to Amazon Bedrock AgentCore
-Runtime. Temporal invokes the Runtime endpoint when the Worker Controller Instance needs Worker capacity.
-
-The guide uses the
-[Python Strands AgentCore sample](https://github.com/temporalio/samples-python/tree/6fd0c9e879e85c4403bf8c1c591f7394fa60bed2/bedrock_agentcore/strands-agent).
-The deployment procedure applies to other Python Workers that use the same AgentCore Runtime handler. For the Worker
-implementation and lifecycle, see
+This guide deploys an existing Python [Serverless Worker](/serverless-workers) to Amazon Bedrock AgentCore Runtime and
+configures Temporal Cloud to start Worker capacity. It assumes that you already have a Temporal Worker and an AgentCore
+project. For the Worker implementation and lifecycle, see
 [Serverless Workers on Amazon Bedrock AgentCore Runtime - Python SDK](/develop/python/workers/serverless-workers/agentcore).
+
+If you are still deciding how to structure your agent, Workflow, and Activities, see the
+[Python Strands AgentCore sample](https://github.com/temporalio/samples-python/tree/schoeff/strands-agent/bedrock_agentcore/strands-agent)
+for a complete application.
 
 ## Prerequisites {/* #prerequisites */}
 
 - A Temporal Cloud account with an AWS-hosted Namespace and access to the AgentCore Serverless Workers Pre-release.
 - A Temporal Cloud API key that can connect to the Namespace.
 - [Temporal CLI v1.8.3](https://github.com/temporalio/cli/releases/tag/v1.8.3) or later, configured for your Namespace.
+- An existing Python Temporal Worker with an
+  [AgentCore Runtime handler](/develop/python/workers/serverless-workers/agentcore#runtime-handler).
+- An AgentCore project that packages the Worker and contains `agentcore/agentcore.json`, `agentcore/aws-targets.json`,
+  and the generated AgentCore CDK project.
 - An AWS account in an [AgentCore-supported Region](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html).
 - The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed and configured
   with credentials for that account.
@@ -41,64 +45,13 @@ implementation and lifecycle, see
   installed with `npm install -g @aws/agentcore`.
 - The [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting-started.html) installed and bootstrapped in the target
   account and Region.
-- Python 3.10 or later and [`uv`](https://docs.astral.sh/uv/) installed.
 - Permission to create AgentCore resources, CloudFormation stacks, and IAM roles. See
   [IAM permissions for AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html).
 
-The sample agent calls an Amazon Bedrock model and uses AgentCore Code Interpreter. To run the sample without changing
-it, make sure both services are available to your AWS account in the target Region.
+## 1. Configure the Worker Runtime {/* #configure-worker-runtime */}
 
-## 1. Prepare the Worker {/* #prepare-worker */}
-
-Clone the sample repository and check out the AgentCore sample branch:
-
-```bash
-git clone https://github.com/temporalio/samples-python.git
-cd samples-python
-git checkout schoeff/strands-agent
-cd bedrock_agentcore/strands-agent
-```
-
-The sample contains these deployment files:
-
-| File | Purpose |
-| --- | --- |
-| [`agentcore_worker.py`](https://github.com/temporalio/samples-python/blob/6fd0c9e879e85c4403bf8c1c591f7394fa60bed2/bedrock_agentcore/strands-agent/agentcore_worker.py) | Defines the AgentCore Runtime handler and starts the Temporal Worker. |
-| [`workflows.py`](https://github.com/temporalio/samples-python/blob/6fd0c9e879e85c4403bf8c1c591f7394fa60bed2/bedrock_agentcore/strands-agent/workflows.py) | Defines the sample Workflow. |
-| [`activities.py`](https://github.com/temporalio/samples-python/blob/6fd0c9e879e85c4403bf8c1c591f7394fa60bed2/bedrock_agentcore/strands-agent/activities.py) | Defines the sample Activity. |
-| [`agentcore/agentcore.json`](https://github.com/temporalio/samples-python/blob/6fd0c9e879e85c4403bf8c1c591f7394fa60bed2/bedrock_agentcore/strands-agent/agentcore/agentcore.json) | Configures the Runtime, endpoint, environment, and lifecycle. |
-| [`agentcore/aws-targets.json`](https://github.com/temporalio/samples-python/blob/6fd0c9e879e85c4403bf8c1c591f7394fa60bed2/bedrock_agentcore/strands-agent/agentcore/aws-targets.json) | Selects the AWS account and Region. |
-
-The Runtime handler registers `StrandsAgentWorkflow` and `execute_code` on the Worker. To deploy your own application,
-replace those registrations with your Workflow and Activity Definitions. Keep the AgentCore handler, Worker Versioning
-configuration, and shutdown policy. Every Workflow must declare a
-[versioning behavior](/worker-versioning/#versioning-behaviors), or the Worker must set a default behavior.
-
-## 2. Configure the AgentCore project {/* #configure-project */}
-
-The AgentCore CLI reads the project from `agentcore/agentcore.json` and deploys it to a target in
-`agentcore/aws-targets.json`.
-
-### Select the AWS account and Region {/* #select-account-region */}
-
-Replace the account and Region in `agentcore/aws-targets.json`:
-
-```json
-[
-  {
-    "name": "default",
-    "account": "<AWS_ACCOUNT_ID>",
-    "region": "<AWS_REGION>"
-  }
-]
-```
-
-The Region must support AgentCore Runtime and any AWS services that the Worker's Activities call.
-
-### Configure the Runtime {/* #configure-runtime */}
-
-In `agentcore/agentcore.json`, set the Temporal connection, Task Queue, Worker Deployment name, and Build ID under
-`envVars`:
+In `agentcore/agentcore.json`, configure the Runtime with the Temporal connection, Task Queue, Worker Deployment name,
+and Build ID:
 
 ```json
 {
@@ -115,101 +68,93 @@ In `agentcore/agentcore.json`, set the Temporal connection, Task Queue, Worker D
 },
 {
   "name": "TEMPORAL_TASK_QUEUE",
-  "value": "agentcore-strands-task-queue"
+  "value": "<TASK_QUEUE>"
 },
 {
   "name": "TEMPORAL_DEPLOYMENT_NAME",
-  "value": "agentcore-strands-agent-python"
+  "value": "<DEPLOYMENT_NAME>"
 },
 {
   "name": "TEMPORAL_BUILD_ID",
-  "value": "1.0.0"
+  "value": "<BUILD_ID>"
 }
 ```
 
-The deployment name and Build ID must match the values you use when you create the Worker Deployment Version in
-[Step 5](#create-worker-deployment-version). The Task Queue must match the Task Queue used to start the Workflow.
-For the sample, also set `AWS_REGION` to the Region in `aws-targets.json` so its Bedrock model and Code Interpreter
-calls stay in that Region.
+The Task Queue must match the Task Queue used by your application. The deployment name and Build ID must match the
+Worker Deployment Version that you create in [Step 4](#create-worker-deployment-version).
 
-The sample stores the Temporal Cloud API key in `envVars` to keep the example short. Do not commit a populated API key.
-For a production deployment, store the key in AWS Secrets Manager, grant the Runtime execution role permission to read
-it, and load it in the Runtime handler. The AgentCore CLI creates the Runtime execution role during deployment. This
-role is separate from the invocation role that Temporal assumes in [Step 4](#configure-iam).
-
-The sample uses a CodeZip build and a public network:
+The Runtime definition must use your Worker handler as its entrypoint and provide a named endpoint for Temporal. The
+following fragment uses a public network so the Worker can reach Temporal Cloud:
 
 ```json
 {
-  "build": "CodeZip",
   "entrypoint": "agentcore_worker.py",
-  "codeLocation": ".",
-  "runtimeVersion": "PYTHON_3_12",
   "networkMode": "PUBLIC",
   "protocol": "HTTP",
-  "authorizerType": "AWS_IAM"
+  "authorizerType": "AWS_IAM",
+  "endpoints": {
+    "temporal": {
+      "version": 1,
+      "description": "Invoked by Temporal Cloud Serverless Workers"
+    }
+  }
 }
 ```
 
-`CodeZip` lets the AgentCore CLI package the Python code without Docker. `PUBLIC` gives the Worker outbound network
-access to Temporal Cloud. The `AWS_IAM` authorizer lets Temporal invoke the endpoint by assuming an IAM role in your
-AWS account.
+If you use a VPC instead, configure outbound access from the VPC to your Temporal Cloud Namespace. Temporal invokes the
+named endpoint by assuming the IAM role that you create in [Step 3](#configure-iam).
 
-Keep the named `temporal` endpoint in the sample configuration. Temporal invokes this endpoint rather than AgentCore's
-`DEFAULT` endpoint. For the endpoint and Runtime version relationship, see
-[Worker Versioning on AgentCore Runtime](/serverless-workers/agentcore/#worker-versioning).
+Do not commit a populated Temporal Cloud API key. For a production deployment, store it in AWS Secrets Manager, grant
+the Runtime execution role permission to read it, and load it in the Runtime handler. The Runtime execution role is
+separate from the invocation role that Temporal assumes.
 
-## 3. Deploy the Runtime and endpoint {/* #deploy-runtime */}
+## 2. Deploy the Worker Runtime {/* #deploy-runtime */}
 
-From the sample directory, run:
+From the AgentCore project directory, validate and deploy the project:
 
 ```bash
-./bin/create-runtime.sh
+agentcore validate
+agentcore deploy --target <TARGET> -y
 ```
 
-The script creates the AgentCore CDK scaffold on its first run. It then validates the project, packages the Worker and
-its dependencies, and runs `agentcore deploy`. AgentCore creates the Runtime execution role, Runtime version, named
-endpoint, and CloudWatch log group.
+AgentCore packages the Worker and its dependencies, deploys the Runtime, and creates the named endpoint.
 
 Check the deployed resources:
 
 ```bash
-agentcore status --runtime temporal_strands_worker --json
+agentcore status --runtime <RUNTIME_NAME> --json
 agentcore status --type runtime-endpoint --json
 ```
 
-Record both of these values from the output:
+Record the Runtime ARN and the ARN of the named endpoint. You use the Runtime ARN to scope the invocation role and give
+the endpoint ARN to Temporal Cloud.
 
-- The **Runtime ARN**, which you use to scope the invocation role in [Step 4](#configure-iam).
-- The **Runtime endpoint ARN** for the named `temporal` endpoint, which you give Temporal in
-  [Step 5](#create-worker-deployment-version).
+## 3. Grant Temporal permission to invoke the Runtime {/* #configure-iam */}
 
-## 4. Grant Temporal permission to invoke the Runtime {/* #configure-iam */}
+Temporal Cloud assumes an IAM role in your AWS account to get the named endpoint and invoke the Runtime. Choose an
+External ID of at least five characters. Use the same value in the role trust policy and the Worker Deployment Version.
+The External ID prevents a [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html)
+attack.
 
-Temporal Cloud assumes an IAM role in your AWS account to get the named endpoint and invoke the Runtime. The role is
-not the Runtime execution role and does not run your Worker code.
-
-Choose an External ID of at least five characters. Use the same value in the role trust policy and the Worker
-Deployment Version. The External ID prevents a
-[confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attack.
-
-The sample includes a
-[CloudFormation template](https://github.com/temporalio/samples-python/blob/6fd0c9e879e85c4403bf8c1c591f7394fa60bed2/bedrock_agentcore/strands-agent/iam-role-for-temporal-agentcore-invoke.yaml)
-and a script that deploys it. Pass the Runtime ARN with a trailing wildcard so the policy covers the Runtime and its
-endpoints:
+[Download the CloudFormation template](/files/temporal-cloud-serverless-worker-agentcore-role.yaml), then deploy it.
+Pass the Runtime ARN with a trailing wildcard so the policy covers the Runtime and its endpoints:
 
 ```bash
-AWS_REGION=<AWS_REGION> ./bin/mk-invoke-role.sh \
-  temporal-agentcore-invoke \
-  <EXTERNAL_ID> \
-  '<AGENT_RUNTIME_ARN>*'
+aws cloudformation create-stack \
+  --stack-name <STACK_NAME> \
+  --template-body file://temporal-cloud-serverless-worker-agentcore-role.yaml \
+  --parameters \
+    ParameterKey=AssumeRoleExternalId,ParameterValue=<EXTERNAL_ID> \
+    ParameterKey=AgentRuntimeARNs,ParameterValue='<AGENT_RUNTIME_ARN>*' \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region <AWS_REGION>
 ```
 
 Wait for the CloudFormation stack to finish:
 
 ```bash
 aws cloudformation wait stack-create-complete \
-  --stack-name temporal-agentcore-invoke \
+  --stack-name <STACK_NAME> \
   --region <AWS_REGION>
 ```
 
@@ -217,20 +162,19 @@ Then retrieve the invocation role ARN:
 
 ```bash
 aws cloudformation describe-stacks \
-  --stack-name temporal-agentcore-invoke \
+  --stack-name <STACK_NAME> \
   --query 'Stacks[0].Outputs[?OutputKey==`RoleARN`].OutputValue' \
   --output text \
   --region <AWS_REGION>
 ```
 
 The role grants `bedrock-agentcore:InvokeAgentRuntime` and `bedrock-agentcore:GetAgentRuntimeEndpoint` on the configured
-Runtime resources. Record the role ARN for the next step.
+Runtime resources. This role does not run the Worker code.
 
-## 5. Create the Worker Deployment Version {/* #create-worker-deployment-version */}
+## 4. Create the Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) whose compute
-configuration points to the named AgentCore Runtime endpoint. The deployment name and Build ID must match the Runtime
-environment variables from [Step 2](#configure-runtime).
+configuration points to the named AgentCore Runtime endpoint.
 
 <Tabs groupId="create-version-approach">
 <TabItem value="ui" label="Temporal Cloud UI">
@@ -238,15 +182,15 @@ environment variables from [Step 2](#configure-runtime).
 In the Temporal Cloud UI, open your Namespace and select **Workers** > **Create Worker Deployment**. Provide these
 values:
 
-- **Name**: `agentcore-strands-agent-python`.
-- **Build ID**: `1.0.0`.
+- **Name**: the value of `TEMPORAL_DEPLOYMENT_NAME` in the Runtime environment.
+- **Build ID**: the value of `TEMPORAL_BUILD_ID` in the Runtime environment.
 - **Compute Provider**: select **Amazon Bedrock AgentCore Runtime**.
-- **Runtime endpoint ARN**: the named endpoint ARN from [Step 3](#deploy-runtime).
-- **IAM role ARN**: the invocation role ARN from [Step 4](#configure-iam).
-- **External ID**: the External ID from [Step 4](#configure-iam).
+- **Runtime endpoint ARN**: the named endpoint ARN from [Step 2](#deploy-runtime).
+- **IAM role ARN**: the invocation role ARN from [Step 3](#configure-iam).
+- **External ID**: the External ID from [Step 3](#configure-iam).
 
 Save the Worker Deployment. When you create a version through the UI, the version is automatically current. Continue
-to [Step 7](#verify-deployment).
+to [Step 6](#verify-worker-startup).
 
 </TabItem>
 <TabItem value="cli" label="Temporal CLI">
@@ -256,7 +200,7 @@ First, create the Worker Deployment if it does not already exist:
 ```bash
 temporal worker deployment create \
   --namespace <TEMPORAL_NAMESPACE> \
-  --name agentcore-strands-agent-python
+  --name <DEPLOYMENT_NAME>
 ```
 
 Then create the version with the AgentCore compute configuration:
@@ -264,20 +208,14 @@ Then create the version with the AgentCore compute configuration:
 ```bash
 temporal worker deployment create-version \
   --namespace <TEMPORAL_NAMESPACE> \
-  --deployment-name agentcore-strands-agent-python \
-  --build-id 1.0.0 \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --build-id <BUILD_ID> \
   --aws-agentcore-endpoint-arn <RUNTIME_ENDPOINT_ARN> \
   --aws-agentcore-assume-role-arn <INVOCATION_ROLE_ARN> \
   --aws-agentcore-assume-role-external-id <EXTERNAL_ID>
 ```
 
-| Flag | Description |
-| --- | --- |
-| `--deployment-name` | Worker Deployment name. Must match `TEMPORAL_DEPLOYMENT_NAME` in the Runtime environment. |
-| `--build-id` | Worker Deployment Version Build ID. Must match `TEMPORAL_BUILD_ID` in the Runtime environment. |
-| `--aws-agentcore-endpoint-arn` | ARN of the named AgentCore Runtime endpoint that Temporal invokes. |
-| `--aws-agentcore-assume-role-arn` | IAM role Temporal assumes to invoke the endpoint. This is the CloudFormation stack output from Step 4, not the Runtime execution role. |
-| `--aws-agentcore-assume-role-external-id` | External ID configured in the invocation role trust policy. |
+The deployment name and Build ID must match the values in the Runtime environment.
 
 </TabItem>
 </Tabs>
@@ -286,46 +224,29 @@ To check whether Temporal can reach the endpoint, open the Worker Deployment Ver
 select **Actions** > **Validate Connection**. This checks that Temporal can assume the invocation role, get the named
 endpoint, and invoke the Runtime.
 
-## 6. Set the version as current {/* #set-current-version */}
+## 5. Set the version as current {/* #set-current-version */}
 
 If you used the Temporal CLI, set the version as current:
 
 ```bash
 temporal worker deployment set-current-version \
   --namespace <TEMPORAL_NAMESPACE> \
-  --deployment-name agentcore-strands-agent-python \
-  --build-id 1.0.0
+  --deployment-name <DEPLOYMENT_NAME> \
+  --build-id <BUILD_ID>
 ```
 
 This command asks you to confirm because it changes which version receives new Tasks. Pass `--yes` to skip the prompt.
 If you created the version in the Temporal Cloud UI, it is already current.
 
-## 7. Verify the deployment {/* #verify-deployment */}
+## 6. Verify Worker startup {/* #verify-worker-startup */}
 
-Install the sample dependencies and export the same Temporal connection values that you configured for the Runtime:
-
-```bash
-uv sync
-export TEMPORAL_ADDRESS=<NAMESPACE>.<ACCOUNT>.tmprl.cloud:7233
-export TEMPORAL_NAMESPACE=<NAMESPACE>.<ACCOUNT>
-export TEMPORAL_API_KEY=<TEMPORAL_API_KEY>
-```
-
-Start the sample Workflow from your local machine:
-
-```bash
-uv run python starter.py "Calculate the first 10 Fibonacci numbers."
-```
-
-The starter sends the Workflow to `agentcore-strands-task-queue`. When no Worker is polling, Temporal invokes
-the AgentCore Runtime endpoint. The Runtime starts the Worker, and the Worker processes the Workflow and its Activities.
+Submit work to the configured Task Queue using your application. When no Worker is polling, Temporal invokes the named
+AgentCore Runtime endpoint. The Runtime starts the Worker, and the Worker polls and processes Tasks.
 
 You can confirm the deployment in these places:
 
-- **Temporal Cloud UI**: Open the Workflow Execution and confirm that its Event History progresses.
-- **AgentCore logs**: Run `agentcore logs --runtime temporal_strands_worker` to see the Worker start and process Tasks.
-- **Temporal CLI**: Run `temporal workflow show --workflow-id agentcore-strands-workflow-id-1` to inspect the Event
-  History.
-
-For the sample Workflow and agent implementation, see
-[`workflows.py`](https://github.com/temporalio/samples-python/blob/6fd0c9e879e85c4403bf8c1c591f7394fa60bed2/bedrock_agentcore/strands-agent/workflows.py).
+- **Temporal Cloud UI**: Open the Worker Deployment Version and confirm that the connection is valid and a Worker has
+  polled the Task Queue.
+- **AgentCore logs**: Run `agentcore logs --runtime <RUNTIME_NAME>` to see the Worker start and process Tasks.
+- **Temporal CLI**: Run `temporal worker deployment describe --name <DEPLOYMENT_NAME>` to inspect the deployment and
+  current version.

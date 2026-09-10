@@ -39,6 +39,9 @@ origins:
     ref: 'main'
   - owner: temporalio
     repo: sdk-go
+  - owner: temporalio
+    repo: documentation-sdk-code-examples
+    ref: docs/durable-agent-agentcore-sample
 
 targets:
   - docs
