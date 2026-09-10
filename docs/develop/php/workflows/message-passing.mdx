@@ -14,14 +14,14 @@ tags:
 description: Develop with Signals, Queries, and Updates in Temporal Workflows. Define, handle, and send Signals or Queries, and validate updates from a Temporal Client.
 ---
 
-## How to develop with Signals {/* #signals */}
+## Develop with Signals {/* #signals */}
 
 A [Signal](/sending-messages#sending-signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
-### How to define a Signal {/* #define-signal */}
+### Define a Signal {/* #define-signal */}
 
 A Signal has a name and can have arguments.
 
@@ -75,7 +75,7 @@ If name is not specified the short name of the Workflow interface is used.
 
 In the preceding code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
-### How to handle a Signal {/* #handle-signal */}
+### Handle a Signal {/* #handle-signal */}
 
 Workflows listen for Signals by the Signal's name.
 
@@ -107,7 +107,7 @@ class YourWorkflow
 In the preceding example, the Workflow updates the protected value.
 The main Workflow coroutine waits for the value to change by using the `Workflow::await()` function.
 
-### How to send a Signal from a Temporal Client {/* #send-signal-from-client */}
+### Send a Signal from a Temporal Client {/* #send-signal-from-client */}
 
 When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
@@ -136,7 +136,7 @@ $workflow->setValue(true);
 
 See [Handle Signal](#handle-signal) for details on how to handle Signals in a Workflow.
 
-### How to send a Signal from a Workflow {/* #send-signal-from-workflow */}
+### Send a Signal from a Workflow {/* #send-signal-from-workflow */}
 
 A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 
@@ -167,7 +167,7 @@ $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workfl
 $workflow->setValue(true);
 ```
 
-### How to Signal-With-Start {/* #signal-with-start */}
+### Use Signal-With-Start {/* #signal-with-start */}
 
 Signal-With-Start is used from the Client.
 It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
@@ -189,11 +189,11 @@ $run = $workflowClient->startWithSignal(
 );
 ```
 
-## How to develop with Queries {/* #queries */}
+## Develop with Queries {/* #queries */}
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
-### How to define a Query {/* #define-query */}
+### Define a Query {/* #define-query */}
 
 A Query has a name and can have arguments.
 
@@ -247,7 +247,7 @@ If name is not specified the short name of the Workflow interface is used.
 
 In the preceding code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
-### How to handle a Query {/* #handle-query */}
+### Handle a Query {/* #handle-query */}
 
 Queries are handled by your Workflow.
 
@@ -342,11 +342,11 @@ sleep(60);
 var_dump($workflow->getCurrentState());
 ```
 
-### How to send a Query {/* #send-query */}
+### Send a Query {/* #send-query */}
 
 Queries are sent from a Temporal Client.
 
-## How to develop with Updates {/* #updates */}
+## Develop with Updates {/* #updates */}
 
 An [Update](/sending-messages#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
@@ -855,7 +855,7 @@ They are meant to handle edge cases and act as a catch-all, not as the main way 
 
 :::
 
-### How to set a Dynamic Query {/* #set-a-dynamic-query */}
+### Set a Dynamic Query {/* #set-a-dynamic-query */}
 
 A Dynamic Query in Temporal is a Query method that is invoked dynamically at runtime if no other Query with the same name is registered.
 Use [`Workflow::registerDynamicQuery()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicQuery) to set a dynamic Query handler.
@@ -872,7 +872,7 @@ Workflow::registerDynamicQuery(function (string $name, ValuesInterface $argument
 });
 ```
 
-### How to set a Dynamic Signal {/* #set-a-dynamic-signal */}
+### Set a Dynamic Signal {/* #set-a-dynamic-signal */}
 
 A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
 Use [`Workflow::registerDynamicSignal()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicSignal) to set a dynamic Signal handler.
@@ -889,7 +889,7 @@ Workflow::registerDynamicSignal(function (string $name, ValuesInterface $argumen
  });
 ```
 
-### How to set a Dynamic Update {/* #set-a-dynamic-update */}
+### Set a Dynamic Update {/* #set-a-dynamic-update */}
 
 A Dynamic Update in Temporal is an Update that is invoked dynamically at runtime if no other Update with the same input is registered.
 Use [`Workflow::registerDynamicUpdate()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicUpdate) to set a dynamic Update handler.
