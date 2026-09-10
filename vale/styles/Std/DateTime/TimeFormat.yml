@@ -1,0 +1,23 @@
+# Extracted from errata-ai/Google (MIT). See NOTICE.
+#
+extends: existence
+message: "Inconsistent time format: '%s'."
+level: suggestion
+nonword: true
+tokens:
+  - '\d{1,2}[AP]M\b'
+  - '\d{1,2} ?[ap]m\b'
+  - '\d{1,2} ?[aApP]\.[mM]\.'
+tests:
+  - name: fires
+    input: >
+      The job runs at 5PM and again at 6 am, then at 7 a.m.
+    want: |
+      1:17:Std.DateTime.TimeFormat:Inconsistent time format: '5PM'.
+      1:34:Std.DateTime.TimeFormat:Inconsistent time format: '6 am'.
+      1:48:Std.DateTime.TimeFormat:Inconsistent time format: '7 a.m.'.
+
+  - name: clean
+    input: >
+      The job runs at 5 PM and again at 6 AM.
+    want: ""
