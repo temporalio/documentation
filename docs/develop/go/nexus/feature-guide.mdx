@@ -120,7 +120,7 @@ Use a synchronous Nexus Operation only when its complete execution path is highl
 Use an asynchronous Nexus Operation when latency or availability is uncertain, the work might exceed the handler deadline, or execution depends on a potentially unreliable service or database.
 Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive retryable errors, blocking all Operations from the caller to that Endpoint.
 
-Every Operation is written with [`TemporalOperationHandler`](/nexus/temporal-operation-handler). `temporalnexus.MustNewTemporalOperation(...)` takes a `Start` callback that receives three things: a context, a `NexusClient`, and the
+Every Operation is written with a [Temporal Operation Handler](/nexus/temporal-operation-handler). `temporalnexus.MustNewTemporalOperation(...)` takes a `Start` callback that receives three things: a context, a `NexusClient`, and the
 Operation input. What you do with the Client decides what backs the Operation:
 
 - **Synchronous.** Return `temporalnexus.NewSyncResult(...)` and the Operation completes during the handler call. The

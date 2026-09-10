@@ -123,7 +123,7 @@ Use an asynchronous Nexus Operation when latency or availability is uncertain, t
 Handlers should be reliable since the [circuit breaker](/nexus/operations#circuit-breaking) trips after 5 consecutive
 retryable errors, blocking all Operations from the caller to that Endpoint.
 
-Every Operation is written with [`TemporalOperationHandler`](/nexus/temporal-operation-handler). The
+Every Operation is written with a [Temporal Operation Handler](/nexus/temporal-operation-handler). The
 `@nexus.temporal_operation` decorator hands your start method three things: a context, a Client, and the Operation
 input. What you do with the Client decides what backs the Operation:
 
