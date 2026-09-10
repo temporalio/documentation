@@ -187,9 +187,7 @@ in-flight Activities to complete.
 
 This policy is appropriate when Activities represent the work that should keep the Worker available. The AgentCore
 sample runs model and tool calls as Activities. It is not a universal definition of idleness. If your Worker has a
-different signal, use that instead. For example, a Worker that performs meaningful Workflow Task work without
-scheduling Activities can track active Workflow Task handlers as well as Activities. Start its idle timer only when
-both counts reach zero.
+different signal, implement an idle policy based on that signal.
 
 `AGENTCORE_DEBOUNCE_SECONDS` controls the idle period. `graceful_shutdown_timeout` controls how long the Worker waits
 for in-flight Activities after it stops polling. Choose both values for your workload, and account for AgentCore's
