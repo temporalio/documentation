@@ -13,6 +13,8 @@ repository.
 | LLM Markdown pipeline        | [MARKDOWN_PIPELINE.md](./readme/MARKDOWN_PIPELINE.md)               |
 | Component → Markdown mapping | [COMPONENT_REGISTRY.md](./readme/COMPONENT_REGISTRY.md)             |
 | CI jobs and scheduled jobs   | [AUTOMATIONS.md](./readme/AUTOMATIONS.md)                                  |
+| AI research sources for content review | [AI-KNOWLEDGE-SOURCES.md](./readme/AI-KNOWLEDGE-SOURCES.md)       |
+| Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
 
 ## Repository overview
 
@@ -202,7 +204,8 @@ don't build in production at all, which 404s any inbound links). A page that's a
 belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See
 [UTILITIES.md](./readme/UTILITIES.md) for details.
 
-Vale linting (style):
+Vale linting (style). Requires Vale 3.20+ (CI already runs 3.20.0; upgrade a local install with
+`brew upgrade vale`) — `vale/styles/Std` needs it for its nested rule directories.
 
 ```bash
 yarn lint:py                          # Example: lint Python SDK docs
@@ -270,6 +273,11 @@ Generated register:
 
 - Long sentences carrying little information, such as "That distinction matters because ...".
 - Software jargon used as casual speech: "cross-cutting", "load-bearing".
+- Operational shorthand that names a technique without stating the action the reader must take. For example, replace
+  "move the data out of band" with "store the data in external storage and pass a reference through Event History."
+- In procedural or triage guidance, lead with the reader's action and then give the reason or constraint. For example,
+  prefer "Find the Workflow Id and Run Id in Worker logs because the metric does not carry a Workflow Id" over
+  describing the metric's limitation before saying what the reader should do.
 - "Quietly" or similar words added to a sentence that does not need them.
 - Junk drawer lists, meaning bullets collected under one heading with no shared idea holding them
   together.

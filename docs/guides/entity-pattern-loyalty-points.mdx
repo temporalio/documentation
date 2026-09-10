@@ -76,7 +76,7 @@ Before implementing this pattern, keep the following constraints in mind:
 
 **Payload size limits.** Individual payloads for Workflow and Activity inputs and outputs are limited to 2 MB. If the serialized entity state approaches this limit, store large data externally and reference it by identifier.
 
-**Workflow Determinism.** Activities can include non-deterministic code, but the Workflow itself must remain deterministic. Use `workflow.now()` instead of `datetime.now()`, `workflow.random()` instead of `random`, and `workflow.uuid4()` instead of `uuid.uuid4()`. All I/O must be performed in Activities.
+**Workflow Definition determinism.** Activities can include non-deterministic code, but the Workflow Definition must remain deterministic. Use `workflow.now()` instead of `datetime.now()`, `workflow.random()` instead of `random`, and `workflow.uuid4()` instead of `uuid.uuid4()`. All I/O must be performed in Activities.
 
 **Signal delivery guarantees.** Temporal delivers Signals at least once. Include a deduplication key in Signal payloads and make your Signal processing logic idempotent.
 
@@ -929,7 +929,7 @@ The `_do_continue_as_new` method handles the transition in three steps:
 
 After the transition, clients continue interacting with the same Workflow Id. Temporal automatically routes Signals, Queries, and Updates to the latest Run. Do not specify a Run Id when obtaining a Workflow handle, or your interactions will target a stale Execution.
 
-### Phase 7: Ensure Workflow determinism
+### Phase 7: Ensure Workflow Definition determinism
 
 Temporal replays Event History to resume a Workflow after a crash. The code must produce the same sequence of Commands on every replay.
 

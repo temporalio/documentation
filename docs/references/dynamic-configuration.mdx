@@ -1,17 +1,17 @@
 ---
 id: dynamic-configuration
-title: Temporal Cluster dynamic configuration reference
+title: Temporal Service dynamic configuration reference
 sidebar_label: Dynamic configuration
-description: Temporal Cluster offers dynamic configuration keys that you can update on the fly to optimize performance without service interruption. Customize these settings to meet specific Workflow, Activity, Namespace, or Task Queue requirements, and test thoroughly before deploying to production. For more details, visit the Temporal GitHub repository.
+description: Reference for the dynamic configuration keys that tune a Temporal Service's rate limits, size limits, and retry defaults without a restart.
 toc_max_heading_level: 4
 tags:
   - Reference
 ---
 
-Temporal Cluster provides [dynamic configuration](/temporal-service/configuration#dynamic-configuration) keys that you can update and apply to a running Cluster without restarting your services.
+Temporal Service provides [dynamic configuration](/temporal-service/configuration#dynamic-configuration) keys that you can update and apply to a running Service without restarting your services.
 
-The dynamic configuration keys are set with default values when you create your Cluster configuration.
-You can override these values as you test your Cluster setup for optimal performance according to your workload requirements.
+The dynamic configuration keys are set with default values when you create your Service configuration.
+You can override these values as you test your Service setup for optimal performance according to your workload requirements.
 
 For the complete list of dynamic configuration keys, see [https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go).
 Ensure that you check server release notes for any changes to these keys and values.
@@ -24,7 +24,7 @@ For the default values of dynamic configuration keys, check the following links:
 - [Worker Service](https://github.com/temporalio/temporal/blob/48dc5a95949ea0e555ce0f48e0031b54633fc703/service/worker/service.go#L185)
 
 Setting dynamic configuration is optional.
-Change these values only if you need to override the default values to achieve better performance on your Temporal Cluster.
+Change these values only if you need to override the default values to achieve better performance on your Temporal Service.
 Also, ensure that you test your changes before setting these in production.
 
 ## Format
@@ -63,12 +63,12 @@ testGetMapPropertyKey:
 ### Constraints
 
 You can define constraints on some dynamic configuration keys to set specific values that apply on a Namespace or Task Queue level.
-Not defining constraints on a dynamic configuration key sets the values across the Cluster.
+Not defining constraints on a dynamic configuration key sets the values across the Service.
 
 - To set global values for the configuration key with no constraints, use the following:
 
   ```yaml
-  frontend.globalNamespaceRPS: # Total per-Namespace RPC rate limit applied across the Cluster.
+  frontend.globalNamespaceRPS: # Total per-Namespace RPC rate limit applied across the Service.
     - value: 5000
   ```
 
@@ -127,17 +127,16 @@ For more examples on how dynamic configuration is set, see [samples-server](http
 
 ## Commonly used dynamic configuration keys
 
-The following table lists commonly used dynamic configuration keys that can be used for rate limiting requests to the Temporal Cluster.
+The following table lists commonly used dynamic configuration keys that can be used for rate limiting requests to the Temporal Service.
 
 Setting dynamic configuration keys is optional.
-If you choose to update these values for your Temporal Cluster, ensure that you are provisioning enough resources to handle the load.
+If you choose to update these values for your Temporal Service, ensure that you are provisioning enough resources to handle the load.
 
-All values listed here are for Temporal server v1.21.
-Check [server release notes](https://github.com/temporalio/temporal/releases) to verify any potential breaking changes when upgrading your versions.
+Check [server release notes](https://github.com/temporalio/temporal/releases) to verify any potential breaking changes when upgrading your versions — some keys below note the server version they apply to.
 
 ### Service-level RPS limits
 
-The Requests Per Second (RPS) dynamic configuration keys set the rate at which requests can be made to each service in your Cluster.
+The Requests Per Second (RPS) dynamic configuration keys set the rate at which requests can be made to each service in your Service.
 
 When scaling your services, tune the RPS to test your workload and set acceptable provisioning benchmarks.
 Exceeding these limits results in `ResourceExhaustedError`.
@@ -147,9 +146,9 @@ Exceeding these limits results in `ResourceExhaustedError`.
 | Frontend                               |      |                                                                                                                                                                                                                                                      |               |
 | `frontend.rps`                         | Int  | Rate limit (requests/second) for requests accepted by each Frontend Service host.                                                                                                                                                                    | 2400          |
 | `frontend.namespaceRPS`                | Int  | Rate limit (requests/second) for requests accepted by each Namespace on the Frontend Service.                                                                                                                                                        | 2400          |
-| `frontend.namespaceCount`              | Int  | Limit on the number of concurrent Task Queue polls per Namespace per Frontend Service host.                                                                                                                                                          | 1200          |
-| `frontend.globalNamespaceRPS`          | Int  | Rate limit (requests/second) for requests accepted per Namespace, applied across Cluster. The limit is evenly distributed among available Frontend Service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |
-| `internal-frontend.globalNamespaceRPS` | Int  | Rate limit (requests/second) for requests accepted on each Internal-Frontend Service host applied across the Cluster.                                                                                                                                | 0             |
+| `frontend.namespaceCount`              | Int  | Limits concurrent long-running requests per Namespace per Frontend Service host, per API method. Example requests include long-poll requests and `Query` requests. Kept for backwards compatibility; the underlying setting is not specific to Task Queue polls. | 1200          |
+| `frontend.globalNamespaceRPS`          | Int  | Rate limit (requests/second) for requests accepted per Namespace, applied across the Service. The limit is evenly distributed among available Frontend Service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |
+| `internal-frontend.globalNamespaceRPS` | Int  | Rate limit (requests/second) for requests accepted on each Internal-Frontend Service host applied across the Service.                                                                                                                                | 0             |
 | History                                |      |                                                                                                                                                                                                                                                      |               |
 | `history.rps`                          | Int  | Rate limit (requests/second) for requests accepted by each History Service host.                                                                                                                                                                     | 3000          |
 | Matching                               |      |                                                                                                                                                                                                                                                      |               |
@@ -174,10 +173,10 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 | `history.persistenceMaxQPS`               | Int  | Maximum number of queries per second that the History host can send to the Persistence store.                                                                                                                                                           | 9000          |
 | `history.persistenceNamespaceMaxQPS`      | Int  | Maximum number of queries per second for each Namespace that the History host can send to the Persistence store. <br /> If the value set for this config is less than or equal to 0, then the value set for `history.persistenceMaxQPS` will apply.     | 0             |
 | Matching                                  |      |                                                                                                                                                                                                                                                         |               |
-| `matching.persistenceMaxQPS`              | Int  | Maximum number of queries per second that the Matching Service host can send to the Persistence store.                                                                                                                                                  | 9000          |
+| `matching.persistenceMaxQPS`              | Int  | Maximum number of queries per second that the Matching Service host can send to the Persistence store.                                                                                                                                                  | 3000          |
 | `matching.persistenceNamespaceMaxQPS`     | Int  | Maximum number of queries per second that the Matching host can send to the Persistence store for each Namespace.<br /> If the value set for this config is less than or equal to 0, the value set for `matching.persistenceMaxQPS` will apply.         | 0             |
 | Worker                                    |      |                                                                                                                                                                                                                                                         |               |
-| `worker.persistenceMaxQPS`                | Int  | Maximum number of queries per second that the Worker Service host can send to the Persistence store.                                                                                                                                                    | 100           |
+| `worker.persistenceMaxQPS`                | Int  | Maximum number of queries per second that the Worker Service host can send to the Persistence store.                                                                                                                                                    | 500           |
 | `worker.persistenceNamespaceMaxQPS`       | Int  | Maximum number of queries per second that the Worker host can send to the Persistence store for each Namespace. <br /> If the value set for this config is less than or equal to 0, the value set for `worker.persistenceMaxQPS` will apply.            | 0             |
 | Visibility                                |      |                                                                                                                                                                                                                                                         |               |
 | `system.visibilityPersistenceMaxReadQPS`  | Int  | Maximum number queries per second that Visibility database can receive for read operations.                                                                                                                                                             | 9000          |
@@ -185,7 +184,7 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 
 ### Activity and Workflow default policy setting
 
-You can define default values for Activity and Workflow [Retry Policies](/encyclopedia/retry-policies) at the Cluster level with the following dynamic configuration keys.
+You can define default values for Activity and Workflow [Retry Policies](/encyclopedia/retry-policies) at the Service level with the following dynamic configuration keys.
 
 | Dynamic configuration key            | Type                          | Description                                                                                                       | Default value                                                                                   |
 | ------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -194,7 +193,7 @@ You can define default values for Activity and Workflow [Retry Policies](/encycl
 
 ### Size limit settings
 
-The Persistence store in the Cluster has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
+The Persistence store in the Service has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
 
 The default values on these keys are based on extensive testing.
 You can change these values, but ensure that you are provisioning enough database resources to handle the changed values.
@@ -219,7 +218,7 @@ For details on platform limits, see the [Temporal Platform limits sheet](/self-h
 
 ### Secondary visibility settings
 
-Secondary visibility configuration keys enable Dual Visibility on your Temporal Cluster.
+Secondary visibility configuration keys enable Dual Visibility on your Temporal Service.
 This can be useful when migrating a Visibility database or creating a backup Visibility store.
 
 | Dynamic configuration key                  | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                          | Default value |
@@ -244,6 +243,6 @@ For more detailed explanation of these configs see the [in-repo Nexus architectu
 | Dynamic configuration key                              | Type    | Description                                                                                                                                                                                                                                      | Default value       |
 | ------------------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- |
 | `system.enableNexus`                                   | Boolean | Enables Nexus Features. Removed in 1.31.0 (Nexus is always enabled).                                                                                                                                                                            | `true` (since 1.27) |
-| `component.nexusoperations.useSystemCallbackURL`       | String  | Controls whether to use temporal://system as the callback URL generated by the server. (Server 1.30 or newer)     											                                              | `false`             |
+| `component.nexusoperations.useSystemCallbackURL`       | Boolean | Controls whether to use temporal://system as the callback URL generated by the server. (Server 1.30 or newer)     											                                              | `true` (since 1.31.0; `false` on 1.30.x)             |
 | `component.nexusoperations.callback.endpoint.template` | String  | Defines the URL template used to construct Nexus callback URLs. (Only required for the experimental external endpoint target feature or servers older than 1.30.) 										      | unset               |
 | `component.callbacks.allowedAddresses`                 | Object  | Defines the security allow-list of callback URL patterns that the server will accept; used to restrict what callback endpoints can be invoked. (Only required for the experimental external endpoint target feature or servers older than 1.30.) | unset               |

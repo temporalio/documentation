@@ -17,10 +17,21 @@
   grid-template-columns: minmax(0, min(90vw, 720px)) 260px;
 }
 
+/* The landing page's card grid manages its own max-width — undo the prose
+   column cap so it isn't squeezed down from ~1440px to ~720px. */
+.wrapper[data-landing='true'] {
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .article {
   width: 100%;
   max-width: min(90vw, 720px);
   margin: 0 auto;
+}
+
+.article[data-landing='true'] {
+  max-width: none;
 }
 
 .syntheticHeader {
