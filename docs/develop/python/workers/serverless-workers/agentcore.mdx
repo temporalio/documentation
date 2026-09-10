@@ -129,12 +129,10 @@ For the supported connection variables, config-file format, and profiles, see
 
 ## Stop and drain the Worker {/* #stop-and-drain-the-worker */}
 
-The `async_task` decorator reports the Runtime as busy while the handler is running. If a Worker continues polling after
-the available Temporal work is complete, AgentCore cannot tell from the handler status that the Worker is no longer
-needed. The compute can remain active until it reaches its maximum lifetime, which is eight hours by default.
-
-To release unused capacity sooner, decide how the Worker recognizes that it has no useful work. Observe that condition
-in the Runtime handler.
+The `async_task` decorator reports the Runtime as busy while the handler is running, so AgentCore cannot tell when a
+Worker that is still polling has no Temporal work. Without an application idle policy, the Runtime can remain active
+until its maximum lifetime of eight hours. To release capacity sooner, have the Runtime handler detect when the Worker
+has no useful work.
 
 When the condition remains true for an idle period, leave the `async with worker` block. The Worker stops polling for
 new Tasks and gives in-flight Activities time to complete before the Runtime handler returns.
