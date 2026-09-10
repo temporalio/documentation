@@ -295,7 +295,7 @@ Both ALLOW_DUPLICATE and ALLOW_DUPLICATE_FAILED_ONLY work well with Signal with 
 ## Common pitfalls
 
 - **Not implementing Signal idempotency.** Signals can be delivered more than once (for example, client retries). Without tracking processed operation IDs, the Workflow processes duplicates.
-- **Unbounded history growth.** Entity Workflows that receive many Signals without calling Continue-As-New will hit the 50K event or 10K Signal limit. Use `isContinueAsNewSuggested()` to trigger Continue-As-New.
+- **Unbounded history growth.** Entity Workflows that receive many Signals without calling Continue-As-New will hit the 51,200 event or 10K Signal limit. Use `isContinueAsNewSuggested()` to trigger Continue-As-New.
 - **Losing pending Signals on Continue-As-New.** Drain all pending Signals before calling Continue-As-New, and pass unprocessed ones as input to the new execution.
 - **Expecting a return value from Signals.** Signals are fire-and-forget. If you need a synchronous response, use Updates or Update-with-Start instead.
 - **Race between SignalWithStart and Continue-As-New.** Temporal prevents this race — if a Signal arrives while the Workflow is completing via Continue-As-New, the Workflow rewinds to process the Signal first.
