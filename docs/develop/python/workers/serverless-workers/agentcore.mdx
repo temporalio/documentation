@@ -167,9 +167,9 @@ For the supported connection variables, config-file format, and profiles, see
 
 ## Stop and drain the Worker {/* #stop-and-drain-the-worker */}
 
-The Python SDK provides Worker shutdown and draining. It does not provide a general signal that a Worker is idle.
-`ActivityTracker` is application code that uses an [Activity inbound Interceptor](/develop/python/workers/interceptors)
-to define that signal.
+`ActivityTracker` is custom code from the AgentCore sample. It uses an
+[Activity inbound Interceptor](/develop/python/workers/interceptors) to count Activity work and decide when the Worker
+can stop.
 
 Use `ActivityTracker` to keep a Worker available while it runs Activities and stop it after a period with no Activity
 work:
