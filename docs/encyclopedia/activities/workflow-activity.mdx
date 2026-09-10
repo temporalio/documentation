@@ -1,0 +1,110 @@
+---
+id: workflow-activity
+title: Workflow Activity
+description: Learn about Workflow Activities in Temporal - Activities started as a step in a Workflow, scoped to that Workflow's lifetime and recorded in its Event History.
+slug: /workflow-activity
+toc_max_heading_level: 4
+tags:
+  - Concepts
+  - Activities
+  - Durable Execution
+---
+
+## What is a Workflow Activity? {/* #workflow-activity */}
+
+A Workflow Activity is an [Activity Execution](/activity-execution) started as a step in a
+[Workflow](/workflows), using the Temporal SDK from your Workflow code.
+
+The Workflow schedules the Activity, the Temporal Service dispatches an Activity Task to an Activity
+Worker polling the Activity's Task Queue, and the result is delivered back to the Workflow when the
+Activity Execution closes. Each step is recorded in the Workflow Execution's
+[Event History](/workflow-execution/event#event-history).
+
+Use a Workflow Activity when you need to orchestrate multiple steps: sequencing, branching on a
+result, compensating a failure, waiting on a Signal or Timer between steps. If you just need to
+execute a single Activity, use a [Standalone Activity](/standalone-activity) instead.
+
+:::tip GET STARTED
+
+Start a Workflow Activity:
+[Go](/develop/go/activities/execution)
+| [Java](/develop/java/activities/execution)
+| [PHP](/develop/php/activities/execution)
+| [Python](/develop/python/activities/execution)
+| [TypeScript](/develop/typescript/activities/execution)
+| [.NET](/develop/dotnet/activities/execution)
+| [Ruby](/develop/ruby/activities/execution)
+| [Rust](/develop/rust/activities/execution)
+
+:::
+
+## Activity Options {/* #activity-options */}
+
+You set Activity Options in your Workflow code when you schedule the Activity. At minimum, specify a
+timeout - typically the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+
+- [Timeouts](/encyclopedia/detecting-activity-failures): Schedule-To-Start, Start-To-Close,
+  Schedule-To-Close, and Heartbeat.
+- [Retry Policy](/encyclopedia/retry-policies): Activities retry automatically by default, with
+  exponential backoff and unlimited Maximum Attempts.
+- Task Queue: routes the Activity Task to the Workers that should run it. It doesn't have to be the
+  Workflow's Task Queue.
+
+:::tip GET STARTED
+
+Set Activity timeouts and Heartbeats:
+[Go](/develop/go/activities/timeouts)
+| [Java](/develop/java/activities/timeouts)
+| [PHP](/develop/php/activities/timeouts)
+| [Python](/develop/python/activities/timeouts)
+| [TypeScript](/develop/typescript/activities/timeouts)
+| [.NET](/develop/dotnet/activities/timeouts)
+| [Ruby](/develop/ruby/activities/timeouts)
+| [Rust](/develop/rust/activities/timeouts)
+
+:::
+
+## Event History {/* #event-history */}
+
+A Workflow Activity writes [Activity Events](/workflow-execution/event#activity-events) to the
+Workflow Execution's Event History, such as
+[ActivityTaskScheduled](/references/events#activitytaskscheduled),
+[ActivityTaskStarted](/references/events#activitytaskstarted), and
+[ActivityTaskCompleted](/references/events#activitytaskcompleted).
+
+Two consequences follow:
+
+- **Replay uses the recorded result.** A completed Activity isn't executed again when the Workflow
+  [replays](/workflow-execution#replay).
+- **Arguments and return values are persisted.** They count toward
+  [Event History limits](/workflow-execution/event#event-history-limits), so be mindful of payload
+  size and of how many Activities a single Workflow Execution schedules.
+
+## Activity Id {/* #activity-id */}
+
+A Workflow Activity's [Activity Id](/activity-execution#activity-id) is unique among the open
+Activity Executions of a [Workflow Run](/workflow-execution/workflowid-runid#run-id). A Workflow Run
+may reuse an Activity Id once an earlier Activity Execution with that Id has closed.
+
+## Cancellation {/* #cancellation */}
+
+A Workflow Activity can't be canceled directly. It receives a
+[Cancellation](/activity-execution#cancellation) request as a result of its Workflow being canceled,
+or because the Workflow code requested it. Activities must
+[Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) to receive Cancellation.
+
+The Workflow decides whether to wait for the Cancellation to be accepted or to proceed without
+waiting.
+
+## Asynchronous completion {/* #asynchronous-completion */}
+
+A Workflow Activity can return from its function without completing the Activity Execution, leaving
+an external system to Heartbeat progress and deliver the final result. See
+[Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion).
+
+## Operator commands {/* #operator-commands */}
+
+Pause, Unpause, Reset and Update Options let an operator intervene in a running Workflow Activity.
+These commands are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+See [Activity Operations](/activity-operations) for details.

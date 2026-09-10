@@ -33,7 +33,8 @@ The same SLO for normal Worker requests (commands and polling) apply to Nexus in
 
 ### Historical latency data
 
-Latency over a week-long period for starting and signaling Workflow Executions was as follows:
+Latency over a week-long period for starting and signaling Workflow Executions, and for starting [Standalone Activities](/standalone-activity) (`StartActivityExecution`),
+was as follows:
 
 #### August 2026
 
@@ -42,6 +43,7 @@ Latency over a week-long period for starting and signaling Workflow Executions w
 | `StartWorkflowExecution`           | 20ms | 32ms | 78ms |
 | `SignalWorkflowExecution`          | 19ms | 42ms | 91ms |
 | `SignalWithStartWorkflowExecution` | 30ms | 47ms | 109ms |
+| `StartActivityExecution`           | 13ms | 19ms | 45ms |
 
 #### January 2026
 

@@ -593,6 +593,15 @@ Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### [Standalone Activity](/standalone-activity)
+
+A Standalone Activity is an Activity Execution invoked outside of a Workflow, directly from a Temporal Client. It has a
+separate Id space from Workflows and other Temporal primitives. Existing Activity Functions can be invoked as
+Standalone with no code changes.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+
 #### [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)
 
 A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.
@@ -814,6 +823,14 @@ Workflow Execution.
 #### [Workflow cache](/workflow-execution#workflow-cache)
 
 An in-memory cache on a Worker that holds the state of Workflow Executions it has processed so later Workflow Tasks can avoid a full Event History replay. Used with [Sticky Execution](/sticky-execution). See also [Workflow Cache Tuning](/develop/worker-performance/workflow-cache).
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Workflow Activity](/activities#types-of-activity-execution)
+
+A Workflow Activity is an Activity Execution orchestrated by a Workflow. Its results are persisted to the Workflow and
+Events are added to the Workflow Execution's Event History. Contrast with
+[Standalone Activity](/standalone-activity) and [Local Activity](/local-activity).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 

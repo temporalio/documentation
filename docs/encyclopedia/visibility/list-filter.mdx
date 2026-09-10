@@ -216,6 +216,40 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
+#### Standalone Activity Execution List Filter examples
+
+[Standalone Activity Executions](/standalone-activity) use the same List Filter syntax over their own Search Attributes.
+Pass these to `ListActivities` and `CountActivities`, or to [`temporal activity list`](/cli/command-reference/activity#list) and [`temporal activity count`](/cli/command-reference/activity#count).
+These APIs return Standalone Activity Executions only; Activities that run inside a Workflow are not included.
+
+Find every running Standalone Activity of one Activity Type:
+
+```sql
+ActivityType = '<activity-type>' and ExecutionStatus = 'Running'
+```
+
+Find the Standalone Activities an operator has [paused](/activity-operations):
+
+```sql
+ExecutionStatus = 'Paused'
+```
+
+```sql
+ExecutionStatus = 'Paused' and ActivityType = '<activity-type>'
+```
+
+Find delayed jobs, meaning Standalone Activities whose first Activity Task has not been dispatched yet because of a [Start Delay](/standalone-activity#start-delay):
+
+```sql
+ExecutionStatus = 'Running' and ExecutionTime > '2021-08-22T15:04:05+00:00'
+```
+
+Find one Standalone Activity by its business identifier:
+
+```sql
+ActivityId = '<activity-id>'
+```
+
 ### Search Attribute aliasing
 
 Temporal prefixes most [default Search Attributes](./search-attributes.mdx#default-search-attribute) with `Temporal` to avoid naming conflicts with custom Search Attributes.
