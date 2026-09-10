@@ -23,6 +23,9 @@ import { ReleaseNoteHeader } from '@site/src/components';
 This page covers how Serverless Workers run on Amazon Bedrock AgentCore Runtime, including Worker Versioning and the
 Runtime session lifecycle.
 
+To deploy a Worker, see
+[Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore).
+
 On AgentCore Runtime, a Serverless Worker is a standard long-running Temporal Worker that runs inside an AgentCore
 Runtime session. When the [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) needs
 capacity, it invokes an AgentCore Runtime endpoint. The Runtime starts a Worker, which connects to the Temporal Service

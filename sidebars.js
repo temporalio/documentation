@@ -1607,6 +1607,7 @@ module.exports = {
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
                   ],
                 },
+                'production-deployment/worker-deployments/serverless-workers/agentcore',
                 {
                   type: 'category',
                   label: 'GCP Cloud Run',
