@@ -167,13 +167,27 @@ For the supported connection variables, config-file format, and profiles, see
 
 ## Stop and drain the Worker {/* #stop-and-drain-the-worker */}
 
-The example uses `ActivityTracker` as its idle policy. It starts a 60-second timer when no Activity is running. Starting
-or completing an Activity resets the timer. When the timer expires, the Worker leaves the `async with` block, stops
-polling, and waits up to two minutes for in-flight Activities to complete.
+Use `ActivityTracker` to keep a Worker available while it runs Activities and stop it after a period with no Activity
+work:
 
-This policy is appropriate when Activities represent the work that should keep the Worker available. For example, the
-AgentCore sample runs model and tool calls as Activities. It is not a universal definition of idleness. If your Worker
-has a different signal for useful work, use that signal instead.
+```python
+DEBOUNCE = float(os.environ.get("AGENTCORE_DEBOUNCE_SECONDS", "60"))
+DRAIN = timedelta(seconds=120)
+
+tracker = ActivityTracker()
+worker = create_worker(client, tracker)
+
+async with worker:
+    await tracker.wait_until_idle(DEBOUNCE)
+```
+
+`ActivityTracker` starts a 60-second timer when no Activity is running. Starting or completing an Activity resets the
+timer. When the timer expires, the Worker leaves the `async with` block, stops polling, and waits up to two minutes for
+in-flight Activities to complete.
+
+This policy is appropriate when Activities represent the work that should keep the Worker available. The AgentCore
+sample runs model and tool calls as Activities. It is not a universal definition of idleness. If your Worker has a
+different signal for useful work, use that signal instead.
 
 `AGENTCORE_DEBOUNCE_SECONDS` controls the idle period. `graceful_shutdown_timeout` controls how long the Worker waits
 for in-flight Activities after it stops polling. Choose both values for your workload, and account for AgentCore's
