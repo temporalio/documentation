@@ -186,8 +186,21 @@ timer. When the timer expires, the Worker leaves the `async with` block, stops p
 in-flight Activities to complete.
 
 This policy is appropriate when Activities represent the work that should keep the Worker available. The AgentCore
-sample runs model and tool calls as Activities. It is not a universal definition of idleness. If your Worker has a
-different signal, implement an idle policy based on that signal.
+sample runs model and tool calls as Activities. It is not a universal definition of idleness.
+
+If your workload does not have a useful Activity-based signal, use a fixed Worker lease instead. Start a lease when
+AgentCore invokes the Runtime. When it expires, stop polling and drain the Worker:
+
+```python
+LEASE_SECONDS = 300
+
+async with worker:
+    await asyncio.sleep(LEASE_SECONDS)
+```
+
+A shorter lease releases capacity sooner but causes more Worker starts. A longer lease keeps capacity available longer
+but can leave it idle. After the Worker drains, the next Task that needs capacity causes the WCI to invoke another
+Runtime session.
 
 `AGENTCORE_DEBOUNCE_SECONDS` controls the idle period. `graceful_shutdown_timeout` controls how long the Worker waits
 for in-flight Activities after it stops polling. Choose both values for your workload, and account for AgentCore's
