@@ -46,8 +46,8 @@ flowchart LR
 
     App -->|cleartext request| Seal
     Seal -->|wrap DEK| KMS
-    Seal -->|ciphertext| Upstream
-    Upstream -->|ciphertext response| Open
+    Seal -->|Payloads: ciphertext<br/>other fields: cleartext| Upstream
+    Upstream -->|Payloads: ciphertext<br/>other fields: cleartext| Open
     KMS -->|unwrap DEK| Open
     Open -->|cleartext response| App
 ```
