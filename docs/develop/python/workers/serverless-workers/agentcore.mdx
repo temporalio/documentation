@@ -196,9 +196,8 @@ async def invoke(_: dict) -> dict:
 ```
 
 `ActivityTracker` retires the Worker only after 60 seconds without an Activity starting or completing and with no
-Activity running. A long-running Activity keeps the count above zero, so the Worker continues polling. After that
-Activity completes, the tracker waits another 60 seconds before it retires the Worker. The two-minute
-`graceful_shutdown_timeout` is a safety limit for any Activity still in flight when shutdown starts.
+Activity running. A long-running Activity keeps the count above zero, so the idle policy does not interrupt it. The
+two-minute `graceful_shutdown_timeout` is a safety limit for any Activity still in flight when shutdown starts.
 
 Memory pressure can be another retirement condition. For example, the Runtime handler can monitor process memory and
 initiate the same graceful shutdown when usage crosses a threshold. Memory usage is not an idle signal. It tells you
