@@ -300,7 +300,7 @@ replay-safe one, and do not add `OpenTelemetryPlugin` as well: the two would pro
 <!--SNIPSTART python-arize-tracing-agents-plugin-->
 [arize_tracing/ticket_triage_agents/plugin.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/ticket_triage_agents/plugin.py)
 ```py
-def agents_plugin() -> OpenAIAgentsPlugin:
+def agents_plugin(*, register_activities: bool = True) -> OpenAIAgentsPlugin:
     """The OpenAI Agents plugin, configured to export through OpenTelemetry.
 
     Construct it after ``setup_tracing()``: with ``use_otel_instrumentation=True``
@@ -313,6 +313,8 @@ def agents_plugin() -> OpenAIAgentsPlugin:
     return OpenAIAgentsPlugin(
         use_otel_instrumentation=True,
         add_temporal_spans=True,
+        # False for a workflow-only worker (see worker.py --role).
+        register_activities=register_activities,
         model_params=ModelActivityParameters(
             start_to_close_timeout=timedelta(seconds=60),
             retry_policy=RetryPolicy(
@@ -391,9 +393,18 @@ finally:
 ```
 <!--SNIPEND-->
 
-Run the starter and the Worker as separate processes, as the sample does. The bridge is Public Preview in the
-Temporal SDK; the sample's `telemetry.py` includes a small logging filter for a known, harmless
-"Failed to detach context" message that the bridge produces when an agent span outlives a Workflow Task.
+The bridge is Public Preview in the Temporal SDK. The sample's `telemetry.py` includes a small logging filter for a
+known, harmless "Failed to detach context" message that the bridge produces when an agent span outlives a Workflow
+Task.
+
+:::caution
+
+Until [temporalio/sdk-python#1852](https://github.com/temporalio/sdk-python/issues/1852) is fixed, a Worker process that
+runs both the Workflow and its Activities exports the `temporal:startActivity` spans with a parent that is not in the
+trace, so the model-call and tool subtrees appear detached from the agent turns in Arize. Run the Workflow and the
+Activities in separate Worker processes, as the sample's `--role workflows` and `--role activities` Worker flags do.
+
+:::
 
 ## Add OpenInference attributes
 
