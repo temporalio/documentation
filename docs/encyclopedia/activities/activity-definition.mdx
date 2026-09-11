@@ -169,6 +169,7 @@ Write an Activity Definition:
 
 Temporal recommends that Activities be idempotent.
 Idempotence means that performing an operation multiple times has the same result as performing it once.
+In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
 A few examples where idempotent operations are vital would be:
 
 - **Infrastructure-as-Code (IaC) tool** - Conserving resources is important when you're provisioning infrastructure in the cloud. An IaC system that was not designed with idempotence in mind could lead to high costs if the function to provision a new server was accidentally invoked multiple times. An IaC tool that is designed with idempotence in mind ensures that multiple invocations of the tool doesn't lead to unintended instances being created.
