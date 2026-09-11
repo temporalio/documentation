@@ -477,7 +477,7 @@ Signal and Update handlers can block.
 This allows you to use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), Activities, Child Workflows, [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, etc.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
-It's essential to understand the things that could go wrong in order to use blocking handlers safely.
+To use blocking handlers safely, understand what can go wrong.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of blocking Signal and Update handlers, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
 The following code modifies the Update handler from earlier on in this page.
@@ -787,7 +787,7 @@ public class MyDynamicWorkflow implements DynamicWorkflow {
 }
 ```
 
-### How to set a Dynamic Activity {/* #set-a-dynamic-activity */}
+### Set a Dynamic Activity {/* #set-a-dynamic-activity */}
 
 To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
 
@@ -815,7 +815,7 @@ The dynamic Activity interface is implemented with the `execute` method, as show
 
 Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
 
-### How to set a Dynamic Signal {/* #set-a-dynamic-signal */}
+### Set a Dynamic Signal {/* #set-a-dynamic-signal */}
 
 You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
 
@@ -831,7 +831,7 @@ When registered, any Signals sent to the Workflow without a defined handler will
 Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-### How to set a Dynamic Query {/* #set-a-dynamic-query */}
+### Set a Dynamic Query {/* #set-a-dynamic-query */}
 
 You can also implement Query handlers dynamically. This is useful for library-level code and implementation of DSLs.
 
@@ -847,7 +847,7 @@ When registered, any Queries sent to the Workflow without a defined handler will
 Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-### How to set a Dynamic Update {/* #set-a-dynamic-update */}
+### Set a Dynamic Update {/* #set-a-dynamic-update */}
 
 You can also implement Update handlers dynamically.
 This is useful for library-level code and implementation of DSLs.

@@ -1,7 +1,6 @@
 ---
 id: multi-cluster-replication
 title: Multi-Cluster Replication
-sidebar_label: Multi-Cluster Replication
 description: Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 slug: /temporal-service/multi-cluster-replication
 toc_max_heading_level: 4
@@ -37,7 +36,7 @@ This enables [Temporal UI](/web-ui) to work seamlessly for Global Namespaces.
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
-## Namespace Versions
+## Namespace versions
 
 A _version_ is a concept in Multi-Cluster Replication that describes the chronological order of events per Namespace.
 
@@ -323,10 +322,16 @@ This results in loss of some progress made by the Workflow Execution in the prev
 During such conflict resolution, Temporal re-injects any external Events like Signals in the new Event History before discarding replication tasks.
 Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won't get stuck and will continue to make forward progress.
 
+Namespace metadata replication and Namespace cache refresh are separate. If you change the active Cluster directly (for example with `temporal operator namespace update --active-cluster` or the `UpdateNamespace` API), the Temporal Service that receives the request applies it locally first and then replicates it asynchronously. Until that replication completes, both Temporal Services can temporarily consider the Namespace active or both can consider it passive, depending on which Temporal Service received the request. After a Temporal Service observes the failover, task processing compares a task's Event Id and failover version with the current mutable state and rejects tasks from a superseded history branch, even if the local Namespace cache entry is stale.
+
 Activity Execution completions are not forwarded across Clusters.
 Any outstanding Activities will eventually time out based on the configuration.
 Your application should have retry logic in place so that the Activity gets retried and dispatched again to a Worker after the failover to the new Cluster.
 Handling this is similar to handling an Activity Task timeout caused by a Worker restarting.
+Because conflict resolution can remove an unreplicated Activity completion Event from the current branch, Activities
+must be [idempotent](/activity-definition#idempotency) so that another execution does not repeat an external side effect.
+For operational guidance, see [How to fail over a Global
+Namespace](/self-hosted-guide/multi-cluster-replication#how-to-fail-over-a-global-namespace).
 
 ## Zombie Workflows
 

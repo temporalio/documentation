@@ -1,7 +1,9 @@
 # Temporal documentation style guidance
 
-The content included in the Temporal information corpus follows the [Google developer documentation style guide](https://developers.google.com/style), with deference to the [Microsoft Writing Style Guide](https://docs.microsoft.com/en-us/style-guide/welcome/) for issues left unanswered by Google.
-In addition, we maintain a set of Temporal-specific style guidelines that override certain aspects of the Google and Microsoft guides.
+The content included in the Temporal information corpus follows the [Google developer documentation style guide](https://developers.google.com/style) for tone and structure.
+In addition, we maintain a set of Temporal-specific style guidelines that override certain aspects of the Google guide.
+
+Vale enforces this in practice through [Std](https://vale.sh/blog/std), Vale's shared library of general-purpose prose rules, plus Temporal's own custom rules in `vale/styles/Temporal` — not by vendoring the Google or Microsoft style packages directly.
 
 We recommend that you use the Vale extension for your IDE. Vale enables you to configure rule sets in its own configuration file, making it useful for defining Temporal's style guidelines.
 
