@@ -323,5 +323,23 @@
       "Temporal Cloud"
     ],
     "href": "https://docs.vantage.sh/connecting_temporal/"
+  },
+  {
+    "name": "OpenRouter",
+    "description": "Call hundreds of models through OpenRouter from Temporal Activities, with durable retries, cost tracking, and budgets.",
+    "tags": [
+      "Model gateway"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/openrouter"
+  },
+  {
+    "name": "OpenRouter",
+    "description": "Call hundreds of models through OpenRouter from Temporal Activities, with durable retries and cost tracking.",
+    "tags": [
+      "Model gateway"
+    ],
+    "sdk": "TypeScript",
+    "href": "https://github.com/temporalio/samples-typescript/tree/main/openrouter"
   }
 ]
