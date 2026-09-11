@@ -3,6 +3,6 @@
 // setup (src/theme/SearchBar/algoliaInsights.ts, src/pages/search.tsx).
 module.exports = {
   ALGOLIA_APP_ID: 'T5D6KNJCQS',
-  ALGOLIA_SEARCH_API_KEY: '4a2fa646f476d7756a7cdc599b625bec',
-  ALGOLIA_INDEX_NAME: 'temporal',
+  ALGOLIA_SEARCH_API_KEY: '7f9927fa05ed55464439db9097050857',
+  ALGOLIA_INDEX_NAME: 'temporal-search-experiment',
 };
