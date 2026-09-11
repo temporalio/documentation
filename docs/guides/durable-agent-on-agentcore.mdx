@@ -28,74 +28,118 @@ Interpreter supplies an isolated environment for running code.
 The result separates the lifetime of the agent from the lifetime of its compute. The Workflow can remain open for days
 or months without keeping an AgentCore Runtime active.
 
-## See what you will build
+## What you will build
 
-The agent has one Workflow Execution for each conversation. A client sends prompts to an `ask` Update handler and
-receives the agent's answer as the Update result. The Workflow waits without using Worker compute between prompts.
+The agent has one Workflow Execution for each conversation. The application starts that Workflow and sends prompts to
+an `ask` Update handler through Temporal. It does not send prompts to the AgentCore Runtime endpoint. Each Update
+returns the agent's answer to the application.
 
-When a prompt arrives and no Worker is polling, Temporal Cloud starts Worker capacity on AgentCore Runtime. The Worker
-reconstructs the Workflow from its Event History, runs the next agent turn, and retires after it becomes idle. A later
-prompt can run on a different Worker without starting a new conversation.
+The agent uses Amazon Bedrock for model inference and AgentCore Code Interpreter for calculations. After a turn, its
+Worker retires while the Workflow remains open. A later prompt starts new Worker capacity and continues the same
+conversation.
 
-```mermaid
-sequenceDiagram
-    participant Client
-    participant Temporal as Temporal Cloud
-    participant Runtime1 as AgentCore Runtime A
-    participant AWS as Bedrock and Code Interpreter
-    participant Runtime2 as AgentCore Runtime B
+## Architecture
 
-    Client->>Temporal: Start conversation Workflow
-    Temporal->>Runtime1: Start Worker capacity
-    Client->>Temporal: Update: ask first question
-    Runtime1->>AWS: Model and tool Activities
-    AWS-->>Runtime1: Results
-    Runtime1-->>Temporal: Update result
-    Temporal-->>Client: First answer
-    Runtime1-->>Runtime1: Become idle and drain
-    Note over Temporal: Workflow waits without Worker compute
-    Client->>Temporal: Update: ask follow-up question
-    Temporal->>Runtime2: Start new Worker capacity
-    Runtime2->>Temporal: Replay Event History
-    Runtime2->>AWS: Model and tool Activities
-    AWS-->>Runtime2: Results
-    Runtime2-->>Temporal: Update result
-    Temporal-->>Client: Follow-up answer
-```
+The application combines several pieces, but each one has a separate responsibility:
 
-Start with the
-[durable AgentCore sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent).
-It contains the AgentCore project, Runtime handler, IAM policy, and Code Interpreter Activity used in this guide.
+| System | Job in this application |
+|---|---|
+| Application client | Starts and sends prompts to the Workflow through the Temporal Client. |
+| Temporal Workflow | Represents one conversation and coordinates its turns, waits, and recovery. |
+| Strands Agents | Defines the system prompt, tools, model interaction, and agent loop for each turn. |
+| Temporal Worker | Runs Workflow Tasks and Activities from the Task Queue. |
+| AgentCore Runtime | Supplies isolated AWS compute that hosts the Worker when the Task Queue needs capacity. |
+| Amazon Bedrock | Performs model inference when the Workflow runs a model Activity. |
+| AgentCore Code Interpreter | Runs code in a managed sandbox when the model selects that tool. |
 
-You need Python 3.10 or later, `uv`, AWS credentials, access to a Bedrock model, and a local Temporal development server.
-Follow [Set up your local Python environment](/develop/python/set-up-your-local-python) before continuing.
+A conversation turn moves through those pieces as follows:
 
-Clone the sample repository and install the application dependencies:
+1. Temporal records the prompt and places a Workflow Task on the Task Queue.
+2. If no Worker is polling, Temporal starts Worker capacity on AgentCore Runtime.
+3. The Worker processes the Workflow Task. Strands determines whether the turn needs a model call or tool call, and the
+   Workflow schedules each call as an Activity.
+4. The Worker returns the answer through the Update. The Workflow then waits without using Worker compute.
+5. After the Worker becomes idle, it drains and the AgentCore Runtime handler returns.
+6. A later prompt repeats the process. Another Worker can reconstruct the Workflow from Event History and continue the
+   same conversation.
+
+### Keep the conversation in the Workflow
+
+Use the Workflow Id as the durable identity of the conversation. The Workflow holds the Strands message list and the
+current control state. Temporal records the events needed to reconstruct that state, including prompts and completed
+model and tool Activity results.
+
+The Workflow is not a continuously running Python process. After a turn, it can wait for the next Update without a
+Worker assigned to it. When another Workflow Task arrives, any compatible Worker polling the Task Queue can process
+it. Temporal replays Event History on that Worker before the Workflow continues.
+
+### Separate agent behavior from external calls
+
+Strands defines the behavior within a turn. You configure the agent's instructions and available tools, then Strands
+decides when to call the model, select a tool, or return an answer.
+
+The Temporal Strands plugin changes where those calls execute. Model calls and tools that perform I/O run as Temporal
+Activities instead of running directly in Workflow code. Temporal records each completed result and gives each call its
+own timeout, Retry Policy, and failure boundary.
+
+### Treat AgentCore Runtime as Worker compute
+
+An AgentCore Runtime session hosts a Temporal Worker. The Runtime session is not the conversation and does not need to
+remain active while the Workflow waits. One Runtime session can process Tasks for multiple Workflow Executions, and
+later Tasks for one Workflow Execution can run in another Runtime session.
+
+This means the Worker process and its local files or variables must be safe to replace. State that the conversation
+needs after replacement belongs in the Workflow or another durable store. AgentCore services such as Code Interpreter
+and Memory remain available to Activities, but they do not replace the Workflow's execution state.
+
+### Place state according to its lifetime
+
+| State | Location | Reason |
+|---|---|---|
+| Current conversation and agent progress | Temporal Workflow | It must survive Worker and Runtime replacement. |
+| Completed model and tool call results | Temporal Event History | Activity results let replay restore completed progress without repeating successful calls. |
+| Approvals, timers, and long waits | Temporal Workflow | These are part of the agent's durable control flow. |
+| Knowledge shared across conversations | [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html), accessed from an Activity | It belongs to the user or application rather than one Workflow Execution. |
+| Credentials for AWS and external systems | [AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) or an AWS secret store | Workflow state should not contain credentials. |
+| Tool access and authorization | [AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) and [Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) | These services control how tools are reached and whether a call is allowed. |
+| Temporary Worker caches | AgentCore Runtime session | They can improve performance but must be safe to lose. |
+| Code Interpreter variables and files | Code Interpreter session | They last only for that tool session. Store required outputs durably before relying on them later. |
+| Large files and datasets | Object storage, with a reference in the Workflow | Event History is not intended for large application objects. |
+
+The Strands message list is Workflow state in this design. Temporal reconstructs it through Event History when another
+Worker continues the Workflow. Do not use Event History as unlimited chat or object storage. For conversations that
+accumulate many turns, use [Continue-As-New](/develop/python/integrations/strands-agents#handle-long-running-chat-sessions)
+to start a new Event History while carrying forward the messages the next execution needs.
+
+## Prerequisites
+
+To build and run the agent locally, you need:
+
+- Python 3.10 or later and [`uv`](https://docs.astral.sh/uv/).
+- The [Temporal CLI](/cli/setup-cli) to run a local Temporal development server.
+- AWS credentials with access to the Bedrock model selected by Strands and permission to use AgentCore Code
+  Interpreter. The sample includes the required Code Interpreter IAM policy.
+
+To deploy the Worker, you also need:
+
+- A Temporal Cloud account with an AWS-hosted Namespace and access to the AgentCore Serverless Workers Pre-release.
+- An AWS account in an [AgentCore-supported Region](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html).
+- The AWS and AgentCore tools and permissions listed in the
+  [Serverless Worker deployment prerequisites](/production-deployment/worker-deployments/serverless-workers/agentcore#prerequisites).
+
+This guide uses the
+[durable AgentCore sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent),
+which contains the AgentCore project, Runtime handler, IAM policy, and Code Interpreter Activity. Clone the sample
+repository and install the application dependencies:
 
 ```bash
-git clone https://github.com/temporalio/documentation-sdk-code-examples.git
+git clone --branch docs/durable-agent-agentcore-sample --single-branch \
+  https://github.com/temporalio/documentation-sdk-code-examples.git
 cd documentation-sdk-code-examples/python-agentcore-durable-agent
 uv sync
 ```
 
-## Give each system one job
-
-The three systems operate at different levels:
-
-| System | Job in this application |
-|---|---|
-| Strands Agents | Defines the system prompt, tools, model interaction, and agent loop for one turn. |
-| Temporal | Gives the conversation a durable identity, persists its progress, delivers later prompts, and retries model and tool calls as Activities. |
-| AgentCore Runtime | Starts isolated AWS compute that hosts a Temporal Worker when the Task Queue needs capacity. |
-
-Amazon Bedrock performs model inference. AgentCore Code Interpreter runs code in a managed sandbox when the model
-chooses that tool.
-
-The Workflow Id is the durable identity of the agent conversation. An AgentCore Runtime session is compute that can
-host a Worker for part of that conversation. Do not require the same Runtime session or Worker process to handle every
-turn.
-
-## Build the agent locally
+## 1. Build the agent locally {/* #build-the-agent-locally */}
 
 The [durable AgentCore sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent)
 defines `execute_code` as a Temporal Activity. It uses the Workflow Id as the Code Interpreter session name so two
@@ -247,7 +291,7 @@ Ask a question that requires calculation, then ask a follow-up that depends on t
 close the Workflow. In the Temporal Web UI, the Event History shows the `ask` Update, model Activities, and
 `execute_code` Activity for each turn.
 
-## Run the Worker on AgentCore Runtime
+## 2. Run the Worker on AgentCore Runtime {/* #run-the-worker-on-agentcore-runtime */}
 
 Local development uses a continuously running Worker. On AgentCore Runtime, the Worker starts inside the Runtime's HTTP
 handler and returns when its idle policy decides to release the compute.
@@ -308,7 +352,7 @@ The Runtime does not need a copy of the conversation in a local file or global v
 Workflow Task, Temporal replays the Workflow's Event History and restores the `TemporalAgent` message list before new
 model or tool calls run.
 
-## Deploy the Serverless Worker
+## 3. Deploy the Serverless Worker {/* #deploy-the-serverless-worker */}
 
 Install the AgentCore CLI and generate the CDK project used by the sample's Runtime definition:
 
@@ -333,7 +377,7 @@ The AgentCore Runtime execution role needs permission to invoke Bedrock and Code
 Temporal Cloud assumes needs permission to invoke the AgentCore Runtime endpoint. The deployment guide creates and
 configures the second role.
 
-## Talk to the deployed agent
+## 4. Talk to the deployed agent {/* #talk-to-the-deployed-agent */}
 
 Start one conversation Workflow. This command returns immediately while the Workflow remains open:
 
@@ -380,7 +424,7 @@ temporal workflow signal \
   --name finish
 ```
 
-## Test recovery
+## 5. Test recovery {/* #test-recovery */}
 
 Worker retirement between turns tests one form of recovery. You can also interrupt compute while a model or tool
 Activity is running. Start a prompt that takes long enough to observe, find the active Runtime session identifier in the
@@ -405,24 +449,3 @@ An Activity can run more than once if its Worker stops after making an external 
 Use an idempotency key for tools that change external state. The Workflow Id plus a stable operation identifier is a
 common choice. Code execution used only to calculate an answer does not make an external business change, so it is a
 safe recovery demonstration.
-
-## Decide where state belongs
-
-Place state according to how long it must survive and which system uses it:
-
-| State | Location | Reason |
-|---|---|---|
-| Current conversation and agent progress | Temporal Workflow | It must survive Worker and Runtime replacement. |
-| Completed model and tool call results | Temporal Event History | Activity results let replay restore completed progress without repeating successful calls. |
-| Approvals, timers, and long waits | Temporal Workflow | These are part of the agent's durable control flow. |
-| Knowledge shared across conversations | [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html), accessed from an Activity | It belongs to the user or application rather than one Workflow Execution. |
-| Credentials for AWS and external systems | [AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) or an AWS secret store | Workflow state should not contain credentials. |
-| Tool access and authorization | [AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) and [Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) | These services control how tools are reached and whether a call is allowed. |
-| Temporary Worker caches | AgentCore Runtime session | They can improve performance but must be safe to lose. |
-| Code Interpreter variables and files | Code Interpreter session | They last only for that tool session. Store required outputs durably before relying on them later. |
-| Large files and datasets | Object storage, with a reference in the Workflow | Event History is not intended for large application objects. |
-
-The Strands message list is Workflow state in this design. Temporal reconstructs it through Event History when another
-Worker continues the Workflow. Do not use Event History as unlimited chat or object storage. For conversations that
-accumulate many turns, use [Continue-As-New](/develop/python/integrations/strands-agents#handle-long-running-chat-sessions)
-to start a new Event History while carrying forward the messages the next execution needs.
