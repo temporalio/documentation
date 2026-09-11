@@ -21,9 +21,9 @@ import { ReleaseNoteHeader } from '@site/src/components';
 </ReleaseNoteHeader>
 
 This guide builds a data-analysis agent that can continue a conversation after the compute running it has stopped. A
-Temporal Workflow holds the conversation and coordinates each turn. Strands defines how the agent uses a model and
-tools. Amazon Bedrock AgentCore Runtime supplies serverless compute for the Temporal Worker, and AgentCore Code
-Interpreter supplies an isolated environment for running code.
+Temporal Workflow coordinates each turn and preserves the state needed to continue. Strands defines how the agent uses
+a model and tools. Amazon Bedrock AgentCore Runtime supplies serverless compute for the Temporal Worker, and AgentCore
+Code Interpreter supplies an isolated environment for running code.
 
 The result separates the lifetime of the agent from the lifetime of its compute. The Workflow can remain open for days
 or months without keeping an AgentCore Runtime active.
@@ -40,76 +40,39 @@ conversation.
 
 ## Architecture
 
-The application combines several pieces, but each one has a separate responsibility:
+The application sends prompts to a Temporal Workflow through an Update. The Workflow identifies the conversation and
+records its execution progress. When its Task Queue has work, Serverless Workers starts an AgentCore Runtime session
+that hosts a Temporal Worker. A later Task can run on a different Runtime session because Temporal reconstructs the
+Workflow from Event History before it continues.
 
-| System | Job in this application |
+Strands runs the agent loop for each turn. The Temporal Strands integration schedules model calls and tool calls as
+Activities. Each call has its own timeout, Retry Policy, and recorded result. After the Worker returns the answer, the
+Workflow can wait for another prompt without keeping an AgentCore Runtime session active.
+
+```mermaid
+flowchart LR
+    APP[Application] -->|Prompts and replies| WF[Temporal Workflow]
+    WF --> TQ[Task Queue]
+    TQ --> W[Temporal Worker<br/>AgentCore Runtime session A or B]
+    W --> AWS[Bedrock and<br/>AgentCore services]
+    W --> STORE[External conversation<br/>and artifact storage]
+    WF -.->|Durable references| STORE
+```
+
+Place state according to how long it must remain available:
+
+| State | Location |
 |---|---|
-| Application client | Starts and sends prompts to the Workflow through the Temporal Client. |
-| Temporal Workflow | Represents one conversation and coordinates its turns, waits, and recovery. |
-| Strands Agents | Defines the system prompt, tools, model interaction, and agent loop for each turn. |
-| Temporal Worker | Runs Workflow Tasks and Activities from the Task Queue. |
-| AgentCore Runtime | Supplies isolated AWS compute that hosts the Worker when the Task Queue needs capacity. |
-| Amazon Bedrock | Performs model inference when the Workflow runs a model Activity. |
-| AgentCore Code Interpreter | Runs code in a managed sandbox when the model selects that tool. |
+| Execution progress and bounded working context | Temporal Workflow |
+| Large or unbounded conversation content, uploads, and artifacts | Durable external storage, with stable references in the Workflow |
+| Knowledge shared across conversations, such as user preferences | [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html), accessed from an Activity |
+| Temporary caches and Code Interpreter files | AgentCore Runtime or tool session, when the application can tolerate losing them |
 
-A conversation turn moves through those pieces as follows:
-
-1. Temporal records the prompt and places a Workflow Task on the Task Queue.
-2. If no Worker is polling, Temporal starts Worker capacity on AgentCore Runtime.
-3. The Worker processes the Workflow Task. Strands determines whether the turn needs a model call or tool call, and the
-   Workflow schedules each call as an Activity.
-4. The Worker returns the answer through the Update. The Workflow then waits without using Worker compute.
-5. After the Worker becomes idle, it drains and the AgentCore Runtime handler returns.
-6. A later prompt repeats the process. Another Worker can reconstruct the Workflow from Event History and continue the
-   same conversation.
-
-### Keep the conversation in the Workflow
-
-Use the Workflow Id as the durable identity of the conversation. The Workflow holds the Strands message list and the
-current control state. Temporal records the events needed to reconstruct that state, including prompts and completed
-model and tool Activity results.
-
-The Workflow is not a continuously running Python process. After a turn, it can wait for the next Update without a
-Worker assigned to it. When another Workflow Task arrives, any compatible Worker polling the Task Queue can process
-it. Temporal replays Event History on that Worker before the Workflow continues.
-
-### Separate agent behavior from external calls
-
-Strands defines the behavior within a turn. You configure the agent's instructions and available tools, then Strands
-decides when to call the model, select a tool, or return an answer.
-
-The Temporal Strands plugin changes where those calls execute. Model calls and tools that perform I/O run as Temporal
-Activities instead of running directly in Workflow code. Temporal records each completed result and gives each call its
-own timeout, Retry Policy, and failure boundary.
-
-### Treat AgentCore Runtime as Worker compute
-
-An AgentCore Runtime session hosts a Temporal Worker. The Runtime session is not the conversation and does not need to
-remain active while the Workflow waits. One Runtime session can process Tasks for multiple Workflow Executions, and
-later Tasks for one Workflow Execution can run in another Runtime session.
-
-This means the Worker process and its local files or variables must be safe to replace. State that the conversation
-needs after replacement belongs in the Workflow or another durable store. AgentCore services such as Code Interpreter
-and Memory remain available to Activities, but they do not replace the Workflow's execution state.
-
-### Place state according to its lifetime
-
-| State | Location | Reason |
-|---|---|---|
-| Current conversation and agent progress | Temporal Workflow | It must survive Worker and Runtime replacement. |
-| Completed model and tool call results | Temporal Event History | Activity results let replay restore completed progress without repeating successful calls. |
-| Approvals, timers, and long waits | Temporal Workflow | These are part of the agent's durable control flow. |
-| Knowledge shared across conversations | [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html), accessed from an Activity | It belongs to the user or application rather than one Workflow Execution. |
-| Credentials for AWS and external systems | [AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) or an AWS secret store | Workflow state should not contain credentials. |
-| Tool access and authorization | [AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) and [Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) | These services control how tools are reached and whether a call is allowed. |
-| Temporary Worker caches | AgentCore Runtime session | They can improve performance but must be safe to lose. |
-| Code Interpreter variables and files | Code Interpreter session | They last only for that tool session. Store required outputs durably before relying on them later. |
-| Large files and datasets | Object storage, with a reference in the Workflow | Event History is not intended for large application objects. |
-
-The Strands message list is Workflow state in this design. Temporal reconstructs it through Event History when another
-Worker continues the Workflow. Do not use Event History as unlimited chat or object storage. For conversations that
-accumulate many turns, use [Continue-As-New](/develop/python/integrations/strands-agents#handle-long-running-chat-sessions)
-to start a new Event History while carrying forward the messages the next execution needs.
+For clarity, this sample keeps its complete Strands message list in Workflow state. That works for a bounded
+conversation. For a conversation that can grow without a fixed limit, store its raw content externally and carry a
+reference or bounded summary in the Workflow. Retrieve external content through an Activity before using it in a model
+call. Use [Continue-As-New](/develop/python/integrations/strands-agents#handle-long-running-chat-sessions) to start a new
+Event History with only the references and working context that the next execution needs.
 
 ## Prerequisites
 
