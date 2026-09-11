@@ -32,7 +32,7 @@ active Cluster. This is off by default; enable it by setting
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 All Visibility APIs can be used against active and standby Clusters.
-This enables [Temporal UI](/web-ui) to work seamlessly for Global Namespaces.
+As a result, [Temporal UI](/web-ui) works with Global Namespaces the same way it works with any other Namespace.
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
