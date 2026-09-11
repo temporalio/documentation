@@ -32,6 +32,17 @@ const PLAIN = { accent: '#7F86F1', onAccent: '#0b0b14' };
 export function WalkthroughStep({ children }) {
   return <>{children}</>;
 }
+
+/**
+ * Wraps one or more code blocks the reader is meant to run, so they read as
+ * commands rather than as sample code to study. Give each wrapped block a
+ * `title=` as well: the tint is a scanning aid, but the title is what carries
+ * the meaning for colourblind readers and in the Markdown output.
+ */
+export function RunThis({ children }) {
+  return <div className={styles.runThis}>{children}</div>;
+}
+RunThis.displayName = 'RunThis';
 WalkthroughStep.displayName = 'WalkthroughStep';
 
 function isWalkthroughStep(child) {
@@ -208,6 +219,7 @@ export default function NexusMicroserviceWalkthrough({
             }
             onClick={() => selectStep(next.props.id)}
           >
+            <span className={styles.nextLabel}>Next:</span>
             {stepNumber(next.props.id) ? (
               <span className={styles.nextNum} aria-hidden="true">
                 {stepNumber(next.props.id)}

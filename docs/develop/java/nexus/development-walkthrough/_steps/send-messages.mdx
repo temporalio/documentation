@@ -1,3 +1,5 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
 From the caller's side, the messaging Operations are just Operations. They are called through the same generated stub as `requestApproval`, with the same type checking.
 
 The caller does not know that one is a Signal and one is an Update. That is the handler's implementation detail, and it can change without breaking callers.
@@ -110,6 +112,68 @@ Two things follow from this, and both are useful.
 **The Operation becomes idempotent for callers, not just for retries.** [Step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id) made the start idempotent against server retries of one request. Use-existing extends that to genuinely separate callers, which is what you want for a purchase that two systems might both submit.
 
 One limit to know: use-existing attaches to a *running* Execution. If the approval has already completed, there is nothing to attach to, and the call starts a fresh approval rather than returning the old decision. Whoever needs the outcome of a finished approval has to have been attached while it was open, or be told by the handler — which is what the notification in the next step does.
+
+## Run it in the harder order
+
+The point of Signal-with-Start is that the note can arrive first, so run it that way. Restart the
+handler Worker, then pick an item id that has no approval yet:
+
+<RunThis>
+
+```bash title="Run 1 of 3: attach context before the approval exists"
+temporal nexus operation execute \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation AttachApprovalContext \
+  --operation-id attach-1 \
+  --input '{"itemId":"desk-7","requester":"tao","amount":1250,"note":"Approved in the Q3 budget"}'
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  null
+```
+
+No approval existed for `desk-7`, so the Operation created one and delivered the note to it:
+
+<RunThis>
+
+```bash title="Run 2 of 3: confirm only one approval was created"
+temporal workflow list --namespace approval-handler-namespace
+```
+
+</RunThis>
+
+```
+  Status    WorkflowId       Type
+  Running   approval-desk-7  ApprovalWorkflow
+```
+
+Now request the approval for that same item. Under the default conflict policy this would fail,
+because a Workflow with that Id is already running. With use-existing it attaches instead:
+
+<RunThis>
+
+```bash title="Run 3 of 3: request the approval that already exists"
+temporal nexus operation start \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation RequestApproval \
+  --operation-id approval-desk-7 \
+  --input '{"itemId":"desk-7","requester":"tao","amount":1250}'
+```
+
+</RunThis>
+
+`temporal workflow list` still shows one `approval-desk-7`. The second call did not start a second
+approval; it attached its completion callback to the one the note created. Decide it with
+`SubmitDecision` as in [step 7](/develop/java/nexus/development-walkthrough?step=messaging#run-the-messaging-operations)
+and the result arrives on the Operation started here.
 
 :::note The two Workflow Id policies
 

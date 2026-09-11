@@ -1,3 +1,5 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
 The Service is implemented and a Worker is polling, but no caller can reach it. A [Nexus Endpoint](/nexus/endpoints) is what makes it reachable, and the [Nexus Registry](/nexus/registry) is where Endpoints live.
 
 An Endpoint routes incoming Operation requests to a target Namespace and Task Queue. Callers address the Endpoint by name and never learn the Namespace or Task Queue behind it, which is what lets you move the handler later without changing caller code.
@@ -6,15 +8,20 @@ An Endpoint routes incoming Operation requests to a target Namespace and Task Qu
 
 An Endpoint needs three things: a unique name, the target Namespace where the handler runs, and the target Task Queue the handler's Worker polls. The Task Queue must match what your Worker registered in [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker), or requests arrive and nothing picks them up.
 
-On a development server, create it with the CLI:
+On a development server, create it with the CLI. This is the command already run in
+[Before you start](/develop/java/nexus/development-walkthrough?step=overview#create-the-namespaces-and-the-endpoint),
+repeated here with the parts explained:
 
 ```bash
 temporal operator nexus endpoint create \
   --name approval-endpoint \
   --target-namespace approval-handler-namespace \
   --target-task-queue approval-handler-task-queue \
-  --description-file description.md
+  --description-file ./core/src/main/java/io/temporal/samples/nexuswalkthrough/description.md
 ```
+
+`--description-file` is optional. It attaches Markdown shown to anyone browsing the Registry, which
+is where you say what the Service is for and who owns it.
 
 In Temporal Cloud, create it in the UI under Nexus, or with `tcld`. See [Create a Nexus Endpoint](/nexus/registry#create-a-nexus-endpoint).
 
@@ -42,16 +49,37 @@ On a development server there is nothing to configure. Both Namespaces are local
 
 For Temporal Cloud, the caller and handler connect as separate clients, each to its own Namespace. Generate an API key with access to both Namespaces, or use mTLS certificates. The SDK's [environment configuration](/develop/environment-configuration) support lets you keep one profile per Namespace and select between them with an environment variable, which is cleaner than passing connection options in code.
 
-```bash
-temporal workflow list --namespace approval-handler-namespace
-temporal activity list --namespace approval-handler-namespace
-```
-
 ## Verify it is reachable
 
-Before writing a caller, confirm the wiring independently. Check that the Endpoint exists in the Registry and targets the right Namespace and Task Queue, and that your handler Worker shows as polling that Task Queue.
+Before writing a caller, confirm the wiring independently. Check that the Endpoint exists in the
+Registry and targets the right Namespace and Task Queue:
+
+<RunThis>
+
+```bash title="Run 1 of 2: check the Endpoint exists"
+temporal operator nexus endpoint get --name approval-endpoint
+```
+
+</RunThis>
+
+Then check that your handler Worker is polling that Task Queue:
+
+<RunThis>
+
+```bash title="Run 2 of 2: check the Worker is polling"
+temporal task-queue describe \
+  --namespace approval-handler-namespace \
+  --task-queue approval-handler-task-queue
+```
+
+</RunThis>
 
 A Worker that is not polling is the other common cause of a call that appears to hang: the request is accepted and queued, and nothing serves it.
+
+You have already exercised the Endpoint end to end in
+[step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-operations), so if
+those Operations returned, the wiring above is already good. Come back to these commands when a
+later call stops working.
 
 
 :::tip RESOURCES

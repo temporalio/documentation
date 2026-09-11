@@ -6,9 +6,13 @@ There are three choices, and picking the wrong one is the most common source of 
 
 The handler computes an answer and returns it. Nothing durable is created: no Workflow, no Activity, nothing to cancel, nothing in Event History.
 
-This fits work that cannot meaningfully fail and returns immediately — applying a rule to the input, deriving a value, reading configuration the handler already holds. The Operation completes during the handler call, and the caller gets the answer in the response.
+Use this when the Operation applies a rule to its input and returns: deriving a value, reading configuration the handler already holds, or checking a precondition. The Operation completes during the handler call, and the caller gets the answer in the response.
 
-The limit is that you get no durability. The code runs inside the Nexus Operation handler, so it is bounded by the request deadline, and a failure fails the request rather than retrying a step. If the work can fail in a way you would want retried, it needs an Activity instead.
+**Validation is the clearest case.** When an Operation rejects its input, starting a Workflow or an Activity first would be wrong: you would create an Execution whose only job is to fail immediately, and record that failure in a Namespace that now has to be cleaned up. A handler with no backing Execution checks its preconditions, returns the rejection in the response, and leaves nothing behind.
+
+The limit is that you get no durability. The code runs inside the Nexus Operation handler, so it is bounded by the request deadline, and a failure fails the request rather than retrying a step.
+
+So the question is not whether the Operation can fail, but what should happen when it does. Bad input stays bad, so retrying a rejection only fails again: return the rejection and use no backing Execution. A failure that a retry could fix, such as an unreachable external API, needs an Activity.
 
 ## Workflow
 
@@ -32,10 +36,14 @@ The tradeoff is that an Activity cannot receive messages or hold state, and canc
 | --- | --- | --- |
 | `checkApprovalRequired` | None | Applies a threshold to the input. Nothing to orchestrate, nothing that can fail in a retryable way |
 | `requestApproval` | Workflow | Blocks for a human decision, holds the reminder count, and accepts messages while pending |
-| `remindApprover` | Workflow (message) | A Signal to the approval started by `requestApproval` |
-| `submitDecision` | Workflow (message) | An Update to that same approval, because the caller needs a result back |
-| `attachApprovalContext` | Workflow (message) | A Signal that also starts the approval if it does not exist yet |
+| `remindApprover` | Sync messaging (Signal) | A Signal to the approval started by `requestApproval` |
+| `submitDecision` | Update | An Update to that same approval, because the caller needs a result back |
+| `attachApprovalContext` | Sync messaging (Signal-with-Start) | A Signal that also starts the approval if it does not exist yet |
 | `notifyRequester` | Standalone Activity | One outbound notification, no state, nothing to wait for |
+
+Update is its own backing, not a variation on Workflow: the Operation completes when the Update completes, not when the Workflow returns. Signals are not a backing at all. They are [sync messaging](/nexus/temporal-operation-handler#the-nexus-aware-client) — they take effect during the handler call, and the Operation completes inline the way `checkApprovalRequired` does.
+
+That choice stays private to the handler, but the caller can still observe it. A Signal-backed Operation completes synchronously, so a Temporal caller's Event History goes straight from `NexusOperationScheduled` to `NexusOperationCompleted`. An Update-backed Operation completes through the Nexus completion callback, which adds a `NexusOperationStarted` event carrying the Operation token used to cancel it.
 
 Three of these are worth the contrast.
 
@@ -98,12 +106,6 @@ Nothing about this choice is permanent, and that is the point of making it with 
 What backs an Operation is private to the handler, so it can change while the contract stays exactly where it is. If spend policy moves out of the handler and into a policy service, `checkApprovalRequired` becomes Activity-backed. If it grows into something with several steps — checking a budget, consulting delegation rules, waiting on a policy engine that is slow — it becomes Workflow-backed, the same shape as `requestApproval`. In every case the handler changes and no caller does, because the contract did not.
 
 That is the reason to reach for `TemporalOperationHandler` even for an Operation this small. It is the single entry point for all three backings, so replacing a threshold comparison with a full Workflow later is an edit inside one method rather than a new Operation and a contract change.
-
-:::caution For Reviewers
-The next paragraph is about cost. I thought it was relevant as a big differentiator for opersations with no backing so I put it in - but I'm not sure I should?
-:::
-
-In Temporal Cloud there is a cost argument too. Starting any Nexus Operation costs one [Action](/cloud/pricing) in the caller's Namespace, whatever backs it — that much is fixed. What varies is the handler side: an Operation with no backing Execution adds nothing, while a Workflow or Activity backing bills Actions of its own, retries included. Handling the Nexus Operation itself is not billed. For work as small as a threshold comparison that is the difference between one Action and several, which is worth knowing when the Operation is called on every purchase. See [Nexus pricing](/cloud/nexus/pricing).
 
 Nothing runs this Operation yet. [Step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker) starts the Worker that hosts the Service, and [step 5](/develop/java/nexus/development-walkthrough?step=publish) makes it reachable, so this is the first Operation you will see respond once those are in place.
 
