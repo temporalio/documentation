@@ -43,6 +43,62 @@ When applicable, use [SCIM](/cloud/manage-access/scim) or the Temporal Cloud use
 
 For non-human access (CI/CD pipelines, backend services), use [Temporal Cloud Service Accounts](/cloud/manage-access/service-accounts) instead of shared user logins. Service Accounts are machine identities that can be granted specific permissions without ties to an individual. Create separate Service Accounts with unique API keys for different applications or microservices, and apply least privilege to each (for example, a service account that only has access to one Namespace).
 
+### Restrict Cloud UI session lifetimes
+
+Strict UI Session Mode is an optional account-level setting for organizations that require shorter sessions for users
+authenticated through [SAML single sign-on (SSO)](/cloud/manage-access/saml).
+
+When enabled, Strict UI Session Mode:
+
+- Signs users out after 15 minutes of inactivity, instead of 12 hours.
+- Limits the maximum session duration to 12 hours, instead of 7 days, even if the user remains active.
+
+When either limit is reached, the user must start a new Cloud UI session through the account's SAML identity provider.
+Whether the identity provider prompts the user to enter credentials or complete MFA depends on the identity provider's
+own session policy.
+
+These predictable session limits can help organizations enforce internal security policies and complete security and
+compliance reviews. Enabling Strict UI Session Mode does not by itself guarantee compliance with a particular standard
+or regulation.
+
+#### Prerequisites
+
+Before enabling Strict UI Session Mode, [SAML SSO](/cloud/manage-access/saml) must be configured and active for the
+account.
+
+Strict UI Session Mode applies only to Cloud UI sessions authenticated through SAML. It does not affect other
+authenticated interactions with Temporal, including:
+
+- Users who sign in through Google, Microsoft, or email and password
+- Workers or SDK clients
+- API Keys or Service Accounts
+- Temporal CLI sessions
+- mTLS connections
+
+#### Enable Strict UI Session Mode
+
+[Create a support ticket](/cloud/support#support-ticket) and provide your
+[Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id). Ask Dev Success to enable Strict UI Session
+Mode for the account.
+
+Strict UI Session Mode applies to the entire account. It cannot be configured for individual users, groups, or roles.
+The 15-minute inactivity limit and 12-hour maximum session duration are fixed.
+
+The setting applies when a user starts a new session. Users with an active session must sign out and start a new session
+before the shorter limits take effect.
+
+#### Understand how inactivity is measured
+
+Only Cloud UI activity that sends a request to Temporal Cloud resets the inactivity timer. Mouse movement, scrolling, or
+reading information that has already loaded does not reset the timer.
+
+The Cloud UI does not display a warning or countdown before the session expires.
+
+The 12-hour maximum applies regardless of activity.
+
+To disable Strict UI Session Mode, [create a support ticket](/cloud/support#support-ticket). Active sessions retain the
+shorter limits until users sign out and start new sessions.
+
 ## Secure application authentication and API access
 
 Clients interact with the Temporal Service to initiate and manage Workflows, while Workers execute the business logic defined in Workflows and Activities in your own environment. 
