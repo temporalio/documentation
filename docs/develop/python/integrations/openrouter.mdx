@@ -1,0 +1,392 @@
+---
+id: openrouter
+title: OpenRouter integration
+sidebar_label: OpenRouter
+toc_max_heading_level: 2
+tags:
+  - OpenRouter
+  - Python SDK
+  - Temporal SDKs
+description:
+  Call OpenRouter from Temporal Activities with durable retries, cost tracking, and budgets, using the Temporal Python
+  SDK.
+---
+
+[OpenRouter](https://openrouter.ai/) is a model gateway: one OpenAI-compatible API and one API key in front of hundreds
+of models from many providers. It picks the provider and model for each request, falls back between them, and reports
+what every response cost.
+
+Temporal handles everything around those calls. Each call runs as an Activity, so it gets retries with backoff, a
+timeout, and a durable record in Event History of what was called and what it cost. The Workflow around the
+Activities can fan out over a batch with bounded concurrency, survive a Worker crash without re-running finished
+calls, and pause for hours until a person acts.
+
+The division of labor is simple. OpenRouter decides *which provider and model* serve a request, in milliseconds.
+Temporal decides *what happens over time*: waiting out a rate limit, surviving a crash, parking until someone raises a
+budget, and keeping the audit trail.
+
+This integration is a sample pattern rather than a plugin: OpenRouter needs nothing inside Workflow code. Code snippets
+in this guide are taken from the [OpenRouter samples](https://github.com/temporalio/samples-python/tree/main/openrouter).
+Refer to the samples for the complete code, and to the
+[TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/openrouter) for the same pattern in
+TypeScript.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with OpenRouter's
+  [chat completions API](https://openrouter.ai/docs/quickstart).
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Set up your local development environment by following
+  [Set up your local development environment](/develop/python/set-up-your-local-python) and leave the Temporal
+  development server running.
+- Create an [OpenRouter API key](https://openrouter.ai/settings/keys) and export it as `OPENROUTER_API_KEY` in the
+  Worker's environment. The key stays in the Worker process; it is never part of Workflow input or Event History.
+
+## Install
+
+The samples call OpenRouter with the `openai` package pointed at OpenRouter's base URL, which is the setup OpenRouter
+documents for OpenAI-compatible clients:
+
+```bash
+pip install temporalio openai
+```
+
+OpenRouter's official [`openrouter`](https://pypi.org/project/openrouter/) package works the same way. If you use it,
+construct the client with `retry_config=RetryConfig("none", ...)`. By default it retries 5xx and connection errors for
+up to an hour, which hides attempts from Temporal.
+
+## Call OpenRouter from an Activity
+
+Build one client for the Worker's lifetime with client-side retries turned off, and pass it to the Activity class. The
+Activity makes exactly one HTTP call per attempt, so every attempt is visible in Event History and the Activity's Retry
+Policy is the only retry policy in play.
+
+```python
+from openai import AsyncOpenAI
+
+client = AsyncOpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.environ["OPENROUTER_API_KEY"],
+    max_retries=0,
+    timeout=60.0,
+)
+```
+
+<!--SNIPSTART python-openrouter-call-activity-->
+[openrouter/activities.py](https://github.com/temporalio/samples-python/blob/main/openrouter/activities.py)
+```py
+@activity.defn
+async def call_openrouter(self, request: OpenRouterRequest) -> OpenRouterResult:
+    """One chat completion. One HTTP call per attempt; Temporal retries."""
+    # Heartbeat so a killed Worker is noticed after heartbeat_timeout
+    # rather than after the full start_to_close_timeout.
+    heartbeat_timeout = activity.info().heartbeat_timeout
+    heartbeat_task = (
+        asyncio.create_task(_heartbeat_forever(heartbeat_timeout / 2))
+        if heartbeat_timeout
+        else None
+    )
+    try:
+        return await self._send(request)
+    finally:
+        if heartbeat_task:
+            heartbeat_task.cancel()
+
+async def _send(self, request: OpenRouterRequest) -> OpenRouterResult:
+    extra_body: dict[str, Any] = {}
+    if request.fallback_models:
+        # OpenRouter tries these in order within the same request.
+        extra_body["models"] = request.fallback_models
+    elif request.model == "openrouter/auto":
+        extra_body["plugins"] = [
+            {"id": "auto-router", "cost_tier": request.cost_tier}
+        ]
+    model = request.fallback_models[0] if request.fallback_models else request.model
+
+    try:
+        raw = await self._client.chat.completions.with_raw_response.create(
+            model=model,
+            messages=[{"role": "user", "content": request.prompt}],
+            extra_body=extra_body or None,
+            extra_headers={
+                # Ask OpenRouter to cache the successful response. A retry
+                # of the byte-identical request within the TTL is served
+                # from cache and billed at $0.
+                "X-OpenRouter-Cache": "true",
+                "X-OpenRouter-Cache-TTL": str(request.cache_ttl_seconds),
+            },
+        )
+    except APIStatusError as e:
+        raise_for_status(
+            e.status_code, _error_message(e.body) or e.message, e.response.headers
+        )
+    # Connection errors and timeouts propagate as-is: Temporal retries them.
+
+    payload = json.loads(raw.text)
+    error = payload.get("error")
+    if isinstance(error, dict):
+        # OpenRouter can return HTTP 200 with an error body and no choices
+        # when the upstream provider failed after the request was accepted.
+        raise_for_status(
+            int(error.get("code") or 500), _error_message(payload), raw.headers
+        )
+
+    choices = payload.get("choices") or []
+    usage = payload.get("usage") or {}
+    cost = usage.get("cost")
+    result = OpenRouterResult(
+        prompt=request.prompt,
+        model=str(payload.get("model", model)),
+        answer=_content_to_text((choices[0].get("message") or {}).get("content"))
+        if choices
+        else "",
+        cost_usd=float(cost) if isinstance(cost, (int, float)) else 0.0,
+        generation_id=str(payload.get("id", "")),
+        cache_status=raw.headers.get("x-openrouter-cache-status", ""),
+    )
+    activity.logger.info(
+        "OpenRouter call completed: attempt=%d model=%s cost_usd=%.6f cache=%s id=%s",
+        activity.info().attempt,
+        result.model,
+        result.cost_usd,
+        result.cache_status or "-",
+        result.generation_id,
+    )
+
+    if request.fail_once_after_call and activity.info().attempt == 1:
+        # Demo hook: the Worker "crashes" after the response arrived. The
+        # retry re-sends the identical request and gets a cache hit.
+        raise ApplicationError(
+            "Simulated failure after the response was received",
+            type="SimulatedFailure",
+        )
+
+    return result
+```
+<!--SNIPEND-->
+
+Three details in that Activity carry most of the value.
+
+### Classify errors
+
+OpenRouter's error codes tell you whether a retry can help. The Activity turns them into an `ApplicationError` with the
+matching retry posture, and passes a `Retry-After` header through as the next retry delay:
+
+| Status | Meaning | Retry? |
+|---|---|---|
+| 408, 429 | Timeout, rate limited (`Retry-After` may be set) | Yes, honoring `Retry-After` |
+| 500, 502, 503, 524, 529 | Server error, model down, no provider available, edge timeout, provider overloaded | Yes |
+| 400 | Bad request | No |
+| 401 | Invalid API key | No |
+| 402 | Insufficient credits on the API key | No; see [Pause when money runs out](#pause-when-money-runs-out) |
+| 403 | Moderation or permission block | No |
+
+OpenRouter can also return HTTP 200 with an `error` object in the body and no `choices` when the upstream provider
+failed after the request was accepted. The Activity reads the raw body first and classifies that case by the code
+inside the error.
+
+### Make retries free with response caching
+
+An Activity is at-least-once. If a Worker dies after OpenRouter answered but before Temporal recorded the result,
+Temporal retries the Activity and sends the request again. The Activity sends OpenRouter's
+`X-OpenRouter-Cache: true` header, so OpenRouter serves the retried, byte-identical request from its response cache
+and bills $0 for it. OpenRouter writes the cache shortly after the response completes; a retry that arrives before
+that write lands is a `MISS` and is billed. The response header `X-OpenRouter-Cache-Status` reports `HIT` or `MISS`, and the sample returns it
+with each result.
+
+For this to work, nothing per-attempt may go in the request body. The attempt number belongs in heartbeat details and
+logs, not in the prompt. Two identical requests in flight at the same time both miss the cache and both bill.
+
+### Heartbeat
+
+A 60-second model call with a 90-second `start_to_close_timeout` would take 90 seconds to fail over after a Worker
+crash. The Activity heartbeats, and the Workflow sets `heartbeat_timeout=timedelta(seconds=10)`, so Temporal notices
+the crash in seconds.
+
+## Fan out a prompt batch
+
+The `prompt_batch` sample runs one Activity per prompt under a semaphore, so a slow or failing prompt never blocks the
+rest. The Workflow records a prompt whose Activity fails with a non-retryable error as skipped rather than failing the batch:
+
+<!--SNIPSTART python-openrouter-prompt-batch-fan-out-->
+[openrouter/prompt_batch/workflow.py](https://github.com/temporalio/samples-python/blob/main/openrouter/prompt_batch/workflow.py)
+```py
+semaphore = asyncio.Semaphore(batch.max_concurrency)
+outcomes = await asyncio.gather(
+    *(self._answer(prompt, batch, semaphore) for prompt in batch.prompts)
+)
+```
+<!--SNIPEND-->
+
+Each result carries the concrete model OpenRouter's [Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router)
+chose, OpenRouter's reported `usage.cost`, the generation ID, and the cache status.
+
+Each Activity adds a few events to Event History, and every answer is part of the Workflow result payload. The sample
+caps a batch at 100 prompts. For larger batches, start one Workflow per slice, or use the
+[sliding window](https://github.com/temporalio/samples-python/tree/main/batch_sliding_window) pattern with
+Continue-As-New.
+
+## Pause when money runs out
+
+The `budget_gate` sample is the same batch, except that it pauses instead of failing when money runs out, and resumes
+when a person raises the budget. Two things can pause it:
+
+- A soft budget in the Workflow input, checked against the cost OpenRouter reports on every response. The Workflow
+  reserves an estimate per in-flight call and parks a prompt when `spent + reserved + estimate` would exceed the
+  budget.
+- OpenRouter returning 402 because the API key hit its credit limit. The Activity marks 402 non-retryable; the Workflow
+  catches it and parks that prompt instead of skipping it.
+
+Either way the prompt waits on `workflow.wait_condition`, which costs nothing while it waits and survives Worker
+restarts. A `raise_budget` Update wakes every parked prompt. A `spend_report` Query shows the spend so far, the
+reservations, the per-prompt ledger, and the parked prompts with the reason for each:
+
+<!--SNIPSTART python-openrouter-budget-gate-handlers-->
+[openrouter/budget_gate/workflow.py](https://github.com/temporalio/samples-python/blob/main/openrouter/budget_gate/workflow.py)
+```py
+@workflow.update
+def raise_budget(self, new_budget_usd: float) -> SpendReport:
+    """Raise the soft budget and wake every parked prompt.
+
+    Send the current budget unchanged to resume after topping up credits
+    in the OpenRouter dashboard.
+    """
+    self._budget_usd = new_budget_usd
+    self._budget_version += 1
+    return self.spend_report()
+
+@raise_budget.validator
+def validate_raise_budget(self, new_budget_usd: float) -> None:
+    if new_budget_usd < self._budget_usd:
+        raise ValueError(
+            f"New budget ${new_budget_usd} is below the current budget "
+            f"${self._budget_usd}; the budget can only go up."
+        )
+
+@workflow.query
+def spend_report(self) -> SpendReport:
+    return SpendReport(
+        budget_usd=self._budget_usd,
+        spent_usd=round(self._spent_usd, 6),
+        reserved_usd=round(self._reserved_usd, 6),
+        completed=len(self._ledger),
+        paused=dict(self._paused),
+        paused_reason=next(iter(self._paused.values()), None),
+        ledger=list(self._ledger),
+    )
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART python-openrouter-budget-gate-pause-->
+[openrouter/budget_gate/workflow.py](https://github.com/temporalio/samples-python/blob/main/openrouter/budget_gate/workflow.py)
+```py
+async def _reserve(self, prompt: str, estimate: float, timeout: timedelta) -> bool:
+    """Reserve `estimate` against the budget, parking until it fits."""
+
+    def fits() -> bool:
+        return self._spent_usd + self._reserved_usd + estimate <= self._budget_usd
+
+    if not fits():
+        workflow.logger.info(
+            "Soft budget reached (spent $%.6f of $%.6f); pausing %r",
+            self._spent_usd,
+            self._budget_usd,
+            prompt,
+        )
+        self._paused[prompt] = "soft_budget_exhausted"
+        try:
+            # Durable pause: survives Worker restarts and can wait for hours.
+            await workflow.wait_condition(fits, timeout=timeout)
+        except asyncio.TimeoutError:
+            return False
+        finally:
+            self._paused.pop(prompt, None)
+    self._reserved_usd += estimate
+    return True
+```
+<!--SNIPEND-->
+
+The validator rejects lowering the budget. Sending the current budget unchanged is how an operator says "I topped up
+credits at OpenRouter"; it bumps a version counter that prompts parked on a 402 are waiting for. If nobody acts within
+the approval timeout, the batch completes with the remaining prompts listed as skipped.
+
+The soft budget is a soft budget. The cost of a call is only known after the response. Overshoot is at most
+`max_concurrency * estimated_cost_usd`, plus the gap between the estimate and the real cost of calls already in
+flight.
+To bound one call's cost, set `provider.max_price` in the request. The hard cap is the credit limit on the OpenRouter
+API key, which is what produces the 402.
+
+Interacting with a paused batch from the Temporal CLI:
+
+```bash
+temporal workflow query --workflow-id <id> --type spend_report
+temporal workflow update execute --workflow-id <id> --name raise_budget --input '0.05'
+```
+
+## Routing: OpenRouter fallbacks and Temporal retries
+
+OpenRouter and Temporal both retry, at different time scales, for different reasons. Use both.
+
+| Concern | Where it lives |
+|---|---|
+| Provider outage or rate limit on one provider, within a request | OpenRouter: Auto Router, provider preferences, or a `models` list tried in order |
+| Which model answers a given prompt | OpenRouter: `openrouter/auto` with a `cost_tier`, or an explicit model slug |
+| A 429 with a 30-second `Retry-After` | Temporal: the Activity retries after 30 seconds, visibly |
+| Worker crash mid-call | Temporal: Heartbeat Timeout, retry, cache hit |
+| Waiting hours for a human to raise a budget or add credits | Temporal: `wait_condition` and an Update |
+| Audit of every attempt, model, and cost | Temporal Event History plus OpenRouter's generation ids |
+
+Passing `models: ["a/first", "b/second"]` replaces the Auto Router: OpenRouter tries the list in order within one
+request, and the response's `model` field reports which one answered.
+
+## Use OpenRouter with the OpenAI Agents SDK plugin
+
+OpenRouter speaks the OpenAI Chat Completions API, so the [OpenAI Agents SDK integration](openai-agents) can use it as
+its model provider with no custom code. Point the stock `OpenAIProvider` at OpenRouter, turn off client retries, and
+select Chat Completions:
+
+<!--SNIPSTART python-openai-agents-openrouter-provider-->
+[openai_agents/model_providers/run_openrouter_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/model_providers/run_openrouter_worker.py)
+```py
+def openrouter_provider() -> OpenAIProvider:
+    """OpenAI Agents SDK model provider backed by OpenRouter.
+
+    OpenRouter speaks the OpenAI Chat Completions API, so the stock provider
+    works once it is pointed at OpenRouter's base URL. Client retries are off:
+    the plugin runs each model call as a Temporal Activity, and Temporal owns
+    the retries.
+    """
+    default_headers: dict[str, str] = {}
+    # Optional app attribution for OpenRouter's rankings.
+    if referer := os.getenv("OPENROUTER_HTTP_REFERER"):
+        default_headers["HTTP-Referer"] = referer
+    if title := os.getenv("OPENROUTER_APP_TITLE"):
+        default_headers["X-OpenRouter-Title"] = title
+
+    client = AsyncOpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=os.environ["OPENROUTER_API_KEY"],
+        max_retries=0,
+        default_headers=default_headers or None,
+    )
+    # Chat Completions is OpenRouter's primary endpoint; the Agents SDK
+    # defaults to the Responses API, which OpenRouter offers only in beta.
+    return OpenAIProvider(openai_client=client, use_responses=False)
+```
+<!--SNIPEND-->
+
+Pass the provider to `OpenAIAgentsPlugin(model_provider=...)` and set the agent's `model` to any OpenRouter model slug,
+or to `openrouter/auto`. The plugin runs each model call as an Activity, so the Activity Retry Policy applies to
+OpenRouter calls the same way it does to OpenAI calls.
+
+## Samples
+
+- [openrouter/prompt_batch](https://github.com/temporalio/samples-python/tree/main/openrouter/prompt_batch): fan out a
+  batch with the Auto Router, with a `--fail-once` flag that shows a retry served from cache at $0.
+- [openrouter/budget_gate](https://github.com/temporalio/samples-python/tree/main/openrouter/budget_gate): the batch
+  that pauses on a soft budget or on 402 and resumes on `raise_budget`.
+- [openai_agents/model_providers](https://github.com/temporalio/samples-python/tree/main/openai_agents/model_providers#openrouter):
+  OpenRouter as the model provider for an OpenAI Agents SDK agent.
+- [samples-typescript/openrouter](https://github.com/temporalio/samples-typescript/tree/main/openrouter): the prompt
+  batch in TypeScript.
