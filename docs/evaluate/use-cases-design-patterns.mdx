@@ -8,7 +8,7 @@ tags:
   - design-patterns
 ---
 
-This page provides an overview of how leading organizations leverage Temporal to solve real-world problems, general use cases, and architectural design patterns.
+This page provides an overview of how leading organizations leverage Temporal to solve real-world problems, general use cases, and architectural design patterns. For a full catalog of reusable, code-level Workflow and Activity patterns, see [Temporal Design Patterns](/design-patterns).
 
 ## Use Cases of Temporal in Production
 
@@ -74,6 +74,8 @@ They can use schedules and timers to prompt for user input.
 
 **Code Sample**: [Candidate acceptance example prompting for a response](https://learn.temporal.io/examples/go/background-checks/candidate-acceptance)
 
+For a reusable implementation of this pattern, see [Approval](/design-patterns/approval).
+
 ### Polyglot Systems
 
 Modern development teams often work with different programming languages based on their expertise and project requirements. Temporal supports this through built-in multi-language capabilities, allowing teams to continue using their preferred languages while working together.
@@ -89,7 +91,7 @@ It processes one message at a time, ensuring each message is processed only once
 
 This approach addresses issues that can arise with long message processing times, which in other systems might cause consumer failover (typically with a default 5-minute message poll timeout) and potentially result in duplicate message processing by multiple consumers.
 Temporal's ability to handle extended task durations makes it well-suited for such scenarios.
-The [heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) feature allows you to know that an activity is still working, providing insight into the progress of long-running processes.
+The [heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) feature allows you to know that an activity is still working, providing insight into the progress of long-running processes. See the [Long-Running Activity](/design-patterns/long-running-activity) pattern for a reusable implementation with progress reporting and cancellation.
 
 **Example**: [eCommerce example](https://learn.temporal.io/tutorials/go/build-an-ecommerce-app/).
 
@@ -102,6 +104,8 @@ The [heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) fe
 The Saga pattern is a design pattern used to manage and handle failures in complex Workflows by breaking down a transaction into a series of smaller, manageable sub-transactions.
 If a step in the Workflow fails, the Saga pattern compensates for this failure by executing specific actions to undo the previous steps.
 This ensures that even in the event of a failure, the system can revert to a consistent state.
+
+For an implementation walkthrough with compensation ordering and code samples, see the [Saga Pattern](/design-patterns/saga-pattern) reference.
 
 **Examples:**
 
