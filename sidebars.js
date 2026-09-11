@@ -1684,6 +1684,7 @@ module.exports = {
             },
             'cli/command-reference/config',
             'cli/command-reference/env',
+            'cli/command-reference/nexus',
             'cli/command-reference/operator',
             'cli/command-reference/schedule',
             'cli/command-reference/server',
