@@ -9,6 +9,15 @@
     "href": "/develop/typescript/integrations/ai-sdk"
   },
   {
+    "name": "Arize",
+    "description": "Send OpenInference traces from Temporal Workflows to Arize Phoenix or Arize AX with the OpenTelemetry plugin.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/arize"
+  },
+  {
     "name": "Braintrust",
     "description": "Monitor and evaluate AI application performance with Braintrust observability.",
     "tags": [
