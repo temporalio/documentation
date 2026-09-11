@@ -186,7 +186,7 @@ This section walks you through building a complete customer loyalty Entity Workf
 
 ### Phase 1: Define the loyalty state and data models
 
-Entity Workflows carry their current state as their primary input, which enables Continue-As-New to resume seamlessly. Use Python `dataclass` objects — they serialize cleanly with Temporal's default JSON converter and allow new fields with defaults without breaking existing Executions.
+Entity Workflows carry their current state as their primary input, so Continue-As-New can resume with that state intact. Use Python `dataclass` objects — they serialize cleanly with Temporal's default JSON converter and allow new fields with defaults without breaking existing Executions.
 
 Create a file named `models.py` with the following content:
 
