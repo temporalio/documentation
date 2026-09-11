@@ -1,13 +1,15 @@
 ---
 id: activity-definition
 title: Activity Definition
-description: Learn about defining Temporal Activities, including Activity Types, parameters, and implementation details.
+description: Learn how to define a Temporal Activity; Activity Types, parameters, constraints, idempotency, and retry behavior for the function your Worker runs.
+
 slug: /activity-definition
 toc_max_heading_level: 4
 tags:
   - Concepts
   - Activities
   - Durable Execution
+  - Job Queue
 ---
 
 import { CaptionedImage } from '@site/src/components';
@@ -18,10 +20,16 @@ This page discusses the following:
 - [Parameters](#activity-parameters)
 - [Activity Type](#activity-type)
 
+An Activity Definition is a normal function or method that executes a single, well-defined action.
+The same Activity Definition can be started as a [step in a Workflow](/workflow-activity) or as a background job using a [Standalone Activity](/standalone-activity) once it's been [registered with a Worker](#worker-registration).
+
 An Activity Definition is the code that gives rise to an [Activity Task Execution](/tasks#activity-task-execution).
+
+## Define an Activity function
+
 Below are examples of basic Activity Definitions across supported SDKs.
 
-<Tabs groupId="basic-activity-definition" queryString>
+<Tabs groupId="shared-group" queryString>
 <TabItem value="go" label="Go">
 
 **[Activity Definition in Go](/develop/go/activities/basics)**
@@ -236,6 +244,130 @@ When called from a Workflow, the parameter values and return value are recorded 
 An Activity Type is a name given to an Activity Definition.
 When starting an Activity, you can identify it by the name (Activity Type), or by a reference to its function/method/class (Activity Definition)
 
+## Register the Activity with a Worker {/* #worker-registration */}
+
+An Activity Definition doesn't run until a [Worker](/workers) registers it and starts polling the
+[Task Queue](/task-queue) its Activity Tasks are dispatched on. Registration maps the
+[Activity Type](#activity-type) name to your function, so a caller can start the Activity by name without holding a
+reference to the code.
+
+One Worker can register many Activities, and one registration serves both callers: once the Worker is polling, the same
+Activity can be started as a [Workflow Activity](/workflow-activity) or as a [Standalone Activity](/standalone-activity), with no
+code change using the existing Worker deployment.
+
+<Tabs groupId="shared-group" queryString>
+<TabItem value="go" label="Go">
+
+**[Run a Worker in Go](/develop/go/workers/run-worker-process)**
+
+```go
+w := worker.New(c, "my-task-queue", worker.Options{})
+
+w.RegisterActivity(helloworld.Activity)
+
+err = w.Run(worker.InterruptCh())
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+**[Run a Worker in Java](/develop/java/workers/run-process)**
+
+```java
+WorkerFactory factory = WorkerFactory.newInstance(client);
+
+Worker worker = factory.newWorker("my-task-queue");
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+
+factory.start();
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+**[Run a Worker in PHP](/develop/php/workers/run-worker-process)**
+
+```php
+$factory = WorkerFactory::create();
+
+$worker = $factory->newWorker('my-task-queue');
+$worker->registerActivity(App\DemoActivity::class);
+
+$factory->run();
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+**[Run a Worker in Python](/develop/python/workers/run-process)**
+
+```python
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    activities=[some_activity],
+)
+await worker.run()
+```
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+**[Run a Worker in TypeScript](/develop/typescript/workers/run-process)**
+
+```ts
+const worker = await Worker.create({
+  taskQueue: 'my-task-queue',
+  activities,
+});
+
+await worker.run();
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+**[Run a Worker in C# and .NET](/develop/dotnet/workers/run-worker-process)**
+
+```csharp
+var options = new TemporalWorkerOptions("my-task-queue");
+options.AddAllActivities(typeof(GreetingActivities), null);
+
+using var worker = new TemporalWorker(client, options);
+await worker.ExecuteAsync(CancellationToken.None);
+```
+
+</TabItem>
+<TabItem value="ruby" label="Ruby">
+
+**[Run a Worker in Ruby](/develop/ruby/workers/run-worker-process)**
+
+```ruby
+worker = Temporalio::Worker.new(
+  client: client,
+  task_queue: 'my-task-queue',
+  activities: [SayHello]
+)
+
+worker.run
+```
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+**[Run a Worker in Rust](/develop/rust/workers/worker-process)**
+
+```rust
+let worker_options = WorkerOptions::new("my-task-queue")
+    .register_activities(GreetingActivities)
+    .build();
+```
+
+</TabItem>
+</Tabs>
+
+Go and TypeScript can set the [Activity Type](#activity-type) name at registration. The other SDKs set it on the
+definition itself, as shown in the examples at the top of this page.
 
 ## Best practices for defining Activities
 
