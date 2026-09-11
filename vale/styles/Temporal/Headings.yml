@@ -33,6 +33,8 @@ exceptions:
   - QPS
   - RPS
   # Temporal primitives and proper nouns
+  - Action
+  - Actions
   - Activity
   - Activities
   - Application
@@ -177,11 +179,24 @@ exceptions:
   - Continue-As-New
   - Plugin
   - Plugins
+  # Activity Operations named on the Activity Operations page — capitalized
+  # consistently as operation names throughout that page's headings and body
+  # prose, the same treatment already given to Signal/Query/Update above.
+  - Pause
+  - Unpause
+  - Reset
+  - Terminate
+  - Delete
+  - Paused
   # Exact phrases; "Audit Logging" is the canonical term in Temporal/terms.yml,
   # so keep "Log"/"Logs" out of the single-word list above.
   - Audit Log
   - Audit Logs
   - Audit Logging
+  # Exact phrases; the named Activity Operations, not generic bare words
+  # ("cancel" as a verb, "options" as in the unrelated "Activity options").
+  - Request Cancel
+  - Update Options
   # Cloud provider / networking / industry acronyms
   - Amazon
   - AWS
