@@ -1131,6 +1131,7 @@ const developTypeScriptCategory = {
         },
         items: [
           'develop/typescript/integrations/ai-sdk',
+          'develop/typescript/integrations/google-adk-agents',
           'develop/typescript/integrations/langsmith',
           'develop/typescript/integrations/openai-agents',
           'develop/typescript/integrations/strands-agents',
