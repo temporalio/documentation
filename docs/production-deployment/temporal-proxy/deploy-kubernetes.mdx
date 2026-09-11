@@ -2,7 +2,7 @@
 id: deploy-kubernetes
 title: Deploy Temporal Proxy to Kubernetes
 sidebar_label: Deploy to Kubernetes
-description: Deploy the Temporal Proxy with the Helm chart, including configuration, secrets, TLS, and KMS access.
+description: Deploy Temporal Proxy with the Helm chart, mount configuration and secrets, configure probes and shutdown, and grant KMS access.
 toc_max_heading_level: 4
 tags:
   - Temporal Service
@@ -13,15 +13,19 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="prerelease">
-  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
-  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
-  the definitive configuration schema.
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
 </ReleaseNoteHeader>
 
 The [Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) provisions everything the
 proxy needs: a Deployment, a Service, the ConfigMap that holds your configuration, a ServiceAccount, and an optional
 HorizontalPodAutoscaler and PodDisruptionBudget. The `extraObjects` value renders additional manifests as-is, for
 example an ExternalSecret that supplies upstream credentials.
+
+Before choosing replica placement or exposing the gateway, see
+[Plan a Temporal Proxy deployment](/production-deployment/temporal-proxy/plan-deployment) for topology, availability,
+and trust-boundary guidance.
 
 ## Supply the configuration
 
@@ -95,9 +99,10 @@ The gateway's `config.tls` block and each `upstreams[].tls` block accept a `secr
 | `key`             | `<mount>/tls.key`, or `<mount>/<keyKey>` if `keyKey` is set   |
 | `ca`              | `<mount>/<caKey>`, only when `caKey` is set                   |
 
-`ca` is opt-in because it changes behavior rather than just adding material. On the gateway, a `ca` enforces mutual TLS,
-so only set `caKey` on `config.tls` when you intend to require client certificates. See
-[Configure TLS](/production-deployment/temporal-proxy/configure#configure-tls) for what each combination means.
+`ca` is opt-in because it changes connection behavior. On the gateway, a `ca` enforces mutual TLS, so only set `caKey`
+on `config.tls` when you intend to require client certificates. See
+[Secure upstream connections](/production-deployment/temporal-proxy/secure-connections#secure-upstream-connections) for
+what each combination means.
 
 ```yaml
 config:
@@ -135,21 +140,21 @@ readinessProbe:
 
 Naming a service is optional; omit it to check the empty service name. Either way the answer is the same, because the
 proxy's health is process-wide, and a service your configuration does not allow returns `NOT_FOUND`. See
-[Health checks](/production-deployment/temporal-proxy/configure#health-checks) for what the gateway publishes.
+[Check process health](/production-deployment/temporal-proxy/operate-troubleshoot#check-process-health) for what the
+gateway publishes and what it does not test.
 
 Kubernetes gRPC probes connect in plaintext, so they cannot reach a gateway that terminates TLS. When `config.tls` is
 set, probe the proxy some other way, such as an exec probe running a client that presents the right certificate.
 
 ## Shut down cleanly
 
-On `SIGTERM` the proxy stops accepting connections and drains in-flight RPCs. Each serving tier, meaning the gateway and
-each upstream proxy, drains within five seconds, and the whole stop sequence is bounded at 30 seconds. Long-poll methods
-block for much longer than that, so a rollout normally cuts some of them short: the proxy logs a warning naming the
-deadline that ended the drain and still exits zero, because the callers re-poll. Treat that warning as ordinary on a
-restart rather than a failed shutdown.
+Set `terminationGracePeriodSeconds` to more than 30 seconds. On `SIGTERM`, the proxy stops admitting new requests and
+drains each serving tier for up to five seconds; its complete shutdown is bounded at 30 seconds. A shorter Kubernetes
+grace period can force-kill the process before its lifecycle hooks finish. Long polls can exceed a tier's drain window
+and reconnect through another healthy replica.
 
-An ordinary drain finishes in about five seconds, well inside the Kubernetes default `terminationGracePeriodSeconds`
-of 30.
+See [Shut down the proxy](/production-deployment/temporal-proxy/operate-troubleshoot#shut-down-the-proxy) for the full
+shutdown sequence and expected warning.
 
 ## Grant access to your KMS key
 

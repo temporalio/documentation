@@ -1,0 +1,174 @@
+---
+id: manage-encryption-keys
+title: Manage Temporal Proxy encryption keys
+sidebar_label: Manage encryption keys
+description: Temporal Proxy key lifecycle guidance covers staged rotation, decrypt-only transitions, multi-region access, and safe retirement.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+Temporal Proxy uses short-lived data encryption keys (DEKs) to encrypt Payloads and a key encryption key (KEK) in your
+KMS to wrap each DEK. The proxy rotates DEKs automatically. You manage the longer-lived KMS keys and must keep them
+available for as long as encrypted Payloads refer to them.
+
+Before managing keys, [configure payload encryption](/production-deployment/temporal-proxy/encrypt-payloads) and grant
+the proxy access to the selected AWS KMS, Azure Key Vault, Google Cloud KMS, or extension-server key.
+
+## Distinguish DEK rotation from KMS key rotation
+
+Each `default` or Namespace-specific `overrides` policy has the following lifecycle fields:
+
+| Field         | Purpose                                                                                          |
+| ------------- | ------------------------------------------------------------------------------------------------ |
+| `uri`         | Active KMS key used to wrap new DEKs. The key URI is recorded with every encrypted Payload.      |
+| `decryptURIs` | Earlier or staged KMS keys that the proxy can use only to unwrap existing DEKs.                   |
+| `duration`    | Time for which the proxy uses a DEK to encrypt new Payloads.                                     |
+| `renewBefore` | Lead time before `duration` expires when the proxy prepares a replacement DEK.                   |
+
+The proxy rotates a DEK when it reaches its renewal threshold. A DEK rotation does not rotate or create a KMS key. The
+wrapped DEK and KMS key URI stored with each Payload let the proxy decrypt older Payloads after later DEK rotations.
+
+Use the encryption metrics to verify this lifecycle:
+
+- `dek_rotations_total{reason="scheduled"}` counts DEKs prepared by the background refresh.
+- `dek_rotations_total{reason="on_demand"}` counts DEKs replaced on a request because a fresh DEK was not ready.
+- `kek_ops_total` and `kek_ops_duration_secs` report the KMS operations that wrap and unwrap DEKs.
+
+A sustained increase in `on_demand` rotations indicates that refresh is falling behind. Increase `renewBefore`, while
+keeping it less than `duration`, and check KMS latency and errors. See the
+[metrics reference](/production-deployment/temporal-proxy/reference#inspect-prometheus-metrics) for the complete metric
+list.
+
+## Change the active KMS key
+
+Treat a key change as a compatibility rollout. The key URI is part of the encrypted Payload metadata, so every proxy
+instance that might read a Payload must recognize the URI that wrote it. The proxy reads its configuration at startup;
+restart each instance after every configuration change.
+
+For a rolling deployment with more than one proxy instance, use two stages.
+
+First, register the new key for decryption while the old key remains active. This makes every updated instance recognize
+both key URIs before any instance starts writing with the new key:
+
+```yaml
+encryption:
+  enabled: true
+  default:
+    uri: gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v1
+    decryptURIs:
+      - gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v2
+    duration: 1h
+    renewBefore: 15m
+```
+
+Wait for every instance to run this configuration. Then promote the new key and retain the old key for decryption:
+
+```yaml
+encryption:
+  enabled: true
+  default:
+    uri: gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v2
+    decryptURIs:
+      - gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v1
+    duration: 1h
+    renewBefore: 15m
+```
+
+Keep any keys from earlier migrations in `decryptURIs` during both stages. Repeat the process for every policy under
+`overrides`; those map local, pre-translation Namespace names to key policies.
+
+After the second rollout, start a Workflow through each proxy instance and read both newly written and older Workflow
+Histories through each instance. Watch `vault_ops_total{result="error"}` and `kek_ops_total{result="error"}` during the
+test. Do not remove the old key because the rollout succeeds; retain it until no encrypted Payload refers to it.
+
+## Stop encrypting new Payloads
+
+To stop encrypting new outbound Payloads while keeping existing encrypted data readable, set `enabled: false` and keep
+the key policies in the configuration:
+
+```yaml
+encryption:
+  enabled: false
+  default:
+    uri: gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v2
+    decryptURIs:
+      - gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v1
+    duration: 1h
+    renewBefore: 15m
+```
+
+With this configuration, the proxy stops encrypting new outbound Payloads but continues decrypting Payloads marked with
+its encryption metadata. Removing `default` removes the vault and prevents that decryption path from being created.
+
+This change does not rewrite data already stored by the upstream Temporal Service. Existing encrypted Payloads remain
+encrypted at rest and require their original KMS keys whenever they are returned through the proxy.
+
+## Plan key access across regions
+
+Temporal Proxy does not replicate KMS keys or configuration. Every proxy instance that can receive traffic must be able
+to unwrap every DEK that another instance can produce. This requirement applies during normal load balancing, regional
+failover, rolling key changes, and rollbacks.
+
+Use these checks when the proxy runs in more than one region:
+
+1. Give every instance the same set of active and decrypt-only key URIs for the traffic it can serve.
+2. Grant each instance's runtime identity decrypt access to every configured key URI.
+3. Choose a KMS topology that stays reachable during the region failures your deployment is designed to tolerate.
+4. Test reading data written in every region after removing network access to one region's KMS endpoint.
+
+The configured URI is the key identifier stored with an encrypted Payload. If two URIs address equivalent backing key
+material, the proxy still treats them as different identifiers. Preserve the original URI in `decryptURIs` unless all
+readers use the same stable URI.
+
+Provider choices differ:
+
+- **AWS KMS:** Use an AWS KMS multi-Region key or another design that lets every active region decrypt DEKs written in
+  every other region. Keep the configured URI stable across instances when possible, and test that the URI resolves to
+  usable key material after failover. See [AWS KMS multi-Region keys](https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html).
+- **Azure Key Vault:** Place and replicate vaults according to your regional recovery design. Register every URI that
+  can appear in stored Payloads and grant each proxy identity access to all of them. See
+  [Azure Key Vault availability and redundancy](https://learn.microsoft.com/en-us/azure/key-vault/general/disaster-recovery-guidance).
+- **Google Cloud KMS:** Use a global or multi-region key location when the same key must be reachable from several
+  regions, or ensure every instance can reach the configured regional location. See
+  [Cloud KMS locations](https://cloud.google.com/kms/docs/locations).
+- **Custom KMS extension:** Keep the `extension://<server>/<key>` URI stable and make the extension service as available
+  as the proxy. Its `Decrypt` request contains the wrapped DEK but no Namespace, so the ciphertext returned by `Encrypt`
+  must carry enough information for the extension to select the correct key and version.
+
+## Retire an old KMS key
+
+Retention is not a sufficient retirement signal by itself. Open Workflow Executions can keep Event Histories beyond the
+Namespace Retention Period, and archived or exported histories can outlive the source Namespace. A key is still needed
+if any system from which data can be read contains a Payload that records its URI.
+
+Before removing a key from `decryptURIs`:
+
+1. Confirm that no active policy uses the key as `uri`.
+2. Inventory open and closed Workflow Executions, Archival, exports, backups, and copied histories that might contain
+   Payloads encrypted with the key.
+3. Exercise representative reads, replays, resets, and operational tooling through a proxy configured with the remaining
+   keys.
+4. Remove the old URI from a canary instance and verify that it can read the same data before rolling out the removal.
+5. Revoke access before scheduling deletion. Revocation is reversible if a missed Payload still needs the key.
+
+Keep KMS audit logs and the proxy's decrypt metrics during the retirement window. A decrypt failure after removing a URI
+means that the original key must be restored to `decryptURIs` and made accessible again.
+
+:::caution Deleting a key is irreversible
+
+Deleting a KMS key permanently makes every Payload encrypted under it unreadable. Neither Temporal nor the KMS provider
+can recover the plaintext. Keep the key in a recoverable, disabled state until your data inventory and recovery policy
+prove that it is no longer required.
+
+:::

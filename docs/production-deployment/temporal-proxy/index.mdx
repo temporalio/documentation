@@ -1,9 +1,7 @@
 ---
 id: index
 title: Temporal Proxy
-description:
-  Route requests between Temporal SDK clients and Workers and one or more upstream Temporal Services with the Temporal
-  Proxy, a gRPC proxy that handles namespace translation, TLS, authentication, and payload encryption.
+description: Evaluate Temporal Proxy, understand its security and deployment model, and choose how to configure, deploy, and operate it.
 toc_max_heading_level: 4
 tags:
   - Temporal Service
@@ -14,46 +12,53 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="prerelease">
-  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
-  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
-  the definitive configuration schema.
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
 </ReleaseNoteHeader>
 
-The Temporal Proxy is a gRPC proxy that sits between your Temporal SDK Clients, Workers, and the Temporal Web UI on one
-side and one or more upstream Temporal Services on the other. It handles Namespace translation, TLS termination, and
-optional payload encryption so your applications can target a single local endpoint while the proxy routes each request
-to the right upstream, whether that is a local development Service, a self-hosted Service, or Temporal Cloud.
+Temporal Proxy is a gRPC intermediary between your Temporal SDK Clients, Workers, CLI, or self-hosted Temporal Web UI
+and one or more upstream Temporal Services. Applications connect to one gateway endpoint. The proxy can then route each
+request, translate its Namespace, authenticate and authorize the caller, present upstream credentials, and encrypt
+supported Payload fields.
 
-## Why use it
+Use these pages to evaluate the prerelease project, run it against Temporal Cloud, and understand the operational and
+security work required before placing it in a request path.
 
-Without the proxy, connection details leak into your application code. Every Worker and Client has to know the
-upstream's host, TLS material, credentials, and the exact Namespace name the upstream expects. That couples your code to
-an environment: moving between a local Service, a self-hosted deployment, and Temporal Cloud becomes a code change.
+## Decide whether to use Temporal Proxy
 
-The proxy owns that concern instead. Workers talk plaintext to a single local endpoint using a short Namespace name, and
-the proxy adds TLS, credentials, and Namespace translation on the way out. Point a Worker at a different Namespace and
-it reaches a different upstream, with no change to the Worker.
+Temporal Proxy centralizes connection and data-handling concerns that would otherwise live in every application. It is
+most useful when you need one or more of the following outcomes:
 
-## How it works
+| Goal | What the proxy does | Boundary to plan for |
+| --- | --- | --- |
+| Keep environment-specific connection details out of application configuration | Adds upstream TLS, credentials, and Namespace translation | Applications can still bypass the proxy unless you restrict their upstream credentials and network paths |
+| Route applications to more than one Temporal Service | Selects an upstream by local Namespace and request metadata | The proxy becomes part of the request path and needs its own availability and capacity plan |
+| Apply a common inbound access policy | Allows selected gRPC services and supports built-in or external authentication and authorization | The policy covers calls that enter the gateway, not direct calls to an upstream |
+| Encrypt Payloads before they reach the Temporal Service | Applies envelope encryption to codec-capable Payload fields | Search Attributes and other non-Payload fields remain visible; existing plaintext Payloads remain readable during migration |
 
-The proxy is built from a gateway and one proxy per upstream, connected by unix sockets:
+If one of these controls must be mandatory, treat the proxy as one layer in a larger security boundary. Restrict direct
+access to every upstream in addition to configuring the proxy. See
+[Plan a Temporal Proxy deployment](/production-deployment/temporal-proxy/plan-deployment) before evaluating it with
+production-shaped traffic.
 
-- The **gateway** is the single inbound endpoint that every Worker, SDK Client, and the Web UI connects to.
-- Each **upstream** has its own proxy that handles communication with that destination.
+## Understand request handling
+
+The proxy consists of one gateway and one per-upstream proxy server, connected by Unix sockets:
 
 ```mermaid
 flowchart LR
     Worker[Worker]
     Client[SDK Client]
-    UI[Web UI]
+    UI[Self-hosted Web UI or CLI]
 
     subgraph Proxy[Temporal Proxy]
         direction LR
-        Gateway["Gateway<br/>routes by Namespace<br/>codec-transparent (no payload parsing)"]
-        ProxyA["Per-upstream proxy A<br/>Namespace translation<br/>payload encryption (optional)"]
-        ProxyB["Per-upstream proxy B<br/>Namespace translation<br/>payload encryption (optional)"]
-        Gateway -->|unix socket| ProxyA
-        Gateway -->|unix socket| ProxyB
+        Gateway["Gateway<br/>admit and route calls"]
+        ProxyA["Upstream proxy A<br/>translate and transform"]
+        ProxyB["Upstream proxy B<br/>translate and transform"]
+        Gateway --> ProxyA
+        Gateway --> ProxyB
     end
 
     Cloud[Temporal Cloud]
@@ -68,50 +73,52 @@ flowchart LR
 
 For each request, the gateway:
 
-1. refuses the call if its gRPC service is not one the configuration allows, before any upstream work. By default that
-   allows `WorkflowService` and `OperatorService` and nothing else.
-2. peeks the target Namespace without parsing the payload; it is codec-transparent and relays raw frames in both
-   directions.
-3. picks an upstream: the first matching routing rule, otherwise the system upstream for Namespace-less calls, otherwise
-   the default.
-4. hands the request to that upstream's proxy over a unix socket.
+1. Reads the target method and Namespace without decoding Payloads.
+2. Applies configured inbound authentication or authorization to that target.
+3. Rejects the call if its gRPC service is not allowed.
+4. Selects the first matching route, the system route for Namespace-less calls, or the default route.
+5. Sends the call to the selected per-upstream proxy.
 
-The per-upstream proxy then rewrites the local Namespace to the name the upstream expects, attaches that upstream's TLS
-and credentials, forwards to the Temporal Service, and translates the Namespace back on responses. When payload
-encryption is enabled, it also seals codec-capable Payloads on the way out and opens them on the way back. New Payloads
-sent through the proxy reach the upstream as ciphertext. See
-[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the scope and limits of this fail-closed
-behavior.
+The per-upstream proxy translates the local Namespace, resolves the destination, attaches TLS and credentials, and
+forwards the call. When payload encryption is enabled, it also encrypts supported Payloads on outbound calls and
+decrypts recognized encrypted Payloads on responses. See
+[Encrypt Payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the exact encryption coverage and
+fail-closed behavior.
 
-### Terms
+## Choose a deployment model
 
-| Term             | Meaning                                                                                                                                                                                         |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| gateway          | The single inbound gRPC endpoint that every SDK Client, Worker, and the Web UI connects to. It routes each request to an upstream by Namespace and request metadata, and never parses payloads. |
-| upstream         | A configured destination the proxy forwards to: a Temporal Service (local dev, self-hosted, or Temporal Cloud), or another Temporal Proxy.                                                      |
-| system upstream  | The upstream that handles Namespace-less requests, such as the SDK's `GetSystemInfo` call on connect.                                                                                           |
-| extension server | A gRPC service you run that the proxy calls out to for a capability it has no built-in backend for: wrapping data encryption keys, or deciding whether an inbound call may proceed.             |
-| Temporal Service | A Temporal frontend the proxy connects to.                                                                                                                                                      |
+You can run the gateway as a shared service or place a proxy beside each application deployment:
 
-## Prerequisites
+| Model | Prefer it when | Account for |
+| --- | --- | --- |
+| Shared service | Several application deployments need the same routing and policy | Independent scaling, a larger failure domain, and securing the application-to-proxy network path |
+| Sidecar or local proxy | You want a local endpoint and failure isolation per application deployment | More proxy instances, configuration distribution, and coordinated application rollouts |
 
-- One or more upstream Temporal Services to route to, such as a local development Service, a self-hosted Service, or
-  Temporal Cloud.
-- The `hostPort` address for each upstream.
-- Any credentials the upstreams require, such as a Temporal Cloud API key or mTLS certificates.
-- Go installed, if you build the proxy from source. The container image and Helm chart do not require a local Go
-  toolchain.
+Both models require enough instances, capacity, and regional placement for the availability of the upstreams they
+serve. [Plan a Temporal Proxy deployment](/production-deployment/temporal-proxy/plan-deployment) covers topology,
+trust boundaries, bypass prevention, and high availability.
+
+## Choose your next step
+
+| If you want to | Start here |
+| --- | --- |
+| Run the checked-in example against Temporal Cloud | [Get started with Temporal Cloud](/production-deployment/temporal-proxy/get-started-cloud) |
+| Decide where the proxy belongs and which traffic it must cover | [Plan a Temporal Proxy deployment](/production-deployment/temporal-proxy/plan-deployment) |
+| Build a complete configuration | [Configure Temporal Proxy](/production-deployment/temporal-proxy/configure) |
+| Route traffic and translate Namespace names | [Route requests and translate Namespaces](/production-deployment/temporal-proxy/route-translate) |
+| Configure TLS, authentication, authorization, and credentials | [Secure connections and authorize requests](/production-deployment/temporal-proxy/secure-connections) |
+| Encrypt supported Payload fields | [Encrypt Payloads](/production-deployment/temporal-proxy/encrypt-payloads) |
+| Rotate or retire encryption keys | [Manage encryption keys](/production-deployment/temporal-proxy/manage-encryption-keys) |
+| Install the Helm chart | [Deploy Temporal Proxy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes) |
+| Monitor or diagnose a deployment | [Operate and troubleshoot Temporal Proxy](/production-deployment/temporal-proxy/operate-troubleshoot) |
+| Look up flags, configuration sections, metrics, or compatibility | [Temporal Proxy reference](/production-deployment/temporal-proxy/reference) |
 
 ## Install the proxy
 
+Choose an installation method that matches your evaluation environment. Pin a release instead of using a moving tag
+when you need repeatable behavior.
+
 Install the `proxy` binary with Go:
-
-```bash
-go install github.com/temporalio/temporal-proxy/cmd/proxy@latest
-```
-
-Pin an explicit version instead of `@latest`, using a tag from the
-[releases page](https://github.com/temporalio/temporal-proxy/releases):
 
 ```bash
 go install github.com/temporalio/temporal-proxy/cmd/proxy@vX.Y.Z
@@ -120,86 +127,34 @@ go install github.com/temporalio/temporal-proxy/cmd/proxy@vX.Y.Z
 Pull the container image:
 
 ```bash
-docker pull temporalio/temporal-proxy:latest
+docker pull temporalio/temporal-proxy:vX.Y.Z
 ```
 
-Install with Helm from the Temporal Helm repo, optionally pinning a chart version with `--version`:
+Install the Helm chart from the Temporal chart repository:
 
 ```bash
 helm install temporal-proxy temporal-proxy \
-  --repo https://go.temporal.io/helm-charts
+  --repo https://go.temporal.io/helm-charts \
+  --version <chart-version>
 ```
 
-Each chart release deploys a proxy version by default. Override it with `--set image.tag=vX.Y.Z`. Supply the proxy
-configuration under the `config` key of a Helm values file, as described in
-[Deploy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes).
+See the [Temporal Proxy releases](https://github.com/temporalio/temporal-proxy/releases) and
+[Helm chart releases](https://github.com/temporalio/helm-charts/releases) for available versions. The
+[reference page](/production-deployment/temporal-proxy/reference) lists runtime flags and configuration sections.
 
-Run the proxy with a configuration file passed through the `-c` (or `--config`) flag:
+## Review terminology
 
-```bash
-proxy serve -c config.yaml
-```
-
-`--config` also reads the `PROXY_CONFIG` environment variable, which is how the Helm chart points the proxy at its
-mounted configuration. See [Observability](#observability) for the remaining flags.
-
-## Observability {/* #observability */}
-
-The proxy serves Prometheus metrics at `/metrics` on `:9090` and logs JSON to stderr. The gateway also serves the
-standard gRPC health service, with an entry for every allowed service, which is what a Client health check or a liveness
-probe reads. See [Health checks](/production-deployment/temporal-proxy/configure#health-checks) for what it reports.
-
-Both the metrics listener and the log level are set with flags on `proxy serve`, each with an environment variable
-equivalent:
-
-| Flag                  | Environment variable | Default       | Sets                                         |
-| --------------------- | -------------------- | ------------- | -------------------------------------------- |
-| `--config`, `-c`      | `PROXY_CONFIG`       | none          | Path to the configuration file. Required.    |
-| `--level`             | `LOG_LEVEL`          | `info`        | Log level: `debug`, `info`, `warn`, `error`. |
-| `--metrics-addr`      | `METRICS_ADDR`       | `:9090`       | The `host:port` serving `/metrics`.          |
-| `--metrics-namespace` | `METRICS_NAMESPACE`  | `tmprl_proxy` | Prometheus namespace prefixed onto metrics.  |
-
-Metric names are `<namespace>_<subsystem>_<name>`, so with the default namespace the routing counter is
-`tmprl_proxy_router_decisions_total`. There are three subsystems:
-
-| Subsystem    | Metric                     | Labels                             | Reports                                           |
-| ------------ | -------------------------- | ---------------------------------- | ------------------------------------------------- |
-| `server`     | `requests_total`           | `method`, `code`                   | RPCs served, by gRPC status code                  |
-| `server`     | `request_duration_seconds` | `method`                           | End-to-end time serving an RPC                    |
-| `router`     | `decisions_total`          | `upstream`, `outcome`              | Routing decisions, by chosen upstream             |
-| `router`     | `forwarding_errors_total`  | `upstream`, `reason`               | Forwarding failures the router originated         |
-| `encryption` | `vault_ops_total`          | `operation`, `result`, `namespace` | Envelope operations, sealing and opening payloads |
-| `encryption` | `vault_ops_duration_secs`  | `operation`, `namespace`           | Time per envelope operation, end to end           |
-| `encryption` | `dek_ops_total`            | `operation`, `result`              | Outcome of the AES-256-GCM step alone             |
-| `encryption` | `dek_ops_duration_secs`    | `operation`                        | Time in the AES-256-GCM step alone                |
-| `encryption` | `kek_ops_total`            | `provider`, `operation`, `result`  | DEK wrap and unwrap calls to your KMS             |
-| `encryption` | `kek_ops_duration_secs`    | `provider`, `operation`            | Time spent wrapping and unwrapping DEKs           |
-| `encryption` | `dek_rotations_total`      | `reason`                           | DEK rotations, by why the DEK was replaced        |
-| `encryption` | `dek_cache_hits_total`     | none                               | Reads served from the decrypted-DEK cache         |
-| `encryption` | `dek_cache_misses_total`   | none                               | Reads that required a KMS unwrap                  |
-| `encryption` | `dek_cache_size`           | none                               | Current entries in the decrypted-DEK cache        |
-
-The `encryption` metrics only move when [payload encryption](/production-deployment/temporal-proxy/encrypt-payloads) is
-configured. They are layered, so pick the one that matches the question you are asking:
-
-- `vault_ops_*` is the whole envelope operation end to end, including any KEK call and cache lookup, and is the pair to
-  alert on. It carries the local Namespace.
-- `dek_ops_*` is the symmetric AES-256-GCM step by itself, with the KEK work excluded. Its `result` is that step's own
-  outcome, so a payload that encrypts cleanly and then fails to wrap its DEK counts as a success here and an error under
-  `kek_ops_total`, which keeps the blame with the KMS.
-- `kek_ops_*` is the calls to your KMS. Watch `kek_ops_total{result="error"}`, since a failure to wrap or unwrap a DEK
-  fails the request that needed it.
-
-`dek_rotations_total` splits by `reason`: `initial` for a Namespace's first DEK, `scheduled` for the `renewBefore`
-pre-rotation, and `on_demand` for a DEK replaced at request time because no fresh one was ready. A rising `on_demand`
-rate means rotation is falling behind, so raise `renewBefore`. Compare the cache counters against `cacheSize` to see
-whether the cache is absorbing read traffic.
+| Term | Meaning |
+| --- | --- |
+| gateway | The single inbound gRPC endpoint. It admits and routes requests without decoding Payloads. |
+| upstream | A configured Temporal Service or another Temporal Proxy that receives forwarded calls. |
+| system upstream | The upstream for Namespace-less calls such as `GetSystemInfo`. |
+| per-upstream proxy | The internal server that applies translation, credentials, TLS, and optional payload encryption for one upstream definition. |
+| extension server | A gRPC service you operate that wraps encryption keys or makes inbound authorization decisions. |
 
 ## Related
 
 - [Temporal Proxy repository](https://github.com/temporalio/temporal-proxy)
 - [Temporal Proxy Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy)
-- [Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud)
-- [KMS extension server example](https://github.com/temporalio/temporal-proxy/tree/main/examples/kms)
 - [Codecs and Encryption](/production-deployment/data-encryption)
 - [Self-hosted guide: Security](/self-hosted-guide/security)

@@ -1,8 +1,8 @@
 ---
 id: encrypt-payloads
-title: Encrypt payloads with Temporal Proxy
-sidebar_label: Encrypt payloads
-description: Configure Temporal Proxy payload encryption with envelope encryption and cloud or custom KMS backends.
+title: Encrypt Payloads with Temporal Proxy
+sidebar_label: Encrypt Payloads
+description: Protect supported Temporal Payload fields with envelope encryption backed by AWS KMS, Azure Key Vault, Google Cloud KMS, or a custom service.
 toc_max_heading_level: 4
 tags:
   - Temporal Service
@@ -13,8 +13,8 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="prerelease">
-  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
-  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
   and the definitive configuration schema.
 </ReleaseNoteHeader>
 
@@ -26,8 +26,8 @@ Client code.
 
 It uses envelope encryption: a short-lived data encryption key (DEK) encrypts each payload with AES-256-GCM, and a KMS
 key you own wraps the DEK. The wrapped DEK and a reference to the key that wrapped it travel with the payload, so the
-proxy never holds key material; it calls your KMS to wrap and unwrap DEKs. Supported key schemes are `awskms`,
-`azurekeyvault`, and `gcpkms` for cloud KMS, `extension` for a
+proxy does not receive the KMS key material. It calls your KMS to wrap and unwrap DEKs and can cache decrypted DEKs in
+memory. Supported key schemes are `awskms`, `azurekeyvault`, and `gcpkms` for cloud KMS, `extension` for a
 [key management backend you run yourself](#plug-in-your-own-key-management-backend), and `testing` for local development
 only.
 
@@ -52,7 +52,7 @@ flowchart LR
     Open -->|cleartext response| App
 ```
 
-**Configuration**
+## Configure payload encryption
 
 ```yaml
 encryption:
@@ -78,18 +78,22 @@ encryption:
 - `cacheSize` bounds the in-memory cache of decrypted DEKs, which avoids a KMS call on every message. It must be
   non-negative.
 
+## Understand fail-closed behavior
+
 :::note Scope of fail-closed behavior
 
 Fail-closed applies to outbound codec-capable Payloads on calls that pass through a proxy where `encryption.enabled` is
 `true`. If the proxy cannot encrypt one of these Payloads, such as when the KMS is unavailable, it fails the request
 before sending it upstream. It does not fall back to plaintext.
 
-The proxy cannot enforce encryption for a Client, Worker, Web UI, or CLI that connects directly to the upstream Temporal
-Service. Restrict credentials and network paths when all application traffic must pass through the proxy.
+The proxy cannot enforce encryption for a Client, Worker, self-hosted Web UI, or CLI that connects directly to the
+upstream Temporal Service. Restrict credentials and network paths when all application traffic must pass through the
+proxy.
 
 On responses, the proxy decrypts Payloads that carry its encryption metadata. It passes other Payloads through unchanged
-so data written before proxy adoption remains readable during a migration. This behavior continues until existing
-plaintext data ages out under the Namespace's retention period.
+so data written before proxy adoption remains readable during a migration. Closed Workflow histories normally age out
+under the Namespace's retention period, but open Workflows, Archival, exports, backups, and other copies can preserve
+plaintext data longer.
 
 Fail-closed does not mean that every request field is encrypted. Search Attributes remain unencrypted so the Temporal
 Service can index them. Failure messages and call stacks are not codec-capable Payloads by default. See
@@ -97,6 +101,8 @@ Service can index them. Failure messages and call stacks are not codec-capable P
 [Failure Converter](/failure-converter) for failure encoding.
 
 :::
+
+## Define key policies
 
 `default` and each `overrides` entry are key policies with the same shape:
 
@@ -107,57 +113,10 @@ Service can index them. Failure messages and call stacks are not codec-capable P
 | `duration`    | How long a DEK is used for new encryption before it rotates. Must be greater than zero.                                                                                                                   |
 | `renewBefore` | Lead time before expiry at which the proxy pre-rotates the DEK. Must be at least zero and less than `duration`.                                                                                           |
 
-DEK rotation is automatic on the `duration` and `renewBefore` schedule; you do not manage it. Older payloads stay
-decryptable because their wrapped DEK and key reference travel with them.
-
-To change the active key without losing access to existing data, for example when switching providers, promote the new
-key to `uri` and move the old one to `decryptURIs` in the same update. New payloads use the new key; older payloads
-still resolve against the decrypt-only entry:
-
-```yaml
-encryption:
-  default:
-    uri: gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v2
-    decryptURIs:
-      - gcpkms://projects/my-project/locations/global/keyRings/codec/cryptoKeys/v1
-```
-
-:::note Multi-region deployments need a multi-region key
-
-To stay available alongside a highly available upstream that fails over across regions, such as a Temporal Cloud High
-Availability Namespace whose endpoint moves between regions, you typically run the proxy in more than one region. After
-a failover, a payload sealed by the proxy in one region may be opened by the proxy in another, so every regional proxy
-must be able to unwrap the others' DEKs. Back the key with a multi-region KMS key so the same key material is reachable
-from every region. How you express that differs by provider:
-
-- **AWS:** use a multi-Region key (its ID starts with `mrk-`) and replicate it into each region. The replicas share key
-  material but each has its own regional ARN, so set each proxy's `uri` to its local ARN and list the other regions'
-  ARNs in `decryptURIs`:
-
-  ```yaml
-  encryption:
-    default:
-      # Config for the us-east-1 proxy.
-      uri: awskms:///arn:aws:kms:us-east-1:123456789012:key/mrk-abcd1234?region=us-east-1
-      decryptURIs:
-        - awskms:///arn:aws:kms:us-west-2:123456789012:key/mrk-abcd1234?region=us-west-2
-  ```
-
-- **Azure:** Key Vault keys are regional. Use a separate vault per region (or geo-replication), and, because each vault
-  gives the key a distinct URI, set each proxy's `uri` to its local vault and list the other vaults' keys in
-  `decryptURIs`.
-- **GCP:** create the key in a multi-region location (for example, `locations/us`) or in `global`. The resource name is
-  the same everywhere, so every proxy uses the identical `uri` and no `decryptURIs` are needed:
-  `gcpkms://projects/my-project/locations/us/keyRings/codec/cryptoKeys/my-key`.
-
-For a single-region proxy deployment, a regional key is the right choice; reach for a multi-region key only when the
-proxy itself spans regions.
-
-:::
-
-Decryption always runs on any payload that references a known key, regardless of `enabled`. Setting `enabled: false`
-stops new encryption but keeps opening older payloads, which is a valid decrypt-only posture. The proxy reads encryption
-configuration at startup, so restart it after changing keys or policies.
+The proxy rotates DEKs automatically on the `duration` and `renewBefore` schedule. You remain responsible for changing,
+retaining, and eventually retiring the KMS keys that wrap those DEKs. See
+[Manage encryption keys](/production-deployment/temporal-proxy/manage-encryption-keys) for key migration,
+multi-region access, decrypt-only operation, and safe retirement.
 
 The `testing://` scheme holds its key material in the configuration itself and provides no real security. Use it only
 for local development, and point production at `awskms`, `azurekeyvault`, `gcpkms`, or an extension server.
@@ -300,23 +259,13 @@ Two constraints follow from that shape. `Decrypt` gets ciphertext and nothing el
 the local, pre-translation name, so a server keying on Namespace must use that name rather than the translated remote
 one.
 
-The proxy builds the connection when it builds its key policies, so a malformed address, credentials without TLS, or an
-unreadable `ca` file all fail at startup. Peer verification happens later, because gRPC connects lazily: a `ca` or
-`serverName` that does not match the server's certificate is not discovered until the first payload needs a key, and it
-surfaces as a hung request rather than a clear error.
+The proxy validates and opens extension-server connections before the gateway starts accepting traffic. A malformed or
+unreachable address, credentials without TLS, unreadable `ca` file, or certificate mismatch therefore fails startup. A
+credential that the extension server rejects, or a dependency that fails after startup, surfaces when a request needs a
+key operation and fails that request.
 
 The [KMS extension server example](https://github.com/temporalio/temporal-proxy/tree/main/examples/kms) runs the whole
 path on localhost, with a reference provider you can read as a starting point.
 
-:::caution Deleting a key is irreversible
-
-Deleting a KMS key destroys everything encrypted under it, and neither Temporal nor your cloud provider can recover it.
-Keep every key reachable, as `uri` or in `decryptURIs`, until every payload it wrapped is gone from every system the
-proxy decrypts for, including Workflow history, visibility, and Archival storage. In practice, keep a key at least until
-the Workflow Retention Period has elapsed.
-
-To retire a key, revoke the proxy's permissions rather than deleting it. Removing access is reversible: you can re-grant
-it later if a payload still needs opening, whereas a deleted key is gone for good. Revoking only the encrypt permission
-while leaving decrypt in place also lets you stop new encryption without stranding existing payloads.
-
-:::
+After encryption works, define how keys change and how long old keys remain available. See
+[Manage encryption keys](/production-deployment/temporal-proxy/manage-encryption-keys).

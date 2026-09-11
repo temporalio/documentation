@@ -1,0 +1,151 @@
+---
+id: reference
+title: Temporal Proxy reference
+sidebar_label: Reference
+description: Look up Temporal Proxy release status, artifacts, command flags, configuration groups, forwarding scope, and Prometheus metrics.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+Use this page to look up the current Temporal Proxy command interface, top-level configuration groups, supported gRPC
+services, and proxy-defined Prometheus metrics. For configuration examples and operating guidance, start with
+[Configure Temporal Proxy](/production-deployment/temporal-proxy/configure) and
+[Operate and troubleshoot Temporal Proxy](/production-deployment/temporal-proxy/operate-troubleshoot).
+
+## Check release status and source
+
+Temporal Proxy is a prerelease project and does not yet provide a production-readiness or version-compatibility promise.
+Configuration and behavior can change between releases. Pin the proxy version, test it with the exact SDK, CLI,
+self-hosted Temporal Web UI, and upstream versions in your environment, and review changes before upgrading.
+
+The following sources define the current behavior:
+
+- [Releases](https://github.com/temporalio/temporal-proxy/releases) provide versioned release artifacts and notes.
+- [`internal/config`](https://github.com/temporalio/temporal-proxy/tree/main/internal/config) defines and validates the
+  YAML configuration.
+- [`cmd/proxy`](https://github.com/temporalio/temporal-proxy/tree/main/cmd/proxy) defines command-line flags and
+  environment-variable aliases.
+- [The Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) defines Kubernetes-specific
+  values that render the proxy configuration and resources.
+
+Because links to `main` show unreleased source, use the repository tag matching your pinned version when verifying a
+deployed binary.
+
+## Choose a distribution artifact
+
+| Artifact        | Location                                                                                       | Versioning guidance                                                                  |
+| --------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Go binary       | `github.com/temporalio/temporal-proxy/cmd/proxy`                                                | Install a release tag with `go install ...@vX.Y.Z`.                                  |
+| Container image | [`temporalio/temporal-proxy`](https://hub.docker.com/r/temporalio/temporal-proxy)                | Pin a version tag instead of relying on `latest`.                                    |
+| Helm chart      | [Temporal Helm chart repository](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) | Pin the chart version and review the proxy image tag selected by that chart release. |
+
+Run `proxy --version` to print the proxy version, build time, and Git commit SHA.
+
+## Use command flags
+
+The executable has one subcommand, `serve`:
+
+```bash
+proxy serve --config config.yaml
+```
+
+| Flag             | Alias | Environment variable | Default | Purpose                                             |
+| ---------------- | ----- | -------------------- | ------- | --------------------------------------------------- |
+| `--config <path>` | `-c`  | `PROXY_CONFIG`       | None    | Path to the required YAML configuration file.       |
+| `--level <level>` | None  | `LOG_LEVEL`          | `info`  | Log level: `debug`, `info`, `warn`, or `error`.      |
+
+Metrics are configured in the YAML file, not with command-line flags.
+
+## Use top-level configuration keys
+
+The proxy reads one YAML file and expands `$VAR` and `${VAR}` references from the process environment before parsing it.
+An unset environment variable expands to an empty string, which can produce a validation error or an empty optional
+value. Mount secrets through the environment or a secrets provider instead of committing credentials to the file.
+
+| Key                | Required or default                                                                 | Purpose                                                                                                      |
+| ------------------ | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `hostPort`         | Required when running the binary; the Helm chart can supply it from the Service port | Gateway `host:port` used by SDK Clients, Workers, CLI, and Web UI.                                            |
+| `tls`              | Optional; plaintext when absent                                                     | TLS or mTLS material for inbound gateway connections.                                                        |
+| `allowedServices`  | Defaults to `WorkflowService` and `OperatorService`                                 | Proto full names of gRPC services the gateway can forward.                                                   |
+| `auth`             | Optional; all requests admitted when absent                                         | Selects exactly one inbound authenticator: `staticToken`, `jwks`, or `external`.                              |
+| `encryption`       | Optional; new Payload encryption disabled by default                                | Configures the DEK cache and default or per-Namespace KMS key policies.                                       |
+| `extensionServers` | Optional                                                                            | Addresses external authorization or KMS gRPC services.                                                       |
+| `metrics`          | Defaults to `hostPort: :9090` and `namespace: tmprl_proxy`                          | Sets the HTTP metrics listener and the Prometheus metric-name prefix.                                        |
+| `routing`          | No implicit upstream selection                                                      | Selects the default and system upstreams and ordered Namespace or metadata rules.                             |
+| `upstreams`        | At least one entry is required                                                      | Names upstream Temporal Services and configures addresses, TLS, credentials, and Namespace translation.      |
+
+Each upstream and extension-server name must be unique, and each list must use unique `hostPort` values. Static upstreams
+connect before the gateway starts. An upstream `hostPort` and TLS `serverName` can use request-time templates;
+extension-server addresses cannot.
+
+For nested fields, validation rules, and defaults, consult the configuration source for the release you run and the
+task-specific pages under [Configure Temporal Proxy](/production-deployment/temporal-proxy/configure).
+
+## Check forwarding scope and compatibility
+
+The proxy can forward the following gRPC services:
+
+| Service                                           | Default | Used by                                                                                   |
+| ------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------- |
+| `temporal.api.workflowservice.v1.WorkflowService` | Yes     | SDK Clients, Workers, the Temporal CLI, and self-hosted Temporal Web UI.                    |
+| `temporal.api.operatorservice.v1.OperatorService` | Yes     | `temporal operator` commands and self-hosted Web UI Search Attribute and Nexus Endpoint views. |
+| `grpc.reflection.v1.ServerReflection`             | No      | Service discovery for tools such as `grpcurl`; also admits its `v1alpha` compatibility alias. |
+
+The `allowedServices` configuration can narrow this list but cannot add a service not compiled into the proxy. A call to
+a service outside the allowlist returns `UNIMPLEMENTED` before upstream work begins.
+
+The gateway accepts Temporal gRPC traffic from SDK Clients, Workers, the Temporal CLI, and self-hosted Temporal Web UI.
+It can route to local development, self-hosted, or Temporal Cloud upstream Services. This transport scope is not a
+compatibility matrix. While the project is prerelease, verify each Client and upstream version combination with
+representative Workflow, polling, Visibility, operator, and long-poll calls before deployment.
+
+## Inspect Prometheus metrics {/* #inspect-prometheus-metrics */}
+
+The proxy serves Prometheus metrics at `/metrics` on `metrics.hostPort`. Metric names use
+`<namespace>_<subsystem>_<name>`, where `metrics.namespace` defaults to `tmprl_proxy`. For example,
+`router_decisions_total` is exposed as `tmprl_proxy_router_decisions_total` by default.
+
+The endpoint also includes collectors registered by the Go runtime and process. The following table lists metrics defined
+by Temporal Proxy:
+
+| Subsystem    | Metric                     | Labels                             | Reports                                                                 |
+| ------------ | -------------------------- | ---------------------------------- | ----------------------------------------------------------------------- |
+| `server`     | `requests_total`           | `method`, `code`                   | Completed gateway RPCs by full gRPC method and status code.             |
+| `server`     | `request_duration_seconds` | `method`                           | End-to-end RPC duration, with buckets extending through long polls.     |
+| `router`     | `decisions_total`          | `upstream`, `outcome`              | Selected upstream and whether a rule, default, or system route chose it. |
+| `router`     | `forwarding_errors_total`  | `upstream`, `reason`               | Router-originated connection and stream-setup failures.                 |
+| `encryption` | `vault_ops_total`          | `operation`, `result`, `namespace` | Complete Payload encrypt and decrypt operations.                        |
+| `encryption` | `vault_ops_duration_secs`  | `operation`, `namespace`           | End-to-end envelope-operation duration, including KMS and cache work.   |
+| `encryption` | `dek_ops_total`            | `operation`, `result`              | AES-256-GCM Payload operations and their own result.                    |
+| `encryption` | `dek_ops_duration_secs`    | `operation`                        | Time spent in the AES-256-GCM step.                                     |
+| `encryption` | `kek_ops_total`            | `provider`, `operation`, `result`  | KMS DEK wrap and unwrap operations.                                     |
+| `encryption` | `kek_ops_duration_secs`    | `provider`, `operation`            | Time spent wrapping and unwrapping DEKs.                                |
+| `encryption` | `dek_rotations_total`      | `reason`                           | DEK rotations by `initial`, `scheduled`, or `on_demand` reason.         |
+| `encryption` | `dek_cache_hits_total`     | None                               | Reads served from the decrypted-DEK cache.                              |
+| `encryption` | `dek_cache_misses_total`   | None                               | Reads that required a KMS unwrap.                                       |
+| `encryption` | `dek_cache_size`           | None                               | Current number of decrypted-DEK cache entries.                          |
+
+Encryption metrics are registered when a key policy creates a vault, including a decrypt-only configuration with
+`encryption.enabled: false`. They move only when the corresponding key or Payload path is exercised.
+
+Label values include:
+
+- Router `outcome`: `match`, `default`, `system`, or `unroutable`.
+- Router forwarding `reason`: `no_connection` or `stream_setup`.
+- Encryption `operation`: `encrypt` or `decrypt` for vault and DEK metrics, and `wrap` or `unwrap` for KEK metrics.
+- Operation `result`: `success` or `error`.
+- DEK rotation `reason`: `initial`, `scheduled`, or `on_demand`.
+
+The `method` and `namespace` labels are not bounded by a fixed configuration list. Do not expose the gateway directly to
+untrusted callers that can send arbitrary method names, and account for Namespace cardinality when storing metrics.

@@ -1,0 +1,158 @@
+---
+id: operate-troubleshoot
+title: Operate and troubleshoot Temporal Proxy
+sidebar_label: Operate and troubleshoot
+description: Monitor Temporal Proxy health, traffic, encryption, and shutdown behavior, and resolve common routing and connectivity failures.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+Operate Temporal Proxy as part of the request path between applications and an upstream Temporal Service. Monitor the
+gateway, each intended upstream path, and any KMS or extension server that a request depends on. The gateway health check
+reports process state; request metrics and end-to-end tests cover the dependencies beyond the process.
+
+## Check process health
+
+The gateway implements the standard gRPC health service. It publishes the empty service name and one entry for each
+service in `allowedServices`. All entries report the same process-wide state:
+
+- `SERVING` means the gateway process is accepting requests.
+- `NOT_SERVING` is published when shutdown starts.
+- `NOT_FOUND` means the health request named a service that is not in `allowedServices`.
+
+The health status does not continuously test upstream Temporal Services, KMS providers, or extension servers. Static
+upstream addresses are connected before gateway startup, so an unreachable static upstream prevents startup. Templated
+upstreams are resolved and connected on first use. After startup, the gateway can still report `SERVING` while one of
+these dependencies is unavailable.
+
+Use the gRPC health check as a process liveness signal. For readiness, add a test that exercises the upstream route and
+other dependencies required for the traffic that instance will receive. If the gateway terminates TLS or mTLS, the
+health client must use matching transport credentials.
+
+For Kubernetes probe configuration, including the limitation of plaintext native gRPC probes, see
+[Deploy Temporal Proxy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes#probe-the-gateway).
+
+## Monitor traffic and dependencies
+
+The proxy writes structured JSON logs to stderr. Set the log level with `--level` or `LOG_LEVEL`; the default is `info`.
+Use `debug` temporarily to record routing decisions and resolved templated upstream targets:
+
+```bash
+proxy serve --config config.yaml --level debug
+```
+
+Do not publish a configuration file, debug logs, or environment values without removing credentials and internal
+addresses. A `testing://` encryption URI contains local test key material and must also be redacted.
+
+The proxy exposes Prometheus metrics at `/metrics`. The default address is `:9090`, and the default metric namespace is
+`tmprl_proxy`; configure both under the top-level `metrics` block. Use the following signals for an initial dashboard:
+
+The metrics listener uses plaintext HTTP and has no authentication. Bind it to a private interface or restrict access
+with your network and deployment controls.
+
+| Signal                                                                 | What to check                                                                                   |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `server_requests_total` by `code`                                      | Changes in non-`OK` gRPC results and the affected methods.                                      |
+| `server_request_duration_seconds`                                      | End-to-end latency, including long-poll methods.                                                 |
+| `router_decisions_total{outcome="unroutable"}`                        | Requests for which no route, system upstream, or default upstream was selected.                 |
+| `router_forwarding_errors_total`                                       | Missing connections or failures while creating an upstream stream.                              |
+| `encryption_vault_ops_total{result="error"}`                          | Payload encrypt or decrypt failures.                                                            |
+| `encryption_kek_ops_total{result="error"}`                            | KMS wrap or unwrap failures.                                                                    |
+| `encryption_dek_rotations_total{reason="on_demand"}`                  | Key refresh falling behind the configured renewal window.                                       |
+
+Prefix each name in the table with the configured metrics namespace. For example, the default full request counter is
+`tmprl_proxy_server_requests_total`. See the
+[Temporal Proxy reference](/production-deployment/temporal-proxy/reference#inspect-prometheus-metrics) for all metric
+names and labels.
+
+## Shut down the proxy
+
+On a termination signal, the proxy marks its gRPC health service `NOT_SERVING`, stops admitting new gateway requests,
+and drains in-flight RPCs. The gateway drains before the per-upstream proxy tiers. Each serving tier has a five-second
+drain budget, and the complete lifecycle stop is bounded at 30 seconds.
+
+Long-poll calls can outlast the drain budget. When the deadline expires, the proxy drops the remaining calls and logs
+`Drain ended with calls in flight. Dropping them` as a warning. Temporal Clients and Workers re-poll, so this warning is
+expected during some restarts.
+
+Give the process supervisor more than 30 seconds between its termination signal and a forced kill. This leaves time for
+the proxy lifecycle hooks and KMS connections to close after the request drain. See
+[Deploy Temporal Proxy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes#shut-down-cleanly) for
+the Kubernetes setting.
+
+## Confirm that clients cannot bypass the proxy
+
+Routing Clients and Workers through the proxy does not stop them from connecting directly to the upstream Temporal
+Service. A direct connection bypasses the proxy's inbound authentication, Namespace translation, outbound credential
+handling, and payload encryption.
+
+When the proxy is the required access path:
+
+1. Configure all Clients, Workers, CLI profiles, and self-hosted Web UI instances to use the gateway endpoint.
+2. Keep upstream API keys and client certificates out of application deployments. Give them only to the proxy runtime.
+3. Restrict the upstream network path to the proxy's egress addresses, private network, or workload identity boundary.
+4. From an application network and identity, verify that a direct upstream health or read request is rejected while the
+   same request through the proxy succeeds.
+5. Compare expected application request volume with proxy metrics. Use this as a drift signal, not proof of enforcement;
+   requests that bypass the proxy produce no proxy metric.
+
+Repeat the direct-access check after credential, network, deployment, or Namespace changes. See
+[Plan a Temporal Proxy deployment](/production-deployment/temporal-proxy/plan-deployment) for trust boundaries and
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads#understand-fail-closed-behavior) for encryption
+coverage.
+
+## Resolve startup failures
+
+The proxy validates its configuration before accepting gateway traffic. Configuration errors include the YAML path of
+the invalid field when possible. Check these causes first:
+
+| Symptom or message                            | Action                                                                                                                  |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| The `--config` flag is required               | Pass `--config <path>` or set `PROXY_CONFIG`.                                                                            |
+| `invalid configuration`                       | Correct the named field, duplicate name, or reference to an unknown upstream or extension server.                       |
+| A certificate file cannot be read or verified | Check the `tls.ca`, `tls.cert`, and `tls.key` paths, PEM contents, expiry, and whether the certificate and key match.     |
+| `upstream connection not ready`               | Check DNS, network policy, the static upstream `hostPort`, and its TLS configuration.                                    |
+| A listener address is already in use          | Check gateway `hostPort`, `metrics.hostPort`, and other proxy processes on the host.                                     |
+| A KMS key cannot be registered                | Check the key URI, provider credential chain, extension-server reference, and encrypt/decrypt permissions.              |
+
+A static upstream is checked during startup. A templated `hostPort` is not, because its value depends on the request
+Namespace or metadata. Test every templated route after the gateway starts.
+
+## Resolve request failures
+
+Start with the gRPC status and message returned to the caller, then correlate it with logs and metrics from the same
+time window:
+
+| Status or symptom                                            | Likely cause and action                                                                                                                                  |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FAILED_PRECONDITION: no upstream matched...`                | No routing rule matched and the applicable `routing.default` or `routing.system` value is absent. Add the intended fallback or matching rule.            |
+| `UNAVAILABLE` while forwarding to the selected upstream      | The selected upstream has no usable connection. Check its address, TLS, credentials, DNS, and network path.                                               |
+| `UNIMPLEMENTED: unknown service...`                          | The service is outside `allowedServices`. Add a forwardable service only if callers should use it.                                                        |
+| `UNAUTHENTICATED` from the gateway                           | The inbound static token or JWT is missing, malformed, expired, or does not match the configured issuer or audience.                                     |
+| `PERMISSION_DENIED` from external authorization              | The extension server denied the resolved method or Namespace. Use the server-side reason in proxy logs; the caller does not receive that internal detail. |
+| A templated upstream returns `INTERNAL` before dialing       | The template failed or rendered an empty or invalid `hostPort` or `serverName`. Enable debug logs and inspect the local and translated Namespace.         |
+| `vault_ops_total{result="error"}` increases                 | The proxy could not encrypt or decrypt a Payload. Check the matching KMS metric, key URI, key access, and extension-server health.                         |
+| Requests fail while the gRPC health check remains `SERVING` | A dependency failed after startup. Test the selected upstream, KMS, and extension service independently.                                                  |
+| Some upstream Payloads remain plaintext                     | Check for direct-client bypass, data written before encryption was enabled, and fields outside Payload Codec coverage.                                    |
+
+For routing and Namespace translation details, see
+[Route and translate Namespaces](/production-deployment/temporal-proxy/route-translate). For gateway and upstream TLS
+and credentials, see
+[Secure connections and authorize requests](/production-deployment/temporal-proxy/secure-connections). Encryption
+fails the request instead of forwarding a codec-capable Payload as plaintext; see
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads).
+
+When opening an issue, include the output of `proxy --version`, the gRPC status and method, the relevant local Namespace
+and selected upstream name, sanitized configuration, and a narrow log and metrics window. Do not include credentials,
+private keys, JWTs, or Payload contents.

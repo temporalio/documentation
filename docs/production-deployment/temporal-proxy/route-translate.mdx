@@ -1,0 +1,187 @@
+---
+id: route-translate
+title: Route requests and translate Namespaces
+sidebar_label: Route and translate requests
+description: Direct Temporal Proxy requests to upstream Temporal Services and map local Namespace names to each upstream's registered names.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and is not ready for production use. Behavior and configuration can change
+  between releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for current status
+  and the definitive configuration schema.
+</ReleaseNoteHeader>
+
+Temporal Proxy can select an upstream Temporal Service for each request and present a different Namespace name to that
+upstream. Applications connect to one gateway and continue to use local Namespace names. The proxy routes on the local
+name, then translates it before forwarding the request.
+
+Start with [Configure Temporal Proxy](/production-deployment/temporal-proxy/configure) for the gateway listener and a
+complete baseline configuration.
+
+## Define upstreams
+
+Each entry in `upstreams` describes one Temporal Service that the proxy can reach. Give every upstream a unique `name`
+so that `routing` can refer to it, and a unique `hostPort` with the upstream's gRPC address.
+
+```yaml
+upstreams:
+  - name: local
+    hostPort: temporal.internal.example.com:7233
+    tls:
+      ca: /etc/temporal-proxy/tls/local-ca.pem
+      cert: /etc/temporal-proxy/tls/client.pem
+      key: /etc/temporal-proxy/tls/client-key.pem
+
+  - name: cloud
+    hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
+    tls: {}
+    namespaces:
+      rules:
+        suffix: .${TEMPORAL_ACCOUNT}
+    credentials:
+      static:
+        apiKey: ${TEMPORAL_API_KEY}
+```
+
+The proxy expands `$VAR` and `${VAR}` environment variables before parsing the YAML. It validates static addresses and
+opens their connections at startup. If `hostPort` or `tls.serverName` contains a Go template action, the proxy resolves
+the address for each request and connects on first use.
+
+Set `cloud: true` on an upstream when it connects to Temporal Cloud through an address and TLS server name that the
+proxy cannot recognize as a Temporal Cloud endpoint. This enables Cloud-specific validation of translated Namespace
+configuration, including suffix and override shapes. It does not reject every malformed Namespace produced after
+request-time translation; verify translated Namespace names in your deployment tests. Addresses under `tmprl.cloud` are
+detected automatically.
+
+For TLS and credentials on each upstream, see
+[Secure Temporal Proxy connections](/production-deployment/temporal-proxy/secure-connections#secure-upstream-connections).
+
+## Route requests
+
+The `routing` block selects one upstream for each request. Rules are evaluated from top to bottom, and the first match
+wins. When no rule matches, the proxy uses `system` for a Namespace-less request and `default` for any other request.
+
+```yaml
+routing:
+  default: local
+  system: cloud
+  rules:
+    - match:
+        namespace: 'prod-*'
+        metadata:
+          x-tier: gold
+      upstream: cloud
+    - match:
+        namespace: '*-test'
+      upstream: local
+```
+
+- `default` is optional. Without it, an unmatched request fails with `FAILED_PRECONDITION`.
+- `system` is optional. It handles calls that do not name a Namespace, such as `GetSystemInfo` and `GetClusterInfo`.
+  Without it, those calls use `default`.
+- `rules` is optional. Each rule must contain `namespace`, `metadata`, or both, and must name a configured upstream.
+
+Rules run before the `system` and `default` fallbacks. A metadata-only rule can therefore match a Namespace-less
+request. Selecting an upstream does not provide failover: if the selected upstream has no available connection, the
+request fails instead of trying another rule or upstream.
+
+## Match Namespaces and metadata
+
+Routing matches the local Namespace name, before Namespace translation. A Namespace match supports a literal or one of
+the following glob forms:
+
+| Pattern    | Matches                     |
+| ---------- | --------------------------- |
+| `payments` | Exactly `payments`          |
+| `prod-*`   | Names starting with `prod-` |
+| `*-test`   | Names ending with `-test`   |
+| `*-test-*` | Names containing `-test-`   |
+| `*`        | Every Namespace             |
+
+A wildcard in any other position, such as `prod-*-eu`, is invalid.
+
+Metadata matches gRPC request metadata. Keys are case-insensitive and do not support wildcards. Values support the
+same glob forms as Namespace names. When a key has multiple values, the condition matches if any value matches. A rule
+that specifies both Namespace and metadata matches only when every condition matches.
+
+:::caution Routing metadata is not authorization
+
+A caller that can connect to the gateway can set request metadata. Do not use a routing header by itself as a security
+boundary. Authentication identifies the caller but does not make a caller-supplied header trustworthy. Use an extension
+server to authorize the resolved request, or a trusted intermediary to set and sanitize the routing header. See
+[Secure connections and authorize requests](/production-deployment/temporal-proxy/secure-connections).
+
+:::
+
+Routing rules cannot match the gRPC method, the translated Namespace name, or values inside a Payload. External
+authorization can allow or deny a method for a caller, but it cannot select the upstream. Use separate gateways or
+trusted routing metadata when the destination itself must vary by caller or method.
+
+## Translate Namespaces
+
+Namespace translation lets applications use a local name while an upstream receives its registered name. Rules belong
+to an upstream because different Temporal Services can use different naming conventions.
+
+```yaml
+upstreams:
+  - name: cloud
+    hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
+    tls: {}
+    namespaces:
+      rules:
+        prefix: ''
+        suffix: .acct
+        overrides:
+          - local: billing
+            remote: payments.acct
+```
+
+- `prefix` and `suffix` wrap a local name on requests and are removed from the remote name on responses. In this
+  example, `orders` becomes `orders.acct`.
+- `overrides` defines explicit `local` and `remote` pairs. An override takes precedence over `prefix` and `suffix`.
+  Each local name and each remote name can appear only once.
+
+For a Temporal Cloud upstream, a non-empty suffix must have the form `.<account-id>`, and every override's remote name
+must be a complete Cloud Namespace name. Translation does not register or rename a Namespace. The resulting remote
+Namespace must already exist on the selected Temporal Service.
+
+The proxy translates recognized Namespace-name fields in Workflow Service and Operator Service protobuf messages, the
+`temporal-namespace` request metadata header, and Namespace fields in typed gRPC error details. It does not rewrite
+Namespace names embedded in Payload data, arbitrary metadata values, or free-text error messages.
+
+## Resolve templated upstreams
+
+Use a Go template in `hostPort` or `tls.serverName` when the address varies by Namespace or request metadata. These
+values are available after the proxy selects an upstream and translates the Namespace:
+
+- `{{ .LocalNamespace }}` is the Namespace name received from the application.
+- `{{ .RemoteNamespace }}` is the name after the selected upstream's translation rules run.
+- `{{ .Metadata.<key> }}` or `{{ index .Metadata "<key>" }}` is the last value for a request metadata key.
+
+Use lowercase metadata keys in templates. gRPC normalizes metadata keys to lowercase before the proxy builds the
+template context.
+
+For example, the following upstream directs each translated Cloud Namespace to its own endpoint:
+
+```yaml
+upstreams:
+  - name: cloud
+    hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
+    tls: {}
+    namespaces:
+      rules:
+        suffix: .${TEMPORAL_ACCOUNT}
+```
+
+An absent metadata key renders as an empty string. If that produces an empty or malformed `hostPort`, the request fails
+without dialing an upstream. Template expressions are not supported in `extensionServers.hostPort`.
+
+For an end-to-end Cloud configuration that uses Namespace translation and a templated endpoint, see
+[Get started with Temporal Cloud](/production-deployment/temporal-proxy/get-started-cloud).
