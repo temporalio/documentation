@@ -6,12 +6,12 @@ sidebar_label: Activity Execution
 slug: /develop/go/activities/execution
 toc_max_heading_level: 3
 tags:
+  - Activities
   - Go SDK
   - Temporal SDKs
-  - Activity
 ---
 
-## How to start an Activity Execution {/* #activity-execution */}
+## Start an Activity Execution {/* #activity-execution */}
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -56,7 +56,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to set the required Activity Timeouts {/* #required-timeout */}
+### Set the required Activity Timeouts {/* #required-timeout */}
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
@@ -288,7 +288,7 @@ if err != nil {
 }
 ```
 
-### How to get the results of an Activity Execution {/* #get-activity-results */}
+### Get the results of an Activity Execution {/* #get-activity-results */}
 
 The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.

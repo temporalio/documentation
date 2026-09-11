@@ -5,11 +5,12 @@ sidebar_label: Activity basics
 description: This section explains Activity basics with the Go SDK
 toc_max_heading_level: 4
 tags:
+  - Activities
   - Go SDK
   - Temporal SDKs
 ---
 
-## How to develop an Activity Definition in Go {/* #activity-definition */}
+## Develop an Activity Definition {/* #activity-definition */}
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 
@@ -71,7 +72,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to develop Activity Parameters {/* #activity-parameters */}
+### Develop Activity parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -122,7 +123,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to define Activity return values {/* #activity-return-values */}
+### Define Activity return values {/* #activity-return-values */}
 
 All data returned from an Activity must be serializable.
 
@@ -155,7 +156,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to customize Activity Type in Go {/* #customize-activity-type */}
+### Customize Activity Type {/* #customize-activity-type */}
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 

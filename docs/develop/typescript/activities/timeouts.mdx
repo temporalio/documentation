@@ -2,7 +2,7 @@
 id: timeouts
 title: Activity Timeouts - TypeScript SDK
 sidebar_label: Timeouts
-description: Optimize Workflow Execution with Temporal TypeScript SDK - Set Activity Timeouts and Retry Policies efficiently.
+description: Set the Schedule-To-Close, Start-To-Close, and Heartbeat Timeouts on a TypeScript Activity, tune its Retry Policy, and override the next retry delay.
 toc_max_heading_level: 4
 tags:
   - Activities
@@ -17,7 +17,7 @@ This page shows how to do the following:
 
 - [Activity Timeouts](#activity-timeouts)
 - [Activity Retry Policy](#activity-retries)
-- [Activity next Retry delay](#activity-next-retry-delay)
+- [Activity next retry delay](#activity-next-retry-delay)
 - [Heartbeat an Activity](#activity-heartbeats)
 - [Activity Heartbeat Timeout](#activity-heartbeat-timeout)
 
@@ -65,7 +65,7 @@ const { myActivity } = proxyActivities<typeof activities>({
 });
 ```
 
-## Activity next Retry delay {/* #activity-next-retry-delay */}
+## Activity next retry delay {/* #activity-next-retry-delay */}
 
 The time to wait after a retryable Activity failure until the next retry is attempted is normally determined by that Activity's Retry Policy.
 However, an Activity may override that duration when explicitly failing with an [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure) by setting a next Retry delay.
