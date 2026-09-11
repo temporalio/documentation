@@ -78,8 +78,10 @@ For each request, the gateway:
 
 The per-upstream proxy then rewrites the local Namespace to the name the upstream expects, attaches that upstream's TLS
 and credentials, forwards to the Temporal Service, and translates the Namespace back on responses. When payload
-encryption is enabled, it also seals payloads on the way out and opens them on the way back, so the upstream only ever
-stores ciphertext.
+encryption is enabled, it also seals codec-capable Payloads on the way out and opens them on the way back. New Payloads
+sent through the proxy reach the upstream as ciphertext. See
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the scope and limits of this fail-closed
+behavior.
 
 ### Terms
 
