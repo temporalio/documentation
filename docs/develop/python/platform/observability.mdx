@@ -1,9 +1,9 @@
 ---
 id: observability
-title: Observability - Python SDK
+title: Observability
 sidebar_label: Observability
 description: Discover how to monitor your Temporal Application using metrics, tracing, logging, and visibility APIs. Emit metrics, set up tracing, log from Workflows, and use custom Search Attributes.
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 tags:
   - Observability
   - Workflows
@@ -32,6 +32,8 @@ For a complete list of metrics capable of being emitted, see the [SDK metrics re
 
 Metrics in Python are configured globally; therefore, you should set a Prometheus endpoint before any other Temporal code.
 
+### Set a Prometheus endpoint
+
 The following example exposes a Prometheus endpoint on port `9000`.
 
 ```python
@@ -42,6 +44,63 @@ from temporalio.runtime import Runtime, TelemetryConfig, PrometheusConfig
 new_runtime = Runtime(telemetry=TelemetryConfig(metrics=PrometheusConfig(bind_address="0.0.0.0:9000")))
 my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 ```
+
+### Attach global tags to metrics
+
+SDK metrics arrive tagged with Temporal information such as `namespace` and `task_queue`.
+Global tags add your organization's information next to them, so a dashboard can group Workers by the team, service, or environment that owns them.
+
+Set [`global_tags`](https://python.temporal.io/temporalio.runtime.TelemetryConfig.html#global_tags) on `TelemetryConfig` to add the same key-value pairs to every metric the runtime emits, from both the Client and the Worker.
+
+```python
+from temporalio.runtime import Runtime, TelemetryConfig, PrometheusConfig
+
+new_runtime = Runtime(
+    telemetry=TelemetryConfig(
+        metrics=PrometheusConfig(bind_address="0.0.0.0:9000"),
+        global_tags={
+            "team": "content-platform",
+            "service": "checkout",
+            "cost_center": "cc-1042",
+            "environment": "production",
+        },
+    )
+)
+my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
+```
+
+#### Choose a tag set
+
+Tags group metrics work best when standardized across the organization. Every Worker across your organization emits the same keys, so decide on the set before teams adopt it.
+These five suit most organizations:
+
+| Tag           | Example            | Question it answers                                    |
+| ------------- | ------------------ | ------------------------------------------------------ |
+| `team`        | `content-platform` | Who owns the Workers behind this Namespace or Task Queue? |
+| `service`     | `checkout`         | Which application emits these metrics?                 |
+| `cost_center` | `cc-1042`          | Which budget does this Worker fleet belong to?         |
+| `environment` | `production`       | Is this production traffic, or staging or test?        |
+| `region`      | `us-east-2`        | Where does the Worker fleet run?                       |
+
+The built-in tags identify where a metric came from inside Temporal.
+`namespace` and `task_queue` do not record which team runs the Workers behind them, so a dashboard grouped only by those tags cannot answer an ownership question.
+
+That gap costs you time during an incident.
+When several Namespaces degrade at once, what you need first is the name of the team that owns the affected Workers, so you can ask whether they deployed recently.
+Standardized tags put that name on the dashboard, which turns a broad question about the Temporal Service into a direct message to one team.
+
+Grouping by `team` also tells you which case you are looking at:
+
+- The affected Workers share one `team` value. Check that team's recent deploys first, because a deploy that restarts a Worker fleet causes a short disturbance in its metrics.
+- The affected Workers span several `team` values. A single team's deploy no longer explains the pattern, so you can rule it out and look for a shared cause.
+
+The same grouping answers questions outside incidents.
+A `cost_center` tag shows which budget owner drives Workflow and Activity volume.
+SDK metrics count what your Workers and Clients do, which is not the same as the [Actions](/cloud/pricing#action) Temporal Cloud bills for, so use them to compare teams rather than to reconcile a bill.
+
+Keep tag values low cardinality.
+Your metrics backend stores one series per distinct combination of tag values, so a value that changes per Workflow Execution, such as a Workflow Id or a customer identifier, multiplies what it stores.
+Ownership and deployment identifiers avoid this because they stay fixed for the life of the process.
 
 ## Set up tracing {/* #tracing */}
 

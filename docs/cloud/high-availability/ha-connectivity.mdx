@@ -48,7 +48,7 @@ When authenticating with mTLS, set the Client's `server_name` / `serverNameOverr
 This overrides the SNI that the Client will expect during the TLS Handshake with Temporal Cloud.
 The Regional Endpoint forwards the request to your Namespace, so the Client must expect the Namespace's certificate during the TLS handshake.
 
-For example, in Typescript, the Client's config would be set like this:
+For example, in TypeScript, the Client's config would be set like this:
 
 ```typescript
 await Connection.connect({
