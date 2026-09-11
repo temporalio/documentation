@@ -15,19 +15,19 @@ tags:
 
 This page shows how to do the following:
 
-- [Raise and Handle Exceptions](#exception-handling)
-- [Deliberately Fail Workflows](#workflow-failure)
-- [Workflow Timeouts](#workflow-timeouts)
+- [Raise and handle exceptions](#exception-handling)
+- [Fail Workflows deliberately](#workflow-failure)
+- [Workflow timeouts](#workflow-timeouts)
 - [Workflow retries](#workflow-retries)
 
-## Raise and Handle Exceptions {/* #exception-handling */}
+## Raise and handle exceptions {/* #exception-handling */}
 
 In each Temporal SDK, error handling is implemented idiomatically, following the conventions of the language.
-Temporal uses several different error classes internally — for example, [`CancelledFailure`](https://typescript.temporal.io/api/classes/common.CancelledFailure) in the Typescript SDK, to handle a Workflow cancellation. 
+Temporal uses several different error classes internally — for example, [`CancelledFailure`](https://typescript.temporal.io/api/classes/common.CancelledFailure) in the TypeScript SDK, to handle a Workflow cancellation. 
 You should not raise or otherwise implement these manually, as they are tied to Temporal platform logic.
 
 The one Temporal error class that you will typically raise deliberately is [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure).
-In fact, *any* other exceptions that are raised from your Typescript code in a Temporal Activity will be converted to an `ApplicationError` internally.
+In fact, *any* other exceptions that are raised from your TypeScript code in a Temporal Activity will be converted to an `ApplicationFailure` internally.
 This way, an error's type, severity, and any additional details can be sent to the Temporal Service, indexed by the Web UI, and even serialized across language boundaries.
 
 In other words, these two code samples do the same thing:
@@ -37,7 +37,7 @@ class InvalidChargeError extends Error {
     constructor(message: string) {
         super(message);
         this.name = "InvalidChargeError";
-        Object.setPrototypeOf(this, CustomError.prototype);
+        Object.setPrototypeOf(this, InvalidChargeError.prototype);
     }
 }
 
@@ -56,7 +56,7 @@ if (chargeAmount < 0) {
 ```
 
 Depending on your implementation, you may decide to use either method.
-One reason to use the Temporal `ApplicationFailure` class is because it allows you to set an additional `non_retryable` parameter.
+One reason to use the Temporal `ApplicationFailure` class is because it allows you to set an additional `nonRetryable` parameter.
 This way, you can decide whether an error should not be retried automatically by Temporal.
 This can be useful for deliberately failing a Workflow due to bad input data, rather than waiting for a timeout to elapse:
 
@@ -71,7 +71,7 @@ if (chargeAmount < 0) {
 
 You can alternately specify a list of errors that are non-retryable in your Activity [Retry Policy](/develop/typescript/activities/timeouts#activity-retries).
 
-## Failing Workflows {/* #workflow-failure */}
+## Fail Workflows deliberately {/* #workflow-failure */}
 
 One of the core design principles of Temporal is that an Activity Failure will never directly cause a Workflow Failure — a Workflow should never return as Failed unless deliberately.
 The default retry policy associated with Temporal Activities is to retry them until reaching a certain timeout threshold.
@@ -94,14 +94,12 @@ try {
 ```
 
 This works differently in a Workflow than raising exceptions from Activities.
-In an Activity, any Typescript exceptions or custom exceptions are converted to a Temporal `ApplicationFailure`.
+In an Activity, any TypeScript exceptions or custom exceptions are converted to a Temporal `ApplicationFailure`.
 In a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationFailure` will only fail that particular [Workflow Task](/tasks#workflow-task-execution) and be retried.
-This includes any typical Typescript runtime errors like an `undefined` error that are raised automatically.
+This includes any typical TypeScript runtime errors like an `undefined` error that are raised automatically.
 These errors are treated as bugs that can be corrected with a fixed deployment, rather than a reason for a Temporal Workflow Execution to return unexpectedly.
 
-## Workflow Timeouts {/* #workflow-timeouts */}
-
-**How to set Workflow Timeouts using the Temporal TypeScript SDK**
+## Workflow timeouts {/* #workflow-timeouts */}
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
@@ -133,8 +131,6 @@ await client.workflow.start(example, {
 ```
 
 ## Workflow retries {/* #workflow-retries */}
-
-**How to set Workflow retries using the Temporal TypeScript SDK**
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 

@@ -25,7 +25,7 @@ The following timeouts are available in Activity options:
 
 An Activity Execution must have either the Start-To-Close Timeout or the Schedule-To-Close Timeout set. Temporal strongly recommends setting a Start-To-Close Timeout because the service relies on it to detect lost Activity Tasks and trigger retries when appropriate.
 
-In Rust, these values are configured as part of the Activity options when scheduling an Activity from a Workflow. The Rust SDK is currently pre-release and its API is still evolving, so exact method names may change over time.
+In Rust, these values are configured as part of the Activity options when scheduling an Activity from a Workflow.
 
 Available timeout fields include:
 

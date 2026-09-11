@@ -1,7 +1,6 @@
 ---
 id: handling-messages
 title: Handling Signals, Queries, & Updates
-sidebar_label: Handling Signals, Queries, & Updates
 description: Signals, Queries, and Updates facilitate interactions with Workflow Executions.
 slug: /handling-messages 
 tags:
@@ -81,7 +80,7 @@ You can guard your handlers with concurrency primitives like mutexes or semaphor
 #### Inject work into the main Workflow {/* #injecting-work-into-main-workflow */}
 
 Sometimes you want to process work provided by messages in the main Workflow. Perhaps you’d like to accumulate several messages before acting on any of them. For example, message handlers might put work into a queue, which can then be picked up and processed in an event loop that you yourself write.
-This option is considered advanced but offers powerful flexibility. And if you serialize the handling of your messages inside your main Workflow, you can avoid using concurrency primitives like mutexes and semaphores. See the links above for how to do this in your SDK.
+This option is advanced, but it lets you control exactly when each message is processed. And if you serialize the handling of your messages inside your main Workflow, you can avoid using concurrency primitives like mutexes and semaphores. See the links above for how to do this in your SDK.
 
 #### Finishing handlers before the Workflow completes {/* #finishing-message-handlers */}
 

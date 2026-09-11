@@ -28,6 +28,35 @@ To invite users using the Temporal Cloud UI:
 
 </TabItem>
 
+<TabItem value="invite-temporal-cloud" label="Temporal CLI">
+
+Use the [`temporal cloud user invite`](/cli/command-reference/cloud/user#invite) command. Specify the user's email, an
+account-level role, and optionally one or more Namespace permissions.
+
+Available account roles: `owner` | `admin` | `developer` | `finance-admin` | `read` | `metrics-read`.
+
+Available Namespace permissions: `admin` | `write` | `read`.
+
+```command
+temporal cloud user invite \
+  --email <user@example.com> \
+  --account-role <role> \
+  --namespace-access <namespace.account>=<permission>
+```
+
+Repeat `--namespace-access` to grant permissions on more than one Namespace. `--email` takes a single address, so invite
+one user per command:
+
+```command
+temporal cloud user invite \
+  --email user1@example.com \
+  --account-role developer \
+  --namespace-access ns1.my-account=admin \
+  --namespace-access ns2.my-account=write
+```
+
+</TabItem>
+
 <TabItem value="invite-tcld" label="tcld">
 
 Use the [`tcld user invite`](/cloud/tcld/user/#invite) command. Specify the user's email, an account-level role, and
@@ -60,7 +89,7 @@ tcld user invite \
 
 </Tabs>
 
-### Frequently Asked Questions
+### Frequently asked questions
 
 #### Can multiple Temporal Cloud accounts share the same email domain?
 
