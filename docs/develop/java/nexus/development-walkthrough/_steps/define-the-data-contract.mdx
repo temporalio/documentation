@@ -1,3 +1,10 @@
+:::caution Run the setup first
+
+This step assumes you read through the
+[Overview](/develop/java/nexus/development-walkthrough?step=overview) and ran the three terminal commands there!
+
+:::
+
 Start with the contract, not the code.
 
 The contract is the only thing a caller and a handler share. Everything else — which language each side is written in, whether an Operation is backed by a Workflow or an Activity, which Task Queue the Worker polls — is private to one side and can change without the other side knowing.
@@ -50,7 +57,26 @@ A file is one or the other, never both. A contract can span several files, with 
 
 The approval contract declares a Service with six Operations, so its entry file is a Nexus document.
 
-**[Definition files](/develop/java/nexus/client-code-generator#definition-files)** documents both flavors in full, with the supported subset of JSON Schema and a worked example to model this contract on.
+A Nexus document has two sections. `services` declares the Services and their Operations, with each
+Operation naming its input and output by reference. `$defs` declares the reusable types those
+references point at, in plain JSON Schema. Read the contract below in that order: what the Service
+offers first, then the shape of the data it moves.
+
+Nothing under `$defs` is Nexus-specific. It is ordinary JSON Schema, which is what lets the same
+types generate into four languages.
+
+:::note How to write a contract of your own
+
+This walkthrough hands you a finished contract. To write one yourself, start with
+[Definition files](/develop/java/nexus/client-code-generator#definition-files), which documents both
+flavors in full, with the supported subset of JSON Schema and a worked example to model this contract
+on. For the complete rules the generator enforces, see
+[Definition files](https://github.com/temporalio/nexgen#definition-files) in the `nexgen` README.
+
+In [step 2](/develop/java/nexus/development-walkthrough?step=generate) you pass this file to `nexgen`,
+which reads the contract and generates the Java client and handler code from it.
+
+:::
 
 Here is the approval contract in full. Every Operation the walkthrough builds is declared here, before any implementation exists:
 

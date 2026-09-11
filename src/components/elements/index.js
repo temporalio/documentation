@@ -12,4 +12,8 @@ export * from './Video'
 export { default as AnnotatedCode } from './AnnotatedCode'
 export { default as PriorityFairnessSimulator } from './PriorityFairnessSimulator'
 export { default as PriorityFairnessWalkthrough } from './PriorityFairnessWalkthrough'
-export { default as NexusMicroserviceWalkthrough, WalkthroughStep } from './NexusMicroserviceWalkthrough'
+// WalkthroughStep is deliberately not re-exported here. Demos/EventHistoryWalkthrough already
+// exports that name, and src/components/index.js star-exports both barrels, so exporting it twice
+// makes the name ambiguous and the event-history pages resolve the wrong component. The Nexus
+// walkthrough imports WalkthroughStep straight from ./NexusMicroserviceWalkthrough instead.
+export { default as NexusMicroserviceWalkthrough } from './NexusMicroserviceWalkthrough'

@@ -1,3 +1,5 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
 The approval blocks waiting for a decision. **Messages** give callers a way to interact with it while it waits.
 
 Two Operations get added to the workflow sample problem. Which [message](/sending-messages) type each one uses is decided by what the caller needs back, not by preference.
@@ -172,6 +174,76 @@ Messages are for changing a running approval or nudging it along, not for collec
 Both also stop working the moment the approval completes. The Temporal Service accepts a Signal or an Update only while the Workflow is still running, and rejects one sent to a closed Workflow with `NOT_FOUND: workflow execution already completed`. That happens as soon as the decision lands, not when the [Retention Period](/temporal-service/temporal-server#retention-period) later expires and the Execution is deleted. A second `submitDecision` for an approval that has already been decided fails this way, and so does any attempt to use these Operations to look up a past decision.
 
 If more than one system needs the outcome, see [step 8](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists) for how additional callers attach to a running approval and receive the same decision.
+
+## Run the messaging Operations
+
+Restart the handler Worker to pick up the two new Operations, then nudge the approval left running
+at the end of [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-operations).
+The Signal returns nothing:
+
+<RunThis>
+
+```bash title="Run 1 of 3: nudge the approver"
+temporal nexus operation execute \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation RemindApprover \
+  --operation-id remind-1 \
+  --input '{"itemId":"laptop-42"}'
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  null
+```
+
+The Update returns the confirmation the caller needs, including the reminder count the Workflow has
+been keeping:
+
+<RunThis>
+
+```bash title="Run 2 of 3: submit the decision"
+temporal nexus operation execute \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation SubmitDecision \
+  --operation-id decide-1 \
+  --input '{"itemId":"laptop-42","decision":"APPROVED"}'
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  {"recorded":"APPROVED","remindersSent":1}
+```
+
+That decision unblocks the approval Workflow, which returns and completes the `requestApproval`
+Operation still open from step 4. Collect its result:
+
+<RunThis>
+
+```bash title="Run 3 of 3: collect the approval result"
+temporal nexus operation result \
+  --namespace approval-caller-namespace --operation-id approval-1
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  {"decision":"APPROVED"}
+```
+
+Nothing polled for that decision. The Operation completed because the approval Workflow returned,
+and `result` waited on the completion callback rather than asking the approval for its status.
 
 
 :::tip RESOURCES

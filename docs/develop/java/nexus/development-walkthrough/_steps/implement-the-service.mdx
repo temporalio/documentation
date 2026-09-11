@@ -1,3 +1,5 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
 [Step 3](/develop/java/nexus/development-walkthrough?step=backing#build-the-operation-that-needs-no-backing) implemented the one Operation that needs no backing. This step adds the one at the center of the Service: back `requestApproval` with the approval Workflow, then run a Worker that hosts the Service, the Workflow, and the Activities.
 
 ## Write the approval Workflow
@@ -160,6 +162,105 @@ One Worker hosts the Nexus Service implementation, the Workflow implementation, 
 <!--SNIPEND-->
 
 A Worker registering a Nexus Service does not need to be the same Worker that runs the backing Workflow. Splitting them is a normal choice for larger deployments — see [Nexus patterns](/nexus/patterns).
+
+Start it from the repository root, and leave it running:
+
+<RunThis>
+
+```bash title="Run 1 of 4: start the handler Worker"
+./gradlew -q :core:execute \
+  -PmainClass=io.temporal.samples.nexuswalkthrough.handler.HandlerWorker \
+  --args="-target-host localhost:7233 -namespace approval-handler-namespace"
+```
+
+</RunThis>
+
+Qualify the task as `:core:execute`. An unqualified `execute` also runs the `lambda-worker:starter`
+task, which ignores `-PmainClass` and starts an unrelated sample. Like any Worker this one runs
+until you stop it, so Gradle keeps reporting the task as executing.
+
+## Run the Operations
+
+The Service is now reachable through the Endpoint you created in
+[Before you start](/develop/java/nexus/development-walkthrough?step=overview#create-the-namespaces-and-the-endpoint),
+so both Operations written so far can be run from the command line. No caller Workflow and no caller
+Worker exist yet, and none are needed: `temporal nexus operation execute` starts a
+[Standalone Nexus Operation](/standalone-nexus-operation), which makes the CLI the caller.
+
+Start with `checkApprovalRequired` from [step 3](/develop/java/nexus/development-walkthrough?step=backing#build-the-operation-that-needs-no-backing).
+The sample sets the spend threshold at 500, so this amount is over it:
+
+<RunThis>
+
+```bash title="Run 2 of 4: check whether approval is required"
+temporal nexus operation execute \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation CheckApprovalRequired \
+  --operation-id check-1 \
+  --input '{"itemId":"laptop-42","requester":"tao","amount":2500}'
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  {"approvalRequired":true,"threshold":500}
+```
+
+The Operation names on the command line are `CheckApprovalRequired` and `RequestApproval`, not the
+`checkApprovalRequired` and `requestApproval` keys in the contract. The generator emits the wire
+name in Pascal case, and that is the name the Endpoint routes on.
+
+Now `requestApproval`. It is Workflow-backed and the approval blocks for a decision, so it does not
+return during the call. Use `start` rather than `execute`, which returns as soon as the Operation
+has started:
+
+<RunThis>
+
+```bash title="Run 3 of 4: request an approval"
+temporal nexus operation start \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation RequestApproval \
+  --operation-id approval-1 \
+  --input '{"itemId":"laptop-42","requester":"tao","amount":2500}'
+```
+
+</RunThis>
+
+`describe` shows it sitting open, which is the durability the Workflow backing buys you:
+
+<RunThis>
+
+```bash title="Run 4 of 4: describe the pending Operation"
+temporal nexus operation describe \
+  --namespace approval-caller-namespace --operation-id approval-1
+```
+
+</RunThis>
+
+```
+  Operation       RequestApproval
+  Status          Running
+  State           Started
+  OperationToken  eyJ0IjoxLCJucyI6ImFwcHJvdmFsLWhhbmRsZXItbmFtZXNwYWNlIiwid2lkIjoiYXBwcm92YWwtbGFwdG9wLTQyIn0
+
+Links: 1
+
+  Link  temporal:///namespaces/approval-handler-namespace/workflows/approval-laptop-42/...
+```
+
+Two things in that output are worth reading. The Workflow Id is `approval-laptop-42`, derived from
+the item id as decided in [step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id).
+And the link points from the Operation to the approval Workflow in the handler Namespace, which the
+Nexus-aware Client attached without any code to do it.
+
+The approval stays open until something decides it. [Step 7](/develop/java/nexus/development-walkthrough?step=messaging)
+adds the Operation that does, and closes this one out.
 
 ## Handle failures
 

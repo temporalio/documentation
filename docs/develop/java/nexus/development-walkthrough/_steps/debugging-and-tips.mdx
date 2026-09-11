@@ -1,5 +1,25 @@
 Most Nexus problems are wiring problems, and they produce a small number of recognizable symptoms. Work from the symptom.
 
+## Pre-release build errors
+
+Two failures mean the development server is missing a setting rather than your code being wrong.
+Both settings are off by default and are covered in
+[Before you start](/develop/java/nexus/development-walkthrough?step=overview#start-the-development-server).
+
+**`Standalone Nexus operation is disabled`** comes back from `temporal nexus operation execute`,
+`start`, `describe`, and `result`. The server was started without
+`nexusoperation.enableStandalone=true`, so a Client cannot start an Operation without a caller
+Workflow. Operations called from a caller Workflow are unaffected, which is why this only shows up
+when running Operations from the command line.
+
+**`completion callbacks are not enabled for this namespace`** fails the `notifyRequester` Operation
+only. The server was started without `activity.enableCallbacks=true`, so a completion callback
+cannot attach to a Standalone Activity Execution. The other five Operations are unaffected.
+
+A stock Temporal CLI also does not have `temporal nexus operation` at all. If those commands are not
+in `temporal nexus --help`, you are on a released build rather than the pre-release one this
+walkthrough needs.
+
 ## The call hangs and nothing happens
 
 Three causes, in the order worth checking.
