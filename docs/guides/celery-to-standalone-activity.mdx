@@ -448,5 +448,5 @@ Useful next topics:
 
 If you plan to compare throughput against your Celery deployment, match the Worker poller configuration first. Celery
 prefetches several tasks per worker process by default (`worker_prefetch_multiplier`), while a Temporal Worker fetches
-per poll. We reccommend [poller autoscaling](/develop/worker-performance/configuration#configuring-poller-options) for 
+per poll. We recommend [poller autoscaling](/develop/worker-performance/configuration#configuring-poller-options) for 
 more efficient poller usage, better throughput, and schedule-to-start latency improvements.

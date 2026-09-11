@@ -206,7 +206,7 @@ You define the Activity and register it on an Activity Worker once. The same fun
 as a step in a Workflow, with no changes to your Activity code or your Worker. Start with background jobs, and add
 Workflow orchestration later without a rewrite.
 
-## Activity Options {/* #activity-options */}
+## Activity options {/* #activity-options */}
 
 You set Activity Options on the Client when you start the job. At minimum, specify a timeout - typically the
 [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
@@ -317,7 +317,7 @@ AWS Lambda support is in [Public Preview](/evaluate/development-production-featu
 GCP Cloud Run is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release). See
 [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
 
-## Standalone Activity vs. Workflow Activity
+## Standalone Activity versus Workflow Activity
 
 A Standalone Activity follows the same execution semantics as an Activity in a Workflow: it's queued, retried until it
 succeeds or its Schedule-To-Close Timeout elapses, and it requires idempotent Activity code. What differs is that it's

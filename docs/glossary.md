@@ -601,7 +601,6 @@ Standalone with no code changes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-
 #### [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)
 
 A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.
@@ -826,7 +825,7 @@ An in-memory cache on a Worker that holds the state of Workflow Executions it ha
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Activity](/activities#types-of-activity-execution)
+#### [Workflow Activity](/workflow-activity)
 
 A Workflow Activity is an Activity Execution orchestrated by a Workflow. Its results are persisted to the Workflow and
 Events are added to the Workflow Execution's Event History. Contrast with
