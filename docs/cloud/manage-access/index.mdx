@@ -17,10 +17,14 @@ Access to Temporal Cloud is governed by role-based access control (RBAC). Within
 as user, user group or service account, has one account-level role and optionally, one or more Namespace-level
 permissions. Each principal can only perform actions that are allowed by their assigned roles and permissions.
 
-Temporal Cloud supports Security Assertion Markup Language (SAML) and System for Cross-domain Identity Management (SCIM)
-for integration with your organization's identity provider (IdP). SAML enables single sign-on (SSO) by allowing your
-identity provider to authenticate users into Temporal Cloud. SCIM automatically creates, updates, and removes users and
-groups in Temporal Cloud based on changes in your identity provider.
+Temporal Cloud supports [Security Assertion Markup Language (SAML)](/cloud/manage-access/saml) and
+[System for Cross-domain Identity Management (SCIM)](/cloud/manage-access/scim) for integration with your organization's
+identity provider (IdP). SAML enables single sign-on (SSO) by allowing your identity provider to authenticate users into
+Temporal Cloud. SCIM automatically creates, updates, and removes users and groups in Temporal Cloud based on changes in
+your identity provider.
+
+To enforce shorter sessions for SAML-authenticated Cloud UI users, see
+[Restrict Cloud UI session lifetimes](/best-practices/security-controls#restrict-cloud-ui-session-lifetimes).
 
 ## Temporal Cloud accounts
 
