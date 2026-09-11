@@ -2,14 +2,13 @@
 id: sidekiq-to-standalone-activity
 title: Migrate a Sidekiq job queue to a Temporal Standalone Activity
 sidebar_label: Migrate from Sidekiq
-description: Migrate Sidekiq background jobs to a Temporal Standalone Activity.
-keywords:
-  - sidekiq
-  - standalone activities
-  - ruby
-  - migration
-  - background jobs
-  - temporal
+description: Migrate Sidekiq background jobs to a Temporal Standalone Activity for reliability and durable execution.
+tags:
+  - Migration
+  - Sidekiq
+  - Standalone Activities
+  - Ruby
+  - Workers
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
@@ -46,7 +45,7 @@ One difference stands out in that table: Sidekiq has no result backend, so a job
 
 Before you begin, you will need the following:
 
-- Ruby 3.2 or higher installed on your machine (3.3 or higher is recommended, since the Worker can then run on fibers).
+- Ruby 3.3 or higher installed on your machine.
 - The `temporalio` gem (the Temporal Ruby SDK). Standalone Activities are a recent addition, so install the latest version (added in Step 2).
 - Temporal Server v1.31.0 or higher (bundled with a recent Temporal CLI's development server).
 - The Temporal CLI, version 1.7.0 or higher (installed in Step 2).
@@ -66,6 +65,7 @@ Your project will grow into the following files as you work through the tutorial
 
 ```text
 temporal-standalone/
+├── welcome_email_helpers.rb # Shared job logic
 ├── my_activity.rb        # The Activity (your former Sidekiq job)
 ├── worker.rb             # Runs the Worker
 ├── execute_activity.rb   # Runs the Activity and waits for the result
@@ -131,17 +131,39 @@ Your application code will connect to `localhost:7233`. The Web UI at `http://lo
 
 In this step, you will take a Sidekiq job and rewrite it as a Temporal Activity. The work inside (network calls, database writes, file I/O) stays the same. You write a Standalone Activity exactly the way you would write any Temporal Activity; nothing about the class marks it as "standalone." What makes it standalone is how you invoke it, which you will do in Step 6.
 
-Consider a typical Sidekiq job that sends a welcome email. Its `welcome_email_job.rb` might look like this:
+Consider a typical Sidekiq job that sends a welcome email. First, extract its business logic into `welcome_email_helpers.rb`; both the existing Sidekiq job and the new Activity use these same helpers:
+
+```ruby
+# welcome_email_helpers.rb
+# A tiny stand-in for your user model.
+User = Struct.new(:user_id, :email)
+
+module WelcomeEmailHelpers
+  # Replace these with your real user lookup and mailer when you adapt this.
+  def get_user(user_id)
+    User.new(user_id, "user#{user_id}@example.com")
+  end
+
+  def deliver_email(address, subject)
+    puts "Delivering '#{subject}' to #{address}"
+  end
+end
+```
+
+Its `welcome_email_job.rb` can use that shared logic without changing the work it performs:
 
 ```ruby
 # Sidekiq version — welcome_email_job.rb
+require_relative "welcome_email_helpers"
+
 class WelcomeEmailJob
   include Sidekiq::Job
+  include WelcomeEmailHelpers
   sidekiq_options queue: "default", retry: 5
 
   def perform(user_id)
-    user = User.find(user_id)
-    UserMailer.welcome(user).deliver_now
+    user = get_user(user_id)
+    deliver_email(user.email, "Welcome!")
   end
 end
 ```
@@ -151,11 +173,11 @@ Create `my_activity.rb` and add the Temporal equivalent:
 ```ruby
 # my_activity.rb
 require "temporalio/activity"
-
-# A tiny stand-in for your user model.
-User = Struct.new(:user_id, :email)
+require_relative "welcome_email_helpers"
 
 class SendWelcomeEmail < Temporalio::Activity::Definition
+  include WelcomeEmailHelpers
+
   # Sidekiq jobs take simple, JSON-safe arguments. Here we accept a single
   # hash so you can add fields later without breaking callers. Use string
   # keys so values round-trip cleanly through Temporal's JSON conversion.
@@ -164,25 +186,12 @@ class SendWelcomeEmail < Temporalio::Activity::Definition
     deliver_email(user.email, "Welcome!")
     "sent to #{user.email}"
   end
-
-  private
-
-  # --- Mock helpers -------------------------------------------------------
-  # Replace these with your real user lookup and mailer when you adapt this.
-  def get_user(user_id)
-    User.new(user_id, "user#{user_id}@example.com")
-  end
-
-  def deliver_email(address, subject)
-    puts "Delivering '#{subject}' to #{address}"
-  end
-  # ------------------------------------------------------------------------
 end
 ```
 
 Two changes are worth noting. First, the retry configuration is gone: you no longer set `retry: 5`, because Temporal retries a failed Activity automatically. You will configure how it retries in Step 8. Second, the Activity is a class that extends `Temporalio::Activity::Definition` and implements `execute`, in place of a class that includes `Sidekiq::Job` and implements `perform`.
 
-The `User` struct and the two mock helpers let this file run end to end without a database or mailer. When you migrate your own job, swap `get_user` and `deliver_email` for your real implementations; the Activity itself does not change. Now you need a Worker to run it.
+The `User` struct and the two mock helpers let these files run end to end without a database or mailer. When you migrate your own job, keep its existing shared business logic (or swap these helpers for your real implementations); the Activity itself does not need special handling. Now you need a Worker to run it.
 
 ## Step 5: Run a Worker to process the Activity
 
@@ -254,11 +263,11 @@ You will see the Activity's return value:
 Result: sent to user42@example.com
 ```
 
-A couple of details are worth calling out. The `id` you provide is a business identifier you choose (an order number, a user identifier); Temporal uses it, along with the Id reuse and conflict policies, to guarantee the same Activity is not started twice, which is a built-in form of deduplication. Every Activity also requires a timeout — `start_to_close_timeout` (in seconds) caps how long one attempt may run, a safety net Sidekiq leaves to you.
+A couple of details are worth calling out. The `id` you provide is a business identifier you choose (an order number, a user identifier); Temporal uses it, along with the ID reuse and conflict policies, to guarantee that concurrent Activities cannot have the same ID, which is a built-in form of deduplication. Every Activity also requires a timeout — `start_to_close_timeout` (in seconds) caps how long one attempt may run, a safety net Sidekiq leaves to you.
 
 ## Step 7: Start an Activity in place of `perform_async`
 
-`perform_async` is Sidekiq's core call: it enqueues a job and returns immediately. The Temporal equivalent is `start_activity`, which durably enqueues the Activity and hands back a handle you can use later. In this step, you will start an Activity without blocking on it. (Note that the activity ID differs from Step 6 to avoid the deduplication effect described there.)
+`perform_async` is Sidekiq's core call: it enqueues a job and returns immediately. The Temporal equivalent is `start_activity`, which durably enqueues the Activity and hands back a handle you can use later. In this step, you will start an Activity without blocking on it.
 
 Create `start_activity.rb`:
 
@@ -386,7 +395,7 @@ welcome-email-async | SendWelcomeEmail | email-tasks
 Total activities: 2
 ```
 
-The `query` uses the same [List Filter](/list-filter) syntax as Workflow visibility, so you can filter by attributes such as `ActivityType` and `Status` — for example, `"ActivityType = 'SendWelcomeEmail' AND Status = 'Running'"`. Each `info` also exposes `status`, `schedule_time`, `close_time`, and `execution_duration` if you need them. These calls return only Standalone Activities; Activities running inside Workflows are excluded. The Temporal CLI offers the same views with `temporal activity list` and `temporal activity count`.
+The `query` uses the same [List Filter](/list-filter) syntax as Workflow visibility, so you can filter by attributes such as `ActivityType` and `ExecutionStatus` — for example, `"ActivityType = 'SendWelcomeEmail' AND ExecutionStatus = 'Running'"`. Each `info` also exposes `status`, `schedule_time`, `close_time`, and `execution_duration` if you need them. These calls return only Standalone Activities; Activities running inside Workflows are excluded. The Temporal CLI offers the same views with `temporal activity list` and `temporal activity count`.
 
 ## Step 10: When to use a Workflow
 
