@@ -49,17 +49,106 @@ Tracing allows you to view the call graph of a Workflow along with its Activitie
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
-To configure tracing in Python, install the `opentelemetry` dependencies.
+To configure tracing in Python, install the `opentelemetry` dependencies and an exporter for your tracing backend.
 
 ```bash
 # This command installs the `opentelemetry` dependencies.
 pip install temporalio[opentelemetry]
+# Any OpenTelemetry exporter works; this one speaks OTLP.
+pip install opentelemetry-exporter-otlp
 ```
 
-Then the [`temporalio.contrib.opentelemetry.TracingInterceptor`](https://python.temporal.io/temporalio.contrib.opentelemetry.TracingInterceptor.html) class can be set as an interceptor as an argument of [`Client.connect()`](https://python.temporal.io/temporalio.client.Client.html#connect).
+The Python SDK offers two ways to emit OpenTelemetry spans: the `OpenTelemetryPlugin`, which supports spans with real
+durations and the standard OpenTelemetry API inside Workflow code, and the earlier `TracingInterceptor`.
 
-When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
-Spans are created and serialized through the server to give one trace for a Workflow Execution.
+### Trace with the OpenTelemetry plugin
+
+The [`OpenTelemetryPlugin`](https://python.temporal.io/temporalio.contrib.opentelemetry.OpenTelemetryPlugin.html)
+propagates trace context across Client, Workflow, and Activity boundaries and lets Workflow code use the standard
+OpenTelemetry API. It requires a replay-safe tracer provider from
+[`create_tracer_provider()`](https://python.temporal.io/temporalio.contrib.opentelemetry.html#create_tracer_provider),
+set as the global tracer provider before you connect the Client.
+
+```python
+from opentelemetry import trace
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from temporalio.client import Client
+from temporalio.contrib.opentelemetry import OpenTelemetryPlugin, create_tracer_provider
+
+provider = create_tracer_provider()
+provider.add_span_processor(
+    BatchSpanProcessor(OTLPSpanExporter(endpoint="http://localhost:4318/v1/traces"))
+)
+trace.set_tracer_provider(provider)
+
+client = await Client.connect(
+    "localhost:7233",
+    plugins=[OpenTelemetryPlugin(add_temporal_spans=True)],
+)
+```
+
+Register the plugin on the Client only. Workers created from that Client inherit it. With `add_temporal_spans=True`,
+the plugin creates spans for Temporal operations: `StartWorkflow`, `RunWorkflow`, `StartActivity`, `RunActivity`,
+Signal, Query, and Update handlers, and Child Workflows. With the default `add_temporal_spans=False`, the plugin only
+propagates trace context, so spans you create yourself nest correctly without additional Temporal spans.
+
+Inside Workflow code, create spans with the regular tracer. The plugin allows the `opentelemetry` module through
+the Workflow sandbox.
+
+```python
+from datetime import timedelta
+
+from opentelemetry import trace
+from temporalio import workflow
+
+from my_activities import my_activity
+
+
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        with trace.get_tracer(__name__).start_as_current_span("prepare"):
+            return await workflow.execute_activity(
+                my_activity, name, start_to_close_timeout=timedelta(seconds=10)
+            )
+```
+
+Replay is safe. The provider generates span identifiers deterministically from Workflow state and does not export
+spans while a Workflow replays, so Worker restarts and cache evictions never produce duplicate spans. A span that is
+open when a Worker stops is exported once, when the Workflow finishes it on another Worker. Each Activity attempt
+produces its own `RunActivity` span, so retries stay visible.
+
+:::note
+
+`OpenTelemetryPlugin` and `create_tracer_provider()` are experimental and may change in future versions.
+
+:::
+
+For a complete example that sends agent traces to an observability backend, see the
+[OpenTelemetry section of the OpenAI Agents SDK guide](/develop/python/integrations/openai-agents#opentelemetry).
+
+### Trace with the interceptor
+
+The [`temporalio.contrib.opentelemetry.TracingInterceptor`](https://python.temporal.io/temporalio.contrib.opentelemetry.TracingInterceptor.html)
+class is the earlier integration. Set it as an interceptor as an argument of
+[`Client.connect()`](https://python.temporal.io/temporalio.client.Client.html#connect).
+
+```python
+from temporalio.client import Client
+from temporalio.contrib.opentelemetry import TracingInterceptor
+
+client = await Client.connect("localhost:7233", interceptors=[TracingInterceptor()])
+```
+
+When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the
+Worker. Spans are created and serialized through the server to give one trace for a Workflow Execution.
+
+The interceptor creates Workflow-side spans as completed spans with no duration, because an open span cannot
+survive replay. To add a custom span from Workflow code with the interceptor, use
+[`temporalio.contrib.opentelemetry.workflow.completed_span()`](https://python.temporal.io/temporalio.contrib.opentelemetry.workflow.html).
+For spans with real durations inside Workflows, use the plugin instead.
 
 ## Log from a Workflow {/* #logging */}
 
