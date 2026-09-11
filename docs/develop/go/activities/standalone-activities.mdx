@@ -73,7 +73,8 @@ temporal activity result --activity-id standalone_activity_helloworld_ActivityID
 Use `client.GetActivityHandle()` to create a handle to a previously started Standalone Activity. This is analogous to
 `client.GetWorkflow()` for Workflow Executions.
 
-Both `ActivityID` and `RunID` are required.
+`ActivityID` is required. `RunID` is optional. Leave it empty to target the latest Activity Execution with
+the given Activity Id.
 
 ```go
 handle := c.GetActivityHandle(client.GetActivityHandleOptions{
@@ -121,7 +122,7 @@ temporal activity list
 ```
 
 The `Query` field accepts the same [List Filter](/list-filter) syntax used for Workflow Visibility. For example,
-`"ActivityType = 'Activity' AND Status = 'Running'"`.
+`"ActivityType = 'Activity' AND ExecutionStatus = 'Running'"`.
 
 
 ## Count Standalone Activities {/* #count-activities */}
