@@ -2,7 +2,7 @@
 id: timeouts
 title: Activity Timeouts - PHP SDK
 sidebar_label: Timeouts
-description: Set Activity Timeouts and a Retry Policy with the Temporal PHP SDK, override the next retry delay, and Heartbeat long-running Activities.
+description: Set the Schedule-To-Close, Start-To-Close, and Heartbeat Timeouts on a PHP Activity, tune its Retry Policy, and override the next retry delay.
 toc_max_heading_level: 4
 tags:
   - Activities
@@ -151,7 +151,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 }
 ```
 
-#### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
+### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

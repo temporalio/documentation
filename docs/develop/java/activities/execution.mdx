@@ -1,8 +1,8 @@
 ---
 id: execution
 title: Activity execution - Java SDK
-description: Invoke Activities synchronously or asynchronously from a Java Workflow, set ActivityOptions and Timeouts, and read the ActivityExecutionContext.
-sidebar_label: Activity execution
+description: Shows how to perform Activity execution with the Java SDK
+sidebar_label: Activity Execution
 slug: /develop/java/activities/execution
 toc_max_heading_level: 3
 tags:
@@ -292,9 +292,6 @@ This or `StartToCloseTimeout` must be set.
 - Default: Unlimited.
   Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
 
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
 - With `ActivityStub`
 
   ```java
@@ -324,9 +321,6 @@ To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#s
 
 - Type: `Duration`
 - Default: Unlimited. This timeout is non-retryable.
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
 
 - With `ActivityStub`
 
@@ -363,9 +357,6 @@ This or `ScheduleToClose` must be set.
 - Type: `Duration`
 - Default: Defaults to [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) value
 
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
 - With `ActivityStub`
 
   ```java
@@ -396,9 +387,6 @@ To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat
 
 - Type: `Duration`
 - Default: None
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
 
 - With `ActivityStub`
 

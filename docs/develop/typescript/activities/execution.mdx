@@ -1,7 +1,7 @@
 ---
 id: execution
 title: Activity execution - TypeScript SDK
-description: Spawn an Activity Execution from a Workflow with the Temporal TypeScript SDK, set the required Activity Timeouts, and get the Activity's result.
+description: Shows how to perform Activity execution with the TypeScript SDK
 sidebar_label: Activity execution
 slug: /develop/typescript/activities/execution
 toc_max_heading_level: 3
@@ -50,10 +50,14 @@ also retry an Activity if it fails or times out. For this reason, you should wri
 [idempotent](/encyclopedia/activities/activity-definition.mdx#idempotency): calling them multiple times with the
 same input should have the same effect as calling them once.
 
-:::tip Every Activity call you make is recorded in the Workflow’s execution history, including the parameters you pass
+:::tip
+
+Every Activity call you make is recorded in the Workflow’s execution history, including the parameters you pass
 in and the value that comes back. This history is what allows Temporal to recover a Workflow after a failure. Because
 the entire history must be stored and replayed, avoid passing large objects as Activity inputs or return values. Keeping
-payloads small will help your Workflows replay and recover efficiently. :::
+payloads small will help your Workflows replay and recover efficiently.
+
+:::
 
 ## Set the required Activity Timeouts {/* #required-timeout */}
 
