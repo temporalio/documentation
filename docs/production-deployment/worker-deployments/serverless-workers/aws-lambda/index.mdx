@@ -20,6 +20,15 @@ import TabItem from '@theme/TabItem';
 
 This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on AWS Lambda.
 
+:::tip Try it locally
+
+To evaluate Serverless Workers with no AWS account, or to iterate on Worker code before deploying to AWS, run this whole
+flow on your machine with [LocalStack](https://www.localstack.cloud/) in place of AWS and the Temporal dev server in
+place of a Temporal Service. See
+[Test a Serverless Worker locally with LocalStack](/production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development).
+
+:::
+
 ## Prerequisites {/* #prerequisites */}
 
 - A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
