@@ -14,20 +14,11 @@ import { CaptionedImage } from '@site/src/components';
 
 This page discusses the following:
 
-- [Activity Definition](#activity-definition)
 - [Idempotency](#idempotency)
-- [Constraints](#activity-constraints)
 - [Parameters](#activity-parameters)
 - [Activity Type](#activity-type)
 
-In day-to-day conversation, the term _Activity_ denotes an [Activity Definition](/activity-definition), [Activity Type](/activity-definition#activity-type), or [Activity Execution](/activity-execution).
-Temporal documentation aims to be explicit and differentiate between them.
-
-## What is an Activity Definition? {/* #activity-definition */}
-
-An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/tasks#activity-task-execution).
-Activities encapsulate business logic that is prone to failure, allowing for automatic retries when issues occur.
-
+An Activity Definition is the code that gives rise to an [Activity Task Execution](/tasks#activity-task-execution).
 Below are examples of basic Activity Definitions across supported SDKs.
 
 <Tabs groupId="basic-activity-definition" queryString>
@@ -161,7 +152,7 @@ impl GreetingActivities {
 
 :::tip GET STARTED
 
-Develop an Activity Definition:
+Write an Activity Definition:
 [Go](/develop/go/activities/basics)
 | [Java](/develop/java/activities/basics)
 | [PHP](/develop/php/activities/basics)
@@ -173,31 +164,11 @@ Develop an Activity Definition:
 
 :::
 
-The term _Activity Definition_ is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition—the method or function that is invoked for an [Activity Task Execution](/tasks#activity-task-execution).
-Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
-
-Activity Definitions are named and referenced in code by their [Activity Type](/activity-definition#activity-type).
-
-<CaptionedImage
-    src="/diagrams/activity-definition.svg"
-    title="Activity Definition"
-    />
 
 ### Idempotency {/* #idempotency */}
 
 Temporal recommends that Activities be idempotent.
-
 Idempotence means that performing an operation multiple times has the same result as performing it once.
-In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
-
-Consider the power button on your laptop. When you press it, the machine is changed from one state to the other, from on to off, and vice versa. This is not an idempotent operation. Each invocation leads to a different state. However, imagine that you modified your laptop to have separate on and off buttons. Pressing the On button multiple times would have no effect beyond the initial invocation as the laptop is already on. This action is considered idempotent.
-
-<CaptionedImage
-  src="/diagrams/idempotence-image.png"
-/>
-
-Idempotency is an important design consideration in software applications as well. You have probably encountered idempotent operations in your work already.
-
 A few examples where idempotent operations are vital would be:
 
 - **Infrastructure-as-Code (IaC) tool** - Conserving resources is important when you're provisioning infrastructure in the cloud. An IaC system that was not designed with idempotence in mind could lead to high costs if the function to provision a new server was accidentally invoked multiple times. An IaC tool that is designed with idempotence in mind ensures that multiple invocations of the tool doesn't lead to unintended instances being created.
@@ -249,43 +220,27 @@ For example, Temporal will keep track of the [exponential backoff delay](/encycl
 For an Activity with a [Retry Policy](/encyclopedia/retry-policies) that allows retries, Temporal guarantees that the Activity will be observed as completed exactly once. However, the Activity may be executed multiple times and may even partially complete more than once during this process. This could lead to a scenario where certain parts of the Activity are executed multiple times before a successful execution is completed.
 
 :::caution
-Be cautious when doing retries within your Activity because it lengthens the needed Activity timeout. Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
+You should typically not write retry logic manually within your Activity Definition. It lengthens the needed Activity timeout, prevents users from counting failure metrics, and makes it harder for users to debug in Temporal UI when something is wrong.
 :::
 
-### Constraints {/* #activity-constraints */}
 
-Activity Definitions are executed as normal functions.
+### Activity Parameters {/* #activity-parameters */}
 
-In the event of failure, the function begins at its initial state when retried (except when Activity Heartbeats are established).
+An Activity Definition can use function/method parameters as usual for your language.
+When called from a Workflow, the parameter values and return value are recorded in the [Event History](/workflow-execution/event#event-history) of the Workflow Execution.
 
-Therefore, an Activity Definition has no restrictions on the code it contains.
 
-### Parameters {/* #activity-parameters */}
+## Activity Type {/* #activity-type */}
 
-An Activity Definition can support as many parameters as needed.
+An Activity Type is a name given to an Activity Definition.
+When starting an Activity, you can identify it by the name (Activity Type), or by a reference to its function/method/class (Activity Definition)
 
-All values passed through these parameters are recorded in the [Event History](/workflow-execution/event#event-history) of the Workflow Execution.
-Return values are also captured in the Event History for the calling Workflow Execution.
-
-Activity Definitions must contain the following parameters:
-
-- Context: an optional parameter that provides Activity context within multiple APIs.
-- Heartbeat: a notification from the Worker to the Temporal Service that the Activity Execution is progressing. Cancelations are allowed only if the Activity Definition permits Heartbeating.
-- Timeouts: intervals that control the execution and retrying of Activity Task Executions.
-
-Other parameters, such as [Retry Policies](/encyclopedia/retry-policies) and return values, can be seen in the implementation guides, listed in the next section.
-
-## What is an Activity Type? {/* #activity-type */}
-
-An Activity Type is the mapping of a name to an Activity Definition.
-
-Activity Types are scoped through Task Queues.
 
 ## Best practices for defining Activities
 
 Here are some best practices you can use when you are creating Activities for your Workflow:
 
-- Activity arguments and return values should be serializable.
+- Activity arguments and return values must be serializable.
 - Activities that perform writes should be idempotent.
-- Activities have [timeouts](/develop/python/activities/timeouts#activity-heartbeats) and [retry policies](/encyclopedia/retry-policies). For Activities, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
-- You need to specify at least one timeout, typically the [start_to_close timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [Activity retry policy section](#activity-retry-policy) to learn more.
+- Activities have [timeouts](/develop/python/activities/timeouts#activity-heartbeats) and [retry policies](/encyclopedia/retry-policies). For Activities, your operation should either complete within a few minutes or it should heartbeat. This way it will be clear to the Workflow when the Activity is still making progress.
+- You need to specify at least one timeout, typically the [start_to_close timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will detect a problem and retry. See the [Activity retry policy section](#activity-retry-policy) to learn more.
