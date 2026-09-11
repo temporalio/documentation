@@ -240,7 +240,7 @@ public class MyWorkflowImpl implements MyWorkflow {
 
 This pattern is a good fit when your Workflow calls a downstream service with explicit requests-per-second limits, when you need throughput enforcement that holds across many concurrent Workflow instances without per-Activity logic, and when only a subset of Activity types require throttling and others should run without restriction.
 
-It is not a good fit when you need concurrency limits rather than throughput limits (see [Priority Task Queues](/design-patterns/priority-task-queues)), when the downstream system has no rate limit and throughput is bounded only by Workflow logic, or when all Activities require the same limit and a single shared queue suffices.
+It is not a good fit when you need concurrency limits rather than throughput limits, when the downstream system has no rate limit and throughput is bounded only by Workflow logic, or when all Activities require the same limit and a single shared queue suffices.
 
 ## Benefits and trade-offs
 
@@ -284,8 +284,8 @@ The concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkf
 
 ### Patterns
 
-- **[Priority Task Queues](/design-patterns/priority-task-queues)**: Route work to separate queues by urgency, with different concurrency budgets per tier.
-- **[Fairness](/design-patterns/fairness)**: Give each tenant an equal throughput share when multiple tenants share capacity.
+- **[Priority](/design-patterns/priority-task-queues)**: Order Task dispatches by urgency within a shared Task Queue.
+- **[Fairness](/design-patterns/fairness)**: Distribute Task dispatches among tenants that share a Task Queue.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Route Activities to a specific Worker host for resource or data affinity.
 
 ### Guides

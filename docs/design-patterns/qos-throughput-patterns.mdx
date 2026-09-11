@@ -1,12 +1,12 @@
 ---
 id: qos-throughput-patterns
 title: "QoS & Throughput Patterns"
-description: "Pattern selection guide for controlling execution rate, protecting downstream services from overload, and ensuring fair capacity distribution across tenants."
+description: "Pattern selection guide for controlling execution rate, protecting downstream services from overload, and providing fair dispatch across tenants."
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
 
-These patterns control how fast work executes, protect downstream services from overload, and make sure no single caller or tenant monopolizes Worker capacity at the expense of others.
+These patterns control how fast work executes, protect downstream services from overload, and make sure no single caller or tenant dominates dispatch.
 
 ## Patterns in this section
 
@@ -20,14 +20,14 @@ These patterns control how fast work executes, protect downstream services from 
   {
     href: "/design-patterns/priority-task-queues",
     icon: "priority-task-queues-icon.svg",
-    title: "Priority Task Queues",
-    description: "Assigns a priority level to Workflows and Activities so time-sensitive work runs ahead of lower-priority work on the same Task Queue.",
+    title: "Priority",
+    description: "Assigns a priority level to Workflows and Activities so time-sensitive work dispatches ahead of lower-priority work on the same Task Queue.",
   },
   {
     href: "/design-patterns/fairness",
     icon: "fairness-icon.svg",
     title: "Fairness",
-    description: "Distributes Worker capacity evenly across tenants or users so a burst from one caller does not starve the others.",
+    description: "Distributes Task dispatches across tenants or users so a burst from one caller does not starve the others.",
   },
 ]} />
 
@@ -35,7 +35,7 @@ These patterns control how fast work executes, protect downstream services from 
 
 **A downstream dependency has a fixed rate limit**: use [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting) to cap throughput at the Worker.
 
-**Urgent work must not wait behind bulk work**: use [Priority Task Queues](/design-patterns/priority-task-queues).
+**Urgent work should move ahead of bulk work**: use [Priority](/design-patterns/priority-task-queues).
 
 **Multiple tenants share the same Workers**: use [Fairness](/design-patterns/fairness) to keep one tenant's burst from starving others.
 
