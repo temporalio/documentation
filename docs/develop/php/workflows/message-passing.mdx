@@ -352,8 +352,6 @@ An [Update](/sending-messages#sending-updates) is an operation that can mutate t
 
 ### Define Update {/* #define-update */}
 
-**How to define an Update using the PHP SDK.**
-
 Workflow Updates handlers are methods in your Workflow Definition designed to handle updates.
 These updates can be triggered during the lifecycle of a Workflow Execution.
 
@@ -370,8 +368,6 @@ public function myUpdate(string $value);
 ```
 
 ### Handle Update {/* #handle-updates */}
-
-**How to handle Updates in a Workflow using the PHP SDK.**
 
 Workflows listen for Update by the Update's name.
 
@@ -422,8 +418,6 @@ Workflow::registerUpdate(
 
 ### Validate Update {/* #validate-an-update */}
 
-**How to validate Updates in a Workflow using the PHP SDK.**
-
 Validate certain aspects of the data sent to the Workflow using an Update Validator method. For instance, a counter Workflow might never want to accept a non-positive number. Use the [`#[UpdateValidatorMethod]`](https://php.temporal.io/classes/Temporal-Workflow-UpdateValidatorMethod.html) attribute and set the `forUpdate` argument to the name of your Update handler. Your Update Validator should accept the same input parameters as your Update Handler and return `void`.
 
 ```php
@@ -441,8 +435,6 @@ interface GreetingWorkflow {
 ```
 
 ### Send Update from a Client {/* #send-update-from-client */}
-
-**How to send an Update to a Workflow Execution from a Temporal Client using the PHP SDK.**
 
 To send an Update to a Workflow Execution from a Client, call the Update method, annotated with `#[UpdateMethod]` in the Workflow interface, from the Client code.
 

@@ -34,8 +34,6 @@ Most .NET SDK samples use [xUnit](https://xunit.net/).
 
 ## Testing Workflows {/* #testing-workflows */}
 
-**How to test Workflow Definitions using the Temporal .NET SDK**
-
 Workflow testing can be done in an integration-test fashion against a real server, however it is hard to simulate timeouts and other long time-based code.
 Using the time-skipping Workflow test environment can help there.
 
@@ -241,8 +239,6 @@ Simply write different/empty/fake/asserting ones and pass those to the Worker to
 
 ## Testing Activities {/* #test-activities */}
 
-**How to test Activity Definitions using the Temporal .NET SDK**
-
 Unit testing an Activity or any code that could run in an Activity is done via the `Temporalio.Testing.ActivityEnvironment` class.
 Simply instantiate the class, and any code inside `RunAsync` will be invoked inside the activity context.
 The following important members are available on the environment to affect the activity context:
@@ -257,8 +253,6 @@ The following important members are available on the environment to affect the a
 - `PayloadConverter` - Defaulted to default payload converter.
 
 ## Replay test {/* #replay */}
-
-**How to do a Replay test using the Temporal .NET SDK**
 
 Given a Workflow's history, it can be replayed locally to check for things like non-determinism errors.
 For example, assuming the `history` parameter below is given a JSON string of history exported from the CLI or web UI, the following method will replay it:

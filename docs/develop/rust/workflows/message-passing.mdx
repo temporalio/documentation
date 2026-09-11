@@ -273,22 +273,14 @@ ctx.external_workflow("workflow-id-1", Some("run-id-1".into()))
 ### Signal-With-Start {/* #signal-with-start */}
 
 ```rust
-let signal_input = vec![ApproveInput {
-    name: "Ziggy".to_string(),
-}
-.as_json_payload()?]
-.into_payloads();
-
-let wf_handle = client.start_workflow(
+let wf_handle = client.signal_with_start_workflow(
     GreetingsWorkflow::run,
     (),
-    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10")
-        .start_signal(
-            WorkflowStartSignal::new("approve")
-                .maybe_input(signal_input)
-                .build(),
-        )
-        .build(),
+    GreetingsWorkflow::approve,
+    ApproveInput {
+        name: "Ziggy".to_string(),
+    },
+    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
 ).await?;
 ```
 
