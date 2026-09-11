@@ -94,7 +94,7 @@ After you exceed your Actions and Storage allocations in your base tier, Tempora
 Both models meter and bill for three primary components: [Actions](#action), [Storage](#storage), and [your Temporal Cloud Plan](/cloud/support#support).
 
 - With Pay-As-You-Go, you are invoiced each calendar month based on your consumption.
-  Pay-As-You-Go pricing automatically applies volume prices as your Actions scale.
+  On the Business plan and above, Pay-As-You-Go pricing automatically applies volume prices as your Actions scale.
 - With Commitments, you pre-purchase your Temporal Cloud spend with Temporal Credits.
   Temporal Credits pay for your Temporal Cloud consumption, including Temporal Cloud Plan charges.
 
@@ -108,23 +108,24 @@ This section explains how you're billed each calendar month and gives examples.
 ### Action pricing {/* #payg-action-pricing */}
 
 Actions pricing starts at &#36;50 per million Actions (&#36;0.00005 per Action).
-You gain progressive volume discounts as you scale on the Business, Enterprise and Mission Critical Plans.
+The Developer plan is billed at &#36;50 per million Actions at every volume.
+On the Business, Enterprise, and Mission Critical plans, you gain progressive volume discounts as you scale.
 Greater discounts are available through commitments.
 Discounts are based on your account's total usage, metered and billed for each calendar month:
 
-| Actions               | Price per Million Actions                                                                 |
-| --------------------- | ----------------------------------------------------------------------------------------- |
-| First 5M              | &#36;50                                                                                   |
-| Next 5M, up to 10M    | &#36;45                                                                                   |
-| Next 10M, up to 20M   | &#36;40                                                                                   |
-| Next 30M, up to 50M   | &#36;35                                                                                   |
-| Next 50M, up to 100M  | &#36;30                                                                                   |
-| Next 100M, up to 200M | &#36;25                                                                                   |
-| Over 200M             | Contact [Sales](mailto:sales@temporal.io) for info<br /> _More discounts, helpful humans_ |
+| Actions (Business, Enterprise, and Mission Critical) | Price per Million Actions                                                                 |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| First 5M                                             | &#36;50                                                                                   |
+| Next 5M, up to 10M                                   | &#36;45                                                                                   |
+| Next 10M, up to 20M                                  | &#36;40                                                                                   |
+| Next 30M, up to 50M                                  | &#36;35                                                                                   |
+| Next 50M, up to 100M                                 | &#36;30                                                                                   |
+| Next 100M, up to 200M                                | &#36;25                                                                                   |
+| Over 200M                                            | Contact [Sales](mailto:sales@temporal.io) for info<br /> _More discounts, helpful humans_ |
 
 **Example**
 
-If you consume 11.25M Actions in excess of your Temporal Cloud Plan allocation in one calendar month, your bill for Actions will be:
+If you are on the Business plan and consume 11.25M Actions in excess of your plan's allocation in one calendar month, your bill for Actions will be:
 
 ```
 5M Actions ⨉ $50 Per Million Actions = $250
@@ -226,7 +227,7 @@ Temporal Cloud offers two ways to roll-over unused credits:
 **How do I make a commitment and purchase Temporal Credits?**
 
 Contact our team at [sales@temporal.io](mailto:sales@temporal.io) or reach out to your dedicated account manager.
-You can also purchase Temporal Cloud commitments credits through [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo) and [GCP Marketplace](https://console.cloud.google.com/marketplace/product/temporal-public/temporal-cloud-pay-as-you-go).
+You can also purchase Temporal Cloud commitment credits through [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo) and [GCP Marketplace](https://console.cloud.google.com/marketplace/product/temporal-public/temporal-cloud-pay-as-you-go).
 
 ### Credit Balance
 
@@ -385,8 +386,7 @@ Our team is always happy to [help you estimate costs](https://pages.temporal.io/
 **What payment methods does Temporal accept?**
 
 You can pay with a credit card, ACH, or wire transfer.
-To pay for Temporal Cloud with an AWS or GCP Account. 
-Sign up in the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo) or [GCP Marketplace](https://console.cloud.google.com/marketplace/product/temporal-public/temporal-cloud-pay-as-you-go)
+To pay with an AWS or Google Cloud account, sign up in the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo) or [GCP Marketplace](https://console.cloud.google.com/marketplace/product/temporal-public/temporal-cloud-pay-as-you-go).
 
 **How often will I be billed?**
 
@@ -410,14 +410,15 @@ This means you only pay for what you use.
 For example, running a test Workflow with 10,000 Actions costs 10,000 ⨉ &#36;50 per million Actions = &#36;0.50, plus 10% for support, for a total of &#36;0.55.
 For tiers with included Actions and Storage, consumption in excess of your plan's allocations is billed on a consumption basis.
 
-**Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform Marketplace?**
+**Can I purchase Temporal Cloud through AWS Marketplace or Google Cloud Marketplace?**
 
-There are two ways to purchase Temporal Cloud through AWS Marketplace:
+Yes.
+Both marketplaces offer the same two purchase paths:
 
-- Pay-As-You-Go available from [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo) and [GCP Marketplace](https://console.cloud.google.com/marketplace/product/temporal-public/temporal-cloud-pay-as-you-go)
-- Credits: available via private offer, please contact our team at [sales@temporal.io](mailto:sales@temporal.io)
+- **Pay-As-You-Go**: subscribe directly in [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo) or [GCP Marketplace](https://console.cloud.google.com/marketplace/product/temporal-public/temporal-cloud-pay-as-you-go).
+- **Credits**: available via private offer. Contact our team at [sales@temporal.io](mailto:sales@temporal.io).
 
-To purchase Temporal Cloud on the Google Cloud Marketplace, please contact our team at [sales@temporal.io](mailto:sales@temporal.io).
+Billing goes through your AWS or Google Cloud account.
 
 **How do I see how many Temporal Cloud credits are remaining?**
 
