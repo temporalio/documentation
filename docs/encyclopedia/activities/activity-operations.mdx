@@ -250,14 +250,7 @@ Reset is handled cooperatively.
 - The reset request is delivered to the running attempt through the Activity's
   [Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat), if the Activity heartbeats.
 - Your Worker can accept the request and stop processing the current attempt, or carry on and complete the Activity
-  successfully. To write Activity code that responds to the request, see "Respond to interruption requests in Activity
-  code" for your SDK:
-  [Go](/develop/go/activities/standalone-activities#interruption-requests),
-  [Java](/develop/java/activities/standalone-activities#interruption-requests),
-  [Python](/develop/python/activities/standalone-activities#interruption-requests),
-  [TypeScript](/develop/typescript/activities/standalone-activities#interruption-requests),
-  [.NET](/develop/dotnet/activities/standalone-activities#interruption-requests),
-  [Ruby](/develop/ruby/activities/standalone-activities#interruption-requests).
+  successfully.
 - The Temporal Service processes the reset once the current attempt finishes, including by hitting its
   [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). A new attempt then
   starts and a new Activity Task is dispatched to a Worker.
