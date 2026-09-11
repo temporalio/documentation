@@ -1,0 +1,64 @@
+---
+id: index
+title: Nexus Microservice Development Walkthrough - Java SDK
+sidebar_label: Microservice Development Walkthrough
+description: Build a Nexus Service end to end in Java, starting from a data contract and adding one Nexus capability at a time to solve a purchase approval problem.
+hide_table_of_contents: true
+tags:
+  - Nexus
+  - Java SDK
+  - Temporal SDKs
+---
+
+import NexusMicroserviceWalkthrough, { WalkthroughStep } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+import Overview from './_steps/overview.mdx';
+import DefineTheDataContract from './_steps/define-the-data-contract.mdx';
+import GenerateCode from './_steps/generate-code.mdx';
+import ChooseBackingImplementation from './_steps/choose-backing-implementation.mdx';
+import ImplementTheService from './_steps/implement-the-service.mdx';
+import PublishInNexus from './_steps/publish-in-nexus.mdx';
+import CallTheService from './_steps/call-the-service.mdx';
+import AddMessaging from './_steps/add-messaging.mdx';
+import SendMessages from './_steps/send-messages.mdx';
+import AddAStandaloneActivity from './_steps/add-a-standalone-activity.mdx';
+import CallTheStandaloneActivity from './_steps/call-the-standalone-activity.mdx';
+import DebuggingAndTips from './_steps/debugging-and-tips.mdx';
+
+<NexusMicroserviceWalkthrough title="Microservice Walkthrough">
+  <WalkthroughStep id="overview" label="Overview" numbered={false}>
+    <Overview />
+  </WalkthroughStep>
+  <WalkthroughStep id="contract" label="Contract">
+    <DefineTheDataContract />
+  </WalkthroughStep>
+  <WalkthroughStep id="generate" label="Generate">
+    <GenerateCode />
+  </WalkthroughStep>
+  <WalkthroughStep id="backing" label="Backing">
+    <ChooseBackingImplementation />
+  </WalkthroughStep>
+  <WalkthroughStep id="implement" label="Implement">
+    <ImplementTheService />
+  </WalkthroughStep>
+  <WalkthroughStep id="publish" label="Publish">
+    <PublishInNexus />
+  </WalkthroughStep>
+  <WalkthroughStep id="call" label="Call">
+    <CallTheService />
+  </WalkthroughStep>
+  <WalkthroughStep id="messaging" label="Messaging">
+    <AddMessaging />
+  </WalkthroughStep>
+  <WalkthroughStep id="send" label="Send">
+    <SendMessages />
+  </WalkthroughStep>
+  <WalkthroughStep id="activity" label="Activity">
+    <AddAStandaloneActivity />
+  </WalkthroughStep>
+  <WalkthroughStep id="call-activity" label="Finish">
+    <CallTheStandaloneActivity />
+  </WalkthroughStep>
+  <WalkthroughStep id="tips" label="Tips" numbered={false}>
+    <DebuggingAndTips />
+  </WalkthroughStep>
+</NexusMicroserviceWalkthrough>

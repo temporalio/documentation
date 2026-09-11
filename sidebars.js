@@ -107,6 +107,8 @@ const developDotnetCategory = {
           'develop/dotnet/nexus/quickstart',
           'develop/dotnet/nexus/feature-guide',
           'develop/dotnet/nexus/standalone-operations',
+          'develop/dotnet/nexus/temporal-operation-handler',
+          'develop/dotnet/nexus/activity-backed-operations',
         ],
       },
       {
@@ -259,6 +261,9 @@ const developGoCategory = {
           'develop/go/nexus/quickstart',
           'develop/go/nexus/feature-guide',
           'develop/go/nexus/standalone-operations',
+          'develop/go/nexus/temporal-operation-handler',
+          'develop/go/nexus/client-code-generator',
+          'develop/go/nexus/activity-backed-operations',
         ],
       },
       {
@@ -421,6 +426,10 @@ const developJavaCategory = {
           'develop/java/nexus/quickstart',
           'develop/java/nexus/feature-guide',
           'develop/java/nexus/standalone-operations',
+          'develop/java/nexus/temporal-operation-handler',
+          'develop/java/nexus/client-code-generator',
+          'develop/java/nexus/activity-backed-operations',
+          'develop/java/nexus/development-walkthrough/index',
         ],
       },
       {
@@ -665,6 +674,9 @@ const developPythonCategory = {
           'develop/python/nexus/quickstart',
           'develop/python/nexus/feature-guide',
           'develop/python/nexus/standalone-operations',
+          'develop/python/nexus/temporal-operation-handler',
+          'develop/python/nexus/client-code-generator',
+          'develop/python/nexus/activity-backed-operations',
         ],
       },
       {
@@ -1077,6 +1089,9 @@ const developTypeScriptCategory = {
           'develop/typescript/nexus/quickstart',
           'develop/typescript/nexus/feature-guide',
           'develop/typescript/nexus/standalone-operations',
+          'develop/typescript/nexus/temporal-operation-handler',
+          'develop/typescript/nexus/client-code-generator',
+          'develop/typescript/nexus/activity-backed-operations',
         ],
       },
       {
@@ -2110,6 +2125,9 @@ module.exports = {
           },
           items: [
             'encyclopedia/nexus/nexus-services',
+            'encyclopedia/nexus/temporal-operation-handler',
+            'encyclopedia/nexus/nexus-client-code-generator',
+            'encyclopedia/nexus/nexus-standalone-activity',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
