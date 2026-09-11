@@ -1,0 +1,187 @@
+.secondaryNav {
+  --secondary-nav-accent: var(--interactive-primary-surface, #444ce7);
+  --secondary-nav-gradient: linear-gradient(255.4deg, #444ce7 0%, #b664ff 100%);
+  --secondary-nav-surface: var(--ifm-navbar-background-color);
+
+  position: sticky;
+  top: var(--navbar-primary-height);
+  z-index: 150;
+  height: var(--secondary-nav-height);
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+  font-size: 0.875rem;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--ifm-navbar-padding-horizontal);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.inner::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--ifm-navbar-link-color);
+  text-decoration: none;
+  transition:
+    color 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.tab:hover {
+  text-decoration: none;
+}
+
+/* POC scaffolding. Delete with the unused variants. */
+.pickers {
+  display: flex;
+  gap: 0.375rem;
+  margin-left: auto;
+  padding-left: 1rem;
+}
+
+.picker {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  color: var(--ifm-color-emphasis-600);
+  background: transparent;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* A. Underline ----------------------------------------------------------- */
+
+.underline .tabs {
+  gap: 1.75rem;
+}
+
+.underline .tab {
+  height: var(--secondary-nav-height);
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+}
+
+.underline .tab:hover {
+  color: var(--ifm-navbar-link-hover-color);
+}
+
+.underline .tabActive,
+.underline .tabActive:hover {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* B. Segmented. Keep the two-background ring: a masked pseudo-element fills
+ * solid in production, autoprefixer drops mask-composite. */
+
+.segmented .group {
+  display: inline-flex;
+  gap: 0.5rem;
+  padding: 0.3125rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--secondary-nav-surface), var(--secondary-nav-surface)) padding-box,
+    var(--secondary-nav-gradient) border-box;
+}
+
+.segmented .tab {
+  padding: 0.4375rem 1.5rem;
+  border-radius: 999px;
+}
+
+.segmented .tab:hover {
+  color: var(--ifm-navbar-link-hover-color);
+}
+
+.segmented .tabActive,
+.segmented .tabActive:hover {
+  color: #fff;
+  background: var(--secondary-nav-accent);
+}
+
+/* Surfaces --------------------------------------------------------------- */
+
+/* Surfaces stay opaque: the bar is sticky over the doc sidebar's right border
+ * and the page content. Each sets --secondary-nav-surface so the segmented
+ * ring's inner fill matches the bar. */
+
+.surfaceFlush {
+  --secondary-nav-surface: var(--ifm-navbar-background-color);
+
+  background: var(--secondary-nav-surface);
+}
+
+.surfaceRaised {
+  --secondary-nav-surface: #f4f5f7;
+
+  background: var(--secondary-nav-surface);
+}
+
+.surfaceTint {
+  --secondary-nav-surface: #f6f6fe;
+
+  background: var(--secondary-nav-surface);
+}
+
+.surfaceGradient {
+  --secondary-nav-surface: #ecedfd;
+
+  background: linear-gradient(90deg, #ecedfd 0%, #fbf5ff 100%);
+}
+
+.surfaceInk {
+  --secondary-nav-surface: #0d0f1c;
+
+  background: var(--secondary-nav-surface);
+  border-bottom-color: transparent;
+}
+
+.surfaceInk .tab {
+  color: rgb(255 255 255 / 72%);
+}
+
+.surfaceInk .tab:hover,
+.surfaceInk.underline .tabActive {
+  color: #fff;
+}
+
+.surfaceInk.underline .tabActive {
+  border-bottom-color: #fff;
+}
+
+.surfaceInk .picker {
+  color: rgb(255 255 255 / 60%);
+  border-color: rgb(255 255 255 / 20%);
+}
+
+[data-theme='dark'] .surfaceRaised {
+  --secondary-nav-surface: #14141a;
+}
+
+[data-theme='dark'] .surfaceTint {
+  --secondary-nav-surface: #0b0c25;
+}
+
+[data-theme='dark'] .surfaceGradient {
+  --secondary-nav-surface: #131541;
+
+  background: linear-gradient(90deg, #131541 0%, #1a0f26 100%);
+}
