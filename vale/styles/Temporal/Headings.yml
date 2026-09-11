@@ -215,8 +215,13 @@ exceptions:
   - Grafana
   # AI vendor and model-platform proper nouns
   - AI
+  - Arize
   - Google
   - Gemini
+  - OpenAI
+  - OpenInference
+  - OTLP
+  - Phoenix
   - Vertex
   # Temporal product/site section proper nouns (exact phrase, not the individual words)
   - AI Cookbook
