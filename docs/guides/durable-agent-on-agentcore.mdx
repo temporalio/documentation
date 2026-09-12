@@ -65,7 +65,6 @@ Place state according to how long it must remain available:
 |---|---|
 | Execution progress and bounded working context | Temporal Workflow |
 | Large or unbounded conversation content, uploads, and artifacts | Durable external storage, with stable references in the Workflow |
-| Knowledge shared across conversations, such as user preferences | [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html), accessed from an Activity |
 | Temporary caches and Code Interpreter files | AgentCore Runtime or tool session, when the application can tolerate losing them |
 
 For clarity, this sample keeps its complete Strands message list in Workflow state. That works for a bounded
