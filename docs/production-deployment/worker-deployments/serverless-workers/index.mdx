@@ -15,10 +15,9 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="publicPreview">
-  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
-  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/cloud/support#support-ticket) or
-  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
-  when Cloud Run reaches Public Preview.
+  AWS Lambda support is in Public Preview. Support for GCP Cloud Run and Amazon Bedrock AgentCore Runtime is in
+  Pre-release, and their APIs may change in backwards-incompatible ways. To request access, create a
+  [support ticket](/cloud/support#support-ticket) or contact your account team.
 </ReleaseNoteHeader>
 
 Serverless Workers let you run Temporal Workers on serverless compute. Deploy your Worker code to a serverless provider,
@@ -27,9 +26,8 @@ work on the Task Queue. There is no always-on Worker fleet to provision or scale
 
 Temporal monitors Task Queues that have a compute provider configured. When a Task arrives and no Worker is free to take
 it, the [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) starts compute. How it starts
-compute is where the providers differ. On AWS Lambda the WCI invokes a function per unit of work, and the Worker exits
-when the invocation window ends. On GCP Cloud Run it resizes a Worker Pool of long-lived instances that poll
-continuously.
+compute is where the providers differ. On AWS Lambda and AgentCore Runtime, the WCI invokes compute in response to
+unmet Task Queue demand. On GCP Cloud Run, it resizes a Worker Pool of long-lived instances that poll continuously.
 
 ## Supported providers
 
@@ -38,3 +36,6 @@ continuously.
 - [**GCP Cloud Run**](/production-deployment/worker-deployments/serverless-workers/cloud-run) - Deploy a Serverless
   Worker to a Cloud Run Worker Pool. Temporal impersonates a service account in your GCP project to scale the pool as
   Tasks arrive and drain.
+- [**Amazon Bedrock AgentCore Runtime**](/production-deployment/worker-deployments/serverless-workers/agentcore) -
+  Deploy a Serverless Worker to AgentCore Runtime. Temporal assumes an IAM role in your AWS account to invoke the
+  Runtime endpoint as Tasks arrive.

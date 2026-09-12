@@ -1,0 +1,109 @@
+---
+id: serverless-workers-agentcore
+title: Serverless Workers on Amazon Bedrock AgentCore Runtime
+sidebar_label: Amazon Bedrock AgentCore
+description:
+  How Serverless Workers run on Amazon Bedrock AgentCore Runtime, including Worker Versioning and Runtime session
+  lifecycle.
+slug: /serverless-workers/agentcore
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Concepts
+  - Serverless
+  - Amazon Bedrock AgentCore
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+</ReleaseNoteHeader>
+
+This page covers how Serverless Workers run on Amazon Bedrock AgentCore Runtime, including Worker Versioning and the
+Runtime session lifecycle.
+
+To deploy a Worker, see
+[Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore).
+
+On AgentCore Runtime, a Serverless Worker is a standard long-running Temporal Worker that runs inside an AgentCore
+Runtime session. When the [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) needs
+capacity, it invokes an AgentCore Runtime endpoint. The Runtime starts a Worker, which connects to the Temporal Service
+and polls its Task Queue.
+
+## Autoscaling {/* #autoscaling */}
+
+AgentCore Runtime uses the same event-driven autoscaling model as AWS Lambda. The WCI invokes individual Runtime
+sessions when it needs more capacity. It does not manage a target-sized pool of Runtime sessions. For the shared
+autoscaling behavior, see [Autoscaling for Serverless Workers on AWS Lambda](/serverless-workers/aws-lambda#autoscaling).
+
+## Worker Versioning {/* #worker-versioning */}
+
+Serverless Workers require [Worker Versioning](/worker-versioning). Associate each Worker Deployment Version with a
+named AgentCore Runtime endpoint that points to one AgentCore Runtime version.
+
+AgentCore creates an immutable Runtime version when you create or update a Runtime. A named endpoint has a stable ARN
+and points to a chosen Runtime version. Configure the endpoint ARN as the compute provider for the corresponding Worker
+Deployment Version:
+
+```bash
+temporal worker deployment create-version \
+    --deployment-name my-worker \
+    --build-id v1 \
+    --aws-agentcore-endpoint-arn <AGENTCORE_RUNTIME_ENDPOINT_ARN> \
+    --aws-agentcore-assume-role-arn <INVOKE_ROLE_ARN> \
+    --aws-agentcore-assume-role-external-id <EXTERNAL_ID>
+```
+
+Use one named endpoint for each Worker Deployment Version. For example, point an endpoint named `temporal-v1` at
+AgentCore Runtime version `1` and use its ARN for Temporal Worker Deployment Version `my-worker/v1`.
+
+When you deploy new Worker code, AgentCore creates a new Runtime version. Create another endpoint that points to that
+new Runtime version and configure it on a new Worker Deployment Version. Keep the older endpoint while Pinned
+Workflows can still need the older Worker code.
+
+:::caution
+
+Do not configure a live Worker Deployment Version with AgentCore's `DEFAULT` endpoint. That endpoint moves to the
+latest Runtime version whenever you update the Runtime. Updating code behind a Worker Deployment Version can cause
+non-determinism errors for in-flight Workflows, including Pinned Workflows.
+
+:::
+
+For details about AgentCore Runtime versions and endpoints, see [AgentCore Runtime versioning and
+endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-runtime-versioning.html).
+
+## Lifecycle {/* #lifecycle */}
+
+An AgentCore Runtime session is the compute that runs a Worker, not a durable place to store Workflow state. AgentCore
+can resume a session on new compute after the previous compute ends, and a later Task can run on another Worker. Keep
+state that a Workflow needs in the Workflow or another durable store.
+
+Unlike an AWS Lambda Worker, an AgentCore Worker does not have a fixed Lambda invocation deadline. Your Runtime handler
+starts the Worker as background work. The Worker polls until it drains or AgentCore ends its compute.
+
+Two sets of controls determine when that Worker stops:
+
+- **Worker idle and graceful-shutdown policy**: Your Worker implementation decides when it has been idle, stops
+  polling, and waits for in-flight Activities to complete.
+- **AgentCore lifecycle settings**: AgentCore can end the session or its compute before the Worker policy does.
+
+The AgentCore lifecycle settings are:
+
+- **Idle Runtime session timeout**: Ends a Runtime session after it has not received an AgentCore Runtime invocation for
+  the configured duration. The default is 15 minutes. This is not a Temporal Worker idle timer: polling the Temporal
+  Service does not reset it.
+- **Maximum lifetime**: Ends the compute running a Runtime session after the configured duration. The default and
+  maximum is 8 hours. AgentCore can resume the session on new compute after that.
+
+AgentCore's session idle timeout does not replace a Worker idle policy. It resets with AgentCore Runtime invocations
+and does not measure Task Queue activity. To control how long an unused Worker polls, implement a separate shutdown
+policy: when its idle condition is met, stop polling and drain in-flight Activities before the Runtime handler returns.
+Choose the idle period and drain timeout for your workload, and account for the AgentCore maximum lifetime.
+
+Configure Activity timeouts and, for long-running Activities,
+[Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so a retry can recover if AgentCore
+ends the compute before an Activity completes.
+
+For the lifecycle setting ranges and defaults, see [Configure Amazon Bedrock AgentCore lifecycle
+settings](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-lifecycle-settings.html).
