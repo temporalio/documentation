@@ -1,13 +1,14 @@
 ---
 id: activity-execution
 title: Activity Execution
-description: Understand how Activity Executions work in Temporal, including retries, timeouts, and failure handling.
+description: Learn how to start an Activity as a durable Activity Execution with built-in retries, timeouts, and failure handling.
 slug: /activity-execution
 toc_max_heading_level: 4
 tags:
   - Concepts
   - Activities
   - Durable Execution
+  - Job Queue
 ---
 
 import { CaptionedImage } from '@site/src/components';
@@ -15,27 +16,88 @@ import { CaptionedImage } from '@site/src/components';
 This page discusses the following:
 
 - [Activity Execution](#activity-execution)
+- [Activity Execution Lifecycle](#activity-execution-lifecycle)
 - [Cancellation](#cancellation)
 - [Activity Id](#activity-id)
 - [Asynchronous Activity Completion](#asynchronous-activity-completion)
 - [Task Token](#task-token)
 
-## What is an Activity Execution? {/* #activity-execution */}
 
-An Activity Execution is the full chain of [Activity Task Executions](/tasks#activity-task-execution).
+When an Activity caller starts an [Activity](/activities), an Activity Execution is created that orchestrates its full lifecycle, including retries.
 
-:::info
+[Workflow Activities](/workflow-activity) and [Standalone Activities](/standalone-activity) are durable Activity Executions that live in the Temporal Service.
+They [dispatch Tasks to Activity Workers using an Activity Task Queue](/activity-execution#activity-execution-lifecycle) and collect results to determine next steps.
 
-- [How to start an Activity Execution using the Go SDK](/develop/go/activities/execution)
-- [How to start an Activity Execution using the Java SDK](/develop/java/activities/execution)
-- [How to start an Activity Execution using the PHP SDK](/develop/php/activities/execution)
-- [How to start an Activity Execution using the Python SDK](/develop/python/activities/execution)
-- [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/activities/execution)
-- [How to start an Activity Execution using the .NET SDK](/develop/dotnet/activities/execution)
-- [How to start an Activity Execution using the Ruby SDK](/develop/ruby/activities/execution)
-- [How to start an Activity Execution using the Rust SDK](/develop/rust/activities/execution)
+## How can an Activity be invoked? {/* #activity-execution */}
+
+Once an Activity function has been [defined and registred in a Worker](/activity-definition) it can be invoked in different ways.
+
+### Workflow Activity Executions {/* #workflow-activity-executions */}
+
+A [Workflow Activity](/workflow-activity) is started as a step in a Workflow using the Temporal SDK and its lifetime is scoped to the Workflow.
+The Workflow schedules the Activity, and the result is delivered back to the Workflow when the
+Activity Execution closes. Each step is recorded in the Workflow Execution's
+[Event History](/workflow-execution/event), for example the
+Workflow [ActivityTaskCompleted](/references/events#activitytaskcompleted) Event. For other related Events, see
+[Workflow Activity Events](/workflow-execution/event#activity-events).
+
+:::tip GET STARTED
+
+Start a Workflow Activity:
+[Go](/develop/go/activities/execution)
+| [Java](/develop/java/activities/execution)
+| [PHP](/develop/php/activities/execution)
+| [Python](/develop/python/activities/execution)
+| [TypeScript](/develop/typescript/activities/execution)
+| [.NET](/develop/dotnet/activities/execution)
+| [Ruby](/develop/ruby/activities/execution)
+| [Rust](/develop/rust/activities/execution)
 
 :::
+
+### Standalone Activity Executions {/* #standalone-activity-executions */}
+
+A [Standalone Activity](/standalone-activity) is an independent top-level execution, started directly by a Temporal SDK [Client](/encyclopedia/temporal-client), with its own lifetime.
+ The Client gets a handle and
+fetches the result through it.
+Because there's no Workflow, there is no Workflow Event History.
+Standalone Activities use a [separate Id space](/standalone-activity#deduplication-and-id-space-uniqueness) for deduplication and uniqueness and provide full [visibility](/standalone-activity#visibility) and [lifecycle control](/standalone-activity#lifecycle-control).
+
+
+| | [Standalone Activity](/standalone-activity) | [Workflow Activity](/workflow-activity) |
+| --- | --- | --- |
+| Started by | [Client](/encyclopedia/temporal-client) | Workflow code |
+| Lifetime | Independent top-level execution | Scoped to the Workflow Run |
+| Result delivered to | The Client, through a handle | The Workflow |
+| Recorded in Event History | No Workflow, so no Event History | Yes |
+| Activity Id space | [Separate Id space](/standalone-activity#deduplication-and-id-space-uniqueness) | Scoped to the Workflow Run |
+| Best for | [Durable job processing](/evaluate/development-production-features/job-queue) | Multi-step orchestration |
+
+:::tip GET STARTED
+
+Start a Standalone Activity:
+[Go](/develop/go/activities/standalone-activities-quickstart#execute-activity)
+| [Python](/develop/python/activities/standalone-activities-quickstart#execute-a-standalone-activity)
+| [Java](/develop/java/activities/standalone-activities-quickstart#execute-activity)
+| [.NET](/develop/dotnet/activities/standalone-activities-quickstart#execute-activity)
+| [TypeScript](/develop/typescript/activities/standalone-activities-quickstart#execute-activity-type-checking)
+| [Ruby](/develop/ruby/activities/standalone-activities-quickstart#execute-activity)
+
+:::
+
+### Local Activity Executions {/* #local-activity-executions */}
+
+When specific performance optimizations are more important than full durability, an Activity may be executed in the same process as a Workflow (a [Local Activity](/local-activity)), bypassing the regular Activity Execution and Task Queue.
+
+:::tip
+
+[Local Activities](/local-activity) are not a replacement for regular Activities, since they bypass the regular Activity Execution lifecycle and lack full durability.
+
+:::
+
+## Activity Execution lifecycle
+
+[Workflow Activities](/workflow-activity) and [Standalone Activities](/standalone-activity) use the regular Activity Execution lifecycle, which includes the full chain of [Activity Task Executions](/tasks#activity-task-execution).
 
 <CaptionedImage src="/diagrams/activity-execution.svg" title="Activity Execution" />
 
@@ -111,8 +173,7 @@ an Activity Id if an earlier Activity Execution with the same Id has closed.)
 
 An Activity Id can be used to [complete the Activity asynchronously](#asynchronous-activity-completion).
 
-[Standalone Activities](/standalone-activity) have a separate ID space from Workflows and other Temporal primitives.
-This means use of conflict policy (`USE_EXISTING`, …) and reuse policy (`REJECT_DUPLICATES`, …) will only observe the Standalone Activity ID space.
+[Standalone Activities](/standalone-activity) have a [separate Id space](/standalone-activity#deduplication-and-id-space-uniqueness) from [the Workflow Id space](/workflow-execution/workflowid-runid) for deduplication and uniqueness.
 
 ## What is Asynchronous Activity Completion? {/* #asynchronous-activity-completion */}
 
@@ -120,15 +181,18 @@ Asynchronous Activity Completion is a feature that enables an Activity Function 
 Execution to complete. The Temporal Client can then be used from anywhere to both Heartbeat Activity Execution progress
 and eventually complete the Activity Execution and provide a result.
 
-How to complete an Activity Asynchronously in:
+:::tip GET STARTED
 
-- [.NET](/develop/dotnet/activities/asynchronous-activity)
-- [Go](/develop/go/activities/asynchronous-activity)
-- [Java](/develop/java/activities/asynchronous-activity)
-- [PHP](/develop/php/activities/asynchronous-activity)
-- [Python](/develop/python/activities/asynchronous-activity)
-- [Ruby](/develop/ruby/activities/asynchronous-activity)
-- [TypeScript](/develop/typescript/activities/asynchronous-activity)
+Complete an Activity Asynchronously:
+[Go](/develop/go/activities/asynchronous-activity)
+| [Java](/develop/java/activities/asynchronous-activity)
+| [PHP](/develop/php/activities/asynchronous-activity)
+| [Python](/develop/python/activities/asynchronous-activity)
+| [TypeScript](/develop/typescript/activities/asynchronous-activity)
+| [.NET](/develop/dotnet/activities/asynchronous-activity)
+| [Ruby](/develop/ruby/activities/asynchronous-activity)
+
+:::
 
 ### When to use Async Completion
 

@@ -3,21 +3,27 @@ id: activities
 title: What is a Temporal Activity?
 sidebar_label: Activities
 description:
-  Understand Temporal Activities, including  Activity Definitions, Types, Executions, idempotency, cancellations, Local Activities, and
-  Standalone Activities.
+  Learn how Temporal turns a plain function you write into a Temporal Activity and durably executes it as a Workflow step or background job.
 slug: /activities
 toc_max_heading_level: 4
 tags:
   - Concepts
   - Activities
   - Durable Execution
+  - Job Queue
 ---
 
 import { Video } from '@site/src/components';
 
-This guide provides a comprehensive overview of Temporal Activities including
-[Activity Definition](/activity-definition), [Activity Type](/activity-definition#activity-type),
-[Activity Execution](/activity-execution), [Local Activity](/local-activity), and [Standalone Activity](/standalone-activity).
+An Activity is a normal function or method (an [Activity Definition](/activity-definition)) that executes a single, well-defined action
+(either short or long running), such as calling another service, transcoding a media file, or sending an email message.
+
+Activity functions are registered by name (an [Activity Type](/activity-definition#activity-type)) on a Worker that polls a Task Queue for Activity Tasks to run.
+Activity code can do whatever you want, use any library or package, and otherwise be non-deterministic.
+We recommend that it be [idempotent](/activity-definition#idempotency), so retries can be processed without duplicate side effects.
+
+Activities are started as a step in a Workflow (a [Workflow Activity](/workflow-activity)) or as a [Standalone Activity](/standalone-activity) that runs independently for [background job processing](/evaluate/development-production-features/job-queue).
+This creates a durable [Activity Execution](/activity-execution) in Temporal that orchestrates the full lifecycle of an Activity, dispatching Tasks to the Activity Worker using its Task Queue and collecting results to determine next steps.
 
 :::tip
 
@@ -27,10 +33,6 @@ Watch a short overview of what an Activity is in Temporal:
 
 :::
 
-An Activity is a normal function or method that executes a single, well-defined action (either short or long running),
-such as calling another service, transcoding a media file, or sending an email message. Activity code can be
-non-deterministic. We recommend that it be [idempotent](/activity-definition#idempotency).
-
 Activities are the most common Temporal primitive and encompass small units of work such as:
 
 - Single write operations, like updating user information or submitting a credit card payment
@@ -38,16 +40,16 @@ Activities are the most common Temporal primitive and encompass small units of w
 - One or more read operations followed by a write operation, like checking a product status and user address before updating an order status
 - A read that should be memoized, like an LLM call, a large download, or a slow-polling read
 
-Larger pieces of functionality should be broken up into multiple activities. This makes it easier to do failure recovery, have short timeouts, and be idempotent.
+Larger pieces of functionality should be broken up into multiple Activities. This makes it easier to do failure recovery, have short timeouts, and be idempotent.
 
-Workflow code orchestrates the execution of Activities, persisting the results. If an Activity Execution fails,
-any future attempt will start from the initial state, unless your code uses ([Heartbeat details payloads](/encyclopedia/detecting-activity-failures#activity-heartbeat))
-for checkpointing (storing state on the server, and using it when resuming subsequent attempts).
+If an Activity attempt fails, it is automatically retried using its [Retry Policy](/activity-definition#activity-retry-policy).
+Each attempt starts from the initial state, unless your code uses
+a [Heartbeat detail payload](/encyclopedia/detecting-activity-failures#activity-heartbeat) for checkpointing. The
+last recorded Heartbeat details are made available to the Activity function on the next attempt, so your code can
+continue processing where it left off.
 
-Activity Functions are executed by Worker Processes. When the Activity Function returns, the Worker sends the results
-back to the Temporal Service as part of the [ActivityTaskCompleted](/references/events#activitytaskcompleted) Event. The
-Event is added to the Workflow Execution's Event History. For other Activity-related Events, see
-[Activity Events](/workflow-execution/event#activity-events).
+When specific performance optimizations are more important than full durability, an Activity may be executed in the same process as a Workflow (a [Local Activity](/local-activity)), bypassing the regular Activity Execution and Task Queue.
+Local Activities are not a replacement for regular Activities.
 
-If you only want to execute one Activity Function, then you don't need to use a Workflow: you can
-use your SDK Client to invoke it directly as a [Standalone Activity](/standalone-activity).
+Regardless of how you invoke an Activity the [Activity Definition](/activity-definition) and Worker registration is the same.
+You can write an Activity once, register it with a Worker, and invoke it as a Workflow Activity, a Standalone Activity or a Local Activity.

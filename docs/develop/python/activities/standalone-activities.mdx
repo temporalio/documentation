@@ -11,14 +11,8 @@ tags:
 description: Execute Activities independently without a Workflow using the Temporal Python SDK.
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  featureName="standaloneActivity"
-/>
-
-Standalone Activities are Activities that run independently, without being orchestrated by a
-Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
+[Standalone Activities](/standalone-activity) are Activities that run independently, without being orchestrated
+by a Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
 Activity directly from a Temporal Client.
 
 The way you write the Activity and register it with a Worker is identical to [Workflow
@@ -33,6 +27,7 @@ New to Standalone Activities? Start with the [Standalone Activities Quickstart](
 
 This page covers the following:
 
+- [Prerequisites](#prerequisites)
 - [Start a Standalone Activity without waiting for the result](#start-activity)
 - [Get a handle to an existing Standalone Activity](#get-activity-handle)
 - [Wait for the result of a Standalone Activity](#get-activity-result)
@@ -45,6 +40,17 @@ This page covers the following:
 This documentation uses source code from the [hello_standalone_activity](https://github.com/temporalio/samples-python/tree/main/hello_standalone_activity) sample.
 
 :::
+
+## Prerequisites {/* #prerequisites */}
+
+Standalone Activities require:
+
+- **Python** 3.10+
+- **Temporal Python SDK** v1.33.0 or higher
+- **[Temporal CLI](/cli/setup-cli)** v1.9.0 or higher
+
+The [Standalone Activities Quickstart](/develop/python/activities/standalone-activities-quickstart)
+walks through installing these.
 
 ## Start a Standalone Activity without waiting for the result {/* #start-activity */}
 

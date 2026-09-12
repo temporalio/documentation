@@ -1970,10 +1970,21 @@ module.exports = {
           },
           items: [
             'encyclopedia/activities/activity-definition',
-            'encyclopedia/activities/activity-execution',
+            {
+              type: 'category',
+              label: 'Activity Execution',
+              collapsed: false,
+              link: {
+                type: 'doc',
+                id: 'encyclopedia/activities/activity-execution',
+              },
+              items: [
+                'encyclopedia/activities/workflow-activity',
+                'encyclopedia/activities/standalone-activity',
+                'encyclopedia/activities/local-activity',
+              ],
+            },
             'encyclopedia/activities/activity-operations',
-            'encyclopedia/activities/local-activity',
-            'encyclopedia/activities/standalone-activity',
           ],
         },
         {

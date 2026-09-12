@@ -99,11 +99,12 @@ available endpoints are listed in the following sections:
 
 ## Activity {/* #activity */}
 
-- **Activity started or retried**. Occurs each time an Activity is started or retried.
-- **Standalone Activity started**. Occurs when a [Standalone Activity](/standalone-activity) is started.
+- **Activity started or retried**. Occurs each time a [**Workflow Activity**](/workflow-activity) or [**Standalone Activity**](/standalone-activity) is started or retried.
   - De-duplicated Standalone Activity starts that return an already-running Activity (sharing an Activity Id) do _not_
-    count as an Action, unless the start request tries to attach a callback to the running Activity — for example,
+    count as an Action, unless the start request performs an Activity options update, like attaching a callback to the running Activity — for example,
     within a Nexus handler using the `USE_EXISTING` conflict policy.
+- **Standalone Activity pause, reset, and update options**. Each count as one Action. Unpause does _not_ count as an Action.
+  See [Activity Operations](/activity-operations).
 - **Local Activity started**. All [Local Activities](/local-activity) associated with one Workflow Task count as a
   single Action. Temporal Cloud counts all [RecordMarkers](/references/commands#recordmarker) from each Workflow Task as
   one action, and not _N_ actions. Note:

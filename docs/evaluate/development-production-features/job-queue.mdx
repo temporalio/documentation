@@ -3,8 +3,7 @@ id: job-queue
 title: Job Queue
 description: Standalone Activities adds the ability to execute any Temporal Activity as a top-level primitive without the full overhead of a Workflow.
 tags:
-  - Features
-  - Standalone Activities
+  - Job Queue
 ---
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
@@ -45,7 +44,8 @@ Standalone Activities add the ability to execute any Temporal Activity as a top-
 
 - Full job visibility (list, search) with detailed execution state, retry count, errors & results
 - OpenMetrics support
-- Lifecycle controls: cancel, pause, unpause, reset, terminate
+- Lifecycle controls: cancel, pause, unpause, reset, terminate, delete
+- Batch operations: cancel, terminate, delete
 - Manual completion for external integrations & on-call management
 
 ## Next steps
@@ -57,5 +57,6 @@ Learn more about [Standalone Activity concepts, features, and limitations](/stan
 - [.NET SDK - Standalone Activities quickstart and code sample](/develop/dotnet/activities/standalone-activities-quickstart)
 - [Java SDK - Standalone Activities quickstart and code sample](/develop/java/activities/standalone-activities-quickstart)
 - [TypeScript SDK - Standalone Activities quickstart and code sample](/develop/typescript/activities/standalone-activities-quickstart)
+- [Ruby SDK - Standalone Activities quickstart and code sample](/develop/ruby/activities/standalone-activities-quickstart)
 
 To build a job queue end to end, follow the Build a Job Queue with Standalone Activities tutorial in [Go](https://learn.temporal.io/tutorials/go/standalone-activities/), [Java](https://learn.temporal.io/tutorials/java/standalone-activities/), [Python](https://learn.temporal.io/tutorials/python/standalone-activities/), or [TypeScript](https://learn.temporal.io/tutorials/typescript/standalone-activities/). It covers idempotency keys, server-side deduplication, throughput limits, [Priority and Fairness](/develop/task-queue-priority-fairness), heartbeat checkpoints, and reusing the same Activity inside a Workflow.

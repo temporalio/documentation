@@ -1,34 +1,329 @@
 ---
 id: standalone-activity
 title: Standalone Activity
-description: Learn about Standalone Activities in Temporal, their benefits, execution model, and when to use them.
+description: Learn about durable job processing with Standalone Activities that run independently from a Workflow.
 slug: /standalone-activity
 toc_max_heading_level: 4
 tags:
   - Concepts
   - Activities
   - Durable Execution
+  - Job Queue
 ---
 
-import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  featureName="standaloneActivity"
-  languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
-  guidePath="activities/standalone-activities"
->
-  Available in [Temporal Cloud](#temporal-cloud-support) and in Temporal Server v1.31.0 or higher (included in [Temporal CLI](#temporal-cli-support) v1.7.0 or higher).
-</ReleaseNoteHeader>
-
-See [limitations](#public-preview-limitations) below.
+import { CaptionedImage } from '@site/src/components';
 
 ## What is a Standalone Activity? {/* #standalone-activity */}
 
-If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to
-execute a single Activity, use a Standalone Activity.
+A Standalone [Activity](/activities) is a top-level [Activity Execution](/activity-execution) started directly by a
+[Client](/encyclopedia/temporal-client), without using a Workflow.
 
-Standalone Activities are Temporal’s [job queue](/evaluate/development-production-features/job-queue) -
-the simplest way to run durable, retryable tasks on Temporal.
+**Standalone Activities are Temporal's [job queue](/evaluate/development-production-features/job-queue)** - the
+simplest way to run durable, retryable background jobs on Temporal. A job is queued, dispatched to one of your Workers,
+retried on failure, and kept addressable the whole time.
+
+Use it to run a single Activity reliably - sending an email, processing a webhook, syncing data, transcoding a file.
+If you need to orchestrate multiple steps that depend on each other, use a [Workflow](/workflows) instead. Standalone
+Activities don't replace Workflows, and you can use both in the same application.
+
+## Coming from another job queue? {/* #coming-from-another-job-queue */}
+
+Temporal uses its own names for some job queue concepts, here's how they map:
+
+| In a job queue | In Temporal |
+| --- | --- |
+| The function a job runs | An [Activity Definition](/activity-definition) - a normal function, registered by name |
+| One enqueued job | A **Standalone Activity Execution** - one durable run, addressable by its Activity Id |
+| The queue | A [Task Queue](/task-queue) that your Workers poll |
+| A worker process | An [Activity Worker](/workers) - your process, running your code |
+
+For the full comparison and a migration path, see
+[Job Queue](/evaluate/development-production-features/job-queue) and
+[Migrate a Celery task queue to a Standalone Activity](/guides/celery-to-standalone-activity).
+
+:::tip GET STARTED
+
+Pick your SDK and follow the quickstart:
+[Go](/develop/go/activities/standalone-activities-quickstart)
+| [Java](/develop/java/activities/standalone-activities-quickstart)
+| [Python](/develop/python/activities/standalone-activities-quickstart)
+| [TypeScript](/develop/typescript/activities/standalone-activities-quickstart)
+| [.NET](/develop/dotnet/activities/standalone-activities-quickstart)
+| [Ruby](/develop/ruby/activities/standalone-activities-quickstart)
+
+:::
+
+## Key features
+
+### Durable job lifecycle {/* #job-lifecycle */}
+
+Each job is durably persisted before any Worker sees it, so jobs aren't lost.
+Workers pull work from a [Task Queue](/task-queue) and there's no head-of-line blocking, so a slow job doesn't block the dispatch of other Tasks.
+See [Activity Execution Lifecycle](/activity-execution#activity-execution-lifecycle).
+
+### Retries and timeouts {/* #retries-and-timeouts */}
+
+Every job carries a [Retry Policy](/encyclopedia/retry-policies) and
+[timeouts](/encyclopedia/detecting-activity-failures) you set when you start it. The default is at-least-once: retry
+with exponential backoff until the job succeeds or its Schedule-To-Close Timeout elapses. Set Maximum Attempts to 1 for
+at-most-once.
+
+Because a retry runs your function again, Activity code should be
+[idempotent](/activity-definition#idempotency).
+
+### Long-running jobs and Heartbeats {/* #heartbeats */}
+
+Jobs can run for any duration. [Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) to signal
+liveness and to checkpoint progress.
+
+A retry restarts your Activity function from the top - it doesn't resume mid-function. The last recorded Heartbeat
+details are made available to the next attempt, so your code can read the checkpoint and skip the work it already
+finished.
+
+### Deduplicate with the Activity Id {/* #deduplication */}
+
+Use a business identifier you already have as the Activity Id, and Temporal enforces uniqueness for you: an
+[Activity Id Conflict Policy](#activity-id-conflict-policy) covers a job that's already running, and an
+[Activity Id Reuse Policy](#activity-id-reuse-policy) covers one that already completed.
+
+This is a different problem from idempotency, and you need both. The Activity Id stops you submitting the same job
+twice. Idempotent code stops one job's side effects happening twice if retried.
+
+### Priority and fairness {/* #priority-and-fairness */}
+
+[Priority](/develop/task-queue-priority-fairness#task-queue-priority) is strict: higher-priority Tasks dispatch before
+lower-priority ones. [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) prevents starvation: each
+fairness key gets its own virtual queue and dispatch cycles round-robin across keys, so one tenant's backlog doesn't
+starve everyone else.
+
+On Temporal Cloud, enabling Fairness carries a [per-Action surcharge](/cloud/actions#fairness).
+
+### Schedule a job for later {/* #start-delay */}
+
+Start Delay dispatches the first Activity Task after a delay instead of immediately. Use it for work that shouldn't run
+until later, such as a reminder email or a deferred cleanup step.
+
+```bash
+temporal activity start \
+  --activity-id my-activity \
+  --type MyActivity \
+  --task-queue my-task-queue \
+  --start-to-close-timeout 5m \
+  --start-delay 1h
+```
+
+The delay applies to the first Activity Task only. Retry attempts are dispatched according to the
+[Retry Policy](/encyclopedia/retry-policies), not the delay.
+
+Start Delay schedules one job at a future time. It doesn't create a recurring schedule.
+
+### Visibility {/* #visibility */}
+
+Query jobs with [List Filter](/list-filter) by type, status, Task Queue, and other attributes, from the SDK or with
+`temporal activity list`. See [Search Attributes](/search-attribute) for the attributes set on Standalone Activity
+Executions, and add your own to filter on your business data.
+
+`temporal activity list` shows a list of jobs optionally matching a [List Filter](/list-filter).
+
+```
+./temporal activity list --query "ExecutionStatus='Running'"
+  Status          ActivityId             Type       StartTime
+  Running  process_files-1786633958  process_files  1 week ago
+```
+
+`temporal activity count` returns the total number of Standalone Activity Executions optionally matching a [List Filters](/list-filter), analogous to counting Workflow Executions.
+
+```
+./temporal activity count --query "GROUP BY ExecutionStatus"
+Total: 45
+Group total: 30, values: Completed
+Group total: 10, values: Canceled
+Group total: 4, values: Terminated
+Group total: 1, values: Running
+```
+
+This is the count of Activity Executions (Completed, Running, Failed, etc.) - not the number of queued tasks.
+
+`temporal activity describe` shows one job's status, attempt count, and last error.
+
+```
+./temporal activity describe -a process_files-1786633958
+Activity Execution Info:
+  ActivityId            process_files-1786633958
+  RunId                 01a06322-99ac-7972-8829-65352fc5d158
+  Type                  process_files
+  Status                Running
+  RunState              Scheduled
+  TaskQueue             demo-task-queue
+  StartToCloseTimeout   24h0m0s
+  Attempt               1
+  ScheduleTime          1 week ago
+  StateTransitionCount  3
+```
+
+### Observability {/* #observability */}
+
+All existing [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) apply
+to Standalone Activities. This includes counts for scheduled, started, completed, failed, timed out,
+and canceled activities.
+
+
+### Lifecycle control {/* #lifecycle-control */}
+
+Because a Standalone Activity has no Workflow to own it, you act on the execution directly by Activity Id:
+
+- **Request Cancel** asks the execution to close gracefully, letting your code clean up. See
+  [Cancellation](/activity-execution#cancellation).
+- **Terminate** forcefully closes the execution, with no opportunity for your code to clean up.
+- **Delete** terminates the execution if it's running, then deletes it asynchronously.
+
+Activities must [Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) to receive Cancellation, so
+interrupting an already-running attempt is cooperative: Temporal can accept a Cancel request without the Worker
+honoring it. If the Worker is unresponsive, the request takes effect at the next attempt boundary, for example when the
+[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) elapses.
+
+Only Terminate and Delete discard Activity progress unconditionally.
+
+### Operator commands {/* #operator-commands */}
+
+Pause, Unpause, Reset, and Update Options let an operator intervene in a running job from the CLI, the UI, or the gRPC
+API.
+
+These commands are in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Request Cancel, Terminate,
+and Delete are Generally Available.
+
+See [Activity Operations](/activity-operations) for behavior, precedence, and batch support.
+
+### Asynchronous completion {/* #asynchronous-completion */}
+
+A Standalone Activity can return from its function without completing the Activity Execution, leaving an external
+system to Heartbeat progress and deliver the final result by Activity Id or Task Token. See
+[Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion).
+
+### Reuse Activities for jobs and Workflows {/* #dual-use */}
+
+You define the Activity and register it on an Activity Worker once. The same function runs as a Standalone Activity or
+as a step in a Workflow, with no changes to your Activity code or your Worker. Start with background jobs, and add
+Workflow orchestration later without a rewrite.
+
+## Activity options {/* #activity-options */}
+
+You set Activity Options on the Client when you start the job. At minimum, specify a timeout - typically the
+[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+
+| Option | What it controls |
+| --- | --- |
+| [Timeouts](/encyclopedia/detecting-activity-failures) | Schedule-To-Start, Start-To-Close, Schedule-To-Close, and Heartbeat |
+| [Retry Policy](/encyclopedia/retry-policies) | Retry backoff and Maximum Attempts. Set Maximum Attempts to 1 for at-most-once |
+| Task Queue | Which Workers get the job |
+| Activity Id | The deduplication key, with its [Conflict](#activity-id-conflict-policy) and [Reuse](#activity-id-reuse-policy) policies |
+| [Priority and fairness](/develop/task-queue-priority-fairness) | Dispatch order when jobs compete for the same Workers |
+| [Start Delay](#start-delay) | Run the job after a start delay |
+
+:::tip GET STARTED
+
+Get results, get handles, and list Standalone Activities:
+[Go](/develop/go/activities/standalone-activities)
+| [Java](/develop/java/activities/standalone-activities)
+| [Python](/develop/python/activities/standalone-activities)
+| [TypeScript](/develop/typescript/activities/standalone-activities)
+| [.NET](/develop/dotnet/activities/standalone-activities)
+| [Ruby](/develop/ruby/activities/standalone-activities)
+
+:::
+
+## Activity Id and deduplication {/* #deduplication-and-id-space-uniqueness */}
+
+Standalone Activities have a separate Id space from [the Workflow Id space](/workflow-execution/workflowid-runid) and
+other Temporal primitives, so the [Activity Id Conflict Policy](#activity-id-conflict-policy) and the
+[Activity Id Reuse Policy](#activity-id-reuse-policy) observe only the Standalone Activity Id space for deduplication
+and uniqueness.
+
+### What is an Activity Id Reuse Policy? {/* #activity-id-reuse-policy */}
+
+An Activity Id Reuse Policy determines whether a [Standalone Activity](/standalone-activity) Execution can start with an
+Activity Id that a previous, and now closed, Standalone Activity Execution used. If the request is denied, the Temporal
+Service returns an `ActivityExecutionAlreadyStarted` error.
+
+See [Activity Id Conflict Policy](#activity-id-conflict-policy) for resolving a conflict with a running Standalone
+Activity Execution.
+
+The Activity Id Reuse Policy can have one of the following values:
+
+- **Allow Duplicate:** The Standalone Activity Execution can start regardless of the closed status of a previous
+  Standalone Activity Execution with the same Activity Id.
+  **This is the default policy, if one isn't specified.**
+- **Allow Duplicate Failed Only:** The Standalone Activity Execution can start only if the previous Standalone Activity
+  Execution with the same Activity Id failed, was canceled, was terminated, or timed out.
+- **Reject Duplicate:** The Standalone Activity Execution can't start if a previous Standalone Activity Execution has
+  the same Activity Id, regardless of its closed status.
+
+These values apply to closed Standalone Activity Executions that are still retained in the Namespace, so the check
+reaches back only as far as the [retention period](#result-retention).
+
+### What is an Activity Id Conflict Policy? {/* #activity-id-conflict-policy */}
+
+An Activity Id Conflict Policy determines what happens when you start a Standalone Activity with an Activity Id that a
+running Standalone Activity Execution already uses. Two Standalone Activity Executions never run at the same time with
+the same Activity Id.
+
+See [Activity Id Reuse Policy](#activity-id-reuse-policy) for reusing the Activity Id of a closed Standalone Activity
+Execution.
+
+The Activity Id Conflict Policy can have one of the following values:
+
+- **Fail:** Doesn't start a new Standalone Activity Execution and returns an `ActivityExecutionAlreadyStarted` error.
+  **This is the default policy, if one isn't specified.**
+- **Use Existing:** Doesn't start a new Standalone Activity Execution and returns a handle to the running one.
+
+## Result retention {/* #result-retention */}
+
+A Standalone Activity Execution and its result are retained for the
+[Retention Period](/temporal-service/temporal-server#retention-period) of the Namespace it ran in, the same as other
+closed Executions. Within that window the Execution stays visible to `temporal activity describe` and
+`temporal activity list`. After the Retention Period elapses, the Execution and its result are deleted and the
+Activity Id becomes available for reuse.
+
+Retention is also what enforces deduplication: the [Reuse Policy](#activity-id-reuse-policy) checks against the retained
+record of a completed job, so a job older than the Retention Period no longer blocks reuse of its Activity Id.
+
+To remove an Execution before then, use `temporal activity delete`.
+
+## Worker configuration {/* #worker-configuration */}
+
+An Activity Worker's default poller count is lower than the concurrency many job queue frameworks use, and some of them
+prefetch several tasks per poll. If you're moving existing work to Standalone Activities and comparing throughput,
+match the poller count to your previous system before you measure. Otherwise the comparison reflects poller
+configuration rather than the platform.
+
+See [Worker performance](/develop/worker-performance/configuration#configuring-poller-options) for poller autoscaling
+and the manual settings.
+
+For long-running Activities, start the Activity and hold the handle rather than blocking on the result, so a Worker
+slot and poller aren't held for the duration.
+
+## Serverless Workers {/* #serverless-workers */}
+
+Job queue load is bursty, so Activity Workers often sit idle between jobs. With
+[Serverless Workers](/serverless-workers), Temporal starts the Worker instead: when a job arrives and no Worker is
+available to take it, Temporal invokes your configured compute provider, the Worker polls the Task Queue, processes the
+job, and scales back down.
+
+Your Activity code and Worker registration are unchanged. The Worker must belong to a
+[Worker Deployment Version](/worker-versioning#deployment-versions) with a compute provider configured, which is how
+Temporal knows what to invoke.
+
+AWS Lambda support is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) and
+GCP Cloud Run is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release). See
+[Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+
+## Standalone Activity versus Workflow Activity
+
+A Standalone Activity follows the same execution semantics as an Activity in a Workflow: it's queued, retried until it
+succeeds or its Schedule-To-Close Timeout elapses, and it requires idempotent Activity code. What differs is that it's
+orchestrated by its own state machine, so there's no Workflow [Event History](/workflow-execution/event#event-history)
+and no deterministic replay.
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
   <CaptionedImage
@@ -38,73 +333,41 @@ the simplest way to run durable, retryable tasks on Temporal.
   />
 </div>
 
-A Standalone Activity is a top-level [Activity Execution](/activity-execution) started directly by a
-[Client](/encyclopedia/temporal-client), without using a Workflow. This results in
-fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud than using a Workflow
-to run a single Activity. If your Activity Execution is short-lived, you will also notice lower
-latency, since there are fewer Worker round-trips.
+Both are durable [Activity Executions](/activity-execution) that use the same Activity Execution
+lifecycle. The [Activity Definition](/activity-definition) and Worker registration are identical, so
+the same Activity function can run either way with no code changes. What differs is who starts it
+and what owns its lifetime.
 
-You write your Activity Functions the same way for both. In fact, the same Activity Function can be
-executed as a Standalone Activity and as a Workflow Activity with no code changes.
+Running a single Activity as a Standalone Activity also costs fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) in
+Temporal Cloud than wrapping it in a Workflow, and short jobs see lower latency because there are fewer Worker
+round-trips. See [cost optimization](/best-practices/cost-optimization#standalone-activities-vs-a-workflow-that-runs-a-single-activity) for details.
 
-:::tip GET STARTED
 
-Pick your SDK and follow the quickstart:
+## Feature release stages {/* #feature-release-stages */}
 
-- [Go SDK - Standalone Activities quickstart and code sample](/develop/go/activities/standalone-activities-quickstart)
-- [Python SDK - Standalone Activities quickstart and code sample](/develop/python/activities/standalone-activities-quickstart)
-- [.NET SDK - Standalone Activities quickstart and code sample](/develop/dotnet/activities/standalone-activities-quickstart)
-- [Java SDK - Standalone Activities quickstart and code sample](/develop/java/activities/standalone-activities-quickstart)
-- [Ruby SDK - Standalone Activities quickstart and code sample](/develop/ruby/activities/standalone-activities-quickstart)
-- [TypeScript SDK - Standalone Activities quickstart and code sample](/develop/typescript/activities/standalone-activities-quickstart)
+Standalone Activities are Generally Available, including Start Delay, Request Cancel, Terminate, and Delete.
 
-:::
+These capabilities are in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview):
 
-## Use cases
+- [Operator commands](/activity-operations): Pause, Unpause, Reset, and Update Options.
+- Batch operations by [List Filter](/list-filter): Request Cancel, Terminate, and Delete.
 
-Standalone Activities can be used for [durable job processing use
-cases](/evaluate/development-production-features/job-queue) such as sending an email, processing a
-webhook, syncing data, or executing a single function reliably with built-in retries and timeouts.
+## Limitations {/* #limitations */}
 
-## Key features
-- Execute any Temporal Activity as a top-level primitive without the overhead of a Workflow
-- Native async job processing model: schedule -> dispatch -> process -> result
-- No head-of-line blocking - a slow job doesn’t block the dispatch of other Tasks
-- Arbitrary length jobs with heartbeats for liveness and checkpointing progress
-- At-least-once execution by default with native retry policy and timeouts
-- At-most-once execution if retry max attempts is 1
-- Addressable - get an Activity ID / Run ID and get the result, cancel, and terminate
-- Deduplication - with conflict policy: (USE_EXISTING, ...), reuse policy: (REJECT_DUPLICATES, ...)
-- Separate ID space from Workflows - Standalone Activities are a different kind of top-level execution
-- Priority and fairness - multi-tenant fairness, weighted priority tiers, and safeguards against starvation of lower-weighted tasks
-- Visibility - list Activity Executions and view status, retry count, and last error
-- Manual completion by ID (or token): ignore activity return and wait for external completion
-- Activity metrics - including counts for success, failure, timeout, and cancel
-- Dual use - execute Activities within a Workflow or standalone with no Worker code changes
+The following features are not yet supported:
 
-## Observability {/* #observability */}
-
-All existing [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) apply
-to Standalone Activities. This includes counts for scheduled, started, completed, failed, timed out,
-and canceled activities.
-
-You can use [List Filters](/list-filter) to query Standalone Activity Executions by type, status,
-task queue, and other attributes using the SDK or the `temporal activity list` CLI command.
-
-`CountActivities` returns the total number of Standalone Activity Executions matching a filter,
-analogous to counting Workflow Executions. This is the total count of executions (running, completed,
-failed, etc.) - not the number of queued tasks.
-
-## Public Preview limitations
-
-The Public Preview of Standalone Activities has some known limitations:
-
-- Pause, reset, and update options are not supported in Public Preview but scheduled for GA.
-- `TerminateExisting` conflict policy / `TerminateIfRunning` reuse policy is not supported yet.
+- `TerminateExisting` conflict policy. Use `Fail` or `UseExisting` instead.
+- Starting from a recurring [Schedule](/schedule). For a one-time job at a future time, use
+  [Start Delay](#start-delay). For recurring work, schedule a Workflow that invokes the Activity, which runs it as a
+  [Workflow Activity](/workflow-activity) rather than a Standalone Activity.
+- Starting from [Temporal Nexus](/evaluate/nexus).
+- Batch Reset, Pause, Unpause, Update Options, Complete, and Fail.
+- Export for Standalone Activities similar to [Workflow Export](/cloud/export).
 
 ## Temporal CLI support
 
-Standalone Activities require [Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.7.0) v1.7.0 or higher and [Temporal Server](https://github.com/temporalio/temporal/releases/tag/v1.31.0) v1.31.0 or higher.
+Standalone Activities require [Temporal CLI](https://github.com/temporalio/cli/releases) v1.9.0 or higher and [Temporal Server](https://github.com/temporalio/temporal/releases) v1.32.0 or higher.
 
 Install with Homebrew:
 
@@ -120,16 +383,30 @@ Verify the installation:
 temporal --version
 ```
 
-Which should output v1.7.0 or higher, for example:
+Which should output v1.9.0 or higher, for example:
 ```
-temporal version 1.7.0 (Server 1.31.0, UI 2.49.1)
+temporal version 1.9.0 (Server 1.32.0, UI 2.53.3)
 ```
 
-The `temporal activity` subcommand supports Standalone Activities with commands including: `start`,
-`execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
-
-The Temporal Dev Server has Standalone Activities enabled by default for local testing.
+The `temporal activity` subcommand supports Standalone Activities with `start`, `execute`, `result`, `list`, `count`,
+`describe`, `cancel`, `terminate`, and `delete`. It also supports the Public Preview operator commands `pause`,
+`unpause`, `reset`, and `update-options`. See [Activity Operations](/activity-operations).
 
 ## Temporal Cloud support
 
-Standalone Activities in Temporal Cloud is available as a Public Preview feature.
+Standalone Activities are Generally Available in Temporal Cloud, in all [regions](/cloud/regions).
+
+Service Level Objectives and the Service Level Agreement match those for Workflows. See
+[Service availability](/cloud/service-availability) and [SLA](/cloud/sla).
+
+:::tip RESOURCES
+
+- Try it end to end with the [Standalone Activities demo](/demos/standalone-activities).
+- Build a job queue with priority and fairness:
+  [Go](https://learn.temporal.io/tutorials/go/standalone-activities/),
+  [Java](https://learn.temporal.io/tutorials/java/standalone-activities/),
+  [Python](https://learn.temporal.io/tutorials/python/standalone-activities/),
+  [TypeScript](https://learn.temporal.io/tutorials/typescript/standalone-activities/).
+- Add orchestration when you need it: see [Workflow Activity](/workflow-activity).
+
+:::

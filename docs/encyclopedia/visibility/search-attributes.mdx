@@ -72,8 +72,8 @@ These Search Attributes are created when the initial index is created.
 | ~BuildIds~                           | ~Keyword List~ | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Deprecated since server version 1.31 in favor of the `TemporalUsedWorkerDeploymentVersions` search attribute. |
 | CloseTime                            | Datetime     | The time at which the Workflow Execution completed.                                                                                                                                                                                                                                    |
 | ExecutionDuration                    | Int          | The time needed to run the Workflow Execution (in nanoseconds). Available only for closed Workflows.                                                                                                                                                                                   |
-| ExecutionStatus                      | Keyword      | The current state of the Workflow Execution.                                                                                                                                                                                                                                           |
-| ExecutionTime                        | Datetime     | The time at which the Workflow Execution actually begins running; same as `StartTime` for most cases but different for Cron Workflows and retried Workflows.                                                                                                                           |
+| ExecutionStatus                      | Keyword      | The current state of the Workflow Execution. Also set on [Standalone Activity Executions](/standalone-activity), where it holds the Activity Execution status.                                                                                                                          |
+| ExecutionTime                        | Datetime     | The time at which the Execution actually begins running; same as `StartTime` for most cases but different for Cron Workflows and retried Workflows. Also set on [Standalone Activity Executions](/standalone-activity), where a [Start Delay](/standalone-activity#start-delay) pushes it past `StartTime`, making it the attribute to query for delayed jobs. |
 | HistoryLength                        | Int          | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                                                                                                                                        |
 | HistorySizeBytes                     | Long         | The size of the Event History.                                                                                                                                                                                                                                                         |
 | RunId                                | Keyword      | Identifies the current Workflow Execution Run.                                                                                                                                                                                                                                         |
@@ -101,7 +101,10 @@ These Search Attributes are created when the initial index is created.
 - To use default Search Attributes with the `Temporal` prefix in a List Filter, you can use their non-prefixed alias.
   Refer to [Search Attribute aliasing](./list-filter.mdx#search-attribute-aliasing) for details.
 
-- ExecutionStatus values correspond to Workflow Execution statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
+- On a Workflow Execution, ExecutionStatus values correspond to Workflow Execution statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
+
+- On a [Standalone Activity Execution](/standalone-activity), ExecutionStatus values correspond to Activity Execution statuses: Running, Completed, Failed, Canceled, Terminated, TimedOut, Paused.
+  `Paused` is the status of an Activity that an operator has paused with [Pause](/activity-operations). Query it with `ExecutionStatus = 'Paused'`.
 
 - StartTime, CloseTime, and ExecutionTime are stored as dates but are supported by queries that use either EpochTime in nanoseconds or a string in [RFC3339Nano format](https://pkg.go.dev/time#pkg-constants) (such as "2006-01-02T15:04:05.999999999Z07:00").
 
@@ -243,6 +246,26 @@ This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttribute
 */}
 
 For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attributes) guide.
+
+### Search Attributes on Standalone Activity Executions {/* #standalone-activity-search-attributes */}
+
+[Standalone Activity Executions](/standalone-activity) have their own Visibility records, separate from Workflow Executions.
+`ListActivities` and `CountActivities` (and `temporal activity list` and `temporal activity count`) return Standalone Activity Executions only.
+Activities that run inside a Workflow are not returned by them, and they have no Visibility record of their own; find them through their Workflow Execution.
+
+The Temporal Service sets the following Search Attributes on every Standalone Activity Execution:
+
+| Name | Type | Definition |
+|------|------|------------|
+| ActivityId | Keyword | The business identifier of the Standalone Activity Execution. |
+| ActivityType | Keyword | The Activity Type name. |
+| ExecutionStatus | Keyword | The current state of the Standalone Activity Execution: Running, Completed, Failed, Canceled, Terminated, TimedOut, or Paused. |
+| ExecutionTime | Datetime | The time at which the first Activity Task is dispatched. A [Start Delay](/standalone-activity#start-delay) pushes this past the time the Activity was started. |
+| TaskQueue | Keyword | Task Queue the Standalone Activity Execution is dispatched on. |
+
+Custom Search Attributes also apply. Set them when you start the Standalone Activity, then filter on them the same way you would for a Workflow Execution.
+
+Search Attributes that describe Workflow structure or Event History, such as `WorkflowType`, `HistoryLength`, `HistorySizeBytes`, `ParentWorkflowId`, and `RootWorkflowId`, apply to Workflow Executions and are not set on Standalone Activity Executions.
 
 ### Usage {/* #usage */}
 

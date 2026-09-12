@@ -134,6 +134,15 @@ For detailed discussion of this tradeoff, see [How many Activities should I use 
 [Child Workflows cost 2 Actions](/cloud/actions#workflow) compared to an Activity's 1 Action.
 See [Child Workflows documentation](/child-workflows) for detailed comparison of capabilities and use cases.
 
+### Standalone Activities vs a Workflow that runs a single Activity
+
+Starting a [Standalone Activity](/standalone-activity) costs 1 Action.
+Running the same single Activity in a wrapper Workflow costs 1 Action for the Activity and 1 Action for the Workflow, not including Activity heartbeats, retries, or other billable [Actions](/cloud/actions#activity).
+
+Use a Workflow when you need multi-step orchestration, human in the loop, signals, timers, updates, queries, or enhanced step-by-step visibility with event history and [replay](/workflow-execution#replay).
+
+Use a Standalone Activity when you need to execute a single Activity function reliably.
+
 ### Retry Policies
 
 Each Activity retry counts as one Action.
