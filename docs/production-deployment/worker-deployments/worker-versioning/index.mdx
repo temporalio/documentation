@@ -86,6 +86,14 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - For a given Workflow, its [**Target Worker Deployment Version**](/worker-versioning#versioning-definitions) is the
   version it will move to next.
 
+:::caution Before you enable Worker Versioning
+
+Worker Versioning has [limits](/cloud/limits#worker-versioning-level) on the number of deployments, versions, and Task Queues. Review those limits before enabling versioning.
+
+In particular, do not enable Worker Versioning for worker-specific Task Queues. See [Task Queue limits](/cloud/limits#max-task-queues-in-deployment-version-limits).
+
+:::
+
 ## Setting up your deployment system {/* #deployment-systems */}
 
 If you haven't already, you'll want to pick a container deployment solution for your Workers.

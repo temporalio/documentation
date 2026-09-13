@@ -761,6 +761,12 @@ You need to handle cleanup if the Workflow fails mid-process.
 
 ## Best practices
 
+:::caution Worker Versioning
+
+Do not enable [Worker Versioning](/production-deployment/worker-deployments/worker-versioning#definition) for worker-specific Task Queues. See [Task Queue limits](/cloud/limits#max-task-queues-in-deployment-version-limits).
+
+:::
+
 - **Set ScheduleToStartTimeout.** Always configure this for host-specific queues to handle Worker failures.
 - **Implement cleanup.** Use try-finally or cancellation scopes to clean up local resources.
 - **Use unique queue names.** Use hostname, IP, or UUID to ensure unique Task Queue names.
