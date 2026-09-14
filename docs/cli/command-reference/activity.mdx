@@ -344,7 +344,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to reset. Mutually exclusive with `--query`. Set `--workflow-id` to target a workflow Activity, or omit it to target a standalone Activity (the latest run unless `--run-id` is set). |
+| `--activity-id`, `-a` | No | **string** The Activity ID to reset. Mutually exclusive with --query. Set --workflow-id to target a workflow Activity, or omit it to target a standalone Activity (the latest run unless --run-id is set). |
 | `--clear-heartbeat-details` | No | **bool** Clear the Activity's heartbeat details. |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
 | `--jitter` | No | **duration** The activity will reset at random a time within the specified duration. Can only be used with --query. |
@@ -494,7 +494,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to unpause. Mutually exclusive with `--query`. Set `--workflow-id` to target a workflow Activity, or omit it to target a standalone Activity (the latest run unless `--run-id` is set). |
+| `--activity-id`, `-a` | No | **string** The Activity ID to unpause. Mutually exclusive with --query. Set --workflow-id to target a workflow Activity, or omit it to target a standalone Activity (the latest run unless --run-id is set). |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
 | `--jitter` | No | **duration** The activity will start at random a time within the specified duration. Can only be used with --query. |
 | `--query`, `-q` | No | **string** EXPERIMENTAL: Starts a batch Activity operation using an SQL-like `QUERY` List Filter. This behavior may change in the future. Set either --activity-id (single Activity) or --query (batch). --query cannot be combined with --workflow-id or --run-id. |
@@ -557,7 +557,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to update options. Mutually exclusive with `--query`. Set `--workflow-id` to target a workflow Activity, or omit it to target a standalone Activity (the latest run unless `--run-id` is set). |
+| `--activity-id`, `-a` | No | **string** The Activity ID to update options. Mutually exclusive with --query. Set --workflow-id to target a workflow Activity, or omit it to target a standalone Activity (the latest run unless --run-id is set). |
 | `--headers` | No | **string[]** Temporal workflow headers in 'KEY=VALUE' format. Keys must be identifiers, and values must be JSON values. May be passed multiple times to set multiple Temporal headers. Note: These are workflow headers, not gRPC headers. |
 | `--heartbeat-timeout` | No | **duration** Maximum permitted time between successful worker heartbeats. |
 | `--query`, `-q` | No | **string** EXPERIMENTAL: Starts a batch Activity operation using an SQL-like `QUERY` List Filter. This behavior may change in the future. Set either --activity-id (single Activity) or --query (batch). --query cannot be combined with --workflow-id or --run-id. |
