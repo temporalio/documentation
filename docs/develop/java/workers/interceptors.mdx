@@ -15,12 +15,78 @@ tags:
 Interceptors wrap inbound and outbound Temporal calls so you can apply shared behavior such as tracing, logging, or
 authorization. See [Interceptors](/encyclopedia/interceptors) for the inbound vs outbound model.
 
-Register them on the Client (`WorkflowClientOptions.setInterceptors`) or the Worker Factory
-(`WorkerFactoryOptions.setWorkerInterceptors`). Extend `WorkflowClientInterceptorBase` / `WorkerInterceptorBase` and
-override only the methods you need. Full API:
+Register them on the Client (`WorkflowClientOptions.Builder.setInterceptors`) or the Worker Factory
+(`WorkerFactoryOptions.Builder.setWorkerInterceptors`). Full API:
 [`io.temporal.common.interceptors`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/interceptors/package-summary.html).
 
 Several interceptor APIs are marked `@Experimental`.
+
+## Implement a Client interceptor
+
+Extend `WorkflowClientInterceptorBase` and override `workflowClientCallsInterceptor` to return a
+`WorkflowClientCallsInterceptor` that wraps `next`. Override only the calls you want to intercept; forward the rest to
+`next` (or to `super`, if you extend `WorkflowClientCallsInterceptorBase`).
+
+```java
+public class TracingClientInterceptor extends WorkflowClientInterceptorBase {
+  @Override
+  public WorkflowClientCallsInterceptor workflowClientCallsInterceptor(
+      WorkflowClientCallsInterceptor next) {
+    return new WorkflowClientCallsInterceptorBase(next) {
+      @Override
+      public WorkflowStartOutput start(WorkflowStartInput input) {
+        System.out.println("starting workflow " + input.getWorkflowId());
+        return super.start(input);
+      }
+    };
+  }
+}
+```
+
+Register the interceptor when you build the Client:
+
+```java
+WorkflowClientOptions clientOptions =
+    WorkflowClientOptions.newBuilder().setInterceptors(new TracingClientInterceptor()).build();
+WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
+```
+
+## Implement a Worker interceptor
+
+Extend `WorkerInterceptorBase` and override `interceptWorkflow`, `interceptActivity`, or both, for the inbound call
+chains you need. Each inbound interceptor must forward every override to `next`. To also intercept outbound calls made
+from inside the Workflow, wrap the `WorkflowOutboundCallsInterceptor` passed to `init` and forward that wrapper to
+`next.init(...)`:
+
+```java
+public class TracingWorkerInterceptor extends WorkerInterceptorBase {
+  @Override
+  public WorkflowInboundCallsInterceptor interceptWorkflow(WorkflowInboundCallsInterceptor next) {
+    return new WorkflowInboundCallsInterceptorBase(next) {
+      @Override
+      public void init(WorkflowOutboundCallsInterceptor outboundCalls) {
+        next.init(
+            new WorkflowOutboundCallsInterceptorBase(outboundCalls) {
+              @Override
+              public <R> ActivityOutput<R> executeActivity(ActivityInput<R> input) {
+                Workflow.getLogger(TracingWorkerInterceptor.class)
+                    .info("starting activity " + input.getActivityName());
+                return super.executeActivity(input);
+              }
+            });
+      }
+    };
+  }
+}
+```
+
+Register the interceptor on the Worker Factory:
+
+```java
+WorkerFactoryOptions factoryOptions =
+    WorkerFactoryOptions.newBuilder().setWorkerInterceptors(new TracingWorkerInterceptor()).build();
+WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
+```
 
 :::warning Workflow interceptors and replay
 
