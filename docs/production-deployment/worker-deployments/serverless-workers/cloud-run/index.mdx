@@ -402,7 +402,7 @@ use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let address = std::env::var("TEMPORAL_ADDRESS")?;
 
-    let runtime = Runtime::new_assume_tokio(Default::default())?;
+    let runtime = Runtime::from_current_tokio(Default::default())?;
 
     let connection_options = ConnectionOptions::new(Url::from_str(&format!("https://{address}"))?)
         .api_key(std::env::var("TEMPORAL_API_KEY")?)

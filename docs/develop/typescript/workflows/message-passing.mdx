@@ -2,7 +2,7 @@
 id: message-passing
 title: Workflow message passing - TypeScript SDK
 sidebar_label: Message passing
-description: Develop with Queries, Signals, and Updates with the Temporal Typescript SDK.
+description: Develop with Queries, Signals, and Updates with the Temporal TypeScript SDK.
 toc_max_heading_level: 3
 tags:
   - Workflows
@@ -18,7 +18,7 @@ A Workflow can act like a stateful web service that receives messages: Queries, 
 The Workflow implementation defines these endpoints via handler methods that can react to incoming messages and return values.
 Temporal Clients use messages to read Workflow state and control its execution.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview of this topic.
-This page introduces these features for the Temporal Typescript SDK.
+This page introduces these features for the Temporal TypeScript SDK.
 
 ## Write message handlers {/* #writing-message-handlers */}
 
@@ -391,7 +391,7 @@ const finalReport = await wfHandle.result();
 :::info SEND MESSAGES WITHOUT TYPE SAFETY
 
 In real-world development, sometimes you may be unable to import message type objects defined by `defineQuery`, `defineSignal`, or `defineUpdate`.
-When you don't have access to the Workflow Definition or it isn't written in Typescript, you can still use APIs that aren't type-safe, and dynamic method invocation.
+When you don't have access to the Workflow Definition or it isn't written in TypeScript, you can still use APIs that aren't type-safe, and dynamic method invocation.
 Pass message type names instead of message type objects to:
 
 - [`client.workflow.start`](https://typescript.temporal.io/api/classes/client.WorkflowClient#start)
@@ -423,7 +423,7 @@ For additional information, see [Inject work into the main Workflow](/handling-m
 Signal and Update handlers can be `async` functions.
 Using `async` allows you to use `await` with Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, etc.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at `await` calls.
-It's essential to understand the things that could go wrong in order to use `async` handlers safely.
+To use `async` handlers safely, understand what can go wrong.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the [Safe message handlers](https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/README.md) sample, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
 The following code executes an Activity that makes a network call to a remote service.
