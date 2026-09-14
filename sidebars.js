@@ -222,6 +222,7 @@ const developGoCategory = {
         items: [
           'develop/go/workers/run-worker-process',
           'develop/go/workers/sessions',
+          'develop/go/workers/interceptors',
           {
             type: 'category',
             label: 'Serverless Workers',
@@ -384,6 +385,7 @@ const developJavaCategory = {
         },
         items: [
           'develop/java/workers/run-worker-process',
+          'develop/java/workers/interceptors',
           {
             type: 'category',
             label: 'Serverless Workers',
@@ -1680,6 +1682,7 @@ module.exports = {
             },
             'cli/command-reference/config',
             'cli/command-reference/env',
+            'cli/command-reference/nexus',
             'cli/command-reference/operator',
             'cli/command-reference/schedule',
             'cli/command-reference/server',
