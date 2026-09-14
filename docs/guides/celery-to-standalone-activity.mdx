@@ -38,10 +38,10 @@ Before you start, it helps to know which Temporal building block replaces each C
 
 Before you begin, you will need the following:
 
-- Python 3.9 or higher installed on your machine.
+- Python 3.10 or higher installed on your machine.
 - Temporal Server v1.32.0 or higher (for Standalone Activities)
-- The Temporal Python SDK, version 1.23.0 or higher (installed in Step 2).
-- The Temporal CLI, version 1.9.0 or higher (installed in Step 2).
+- The Temporal Python SDK, version 1.33.0 or higher (installed in Step 2).
+- The Temporal CLI, version 1.9.1 or higher (installed in Step 2).
 - An existing Celery task you want to migrate, or the sample task shown in Step 4 if you are following along from scratch.
 
 ## Step 1: Set up your project directory
@@ -71,13 +71,13 @@ With the directory in place, you can install the tools you need.
 
 In this step, you will install the Python SDK your code depends on and the Temporal CLI you will use to run a local server. Standalone Activities require specific minimum versions, so this step matters more than a normal install.
 
-Install the Temporal Python SDK (version 1.23.0 or higher) with `pip`:
+Install the Temporal Python SDK (version 1.33.0 or higher) with `pip`:
 
 ```bash
-pip install "temporalio>=1.23.0"
+pip install "temporalio>=1.33.0"
 ```
 
-Next, install the Temporal CLI (version 1.9.0 or higher). On macOS or Linux with [Homebrew](https://brew.sh/), run:
+Next, install the Temporal CLI (version 1.9.1 or higher). On macOS or Linux with [Homebrew](https://brew.sh/), run:
 
 ```bash
 brew install temporal
@@ -85,13 +85,13 @@ brew install temporal
 
 If you aren't using Homebrew, download the binary for your platform from the [Temporal CLI install guide](/cli/setup-cli) and add it to your `PATH`.
 
-Verify the CLI version, since Standalone Activities require 1.9.0 or higher:
+Verify the CLI version, since Standalone Activities require 1.9.1 or higher:
 
 ```bash
 temporal --version
 ```
 
-Confirm the printed version is at least 1.9.0. With the tools installed, you can start a local Temporal Service.
+Confirm the printed version is at least 1.9.1. With the tools installed, you can start a local Temporal Service.
 
 ## Step 3: Start the Temporal Development Server
 
