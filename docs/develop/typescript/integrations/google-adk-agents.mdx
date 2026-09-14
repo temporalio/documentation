@@ -20,6 +20,9 @@ operations run as Activities. Completed calls are recorded in Event History and 
 model and routes each model call to an Activity. The integration also provides Workflow-safe APIs for Activity-backed
 tools, MCP servers, and streamed model responses.
 
+Code snippets on this page come from the
+[Google ADK samples directory](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents).
+
 <ReleaseNoteHeader type="prerelease" />
 
 ## Prerequisites
@@ -31,7 +34,7 @@ tools, MCP servers, and streamed model responses.
 - Set up your local development environment by following
   [Set up your local with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript). Leave the Temporal
   development server running to run the samples locally.
-- Install Node.js 22 or later to run the samples.
+- Install Node.js 22 or later.
 
 ## Install the Google ADK integration
 
@@ -52,9 +55,9 @@ for the [programming model limits](/cloud/limits#programming-model-level), inclu
 
 ## Run an ADK agent in a Workflow
 
-The [basic Google ADK sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/basic)
-contains a complete Workflow, Worker, and Client. It uses the standard ADK `LlmAgent` and `InMemoryRunner` APIs in the
-Workflow, with `TemporalModel` as the agent's model. The runner iterates over ADK events and returns the final response.
+The agent chat sample contains a complete Workflow, Worker, and Client. It uses the standard ADK `LlmAgent` and
+`InMemoryRunner` APIs in the Workflow, with `TemporalModel` as the agent's model. The Client sends messages through
+Workflow Updates and can query the conversation history.
 
 The Worker registers `GoogleAdkPlugin`, which installs the model Activities and the Workflow bundler configuration.
 The Client starts the Workflow normally and doesn't need the plugin.
@@ -67,12 +70,8 @@ Use each API from its package entry point:
 | `@temporalio/google-adk-agents/workflow` | `TemporalModel`, `TemporalMCPToolset`, and `activityAsTool` for Workflow code |
 | `@temporalio/google-adk-agents/testing` | `fakeModelProvider` and `mockMCPToolset` for tests |
 
-Start the Worker, then run the Client from the sample directory:
-
-```bash
-npx tsx src/basic/worker.ts
-npx tsx src/basic/client.ts
-```
+The [agent chat sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/agent-chat)
+shows this Workflow, Worker, and Client together, including its Update, Query, and Continue-As-New behavior.
 
 ## Configure model calls
 
@@ -136,18 +135,15 @@ to load Google ADK in the replay sandbox.
 Compose `GoogleAdkPlugin` after `OpenTelemetryPlugin` from `@temporalio/interceptors-opentelemetry` to export ADK's
 agent, model, and tool spans from the Workflow sandbox.
 
-```ts
-plugins: [new OpenTelemetryPlugin({ resource, spanProcessor }), new GoogleAdkPlugin()]
-```
-
 The OpenTelemetry plugin's Worker sink suppresses span export during replay. Export is at-least-once because a failed or
 timed-out Workflow Task can execute again without being a replay.
-The [observability sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/observability)
-shows the plugin order and an OpenTelemetry span processor that records model usage.
 
 ADK span attributes can contain prompts and model responses. Send them only to an approved destination or remove
 sensitive attributes in the span processor. `ADK_CAPTURE_MESSAGE_CONTENT_IN_SPANS` doesn't control this behavior in a
 Workflow because the Workflow sandbox doesn't expose Worker environment variables.
+
+The [observability sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/observability)
+shows the plugin order and an OpenTelemetry span processor that records model usage.
 
 ## Reference and troubleshooting
 
@@ -239,22 +235,9 @@ Workflow instead of routing it to an Activity.
 
 ## Resources
 
-- The [basic sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/basic) runs one
-  durable model call.
-- The [tools sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/tools) exposes an
-  Activity as an ADK tool.
-- The [agent patterns sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/agent-patterns)
-  delegates work across multiple agents.
-- The [MCP sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/mcp) connects an MCP
-  server through Activities.
-- The [streaming sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/streaming)
-  publishes model response chunks through Workflow streams.
-- The [human approval sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/human-approval)
-  gates a long-running tool with a Signal or Update.
-- The [observability sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/observability)
-  exports ADK spans and records model usage.
 - [Google ADK integration package](https://www.npmjs.com/package/@temporalio/google-adk-agents)
 - [Google ADK integration source](https://github.com/temporalio/sdk-typescript/tree/main/contrib/google-adk-agents)
-- [Google ADK samples](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents)
+- [Google ADK samples directory](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents)
+- [Google ADK source](https://github.com/google/adk-js)
 - [Google ADK documentation](https://google.github.io/adk-docs/)
 - [Temporal TypeScript SDK documentation](/develop/typescript)
