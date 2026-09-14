@@ -179,8 +179,9 @@ matching retry posture, and passes a `Retry-After` header through as the next re
 | 500, 502, 503, 524, 529 | Server error, model down, no provider available, edge timeout, provider overloaded | Yes |
 | 400 | Bad request | No |
 | 401 | Invalid API key | No |
-| 402 | Insufficient credits on the API key | No; see [Pause when money runs out](#pause-when-money-runs-out) |
-| 403 | Moderation or permission block | No |
+| 402 | The account is out of credits | No; raised as `OpenRouterOutOfCredits`, see [Pause when money runs out](#pause-when-money-runs-out) |
+| 403 with `Key limit exceeded` | The API key hit its own credit limit | No; raised as `OpenRouterOutOfCredits` |
+| 403, other | Moderation or permission block | No |
 
 OpenRouter can also return HTTP 200 with an `error` object in the body and no `choices` when the upstream provider
 failed after the request was accepted. The Activity reads the raw body first and classifies that case by the code
@@ -235,8 +236,9 @@ when a person raises the budget. Two things can pause it:
 - A soft budget in the Workflow input, checked against the cost OpenRouter reports on every response. The Workflow
   reserves an estimate per in-flight call and parks a prompt when `spent + reserved + estimate` would exceed the
   budget.
-- OpenRouter returning 402 because the API key hit its credit limit. The Activity marks 402 non-retryable; the Workflow
-  catches it and parks that prompt instead of skipping it.
+- OpenRouter refusing the call for lack of credits: 402 when the account is out of credits, or 403 `Key limit exceeded`
+  when the API key hit its own limit. The Activity raises both as the non-retryable `OpenRouterOutOfCredits`; the
+  Workflow catches that type and parks the prompt instead of skipping it.
 
 Either way the prompt waits on `workflow.wait_condition`, which costs nothing while it waits and survives Worker
 restarts. A `raise_budget` Update wakes every parked prompt. A `spend_report` Query shows the spend so far, the
@@ -315,7 +317,7 @@ The soft budget is a soft budget. The cost of a call is only known after the res
 `max_concurrency * estimated_cost_usd`, plus the gap between the estimate and the real cost of calls already in
 flight.
 To bound one call's cost, set `provider.max_price` in the request. The hard cap is the credit limit on the OpenRouter
-API key, which is what produces the 402.
+API key, which is what produces the `403 Key limit exceeded`.
 
 Interacting with a paused batch from the Temporal CLI:
 
