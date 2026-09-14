@@ -19,7 +19,7 @@ It enables Workflows to wait for asynchronous operations in third-party services
 
 Workflows often need to wait on an external system that has no way to push a notification back: a REST API with no webhook, a long-running job in a third-party system, a status check that has to be repeated until it changes. Doing that well means picking the right poll frequency for the situation without overwhelming the external service.
 
-Without a deliberate polling strategy, you're left building retry logic by hand, choosing between responsiveness and resource efficiency with no way to have both, and managing heartbeating and timeouts yourself — while Workflow history grows with every poll.
+Without a deliberate polling strategy, you're left building retry logic by hand, choosing between responsiveness and resource efficiency with no way to have both, and managing heartbeating and timeouts yourself — while Event history grows with every poll.
 
 ## Solution
 
