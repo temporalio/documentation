@@ -255,60 +255,49 @@ close the Workflow. In the Temporal Web UI, the Event History shows the `ask` Up
 
 ## 2. Run the Worker on AgentCore Runtime {/* #run-the-worker-on-agentcore-runtime */}
 
-Local development uses a continuously running Worker. On AgentCore Runtime, the Worker starts inside the Runtime's HTTP
-handler and returns when its idle policy decides to release the compute.
+Local development uses a continuously running Worker. On AgentCore Runtime, the HTTP handler starts the Worker in a
+background task and immediately returns an acknowledgment. The Worker continues polling until its idle policy decides
+to release the compute.
 
 The AgentCore Runtime handler registers the `DurableAgentWorkflow` and `execute_code` definitions from
 [Build the agent locally](#build-the-agent-locally). It adds Worker Versioning and the Activity-based idle tracker from
-the [Python AgentCore Worker guide](/develop/python/workers/serverless-workers/agentcore#stop-and-drain-the-worker), then
-runs the Worker inside the Runtime handler:
+the [Python AgentCore Worker guide](/develop/python/workers/serverless-workers/agentcore#stop-and-drain-the-worker).
+The entry point registers the background Worker as an AgentCore asynchronous task, prevents another invocation in the
+same Runtime session from starting a duplicate Worker, and clears the task after the Worker drains or fails:
 
 <!--SNIPSTART python-agentcore-durable-agent-runtime-handler-->
 [python-agentcore-durable-agent/agentcore_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/agentcore_worker.py)
 ```py
+_worker: asyncio.Task[None] | None = None
+
+
+async def _run_until_idle(task_id: int) -> None:
+    try:
+        await run_worker()
+    except Exception:
+        log.exception("worker failed in background task")
+    finally:
+        app.complete_async_task(task_id)
+
+
 @app.entrypoint
-@app.async_task
 async def invoke(payload: dict) -> dict:
-    client = await Client.connect(
-        required_env("TEMPORAL_ADDRESS"),
-        namespace=required_env("TEMPORAL_NAMESPACE"),
-        api_key=required_env("TEMPORAL_API_KEY"),
-        tls=True,
-        plugins=[StrandsPlugin()],
-    )
-    tracker = ActivityTracker()
+    global _worker
+    if _worker is not None and not _worker.done():
+        return {"message": "Worker already polling", "task_queue": TASK_QUEUE}
 
-    with ThreadPoolExecutor(max_workers=4) as activity_executor:
-        worker = Worker(
-            client,
-            task_queue=os.environ.get("TEMPORAL_TASK_QUEUE", TASK_QUEUE),
-            workflows=[DurableAgentWorkflow],
-            activities=[execute_code],
-            activity_executor=activity_executor,
-            interceptors=[tracker],
-            deployment_config=WorkerDeploymentConfig(
-                version=WorkerDeploymentVersion(
-                    deployment_name=os.environ.get(
-                        "TEMPORAL_DEPLOYMENT_NAME", DEPLOYMENT_NAME
-                    ),
-                    build_id=os.environ.get("TEMPORAL_BUILD_ID", BUILD_ID),
-                ),
-                use_worker_versioning=True,
-                default_versioning_behavior=VersioningBehavior.PINNED,
-            ),
-            graceful_shutdown_timeout=DRAIN,
-        )
-        async with worker:
-            await tracker.wait_until_idle(DEBOUNCE)
+    task_id = app.add_async_task("temporal-worker")
+    _worker = asyncio.create_task(_run_until_idle(task_id))
 
-    return {"message": "Worker drained"}
+    return {"message": "Worker starting", "task_queue": TASK_QUEUE}
 
 
 ```
 <!--SNIPEND-->
 
 The invocation payload does not contain a user prompt. Temporal invokes the Runtime endpoint to add Worker capacity.
-Clients continue to start and message Workflows through the Temporal Client.
+The acknowledgment does not wait for the Worker to drain. AgentCore reports the Runtime as busy while the asynchronous
+task is registered. Clients continue to start and message Workflows through the Temporal Client.
 
 The Runtime does not need a copy of the conversation in a local file or global variable. When a new Worker receives a
 Workflow Task, Temporal replays the Workflow's Event History and restores the `TemporalAgent` message list before new
