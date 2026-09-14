@@ -27,7 +27,7 @@ See [limitations](#public-preview-limitations) below.
 If you need to orchestrate multiple Activities, use a [Workflow](/workflows). But if you just need to
 execute a single Activity, use a Standalone Activity.
 
-Standalone Activities are Temporal’s [job queue](/evaluate/development-production-features/job-queue) -
+Standalone Activities are Temporal’s [job queue](/evaluate/features/job-queue) -
 the simplest way to run durable, retryable tasks on Temporal.
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
@@ -63,7 +63,7 @@ Pick your SDK and follow the quickstart:
 ## Use cases
 
 Standalone Activities can be used for [durable job processing use
-cases](/evaluate/development-production-features/job-queue) such as sending an email, processing a
+cases](/evaluate/features/job-queue) such as sending an email, processing a
 webhook, syncing data, or executing a single function reliably with built-in retries and timeouts.
 
 ## Key features
@@ -99,7 +99,6 @@ failed, etc.) - not the number of queued tasks.
 
 The Public Preview of Standalone Activities has some known limitations:
 
-- Pause, reset, and update options are not supported in Public Preview but scheduled for GA.
 - `TerminateExisting` conflict policy / `TerminateIfRunning` reuse policy is not supported yet.
 
 ## Temporal CLI support
@@ -126,7 +125,11 @@ temporal version 1.7.0 (Server 1.31.0, UI 2.49.1)
 ```
 
 The `temporal activity` subcommand supports Standalone Activities with commands including: `start`,
-`execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
+`execute`, `result`, `list`, `count`, `describe`, `cancel`, `terminate`, and `delete`.
+
+[Temporal CLI](https://github.com/temporalio/cli) v1.9.0 or higher adds experimental support for `pause`,
+`unpause`, `reset`, and `update-options` on Standalone Activities. See [Activity Operations](/activity-operations)
+for what each operation does.
 
 The Temporal Dev Server has Standalone Activities enabled by default for local testing.
 
