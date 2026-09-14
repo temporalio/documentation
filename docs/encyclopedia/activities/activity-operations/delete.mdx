@@ -18,8 +18,8 @@ Delete terminates the Activity Execution if it's running, then deletes it asynch
 
 - You need an Execution and its result removed before the Namespace
   [Retention Period](/temporal-service/temporal-server#retention-period) elapses.
-- You want to free an Activity Id for reuse without waiting out retention. See
-  [Activity Id Reuse Policy](/standalone-activity#activity-id-reuse-policy).
+- You want to free an Activity ID for reuse without waiting out retention. See
+  [Activity ID Reuse Policy](/standalone-activity#activity-id-reuse-policy).
 
 Delete isn't available for [Workflow Activities](/workflow-activity).
 
@@ -30,7 +30,7 @@ cleanup runs and progress is discarded. The Execution record is then removed asy
 briefly after the command returns.
 
 Once deleted, the Execution no longer appears in `temporal activity describe` or `temporal activity list`, and its
-Activity Id becomes available for reuse.
+Activity ID becomes available for reuse.
 
 ## CLI usage
 

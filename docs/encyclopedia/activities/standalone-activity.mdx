@@ -33,7 +33,7 @@ Temporal uses its own names for some job queue concepts, here's how they map:
 | In a job queue | In Temporal |
 | --- | --- |
 | The function a job runs | An [Activity Definition](/activity-definition) - a normal function, registered by name |
-| One enqueued job | A **Standalone Activity Execution** - one durable run, addressable by its Activity Id |
+| One enqueued job | A **Standalone Activity Execution** - one durable run, addressable by its Activity ID |
 | The queue | A [Task Queue](/task-queue) that your Workers poll |
 | A worker process | An [Activity Worker](/workers) - your process, running your code |
 
@@ -80,13 +80,13 @@ A retry restarts your Activity function from the top - it doesn't resume mid-fun
 details are made available to the next attempt, so your code can read the checkpoint and skip the work it already
 finished.
 
-**Deduplicate with the Activity Id**
+**Deduplicate with the Activity ID**
 
-Use a business identifier you already have as the Activity Id, and Temporal enforces uniqueness for you: an
-[Activity Id Conflict Policy](#activity-id-conflict-policy) covers a job that's already running, and an
-[Activity Id Reuse Policy](#activity-id-reuse-policy) covers one that already completed.
+Use a business identifier you already have as the Activity ID, and Temporal enforces uniqueness for you: an
+[Activity ID Conflict Policy](#activity-id-conflict-policy) covers a job that's already running, and an
+[Activity ID Reuse Policy](#activity-id-reuse-policy) covers one that already completed.
 
-This is a different problem from idempotency, and you need both. The Activity Id stops you submitting the same job
+This is a different problem from idempotency, and you need both. The Activity ID stops you submitting the same job
 twice. Idempotent code stops one job's side effects happening twice if retried.
 
 **Priority and fairness**
@@ -118,7 +118,7 @@ See [Activity Operations](/activity-operations) for behavior, precedence, and ba
 **Asynchronous completion**
 
 A Standalone Activity can return from its function without completing the Activity Execution, leaving an external
-system to Heartbeat progress and deliver the final result by Activity Id or Task Token. See
+system to Heartbeat progress and deliver the final result by Activity ID or Task Token. See
 [Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion).
 
 **Reuse Activities for jobs and Workflows**
@@ -192,7 +192,7 @@ Activity Execution Info:
 
 ## Lifecycle control {/* #lifecycle-control */}
 
-Because a Standalone Activity has no Workflow to own it, you act on the execution directly by Activity Id:
+Because a Standalone Activity has no Workflow to own it, you act on the execution directly by Activity ID:
 
 - **Request Cancel** asks the execution to close gracefully, letting your code clean up. See
   [Cancellation](/activity-execution#cancellation).
@@ -216,7 +216,7 @@ You set Activity Options on the Client when you start the job. At minimum, speci
 | [Timeouts](/encyclopedia/detecting-activity-failures) | Schedule-To-Start, Start-To-Close, Schedule-To-Close, and Heartbeat |
 | [Retry Policy](/encyclopedia/retry-policies) | Retry backoff and Maximum Attempts. Set Maximum Attempts to 1 for at-most-once |
 | Task Queue | Which Workers get the job |
-| Activity Id | The deduplication key, with its [Conflict](#activity-id-conflict-policy) and [Reuse](#activity-id-reuse-policy) policies |
+| Activity ID | The deduplication key, with its [Conflict](#activity-id-conflict-policy) and [Reuse](#activity-id-reuse-policy) policies |
 | [Priority and fairness](/develop/task-queue-priority-fairness) | Dispatch order when jobs compete for the same Workers |
 | [Start Delay](#start-delay) | Run the job after a start delay |
 
@@ -232,45 +232,45 @@ Get results, get handles, and list Standalone Activities:
 
 :::
 
-## Activity Id and deduplication {/* #deduplication-and-id-space-uniqueness */}
+## Activity ID and deduplication {/* #deduplication-and-id-space-uniqueness */}
 
-Standalone Activities have a separate Id space from [the Workflow Id space](/workflow-execution/workflowid-runid) and
-other Temporal primitives, so the [Activity Id Conflict Policy](#activity-id-conflict-policy) and the
-[Activity Id Reuse Policy](#activity-id-reuse-policy) observe only the Standalone Activity Id space for deduplication
+Standalone Activities have a separate ID space from [the Workflow ID space](/workflow-execution/workflowid-runid) and
+other Temporal primitives, so the [Activity ID Conflict Policy](#activity-id-conflict-policy) and the
+[Activity ID Reuse Policy](#activity-id-reuse-policy) observe only the Standalone Activity ID space for deduplication
 and uniqueness.
 
-### What is an Activity Id Reuse Policy? {/* #activity-id-reuse-policy */}
+### What is an Activity ID Reuse Policy? {/* #activity-id-reuse-policy */}
 
-An Activity Id Reuse Policy determines whether a [Standalone Activity](/standalone-activity) Execution can start with an
-Activity Id that a previous, and now closed, Standalone Activity Execution used. If the request is denied, the Temporal
+An Activity ID Reuse Policy determines whether a [Standalone Activity](/standalone-activity) Execution can start with an
+Activity ID that a previous, and now closed, Standalone Activity Execution used. If the request is denied, the Temporal
 Service returns an `ActivityExecutionAlreadyStarted` error.
 
-See [Activity Id Conflict Policy](#activity-id-conflict-policy) for resolving a conflict with a running Standalone
+See [Activity ID Conflict Policy](#activity-id-conflict-policy) for resolving a conflict with a running Standalone
 Activity Execution.
 
-The Activity Id Reuse Policy can have one of the following values:
+The Activity ID Reuse Policy can have one of the following values:
 
 - **Allow Duplicate:** The Standalone Activity Execution can start regardless of the closed status of a previous
-  Standalone Activity Execution with the same Activity Id.
+  Standalone Activity Execution with the same Activity ID.
   **This is the default policy, if one isn't specified.**
 - **Allow Duplicate Failed Only:** The Standalone Activity Execution can start only if the previous Standalone Activity
-  Execution with the same Activity Id failed, was canceled, was terminated, or timed out.
+  Execution with the same Activity ID failed, was canceled, was terminated, or timed out.
 - **Reject Duplicate:** The Standalone Activity Execution can't start if a previous Standalone Activity Execution has
-  the same Activity Id, regardless of its closed status.
+  the same Activity ID, regardless of its closed status.
 
 These values apply to closed Standalone Activity Executions that are still retained in the Namespace, so the check
 reaches back only as far as the [retention period](#result-retention).
 
-### What is an Activity Id Conflict Policy? {/* #activity-id-conflict-policy */}
+### What is an Activity ID Conflict Policy? {/* #activity-id-conflict-policy */}
 
-An Activity Id Conflict Policy determines what happens when you start a Standalone Activity with an Activity Id that a
+An Activity ID Conflict Policy determines what happens when you start a Standalone Activity with an Activity ID that a
 running Standalone Activity Execution already uses. Two Standalone Activity Executions never run at the same time with
-the same Activity Id.
+the same Activity ID.
 
-See [Activity Id Reuse Policy](#activity-id-reuse-policy) for reusing the Activity Id of a closed Standalone Activity
+See [Activity ID Reuse Policy](#activity-id-reuse-policy) for reusing the Activity ID of a closed Standalone Activity
 Execution.
 
-The Activity Id Conflict Policy can have one of the following values:
+The Activity ID Conflict Policy can have one of the following values:
 
 - **Fail:** Doesn't start a new Standalone Activity Execution and returns an `ActivityExecutionAlreadyStarted` error.
   **This is the default policy, if one isn't specified.**
@@ -282,10 +282,10 @@ A Standalone Activity Execution and its result are retained for the
 [Retention Period](/temporal-service/temporal-server#retention-period) of the Namespace it ran in, the same as other
 closed Executions. Within that window the Execution stays visible to `temporal activity describe` and
 `temporal activity list`. After the Retention Period elapses, the Execution and its result are deleted and the
-Activity Id becomes available for reuse.
+Activity ID becomes available for reuse.
 
 Retention is also what enforces deduplication: the [Reuse Policy](#activity-id-reuse-policy) checks against the retained
-record of a completed job, so a job older than the Retention Period no longer blocks reuse of its Activity Id.
+record of a completed job, so a job older than the Retention Period no longer blocks reuse of its Activity ID.
 
 To remove an Execution before then, use `temporal activity delete`.
 
