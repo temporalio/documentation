@@ -1,14 +1,9 @@
 ---
 id: nexus
 title: Temporal Nexus
-sidebar_label: Temporal Nexus
 description: Temporal Nexus connects Temporal Applications across isolated Namespaces with clean service contracts, built-in durability, observability, and security.
 toc_max_heading_level: 4
 slug: /nexus
-keywords:
-  - nexus
-  - nexus overview
-  - temporal nexus
 tags:
   - Nexus
   - Concepts
@@ -18,7 +13,7 @@ import { CaptionedImage, SdkGuideLinks } from '@site/src/components';
 
 :::info NEW TO NEXUS?
 
-This page explains what Nexus is and how it works. To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus).
+This page explains what Nexus is and how it works. To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/features/nexus).
 
 :::
 
@@ -87,6 +82,10 @@ Callers never need to know the handler's Namespace, Task Queue, or internal impl
 
 Endpoints are managed in the [Nexus Registry](/nexus/registry) using the UI, CLI, or Cloud Ops API.
 
+In Temporal Cloud, each Endpoint also belongs to a [Project](/cloud/projects#use-nexus-across-projects).
+The Project controls who can manage the Endpoint in the Cloud Ops API and UI.
+It does not restrict cross-Namespace Nexus calls. Runtime access remains the Endpoint allowlist of caller Namespaces.
+
 ### Queue-based Worker architecture
 
 Nexus uses the same queue-based Worker architecture as the rest of Temporal.
@@ -129,4 +128,3 @@ Each step is a separate, durable Operation with its own retries and failure hand
 - [Nexus execution debugging](/nexus/execution-debugging) - Bi-directional linking, pending Operations, and tracing.
 - [Nexus error handling](/nexus/error-handling) - Error types and how they surface in caller Workflows.
 - [Nexus metrics](/nexus/metrics) - SDK, Cloud, and OSS cluster metrics.
-

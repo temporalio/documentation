@@ -2,7 +2,6 @@
 id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
-sidebar_label: Glossary
 sidebar_position: 13
 toc_max_heading_level: 4
 tags:
@@ -254,7 +253,7 @@ responsible for rate limiting, authorizing, validating, and routing all inbound 
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [General Availability](/evaluate/development-production-features/release-stages#general-availability)
+#### [General Availability](/evaluate/product-release-stages#general-availability)
 
 Learn more about the General Availability release stage
 
@@ -475,13 +474,13 @@ A Payload Converter serializes data, converting objects or values to bytes and b
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Pre-release](/evaluate/development-production-features/release-stages#pre-release)
+#### [Pre-release](/evaluate/product-release-stages#pre-release)
 
 Learn more about the Pre-release stage
 
 <!-- _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_ -->
 
-#### [Public Preview](/evaluate/development-production-features/release-stages#public-preview)
+#### [Public Preview](/evaluate/product-release-stages#public-preview)
 
 Learn more about the Public Preview release stage
 
@@ -749,7 +748,7 @@ The Temporal Web UI provides users with Workflow Execution state and metadata fo
 
 #### [Timer](/workflow-execution/timers-delays)
 
-Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
+Temporal SDKs offer Timer APIs so that the Workflow Definition is deterministic in its handling of time values.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 

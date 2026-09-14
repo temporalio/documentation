@@ -14,6 +14,7 @@ import {
   transformMdx,
   parseFrontmatter,
   extractProp,
+  extractNumberProp,
   parseTabValues,
   parseReadList,
   parseSdkGuideLinks,
@@ -26,8 +27,17 @@ import {
   selectIntegrations,
   integrationsToMarkdownList,
 } from "../scripts/component-handlers/integrations.mjs";
+import {
+  readCookbookRecipes,
+  cookbookRecipesToMarkdownList,
+  cookbookPreviewToMarkdown,
+} from "../scripts/component-handlers/cookbook-preview.mjs";
 import { parseCardItems, cardsToMarkdown } from "../scripts/component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "../scripts/component-handlers/sdk-overview-cards.mjs";
+import {
+  extractQuotedProp,
+  renderWalkthroughStep,
+} from "../scripts/component-handlers/event-history-walkthrough.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
@@ -640,6 +650,29 @@ Watch [What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOK
   assertNotContains(markdown, "<div");
 });
 
+test("Video component becomes a Watch markdown link", () => {
+  const input = `<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "[Watch: What is the Temporal Platform?](https://www.youtube.com/watch?v=EwweiH2rd7M)");
+  assertNotContains(markdown, "<Video");
+  assertNotContains(markdown, "videoId=");
+});
+
+test("Video (multi-line props) becomes a Watch markdown link", () => {
+  const input = `<Video\n  videoId="zLjhNrOKphE"\n  title="What Is a Workflow in Temporal?"\n/>`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "[Watch: What Is a Workflow in Temporal?](https://www.youtube.com/watch?v=zLjhNrOKphE)");
+  assertNotContains(markdown, "<Video");
+});
+
+test("Video inside a :::tip admonition becomes a Watch link in the blockquote", () => {
+  const input = `:::tip\n\nWatch a short overview:\n\n<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />\n\n:::`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "> [Watch: What is the Temporal Platform?](https://www.youtube.com/watch?v=EwweiH2rd7M)");
+  assertNotContains(markdown, "<Video");
+  assertNotContains(markdown, "videoId=");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — SdkTabs
 // ---------------------------------------------------------------------------
@@ -716,7 +749,7 @@ test("self-closing ReleaseNoteHeader does NOT swallow the page body", () => {
 test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
   const input = `<ReleaseNoteHeader featureName="cloudCli" />\n\nCommand reference content.`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Pre-release**");
+  assertContains(markdown, "> **Public Preview**");
   assertContains(markdown, "Command reference content.");
   assertNotContains(markdown, "ReleaseNoteHeader");
 });
@@ -852,6 +885,219 @@ test("SetupStep unwraps {`...`} template literals in CodeSnippet bodies", () => 
 });
 
 // ---------------------------------------------------------------------------
+// Unit tests: extractQuotedProp
+// ---------------------------------------------------------------------------
+console.log("\n📦 extractQuotedProp");
+
+test("extracts a single-quoted value containing double quotes", () => {
+  const tag = `<WalkthroughCommand label="ScheduleActivityTask" details='("pizza-tasks", GetDistance, { Line1: "123 Oak St.", Line2: "", ... })' tone="command" />`;
+  assertEqual(
+    extractQuotedProp(tag, "details"),
+    '("pizza-tasks", GetDistance, { Line1: "123 Oak St.", Line2: "", ... })'
+  );
+  assertEqual(extractQuotedProp(tag, "label"), "ScheduleActivityTask");
+});
+
+test("extracts a double-quoted value", () => {
+  assertEqual(extractQuotedProp('<WalkthroughEvent label="TimerFired" tone="indirect" />', "tone"), "indirect");
+});
+
+test("returns null when the prop is absent", () => {
+  assertEqual(extractQuotedProp('<WalkthroughCommand label="Foo" />', "expected"), null);
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: renderWalkthroughStep
+// ---------------------------------------------------------------------------
+console.log("\n📦 renderWalkthroughStep");
+
+test("renders a step with a single command", () => {
+  const md = renderWalkthroughStep(
+    { number: 5, title: "Request the GetDistance Activity", kind: "command", phase: null, body: "Some prose.", commands: [{ label: "ScheduleActivityTask", details: "(GetDistance)", tone: "command" }], events: [] },
+    { commandsLabel: "Commands issued", eventsLabel: null },
+    { previousPhase: null }
+  );
+  assertContains(md, "#### Step 5: Request the GetDistance Activity");
+  assertContains(md, "*Sends a Command*");
+  assertContains(md, "Some prose.");
+  assertContains(md, "**Commands issued:** `ScheduleActivityTask` (GetDistance)");
+});
+
+test("renders multiple entries as a bulleted list, not the single-line form", () => {
+  const md = renderWalkthroughStep(
+    {
+      number: 1,
+      title: "Two events",
+      kind: "service",
+      phase: null,
+      body: "",
+      commands: [],
+      events: [
+        { label: "ActivityTaskScheduled", tone: "direct" },
+        { label: "ActivityTaskStarted", tone: "indirect" },
+      ],
+    },
+    { commandsLabel: "Commands", eventsLabel: "Events" },
+    { previousPhase: null }
+  );
+  assertContains(md, "**Events:**\n- `ActivityTaskScheduled`\n- `ActivityTaskStarted`");
+});
+
+test("renders a divider and a mismatch/expected entry", () => {
+  const md = renderWalkthroughStep(
+    {
+      number: 8,
+      title: "The next Command does not match",
+      kind: "crash",
+      phase: "History Replay",
+      body: "",
+      commands: [
+        { label: "ScheduleActivityTask", details: "(RunDailyReport) — created during Replay", tone: "command", status: "mismatch", expected: "StartTimer (4 hours)" },
+        { divider: "Event History at the time of the crash" },
+      ],
+      events: [],
+    },
+    { commandsLabel: "Commands created", eventsLabel: "Relevant History Events" },
+    { previousPhase: null }
+  );
+  assertContains(md, "✗ `ScheduleActivityTask` (RunDailyReport) — created during Replay (expected: StartTimer (4 hours))");
+  assertContains(md, "*— Event History at the time of the crash —*");
+});
+
+test("emits one phase heading per phase, not per step", () => {
+  const ctx = { previousPhase: null };
+  const labels = { commandsLabel: "Commands", eventsLabel: "Event History" };
+  const step1 = renderWalkthroughStep(
+    { number: 1, title: "A", kind: null, phase: "History Replay", body: "", commands: [], events: [] },
+    labels,
+    ctx
+  );
+  const step2 = renderWalkthroughStep(
+    { number: 2, title: "B", kind: null, phase: "History Replay", body: "", commands: [], events: [] },
+    labels,
+    ctx
+  );
+  assertContains(step1, "### History Replay");
+  assertNotContains(step2, "### History Replay");
+});
+
+test("omits the Events group when eventsLabel is absent, even if events were somehow passed", () => {
+  const md = renderWalkthroughStep(
+    { number: 1, title: "A", kind: null, phase: null, body: "", commands: [], events: [{ label: "Foo" }] },
+    { commandsLabel: "Commands", eventsLabel: null },
+    { previousPhase: null }
+  );
+  assertNotContains(md, "Foo");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: transformMdx — Event History walkthrough demos
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — Event History walkthrough demos");
+
+test("WalkthroughDemo renders the code fence and each step, using its commandsLabel/eventsLabel", () => {
+  const input = [
+    '<WalkthroughDemo ariaLabel="Test walkthrough" commandsLabel="Commands issued">',
+    "",
+    "```csharp",
+    "var x = 1;",
+    "```",
+    "",
+    '<WalkthroughStep title="A basic Workflow Definition">',
+    "",
+    "Some intro prose.",
+    "",
+    "- Bullet one",
+    "- Bullet two",
+    "",
+    "</WalkthroughStep>",
+    "",
+    '<WalkthroughStep title="Request the GetDistance Activity" kind="command" lines="10-12">',
+    "",
+    "Issues a Command.",
+    "",
+    "<WalkthroughCommand",
+    '  label="ScheduleActivityTask"',
+    "  details='(\"pizza-tasks\", GetDistance, { Line1: \"123 Oak St.\" })'",
+    '  tone="command"',
+    "/>",
+    "",
+    "</WalkthroughStep>",
+    "",
+    "</WalkthroughDemo>",
+  ].join("\n");
+  const { markdown, warnings } = transformMdx(input);
+  assertEqual(warnings.length, 0, `Expected no warnings, got: ${JSON.stringify(warnings)}`);
+  assertContains(markdown, "```csharp");
+  assertContains(markdown, "var x = 1;");
+  assertContains(markdown, "#### Step 1: A basic Workflow Definition");
+  assertContains(markdown, "Some intro prose.");
+  assertContains(markdown, "- Bullet one");
+  assertContains(markdown, "#### Step 2: Request the GetDistance Activity");
+  assertContains(markdown, "*Sends a Command*");
+  assertContains(
+    markdown,
+    '**Commands issued:** `ScheduleActivityTask` ("pizza-tasks", GetDistance, { Line1: "123 Oak St." })'
+  );
+  assertNotContains(markdown, "WalkthroughStep");
+  assertNotContains(markdown, "WalkthroughCommand");
+  assertNotContains(markdown, 'lines="10-12"');
+  assertNotContains(markdown, "ariaLabel");
+});
+
+test("a self-closing WalkthroughDemo (no content) strips cleanly rather than swallowing the rest of the file", () => {
+  const input = [
+    '<WalkthroughDemo ariaLabel="Empty" />',
+    "",
+    "Text after the empty demo.",
+  ].join("\n");
+  const { markdown, warnings } = transformMdx(input);
+  assertEqual(warnings.length, 0, `Expected no warnings, got: ${JSON.stringify(warnings)}`);
+  assertContains(markdown, "Text after the empty demo.");
+  assertNotContains(markdown, "WalkthroughDemo");
+});
+
+test("two WalkthroughDemo instances on one page each keep their own commandsLabel/eventsLabel", () => {
+  const input = [
+    '<WalkthroughDemo ariaLabel="First" commandsLabel="Commands issued">',
+    "",
+    "```go",
+    "code",
+    "```",
+    "",
+    '<WalkthroughStep title="Only step">',
+    "",
+    "Body.",
+    "",
+    "<WalkthroughCommand label=\"Foo\" />",
+    "",
+    "</WalkthroughStep>",
+    "",
+    "</WalkthroughDemo>",
+    "",
+    '<WalkthroughDemo ariaLabel="Second" commandsLabel="Commands" eventsLabel="Events">',
+    "",
+    "```go",
+    "code2",
+    "```",
+    "",
+    '<WalkthroughStep title="Only other step">',
+    "",
+    "Body 2.",
+    "",
+    "<WalkthroughEvent label=\"Bar\" />",
+    "",
+    "</WalkthroughStep>",
+    "",
+    "</WalkthroughDemo>",
+  ].join("\n");
+  const { markdown, warnings } = transformMdx(input);
+  assertEqual(warnings.length, 0, `Expected no warnings, got: ${JSON.stringify(warnings)}`);
+  assertContains(markdown, "**Commands issued:** `Foo`");
+  assertContains(markdown, "**Events:** `Bar`");
+});
+
+// ---------------------------------------------------------------------------
 // Unit tests: transformMdx — JsonTable (graceful degradation without root)
 // ---------------------------------------------------------------------------
 console.log("\n📦 transformMdx — JsonTable");
@@ -914,6 +1160,18 @@ test("selectIntegrations filters to the given SDK(s)", () => {
   assert(!out.some((i) => i.name === "Datadog"), "agnostic entry should be excluded");
 });
 
+test("selectIntegrations filters to the given tag(s)", () => {
+  const out = selectIntegrations(SAMPLE_INTEGRATIONS, [], ["Agent framework"]);
+  assert(out.length === 2, "expected 2 Agent framework integrations");
+  assert(out[0].name === "LangGraph" && out[1].name === "Spring AI", "expected LangGraph then Spring AI (alphabetical)");
+});
+
+test("selectIntegrations combines defaultSdks and defaultTags (AND across groups)", () => {
+  const out = selectIntegrations(SAMPLE_INTEGRATIONS, ["Java"], ["Agent framework"]);
+  assert(out.length === 1, "expected only the Java + Agent framework integration");
+  assert(out[0].name === "Spring AI", "expected Spring AI");
+});
+
 test("integrationsToMarkdownList renders link + description + meta", () => {
   const md = integrationsToMarkdownList([SAMPLE_INTEGRATIONS[0]]);
   assertContains(md, "- [Spring Boot](/a)");
@@ -929,11 +1187,75 @@ test("transformMdx resolves <IntegrationsGrid> to a real list (with projectRoot)
   assertContains(markdown, "- [Spring AI](/develop/java/integrations/spring-ai)");
 });
 
+test("transformMdx resolves <IntegrationsGrid defaultTags> to a real, tag-filtered list", () => {
+  const input = `<IntegrationsGrid defaultTags={["Agent framework"]} />`;
+  const { markdown } = transformMdx(input, { projectRoot: PROJECT_ROOT });
+  assertNotContains(markdown, "<IntegrationsGrid");
+  assertContains(markdown, "- [Spring AI]");
+  assertNotContains(markdown, "- [Braintrust]");
+});
+
 test("transformMdx IntegrationsGrid without projectRoot degrades to a comment", () => {
   const input = `<IntegrationsGrid />`;
   const { markdown } = transformMdx(input);
   assertNotContains(markdown, "<IntegrationsGrid");
   assertContains(markdown, "IntegrationsGrid (not resolved)");
+});
+
+// ---------------------------------------------------------------------------
+// Unit tests: cookbook-preview handler
+// Uses fixtures/ai-cookbook/ (not the real, gitignored, build-time-synced
+// ai-cookbook/ directory) so these tests don't depend on that sync having run.
+// ---------------------------------------------------------------------------
+console.log("\n📦 component-handlers/cookbook-preview");
+
+test("readCookbookRecipes sorts by priority (desc), then title, and excludes the index page", () => {
+  const items = readCookbookRecipes(FIXTURES_DIR);
+  assert(items.length === 3, `expected 3 recipes, got ${items.length}`);
+  assert(items[0].title === "High priority recipe", "expected the prioritized recipe first");
+  assert(items[1].title === "A recipe" && items[2].title === "B recipe", "expected no-priority recipes alphabetically after");
+  assert(!items.some((it) => it.title === "AI Cookbook"), "index page should be excluded");
+});
+
+test("readCookbookRecipes builds /ai/cookbook permalinks from the file slug", () => {
+  const items = readCookbookRecipes(FIXTURES_DIR);
+  const highPriority = items.find((it) => it.title === "High priority recipe");
+  assert(highPriority.permalink === "/ai/cookbook/high-priority", `got ${highPriority.permalink}`);
+});
+
+test("cookbookRecipesToMarkdownList renders link + description", () => {
+  const md = cookbookRecipesToMarkdownList([
+    { title: "Hello world", description: "Do a thing.", permalink: "/ai/cookbook/hello-world" },
+  ]);
+  assertContains(md, "- [Hello world](/ai/cookbook/hello-world) — Do a thing.");
+});
+
+test("cookbookPreviewToMarkdown respects limit and links to the full Cookbook", () => {
+  const md = cookbookPreviewToMarkdown(2, { projectRoot: FIXTURES_DIR });
+  assertContains(md, "- [High priority recipe]");
+  assertContains(md, "- [A recipe]");
+  assertNotContains(md, "- [B recipe]");
+  assertContains(md, "[Browse all recipes](/ai/cookbook)");
+});
+
+test("transformMdx resolves <CookbookPreview limit={2} /> to a real, sorted list", () => {
+  const input = `<CookbookPreview limit={2} />`;
+  const { markdown } = transformMdx(input, { projectRoot: FIXTURES_DIR, sourceFile: "test" });
+  assertNotContains(markdown, "<CookbookPreview");
+  assertContains(markdown, "- [High priority recipe]");
+  assertNotContains(markdown, "- [B recipe]");
+});
+
+test("transformMdx CookbookPreview without projectRoot degrades to a comment", () => {
+  const input = `<CookbookPreview limit={4} />`;
+  const { markdown } = transformMdx(input);
+  assertNotContains(markdown, "<CookbookPreview");
+  assertContains(markdown, "CookbookPreview (not resolved)");
+});
+
+test("extractNumberProp reads a bare numeric prop", () => {
+  assertEqual(extractNumberProp(`<CookbookPreview limit={4} />`, "limit"), 4);
+  assertEqual(extractNumberProp(`<CookbookPreview />`, "limit"), undefined);
 });
 
 // ---------------------------------------------------------------------------
@@ -982,9 +1304,41 @@ test("parseCardItems extracts href/title/description from an items prop", () => 
   assert(items[1].description === "Run Java.", "description parsed");
 });
 
+test("parseCardItems keeps an apostrophe inside a double-quoted description", () => {
+  const tag = `<PatternCards items={[\n  { href: "/a", title: "A", description: "Uses Temporal's Durable Execution end to end." },\n]} />`;
+  const items = parseCardItems(tag);
+  assert(items.length === 1, "expected 1 item");
+  assert(
+    items[0].description === "Uses Temporal's Durable Execution end to end.",
+    `description should not truncate at the apostrophe, got: ${items[0].description}`
+  );
+});
+
 test("cardsToMarkdown renders a link list with descriptions", () => {
   const md = cardsToMarkdown([{ href: "/a", title: "Go", description: "Run Go." }]);
   assertContains(md, "- [Go](/a): Run Go.");
+});
+
+test("parseCardItems extracts tags and sdk from a GridCardList items prop", () => {
+  const tag = `<GridCardList items={[\n  { href: "/a", title: "A", description: "Desc.", tags: ["RAG", "Demo"], sdk: "Python" },\n]} />`;
+  const items = parseCardItems(tag);
+  assert(items.length === 1, "expected 1 item");
+  assertEqual(JSON.stringify(items[0].tags), JSON.stringify(["RAG", "Demo"]), "tags array parsed");
+  assert(items[0].sdk === "Python", "sdk parsed");
+});
+
+test("parseCardItems defaults tags/sdk when absent (PatternCards items)", () => {
+  const tag = `<PatternCards items={[\n  { href: "/a", title: "A", description: "Desc." },\n]} />`;
+  const items = parseCardItems(tag);
+  assertEqual(JSON.stringify(items[0].tags), JSON.stringify([]), "tags defaults to empty array");
+  assert(items[0].sdk === "", "sdk defaults to empty string");
+});
+
+test("cardsToMarkdown appends a _(SDK · tags)_ suffix when present", () => {
+  const md = cardsToMarkdown([
+    { href: "/a", title: "Aktilot", description: "Chat with docs.", tags: ["RAG"], sdk: "Python" },
+  ]);
+  assertContains(md, "- [Aktilot](/a): Chat with docs. _(Python · RAG)_");
 });
 
 test("transformMdx renders QuickstartCards items as a list", () => {
@@ -999,6 +1353,13 @@ test("transformMdx renders PatternCards items as a list", () => {
   const { markdown } = transformMdx(input);
   assertNotContains(markdown, "PatternCards");
   assertContains(markdown, "- [Company Security](https://x): Learn more.");
+});
+
+test("transformMdx renders GridCardList items with a SDK/tags suffix", () => {
+  const input = `<GridCardList\n  className="code-exchange-featured"\n  items={[\n  { href: "https://x", title: "Demo Project", description: "Does things.", tags: ["RAG"], sdk: "Python" },\n]} />`;
+  const { markdown } = transformMdx(input);
+  assertNotContains(markdown, "GridCardList");
+  assertContains(markdown, "- [Demo Project](https://x): Does things. _(Python · RAG)_");
 });
 
 // ---------------------------------------------------------------------------
@@ -1141,7 +1502,7 @@ console.log("\n🗂️  COMPONENT_REGISTRY checks");
 test("all known Temporal components are registered", () => {
   const requiredComponents = [
     "Tabs", "TabItem", "ZoomPanPinch", "RelatedReadList",
-    "CaptionedImage", "DocCardList", "CardList",
+    "CaptionedImage", "DocCardList", "CardList", "Video",
   ];
   for (const comp of requiredComponents) {
     assert(
@@ -1155,10 +1516,10 @@ test("all registry strategies are valid strings", () => {
   const validStrategies = [
     "tabs", "tabitem", "transparent", "related-read",
     "related-read-container", "related-read-item",
-    "captioned-image", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
+    "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
-    "sdk-guide-links",
+    "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "sdk-guide-links", "event-history-demo", "walkthrough-step", "walkthrough-entry",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(

@@ -4,10 +4,6 @@ title: Workflow Timeouts - Rust SDK
 sidebar_label: Timeouts
 description: Optimize Workflow Execution with the Temporal Rust SDK by configuring Workflow Timeouts and Retry Policies.
 toc_max_heading_level: 4
-keywords:
-  - Rust
-  - failure detection
-  - timeouts
 tags:
   - Activities
   - Workflows
@@ -73,13 +69,16 @@ let wf_handle = client.start_workflow(
         "my-task-queue", 
         "greetings-workflow-10",
     )
-    .retry_policy(RetryPolicy {
-        initial_interval: Some(prost_dur!(from_secs(1))),
-        backoff_coefficient: 2.0,
-        maximum_interval: Some(prost_dur!(from_secs(100))),
-        maximum_attempts: 5,
-        non_retryable_error_types: vec!["NonRetryableError".to_string()],
-    }).build()
+    .retry_policy(
+        RetryPolicy::builder()
+            .initial_interval(Duration::from_secs(1))
+            .backoff_coefficient(2.0)
+            .maximum_interval(Duration::from_secs(100))
+            .maximum_attempts(5)
+            .non_retryable_error_types(["NonRetryableError"])
+            .build(),
+    )
+    .build()
 ).await?;
 ```
 

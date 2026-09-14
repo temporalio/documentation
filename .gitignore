@@ -55,5 +55,6 @@ test-results/*
 # screenshots
 screenshots
 # Ignore cookbook recipes since they are synced from the remote repo
-ai-cookbook
+# (anchored to the root — fixtures/ai-cookbook/ is a real, tracked test fixture)
+/ai-cookbook
 scripts/mermaid-compare/*

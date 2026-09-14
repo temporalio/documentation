@@ -4,9 +4,6 @@ title: Testing - PHP SDK
 sidebar_label: Testing
 description: The Temporal Application Testing section explains frameworks for Workflow and integration testing, including end-to-end, integration, unit tests, and how to mock Activities in a PHP environment.
 toc_max_heading_level: 4
-keywords:
-  - php
-  - sdk
 tags:
   - Testing
   - PHP SDK
@@ -202,7 +199,7 @@ The following are examples of fetching and replaying Event Histories:
 To replay Workflow Executions, use the `\Temporal\Testing\Replay\WorkflowReplayer` class.
 
 In the following example, Event Histories are fetching from the Temporal, and then replayed.
-If the Workflow is non-deterministic, a `NonDeterministicWorkflowException` will be thrown.
+If the Workflow Definition is non-deterministic, a `NonDeterministicWorkflowException` will be thrown.
 Note that this requires [Advanced Visibility](/visibility#advanced-visibility) to be enabled.
 
 ```php

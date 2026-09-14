@@ -2,14 +2,15 @@ import { rewrite, next } from '@vercel/functions';
 
 export default function middleware(request) {
   const accept = request.headers.get('accept') || '';
+  const headers = { Vary: 'Accept, Accept-Encoding' };
 
   if (accept.includes('text/markdown')) {
     const url = new URL(request.url);
     const path = url.pathname.replace(/\/+$/, '') || '/index';
-    return rewrite(new URL(`${path}.md`, request.url));
+    return rewrite(new URL(`${path}.md`, request.url), { headers });
   }
 
-  return next();
+  return next({ headers });
 }
 
 export const config = {

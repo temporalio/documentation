@@ -69,19 +69,39 @@ function extractFrontMatter(filePath) {
   return result;
 }
 
+// Mirrors Docusaurus `isCategoryIndex`: a doc is the index of its folder when
+// its filename (minus extension) is `index`, `readme`, or the folder's own name,
+// compared case-insensitively.
+function isCategoryIndexFile(fileName, parentDirName) {
+  const eligible = ['index', 'readme'];
+  if (parentDirName) {
+    eligible.push(parentDirName.toLowerCase());
+  }
+  return eligible.includes(fileName.toLowerCase());
+}
+
 function relativeSlugFromPath(filePath, id) {
   const relativePath = path.relative(DOCS_DIR, filePath);
   const withoutExtension = relativePath.replace(/\.[^.]+$/, '');
   const parts = withoutExtension.split(path.sep);
+  const fileName = parts[parts.length - 1];
+  const parentDirName = parts.length > 1 ? parts[parts.length - 2] : undefined;
 
-  // Mirror Docusaurus: when a doc has no `slug`, its URL is the directory path
-  // plus its `id`. The `id` defaults to the filename, but a custom `id` in the
-  // frontmatter overrides that last segment (e.g. temporal-nexus.mdx with
-  // `id: nexus` publishes at .../nexus, not .../temporal-nexus).
+  // Mirror Docusaurus: a category index file with no `slug` publishes at its
+  // folder's URL, and its `id` is ignored for URL purposes. So
+  // docs/cloud/connectivity/index.mdx serves at /cloud/connectivity even when
+  // its frontmatter sets `id: overview`.
+  if (isCategoryIndexFile(fileName, parentDirName)) {
+    parts.pop();
+    return parts.join('/');
+  }
+
+  // Otherwise the URL is the directory path plus the doc's `id`. The `id`
+  // defaults to the filename, but a custom `id` in the frontmatter overrides
+  // that last segment (e.g. temporal-nexus.mdx with `id: nexus` publishes at
+  // .../nexus, not .../temporal-nexus).
   if (typeof id === 'string' && id.trim().length > 0) {
     parts[parts.length - 1] = id.trim();
-  } else if (parts[parts.length - 1] === 'index') {
-    parts.pop();
   }
 
   return parts.join('/');
@@ -222,6 +242,7 @@ if (require.main === module) {
     isExcludedDocPath,
     getChangedDocFiles,
     extractFrontMatter,
+    isCategoryIndexFile,
     relativeSlugFromPath,
     normalizeSlug,
     collectDocInfo,

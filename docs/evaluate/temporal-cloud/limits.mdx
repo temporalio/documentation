@@ -5,17 +5,6 @@ sidebar_label: Limits
 slug: /cloud/limits
 description: Learn about Temporal Cloud limits, including accounts, namespaces, throughput, retention, task pollers, batch jobs, gRPC, search attributes, and more.
 toc_max_heading_level: 3
-keywords:
-  - capacity
-  - configuration
-  - defaults
-  - limits
-  - quotas
-  - rate limits
-  - scaling
-  - settings
-  - temporal cloud
-  - throttling
 tags:
   - Temporal Cloud
   - Limits
@@ -139,6 +128,31 @@ To avoid throttling, don't schedule all your Workflow Executions to start at the
 Every Temporal SDK supports jittering, which adds small random delays to Schedule specifications, helping to reduce load at any specific moment.
 Set the `jitter` value to the largest delay you will permit before your Workflow Execution must begin.
 This approach uniformly distributes the scheduled Workflow Execution launches through that period and reduces your Schedule Workflow Execution RPS load.
+
+### Per-primitive Id reuse rate limits {/* #per-primitive-id-reuse-rate-limits */}
+
+- Scope: Namespace, primitive type, and Id
+- Primitives covered: Workflows, Standalone Activities, Schedules, and Nexus Operations
+- Default limit: 1 new Execution per second with a burst allowance
+- Not configurable
+
+When executing [Workflows](/workflows), [Standalone Activities](/standalone-activity), and [Nexus Operations](/standalone-nexus-operation), and when creating [Schedules](/schedule), the system enforces a per-primitive limit on successive Executions with the same Id.
+
+Every operation that creates an Execution counts toward the limit:
+
+- `StartWorkflowExecution`
+- `SignalWithStartWorkflowExecution`
+- `ExecuteMultiOperation` (Update)
+- `ResetWorkflowExecution`
+- [Continue-As-New](/workflow-execution/continue-as-new), whether requested by the Workflow or triggered by a [Retry Policy](/encyclopedia/retry-policies) or [Cron Job](/cron-job)
+- `CreateSchedule`
+- `StartActivityExecution`
+- `StartNexusOperationExecution`
+
+This limit applies only to requests that will create new Executions, and so this limit applies after the deduplication check.
+A duplicate start that returns `WorkflowExecutionAlreadyStarted` has no effect on the limit.
+
+Exceeding this limit returns a `ResourceExhausted` error.
 
 ### Visibility API Rate Limit
 

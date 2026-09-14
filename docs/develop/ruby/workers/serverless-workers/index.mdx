@@ -1,0 +1,29 @@
+---
+id: index
+title: Serverless Workers - Ruby SDK
+sidebar_label: Serverless Workers
+description: Write Temporal Workers that run on serverless compute using the Ruby SDK.
+slug: /develop/ruby/workers/serverless-workers
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Ruby SDK
+  - Serverless
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+  Create a [support ticket](/cloud/support#support-ticket) or contact your account team for access, and
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+</ReleaseNoteHeader>
+
+Serverless Workers run on compute that Temporal starts and stops for you, rather than on long-lived processes you operate.
+
+For a general overview of how Serverless Workers work, see [Serverless Workers](/serverless-workers).
+For the end-to-end deployment guide, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+
+## Supported providers
+
+- [**GCP Cloud Run**](/develop/ruby/workers/serverless-workers/cloud-run) - Run a standard Worker on a Cloud Run worker pool. Covers the versioned Worker setup, connection configuration, and handling scale-in.

@@ -1,0 +1,14 @@
+# Flags "isn't just X, it's Y" and similar reversal constructions that
+# promise a contrast and deliver a plain definition. Ported from jdkato/voices'
+# Voices.BinaryContrast rule (https://github.com/jdkato/voices, MIT License),
+# itself derived from no-ai-slop (https://github.com/petergyang/no-ai-slop,
+# MIT License).
+extends: existence
+message: "Binary contrast: '%s'. State the second half directly."
+level: warning
+ignorecase: true
+nonword: true
+tokens:
+  - '\b(?:is|are|it.s|that.s) not (?:just )?[\w\s]{1,30}?[,.;] (?:it.s|but|they.re)\b'
+  - '\b(?:isn.t|aren.t) (?:just )?[\w\s]{1,30}?[,.;] (?:it.s|but|they.re)\b'
+  - '\bthe question is(?:n.t| not) [\w\s]{1,30}?[,.] it.s\b'

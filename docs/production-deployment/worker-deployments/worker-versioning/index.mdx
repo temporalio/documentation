@@ -1,20 +1,16 @@
 ---
 id: index
 title: Worker Versioning
-sidebar_label: Worker Versioning
 description:
   Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for
   patching to support multiple code paths.
 toc_max_heading_level: 4
-keywords:
-  - scaling
-  - workers
-  - versioning
-  - deploys
 tags:
   - Temporal Service
   - Durable Execution
 ---
+
+import { Video } from '@site/src/components';
 
 Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on
 your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
@@ -23,7 +19,7 @@ called [Worker Deployment Versions](/worker-versioning#deployment-versions).
 For most teams, Worker Versioning should be the default recommendation for deploying Workflow code changes in
 production. If you can run versioned worker deployments, prefer Worker Versioning over patching.
 
-Worker Versioning unlocks important benefits for users of [blue-green or rainbow deployments](#deployment-systems).
+Worker Versioning provides the following benefits for [blue-green or rainbow deployments](#deployment-systems):
 
 - Ramping traffic gradually to a new Worker Deployment Version.
 - Verifying a new Deployment Version with tests before sending production traffic to it.
@@ -40,18 +36,7 @@ To use Workflow Pinning, we recommend using [rainbow deployments](#deployment-sy
 
 Watch this Temporal Replay 2025 talk to learn more about Worker Versioning and see a demo.
 
-<div style={{ display: 'flex', justifyContent: 'center' }}>
-  <iframe
-    width="560"
-    height="315"
-    src="https://www.youtube.com/embed/rm4BlD9WXqc"
-    title="YouTube video player"
-    frameBorder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerPolicy="strict-origin-when-cross-origin"
-    allowFullScreen
-  ></iframe>
-</div>
+<Video videoId="rm4BlD9WXqc" title="Worker Versioning: a Temporal Replay 2025 talk and demo" />
 
 :::
 
@@ -194,4 +179,3 @@ If you run [Serverless Workers](/serverless-workers), each Worker Deployment Ver
 specific Lambda function. In production, configure it with a qualified versioned ARN so Pinned Workflows remain truly
 pinned to the code they started against, regardless of whether your default behavior is Pinned or Auto-Upgrade. See
 [Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers).
-

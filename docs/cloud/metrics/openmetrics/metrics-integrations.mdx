@@ -3,21 +3,6 @@ id: metrics-integrations
 title: Metrics integrations
 sidebar_label: Connect an observability tool
 description: Integrating with the Temporal Cloud OpenMetrics endpoint.
-keywords:
-  - temporal cloud metrics configuration
-  - configure metrics endpoint
-  - temporal cloud observability
-  - temporal cloud UI setup
-  - grafana temporal integration
-  - prometheus metrics endpoint
-  - openmetrics endpoint
-  - observability tools integration
-  - openmetrics api
-  - datadog temporal integration
-  - signoz temporal integration
-  - new relic temporal integration
-  - clickstack temporal integration
-  - opentelemetry collector metrics
 tags:
   - Metrics
   - OpenMetrics
@@ -55,6 +40,19 @@ For Datadog users, treat the OpenMetrics integration as the Cloud-side half of y
 
 If you only ingest Cloud metrics, you will miss many worker-side bottlenecks. For recommended Worker monitors, see
 [Monitor worker health](/cloud/worker-health).
+
+### Elastic
+
+The Elastic [Temporal Integration](https://www.elastic.co/docs/reference/integrations/temporal) scrapes the OpenMetrics endpoint, stores metrics in Elasticsearch, and automatically installs dashboards, alert templates, and SLO templates in Kibana.
+
+Setup
+
+1. In Kibana, go to Management → Integrations and search for Temporal (OpenTelemetry).
+2. Add the integration. The default Cloud endpoint (metrics.temporal.io:443) and path (/v1/metrics) are pre-configured.
+3. Enter your Temporal Cloud API key in the Temporal Cloud API Key field.
+4. Verify metrics are flowing in Discover using the filter data_stream.dataset: "temporal.cloud_metrics.otel".
+
+Dashboards, alert rules, and SLO templates are installed automatically.
 
 ### Grafana Cloud
 

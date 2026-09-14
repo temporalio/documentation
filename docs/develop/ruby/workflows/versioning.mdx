@@ -4,18 +4,6 @@ title: Versioning - Ruby SDK
 sidebar_label: Versioning
 description: Use the Ruby SDK Patching API to safely deploy new code versions, handle deprecated patches, and manage Workflow activities using Temporal for long-running tasks.
 toc_max_heading_level: 4
-keywords:
-  - best practices
-  - deployment
-  - deprecated patches
-  - patching
-  - ruby
-  - sdk
-  - version
-  - versioning
-  - workflow completion
-  - event history
-  - workflow transition
 tags:
   - Workflows
   - Ruby SDK
@@ -141,7 +129,7 @@ end
 Once the pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
 
 Patching allows you to make changes to currently running Workflows.
-It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+It introduces compatible changes without causing non-determinism errors.
 
 ### Workflow cutovers
 

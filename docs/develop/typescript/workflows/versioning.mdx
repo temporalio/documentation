@@ -5,11 +5,6 @@ sidebar_label: Versioning
 slug: /develop/typescript/workflows/versioning
 description: Temporal TypeScript SDK ensures deterministic Workflow code with versioning features like Workflow Patching APIs, Worker Build IDs, and Workflow migration strategies.
 toc_max_heading_level: 4
-keywords:
-  - patching
-  - typescript
-  - versioning
-  - workflow code
 tags:
   - Patching
   - Workflows
@@ -133,7 +128,7 @@ export async function myWorkflow(): Promise<void> {
 Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecatePatch()` calls:
 
 Patching allows you to make changes to currently running Workflows.
-It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+It introduces compatible changes without causing non-determinism errors.
 
 ### Workflow cutovers
 

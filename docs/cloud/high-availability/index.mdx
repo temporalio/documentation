@@ -1,21 +1,12 @@
 ---
 id: index
 title: High Availability
-sidebar_label: High Availability
 slug: /cloud/high-availability
 description: Temporal Cloud's Namespace with High Availability features offers automatic failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
 tags:
   - Temporal Cloud
   - Production
   - High Availability
-keywords:
-  - availability
-  - explanation
-  - failover
-  - high-availability
-  - replication
-  - namespaces
-  - temporal-cloud
 ---
 
 import { ToolTipTerm, CaptionedImage } from '@site/src/components';
@@ -139,7 +130,7 @@ These are often major concerns for financial services, e-commerce, gaming, globa
 
 In selected regions, you can add a replica to a Namespace in the same region.
 Temporal operates a "cell architecture" and will replicate the Namespace across multiple cells in that region.
-This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages) in selected regions.
+This feature is currently in [Public Preview](/evaluate/product-release-stages) in selected regions.
 
 Failovers between cells are always managed automatically by Temporal. Unlike Multi-region and Multi-cloud Replication, you cannot disable automatic failovers and you cannot trigger a manual failover for a Same-region Replication Namespace. See [Failovers](/cloud/high-availability/failovers) for details.
 

@@ -21,6 +21,8 @@
  *   - <ToolTipTerm term="x" />    → inline replacement with the term text
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
+ *   - <WalkthroughDemo> + <WalkthroughStep>/<WalkthroughCommand>/
+ *     <WalkthroughEvent>           → fenced code passthrough + per-step Markdown
  *   - <ZoomPanPinch>              → transparent wrapper, pass inner content
  *   - <ViewSourceCodeNotice href> → plain markdown link line
  *   - YouTube/HTML embeds         → stripped (keep a markdown Watch link in prose for LLMs)
@@ -35,9 +37,14 @@
 
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
+import { cookbookPreviewToMarkdown, cookbookHomeToMarkdown } from "./component-handlers/cookbook-preview.mjs";
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
+import {
+  extractQuotedProp,
+  renderWalkthroughStep,
+} from "./component-handlers/event-history-walkthrough.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
@@ -61,6 +68,7 @@ export const COMPONENT_REGISTRY = {
   SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
+  Video: "video",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
@@ -70,6 +78,8 @@ export const COMPONENT_REGISTRY = {
   SetupStep: "setup-step",
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
+  CookbookPreview: "cookbook-preview",
+  CookbookHome: "cookbook-home",
   SdkOverviewCards: "sdk-overview-cards",
   ViewSourceCodeNotice: "view-source-code-notice",
 
@@ -100,14 +110,15 @@ export const COMPONENT_REGISTRY = {
   ThemedImage: "strip-block",
   PatternCards: "cards",
   QuickstartCards: "cards",
+  GridCardList: "cards",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
   ServerlessWorkerDemo: "strip-block",
-  CodeToCommandsDemo: "strip-block",
-  CommandsToEventsDemo: "strip-block",
-  HistoryReplayDemo: "strip-block",
-  NonDeterminismDemo: "strip-block",
+  WalkthroughDemo: "event-history-demo",
+  WalkthroughStep: "walkthrough-step",
+  WalkthroughCommand: "walkthrough-entry",
+  WalkthroughEvent: "walkthrough-entry",
   OperationsTable: "strip-block",
   InvitationContent: "strip-block",
   AnnotatedCode: "strip-tag",
@@ -126,6 +137,7 @@ const COMPONENTS_BY_STRATEGY = (strategy) =>
 
 const STRIP_BLOCK_COMPONENTS = COMPONENTS_BY_STRATEGY("strip-block");
 const STRIP_TAG_COMPONENTS = COMPONENTS_BY_STRATEGY("strip-tag");
+const EVENT_HISTORY_DEMO_COMPONENTS = COMPONENTS_BY_STRATEGY("event-history-demo");
 
 // Availability labels for ReleaseNoteHeader resolved `type` values.
 // Mirrors ReleaseNoteHeader.BASE_RELEASE_STAGES labels in the React component.
@@ -209,6 +221,15 @@ export function extractProp(tagStr, propName) {
   if (mb) return mb[1];
 
   return null;
+}
+
+/**
+ * Extract a bare numeric JSX prop, e.g. extractNumberProp('<X limit={4} />', 'limit') => 4.
+ * Returns undefined if the prop isn't present or isn't a plain number literal.
+ */
+export function extractNumberProp(tagStr, propName) {
+  const m = tagStr.match(new RegExp(`${propName}=\\{(-?\\d+(?:\\.\\d+)?)\\}`));
+  return m ? Number(m[1]) : undefined;
 }
 
 /**
@@ -453,6 +474,8 @@ const State = {
   RELATED_READ_CONTAINER: "RELATED_READ_CONTAINER",
   SETUP_STEPS: "SETUP_STEPS",
   SETUP_STEP: "SETUP_STEP",
+  EVENT_HISTORY_DEMO: "EVENT_HISTORY_DEMO",
+  WALKTHROUGH_STEP: "WALKTHROUGH_STEP",
 };
 
 /**
@@ -570,6 +593,19 @@ export function transformMdx(mdxContent, options = {}) {
   let collectingSetupCode = false;
   let setupCodePropLines = [];
 
+  // --- Event History walkthrough demo state ---
+  let demoName = null;
+  let demoCommandsLabel = "Commands";
+  let demoEventsLabel = null;
+  let demoStepCounter = 0;
+  const demoRenderCtx = { previousPhase: null };
+  let stepTitle = "";
+  let stepKind = null;
+  let stepPhase = null;
+  let stepCommands = [];
+  let stepEvents = [];
+  let stepProseLines = [];
+
   // --- Code fence tracking ---
   let inCodeBlock = false;
   let codeBlockFence = null;
@@ -647,7 +683,7 @@ export function transformMdx(mdxContent, options = {}) {
     // ------------------------------------------------------------------
     if (!inCodeBlock) {
       const fenceMatch = trimmed.match(/^(`{3,}|~{3,})/);
-      if (fenceMatch && state !== State.SETUP_STEP) {
+      if (fenceMatch && state !== State.SETUP_STEP && state !== State.WALKTHROUGH_STEP) {
         inCodeBlock = true;
         codeBlockFence = fenceMatch[1];
         pushLine(line);
@@ -879,6 +915,87 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- Event History demo container: dispatch each <WalkthroughStep> ---
+    // (the code fence itself needs no handling here — it's captured by the
+    // top-level fence pass-through above and lands directly in outputLines,
+    // exactly where it appears, before any step.)
+    if (state === State.EVENT_HISTORY_DEMO) {
+      if (isCloseTag(line, demoName)) {
+        state = State.NORMAL;
+        demoName = null;
+        continue;
+      }
+      if (isOpenTag(line, "WalkthroughStep")) {
+        let tag = line;
+        while (!/>/.test(tag) && i + 1 < lines.length) {
+          i++;
+          tag += " " + lines[i].trim();
+        }
+        stepTitle = extractQuotedProp(tag, "title") || "";
+        stepKind = extractQuotedProp(tag, "kind");
+        stepPhase = extractQuotedProp(tag, "phase");
+        demoStepCounter++;
+        stepCommands = [];
+        stepEvents = [];
+        stepProseLines = [];
+        state = State.WALKTHROUGH_STEP;
+        continue;
+      }
+      continue; // blank lines between the fence and the first step, or between steps
+    }
+
+    // --- WalkthroughStep: collect <WalkthroughCommand>/<WalkthroughEvent>
+    // ledger entries, then the prose body, and render on close ---
+    if (state === State.WALKTHROUGH_STEP) {
+      if (isCloseTag(line, "WalkthroughStep")) {
+        const inner = transformMdx(stepProseLines.join("\n"), {
+          sourceFile: sourceFile + "#walkthrough-step",
+          projectRoot,
+          mdxDir: options.mdxDir,
+          _depth: depth + 1,
+        });
+        warnings.push(...inner.warnings);
+        const rendered = renderWalkthroughStep(
+          {
+            number: demoStepCounter,
+            title: stepTitle,
+            kind: stepKind,
+            phase: stepPhase,
+            body: inner.markdown.trim(),
+            commands: stepCommands,
+            events: stepEvents,
+          },
+          { commandsLabel: demoCommandsLabel, eventsLabel: demoEventsLabel },
+          demoRenderCtx
+        );
+        outputLines.push(rendered);
+        outputLines.push("");
+        state = State.EVENT_HISTORY_DEMO;
+        stepProseLines = [];
+        continue;
+      }
+      const entryMatch = trimmed.match(/^<Walkthrough(Command|Event)\b/);
+      if (entryMatch) {
+        let tag = line;
+        while (!/\/>/.test(tag) && i + 1 < lines.length) {
+          i++;
+          tag += " " + lines[i].trim();
+        }
+        const entry = {
+          label: extractQuotedProp(tag, "label"),
+          details: extractQuotedProp(tag, "details"),
+          tone: extractQuotedProp(tag, "tone"),
+          status: extractQuotedProp(tag, "status"),
+          expected: extractQuotedProp(tag, "expected"),
+          divider: extractQuotedProp(tag, "divider"),
+        };
+        (entryMatch[1] === "Command" ? stepCommands : stepEvents).push(entry);
+        continue;
+      }
+      stepProseLines.push(line);
+      continue;
+    }
+
     // ------------------------------------------------------------------
     // Strip import / export statements
     // ------------------------------------------------------------------
@@ -951,6 +1068,21 @@ export function transformMdx(mdxContent, options = {}) {
         const embedEnd = findHtmlEmbedEnd(lines, i);
         if (embedEnd !== null) {
           i = embedEnd;
+          continue;
+        }
+        // <Video videoId="..." title="..." /> inside a tip → Watch link, same
+        // as the Video strategy used outside admonitions.
+        if (/^\s*<Video\b/.test(line)) {
+          let tag = line;
+          while (!/\/>/.test(tag) && i + 1 < lines.length) {
+            i++;
+            tag += " " + lines[i].trim();
+          }
+          const videoId = extractProp(tag, "videoId");
+          const title = extractProp(tag, "title");
+          if (videoId && title) {
+            admonitionLines.push(`[Watch: ${title}](https://www.youtube.com/watch?v=${videoId})`);
+          }
           continue;
         }
         admonitionLines.push(line);
@@ -1162,6 +1294,30 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- Event History demo open (<WalkthroughDemo>) ---
+    let matchedEventHistoryDemo = null;
+    for (const comp of EVENT_HISTORY_DEMO_COMPONENTS) {
+      if (isOpenTag(line, comp)) {
+        matchedEventHistoryDemo = comp;
+        break;
+      }
+    }
+    if (state === State.NORMAL && matchedEventHistoryDemo) {
+      if (trimmed.endsWith("/>")) continue; // self-closing, no content to render
+      let tag = line;
+      while (!/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      state = State.EVENT_HISTORY_DEMO;
+      demoName = matchedEventHistoryDemo;
+      demoCommandsLabel = extractQuotedProp(tag, "commandsLabel") || "Commands";
+      demoEventsLabel = extractQuotedProp(tag, "eventsLabel");
+      demoStepCounter = 0;
+      demoRenderCtx.previousPhase = null;
+      continue;
+    }
+
     // --- ZoomPanPinch / transparent wrappers — strip tags, keep content ---
     let transparentName = null;
     for (const name of COMPONENTS_BY_STRATEGY("transparent")) {
@@ -1209,6 +1365,23 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- Video (self-closing, may span lines) ---
+    //     <Video videoId="..." title="..." /> → [Watch: Title](https://www.youtube.com/watch?v=ID)
+    if (state === State.NORMAL && /^\s*<Video\b/.test(line)) {
+      let tag = line;
+      while (!/\/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const videoId = extractProp(tag, "videoId");
+      const title = extractProp(tag, "title");
+      if (videoId && title) {
+        outputLines.push(`[Watch: ${title}](https://www.youtube.com/watch?v=${videoId})`);
+        outputLines.push("");
+      }
+      continue;
+    }
+
     // --- JsonTable (self-closing data component) ---
     if (state === State.NORMAL && /^\s*<JsonTable\b/.test(line)) {
       let tag = line;
@@ -1231,7 +1404,35 @@ export function transformMdx(mdxContent, options = {}) {
         tag += " " + lines[i].trim();
       }
       const defaultSdks = parseStringArrayProp(tag, "defaultSdks");
-      const md = integrationsGridToMarkdown(defaultSdks, { projectRoot, warnings, sourceFile });
+      const defaultTags = parseStringArrayProp(tag, "defaultTags");
+      const md = integrationsGridToMarkdown(defaultSdks, defaultTags, { projectRoot, warnings, sourceFile });
+      outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
+    // --- CookbookPreview (self-closing) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<CookbookPreview\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const limit = extractNumberProp(tag, "limit") ?? 4;
+      const md = cookbookPreviewToMarkdown(limit, { projectRoot, warnings, sourceFile });
+      outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
+    // --- CookbookHome (self-closing, no props) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<CookbookHome\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const md = cookbookHomeToMarkdown({ projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
       continue;
@@ -1250,8 +1451,8 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- QuickstartCards / PatternCards → Markdown link list from items prop ---
-    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards)\b/.test(line)) {
+    // --- QuickstartCards / PatternCards / GridCardList → Markdown link list from items prop ---
+    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards|GridCardList)\b/.test(line)) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {
         i++;

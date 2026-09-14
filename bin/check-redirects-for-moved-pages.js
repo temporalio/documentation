@@ -132,6 +132,7 @@ function loadRedirects() {
   const config = JSON.parse(fs.readFileSync(VERCEL_JSON, 'utf8'));
   return (config.redirects || []).map((r) => ({
     source: r.source,
+    destination: r.destination,
     regex: vercelPatternToRegex(r.source),
   }));
 }

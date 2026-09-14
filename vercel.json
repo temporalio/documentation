@@ -7,6 +7,17 @@
     {
       "source": "/img/og/:path*",
       "destination": "/img/assets/open-graph-shiny.jpg"
+    },
+    {
+      "source": "/:path((?!api/).*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*text/markdown.*"
+        }
+      ],
+      "destination": "/api/markdown-not-found"
     }
   ],
   "headers": [
@@ -47,8 +58,6 @@
     {
       "source": "/llms-api-reference.txt",
       "destination": "/llms.txt",
-      "source": "/develop/typescript/workers/serverless-workers/cloud-run",
-      "destination": "/develop/typescript/workers/serverless-workers",
       "permanent": true
     },
     {
@@ -183,27 +192,67 @@
     },
     {
       "source": "/cookbook",
-      "destination": "/ai-cookbook",
+      "destination": "/ai/cookbook",
+      "permanent": true
+    },
+    {
+      "source": "/cookbook.md",
+      "destination": "/ai/cookbook.md",
       "permanent": true
     },
     {
       "source": "/ai-cookbook/basic-python",
-      "destination": "/ai-cookbook/hello-world-openai-responses-python",
+      "destination": "/ai/cookbook/hello-world-openai-responses-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/basic-python.md",
+      "destination": "/ai/cookbook/hello-world-openai-responses-python.md",
       "permanent": true
     },
     {
       "source": "/ai-cookbook/deep-research-python",
-      "destination": "/ai-cookbook/basic-openai-python",
+      "destination": "/ai/cookbook/basic-openai-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/deep-research-python.md",
+      "destination": "/ai/cookbook/basic-openai-python.md",
       "permanent": true
     },
     {
       "source": "/ai-cookbook/durable-agent-with-tools",
-      "destination": "/ai-cookbook/openai-agents-sdk-python",
+      "destination": "/ai/cookbook/openai-agents-sdk-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/durable-agent-with-tools.md",
+      "destination": "/ai/cookbook/openai-agents-sdk-python.md",
       "permanent": true
     },
     {
       "source": "/ai-cookbook/tool-calling-python",
-      "destination": "/ai-cookbook/tool-call-openai-python",
+      "destination": "/ai/cookbook/tool-call-openai-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/tool-calling-python.md",
+      "destination": "/ai/cookbook/tool-call-openai-python.md",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook",
+      "destination": "/ai/cookbook",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook.md",
+      "destination": "/ai/cookbook.md",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/:path*",
+      "destination": "/ai/cookbook/:path*",
       "permanent": true
     },
     {
@@ -1358,11 +1407,16 @@
     },
     {
       "source": "/temporal/release-stages",
-      "destination": "/evaluate/development-production-features/release-stages"
+      "destination": "/evaluate/product-release-stages"
     },
     {
       "source": "/evaluate/release-stages",
-      "destination": "/evaluate/development-production-features/release-stages"
+      "destination": "/evaluate/product-release-stages"
+    },
+    {
+      "source": "/evaluate/development-production-features/release-stages",
+      "destination": "/evaluate/product-release-stages",
+       "permanent": true
     },
     {
       "source": "/concepts:path*",
@@ -2254,6 +2308,121 @@
     {
       "source": "/develop/typescript/converters-and-encryption",
       "destination": "/develop/typescript/best-practices/data-handling",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/multi-tenant-patterns",
+      "destination": "/best-practices/multi-tenant-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/integrations/braintrust",
+      "destination": "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#python",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features",
+      "destination": "/evaluate/features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/core-application",
+      "destination": "/evaluate/features/core-primitives",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/failure-detection",
+      "destination": "/evaluate/features/timeouts-and-retries",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/throughput-composability",
+      "destination": "/evaluate/features/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/nexus",
+      "destination": "/evaluate/features/nexus",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/workflow-message-passing",
+      "destination": "/evaluate/features/workflow-message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/interrupt-workflow",
+      "destination": "/evaluate/features/cancellation-and-termination",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/observability",
+      "destination": "/evaluate/features/observability",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/data-encryption",
+      "destination": "/evaluate/features/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/schedules",
+      "destination": "/evaluate/features/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/cloud-automation",
+      "destination": "/evaluate/features/cloud-automation",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/low-latency",
+      "destination": "/cloud/service-availability#latency",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/multi-tenancy",
+      "destination": "/namespaces",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/job-queue",
+      "destination": "/evaluate/features/job-queue",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/serverless-workers",
+      "destination": "/evaluate/features/serverless-workers",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/nexus",
+      "destination": "/evaluate/features/nexus",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/cloud-vs-self-hosted-features",
+      "destination": "/evaluate/features/cloud-vs-self-hosted-features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/debugging",
+      "destination": "/evaluate/features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/testing-suite",
+      "destination": "/evaluate/features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/features/cloud-automation",
+      "destination": "/cloud",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/features/low-latency",
+      "destination": "/cloud/service-availability#latency",
       "permanent": true
     }
   ]

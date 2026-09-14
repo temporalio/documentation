@@ -2,8 +2,6 @@
 id: timers
 title: Timers - Rust SDK
 sidebar_label: Timers
-keywords:
-  - timers
 tags:
   - Workflows
   - Durable Timers
@@ -21,8 +19,10 @@ Sleeping is a resource-light operation: it doesn't tie up the process, and you c
 To set a Timer in Rust, use the `timer()` function and pass the duration you want to wait before continuing.
 
 ```rust
-ctx.timer(TimerOptions {
-    duration: Duration::from_secs(60),
-    summary: Some("important timer".into())
-}).await;
+ctx.timer(
+    TimerOptions::builder(Duration::from_secs(60))
+        .summary("important timer".to_owned())
+        .build(),
+)
+.await;
 ```

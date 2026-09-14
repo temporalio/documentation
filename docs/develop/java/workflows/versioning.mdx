@@ -5,12 +5,6 @@ sidebar_label: Versioning
 slug: /develop/java/workflows/versioning
 toc_max_heading_level: 2
 description: The Temporal Platform ensures deterministic Workflow code, offering versioning features in the Java SDK with Workflow Patching APIs and Worker Build Ids for efficient updates.
-keywords:
-  - determinism
-  - java sdk
-  - patching
-  - versioning
-  - workflows
 tags:
   - Workflows
   - Versioning
@@ -191,7 +185,7 @@ Workflow.upsertTypedSearchAttributes(TEMPORAL_CHANGE_VERSION.valueSet(list));
 ```
 
 Patching allows you to make changes to currently running Workflows.
-It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+It introduces compatible changes without causing non-determinism errors.
 
 ### Workflow cutovers
 

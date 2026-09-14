@@ -5,14 +5,6 @@ sidebar_label: GCP Cloud Run
 description: Run a Temporal Worker on a GCP Cloud Run worker pool using the Go SDK.
 slug: /develop/go/workers/serverless-workers/cloud-run
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - cloud run
-  - gcp
-  - google cloud
-  - go sdk
-  - worker
-  - serverless worker
 tags:
   - Workers
   - Go SDK
@@ -32,7 +24,7 @@ On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-mode
 Register Workflows and Activities the same way you would with any other Go Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
 A Cloud Run Worker needs no Cloud Run-specific package.
-The one addition to a standard Worker is Worker Versioning, which is required for Serverless Workers.
+The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
 

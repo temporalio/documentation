@@ -2,10 +2,9 @@
 
 // Post-processes generated CLI docs before committing.
 //
-// - Regenerates the command-reference index to list top-level commands
-//   (not individual cloud subcommands).
+// - Regenerates the command-reference indexes from the generated command pages.
+// - Removes generated keyword metadata and escapes literal brace placeholders.
 // - Injects a ReleaseNoteHeader component into cloud CLI reference pages.
-// - Removes pages for unreleased features.
 //
 // Gen-docs must be run twice because the main CLI and cloud CLI have
 // overlapping option sets (e.g. "client", "common"). Running them in a
@@ -22,10 +21,13 @@
 //
 // When the cloud CLI reaches GA, remove the ReleaseNoteHeader injection below
 // and the "cloudCli" entry from src/constants/featureReleaseTypes.js.
-// When a feature ships, remove it from EXCLUDED_PAGES.
 
 const fs = require("fs");
 const path = require("path");
+const {
+  escapeGeneratedMdxPlaceholders,
+  stripKeywordsFromFrontmatter,
+} = require("./escape-generated-mdx-placeholders.js");
 
 const CMD_REF_DIR = path.join(
   __dirname,
@@ -41,21 +43,16 @@ const IMPORT_LINE = `import { ReleaseNoteHeader } from '@site/src/components';`;
 
 const COMPONENT_BLOCK = `<ReleaseNoteHeader featureName="cloudCli" />`;
 
-const EXCLUDED_PAGES = [];
-
-// ---------------------------------------------------------------------------
-// 1. Remove excluded pages
-// ---------------------------------------------------------------------------
-for (const page of EXCLUDED_PAGES) {
-  const filePath = path.join(CLOUD_DIR, page);
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
-    console.log(`[post-process] removed excluded page: cloud/${page}`);
-  }
+function getMdxFiles(directory) {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) return getMdxFiles(entryPath);
+    return entry.name.endsWith(".mdx") ? [entryPath] : [];
+  });
 }
 
 // ---------------------------------------------------------------------------
-// 2. Regenerate command-reference/index.mdx
+// 1. Regenerate command-reference indexes
 //    Lists top-level .mdx files and subdirectories (like cloud/) as single
 //    entries, rather than expanding every cloud subcommand.
 // ---------------------------------------------------------------------------
@@ -78,13 +75,10 @@ const indexLines = [
   "---",
   "id: index",
   "title: Temporal CLI command reference",
-  "sidebar_label: Overview",
+  "sidebar_label: Command reference",
   "description: Complete command reference for the Temporal CLI, including the cloud extension.",
   "slug: /cli/command-reference",
   "toc_max_heading_level: 4",
-  "keywords:",
-  "  - temporal cli",
-  "  - command reference",
   "tags:",
   "  - Temporal CLI",
   "---",
@@ -102,7 +96,64 @@ fs.writeFileSync(path.join(CMD_REF_DIR, "index.mdx"), indexLines.join("\n"));
 console.log(`[post-process] regenerated command-reference index with ${topLevelCommands.length} entries`);
 
 // ---------------------------------------------------------------------------
-// 3. Inject ReleaseNoteHeader into each cloud page
+// 2. Regenerate cloud command-reference index
+// ---------------------------------------------------------------------------
+const cloudSubcommands = fs
+  .readdirSync(CLOUD_DIR)
+  .filter((f) => f.endsWith(".mdx") && f !== "index.mdx")
+  .map((f) => f.replace(".mdx", ""))
+  .sort();
+
+const cloudIndexLines = [
+  "---",
+  "id: index",
+  "title: Temporal CLI cloud command reference",
+  "sidebar_label: cloud",
+  "description: Command reference for the temporal cloud extension.",
+  "slug: /cli/command-reference/cloud",
+  "toc_max_heading_level: 4",
+  "tags:",
+  "  - Temporal CLI",
+  "---",
+  "",
+  IMPORT_LINE,
+  "",
+  COMPONENT_BLOCK,
+  "",
+  "This section includes the command reference for the `temporal cloud` CLI extension.",
+  "",
+];
+
+for (const cmd of cloudSubcommands) {
+  cloudIndexLines.push(`- [${cmd}](/cli/command-reference/cloud/${cmd})`);
+}
+cloudIndexLines.push("");
+
+fs.writeFileSync(path.join(CLOUD_DIR, "index.mdx"), cloudIndexLines.join("\n"));
+console.log(`[post-process] regenerated cloud command-reference index with ${cloudSubcommands.length} entries`);
+
+// ---------------------------------------------------------------------------
+// 3. Normalize generated command pages
+// ---------------------------------------------------------------------------
+let strippedKeywordsCount = 0;
+let escapedPlaceholderCount = 0;
+
+for (const filePath of getMdxFiles(CMD_REF_DIR)) {
+  const originalContent = fs.readFileSync(filePath, "utf-8");
+  const withoutKeywords = stripKeywordsFromFrontmatter(originalContent);
+  const content = escapeGeneratedMdxPlaceholders(withoutKeywords);
+  if (content === originalContent) continue;
+
+  fs.writeFileSync(filePath, content);
+  if (withoutKeywords !== originalContent) strippedKeywordsCount++;
+  if (content !== withoutKeywords) escapedPlaceholderCount++;
+}
+
+console.log(`[post-process] removed keywords from ${strippedKeywordsCount} command page(s)`);
+console.log(`[post-process] escaped literal MDX placeholders in ${escapedPlaceholderCount} command page(s)`);
+
+// ---------------------------------------------------------------------------
+// 4. Inject ReleaseNoteHeader into each cloud command page
 // ---------------------------------------------------------------------------
 const cloudFiles = fs.readdirSync(CLOUD_DIR).filter((f) => f.endsWith(".mdx"));
 let count = 0;
@@ -168,16 +219,10 @@ for (const file of cloudFiles) {
 console.log(`[post-process] injected ReleaseNoteHeader into ${count} cloud page(s)`);
 
 // ---------------------------------------------------------------------------
-// 4. Update sidebars.js command-reference section
+// 5. Update sidebars.js command-reference section
 // ---------------------------------------------------------------------------
 const SIDEBARS_PATH = path.join(__dirname, "..", "sidebars.js");
 const sidebarsContent = fs.readFileSync(SIDEBARS_PATH, "utf-8");
-
-const cloudSubcommands = fs
-  .readdirSync(CLOUD_DIR)
-  .filter((f) => f.endsWith(".mdx") && f !== "index.mdx")
-  .map((f) => f.replace(".mdx", ""))
-  .sort();
 
 const sidebarTopLevel = topLevelCommands.filter((cmd) => cmd !== "cloud");
 

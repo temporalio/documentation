@@ -42,11 +42,19 @@ const developDotnetCategory = {
         items: [
           'develop/dotnet/activities/basics',
           'develop/dotnet/activities/execution',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/dotnet/activities/standalone-activities-quickstart',
+              'develop/dotnet/activities/standalone-activities',
+            ],
+          },
           'develop/dotnet/activities/timeouts',
           'develop/dotnet/activities/asynchronous-activity',
           'develop/dotnet/activities/dynamic-activity',
           'develop/dotnet/activities/benign-exceptions',
-          'develop/dotnet/activities/standalone-activities',
         ],
       },
       {
@@ -70,6 +78,7 @@ const developDotnetCategory = {
             },
             items: [
               'develop/dotnet/workers/serverless-workers/aws-lambda',
+              'develop/dotnet/workers/serverless-workers/cloud-run',
             ],
           },
         ]
@@ -187,7 +196,15 @@ const developGoCategory = {
         items: [
           'develop/go/activities/basics',
           'develop/go/activities/execution',
-          'develop/go/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/go/activities/standalone-activities-quickstart',
+              'develop/go/activities/standalone-activities',
+            ],
+          },
           'develop/go/activities/timeouts',
           'develop/go/activities/asynchronous-activity',
           'develop/go/activities/dynamic-activity',
@@ -294,7 +311,10 @@ const developGoCategory = {
           type: 'doc',
           id: 'develop/go/integrations/index',
         },
-        items: ['develop/go/integrations/google-adk'],
+        items: [
+          'develop/go/integrations/google-adk',
+          'develop/go/integrations/opentelemetry-v2',
+        ],
       },
     ],
 };
@@ -341,7 +361,15 @@ const developJavaCategory = {
         items: [
           'develop/java/activities/basics',
           'develop/java/activities/execution',
-          'develop/java/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/java/activities/standalone-activities-quickstart',
+              'develop/java/activities/standalone-activities',
+            ],
+          },
           'develop/java/activities/timeouts',
           'develop/java/activities/asynchronous-activity',
           'develop/java/activities/benign-exceptions',
@@ -368,6 +396,7 @@ const developJavaCategory = {
             },
             items: [
               'develop/java/workers/serverless-workers/aws-lambda',
+              'develop/java/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -576,7 +605,15 @@ const developPythonCategory = {
         items: [
           'develop/python/activities/basics',
           'develop/python/activities/execution',
-          'develop/python/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/python/activities/standalone-activities-quickstart',
+              'develop/python/activities/standalone-activities',
+            ],
+          },
           'develop/python/activities/timeouts',
           'develop/python/activities/asynchronous-activity',
           'develop/python/activities/benign-exceptions',
@@ -682,12 +719,12 @@ const developPythonCategory = {
           id: 'develop/python/integrations/index',
         },
         items: [
-          'develop/python/integrations/braintrust',
           'develop/python/integrations/deepagents',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
+          'develop/python/integrations/openai-agents',
           'develop/python/integrations/strands-agents',
         ],
       },
@@ -736,7 +773,15 @@ const developRubyCategory = {
         items: [
           'develop/ruby/activities/basics',
           'develop/ruby/activities/execution',
-          'develop/ruby/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/ruby/activities/standalone-activities-quickstart',
+              'develop/ruby/activities/standalone-activities',
+            ],
+          },
           'develop/ruby/activities/timeouts',
           'develop/ruby/activities/asynchronous-activity',
           'develop/ruby/activities/dynamic-activity',
@@ -752,7 +797,19 @@ const developRubyCategory = {
           id: 'develop/ruby/workers/index',
         },
         items: [
-          'develop/ruby/workers/run-worker-process'
+          'develop/ruby/workers/run-worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/ruby/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/ruby/workers/serverless-workers/cloud-run',
+            ],
+          },
         ],
       },
       {
@@ -873,7 +930,19 @@ const developRustCategory = {
           id: 'develop/rust/workers/index',
         },
         items: [
-          'develop/rust/workers/worker-process'
+          'develop/rust/workers/worker-process',
+          {
+            type: 'category',
+            label: 'Serverless Workers',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/rust/workers/serverless-workers/index',
+            },
+            items: [
+              'develop/rust/workers/serverless-workers/cloud-run',
+            ],
+          },
         ],
       },
       {
@@ -945,7 +1014,15 @@ const developTypeScriptCategory = {
         items: [
           'develop/typescript/activities/basics',
           'develop/typescript/activities/execution',
-          'develop/typescript/activities/standalone-activities',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/typescript/activities/standalone-activities-quickstart',
+              'develop/typescript/activities/standalone-activities',
+            ],
+          },
           'develop/typescript/activities/timeouts',
           'develop/typescript/activities/asynchronous-activity',
           'develop/typescript/activities/benign-exceptions',
@@ -972,6 +1049,7 @@ const developTypeScriptCategory = {
             },
             items: [
               'develop/typescript/workers/serverless-workers/aws-lambda',
+              'develop/typescript/workers/serverless-workers/cloud-run',
             ],
           },
         ],
@@ -1095,41 +1173,20 @@ module.exports = {
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'evaluate/development-production-features/index',
+            id: 'evaluate/features/index',
           },
           items: [
-            'evaluate/development-production-features/core-application',
-            'evaluate/development-production-features/failure-detection',
-            'evaluate/development-production-features/throughput-composability',
-            'evaluate/development-production-features/nexus',
-            'evaluate/development-production-features/workflow-message-passing',
-            'evaluate/development-production-features/debugging',
-            'evaluate/development-production-features/interrupt-workflow',
-            'evaluate/development-production-features/testing-suite',
-            'evaluate/development-production-features/observability',
-            'evaluate/development-production-features/data-encryption',
-            'evaluate/development-production-features/schedules',
-            'evaluate/development-production-features/cloud-automation',
-            'evaluate/development-production-features/low-latency',
-            'evaluate/development-production-features/multi-tenancy',
-            'evaluate/development-production-features/job-queue',
-            'evaluate/development-production-features/serverless-workers/index',
-            {
-              type: 'category',
-              label: 'Product release stages',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'evaluate/development-production-features/release-stages',
-              },
-              items: [
-                {
-                  type: 'link',
-                  label: 'Changelog',
-                  href: 'https://temporal.io/change-log',
-                },
-              ],
-            },
+            'evaluate/features/core-primitives',
+            'evaluate/features/timeouts-and-retries',
+            'evaluate/features/child-workflows',
+            'evaluate/features/nexus',
+            'evaluate/features/workflow-message-passing',
+            'evaluate/features/cancellation-and-termination',
+            'evaluate/features/observability',
+            'evaluate/features/data-encryption',
+            'evaluate/features/schedules',
+            'evaluate/features/job-queue',
+            'evaluate/features/serverless-workers/index',
           ],
         },
         {
@@ -1149,6 +1206,22 @@ module.exports = {
             'evaluate/temporal-cloud/pricing',
             'evaluate/temporal-cloud/actions',
             'evaluate/temporal-cloud/support',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Product release stages',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'evaluate/product-release-stages',
+          },
+          items: [
+            {
+              type: 'link',
+              label: 'Changelog',
+              href: 'https://temporal.io/change-log',
+            },
           ],
         },
         'security',
@@ -1598,6 +1671,7 @@ module.exports = {
                 'cli/command-reference/cloud/logout',
                 'cli/command-reference/cloud/namespace',
                 'cli/command-reference/cloud/nexus',
+                'cli/command-reference/cloud/project',
                 'cli/command-reference/cloud/region',
                 'cli/command-reference/cloud/service-account',
                 'cli/command-reference/cloud/user',
@@ -1742,6 +1816,15 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Durable AI',
+      collapsed: true,
+      link: { type: 'doc', id: 'ai/index' },
+      items: [
+        { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+      ],
+    },
+    {
+      type: 'category',
       label: 'References',
       collapsed: true,
       link: {
@@ -1806,16 +1889,17 @@ module.exports = {
         id: 'best-practices/index',
       },
       items: [
-        'best-practices/worker',
-        'best-practices/worker-alerting',
-        'best-practices/pre-production-testing',
-        'production-deployment/multi-tenant-patterns',
         'best-practices/managing-namespace',
+        'best-practices/multi-tenant-patterns',
         'best-practices/managing-aps-limits',
+        'best-practices/cost-optimization',
+        'best-practices/cost-governance',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
+        'best-practices/worker',
+        'best-practices/worker-alerting',
         'best-practices/error-handling',
-        'best-practices/cost-optimization',
+        'best-practices/pre-production-testing',
         'best-practices/knowledge-hub',
       ],
     },
@@ -1866,6 +1950,7 @@ module.exports = {
                 'encyclopedia/workflow/workflow-execution/timers-delays',
               ],
             },
+            'encyclopedia/workflow/cancellation-and-termination',
             'encyclopedia/workflow/workflow-pause',
             'encyclopedia/workflow/dynamic-handler',
             'encyclopedia/workflow/workflow-schedule',
@@ -2098,6 +2183,7 @@ module.exports = {
         'guides/rate-limit-downstream-apis',
         'guides/durable-gaming-sessions',
         'guides/lock-shared-resources',
+        'guides/celery-to-standalone-activity',
       ],
     },
     'integrations',

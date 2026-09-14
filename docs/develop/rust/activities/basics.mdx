@@ -4,8 +4,6 @@ title: Activity basics - Rust SDK
 sidebar_label: Activity basics
 description: This section explains how to implement Activities with the Rust SDK
 toc_max_heading_level: 4
-keywords:
-  - Rust SDK
 tags:
   - Rust SDK
   - Temporal SDKs
@@ -72,7 +70,7 @@ struct SleeperActivities {
 #[activities]
 impl SleeperActivities {
     #[activity]
-    async fn sleeper(
+    pub async fn sleeper(
         self: Arc<Self>,
         ctx: ActivityContext,
         _: String,
@@ -144,7 +142,9 @@ impl MyActivities {
 
         // If an error should not be retried
         if input.len() > 1000000 {
-            return Err(ApplicationFailure::non_retryable("Input too large").into());
+            return Err(
+                ApplicationFailure::non_retryable("Input too large").into(),
+            );
         }
 
         let result = ProcessedData {

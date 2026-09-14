@@ -13,6 +13,8 @@ repository.
 | LLM Markdown pipeline        | [MARKDOWN_PIPELINE.md](./readme/MARKDOWN_PIPELINE.md)               |
 | Component → Markdown mapping | [COMPONENT_REGISTRY.md](./readme/COMPONENT_REGISTRY.md)             |
 | CI jobs and scheduled jobs   | [AUTOMATIONS.md](./readme/AUTOMATIONS.md)                                  |
+| AI research sources for content review | [AI-KNOWLEDGE-SOURCES.md](./readme/AI-KNOWLEDGE-SOURCES.md)       |
+| Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
 
 ## Repository overview
 
@@ -49,10 +51,10 @@ Exceptions: **Multi-Cluster Replication**, code/config identifiers, and CLI comm
 
 ### Identifier abbreviation
 
-Outside Temporal core terms, spell out "identifier." For core terms, use `Id` (not `ID` or `id`).
+Outside Temporal core terms, spell out "identifier." For core terms, use `ID` (not `Id` or `id`).
 
-- Correct: "Provide an order identifier as a Workflow Id."
-- Incorrect: "Provide an order ID as a Workflow ID."
+- Correct: "Provide an order identifier as a Workflow ID."
+- Incorrect: "Provide an order Id as a Workflow Id."
 
 In code blocks, follow each language's conventions.
 
@@ -109,10 +111,25 @@ tags:
 ---
 ```
 
-- Write `description` as a single clear sentence.
+- Write `description` as a single clear sentence. See [Meta descriptions](#meta-descriptions) below.
 - Do not change `id` or `slug` without a redirect plan.
 - Match `tags` to sibling pages in the same section. Use existing tags; don't add new ones unless it's a new feature.
 - Do not add a `keywords` field. It isn't used by the site.
+
+### Meta descriptions
+
+The `description` field becomes the search-result snippet, so it has its own bar beyond "one sentence." It must follow
+the [Style guide](#style-guide) above (terminology, filler, intensifiers, word choice, tense) and additionally:
+
+- Target roughly 120-155 characters, with the page's most important term in the first 60.
+- Complement the title; don't restate it. Search engines render the title directly above the description, so wording
+  carried over from the title wastes that space. Search engines may also replace an unhelpful description with a body
+  excerpt. Sharing the primary term with the title is fine — reusing the title's phrasing is not. If the title and
+  description read as the same sentence twice, rewrite the description.
+- Never open with a word that carries no information: "Learn," "Discover," "Explore," "Understand," "Find out," "Read
+  about," "This page," or similar throat-clearing verbs. Open with the substance the reader gets.
+- No keyword stuffing, and no placeholder or boilerplate text.
+- Describe what this specific page covers, not the section or product in general.
 
 ## MDX and components
 
@@ -175,7 +192,8 @@ don't build in production at all, which 404s any inbound links). A page that's a
 belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See
 [UTILITIES.md](./readme/UTILITIES.md) for details.
 
-Vale linting (style):
+Vale linting (style). Requires Vale 3.20+ (CI already runs 3.20.0; upgrade a local install with
+`brew upgrade vale`) — `vale/styles/Std` needs it for its nested rule directories.
 
 ```bash
 yarn lint:py                          # Example: lint Python SDK docs
@@ -195,3 +213,109 @@ noisier suggestion-level rules that are not enforced in CI and are not a require
 `.vale-ci.ini` enables only the small set of high-confidence rules (`Temporal.Headings`, `Temporal.RelativeLinks`) used
 as a CI gate in `.github/workflows/vale-ci.yml`. `.vale.ini` (the default config) runs the full style set, which
 includes noisier suggestion-level rules not enforced in CI.
+
+## Code Review Rules
+
+Guidance for automated reviewers on pull requests. Review a pull request when it changes files under
+`docs/`. Check the three things below, and nothing else.
+
+Do not review:
+
+- Dependabot pull requests, and lockfile-only changes.
+- Pull requests that change no files under `docs/`.
+- Pull requests opened by the `temporal-cicd` app. These regenerate content from a source of truth
+  outside this repository: snipsync snippets, the CLI command reference, the Cloud permissions table,
+  and SDK version chips. Nothing in them can be fixed here.
+- Reverts.
+- Pull requests from authors outside the `temporalio` organization, unless a maintainer asks for a
+  review on the pull request.
+
+When a pull request is out of scope, stop without commenting.
+
+### 1. Collateral changes
+
+The same fact usually appears on several pages, and a pull request that changes it in one place often
+misses the others.
+
+- Search the rest of `docs/` for pages that state the same fact, and name the ones that should
+  probably change too. Give paths.
+- When a page documents something belonging to a larger feature, check whether the parent, summary,
+  and index pages for that feature need the same addition.
+
+Name specific files. A general reminder to check other pages is not a finding.
+
+### 2. Structural fit
+
+- Does a new or moved page belong in the section it was put in? Use
+  [INFORMATION-ARCHITECTURE.md](./readme/INFORMATION-ARCHITECTURE.md).
+- Does a large part of the page cover content that belongs on another page or in another section?
+- Is the page long enough to split? Aim for fewer than 10 top-level headings and fewer than 15
+  headings in total.
+- Do the frontmatter `tags` match the sibling pages in the same section?
+
+### 3. Text tone
+
+Flag the writing, never the author. Say nothing about who wrote the text or how it was produced.
+
+Generated register:
+
+- Long sentences carrying little information, such as "That distinction matters because ...".
+- Software jargon used as casual speech: "cross-cutting", "load-bearing".
+- Operational shorthand that names a technique without stating the action the reader must take. For example, replace
+  "move the data out of band" with "store the data in external storage and pass a reference through Event History."
+- In procedural or triage guidance, lead with the reader's action and then give the reason or constraint. For example,
+  prefer "Find the Workflow ID and Run ID in Worker logs because the metric does not carry a Workflow ID" over
+  describing the metric's limitation before saying what the reader should do.
+- "Quietly" or similar words added to a sentence that does not need them.
+- Junk drawer lists, meaning bullets collected under one heading with no shared idea holding them
+  together.
+
+Marketing register:
+
+- Opening a page with a leading question.
+- Repeated, eager mentions of paid features where they are not the subject.
+- Vague intensifiers standing in for a fact. See [Writing style](#writing-style) above.
+
+Pages under `docs/evaluate/` are allowed some marketing register. Hold reference, develop, and
+production-deployment pages to a stricter line.
+
+Before. Two rhetorical questions, then a paragraph restating the premise, and the actual capability
+arrives last:
+
+> Temporal keeps your Workflows running even when a Worker crashes. But what happens when a whole
+> data center crashes? Or a region?
+>
+> In the cloud, outages are commonplace. An outage can bring down a whole data center, cluster,
+> region, or cloud provider. To be durable in the cloud, Workflows and applications must handle
+> these outages smoothly, just like Temporal handles a Worker crash.
+>
+> Temporal Cloud's High Availability features add extra reliability to Temporal Cloud Namespaces by
+> handling cloud outages. Using asynchronous replication between multiple regions or cloud
+> providers, combined with automatic outage detection and failover, High Availability keeps your
+> Workflows running even during a cloud region outage.
+
+After. Same facts, leading with what the feature does:
+
+> Temporal Cloud High Availability uses asynchronous replication between multiple regions or cloud
+> providers, with automatic outage detection and failover, to keep your Workflows running during a
+> cloud region outage.
+
+### What not to flag
+
+- Anything CI already reports. Redirects, orphaned pages, broken links, build failures, Mermaid
+  syntax, and the Vale rules in `.vale-ci.ini` all run on every pull request. See
+  [AUTOMATIONS.md](./readme/AUTOMATIONS.md).
+- Terminology, capitalization, and word choice. Vale owns these. Rules that Vale does not enforce
+  today get added to Vale, not to this review.
+- Content inside `<!--SNIPSTART-->` and `<!--SNIPEND-->` blocks. That code comes from a sample
+  repository and cannot be fixed here. A snippet that disappeared, or prose that no longer matches
+  the snippet it describes, is still worth flagging.
+- Product behavior you cannot confirm from this repository. Ask instead of guessing.
+
+### How to leave comments
+
+- Anchor a finding to a line when it has one. Put the rest, such as a page in the wrong section, in
+  the review body.
+- One finding per comment, with the path and the fix you are suggesting.
+- State the finding and the fix. Do not say whether it should block the merge.
+- Group nits rather than posting each one separately, and keep them few.

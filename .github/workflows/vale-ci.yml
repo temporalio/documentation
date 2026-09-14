@@ -4,6 +4,12 @@ on:
   pull_request:
     paths:
       - "docs/**"
+      # Lint the ruleset changes too. A malformed style file makes Vale exit 2
+      # and skip linting entirely, which would otherwise fail open on every
+      # later PR without anything having flagged it here.
+      - "vale/**"
+      - ".vale-ci.ini"
+      - ".github/workflows/vale-ci.yml"
 
 permissions:
   contents: read
@@ -16,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: vale-cli/vale-action@2.1.2
+      - uses: vale-cli/vale-action@v3.0.0
         with:
           reporter: github-pr-review
           level: info

@@ -3,14 +3,6 @@ id: standalone-operations
 title: Standalone Nexus Operations - TypeScript SDK
 sidebar_label: Standalone Operations
 toc_max_heading_level: 4
-keywords:
-  - standalone nexus operation
-  - nexus operation execution
-  - execute nexus operation
-  - nexus operation handle
-  - list nexus operations
-  - count nexus operations
-  - typescript sdk
 tags:
   - Nexus
   - Temporal Client
@@ -196,7 +188,7 @@ for await (const op of client.nexus.list({ query })) {
 ```
 
 The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
-`"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
+`"Endpoint = 'my-endpoint' AND ExecutionStatus = 'Running'"`.
 
 Or use the Temporal CLI:
 
