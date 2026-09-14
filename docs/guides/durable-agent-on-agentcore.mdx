@@ -2,7 +2,7 @@
 id: durable-agent-on-agentcore
 title: Build a durable agent on Amazon Bedrock AgentCore
 sidebar_label: Durable agent on AgentCore
-description: A Temporal Workflow preserves conversation state while AgentCore Runtime supplies serverless Worker compute for a Strands agent.
+description: Run a Strands agent as a Temporal Workflow while AgentCore Runtime supplies serverless Worker compute and a code execution tool.
 toc_max_heading_level: 3
 author: n/a
 tags:
@@ -20,94 +20,106 @@ import { ReleaseNoteHeader } from '@site/src/components';
   Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
 </ReleaseNoteHeader>
 
-This guide builds a data-analysis agent that can continue a conversation after the compute running it has stopped. A
-Temporal Workflow coordinates each turn and preserves the state needed to continue. Strands defines how the agent uses
-a model and tools. Amazon Bedrock AgentCore Runtime supplies serverless compute for the Temporal Worker, and AgentCore
-Code Interpreter supplies an isolated environment for running code.
-
-The result separates the lifetime of the agent from the lifetime of its compute. The Workflow can remain open for days
-or months without keeping an AgentCore Runtime active.
+This guide deploys a Strands agent as a Temporal Serverless Worker on Amazon Bedrock AgentCore Runtime. The agent uses
+Amazon Bedrock for model inference and AgentCore Code Interpreter to run Python.
 
 ## What you will build
 
-The agent has one Workflow Execution for each conversation. The application starts that Workflow and sends prompts to
-an `ask` Update handler through Temporal. It does not send prompts to the AgentCore Runtime endpoint. Each Update
-returns the agent's answer to the application.
+The sample accepts one prompt and runs one Workflow Execution. The Workflow asks the model to answer the prompt. The
+model can call Code Interpreter through a Temporal Activity before returning its answer.
 
-The agent uses Amazon Bedrock for model inference and AgentCore Code Interpreter for calculations. After a turn, its
-Worker retires while the Workflow remains open. A later prompt starts new Worker capacity and continues the same
-conversation.
+Your local client starts the Workflow through Temporal. When the Task Queue needs a Worker, Temporal starts an
+AgentCore Runtime session. The Worker processes the Workflow and Activity Tasks, then drains after 60 seconds without
+an Activity starting or finishing.
 
 ## Architecture
 
-The application sends prompts to a Temporal Workflow through an Update. The Workflow identifies the conversation and
-records its execution progress. When its Task Queue has work, Serverless Workers starts an AgentCore Runtime session
-that hosts a Temporal Worker. A later Task can run on a different Runtime session because Temporal reconstructs the
-Workflow from Event History before it continues.
+The Workflow contains the Strands agent loop. The Temporal Strands integration runs model calls as Activities. The
+Code Interpreter tool is also an Activity, so model and tool calls have their own retries, timeouts, and recorded
+results.
 
-Strands runs the agent loop for each turn. The Temporal Strands integration schedules model calls and tool calls as
-Activities. Each call has its own timeout, Retry Policy, and recorded result. After the Worker returns the answer, the
-Workflow can wait for another prompt without keeping an AgentCore Runtime session active.
+AgentCore Runtime hosts the Temporal Worker. It does not receive the user's prompt. Temporal invokes the Runtime
+endpoint only to add Worker capacity, and the application sends the prompt through the Temporal Client.
 
 ```mermaid
 flowchart LR
-    APP[Application] -->|Prompts and replies| WF[Temporal Workflow]
-    WF --> TQ[Task Queue]
-    TQ --> W[Temporal Worker<br/>AgentCore Runtime session A or B]
-    W --> AWS[Bedrock and<br/>AgentCore services]
-    W --> STORE[External conversation<br/>and artifact storage]
-    WF -.->|Durable references| STORE
+    APP[Local client] -->|Start with prompt| WF[Temporal Workflow]
+    WF -->|Workflow and Activity Tasks| W[Temporal Worker<br/>on AgentCore Runtime]
+    W --> MODEL[Amazon Bedrock]
+    W --> TOOL[AgentCore<br/>Code Interpreter]
 ```
 
-Place state according to how long it must remain available:
-
-| State | Location |
-|---|---|
-| Execution progress and bounded working context | Temporal Workflow |
-| Large or unbounded conversation content, uploads, and artifacts | Durable external storage, with stable references in the Workflow |
-| Temporary caches and Code Interpreter files | AgentCore Runtime or tool session, when the application can tolerate losing them |
-
-For clarity, this sample keeps its complete Strands message list in Workflow state. That works for a bounded
-conversation. For a conversation that can grow without a fixed limit, store its raw content externally and carry a
-reference or bounded summary in the Workflow. Retrieve external content through an Activity before using it in a model
-call. Use [Continue-As-New](/develop/python/integrations/strands-agents#handle-long-running-chat-sessions) to start a new
-Event History with only the references and working context that the next execution needs.
+This sample completes after one answer. To support a conversation, keep the Workflow open and accept later prompts
+through an Update or Signal. Store bounded conversation state, or references to externally stored content, in the
+Workflow. Use the Workflow Id as the conversation identifier. Do not depend on one AgentCore Runtime session handling
+every turn.
 
 ## Prerequisites
 
-To build and run the agent locally, you need:
-
-- Python 3.10 or later and [`uv`](https://docs.astral.sh/uv/).
-- [Temporal CLI v1.8.3](https://github.com/temporalio/cli/releases/tag/v1.8.3) or later. This version adds the AgentCore
-  options used to create a Worker Deployment Version.
-- AWS credentials with access to Amazon Nova Lite through Bedrock and permission to use AgentCore Code Interpreter.
-  The sample includes the required Code Interpreter IAM policy.
-
-To deploy the Worker, you also need:
-
 - A Temporal Cloud account with an AWS-hosted Namespace and access to the AgentCore Serverless Workers Pre-release.
-- An AWS account in an [AgentCore-supported Region](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html).
-- The AWS and AgentCore tools and permissions listed in the
-  [Serverless Worker deployment prerequisites](/production-deployment/worker-deployments/serverless-workers/agentcore#prerequisites).
+- A Temporal Cloud API key that can connect to the Namespace.
+- [Temporal CLI v1.8.3](https://github.com/temporalio/cli/releases/tag/v1.8.3) or later.
+- Python 3.10 or later and [`uv`](https://docs.astral.sh/uv/).
+- Node.js 20 or later and the
+  [AgentCore CLI](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html).
+- The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured for your AWS
+  account.
+- The [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting-started.html) installed and bootstrapped in an
+  [AgentCore-supported Region](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html).
+- AWS permissions to deploy AgentCore resources, CloudFormation stacks, and IAM roles. See
+  [IAM permissions for AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html).
+- Access to the Amazon Bedrock model that Strands selects in the target Region.
 
-## 1. Get and run the agent locally {/* #build-the-agent-locally */}
+## 1. Get the sample
 
-Clone the sample repository and install the application dependencies:
+Clone the branch from the
+[Strands Agent on Bedrock AgentCore sample PR](https://github.com/temporalio/samples-python/pull/360), then install its
+Python dependencies:
 
 ```bash
-git clone --branch docs/durable-agent-agentcore-sample --single-branch \
-  https://github.com/temporalio/documentation-sdk-code-examples.git
-cd documentation-sdk-code-examples/python-agentcore-durable-agent
+git clone --branch schoeff/strands-agent --single-branch \
+  https://github.com/temporalio/samples-python.git
+cd samples-python/bedrock_agentcore/strands_agent
 uv sync
 ```
 
-The [durable AgentCore sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent)
-defines `execute_code` as a Temporal Activity. It uses the Workflow Id as the Code Interpreter session name so two
-Workflow Executions handled by the same process do not share a sandbox. The name does not make the sandbox durable
-across Worker replacement.
+The cloned directory contains the Workflow, Activity, Runtime handler, AgentCore configuration, deployment scripts,
+and IAM template used throughout this guide.
 
-<!--SNIPSTART python-agentcore-durable-agent-code-activity-->
-[python-agentcore-durable-agent/activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/activities.py)
+## 2. Examine the agent Workflow
+
+The sample creates a `TemporalAgent` with a system prompt and the `execute_code` tool:
+
+[View `workflows.py` in the sample](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/workflows.py).
+
+```py
+@workflow.defn
+class StrandsAgentWorkflow:
+    def __init__(self) -> None:
+        self.agent = TemporalAgent(
+            start_to_close_timeout=timedelta(seconds=60),
+            system_prompt=SYSTEM_PROMPT,
+            tools=[
+                activity_as_tool(
+                    execute_code,
+                    start_to_close_timeout=timedelta(minutes=2),
+                )
+            ],
+        )
+
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        result = await self.agent.invoke_async(prompt)
+        return str(result)
+```
+
+`TemporalAgent` adapts the Strands agent loop to run in Workflow code. The Temporal Strands plugin schedules each model
+call as an Activity. `activity_as_tool` makes `execute_code` another Activity when the model selects that tool.
+
+The `execute_code` Activity creates a Code Interpreter session using the Workflow Id as its session name:
+
+[View `activities.py` in the sample](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/activities.py).
+
 ```py
 @activity.defn
 def execute_code(
@@ -120,196 +132,46 @@ def execute_code(
     return interpreter.execute_code(
         ExecuteCodeAction(type="executeCode", code=code, language=language)
     )
-
-
 ```
-<!--SNIPEND-->
 
-The Activity boundary gives the tool call a separate timeout, Retry Policy, and result in Event History. It also keeps
-AWS calls out of deterministic Workflow code.
+Using the Workflow Id gives each Workflow Execution its own Code Interpreter sandbox.
 
-The sample defines a Workflow that accepts multiple prompts. It sets `MODEL_NAME` to `nova-lite` and maps it to the
-Bedrock model identifier `amazon.nova-lite-v1:0` when it configures `StrandsPlugin`. The Workflow refers to the
-registered model by name, so model construction and AWS access remain in the Worker process.
+## 3. Configure and deploy the Runtime
 
-<!--SNIPSTART python-agentcore-durable-agent-workflow-->
-[python-agentcore-durable-agent/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/workflows.py)
-```py
-@workflow.defn
-class DurableAgentWorkflow:
-    def __init__(self) -> None:
-        self._done = False
-        self._lock = asyncio.Lock()
-        self._agent = TemporalAgent(
-            model=MODEL_NAME,
-            start_to_close_timeout=timedelta(seconds=60),
-            system_prompt=SYSTEM_PROMPT,
-            tools=[
-                activity_as_tool(
-                    execute_code,
-                    start_to_close_timeout=timedelta(minutes=2),
-                )
-            ],
-        )
-
-    @workflow.update
-    async def ask(self, prompt: str) -> str:
-        async with self._lock:
-            result = await self._agent.invoke_async(prompt)
-            return str(result).strip()
-
-    @workflow.signal
-    def finish(self) -> None:
-        self._done = True
-
-    @workflow.run
-    async def run(self) -> None:
-        await workflow.wait_condition(lambda: self._done)
-        await workflow.wait_condition(workflow.all_handlers_finished)
-
-
-```
-<!--SNIPEND-->
-
-`TemporalAgent` is a Strands `Agent` adapted to run inside a Workflow. It retains the Strands message list between
-calls to `invoke_async`. The Temporal Strands plugin runs model calls as Activities, and `activity_as_tool` runs the
-Code Interpreter tool as an Activity. Configure retries through Temporal Activity Retry Policies rather than a Strands
-retry strategy.
-
-The lock makes the agent process one prompt at a time. The `run` method waits until the `finish` Signal arrives, so the
-Workflow remains available between turns. This wait is durable and does not keep a Python process running.
-
-Register `DurableAgentWorkflow`, `execute_code`, and `StrandsPlugin` on a local Worker. The
-[sample Worker](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/local_worker.py)
-also creates the executor required by the synchronous `execute_code` Activity:
-
-<!--SNIPSTART python-agentcore-durable-agent-local-worker-->
-[python-agentcore-durable-agent/local_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/local_worker.py)
-```py
-async def main() -> None:
-    client = await Client.connect(
-        "localhost:7233",
-        plugins=[
-            StrandsPlugin(models={MODEL_NAME: lambda: BedrockModel(model_id=MODEL_ID)})
-        ],
-    )
-
-    with ThreadPoolExecutor(max_workers=4) as activity_executor:
-        worker = Worker(
-            client,
-            task_queue=TASK_QUEUE,
-            workflows=[DurableAgentWorkflow],
-            activities=[execute_code],
-            activity_executor=activity_executor,
-        )
-        await worker.run()
-
-
-```
-<!--SNIPEND-->
-
-Start the Temporal development server, then start the Worker in another terminal:
+Install the AgentCore CLI:
 
 ```bash
-temporal server start-dev
+npm install -g @aws/agentcore
 ```
 
-```bash
-uv run python local_worker.py
+Open `agentcore/aws-targets.json`. Replace the account number and Region with the AWS account and Region where you
+will deploy the Runtime:
+
+```json
+[
+  {
+    "name": "default",
+    "description": "AWS account and Region for the Runtime",
+    "account": "<AWS_ACCOUNT_ID>",
+    "region": "<AWS_REGION>"
+  }
+]
 ```
 
-The sample's chat client starts a Workflow and sends each prompt as an Update:
+Open `agentcore/agentcore.json` and replace the placeholder values for `TEMPORAL_ADDRESS`, `TEMPORAL_NAMESPACE`, and
+`TEMPORAL_API_KEY`. Set `AWS_REGION` to the same Region used in `aws-targets.json`. Keep these sample values unchanged:
 
-<!--SNIPSTART python-agentcore-durable-agent-chat-client-->
-[python-agentcore-durable-agent/chat.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/chat.py)
-```py
-async def main() -> None:
-    client = await Client.connect(
-        "localhost:7233",
-        plugins=[
-            StrandsPlugin(models={MODEL_NAME: lambda: BedrockModel(model_id=MODEL_ID)})
-        ],
-    )
-    handle = await client.start_workflow(
-        DurableAgentWorkflow.run,
-        id=f"durable-agent-{uuid.uuid4()}",
-        task_queue=TASK_QUEUE,
-    )
+| Setting | Value |
+|---|---|
+| `TEMPORAL_TASK_QUEUE` | `agentcore-strands-task-queue` |
+| `TEMPORAL_DEPLOYMENT_NAME` | `agentcore-strands-agent-python` |
+| `TEMPORAL_BUILD_ID` | `1.0.0` |
+| Runtime endpoint name | `temporal` |
 
-    while prompt := input("You: "):
-        if prompt == "/finish":
-            await handle.signal(DurableAgentWorkflow.finish)
-            return
-        answer = await handle.execute_update(DurableAgentWorkflow.ask, prompt)
-        print(f"Agent: {answer}")
+Putting the API key in `agentcore.json` keeps the tutorial short. Do not commit the populated file. For a production
+deployment, store the key in AWS Secrets Manager and load it when the Runtime starts.
 
-
-```
-<!--SNIPEND-->
-
-Run the client in a third terminal:
-
-```bash
-uv run python chat.py
-```
-
-Ask a question that requires calculation, then ask a follow-up that depends on the first answer. Enter `/finish` to
-close the Workflow. In the Temporal Web UI, the Event History shows the `ask` Update, model Activities, and
-`execute_code` Activity for each turn.
-
-## 2. Configure and deploy the Worker Runtime {/* #run-the-worker-on-agentcore-runtime */}
-
-Local development uses a continuously running Worker. On AgentCore Runtime, the HTTP handler starts the Worker in a
-background task and immediately returns an acknowledgment. The Worker continues polling until its idle policy decides
-to release the compute.
-
-The AgentCore Runtime handler registers the `DurableAgentWorkflow` and `execute_code` definitions from
-[Get and run the agent locally](#build-the-agent-locally). It adds Worker Versioning and the Activity-based idle tracker from
-the [Python AgentCore Worker guide](/develop/python/workers/serverless-workers/agentcore#stop-and-drain-the-worker).
-The entry point registers the background Worker as an AgentCore asynchronous task, prevents another invocation in the
-same Runtime session from starting a duplicate Worker, and clears the task after the Worker drains or fails:
-
-<!--SNIPSTART python-agentcore-durable-agent-runtime-handler-->
-[python-agentcore-durable-agent/agentcore_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/agentcore_worker.py)
-```py
-_worker: asyncio.Task[None] | None = None
-
-
-async def _run_until_idle(task_id: int) -> None:
-    try:
-        await run_worker()
-    except Exception:
-        log.exception("worker failed in background task")
-    finally:
-        app.complete_async_task(task_id)
-
-
-@app.entrypoint
-async def invoke(payload: dict) -> dict:
-    global _worker
-    if _worker is not None and not _worker.done():
-        return {"message": "Worker already polling", "task_queue": TASK_QUEUE}
-
-    task_id = app.add_async_task("temporal-worker")
-    _worker = asyncio.create_task(_run_until_idle(task_id))
-
-    return {"message": "Worker starting", "task_queue": TASK_QUEUE}
-
-
-```
-<!--SNIPEND-->
-
-The invocation payload does not contain a user prompt. Temporal invokes the Runtime endpoint to add Worker capacity.
-The acknowledgment does not wait for the Worker to drain. AgentCore reports the Runtime as busy while the asynchronous
-task is registered. Clients continue to start and message Workflows through the Temporal Client.
-
-The Runtime does not need a copy of the conversation in a local file or global variable. When a new Worker receives a
-Workflow Task, Temporal replays the Workflow's Event History and restores the `TemporalAgent` message list before new
-model or tool calls run.
-
-Stop the local Worker and Temporal development server. In one terminal, export the Temporal Cloud and AWS settings
-used by the rest of this guide. Replace the first two values with your Namespace details. Enter your API key at the
-prompt:
+Export the same connection values for the Temporal CLI and the sample client:
 
 ```bash
 export TEMPORAL_ADDRESS="<namespace>.<account>.tmprl.cloud:7233"
@@ -318,54 +180,23 @@ printf "Temporal Cloud API key: "
 read -rs TEMPORAL_API_KEY
 printf "\n"
 export TEMPORAL_API_KEY
-export AWS_REGION="us-west-2"
+export AWS_REGION="<AWS_REGION>"
 ```
 
-Use an AgentCore-supported Region where your AWS credentials can invoke Amazon Nova Lite and Code Interpreter. The
-Temporal variables also configure subsequent Temporal CLI commands.
-
-Install the AgentCore CLI and generate the CDK files used to deploy the sample:
+Deploy the Runtime and its named endpoint:
 
 ```bash
-npm install -g @aws/agentcore
-./bootstrap-agentcore-project.sh
+./bin/create-runtime.sh
 ```
 
-Populate the sample's AgentCore configuration from those variables. The command gets the AWS account number from your
-current AWS CLI credentials:
-
-```bash
-uv run python configure_agentcore.py
-```
-
-The sample configuration uses these values throughout the deployment:
-
-| Setting | Tutorial value |
-|---|---|
-| Runtime entrypoint | `agentcore_worker.py` |
-| Task Queue | `durable-agent` |
-| Worker Deployment name | `durable-agent-agentcore` |
-| Build ID | `1.0.0` |
-| Runtime endpoint name | `temporal` |
-
-The command writes your Temporal Cloud API key to `agentcore/agentcore.json`. Do not commit the populated file. For a
-production deployment, store the key in AWS Secrets Manager and load it when the Runtime starts.
-
-Validate and deploy the Runtime:
-
-```bash
-agentcore validate
-agentcore deploy --target default --yes
-```
-
-AgentCore packages the Worker and its dependencies, creates its execution role, deploys the Runtime, and creates the
-named endpoint. Retrieve the Runtime and endpoint ARNs for the next steps:
+The script creates the AgentCore CDK project on its first run, validates the configuration, packages the sample, and
+deploys it. Retrieve the Runtime and endpoint ARNs:
 
 ```bash
 export AGENT_RUNTIME_ARN="$(
   aws bedrock-agentcore-control list-agent-runtimes \
     --region "$AWS_REGION" \
-    --query "agentRuntimes[?agentRuntimeName=='TemporalDurableAgent_durable_agent_worker'].agentRuntimeArn | [0]" \
+    --query "agentRuntimes[?agentRuntimeName=='TemporalStrandsAgent_temporal_strands_worker'].agentRuntimeArn | [0]" \
     --output text
 )"
 export AGENT_RUNTIME_ID="${AGENT_RUNTIME_ARN##*/}"
@@ -382,31 +213,23 @@ echo "$RUNTIME_ENDPOINT_ARN"
 
 Both commands must print an ARN before you continue.
 
-## 3. Grant Temporal access to the Runtime {/* #grant-temporal-access */}
+## 4. Grant Temporal access to the Runtime
 
-Temporal Cloud needs an IAM role that it can assume to invoke the Runtime endpoint. The cloned sample includes the
-CloudFormation template for this role. Choose an External ID and short names for the stack and role:
+Choose an External ID, then use the sample's CloudFormation script to create the IAM role that Temporal Cloud assumes:
 
 ```bash
 export EXTERNAL_ID="$(openssl rand -hex 16)"
-export INVOCATION_STACK="ac-durable-invoke"
-export INVOCATION_ROLE_NAME="TemporalSW"
+export INVOCATION_STACK="ac-strands-invoke"
+
+./bin/mk-invoke-role.sh \
+  "$INVOCATION_STACK" \
+  "$EXTERNAL_ID" \
+  "${AGENT_RUNTIME_ARN}*"
 ```
 
-Create the role. This role only lets Temporal get the endpoint and invoke the Runtime. The separate execution role
-created by AgentCore runs the Worker and accesses Bedrock and Code Interpreter.
+Wait for the stack and retrieve the role ARN:
 
 ```bash
-aws cloudformation create-stack \
-  --stack-name "$INVOCATION_STACK" \
-  --template-body file://temporal-cloud-serverless-worker-agentcore-role.yaml \
-  --parameters \
-    ParameterKey=AssumeRoleExternalId,ParameterValue="$EXTERNAL_ID" \
-    ParameterKey=AgentRuntimeARNs,ParameterValue="${AGENT_RUNTIME_ARN}*" \
-    ParameterKey=RoleName,ParameterValue="$INVOCATION_ROLE_NAME" \
-  --capabilities CAPABILITY_NAMED_IAM \
-  --region "$AWS_REGION"
-
 aws cloudformation wait stack-create-complete \
   --stack-name "$INVOCATION_STACK" \
   --region "$AWS_REGION"
@@ -421,110 +244,67 @@ export INVOCATION_ROLE_ARN="$(
 echo "$INVOCATION_ROLE_ARN"
 ```
 
-The final command must print the new role ARN.
+This invocation role lets Temporal get the named endpoint and invoke the Runtime. It is separate from the Runtime
+execution role that AgentCore created to run the Worker and access Code Interpreter.
 
-## 4. Create the Serverless Worker deployment {/* #deploy-the-serverless-worker */}
+## 5. Create the Serverless Worker deployment
 
 Create a Worker Deployment and a version that points to the AgentCore endpoint:
 
 ```bash
 temporal worker deployment create \
-  --name durable-agent-agentcore
+  --name agentcore-strands-agent-python
 
 temporal worker deployment create-version \
-  --deployment-name durable-agent-agentcore \
+  --deployment-name agentcore-strands-agent-python \
   --build-id 1.0.0 \
   --aws-agentcore-endpoint-arn "$RUNTIME_ENDPOINT_ARN" \
   --aws-agentcore-assume-role-arn "$INVOCATION_ROLE_ARN" \
   --aws-agentcore-assume-role-external-id "$EXTERNAL_ID"
 
 temporal worker deployment set-current-version \
-  --deployment-name durable-agent-agentcore \
+  --deployment-name agentcore-strands-agent-python \
   --build-id 1.0.0 \
   --yes
 ```
 
 Creating the version causes Temporal to invoke the Runtime and wait for the Worker to register. The deployment name
-and Build ID in these commands match the values packaged into the Runtime. Setting the version as current lets it
-receive new Tasks on the `durable-agent` Task Queue.
+and Build ID match the values in `agentcore.json`. Setting the version as current lets it receive new Tasks on the
+`agentcore-strands-task-queue` Task Queue.
 
-You now have a deployed Runtime and a Worker Deployment Version that Temporal can start when the Task Queue needs
-capacity. For more deployment options, see
-[Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore).
+## 6. Run the agent
 
-## 5. Talk to the deployed agent {/* #talk-to-the-deployed-agent */}
-
-Start one conversation Workflow. This command returns immediately while the Workflow remains open:
+Run the sample client with its default prompt:
 
 ```bash
-temporal workflow start \
-  --workflow-id durable-agent-alice \
-  --type DurableAgentWorkflow \
-  --task-queue durable-agent
+uv run python starter.py
 ```
 
-Send the first prompt as an Update and wait for the reply:
+Or provide a prompt:
 
 ```bash
-temporal workflow update execute \
-  --workflow-id durable-agent-alice \
-  --name ask \
-  --input '"A film festival has 7 screens with 4 showings per screen. How many screenings can it schedule?"'
+uv run python starter.py \
+  "Calculate the first 10 Fibonacci numbers and verify the result with Python."
 ```
 
-Temporal starts AgentCore Worker capacity because the Task Queue has work. After the turn completes and the idle period
-expires, the Runtime handler drains the Worker and returns. Confirm this in the AgentCore logs. Wait until the log
-contains `worker idle for 60.0s and drained`, then stop following the logs with `Ctrl+C`:
+`starter.py` starts `StrandsAgentWorkflow` and waits for its result. Temporal starts AgentCore Worker capacity, the
+Workflow calls the model and Code Interpreter Activities, and the client prints the answer. The Workflow then
+completes. After 60 seconds without an Activity starting or finishing, the Worker drains.
+
+Inspect the completed Workflow Execution:
 
 ```bash
-aws logs tail "/aws/bedrock-agentcore/runtimes/${AGENT_RUNTIME_ID}-temporal" \
-  --region "$AWS_REGION" \
-  --follow
+temporal workflow show \
+  --workflow-id agentcore-strands-workflow-id-1
 ```
 
-After the Worker has retired, send a follow-up that depends on the first turn:
+The Event History contains the model and `execute_code` Activities. Follow the Worker from AgentCore:
 
 ```bash
-temporal workflow update execute \
-  --workflow-id durable-agent-alice \
-  --name ask \
-  --input '"If we add two screenings to the total you calculated, what is the new total?"'
+agentcore logs --runtime temporal_strands_worker
 ```
 
-Temporal starts capacity again. The new Worker reconstructs the existing Workflow and its Strands messages, so the
-agent can interpret "the total you calculated" without depending on the previous Worker process.
-
-End the conversation when it no longer needs to accept prompts:
-
-```bash
-temporal workflow signal \
-  --workflow-id durable-agent-alice \
-  --name finish
-```
-
-## 6. Test recovery {/* #test-recovery */}
-
-Worker retirement between turns tests one form of recovery. You can also interrupt compute while a model or tool
-Activity is running. Start a prompt that takes long enough to observe, find the active Runtime session identifier in the
-AgentCore logs, and stop that session:
-
-```bash
-export RUNTIME_SESSION_ID="<session-id-from-AgentCore-logs>"
-aws bedrock-agentcore stop-runtime-session \
-  --agent-runtime-arn "$AGENT_RUNTIME_ARN" \
-  --runtime-session-id "$RUNTIME_SESSION_ID" \
-  --region "$AWS_REGION"
-```
-
-For the required IAM permission and API behavior, see
-[Stop a running session](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-stop-session.html).
-
-The Activity attempt running on that Worker is interrupted. Temporal keeps the Workflow state and schedules the
-Activity again according to its Retry Policy. Serverless Workers starts new AgentCore capacity to process the Task. In
-the Temporal Web UI, inspect the Activity attempts and confirm that the Workflow continues without restarting the
-conversation.
-
-An Activity can run more than once if its Worker stops after making an external change but before reporting completion.
-Use an idempotency key for tools that change external state. The Workflow Id plus a stable operation identifier is a
-common choice. Code execution used only to calculate an answer does not make an external business change, so it is a
-safe recovery demonstration.
+This one-turn example demonstrates durable model and tool execution on replaceable compute. A conversational version
+would keep the Workflow open after the first answer and accept additional prompts through Workflow Updates. Each
+conversation would use its own Workflow Id while Serverless Workers could run its Tasks on any compatible Runtime
+session.

@@ -68,16 +68,16 @@ Worker. To set the behavior per Workflow instead, pass `versioning_behavior` to 
 
 ## Start the Worker from the Runtime handler {/* #runtime-handler */}
 
-AgentCore Runtime invokes an HTTP handler. Use `BedrockAgentCoreApp` to provide that handler, and use `async_task` so
-AgentCore keeps the Runtime active while the Worker polls:
+AgentCore Runtime invokes an HTTP handler. Use `BedrockAgentCoreApp` to provide that handler. Register the Worker as an
+asynchronous AgentCore task, then return an acknowledgment while the Worker continues polling in the background. The
+sample stores the background task in `_worker` and uses it to prevent another invocation from starting a duplicate
+Worker in the same Runtime session:
 
 <!--SNIPSTART python-agentcore-runtime-handler-->
-[bedrock_agentcore/strands-agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/5b0fe65efe934388d35eda430fb11df6899ce1d3/bedrock_agentcore/strands-agent/agentcore_worker.py)
+[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/9d5c46bed0f0f6f8a726fa91f371c4c83f232ba2/bedrock_agentcore/strands_agent/agentcore_worker.py)
 ```py
-@app.entrypoint
-@app.async_task  # keeps /ping on "HealthyBusy" until this returns
-async def invoke(payload: dict) -> dict:
-    """Poll until idle, then drain. The payload is unused: every call is a new session and new worker."""
+async def run_worker() -> None:
+    """Poll until idle, then drain."""
     api_key = os.environ.get("TEMPORAL_API_KEY") or None
     client = await Client.connect(
         os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
@@ -87,15 +87,13 @@ async def invoke(payload: dict) -> dict:
         plugins=[StrandsPlugin()],
     )
 
-    task_queue = os.environ.get("TEMPORAL_TASK_QUEUE", workflows.TASK_QUEUE)
     tracker = ActivityTracker()
-
-    log.info("polling %s as %s/%s", task_queue, DEPLOYMENT_NAME, BUILD_ID)
+    log.info("polling %s as %s/%s", TASK_QUEUE, DEPLOYMENT_NAME, BUILD_ID)
     # execute_code is a sync Activity, so it needs an executor to block on.
     with ThreadPoolExecutor(max_workers=4) as activity_executor:
         worker = Worker(
             client,
-            task_queue=task_queue,
+            task_queue=TASK_QUEUE,
             workflows=[workflows.StrandsAgentWorkflow],
             activities=[execute_code],
             activity_executor=activity_executor,
@@ -112,12 +110,40 @@ async def invoke(payload: dict) -> dict:
         async with worker:
             await tracker.wait_until_idle(DEBOUNCE)
     log.info("worker idle for %ss; drained", DEBOUNCE)
-    return {"message": "worker drained", "task_queue": task_queue}
+
+
+async def _run_until_idle(task_id: int) -> None:
+    """Own the Worker's whole life, and always release the async task."""
+    try:
+        await run_worker()
+    except Exception:
+        # Nothing awaits this task, so an error would otherwise be swallowed.
+        log.exception("worker failed in async task")
+    finally:
+        # Without this the session stays HealthyBusy until MaxLifetime.
+        app.complete_async_task(task_id)
+
+
+@app.entrypoint
+async def invoke(payload: dict) -> dict:
+    """Start the Worker and acknowledge. The payload is unused."""
+    # Prevent duplicate workers since we exit early
+    global _worker
+    if _worker is not None and not _worker.done():
+        log.info("worker already polling %s", TASK_QUEUE)
+        return {"message": "worker already polling", "task_queue": TASK_QUEUE}
+
+    task_id = app.add_async_task("temporal-worker")
+    _worker = asyncio.create_task(_run_until_idle(task_id))
+
+    return {"message": "worker starting", "task_queue": TASK_QUEUE}
 ```
 <!--SNIPEND-->
 
 The payload does not represent a Workflow input. The Worker Controller Instance invokes the endpoint to add Worker
-capacity. Applications start Workflows through the Temporal Client, as usual.
+capacity. Applications start Workflows through the Temporal Client, as usual. `add_async_task` causes AgentCore to
+report the Runtime as busy while the Worker polls. `complete_async_task` releases that status after the Worker drains
+or fails.
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
@@ -132,19 +158,19 @@ For the supported connection variables, config-file format, and profiles, see
 ## Stop and drain the Worker {/* #stop-and-drain-the-worker */}
 
 AgentCore cannot tell when a Worker that is still polling has no Temporal work. The Runtime remains busy while the
-`async_task` handler runs, so it can remain active until its eight-hour maximum lifetime. To release capacity sooner,
-have the handler detect when the Worker has no useful work and return.
+asynchronous task is registered, so it can remain active until its eight-hour maximum lifetime. To release capacity
+sooner, have the handler detect when the Worker has no useful work and complete the asynchronous task.
 
 When the condition remains true for an idle period, leave the `async with worker` block. The Worker stops polling for
 new Tasks and gives in-flight Activities time to complete before the Runtime handler returns.
 
 The following example from the
-[AgentCore sample Worker](https://github.com/temporalio/samples-python/blob/5b0fe65efe934388d35eda430fb11df6899ce1d3/bedrock_agentcore/strands-agent/agentcore_worker.py)
+[AgentCore sample Worker](https://github.com/temporalio/samples-python/blob/9d5c46bed0f0f6f8a726fa91f371c4c83f232ba2/bedrock_agentcore/strands_agent/agentcore_worker.py)
 defines an `ActivityTracker`. It uses an [Activity inbound Interceptor](/develop/python/workers/interceptors) to count
 running Activities.
 
 <!--SNIPSTART python-agentcore-activity-tracker-->
-[bedrock_agentcore/strands-agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/5b0fe65efe934388d35eda430fb11df6899ce1d3/bedrock_agentcore/strands-agent/agentcore_worker.py)
+[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/9d5c46bed0f0f6f8a726fa91f371c4c83f232ba2/bedrock_agentcore/strands_agent/agentcore_worker.py)
 ```py
 # How long the Worker keeps polling after it goes idle.
 DEBOUNCE = float(os.environ.get("AGENTCORE_DEBOUNCE_SECONDS", "60"))
