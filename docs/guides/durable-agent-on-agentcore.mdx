@@ -78,7 +78,8 @@ Event History with only the references and working context that the next executi
 To build and run the agent locally, you need:
 
 - Python 3.10 or later and [`uv`](https://docs.astral.sh/uv/).
-- The [Temporal CLI](/cli/setup-cli) to run a local Temporal development server.
+- [Temporal CLI v1.8.3](https://github.com/temporalio/cli/releases/tag/v1.8.3) or later. This version adds the AgentCore
+  options used to create a Worker Deployment Version.
 - AWS credentials with access to Amazon Nova Lite through Bedrock and permission to use AgentCore Code Interpreter.
   The sample includes the required Code Interpreter IAM policy.
 
@@ -89,10 +90,9 @@ To deploy the Worker, you also need:
 - The AWS and AgentCore tools and permissions listed in the
   [Serverless Worker deployment prerequisites](/production-deployment/worker-deployments/serverless-workers/agentcore#prerequisites).
 
-This guide uses the
-[durable AgentCore sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent),
-which contains the AgentCore project, Runtime handler, IAM policy, and Code Interpreter Activity. Clone the sample
-repository and install the application dependencies:
+## 1. Get and run the agent locally {/* #build-the-agent-locally */}
+
+Clone the sample repository and install the application dependencies:
 
 ```bash
 git clone --branch docs/durable-agent-agentcore-sample --single-branch \
@@ -100,8 +100,6 @@ git clone --branch docs/durable-agent-agentcore-sample --single-branch \
 cd documentation-sdk-code-examples/python-agentcore-durable-agent
 uv sync
 ```
-
-## 1. Build the agent locally {/* #build-the-agent-locally */}
 
 The [durable AgentCore sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent)
 defines `execute_code` as a Temporal Activity. It uses the Workflow Id as the Code Interpreter session name so two
@@ -130,11 +128,9 @@ def execute_code(
 The Activity boundary gives the tool call a separate timeout, Retry Policy, and result in Event History. It also keeps
 AWS calls out of deterministic Workflow code.
 
-Define a Workflow that accepts multiple prompts:
-
-The sample sets `MODEL_NAME` to `nova-lite` and maps it to the Bedrock model identifier `amazon.nova-lite-v1:0` when it
-configures `StrandsPlugin`. The Workflow refers to the registered model by name, so model construction and AWS access
-remain in the Worker process.
+The sample defines a Workflow that accepts multiple prompts. It sets `MODEL_NAME` to `nova-lite` and maps it to the
+Bedrock model identifier `amazon.nova-lite-v1:0` when it configures `StrandsPlugin`. The Workflow refers to the
+registered model by name, so model construction and AWS access remain in the Worker process.
 
 <!--SNIPSTART python-agentcore-durable-agent-workflow-->
 [python-agentcore-durable-agent/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/workflows.py)
@@ -261,14 +257,14 @@ Ask a question that requires calculation, then ask a follow-up that depends on t
 close the Workflow. In the Temporal Web UI, the Event History shows the `ask` Update, model Activities, and
 `execute_code` Activity for each turn.
 
-## 2. Run the Worker on AgentCore Runtime {/* #run-the-worker-on-agentcore-runtime */}
+## 2. Configure and deploy the Worker Runtime {/* #run-the-worker-on-agentcore-runtime */}
 
 Local development uses a continuously running Worker. On AgentCore Runtime, the HTTP handler starts the Worker in a
 background task and immediately returns an acknowledgment. The Worker continues polling until its idle policy decides
 to release the compute.
 
 The AgentCore Runtime handler registers the `DurableAgentWorkflow` and `execute_code` definitions from
-[Build the agent locally](#build-the-agent-locally). It adds Worker Versioning and the Activity-based idle tracker from
+[Get and run the agent locally](#build-the-agent-locally). It adds Worker Versioning and the Activity-based idle tracker from
 the [Python AgentCore Worker guide](/develop/python/workers/serverless-workers/agentcore#stop-and-drain-the-worker).
 The entry point registers the background Worker as an AgentCore asynchronous task, prevents another invocation in the
 same Runtime session from starting a duplicate Worker, and clears the task after the Worker drains or fails:
@@ -311,32 +307,152 @@ The Runtime does not need a copy of the conversation in a local file or global v
 Workflow Task, Temporal replays the Workflow's Event History and restores the `TemporalAgent` message list before new
 model or tool calls run.
 
-## 3. Deploy the Serverless Worker {/* #deploy-the-serverless-worker */}
+Stop the local Worker and Temporal development server. In one terminal, export the Temporal Cloud and AWS settings
+used by the rest of this guide. Replace the first two values with your Namespace details. Enter your API key at the
+prompt:
 
-Install the AgentCore CLI and generate the CDK project used by the sample's Runtime definition:
+```bash
+export TEMPORAL_ADDRESS="<namespace>.<account>.tmprl.cloud:7233"
+export TEMPORAL_NAMESPACE="<namespace>.<account>"
+printf "Temporal Cloud API key: "
+read -rs TEMPORAL_API_KEY
+printf "\n"
+export TEMPORAL_API_KEY
+export AWS_REGION="us-west-2"
+```
+
+Use an AgentCore-supported Region where your AWS credentials can invoke Amazon Nova Lite and Code Interpreter. The
+Temporal variables also configure subsequent Temporal CLI commands.
+
+Install the AgentCore CLI and generate the CDK files used to deploy the sample:
 
 ```bash
 npm install -g @aws/agentcore
 ./bootstrap-agentcore-project.sh
 ```
 
-Follow [Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore)
-to deploy the existing AgentCore project and configure its Worker Deployment Version.
+Populate the sample's AgentCore configuration from those variables. The command gets the AWS account number from your
+current AWS CLI credentials:
 
-For this application, use the same values in each place:
+```bash
+uv run python configure_agentcore.py
+```
+
+The sample configuration uses these values throughout the deployment:
 
 | Setting | Tutorial value |
 |---|---|
 | Runtime entrypoint | `agentcore_worker.py` |
 | Task Queue | `durable-agent` |
 | Worker Deployment name | `durable-agent-agentcore` |
-| Build ID | A version for this code, such as `1.0.0` |
+| Build ID | `1.0.0` |
+| Runtime endpoint name | `temporal` |
 
-The AgentCore Runtime execution role needs permission to invoke Bedrock and Code Interpreter. The separate role that
-Temporal Cloud assumes needs permission to invoke the AgentCore Runtime endpoint. The deployment guide creates and
-configures the second role.
+The command writes your Temporal Cloud API key to `agentcore/agentcore.json`. Do not commit the populated file. For a
+production deployment, store the key in AWS Secrets Manager and load it when the Runtime starts.
 
-## 4. Talk to the deployed agent {/* #talk-to-the-deployed-agent */}
+Validate and deploy the Runtime:
+
+```bash
+agentcore validate
+agentcore deploy --target default --yes
+```
+
+AgentCore packages the Worker and its dependencies, creates its execution role, deploys the Runtime, and creates the
+named endpoint. Retrieve the Runtime and endpoint ARNs for the next steps:
+
+```bash
+export AGENT_RUNTIME_ARN="$(
+  aws bedrock-agentcore-control list-agent-runtimes \
+    --region "$AWS_REGION" \
+    --query "agentRuntimes[?agentRuntimeName=='TemporalDurableAgent_durable_agent_worker'].agentRuntimeArn | [0]" \
+    --output text
+)"
+export AGENT_RUNTIME_ID="${AGENT_RUNTIME_ARN##*/}"
+export RUNTIME_ENDPOINT_ARN="$(
+  aws bedrock-agentcore-control list-agent-runtime-endpoints \
+    --agent-runtime-id "$AGENT_RUNTIME_ID" \
+    --region "$AWS_REGION" \
+    --query "runtimeEndpoints[?name=='temporal'].agentRuntimeEndpointArn | [0]" \
+    --output text
+)"
+echo "$AGENT_RUNTIME_ARN"
+echo "$RUNTIME_ENDPOINT_ARN"
+```
+
+Both commands must print an ARN before you continue.
+
+## 3. Grant Temporal access to the Runtime {/* #grant-temporal-access */}
+
+Temporal Cloud needs an IAM role that it can assume to invoke the Runtime endpoint. The cloned sample includes the
+CloudFormation template for this role. Choose an External ID and short names for the stack and role:
+
+```bash
+export EXTERNAL_ID="$(openssl rand -hex 16)"
+export INVOCATION_STACK="ac-durable-invoke"
+export INVOCATION_ROLE_NAME="TemporalSW"
+```
+
+Create the role. This role only lets Temporal get the endpoint and invoke the Runtime. The separate execution role
+created by AgentCore runs the Worker and accesses Bedrock and Code Interpreter.
+
+```bash
+aws cloudformation create-stack \
+  --stack-name "$INVOCATION_STACK" \
+  --template-body file://temporal-cloud-serverless-worker-agentcore-role.yaml \
+  --parameters \
+    ParameterKey=AssumeRoleExternalId,ParameterValue="$EXTERNAL_ID" \
+    ParameterKey=AgentRuntimeARNs,ParameterValue="${AGENT_RUNTIME_ARN}*" \
+    ParameterKey=RoleName,ParameterValue="$INVOCATION_ROLE_NAME" \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region "$AWS_REGION"
+
+aws cloudformation wait stack-create-complete \
+  --stack-name "$INVOCATION_STACK" \
+  --region "$AWS_REGION"
+
+export INVOCATION_ROLE_ARN="$(
+  aws cloudformation describe-stacks \
+    --stack-name "$INVOCATION_STACK" \
+    --query 'Stacks[0].Outputs[?OutputKey==`RoleARN`].OutputValue' \
+    --output text \
+    --region "$AWS_REGION"
+)"
+echo "$INVOCATION_ROLE_ARN"
+```
+
+The final command must print the new role ARN.
+
+## 4. Create the Serverless Worker deployment {/* #deploy-the-serverless-worker */}
+
+Create a Worker Deployment and a version that points to the AgentCore endpoint:
+
+```bash
+temporal worker deployment create \
+  --name durable-agent-agentcore
+
+temporal worker deployment create-version \
+  --deployment-name durable-agent-agentcore \
+  --build-id 1.0.0 \
+  --aws-agentcore-endpoint-arn "$RUNTIME_ENDPOINT_ARN" \
+  --aws-agentcore-assume-role-arn "$INVOCATION_ROLE_ARN" \
+  --aws-agentcore-assume-role-external-id "$EXTERNAL_ID"
+
+temporal worker deployment set-current-version \
+  --deployment-name durable-agent-agentcore \
+  --build-id 1.0.0 \
+  --yes
+```
+
+Creating the version causes Temporal to invoke the Runtime and wait for the Worker to register. The deployment name
+and Build ID in these commands match the values packaged into the Runtime. Setting the version as current lets it
+receive new Tasks on the `durable-agent` Task Queue.
+
+You now have a deployed Runtime and a Worker Deployment Version that Temporal can start when the Task Queue needs
+capacity. For more deployment options, see
+[Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore).
+
+## 5. Talk to the deployed agent {/* #talk-to-the-deployed-agent */}
 
 Start one conversation Workflow. This command returns immediately while the Workflow remains open:
 
@@ -357,10 +473,13 @@ temporal workflow update execute \
 ```
 
 Temporal starts AgentCore Worker capacity because the Task Queue has work. After the turn completes and the idle period
-expires, the Runtime handler drains the Worker and returns. Confirm this in the AgentCore logs:
+expires, the Runtime handler drains the Worker and returns. Confirm this in the AgentCore logs. Wait until the log
+contains `worker idle for 60.0s and drained`, then stop following the logs with `Ctrl+C`:
 
 ```bash
-agentcore logs --runtime <RUNTIME_NAME>
+aws logs tail "/aws/bedrock-agentcore/runtimes/${AGENT_RUNTIME_ID}-temporal" \
+  --region "$AWS_REGION" \
+  --follow
 ```
 
 After the Worker has retired, send a follow-up that depends on the first turn:
@@ -383,17 +502,18 @@ temporal workflow signal \
   --name finish
 ```
 
-## 5. Test recovery {/* #test-recovery */}
+## 6. Test recovery {/* #test-recovery */}
 
 Worker retirement between turns tests one form of recovery. You can also interrupt compute while a model or tool
 Activity is running. Start a prompt that takes long enough to observe, find the active Runtime session identifier in the
 AgentCore logs, and stop that session:
 
 ```bash
+export RUNTIME_SESSION_ID="<session-id-from-AgentCore-logs>"
 aws bedrock-agentcore stop-runtime-session \
-  --agent-runtime-arn <AGENT_RUNTIME_ARN> \
-  --runtime-session-id <RUNTIME_SESSION_ID> \
-  --region <AWS_REGION>
+  --agent-runtime-arn "$AGENT_RUNTIME_ARN" \
+  --runtime-session-id "$RUNTIME_SESSION_ID" \
+  --region "$AWS_REGION"
 ```
 
 For the required IAM permission and API behavior, see
