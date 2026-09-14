@@ -20,7 +20,7 @@ The Workflow execution is registered in Temporal right away, but the first Workf
 
 Some business processes need a Workflow that exists and is queryable immediately, but doesn't actually start executing until a specific time in the future — a one-time delay, not a recurring schedule.
 
-Without delayed start, the alternatives are all a worse fit: trigger Workflow creation from an external scheduler, start the Workflow immediately and make `sleep()` its first operation (wasting a Workflow slot for no reason), build a custom queueing system for deferred execution, or reach for [Temporal Schedules](/schedule) — built for recurring executions, more machinery than a single delay needs.
+Without delayed start, the alternatives are all a worse fit: trigger Workflow creation from an external scheduler, start the Workflow immediately and make `sleep()` its first operation (which runs Workflow code — and processes any regular Signal sent during the wait — before the delay you actually wanted has elapsed), build a custom queueing system for deferred execution, or reach for [Temporal Schedules](/schedule) — built for recurring executions, more machinery than a single delay needs.
 
 ## Solution
 

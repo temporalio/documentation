@@ -531,7 +531,7 @@ You may overwhelm external services without throttling, and storing many Futures
 ### References
 
 - [Blob Size Limit Error](/troubleshooting/blob-size-limit-error): Diagnosing and fixing the 4 MB gRPC message limit this pattern's pitfalls mention.
-- [Workflow Execution limits](/workflow-execution/limits): Canonical reference for the 2,000-pending-operations limit, which applies to Activities, Child Workflows, Signals, and Cancellation requests together, not just Activities.
+- [Workflow Execution limits](/workflow-execution/limits): Canonical reference for the pending-operations limits — 2,000 by default for each of Activities, Child Workflows, Signals, and Cancellation requests independently, not a single 2,000 cap shared across all of them.
 
 ### Sample code
 
