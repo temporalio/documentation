@@ -59,6 +59,8 @@ The agent chat sample contains a complete Workflow, Worker, and Client. It uses 
 `InMemoryRunner` APIs in the Workflow, with `TemporalModel` as the agent's model. The Client sends messages through
 Workflow Updates and can query the conversation history.
 
+Create the agent and runner in Workflow code:
+
 <!--SNIPSTART typescript-google-adk-agent-chat-workflow -->
 [google-adk-agents/src/agent-chat/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/google-adk-agents/src/agent-chat/workflows.ts)
 ```ts
@@ -71,8 +73,7 @@ const runner = new InMemoryRunner({ agent, appName: 'agent-chat' });
 ```
 <!--SNIPEND-->
 
-The Worker registers `GoogleAdkPlugin`, which installs the model Activities and the Workflow bundler configuration.
-The Client starts the Workflow normally and doesn't need the plugin.
+Register `GoogleAdkPlugin` on the Worker to install the model Activities and Workflow bundler configuration:
 
 <!--SNIPSTART typescript-google-adk-agent-chat-worker -->
 [google-adk-agents/src/agent-chat/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/google-adk-agents/src/agent-chat/worker.ts)
@@ -88,6 +89,8 @@ const worker = await Worker.create({
 await worker.run();
 ```
 <!--SNIPEND-->
+
+The Client starts the Workflow normally and doesn't need the plugin.
 
 Use each API from its package entry point:
 
@@ -107,18 +110,8 @@ shows a coordinator transferring a request to a researcher and then a writer.
 
 ## Configure model calls
 
-Pass Activity options to `TemporalModel` to set timeouts, retries, a Task Queue, or an Activity summary. The default
-`startToCloseTimeout` is one minute.
-
-```ts
-const model = new TemporalModel('gemini-2.5-flash', {
-  activity: {
-    startToCloseTimeout: '5 minutes',
-    heartbeatTimeout: '30 seconds',
-    retry: { maximumAttempts: 3 },
-  },
-});
-```
+Pass Activity options to `TemporalModel` to set timeouts, retries, a Task Queue, or an Activity summary. Set these under
+the model's `activity` option. The default `startToCloseTimeout` is one minute.
 
 The plugin disables retries in the underlying model SDK so that the Activity retry policy controls retries and backoff.
 Set `heartbeatTimeout` to detect a dead Worker and deliver cancellation to a long model call. The Activity heartbeats on
