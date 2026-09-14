@@ -1,5 +1,13 @@
 const path = require('path');
-const { extractTitle, hasManualOverride, hashFor, stripFrontmatter, IMAGE_EXTENSION, DEFAULT_FOOTER_TEXT } = require('./shared');
+const {
+  extractTitle,
+  hasManualOverride,
+  hashFor,
+  resolveImageOrigin,
+  stripFrontmatter,
+  IMAGE_EXTENSION,
+  DEFAULT_FOOTER_TEXT,
+} = require('./shared');
 
 // This is what actually makes the generated og:image survive client-side
 // hydration. The previous approach patched og:image/twitter:image directly
@@ -15,10 +23,20 @@ const { extractTitle, hasManualOverride, hashFor, stripFrontmatter, IMAGE_EXTENS
 // component already renders correctly through both SSR and hydration (it's
 // the same mechanism a page uses to manually opt out — see
 // hasManualOverride below). So instead of patching HTML after the fact, this
-// injects that same front-matter field with the path the generated card
-// will actually be written to (by plugins/og-image/index.js's postBuild),
-// early enough — during MDX compilation — that it becomes genuine front
-// matter data. Docusaurus then renders it itself, identically, every time.
+// injects that same front-matter field with the URL the generated card will
+// actually be written to (by plugins/og-image/index.js's postBuild), early
+// enough — during MDX compilation — that it becomes genuine front matter
+// data. Docusaurus then renders it itself, identically, every time.
+//
+// The value is a full absolute URL (via resolveImageOrigin), not a
+// site-relative path — Docusaurus's own image-metadata resolution
+// (addBaseUrl in @docusaurus/core) leaves any URL that already has a
+// protocol untouched, so an absolute URL here is what actually reaches the
+// rendered og:image/twitter:image tags. A relative path would instead get
+// resolved against docusaurus.config.js's siteConfig.url, which is always
+// the production domain — on a Vercel preview build that would point
+// social-share scrapers at an image that only exists on this deployment,
+// not at docs.temporal.io.
 //
 // Registered in docusaurus.config.js's docs preset `remarkPlugins` (and, with
 // a `footerText` override, on the ai-cookbook docs plugin instance's own
@@ -51,7 +69,7 @@ function ogImageRemarkPlugin(options = {}) {
     // Mutating in place, not reassigning file.data.frontMatter — the mdx
     // loader holds the same object reference and serializes it into the
     // compiled module's `export const frontMatter = {...}` after this runs.
-    frontMatter.image = `/img/og/${hash}.${IMAGE_EXTENSION}`;
+    frontMatter.image = `${resolveImageOrigin()}/img/og/${hash}.${IMAGE_EXTENSION}`;
   };
 }
 

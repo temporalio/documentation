@@ -62,11 +62,12 @@
   align-items: center;
   gap: 0.375rem;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .icons svg {
-  width: 22px;
-  height: 22px;
+  width: 32px;
+  height: 32px;
   pointer-events: none;
 }
 
@@ -83,11 +84,19 @@
   flex: 1;
 }
 
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
 .cardMeta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
-  margin-top: auto;
+  flex: 1;
+  min-width: 0;
 }
 
 .badge {

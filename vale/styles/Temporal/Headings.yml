@@ -30,6 +30,8 @@ exceptions:
   - VS
   - Windows
   - JSON
+  - QPS
+  - RPS
   # Temporal primitives and proper nouns
   - Activity
   - Activities

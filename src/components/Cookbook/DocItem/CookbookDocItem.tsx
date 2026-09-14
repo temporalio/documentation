@@ -63,6 +63,15 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
   const hasTOC = !frontMatter?.hide_table_of_contents && (toc?.length ?? 0) > 0;
   const shouldRenderSyntheticTitle = !frontMatter?.hide_title && typeof contentTitle === 'undefined';
   const syntheticTitle = shouldRenderSyntheticTitle ? title : undefined;
+  // The landing page (ai-cookbook/index.mdx) renders a wide card grid
+  // (CookbookHome), not prose — the default article column is capped at
+  // ~720px for recipe readability, which would squeeze that grid down to 1-2
+  // columns. CookbookHome manages its own max-width (1440px) internally, so
+  // just remove this component's cap for that one page instead. Keyed off
+  // `id` (not `metadata.permalink`, which is inconsistently trailing-slashed
+  // between SSR and hydration) — 'index' is the same id resolveUrlPath and
+  // cookbook-index's own readItems() already use to single out this doc.
+  const isLandingPage = id === 'index';
 
   const resolvedTags = (tags ?? metaTags.map((t: any) => t.label)) as string[];
   const dataTags = resolvedTags.length ? resolvedTags.join(',') : undefined;
@@ -253,8 +262,8 @@ function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
       <MarkdownAlternateLink />
 
       <main className={styles.main}>
-        <div className={styles.wrapper} data-has-toc={hasTOC ? 'true' : undefined}>
-          <article className={styles.article} data-tags={dataTags} data-doc-id={id}>
+        <div className={styles.wrapper} data-has-toc={hasTOC ? 'true' : undefined} data-landing={isLandingPage ? 'true' : undefined}>
+          <article className={styles.article} data-tags={dataTags} data-doc-id={id} data-landing={isLandingPage ? 'true' : undefined}>
             <AgentDirective />
             {syntheticTitle && (
               <header className={styles.syntheticHeader}>
