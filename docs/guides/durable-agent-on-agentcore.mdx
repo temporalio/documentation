@@ -79,8 +79,8 @@ To build and run the agent locally, you need:
 
 - Python 3.10 or later and [`uv`](https://docs.astral.sh/uv/).
 - The [Temporal CLI](/cli/setup-cli) to run a local Temporal development server.
-- AWS credentials with access to the Bedrock model selected by Strands and permission to use AgentCore Code
-  Interpreter. The sample includes the required Code Interpreter IAM policy.
+- AWS credentials with access to Amazon Nova Lite through Bedrock and permission to use AgentCore Code Interpreter.
+  The sample includes the required Code Interpreter IAM policy.
 
 To deploy the Worker, you also need:
 
@@ -132,6 +132,10 @@ AWS calls out of deterministic Workflow code.
 
 Define a Workflow that accepts multiple prompts:
 
+The sample sets `MODEL_NAME` to `nova-lite` and maps it to the Bedrock model identifier `amazon.nova-lite-v1:0` when it
+configures `StrandsPlugin`. The Workflow refers to the registered model by name, so model construction and AWS access
+remain in the Worker process.
+
 <!--SNIPSTART python-agentcore-durable-agent-workflow-->
 [python-agentcore-durable-agent/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/durable-agent-agentcore-sample/python-agentcore-durable-agent/workflows.py)
 ```py
@@ -141,7 +145,7 @@ class DurableAgentWorkflow:
         self._done = False
         self._lock = asyncio.Lock()
         self._agent = TemporalAgent(
-            model="bedrock",
+            model=MODEL_NAME,
             start_to_close_timeout=timedelta(seconds=60),
             system_prompt=SYSTEM_PROMPT,
             tools=[
@@ -189,7 +193,9 @@ also creates the executor required by the synchronous `execute_code` Activity:
 async def main() -> None:
     client = await Client.connect(
         "localhost:7233",
-        plugins=[StrandsPlugin()],
+        plugins=[
+            StrandsPlugin(models={MODEL_NAME: lambda: BedrockModel(model_id=MODEL_ID)})
+        ],
     )
 
     with ThreadPoolExecutor(max_workers=4) as activity_executor:
@@ -224,7 +230,9 @@ The sample's chat client starts a Workflow and sends each prompt as an Update:
 async def main() -> None:
     client = await Client.connect(
         "localhost:7233",
-        plugins=[StrandsPlugin()],
+        plugins=[
+            StrandsPlugin(models={MODEL_NAME: lambda: BedrockModel(model_id=MODEL_ID)})
+        ],
     )
     handle = await client.start_workflow(
         DurableAgentWorkflow.run,

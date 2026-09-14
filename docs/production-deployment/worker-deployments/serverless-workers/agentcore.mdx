@@ -137,7 +137,8 @@ The External ID prevents a [confused deputy](https://docs.aws.amazon.com/IAM/lat
 attack.
 
 [Download the CloudFormation template](/files/temporal-cloud-serverless-worker-agentcore-role.yaml), then deploy it.
-Pass the Runtime ARN with a trailing wildcard so the policy covers the Runtime and its endpoints:
+Pass the Runtime ARN with a trailing wildcard so the policy covers the Runtime and its endpoints. The template names
+the IAM role `<ROLE_NAME>-<STACK_NAME>`. Keep the combined name within the IAM limit of 64 characters:
 
 ```bash
 aws cloudformation create-stack \
@@ -146,6 +147,7 @@ aws cloudformation create-stack \
   --parameters \
     ParameterKey=AssumeRoleExternalId,ParameterValue=<EXTERNAL_ID> \
     ParameterKey=AgentRuntimeARNs,ParameterValue='<AGENT_RUNTIME_ARN>*' \
+    ParameterKey=RoleName,ParameterValue=<ROLE_NAME> \
   --capabilities CAPABILITY_NAMED_IAM \
   --region <AWS_REGION>
 ```
