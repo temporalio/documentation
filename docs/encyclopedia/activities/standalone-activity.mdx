@@ -18,7 +18,7 @@ import { CaptionedImage } from '@site/src/components';
 A Standalone [Activity](/activities) is a top-level [Activity Execution](/activity-execution) started directly by a
 [Client](/encyclopedia/temporal-client), without using a Workflow.
 
-**Standalone Activities are Temporal's [job queue](/evaluate/development-production-features/job-queue)** - the
+**Standalone Activities are Temporal's [job queue](/evaluate/features/job-queue)** - the
 simplest way to run durable, retryable background jobs on Temporal. A job is queued, dispatched to one of your Workers,
 retried on failure, and kept addressable the whole time.
 
@@ -38,7 +38,7 @@ Temporal uses its own names for some job queue concepts, here's how they map:
 | A worker process | An [Activity Worker](/workers) - your process, running your code |
 
 For the full comparison and a migration path, see
-[Job Queue](/evaluate/development-production-features/job-queue) and
+[Job Queue](/evaluate/features/job-queue) and
 [Migrate a Celery task queue to a Standalone Activity](/guides/celery-to-standalone-activity).
 
 :::tip GET STARTED
@@ -110,7 +110,7 @@ Pause, Unpause, Reset, and Update Options let an operator intervene in a running
 API.
 
 These commands are in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Request Cancel, Terminate,
+[Public Preview](/evaluate/product-release-stages#public-preview). Request Cancel, Terminate,
 and Delete are Generally Available.
 
 See [Activity Operations](/activity-operations) for behavior, precedence, and batch support.
@@ -313,8 +313,8 @@ Your Activity code and Worker registration are unchanged. The Worker must belong
 [Worker Deployment Version](/worker-versioning#deployment-versions) with a compute provider configured, which is how
 Temporal knows what to invoke.
 
-AWS Lambda support is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) and
-GCP Cloud Run is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release). See
+AWS Lambda support is in [Public Preview](/evaluate/product-release-stages#public-preview) and
+GCP Cloud Run is in [Pre-release](/evaluate/product-release-stages#pre-release). See
 [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
 
 ## Standalone Activity versus Workflow Activity
@@ -346,7 +346,7 @@ round-trips. See [cost optimization](/best-practices/cost-optimization#standalon
 Standalone Activities are Generally Available, including Start Delay, Request Cancel, Terminate, and Delete.
 
 These capabilities are in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview):
+[Public Preview](/evaluate/product-release-stages#public-preview):
 
 - [Operator commands](/activity-operations): Pause, Unpause, Reset, and Update Options.
 - Batch operations by [List Filter](/list-filter): Request Cancel, Terminate, and Delete.
