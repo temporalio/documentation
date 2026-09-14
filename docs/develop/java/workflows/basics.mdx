@@ -165,7 +165,7 @@ Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
 However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
 
-Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
+Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html).
 
 The `execute` method for `DynamicWorkflow` can return type Object.
 Ensure that your Client can handle an Object type return or is able to convert the Object type response.
