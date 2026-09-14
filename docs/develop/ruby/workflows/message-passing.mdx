@@ -5,6 +5,7 @@ sidebar_label: Message passing
 description: Develop with Queries, Signals, and Updates using the Temporal Ruby SDK.
 toc_max_heading_level: 3
 tags:
+  - Workflows
   - Ruby SDK
   - Temporal SDKs
 ---
@@ -362,7 +363,7 @@ Signal and Update handlers can be asynchronous as well as blocking.
 Using asynchronous calls allows you to wait for Activities, Child Workflows, Durable Timers, wait conditions, etc.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
-It's essential to understand the things that could go wrong in order to use asynchronous handlers safely.
+To use asynchronous handlers safely, understand what can go wrong.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
 The following code is an Activity that simulates a network call to a remote service:

@@ -57,7 +57,7 @@ We recommend you enable mTLS for strong identity assurance of clients; it ensure
 
 ### Proactively manage and rotate certificates
 
-Track the expiration dates of your client and [Certificate Authority certificates](/cloud/certificates). Temporal Cloud trusts the uploaded CA; if it expires, all client authorizations will fail. Establish and automate a certificate rotation schedule (for example, rotate client certificates quarterly and CA certificates annually, well before expiry). Temporal supports uploading a new CA certificate alongside the old one to allow seamless rollover. Always test new certificates in a staging environment if possible.
+Track the expiration dates of your client and [Certificate Authority certificates](/cloud/certificates). Temporal Cloud trusts the uploaded CA; if it expires, all client authorizations will fail. Establish and automate a certificate rotation schedule (for example, rotate client certificates quarterly and CA certificates annually, well before expiry). Temporal supports uploading a new CA certificate alongside the old one, so rotation doesn't interrupt client connections. Always test new certificates in a staging environment if possible.
 
 ### Handle API keys with strict care
 
