@@ -74,7 +74,7 @@ sample stores the background task in `_worker` and uses it to prevent another in
 Worker in the same Runtime session:
 
 <!--SNIPSTART python-agentcore-runtime-handler-->
-[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/9d5c46bed0f0f6f8a726fa91f371c4c83f232ba2/bedrock_agentcore/strands_agent/agentcore_worker.py)
+[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/agentcore_worker.py)
 ```py
 async def run_worker() -> None:
     """Poll until idle, then drain."""
@@ -137,6 +137,8 @@ async def invoke(payload: dict) -> dict:
     _worker = asyncio.create_task(_run_until_idle(task_id))
 
     return {"message": "worker starting", "task_queue": TASK_QUEUE}
+
+
 ```
 <!--SNIPEND-->
 
@@ -170,7 +172,7 @@ defines an `ActivityTracker`. It uses an [Activity inbound Interceptor](/develop
 running Activities.
 
 <!--SNIPSTART python-agentcore-activity-tracker-->
-[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/9d5c46bed0f0f6f8a726fa91f371c4c83f232ba2/bedrock_agentcore/strands_agent/agentcore_worker.py)
+[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/agentcore_worker.py)
 ```py
 # How long the Worker keeps polling after it goes idle.
 DEBOUNCE = float(os.environ.get("AGENTCORE_DEBOUNCE_SECONDS", "60"))
@@ -219,6 +221,8 @@ class _TrackedActivity(ActivityInboundInterceptor):
         finally:
             self._tracker.inflight -= 1
             self._tracker.changed.set()
+
+
 ```
 <!--SNIPEND-->
 

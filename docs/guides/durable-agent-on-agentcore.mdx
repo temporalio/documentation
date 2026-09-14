@@ -90,12 +90,14 @@ and IAM template used throughout this guide.
 
 The sample creates a `TemporalAgent` with a system prompt and the `execute_code` tool:
 
-[View `workflows.py` in the sample](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/workflows.py).
-
+<!--SNIPSTART python-agentcore-strands-workflow-->
+[bedrock_agentcore/strands_agent/workflows.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/workflows.py)
 ```py
 @workflow.defn
 class StrandsAgentWorkflow:
     def __init__(self) -> None:
+        # Configure with the plugin's default BedrockModel(), custom system
+        # prompt and code interpreter tool.
         self.agent = TemporalAgent(
             start_to_close_timeout=timedelta(seconds=60),
             system_prompt=SYSTEM_PROMPT,
@@ -109,22 +111,29 @@ class StrandsAgentWorkflow:
 
     @workflow.run
     async def run(self, prompt: str) -> str:
+        # invoke_async, not agent(prompt) -- the sync form spawns a worker thread the
+        # Workflow sandbox blocks.
         result = await self.agent.invoke_async(prompt)
         return str(result)
+
+
 ```
+<!--SNIPEND-->
 
 `TemporalAgent` adapts the Strands agent loop to run in Workflow code. The Temporal Strands plugin schedules each model
 call as an Activity. `activity_as_tool` makes `execute_code` another Activity when the model selects that tool.
 
 The `execute_code` Activity creates a Code Interpreter session using the Workflow Id as its session name:
 
-[View `activities.py` in the sample](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/activities.py).
-
+<!--SNIPSTART python-agentcore-code-interpreter-activity-->
+[bedrock_agentcore/strands_agent/activities.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/activities.py)
 ```py
+# Use AgentCore Code Interpreter to provide a code sandbox and execute LLM generated solution
 @activity.defn
 def execute_code(
     code: str, language: LanguageType = LanguageType.PYTHON
 ) -> dict[str, Any]:
+    """Run code in this Sessions's sandbox (workflow ID) and return the Code Interpreter result."""
     interpreter = AgentCoreCodeInterpreter(
         region=os.environ.get("AWS_REGION", "us-west-2"),
         session_name=activity.info().workflow_id,
@@ -132,7 +141,10 @@ def execute_code(
     return interpreter.execute_code(
         ExecuteCodeAction(type="executeCode", code=code, language=language)
     )
+
+
 ```
+<!--SNIPEND-->
 
 Using the Workflow Id gives each Workflow Execution its own Code Interpreter sandbox.
 
