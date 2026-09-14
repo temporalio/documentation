@@ -73,6 +73,11 @@ Use each API from its package entry point:
 The [agent chat sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/agent-chat)
 shows this Workflow, Worker, and Client together, including its Update, Query, and Continue-As-New behavior.
 
+An agent graph can delegate work among multiple `LlmAgent` instances. The agents and their transfers remain in the
+Workflow, while each `TemporalModel` call runs as an Activity. The
+[multi-agent sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/multi-agent)
+shows a coordinator transferring a request to a researcher and then a writer.
+
 ## Configure model calls
 
 Pass Activity options to `TemporalModel` to set timeouts, retries, a Task Queue, or an Activity summary. The default
@@ -92,6 +97,10 @@ The plugin disables retries in the underlying model SDK so that the Activity ret
 Set `heartbeatTimeout` to detect a dead Worker and deliver cancellation to a long model call. The Activity heartbeats on
 a timer, so a Heartbeat Timeout doesn't detect a stalled call; `startToCloseTimeout` bounds a stalled call.
 
+Use ADK's `outputSchema` to constrain a model response, then validate the result in the Workflow before returning it.
+The [structured-output sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/structured-output)
+shows this pattern for an incident summary.
+
 ## Add tools and MCP servers
 
 Google ADK function tools run as part of the agent graph inside the Workflow. Use them for deterministic operations,
@@ -102,6 +111,11 @@ Use `activityAsTool` to expose an existing Activity to an agent. Its `name` must
 Worker's `activities` option. The model's arguments object becomes the Activity's single argument, and the `activity`
 option controls its timeouts and retries. The [tools sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/tools)
 shows the Workflow and Worker configuration together.
+
+An ADK `LongRunningFunctionTool` can wait in Workflow code for external input. A Signal can release the tool
+asynchronously, while an Update can release it and return an accepted result to the caller. The
+[human-in-the-loop sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/human-in-the-loop)
+shows both forms of approval.
 
 For MCP, register a named factory with `mcpToolsets: { <name>: factory }` in the Worker plugin, then create a
 `TemporalMCPToolset` with the same name in Workflow code. Listing tools and calling them execute as Activities. Each
