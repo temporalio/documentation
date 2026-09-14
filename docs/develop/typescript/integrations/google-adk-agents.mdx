@@ -12,9 +12,10 @@ description: Run Google ADK agents as durable Temporal Workflows in TypeScript, 
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-The Temporal Google Agent Development Kit (ADK) integration runs an ADK agent graph as a durable Temporal Workflow.
-The agent loop, tool selection, and state run in the Workflow, while model inference and Model Context Protocol (MCP)
-operations run as Activities. Completed calls are recorded in Event History and aren't repeated during replay.
+The Temporal [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/) integration runs an ADK agent
+graph as a durable Temporal Workflow. The agent loop, tool selection, and state run in the Workflow, while model
+inference and Model Context Protocol (MCP) operations run as Activities. Completed calls are recorded in Event History
+and aren't repeated during replay.
 
 `GoogleAdkPlugin` configures the Worker and Workflow bundle. In Workflow code, `TemporalModel` replaces a standard ADK
 model and routes each model call to an Activity. The integration also provides Workflow-safe APIs for Activity-backed
@@ -38,7 +39,8 @@ Code snippets on this page come from the
 
 ## Install the Google ADK integration
 
-Install the integration. Keep all `@temporalio/*` packages in your application on the same version.
+Install the [`@temporalio/google-adk-agents`](https://www.npmjs.com/package/@temporalio/google-adk-agents) package. Keep
+all `@temporalio/*` packages in your application on the same version.
 
 ```bash
 npm install @temporalio/google-adk-agents
@@ -145,9 +147,10 @@ long-lived toolset. MCP failures often have no status and are retryable, so set 
 
 ## Stream model responses
 
-Install `@temporalio/workflow-streams`, host a `WorkflowStream` at the top of the Workflow, and set `streamingTopic` in
-the `TemporalModel` options. The model call must also request streaming, either through ADK runner configuration with
-`StreamingMode.SSE` or by calling `generateContentAsync(request, true)`. A streaming call without a topic fails.
+Install [`@temporalio/workflow-streams`](https://www.npmjs.com/package/@temporalio/workflow-streams), host a
+`WorkflowStream` at the top of the Workflow, and set `streamingTopic` in the `TemporalModel` options. The model call must
+also request streaming, either through ADK runner configuration with `StreamingMode.SSE` or by calling
+`generateContentAsync(request, true)`. A streaming call without a topic fails.
 
 The model Activity publishes chunks to the topic and returns the complete response to the Workflow. The Activity result
 is the deterministic value used during replay. Stream delivery is at-least-once, and a retried Activity publishes its
