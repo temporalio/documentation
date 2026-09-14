@@ -763,7 +763,7 @@ You need to handle cleanup if the Workflow fails mid-process.
 
 :::caution Worker Versioning
 
-Do not enable [Worker Versioning](/production-deployment/worker-deployments/worker-versioning#definition) for worker-specific Task Queues. See [Task Queue limits](/cloud/limits#max-task-queues-in-deployment-version-limits).
+Do not enable [Worker Versioning](/production-deployment/worker-deployments/worker-versioning#definition) for worker-specific Task Queues — versioning is not needed and will quickly exhaust the [Task Queue limit](/cloud/limits#max-task-queues-in-deployment-version-limits).
 
 :::
 
