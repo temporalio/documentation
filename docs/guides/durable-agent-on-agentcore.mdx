@@ -69,21 +69,8 @@ Place state according to how long it must remain available:
 This division is what lets the Workflow outlive any one Runtime session. A Worker can stop after the current work is
 complete, and a later Worker can reconstruct the Workflow before continuing it.
 
-### Extend the sample to multiple turns
-
-For a conversational agent, use one Workflow Id for each conversation and keep the Workflow open after returning the
-first answer. Accept each new prompt through a Workflow Update when the caller needs the answer in the same request.
-A Signal is a better fit when the caller only needs to deliver the prompt and retrieve the result separately.
-
-Keep a bounded message list or summary in Workflow state. Store large messages, attachments, and artifacts in durable
-external storage and retain their references in the Workflow. Retrieve that content through Activities. For a
-conversation that runs long enough to accumulate a large Event History, use
-[Continue-As-New](/develop/python/integrations/strands-agents#handle-long-running-chat-sessions) to carry the working
-context into a new Workflow Run.
-
-The application continues to send every turn through Temporal. Serverless Workers may start a different AgentCore
-Runtime session for a later turn, so conversation correctness must not depend on process memory or Runtime session
-affinity.
+To extend the sample to multiple turns, use one Workflow Id per conversation, keep the Workflow open, and accept later
+prompts through Workflow Updates while allowing any compatible Runtime session to process each turn.
 
 ## Prerequisites
 
@@ -186,10 +173,6 @@ def execute_code(
 <!--SNIPEND-->
 
 Using the Workflow Id gives each Workflow Execution its own Code Interpreter sandbox.
-
-This sample invokes the agent once and completes the Workflow. It does not need a message handler or a durable wait.
-The multi-turn design described in [Extend the sample to multiple turns](#extend-the-sample-to-multiple-turns) would
-change that lifecycle while keeping model and tool calls behind the same Activity boundaries.
 
 ## 3. Configure and deploy the Runtime
 
