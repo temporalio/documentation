@@ -202,6 +202,17 @@ $ curl -H "Authorization: Bearer <API_KEY>" https://metrics.temporal.io/v1/metri
 
 Now you are ready to scrape your metrics\!
 
+### Migrate the Datadog integration
+
+1. Install and configure the
+   [Temporal Cloud - OpenMetrics integration](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/).
+   The new integration uses the `temporal.cloud.v1_*` metric prefix, while the deprecated integration uses
+   `temporal.cloud.v0_*`, so both integrations can run during the migration without metric name collisions.
+2. After you confirm that the new metrics are available in Datadog, optionally uninstall the deprecated
+   [Temporal Cloud integration](https://docs.datadoghq.com/integrations/temporal-cloud/). Leaving the deprecated
+   integration installed does not affect the new integration, but it stops receiving data when the PromQL endpoint is
+   disabled and remains in a broken integration state.
+
 ### Configuring Grafana \+ Prometheus
 
 #### Update Prometheus Configuration
@@ -242,7 +253,6 @@ This replaces the direct Grafana datasource configuration you used with the quer
 Consult the documentation for your observability system for how to configure it to scrape this endpoint and retrieve
 your metrics:
 
-- [Datadog](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/)
 - [NewRelic](https://docs.newrelic.com/docs/infrastructure/prometheus-integrations/install-configure-openmetrics/configure-prometheus-openmetrics-integrations/)
 - [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/configuration/#receivers)
 

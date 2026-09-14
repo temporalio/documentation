@@ -6,6 +6,7 @@ const path = require('path');
 const os = require('os');
 const { spawnSync } = require('child_process');
 const yaml = require('js-yaml');
+const { writeAiCookbookIndex } = require('./write-ai-cookbook-index');
 
 const REPO_URL = process.env.AI_COOKBOOK_REPO ?? 'https://github.com/temporalio/ai-cookbook.git';
 const REPO_BRANCH = process.env.AI_COOKBOOK_BRANCH ?? 'main';
@@ -677,6 +678,12 @@ async function main() {
     console.error('[sync-ai-cookbook] failed:', error);
     process.exitCode = 1;
   }
+  // Every syncReadmes() branch above (success, offline placeholder, or no
+  // READMEs found) can leave OUTPUT_DIR without an index doc — this always
+  // runs last so /ai/cookbook has a landing page regardless of which branch
+  // ran. See write-ai-cookbook-index.js for why this can't just live as a
+  // committed file inside ai-cookbook/ itself.
+  writeAiCookbookIndex(OUTPUT_DIR);
 }
 
 void main();

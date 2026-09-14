@@ -2,7 +2,7 @@
 id: cluster-metrics
 title: OSS Temporal Service metrics reference
 sidebar_label: Temporal Service metrics
-description: A Temporal Service emits metrics helping operators monitor performance and set alerts. Metrics like service requests, latencies, and errors are tracked. Use metric_defs.go for more.
+description: Reference for the metrics a self-hosted Temporal Service emits, covering request rates, latencies, errors, and Nexus Operation activity.
 toc_max_heading_level: 4
 tags:
   - Reference
@@ -268,12 +268,12 @@ Number of Workflows that timed out before completing execution.
 
 These metrics pertain to Nexus Operations.
 
-### Nexus Machinery in the History Service
+### Nexus machinery in the History Service
 
 See [architecture document](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md#scheduler)
 for more info.
 
-#### In-Memory Buffer
+#### In-memory buffer
 
 `dynamic_worker_pool_scheduler_enqueued_tasks`: A counter that is incremented when a task is enqueued to the buffer.
 
@@ -284,20 +284,20 @@ task is rejected.
 
 `dynamic_worker_pool_scheduler_buffer_size`: A gauge that periodically samples the size of the buffer.
 
-### Concurrency Limiter
+### Concurrency limiter
 
 `dynamic_worker_pool_scheduler_active_workers`: A gauge that periodically samples the number of running goroutines.
 
-#### Rate Limiter
+#### Rate limiter
 
 `rate_limited_task_runnable_wait_time`: A histogram representing the time a task spends waiting for the rate limiter.
 
-#### Circuit Breaker
+#### Circuit breaker
 
 `circuit_breaker_executable_blocked`: A counter that is incremented every time a task execution is blocked by the
 circuit breaker.
 
-#### Task Executors
+#### Task executors
 
 `nexus_outbound_requests`: A counter representing the number of Nexus outbound requests made by the history service.
 
@@ -309,7 +309,7 @@ service.
 `callback_outbound_latency`: A histogram representing the latency histogram of outbound callback requests made by the
 history service.
 
-### Nexus Machinery on the Frontend Service
+### Nexus machinery on the Frontend Service
 
 #### `nexus_requests`
 

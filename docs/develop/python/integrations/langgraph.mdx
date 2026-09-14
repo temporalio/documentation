@@ -480,7 +480,7 @@ Use `execute_in: "activity"` when a node does any of the following:
 - **Makes network calls** — LLM calls, HTTP requests, database queries, or any I/O. Activities can do I/O; Workflows
   cannot.
 - **Has non-deterministic behavior** — anything that can return different results on re-execution (random numbers,
-  current time, external data). Workflows must be deterministic.
+  current time, external data).
 - **Is long-running or may fail** — Activities get configurable timeouts, automatic retries, and heartbeating. If an LLM
   call times out or a service is unavailable, Temporal retries the Activity without re-running the entire Workflow.
 - **Calls `interrupt()`** — LangGraph's `interrupt()` is supported in Activity nodes. The plugin serializes the

@@ -1,7 +1,6 @@
 ---
 id: nexus
 title: Temporal Nexus
-sidebar_label: Temporal Nexus
 description: Temporal Nexus connects Temporal Applications across isolated Namespaces with clean service contracts, built-in durability, observability, and security.
 toc_max_heading_level: 4
 slug: /nexus
@@ -82,6 +81,10 @@ Callers reference an Endpoint by name. The Endpoint routes requests to a target 
 Callers never need to know the handler's Namespace, Task Queue, or internal implementation.
 
 Endpoints are managed in the [Nexus Registry](/nexus/registry) using the UI, CLI, or Cloud Ops API.
+
+In Temporal Cloud, each Endpoint also belongs to a [Project](/cloud/projects#use-nexus-across-projects).
+The Project controls who can manage the Endpoint in the Cloud Ops API and UI.
+It does not restrict cross-Namespace Nexus calls. Runtime access remains the Endpoint allowlist of caller Namespaces.
 
 ### Queue-based Worker architecture
 

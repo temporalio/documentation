@@ -16,20 +16,19 @@
 // pages, etc.) still falls back to the site-wide default, which remains the
 // Phase 1 regression floor for everything outside the plugin's reach.
 //
-// Generated-image expectations resolve against config.url directly. The
-// image path now comes from real front matter (injected by
-// plugins/og-image/remarkPlugin.js during MDX compilation) and is rendered
-// by Docusaurus's own metadata pipeline, which always resolves relative
-// image paths against config.url — there's no VERCEL_URL-based override for
-// preview deployments anymore (a known, accepted limitation of moving off
-// the old postBuild HTML-patch approach; see plugins/og-image/remarkPlugin.js
-// for why that approach had to change).
+// Generated-image expectations use ogImagePlugin.resolveImageOrigin(),
+// which substitutes VERCEL_URL on non-production Vercel deployments — see
+// the comment on that function in plugins/og-image/shared.js. The image
+// path itself comes from real front matter (injected by
+// plugins/og-image/remarkPlugin.js during MDX compilation, as a full
+// absolute URL for exactly this reason) and is rendered by Docusaurus's own
+// metadata pipeline, which leaves an already-absolute image URL untouched
+// rather than re-resolving it against config.url.
 
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const ogImagePlugin = require('../plugins/og-image');
-const { AI_COOKBOOK_OG_IMAGE_PATH } = require('../src/constants/aiCookbookOgImage');
 
 const BUILD_DIR = path.join(process.cwd(), 'build');
 const DOCS_DIR = path.join(process.cwd(), 'docs');
@@ -122,7 +121,7 @@ async function main() {
       const hash = ogImagePlugin.hashFor(title, description, footerText);
       const expectedImage = new URL(
         path.posix.join(config.baseUrl, 'img/og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`),
-        config.url,
+        ogImagePlugin.resolveImageOrigin(),
       ).toString();
       const expectedImagePath = path.join(BUILD_DIR, 'img', 'og', `${hash}.${ogImagePlugin.IMAGE_EXTENSION}`);
 
@@ -137,39 +136,6 @@ async function main() {
       if (!fs.existsSync(expectedImagePath)) {
         missingImages.push({ file: path.relative(BUILD_DIR, htmlPath), expectedImagePath });
       }
-    }
-  }
-
-  // /ai/cookbook (src/pages/ai/cookbook.tsx) is a plain page, not an MDX doc,
-  // so it never went through the DOC_TARGETS loop above — but it does declare
-  // its own og:image (see plugins/cookbook-index's postBuild), so it's
-  // checked here as a manual override rather than folded into "other pages
-  // must match the site default" below.
-  const cookbookHomeHtmlPath = path.join(BUILD_DIR, 'ai', 'cookbook', 'index.html');
-  if (fs.existsSync(cookbookHomeHtmlPath)) {
-    docHtmlPaths.add(cookbookHomeHtmlPath);
-    docPagesChecked++;
-    overridePagesChecked++;
-
-    const html = fs.readFileSync(cookbookHomeHtmlPath, 'utf8');
-    const ogImage = extractMetaContent(html, 'property', 'og:image');
-    const twitterImage = extractMetaContent(html, 'name', 'twitter:image');
-    const expectedOverride = new URL(
-      path.posix.join(config.baseUrl, AI_COOKBOOK_OG_IMAGE_PATH.replace(/^\/+/, '')),
-      config.url,
-    ).toString();
-    const expectedImagePath = path.join(BUILD_DIR, AI_COOKBOOK_OG_IMAGE_PATH);
-
-    if (ogImage !== expectedOverride || twitterImage !== expectedOverride) {
-      overrideMismatches.push({
-        file: path.relative(BUILD_DIR, cookbookHomeHtmlPath),
-        expected: expectedOverride,
-        ogImage,
-        twitterImage,
-      });
-    }
-    if (!fs.existsSync(expectedImagePath)) {
-      missingImages.push({ file: path.relative(BUILD_DIR, cookbookHomeHtmlPath), expectedImagePath });
     }
   }
 

@@ -36,6 +36,15 @@
     "href": "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#typescript"
   },
   {
+    "name": "Elastic",
+    "description": "Export Temporal Cloud metrics to Elastic with the Elastic Managed Temporal integration and get OOTB dashboards, alerts and slo templates.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://www.elastic.co/docs/reference/integrations/temporal"
+  },
+  {
     "name": "ClickStack",
     "description": "Ingest Temporal Cloud metrics into ClickHouse via an OpenTelemetry collector with HyperDX dashboards.",
     "tags": [

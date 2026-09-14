@@ -3,6 +3,9 @@ id: approval
 title: "Approval Pattern"
 sidebar_label: "Approval"
 description: "Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata."
+tags:
+  - Design Patterns
+  - Signals
 ---
 
 import Tabs from '@theme/Tabs';
@@ -812,7 +815,7 @@ The Approval pattern captures rich context — approver identity, reasons, and t
 All approval data is recorded in the Workflow history as Signal events, giving you a built-in audit trail.
 Timeout handling is automatic: you define the maximum wait time and the Workflow handles the fallback.
 The pattern supports multi-level, conditional, and escalating approval chains, and you can check approval status at any time through Query methods without modifying Workflow state.
-Because all decisions are recorded in the event history, the Workflow is deterministic and replay-safe.
+Because all decisions are recorded in the event history, the Workflow Definition is replay-safe.
 
 The trade-offs to consider are that the pattern requires an external system to send approval Signals, which means you need a separate approval interface.
 The Workflow blocks until the approval arrives or the timeout expires, so you must define a maximum wait time.

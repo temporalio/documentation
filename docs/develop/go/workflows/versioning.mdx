@@ -1,7 +1,7 @@
 ---
 id: versioning
 title: Versioning - Go SDK
-description: Temporal's Go SDK ensures Workflow determinism through Patching APIs and Worker Versioning. Update Workflow code without causing non-deterministic issues, understand versioning best practices, and use dynamic configuration parameters for seamless updating of long-running Workflows.
+description: Patch Go Workflow code with GetVersion, deprecate old Workflow versions, and plan cutovers without breaking running Executions.
 sidebar_label: Versioning
 toc_max_heading_level: 4
 tags:
@@ -183,7 +183,7 @@ if version  == 2 {
 ```
 
 Patching allows you to make changes to currently running Workflows.
-It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+It introduces compatible changes without causing non-determinism errors.
 
 ### Workflow cutovers
 

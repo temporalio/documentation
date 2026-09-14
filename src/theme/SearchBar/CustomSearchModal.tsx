@@ -1,21 +1,19 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  InstantSearch,
-  SearchBox,
-  Configure,
-} from 'react-instantsearch';
+import { InstantSearch, SearchBox, Configure } from 'react-instantsearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import aa from './algoliaInsights';
+import { useAnalyticsConsent } from './useAnalyticsConsent';
 import { ClearButton } from './ClearButton';
 import { LanguageFilter } from './LanguageFilter';
 import { SearchResults } from './SearchResults';
 import { SearchFooter } from './SearchFooter';
 import { SDK_LANGUAGES } from './SDKLanguageFilter';
 
-// Stable reference: an inline `{ insightsClient: aa }` object literal would be
-// a new object on every render, which resets the insights middleware's
-// dedup cache and re-fires "Hits Viewed" for results it already reported.
-const INSIGHTS_CONFIG = { insightsClient: aa };
+// Stable references: an inline object literal would be a new object on every
+// render, which resets the insights middleware's dedup cache and re-fires
+// "Hits Viewed" for results it already reported.
+const INSIGHTS_CONFIG_ENABLED = { insightsClient: aa };
+const INSIGHTS_CONFIG_DISABLED = { insightsClient: undefined };
 
 interface CustomSearchModalProps {
   appId: string;
@@ -38,6 +36,10 @@ export function CustomSearchModal({
   // made InstantSearch re-search and re-fire insights events on nearly
   // every state change in this component (e.g. every keystroke).
   const searchClient = useMemo(() => algoliasearch(appId, apiKey), [appId, apiKey]);
+  // Without analytics consent, InstantSearch's insights middleware never
+  // fires (no insightsClient), so no "Hits Viewed"/click events reach Algolia.
+  const hasAnalyticsConsent = useAnalyticsConsent();
+  const insightsConfig = hasAnalyticsConsent ? INSIGHTS_CONFIG_ENABLED : INSIGHTS_CONFIG_DISABLED;
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [resultCount, setResultCount] = useState(0);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(false);
@@ -91,7 +93,7 @@ export function CustomSearchModal({
 
   // Reset scroll tracking when filter is manually expanded
   const handleToggleCollapse = useCallback(() => {
-    setIsFilterCollapsed(prev => {
+    setIsFilterCollapsed((prev) => {
       if (prev) {
         // Expanding - reset scroll tracking
         hasScrolledRef.current = false;
@@ -146,9 +148,7 @@ export function CustomSearchModal({
 
       if (e.key === 'Tab') {
         // Focus trap logic
-        const focusableElements = modalRef.current.querySelectorAll(
-          'input, button, [tabindex]:not([tabindex="-1"])'
-        );
+        const focusableElements = modalRef.current.querySelectorAll('input, button, [tabindex]:not([tabindex="-1"])');
         const firstElement = focusableElements[0] as HTMLElement;
         const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
@@ -176,11 +176,10 @@ export function CustomSearchModal({
   // Build facet filters based on selected languages
   // Uses negative filters to exclude unselected languages
   // This shows selected languages + language-agnostic content (no sdk_language attribute)
-  const facetFilters = selectedLanguages.length > 0
-    ? SDK_LANGUAGES
-        .filter(lang => !selectedLanguages.includes(lang.id))
-        .map(lang => `sdk_language:-${lang.id}`)
-    : undefined;
+  const facetFilters =
+    selectedLanguages.length > 0
+      ? SDK_LANGUAGES.filter((lang) => !selectedLanguages.includes(lang.id)).map((lang) => `sdk_language:-${lang.id}`)
+      : undefined;
 
   return (
     <div className="custom-search-overlay" onClick={onClose} role="presentation">
@@ -192,11 +191,7 @@ export function CustomSearchModal({
         aria-modal="true"
         aria-label="Search documentation"
       >
-        <InstantSearch
-          searchClient={searchClient}
-          indexName={indexName}
-          insights={INSIGHTS_CONFIG}
-        >
+        <InstantSearch searchClient={searchClient} indexName={indexName} insights={insightsConfig}>
           <Configure
             hitsPerPage={20}
             facetFilters={facetFilters}
@@ -223,13 +218,9 @@ export function CustomSearchModal({
               }}
             />
             <ClearButton />
-            <button
-              className="custom-search-close"
-              onClick={onClose}
-              aria-label="Close search"
-            >
+            <button className="custom-search-close" onClick={onClose} aria-label="Close search">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"/>
+                <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z" />
               </svg>
             </button>
           </div>
@@ -239,11 +230,7 @@ export function CustomSearchModal({
             isCollapsed={isFilterCollapsed}
             onToggleCollapse={handleToggleCollapse}
           />
-          <SearchResults
-            onClose={onClose}
-            selectedIndex={selectedIndex}
-            onResultsChange={handleResultsChange}
-          />
+          <SearchResults onClose={onClose} selectedIndex={selectedIndex} onResultsChange={handleResultsChange} />
           <SearchFooter />
           {/* Screen reader announcements */}
           <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
