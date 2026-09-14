@@ -1984,7 +1984,24 @@ module.exports = {
                 'encyclopedia/activities/local-activity',
               ],
             },
-            'encyclopedia/activities/activity-operations',
+            {
+              type: 'category',
+              label: 'Activity Operations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'encyclopedia/activities/activity-operations/index',
+              },
+              items: [
+                'encyclopedia/activities/activity-operations/pause',
+                'encyclopedia/activities/activity-operations/unpause',
+                'encyclopedia/activities/activity-operations/reset',
+                'encyclopedia/activities/activity-operations/update-options',
+                'encyclopedia/activities/activity-operations/request-cancel',
+                'encyclopedia/activities/activity-operations/terminate',
+                'encyclopedia/activities/activity-operations/delete',
+              ],
+            },
           ],
         },
         {

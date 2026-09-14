@@ -55,13 +55,13 @@ Pick your SDK and follow the quickstart:
 
 ## Key features
 
-### Durable job lifecycle {/* #job-lifecycle */}
+**Durable job lifecycle**
 
 Each job is durably persisted before any Worker sees it, so jobs aren't lost.
 Workers pull work from a [Task Queue](/task-queue) and there's no head-of-line blocking, so a slow job doesn't block the dispatch of other Tasks.
 See [Activity Execution Lifecycle](/activity-execution#activity-execution-lifecycle).
 
-### Retries and timeouts {/* #retries-and-timeouts */}
+**Retries and timeouts**
 
 Every job carries a [Retry Policy](/encyclopedia/retry-policies) and
 [timeouts](/encyclopedia/detecting-activity-failures) you set when you start it. The default is at-least-once: retry
@@ -71,7 +71,7 @@ at-most-once.
 Because a retry runs your function again, Activity code should be
 [idempotent](/activity-definition#idempotency).
 
-### Long-running jobs and Heartbeats {/* #heartbeats */}
+**Long-running jobs and Heartbeats**
 
 Jobs can run for any duration. [Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) to signal
 liveness and to checkpoint progress.
@@ -80,7 +80,7 @@ A retry restarts your Activity function from the top - it doesn't resume mid-fun
 details are made available to the next attempt, so your code can read the checkpoint and skip the work it already
 finished.
 
-### Deduplicate with the Activity Id {/* #deduplication */}
+**Deduplicate with the Activity Id**
 
 Use a business identifier you already have as the Activity Id, and Temporal enforces uniqueness for you: an
 [Activity Id Conflict Policy](#activity-id-conflict-policy) covers a job that's already running, and an
@@ -89,7 +89,7 @@ Use a business identifier you already have as the Activity Id, and Temporal enfo
 This is a different problem from idempotency, and you need both. The Activity Id stops you submitting the same job
 twice. Idempotent code stops one job's side effects happening twice if retried.
 
-### Priority and fairness {/* #priority-and-fairness */}
+**Priority and fairness**
 
 [Priority](/develop/task-queue-priority-fairness#task-queue-priority) is strict: higher-priority Tasks dispatch before
 lower-priority ones. [Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) prevents starvation: each
@@ -98,7 +98,36 @@ starve everyone else.
 
 On Temporal Cloud, enabling Fairness carries a [per-Action surcharge](/cloud/actions#fairness).
 
-### Schedule a job for later {/* #start-delay */}
+**Observability**
+
+All existing [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) apply
+to Standalone Activities. This includes counts for scheduled, started, completed, failed, timed out,
+and canceled activities.
+
+**Operator commands**
+
+Pause, Unpause, Reset, and Update Options let an operator intervene in a running job from the CLI, the UI, or the gRPC
+API.
+
+These commands are in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Request Cancel, Terminate,
+and Delete are Generally Available.
+
+See [Activity Operations](/activity-operations) for behavior, precedence, and batch support.
+
+**Asynchronous completion**
+
+A Standalone Activity can return from its function without completing the Activity Execution, leaving an external
+system to Heartbeat progress and deliver the final result by Activity Id or Task Token. See
+[Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion).
+
+**Reuse Activities for jobs and Workflows**
+
+You define the Activity and register it on an Activity Worker once. The same function runs as a Standalone Activity or
+as a step in a Workflow, with no changes to your Activity code or your Worker. Start with background jobs, and add
+Workflow orchestration later without a rewrite.
+
+## Schedule a job for later {/* #start-delay */}
 
 Start Delay dispatches the first Activity Task after a delay instead of immediately. Use it for work that shouldn't run
 until later, such as a reminder email or a deferred cleanup step.
@@ -117,7 +146,7 @@ The delay applies to the first Activity Task only. Retry attempts are dispatched
 
 Start Delay schedules one job at a future time. It doesn't create a recurring schedule.
 
-### Visibility {/* #visibility */}
+## Visibility {/* #visibility */}
 
 Query jobs with [List Filter](/list-filter) by type, status, Task Queue, and other attributes, from the SDK or with
 `temporal activity list`. See [Search Attributes](/search-attribute) for the attributes set on Standalone Activity
@@ -161,14 +190,7 @@ Activity Execution Info:
   StateTransitionCount  3
 ```
 
-### Observability {/* #observability */}
-
-All existing [Activity metrics](/cloud/metrics/openmetrics/metrics-reference#activity-metrics) apply
-to Standalone Activities. This includes counts for scheduled, started, completed, failed, timed out,
-and canceled activities.
-
-
-### Lifecycle control {/* #lifecycle-control */}
+## Lifecycle control {/* #lifecycle-control */}
 
 Because a Standalone Activity has no Workflow to own it, you act on the execution directly by Activity Id:
 
@@ -183,29 +205,6 @@ honoring it. If the Worker is unresponsive, the request takes effect at the next
 [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) elapses.
 
 Only Terminate and Delete discard Activity progress unconditionally.
-
-### Operator commands {/* #operator-commands */}
-
-Pause, Unpause, Reset, and Update Options let an operator intervene in a running job from the CLI, the UI, or the gRPC
-API.
-
-These commands are in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Request Cancel, Terminate,
-and Delete are Generally Available.
-
-See [Activity Operations](/activity-operations) for behavior, precedence, and batch support.
-
-### Asynchronous completion {/* #asynchronous-completion */}
-
-A Standalone Activity can return from its function without completing the Activity Execution, leaving an external
-system to Heartbeat progress and deliver the final result by Activity Id or Task Token. See
-[Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion).
-
-### Reuse Activities for jobs and Workflows {/* #dual-use */}
-
-You define the Activity and register it on an Activity Worker once. The same function runs as a Standalone Activity or
-as a step in a Workflow, with no changes to your Activity code or your Worker. Start with background jobs, and add
-Workflow orchestration later without a rewrite.
 
 ## Activity options {/* #activity-options */}
 
@@ -341,7 +340,6 @@ and what owns its lifetime.
 Running a single Activity as a Standalone Activity also costs fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) in
 Temporal Cloud than wrapping it in a Workflow, and short jobs see lower latency because there are fewer Worker
 round-trips. See [cost optimization](/best-practices/cost-optimization#standalone-activities-vs-a-workflow-that-runs-a-single-activity) for details.
-
 
 ## Feature release stages {/* #feature-release-stages */}
 
