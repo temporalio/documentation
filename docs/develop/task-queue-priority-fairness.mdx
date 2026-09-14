@@ -2,7 +2,7 @@
 id: task-queue-priority-fairness
 title: Task Queue Priority and Fairness
 sidebar_label: Task queue priority and fairness
-description: Control execution order within a Task Queue using priority levels, and use Fairness to stop tenants from blocking each other.
+description: Control Task dispatch order within a Task Queue using priority levels, and use Fairness to stop tenants from blocking each other.
 toc_max_heading_level: 4
 tags:
   - Task Queues
@@ -12,14 +12,14 @@ tags:
 import { EnlargeImage, SdkTabs, AnnotatedCode } from '@site/src/components';
 
 [Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
-distribution of work within a Task Queue. Priority allows [Tasks](/tasks) to be executed in Priority order.
+distribution of work within a Task Queue. Priority dispatches [Tasks](/tasks) in Priority order.
 Fairness prevents one set of Tasks from blocking others within the same priority level.
 
 You can use Priority and Fairness individually or combine them to express Fairness within a Priority level.
 
 ## Task Queue Priority
 
-**Task Queue Priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on assigned priority values within a Task Queue. Each priority level acts as a sub-queue that separates Tasks so that high priority Tasks can cut in front of low priority Tasks.
+**Task Queue Priority** lets you control the dispatch order of Workflows, Activities, and Child Workflows based on assigned priority values within a Task Queue. Each priority level acts as a sub-queue that separates Tasks so that high priority Tasks can cut in front of low priority Tasks.
 
 <EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-details.png"
@@ -30,9 +30,9 @@ Priority is enforced within a single Task Queue [partition](/task-queue#task-ord
 
 ### When to use Priority
 
-If you need a way to specify the order your Tasks execute in, you can use Priority to manage that. Priority lets you differentiate between your Tasks, like batch and real-time Tasks, so that you can use a single pool of Workers for efficient resource allocation, while ensuring real-time Tasks are processed ahead of batch Tasks.
+If you need a way to specify the order your Tasks dispatch in, you can use Priority to manage that. Priority lets you differentiate between your Tasks, like batch and real-time Tasks, so that you can use a single pool of Workers for efficient resource allocation, while ensuring real-time Tasks dispatch ahead of batch Tasks.
 
-You can also use this as a way to run urgent Tasks immediately and override others. For example, if you are running an e-commerce platform, you may want to process payment related Tasks before less time-sensitive Tasks like internal inventory management.
+You can also use this as a way to move urgent Tasks ahead of others in the backlog. For example, if you are running an e-commerce platform, you may want payment-related Tasks to dispatch before less time-sensitive Tasks like internal inventory management.
 
 ### How to use Priority
 
@@ -43,7 +43,7 @@ A lower value implies higher priority, so `1` is the highest priority level. If 
 Priority of `3`. Activities and Child Workflows will inherit their Workflow's priority unless they explicitly specify
 their own priority.
 
-When Priority is enabled, all Tasks within a Task Queue will be processed in Priority order. For example, all priority level `1` Tasks will start executing before the first priority level `2` Task, and so on. Lower priority Tasks will be blocked until all higher priority Tasks have started. Tasks are scheduled by default to run in first-in-first-out (FIFO) order within each priority level. If you need greater control of task ordering within a priority level, such as preventing large tenants from overwhelming small tenants, check out [the Fairness section](#task-queue-fairness).
+When Priority is enabled, all Tasks within a Task Queue dispatch in Priority order. For example, all priority level `1` Tasks dispatch before the first priority level `2` Task, and so on. Lower priority Tasks remain in the backlog until all higher priority Tasks have dispatched. Tasks dispatch by default in first-in-first-out (FIFO) order within each priority level. If you need greater control of task ordering within a priority level, such as preventing large tenants from overwhelming small tenants, check out [the Fairness section](#task-queue-fairness).
 
 You can set a Workflow's priority key via the CLI like so:
 
@@ -210,7 +210,7 @@ await Workflow.ExecuteChildWorkflowAsync(
 
 Task Queue Fairness lets you distribute Tasks based on _fairness keys_ and _fairness weights_ within a Task Queue.
 
-Each fairness key creates its own "virtual queue", allowing you to organize Tasks into logical groups like tenants, applications, or workload types. These virtual queues operate using a round-robin dispatch mechanism, meaning the system cycles through each fairness key in turn when selecting the next Task to dispatch. This prevents any single fairness key from hogging Worker capacity, even if one key has a much larger backlog than the others.
+Each fairness key creates its own "virtual queue", allowing you to organize Tasks into logical groups like tenants, applications, or workload types. These virtual queues operate using a round-robin dispatch mechanism, meaning the system cycles through each fairness key in turn when selecting the next Task to dispatch. This prevents any single fairness key from dominating dispatch, even if one key has a much larger backlog than the others.
 
 By default, each fairness key is weighted equally in the round-robin, with a _fairness weight_ of 1.0. This behavior can be customized by assigning a different fairness weight to a key. For example, Tasks belonging to a fairness key with a weight of 2.0 will be dispatched twice as often as keys with the default weight.
 
@@ -229,10 +229,10 @@ It sequences Tasks in the Task Queue probabilistically using a weighted distribu
 - A [data structure](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) that tracks how you've distributed Tasks for different fairness keys
 
 As an example, imagine a workload with three tenants, _tenant-big_, _tenant-mid_, _tenant-small_, that have varying
-numbers of Tasks at all times. Your _tenant-big_ has a large number of Tasks that can overwhelm your Task Queue and
-prevent _tenant-mid_ and _tenant-small_ from running their Tasks. With Fairness, you can give each tenant a different
-fairness key to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others. In this case,
-_tenant-mid_ and _tenant-small_ will have Tasks run in between _tenant-big_ Tasks so that they are executed "fairly".
+numbers of Tasks at all times. Your _tenant-big_ has a large number of Tasks that can dominate dispatch on your Task Queue and
+delay _tenant-mid_ and _tenant-small_ Tasks. With Fairness, you can give each tenant a different
+fairness key so that _tenant-big_ doesn't dominate dispatch and block the others. In this case,
+_tenant-mid_ and _tenant-small_ Tasks dispatch in between _tenant-big_ Tasks so that dispatch stays fair across tenants.
 
 ### How to use Fairness
 
