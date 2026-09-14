@@ -1415,11 +1415,8 @@
     },
     {
       "source": "/evaluate/development-production-features/release-stages",
-      "destination": "/evaluate/product-release-stages"
-    },
-    {
-      "source": "/evaluate/features/release-stages",
-      "destination": "/evaluate/product-release-stages"
+      "destination": "/evaluate/product-release-stages",
+       "permanent": true
     },
     {
       "source": "/concepts:path*",
@@ -2329,11 +2326,6 @@
       "permanent": true
     },
     {
-      "source": "/evaluate/development-production-features/index",
-      "destination": "/evaluate/features",
-      "permanent": true
-    },
-    {
       "source": "/evaluate/development-production-features/core-application",
       "destination": "/evaluate/features/core-primitives",
       "permanent": true
@@ -2399,7 +2391,7 @@
       "permanent": true
     },
     {
-      "source": "/evaluate/development-production-features/serverless-workers/index",
+      "source": "/evaluate/serverless-workers",
       "destination": "/evaluate/features/serverless-workers",
       "permanent": true
     },
