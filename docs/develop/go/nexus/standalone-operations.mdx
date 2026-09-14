@@ -44,29 +44,27 @@ This documentation uses source code from the
 
 ## Prerequisites {/* #prerequisites */}
 
-Standalone Nexus Operations are at Pre-release and require a special Temporal CLI build.
+Standalone Nexus Operations are a Pre-release feature and require Temporal CLI v1.9.0 or higher.
 
-### 1. Install and verify the Pre-release Temporal CLI {/* #install-cli */}
+### 1. Install and verify the Temporal CLI {/* #install-cli */}
 
-The `temporal nexus operation` commands require a Pre-release build of the Temporal CLI. See
-[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for the platform downloads,
+The `temporal nexus operation` commands require Temporal CLI v1.9.0 or higher. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for install options,
 then verify:
 
 ```bash
-./temporal --version
-# temporal version 1.7.4-standalone-nexus-operations
+temporal --version
 ```
 
-Run it as `./temporal` from the directory where you extracted it. The standard `brew install temporal`
-build does not include Standalone Nexus Operation support during Pre-release.
+Which should output v1.9.0 or higher.
 
 ### 2. Start a local dev server {/* #enable-dev-server */}
 
-The Pre-release dev server enables Standalone Nexus Operations by default — no dynamic config is
+The dev server enables Standalone Nexus Operations by default — no dynamic config is
 required. Start it with the caller and handler Namespaces pre-created:
 
 ```bash
-./temporal server start-dev \
+temporal server start-dev \
   --namespace my-caller-namespace \
   --namespace my-handler-namespace
 ```
@@ -78,7 +76,7 @@ To run the examples on this page against the [Go sample](https://github.com/temp
 create a Nexus Endpoint that routes to the handler Namespace and the Worker's Task Queue:
 
 ```bash
-./temporal operator nexus endpoint create \
+temporal operator nexus endpoint create \
   --name my-nexus-endpoint \
   --target-namespace my-handler-namespace \
   --target-task-queue nexus-handler-queue
@@ -128,7 +126,7 @@ TEMPORAL_NAMESPACE=my-caller-namespace go run nexus-standalone-operations/starte
 Or use the Temporal CLI to execute a Standalone Nexus Operation:
 
 ```bash
-./temporal nexus operation execute \
+temporal nexus operation execute \
   --namespace my-caller-namespace \
   --endpoint my-nexus-endpoint \
   --service my-hello-service \
@@ -157,7 +155,7 @@ the failure is returned as an error.
 Or use the Temporal CLI to wait for a result by Operation ID:
 
 ```bash
-./temporal nexus operation result --namespace my-caller-namespace --operation-id my-echo-op
+temporal nexus operation result --namespace my-caller-namespace --operation-id my-echo-op
 ```
 
 ## List Standalone Nexus Operations {/* #list-operations */}
@@ -191,7 +189,7 @@ The `Query` field accepts [List Filter](/list-filter) syntax. For example,
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Count Standalone Nexus Operations {/* #count-operations */}
@@ -215,7 +213,7 @@ log.Println("Total Nexus operations:", resp.Count)
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
