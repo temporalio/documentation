@@ -38,11 +38,10 @@ Code snippets on this page come from the
 
 ## Install the Google ADK integration
 
-Install the integration and its Google ADK peer dependencies. Keep all `@temporalio/*` packages in your application on
-the same version.
+Install the integration. Keep all `@temporalio/*` packages in your application on the same version.
 
 ```bash
-npm install @temporalio/google-adk-agents "@google/adk@>=1.5.0 <1.6.0" "@google/genai@^2.9.0"
+npm install @temporalio/google-adk-agents
 ```
 
 Version 1.23.0 of the integration supports `@google/adk` 1.5.x. The upper bound is required because the Workflow bundle
