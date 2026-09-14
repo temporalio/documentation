@@ -59,8 +59,35 @@ The agent chat sample contains a complete Workflow, Worker, and Client. It uses 
 `InMemoryRunner` APIs in the Workflow, with `TemporalModel` as the agent's model. The Client sends messages through
 Workflow Updates and can query the conversation history.
 
+<!--SNIPSTART typescript-google-adk-agent-chat-workflow -->
+[google-adk-agents/src/agent-chat/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/google-adk-agents/src/agent-chat/workflows.ts)
+```ts
+const agent = new LlmAgent({
+  name: 'assistant',
+  model: new TemporalModel('gemini-2.5-flash'),
+  instruction: 'Continue the conversation using its prior context. Respond in one sentence.',
+});
+const runner = new InMemoryRunner({ agent, appName: 'agent-chat' });
+```
+<!--SNIPEND-->
+
 The Worker registers `GoogleAdkPlugin`, which installs the model Activities and the Workflow bundler configuration.
 The Client starts the Workflow normally and doesn't need the plugin.
+
+<!--SNIPSTART typescript-google-adk-agent-chat-worker -->
+[google-adk-agents/src/agent-chat/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/google-adk-agents/src/agent-chat/worker.ts)
+```ts
+const worker = await Worker.create({
+  connection,
+  taskQueue: 'google-adk-agent-chat',
+  workflowsPath: require.resolve('./workflows'),
+  plugins: [
+    new GoogleAdkPlugin(process.env.MODEL_PROVIDER === 'fake' ? { modelProvider: offlineModelProvider() } : {}),
+  ],
+});
+await worker.run();
+```
+<!--SNIPEND-->
 
 Use each API from its package entry point:
 
