@@ -23,6 +23,10 @@ import { ReleaseNoteHeader } from '@site/src/components';
 This guide deploys a Strands agent as a Temporal Serverless Worker on Amazon Bedrock AgentCore Runtime. The agent uses
 Amazon Bedrock for model inference and AgentCore Code Interpreter to run Python.
 
+The [AgentCore deployment page](/production-deployment/worker-deployments/serverless-workers/agentcore) is a focused
+procedure for deploying an existing Worker. This guide uses a complete agent sample to explain why the Workflow,
+Activities, Runtime, and Worker Deployment are structured this way.
+
 ## What you will build
 
 The sample accepts one prompt and runs one Workflow Execution. The Workflow asks the model to answer the prompt. The
@@ -31,6 +35,10 @@ model can call Code Interpreter through a Temporal Activity before returning its
 Your local client starts the Workflow through Temporal. When the Task Queue needs a Worker, Temporal starts an
 AgentCore Runtime session. The Worker processes the Workflow and Activity Tasks, then drains after 60 seconds without
 an Activity starting or finishing.
+
+The sample is intentionally one turn. This keeps the deployment path visible while still demonstrating the important
+reliability boundary: the model and tool calls are recorded Temporal operations, and the Worker process that performs
+them can be replaced.
 
 ## Architecture
 
@@ -49,10 +57,33 @@ flowchart LR
     W --> TOOL[AgentCore<br/>Code Interpreter]
 ```
 
-This sample completes after one answer. To support a conversation, keep the Workflow open and accept later prompts
-through an Update or Signal. Store bounded conversation state, or references to externally stored content, in the
-Workflow. Use the Workflow Id as the conversation identifier. Do not depend on one AgentCore Runtime session handling
-every turn.
+Place state according to how long it must remain available:
+
+| State | Location | Reason |
+|---|---|---|
+| Agent progress and bounded working context | Temporal Workflow | Temporal reconstructs Workflow state from Event History when another Worker continues the execution. |
+| Model calls and tool operations | Temporal Activities | Each operation gets its own timeout, Retry Policy, and recorded result. |
+| Large conversations, uploads, and generated artifacts | External durable storage, with references in the Workflow | Large or unbounded data should not cause Event History to grow without limit. |
+| Process-local caches and temporary files | AgentCore Runtime session | Runtime sessions are replaceable, so the agent must tolerate losing this state. |
+
+This division is what lets the Workflow outlive any one Runtime session. A Worker can stop after the current work is
+complete, and a later Worker can reconstruct the Workflow before continuing it.
+
+### Extend the sample to multiple turns
+
+For a conversational agent, use one Workflow Id for each conversation and keep the Workflow open after returning the
+first answer. Accept each new prompt through a Workflow Update when the caller needs the answer in the same request.
+A Signal is a better fit when the caller only needs to deliver the prompt and retrieve the result separately.
+
+Keep a bounded message list or summary in Workflow state. Store large messages, attachments, and artifacts in durable
+external storage and retain their references in the Workflow. Retrieve that content through Activities. For a
+conversation that runs long enough to accumulate a large Event History, use
+[Continue-As-New](/develop/python/integrations/strands-agents#handle-long-running-chat-sessions) to carry the working
+context into a new Workflow Run.
+
+The application continues to send every turn through Temporal. Serverless Workers may start a different AgentCore
+Runtime session for a later turn, so conversation correctness must not depend on process memory or Runtime session
+affinity.
 
 ## Prerequisites
 
@@ -85,6 +116,10 @@ uv sync
 
 The cloned directory contains the Workflow, Activity, Runtime handler, AgentCore configuration, deployment scripts,
 and IAM template used throughout this guide.
+
+The sample uses AgentCore's CodeZip build instead of a container image. AgentCore packages the Python project and runs
+it on its managed Python runtime, so this path does not require a Dockerfile. The checked-in files define the
+application and Runtime settings. The deployment script generates the AgentCore CDK project when you first run it.
 
 ## 2. Examine the agent Workflow
 
@@ -123,6 +158,10 @@ class StrandsAgentWorkflow:
 `TemporalAgent` adapts the Strands agent loop to run in Workflow code. The Temporal Strands plugin schedules each model
 call as an Activity. `activity_as_tool` makes `execute_code` another Activity when the model selects that tool.
 
+The Workflow owns the sequence of model and tool decisions because that sequence must resume correctly after a
+failure. The model calls themselves do not run as ordinary Workflow code. They run as Activities because they perform
+network I/O, can fail independently, and are not deterministic.
+
 The `execute_code` Activity creates a Code Interpreter session using the Workflow Id as its session name:
 
 <!--SNIPSTART python-agentcore-code-interpreter-activity-->
@@ -147,6 +186,10 @@ def execute_code(
 <!--SNIPEND-->
 
 Using the Workflow Id gives each Workflow Execution its own Code Interpreter sandbox.
+
+This sample invokes the agent once and completes the Workflow. It does not need a message handler or a durable wait.
+The multi-turn design described in [Extend the sample to multiple turns](#extend-the-sample-to-multiple-turns) would
+change that lifecycle while keeping model and tool calls behind the same Activity boundaries.
 
 ## 3. Configure and deploy the Runtime
 
@@ -180,6 +223,11 @@ Open `agentcore/agentcore.json` and replace the placeholder values for `TEMPORAL
 | `TEMPORAL_BUILD_ID` | `1.0.0` |
 | Runtime endpoint name | `temporal` |
 
+These values connect two separately configured systems. The Runtime uses the Task Queue, deployment name, and Build ID
+when its Worker registers with Temporal. The Worker Deployment Version created in Step 5 uses the same deployment name
+and Build ID and points Temporal back to this Runtime endpoint. If the values differ, Temporal can start compute that
+does not register as the version waiting for work.
+
 Putting the API key in `agentcore.json` keeps the tutorial short. Do not commit the populated file. For a production
 deployment, store the key in AWS Secrets Manager and load it when the Runtime starts.
 
@@ -202,7 +250,10 @@ Deploy the Runtime and its named endpoint:
 ```
 
 The script creates the AgentCore CDK project on its first run, validates the configuration, packages the sample, and
-deploys it. Retrieve the Runtime and endpoint ARNs:
+deploys it. The sample uses public network mode so the Worker can make an outbound connection to Temporal Cloud. The
+named endpoint is for capacity requests from Temporal, not prompts from the application.
+
+Retrieve the Runtime and endpoint ARNs:
 
 ```bash
 export AGENT_RUNTIME_ARN="$(
@@ -259,6 +310,11 @@ echo "$INVOCATION_ROLE_ARN"
 This invocation role lets Temporal get the named endpoint and invoke the Runtime. It is separate from the Runtime
 execution role that AgentCore created to run the Worker and access Code Interpreter.
 
+Keeping the roles separate gives each side only the permissions it needs. Temporal assumes the invocation role to
+start capacity. AgentCore assumes the execution role inside that capacity when the Worker calls Bedrock and Code
+Interpreter. The trailing wildcard on the Runtime ARN allows the invocation role to cover the named endpoint as well
+as the Runtime.
+
 ## 5. Create the Serverless Worker deployment
 
 Create a Worker Deployment and a version that points to the AgentCore endpoint:
@@ -284,6 +340,10 @@ Creating the version causes Temporal to invoke the Runtime and wait for the Work
 and Build ID match the values in `agentcore.json`. Setting the version as current lets it receive new Tasks on the
 `agentcore-strands-task-queue` Task Queue.
 
+The Worker Deployment Version binds one version of the Worker code to one compute configuration. The sample registers
+Workflows with `PINNED` behavior, so a Workflow continues on its assigned version instead of moving to a newer version
+while it is running. Marking `1.0.0` as current sends new Workflow Executions to that version.
+
 ## 6. Run the agent
 
 Run the sample client with its default prompt:
@@ -303,6 +363,10 @@ uv run python starter.py \
 Workflow calls the model and Code Interpreter Activities, and the client prints the answer. The Workflow then
 completes. After 60 seconds without an Activity starting or finishing, the Worker drains.
 
+Starting the agent through `starter.py`, rather than invoking the AgentCore endpoint, is an architectural choice. The
+Temporal Client creates the durable Workflow Execution first. AgentCore supplies a Worker when Temporal has a Task
+ready to run.
+
 Inspect the completed Workflow Execution:
 
 ```bash
@@ -316,7 +380,5 @@ The Event History contains the model and `execute_code` Activities. Follow the W
 agentcore logs --runtime temporal_strands_worker
 ```
 
-This one-turn example demonstrates durable model and tool execution on replaceable compute. A conversational version
-would keep the Workflow open after the first answer and accept additional prompts through Workflow Updates. Each
-conversation would use its own Workflow Id while Serverless Workers could run its Tasks on any compatible Runtime
-session.
+The Workflow history and AgentCore logs show the two sides of the integration. Event History records what the agent
+did. The AgentCore logs show which replaceable Worker process performed the work and when that Worker drained.
