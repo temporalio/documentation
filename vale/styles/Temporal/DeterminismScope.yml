@@ -1,0 +1,13 @@
+# This rule intentionally does not use lookaround (Vale's regex engine, RE2,
+# doesn't support it). It's advisory (see .vale-ci.ini) rather than a hard
+# gate, so some phrasing it can't safely catch without lookaround is an
+# acceptable tradeoff for avoiding false positives.
+extends: existence
+message: "Scope determinism to the Workflow Definition, not the whole Workflow — see AGENTS.md. Found: '%s'"
+link: https://github.com/temporalio/documentation/blob/main/AGENTS.md
+level: suggestion
+ignorecase: true
+tokens:
+  - '\bWorkflows?\s+(?:is|are|was|were|must be|needs? to be|should be|remains?)\s+(?:non-)?deterministic\b'
+  - '\b(?:non-)?deterministic Workflows?[,.;:]'
+  - '\bWorkflow determinism\b'

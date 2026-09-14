@@ -13,8 +13,7 @@ tags:
 
 import * as Components from '@site/src/components';
 
-Workflows can be thought of as stateful web services that can receive messages. The Workflow can have powerful message
-handlers akin to endpoints that react to the incoming messages in combination with the current state of the Workflow.
+Workflows can be thought of as stateful web services that can receive messages. The Workflow can have message handlers, akin to endpoints, that react to incoming messages together with the Workflow's current state.
 Temporal supports three types of messages: Signals, Queries, and Updates:
 
 - Queries are read requests. They can read the current state of the Workflow but cannot block in doing so.

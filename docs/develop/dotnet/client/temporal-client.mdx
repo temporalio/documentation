@@ -6,7 +6,7 @@ description:
   Create a Temporal Client, connect to Temporal Cloud, start a Workflow, and get Workflow results using the Temporal
   .NET SDK with detailed steps and code examples.
 tags:
-  - .Net SDK
+  - .NET SDK
   - Temporal SDKs
   - Temporal Client
   - Certificates
@@ -495,8 +495,6 @@ completion, Activity Heartbeats, and so on); calls already in flight on the old 
 
 ## Start a Workflow {/* #start-workflow */}
 
-**How to start a Workflow using the Temporal .NET SDK**
-
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
 you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
 language-specific contextual data, and Workflow Function parameters.
@@ -518,8 +516,6 @@ Console.WriteLine("Result: {0}", result);
 ```
 
 ## Get Workflow results {/* #get-workflow-results */}
-
-**How to get the results of a Workflow Execution using the Temporal .NET SDK**
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 

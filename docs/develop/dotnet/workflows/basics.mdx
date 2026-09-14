@@ -5,6 +5,7 @@ sidebar_label: Workflow basics
 description: This section explains Workflow basics with the .NET SDK
 toc_max_heading_level: 4
 tags:
+  - Workflows
   - .NET SDK
   - Temporal SDKs
 ---
@@ -181,7 +182,7 @@ Here are some known gotchas to avoid with .NET tasks inside of Workflows:
 - Be wary of additional libraries' implicit use of the default scheduler.
   - For example, while there are articles for `Dataflow` about [using a specific scheduler](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-specify-a-task-scheduler-in-a-dataflow-block), there are hidden implicit uses of `TaskScheduler.Default`. For example, see [this bug](https://github.com/dotnet/runtime/issues/83159).
 
-In order to help catch wrong scheduler use, by default the Temporal .NET SDK adds an event source listener for info-level task events.
+To help catch wrong scheduler use, the Temporal .NET SDK adds an event source listener for info-level task events by default.
 While this technically receives events from all uses of tasks in the process, we make sure to ignore anything that is not running in a Workflow in a high performant way (basically one thread local check).
 
 For code that does run in a Workflow and accidentally starts a task in another scheduler, an `InvalidWorkflowOperationException` will be thrown which "pauses" the Workflow (fails the Workflow Task which continually retries until the code is fixed).
