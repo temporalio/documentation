@@ -127,7 +127,7 @@ async function run() {
   try {
     const worker = await Worker.create({
       connection,
-      namespace: 'default',
+      namespace: config.namespace ?? 'default',
       taskQueue: 'hello-standalone-activities',
       activities,
     });
@@ -195,7 +195,7 @@ import { nanoid } from 'nanoid';
 
 const config = loadClientConnectConfig();
 const connection = await Connection.connect(config.connectionOptions);
-const client = new Client({ connection });
+const client = new Client({ connection, namespace: config.namespace });
 
 const activitiesClient = client.activity.typed<typeof activities>();`}
 </CodeSnippet>

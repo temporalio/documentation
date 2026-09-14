@@ -126,7 +126,7 @@ Executions, and add your own to filter on your business data.
 `temporal activity list` shows a list of jobs optionally matching a [List Filter](/list-filter).
 
 ```
-./temporal activity list --query "ExecutionStatus='Running'"
+temporal activity list --query "ExecutionStatus='Running'"
   Status          ActivityId             Type       StartTime
   Running  process_files-1786633958  process_files  1 week ago
 ```
@@ -134,7 +134,7 @@ Executions, and add your own to filter on your business data.
 `temporal activity count` returns the total number of Standalone Activity Executions optionally matching a [List Filters](/list-filter), analogous to counting Workflow Executions.
 
 ```
-./temporal activity count --query "GROUP BY ExecutionStatus"
+temporal activity count --query "GROUP BY ExecutionStatus"
 Total: 45
 Group total: 30, values: Completed
 Group total: 10, values: Canceled
@@ -147,7 +147,7 @@ This is the count of Activity Executions (Completed, Running, Failed, etc.) - no
 `temporal activity describe` shows one job's status, attempt count, and last error.
 
 ```
-./temporal activity describe -a process_files-1786633958
+temporal activity describe -a process_files-1786633958
 Activity Execution Info:
   ActivityId            process_files-1786633958
   RunId                 01a06322-99ac-7972-8829-65352fc5d158

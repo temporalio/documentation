@@ -90,7 +90,7 @@ run:
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity start \
+temporal activity start \
   --type ComposeGreeting \
   --activity-id standalone-activity-id \
   --task-queue standalone-activity-task-queue \
@@ -131,7 +131,7 @@ CompletableFuture<String> future = handle.getResultAsync();
 Or use the Temporal CLI to wait for a result by Activity ID:
 
 ```bash
-./temporal activity result --activity-id standalone-activity-id
+temporal activity result --activity-id standalone-activity-id
 ```
 
 ## List Standalone Activities {/* #list-activities */}
@@ -166,11 +166,11 @@ Run it:
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity list
+temporal activity list
 ```
 
 The query parameter accepts the same [List Filter](/list-filter) syntax used for [Workflow
-Visibility](/visibility). For example, `ActivityType = 'composeGreeting' AND Status = 'Running'`.
+Visibility](/visibility). For example, `ActivityType = 'ComposeGreeting' AND ExecutionStatus = 'Running'`.
 
 ## Count Standalone Activities {/* #count-activities */}
 
@@ -200,7 +200,7 @@ Run it:
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity count
+temporal activity count
 ```
 
 ## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}

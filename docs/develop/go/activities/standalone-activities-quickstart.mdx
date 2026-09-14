@@ -191,8 +191,8 @@ func main() {
 	defer c.Close()
 
 	activityOptions := client.StartActivityOptions{
-		ID:        "standalone_activity_helloworld_ActivityID",
-		TaskQueue: "standalone-activity-helloworld",
+		ID:                     "standalone_activity_helloworld_ActivityID",
+		TaskQueue:              "standalone-activity-helloworld",
 		ScheduleToCloseTimeout: 10 * time.Second,
 	}
 

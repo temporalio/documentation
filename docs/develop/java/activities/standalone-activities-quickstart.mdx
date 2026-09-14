@@ -200,7 +200,7 @@ String result = client.execute("ComposeGreeting", String.class, options, "Hello"
 {`./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.ExecuteActivity`}
 </CodeSnippet>
 <CodeSnippet language="bash">
-{`./temporal activity execute \\
+{`temporal activity execute \\
   --type ComposeGreeting \\
   --activity-id standalone-activity-id \\
   --task-queue standalone-activity-task-queue \\
