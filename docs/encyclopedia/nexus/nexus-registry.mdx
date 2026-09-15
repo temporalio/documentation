@@ -91,7 +91,7 @@ See [Runtime Access Controls](/nexus/security#runtime-access-controls) for detai
 
 :::info
 
-The Nexus Registry uses default roles in Temporal Cloud. For self-hosted deployments, you can implement [custom Authorizers](/self-hosted-guide/security#authorizer-plugin to restrict access).
+The Nexus Registry uses default roles in Temporal Cloud. For self-hosted deployments, you can implement [custom Authorizers](/self-hosted-guide/security#authorizer-plugin) to restrict access.
 
 :::
 
@@ -100,7 +100,7 @@ In Temporal Cloud, Nexus Registry respects RBAC permissions, and restricts funct
 | Action                     | Required permissions                                      |
 |---------------------------|-----------------------------------------------------------|
 | View or search Endpoints  | Read-only role (or higher) at the Account level           |
-| Manage Endpoints          | Account Developer (or higher), or Project Contribute (or higher) on the Endpoint's Project, **and** Namespace Admin on the target Namespace. Effective Namespace Admin on the target Namespace is required separately. |
+| Manage Endpoints          | Account Developer (or higher), or Project Contribute (or higher) on the Endpoint's Project, **and** Namespace Admin on the target Namespace. Effective Namespace Admin on the target Namespace is required separately. Changing an Endpoint's target Namespace requires Namespace Admin on both the current target Namespace and the new target Namespace. |
 
 See [Nexus security in Temporal Cloud](/cloud/nexus/security).
 
