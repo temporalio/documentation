@@ -1,0 +1,114 @@
+---
+id: external-storage
+title: External Storage - Java SDK
+sidebar_label: External Storage
+slug: /develop/java/data-handling/external-storage
+toc_max_heading_level: 3
+tags:
+  - Java SDK
+  - Temporal SDKs
+  - Data Converters
+description: Offload large payloads to Amazon S3 using the claim check pattern in the Java SDK.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="externalStorage">
+  APIs and configuration may change before General Availability. Join the
+  [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for
+  help.
+</ReleaseNoteHeader>
+
+When your Workflows or Activities handle data larger than the Temporal Service payload limit, offload the payloads to
+an external store such as Amazon S3. Temporal stores a small reference in Event History, and the Java SDK retrieves the
+payload before your Workflow or Activity receives it.
+
+This page shows how to configure the Java SDK with Amazon S3. For the claim check pattern, retention requirements, and
+storage design guidance, see [External Storage](/external-storage).
+
+## Store and retrieve large payloads with Amazon S3
+
+The Java SDK includes an experimental S3 storage driver. It requires Java SDK v1.39.0 or later.
+
+### Prerequisites
+
+- An S3 bucket that your Temporal Client and Workers can reach. Configure [lifecycle management](/external-storage#lifecycle)
+  so objects remain available for the Workflow lifetime and Namespace retention period.
+- AWS credentials that can read and write S3 objects. The AWS SDK for Java reads its standard credential provider chain,
+  including environment variables, IAM roles, and AWS configuration files.
+- These dependencies:
+
+  ```gradle
+  implementation "io.temporal:temporal-sdk:1.39.0"
+  implementation "io.temporal:temporal-payload-storage-s3driver:1.39.0"
+  implementation "io.temporal:temporal-payload-storage-s3driver-awssdkv2:1.39.0"
+  ```
+
+### Procedure
+
+1. Create an asynchronous S3 client, wrap it in an `S3AsyncClientAdapter`, and create an `S3StorageDriver`:
+
+   <!--SNIPSTART java-s3-driver-create-->
+   [features/snippets/external_storage/s3_setup/s3_driver_create.java](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.java)
+   ```java
+   S3AsyncClient s3Client = S3AsyncClient.builder().region(Region.US_EAST_2).build();
+
+   S3StorageDriver driver =
+       S3StorageDriver.newBuilder()
+           .setClient(new S3AsyncClientAdapter(s3Client))
+           .setBucket("my-temporal-payloads")
+           .build();
+   ```
+   <!--SNIPEND-->
+
+   To select an S3 bucket for each payload, use `setBucketResolver()` instead of `setBucket()`.
+
+2. Add the driver to `ExternalStorage`, then set it on `WorkflowClientOptions`. A Worker created from that Client
+   inherits the configuration:
+
+   <!--SNIPSTART java-s3-external-storage-setup-->
+   [features/snippets/external_storage/s3_setup/s3_external_storage_setup.java](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.java)
+   ```java
+   ExternalStorage externalStorage = ExternalStorage.newBuilder().setDriver(driver).build();
+
+   WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+   WorkflowClient client =
+       WorkflowClient.newInstance(
+           service,
+           WorkflowClientOptions.newBuilder().setExternalStorage(externalStorage).build());
+   WorkerFactory factory = WorkerFactory.newInstance(client);
+   Worker worker = factory.newWorker("my-task-queue");
+   ```
+   <!--SNIPEND-->
+
+   Configure External Storage on every Client and Worker process that can send or receive an offloaded payload. For
+   example, a Client that starts a Workflow needs it to offload a large input, and a separate Worker process needs it to
+   retrieve that input.
+
+By default, the SDK offloads serialized Payloads that are 256 KiB or larger. Use `setPayloadSizeThreshold()` to change
+the threshold. Set it to `0` to offload every payload. Payloads below the threshold remain inline in Event History.
+
+The S3 driver stores serialized Payloads under content-addressed keys derived from their SHA-256 hash. It reuses an
+existing object when a Workflow Run passes the same payload again, verifies the hash on retrieval, and rejects payloads
+larger than 50 MiB by default. Use `setMaxPayloadSize()` to change that limit.
+
+## Implement a custom storage driver
+
+To use a storage system other than S3, implement `StorageDriver`. Its `store()` method uploads a list of serialized
+Payload protobuf messages and returns one `StorageDriverClaim` for each payload. Its `retrieve()` method uses those
+claims to return the original Payloads. Both methods return `CompletableFuture` and must observe the cancellation token
+in their context.
+
+Give each driver instance a stable, unique `getName()` value. The SDK records that name in a reference and uses it to
+choose the driver during retrieval. `getType()` identifies the driver implementation for Worker heartbeats and metrics;
+keep it the same for all configurations of the same driver.
+
+Register every driver that might need to retrieve an existing reference. If you register more than one driver, provide
+a `StorageDriverSelector` to choose which driver stores new payloads. This lets you migrate storage backends without
+making existing payloads unreadable.
+
+## Manage external objects
+
+Temporal does not delete objects from your S3 bucket. Configure an S3 lifecycle rule with a TTL longer than the maximum
+Workflow Run Timeout plus the Namespace retention period. For the formula and guidance for multi-region storage, see
+[Lifecycle management](/external-storage#lifecycle) and [Durable External Storage](/external-storage#durable-external-storage).
