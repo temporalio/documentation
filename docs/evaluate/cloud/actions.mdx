@@ -3,9 +3,8 @@ id: actions
 title: Temporal Cloud Actions
 sidebar_label: Actions
 description:
-  Temporal Cloud offers flexible, predictable pricing for Workflows, Activities, Workers, and Storage. Pay for what you
-  use with volume discounts and credit savings.
-slug: /cloud/actions
+  Which operations count as billable Actions in Temporal Cloud, by category, with the metric name and Event History type
+  for each one.
 toc_max_heading_level: 4
 tags:
   - Temporal Cloud
@@ -14,10 +13,10 @@ tags:
   - Support
 ---
 
-Temporal Cloud Actions are the primary unit of consumption-based pricing for Temporal Cloud. They track billable
-operations within the Temporal Cloud Service, such as starting Workflows, recording a Heartbeat, or sending Signals.
+Actions are the primary unit of consumption-based pricing for Temporal Cloud. They track billable operations within the
+Temporal Cloud Service, such as starting Workflows, recording a Heartbeat, or sending Signals.
 
-Actions can be largely placed in the following categories:
+Most Actions fall into one of these categories:
 
 - [Workflow](#workflow)
 - [Activity](#activity)
@@ -40,20 +39,16 @@ operations.
 
 Billable Actions are visible in the [OpenMetrics endpoint](/cloud/metrics/openmetrics),
 [Event History](/cloud/actions-usage#actions-in-workflows) and [Usage](https://cloud.temporal.io/usage) Dashboards,
-and the [Billing API](/cloud/billing-api). Action types and categories can help estimate usage, identify specific Action
-types that are driving usage, optimize workflows by tracking usage spikes, and troubleshoot errors. For example:
+and the [Billing API](/cloud/billing-api). Use Action types and categories to estimate usage, find the Action types
+driving it, track spikes, and troubleshoot errors. For example, you can see whether a new Workflow Type on a Namespace
+is driving a usage increase, or find the aggregate usage of Activity Heartbeats on a Namespace.
 
-- You can see if a new Workflow type on a Namespace is driving a significant usage increase
-- You can identify the aggregate usage of Activity Heartbeats on a Namespace
+Which Action Types you see depends on the endpoint. Action Categories and Action Types are not available in the Billing
+API.
 
-The following is the mapping of Action Categories to Action types. The Action Types that are visible on various
-endpoints can differ based on what is visible to a system. Action Categories and Action Types are not available in the
-billing API.
-
-Usage and Billing data will have the most complete Actions data while Event history and metrics will help with
-detailed _estimates_. For example, [History Event Types](/workflow-execution/event) are provided
-for transparency, but do not always have a simple 1:1 relationship with Action Types. The Categories, Action types, and
-available endpoints are listed in the following sections:
+Usage and billing data carry the most complete Actions data, while Event History and metrics support detailed
+_estimates_. [History Event Types](/workflow-execution/event) are listed for transparency, but they do not always map
+1:1 to Action Types. The following sections list each category, its Action types, and where each one is available.
 
 ## Workflow {/* #workflow */}
 
@@ -177,8 +172,7 @@ available endpoints are listed in the following sections:
 
 ## Schedule {/* #schedule */}
 
-[Schedules](/schedule) allows you to schedule a Workflow to start at a particular time. Each execution of a Schedule
-accrues three actions:
+A [Schedule](/schedule) starts a Workflow at a particular time. Each execution of a Schedule accrues three Actions:
 
 - **Schedule Start**. This accounts for two actions.
 - **Workflow started**. This is a single action to start the target Workflow. It includes initial Search Attributes as
@@ -241,5 +235,5 @@ an additional `0.1` Action is charged per Action in the Namespace.
 | --------------------------- | ----------- | ------------------ |
 | Enable Provisioned Capacity | N/A         | N/A                |
 
-Actions usage can be tracked in multiple areas depending on the needed granularity. Refer to the
-[Billing and Usage](/cloud/billing-and-usage) documentation for more information.
+Track Actions usage at the granularity you need. See [Billing and Usage](/cloud/billing-and-usage) for the available
+views.
