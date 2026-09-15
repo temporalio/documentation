@@ -2214,6 +2214,7 @@ module.exports = {
         'guides/durable-gaming-sessions',
         'guides/lock-shared-resources',
         'guides/celery-to-standalone-activity',
+        'guides/sidekiq-to-standalone-activity',
       ],
     },
     'integrations',
