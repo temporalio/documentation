@@ -918,6 +918,15 @@ const developRustCategory = {
         items: [
           'develop/rust/activities/basics',
           'develop/rust/activities/execution',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/rust/activities/standalone-activities-quickstart',
+              'develop/rust/activities/standalone-activities',
+            ],
+          },
           'develop/rust/activities/timeouts',
         ],
       },
