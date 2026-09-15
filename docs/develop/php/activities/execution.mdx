@@ -1,7 +1,7 @@
 ---
 id: execution
-title: Activity execution - PHP SDK
-description: Shows how to perform Activity execution with the PHP SDK
+title: Activity Execution - PHP SDK
+description: Call an Activity from a PHP Workflow through a stub created with newActivityStub, set the required Timeout, and get the Activity result.
 sidebar_label: Activity Execution
 slug: /develop/php/activities/execution
 toc_max_heading_level: 3
@@ -21,7 +21,7 @@ A single instance of the Activities implementation is shared across multiple sim
 Activity implementation code should be _idempotent_.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
-The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
+The entire Execution history is transferred from the Temporal Service to Workflow Workers when a Workflow state needs to recover.
 A large Execution history can thus adversely impact the performance of your Workflow.
 
 Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.

@@ -76,7 +76,7 @@ Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
-## Activity next retry delay {/* #activity-next-retry-delay */}
+### Activity next retry delay {/* #activity-next-retry-delay */}
 
 You may throw an [`ApplicationFailure`](/references/failures#application-failure) with the `nextRetryDelay` field set.
 This value will replace and override whatever the retry interval would be on the retry policy.

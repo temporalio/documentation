@@ -47,7 +47,7 @@ const { myActivity } = proxyActivities<typeof activities>({
 });
 ```
 
-## Activity Retry Policy {/* #activity-retries */}
+### Activity Retry Policy {/* #activity-retries */}
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -65,7 +65,7 @@ const { myActivity } = proxyActivities<typeof activities>({
 });
 ```
 
-## Activity next retry delay {/* #activity-next-retry-delay */}
+### Activity next retry delay {/* #activity-next-retry-delay */}
 
 The time to wait after a retryable Activity failure until the next retry is attempted is normally determined by that Activity's Retry Policy.
 However, an Activity may override that duration when explicitly failing with an [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure) by setting a next Retry delay.
@@ -135,7 +135,7 @@ export async function myActivity(): Promise<void> {
 }
 ```
 
-## Activity Heartbeat Timeout {/* #activity-heartbeat-timeout */}
+### Activity Heartbeat Timeout {/* #activity-heartbeat-timeout */}
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 If the Temporal Server doesn't receive a Heartbeat before expiration of the Heartbeat Timeout, the Activity is considered as timed out and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.

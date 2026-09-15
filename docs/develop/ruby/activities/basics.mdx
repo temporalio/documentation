@@ -2,7 +2,7 @@
 id: basics
 title: Activity basics - Ruby SDK
 sidebar_label: Activity basics
-description: This section explains Activity basics with the Ruby SDK
+description: Define an Activity as a class that extends Temporalio::Activity::Definition, name it, and pick the executor that controls Activity concurrency.
 toc_max_heading_level: 4
 tags:
   - Activities
@@ -14,7 +14,7 @@ tags:
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
-An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
+An Activity can interact with the world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
 
 Standalone Activities are Activities that run independently, without being orchestrated by a Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone Activity directly from a Temporal Client.
