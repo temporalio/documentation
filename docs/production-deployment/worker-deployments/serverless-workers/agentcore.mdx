@@ -20,14 +20,18 @@ import TabItem from '@theme/TabItem';
   Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
 </ReleaseNoteHeader>
 
-This guide deploys an existing Python [Serverless Worker](/serverless-workers) to Amazon Bedrock AgentCore Runtime and
-configures Temporal Cloud to start Worker capacity. It assumes that you already have a Temporal Worker and an AgentCore
-project. For the Worker implementation and lifecycle, see
-[Serverless Workers on Amazon Bedrock AgentCore Runtime - Python SDK](/develop/python/workers/serverless-workers/agentcore).
+This page covers only deploying an existing Python [Serverless Worker](/serverless-workers) to Amazon Bedrock AgentCore
+Runtime and connecting it to a Worker Deployment Version. It assumes that your Worker and AgentCore project are already
+in place.
 
-If you are still deciding how to structure your agent, Workflow, and Activities, see the
-[Python Strands AgentCore sample](https://github.com/temporalio/samples-python/tree/schoeff/strands-agent/bedrock_agentcore/strands_agent)
-for a complete application.
+For a complete tutorial, see [Build a durable agent on Amazon Bedrock
+AgentCore](/guides/durable-agent-on-agentcore). That guide starts with the [Python Strands AgentCore
+sample](https://github.com/temporalio/samples-python/tree/schoeff/strands-agent/bedrock_agentcore/strands_agent) and explains
+the agent architecture, Workflow and Activity boundaries, AgentCore project configuration, and deployment from start to
+finish. Use this page when you only need the Worker deployment procedure.
+
+For details about the Worker implementation and lifecycle, see [Serverless Workers on Amazon Bedrock AgentCore Runtime -
+Python SDK](/develop/python/workers/serverless-workers/agentcore).
 
 ## Prerequisites {/* #prerequisites */}
 
@@ -84,7 +88,8 @@ The Task Queue must match the Task Queue used by your application. The deploymen
 Worker Deployment Version that you create in [Step 4](#create-worker-deployment-version).
 
 The Runtime definition must use your Worker handler as its entrypoint and provide a named endpoint for Temporal. The
-following fragment uses a public network so the Worker can reach Temporal Cloud:
+following fragment from the Python Strands AgentCore sample uses a public network so the Worker can reach Temporal
+Cloud:
 
 ```json
 {
@@ -100,6 +105,11 @@ following fragment uses a public network so the Worker can reach Temporal Cloud:
   }
 }
 ```
+
+The endpoint is pinned to the specified AgentCore Runtime version. In this example, `version: 1` refers to the first
+deployed Runtime version. For a later Worker version, create a named endpoint pinned to the new Runtime version and use
+that endpoint ARN for the corresponding Worker Deployment Version. Keep endpoints used by existing Worker Deployment
+Versions pinned to their original Runtime versions.
 
 If you use a VPC instead, configure outbound access from the VPC to your Temporal Cloud Namespace. Temporal invokes the
 named endpoint by assuming the IAM role that you create in [Step 3](#configure-iam).
@@ -127,7 +137,19 @@ agentcore status --type runtime-endpoint --json
 ```
 
 Record the Runtime ARN and the ARN of the named endpoint. You use the Runtime ARN to scope the invocation role and give
-the endpoint ARN to Temporal Cloud.
+the endpoint ARN to Temporal Cloud. Confirm that the endpoint's live version matches the Runtime version containing the
+Worker code and environment configuration that you intend to deploy:
+
+```bash
+aws bedrock-agentcore-control get-agent-runtime-endpoint \
+  --agent-runtime-id <RUNTIME_ID> \
+  --endpoint-name <ENDPOINT_NAME> \
+  --query '{status:status,liveVersion:liveVersion}' \
+  --region <AWS_REGION>
+```
+
+If you redeploy the Runtime without creating or updating an endpoint, an existing endpoint can remain pinned to the
+earlier Runtime version.
 
 ## 3. Grant Temporal permission to invoke the Runtime {/* #configure-iam */}
 
