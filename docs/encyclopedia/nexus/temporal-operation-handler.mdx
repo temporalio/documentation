@@ -1,0 +1,75 @@
+---
+id: temporal-operation-handler
+title: Temporal Operation Handler
+sidebar_label: Temporal Operation Handler
+description: The Temporal Operation Handler is a single Nexus handler type that can back an Operation with a Workflow, an Update, or an Activity, with bidirectional linking across Namespace boundaries.
+toc_max_heading_level: 4
+slug: /nexus/temporal-operation-handler
+tags:
+  - Nexus
+  - Concepts
+---
+
+:::caution
+
+The Temporal Operation Handler is pre-release.
+`TemporalOperationHandler` is marked experimental in the SDKs and may change in backwards-incompatible ways.
+
+:::
+
+A [Nexus Service](/nexus/services) publishes Operations that other teams call across [Namespace](/namespaces) boundaries.
+`TemporalOperationHandler` is how you implement those Operations.
+
+It is a single handler type that can back an Operation with any Temporal primitive — start a Workflow, run an Update, start an Activity — or complete the Operation inline with no backing Execution at all.
+Whichever you choose, the handler is the same shape, and every Execution it touches is connected back to the caller automatically.
+
+For language-specific examples, migration from earlier handler APIs, and Worker registration, see [How to use the Temporal Operation Handler](/develop/java/nexus/temporal-operation-handler).
+
+## What you can do with it
+
+**Back an Operation with whichever primitive fits the work.** A multi-step process is a Workflow. A single durable step is an [Activity](/activities), with no Workflow wrapped around it — see [Nexus Standalone Activity](/nexus/standalone-activity). A change to something already running is an Update. The caller sees the same Operation contract either way, and you can change your choice later without touching callers.
+
+**Combine messaging and a backing in one handler.** A handler can Signal a running Workflow to unblock it and then return a different Execution's result for the caller to await. These are not separate handler types you pick between; they compose inside one start handler.
+
+**Get observability across the Namespace boundary without wiring it.** The Client handed to your handler propagates [bidirectional links](/nexus/execution-debugging#bi-directional-linking) and request Ids on every call it makes. The caller-side and handler-side Executions are connected in the UI and in [Event History](/encyclopedia/event-history), so a single trace crosses the boundary between two teams' Namespaces.
+
+**Stay idempotent through retries.** The server retries Nexus start requests, and the request Id travels with them. Deriving the backing Execution's Id from it means a retry targets the same Execution rather than starting a second one.
+
+**Cancel through the same handler.** The Operation token records which kind of Execution backs the Operation, so a cancellation request reaches the right place. The default behavior is usually what you want, and each kind can be overridden when it is not.
+
+**Grow a handler without rewriting it.** An Operation that starts out completing inline can later gain an async backing, or send a Signal, without changing handler type or breaking its contract.
+
+## The Nexus-aware Client
+
+A `TemporalOperationHandler` start handler receives three things: a context, a Client, and the Operation input.
+
+The Client is what makes the linking automatic, so prefer it over constructing your own inside a handler.
+Reaching for your own Client still works, but messages sent that way are not connected back to the caller.
+
+The Client exposes two kinds of call:
+
+**Async backings — at most one per Operation invocation.** These determine what the Operation *is*, and their result is delivered to the caller through the Nexus completion callback when the underlying Execution finishes.
+
+- Start a Workflow — the Operation completes when the Workflow returns
+- Update a Workflow — the Operation completes when the Update completes
+- Start an Activity — the Operation completes when the Activity returns; see [Nexus Standalone Activity](/nexus/standalone-activity)
+
+**Sync messaging — as many as you need.** Reach these through the underlying Temporal Client that the Nexus-aware Client exposes.
+They take effect during the handler call, still get link propagation, and do not require an async backing.
+
+- Signal — delivered during the handler call to a Workflow that is already running
+- Signal-with-Start — delivers the Signal, starting the Workflow first if it is not already running
+
+A handler that only sends messages returns a synchronous result, and the Operation completes immediately.
+
+## Related
+
+- How to use the Temporal Operation Handler:
+  [Go](/develop/go/nexus/temporal-operation-handler) ·
+  [Java](/develop/java/nexus/temporal-operation-handler) ·
+  [.NET](/develop/dotnet/nexus/temporal-operation-handler) ·
+  [Python](/develop/python/nexus/temporal-operation-handler) ·
+  [TypeScript](/develop/typescript/nexus/temporal-operation-handler)
+- [Nexus Standalone Activity](/nexus/standalone-activity) — Activity-backed Operations
+- [Nexus Client Code Generator](/nexus/client-code-generator) — contract-first typed clients
+- [Microservice Development Walkthrough](/develop/java/nexus/development-walkthrough) — end-to-end Java guide
