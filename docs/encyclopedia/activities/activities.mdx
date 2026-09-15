@@ -22,7 +22,7 @@ Activity functions are registered by name (an [Activity Type](/activity-definiti
 Activity code can do whatever you want, use any library or package, and otherwise be non-deterministic.
 We recommend that it be [idempotent](/activity-definition#idempotency), so retries can be processed without duplicate side effects.
 
-Activities are started as a step in a Workflow (a [Workflow Activity](/workflow-activity)) or as a [Standalone Activity](/standalone-activity) that runs independently for [background job processing](/evaluate/development-production-features/job-queue).
+Activities are started as a step in a Workflow (a [Workflow Activity](/workflow-activity)) or as a [Standalone Activity](/standalone-activity) that runs independently for [background job processing](/evaluate/features/job-queue).
 This creates a durable [Activity Execution](/activity-execution) in Temporal that orchestrates the full lifecycle of an Activity, dispatching Tasks to the Activity Worker using its Task Queue and collecting results to determine next steps.
 
 :::tip

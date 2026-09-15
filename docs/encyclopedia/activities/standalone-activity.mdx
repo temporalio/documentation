@@ -18,7 +18,7 @@ import { CaptionedImage } from '@site/src/components';
 A Standalone [Activity](/activities) is a top-level [Activity Execution](/activity-execution) started directly by a
 [Client](/encyclopedia/temporal-client), without using a Workflow.
 
-**Standalone Activities are Temporal's [job queue](/evaluate/features/job-queue)** - the
+Standalone Activities are Temporal's [job queue](/evaluate/features/job-queue) - the
 simplest way to run durable, retryable background jobs on Temporal. A job is queued, dispatched to one of your Workers,
 retried on failure, and kept addressable the whole time.
 
@@ -359,7 +359,7 @@ The following features are not yet supported:
 - Starting from a recurring [Schedule](/schedule). For a one-time job at a future time, use
   [Start Delay](#start-delay). For recurring work, schedule a Workflow that invokes the Activity, which runs it as a
   [Workflow Activity](/workflow-activity) rather than a Standalone Activity.
-- Starting from [Temporal Nexus](/evaluate/nexus).
+- Starting from [Temporal Nexus](/evaluate/features/nexus).
 - Batch Reset, Pause, Unpause, Update Options, Complete, and Fail.
 - Export for Standalone Activities similar to [Workflow Export](/cloud/export).
 
