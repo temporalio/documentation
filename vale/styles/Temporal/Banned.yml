@@ -1,0 +1,26 @@
+# Vague or inflated vocabulary with no single right replacement -- each one
+# needs the sentence rewritten around it, not swapped for another word.
+# Ported from jdkato/voices' Voices.Banned rule
+# (https://github.com/jdkato/voices, MIT License), itself derived from
+# no-ai-slop (https://github.com/petergyang/no-ai-slop, MIT License).
+extends: existence
+message: "Vague or inflated word: '%s'. Say the plain thing."
+level: warning
+ignorecase: true
+tokens:
+  - delve
+  - foster
+  - 'empower(?:s|ed|ing)?'
+  - cutting-edge
+  - paradigm shift
+  - game changer
+  - game-changer
+  - tapestry
+  - realm
+  - beacon
+  - multifaceted
+  - paramount
+  - transformative
+  - 'embark(?:s|ed|ing)?'
+  - 'harness(?:es|ed|ing)?'
+  - ever-evolving

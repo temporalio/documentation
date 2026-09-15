@@ -2,7 +2,7 @@
 id: multi-cluster-replication
 title: Self-hosted Multi-Cluster Replication
 sidebar_label: Multi-Cluster Replication
-description: Multi-Cluster Replication in Temporal ensures asynchronous replication of Workflow Executions from active to passive Clusters for backup and state reconstruction, enabling seamless failovers.
+description: Multi-Cluster Replication in Temporal ensures asynchronous replication of Workflow Executions from active to passive Clusters for backup and state reconstruction, so you can fail over to a passive Cluster.
 slug: /self-hosted-guide/multi-cluster-replication
 toc_max_heading_level: 4
 tags:
@@ -22,7 +22,7 @@ active Cluster. This is off by default; enable it by setting
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 All Visibility APIs can be used against active and standby Clusters.
-This enables [Temporal UI](/web-ui) to work seamlessly for Global Namespaces.
+As a result, [Temporal UI](/web-ui) works with Global Namespaces the same way it works with any other Namespace.
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 

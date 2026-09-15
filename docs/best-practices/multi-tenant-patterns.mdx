@@ -80,6 +80,8 @@ This pattern works well when you have many tenants with different service tiers 
 
 <RelatedReadContainer>
   <RelatedReadItem path="/develop/task-queue-priority-fairness#task-queue-fairness" text="Task Queue Fairness Reference" archetype="feature-guide" />
+  <RelatedReadItem path="/design-patterns/fairness" text="Fairness pattern" />
+  <RelatedReadItem path="/design-patterns/priority-task-queues" text="Priority pattern" />
 </RelatedReadContainer>
 
 ### 3. Shared Workflow Task Queues, separate Activity Task Queues
@@ -123,7 +125,7 @@ need its own service accounts, API keys, dashboards, or rate limits. If that is 
 [Namespace best practices](/best-practices/managing-namespace) before committing to Namespace-per-tenant isolation.
 
 <RelatedReadContainer>
-  <RelatedReadItem path="/evaluate/development-production-features/multi-tenancy#namespace-isolation" text="Namespace Isolation in Temporal Cloud" archetype="cloud-guide" />
+  <RelatedReadItem path="/cloud/security#namespace-isolation" text="Namespace Isolation in Temporal Cloud" archetype="cloud-guide" />
 </RelatedReadContainer>
 
 ### Pattern comparison
@@ -336,7 +338,7 @@ TenantId = 'customer-123' AND ExecutionStatus = 'Running'
 ## Related resources
 
 <RelatedReadContainer>
-  <RelatedReadItem path="/evaluate/development-production-features/multi-tenancy" text="Multi-tenancy Overview" archetype="feature-guide" />
+  <RelatedReadItem path="/namespaces" text="Namespaces" archetype="feature-guide" />
   <RelatedReadItem path="/cloud/limits" text="Temporal Cloud Limits" archetype="cloud-guide" />
   <RelatedReadItem path="/visibility" text="Visibility and Search Attributes" archetype="feature-guide" />
 </RelatedReadContainer>
