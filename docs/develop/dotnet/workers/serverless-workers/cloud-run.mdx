@@ -23,7 +23,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
 Register Workflows and Activities the same way you would with any other .NET Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
-A Cloud Run Worker needs no Cloud Run-specific package.
+A Cloud Run Worker needs no Cloud Run-specific runtime or handler.
 The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
@@ -135,7 +135,104 @@ public static string Process(IReadOnlyList<string> items)
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
-## Add observability {/* #add-observability */}
+## Configure OpenTelemetry {/* #opentelemetry */}
 
-A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
-For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - .NET SDK](/develop/dotnet/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
+Configure the .NET OpenTelemetry exporter and the Temporal Runtime to send telemetry by OTLP to `localhost:4317`. The following code sample configures the Worker only. You must separately run an OTLP-compatible receiver at that address. In a Cloud Run Worker Pool, run that receiver as a sidecar.
+
+<!--SNIPSTART dotnet-cloud-run-otel-->
+[src/OpenTelemetry/CoreSdkForwarding/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/OpenTelemetry/CoreSdkForwarding/Program.cs)
+```cs
+var resourceBuilder = ResourceBuilder.
+    CreateDefault().
+    AddService("TemporalioSamples.OpenTelemetry", serviceInstanceId: instanceId);
+
+using var tracerProvider = Sdk.
+    CreateTracerProviderBuilder().
+    SetResourceBuilder(resourceBuilder).
+    AddSource(TracingInterceptor.ClientSource.Name, TracingInterceptor.WorkflowsSource.Name, TracingInterceptor.ActivitiesSource.Name).
+    AddOtlpExporter().
+    Build();
+
+// Shared by the client and by Core SDK log forwarding below. The OpenTelemetry provider exports
+// logs to the dashboard alongside the traces and metrics.
+using var loggerFactory = LoggerFactory.Create(builder =>
+    builder.
+        AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
+        AddOpenTelemetry(options =>
+        {
+            options.SetResourceBuilder(resourceBuilder);
+            options.IncludeFormattedMessage = true;
+            options.IncludeScopes = true;
+            options.AddOtlpExporter();
+        }).
+        SetMinimumLevel(LogLevel.Information));
+
+// Create a client to localhost on default namespace
+var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+connectOptions.TargetHost ??= "localhost:7233";
+connectOptions.LoggerFactory = loggerFactory;
+connectOptions.Interceptors = new[] { new TracingInterceptor() };
+connectOptions.Runtime = new TemporalRuntime(new TemporalRuntimeOptions()
+{
+    Telemetry = new TelemetryOptions()
+    {
+        Metrics = new MetricsOptions()
+        {
+            OpenTelemetry = new OpenTelemetryOptions()
+            {
+                Url = new Uri("http://localhost:4317"),
+            },
+        },
+        Logging = new LoggingOptions()
+        {
+            // Core SDK logs default to WARN; lowered here so there is more to see.
+            Filter = new TelemetryFilterOptions(core: TelemetryFilterOptions.Level.Info),
+
+            // The Core SDK writes its logs to the console itself unless Forwarding is set, in
+            // which case they go to this ILogger instead.
+            Forwarding = new LogForwardingOptions(loggerFactory.CreateLogger("Temporalio.Core")),
+        },
+    },
+});
+var client = await TemporalClient.ConnectAsync(connectOptions);
+```
+<!--SNIPEND-->
+
+The [OpenTelemetry sample](https://github.com/temporalio/samples-dotnet/tree/main/src/OpenTelemetry) shows the tracing, metrics, and log-export configuration. Its Docker Compose file runs the .NET Aspire Dashboard locally and exposes its OTLP endpoint on port `4317`; it does not define a Cloud Run sidecar. Configure your Cloud Run sidecar to export the received telemetry to your backend.
+
+## Set a Worker identity {/* #worker-identity */}
+
+Use `WorkerIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
+
+<!--SNIPSTART dotnet-cloud-run-worker-id-->
+[src/Gcp/CloudRun/WorkerId/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/Gcp/CloudRun/WorkerId/Program.cs)
+```cs
+var address = GetEnvironmentVariable("TEMPORAL_ADDRESS") ?? "localhost:7233";
+var temporalNamespace = GetEnvironmentVariable("TEMPORAL_NAMESPACE") ?? "default";
+var taskQueue = GetEnvironmentVariable("TEMPORAL_TASK_QUEUE") ?? "cloud-run-worker-sample";
+
+using var loggerFactory = LoggerFactory.Create(builder => builder.
+    AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
+    SetMinimumLevel(LogLevel.Information));
+var logger = loggerFactory.CreateLogger("CloudRunWorkerId");
+
+// Register the Cloud Run plugin once on the client. At connect time it reads the Cloud Run instance
+// id from the metadata server, and the worker pool / service name and revision from the environment,
+// then sets the client Identity to the worker identity "{instanceId}@{revision}" (unless one was
+// already configured). Every worker created from this client inherits that identity. The plugin only
+// sets the worker identity; it does not configure anything else.
+//
+// NOTE: this requires the process to be running on a Cloud Run worker pool or service. Running it
+// elsewhere throws at connect time because the metadata server is unreachable.
+var clientOptions = new TemporalClientConnectOptions(address)
+{
+    Namespace = temporalNamespace,
+    LoggerFactory = loggerFactory,
+    Plugins = new[] { new WorkerIdPlugin() },
+};
+
+var client = await TemporalClient.ConnectAsync(clientOptions);
+```
+<!--SNIPEND-->
+
+The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run Worker Id sample](https://github.com/temporalio/samples-dotnet/pull/219).

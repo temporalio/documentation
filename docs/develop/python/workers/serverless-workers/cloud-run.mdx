@@ -23,7 +23,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
 Register Workflows and Activities the same way you would with any other Python Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
-A Cloud Run Worker needs no Cloud Run-specific package.
+A Cloud Run Worker needs no Cloud Run-specific runtime or handler.
 The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
@@ -129,7 +129,120 @@ async def my_activity(items: list[str]) -> str:
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
-## Add observability {/* #add-observability */}
+## Configure OpenTelemetry {/* #opentelemetry */}
 
-A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
-For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
+Run an OpenTelemetry Collector as a sidecar in the Worker Pool. The Cloud Run OpenTelemetry plugin exports metrics and traces by OTLP gRPC to the Collector at `localhost:4317`. It configures the endpoint, service name, Core SDK metrics, and tracer provider from Cloud Run defaults.
+
+Create the plugin and pass it to `Client.connect`. The sample reads its connection settings from the environment:
+
+<!--SNIPSTART python-cloud-run-otel-worker {"selectedLines": ["1-11"]}-->
+[gcp/cloud_run/opentelemetry/worker.py](https://github.com/temporalio/samples-python/blob/gcp-cloud-run-otel/gcp/cloud_run/opentelemetry/worker.py)
+```py
+# Endpoint, service name, Core metrics, and tracer provider all use the GCP
+# plugin defaults. The opt-in adds named Temporal operation spans.
+plugin = OpenTelemetryPlugin(add_temporal_spans=True)
+client = await Client.connect(
+    settings.address,
+    namespace=settings.namespace,
+    api_key=settings.api_key,
+    # TLS for Temporal Cloud (api key present); plaintext for a dev server.
+    tls=bool(settings.api_key),
+    plugins=[plugin],
+)
+```
+<!--SNIPEND-->
+
+Configure the Collector sidecar to receive OTLP gRPC on `localhost:4317`, export traces to Google Cloud, and export metrics to Google Managed Service for Prometheus:
+
+<!--SNIPSTART python-cloud-run-otel-collector-config-->
+[gcp/cloud_run/opentelemetry/collector-config.yaml](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/opentelemetry/collector-config.yaml)
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: localhost:4317
+
+processors:
+  batch/traces:
+    send_batch_max_size: 200
+    send_batch_size: 200
+    timeout: 5s
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 65
+    spike_limit_percentage: 20
+  resource_detection:
+    detectors: [gcp]
+    timeout: 10s
+  transform/collision:
+    metric_statements:
+      - context: datapoint
+        statements:
+          - set(attributes["exported_location"], attributes["location"])
+          - delete_key(attributes, "location")
+          - set(attributes["exported_cluster"], attributes["cluster"])
+          - delete_key(attributes, "cluster")
+          - set(attributes["exported_namespace"], attributes["namespace"])
+          - delete_key(attributes, "namespace")
+          - set(attributes["exported_job"], attributes["job"])
+          - delete_key(attributes, "job")
+          - set(attributes["exported_instance"], attributes["instance"])
+          - delete_key(attributes, "instance")
+          - set(attributes["exported_project_id"], attributes["project_id"])
+          - delete_key(attributes, "project_id")
+  transform/set_project_id:
+    error_mode: ignore
+    trace_statements:
+      - set(resource.attributes["gcp.project_id"], resource.attributes["gcp.project.id"]) where resource.attributes["gcp.project.id"] != nil
+      - set(resource.attributes["gcp.project_id"], resource.attributes["cloud.account.id"]) where resource.attributes["gcp.project_id"] == nil and resource.attributes["cloud.account.id"] != nil
+
+exporters:
+  googlemanagedprometheus:
+  otlp_grpc:
+    endpoint: telemetry.googleapis.com:443
+    compression: none
+    balancer_name: pick_first
+    auth:
+      authenticator: googleclientauth
+
+extensions:
+  googleclientauth:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+service:
+  extensions: [googleclientauth, health_check]
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, resource_detection, transform/collision]
+      exporters: [googlemanagedprometheus]
+    traces:
+      receivers: [otlp]
+      processors:
+        [memory_limiter, resource_detection, transform/set_project_id, batch/traces]
+      exporters: [otlp_grpc]
+```
+<!--SNIPEND-->
+
+Wait until the Collector accepts connections before starting the Worker. On shutdown, call `plugin.shutdown()` after the Worker stops so traces can flush. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Python Cloud Run OpenTelemetry sample](https://github.com/temporalio/samples-python/pull/353).
+
+## Set a Worker identity {/* #worker-identity */}
+
+Use `WorkerIDPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
+
+<!--SNIPSTART python-cloud-run-worker-id-->
+[gcp/cloud_run/worker_id/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/worker_id/worker.py)
+```py
+client = await Client.connect(
+    settings.address,
+    namespace=settings.namespace,
+    plugins=[WorkerIDPlugin()],
+    api_key=settings.api_key,
+    tls=settings.tls,
+)
+```
+<!--SNIPEND-->
+
+The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [Python Cloud Run Worker Id sample](https://github.com/temporalio/samples-python/pull/356).
