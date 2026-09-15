@@ -18,9 +18,9 @@ Heartbeats inform Temporal that the Activity is still alive and allow storing pr
 
 ## Problem
 
-In long-running operations, you often need Activities that process large datasets or perform time-consuming operations (minutes to hours), report progress to avoid appearing stuck or timing out, resume from the last checkpoint after Worker crashes or restarts, handle cancellation requests gracefully and clean up resources, and avoid reprocessing already-completed work.
+Activities that process large datasets or run for minutes to hours need a way to report progress — so they don't appear stuck or time out — and to resume from a checkpoint rather than restart from scratch after a Worker crash. They also need to handle cancellation gracefully and avoid redoing work that already finished.
 
-Without heartbeats, you must set very long Activity timeouts that delay failure detection, reprocess entire batches from the beginning on failures, accept no visibility into Activity progress, risk zombie Activities that appear alive but are stuck, and implement custom checkpointing and recovery logic.
+Without heartbeats, none of that is possible. You're left setting very long Activity timeouts that delay failure detection, reprocessing entire batches from the beginning on any failure, and building custom checkpointing and recovery logic yourself — with no visibility into whether an Activity is actually making progress or just a zombie that looks alive.
 
 ## Solution
 
@@ -606,6 +606,10 @@ Heartbeat details have size limits, so you should avoid large objects.
 
 - **[Saga Pattern](/design-patterns/saga-pattern)**: Compensating transactions with long-running steps.
 - **[Polling](/design-patterns/polling)**: Heartbeating Activity for frequent polling.
+
+### References
+
+- [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat): Canonical reference for heartbeats, heartbeat timeouts, and throttling.
 
 ### Sample code
 

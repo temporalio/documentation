@@ -22,8 +22,12 @@ opposed to lifecycle behaviors like [retries](/encyclopedia/retry-policies) and
 [timeouts](/encyclopedia/detecting-activity-failures) which happen automatically.
 
 You can perform Activity Operations through the [CLI](/cli/command-reference/activity), the UI, or directly via the gRPC
-API. Activity Operations don't apply to [Local Activities](/local-activity) or
-[Standalone Activities](/standalone-activity).
+API. Activity Operations don't apply to [Local Activities](/local-activity).
+
+Pause, Unpause, Reset, and Update Options are also available, experimentally, for
+[Standalone Activities](/standalone-activity) as of Temporal CLI v1.9.0. Omit `--workflow-id` on the CLI to target a
+Standalone Activity by Activity ID (and optional Run ID) instead of a Workflow Activity. The rest of this page
+describes these operations for Activities running inside a Workflow.
 
 :::note Public Preview
 
@@ -115,8 +119,8 @@ but they must be Unpaused separately.
 
 ### Limitations
 
-- **Pause operates on individual Activities by ID within a single Workflow.** Unlike Unpause, Reset, and Update Options,
-  there's no `--query` flag. To pause multiple Activities, issue separate commands for each Activity ID.
+- **Pause operates on one Activity at a time, by ID.** Unlike Unpause, Reset, and Update Options, there's no `--query`
+  flag. To pause multiple Activities, issue separate commands for each Activity ID.
 - **No Namespace-wide query for Paused Activities.** You must know the Workflow Id. See [Observability](#observability).
 
 ## Unpause {/* #unpause */}
@@ -133,9 +137,8 @@ Unpause resumes a Paused Activity Execution.
 
 - **The Activity is rescheduled immediately.** Any remaining retry backoff is discarded. The next execution starts right
   away.
-- **Attempt count and Heartbeat data are preserved by default.** The Activity resumes from where it left off. Use
-  `--reset-attempts` or `--reset-heartbeats` on the CLI to clear these, or use [Reset](#reset) to restart from
-  attempt 1.
+- **Attempt count and Heartbeat data are preserved.** The Activity resumes from where it left off. Use [Reset](#reset)
+  if you need to restart from attempt 1 or clear Heartbeat details.
 
 Unpause is idempotent. Unpausing an Activity that isn't Paused has no effect. Unpausing an Activity that has already
 completed returns an error.
@@ -148,8 +151,7 @@ temporal activity unpause \
   --activity-id my-activity
 ```
 
-See the [CLI reference for `temporal activity unpause`](/cli/command-reference/activity#unpause) for all options,
-including `--reset-attempts` and `--reset-heartbeats` to clear state on resume.
+See the [CLI reference for `temporal activity unpause`](/cli/command-reference/activity#unpause) for all options.
 
 ### Important considerations
 
@@ -184,8 +186,8 @@ Reset clears an Activity's retry state and schedules a fresh execution.
 - **The attempt count resets to 1.** The Activity gets a full set of retry attempts regardless of how many it had used.
 - **Retry backoff is discarded.** If the Activity was in a backoff wait, it's rescheduled to run immediately.
 - **If the Activity is Paused, Reset also Unpauses it.** Use `--keep-paused` to Reset the attempt count without resuming
-  execution. With `--keep-paused`, the attempt count and Heartbeat data (if `--reset-heartbeats`) are reset, but the
-  Activity stays Paused. No retry is scheduled until you [Unpause](#unpause) separately.
+  execution. With `--keep-paused`, the attempt count and Heartbeat data (if `--clear-heartbeat-details`) are reset, but
+  the Activity stays Paused. No retry is scheduled until you [Unpause](#unpause) separately.
 - **Resetting an Activity doesn't affect the parent Workflow.** The Workflow continues Running, and Signals, Queries,
   and Updates on the parent Workflow are unaffected.
 - **Workflow code has no visibility into Activity Operations.** Reset doesn't produce an Event History event, so the
@@ -217,7 +219,7 @@ temporal activity reset \
 ```
 
 See the [CLI reference for `temporal activity reset`](/cli/command-reference/activity#reset) for all options, including
-`--reset-heartbeats` and bulk mode via `--query`.
+`--clear-heartbeat-details` and bulk mode via `--query`.
 
 ### Detect Reset in Activity code
 
@@ -240,7 +242,7 @@ handle these cases differently, for example saving partial progress on Reset whi
   calculated from when the Activity was originally scheduled. Use [`update-options`](#update-options) to extend the
   timeout before or after Reset.
 - **Heartbeat details are preserved by default.** If your Activity uses Heartbeat details for progress tracking and you
-  want a clean restart, pass `--reset-heartbeats`.
+  want a clean restart, pass `--clear-heartbeat-details`.
 - **Reset won't interrupt an Activity that doesn't Heartbeat.** The current execution runs to completion, which could
   take up to the full [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). If the
   Activity had already retried (attempt > 1), the Temporal Service rejects the current execution's result because Reset
