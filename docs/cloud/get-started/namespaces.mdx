@@ -548,17 +548,12 @@ Namespace descriptions are visible to anyone with Namespace Read access through 
 
 :::
 
-### Limits
-
-- Optional. Create and update succeed without it.
-- At most 255 printable ASCII characters plus whitespace.
-- Mutable, including clear-to-empty.
-- Does not change Namespace runtime behavior.
-- Stored on the Cloud control plane (`NamespaceSpec.description`). It is not the open source `NamespaceInfo.Description`
-  field, and Temporal Cloud does not sync the two. Do not use `temporal operator namespace` to manage Cloud descriptions.
-
-The Temporal Cloud UI can render a limited Markdown subset. The stored value is still the 255-character printable ASCII
-string.
+### Description structure and limits
+- A description is optional and can be added, changed, or removed after Namespace creation.
+- Descriptions can contain up to 255 characters total. Supported characters are printable ASCII and whitespace.
+- The Temporal Cloud UI can render a limited Markdown subset. The stored value is still the 255-character printable ASCII
+- A description does not affect Namespace runtime behavior.
+- A Temporal Cloud Namespace description is separate from the open source `NamespaceInfo.Description` field. The temporal operator namespace commands do not manage the Cloud description.
 
 ### Permissions
 
