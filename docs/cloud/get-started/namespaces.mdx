@@ -30,6 +30,7 @@ identifiers, and gRPC endpoints in Temporal Cloud.
 - [Manage Namespaces](#manage-namespaces)
 - [Delete a Namespace](#delete-a-namespace)
 - [Tag a Namespace](#tag-a-namespace)
+- [Add a Namespace description](#describe-a-namespace)
 
 ## What is a Cloud Namespace Name? {/* #temporal-cloud-namespace-name */}
 
@@ -204,6 +205,7 @@ By default, each account starts with 10 Namespaces. This limit increases automat
 To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name), region, and Cloud Provider
+- Optional [Namespace description](#describe-a-namespace)
 - [Retention Period](/temporal-service/temporal-server#retention-period) for the
   [Event History](/workflow-execution/event#event-history) of closed [Workflow Executions](/workflow-execution).
 - [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace, if you are using mTLS
@@ -225,6 +227,9 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. On the left side of the window, click **Namespaces**.
 1. On the **Namespaces** page, click **Create Namespace** in the upper-right portion of the window.
 1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
+1. Optional: In **Description**, enter a short purpose note (at most 255 printable ASCII characters plus whitespace).
+   This is free-text context, not a Tag. Do not include secrets, confidential data, or PII. Descriptions are not
+   encrypted.
 1. In **Cloud Provider**, select the cloud provider in which to host this Namespace.
 1. In **Region**, select the region in which to host this Namespace.
 1. In **Retention Period**, specify a value from 1 to 90 days. When choosing this value, consider your needs for Event
@@ -246,6 +251,30 @@ See the [`temporal cloud namespace create`](/cli/command-reference/cloud/namespa
 
 </TabItem>
 
+<TabItem value="namespace-cloud-ops" label="Cloud Operations API">
+
+Use the
+[`CreateNamespace` API](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces)
+to create a Namespace. Pass an optional `description` on `spec`.
+
+```
+curl -sS -X POST "$BASE/cloud/namespaces" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "spec": {
+      "name": "payments-prod",
+      "regions": ["aws-us-west-2"],
+      "retentionDays": 30,
+      "apiKeyAuth": { "enabled": true },
+      "description": "Finance data integrations for Elevate across AWS, OCI, GCP"
+    }
+  }'
+```
+
+For authentication headers and API versioning, see [Cloud Ops API](/ops).
+
+</TabItem>
+
 <TabItem value="namespace-tcld" label="tcld">
 
 See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command reference for details.
@@ -259,8 +288,8 @@ See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command referen
 For guidance on how many Namespaces to create, how to split workloads across services or domains, and when to isolate
 tenants or teams, see [Namespace best practices](/best-practices/managing-namespace).
 
-This page focuses on Temporal Cloud namespace mechanics such as naming rules, provisioning, authentication, tagging, and
-accessing Namespace endpoints.
+This page focuses on Temporal Cloud Namespace mechanics such as naming rules, provisioning, authentication, tagging,
+description, and accessing Namespace endpoints.
 
 ## How to access a Namespace in Temporal Cloud {/* #access-namespaces */}
 
@@ -504,3 +533,67 @@ displayed and can add, edit, or remove them if you have the appropriate permissi
   src="/img/cloud/tags/CreateNamespace-AddedTag.png"
   title="After adding a tag during namespace creation"
 />
+
+## How to add a Namespace description in Temporal Cloud {/* #describe-a-namespace */}
+
+A Namespace description is an optional free-text purpose note. Use it to answer "what is this Namespace for?" when the
+name is not enough.
+
+Description is not a Tag. Description is a human-readable summary. Tags are structured key-value metadata for filtering,
+reporting, and automation. See [How to tag a Namespace](#tag-a-namespace).
+
+:::caution Do not include sensitive or confidential information
+
+Namespace descriptions are visible to anyone with Namespace Read access through supported management tools. Descriptions are Cloud metadata, not Workflow payloads, and are not processed by a [Payload Codec](/payload-codec#payload-codec). Do not include secrets, credentials, confidential information, or personally identifiable information.
+
+:::
+
+### Description structure and limits
+- A description is optional and can be added, changed, or removed after Namespace creation.
+- Descriptions can contain up to 255 characters total. Supported characters are printable ASCII and whitespace.
+- The Temporal Cloud UI can render a limited Markdown subset. The stored value is still the 255-character printable ASCII
+- A description does not affect Namespace runtime behavior.
+- A Temporal Cloud Namespace description is separate from the open source `NamespaceInfo.Description` field. The temporal operator namespace commands do not manage the Cloud description.
+
+### Permissions
+
+- Account Owners, Account Admins, and Namespace Admins can change a description.
+- Anyone with Namespace Read access can view it.
+
+<Tabs>
+
+<TabItem value="description-webui" label="Web UI">
+
+When creating a Namespace, fill **Description** on the Create Namespace page.
+For an existing Namespace, open its overview and select Add description or the description edit control under the Namespace full name. Save an empty value to remove the description.
+
+</TabItem>
+
+<TabItem value="description-cloud-ops" label="Cloud Operations API">
+
+Create: include `spec.description` when calling
+[`CreateNamespace`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces).
+
+Update: UpdateNamespace replaces the complete Namespace specification. Call [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D), preserve the returned spec and resourceVersion, change spec.description, and submit the complete specification to [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D). Omitting description from the updated specification clears the existing description.
+Read: `GET /cloud/namespaces/{namespace}` returns `spec.description`.
+
+Namespace descriptions require Cloud Operations API version v0.21.0 or later. See [Cloud Operations API](/ops).
+
+</TabItem>
+
+<TabItem value="description-cli" label="Temporal CLI">
+
+See [`temporal cloud namespace create --description`](/cli/command-reference/cloud/namespace#create) and
+[`temporal cloud namespace description`](/cli/command-reference/cloud/namespace#description).
+
+```
+temporal cloud namespace description set \
+  --namespace payments-prod.account \
+  --value "Elevate project migration from AWS to GCP"
+```
+
+Pass an empty `--value` to clear the description.
+
+</TabItem>
+
+</Tabs>
