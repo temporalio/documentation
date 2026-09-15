@@ -33,7 +33,7 @@ Activities are not executable on their own. You cannot start an Activity Executi
 Note that before an Activity Execution is invoked:
 
 - Activity options (either [`setStartToCloseTimeout`](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) are required) must be set for the Activity.
-  For details, see [How to set Activity timeouts](/develop/java/activities/timeouts).
+  For details, see [Activity Timeouts](/develop/java/activities/timeouts).
 - The Activity must be registered with a Worker.
   See [Worker Program](/develop/java/workers/run-worker-process#run-a-dev-worker)
 - Activity code must be thread-safe.
@@ -131,7 +131,7 @@ In the following asynchronous Activity invocation, the method reference is passe
 Promise<String> localNamePromise = Async.function(activities::download, sourceBucket, sourceFile);
 ```
 
-The following example shows how to call two Activity methods, "download" and "upload", in parallel on multiple files.
+The following example calls two Activity methods, "download" and "upload", in parallel on multiple files.
 
 ```java
   public void processFile(Arguments args) {
@@ -265,7 +265,7 @@ If you define options per-Activity Type options with `WorkflowImplementationOpti
 
 ## Java ActivityOptions reference {/* #activity-options-reference */}
 
-Use [`ActivityOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) to configure how to invoke an Activity Execution.
+Use [`ActivityOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) to configure an Activity Execution.
 
 You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
 Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.

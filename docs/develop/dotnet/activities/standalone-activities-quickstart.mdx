@@ -162,9 +162,9 @@ await worker.ExecuteAsync(tokenSource.Token);`}
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a Worker, register the Activity, and run the Worker. The Worker doesn't need to know
-whether the Activity will be invoked from a Workflow or as a Standalone Activity. See [How to develop
-a Worker](/develop/dotnet/workers/run-worker-process) for more details on Worker setup and
-configuration options.
+whether the Activity will be invoked from a Workflow or as a Standalone Activity. See
+[Develop a Worker](/develop/dotnet/workers/run-worker-process) for more details on Worker setup and configuration
+options.
 
 [src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
 
@@ -270,4 +270,4 @@ for mTLS and API key setup.
 ## Next steps
 
 - **[Standalone Activities Feature Guide](/develop/dotnet/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
-- **[Activity basics](/develop/dotnet/activities/basics)**: How to write and register Activities with the .NET SDK.
+- **[Activity basics](/develop/dotnet/activities/basics)**: Write and register Activities with the .NET SDK.
