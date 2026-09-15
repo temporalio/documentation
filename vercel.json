@@ -2424,6 +2424,61 @@
       "source": "/evaluate/features/low-latency",
       "destination": "/cloud/service-availability#latency",
       "permanent": true
+    },
+    {
+      "source": "/tags/temporal-sd-ks",
+      "destination": "/tags/temporal-sdks",
+      "permanent": true
+    },
+    {
+      "source": "/tags/type-script-sdk",
+      "destination": "/tags/typescript-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/tags/tr-us",
+      "destination": "/tags/trus",
+      "permanent": true
+    },
+    {
+      "source": "/tags/google-gen-ai",
+      "destination": "/tags/google-genai",
+      "permanent": true
+    },
+    {
+      "source": "/tags/lang-graph",
+      "destination": "/tags/langgraph",
+      "permanent": true
+    },
+    {
+      "source": "/tags/lang-smith",
+      "destination": "/tags/langsmith",
+      "permanent": true
+    },
+    {
+      "source": "/tags/open-ai-agents-sdk",
+      "destination": "/tags/openai-agents-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/tags/open-metrics",
+      "destination": "/tags/openmetrics",
+      "permanent": true
+    },
+    {
+      "source": "/tags/self-hosted",
+      "destination": "/tags/self-hosting",
+      "permanent": true
+    },
+    {
+      "source": "/tags/activity",
+      "destination": "/tags/activities",
+      "permanent": true
+    },
+    {
+      "source": "/tags/worker",
+      "destination": "/tags/workers",
+      "permanent": true
     }
   ]
 }
