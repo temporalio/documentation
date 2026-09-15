@@ -725,6 +725,7 @@ const developPythonCategory = {
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
           'develop/python/integrations/openai-agents',
+          'develop/python/integrations/openrouter',
           'develop/python/integrations/strands-agents',
         ],
       },
