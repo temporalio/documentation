@@ -259,6 +259,25 @@ echo "$RUNTIME_ENDPOINT_ARN"
 
 Both commands must print an ARN before you continue.
 
+AgentCore creates an immutable Runtime version when you deploy changed Worker code or configuration. The named
+`temporal` endpoint remains on its configured version. When you redeploy the sample, increment
+`endpoints.temporal.version` in `agentcore/agentcore.json` so the endpoint uses the new Runtime version.
+
+Verify the endpoint version before creating the Worker Deployment Version:
+
+```bash
+aws bedrock-agentcore-control get-agent-runtime-endpoint \
+  --agent-runtime-id "$AGENT_RUNTIME_ID" \
+  --endpoint-name temporal \
+  --query '{status:status,liveVersion:liveVersion}' \
+  --region "$AWS_REGION"
+```
+
+If the endpoint remains on an earlier version, Temporal starts the old Worker code. Creating the Worker Deployment
+Version can then time out if that code does not acknowledge the invocation promptly or does not register the expected
+deployment name and Build ID. For details, see [AgentCore Runtime versioning and
+endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-runtime-versioning.html).
+
 ## 4. Grant Temporal access to the Runtime
 
 Choose an External ID, then use the sample's CloudFormation script to create the IAM role that Temporal Cloud assumes:
@@ -272,6 +291,14 @@ export INVOCATION_STACK="ac-strands-invoke"
   "$EXTERNAL_ID" \
   "${AGENT_RUNTIME_ARN}*"
 ```
+
+:::caution
+
+The sample names the IAM role `Temporal-Cloud-Serverless-Worker-<stack-name>`. An [IAM role name can contain at most 64
+characters](https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-iam-role.html). Keep
+`INVOCATION_STACK` to 31 characters or fewer. The `ac-strands-invoke` value above is within the limit.
+
+:::
 
 Wait for the stack and retrieve the role ARN:
 

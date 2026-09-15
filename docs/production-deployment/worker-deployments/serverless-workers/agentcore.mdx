@@ -156,10 +156,17 @@ aws bedrock-agentcore-control get-agent-runtime-endpoint \
   --region <AWS_REGION>
 ```
 
-If you redeploy the Runtime without creating or updating an endpoint, an existing endpoint can remain pinned to the
-earlier Runtime version. For a later Worker version, create a named endpoint pinned to the new Runtime version and use
-that endpoint ARN for the corresponding Worker Deployment Version. Keep endpoints used by existing Worker Deployment
-Versions pinned to their original Runtime versions.
+:::caution Verify the endpoint version after redeploying
+
+If you redeploy the Runtime without updating its named endpoint, Temporal continues to invoke the earlier Worker code.
+Creating the Worker Deployment Version can then time out if that code does not acknowledge the invocation promptly or
+does not register the expected deployment name and Build ID.
+
+For a later Worker version, create or update a named endpoint to use the new Runtime version. Use that endpoint ARN for
+the corresponding Worker Deployment Version. Keep endpoints used by existing Worker Deployment Versions pinned to
+their original Runtime versions.
+
+:::
 
 If you use a VPC instead of a public network, configure outbound access from the VPC to your Temporal Cloud Namespace.
 Temporal invokes the named endpoint by assuming the IAM role that you create in [Step 3](#configure-iam).
@@ -172,8 +179,16 @@ The External ID prevents a [confused deputy](https://docs.aws.amazon.com/IAM/lat
 attack.
 
 [Download the CloudFormation template](/files/temporal-cloud-serverless-worker-agentcore-role.yaml), then deploy it.
-Pass the Runtime ARN with a trailing wildcard so the policy covers the Runtime and its endpoints. The template names
-the IAM role `<ROLE_NAME>-<STACK_NAME>`. Keep the combined name within the IAM limit of 64 characters:
+Pass the Runtime ARN with a trailing wildcard so the policy covers the Runtime and its endpoints.
+
+:::caution
+
+The template names the IAM role `<ROLE_NAME>-<STACK_NAME>`. An [IAM role name can contain at most 64
+characters](https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-iam-role.html). Include
+the hyphen when checking the combined length. CloudFormation cannot create the role if the combined name exceeds this
+limit.
+
+:::
 
 ```bash
 aws cloudformation create-stack \
