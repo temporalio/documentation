@@ -518,6 +518,12 @@ The Temporal Cloud Nexus metrics in this section are in
 Nexus operation metrics measure calls from the caller side. For these metrics, `temporal_namespace` identifies the caller Namespace.
 Nexus request metrics measure requests on the handler side. For these metrics, `temporal_namespace` identifies the handler Namespace.
 
+:::note Standalone Nexus Operations
+
+Standalone Nexus Operations are Nexus Operation Executions that are started independently, without a caller Workflow. For Nexus Operation metrics that include the `temporal_workflow_type` label, Standalone Nexus Operations use the placeholder value `"__temporal_standalone_nexus_operation__"`.
+
+:::
+
 :::note Nexus latency intervals
 
 - Request latency measures how long the handler takes to process one Nexus request. For a synchronous start request, it ends when the handler returns the result. For an asynchronous start request, it ends when the handler finishes the start request and doesn't continue until the Operation completes.
