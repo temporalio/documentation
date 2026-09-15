@@ -395,6 +395,13 @@ The maximum number of Worker deployments that the server allows to be registered
 
 The maximum number of versions that the server allows to be registered in a single Worker deployments at a given time. Note that unused versions will be deleted by the system automatically when this limit is reached. Defaults to 100.
 
-### Max Task Queues In Deployment Version limits {/* #max-task-queues-in-deployment-version-limits */}
+### Max Task Queues in Deployment Version limits {/* #max-task-queues-in-deployment-version-limits */}
 
 The maximum number of Task Queues that the server allows to be registered in a single Worker Deployment Version. Defaults to 100.
+
+:::caution
+
+**Do not enable Worker Versioning for Task Queues that are generated per Worker** (for example, a Task Queue that has a UUID in its name) — this pattern will quickly exhaust the limit.
+A per-worker Task Queue's lifetime is tied to the Worker itself. When the Worker is updated to a new version, it gets a new Task Queue and the old one is gone, so versioning is not relevant.
+
+:::
