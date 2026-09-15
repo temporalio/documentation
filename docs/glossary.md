@@ -866,14 +866,14 @@ Workflow Execution within a Namespace.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow ID Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy)
+#### [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy)
 
 A Workflow ID Conflict Policy determines how to resolve the conflict when spawning a new Workflow Execution with a
 particular Workflow ID that is used by an Open Workflow Execution already.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow ID Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy)
+#### [Workflow Id Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy)
 
 A Workflow ID Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow ID, if
 that Workflow ID has been used with a previous, and now Closed, Workflow Execution.

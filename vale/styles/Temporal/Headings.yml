@@ -91,6 +91,8 @@ exceptions:
   - Versioning
   - Worker
   - Workers
+  - Conflict Policy
+  - Reuse Policy
   - Workflow
   - Workflows
   # Temporal compound term components
