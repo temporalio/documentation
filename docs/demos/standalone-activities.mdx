@@ -10,15 +10,7 @@ tags:
 description: An interactive overview of Temporal Standalone Activities.
 ---
 
-import { StandaloneActivityDemo, ReleaseNoteHeader, SdkGuideLinks } from '@site/src/components';
-
-<ReleaseNoteHeader
-  featureName="standaloneActivity"
-  languages={["Go", "Python", "Java", ".NET", "TypeScript", "Ruby"]}
-  guidePath="activities/standalone-activities"
->
-  Available in [Temporal Cloud](/standalone-activity#temporal-cloud-support) and in the [Temporal CLI](/standalone-activity#temporal-cli-support) v1.7.0 or higher with Temporal Server v1.31.0 or higher. Java SDK support is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-</ReleaseNoteHeader>
+import { StandaloneActivityDemo, SdkGuideLinks } from '@site/src/components';
 
 Standalone Activities let you run a single Activity straight from your application without
 writing a Workflow. Your code uses the Temporal Client to send the request to the Server, the Server durably enqueues the request
