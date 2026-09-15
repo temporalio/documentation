@@ -1,0 +1,360 @@
+---
+id: standalone-activities
+title: Standalone Activities Feature Guide
+sidebar_label: Feature Guide
+toc_max_heading_level: 4
+tags:
+  - Activities
+  - Temporal Client
+  - Rust SDK
+  - Temporal SDKs
+description: Execute Activities independently without a Workflow using the Temporal Rust SDK.
+---
+
+[Standalone Activities](/standalone-activity) are Activities that run independently, without being
+orchestrated by a Workflow. Instead of executing an Activity from within a Workflow Definition using
+`ctx.execute_activity()`, you execute a Standalone Activity directly from a
+[`Client`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html).
+
+The way you write the Activity and register it with a Worker is identical to [Workflow
+Activities](/develop/rust/activities/basics). The only difference is that you execute a Standalone
+Activity directly from your Temporal Client.
+
+:::tip
+
+New to Standalone Activities? Start with the [Standalone Activities Quickstart](/develop/rust/activities/standalone-activities-quickstart).
+
+:::
+
+This page covers the following:
+
+- [Prerequisites](#prerequisites)
+- [Start a Standalone Activity without waiting for the result](#start-activity)
+- [Get a handle to an existing Standalone Activity](#get-activity-handle)
+- [Wait for the result of a Standalone Activity](#get-activity-result)
+- [List Standalone Activities](#list-activities)
+- [Count Standalone Activities](#count-activities)
+- [Run Standalone Activities with Temporal Cloud](#run-standalone-activities-temporal-cloud)
+
+:::note
+
+This documentation uses source code from the
+[standalone_activity](https://github.com/temporalio/sdk-rust/tree/main/crates/sdk/examples/standalone_activities)
+sample.
+
+:::
+
+## Prerequisites {/* #prerequisites */}
+
+Standalone Activities require:
+
+- **Rust** 1.92.0+
+- **Temporal Rust SDK** v1.0.0 or higher
+- **[Temporal CLI](/cli/setup-cli)** v1.9.1 or higher
+
+The [Standalone Activities Quickstart](/develop/rust/activities/standalone-activities-quickstart)
+walks through installing these.
+
+## Start a Standalone Activity without waiting for the result {/* #start-activity */}
+
+Starting a Standalone Activity means sending a request to the Temporal Server to durably enqueue
+your Activity job, without waiting for it to be executed by your Worker.
+
+Use [`Client::start_activity`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html#method.start_activity)
+to start a Standalone Activity and get a handle without waiting for the result:
+
+[start_activity.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/start_activity.rs)
+
+```rust
+let options = ActivityStartOptions::with_start_to_close_timeout(
+    "standalone-activities",
+    "standalone-activity-id",
+    Duration::from_secs(10),
+)
+.build();
+
+// Returns as soon as the server has durably enqueued the activity.
+let handle = client
+    .start_activity(
+        GreetingActivities::compose_greeting,
+        ("Hello".to_string(), "Temporal".to_string()),
+        options,
+    )
+    .await?;
+
+println!(
+    "Started activity, id: {} run_id: {:?}",
+    handle.activity_id(),
+    handle.run_id()
+);
+```
+
+The first argument identifies the Activity to run. Passing the Activity method itself, such as
+`GreetingActivities::compose_greeting`, gives you a typed
+[`ActivityHandle`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html),
+so the input and output types are checked at compile time. The second argument is the Activity's
+input; if your Activity takes several values, pass them as a tuple.
+
+[`ActivityStartOptions`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityStartOptions.html)
+requires a Task Queue, an Activity ID, and a close timeout. The
+`with_start_to_close_timeout` and `with_schedule_to_close_timeout` constructors return a builder
+with that timeout already set; call `.build()` to finish, or set additional fields such as
+`retry_policy`, `heartbeat_timeout`, `id_reuse_policy`, or `priority` first.
+
+With the Temporal Server and Worker running, open a new terminal in the `crates/sdk` directory and
+run:
+
+```bash
+cargo run --features examples --example standalone-activities-start
+```
+
+Or use the Temporal CLI:
+
+```bash
+temporal activity start \
+  --type 'GreetingActivities::compose_greeting' \
+  --activity-id standalone-activity-id \
+  --task-queue standalone-activities \
+  --start-to-close-timeout 10s \
+  --input '["Hello","Temporal"]'
+```
+
+By default, the `#[activities]` macro names each Activity `<ImplType>::<method_name>`, so the
+`compose_greeting` method on `GreetingActivities` registers as `GreetingActivities::compose_greeting`. Use that
+name when referring to the Activity from the CLI or from a [List Filter](/list-filter) query.
+
+## Get a handle to an existing Standalone Activity {/* #get-activity-handle */}
+
+Use [`Client::get_activity_handle`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html#method.get_activity_handle)
+to create an
+[`ActivityHandle`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html)
+for a previously started Standalone Activity:
+
+[get_activity_handle.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/get_activity_handle.rs)
+
+```rust
+// Passing `None` for the run ID targets the latest run with this activity ID.
+let handle = client.get_activity_handle(
+    GreetingActivities::compose_greeting,
+    "standalone-activity-id",
+    None,
+);
+```
+
+Pass `None` for the run ID to target the latest run of the given Activity ID, or pass
+`Some(run_id)` to target a specific run.
+
+If you don't have the Activity definition on hand, for example in a tool that operates on
+Activities it didn't start, use
+[`Client::get_untyped_activity_handle`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html#method.get_untyped_activity_handle)
+instead. You can still describe, cancel, and terminate through an untyped handle.
+
+You can then use the handle to wait for the result, describe, cancel, or terminate the Activity:
+
+```rust
+handle.result().await?;                            // block until the activity completes
+handle.describe(Default::default()).await?;        // status, timestamps, attempt, last failure, ...
+handle.cancel(Default::default()).await?;          // request cancellation
+handle.terminate(Default::default()).await?;       // force-close the activity
+```
+
+[`describe`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html#method.describe)
+takes an
+[`ActivityDescribeOptions`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityDescribeOptions.html).
+Its `include_input`, `include_outcome`, and `include_heartbeat_details` fields are off by default,
+because those fields carry Payloads that can be arbitrarily large. Turn them on only when you need
+them:
+
+```rust
+let description = handle
+    .describe(
+        ActivityDescribeOptions::builder()
+            .include_outcome(true)
+            .build(),
+    )
+    .await?;
+
+println!("Status: {:?}", description.status());
+println!("Type: {}", description.activity_type());
+println!("Attempt: {}", description.attempt());
+```
+
+The accessors on the description (`status()`, `activity_type()`, `schedule_time()`, and so on)
+come from the
+[`ActivityExecutionInfoLike`](https://docs.rs/temporalio-client/latest/temporalio_client/trait.ActivityExecutionInfoLike.html)
+trait, so bring it into scope to use them.
+
+Run it, after executing an Activity with one of the samples above:
+
+```bash
+cargo run --features examples --example standalone-activities-get-handle
+```
+
+Or use the Temporal CLI to describe an Activity by ID:
+
+```bash
+temporal activity describe --activity-id standalone-activity-id
+```
+
+## Wait for the result of a Standalone Activity {/* #get-activity-result */}
+
+The Rust SDK has no single call that does both. To execute a Standalone Activity and wait for its
+result, call `start_activity` to durably enqueue the Activity, then
+[`ActivityHandle::result`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html#method.result)
+to block until it completes and return the result:
+
+[execute_activity.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/execute_activity.rs)
+
+```rust
+// There is no single "execute" call: start the activity, then await its result.
+let handle = client
+    .start_activity(
+        GreetingActivities::compose_greeting,
+        ("Hello".to_string(), "Temporal".to_string()),
+        options,
+    )
+    .await?;
+
+let result = handle.result().await?;
+println!("Activity result: {result}");
+```
+
+Because the handle is typed, `result` returns the Activity's own output type, `String` in this
+case, with no downcasting. It fails with an
+[`ActivityResultError`](https://docs.rs/temporalio-client/latest/temporalio_client/errors/enum.ActivityResultError.html)
+if the Activity failed, was cancelled, or was terminated.
+
+Splitting start from result also means you don't have to wait in the same process, or even the same
+program, that started the Activity: [get a handle](#get-activity-handle) later and call `result` on
+it.
+
+Or use the Temporal CLI to wait for a result by Activity ID:
+
+```bash
+temporal activity result --activity-id standalone-activity-id
+```
+
+## List Standalone Activities {/* #list-activities */}
+
+Use [`Client::list_activities`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html#method.list_activities)
+to list Standalone Activity Executions that match a [List Filter](/list-filter) query. The result is
+a [`ListActivitiesStream`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ListActivitiesStream.html),
+a `Stream` of
+[`ActivityExecutionInfo`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityExecutionInfo.html)
+values that fetches pages from the server on demand as the stream is consumed.
+
+These APIs return only Standalone Activity Executions. Activities running inside Workflows are not
+included.
+
+[list_activities.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/list_activities.rs)
+
+```rust
+use futures::StreamExt;
+use temporalio_client::ActivityExecutionInfoLike;
+
+let mut executions =
+    client.list_activities("TaskQueue = 'standalone-activities'", Default::default());
+
+while let Some(execution) = executions.next().await {
+    let execution = execution?;
+    println!(
+        "{} {} {:?}",
+        execution.activity_id(),
+        execution.activity_type(),
+        execution.status()
+    );
+}
+```
+
+`list_activities` is not `async`. It returns the stream immediately, and the requests happen as you
+poll it. Each item is a `Result`, because a page fetch can fail partway through the
+stream.
+
+Run it:
+
+```bash
+cargo run --features examples --example standalone-activities-list
+```
+
+Or use the Temporal CLI:
+
+```bash
+temporal activity list
+```
+
+The query parameter accepts the same [List Filter](/list-filter) syntax used for [Workflow
+Visibility](/visibility). For example,
+`ActivityType = 'GreetingActivities::compose_greeting' AND ExecutionStatus = 'Running'`.
+
+## Count Standalone Activities {/* #count-activities */}
+
+Use [`Client::count_activities`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html#method.count_activities)
+to count Standalone Activity Executions that match a [List Filter](/list-filter) query. This returns
+the total count of executions (running, completed, failed, etc.) — not the number of queued tasks.
+It works the same way as counting Workflow Executions.
+
+[count_activities.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/count_activities.rs)
+
+```rust
+let count = client
+    .count_activities("TaskQueue = 'standalone-activities'", Default::default())
+    .await?;
+
+println!("Total: {}", count.count());
+// Non-empty only when the query has a GROUP BY clause.
+for group in count.groups() {
+    println!("  {:?} => {}", group.get::<String>(0), group.count());
+}
+```
+
+If the query has a `GROUP BY` clause,
+[`groups()`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityExecutionCount.html#method.groups)
+holds the per-group counts and `count()` is their sum; otherwise `groups()` is empty. Group values
+are typed: read them with `get::<T>(index)`, or with `try_get` if you want to handle a
+deserialization failure rather than get `None`.
+
+Run it:
+
+```bash
+cargo run --features examples --example standalone-activities-count
+```
+
+Or use the Temporal CLI:
+
+```bash
+temporal activity count
+```
+
+## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
+
+The Worker and Client code in the [Standalone Activities Quickstart](/develop/rust/activities/standalone-activities-quickstart)
+use [`ClientOptions::load_from_config`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ClientOptions.html#method.load_from_config),
+so the same code works against Temporal Cloud — configure the connection via environment variables
+or a TOML profile. No code changes are needed.
+
+For a step-by-step guide on connecting to Temporal Cloud, including Namespace creation, certificate
+generation, and authentication setup in the Cloud UI, see
+[Connect to Temporal Cloud](/develop/rust/client/temporal-client#connect-to-temporal-cloud).
+
+### Connect with mTLS
+
+Set these environment variables with values from your Temporal Cloud Namespace settings:
+
+```
+export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
+export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
+export TEMPORAL_TLS_CLIENT_CERT_PATH='path/to/your/client.pem'
+export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/client.key'
+```
+
+### Connect with an API key
+
+Set these environment variables with values from your Temporal Cloud API key settings:
+
+```
+export TEMPORAL_ADDRESS=<your-namespace>.<your-account-id>.tmprl.cloud:7233
+export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
+export TEMPORAL_API_KEY=<your-api-key>
+```
+
+Then run the Worker and starter code as shown in the [Standalone Activities Quickstart](/develop/rust/activities/standalone-activities-quickstart).
