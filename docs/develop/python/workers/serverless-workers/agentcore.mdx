@@ -84,15 +84,7 @@ async def run_worker() -> None:
         namespace=os.environ.get("TEMPORAL_NAMESPACE", "default"),
         api_key=api_key,
         tls=bool(api_key),
-        plugins=[
-            StrandsPlugin(
-                models={
-                    workflows.MODEL_NAME: lambda: BedrockModel(
-                        model_id=workflows.MODEL_ID
-                    )
-                }
-            )
-        ],
+        plugins=[StrandsPlugin()],
     )
 
     tracker = ActivityTracker()
@@ -149,9 +141,6 @@ async def invoke(payload: dict) -> dict:
 
 ```
 <!--SNIPEND-->
-
-The `models` mapping registers Nova Lite under the name used by the sample Workflow. Model calls then run as Activities
-on this Worker.
 
 The payload does not represent a Workflow input. The Worker Controller Instance invokes the endpoint to add Worker
 capacity. Applications start Workflows through the Temporal Client, as usual. `add_async_task` causes AgentCore to
