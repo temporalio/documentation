@@ -52,7 +52,7 @@ Each ping informs the Temporal Service that the Activity Execution is making pro
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Id](/activity-execution#activity-id)
+#### [Activity ID](/activity-execution#activity-id)
 
 A unique identifier for an Activity Execution.
 
@@ -515,7 +515,7 @@ a measure that controls the rate of requests at the service level, such as the F
 #### [Reset](/workflow-execution/event#reset)
 
 A Reset terminates a Workflow Execution, removes the progress in the Event History up to the reset point, and then
-creates a new Workflow Execution with the same Workflow Type and Id to continue.
+creates a new Workflow Execution with the same Workflow Type and ID to continue.
 
 <!-- _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanation)_ -->
 
@@ -533,9 +533,9 @@ Execution or an Activity Task Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Run Id](/workflow-execution/workflowid-runid#run-id)
+#### [Run ID](/workflow-execution/workflowid-runid#run-id)
 
-A Run Id is a globally unique, platform-level identifier for a Workflow Execution.
+A Run ID is a globally unique, platform-level identifier for a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -590,6 +590,14 @@ A Signal is an asynchronous request to a Workflow Execution.
 #### [Signal-With-Start](/sending-messages#signal-with-start)
 
 Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if it already exists.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Standalone Activity](/standalone-activity)
+
+A Standalone Activity is an Activity Execution invoked outside of a Workflow, directly from a Temporal Client. It has a
+separate ID space from Workflows and other Temporal primitives. Existing Activity Functions can be invoked as
+Standalone with no code changes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -673,15 +681,15 @@ Temporal Cloud is a managed, hosted Temporal environment that provides a platfor
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id)
+#### [Temporal Cloud Account ID](/cloud/namespaces#temporal-cloud-account-id)
 
-A Temporal Cloud Account Id is a unique identifier for a customer.
+A Temporal Cloud Account ID is a unique identifier for a customer.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id)
+#### [Temporal Cloud Namespace ID](/cloud/namespaces#temporal-cloud-namespace-id)
 
-A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.
+A Cloud Namespace ID is a globally unique identifier for a Namespace in Temporal Cloud.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -817,6 +825,14 @@ An in-memory cache on a Worker that holds the state of Workflow Executions it ha
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### [Workflow Activity](/workflow-activity)
+
+A Workflow Activity is an Activity Execution orchestrated by a Workflow. Its results are persisted to the Workflow and
+Events are added to the Workflow Execution's Event History. Contrast with
+[Standalone Activity](/standalone-activity) and [Local Activity](/local-activity).
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 #### [Workflow Definition](/workflow-definition)
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
@@ -843,24 +859,24 @@ Workflow History export allows users to export Closed Workflow Histories to a us
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_ -->
 
-#### [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)
+#### [Workflow ID](/workflow-execution/workflowid-runid#workflow-id)
 
-A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open
+A Workflow ID is a customizable, application-level identifier for a Workflow Execution that is unique to an Open
 Workflow Execution within a Namespace.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy)
+#### [Workflow ID Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy)
 
-A Workflow Id Conflict Policy determines how to resolve the conflict when spawning a new Workflow Execution with a
-particular Workflow Id that is used by an Open Workflow Execution already.
+A Workflow ID Conflict Policy determines how to resolve the conflict when spawning a new Workflow Execution with a
+particular Workflow ID that is used by an Open Workflow Execution already.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Id Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy)
+#### [Workflow ID Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy)
 
-A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if
-that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
+A Workflow ID Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow ID, if
+that Workflow ID has been used with a previous, and now Closed, Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
