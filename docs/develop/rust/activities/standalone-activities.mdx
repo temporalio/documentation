@@ -73,6 +73,7 @@ let options = ActivityStartOptions::with_start_to_close_timeout(
 )
 .build();
 
+// Returns as soon as the server has durably enqueued the activity.
 let handle = client
     .start_activity(
         GreetingActivities::compose_greeting,
@@ -81,10 +82,11 @@ let handle = client
     )
     .await?;
 
-println!("Started Activity with id={} run_id={:?}", handle.activity_id(), handle.run_id());
-
-// Wait for the result later
-println!("Activity result: {}", handle.result().await?);
+println!(
+    "Started activity, id: {} run_id: {:?}",
+    handle.activity_id(),
+    handle.run_id()
+);
 ```
 
 The first argument identifies the Activity to run. Passing the Activity method itself, such as
@@ -131,6 +133,7 @@ for a previously started Standalone Activity:
 [get_activity_handle.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/get_activity_handle.rs)
 
 ```rust
+// Passing `None` for the run ID targets the latest run with this activity ID.
 let handle = client.get_activity_handle(
     GreetingActivities::compose_greeting,
     "standalone-activity-id",
@@ -164,10 +167,15 @@ them:
 
 ```rust
 let description = handle
-    .describe(ActivityDescribeOptions::builder().include_outcome(true).build())
+    .describe(
+        ActivityDescribeOptions::builder()
+            .include_outcome(true)
+            .build(),
+    )
     .await?;
 
-println!("Status:  {:?}", description.status());
+println!("Status: {:?}", description.status());
+println!("Type: {}", description.activity_type());
 println!("Attempt: {}", description.attempt());
 ```
 
@@ -198,6 +206,7 @@ to block until it completes and return the result:
 [execute_activity.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/execute_activity.rs)
 
 ```rust
+// There is no single "execute" call: start the activity, then await its result.
 let handle = client
     .start_activity(
         GreetingActivities::compose_greeting,
@@ -243,16 +252,16 @@ included.
 use futures::StreamExt;
 use temporalio_client::ActivityExecutionInfoLike;
 
-let mut activities =
+let mut executions =
     client.list_activities("TaskQueue = 'standalone-activities'", Default::default());
 
-while let Some(activity) = activities.next().await {
-    let activity = activity?;
+while let Some(execution) = executions.next().await {
+    let execution = execution?;
     println!(
         "{} {} {:?}",
-        activity.activity_id(),
-        activity.activity_type(),
-        activity.status()
+        execution.activity_id(),
+        execution.activity_type(),
+        execution.status()
     );
 }
 ```
@@ -287,12 +296,13 @@ It works the same way as counting Workflow Executions.
 [count_activities.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/count_activities.rs)
 
 ```rust
-let result = client
+let count = client
     .count_activities("TaskQueue = 'standalone-activities'", Default::default())
     .await?;
 
-println!("Total: {}", result.count());
-for group in result.groups() {
+println!("Total: {}", count.count());
+// Non-empty only when the query has a GROUP BY clause.
+for group in count.groups() {
     println!("  {:?} => {}", group.get::<String>(0), group.count());
 }
 ```

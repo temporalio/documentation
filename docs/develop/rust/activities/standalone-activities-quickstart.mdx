@@ -159,26 +159,21 @@ Filter](/list-filter) queries.
 <SetupStep code={
 <>
 <CodeSnippet language="rust" title="worker.rs">
-{`use temporalio_client::{
-    Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
-};
-use temporalio_sdk::{Runtime, Worker, WorkerOptions};
-
-#[tokio::main]
+{`#[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let runtime = Runtime::from_current_tokio(Default::default())?;
-
-    let (connection_options, client_options) =
+    let (conn_opts, client_opts) =
         ClientOptions::load_from_config(LoadClientConfigProfileOptions::default())?;
-    let connection = Connection::connect(connection_options).await?;
-    let client = Client::new(connection, client_options)?;
+    let connection = Connection::connect(conn_opts).await?;
+    let client = Client::new(connection, client_opts)?;
 
+    // A Worker that only runs Standalone Activities needs no registered workflows.
     let worker_options = WorkerOptions::new("standalone-activities")
         .register_activities(GreetingActivities)
         .build();
 
     let mut worker = Worker::new(&runtime, client, worker_options)?;
-    println!("Starting worker (ctrl+c to exit)");
+    println!("Worker started on task queue: standalone-activities");
     worker.run().await?;
 
     Ok(())
@@ -217,6 +212,7 @@ Leave this terminal running — the Worker needs to stay up to process activitie
 )
 .build();
 
+// There is no single "execute" call: start the activity, then await its result.
 let handle = client
     .start_activity(
         GreetingActivities::compose_greeting,
