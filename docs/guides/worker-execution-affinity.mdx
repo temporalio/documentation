@@ -77,7 +77,7 @@ If a Worker crashes while processing Activities on its unique queue:
 
 :::caution Worker Versioning
 
-Do not enable [Worker Versioning](/production-deployment/worker-deployments/worker-versioning#definition) for worker-specific Task Queues — versioning is not relevant for such queues, and it will unnecessarily exhaust the [per-version Task Queue limit](/cloud/limits#max-task-queues-in-deployment-version-limits).
+Do not enable [Worker Versioning](/production-deployment/worker-deployments/worker-versioning#definition) for worker-specific Task Queues — it will unnecessarily exhaust the [per-version Task Queue limit](/cloud/limits#max-task-queues-in-deployment-version-limits). A per-worker Task Queue's lifetime is tied to the Worker itself. When the Worker is updated to a new version, it gets a new Task Queue and the old one is gone. So versioning this queue does not add any value.
 
 :::
 
