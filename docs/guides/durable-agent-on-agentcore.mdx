@@ -14,7 +14,7 @@ tags:
   - Serverless
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="prerelease">
   Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
@@ -42,20 +42,20 @@ them can be replaced.
 
 ## Architecture
 
-The Workflow contains the Strands agent loop. The Temporal Strands integration runs model calls as Activities. The
-Code Interpreter tool is also an Activity, so model and tool calls have their own retries, timeouts, and recorded
-results.
+Temporal Cloud owns the agent's execution state and capacity control. The application starts or signals the Workflow.
+The Workflow records agent decisions and schedules model and tool work as Temporal Tasks. When the Task Queue needs
+capacity, the Worker Controller Instance starts AgentCore Runtime sessions.
 
-AgentCore Runtime hosts the Temporal Worker. It does not receive the user's prompt. Temporal invokes the Runtime
-endpoint only to add Worker capacity, and the application sends the prompt through the Temporal Client.
+Each Runtime session hosts a Temporal Worker that polls the versioned Task Queue. Workers can call AgentCore services,
+but the sessions and their process-local state remain replaceable. The sample in this guide uses AgentCore Code
+Interpreter. It does not use every AgentCore service shown in the reference architecture.
 
-```mermaid
-flowchart LR
-    APP[Local client] -->|Start with prompt| WF[Temporal Workflow]
-    WF -->|Workflow and Activity Tasks| W[Temporal Worker<br/>on AgentCore Runtime]
-    W --> MODEL[Amazon Bedrock]
-    W --> TOOL[AgentCore<br/>Code Interpreter]
-```
+<CaptionedImage
+  src="/diagrams/temporal-agentcore-reference-architecture.png"
+  title="Temporal coordinates agent execution and starts Worker capacity on AgentCore Runtime."
+  alt="An application starts or signals a durable Strands agent Workflow in Temporal Cloud. The Workflow sends Tasks to a versioned Task Queue. A Worker Controller Instance observes demand and starts AgentCore Runtime sessions. Temporal Workers in those sessions poll and complete Tasks and can use AgentCore services."
+  zoom="true"
+/>
 
 Place state according to how long it must remain available:
 
