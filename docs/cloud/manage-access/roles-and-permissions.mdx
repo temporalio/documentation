@@ -33,6 +33,10 @@ The following table provides a summary of the account-level roles and their prim
 | Finance Admin | Manages billing and payment information     | No                    | None                                    | Full billing, payments, and usage         |
 | Read-Only     | Views account configuration and resources   | No                    | None                                    | None                              |
 
+Account Owner is the only customer role that can assign Finance Admin. This applies to users, groups, and Service
+Accounts. Global Admin can create these principals but cannot assign Finance Admin. Global Admin has usage visibility,
+not billing or payment access. Finance Admin is not a substitute for Account Owner.
+
 Account-level roles don't govern day-to-day operations within a Namespace. Access to resources inside a Namespace, such
 as Workflows and Workflow Executions, is controlled by [Namespace-level permissions](#namespace-level-permissions).
 
