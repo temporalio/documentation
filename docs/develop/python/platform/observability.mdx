@@ -120,7 +120,7 @@ spans while a Workflow replays, so Worker restarts and cache evictions never pro
 open when a Worker stops is exported once, when the Workflow finishes it on another Worker. Each Activity attempt
 produces its own `RunActivity` span, so retries stay visible.
 
-:::note
+:::caution
 
 `OpenTelemetryPlugin` and `create_tracer_provider()` are experimental and may change in future versions.
 
