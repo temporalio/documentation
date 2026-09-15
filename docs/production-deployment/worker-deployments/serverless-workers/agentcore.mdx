@@ -54,8 +54,10 @@ Python SDK](/develop/python/workers/serverless-workers/agentcore).
 
 ## 1. Configure the Worker Runtime {/* #configure-worker-runtime */}
 
-In `agentcore/agentcore.json`, configure the Runtime with the Temporal connection, Task Queue, Worker Deployment name,
-and Build ID:
+`agentcore/agentcore.json` is the [AgentCore CLI project
+configuration](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html). Its
+`runtimes` array defines the AgentCore Runtime resources that the CLI deploys. In the existing Runtime object, configure
+the Temporal connection, Task Queue, Worker Deployment name, and Build ID:
 
 ```json
 {
@@ -87,9 +89,14 @@ and Build ID:
 The Task Queue must match the Task Queue used by your application. The deployment name and Build ID must match the
 Worker Deployment Version that you create in [Step 4](#create-worker-deployment-version).
 
-The Runtime definition must use your Worker handler as its entrypoint and provide a named endpoint for Temporal. The
-following fragment from the Python Strands AgentCore sample uses a public network so the Worker can reach Temporal
-Cloud:
+The `entrypoint` field names the Python file that AgentCore starts. That file must implement the [AgentCore Runtime HTTP
+protocol contract](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-http-protocol-contract.html) by
+serving the Runtime's `/invocations` and `/ping` endpoints. For a Serverless Worker, `/invocations` starts the Temporal
+Worker and acknowledges the request. For an implementation example, see the [Python Runtime entry
+point](/develop/python/workers/serverless-workers/agentcore#runtime-handler).
+
+The following fragment from the Python Strands AgentCore sample configures that entry point, a public network, and the
+named endpoint that Temporal invokes:
 
 ```json
 {
@@ -106,16 +113,11 @@ Cloud:
 }
 ```
 
-The endpoint is pinned to the specified AgentCore Runtime version. In this example, `version: 1` refers to the first
-deployed Runtime version. For a later Worker version, create a named endpoint pinned to the new Runtime version and use
-that endpoint ARN for the corresponding Worker Deployment Version. Keep endpoints used by existing Worker Deployment
-Versions pinned to their original Runtime versions.
-
-If you use a VPC instead, configure outbound access from the VPC to your Temporal Cloud Namespace. Temporal invokes the
-named endpoint by assuming the IAM role that you create in [Step 3](#configure-iam).
+In this initial configuration, `version: 1` selects the first AgentCore Runtime version. Verify the named endpoint's
+version after deployment in [Step 2](#deploy-runtime).
 
 Do not commit a populated Temporal Cloud API key. For a production deployment, store it in AWS Secrets Manager, grant
-the Runtime execution role permission to read it, and load it in the Runtime handler. The Runtime execution role is
+the Runtime execution role permission to read it, and load it in the Runtime entry point. The Runtime execution role is
 separate from the invocation role that Temporal assumes.
 
 ## 2. Deploy the Worker Runtime {/* #deploy-runtime */}
@@ -137,8 +139,14 @@ agentcore status --type runtime-endpoint --json
 ```
 
 Record the Runtime ARN and the ARN of the named endpoint. You use the Runtime ARN to scope the invocation role and give
-the endpoint ARN to Temporal Cloud. Confirm that the endpoint's live version matches the Runtime version containing the
-Worker code and environment configuration that you intend to deploy:
+the endpoint ARN to Temporal Cloud.
+
+AgentCore creates an immutable Runtime version when you create or update a Runtime. A named endpoint remains pinned to
+its configured version until you update it. For details, see [AgentCore Runtime versioning and
+endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-runtime-versioning.html).
+
+Confirm that the endpoint's live version matches the Runtime version containing the Worker code and environment
+configuration that you intend to deploy:
 
 ```bash
 aws bedrock-agentcore-control get-agent-runtime-endpoint \
@@ -149,7 +157,12 @@ aws bedrock-agentcore-control get-agent-runtime-endpoint \
 ```
 
 If you redeploy the Runtime without creating or updating an endpoint, an existing endpoint can remain pinned to the
-earlier Runtime version.
+earlier Runtime version. For a later Worker version, create a named endpoint pinned to the new Runtime version and use
+that endpoint ARN for the corresponding Worker Deployment Version. Keep endpoints used by existing Worker Deployment
+Versions pinned to their original Runtime versions.
+
+If you use a VPC instead of a public network, configure outbound access from the VPC to your Temporal Cloud Namespace.
+Temporal invokes the named endpoint by assuming the IAM role that you create in [Step 3](#configure-iam).
 
 ## 3. Grant Temporal permission to invoke the Runtime {/* #configure-iam */}
 
