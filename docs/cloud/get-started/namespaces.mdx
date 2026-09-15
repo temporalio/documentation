@@ -29,8 +29,8 @@ identifiers, and gRPC endpoints in Temporal Cloud.
 - [Access a Namespace](#access-namespaces)
 - [Manage Namespaces](#manage-namespaces)
 - [Delete a Namespace](#delete-a-namespace)
-- [Add a Namespace description](#describe-a-namespace)
 - [Tag a Namespace](#tag-a-namespace)
+- [Add a Namespace description](#describe-a-namespace)
 
 ## What is a Cloud Namespace Name? {/* #temporal-cloud-namespace-name */}
 
@@ -228,7 +228,8 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. On the **Namespaces** page, click **Create Namespace** in the upper-right portion of the window.
 1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
 1. Optional: In **Description**, enter a short purpose note (at most 255 printable ASCII characters plus whitespace).
-   This is free-text context, not a Tag.
+   This is free-text context, not a Tag. Do not include secrets, confidential data, or PII. Descriptions are not
+   encrypted.
 1. In **Cloud Provider**, select the cloud provider in which to host this Namespace.
 1. In **Region**, select the region in which to host this Namespace.
 1. In **Retention Period**, specify a value from 1 to 90 days. When choosing this value, consider your needs for Event
@@ -287,8 +288,8 @@ See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command referen
 For guidance on how many Namespaces to create, how to split workloads across services or domains, and when to isolate
 tenants or teams, see [Namespace best practices](/best-practices/managing-namespace).
 
-This page focuses on Temporal Cloud Namespace mechanics such as naming rules, provisioning, authentication, description,
-tagging, and accessing Namespace endpoints.
+This page focuses on Temporal Cloud Namespace mechanics such as naming rules, provisioning, authentication, tagging,
+description, and accessing Namespace endpoints.
 
 ## How to access a Namespace in Temporal Cloud {/* #access-namespaces */}
 
@@ -482,6 +483,57 @@ tcld namespace lifecycle set \
 </TabItem>
 </Tabs>
 
+## How to tag a Namespace in Temporal Cloud {/* #tag-a-namespace */}
+
+Tags are key-value metadata pairs that can be attached to namespaces in Temporal Cloud to help operators organize,
+track, and manage namespaces more easily.
+
+### Tag structure and limits
+
+- Each namespace can have a maximum of 10 tags
+- Each key must be unique for a given namespace (for example, a namespace cannot have both `team:foo` and `team:bar` tags)
+- Keys and values must be 1-63 characters in length
+- Allowed characters: lowercase letters (`a-z`), numbers (`0-9`), periods (`.`), underscores (`_`), hyphens (`-`), and
+  at signs (`@`)
+- Tags are not a secure storage mechanism and should not store PII or PHI
+- Tags will not change the behavior of the tagged resource
+- There is a soft limit of 1000 unique tag keys per account
+
+### Permissions
+
+- Only [**Account Admins** and **Account Owners**](/cloud/manage-access/roles-and-permissions#account-level-roles) can create and edit tags
+- All users with access to a namespace can view its tags
+
+### Temporal Cloud CLI
+
+See the [`temporal cloud namespace tag`](/cli/command-reference/cloud/namespace#tag) or
+[tcld namespace tags](/cloud/tcld/namespace/#tags) command reference for details.
+
+### Terraform
+
+See the
+[Terraform provider](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/docs/resources/namespace_tags.md)
+for details.
+
+### Web UI
+
+Tags can be viewed and managed through the Temporal Cloud web interface. When viewing a namespace, you'll see tags
+displayed and can add, edit, or remove them if you have the appropriate permissions.
+
+<CaptionedImage src="/img/cloud/tags/Namespace-DetailsWithTags.png" title="Tags appear in namespace details" />
+
+<CaptionedImage src="/img/cloud/tags/Namespaces-IndexWithTags.png" title="Tags appear on the list of namespaces" />
+
+<CaptionedImage
+  src="/img/cloud/tags/CreateNamespace-AddNewTag.png"
+  title="Where to add tags during namespace creation"
+/>
+
+<CaptionedImage
+  src="/img/cloud/tags/CreateNamespace-AddedTag.png"
+  title="After adding a tag during namespace creation"
+/>
+
 ## How to add a Namespace description in Temporal Cloud {/* #describe-a-namespace */}
 
 A Namespace description is an optional free-text purpose note. Use it to answer "what is this Namespace for?" when the
@@ -490,12 +542,22 @@ name is not enough.
 Description is not a Tag. Description is a human-readable summary. Tags are structured key-value metadata for filtering,
 reporting, and automation. See [How to tag a Namespace](#tag-a-namespace).
 
+:::caution Do not include sensitive or confidential information
+
+Do not include secrets, credentials, confidential data, or personally identifiable information (PII) in a Namespace
+description.
+
+Like [Tags](#tag-a-namespace) and [Search Attributes](/search-attribute), Namespace descriptions are not encrypted and
+are not processed by a custom [Payload Codec](/payload-codec#payload-codec). Anyone with Namespace Read access can see
+the description in the Cloud UI, CLI, and Cloud Ops API.
+
+:::
+
 ### Limits
 
 - Optional. Create and update succeed without it.
 - At most 255 printable ASCII characters plus whitespace.
 - Mutable, including clear-to-empty.
-- Not a security boundary. Do not store secrets, PII, or PHI.
 - Does not change Namespace runtime behavior.
 - Stored on the Cloud control plane (`NamespaceSpec.description`). It is not the open source `NamespaceInfo.Description`
   field, and Temporal Cloud does not sync the two. Do not use `temporal operator namespace` to manage Cloud descriptions.
@@ -569,54 +631,3 @@ Pass an empty `--value` to clear the description.
 </TabItem>
 
 </Tabs>
-
-## How to tag a Namespace in Temporal Cloud {/* #tag-a-namespace */}
-
-Tags are key-value metadata pairs that can be attached to namespaces in Temporal Cloud to help operators organize,
-track, and manage namespaces more easily.
-
-### Tag structure and limits
-
-- Each namespace can have a maximum of 10 tags
-- Each key must be unique for a given namespace (for example, a namespace cannot have both `team:foo` and `team:bar` tags)
-- Keys and values must be 1-63 characters in length
-- Allowed characters: lowercase letters (`a-z`), numbers (`0-9`), periods (`.`), underscores (`_`), hyphens (`-`), and
-  at signs (`@`)
-- Tags are not a secure storage mechanism and should not store PII or PHI
-- Tags will not change the behavior of the tagged resource
-- There is a soft limit of 1000 unique tag keys per account
-
-### Permissions
-
-- Only [**Account Admins** and **Account Owners**](/cloud/manage-access/roles-and-permissions#account-level-roles) can create and edit tags
-- All users with access to a namespace can view its tags
-
-### Temporal Cloud CLI
-
-See the [`temporal cloud namespace tag`](/cli/command-reference/cloud/namespace#tag) or
-[tcld namespace tags](/cloud/tcld/namespace/#tags) command reference for details.
-
-### Terraform
-
-See the
-[Terraform provider](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/docs/resources/namespace_tags.md)
-for details.
-
-### Web UI
-
-Tags can be viewed and managed through the Temporal Cloud web interface. When viewing a namespace, you'll see tags
-displayed and can add, edit, or remove them if you have the appropriate permissions.
-
-<CaptionedImage src="/img/cloud/tags/Namespace-DetailsWithTags.png" title="Tags appear in namespace details" />
-
-<CaptionedImage src="/img/cloud/tags/Namespaces-IndexWithTags.png" title="Tags appear on the list of namespaces" />
-
-<CaptionedImage
-  src="/img/cloud/tags/CreateNamespace-AddNewTag.png"
-  title="Where to add tags during namespace creation"
-/>
-
-<CaptionedImage
-  src="/img/cloud/tags/CreateNamespace-AddedTag.png"
-  title="After adding a tag during namespace creation"
-/>
