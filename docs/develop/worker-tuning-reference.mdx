@@ -55,13 +55,13 @@ Compute settings control how many Tasks a Worker can execute concurrently.
 | Setting | Description |
 |---------|-------------|
 | `MaxConcurrentWorkflowTaskExecutionSize` | Maximum concurrent Workflow Tasks |
-| `MaxConcurrentActivityTaskExecutionSize` | Maximum concurrent Activity Tasks |
-| `MaxConcurrentLocalActivityTaskExecutionSize` | Maximum concurrent Local Activities |
+| `MaxConcurrentActivityExecutionSize` | Maximum concurrent Activity Tasks |
+| `MaxConcurrentLocalActivityExecutionSize` | Maximum concurrent Local Activities |
 | `MaxWorkflowThreadCount` / `workflowThreadPoolSize` | Thread pool for Workflow execution |
 
 ### Compute defaults by SDK
 
-| SDK | MaxConcurrentWorkflowTaskExecutionSize | MaxConcurrentActivityTaskExecutionSize | MaxConcurrentLocalActivityTaskExecutionSize | MaxWorkflowThreadCount |
+| SDK | MaxConcurrentWorkflowTaskExecutionSize | MaxConcurrentActivityExecutionSize | MaxConcurrentLocalActivityExecutionSize | MaxWorkflowThreadCount |
 |-----|----------------------------------------|----------------------------------------|---------------------------------------------|------------------------|
 | **Go** | 1,000 | 1,000 | 1,000 | - |
 | **Java** | 200 | 200 | 200 | 600 |
@@ -136,7 +136,7 @@ For the complete metrics reference, see [SDK metrics](/references/sdk-metrics).
 | Worker configuration option | SDK metric |
 |-----------------------------|------------|
 | `MaxConcurrentWorkflowTaskExecutionSize` | [`worker_task_slots_available {worker_type = WorkflowWorker}`](/references/sdk-metrics#worker_task_slots_available) |
-| `MaxConcurrentActivityTaskExecutionSize` | [`worker_task_slots_available {worker_type = ActivityWorker}`](/references/sdk-metrics#worker_task_slots_available) |
+| `MaxConcurrentActivityExecutionSize` | [`worker_task_slots_available {worker_type = ActivityWorker}`](/references/sdk-metrics#worker_task_slots_available) |
 | `MaxWorkflowThreadCount` | [`workflow_active_thread_count`](/references/sdk-metrics#workflow_active_thread_count) (Java only) |
 | CPU-intensive logic | [`workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency) |
 
