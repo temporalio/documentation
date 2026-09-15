@@ -544,12 +544,7 @@ reporting, and automation. See [How to tag a Namespace](#tag-a-namespace).
 
 :::caution Do not include sensitive or confidential information
 
-Do not include secrets, credentials, confidential data, or personally identifiable information (PII) in a Namespace
-description.
-
-Like [Tags](#tag-a-namespace) and [Search Attributes](/search-attribute), Namespace descriptions are not encrypted and
-are not processed by a custom [Payload Codec](/payload-codec#payload-codec). Anyone with Namespace Read access can see
-the description in the Cloud UI, CLI, and Cloud Ops API.
+Namespace descriptions are visible to anyone with Namespace Read access through supported management tools. Descriptions are Cloud metadata, not Workflow payloads, and are not processed by a [Payload Codec](/payload-codec#payload-codec). Do not include secrets, credentials, confidential information, or personally identifiable information.
 
 :::
 
