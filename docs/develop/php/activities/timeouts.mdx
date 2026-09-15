@@ -78,8 +78,6 @@ These values are set in the Activity Options.
 
 ## Activity next Retry delay {/* #activity-next-retry-delay */}
 
-**How to override the next Retry delay following an Activity failure using the Temporal PHP SDK**
-
 You may throw an [`ApplicationFailure`](/references/failures#application-failure) with the `nextRetryDelay` field set.
 This value will replace and override whatever the retry interval would be on the retry policy.
 
