@@ -31,6 +31,31 @@ Runtime session. When the [Worker Controller Instance (WCI)](/serverless-workers
 capacity, it invokes an AgentCore Runtime endpoint. The Runtime starts a Worker, which connects to the Temporal Service
 and polls its Task Queue.
 
+## How Temporal and AgentCore work together {/* #how-temporal-and-agentcore-work-together */}
+
+Temporal is the durable execution layer for the agent. A Workflow records the agent's progress, coordinates model and
+tool calls, waits for input, and applies retries and timeouts. Model calls, tool calls, and other operations that
+perform network I/O run as Activities.
+
+AgentCore supplies the compute that hosts Temporal Workers and optional services that those Activities can use.
+Configuring AgentCore Runtime as a Serverless Workers compute provider does not automatically configure the other
+AgentCore services.
+
+| Concern | Where it belongs | How to use it |
+| --- | --- | --- |
+| **Agent execution and progress** | Temporal Workflow | Keep the agent loop, completed steps, approvals, and long-running waits in the Workflow so execution can continue on another Worker. |
+| **Model and tool operations** | Temporal Activities | Give each external operation its own timeout, Retry Policy, and recorded result. The Temporal Strands integration runs model and tool calls as Activities. |
+| **Worker compute** | AgentCore Runtime | Host a Temporal Worker in each Runtime session. Treat the Worker and its process-local state as replaceable. |
+| **Credentials** | [AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) | Resolve credentials when an Activity accesses AWS or third-party services. Do not store credentials in Workflow state. |
+| **Tool access and authorization** | [AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-core-concepts.html) and [Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy-create-policies.html) | Call governed tools from Activities. Gateway connects the agent to tools, and Policy controls which tool calls are allowed. |
+| **Knowledge across conversations** | [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) | Read or write reusable knowledge through Activities. Memory does not replace Workflow state or Event History. |
+| **Managed tools** | [AgentCore Code Interpreter](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/code-interpreter-getting-started.html) and Browser | Wrap calls to these services in Activities so Temporal can record the result and retry failures. |
+| **Runtime and agent telemetry** | [AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-configure.html) | Use AgentCore telemetry for Runtime, model, and tool behavior. Use Temporal Event History to inspect durable execution progress. |
+| **Caches and temporary files** | AgentCore Runtime session | Reuse them while the Runtime compute remains available, but do not require them to continue the Workflow. |
+
+For an implementation of this architecture using Strands and AgentCore Code Interpreter, see
+[Build a durable agent on Amazon Bedrock AgentCore](/guides/durable-agent-on-agentcore).
+
 ## Choose AgentCore Runtime or AWS Lambda {/* #choose-agentcore-or-lambda */}
 
 AgentCore Runtime and AWS Lambda use the same event-driven autoscaling algorithm for Serverless Workers. Choose between
