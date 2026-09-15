@@ -14,10 +14,10 @@ tags:
 import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="publicPreview">
-  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
-  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/cloud/support#support-ticket) or
-  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
-  when Cloud Run reaches Public Preview.
+  AWS Lambda support is in Public Preview. Amazon Bedrock AgentCore Runtime and GCP Cloud Run support are in
+  Pre-release, and their APIs may change in backwards-incompatible ways. To request Cloud Run access, create a
+  [support ticket](/cloud/support#support-ticket) or contact your account team, and
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
 </ReleaseNoteHeader>
 
 This page covers the following:
@@ -39,8 +39,9 @@ in response to work on a Task Queue.
 
 A Serverless Worker uses the same Temporal SDKs as a traditional long-lived Worker, and registers Workflows and
 Activities the same way. What differs is that Temporal manages the Worker's lifecycle rather than you running a Worker
-process. How that lifecycle works depends on the compute provider: AWS Lambda runs short-lived invocations, while GCP
-Cloud Run runs a pool of long-lived instances. See [Worker lifecycle](#worker-lifecycle).
+process. How that lifecycle works depends on the compute provider: AWS Lambda runs short-lived invocations, Amazon
+Bedrock AgentCore Runtime runs sessions with idle and maximum-lifetime limits, and GCP Cloud Run runs a pool of
+long-lived instances. See [Worker lifecycle](#worker-lifecycle).
 
 Serverless Workers require [Worker Versioning](/worker-versioning). Each Serverless Worker must be associated with a
 [Worker Deployment Version](/worker-versioning#deployment-versions) that has a compute provider configured.
@@ -69,12 +70,13 @@ Temporal impersonates to scale it.
 Compute providers are only needed for Serverless Workers. Traditional long-lived Workers do not require a compute
 provider because the Worker process lifecycle is not managed by the Temporal server.
 
-Temporal supports two compute providers:
+Temporal supports three compute providers:
 
-| Provider      | Description                                                                   |
-| ------------- | ----------------------------------------------------------------------------- |
-| AWS Lambda    | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
-| GCP Cloud Run | Temporal scales a Cloud Run [Worker Pool](https://cloud.google.com/run/docs/resource-model#worker-pools) through the Cloud Run admin API. A Worker Pool is its own Cloud Run resource type, distinct from a Service or a Job. |
+| Provider                       | Description |
+| ------------------------------ | ----------- |
+| AWS Lambda                     | Temporal assumes an IAM role in your AWS account to invoke a Lambda function. |
+| Amazon Bedrock AgentCore Runtime | Temporal assumes an IAM role in your AWS account to invoke an AgentCore Runtime endpoint. |
+| GCP Cloud Run                  | Temporal scales a Cloud Run [Worker Pool](https://cloud.google.com/run/docs/resource-model#worker-pools) through the Cloud Run admin API. A Worker Pool is its own Cloud Run resource type, distinct from a Service or a Job. |
 
 ## How Serverless invocation works {/* #how-invocation-works */}
 
@@ -167,6 +169,7 @@ short-lived invocations on AWS Lambda, or long-lived pool instances on GCP Cloud
 Refer to the lifecycle section for your compute provider:
 
 - [AWS Lambda lifecycle](/serverless-workers/aws-lambda#lifecycle)
+- [Amazon Bedrock AgentCore Runtime lifecycle](/serverless-workers/agentcore#lifecycle)
 - [GCP Cloud Run lifecycle](/serverless-workers/cloud-run#lifecycle)
 
 ## Failure handling {/* #failure-handling */}
@@ -207,9 +210,9 @@ With single-slot configuration, each Activity gets a dedicated execution environ
 
 | Constraint        | Detail                                                                                                                                                                                                                                                          |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Activity duration | Depends on the compute provider. On AWS Lambda, an Activity must finish within the invocation limit (15 minutes maximum), minus the shutdown deadline buffer. On GCP Cloud Run, instances are long-lived, so no per-invocation limit applies. See [Worker lifecycle](#worker-lifecycle).                                                                                                                       |
+| Activity duration | Depends on the compute provider. On AWS Lambda, an Activity must finish within the invocation limit (15 minutes maximum), minus the shutdown deadline buffer. On Amazon Bedrock AgentCore Runtime, a microVM session has a maximum lifetime of 8 hours. On GCP Cloud Run, instances are long-lived, so no per-invocation limit applies. See [Worker lifecycle](#worker-lifecycle). |
 | Workflow duration | No limit. Workflows of any duration work. A Workflow runs across as many Workers as needed.                                                                                                                           |
-| Worker code       | Same Temporal SDK Worker code, using the serverless Worker package for your SDK.                                                                                                                                                                                |
+| Worker code       | Depends on the compute provider. AWS Lambda uses a serverless Worker package for your SDK. Amazon Bedrock AgentCore Runtime and GCP Cloud Run run standard long-lived Temporal Workers inside provider-specific runtime infrastructure. |
 | Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. See [Worker Versioning](/worker-versioning) for rollout strategies such as ramping, and [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers) for how Worker Deployment Versions map to compute provider primitives. |
 | High Availability | On failover of a Namespace with [Multi-region or Multi-cloud Replication](/cloud/high-availability), the WCI keeps invoking Workers in the original region unless you manually repoint the compute provider. Compute provider configuration, such as a Lambda ARN or a Cloud Run Worker Pool, is scoped to a single region. See [Serverless Workers and High Availability](/cloud/high-availability#serverless-workers). |
 
@@ -221,4 +224,5 @@ How Worker Deployment Versions map to compute provider primitives differs by pro
 Refer to the versioning section for your compute provider:
 
 - [AWS Lambda versioning](/serverless-workers/aws-lambda#worker-versioning)
+- [Amazon Bedrock AgentCore Runtime versioning](/serverless-workers/agentcore#worker-versioning)
 - [GCP Cloud Run versioning](/serverless-workers/cloud-run#worker-versioning)
