@@ -85,8 +85,8 @@ The Java SDK includes an experimental S3 storage driver. It requires Java SDK v1
    example, a Client that starts a Workflow needs it to offload a large input, and a separate Worker process needs it to
    retrieve that input.
 
-By default, the SDK offloads serialized Payloads that are 256 KiB or larger. Use `setPayloadSizeThreshold()` to change
-the threshold. Set it to `0` to offload every payload. Payloads below the threshold remain inline in Event History.
+By default, the SDK offloads serialized Payloads that are 256 KiB or larger. For other thresholds, see
+[Configure payload size threshold](#configure-payload-size-threshold).
 
 The S3 driver stores serialized Payloads under content-addressed keys derived from their SHA-256 hash. It reuses an
 existing object when a Workflow Run passes the same payload again, verifies the hash on retrieval, and rejects payloads
@@ -94,18 +94,144 @@ larger than 50 MiB by default. Use `setMaxPayloadSize()` to change that limit.
 
 ## Implement a custom storage driver
 
-To use a storage system other than S3, implement `StorageDriver`. Its `store()` method uploads a list of serialized
-Payload protobuf messages and returns one `StorageDriverClaim` for each payload. Its `retrieve()` method uses those
-claims to return the original Payloads. Both methods return `CompletableFuture` and must observe the cancellation token
-in their context.
+To use a storage system other than S3, implement `StorageDriver`. The following driver stores Payload protobuf messages
+in memory. Use it to understand the contract or in tests, not in production: each process has its own memory and the
+data is lost when that process stops. A production driver must use a durable store that every Client and Worker can
+access.
 
-Give each driver instance a stable, unique `getName()` value. The SDK records that name in a reference and uses it to
+<!--SNIPSTART java-custom-storage-driver-->
+[features/snippets/external_storage/custom_driver/custom_storage_driver.java](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.java)
+```java
+class InMemoryStorageDriver implements StorageDriver {
+  private static final String CLAIM_KEY = "key";
+
+  private final ConcurrentMap<String, Payload> payloads = new ConcurrentHashMap<>();
+
+  @Override
+  public String getName() {
+    return "in-memory-example";
+  }
+
+  @Override
+  public String getType() {
+    return "example.in-memory";
+  }
+
+  @Override
+  public CompletableFuture<List<StorageDriverClaim>> store(
+      StorageDriverStoreContext context, List<Payload> payloadsToStore) {
+    context.getCancellationToken().throwIfCancellationRequested();
+
+    List<StorageDriverClaim> claims = new ArrayList<>();
+    for (Payload payload : payloadsToStore) {
+      String key = UUID.randomUUID().toString();
+      payloads.put(key, payload);
+      claims.add(new StorageDriverClaim(Map.of(CLAIM_KEY, key)));
+    }
+    return CompletableFuture.completedFuture(claims);
+  }
+
+  @Override
+  public CompletableFuture<List<Payload>> retrieve(
+      StorageDriverRetrieveContext context, List<StorageDriverClaim> claims) {
+    context.getCancellationToken().throwIfCancellationRequested();
+
+    List<Payload> retrievedPayloads = new ArrayList<>();
+    for (StorageDriverClaim claim : claims) {
+      String key = claim.getClaimData().get(CLAIM_KEY);
+      Payload payload = payloads.get(key);
+      if (payload == null) {
+        return failedFuture(new IllegalArgumentException("No payload for claim " + key));
+      }
+      retrievedPayloads.add(payload);
+    }
+    return CompletableFuture.completedFuture(retrievedPayloads);
+  }
+
+  private static <T> CompletableFuture<T> failedFuture(Throwable error) {
+    CompletableFuture<T> result = new CompletableFuture<>();
+    result.completeExceptionally(error);
+    return result;
+  }
+}
+```
+<!--SNIPEND-->
+
+`store()` returns one `StorageDriverClaim` for each input Payload, in the same order. Put the information needed to
+retrieve the Payload in each claim. `retrieve()` accepts those claims and returns the original Payloads in the same
+order. The Payload Converter and Payload Codec have already encoded the application data before the driver receives it.
+
+Give every driver instance a stable, unique `getName()` value. The SDK records that name in a reference and uses it to
 choose the driver during retrieval. `getType()` identifies the driver implementation for Worker heartbeats and metrics;
-keep it the same for all configurations of the same driver.
+keep it the same for every configuration of the same driver. For an asynchronous storage client, use each context's
+cancellation token to cancel its in-flight request when the SDK abandons the operation.
 
-Register every driver that might need to retrieve an existing reference. If you register more than one driver, provide
-a `StorageDriverSelector` to choose which driver stores new payloads. This lets you migrate storage backends without
-making existing payloads unreadable.
+Register the driver with `ExternalStorage` using the setup in [Store and retrieve large payloads with Amazon S3](#store-and-retrieve-large-payloads-with-amazon-s3).
+
+## Configure payload size threshold
+
+The size threshold applies to the serialized Payload, including its metadata. By default, serialized Payloads that are
+256 KiB or larger are offloaded. Payloads smaller than the threshold stay inline in Event History. Set a higher value to
+offload less data or set the value to `0` to offload every Payload.
+
+<!--SNIPSTART java-external-storage-threshold-->
+[features/snippets/external_storage/threshold/threshold_config.java](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.java)
+```java
+return ExternalStorage.newBuilder()
+    .setDriver(driver)
+    .setPayloadSizeThreshold(512 * 1024)
+    .build();
+```
+<!--SNIPEND-->
+
+## Use multiple storage drivers
+
+When you register more than one driver, you must set a `StorageDriverSelector`. The selector chooses the registered
+driver that stores each new Payload. It can return `null` to leave a specific Payload inline. Drivers that the selector
+does not choose remain available for retrieval, which lets you migrate storage backends without making existing
+references unreadable.
+
+Every registered driver needs a distinct `getName()` value. For example, set a distinct name on each `S3StorageDriver`
+when registering two S3 drivers. The following configuration stores new Payloads with `preferredDriver`, while keeping
+`legacyDriver` available to retrieve references that it created:
+
+<!--SNIPSTART java-external-storage-multiple-drivers-->
+[features/snippets/external_storage/multiple_drivers/multiple_drivers.java](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/multiple_drivers/multiple_drivers.java)
+```java
+return ExternalStorage.newBuilder()
+    .setDrivers(Arrays.asList(preferredDriver, legacyDriver))
+    .setDriverSelector((context, payload) -> preferredDriver)
+    .build();
+```
+<!--SNIPEND-->
+
+## Configure multi-region durability with Amazon S3
+
+To tolerate an AWS Region failure, configure [Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html)
+and an [S3 Multi-Region Access Point (MRAP)](https://aws.amazon.com/s3/features/multi-region-access-points/), then set
+the driver bucket to the MRAP ARN. Enable ARN-region routing on the AWS SDK client so it sends a request to the Region
+in the ARN:
+
+<!--SNIPSTART java-s3-mrap-driver-create-->
+[features/snippets/external_storage/s3_setup/mrap_driver_create.java](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/mrap_driver_create.java)
+```java
+S3AsyncClient s3Client =
+    S3AsyncClient.builder()
+        .region(Region.US_EAST_2)
+        .serviceConfiguration(S3Configuration.builder().useArnRegionEnabled(true).build())
+        .build();
+
+return S3StorageDriver.newBuilder()
+    .setClient(new S3AsyncClientAdapter(s3Client))
+    .setBucket("arn:aws:s3::123456789012:accesspoint/example.mrap")
+    .build();
+```
+<!--SNIPEND-->
+
+CRR is asynchronous. During replication lag, a Worker in another Region can temporarily fail to retrieve a new object.
+Use appropriate Activity retry policies and prefer the same Region for an immediate read. See [Durable External Storage](/external-storage#durable-external-storage)
+for the replication trade-offs and [Replication Time Control](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-time-control.html)
+if you need a replication-time service-level agreement.
 
 ## Manage external objects
 
