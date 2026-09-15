@@ -587,11 +587,7 @@ description clears it.
 Create: include `spec.description` on
 [`CreateNamespace`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces).
 
-Update: call
-[`GetNamespace`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D),
-copy the current `spec` and `resourceVersion`, change only `description`, then
-[`UpdateNamespace`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D)
-with the full spec. Omitting `description` on update clears it.
+Update: UpdateNamespace replaces the complete Namespace specification. Call [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D), preserve the returned spec and resourceVersion, change spec.description, and submit the complete specification to [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D). Omitting description from the updated specification clears the existing description.
 
 ```
 curl -sS -X POST "$BASE/cloud/namespaces/$NAMESPACE" \
