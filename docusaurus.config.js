@@ -272,6 +272,11 @@ module.exports = async function createConfigAsync() {
              */
             // excludeNextVersionDocs: false,
             includeCurrentVersion: true, // excludeNextVersionDocs is now deprecated
+            // docs/tags.yml declares explicit permalinks for a handful of tags whose
+            // auto-generated kebabCase slug is wrong; that file's mere existence makes
+            // Docusaurus treat every other page's inline `tags` frontmatter as "unknown"
+            // and warn. We don't have (or want) a fully closed tag vocabulary, so ignore.
+            onInlineTags: 'ignore',
             // // below remark plugin disabled until we can figure out why it is not transpiling to ESNext properly - swyx
             // // original PR https://github.com/temporalio/documentation/pull/496/files
             admonitions: {
