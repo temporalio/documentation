@@ -21,7 +21,7 @@ import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 </ReleaseNoteHeader>
 
 This guide deploys a Strands agent as a Temporal Serverless Worker on Amazon Bedrock AgentCore Runtime. The agent uses
-Amazon Bedrock for model inference and AgentCore Code Interpreter to run Python.
+Amazon Nova Lite for model inference and AgentCore Code Interpreter to run Python.
 
 The [AgentCore deployment page](/production-deployment/worker-deployments/serverless-workers/agentcore) is a focused
 procedure for deploying an existing Worker. This guide uses a complete agent sample to explain why the Workflow,
@@ -86,7 +86,7 @@ prompts through Workflow Updates while allowing any compatible Runtime session t
   [AgentCore-supported Region](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html).
 - AWS permissions to deploy AgentCore resources, CloudFormation stacks, and IAM roles. See
   [IAM permissions for AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html).
-- Access to the Amazon Bedrock model that Strands selects in the target Region.
+- Access to Amazon Nova Lite in the target Region.
 
 ## 1. Get the sample
 
@@ -115,12 +115,25 @@ The sample creates a `TemporalAgent` with a system prompt and the `execute_code`
 <!--SNIPSTART python-agentcore-strands-workflow-->
 [bedrock_agentcore/strands_agent/workflows.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/workflows.py)
 ```py
+MODEL_NAME = "nova-lite"
+MODEL_ID = "amazon.nova-lite-v1:0"
+
+with workflow.unsafe.imports_passed_through():
+    from activities import execute_code
+
+SYSTEM_PROMPT = """You are an AI assistant that validates answers through code execution.
+When asked about code, algorithms, calculations, or data, write Python and run it with the
+execute_code tool instead of working the answer out in your head. The sandbox persists
+across calls, so variables you define in one call are still there in the next. Report both
+the code you ran and its output."""
+
+
 @workflow.defn
 class StrandsAgentWorkflow:
     def __init__(self) -> None:
-        # Configure with the plugin's default BedrockModel(), custom system
-        # prompt and code interpreter tool.
+        # Configure the model, custom system prompt and code interpreter tool.
         self.agent = TemporalAgent(
+            model=MODEL_NAME,
             start_to_close_timeout=timedelta(seconds=60),
             system_prompt=SYSTEM_PROMPT,
             tools=[
@@ -144,6 +157,7 @@ class StrandsAgentWorkflow:
 
 `TemporalAgent` adapts the Strands agent loop to run in Workflow code. The Temporal Strands plugin schedules each model
 call as an Activity. `activity_as_tool` makes `execute_code` another Activity when the model selects that tool.
+The `model` argument selects the named Nova Lite model that the Worker registers with the plugin.
 
 The Workflow owns the sequence of model and tool decisions because that sequence must resume correctly after a
 failure. The model calls themselves do not run as ordinary Workflow code. They run as Activities because they perform
