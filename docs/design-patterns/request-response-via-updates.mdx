@@ -2,6 +2,9 @@
 id: request-response-via-updates
 title: "Request-Response via Updates"
 description: "Uses a Workflow Update to validate a request, modify Workflow state, and return a typed result to the caller synchronously, with strong consistency."
+tags:
+  - Design Patterns
+  - Updates
 ---
 
 import Tabs from '@theme/Tabs';
@@ -303,6 +306,11 @@ Trade-offs:
 - **Query**: Read-only state inspection.
 - **[Entity Workflow](/design-patterns/entity-workflow)**: Long-running Workflows representing business entities.
 - **[Early Return](/design-patterns/early-return)**: Returning intermediate results before Workflow completion.
+
+### References
+
+- [Sending Messages](/sending-messages): Canonical reference for Updates as a delivery mechanism, alongside Signals and Queries.
+- [Handling Messages](/handling-messages): Canonical reference for writing Update handlers, including validators and idempotency.
 
 ### Sample code
 

@@ -274,3 +274,11 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
     title="Heartbeat Timeout periods" />
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/encyclopedia/retry-policies) dictates it.
+
+#### What a Heartbeat Timeout of `0s` means {/* #heartbeat-timeout-zero */}
+
+`0s` means the Heartbeat Timeout is disabled. No Heartbeat timer is started, so the Activity never fails for missing a Heartbeat. It does not mean an unbounded timeout, and it does not mean the Activity times out immediately.
+
+`0s` is also the normalized value the Temporal Service stores when you leave the Heartbeat Timeout unset. An unset Heartbeat Timeout and an explicit `0s` are therefore indistinguishable once the Activity is scheduled: both are reported as `0s` and both behave as disabled.
+
+The Heartbeat Timeout is also capped at the [Start-To-Close Timeout](#start-to-close-timeout). Setting a Heartbeat Timeout longer than the Start-To-Close Timeout stores the Start-To-Close Timeout instead.
