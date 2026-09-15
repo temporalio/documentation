@@ -255,10 +255,10 @@ Workers based on the TypeScript SDK can be deployed and run as Docker containers
 Use an LTS Node.js release such as 18, 20, 22, or 24. Both `amd64` and `arm64` architectures are supported. A
 glibc-based image is required; musl-based images are _not_ supported (see below).
 
-The most direct way to deploy a TypeScript SDK Worker on Docker is to start with the `node:20-bullseye` image. For example:
+The most direct way to deploy a TypeScript SDK Worker on Docker is to start with the `node:20-bookworm` image. For example:
 
 ```dockerfile
-FROM node:20-bullseye
+FROM node:20-bookworm
 
 # For better cache utilization, copy package.json and lock file first and install the dependencies before copying the
 # rest of the application and building.
@@ -273,7 +273,7 @@ CMD ["npm", "start"]
 ```
 
 For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like
-`node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian11`) with the
+`node:20-bookworm-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian12`) with the
 following caveats.
 
 ### Using `node:slim` images
@@ -285,7 +285,7 @@ The requirement holds even when you connect to a local Temporal Service, and whe
 TLS. Install the package when you build the image:
 
 ```dockerfile
-FROM node:20-bullseye-slim
+FROM node:20-bookworm-slim
 
 RUN apt-get update \
     && apt-get install -y ca-certificates \
@@ -311,7 +311,7 @@ Use a multi-step Dockerfile instead:
 ```dockerfile
 # -- BUILD STEP --
 
-FROM node:20-bullseye AS builder
+FROM node:20-bookworm AS builder
 
 COPY . /app
 WORKDIR /app
@@ -321,7 +321,7 @@ RUN npm install --only=production \
 
 # -- RESULTING IMAGE --
 
-FROM gcr.io/distroless/nodejs20-debian11
+FROM gcr.io/distroless/nodejs20-debian12
 
 COPY --from=builder /app /app
 WORKDIR /app
