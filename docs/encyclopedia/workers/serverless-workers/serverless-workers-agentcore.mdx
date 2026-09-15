@@ -34,8 +34,7 @@ and polls its Task Queue.
 ## How Temporal and AgentCore work together {/* #how-temporal-and-agentcore-work-together */}
 
 Temporal is the durable execution layer for the agent. A Workflow records the agent's progress, coordinates model and
-tool calls, waits for input, and applies retries and timeouts. Model calls, tool calls, and other operations that
-perform network I/O run as Activities.
+tool calls, waits for input, and applies retries and timeouts. Model calls and tool calls run as Activities.
 
 AgentCore supplies the compute that hosts Temporal Workers and optional services that those Activities can use.
 Configuring AgentCore Runtime as a Serverless Workers compute provider does not automatically configure the other
@@ -49,7 +48,6 @@ AgentCore services.
 | **Credentials** | [AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) | Resolve credentials when an Activity accesses AWS or third-party services. Do not store credentials in Workflow state. |
 | **Tool access and authorization** | [AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-core-concepts.html) and [Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy-create-policies.html) | Call governed tools from Activities. Gateway connects the agent to tools, and Policy controls which tool calls are allowed. |
 | **Knowledge across conversations** | [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) | Read or write reusable knowledge through Activities. Memory does not replace Workflow state or Event History. |
-| **Managed tools** | [AgentCore Code Interpreter](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/code-interpreter-getting-started.html) and Browser | Wrap calls to these services in Activities so Temporal can record the result and retry failures. |
 | **Runtime and agent telemetry** | [AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-configure.html) | Use AgentCore telemetry for Runtime, model, and tool behavior. Use Temporal Event History to inspect durable execution progress. |
 | **Caches and temporary files** | AgentCore Runtime session | Reuse them while the Runtime compute remains available, but do not require them to continue the Workflow. |
 
@@ -68,7 +66,7 @@ Workflow progress and the compute provider runs replaceable Workers.
 | **Worker process** | A standard long-running Worker runs as background work in a Runtime session. | A Lambda Worker integration manages the Worker within each function invocation. |
 | **Compute lifetime** | A Runtime session using the serverless microVM compute type can run for up to 8 hours. | A function invocation can run for up to [15 minutes](https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html). |
 | **Process-local reuse** | The Worker can reuse in-memory caches and temporary files while its Runtime compute remains available. A later Task can run on another Worker, so do not depend on this state. | Each invocation is independent. Do not expect process-local state to be available to a later invocation. |
-| **Agent services** | AgentCore provides services for identity, tool access, policy, memory, and observability, along with tools such as Code Interpreter and Browser. | Lambda can call AWS services under its execution role, but it does not provide the AgentCore agent platform. |
+| **Agent services** | AgentCore provides services for identity, tool access, policy, memory, and observability. | Lambda can call AWS services under its execution role, but it does not provide the AgentCore agent platform. |
 
 Use AgentCore Runtime when you are building on AgentCore services or when model and tool operations benefit from a
 longer compute window. Use Lambda for a general-purpose Worker when each invocation can complete within its 15-minute
