@@ -582,7 +582,7 @@ Create: include `spec.description` on
 Update: UpdateNamespace replaces the complete Namespace specification. Call [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D), preserve the returned spec and resourceVersion, change spec.description, and submit the complete specification to [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D). Omitting description from the updated specification clears the existing description.
 Read: `GET /cloud/namespaces/{namespace}` returns `spec.description`.
 
-Requires Cloud Ops API version `v0.21.0` or later. See [Cloud Ops API](/ops).
+Namespace descriptions require Cloud Operations API version v0.21.0 or later. See [Cloud Operations API](/ops).
 
 </TabItem>
 
