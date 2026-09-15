@@ -588,23 +588,6 @@ Create: include `spec.description` on
 [`CreateNamespace`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces).
 
 Update: UpdateNamespace replaces the complete Namespace specification. Call [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D), preserve the returned spec and resourceVersion, change spec.description, and submit the complete specification to [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D). Omitting description from the updated specification clears the existing description.
-
-```
-curl -sS -X POST "$BASE/cloud/namespaces/$NAMESPACE" \
-  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
-  -d '{
-    "namespace": "'"$NAMESPACE"'",
-    "resourceVersion": "'"$RESOURCE_VERSION"'",
-    "spec": {
-      "name": "payments-prod",
-      "regions": ["aws-us-west-2"],
-      "retentionDays": 30,
-      "apiKeyAuth": { "enabled": true },
-      "description": "Elevate project migration from AWS to GCP"
-    }
-  }'
-```
-
 Read: `GET /cloud/namespaces/{namespace}` returns `spec.description`.
 
 Requires Cloud Ops API version `v0.21.0` or later. See [Cloud Ops API](/ops).
