@@ -70,8 +70,8 @@ Workflow progress and the compute provider runs replaceable Workers.
 
 Use AgentCore Runtime when you are building on AgentCore services or when model and tool operations benefit from a
 longer compute window. Use Lambda for a general-purpose Worker when each invocation can complete within its 15-minute
-limit. Neither option changes where durable agent progress belongs: keep it in a Temporal Workflow or another durable
-store, not in the Worker process.
+limit. Neither option changes where durable agent progress belongs: keep it in a Temporal Workflow, not in the Worker
+process.
 
 ## Autoscaling {/* #autoscaling */}
 
