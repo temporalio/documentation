@@ -1,0 +1,146 @@
+---
+id: index
+title: Activity Operations
+description: Learn how to manage a running Activity Execution with commands to Pause, Unpause, Reset, Update Options, Request Cancel, Terminate, and Delete.
+slug: /activity-operations
+toc_max_heading_level: 4
+tags:
+  - Concepts
+  - Activities
+  - Temporal CLI
+  - Job Queue
+---
+
+This section covers the following:
+
+- [Pause](/activity-operations/pause)
+- [Unpause](/activity-operations/unpause)
+- [Reset](/activity-operations/reset)
+- [Update Options](/activity-operations/update-options)
+- [Request Cancel](/activity-operations/request-cancel)
+- [Terminate](/activity-operations/terminate)
+- [Delete](/activity-operations/delete)
+- [Batch operations](#batch-operations)
+- [Observability](#observability)
+
+Activity Operations are deliberate actions you perform on a specific [Activity Execution](/activity-execution), as
+opposed to lifecycle behaviors like [retries](/encyclopedia/retry-policies) and
+[timeouts](/encyclopedia/detecting-activity-failures) which happen automatically.
+
+You can perform Activity Operations through the [CLI](/cli/command-reference/activity), the UI, or directly via the gRPC
+API. They apply to Workflow Activities and to [Standalone Activities](/standalone-activity). They don't apply to
+[Local Activities](/local-activity).
+
+:::note Public Preview
+
+Activity Operations are in [Public Preview](/evaluate/product-release-stages#public-preview), 
+except for Standalone Activity commands: Request Cancel, Terminate, Delete which are GA.
+
+For [Workflow Activities](/workflow-activity), Pause, Unpause, and Reset are available in Server
+v1.28.0+. Self-hosted UI requires v2.47.0+. For [Standalone Activities](/standalone-activity), Pause,
+Unpause, Reset, and Update Options are available in Server v1.32.0+ and Temporal CLI v1.9.1+.
+
+Activity Operations aren't available as SDK client methods. They're operational controls designed for the CLI, UI, and
+gRPC API - they are not for programmatic use in Workflow or Activity code.
+
+:::
+
+## Operations summary
+
+| Operation                                             | What it does                                                                     | Workflow Activity    | Standalone Activity | CLI                                                                                  |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------- | ------------------- | ------------------------------------------------------------------------------------ |
+| [Pause](/activity-operations/pause)                   | Stops retries. In-flight execution continues unless the Activity uses Heartbeat. | Yes                  | Yes                 | [`temporal activity pause`](/cli/command-reference/activity#pause)                   |
+| [Unpause](/activity-operations/unpause)               | Resumes a Paused Activity. The next execution starts immediately.                | Yes                  | Yes                 | [`temporal activity unpause`](/cli/command-reference/activity#unpause)               |
+| [Reset](/activity-operations/reset)                   | Clears retry state (attempts, backoff) and schedules a new execution.            | Yes                  | Yes                 | [`temporal activity reset`](/cli/command-reference/activity#reset)                   |
+| [Update Options](/activity-operations/update-options) | Changes timeouts, Retry Policy, or Task Queue without restarting the Activity.   | Yes                  | Yes                 | [`temporal activity update-options`](/cli/command-reference/activity#update-options) |
+| [Request Cancel](/activity-operations/request-cancel) | Requests that an execution close gracefully, letting your code clean up.         | Through the Workflow | Yes                 | [`temporal activity cancel`](/cli/command-reference/activity#cancel)                 |
+| [Terminate](/activity-operations/terminate)           | Forcefully closes an execution with no opportunity for your code to clean up.    | No                   | Yes                 | [`temporal activity terminate`](/cli/command-reference/activity#terminate)           |
+| [Delete](/activity-operations/delete)                 | Terminates the execution if it's running, then deletes it asynchronously.        | No                   | Yes                 | [`temporal activity delete`](/cli/command-reference/activity)                        |
+
+A Workflow Activity can't be cancelled directly. It receives a cancellation request as a result of its
+[Workflow](/workflows) being cancelled, and from that point behaves the same way a Standalone Activity does.
+
+### What an operation guarantees
+
+Every operation does two things, and they succeed independently.
+
+**Server-side state changes immediately.** Terminate closes the execution. Request Cancel closes it immediately when no
+attempt is running. This doesn't depend on the Activity Heartbeating.
+
+**Interrupting an already-running attempt is best-effort.** Request Cancel, Terminate, Reset, and Pause all attempt it,
+by the same mechanism: the request reaches your code through the Activity's Heartbeat. An Activity that doesn't
+Heartbeat isn't interrupted mid-attempt.
+
+Because interruption is best-effort, **a Request Cancel, Reset, or Pause request can succeed without the operation
+taking effect.** When an attempt is running, your code may complete or fail non-retryably instead of honoring the
+request. Only Terminate and Delete discard Activity progress unconditionally. A successful response means the request
+was accepted, not that the Activity stopped.
+
+## Successive operations {/* #successive-operations */}
+
+When operations conflict, precedence is **Request Cancel, then Reset, then Pause**. A higher-precedence request wins
+over a pending lower-precedence one.
+
+Requests that can't apply to the Activity's current state return an error rather than being queued:
+
+- `FailedPrecondition` when the Activity exists but isn't in a state that accepts the operation.
+- `NotFound` when the Activity or its run can't be found.
+
+Pause and Unpause interact with timers in a way worth knowing before you use them together:
+
+- **Timers keep running while an Activity is Paused.** Pausing doesn't stop the Schedule-To-Close Timeout.
+- **No new attempt is scheduled while Paused.**
+- **On Unpause, a retry that's already past due starts immediately.**
+- **Before the first attempt, Unpause honors the Activity's original Start Delay deadline.** If that deadline has
+  passed, the Activity is dispatched immediately. Start Delay isn't restarted from the Unpause time, and it doesn't
+  apply to retry attempts.
+
+## Batch operations {/* #batch-operations */}
+
+You can apply some operations to many Activities at once with a `--query` [List Filter](/list-filter) instead of a
+single Activity ID.
+
+**Standalone Activities** currently only support batch operations for Request Cancel, Terminate, and Delete:
+
+```bash
+temporal activity terminate \
+  --query 'ActivityType="ProcessImage" AND ExecutionStatus="Running"' \
+  --reason "Bad input batch"
+```
+
+For **Workflow Activities**, `--query` applies to Reset, Unpause, and Update Options.
+
+Use `--jitter` to stagger a batch so a recovering downstream service isn't hit by every retry at once.
+
+## Billable Actions {/* #billable-actions */}
+
+In Temporal Cloud, Pause, Reset, and Update Options each count as one
+[Action](/cloud/actions#activity). Unpause is free.
+
+## Observability {/* #observability */}
+
+Activity Operations have a limited audit trail because they are not recorded in a Workflow's Event History. However, you
+can use the CLI and the UI to check Activity state and find Paused Activities for running Workflows.
+
+### Check Activity state
+
+`temporal workflow describe` shows the current state of each pending Activity, including whether it's Paused, its
+current attempt count, and last failure. The UI shows who performed an operation, when, and why (if a `--reason` was
+provided).
+
+### Find Paused Activities
+
+The `TemporalPauseInfo` [Search Attribute](/search-attribute) is filterable within a Workflow.
+
+There's no Namespace-wide query to find all Paused Activities across Workflows. You must know the Workflow ID.
+
+### Audit trail {/* #audit-trail */}
+
+Activity Operations don't produce Event History events. There is no record of a Pause, Reset, or option change in the
+Workflow's [Event History](/workflow-execution/event#event-history). Nothing that reads the Event History - Workflow
+code, Replays, or external tooling - will see that an Operation occurred.
+
+Evidence of an Operation is gone when the Activity completes or the Workflow closes. There's no persistent record that
+an Activity was Paused, Reset, or had its options changed.
+
+The only way to confirm the current state of an Activity is `temporal workflow describe` or the UI.
