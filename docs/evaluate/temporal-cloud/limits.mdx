@@ -262,6 +262,18 @@ For example,
 
 There is no limit on the number of resource IDs or actions within a single permission pair. Applying a permission to all resources of a type counts as one permission regardless of how many resources exist in your account.
 
+### Write bandwidth limit
+
+Temporal Cloud limits the sustained volume of data that each Namespace can write. This limit applies to operations that write Workflow state, including Workflow starts, Signals, Updates, Activity Heartbeats, and task completions.
+
+The write bandwidth limit scales with the Namespace APS limit. A higher APS limit includes a proportionally higher write bandwidth limit.
+
+Use the [`namespace_bandwidth_bytes`](/cloud/metrics/openmetrics/metrics-reference#namespace_bandwidth_bytes) and [`namespace_bandwidth_throttled_bytes`](/cloud/metrics/openmetrics/metrics-reference#namespace_bandwidth_throttled_bytes) metrics to monitor write bandwidth usage and throttling. See [Monitor write bandwidth](/cloud/service-health#monitor-write-bandwidth) for guidance.
+
+A Namespace can reach this limit while staying below its APS limit. Larger payloads use more write bandwidth per Action. When the limit is reached, write requests return `ResourceExhausted`. Temporal SDKs retry these requests according to their request retry policy. Continued throttling increases latency and can cause a client call to fail after its retries expire.
+
+Keep payloads small for workloads with sustained write traffic. Use [External Storage](/external-storage) for large data and pass a reference in the payload.
+
 ## Nexus Endpoint level
 
 ### Nexus Endpoints limits
