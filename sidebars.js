@@ -2139,7 +2139,6 @@ module.exports = {
           items: [
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
-            'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
             'encyclopedia/nexus/nexus-patterns',
@@ -2147,6 +2146,11 @@ module.exports = {
             'encyclopedia/nexus/nexus-execution-debugging',
             'encyclopedia/nexus/nexus-error-handling',
             'encyclopedia/nexus/nexus-metrics',
+            // Pre-release features, kept at the bottom of the section.
+            'encyclopedia/nexus/temporal-operation-handler',
+            'encyclopedia/nexus/nexus-code-generator',
+            'encyclopedia/nexus/standalone-nexus-operation',
+            'encyclopedia/nexus/nexus-standalone-activity',
           ],
         },
         {
