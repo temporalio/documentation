@@ -175,6 +175,14 @@ for `temporal_cloud_v1_total_action_count` at a 50% threshold of the `temporal_c
 or directly when throttling is detected as a value greater than zero for `temporal_cloud_v1_total_action_throttled_count`. This logic can also be used to automatically scale [Temporal
 Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed. Some workloads choose to exceed limits and accept throttling because they are not latency sensitive.
 
+### Monitor write bandwidth
+
+Use [`namespace_bandwidth_bytes`](/cloud/metrics/openmetrics/metrics-reference#namespace_bandwidth_bytes) to monitor the volume of write data that counts toward the Namespace write bandwidth limit. The metric reports bytes per second averaged over each one-minute aggregation window.
+
+Use [`namespace_bandwidth_throttled_bytes`](/cloud/metrics/openmetrics/metrics-reference#namespace_bandwidth_throttled_bytes) to detect write bandwidth throttling. A value greater than zero means that write requests were throttled during the aggregation window. Break down the metric by `operation` to find the write operations that contributed to the throttling.
+
+The write bandwidth limit scales with the Namespace APS limit. Increasing the APS limit increases the write bandwidth limit proportionally. Monitor Action usage and write bandwidth together because a Namespace with large payloads can reach its write bandwidth limit while remaining below its APS limit.
+
 ### Provisioned capacity utilization
 
 For Namespaces in [provisioned capacity](/cloud/capacity-modes#provisioned-capacity) mode, the limit and count metrics also reveal the lower bound: how much of your reserved capacity you are actually using.

@@ -590,6 +590,28 @@ The current number of open workflows in a namespace.
 
 **Type**: Value
 
+#### namespace\_bandwidth\_bytes
+
+The volume of data in write requests that count toward the Namespace write bandwidth limit, in bytes per second. See [Monitor write bandwidth](/cloud/service-health#monitor-write-bandwidth) for guidance on monitoring usage against the limit.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the write operation |
+| `is_background` | Whether the write operation was background |
+
+**Type**: Rate
+
+#### namespace\_bandwidth\_throttled\_bytes
+
+The volume of data in write requests throttled by the Namespace write bandwidth limit, in bytes per second. A value greater than zero means write requests were throttled during the aggregation window.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the throttled write operation |
+| `is_background` | Whether the throttled write operation was background |
+
+**Type**: Rate
+
 #### temporal\_cloud\_v1\_total\_action\_count
 
 The total number of actions performed per second. Actions with `is_background=false` are counted toward the ``temporal_cloud_v1_action_limit``.
