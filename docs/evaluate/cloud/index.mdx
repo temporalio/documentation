@@ -1,0 +1,220 @@
+---
+id: index
+title: Overview
+description: Managed Durable Execution on AWS and GCP, with cell-based isolation, three-zone replication, consumption-based pricing, and migration from self-hosted.
+toc_max_heading_level: 4
+tags:
+  - Temporal Cloud
+---
+
+import CloudRegionCount from '@site/src/components/elements/CloudRegionCount';
+import PatternCards from '@site/src/components/PatternCards';
+
+Temporal Cloud is a managed Durable Execution platform.
+Temporal operates the Temporal Service for you: persistence, replication, version upgrades, and availability.
+
+Your Workers stay in your environment.
+They run your Workflow and Activity code and handle your data, while Temporal Cloud stores Workflow state and schedules the work.
+
+## How Temporal Cloud works
+
+Temporal Cloud runs the Temporal Service for your applications:
+
+1. **Your environment**: You run Workers that execute your Workflow and Activity code. Deploy them on Kubernetes, virtual machines, serverless platforms, or on-premises hardware.
+2. **Temporal Cloud**: Stores Workflow state and Event History, queues Tasks, and schedules work. Data is encrypted in transit and at rest.
+3. **Temporal SDKs**: Your applications use an SDK to talk to Temporal Cloud over TLS-encrypted gRPC connections.
+
+Because the two halves scale separately, you size the compute for your Workers and Temporal sizes the orchestration layer.
+
+## Architecture
+
+### Cell-based infrastructure
+
+Temporal Cloud uses a cell-based architecture to achieve isolation and scalability.
+Each cell is a self-contained deployment unit with its own:
+
+- Dedicated cloud account and VPC
+- Kubernetes cluster running Temporal services
+- Primary database with synchronous replication across three availability zones
+- Elasticsearch for Workflow visibility and search
+- Load balancers and ingress management
+- Observability and certificate infrastructure
+
+Cells are failure domains.
+When infrastructure inside a cell degrades, only the Namespaces in that cell are affected, and cells scale independently of each other.
+
+### Data plane and control plane
+
+**Data plane**: Where your Workflows run. Each cell processes Workflow operations, persists state, and manages Task Queues.
+
+**Control plane**: Handles provisioning, configuration, and lifecycle operations. When you create a Namespace, the control plane:
+
+1. Selects a cell in the region you chose
+2. Provisions database resources and roles
+3. Generates and deploys mTLS certificates
+4. Configures ingress routes and validates connectivity
+
+The control plane runs those steps on Temporal itself.
+
+### Multi-cloud availability
+
+Temporal Cloud runs on both AWS and GCP:
+
+- <strong><CloudRegionCount provider="aws" /> AWS regions</strong> spanning North America, Europe, Asia Pacific, and South America
+- <strong><CloudRegionCount provider="gcp" /> GCP regions</strong> in North America, Europe, and Asia Pacific
+
+You can create Namespaces in any supported region.
+For disaster recovery, replicate across regions within a cloud provider or across the two providers.
+
+See [Service regions](/evaluate/cloud/regions) for the complete list.
+
+## Built-in reliability
+
+Every Temporal Cloud Namespace includes baseline high availability:
+
+- **Three-zone replication**: Workflow state replicates synchronously across three availability zones before a write is acknowledged
+- **Automatic failover**: If one zone becomes unavailable, operations continue on the remaining zones
+- **99.9% SLA**: Contractual uptime guarantee for standard Namespaces
+
+### High Availability features
+
+For workloads that need stronger guarantees, Temporal Cloud offers three replication options:
+
+| Deployment | Description | Use case |
+|------------|-------------|----------|
+| **Same-region** | Replicate across isolated cells within one region | Single-region applications needing cell-level isolation |
+| **Multi-region** | Replicate across regions within one cloud provider | Geographic redundancy and compliance requirements |
+| **Multi-cloud** | Replicate across cloud providers (AWS ↔️ GCP) | Resilience to a provider-wide outage |
+
+High Availability Namespaces include:
+
+- **99.99% SLA**: Contractual uptime guarantee
+- **Sub-1-minute RPO**: Recovery Point Objective for data loss
+- **20-minute RTO**: Recovery Time Objective for failover completion
+- **Automatic or manual failover**: Choose the failover strategy per Namespace
+
+See [High Availability](/cloud/high-availability) for configuration details.
+
+## Security model
+
+Temporal Cloud secures your applications at several layers.
+
+### Your code stays with you
+
+Temporal Cloud does not execute your application code.
+Workers run in your environment and connect to Temporal Cloud over encrypted channels, so access to your compute resources and secrets stays with you.
+
+### Client-side encryption
+
+The [Data Converter](/dataconversion) encrypts Payloads before they leave your Workers, so Temporal Cloud stores ciphertext and the data stays encrypted even if the service is compromised.
+Deploy a [Codec Server](/production-deployment/data-encryption) to decrypt data in the Web UI without sharing keys with Temporal.
+
+### Network isolation
+
+- **mTLS authentication**: Per-Namespace certificate-based authentication for gRPC endpoints
+- **API key authentication**: Alternative to certificates for simpler key management
+- **Private connectivity**: AWS PrivateLink and GCP Private Service Connect for traffic that never traverses the public internet
+
+### Compliance
+
+Temporal Technologies maintains SOC 2 Type 2 certification and complies with GDPR and HIPAA regulations.
+Audit logs capture supported operations in the Temporal Cloud control plane and export to your security
+monitoring systems.
+See [Audit Logging](/cloud/audit-logs) for the supported operations and coverage.
+
+See [Security model](/evaluate/cloud/security) for the full model.
+
+## Consumption-based pricing
+
+Temporal Cloud bills for what you use.
+
+### Actions
+
+Actions are the primary billing unit.
+Actions are billable operations like starting Workflows, sending Signals, recording Heartbeats, and completing Activities. Pricing starts at $50 per million Actions. Volume and commitment discounts are available on the Business, Enterprise, and Mission Critical plans.
+
+### Storage
+
+- **Active Storage**: Event History for running Workflows
+- **Retained Storage**: Event History for closed Workflows, for a Retention Period you set per Namespace, up to 90 days
+
+### Plans
+
+Four tiers—Developer, Business, Enterprise, and Mission Critical—with increasing support levels. The Developer plan starts at $0/month. The Business plan and above add monthly Actions and Storage allocations and commitment discounts.
+Self-serve signup and plan management available at [cloud.temporal.io](https://cloud.temporal.io).
+
+See [Pricing](/cloud/pricing) for rates and examples.
+
+## Move workloads between deployments
+
+Temporal Cloud runs the same Temporal Server as the open-source distribution, so applications built for a self-hosted Temporal Service run on Temporal Cloud without code changes.
+Point your connection configuration at your Cloud Namespace.
+
+[Automated migration](/cloud/migrate/automated) uses Workflow replication to move running Workflows from self-hosted to Cloud, or between Cloud regions, with no Workflow restarts, data loss, or downtime.
+[Manual migration](/cloud/migrate/manual) updates Clients and Workers to use new Namespace endpoints and lets existing Workflows finish where they are.
+
+The same tooling works in every direction: self-hosted to Cloud, Cloud to self-hosted, and between Cloud regions and providers.
+
+## Run Cloud operations yourself
+
+Standard operations need no support ticket:
+
+- **Web UI**: Create Namespaces, manage users, and configure settings at [cloud.temporal.io](https://cloud.temporal.io)
+- **[Temporal CLI Cloud extension](/cli/cloud)**: Automate operations from the Temporal CLI
+- **CLI (`tcld`)**: Automate operations from the command line
+- **Terraform provider**: Manage Namespaces, users, and configuration as code
+- **Cloud Ops API**: Programmatic access for custom tooling and automation
+
+## Get started
+
+1. [Sign up for Temporal Cloud](https://temporal.io/get-cloud)
+2. [Create your first Namespace](/cloud/namespaces)
+3. [Connect your Workers](/cloud/get-started#set-up-your-clients-and-workers)
+4. [Run your first Workflow](/cloud/get-started#run-your-first-workflow)
+
+To move existing self-hosted workloads, see [Migration](/cloud/migrate).
+
+## Evaluate Temporal Cloud
+
+<PatternCards items={[
+  {
+    href: "/cloud/pricing",
+    title: "Pricing",
+    description: "Plans, Action and Storage rates, commitment pricing, and worked examples for estimating a monthly bill.",
+  },
+  {
+    href: "/evaluate/cloud/actions",
+    title: "Actions",
+    description: "Which operations count as billable Actions, by category, with the metric and Event History type for each.",
+  },
+  {
+    href: "/evaluate/cloud/limits",
+    title: "Limits",
+    description: "Rate, resource, and configuration limits by scope, which ones you can raise, and what happens when you exceed them.",
+  },
+  {
+    href: "/evaluate/cloud/service-availability",
+    title: "Availability",
+    description: "Throughput modes, the p99 latency SLO, measured latency for common operations, and the custom persistence layer behind them.",
+  },
+  {
+    href: "/evaluate/cloud/sla",
+    title: "SLA",
+    description: "The contractual uptime guarantee for each deployment mode, and how the service-error rate is calculated.",
+  },
+  {
+    href: "/evaluate/cloud/security",
+    title: "Security model",
+    description: "Namespace isolation, authentication, encryption in transit and at rest, access control, and compliance certifications.",
+  },
+  {
+    href: "/evaluate/cloud/regions",
+    title: "Service regions",
+    description: "The AWS and GCP regions where you can create a Temporal Cloud Namespace.",
+  },
+  {
+    href: "/evaluate/cloud/support",
+    title: "Support",
+    description: "Response times, channels, and technical guidance included with each plan, plus how to open a support ticket.",
+  },
+]} />
