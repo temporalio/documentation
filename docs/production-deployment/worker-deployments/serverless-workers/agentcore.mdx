@@ -2,7 +2,7 @@
 id: agentcore
 title: Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime
 sidebar_label: Amazon Bedrock AgentCore
-description: Deploy an existing Python Worker to AgentCore Runtime and configure Temporal Cloud to start capacity when Task Queue demand increases.
+description: Deploy an existing Python Worker to AgentCore Runtime and configure Temporal to start capacity when Task Queue demand increases.
 slug: /production-deployment/worker-deployments/serverless-workers/agentcore
 toc_max_heading_level: 4
 tags:
@@ -35,8 +35,13 @@ Python SDK](/develop/python/workers/serverless-workers/agentcore).
 
 ## Prerequisites {/* #prerequisites */}
 
-- A Temporal Cloud account with an AWS-hosted Namespace and access to the AgentCore Serverless Workers Pre-release.
-- A Temporal Cloud API key that can connect to the Namespace.
+- A Temporal Cloud account with an AWS-hosted Namespace and access to the AgentCore Serverless Workers Pre-release, or
+  a self-hosted Temporal Service v1.32.0 or later.
+- For self-hosted deployments, complete the
+  [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/agentcore/self-hosted-setup) before
+  following this guide.
+- Credentials that let the Worker connect to the Temporal Service. The example configuration uses a Temporal Cloud API
+  key.
 - [Temporal CLI v1.8.3](https://github.com/temporalio/cli/releases/tag/v1.8.3) or later, configured for your Namespace.
 - An existing Python Temporal Worker with an
   [AgentCore Runtime handler](/develop/python/workers/serverless-workers/agentcore#runtime-handler).
@@ -139,7 +144,7 @@ agentcore status --type runtime-endpoint --json
 ```
 
 Record the Runtime ARN and the ARN of the named endpoint. You use the Runtime ARN to scope the invocation role and give
-the endpoint ARN to Temporal Cloud.
+the endpoint ARN to Temporal.
 
 AgentCore creates an immutable Runtime version when you create or update a Runtime. A named endpoint remains pinned to
 its configured version until you update it. For details, see [AgentCore Runtime versioning and
@@ -168,10 +173,18 @@ their original Runtime versions.
 
 :::
 
-If you use a VPC instead of a public network, configure outbound access from the VPC to your Temporal Cloud Namespace.
-Temporal invokes the named endpoint by assuming the IAM role that you create in [Step 3](#configure-iam).
+If you use a VPC instead of a public network, configure outbound access from the VPC to the Temporal Service. Temporal
+invokes the named endpoint by assuming the IAM role that you create in [Step 3](#configure-iam).
 
 ## 3. Grant Temporal permission to invoke the Runtime {/* #configure-iam */}
+
+:::info Self-hosted Temporal Service
+
+If you use a self-hosted Temporal Service, create the invocation role during the
+[self-hosted setup](/production-deployment/worker-deployments/serverless-workers/agentcore/self-hosted-setup#create-invocation-role).
+Use that role when you create the Worker Deployment Version and skip the rest of this step.
+
+:::
 
 Temporal Cloud assumes an IAM role in your AWS account to get the named endpoint and invoke the Runtime. Choose an
 External ID of at least five characters. Use the same value in the role trust policy and the Worker Deployment Version.
@@ -247,6 +260,8 @@ to [Step 6](#verify-worker-startup).
 </TabItem>
 <TabItem value="cli" label="Temporal CLI">
 
+Use the Temporal CLI for a self-hosted Temporal Service.
+
 First, create the Worker Deployment if it does not already exist:
 
 ```bash
@@ -272,9 +287,9 @@ The deployment name and Build ID must match the values in the Runtime environmen
 </TabItem>
 </Tabs>
 
-To check whether Temporal can reach the endpoint, open the Worker Deployment Version in the Temporal Cloud UI and
-select **Actions** > **Validate Connection**. This checks that Temporal can assume the invocation role, get the named
-endpoint, and invoke the Runtime.
+For Temporal Cloud, check whether Temporal can reach the endpoint by opening the Worker Deployment Version in the
+Temporal Cloud UI and selecting **Actions** > **Validate Connection**. This checks that Temporal can assume the
+invocation role, get the named endpoint, and invoke the Runtime.
 
 ## 5. Set the version as current {/* #set-current-version */}
 
@@ -297,8 +312,8 @@ AgentCore Runtime endpoint. The Runtime starts the Worker, and the Worker polls 
 
 You can confirm the deployment in these places:
 
-- **Temporal Cloud UI**: Open the Worker Deployment Version and confirm that the connection is valid and a Worker has
-  polled the Task Queue.
+- **Temporal UI**: Open the Worker Deployment Version and confirm that a Worker has polled the Task Queue. In Temporal
+  Cloud, also confirm that the connection is valid.
 - **AgentCore logs**: Run `agentcore logs --runtime <RUNTIME_NAME>` to see the Worker start and process Tasks.
 - **Temporal CLI**: Run `temporal worker deployment describe --name <DEPLOYMENT_NAME>` to inspect the deployment and
   current version.

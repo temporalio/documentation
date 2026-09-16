@@ -1605,7 +1605,18 @@ module.exports = {
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
                   ],
                 },
-                'production-deployment/worker-deployments/serverless-workers/agentcore',
+                {
+                  type: 'category',
+                  label: 'Amazon Bedrock AgentCore',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/agentcore',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/agentcore-self-hosted-setup',
+                  ],
+                },
                 {
                   type: 'category',
                   label: 'GCP Cloud Run',
