@@ -105,6 +105,7 @@ named endpoint that Temporal invokes:
 
 ```json
 {
+  "name": "temporal_strands_worker",
   "entrypoint": "agentcore_worker.py",
   "networkMode": "PUBLIC",
   "protocol": "HTTP",
@@ -137,10 +138,11 @@ agentcore deploy --target default -y
 
 AgentCore packages the Worker and its dependencies, deploys the Runtime, and creates the named endpoint.
 
-Check the deployed resources:
+Check the deployed resources. The `--runtime` value is the Runtime object's `name` in `agentcore/agentcore.json`. The
+sample Runtime is named `temporal_strands_worker`. If your Runtime has a different name, replace this value:
 
 ```bash
-agentcore status --runtime <RUNTIME_NAME> --json
+agentcore status --runtime temporal_strands_worker --json
 agentcore status --type runtime-endpoint --json
 ```
 
