@@ -39,9 +39,9 @@ Your Temporal Client starts the Workflow. When the Task Queue needs a Worker, Te
 AgentCore Runtime session. The Worker processes the Workflow and Activity Tasks, then drains after 60 seconds without
 an Activity starting or finishing.
 
-The sample is intentionally one turn. This keeps the deployment path visible while still demonstrating the important
-reliability boundary: the model and tool calls are recorded Temporal operations, and the Worker process that performs
-them can be replaced.
+The sample handles one turn so the tutorial can focus on deployment. Both the model request and Code Interpreter call
+run as Temporal Activities. If the Worker stops before an Activity completes, Temporal can retry the Activity on
+another Worker according to its Retry Policy.
 
 ## Architecture
 
