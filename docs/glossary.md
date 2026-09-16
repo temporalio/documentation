@@ -675,7 +675,7 @@ A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communi
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud](/evaluate/cloud/overview)
+#### [Temporal Cloud](/evaluate/cloud)
 
 Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.
 

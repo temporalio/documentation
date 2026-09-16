@@ -2482,7 +2482,7 @@
     },
     {
       "source": "/cloud/overview",
-      "destination": "/evaluate/cloud/overview",
+      "destination": "/evaluate/cloud",
       "permanent": true
     },
     {

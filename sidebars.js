@@ -1196,7 +1196,7 @@ module.exports = {
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'evaluate/cloud/overview',
+            id: 'evaluate/cloud/index',
           },
           items: [
             'evaluate/cloud/security',
