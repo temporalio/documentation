@@ -47,7 +47,8 @@ another Worker according to its Retry Policy.
 
 Temporal Cloud owns the agent's execution state and capacity control. The application starts or signals the Workflow.
 The Workflow records agent decisions and schedules model and tool work as Temporal Tasks. When the Task Queue needs
-capacity, the Worker Controller Instance starts AgentCore Runtime sessions.
+capacity, the [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) starts AgentCore
+Runtime sessions.
 
 Each Runtime session hosts a Temporal Worker that polls the versioned Task Queue. Workers can call AgentCore services,
 but the sessions and their process-local state remain replaceable. The sample in this guide uses AgentCore Code
@@ -72,8 +73,8 @@ Place state according to how long it must remain available:
 This division is what lets the Workflow outlive any one Runtime session. A Worker can stop after the current work is
 complete, and a later Worker can reconstruct the Workflow before continuing it.
 
-To extend the sample to multiple turns, use one Workflow Id per conversation, keep the Workflow open, and accept later
-prompts through Workflow Updates while allowing any compatible Runtime session to process each turn.
+To extend the sample to multiple turns, use one Workflow ID per conversation and send later prompts to that Workflow
+through Updates. Any compatible Runtime session can process the next turn.
 
 ## Prerequisites
 
@@ -152,7 +153,7 @@ The Workflow owns the sequence of model and tool decisions because that sequence
 failure. The model calls themselves do not run as ordinary Workflow code. They run as Activities because they perform
 network I/O, can fail independently, and are not deterministic.
 
-The `execute_code` Activity creates a Code Interpreter session using the Workflow Id as its session name:
+The `execute_code` Activity creates a Code Interpreter session using the Workflow ID as its session name:
 
 <!--SNIPSTART python-agentcore-code-interpreter-activity-->
 [bedrock_agentcore/strands_agent/activities.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/activities.py)
@@ -175,7 +176,7 @@ def execute_code(
 ```
 <!--SNIPEND-->
 
-Using the Workflow Id gives each Workflow Execution its own Code Interpreter sandbox.
+Using the Workflow ID gives each Workflow Execution its own Code Interpreter sandbox.
 
 ## 3. Configure and deploy the Runtime
 
