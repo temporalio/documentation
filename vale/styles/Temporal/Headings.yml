@@ -168,8 +168,8 @@ exceptions:
   # the SDK is flagged — "Temporal .NET technical resources" is reported
   # while the identical Go heading is not.
   - NET
-  # Identifier casing per this repo's style guide (Id, not ID)
-  - Id
+  # Identifier casing per this repo's style guide (ID, not Id)
+  - ID
   # Temporal feature / primitive names
   - Versioning
   - Patching
