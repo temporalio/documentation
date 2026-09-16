@@ -207,7 +207,7 @@ offload less data or set the value to `0` to offload every Payload.
 ```java
 return ExternalStorage.newBuilder()
     .setDriver(driver)
-    .setPayloadSizeThreshold(512 * 1024)
+    .setPayloadSizeThreshold(0)
     .build();
 ```
 <!--SNIPEND-->
