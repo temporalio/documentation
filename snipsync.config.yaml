@@ -7,8 +7,6 @@ origins:
     repo: samples-typescript
   - owner: temporalio
     repo: samples-python
-    # Remove this ref after temporalio/samples-python#360 merges.
-    ref: schoeff/strands-agent
   - owner: temporalio
     repo: reference-app-orders-go
   - owner: temporalio

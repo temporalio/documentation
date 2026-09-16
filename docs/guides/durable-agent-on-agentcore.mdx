@@ -94,13 +94,11 @@ through Updates. Any compatible Runtime session can process the next turn.
 
 ## 1. Get the sample
 
-Clone the branch from the
-[Strands Agent on Bedrock AgentCore sample PR](https://github.com/temporalio/samples-python/pull/360), then install its
-Python dependencies:
+Clone the [Python samples repository](https://github.com/temporalio/samples-python/tree/main/bedrock_agentcore/strands_agent),
+then install the sample's Python dependencies:
 
 ```bash
-git clone --branch schoeff/strands-agent --single-branch \
-  https://github.com/temporalio/samples-python.git
+git clone --depth 1 https://github.com/temporalio/samples-python.git
 cd samples-python/bedrock_agentcore/strands_agent
 uv sync
 ```
@@ -117,7 +115,7 @@ application and Runtime settings. The deployment script generates the AgentCore 
 The sample creates a `TemporalAgent` with a system prompt and the `execute_code` tool:
 
 <!--SNIPSTART python-agentcore-strands-workflow-->
-[bedrock_agentcore/strands_agent/workflows.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/workflows.py)
+[bedrock_agentcore/strands_agent/workflows.py](https://github.com/temporalio/samples-python/blob/main/bedrock_agentcore/strands_agent/workflows.py)
 ```py
 @workflow.defn
 class StrandsAgentWorkflow:
@@ -156,7 +154,7 @@ network I/O, can fail independently, and are not deterministic.
 The `execute_code` Activity creates a Code Interpreter session using the Workflow ID as its session name:
 
 <!--SNIPSTART python-agentcore-code-interpreter-activity-->
-[bedrock_agentcore/strands_agent/activities.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/activities.py)
+[bedrock_agentcore/strands_agent/activities.py](https://github.com/temporalio/samples-python/blob/main/bedrock_agentcore/strands_agent/activities.py)
 ```py
 # Use AgentCore Code Interpreter to provide a code sandbox and execute LLM generated solution
 @activity.defn
@@ -251,24 +249,18 @@ echo "$RUNTIME_ENDPOINT_ARN"
 
 Both commands must print an ARN before you continue.
 
-AgentCore creates an immutable Runtime version when you deploy changed Worker code or configuration. The named
-`temporal` endpoint remains on its configured version. When you redeploy the sample, increment
-`endpoints.temporal.version` in `agentcore/agentcore.json` so the endpoint uses the new Runtime version.
+:::important Runtime ARN and endpoint ARN are different
 
-Verify the endpoint version before creating the Worker Deployment Version:
+`AGENT_RUNTIME_ARN` ends with `/runtime/<runtime-id>`. It identifies the Runtime resource. The IAM role in Step 4 uses
+this ARN with a trailing wildcard to allow access to the Runtime and its endpoints.
 
-```bash
-aws bedrock-agentcore-control get-agent-runtime-endpoint \
-  --agent-runtime-id "$AGENT_RUNTIME_ID" \
-  --endpoint-name temporal \
-  --query '{status:status,liveVersion:liveVersion}' \
-  --region "$AWS_REGION"
-```
+`RUNTIME_ENDPOINT_ARN` adds `/runtime-endpoint/temporal` to the Runtime ARN. It identifies the named endpoint that
+routes invocations to its configured Runtime version. The Worker Deployment Version in Step 5 uses this ARN to tell
+Temporal what to invoke.
 
-If the endpoint remains on an earlier version, Temporal starts the old Worker code. Creating the Worker Deployment
-Version can then time out if that code does not acknowledge the invocation promptly or does not register the expected
-deployment name and Build ID. For details, see [AgentCore Runtime versioning and
-endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-runtime-versioning.html).
+Do not use `AGENT_RUNTIME_ARN` as the `--aws-agentcore-endpoint-arn` value.
+
+:::
 
 ## 4. Grant Temporal access to the Runtime
 

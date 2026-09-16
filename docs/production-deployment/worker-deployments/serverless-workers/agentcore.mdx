@@ -26,7 +26,7 @@ Workflow and Activity code and AgentCore project are already in place.
 
 For a tutorial that walks you through setting up an AgentCore project from scratch, see [Build a durable agent on
 Amazon Bedrock AgentCore](/guides/durable-agent-on-agentcore). That guide starts with the [Python Strands AgentCore
-sample](https://github.com/temporalio/samples-python/tree/schoeff/strands-agent/bedrock_agentcore/strands_agent) and explains
+sample](https://github.com/temporalio/samples-python/tree/main/bedrock_agentcore/strands_agent) and explains
 the agent architecture, Workflow and Activity boundaries, AgentCore project configuration, and deployment from start to
 finish. Use this page when you only need the Worker deployment procedure.
 
@@ -83,8 +83,7 @@ named endpoint that Temporal invokes:
 }
 ```
 
-In this initial configuration, `version: 1` selects the first AgentCore Runtime version. Verify the named endpoint's
-version after deployment in [Step 3](#deploy-runtime).
+In this initial configuration, `version: 1` selects the first AgentCore Runtime version.
 
 Within the same Runtime object, add the Temporal connection, Task Queue, Worker Deployment name, and Build ID to the
 `envVars` array:
@@ -168,7 +167,7 @@ file also contains the imports, creates the `BedrockAgentCoreApp`, retains the b
 [Start the Worker from the Runtime handler](/develop/python/workers/serverless-workers/agentcore#runtime-handler).
 
 <!--SNIPSTART python-agentcore-runtime-handler-->
-[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/agentcore_worker.py)
+[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/main/bedrock_agentcore/strands_agent/agentcore_worker.py)
 ```py
 async def run_worker() -> None:
     """Poll until idle, then drain."""
@@ -259,48 +258,26 @@ agentcore status --runtime temporal_strands_worker --json
 agentcore status --type runtime-endpoint --json
 ```
 
-Record the Runtime ARN and the ARN of the named endpoint. You use the Runtime ARN to scope the invocation role and give
-the endpoint ARN to Temporal.
+Record the Runtime ARN and the ARN of the named endpoint.
 
-AgentCore creates an immutable Runtime version when you create or update a Runtime. A named endpoint remains pinned to
-its configured version until you update it. For details, see [AgentCore Runtime versioning and
-endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-runtime-versioning.html).
+:::important Runtime ARN and endpoint ARN are different
 
-Check which Runtime version the named endpoint serves. Set `<RUNTIME_ID>` to the identifier after `/runtime/` in the
-Runtime ARN, `<ENDPOINT_NAME>` to the key under `endpoints` in `agentcore.json`, and `<AWS_REGION>` to the Region in
-`aws-targets.json`:
+The Runtime ARN ends with `/runtime/<runtime-id>`. It identifies the Runtime resource. Use it with a trailing wildcard
+to scope the IAM role that Temporal assumes:
 
-```bash
-aws bedrock-agentcore-control get-agent-runtime-endpoint \
-  --agent-runtime-id <RUNTIME_ID> \
-  --endpoint-name <ENDPOINT_NAME> \
-  --query '{status:status,liveVersion:liveVersion}' \
-  --region <AWS_REGION>
+```text
+arn:aws:bedrock-agentcore:<region>:<account>:runtime/<runtime-id>
 ```
 
-For the configuration in [Step 1](#configure-worker-runtime), the command must return `READY` and a `liveVersion` of
-`1`:
+The endpoint ARN adds `/runtime-endpoint/<endpoint-name>` to the Runtime ARN. It identifies the named endpoint that
+routes invocations to its configured Runtime version. Give this ARN to Temporal when you create the Worker Deployment
+Version:
 
-```json
-{
-  "status": "READY",
-  "liveVersion": "1"
-}
+```text
+arn:aws:bedrock-agentcore:<region>:<account>:runtime/<runtime-id>/runtime-endpoint/<endpoint-name>
 ```
 
-The `liveVersion` must match the `version` configured for the named endpoint in `agentcore.json`. This confirms that
-the endpoint ARN you give to Temporal invokes the expected Worker code and Runtime environment.
-
-:::caution Verify the endpoint version after redeploying
-
-If you redeploy the Runtime, AgentCore creates another immutable Runtime version. For example, the new version might be
-`2` while the named endpoint still has `version: 1` in `agentcore.json`. Temporal then continues to invoke the Worker
-code from version `1`.
-
-For a later Worker version, create or update a named endpoint with the new Runtime version. Wait until its `status` is
-`READY` and its `liveVersion` matches that version before using the endpoint ARN for the corresponding Worker
-Deployment Version. Keep endpoints used by existing Worker Deployment Versions pinned to their original Runtime
-versions.
+Do not pass the Runtime ARN as the `--aws-agentcore-endpoint-arn` value.
 
 :::
 
