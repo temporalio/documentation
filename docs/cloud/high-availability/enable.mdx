@@ -11,7 +11,7 @@ Executions.
 
 Adding a replica fails the Namespace over automatically; to plan how your Workers fail over with it, see [Worker deployment patterns for high availability and disaster recovery](/cloud/high-availability/architecture-patterns).
 
- The replica region must be on the same continent as the primary region. Because of that, not all replication options are available in all Temporal Cloud regions. See the [Service regions](/cloud/regions) page for the supported replica regions for each active region.
+ The replica region must be on the same continent as the primary region. Because of that, not all replication options are available in all Temporal Cloud regions. See the [Service regions](/evaluate/cloud/regions) page for the supported replica regions for each active region.
 
 Using private network connectivity with a HA namespace requires extra setup. See
 [Connectivity for HA](/cloud/high-availability/ha-connectivity).
@@ -29,9 +29,9 @@ utility.
 <TabItem value="webui" label="Web UI">
 
     1. Visit Temporal Cloud in your Web browser.
-    1. During Namespace creation, specify the primary [region](/cloud/regions) for the Namespace.
+    1. During Namespace creation, specify the primary [region](/evaluate/cloud/regions) for the Namespace.
     1. Select "Add a replica".
-    1. Choose the [region](/cloud/regions) for the replica.
+    1. Choose the [region](/evaluate/cloud/regions) for the replica.
 
     The web interface will present an estimated time for replication to complete.
     This time is based on your selection and the size and scale of the Workflows in your Namespace.
@@ -49,7 +49,7 @@ temporal cloud namespace create \
    --region <replica_region>
 ```
 
-Specify the [region codes](/cloud/regions) as arguments to the two `--region` flags.
+Specify the [region codes](/evaluate/cloud/regions) as arguments to the two `--region` flags.
 
 </TabItem>
 
@@ -64,7 +64,7 @@ tcld namespace create \
    --region <replica_region>
 ```
 
-Specify the [region codes](/cloud/regions) as arguments to the two `--region` flags.
+Specify the [region codes](/evaluate/cloud/regions) as arguments to the two `--region` flags.
 
 If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before
 `namespace create`.
@@ -86,7 +86,7 @@ A replica can be added after a namespace has already been created.
 1. Visit Temporal Cloud Namespaces in your Web browser.
 1. Navigate to the Namespace details page.
 1. Select the “Add a replica” button.
-1. Choose the [region](/cloud/regions) for the replica.
+1. Choose the [region](/evaluate/cloud/regions) for the replica.
 
 The web interface will present an estimated time for replication to complete. This time is based on your selection and
 the size and scale of the Workflows in your Namespace.
@@ -106,7 +106,7 @@ temporal cloud namespace ha region add \
 ```
 
 Specify the region ID (for example, `aws-us-east-1`) of the region where you want to create the replica as an argument to
-the `--region` flag. See [Regions](/cloud/regions) for available region names.
+the `--region` flag. See [Regions](/evaluate/cloud/regions) for available region names.
 
 Temporal Cloud sends an email alert once your Namespace is ready for use.
 
@@ -123,7 +123,7 @@ tcld namespace add-region \
 ```
 
 Specify the region name (for example, `us-east-1`) of the region where you want to create the replica as an argument to the
-`--region` flag. See [Regions](/cloud/regions) for available region names.
+`--region` flag. See [Regions](/evaluate/cloud/regions) for available region names.
 
 If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before
 `namespace add-region`.
@@ -347,7 +347,7 @@ temporal cloud namespace ha region delete \
     --region <replica_region_name>
 ```
 
-See [Regions](/cloud/regions) for available region names.
+See [Regions](/evaluate/cloud/regions) for available region names.
 
 </TabItem>
 
@@ -362,7 +362,7 @@ tcld namespace delete-region \
     --region <replica_region_name>
 ```
 
-See [Regions](/cloud/regions) for available region names.
+See [Regions](/evaluate/cloud/regions) for available region names.
 
 </TabItem>
 
