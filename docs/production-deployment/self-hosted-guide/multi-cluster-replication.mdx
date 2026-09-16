@@ -26,9 +26,100 @@ As a result, [Temporal UI](/web-ui) works with Global Namespaces the same way it
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
+## How to prepare for a Namespace failover
+
+Prepare the replication topology and monitor the destination Temporal Service before you start a planned handover.
+
+### Configure compatible shard counts
+
+The History shard counts of connected Temporal Services must be equal or clean multiples of each other. For example,
+512 and 1,024 shards are compatible, but 512 and 768 are not. The replication stream rejects a connection when it
+cannot map History shards between the source and destination.
+
+Set [`numHistoryShards`](/references/configuration#numhistoryshards) when you first deploy each Temporal Service. You
+cannot change it after the Temporal Service has started.
+
+### Configure API forwarding
+
+Use `all-apis-forwarding` on every participating Temporal Service if Clients and Workers can continue connecting to any
+frontend after a failover:
+
+```yaml
+dcRedirectionPolicy:
+  policy: "all-apis-forwarding"
+```
+
+This static configuration requires a Temporal Server restart. It forwards Client requests, Worker polls, Activity
+heartbeats, and task-completion requests from a passive Temporal Service to the active Temporal Service.
+
+`selected-apis-forwarding` forwards only selected Client APIs. It does not forward Worker polls, task-completion
+requests, Activity heartbeats, `UpdateWorkflowExecution`, or `ExecuteMultiOperation`. If you use that policy, repoint
+Clients and Workers to the destination frontend as part of the failover procedure.
+
+Keep `system.enableNamespaceNotActiveAutoForwarding` at its default value of `true` on every Temporal Service.
+Setting it to `false` disables forwarding regardless of `dcRedirectionPolicy`.
+
+### Populate a new passive Temporal Service
+
+The replication stream transfers tasks created after two Temporal Services are connected. If you add a passive
+Temporal Service to an existing Global Namespace, run `force-replication-v2` to copy existing Workflow Execution state
+before the first failover:
+
+```bash
+temporal workflow start \
+  --address ActiveClusterFrontendAddress \
+  --namespace temporal-system \
+  --task-queue default-worker-tq \
+  --type force-replication-v2 \
+  --workflow-id force-replication-YourNamespaceName \
+  --input '{"Namespace":"YourNamespaceName","Query":"","ConcurrentActivityCount":5}'
+```
+
+Wait for this Workflow to complete before starting a handover. Do not run it after a temporary replication outage on
+an established passive Temporal Service. An established stream resumes from its replication watermark when connectivity
+returns.
+
+Set `history.EnableReplicationTaskTieredProcessing` to `true` on every Temporal Service before running a backfill or
+handover. This separates live, high-priority replication tasks from lower-priority backfill tasks so a backfill does not
+block the handover drain. Changing this dynamic configuration restarts replication streams; wait for them to recover
+before continuing.
+
+### Check replication health
+
+Do not start a planned handover until the destination Temporal Service is caught up and the replication stream is
+making progress. Monitor the following [Temporal Service metrics](/references/cluster-metrics#multi-cluster-replication-metrics):
+
+| Metric | Ready-to-handover condition |
+| --- | --- |
+| `replication_stream_stuck` | No new events. A non-zero rate means a stream stopped making progress. |
+| `replication_dlq_enqueue_failed` | No new events. A failure can mean a replication task was not stored for later recovery. |
+| `replication_tasks_lag` | Low and stable or decreasing on the destination. Do not proceed while lag is rising. |
+| `replication_latency` | The p99 latency is comfortably below the handover timeout. Tasks near the 30-second maximum drain window cannot complete in time. |
+| `replication_tasks_recv_backlog` | Low and not approaching the receiver's flow-control limit. |
+| `task_errors_discarded` | No new events on the passive Temporal Service. A discarded standby task can leave a Workflow Execution without a pending task after failover. |
+
+A non-zero `replication_stream_error` rate does not by itself indicate that replication is unhealthy. Connections can
+be recycled and re-established while the stream continues to make progress. Evaluate it together with
+`replication_stream_stuck`, replication lag, and replication latency.
+
+Keep `history.standbyTaskMissingEventsDiscardDelay` at its default of 15 minutes or higher. A shorter delay makes a
+passive Temporal Service discard standby tasks sooner when the Event History they require is delayed. Monitor
+`task_errors_discarded` to detect these discards before failover.
+
+### Prepare Schedules
+
+If the Namespace uses [Schedules](/schedule), confirm that `worker.enableScheduler` is `true` on the destination
+Temporal Service and that the Worker Service has enough capacity for the Schedule load. Align
+`worker.schedulerNamespaceStartWorkflowRPS` between the source and destination so catchup behavior does not change
+after failover.
+
+A Schedule's `catchup_window` must be longer than the expected handover drain. The default catchup window is much
+longer than the handover's 30-second maximum drain time, but a custom short window can cause a scheduled action to be
+missed during the handover.
+
 ## How to fail over a Global Namespace
 
-For a planned failover, run the built-in `namespace-handover` Workflow against the currently active Temporal Service.
+For a planned failover, run the built-in `namespace-handover-v2` Workflow against the currently active Temporal Service.
 The handover Workflow:
 
 1. Waits for the destination Temporal Service to approach the configured replication-lag thresholds.
@@ -40,22 +131,79 @@ This process creates a brief availability gap while traffic is paused, but it pr
 back at the cutover. If the destination cannot catch up during the handover timeout, the Workflow restores the `normal`
 replication state without changing the active Temporal Service.
 
-Connect Temporal CLI to the currently active Temporal Service, then run the handover Workflow in the `temporal-system`
-Namespace. Use a unique Workflow Id for each handover:
+First check whether a handover is already running. Never run two handovers for the same Namespace at the same time:
 
 ```bash
-temporal workflow execute \
+temporal workflow list \
+  --address ActiveClusterFrontendAddress \
+  --namespace temporal-system \
+  --query 'WorkflowType="namespace-handover-v2" AND ExecutionStatus="Running"'
+```
+
+If no handover is running for the Namespace, start the Workflow in the `temporal-system` Namespace:
+
+```bash
+temporal workflow start \
   --address ActiveClusterFrontendAddress \
   --namespace temporal-system \
   --task-queue default-worker-tq \
-  --workflow-id YourHandoverWorkflowId \
-  --type namespace-handover \
-  --input '{"Namespace":"YourNamespaceName","RemoteCluster":"NewActiveCluster","AllowedLaggingSeconds":10,"AllowedLaggingTasks":0,"HandoverTimeoutSeconds":10}'
+  --workflow-id handover-YourNamespaceName \
+  --type namespace-handover-v2 \
+  --input '{"Namespace":"YourNamespaceName","RemoteCluster":"NewActiveCluster","AllowedLaggingSeconds":10,"AllowedLaggingTasks":500,"HandoverTimeoutSeconds":30}'
 ```
 
-`RemoteCluster` is the configured name of the destination Temporal Service. `AllowedLaggingSeconds` and
-`AllowedLaggingTasks` control when the Workflow can begin pausing traffic. `HandoverTimeoutSeconds` controls how long
-it waits for complete replication after the pause and is capped at 30 seconds.
+The input fields have the following behavior:
+
+| Field | Behavior |
+| --- | --- |
+| `RemoteCluster` | The configured name of the destination Temporal Service. |
+| `AllowedLaggingSeconds` | The maximum time lag before the Workflow can enter the drain phase. The server limits this value to between 5 and 120 seconds. |
+| `AllowedLaggingTasks` | The maximum task-count lag before the Workflow can enter the drain phase. After the destination reaches the replication snapshot taken when the handover starts, a shard passes when either its time lag or task-count lag is within the corresponding limit. A value of `0` is the strictest task-count threshold; it does not disable the check. |
+| `HandoverTimeoutSeconds` | The time allowed for every shard to drain after writes pause. Set it explicitly. The maximum is 30 seconds. |
+
+While the Workflow is catching up, `catchup_not_ready_shard_count` should fall to zero. During the drain phase,
+`handover_ready_shard_count` should reach the Temporal Service's `numHistoryShards` value before the handover timeout.
+The Workflow rolls back if every shard does not become ready in time.
+
+The Workflow automatically restores the Namespace to the `normal` replication state if the destination cannot drain
+within the timeout. Do not terminate a handover Workflow. Termination prevents Workflow cleanup logic from running and
+can leave the Namespace in the `handover` replication state with write requests blocked.
+
+### Verify a planned failover
+
+After the handover Workflow completes, describe the Namespace against the source and destination frontends:
+
+```bash
+temporal operator namespace describe \
+  --address ClusterFrontendAddress \
+  --namespace YourNamespaceName
+```
+
+The source and destination Temporal Services must report the same new active Temporal Service and a replication state
+of `Normal`. The Workflow completing does not replace this check because Namespace metadata replication is
+asynchronous.
+
+Continue monitoring after the change:
+
+- Confirm `replication_tasks_applied` begins increasing on the former active Temporal Service. This verifies that the
+  reverse replication stream is active.
+- Confirm `replication_tasks_lag` settles on the former active Temporal Service.
+- Confirm Workflow Task Schedule-to-Start latency returns to its normal range on the new active Temporal Service.
+- Confirm Clients and Workers no longer produce `NamespaceNotActive` or forwarding errors.
+- If Clients or Workers still connect to the former active Temporal Service, confirm `client_redirection_requests`
+  increases and `client_redirection_errors` remains at zero.
+- If the Namespace uses Schedules, run `temporal schedule describe` against the new active Temporal Service and confirm
+  that `FutureActionTimes` contains future times and `RecentActions` advances.
+
+If the source and destination Temporal Services disagree about the active Temporal Service, send an explicit Namespace
+update to the new active frontend, and then repeat the checks against both frontends:
+
+```bash
+temporal operator namespace update \
+  --address NewActiveClusterFrontendAddress \
+  --namespace YourNamespaceName \
+  --active-cluster NewActiveCluster
+```
 
 ### Force a failover when the active Temporal Service is unavailable
 
@@ -486,6 +634,95 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
+
+## How to maintain replicated data
+
+### Delete Workflow Executions
+
+Run explicit Workflow Execution deletes against the active Temporal Service. How that delete reaches passive Temporal
+Services depends on the Temporal Server version:
+
+| Temporal Server version | Delete replication behavior |
+| --- | --- |
+| v1.30 and earlier | Explicit deletes do not replicate. |
+| v1.31 | Set `history.enableDeleteWorkflowExecutionReplication` to `true` on every Temporal Service. The setting affects new deletes and does not remove Workflow Executions that were deleted earlier. |
+| v1.32 and later | Explicit deletes replicate automatically. The dynamic configuration setting was removed. |
+
+This applies to `DeleteWorkflowExecution`, including the individual deletes performed by a batch delete. Retention
+cleanup is not replicated; each Temporal Service deletes closed Workflow Executions according to the replicated
+Namespace retention setting. An administrative force delete with `tdbg workflow delete` is also local to the Temporal
+Service against which you run it.
+
+When explicit delete replication is unavailable or disabled, a Workflow Execution deleted early on the active Temporal
+Service remains on each passive Temporal Service until its own retention cleanup runs. This can make a passive SQL
+database temporarily larger than the active database.
+
+### Monitor passive database cleanup
+
+Each Temporal Service independently runs retention cleanup and the History scavenger. Small, stable database-size
+differences are expected. Investigate a passive SQL database that continues to grow relative to the active database,
+especially when the difference is concentrated in `executions`, `current_executions`, `history_tree`, or
+`history_node`.
+
+Monitor the History scavenger with `scavenger_skips`, `scavenger_success`, and `scavenger_errors`. The scavenger skips a
+History branch until it is older than `worker.historyScannerDataMinAge`, which defaults to 60 days. If leftover History
+is accumulating after failed or manual deletes, lower this dynamic configuration to a duration appropriate for your
+retention and recovery requirements. For example, use `1h` while draining a known backlog or a value of up to one week
+to remove routine leftovers sooner. The scavenger runs every 12 hours, so the new value takes effect during its next
+scheduled pass.
+
+Do not delete rows directly from the persistence database. Removing an execution row without its History pointer can
+strand History branches. Use Temporal APIs to delete whole Workflow Executions and let the History scavenger remove
+branches whose Workflow Executions no longer exist.
+
+### Configure custom Search Attributes
+
+Custom Search Attributes must be available on every Temporal Service before a failover:
+
+- With SQL Visibility, custom Search Attribute aliases are part of Namespace metadata and replicate to passive Temporal
+  Services.
+- With Elasticsearch Visibility, custom Search Attributes are stored in each Temporal Service's Elasticsearch metadata
+  and index. Create the same Search Attributes on every Temporal Service.
+
+Use the same Visibility store type across the replication group. A mixed SQL and Elasticsearch configuration does not
+store custom Search Attributes in the same way and is not a validated deployment pattern.
+
+### How to delete a Global Namespace
+
+Deleting a Global Namespace from the active Temporal Service does not delete the Namespace record from passive
+Temporal Services. To remove it completely, disconnect the passive Temporal Services before deleting any copy:
+
+1. On the active Temporal Service, replace the Namespace's replication Cluster list with only the active Temporal
+   Service:
+
+   ```bash
+   temporal operator namespace update \
+     --address ActiveClusterFrontendAddress \
+     --namespace YourNamespaceName \
+     --cluster ActiveCluster
+   ```
+
+   Before continuing, describe the Namespace against each passive frontend and confirm that its Temporal Service is no
+   longer in the replication Cluster list.
+
+2. Delete the Namespace from the active Temporal Service:
+
+   ```bash
+   temporal operator namespace delete \
+     --address ActiveClusterFrontendAddress \
+     --namespace YourNamespaceName
+   ```
+
+3. Delete the disconnected copy from each former passive Temporal Service:
+
+   ```bash
+   temporal operator namespace delete \
+     --address PassiveClusterFrontendAddress \
+     --namespace YourNamespaceName
+   ```
+
+Confirm that `temporal operator namespace describe` returns `Namespace not found` from every frontend. Removing a
+Temporal Service from the Namespace replication configuration does not clean up that Temporal Service's existing copy.
 
 ## How to set up Multi-Cluster Replication {/* #set-up-multi-cluster-replication */}
 
