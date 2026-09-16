@@ -65,8 +65,7 @@ The same Activity function runs at three scales, so an early decision doesn't lo
   [job queue](/evaluate/features/job-queue): durable retries, a Run ID you can cancel or query,
   and deduplication at submit time, without running a broker. Teams moving off Celery, Sidekiq, or
   a homegrown queue can start here — see the
-  [Celery migration guide](/guides/celery-to-standalone-activity). Standalone Activities are in
-  Public Preview, on Temporal Cloud and Temporal Server v1.31.0 and later.
+  [Celery migration guide](/guides/celery-to-standalone-activity).
 - **One process.** Wrap several Activities in a Workflow when you need ordering, state between
   steps, or compensation. The Activity code doesn't change.
 - **Many teams.** [Temporal Nexus](/evaluate/features/nexus) connects Workflows across isolated
