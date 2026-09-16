@@ -212,15 +212,9 @@ does not register as the version waiting for work.
 Putting the API key in `agentcore.json` keeps the tutorial short. Do not commit the populated file. For a production
 deployment, store the key in AWS Secrets Manager and load it when the Runtime starts.
 
-Export the same connection values for the Temporal CLI and the sample client:
+Set the Region for the AWS CLI commands in this guide:
 
 ```bash
-export TEMPORAL_ADDRESS="<namespace>.<account>.tmprl.cloud:7233"
-export TEMPORAL_NAMESPACE="<namespace>.<account>"
-printf "Temporal Cloud API key: "
-read -rs TEMPORAL_API_KEY
-printf "\n"
-export TEMPORAL_API_KEY
 export AWS_REGION="<AWS_REGION>"
 ```
 
@@ -324,6 +318,18 @@ Interpreter. The trailing wildcard on the Runtime ARN allows the invocation role
 as the Runtime.
 
 ## 5. Create the Serverless Worker deployment
+
+The values in `agentcore.json` configure the Worker inside AgentCore Runtime. They do not configure the Temporal CLI or
+the sample client process. Export the Temporal connection values for those processes:
+
+```bash
+export TEMPORAL_ADDRESS="<namespace>.<account>.tmprl.cloud:7233"
+export TEMPORAL_NAMESPACE="<namespace>.<account>"
+printf "Temporal Cloud API key: "
+read -rs TEMPORAL_API_KEY
+printf "\n"
+export TEMPORAL_API_KEY
+```
 
 Create a Worker Deployment and a version that points to the AgentCore endpoint:
 
