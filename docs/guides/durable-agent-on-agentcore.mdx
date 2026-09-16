@@ -374,10 +374,6 @@ uv run python starter.py \
 Workflow calls the model and Code Interpreter Activities, and the client prints the answer. The Workflow then
 completes. After 60 seconds without an Activity starting or finishing, the Worker drains.
 
-Starting the agent through `starter.py`, rather than invoking the AgentCore endpoint, is an architectural choice. The
-Temporal Client creates the durable Workflow Execution first. AgentCore supplies a Worker when Temporal has a Task
-ready to run.
-
 Inspect the completed Workflow Execution:
 
 ```bash
