@@ -71,7 +71,9 @@ the Workflow and treat Worker-local state as replaceable.
 | **Process-local reuse** | The Worker can reuse initialization work, in-memory caches, and temporary files while its Runtime compute remains available. A later Task can run on another Worker, so do not depend on this state. | Each invocation is independent. Do not expect process-local state to be available to a later invocation. |
 | **Agent services** | AgentCore provides services for identity, tool access, policy, memory, and observability. | Lambda can call AWS services under its execution role, but it does not provide the AgentCore agent platform. |
 
-These differences lead to the following practical choices:
+Both compute providers can serve long-running Workflows because Temporal maintains Workflow state and execution
+progress independently of any Worker process. Their differences affect which provider is a better fit for individual
+Activity attempts, Worker lifecycle, process-local reuse, and AgentCore services:
 
 | Choose AgentCore Runtime if | Choose AWS Lambda if |
 | --- | --- |
