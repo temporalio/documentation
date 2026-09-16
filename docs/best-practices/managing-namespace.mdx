@@ -223,6 +223,17 @@ While the name captures use case, domain, and environment, tags can capture addi
 
 For tag structure, limits, and management instructions, see [How to tag a Namespace](/cloud/namespaces#tag-a-namespace).
 
+## Description {/* #description */}
+
+Use an optional [Namespace description](/cloud/namespaces#describe-a-namespace) for a one-line purpose note: workload,
+owner context, or why the Namespace exists.
+
+Keep structured classification in [Tags](#tagging). Description is for humans reading the Namespace. Tags are for
+filter, report, and automation dimensions such as `team` and `environment`.
+
+Do not put secrets, confidential data, or PII in a description. Like Tags and [Search Attributes](/search-attribute),
+descriptions are not encrypted.
+
 ## SDK client configuration
 
 Set Namespaces in your SDK Client to isolate your Workflow Executions.

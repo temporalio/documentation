@@ -47,12 +47,14 @@ Temporal doesn't replace your compute. You run and scale the Workers that poll [
 
 Long jobs also stay your responsibility to instrument: heartbeats are optional, and without them a job that dies mid-run isn't detected until its Start-To-Close Timeout expires.
 
-## Public Preview limitations
+## Release stages and limitations
 
-Standalone Activities are in [Public Preview](/evaluate/product-release-stages#public-preview), which affects what you can do to a job in flight:
+Standalone Activities are Generally Available, including Start Delay, Request Cancel, Terminate, and Delete. These capabilities are in [Public Preview](/evaluate/product-release-stages#public-preview):
 
-- Pause, unpause, reset, and update are not supported yet. Cancel and terminate are.
-- The `TerminateExisting` conflict policy and `TerminateIfRunning` reuse policy are not supported yet.
+- [Operator commands](/activity-operations): Pause, Unpause, Reset, and Update Options.
+- Batch operations by [List Filter](/list-filter): Request Cancel, Terminate, and Delete.
+
+The `TerminateExisting` conflict policy is not supported yet. Use `Fail` or `UseExisting` instead. See [Limitations](/standalone-activity#limitations) for the full list.
 
 ## Resources
 
