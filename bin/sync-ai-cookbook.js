@@ -24,9 +24,6 @@ const SLUG_ALIASES = new Map([
   // Add more aliases as recipes are renamed: ['old-slug', 'new-slug']
 ]);
 
-// Map old documentation paths used by cookbook recipes to their current routes.
-const DOCS_PATH_ALIASES = new Map([['/evaluate/cloud/limits', '/cloud/limits']]);
-
 function runGit(args, options = {}) {
   const result = spawnSync('git', args, {
     stdio: ['ignore', 'inherit', 'inherit'],
@@ -300,8 +297,7 @@ function normalizeDocsHref(href) {
   if (!match) {
     return null;
   }
-  const originalPathname = match[1] ?? '/';
-  const pathname = DOCS_PATH_ALIASES.get(originalPathname) ?? originalPathname;
+  const pathname = match[1] ?? '/';
   const search = match[2] ?? '';
   const hash = match[3] ?? '';
   return `${pathname}${search}${hash}`;

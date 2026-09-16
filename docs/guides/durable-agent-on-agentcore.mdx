@@ -146,8 +146,9 @@ class StrandsAgentWorkflow:
 ```
 <!--SNIPEND-->
 
-`TemporalAgent` adapts the Strands agent loop to run in Workflow code. The Temporal Strands plugin schedules each model
-call as an Activity. `activity_as_tool` makes `execute_code` another Activity when the model selects that tool.
+`TemporalAgent` adapts the Strands agent loop to run in Workflow code. The
+[Temporal Strands plugin](/develop/python/integrations/strands-agents) schedules each model call as an Activity.
+`activity_as_tool` makes `execute_code` another Activity when the model selects that tool.
 
 The Workflow owns the sequence of model and tool decisions because that sequence must resume correctly after a
 failure. The model calls themselves do not run as ordinary Workflow code. They run as Activities because they perform
