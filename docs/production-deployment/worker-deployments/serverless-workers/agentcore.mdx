@@ -2,7 +2,7 @@
 id: agentcore
 title: Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime
 sidebar_label: Amazon Bedrock AgentCore
-description: Deploy an existing Python Worker to AgentCore Runtime and configure Temporal to start capacity when Task Queue demand increases.
+description: Add a Python Worker to an existing AgentCore application and configure Temporal to start capacity when Task Queue demand increases.
 slug: /production-deployment/worker-deployments/serverless-workers/agentcore
 toc_max_heading_level: 4
 tags:
@@ -20,9 +20,9 @@ import TabItem from '@theme/TabItem';
   Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
 </ReleaseNoteHeader>
 
-This page covers only deploying an existing Python [Serverless Worker](/serverless-workers) to Amazon Bedrock AgentCore
-Runtime and connecting it to a Worker Deployment Version. It assumes that your Worker and AgentCore project are already
-in place.
+This page shows how to add a Python [Serverless Worker](/serverless-workers) to an existing Amazon Bedrock AgentCore
+application, deploy it to AgentCore Runtime, and connect it to a Worker Deployment Version. It assumes that your
+Workflow and Activity code and AgentCore project are already in place.
 
 For a complete tutorial, see [Build a durable agent on Amazon Bedrock
 AgentCore](/guides/durable-agent-on-agentcore). That guide starts with the [Python Strands AgentCore
@@ -35,29 +35,26 @@ Python SDK](/develop/python/workers/serverless-workers/agentcore).
 
 ## Prerequisites {/* #prerequisites */}
 
-- A Temporal Cloud account with an AWS-hosted Namespace and access to the AgentCore Serverless Workers Pre-release, or
-  a self-hosted Temporal Service v1.32.0 or later.
-- For self-hosted deployments, complete the
-  [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/agentcore/self-hosted-setup) before
-  following this guide.
-- Credentials that let the Worker connect to the Temporal Service. The example configuration uses a Temporal Cloud API
-  key.
+- A Temporal Cloud account with an AWS-hosted Namespace and access to the AgentCore Serverless Workers Pre-release. For
+  a self-hosted Temporal Service v1.32.0 or later, complete the
+  [self-hosted setup](/production-deployment/worker-deployments/serverless-workers/agentcore/self-hosted-setup) first.
 - [Temporal CLI v1.8.3](https://github.com/temporalio/cli/releases/tag/v1.8.3) or later, configured for your Namespace.
-- An existing Python Temporal Worker with an
-  [AgentCore Runtime handler](/develop/python/workers/serverless-workers/agentcore#runtime-handler).
-- An AgentCore project that packages the Worker and contains `agentcore/agentcore.json`, `agentcore/aws-targets.json`,
-  and the generated AgentCore CDK project.
-- An AWS account in an [AgentCore-supported Region](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html).
-- The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed and configured
-  with credentials for that account.
-- Node.js 20 or later and the [AgentCore CLI](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html)
-  installed with `npm install -g @aws/agentcore`.
-- The [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting-started.html) installed and bootstrapped in the target
-  account and Region.
-- Permission to create AgentCore resources, CloudFormation stacks, and IAM roles. See
+- An existing AgentCore project with `agentcore/agentcore.json`, `agentcore/aws-targets.json`, and a generated AgentCore
+  CDK project.
+- An AWS account in an [AgentCore-supported Region](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html),
+  with the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured for that
+  account and permission to create AgentCore resources, CloudFormation stacks, and IAM roles. See
   [IAM permissions for AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html).
+- Node.js 20 or later, the [AgentCore CLI](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html),
+  and the [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting-started.html) installed. Bootstrap the CDK in the
+  target account and Region.
 
-## 1. Configure the Worker Runtime {/* #configure-worker-runtime */}
+## 1. Add and configure the Worker Runtime {/* #configure-worker-runtime */}
+
+Add a Python entry point that creates a Temporal Worker for your Workflows and Activities. Configure the Worker with a
+[Worker Deployment Version](/develop/python/workers/serverless-workers/agentcore#versioned-worker), then start it from
+an [AgentCore Runtime handler](/develop/python/workers/serverless-workers/agentcore#runtime-handler). The handler keeps
+the Worker polling in the background after it acknowledges the AgentCore invocation.
 
 `agentcore/agentcore.json` is the [AgentCore CLI project
 configuration](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html). Its
