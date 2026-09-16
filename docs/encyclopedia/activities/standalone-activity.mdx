@@ -96,7 +96,7 @@ lower-priority ones. [Fairness](/develop/task-queue-priority-fairness#task-queue
 fairness key gets its own virtual queue and dispatch cycles round-robin across keys, so one tenant's backlog doesn't
 starve everyone else.
 
-On Temporal Cloud, enabling Fairness carries a [per-Action surcharge](/cloud/actions#fairness).
+On Temporal Cloud, enabling Fairness carries a [per-Action surcharge](/evaluate/cloud/actions#fairness).
 
 **Observability**
 
@@ -337,7 +337,7 @@ lifecycle. The [Activity Definition](/activity-definition) and Worker registrati
 the same Activity function can run either way with no code changes. What differs is who starts it
 and what owns its lifetime.
 
-Running a single Activity as a Standalone Activity also costs fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) in
+Running a single Activity as a Standalone Activity also costs fewer [Billable Actions](/evaluate/cloud/actions-usage#actions-in-workflows) in
 Temporal Cloud than wrapping it in a Workflow, and short jobs see lower latency because there are fewer Worker
 round-trips. See [cost optimization](/best-practices/cost-optimization#standalone-activities-vs-a-workflow-that-runs-a-single-activity) for details.
 
@@ -392,10 +392,10 @@ The `temporal activity` subcommand supports Standalone Activities with `start`, 
 
 ## Temporal Cloud support
 
-Standalone Activities are Generally Available in Temporal Cloud, in all [regions](/cloud/regions).
+Standalone Activities are Generally Available in Temporal Cloud, in all [regions](/evaluate/cloud/regions).
 
 Service Level Objectives and the Service Level Agreement match those for Workflows. See
-[Service availability](/cloud/service-availability) and [SLA](/cloud/sla).
+[Service availability](/evaluate/cloud/service-availability) and [SLA](/evaluate/cloud/sla).
 
 :::tip RESOURCES
 

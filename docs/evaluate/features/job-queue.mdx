@@ -37,7 +37,7 @@ For queries, `temporal activity list` and [List Filters](/list-filter) search Ex
 
 Use a Standalone Activity to run **one** Activity. Use a [Workflow](/workflows) to orchestrate **several**, or to hold state between steps.
 
-Running a single Activity as a Standalone Activity rather than wrapping it in a Workflow costs fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) on Temporal Cloud, and for short jobs it's lower latency, because there are fewer Worker round-trips.
+Running a single Activity as a Standalone Activity rather than wrapping it in a Workflow costs fewer [Billable Actions](/evaluate/cloud/actions-usage#actions-in-workflows) on Temporal Cloud, and for short jobs it's lower latency, because there are fewer Worker round-trips.
 
 You don't have to decide up front. The same Activity Function runs both ways with no code changes, so a job that later becomes one step of a longer process moves into a Workflow without a rewrite.
 

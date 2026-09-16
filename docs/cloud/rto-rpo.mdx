@@ -20,7 +20,7 @@ near recovery point.
 Temporal Cloud publishes goals for the recovery time and recovery point for each kind of outage. These goals are called
 the Recovery Time Objective (RTO) and Recovery Point Objective (RPO). For details on how each is measured, see
 [How RTO and RPO are measured](#how-rto-and-rpo-are-measured). These objectives are complementary to Temporal Cloud's
-[Service Level Agreement (SLA)](/cloud/sla).
+[Service Level Agreement (SLA)](/evaluate/cloud/sla).
 
 The RTO and RPO for a Namespace depend on the type of outage and which [High Availability](/cloud/high-availability)
 features the Namespace has enabled.
@@ -92,7 +92,7 @@ handle a single AZ failure without disruption to end-user Temporal operations.
 [High Availability](/cloud/high-availability) features are _not_ required to keep Temporal Cloud operations running
 through an AZ outage.
 
-**SLA inclusion:** Included in the [SLA](/cloud/sla) calculation. Any errors during an AZ outage count toward SLA
+**SLA inclusion:** Included in the [SLA](/evaluate/cloud/sla) calculation. Any errors during an AZ outage count toward SLA
 credits, since AZ resilience is within Temporal's responsibility.
 
 If two AZs fail simultaneously, Temporal Cloud treats the event as a [Cloud Region outage](#cloud-region-outage). In
@@ -135,7 +135,7 @@ different cloud provider. [Same-region Replication](/cloud/high-availability) re
 within the same region. When any of these features are enabled for a Namespace, an outage that disrupts a single cell
 can be mitigated by failing the Namespace over to its replica.
 
-**SLA inclusion:** Included in the [SLA](/cloud/sla) calculation. Any errors during a cell outage count toward SLA
+**SLA inclusion:** Included in the [SLA](/evaluate/cloud/sla) calculation. Any errors during a cell outage count toward SLA
 credits, since mitigating cell outages is within Temporal's responsibility.
 
 Cell-level disruptions occur from time to time, and Temporal's replication and failover tooling has restored affected
@@ -162,7 +162,7 @@ A cloud region as a whole can become degraded, with effects that span beyond any
 fail over and continue serving Workflows. Same-region Replication does not protect against a Cloud Region outage, since
 the replica resides in the same region.
 
-**SLA inclusion:** Included in the [SLA](/cloud/sla) calculation only for Namespaces that have Multi-region Replication
+**SLA inclusion:** Included in the [SLA](/evaluate/cloud/sla) calculation only for Namespaces that have Multi-region Replication
 or Multi-cloud Replication enabled with automatic failovers — in those cases, Temporal can mitigate the outage.
 For Namespaces without these features, a Cloud Region outage is excluded from the SLA calculation, as it is beyond
 Temporal's control to mitigate.
@@ -200,7 +200,7 @@ is potentially affected.
 **Mitigation:** [Multi-cloud Replication](/cloud/high-availability) places the replica in a different cloud provider
 entirely, so the Namespace can fail over even when an entire cloud provider goes down.
 
-**SLA inclusion:** Included in the [SLA](/cloud/sla) calculation only for Namespaces that have Multi-cloud Replication
+**SLA inclusion:** Included in the [SLA](/evaluate/cloud/sla) calculation only for Namespaces that have Multi-cloud Replication
 enabled with automatic failovers — in those cases, Temporal can mitigate the outage. For Namespaces without this
 feature, a cloud-wide outage is excluded from the SLA calculation, as it is beyond Temporal's control to mitigate.
 
@@ -300,9 +300,9 @@ and apply in different situations.
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | What is it?                       | An objective, or high-priority goal, for the total time that an outage disrupts a Namespace.                                                                                                                                                                 | A contractual agreement that sets an upper bound on the service error rate, with financial repercussions.                                                                                                                                                                                                                                                                                                                                                                      |
 | How is it measured?               | The achieved recovery time is measured in terms of minutes per outage.                                                                                                                                                                                       | The achieved service error rate is measured in terms of error rate per month.                                                                                                                                                                                                                                                                                                                                                                                                  |
-| How is the calculation performed? | The achieved recovery time in a given outage is the total time between when a disruption to a Namespace began and when the Namespace was restored to full functionality, either after a failover to a healthy region or after the outage has been mitigated. | Temporal measures the percentage of requests to Temporal Cloud that fail, and applies a [formula](/cloud/sla) to get the final percentage for the month.                                                                                                                                                                                                                                                                                                                       |
+| How is the calculation performed? | The achieved recovery time in a given outage is the total time between when a disruption to a Namespace began and when the Namespace was restored to full functionality, either after a failover to a healthy region or after the outage has been mitigated. | Temporal measures the percentage of requests to Temporal Cloud that fail, and applies a [formula](/evaluate/cloud/sla) to get the final percentage for the month.                                                                                                                                                                                                                                                                                                                       |
 | Do partial degradations count?    | Most outages contain periods of **partial degradation** where some percentage of Namespace operations fail while the rest complete as normal. When they disrupt a Namespace, periods of partial degradation count in the calculation of the recovery time.   | Partial degradations only partially count for the service error rate calculation. A 5-minute window with a 10% error rate would count less than a 5-minute window with a 100% error rate.                                                                                                                                                                                                                                                                                      |
-| What is excluded?                 | For partial degradations, what counts as a disruption to a Namespace is subject to Temporal's expert judgment, but a good rule of thumb is a service error rate >=10%.                                                                                       | We exclude outages that are out of Temporal's control to mitigate, for example, a failure of the underlying cloud provider infrastructure that affects a Namespace without High Availability and automatic failovers enabled. If a Namespace has the relevant High Availability feature and has automatic failovers enabled, then Temporal can act to mitigate the outage and it does usually count against the SLA. Full exclusions on the [SLA page](/cloud/sla). |
+| What is excluded?                 | For partial degradations, what counts as a disruption to a Namespace is subject to Temporal's expert judgment, but a good rule of thumb is a service error rate >=10%.                                                                                       | We exclude outages that are out of Temporal's control to mitigate, for example, a failure of the underlying cloud provider infrastructure that affects a Namespace without High Availability and automatic failovers enabled. If a Namespace has the relevant High Availability feature and has automatic failovers enabled, then Temporal can act to mitigate the outage and it does usually count against the SLA. Full exclusions on the [SLA page](/evaluate/cloud/sla). |
 
 The following examples illustrate the RTO and SLA calculations for different types of outages in a regional outage. These
 hypothetical Namespaces are based on actual Temporal Cloud performance in a

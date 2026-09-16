@@ -21,7 +21,7 @@ When you see a sudden drop in Worker resource utilization, verify whether Tempor
 - [temporal\_cloud\_v1\_service\_latency\_p99](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_latency_p99)
 
 This metric measures latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-These operations are mission critical and never [throttled](/cloud/service-availability#throughput).
+These operations are mission critical and never [throttled](/evaluate/cloud/service-availability#throughput).
 This metric is a good indicator of your lowest possible latency for the 99th percentile of requests.
 
 ### Workflow execution latency
@@ -37,7 +37,7 @@ These measure the time from when a Workflow is scheduled until it closes, includ
 ## Monitor Temporal Service errors
 
 Check for Temporal Service gRPC API errors.
-Note that Service API errors are not equivalent to guarantees mentioned in the [Temporal Cloud SLA](/cloud/sla).
+Note that Service API errors are not equivalent to guarantees mentioned in the [Temporal Cloud SLA](/evaluate/cloud/sla).
 
 ### Reference Metrics
 
@@ -192,7 +192,7 @@ If your traffic is spiky or unpredictable, you may intentionally keep capacity p
 :::note
 
 These metrics are approximate measures of TRU capacity based on real-time TRU quotas, and do not capture the fact that TRUs are billed by the calendar hour.
-Please use [Usage](/cloud/actions-usage) and [Billing](/cloud/billing) as the source of truth for TRU and action accounting.
+Please use [Usage](/evaluate/cloud/actions-usage) and [Billing](/cloud/billing) as the source of truth for TRU and action accounting.
 
 :::
 
@@ -224,13 +224,13 @@ To understand a spiky workload, always read all three metrics in the row as a se
 | Limit (for example, `temporal_cloud_v1_action_limit`) | Your provisioned ceiling |
 | Throttle (for example, `temporal_cloud_v1_total_action_throttled_count`) | Whether the limit was actually hit |
 
-A non-zero throttle value means throttling occurred during that window, even when the count sits comfortably below the limit. Most often this reflects a sub-minute burst in your own workload. If you cannot find a matching burst in your SDK metrics, the cause may be a shared limit or another Cloud-side condition rather than your namespace. In that case, contact [Temporal Support](/cloud/support#support-ticket). For spiky or latency-sensitive workloads, alert on the throttle metric directly (any value greater than zero) rather than relying only on a count-versus-limit threshold, which can hide sub-minute bursts. The same logic applies to all three limit types — Actions (APS), service requests (RPS), and operations — using each row of the [limit / count / throttle table](#rps-aps-rate-limits) above.
+A non-zero throttle value means throttling occurred during that window, even when the count sits comfortably below the limit. Most often this reflects a sub-minute burst in your own workload. If you cannot find a matching burst in your SDK metrics, the cause may be a shared limit or another Cloud-side condition rather than your namespace. In that case, contact [Temporal Support](/evaluate/cloud/support#support-ticket). For spiky or latency-sensitive workloads, alert on the throttle metric directly (any value greater than zero) rather than relying only on a count-versus-limit threshold, which can hide sub-minute bursts. The same logic applies to all three limit types — Actions (APS), service requests (RPS), and operations — using each row of the [limit / count / throttle table](#rps-aps-rate-limits) above.
 
 ## Detecting Resource Exhaustion
 
 Resource exhaustion happens when a single resource (a Namespace, Task Queue, or Workflow ID) receives a burst of operations larger than that resource can absorb in the moment. The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` increments and `ResourceExhausted` gRPC errors are returned to the client. SDKs retry these errors gracefully, so workflow progress is rarely impacted.
 
-Persistent non-zero values are unexpected and indicate a hot resource. Use the `operation` label to identify which RPC is hitting the burst limit. For example, `StartWorkflowExecution` increments here when the same Workflow Id is started more than once per second. See [Per-primitive Id reuse rate limits](/cloud/limits#per-primitive-id-reuse-rate-limits).
+Persistent non-zero values are unexpected and indicate a hot resource. Use the `operation` label to identify which RPC is hitting the burst limit. For example, `StartWorkflowExecution` increments here when the same Workflow Id is started more than once per second. See [Per-primitive Id reuse rate limits](/evaluate/cloud/limits#per-primitive-id-reuse-rate-limits).
 
 Resource exhaustion is distinct from rate limiting against your account limits. For workloads that are throttled because they exceed their provisioned capacity, see [Monitoring Trends Against Limits](#rps-aps-rate-limits). Limits-driven throttling slows or stalls a workload, so it is generally the more important signal to monitor.
 
@@ -255,4 +255,4 @@ To confirm lock contention:
 | `RespondWorkflowTaskCompleted` | A single Workflow schedules a large batch of Activities or Child Workflows in parallel, each taking the lock. | Limit concurrent operations to 500 or fewer per execution. Process the batch in smaller groups using a sliding-window or plain batching pattern instead of scheduling everything at once. |
 | `QueryWorkflow` | Too many concurrent Queries against one execution, or a side effect of repeated Workflow Task retries. | Reduce concurrent Queries to that execution. If it correlates with Workflow Task failures or timeouts, resolve those first. |
 
-At low, brief rates this error is benign because clients retry it and no progress is lost. Investigate when the rate is sustained or correlates with rising latency on the affected operations. For the per-execution limits referenced above, see [Per Workflow Execution concurrency limits](/cloud/limits#per-workflow-execution-concurrency-limits).
+At low, brief rates this error is benign because clients retry it and no progress is lost. Investigate when the rate is sustained or correlates with rising latency on the affected operations. For the per-execution limits referenced above, see [Per Workflow Execution concurrency limits](/evaluate/cloud/limits#per-workflow-execution-concurrency-limits).

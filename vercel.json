@@ -2479,6 +2479,46 @@
       "source": "/tags/worker",
       "destination": "/tags/workers",
       "permanent": true
+    },
+    {
+      "source": "/cloud/overview",
+      "destination": "/evaluate/cloud/overview",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/security",
+      "destination": "/evaluate/cloud/security",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/service-availability",
+      "destination": "/evaluate/cloud/service-availability",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/regions",
+      "destination": "/evaluate/cloud/regions",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/limits",
+      "destination": "/evaluate/cloud/limits",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/sla",
+      "destination": "/evaluate/cloud/sla",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/actions",
+      "destination": "/evaluate/cloud/actions",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/support",
+      "destination": "/evaluate/cloud/support",
+      "permanent": true
     }
   ]
 }
