@@ -272,10 +272,10 @@ endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-r
 
 ## 4. Grant Temporal access to the Runtime
 
-Choose an External ID, then use the sample's CloudFormation script to create the IAM role that Temporal Cloud assumes:
+Set the External ID, then use the sample's CloudFormation script to create the IAM role that Temporal Cloud assumes:
 
 ```bash
-export EXTERNAL_ID="$(openssl rand -hex 16)"
+export EXTERNAL_ID="temporal-agentcore-tutorial"
 export INVOCATION_STACK="ac-strands-invoke"
 
 ./bin/mk-invoke-role.sh \
@@ -283,6 +283,8 @@ export INVOCATION_STACK="ac-strands-invoke"
   "$EXTERNAL_ID" \
   "${AGENT_RUNTIME_ARN}*"
 ```
+
+The fixed External ID makes the tutorial commands repeatable. Use a unique External ID for a production deployment.
 
 :::caution
 
