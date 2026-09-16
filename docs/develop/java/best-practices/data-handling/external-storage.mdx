@@ -205,10 +205,7 @@ offload less data or set the value to `0` to offload every Payload.
 <!--SNIPSTART java-external-storage-threshold-->
 [features/snippets/external_storage/threshold/threshold_config.java](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.java)
 ```java
-return ExternalStorage.newBuilder()
-    .setDriver(driver)
-    .setPayloadSizeThreshold(0)
-    .build();
+return ExternalStorage.newBuilder().setDriver(driver).setPayloadSizeThreshold(0).build();
 ```
 <!--SNIPEND-->
 
