@@ -425,11 +425,11 @@ Temporal API keys automatically expire based on the specified expiration time. [
 
 :::tip
 
-Except for Service Accounts with the Metrics Read-Only role, Service Accounts can create replacement API keys for
-themselves regardless of their configured permissions. To use this feature, have your Service Account create a new API
-key using the [Cloud Ops APIs](/ops) or the CLI before the current one expires. An Account Owner or Global Admin must
-create and rotate keys for Metrics Read-Only Service Accounts. Service Accounts cannot delete their own API keys without
-the requisite permissions, which helps keep Workflow access secure.
+Service Accounts can create replacement API keys for themselves regardless of their configured permissions, except for
+Service Accounts with the [Metrics Read-Only role](/cloud/metrics/openmetrics#metrics-read-only-role). To use this
+feature, have your Service Account create a new API key using the [Cloud Ops APIs](/ops) or the CLI before the current
+one expires. Service Accounts cannot delete their own API keys without the requisite permissions, which helps keep
+Workflow access secure.
 
 :::
 

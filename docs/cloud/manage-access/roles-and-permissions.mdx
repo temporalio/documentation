@@ -34,9 +34,9 @@ The following table provides a summary of the account-level roles and their prim
 | Read-Only         | Views account configuration and resources      | No                    | None                                    | None                              |
 | Metrics Read-Only | Reads account metrics from the OpenMetrics API | No                    | None                                    | None                              |
 
-The Metrics Read-Only role is intended for Service Accounts used by observability integrations. It grants access to the
-[Temporal Cloud OpenMetrics endpoint](/cloud/metrics/openmetrics) but no Cloud Ops API or Namespace permissions. An
-Account Owner or Global Admin must manage the Service Account and its API keys.
+The Metrics Read-Only role is intended for Service Accounts used by observability integrations. It grants read access to
+the [Temporal Cloud OpenMetrics endpoint](/cloud/metrics/openmetrics) but no other permissions. An Account Owner or
+Global Admin must manage the Service Account and its API keys.
 
 Account-level roles don't govern day-to-day operations within a Namespace. Access to resources inside a Namespace, such
 as Workflows and Workflow Executions, is controlled by [Namespace-level permissions](#namespace-level-permissions).
