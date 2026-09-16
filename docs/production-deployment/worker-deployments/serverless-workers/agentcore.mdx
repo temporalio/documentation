@@ -58,38 +58,7 @@ the Worker polling in the background after it acknowledges the AgentCore invocat
 
 `agentcore/agentcore.json` is the [AgentCore CLI project
 configuration](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html). Its
-`runtimes` array defines the AgentCore Runtime resources that the CLI deploys. In the existing Runtime object, configure
-the Temporal connection, Task Queue, Worker Deployment name, and Build ID:
-
-```json
-{
-  "name": "TEMPORAL_ADDRESS",
-  "value": "<NAMESPACE>.<ACCOUNT>.tmprl.cloud:7233"
-},
-{
-  "name": "TEMPORAL_NAMESPACE",
-  "value": "<NAMESPACE>.<ACCOUNT>"
-},
-{
-  "name": "TEMPORAL_API_KEY",
-  "value": "<TEMPORAL_API_KEY>"
-},
-{
-  "name": "TEMPORAL_TASK_QUEUE",
-  "value": "<TASK_QUEUE>"
-},
-{
-  "name": "TEMPORAL_DEPLOYMENT_NAME",
-  "value": "<DEPLOYMENT_NAME>"
-},
-{
-  "name": "TEMPORAL_BUILD_ID",
-  "value": "<BUILD_ID>"
-}
-```
-
-The Task Queue must match the Task Queue used by your application. The deployment name and Build ID must match the
-Worker Deployment Version that you create in [Step 4](#create-worker-deployment-version).
+`runtimes` array defines the AgentCore Runtime resources that the CLI deploys.
 
 The `entrypoint` field names the Python file that AgentCore starts. That file must implement the [AgentCore Runtime HTTP
 protocol contract](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-http-protocol-contract.html) by
@@ -118,6 +87,44 @@ named endpoint that Temporal invokes:
 
 In this initial configuration, `version: 1` selects the first AgentCore Runtime version. Verify the named endpoint's
 version after deployment in [Step 2](#deploy-runtime).
+
+Within the same Runtime object, add the Temporal connection, Task Queue, Worker Deployment name, and Build ID to the
+`envVars` array:
+
+```json
+{
+  "envVars": [
+    {
+      "name": "TEMPORAL_ADDRESS",
+      "value": "<NAMESPACE>.<ACCOUNT>.tmprl.cloud:7233"
+    },
+    {
+      "name": "TEMPORAL_NAMESPACE",
+      "value": "<NAMESPACE>.<ACCOUNT>"
+    },
+    {
+      "name": "TEMPORAL_API_KEY",
+      "value": "<TEMPORAL_API_KEY>"
+    },
+    {
+      "name": "TEMPORAL_TASK_QUEUE",
+      "value": "<TASK_QUEUE>"
+    },
+    {
+      "name": "TEMPORAL_DEPLOYMENT_NAME",
+      "value": "<DEPLOYMENT_NAME>"
+    },
+    {
+      "name": "TEMPORAL_BUILD_ID",
+      "value": "<BUILD_ID>"
+    }
+  ]
+}
+```
+
+Replace `<NAMESPACE>.<ACCOUNT>` with your Temporal Cloud Namespace ID, `<TEMPORAL_API_KEY>` with its API key, and
+`<TASK_QUEUE>` with the Task Queue used by your application. Choose `<DEPLOYMENT_NAME>` and `<BUILD_ID>` for this Worker
+version.
 
 Do not commit a populated Temporal Cloud API key. For a production deployment, store it in AWS Secrets Manager, grant
 the Runtime execution role permission to read it, and load it in the Runtime entry point. The Runtime execution role is
@@ -239,7 +246,9 @@ Runtime resources. This role does not run the Worker code.
 ## 4. Create the Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) whose compute
-configuration points to the named AgentCore Runtime endpoint.
+configuration points to the named AgentCore Runtime endpoint. The deployment name and Build ID must match
+`TEMPORAL_DEPLOYMENT_NAME` and `TEMPORAL_BUILD_ID` in the Runtime environment from
+[Step 1](#configure-worker-runtime).
 
 <Tabs groupId="create-version-approach">
 <TabItem value="ui" label="Temporal Cloud UI">
@@ -281,8 +290,6 @@ temporal worker deployment create-version \
   --aws-agentcore-assume-role-arn <INVOCATION_ROLE_ARN> \
   --aws-agentcore-assume-role-external-id <EXTERNAL_ID>
 ```
-
-The deployment name and Build ID must match the values in the Runtime environment.
 
 </TabItem>
 </Tabs>
