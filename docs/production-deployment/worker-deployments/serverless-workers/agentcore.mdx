@@ -49,12 +49,7 @@ Python SDK](/develop/python/workers/serverless-workers/agentcore).
   and the [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting-started.html) installed. Bootstrap the CDK in the
   target account and Region.
 
-## 1. Add and configure the Worker Runtime {/* #configure-worker-runtime */}
-
-Add a Python entry point that creates a Temporal Worker for your Workflows and Activities. Configure the Worker with a
-[Worker Deployment Version](/develop/python/workers/serverless-workers/agentcore#versioned-worker), then start it from
-an [AgentCore Runtime handler](/develop/python/workers/serverless-workers/agentcore#runtime-handler). The handler keeps
-the Worker polling in the background after it acknowledges the AgentCore invocation.
+## 1. Configure the Worker Runtime {/* #configure-worker-runtime */}
 
 `agentcore/agentcore.json` is the [AgentCore CLI project
 configuration](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html). Its
@@ -72,7 +67,10 @@ named endpoint that Temporal invokes:
 ```json
 {
   "name": "temporal_strands_worker",
+  "build": "CodeZip",
   "entrypoint": "agentcore_worker.py",
+  "codeLocation": ".",
+  "runtimeVersion": "PYTHON_3_12",
   "networkMode": "PUBLIC",
   "protocol": "HTTP",
   "authorizerType": "AWS_IAM",
@@ -86,7 +84,7 @@ named endpoint that Temporal invokes:
 ```
 
 In this initial configuration, `version: 1` selects the first AgentCore Runtime version. Verify the named endpoint's
-version after deployment in [Step 2](#deploy-runtime).
+version after deployment in [Step 3](#deploy-runtime).
 
 Within the same Runtime object, add the Temporal connection, Task Queue, Worker Deployment name, and Build ID to the
 `envVars` array:
@@ -130,7 +128,118 @@ Do not commit a populated Temporal Cloud API key. For a production deployment, s
 the Runtime execution role permission to read it, and load it in the Runtime entry point. The Runtime execution role is
 separate from the invocation role that Temporal assumes.
 
-## 2. Deploy the Worker Runtime {/* #deploy-runtime */}
+## 2. Add the Worker code {/* #add-worker-code */}
+
+For a `CodeZip` Runtime, AgentCore packages the directory identified by `codeLocation`. The `entrypoint` path is
+relative to that directory. The directory must contain the entry point, every local module that it imports, and a
+`pyproject.toml` file that declares the Runtime dependencies.
+
+The sample sets `codeLocation` to `.` and uses the following layout:
+
+```text
+project-root/
+├── agentcore/
+│   ├── agentcore.json
+│   ├── aws-targets.json
+│   └── cdk/
+├── agentcore_worker.py
+├── workflows.py
+├── activities.py
+└── pyproject.toml
+```
+
+With this layout, set `entrypoint` to `agentcore_worker.py`. If your AgentCore application keeps code in a directory
+such as `app/MyAgent`, set `codeLocation` to that directory and put the entry point, imported modules, and
+`pyproject.toml` there.
+
+Declare `temporalio`, `bedrock-agentcore`, and your application dependencies in `pyproject.toml`. The entry point must:
+
+- Connect a Temporal Client and create a standard long-running Worker with your Workflows and Activities.
+- Configure the Worker with the deployment name and Build ID from the Runtime environment.
+- Use `BedrockAgentCoreApp` to implement the AgentCore Runtime HTTP endpoints.
+- Start the Worker as an AgentCore asynchronous task and acknowledge the invocation without waiting for the Worker to
+  stop.
+- Stop polling and drain the Worker when its idle policy decides to release the Runtime.
+
+The following excerpt from the Python sample implements this structure. It uses the `ActivityTracker`, `DEBOUNCE`, and
+`DRAIN` values defined in the same source file to retire the Worker after an idle period. The complete linked source
+file also contains the imports, creates the `BedrockAgentCoreApp`, retains the background task in `_worker`, and calls
+`app.run()` when the entry point starts. For the idle-policy code and an explanation of each part, see
+[Start the Worker from the Runtime handler](/develop/python/workers/serverless-workers/agentcore#runtime-handler).
+
+<!--SNIPSTART python-agentcore-runtime-handler-->
+[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/schoeff/strands-agent/bedrock_agentcore/strands_agent/agentcore_worker.py)
+```py
+async def run_worker() -> None:
+    """Poll until idle, then drain."""
+    api_key = os.environ.get("TEMPORAL_API_KEY") or None
+    client = await Client.connect(
+        os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+        namespace=os.environ.get("TEMPORAL_NAMESPACE", "default"),
+        api_key=api_key,
+        tls=bool(api_key),
+        plugins=[StrandsPlugin()],
+    )
+
+    tracker = ActivityTracker()
+    log.info("polling %s as %s/%s", TASK_QUEUE, DEPLOYMENT_NAME, BUILD_ID)
+    # execute_code is a sync Activity, so it needs an executor to block on.
+    with ThreadPoolExecutor(max_workers=4) as activity_executor:
+        worker = Worker(
+            client,
+            task_queue=TASK_QUEUE,
+            workflows=[workflows.StrandsAgentWorkflow],
+            activities=[execute_code],
+            activity_executor=activity_executor,
+            interceptors=[tracker],
+            deployment_config=WorkerDeploymentConfig(
+                version=WorkerDeploymentVersion(
+                    deployment_name=DEPLOYMENT_NAME, build_id=BUILD_ID
+                ),
+                use_worker_versioning=True,
+                default_versioning_behavior=VersioningBehavior.PINNED,
+            ),
+            graceful_shutdown_timeout=DRAIN,
+        )
+        async with worker:
+            await tracker.wait_until_idle(DEBOUNCE)
+    log.info("worker idle for %ss; drained", DEBOUNCE)
+
+
+async def _run_until_idle(task_id: int) -> None:
+    """Own the Worker's whole life, and always release the async task."""
+    try:
+        await run_worker()
+    except Exception:
+        # Nothing awaits this task, so an error would otherwise be swallowed.
+        log.exception("worker failed in async task")
+    finally:
+        # Without this the session stays HealthyBusy until MaxLifetime.
+        app.complete_async_task(task_id)
+
+
+@app.entrypoint
+async def invoke(payload: dict) -> dict:
+    """Start the Worker and acknowledge. The payload is unused."""
+    # Prevent duplicate workers since we exit early
+    global _worker
+    if _worker is not None and not _worker.done():
+        log.info("worker already polling %s", TASK_QUEUE)
+        return {"message": "worker already polling", "task_queue": TASK_QUEUE}
+
+    task_id = app.add_async_task("temporal-worker")
+    _worker = asyncio.create_task(_run_until_idle(task_id))
+
+    return {"message": "worker starting", "task_queue": TASK_QUEUE}
+
+
+```
+<!--SNIPEND-->
+
+Replace `StrandsPlugin`, `StrandsAgentWorkflow`, and `execute_code` with the plugins, Workflows, and Activities used by
+your application. If all Activities are asynchronous, you do not need the `ThreadPoolExecutor` or `activity_executor`.
+
+## 3. Deploy the Worker Runtime {/* #deploy-runtime */}
 
 From the AgentCore project directory, validate and deploy the project. Set `--target` to the `name` of the deployment
 target in `agentcore/aws-targets.json`. For example, if the target is named `default`, run:
@@ -181,9 +290,9 @@ their original Runtime versions.
 :::
 
 If you use a VPC instead of a public network, configure outbound access from the VPC to the Temporal Service. Temporal
-invokes the named endpoint by assuming the IAM role that you create in [Step 3](#configure-iam).
+invokes the named endpoint by assuming the IAM role that you create in [Step 4](#configure-iam).
 
-## 3. Grant Temporal permission to invoke the Runtime {/* #configure-iam */}
+## 4. Grant Temporal permission to invoke the Runtime {/* #configure-iam */}
 
 :::info Self-hosted Temporal Service
 
@@ -243,7 +352,7 @@ aws cloudformation describe-stacks \
 The role grants `bedrock-agentcore:InvokeAgentRuntime` and `bedrock-agentcore:GetAgentRuntimeEndpoint` on the configured
 Runtime resources. This role does not run the Worker code.
 
-## 4. Create the Worker Deployment Version {/* #create-worker-deployment-version */}
+## 5. Create the Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) whose compute
 configuration points to the named AgentCore Runtime endpoint. The deployment name and Build ID must match
@@ -259,12 +368,12 @@ values:
 - **Name**: the value of `TEMPORAL_DEPLOYMENT_NAME` in the Runtime environment.
 - **Build ID**: the value of `TEMPORAL_BUILD_ID` in the Runtime environment.
 - **Compute Provider**: select **Amazon Bedrock AgentCore Runtime**.
-- **Runtime endpoint ARN**: the named endpoint ARN from [Step 2](#deploy-runtime).
-- **IAM role ARN**: the invocation role ARN from [Step 3](#configure-iam).
-- **External ID**: the External ID from [Step 3](#configure-iam).
+- **Runtime endpoint ARN**: the named endpoint ARN from [Step 3](#deploy-runtime).
+- **IAM role ARN**: the invocation role ARN from [Step 4](#configure-iam).
+- **External ID**: the External ID from [Step 4](#configure-iam).
 
 Save the Worker Deployment. When you create a version through the UI, the version is automatically current. Continue
-to [Step 6](#verify-worker-startup).
+to [Step 7](#verify-worker-startup).
 
 </TabItem>
 <TabItem value="cli" label="Temporal CLI">
@@ -298,7 +407,7 @@ For Temporal Cloud, check whether Temporal can reach the endpoint by opening the
 Temporal Cloud UI and selecting **Actions** > **Validate Connection**. This checks that Temporal can assume the
 invocation role, get the named endpoint, and invoke the Runtime.
 
-## 5. Set the version as current {/* #set-current-version */}
+## 6. Set the version as current {/* #set-current-version */}
 
 If you used the Temporal CLI, set the version as current:
 
@@ -312,7 +421,7 @@ temporal worker deployment set-current-version \
 This command asks you to confirm because it changes which version receives new Tasks. Pass `--yes` to skip the prompt.
 If you created the version in the Temporal Cloud UI, it is already current.
 
-## 6. Verify Worker startup {/* #verify-worker-startup */}
+## 7. Verify Worker startup {/* #verify-worker-startup */}
 
 Submit work to the configured Task Queue using your application. When no Worker is polling, Temporal invokes the named
 AgentCore Runtime endpoint. The Runtime starts the Worker, and the Worker polls and processes Tasks.
