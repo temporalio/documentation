@@ -127,11 +127,12 @@ separate from the invocation role that Temporal assumes.
 
 ## 2. Deploy the Worker Runtime {/* #deploy-runtime */}
 
-From the AgentCore project directory, validate and deploy the project:
+From the AgentCore project directory, validate and deploy the project. Set `--target` to the `name` of the deployment
+target in `agentcore/aws-targets.json`. For example, if the target is named `default`, run:
 
 ```bash
 agentcore validate
-agentcore deploy --target <TARGET> -y
+agentcore deploy --target default -y
 ```
 
 AgentCore packages the Worker and its dependencies, deploys the Runtime, and creates the named endpoint.
