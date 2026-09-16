@@ -30,8 +30,10 @@ sample to explain why the Workflow, Activities, Runtime, and Worker Deployment a
 
 ## What you will build
 
-The sample accepts one prompt and runs one Workflow Execution. The Workflow asks the model to answer the prompt. The
-model can call Code Interpreter through a Temporal Activity before returning its answer.
+You will build an agent that can respond to prompts by using Amazon Bedrock for model inference and AgentCore Code
+Interpreter to run Python when needed. The sample accepts one prompt and runs one Workflow Execution. The Workflow asks
+the model to answer the prompt. The model can call Code Interpreter through a Temporal Activity before returning its
+answer.
 
 Your local client starts the Workflow through Temporal. When the Task Queue needs a Worker, Temporal starts an
 AgentCore Runtime session. The Worker processes the Workflow and Activity Tasks, then drains after 60 seconds without
