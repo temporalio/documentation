@@ -317,6 +317,8 @@ start capacity. AgentCore assumes the execution role inside that capacity when t
 Interpreter. The trailing wildcard on the Runtime ARN allows the invocation role to cover the named endpoint as well
 as the Runtime.
 
+## 5. Create the Serverless Worker deployment
+
 The values in `agentcore.json` configure the Worker inside AgentCore Runtime. They do not configure the Temporal CLI or
 the sample client process. Before continuing, export `TEMPORAL_ADDRESS`, `TEMPORAL_NAMESPACE`, `TEMPORAL_API_KEY`, and
 `AWS_REGION` for those processes. From the `samples-python/bedrock_agentcore/strands_agent` directory, run this command
@@ -325,8 +327,6 @@ to read and export the values from `agentcore/agentcore.json`:
 ```bash
 eval "$(python3 -c 'import json, shlex; env = {item["name"]: item["value"] for item in json.load(open("agentcore/agentcore.json"))["runtimes"][0]["envVars"]}; print("\n".join(f"export {name}={shlex.quote(env[name])}" for name in ("TEMPORAL_ADDRESS", "TEMPORAL_NAMESPACE", "TEMPORAL_API_KEY", "AWS_REGION")))')"
 ```
-
-## 5. Create the Serverless Worker deployment
 
 Create a Worker Deployment and a version that points to the AgentCore endpoint:
 
