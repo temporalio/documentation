@@ -35,6 +35,21 @@ temporal-consent-banner:not(:defined) {
   font: inherit;
 }
 
+.footer__social-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer__social-link {
+  display: inline-flex;
+  color: var(--ifm-footer-link-color);
+}
+
+.footer__social-link:hover {
+  color: var(--ifm-footer-link-hover-color);
+}
+
 :root {
   /* --ifm-color-primary: #f2633f;
    --ifm-color-primary-dark: #111827; */
