@@ -78,7 +78,6 @@ Activity attempts, Worker lifecycle, process-local reuse, and AgentCore services
 | Choose AgentCore Runtime if | Choose AWS Lambda if |
 | --- | --- |
 | Your application uses AgentCore services for identity, tool access, policy, memory, or observability. | Your Worker needs general-purpose AWS compute but does not use the AgentCore platform. |
-| You want to run a standard long-running Worker and define its idle and drain behavior. | You want the Lambda Worker integration to manage the Worker around each invocation and its deadline. |
 | An Activity attempt might need longer than Lambda's 15-minute invocation limit. An AgentCore Runtime session can provide up to 8 hours for uninterrupted work. | Individual Activity attempts finish within the Lambda invocation window or can resume or retry without significant cost. The 15-minute limit does not limit the overall Workflow duration. |
 | Reusing initialization work, in-memory caches, or temporary files reduces startup work or latency. | The Worker does not need process-local reuse. |
 
