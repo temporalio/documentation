@@ -82,8 +82,7 @@ through Updates. Any compatible Runtime session can process the next turn.
 - A Temporal Cloud API key that can connect to the Namespace.
 - [Temporal CLI v1.8.3](https://github.com/temporalio/cli/releases/tag/v1.8.3) or later.
 - Python 3.10 or later and [`uv`](https://docs.astral.sh/uv/).
-- Node.js 20 or later and the
-  [AgentCore CLI](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html).
+- Node.js 20 or later.
 - The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured for your AWS
   account.
 - The [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting-started.html) installed and bootstrapped in an
@@ -91,6 +90,13 @@ through Updates. Any compatible Runtime session can process the next turn.
 - AWS permissions to deploy AgentCore resources, CloudFormation stacks, and IAM roles. See
   [IAM permissions for AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html).
 - Access to the Amazon Bedrock model that Strands selects in the target Region.
+
+Install the [AgentCore
+CLI](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html):
+
+```bash
+npm install -g @aws/agentcore
+```
 
 ## 1. Get the sample
 
@@ -179,12 +185,6 @@ def execute_code(
 Using the Workflow ID gives each Workflow Execution its own Code Interpreter sandbox.
 
 ## 3. Configure and deploy the Runtime
-
-Install the AgentCore CLI:
-
-```bash
-npm install -g @aws/agentcore
-```
 
 Open `agentcore/aws-targets.json`. Replace the account number and Region with the AWS account and Region where you
 will deploy the Runtime:
