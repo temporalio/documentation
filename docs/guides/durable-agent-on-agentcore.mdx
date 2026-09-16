@@ -381,10 +381,10 @@ temporal workflow show \
   --workflow-id agentcore-strands-workflow-id-1
 ```
 
-The Event History contains the model and `execute_code` Activities. Follow the Worker from AgentCore:
+The Event History contains the model and `execute_code` Activities. Search the previous hour of AgentCore Runtime logs:
 
 ```bash
-agentcore logs --runtime temporal_strands_worker
+agentcore logs --runtime temporal_strands_worker --since 1h
 ```
 
 The Workflow history and AgentCore logs show the two sides of the integration. Event History records what the agent
