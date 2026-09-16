@@ -1,9 +1,8 @@
 ---
 id: limits
-title: System limits - Temporal Cloud
+title: System limits
 sidebar_label: Limits
-slug: /cloud/limits
-description: Learn about Temporal Cloud limits, including accounts, namespaces, throughput, retention, task pollers, batch jobs, gRPC, search attributes, and more.
+description: Rate, resource, and configuration limits for Temporal Cloud by scope, which ones you can raise, and what happens when you exceed them.
 toc_max_heading_level: 3
 tags:
   - Temporal Cloud
@@ -13,14 +12,15 @@ tags:
 import { CaptionedImage } from '@site/src/components';
 import { ReleaseNoteHeader } from '@site/src/components';
 
-Temporal Cloud enforces a variety of limits to keep the service reliable, including rate limits (how often something may occur in a unit of time), resource limits (how many of a given resource may exist at any one time), and configuration limits (minimum or maximum values for a setting)
+Temporal Cloud enforces three kinds of limits to keep the service reliable: rate limits (how often something can happen in a unit of time), resource limits (how many of a resource can exist at once), and configuration limits (the minimum or maximum value for a setting).
 
-Every limit applies at a specific scope (level of the application):
+Every limit applies at one scope:
 
-- At the Temporal Cloud [Account level](#account-level)
-- At the [Namespace level](#namespace-level)
-- At the [Nexus endpoint level](#nexus-endpoint-level)
-- Within the [programming model](#programming-model-level) itself
+- The Temporal Cloud [Account level](#account-level)
+- The [Project level](#project-level)
+- The [Namespace level](#namespace-level)
+- The [Nexus Endpoint level](#nexus-endpoint-level)
+- The [programming model](#programming-model-level) itself
 
 ## Account level
 
@@ -106,17 +106,18 @@ See the [operations list](/references/operation-list) for the list of operations
 
 ### Throttling behavior
 
-When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests. Here's what happens:
+When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests:
 
-1. **Priority-based throttling**: Low-priority operations are throttled first. Higher-priority operations like `StartWorkflowExecution`, `SignalWorkflowExecution`, and `UpdateWorkflowExecution` continue to go through when possible. Temporal Cloud uses similar [throttling priorities as the open source server](https://github.com/temporalio/temporal/blob/main/service/frontend/configs/quotas.go#L66).
-2. **Throttling latency**: Rate limiting is not instantaneous, so usage may briefly exceed your limit before throttling takes effect.
-3. **ResourceExhausted errors**: When throttled, the server returns a `ResourceExhausted` gRPC error. SDK clients automatically retry these based on the default gRPC retry policy.
-4. **Potential failure**: If throttling persists beyond the SDK's retry limit, client calls fail. This means work _can_ be lost if you don't handle these failures.
+1. **Priority-based throttling**: Low-priority operations are throttled first. Higher-priority operations such as `StartWorkflowExecution`, `SignalWorkflowExecution`, and `UpdateWorkflowExecution` continue when possible. Temporal Cloud uses [throttling priorities similar to the open source server](https://github.com/temporalio/temporal/blob/main/service/frontend/configs/quotas.go#L66).
+2. **Throttling latency**: Rate limiting is not instantaneous, so usage can briefly exceed your limit before throttling takes effect.
+3. **ResourceExhausted errors**: A throttled request returns a `ResourceExhausted` gRPC error, which SDK clients retry under the default gRPC retry policy.
+4. **Potential failure**: If throttling outlasts the SDK's retry limit, client calls fail, and work _can_ be lost if you don't handle those failures.
 
-**Best practices for handling throttling:**
-- Log any failed `StartWorkflowExecution`, `SignalWorkflowExecution`, or `UpdateWorkflowExecution` calls on the client side, including the payload, so you can retry or backfill later.
-- Set up [Cloud metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) to alert when throttling occurs and when you approach your limits.
-- Consider [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity) if you have predictable spikes or need guaranteed throughput.
+To handle throttling:
+
+- Log every failed `StartWorkflowExecution`, `SignalWorkflowExecution`, and `UpdateWorkflowExecution` call on the Client side, including the Payload, so you can retry or backfill it later.
+- Alert on [Cloud metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) when throttling occurs and when you approach a limit.
+- Switch to [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity) if you have predictable spikes or need guaranteed throughput.
 
 ### Schedules rate limit
 
@@ -154,7 +155,7 @@ A duplicate start that returns `WorkflowExecutionAlreadyStarted` has no effect o
 
 Exceeding this limit returns a `ResourceExhausted` error.
 
-### Visibility API Rate Limit
+### Visibility API rate limit
 
 - Scope: Namespace
 - Default limit: 30 Visibility API calls per second
@@ -170,7 +171,7 @@ The Visibility API rate limit applies to every read API that lists, searches, or
 
 Any API that returns a set of executions or a count falls under this limit. Single-entity lookups by ID, such as `DescribeWorkflowExecution` and `DescribeSchedule`, do not. Those read the primary store and count against the general namespace rate limit.
 
-### Nexus Rate Limit {/* #nexus-rate-limits */}
+### Nexus rate limit {/* #nexus-rate-limits */}
 
 Nexus requests (such as starting a Nexus Operation or sending a Nexus completion callback) are counted as part of the overall Namespace RPS limit.
 If too many Nexus requests are sent at once, they may be throttled, along with other requests to the Namespace.

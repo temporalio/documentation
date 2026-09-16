@@ -1,39 +1,34 @@
 ---
 id: service-availability
-title: Service availability - Temporal Cloud
+title: Service availability
 sidebar_label: Availability
-description: Temporal Cloud offers high availability and low latency across multiple cloud provider regions with adjustable throughput limits and robust latency targets. Contact us for more details.
-slug: /cloud/service-availability
+description: The throughput and latency you can expect from a Temporal Cloud Namespace, with measured latency for starting and signaling Workflow Executions.
 toc_max_heading_level: 4
 tags:
   - Temporal Cloud
 ---
 
-The operating envelope of Temporal Cloud includes throughput, latency, and limits.
-Service regions are listed on [this page](/cloud/regions).
-If you need more details, [contact us](https://pages.temporal.io/contact-us).
+This page covers the throughput and latency of Temporal Cloud.
+For the regions you can run in, see [Service regions](/cloud/regions); for the full set of rate, resource, and configuration limits, see [System limits](/cloud/limits).
 
-## Throughput expectations {/* #throughput */}
+## Throughput {/* #throughput */}
 
-**What kind of throughput can I get with Temporal Cloud?**
+Each Namespace has a rate limit measured in [Actions](/cloud/pricing#action) per second, and two capacity modes control it:
 
-Each Namespace in Temporal has a rate limit, which is measured in [Actions](/cloud/pricing#action) per second. 
-Temporal offers two different modes for adjusting capacity: On-Demand Capacity or Provisioned Capacity.
-With On-Demand Capacity, Namespace capacity is increased automatically along with usage.
-With Provisioned Capacity, you can control your capacity limits by requesting Temporal Resource Units (TRUs).
+- **On-Demand Capacity** raises the Namespace limit automatically as usage grows.
+- **Provisioned Capacity** sets the limit from the Temporal Resource Units (TRUs) you request, which suits predictable spikes and guaranteed throughput.
 
+See [Capacity Modes](/cloud/capacity-modes) for how each mode sets your limit.
 
 ## Latency Service Level Objective (SLO) {/* #latency */}
 
-**What kind of latency can I expect from Temporal Cloud?**
-
 Temporal Cloud has a p99 latency SLO of 200ms per region.
 
-The same SLO for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
+That SLO covers normal Worker requests, meaning commands and polling, and it applies to Nexus in both the caller and handler Namespaces.
 
 ### Historical latency data
 
-Latency over a week-long period for starting and signaling Workflow Executions, and for starting [Standalone Activities](/standalone-activity) (`StartActivityExecution`),
+Measured latency over a week-long period for starting and signaling Workflow Executions, and for starting [Standalone Activities](/standalone-activity) (`StartActivityExecution`),
 was as follows:
 
 #### August 2026
@@ -61,8 +56,8 @@ was as follows:
 | `SignalWorkflowExecution`          | 14ms | 40ms |
 | `SignalWithStartWorkflowExecution` | 24ms | 61ms |
 
-Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
-Also, concurrent operations on the same Workflow Execution may result in higher latency.
+Latency observed from the Temporal Client also reflects other components in the path, such as the Codec Server, an egress proxy, and the network itself.
+Concurrent operations on the same Workflow Execution can raise latency as well.
 
 ### Custom persistence layer
 
