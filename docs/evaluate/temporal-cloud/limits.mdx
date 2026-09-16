@@ -272,12 +272,6 @@ A Namespace can reach this limit while staying below its APS limit. Larger paylo
 
 Keep payloads small for workloads with sustained write traffic. Use [External Storage](/external-storage) for large data and pass a reference in the payload.
 
-#### Example
-
-Two workloads each perform 400 Actions per second. One writes 5 KB per Action. The other writes 500 KB per Action. The second workload uses about 100 times more write bandwidth and can reach the bandwidth limit while both workloads remain below the same APS limit.
-
-If the Namespace APS limit doubles from 500 to 1,000, its write bandwidth limit also doubles.
-
 ## Nexus Endpoint level
 
 ### Nexus Endpoints limits
