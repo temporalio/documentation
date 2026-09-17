@@ -290,7 +290,7 @@ For each additional AWS account or VPC:
    - Or, use [direct VPCE targeting](#direct-vpce). For High Availability Namespaces, follow the [additional setup](#direct-vpce) so each region's Workers target their local VPC Endpoint.
 3. **Optional:** if you want to enforce private-only access for a Namespace, add a Connectivity Rule for each VPC endpoint and attach all of them (plus a public rule, if needed) to the Namespace. See [Connectivity Rules](/cloud/connectivity#connectivity-rules).
 
-There is no upper limit on the number of VPC endpoints you can connect from your side to a regional PrivateLink service. The default per-account limit on private Connectivity Rules is 50 — [contact support](/cloud/support#support-ticket) if you need to raise it.
+There is no upper limit on the number of VPC endpoints you can connect from your side to a regional PrivateLink service. The default per-account limit on private Connectivity Rules is 50 — [contact support](/evaluate/cloud/support#support-ticket) if you need to raise it.
 
 ## Available AWS regions, PrivateLink endpoints, and DNS record overrides
 

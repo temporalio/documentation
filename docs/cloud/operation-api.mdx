@@ -159,7 +159,7 @@ Temporal targets 99.99% monthly availability for the Cloud Ops API across its HT
 
 Availability measures whether valid Cloud Ops API requests are successfully served. Server-side failures count against this objective; client-caused errors, including invalid requests and authentication or authorization failures, do not. Responses due to documented rate limits (`ResourceExhausted` for gRPC and HTTP 429) are also excluded because they represent intentional throttling rather than service unavailability.
 
-This availability objective applies only to the Cloud Ops API. It is not a contractual service-level agreement and does not change the Temporal Cloud [SLA](/cloud/sla). Temporal Service operations, including Workflow and Activity execution, are covered separately by the Temporal Cloud SLA.
+This availability objective applies only to the Cloud Ops API. It is not a contractual service-level agreement and does not change the Temporal Cloud [SLA](/evaluate/cloud/sla). Temporal Service operations, including Workflow and Activity execution, are covered separately by the Temporal Cloud SLA.
 
 ## Rate limits
 
@@ -194,7 +194,7 @@ By default, each account can have up to 10 long-running (asynchronous) mutating 
 
 ### Request limit increases
 
-If your use case requires higher rate limits, you can request an increase by [submitting a support ticket](/cloud/support#support-ticket). When requesting a limit increase, please provide:
+If your use case requires higher rate limits, you can request an increase by [submitting a support ticket](/evaluate/cloud/support#support-ticket). When requesting a limit increase, please provide:
 
 - Your current usage patterns and requirements
 - The specific limits you need increased
@@ -206,5 +206,5 @@ Your input is valuable!
 
 You can provide feedback through the following channels:
 
-- Submit request or feedback through a [support ticket](/cloud/support#support-ticket)
+- Submit request or feedback through a [support ticket](/evaluate/cloud/support#support-ticket)
 - Open an issue in the [GitHub Repo](https://github.com/temporalio/cloud-api)

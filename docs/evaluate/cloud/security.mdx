@@ -1,0 +1,154 @@
+---
+id: security
+title: Security model
+sidebar_label: Security model
+description: Namespace isolation, mTLS and API key authentication, client-side Payload encryption, private connectivity, access control, and SOC 2 Type 2 compliance.
+toc_max_heading_level: 4
+tags:
+  - Multitenancy
+  - Security
+  - Temporal Cloud
+---
+
+The security model of [Temporal Cloud](/cloud) covers three things: your applications, your data, and the Temporal Cloud platform itself.
+
+:::info General platform security
+
+For the security features of Temporal that aren't specific to Cloud, see [Platform security](/security).
+
+:::
+
+## Applications and data {/* #applications-and-data */}
+
+### Code execution boundaries
+
+Temporal Cloud runs the Temporal Server as a managed service.
+It does not run or manage your applications or [Workers](/workers#worker).
+Applications written with a [Temporal SDK](/encyclopedia/architecture/temporal-sdks) run in your computing environment, whether that's containers (Docker, Kubernetes) or virtual machines in any hosting environment, so you control how they're secured.
+
+### Data Converter: client-side encryption
+
+The optional [Data Converter](/dataconversion) encrypts data before it's sent to Temporal Cloud and decrypts it on the way back.
+
+Data conversion runs on your Workers and [Clients](/encyclopedia/temporal-client), so Temporal Cloud cannot see or decrypt your data.
+Data stored in Temporal Cloud stays encrypted even if the service itself is compromised.
+
+Deploy a [Codec Server](/production-deployment/data-encryption) to decrypt data in the [Temporal Web UI](/web-ui) without sharing encryption keys with Temporal.
+
+## The platform {/* #the-platform */}
+
+### Namespace isolation
+
+The base unit of isolation in Temporal is a [Namespace](/namespaces).
+A Temporal Cloud account can hold many Namespaces, and each one is isolated from the rest.
+
+#### Authentication
+
+Each Namespace is secured with the authentication method you choose:
+
+- **mTLS certificates**: Namespace-specific X.509 certificates for mutual TLS authentication
+- **API keys**: Namespace-scoped keys for bearer-token authentication
+
+See [API Keys](/cloud/api-keys) and [mTLS Certificates](/cloud/certificates) to configure authentication for a Namespace.
+
+#### Rate limiting
+
+Each Namespace has its own rate limits, which keep one Namespace from becoming a noisy neighbor:
+
+- **Actions Per Second (APS)** limits the rate of [Actions](/best-practices/managing-aps-limits) performed in your Workflows
+- **Operations Per Second (OPS)** limits the rate of all [operations](/references/operation-list) that put load on the Temporal Server
+
+A traffic spike in one Namespace cannot affect the performance or reliability of another, whether the two belong to the same Temporal Cloud account or to different accounts.
+
+See [Rate limiting](/evaluate/cloud/limits) for more information about Temporal Cloud limits, and [Monitoring trends against limits](/cloud/service-health#rps-aps-rate-limits) for monitoring best practices.
+
+#### Inter-Namespace communication
+
+Namespaces are isolated by default.
+Workflows in one Namespace reach Workflows in another only through [Temporal Nexus](/nexus), which routes cross-Namespace calls through Nexus Endpoints you control.
+
+See [Nexus Security](/nexus/security) for how Nexus secures that communication.
+
+#### Logical segregation
+
+Temporal Cloud is a multi-tenant service.
+Namespaces in the same environment are logically segregated.
+Namespaces do not share data processing or data storage across regional boundaries.
+
+### Private connectivity
+
+Connect to Temporal Cloud from a secured network without traversing the public internet.
+
+See [Connectivity](/cloud/connectivity) for how to use AWS PrivateLink and GCP Private Service Connect with Temporal Cloud.
+
+### Temporal Nexus
+
+Like Namespaces, the Nexus Registry is account-scoped and global within a Temporal Cloud account.
+Nexus Endpoint names remain unique Account-wide, but each Endpoint is Project-scoped for management.
+An Account Developer (or higher), or a user with Project Contribute (or higher) on the Endpoint's Project, can manage (create, update, or delete) an Endpoint only when they also have Namespace Admin on its target Namespace.
+Changing an Endpoint's target Namespace requires Namespace Admin on both the current target Namespace and the new target Namespace.
+All users with a Read-only role (or higher) in an account, can view and browse the full list of Endpoints.
+
+Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry.
+Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the Namespace configuration.
+Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
+
+For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
+
+See [Nexus Security](/nexus/security) for more information.
+
+### Encryption
+
+:::tip TLS vs mTLS
+
+**TLS** (Transport Layer Security) encrypts data in transit. **mTLS** (mutual TLS) is an authentication method where both client and server present certificates to verify identity. All Temporal Cloud connections use TLS encryption. When you choose "mTLS authentication," you're choosing how to prove your identity, not whether your connection is encrypted.
+
+:::
+
+**In transit**: All connections to Temporal Cloud use TLS 1.3 encryption, regardless of your authentication method ([API keys](/cloud/api-keys) or [mTLS certificates](/cloud/certificates)).
+
+**At rest**: Data is stored in two locations: an Elasticsearch instance (used when filtering Workflows in SDK clients, the [CLI](/cloud/tcld), or the Web UI) and the core Temporal Cloud persistence layer.
+Both are encrypted at rest with AES-256-GCM.
+
+### Identity
+
+Authentication to Temporal Cloud gRPC endpoints supports two methods:
+
+- **[API keys](/cloud/api-keys)**: Identity-based authentication using bearer tokens. Recommended for most cases.
+- **[mTLS certificates](/cloud/certificates)**: Mutual TLS authentication using client certificates issued by your CA.
+
+Both connections are encrypted, so choose based on your organization's security requirements and key management preferences.
+
+For user authentication to the Temporal Cloud UI, see [SAML authentication](/cloud/manage-access/saml).
+
+### Access
+
+Authorization is managed at the account and Namespace level, and users and systems are assigned one or more preconfigured roles.
+Users hold [account-level Roles](/cloud/manage-access/roles-and-permissions#account-level-roles) of administrator, developer, or read-only.
+Systems and application processes hold their own distinct roles.
+
+### Monitoring
+
+Alongside system monitoring for operations and availability, Temporal collects audit logs from the AWS environment and from every call to the gRPC API, which the SDKs, CLI, and Web UI use.
+Those audit logs can be exported to your own security monitoring system.
+
+### Testing
+
+Temporal contracts with a third party for an annual full-scope pentest, excluding social engineering.
+Targeted third-party and internal testing happens as needed, such as when a significant feature is released.
+
+### Internal Temporal access
+
+Access to production systems is restricted to the team that maintains the production infrastructure.
+All access is logged, shared accounts are not allowed, and every production system requires SSO with MFA.
+
+Access to Temporal's cloud environments is granted for a limited period, up to a maximum of 8 hours.
+For the reasoning behind that, see [Rolling out access hours at Temporal](https://temporal.io/blog/rolling-out-access-hours-at-temporal).
+
+Temporal engineering systems are secured by GitHub credentials, which require both membership in the Temporal GitHub organization and MFA.
+Access grants are reviewed quarterly.
+
+### Compliance
+
+Temporal Technologies is SOC 2 Type 2 certified and compliant with GDPR and HIPAA regulations.
+Request compliance audits through the [Contact](https://pages.temporal.io/contact-us) page.
