@@ -32,15 +32,24 @@ without losing state.
 ## Install
 
 ```bash
-uv add "temporalio[openai-agents]"
+uv add temporalio-openai-agents
 ```
 
-The extra pulls in `openai-agents` and `mcp` alongside the Temporal SDK.
+The `temporalio-openai-agents` package installs the Temporal Python SDK and OpenAI Agents SDK dependencies. It requires
+Python 3.10 or later and Temporal Python SDK 1.33.0 or later.
 
-Two import paths cover most applications. `temporalio.contrib.openai_agents` holds what you configure on the Worker and
-Client—`OpenAIAgentsPlugin`, `ModelActivityParameters`, and the MCP and sandbox providers.
-`temporalio.contrib.openai_agents.workflow` holds what you call from inside a Workflow, such as `activity_as_tool` and
-the MCP server handles.
+Two import paths cover most applications. `temporalio.openai_agents` holds what you configure on the Worker and
+Client—including `OpenAIAgentsPlugin`, `ModelActivityParameters`, and sandbox providers.
+`temporalio.openai_agents.workflow` holds what you call from inside a Workflow, such as `activity_as_tool` and MCP
+server proxies.
+
+Version 1.0.0 moves the integration out of the Temporal Python SDK. If you used the earlier contrib module, replace the
+`temporalio[openai-agents]` dependency with `temporalio-openai-agents` and change imports from
+`temporalio.contrib.openai_agents` to `temporalio.openai_agents`.
+
+With Temporal Python SDK 1.33, install both distributions into the same physical `site-packages/temporalio` directory,
+as a standard non-editable virtual environment does. Editable installs, layered deployments, `--target` installs, and
+other split-directory installations require Temporal Python SDK 1.34 or later.
 
 ## Run your first durable agent
 
@@ -245,7 +254,7 @@ Use `nexus_operation_as_tool` to expose a [Nexus](/nexus) Operation as an agent 
 through a Nexus client and feeds the result back to the agent, which lets an agent call across a Namespace boundary:
 
 ```python
-from temporalio.contrib.openai_agents.workflow import nexus_operation_as_tool
+from temporalio.openai_agents.workflow import nexus_operation_as_tool
 
 weather_tool = nexus_operation_as_tool(
     WeatherService.get_weather,
@@ -312,133 +321,93 @@ def orchestrator_agent() -> Agent:
 ## MCP servers
 
 Temporal's durability does not extend to [MCP](https://modelcontextprotocol.io/) servers, which run independently of the
-Workflow. The integration offers two wrappers so you can pick the one that matches how your server behaves.
+Workflow. The integration runs each MCP operation as an Activity and gives Workflow code a durable proxy for an MCP
+Python SDK v2 server.
 
-A **stateless** server treats each operation as independent—`get_weather(location)` carries everything it needs—so it
-can be reconnected to without changing behavior. A **stateful** server keeps session state between calls, as a server
-where `set_location(location)` precedes `get_weather()` does, and loses that state if the session drops. Prefer
-stateless when you have the choice: its durability guarantees are stronger.
+Install the optional MCP dependencies:
+
+```bash
+uv add "temporalio-openai-agents[mcp]"
+```
+
+### Register an MCP server
+
+On the Worker, pass a dictionary of named OpenAI Agents SDK server factories to `OpenAIAgentsPlugin.mcp_servers`. The
+factory and server transport run on the Worker, outside the Workflow sandbox.
+
+[openai_agents/mcp_v2/run_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp_v2/run_worker.py)
+```python
+from datetime import timedelta
+
+from agents.mcp import MCPServerStreamableHttp
+from temporalio.client import Client
+from temporalio.openai_agents import ModelActivityParameters, OpenAIAgentsPlugin
+
+MCP_SERVER_NAME = "StreamableHttpV2Server"
+
+
+def streamable_http_server() -> MCPServerStreamableHttp:
+    return MCPServerStreamableHttp(
+        name=MCP_SERVER_NAME,
+        params={"url": "http://localhost:8000/mcp"},
+    )
+
+
+client = await Client.connect(
+    "localhost:7233",
+    plugins=[
+        OpenAIAgentsPlugin(
+            model_params=ModelActivityParameters(
+                start_to_close_timeout=timedelta(seconds=60)
+            ),
+            mcp_servers={MCP_SERVER_NAME: streamable_http_server},
+        ),
+    ],
+)
+```
+
+You can use stdio, streamable HTTP, in-process, or custom MCP v2 transports. Configure transport, connection, retry,
+and message-handling behavior on the Worker-side `MCPServer`.
+
+### Use the MCP server in a Workflow
+
+Call `temporal_mcp_server()` with the registered name, then pass the returned proxy to the agent.
+
+[openai_agents/mcp_v2/workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp_v2/workflow.py)
+```python
+from agents import Agent, Runner
+from temporalio.openai_agents.workflow import temporal_mcp_server
+
+server = temporal_mcp_server("StreamableHttpV2Server")
+agent = Agent(
+    name="Assistant",
+    instructions="Use the tools to answer the questions.",
+    mcp_servers=[server],
+)
+result = await Runner.run(starting_agent=agent, input="What's the weather in Tokyo?")
+```
+
+Configure Workflow-facing behavior, including `tool_filter`, `require_approval`, `failure_error_function`, and metadata
+resolvers, on `temporal_mcp_server()`. A callable `tool_filter` runs during Workflow replay, so it must be deterministic.
+Do not perform I/O or depend on the system clock, randomness, mutable global state, or other external state from the
+filter.
+
+The proxy caches the tool list in Workflow state by default. Pass `cache_tools_list=False` to refresh it each time the
+OpenAI Agents SDK lists tools. For a parameterless factory using the modern sessionless protocol, the Worker can reuse
+an idle connection for up to five minutes. Set `mcp_connection_idle_timeout` on `OpenAIAgentsPlugin` to change that
+period.
 
 :::warning
 
-Both `stateless_mcp_server()` and `stateful_mcp_server()` accept a `factory_argument` that is passed to the registered
-factory. It is an Activity argument, so it is recorded in Workflow history and, without a payload codec, visible in the
-Web UI. Do not pass secrets, credentials, or API keys through it—resolve those Worker-side inside the server factory.
+`temporal_mcp_server()` accepts a `factory_argument` that is passed to the registered factory. It is an Activity
+argument, so it is recorded in Workflow history and, without a payload codec, visible in the Web UI. Do not pass
+secrets, credentials, or API keys through it. Resolve them on the Worker inside the server factory.
 
 :::
 
-### Stateless MCP servers
-
-Register a `StatelessMCPServerProvider` with a factory that creates the server, and give it a name:
-
-<!--SNIPSTART python-openai-agents-stateless-mcp-worker-->
-[openai_agents/mcp/run_file_system_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp/run_file_system_worker.py)
-```py
-file_system_server = StatelessMCPServerProvider(
-    "FileSystemServer",
-    lambda: MCPServerStdio(
-        name="FileSystemServer",
-        params={
-            "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-filesystem", samples_dir],
-        },
-    ),
-)
-
-# Create client connected to server at the given address
-config = ClientConfig.load_client_connect_config()
-config.setdefault("target_host", "localhost:7233")
-client = await Client.connect(
-    **config,
-    plugins=[
-        OpenAIAgentsPlugin(
-            model_params=ModelActivityParameters(
-                start_to_close_timeout=timedelta(seconds=60)
-            ),
-            mcp_server_providers=[file_system_server],
-        ),
-    ],
-)
-```
-<!--SNIPEND-->
-
-Reference the same name from Workflow code with `stateless_mcp_server`:
-
-<!--SNIPSTART python-openai-agents-stateless-mcp-workflow-->
-[openai_agents/mcp/workflows/file_system_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp/workflows/file_system_workflow.py)
-```py
-server: MCPServer = openai_agents.workflow.stateless_mcp_server(
-    "FileSystemServer"
-)
-agent = Agent(
-    name="Assistant",
-    instructions="Use the tools to read the filesystem and answer questions based on those files.",
-    mcp_servers=[server],
-)
-```
-<!--SNIPEND-->
-
-### Stateful MCP servers
-
-Register a `StatefulMCPServerProvider` instead. The plugin runs a dedicated Worker that holds the connection open for
-the life of the Workflow run.
-
-<!--SNIPSTART python-openai-agents-stateful-mcp-worker-->
-[openai_agents/mcp/run_memory_research_scratchpad_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp/run_memory_research_scratchpad_worker.py)
-```py
-memory_server_provider = StatefulMCPServerProvider(
-    "MemoryServer",
-    lambda _: MCPServerStdio(
-        name="MemoryServer",
-        params={
-            "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-memory"],
-        },
-    ),
-)
-
-# Create client connected to server at the given address
-config = ClientConfig.load_client_connect_config()
-config.setdefault("target_host", "localhost:7233")
-client = await Client.connect(
-    **config,
-    plugins=[
-        OpenAIAgentsPlugin(
-            model_params=ModelActivityParameters(
-                start_to_close_timeout=timedelta(seconds=60)
-            ),
-            mcp_server_providers=[memory_server_provider],
-        ),
-    ],
-)
-```
-<!--SNIPEND-->
-
-In the Workflow, `stateful_mcp_server` is an async context manager, which ties the session's lifetime to the block:
-
-<!--SNIPSTART python-openai-agents-stateful-mcp-workflow-->
-[openai_agents/mcp/workflows/memory_research_scratchpad_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/mcp/workflows/memory_research_scratchpad_workflow.py)
-```py
-async with temporal_openai_agents.workflow.stateful_mcp_server(
-    "MemoryServer",
-) as server:
-    with trace(workflow_name="MCP Memory Scratchpad Example"):
-        agent = Agent(
-            name="Research Scratchpad Agent",
-            instructions=(
-                "Use the Memory MCP tools to persist, query, update, and delete notes."
-                " Keep IDs short and consistent. Synthesis must rely only on recalled notes and include simple"
-                " citations of the form '(Note: id)'. Keep the brief to 5 bullets."
-            ),
-            mcp_servers=[server],
-            model_settings=ModelSettings(tool_choice="required"),
-        )
-```
-<!--SNIPEND-->
-
-If the dedicated Worker fails—a network problem, or the server itself going away—the session state is gone and Temporal
-cannot recreate it. The integration raises an `ApplicationError` so your Workflow can decide what to do; recovering
-means retrying at the application level, not relying on Activity retries.
+Version 1.0.0 deprecates `StatelessMCPServerProvider`, `StatefulMCPServerProvider`, `stateless_mcp_server()`, and
+`stateful_mcp_server()`. Replace provider objects passed through `mcp_server_providers` with named factories passed
+through `mcp_servers`, and replace both Workflow helpers with `temporal_mcp_server()`.
 
 ### Hosted MCP tool
 
@@ -797,7 +766,7 @@ model calls, tools, and orchestration land in the same backend as the rest of yo
 Install the additional dependencies:
 
 ```bash
-uv add openinference-instrumentation-openai-agents opentelemetry-sdk opentelemetry-exporter-otlp
+uv add "temporalio-openai-agents[openinference]" opentelemetry-exporter-otlp
 ```
 
 Then set a global replay-safe tracer provider before connecting the Client, and turn on instrumentation in the plugin:
@@ -853,7 +822,7 @@ with custom_span("Workflow coordination"):
 
 - [OpenAI Agents SDK samples](https://github.com/temporalio/samples-python/tree/main/openai_agents) — runnable examples
   for the patterns in this guide.
-- [`temporalio.contrib.openai_agents` README](https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/openai_agents/README.md)
+- [`temporalio-openai-agents` README](https://github.com/temporalio/ai-integrations/tree/main/python/openai_agents)
   — the full plugin reference, including the complete feature-support matrix.
 - [OpenAI Agents SDK for Python](https://openai.github.io/openai-agents-python/)
 - [Temporal Plugins guide](/develop/plugins-guide) — the Plugin system this integration is built on, which you can also

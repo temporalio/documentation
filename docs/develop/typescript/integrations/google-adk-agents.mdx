@@ -52,7 +52,7 @@ uses compatibility shims for that ADK line. Newer ADK versions can fail while bu
 The Worker reads Gemini credentials from `GOOGLE_GENAI_API_KEY` or `GEMINI_API_KEY`. Credentials remain in the Worker
 process. Model requests and responses are Activity inputs and results, so they are stored in Event History. Use a
 [Payload Codec to encrypt sensitive data](/develop/typescript/best-practices/data-handling/data-encryption), and account
-for the [programming model limits](/cloud/limits#programming-model-level), including the 2 MB limit on a single payload.
+for the [programming model limits](/evaluate/cloud/limits#programming-model-level), including the 2 MB limit on a single payload.
 
 ## Run an ADK agent in a Workflow
 

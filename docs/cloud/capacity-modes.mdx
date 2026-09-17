@@ -29,7 +29,7 @@ Some Actions can result in multiple back-end operations, so limits are also set 
 
 See [Service-level RPS limits](/references/dynamic-configuration#service-level-rps-limits) for more about RPS.
 See the [operations list](/references/operation-list) for the list of operations.
-See the [Actions page](/cloud/actions) for the list of actions.
+See the [Actions page](/evaluate/cloud/actions) for the list of actions.
 
 :::tip Measuring throughput with APS, RPS, and OPS
 
@@ -67,7 +67,7 @@ Throttling limits the rate at which Actions are performed to prevent the Namespa
 - Log any failed client calls (with payloads) so you can retry or backfill later.
 - Set up [limit metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) to alert when approaching your limits.
 
-See [Throttling behavior](/cloud/limits#throttling-behavior) for more details.
+See [Throttling behavior](/evaluate/cloud/limits#throttling-behavior) for more details.
 
 Your rate limits can be adjusted automatically over time or provisioned manually with Capacity Modes.
 
@@ -87,7 +87,7 @@ Actions that are external to the core Temporal service do not contribute to your
 ## On-demand capacity {/* #on-demand-capacity */}
 
 Using On-Demand Capacity, your rate limit grows automatically along with your usage.
-Each Namespace has an Actions per second (APS), Requests per second (RPS), and Operations per second (OPS) limit that scales automatically with usage. Your APS limit never falls below its [default limit](/cloud/limits#actions-per-second). If Temporal Support has manually set your Namespace's limit, that value becomes your floor in place of the default, and it persists across capacity mode changes.
+Each Namespace has an Actions per second (APS), Requests per second (RPS), and Operations per second (OPS) limit that scales automatically with usage. Your APS limit never falls below its [default limit](/evaluate/cloud/limits#actions-per-second). If Temporal Support has manually set your Namespace's limit, that value becomes your floor in place of the default, and it persists across capacity mode changes.
 
 Scaling automatically adjusts based on the lesser of 4 * APS Average or 2 * APS P90 over the past 7 days.
 
@@ -101,12 +101,12 @@ You can also optimize your workload to remain under the On-Demand limits. See [B
 
 Each Namespace has a rate limit, which is measured in Actions per second (APS). 
 Your APS limit automatically adjusts based on a formula that compares your average usage over the last 7 days and your usage at the 90th percentile, or P90. 
-Your throughput limit will never fall below the [default limit](/cloud/limits#actions-per-second) for your Namespace. 
+Your throughput limit will never fall below the [default limit](/evaluate/cloud/limits#actions-per-second) for your Namespace. 
 Under On-Demand capacity you are only charged for the Actions you use.
 To see your current limit, view it in the Temporal Cloud UI under the Namespace overview, retrieve it with the CLI by running [`temporal cloud namespace capacity get`](/cli/command-reference/cloud/namespace#capacity-get) or [`tcld namespace capacity get`](/cloud/tcld/namespace/#capacity), or track the `temporal_cloud_v1_action_limit` metric described in [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
 
 For example, if your average APS over the last 7 days was 200 and your P90 was 500, your limit would be the greater of:
-* The [default limit](/cloud/limits#actions-per-second)
+* The [default limit](/evaluate/cloud/limits#actions-per-second)
 * The lesser of:
   * 4 * 200 APS Mean = 800 APS
   * 2 * 500 APS P90 = 1000 APS
@@ -142,7 +142,7 @@ For Requests in excess of 4 TRUs in regions outside of the US, we recommend subm
 ### Provisioned Capacity Availability
 The amount of capacity available within a region may vary. 
 Temporal will check available capacity at the time of your request and aims to provision requested capacity within two minutes. 
-If you need capacity beyond what is self-serviceable or available in a region, please [file a support ticket](/cloud/support#ticketing) indicating the limit, region, and timeframe that the capacity is needed. 
+If you need capacity beyond what is self-serviceable or available in a region, please [file a support ticket](/evaluate/cloud/support#ticketing) indicating the limit, region, and timeframe that the capacity is needed. 
 
 
 ### When should I use Provisioned Capacity?

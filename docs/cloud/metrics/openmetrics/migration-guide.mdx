@@ -141,7 +141,7 @@ To migrate latency alerts safely:
 
 - Compare like-for-like. To reproduce a former average-based alert, start on `temporal_cloud_v1_service_latency_p50`,
   then move to `_p95` / `_p99` deliberately once you have set an appropriate threshold.
-- Confirm which percentile your SLO targets. The Temporal Cloud [latency SLO](/cloud/service-availability#latency) is a
+- Confirm which percentile your SLO targets. The Temporal Cloud [latency SLO](/evaluate/cloud/service-availability#latency) is a
   **p99**; alerting on p95 against a p99 threshold trips earlier than the SLO.
 
 :::
