@@ -39,7 +39,6 @@ origins:
     ref: 'main'
   - owner: temporalio
     repo: sdk-go
-
 targets:
   - docs
 

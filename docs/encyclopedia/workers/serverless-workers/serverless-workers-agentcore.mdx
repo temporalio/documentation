@@ -1,0 +1,159 @@
+---
+id: serverless-workers-agentcore
+title: Serverless Workers on Amazon Bedrock AgentCore Runtime
+sidebar_label: Amazon Bedrock AgentCore
+description:
+  How Serverless Workers run on Amazon Bedrock AgentCore Runtime, including Worker Versioning and Runtime session
+  lifecycle.
+slug: /serverless-workers/agentcore
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Concepts
+  - Serverless
+  - Amazon Bedrock AgentCore
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+</ReleaseNoteHeader>
+
+This page covers how Serverless Workers run on Amazon Bedrock AgentCore Runtime, including Worker Versioning and the
+Runtime session lifecycle.
+
+For a complete tutorial that explains the agent architecture and walks through deployment, see
+[Build a durable agent on Amazon Bedrock AgentCore](/guides/durable-agent-on-agentcore). If your Worker and AgentCore
+project are already in place, see
+[Deploy a Serverless Worker on Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore).
+
+On AgentCore Runtime, a Serverless Worker is a standard long-running Temporal Worker that runs inside an AgentCore
+Runtime session. When the [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) needs
+capacity, it invokes an AgentCore Runtime endpoint. The Runtime starts a Worker, which connects to the Temporal Service
+and polls its Task Queue.
+
+## How Temporal and AgentCore work together {/* #how-temporal-and-agentcore-work-together */}
+
+Temporal is the durable execution layer for the agent. A Workflow records the agent's progress, coordinates model and
+tool calls, waits for input, and applies retries and timeouts. Model calls and tool calls run as Activities.
+
+AgentCore supplies the compute that hosts Temporal Workers and optional services that those Activities can use.
+Configuring AgentCore Runtime as a Serverless Workers compute provider does not automatically configure the other
+AgentCore services.
+
+| Concern | Where it belongs | How to use it |
+| --- | --- | --- |
+| **Agent execution and progress** | Temporal Workflow | Keep the agent loop, completed steps, approvals, and long-running waits in the Workflow so execution can continue on another Worker. |
+| **Model and tool operations** | Temporal Activities | Give each external operation its own timeout, Retry Policy, and recorded result. The Temporal Strands integration runs model and tool calls as Activities. |
+| **Worker compute** | AgentCore Runtime | Host a Temporal Worker in each Runtime session. Treat the Worker and its process-local state as replaceable. |
+| **Credentials** | [AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) | Resolve credentials when an Activity accesses AWS or third-party services. Do not store credentials in Workflow state. |
+| **Tool access and authorization** | [AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-core-concepts.html) and [Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy-create-policies.html) | Call governed tools from Activities. Gateway connects the agent to tools, and Policy controls which tool calls are allowed. |
+| **Knowledge across conversations** | [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) | Read or write reusable knowledge through Activities. Memory does not replace Workflow state or Event History. |
+| **Runtime and agent telemetry** | [AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-configure.html) | Use AgentCore telemetry for Runtime, model, and tool behavior. Use Temporal Event History to inspect durable execution progress. |
+| **Caches and temporary files** | AgentCore Runtime session | Reuse them while the Runtime compute remains available, but do not require them to continue the Workflow. |
+
+For an implementation of this architecture using Strands and AgentCore Code Interpreter, see
+[Build a durable agent on Amazon Bedrock AgentCore](/guides/durable-agent-on-agentcore).
+
+## Choose AgentCore Runtime or AWS Lambda {/* #choose-agentcore-or-lambda */}
+
+AgentCore Runtime and AWS Lambda use the same event-driven autoscaling algorithm and run replaceable Workers. With
+either provider, a Workflow can continue for days, months, or longer across multiple Worker processes. Durable Timers,
+human approval waits, and waits for external events do not require compute to remain running. Keep durable progress in
+the Workflow and treat Worker-local state as replaceable.
+
+| Consideration | AgentCore Runtime | AWS Lambda |
+| --- | --- | --- |
+| **Primary use** | Agent and tool workloads that use the [AgentCore platform](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html). | General-purpose, event-driven Worker workloads on AWS. |
+| **Worker process** | A standard long-running Worker runs as background work in a Runtime session. The Runtime handler defines its idle and drain behavior, subject to AgentCore lifecycle limits. | A Lambda Worker integration starts the Worker, monitors the invocation deadline, and shuts it down before the function ends. |
+| **Compute lifetime** | A Runtime session using the serverless microVM compute type can run for up to 8 hours. | One function invocation can run for up to [15 minutes](https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html). A later invocation can continue processing Tasks for the same Workflow. |
+| **Process-local reuse** | The Worker can reuse initialization work, in-memory caches, and temporary files while its Runtime compute remains available. A later Task can run on another Worker, so do not depend on this state. | Each invocation is independent. Do not expect process-local state to be available to a later invocation. |
+| **Agent services** | AgentCore provides services for identity, tool access, policy, memory, and observability. | Lambda can call AWS services under its execution role, but it does not provide the AgentCore agent platform. |
+
+Both compute providers can serve long-running Workflows because Temporal maintains Workflow state and execution
+progress independently of any Worker process. Their differences affect which provider is a better fit for individual
+Activity attempts, Worker lifecycle, process-local reuse, and AgentCore services:
+
+| Choose AgentCore Runtime if | Choose AWS Lambda if |
+| --- | --- |
+| Your application uses AgentCore services for identity, tool access, policy, memory, or observability. | Your Worker needs general-purpose AWS compute but does not use the AgentCore platform. |
+| An Activity attempt might need longer than Lambda's 15-minute invocation limit. An AgentCore Runtime session can provide up to 8 hours for uninterrupted work. | Individual Activity attempts finish within the Lambda invocation window or can resume or retry without significant cost. The 15-minute limit does not limit the overall Workflow duration. |
+| Reusing initialization work, in-memory caches, or temporary files reduces startup work or latency. | The Worker does not need process-local reuse. |
+
+## Autoscaling {/* #autoscaling */}
+
+AgentCore Runtime uses the same event-driven autoscaling model as AWS Lambda. The WCI invokes individual Runtime
+sessions when it needs more capacity. It does not manage a target-sized pool of Runtime sessions. For the shared
+autoscaling behavior, see [Autoscaling for Serverless Workers on AWS Lambda](/serverless-workers/aws-lambda#autoscaling).
+
+## Worker Versioning {/* #worker-versioning */}
+
+Serverless Workers require [Worker Versioning](/worker-versioning). Associate each Worker Deployment Version with a
+named AgentCore Runtime endpoint that points to one AgentCore Runtime version.
+
+AgentCore creates an immutable Runtime version when you create or update a Runtime. A named endpoint has a stable ARN
+and points to a chosen Runtime version. Configure the endpoint ARN as the compute provider for the corresponding Worker
+Deployment Version:
+
+```bash
+temporal worker deployment create-version \
+    --deployment-name my-worker \
+    --build-id v1 \
+    --aws-agentcore-endpoint-arn <AGENTCORE_RUNTIME_ENDPOINT_ARN> \
+    --aws-agentcore-assume-role-arn <INVOKE_ROLE_ARN> \
+    --aws-agentcore-assume-role-external-id <EXTERNAL_ID>
+```
+
+Use one named endpoint for each Worker Deployment Version. For example, point an endpoint named `temporal-v1` at
+AgentCore Runtime version `1` and use its ARN for Temporal Worker Deployment Version `my-worker/v1`.
+
+When you deploy new Worker code, AgentCore creates a new Runtime version. Create another endpoint that points to that
+new Runtime version and configure it on a new Worker Deployment Version. Keep the older endpoint while Pinned
+Workflows can still need the older Worker code.
+
+:::caution
+
+Do not configure a live Worker Deployment Version with AgentCore's `DEFAULT` endpoint. That endpoint moves to the
+latest Runtime version whenever you update the Runtime. Updating code behind a Worker Deployment Version can cause
+non-determinism errors for in-flight Workflows, including Pinned Workflows.
+
+:::
+
+For details about AgentCore Runtime versions and endpoints, see [AgentCore Runtime versioning and
+endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-runtime-versioning.html).
+
+## Lifecycle {/* #lifecycle */}
+
+An AgentCore Runtime session is the compute that runs a Worker, not a durable place to store Workflow state. AgentCore
+can resume a session on new compute after the previous compute ends, and a later Task can run on another Worker. Keep
+state that a Workflow needs in the Workflow or another durable store.
+
+Unlike an AWS Lambda Worker, an AgentCore Worker does not have a fixed Lambda invocation deadline. Your Runtime handler
+starts the Worker as background work. The Worker polls until it drains or AgentCore ends its compute.
+
+Two sets of controls determine when that Worker stops:
+
+- **Worker idle and graceful-shutdown policy**: Your Worker implementation decides when it has been idle, stops
+  polling, and waits for in-flight Activities to complete.
+- **AgentCore lifecycle settings**: AgentCore can end the session or its compute before the Worker policy does.
+
+The AgentCore lifecycle settings are:
+
+- **Idle Runtime session timeout**: Ends a Runtime session after it has not received an AgentCore Runtime invocation for
+  the configured duration. The default is 15 minutes. This is not a Temporal Worker idle timer: polling the Temporal
+  Service does not reset it.
+- **Maximum lifetime**: Ends the compute running a Runtime session after the configured duration. The default and
+  maximum is 8 hours. AgentCore can resume the session on new compute after that.
+
+AgentCore's session idle timeout does not replace a Worker idle policy. It resets with AgentCore Runtime invocations
+and does not measure Task Queue activity. To control how long an unused Worker polls, implement a separate shutdown
+policy: when its idle condition is met, stop polling and drain in-flight Activities before the Runtime handler returns.
+Choose the idle period and drain timeout for your workload, and account for the AgentCore maximum lifetime.
+
+Configure Activity timeouts and, for long-running Activities,
+[Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so a retry can recover if AgentCore
+ends the compute before an Activity completes.
+
+For the lifecycle setting ranges and defaults, see [Configure Amazon Bedrock AgentCore lifecycle
+settings](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-lifecycle-settings.html).
