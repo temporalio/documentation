@@ -6,6 +6,6 @@ export const FEATURE_RELEASE_TYPES = {
   workflowStreams: "publicPreview",
   serverlessWorkersLambda: "publicPreview",
   serverlessWorkersCloudRun: "prerelease",
-  externalStorage: "prerelease",
+  externalStorage: "publicPreview",
   projects: "prerelease",
 };
