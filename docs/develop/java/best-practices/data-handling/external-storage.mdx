@@ -36,11 +36,10 @@ The Java SDK includes an experimental S3 storage driver. It requires Java SDK v1
   so objects remain available for the Workflow lifetime and Namespace retention period.
 - AWS credentials that can read and write S3 objects. The AWS SDK for Java reads its standard credential provider chain,
   including environment variables, IAM roles, and AWS configuration files.
-- These dependencies:
+- The AWS SDK v2 S3 driver module. Use the same version as your Temporal Java SDK dependency. The module includes the
+  generic S3 driver and AWS S3 client as transitive dependencies:
 
   ```gradle
-  implementation "io.temporal:temporal-sdk:1.39.0"
-  implementation "io.temporal:temporal-payload-storage-s3driver:1.39.0"
   implementation "io.temporal:temporal-payload-storage-s3driver-awssdkv2:1.39.0"
   ```
 
