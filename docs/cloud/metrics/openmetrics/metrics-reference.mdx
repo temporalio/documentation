@@ -1046,6 +1046,24 @@ Schedule executions dropped per second due to the overlap policy. This metric is
 
 **Type**: Rate
 
+#### temporal\_cloud\_v1\_schedule\_action\_e2e\_delay\_p50
+
+The 50th percentile total delay from an execution's scheduled time to actual start, in seconds. Includes overlap-policy wait. Not emitted for backfills.
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_schedule\_action\_e2e\_delay\_p95
+
+The 95th percentile total delay from an execution's scheduled time to actual start, in seconds. Includes overlap-policy wait. Not emitted for backfills.
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_schedule\_action\_e2e\_delay\_p99
+
+The 99th percentile total delay from an execution's scheduled time to actual start, in seconds. Includes overlap-policy wait. Not emitted for backfills.
+
+**Type**: Latency
+
 ### Replication Metrics
 
 #### temporal\_cloud\_v1\_replication\_lag\_p50
