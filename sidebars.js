@@ -640,6 +640,7 @@ const developPythonCategory = {
             },
             items: [
               'develop/python/workers/serverless-workers/aws-lambda',
+              'develop/python/workers/serverless-workers/agentcore',
               'develop/python/workers/serverless-workers/cloud-run',
             ],
           },
@@ -1607,6 +1608,18 @@ module.exports = {
                 },
                 {
                   type: 'category',
+                  label: 'Amazon Bedrock AgentCore',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/agentcore',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/agentcore-self-hosted-setup',
+                  ],
+                },
+                {
+                  type: 'category',
                   label: 'GCP Cloud Run',
                   collapsed: true,
                   link: {
@@ -2043,6 +2056,7 @@ module.exports = {
               link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
               items: [
                 'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-agentcore',
                 'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
               ],
             },
@@ -2205,6 +2219,7 @@ module.exports = {
         id: 'guides/index',
       },
       items: [
+        'guides/durable-agent-on-agentcore',
         'guides/entity-pattern-loyalty-points',
         'guides/recover-without-restart',
         'guides/route-specialized-workloads',

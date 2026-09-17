@@ -13,21 +13,21 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="publicPreview">
-  AWS Lambda support is in Public Preview. GCP Cloud Run support is in Pre-release, and its APIs may change in
-  backwards-incompatible ways. To request Cloud Run access, create a [support ticket](/evaluate/cloud/support#support-ticket) or
-  contact your account team, and [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear
-  when Cloud Run reaches Public Preview.
+  AWS Lambda support is in Public Preview. Amazon Bedrock AgentCore Runtime and GCP Cloud Run support are in
+  Pre-release, and their APIs may change in backwards-incompatible ways. To request access, create a
+  [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team. You can also
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates).
 </ReleaseNoteHeader>
 
-Serverless Workers let you run Temporal Workers on serverless compute platforms like AWS Lambda and GCP Cloud Run. There
-are no servers to provision, no clusters to scale, and no idle compute to pay for. Temporal starts Workers when Tasks
-arrive and stops them when the work drains.
+Serverless Workers let you run Temporal Workers on AWS Lambda, Amazon Bedrock AgentCore Runtime, and GCP Cloud Run.
+There are no servers to provision, no Worker fleet to scale, and no idle Worker fleet to maintain. Temporal starts
+Worker capacity when Tasks arrive and scales it down when the work drains.
 
 Serverless Workers use the same Temporal SDKs as traditional long-lived Workers. You register Workflows and Activities
 the same way. The difference is in the lifecycle: Temporal manages it instead of you running a Worker process. How that
 lifecycle works depends on the provider. On AWS Lambda, Temporal invokes a function per unit of work, and the Worker
-exits when the invocation ends. On GCP Cloud Run, Temporal resizes a pool of long-lived instances, scaling it to zero
-when there is no work.
+exits when the invocation ends. On AgentCore Runtime, Temporal invokes Runtime sessions that host standard long-running
+Workers. On GCP Cloud Run, Temporal resizes a pool of long-lived instances, scaling it to zero when there is no work.
 
 For a deeper look at how Serverless invocation works under the hood, see [Serverless Workers](/serverless-workers) in
 the encyclopedia.
@@ -49,7 +49,7 @@ dedicated compute.
 
 Long-lived Workers require you to provision infrastructure, configure scaling policies, manage deployments, and monitor
 host-level health. Serverless Workers reduce this burden by offloading invocation and scaling to Temporal and the
-compute provider. You still deploy the function and configure the compute provider, but there is no always-on
+compute provider. You still deploy the Worker package and configure the compute provider, but there is no always-on
 infrastructure to manage and no autoscaling policies to tune.
 
 Worker management is one of the most common sources of support questions for Temporal users. Serverless Workers offer a
@@ -61,9 +61,9 @@ of managing infrastructure.
 Running a long-lived Worker requires choosing a hosting strategy, configuring compute resources, and setting up
 deployment pipelines before you can execute your first Workflow in production.
 
-With Serverless Workers, deploying a Worker is as simple as deploying a function. Package your Worker code, deploy it to
-your serverless provider, and configure the connection to Temporal. There is no need to set up Kubernetes, manage
-container orchestration, or design a scaling strategy.
+With Serverless Workers, you package your Worker code, deploy it to your serverless provider, and configure the
+connection to Temporal. There is no need to set up Kubernetes, manage container orchestration, or design a scaling
+strategy.
 
 ### Scale automatically
 
@@ -89,8 +89,8 @@ Serverless Workers are a good fit when:
   always-on compute.
 - **You want a simpler getting-started path.** Deploying a function is simpler than setting up a container orchestration
   platform. Serverless Workers reduce the steps between writing Worker code and running your first Workflow.
-- **Your organization has standardized on serverless.** Teams that already run services on Lambda, Cloud Run, or similar
-  platforms can run Temporal Workers using the same deployment patterns and tooling.
+- **Your organization has standardized on serverless.** Teams that already run services on Lambda, AgentCore Runtime,
+  Cloud Run, or similar platforms can run Temporal Workers using the same deployment patterns and tooling.
 - **You serve multiple tenants with infrequent workloads.** Platforms that run Workflows on behalf of many users or
   customers can avoid running dedicated Workers per tenant.
 
@@ -98,28 +98,34 @@ Serverless Workers may not be ideal when:
 
 - **Activities are long-running and cannot be interrupted.** Some serverless platforms enforce execution time limits.
   For example, AWS Lambda has a 15-minute execution limit. Activities that run longer than the provider's timeout and
-  cannot be broken into smaller steps need a different hosting strategy or a provider with longer limits (such as Cloud
-  Run). Long-running Workflows are not affected because Workflows can span multiple invocations.
+  cannot be broken into smaller steps need a different hosting strategy or a provider with a longer compute lifetime.
+  AgentCore Runtime sessions can provide up to 8 hours of uninterrupted compute. Long-running Workflows are not
+  affected because Temporal maintains their state and execution progress across Worker processes.
 - **Workloads require sustained high throughput.** For consistently high-volume Task Queues, long-lived Workers on
   dedicated compute may be more cost-effective and performant.
 - **You need a persistent connection to Temporal.** Some features require the Worker to hold a connection open. On AWS
-  Lambda each invocation connects fresh, so those features do not apply. Cloud Run instances are long-lived and hold a
-  connection for as long as the instance runs.
+  Lambda each invocation connects fresh, so those features do not apply. AgentCore Runtime Workers and Cloud Run
+  instances hold a connection for the lifetime of their compute.
 
 ## How Serverless Workers compare to long-lived Workers
 
 |                | Long-lived Worker                                          | Serverless Worker                                                                                  |
 | -------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Lifecycle**  | Long-lived process that runs continuously.                 | Temporal starts and stops it: per invocation on AWS Lambda, by pool size on GCP Cloud Run.          |
+| **Lifecycle**  | Long-lived process that runs continuously.                 | Temporal starts and stops it according to the compute provider's lifecycle.                         |
 | **Scaling**    | You manage scaling (Kubernetes HPA, instance count, etc.). | Temporal adds capacity as needed, within the compute provider's limits.                            |
-| **Connection** | Persistent connection to Temporal.                         | Fresh connection per invocation on AWS Lambda. Held for the instance's lifetime on GCP Cloud Run.  |
+| **Connection** | Persistent connection to Temporal.                         | Fresh per Lambda invocation. Held for the compute lifetime on AgentCore Runtime and Cloud Run.     |
 
 ## Supported providers
 
-| Provider      | Compute                                                                     |
-| ------------- | --------------------------------------------------------------------------- |
-| AWS Lambda    | A function Temporal invokes per unit of work.                                |
-| GCP Cloud Run | A Worker Pool of long-lived instances whose size Temporal scales.            |
+All three providers can serve long-running Workflows because Workflow lifetime is independent of Worker lifetime. The
+provider's compute limit applies to an individual Worker invocation or compute instance, not to the total Workflow
+duration.
+
+| Provider | Worker lifecycle | Consider this provider when |
+| --- | --- | --- |
+| [AWS Lambda](/serverless-workers/aws-lambda) | Temporal invokes a function per unit of work. Each invocation can run for up to 15 minutes. | You want general-purpose, event-driven AWS compute, and individual Activity attempts fit within the Lambda invocation window. |
+| [Amazon Bedrock AgentCore Runtime](/serverless-workers/agentcore) | Temporal invokes Runtime sessions that host standard long-running Workers. Each session can provide up to 8 hours of uninterrupted compute. | You are building agents on AWS, want to use AgentCore services, need longer Activity attempts, or benefit from process-local reuse while the Runtime compute remains available. |
+| [GCP Cloud Run](/serverless-workers/cloud-run) | Temporal adjusts the size of a Worker Pool of long-lived instances. | You want a managed pool of container-based Workers on Google Cloud. |
 
 ## Next steps
 
@@ -133,12 +139,12 @@ Serverless Workers may not be ideal when:
 
 For the Worker code itself, pick your SDK and provider:
 
-| SDK | AWS Lambda | GCP Cloud Run |
-| --- | --- | --- |
-| Go | [Lambda Workers in Go](/develop/go/workers/serverless-workers/aws-lambda) | [Cloud Run Workers in Go](/develop/go/workers/serverless-workers/cloud-run) |
-| Python | [Lambda Workers in Python](/develop/python/workers/serverless-workers/aws-lambda) | [Cloud Run Workers in Python](/develop/python/workers/serverless-workers/cloud-run) |
-| TypeScript | [Lambda Workers in TypeScript](/develop/typescript/workers/serverless-workers/aws-lambda) | [Cloud Run Workers in TypeScript](/develop/typescript/workers/serverless-workers/cloud-run) |
-| Java | [Lambda Workers in Java](/develop/java/workers/serverless-workers/aws-lambda) | [Cloud Run Workers in Java](/develop/java/workers/serverless-workers/cloud-run) |
-| .NET | [Lambda Workers in .NET](/develop/dotnet/workers/serverless-workers/aws-lambda) | [Cloud Run Workers in .NET](/develop/dotnet/workers/serverless-workers/cloud-run) |
-| Ruby |  | [Cloud Run Workers in Ruby](/develop/ruby/workers/serverless-workers/cloud-run) |
-| Rust |  | [Cloud Run Workers in Rust](/develop/rust/workers/serverless-workers/cloud-run) |
+| SDK | AWS Lambda | Amazon Bedrock AgentCore Runtime | GCP Cloud Run |
+| --- | --- | --- | --- |
+| Go | [Lambda Workers in Go](/develop/go/workers/serverless-workers/aws-lambda) |  | [Cloud Run Workers in Go](/develop/go/workers/serverless-workers/cloud-run) |
+| Python | [Lambda Workers in Python](/develop/python/workers/serverless-workers/aws-lambda) | [AgentCore Runtime Workers in Python](/develop/python/workers/serverless-workers/agentcore) | [Cloud Run Workers in Python](/develop/python/workers/serverless-workers/cloud-run) |
+| TypeScript | [Lambda Workers in TypeScript](/develop/typescript/workers/serverless-workers/aws-lambda) |  | [Cloud Run Workers in TypeScript](/develop/typescript/workers/serverless-workers/cloud-run) |
+| Java | [Lambda Workers in Java](/develop/java/workers/serverless-workers/aws-lambda) |  | [Cloud Run Workers in Java](/develop/java/workers/serverless-workers/cloud-run) |
+| .NET | [Lambda Workers in .NET](/develop/dotnet/workers/serverless-workers/aws-lambda) |  | [Cloud Run Workers in .NET](/develop/dotnet/workers/serverless-workers/cloud-run) |
+| Ruby |  |  | [Cloud Run Workers in Ruby](/develop/ruby/workers/serverless-workers/cloud-run) |
+| Rust |  |  | [Cloud Run Workers in Rust](/develop/rust/workers/serverless-workers/cloud-run) |
