@@ -222,6 +222,7 @@ const developGoCategory = {
         items: [
           'develop/go/workers/run-worker-process',
           'develop/go/workers/sessions',
+          'develop/go/workers/interceptors',
           {
             type: 'category',
             label: 'Serverless Workers',
@@ -384,6 +385,7 @@ const developJavaCategory = {
         },
         items: [
           'develop/java/workers/run-worker-process',
+          'develop/java/workers/interceptors',
           {
             type: 'category',
             label: 'Serverless Workers',
@@ -638,6 +640,7 @@ const developPythonCategory = {
             },
             items: [
               'develop/python/workers/serverless-workers/aws-lambda',
+              'develop/python/workers/serverless-workers/agentcore',
               'develop/python/workers/serverless-workers/cloud-run',
             ],
           },
@@ -1131,6 +1134,7 @@ const developTypeScriptCategory = {
         },
         items: [
           'develop/typescript/integrations/ai-sdk',
+          'develop/typescript/integrations/google-adk-agents',
           'develop/typescript/integrations/langsmith',
           'develop/typescript/integrations/openai-agents',
           'develop/typescript/integrations/strands-agents',
@@ -1171,41 +1175,20 @@ module.exports = {
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'evaluate/development-production-features/index',
+            id: 'evaluate/features/index',
           },
           items: [
-            'evaluate/development-production-features/core-application',
-            'evaluate/development-production-features/failure-detection',
-            'evaluate/development-production-features/throughput-composability',
-            'evaluate/development-production-features/nexus',
-            'evaluate/development-production-features/workflow-message-passing',
-            'evaluate/development-production-features/debugging',
-            'evaluate/development-production-features/interrupt-workflow',
-            'evaluate/development-production-features/testing-suite',
-            'evaluate/development-production-features/observability',
-            'evaluate/development-production-features/data-encryption',
-            'evaluate/development-production-features/schedules',
-            'evaluate/development-production-features/cloud-automation',
-            'evaluate/development-production-features/low-latency',
-            'evaluate/development-production-features/multi-tenancy',
-            'evaluate/development-production-features/job-queue',
-            'evaluate/development-production-features/serverless-workers/index',
-            {
-              type: 'category',
-              label: 'Product release stages',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'evaluate/development-production-features/release-stages',
-              },
-              items: [
-                {
-                  type: 'link',
-                  label: 'Changelog',
-                  href: 'https://temporal.io/change-log',
-                },
-              ],
-            },
+            'evaluate/features/core-primitives',
+            'evaluate/features/timeouts-and-retries',
+            'evaluate/features/child-workflows',
+            'evaluate/features/nexus',
+            'evaluate/features/workflow-message-passing',
+            'evaluate/features/cancellation-and-termination',
+            'evaluate/features/observability',
+            'evaluate/features/data-encryption',
+            'evaluate/features/schedules',
+            'evaluate/features/job-queue',
+            'evaluate/features/serverless-workers/index',
           ],
         },
         {
@@ -1214,17 +1197,33 @@ module.exports = {
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'evaluate/temporal-cloud/overview',
+            id: 'evaluate/cloud/index',
           },
           items: [
-            'evaluate/temporal-cloud/security',
-            'evaluate/temporal-cloud/service-availability',
-            'evaluate/temporal-cloud/regions',
-            'evaluate/temporal-cloud/limits',
-            'evaluate/temporal-cloud/sla',
-            'evaluate/temporal-cloud/pricing',
-            'evaluate/temporal-cloud/actions',
-            'evaluate/temporal-cloud/support',
+            'evaluate/cloud/security',
+            'evaluate/cloud/service-availability',
+            'evaluate/cloud/regions',
+            'evaluate/cloud/limits',
+            'evaluate/cloud/sla',
+            'evaluate/cloud/pricing',
+            'evaluate/cloud/actions',
+            'evaluate/cloud/support',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Product release stages',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'evaluate/product-release-stages',
+          },
+          items: [
+            {
+              type: 'link',
+              label: 'Changelog',
+              href: 'https://temporal.io/change-log',
+            },
           ],
         },
         'security',
@@ -1603,7 +1602,20 @@ module.exports = {
                     id: 'production-deployment/worker-deployments/serverless-workers/aws-lambda/index',
                   },
                   items: [
+                    'production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development',
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'Amazon Bedrock AgentCore',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/agentcore',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/agentcore-self-hosted-setup',
                   ],
                 },
                 {
@@ -1684,6 +1696,7 @@ module.exports = {
             },
             'cli/command-reference/config',
             'cli/command-reference/env',
+            'cli/command-reference/nexus',
             'cli/command-reference/operator',
             'cli/command-reference/schedule',
             'cli/command-reference/server',
@@ -1953,6 +1966,7 @@ module.exports = {
                 'encyclopedia/workflow/workflow-execution/timers-delays',
               ],
             },
+            'encyclopedia/workflow/cancellation-and-termination',
             'encyclopedia/workflow/workflow-pause',
             'encyclopedia/workflow/dynamic-handler',
             'encyclopedia/workflow/workflow-schedule',
@@ -1970,10 +1984,38 @@ module.exports = {
           },
           items: [
             'encyclopedia/activities/activity-definition',
-            'encyclopedia/activities/activity-execution',
-            'encyclopedia/activities/activity-operations',
-            'encyclopedia/activities/local-activity',
-            'encyclopedia/activities/standalone-activity',
+            {
+              type: 'category',
+              label: 'Activity Execution',
+              collapsed: false,
+              link: {
+                type: 'doc',
+                id: 'encyclopedia/activities/activity-execution',
+              },
+              items: [
+                'encyclopedia/activities/workflow-activity',
+                'encyclopedia/activities/standalone-activity',
+                'encyclopedia/activities/local-activity',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Activity Operations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'encyclopedia/activities/activity-operations/index',
+              },
+              items: [
+                'encyclopedia/activities/activity-operations/pause',
+                'encyclopedia/activities/activity-operations/unpause',
+                'encyclopedia/activities/activity-operations/reset',
+                'encyclopedia/activities/activity-operations/update-options',
+                'encyclopedia/activities/activity-operations/request-cancel',
+                'encyclopedia/activities/activity-operations/terminate',
+                'encyclopedia/activities/activity-operations/delete',
+              ],
+            },
           ],
         },
         {
@@ -2014,6 +2056,7 @@ module.exports = {
               link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
               items: [
                 'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-agentcore',
                 'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
               ],
             },
@@ -2176,6 +2219,7 @@ module.exports = {
         id: 'guides/index',
       },
       items: [
+        'guides/durable-agent-on-agentcore',
         'guides/entity-pattern-loyalty-points',
         'guides/recover-without-restart',
         'guides/route-specialized-workloads',

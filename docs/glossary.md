@@ -18,7 +18,7 @@ Application.
 
 <!-- _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_ -->
 
-#### [Actions Per Second (APS)](/cloud/limits#actions-per-second)
+#### [Actions Per Second (APS)](/evaluate/cloud/limits#actions-per-second)
 
 APS, or Actions per second, is specific to Temporal Cloud. Each Temporal Cloud Namespace enforces a rate limit, which is
 measured in Actions per second (APS). This is the number of Actions, such as starting or signaling a Workflow, that can
@@ -52,7 +52,7 @@ Each ping informs the Temporal Service that the Activity Execution is making pro
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Id](/activity-execution#activity-id)
+#### [Activity ID](/activity-execution#activity-id)
 
 A unique identifier for an Activity Execution.
 
@@ -108,7 +108,7 @@ receives information about the API call, along with the role and permission clai
 
 An availability zone is a part of the Temporal system where tasks or operations are handled and executed. This design
 helps manage workloads and ensure tasks are completed. Temporal Cloud Namespaces are automatically distributed across
-three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/cloud/sla).
+three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/evaluate/cloud/sla).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -253,7 +253,7 @@ responsible for rate limiting, authorizing, validating, and routing all inbound 
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [General Availability](/evaluate/development-production-features/release-stages#general-availability)
+#### [General Availability](/evaluate/product-release-stages#general-availability)
 
 Learn more about the General Availability release stage
 
@@ -278,7 +278,7 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 High availability ensures that a system remains operational with minimal downtime. It achieves this with redundancy and
 failover mechanisms that handle failures, so end-users remain unaware of incidents. Temporal Cloud guarantees this high
-availability with its Service Level Agreements ([SLA](/cloud/sla))
+availability with its Service Level Agreements ([SLA](/evaluate/cloud/sla))
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
@@ -474,13 +474,13 @@ A Payload Converter serializes data, converting objects or values to bytes and b
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Pre-release](/evaluate/development-production-features/release-stages#pre-release)
+#### [Pre-release](/evaluate/product-release-stages#pre-release)
 
 Learn more about the Pre-release stage
 
 <!-- _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_ -->
 
-#### [Public Preview](/evaluate/development-production-features/release-stages#public-preview)
+#### [Public Preview](/evaluate/product-release-stages#public-preview)
 
 Learn more about the Public Preview release stage
 
@@ -515,7 +515,7 @@ a measure that controls the rate of requests at the service level, such as the F
 #### [Reset](/workflow-execution/event#reset)
 
 A Reset terminates a Workflow Execution, removes the progress in the Event History up to the reset point, and then
-creates a new Workflow Execution with the same Workflow Type and Id to continue.
+creates a new Workflow Execution with the same Workflow Type and ID to continue.
 
 <!-- _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanation)_ -->
 
@@ -533,9 +533,9 @@ Execution or an Activity Task Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Run Id](/workflow-execution/workflowid-runid#run-id)
+#### [Run ID](/workflow-execution/workflowid-runid#run-id)
 
-A Run Id is a globally unique, platform-level identifier for a Workflow Execution.
+A Run ID is a globally unique, platform-level identifier for a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -590,6 +590,14 @@ A Signal is an asynchronous request to a Workflow Execution.
 #### [Signal-With-Start](/sending-messages#signal-with-start)
 
 Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if it already exists.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Standalone Activity](/standalone-activity)
+
+A Standalone Activity is an Activity Execution invoked outside of a Workflow, directly from a Temporal Client. It has a
+separate ID space from Workflows and other Temporal primitives. Existing Activity Functions can be invoked as
+Standalone with no code changes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -667,21 +675,21 @@ A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communi
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud](/cloud/overview)
+#### [Temporal Cloud](/evaluate/cloud)
 
 Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id)
+#### [Temporal Cloud Account ID](/cloud/namespaces#temporal-cloud-account-id)
 
-A Temporal Cloud Account Id is a unique identifier for a customer.
+A Temporal Cloud Account ID is a unique identifier for a customer.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id)
+#### [Temporal Cloud Namespace ID](/cloud/namespaces#temporal-cloud-namespace-id)
 
-A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.
+A Cloud Namespace ID is a globally unique identifier for a Namespace in Temporal Cloud.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -748,7 +756,7 @@ The Temporal Web UI provides users with Workflow Execution state and metadata fo
 
 #### [Timer](/workflow-execution/timers-delays)
 
-Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
+Temporal SDKs offer Timer APIs so that the Workflow Definition is deterministic in its handling of time values.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -817,6 +825,14 @@ An in-memory cache on a Worker that holds the state of Workflow Executions it ha
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### [Workflow Activity](/workflow-activity)
+
+A Workflow Activity is an Activity Execution orchestrated by a Workflow. Its results are persisted to the Workflow and
+Events are added to the Workflow Execution's Event History. Contrast with
+[Standalone Activity](/standalone-activity) and [Local Activity](/local-activity).
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 #### [Workflow Definition](/workflow-definition)
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
@@ -843,24 +859,24 @@ Workflow History export allows users to export Closed Workflow Histories to a us
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_ -->
 
-#### [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)
+#### [Workflow ID](/workflow-execution/workflowid-runid#workflow-id)
 
-A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open
+A Workflow ID is a customizable, application-level identifier for a Workflow Execution that is unique to an Open
 Workflow Execution within a Namespace.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy)
+#### [Workflow ID Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy)
 
-A Workflow Id Conflict Policy determines how to resolve the conflict when spawning a new Workflow Execution with a
-particular Workflow Id that is used by an Open Workflow Execution already.
+A Workflow ID Conflict Policy determines how to resolve the conflict when spawning a new Workflow Execution with a
+particular Workflow ID that is used by an Open Workflow Execution already.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Id Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy)
+#### [Workflow ID Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy)
 
-A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if
-that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
+A Workflow ID Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow ID, if
+that Workflow ID has been used with a previous, and now Closed, Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 

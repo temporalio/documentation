@@ -2,6 +2,9 @@
 id: batch-iterator
 title: "Batch Iterator"
 description: "Pages through unbounded datasets using Continue-As-New to prevent history overflow while maintaining exactly-once processing guarantees."
+tags:
+  - Design Patterns
+  - Workflows
 ---
 
 import Tabs from '@theme/Tabs';
@@ -17,7 +20,7 @@ The Batch Iterator pattern processes a large record set one page at a time. Each
 
 ## Problem
 
-A single Workflow run is limited to 50,000 history events (aim for 2,000) and 2,000 in-flight Activities. Processing millions of records in one run is not possible within these bounds.
+A single Workflow run is limited to 51,200 history events (aim for 2,000) and 2,000 in-flight Activities. Processing millions of records in one run is not possible within these bounds.
 
 You need a way to process an arbitrarily large record set reliably, with the ability to resume from a checkpoint if the Workflow is interrupted, and without overwhelming downstream systems with a burst of concurrent requests.
 
@@ -250,5 +253,5 @@ public class BatchIteratorWorkflowImpl implements BatchIteratorWorkflow {
 - [Continue-as-New pattern](/design-patterns/continue-as-new) — core concepts for history management via `continueAsNew`
 - [Sliding Window](/design-patterns/sliding-window) — bounded concurrency that progresses at the rate of the fastest processor
 - [MapReduce Tree](/design-patterns/mapreduce-tree) — fully parallel processing for maximum speed
-- [Temporal limits reference](/cloud/limits)
+- [Temporal limits reference](/evaluate/cloud/limits)
 - [Batch samples (Java)](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/batch/iterator)

@@ -56,13 +56,13 @@ This documentation uses source code from the [hello_standalone_activity](https:/
 
 Prerequisites:
 
-- **Python 3.9+**
+- **Python 3.10+**
 
 - **[uv](https://docs.astral.sh/uv/)** - Python package manager. Install with Homebrew, or see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for other platforms.
 
-- **Temporal Python SDK** (v1.23.0 or higher)
+- **Temporal Python SDK** (v1.33.0 or higher)
 
-- **Temporal CLI** v1.7.0 or higher. Install with Homebrew, or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms. Verify the installation with `temporal --version`.
+- **Temporal CLI** v1.9.1 or higher. Install with Homebrew, or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms. Verify the installation with `temporal --version`.
 
 Start the Temporal development server with `temporal server start-dev`.
 
@@ -242,7 +242,10 @@ To run it:
 
 1. Make sure the Temporal Server is running (from the Get Started step above).
 2. Make sure the Worker is running (from the Run a Worker step above).
-3. Open a new terminal, navigate to the `samples-python` directory, and run `uv run hello_standalone_activity/execute_activity.py`.
+3. Open a new terminal, navigate to the `samples-python` directory, and run:
+    ```
+    uv run hello_standalone_activity/execute_activity.py
+    ```
 
 Or use the Temporal CLI.
 
@@ -270,4 +273,5 @@ for mTLS and API key setup.
 ## Next steps
 
 - **[Standalone Activities Feature Guide](/develop/python/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
+- **[Build a Job Queue with Standalone Activities](https://learn.temporal.io/tutorials/python/standalone-activities/)**: Tutorial that builds a durable job queue, with idempotency keys, server-side deduplication, throughput limits, [Priority and Fairness](/develop/task-queue-priority-fairness), and heartbeat checkpoints.
 - **[Activity basics](/develop/python/activities/basics)**: How to write and register Activities with the Python SDK.

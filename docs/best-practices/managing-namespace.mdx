@@ -74,7 +74,7 @@ If you need to include region, use short codes (for example, `aps1`, `use1`).
 Start with the smallest number of Namespaces that gives you clear ownership and safe isolation.
 In Temporal Cloud, a Namespace boundary affects:
 
-- [APS limits](/cloud/limits#actions-per-second) and rate limiting
+- [APS limits](/evaluate/cloud/limits#actions-per-second) and rate limiting
 - access control and credential scope
 - blast radius for misconfigured or overloaded Workers
 - observability boundaries for dashboards and alerts
@@ -222,6 +222,17 @@ While the name captures use case, domain, and environment, tags can capture addi
 | `latency-sensitivity` | Performance tier | `realtime`, `batch`, `async` |
 
 For tag structure, limits, and management instructions, see [How to tag a Namespace](/cloud/namespaces#tag-a-namespace).
+
+## Description {/* #description */}
+
+Use an optional [Namespace description](/cloud/namespaces#describe-a-namespace) for a one-line purpose note: workload,
+owner context, or why the Namespace exists.
+
+Keep structured classification in [Tags](#tagging). Description is for humans reading the Namespace. Tags are for
+filter, report, and automation dimensions such as `team` and `environment`.
+
+Do not put secrets, confidential data, or PII in a description. Like Tags and [Search Attributes](/search-attribute),
+descriptions are not encrypted.
 
 ## SDK client configuration
 

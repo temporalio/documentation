@@ -8,7 +8,7 @@ toc_max_heading_level: 3
 tags:
   - TypeScript SDK
   - Temporal SDKs
-  - Activity
+  - Activities
 ---
 
 ## How to develop an Activity {/* #develop-activities */}
@@ -38,7 +38,7 @@ export async function greet(name: string): Promise<string> {
 ```
 <!--SNIPEND-->
 
-## How to develop Activity Parameters {/* #activity-parameters */}
+## Activity parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may
 support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -75,7 +75,7 @@ All data returned from an Activity must be serializable.
 
 Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there
 is a hard limit of 4MB for any gRPC message size in the Event History transaction
-([see Cloud limits here](/cloud/limits#per-message-grpc-limit)). Keep in mind that all return
+([see Cloud limits here](/evaluate/cloud/limits#per-message-grpc-limit)). Keep in mind that all return
 values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 In TypeScript, the return value is always a Promise.

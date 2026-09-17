@@ -1,7 +1,10 @@
 ---
 id: retry-metrics
 title: "Retry Alerting via Metrics"
-description: "Emit a custom metric from inside the Activity when the attempt count crosses a threshold, surfacing silent persistent failures to on-call teams before an SLA breach."
+description: "Emit a metric from the Activity when attempts cross a threshold, so on-call teams see persistent failures before an SLA breach."
+tags:
+  - Design Patterns
+  - Metrics
 ---
 
 import Tabs from '@theme/Tabs';
@@ -373,3 +376,7 @@ if (ctx.info.attempt > ALERT_THRESHOLD) {
 - [Fast/Slow Retries](/design-patterns/fast-slow-retries): Combine by emitting this metric inside the slow-phase Activity to alert when patient waiting has gone on too long.
 - [Fixed Count of Retries](/design-patterns/fixed-count-retries): Cap attempts at a fixed number instead of alerting at a threshold.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
+
+### References
+
+- [Temporal Retry Policies](/encyclopedia/retry-policies)

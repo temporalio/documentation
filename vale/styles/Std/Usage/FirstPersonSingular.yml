@@ -1,0 +1,31 @@
+# Extracted from errata-ai/Microsoft (MIT). See NOTICE.
+#
+# Microsoft's token set (the superset: I'd, I'll, I've) with the lookaround
+# refinement both packages converged on -- consuming the space around 'I' made
+# the alert span too wide in editors, and `nonword` would block project Vocabs.
+extends: existence
+message: "First-person singular: '%s'."
+level: suggestion
+ignorecase: true
+tokens:
+  - '(?<=^|\s)I(?=[\s,])'
+  - "\\bI'd\\b"
+  - "\\bI'll\\b"
+  - "\\bI'm\\b"
+  - "\\bI've\\b"
+  - \bme\b
+  - \bmy\b
+  - \bmine\b
+tests:
+  - name: fires
+    input: >
+      I think you should restart. My preference is TLS, and I'll explain why.
+    want: |
+      1:1:Std.Usage.FirstPersonSingular:First-person singular: 'I'.
+      1:29:Std.Usage.FirstPersonSingular:First-person singular: 'My'.
+      1:55:Std.Usage.FirstPersonSingular:First-person singular: 'I'll'.
+
+  - name: clean
+    input: >
+      You should restart. TLS is preferred.
+    want: ""

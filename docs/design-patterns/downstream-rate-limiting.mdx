@@ -1,7 +1,10 @@
 ---
 id: downstream-rate-limiting
 title: "Downstream Rate Limiting"
-description: "Caps Activity execution rate against a downstream service by routing throttled Activities to a dedicated Task Queue backed by Workers configured with a throughput limit."
+description: "Rate-limits calls to a downstream service by routing throttled Activities to a dedicated Task Queue with a server-enforced throughput cap."
+tags:
+  - Design Patterns
+  - Task Queues
 ---
 
 import Tabs from '@theme/Tabs';
@@ -19,7 +22,7 @@ The Temporal matching service enforces this limit before dispatching tasks, so t
 
 ## Problem
 
-Many downstream systems — LLM providers, payment processors, third-party REST APIs — enforce requests-per-second limits. Some systems cannot handle more than a defined level of requests per second.
+Many downstream systems — LLM providers, payment processors, third-party REST APIs — enforce requests-per-second limits.
 When many Temporal Workflows schedule Activities concurrently, the resulting burst can saturate those limits, causing request failures, cascading retries, and increased latency for all callers.
 
 Without centralized throttling, each Activity implementation must manage backpressure independently, which scatters policy across the codebase and provides no enforcement at the Temporal scheduling layer.
@@ -240,7 +243,7 @@ public class MyWorkflowImpl implements MyWorkflow {
 
 This pattern is a good fit when your Workflow calls a downstream service with explicit requests-per-second limits, when you need throughput enforcement that holds across many concurrent Workflow instances without per-Activity logic, and when only a subset of Activity types require throttling and others should run without restriction.
 
-It is not a good fit when you need concurrency limits rather than throughput limits (see [Priority Task Queues](/design-patterns/priority-task-queues)), when the downstream system has no rate limit and throughput is bounded only by Workflow logic, or when all Activities require the same limit and a single shared queue suffices.
+It is not a good fit when you need concurrency limits rather than throughput limits, when the downstream system has no rate limit and throughput is bounded only by Workflow logic, or when all Activities require the same limit and a single shared queue suffices.
 
 ## Benefits and trade-offs
 
@@ -279,13 +282,14 @@ The concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkf
 - **Confusing throughput limits with concurrency limits.** `MaxTaskQueueActivitiesPerSecond` controls starts per second; `MaxConcurrentActivityExecutionSize` controls simultaneous executions. Long-running Activities that hold slots for minutes may exhaust concurrency before the RPS cap applies.
 - **Setting the cap far below actual demand.** A cap much lower than actual submission rate causes the queue to grow unboundedly. Monitor queue depth and raise the cap or add more Workers when throughput requirements grow.
 - **Expecting a perfectly even per-second rate.** The limit is enforced across the queue's partitions, default four. The server maintains the configured rate as an average over time but can dispatch a short burst above it, up to roughly the rate divided across partitions. If the downstream service rejects any momentary overshoot, set the cap below the hard limit to leave headroom, or reduce the partition count for the queue.
+- **Eager Activity execution bypassing the rate-limited queue.** [Eager Activity Start](/develop/worker-performance#eager-activity-start) lets the server hand an Activity straight back to the Worker that just completed the scheduling Workflow Task, skipping the Task Queue and its rate limit entirely. In Python, disable it explicitly with `disable_eager_activity_execution=True` on the `Worker`. The Go SDK disables it automatically whenever `TaskQueueActivitiesPerSecond` is set, so no separate flag is needed there — but confirm the equivalent for your SDK before relying on the queue-level cap alone.
 
 ## Related
 
 ### Patterns
 
-- **[Priority Task Queues](/design-patterns/priority-task-queues)**: Route work to separate queues by urgency, with different concurrency budgets per tier.
-- **[Fairness](/design-patterns/fairness)**: Give each tenant an equal throughput share when multiple tenants share capacity.
+- **[Priority](/design-patterns/priority-task-queues)**: Order Task dispatches by urgency within a shared Task Queue.
+- **[Fairness](/design-patterns/fairness)**: Distribute Task dispatches among tenants that share a Task Queue.
 - **[Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue)**: Route Activities to a specific Worker host for resource or data affinity.
 
 ### Guides

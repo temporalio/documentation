@@ -13,8 +13,7 @@ tags:
 
 import * as Components from '@site/src/components';
 
-Workflows can be thought of as stateful web services that can receive messages. The Workflow can have powerful message
-handlers akin to endpoints that react to the incoming messages in combination with the current state of the Workflow.
+Workflows can be thought of as stateful web services that can receive messages. The Workflow can have message handlers, akin to endpoints, that react to incoming messages together with the Workflow's current state.
 Temporal supports three types of messages: Signals, Queries, and Updates:
 
 - Queries are read requests. They can read the current state of the Workflow but cannot block in doing so.
@@ -39,7 +38,7 @@ The following table compares when to use **Signals** versus **Updates**.
 | **Asynchronous communication** | Clients want to quickly move on after sending an asynchronous message.                      | Clients want to track the completion of the message.                                                                                                                                       |
 | **Result handling**            | Clients are okay with “fire and forget” — no result or exception needed.                    | Clients need a result or exception without performing a query.                                                                                                                             |
 | **Worker availability**        | Clients don't depend on the Worker being available.                                         | You want to validate the Update before accepting it into the Workflow and its history.                                                                                                     |
-| **Concurrency and throughput** | You don’t want to limit the number of messages processed concurrently by a single Workflow. | You don’t need more concurrent Updates per Workflow than the allowed limits for [Cloud](/cloud/limits#per-workflow-execution-update-limits) or [Self-Hosted](/self-hosted-guide/defaults). |
+| **Concurrency and throughput** | You don’t want to limit the number of messages processed concurrently by a single Workflow. | You don’t need more concurrent Updates per Workflow than the allowed limits for [Cloud](/evaluate/cloud/limits#per-workflow-execution-update-limits) or [Self-Hosted](/self-hosted-guide/defaults). |
 | **Latency sensitivity**        | Since clients don’t expect a result, latency is often not relevant when using Signals.      | Clients want a low-latency end-to-end operation and are willing to wait for completion or validation.                                                                                      |
 
 ### For read requests

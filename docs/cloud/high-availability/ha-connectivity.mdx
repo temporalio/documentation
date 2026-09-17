@@ -32,7 +32,7 @@ Use the Namespace Endpoint unless you have a specific reason to pin traffic to a
 ### Regional Endpoint
 
 Format: `<cloud>-<region>.region.tmprl.cloud:7233` (for example, `aws-us-west-2.region.tmprl.cloud` or `gcp-us-central1.region.tmprl.cloud`).
-See [regions](/cloud/regions) for the full list.
+See [regions](/evaluate/cloud/regions) for the full list.
 
 A Regional Endpoint is shared across every Namespace that is active or replicated in that region.
 Unlike the Namespace Endpoint, a Regional Endpoint stays pinned to the region in its name — if that region holds the passive replica of your Namespace, the Regional Endpoint connects to the passive replica.
@@ -48,7 +48,7 @@ When authenticating with mTLS, set the Client's `server_name` / `serverNameOverr
 This overrides the SNI that the Client will expect during the TLS Handshake with Temporal Cloud.
 The Regional Endpoint forwards the request to your Namespace, so the Client must expect the Namespace's certificate during the TLS handshake.
 
-For example, in Typescript, the Client's config would be set like this:
+For example, in TypeScript, the Client's config would be set like this:
 
 ```typescript
 await Connection.connect({
