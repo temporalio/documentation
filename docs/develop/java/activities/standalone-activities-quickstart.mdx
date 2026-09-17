@@ -148,7 +148,7 @@ factory.start();
 System.out.println("Worker running on task queue: " + TASK_QUEUE);`}
 </CodeSnippet>
 <CodeSnippet language="bash">
-{`./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.StandaloneActivityWorker`}
+{`./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.StandaloneActivityWorker`}
 </CodeSnippet>
 </>
 }>
@@ -197,7 +197,7 @@ System.out.println("Activity result: " + result);`}
 String result = client.execute("ComposeGreeting", String.class, options, "Hello", "World");`}
 </CodeSnippet>
 <CodeSnippet language="bash">
-{`./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.ExecuteActivity`}
+{`./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.ExecuteActivity`}
 </CodeSnippet>
 <CodeSnippet language="bash">
 {`temporal activity execute \\
@@ -232,7 +232,10 @@ To run it:
 
 1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
 2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
-3. Open a new terminal, navigate to the `samples-java` directory, and run the Gradle command.
+3. Open a new terminal, navigate to the `samples-java` directory, and run:
+    ```
+    ./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.ExecuteActivity
+    ```
 
 Or use the Temporal CLI.
 

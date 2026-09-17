@@ -667,7 +667,7 @@ Use the `type` prop to set a specific type if the release stage is only for one 
 Add `children` for more detailed messaging.
 ```js
 <ReleaseNoteHeader featureName="serverlessWorkers">
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  To request access during Pre-release, create a [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team.
   APIs are experimental and may be subject to backwards-incompatible changes.
   [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
