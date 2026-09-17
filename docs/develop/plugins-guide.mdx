@@ -36,8 +36,8 @@ of plugins people want to write.
 
 If you prefer to learn by getting hands-on with code, check out some existing plugins.
 
-- Temporal's Python SDK ships with an
-  [OpenAI Agents SDK](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents) plugin
+- Temporal maintains an
+  [OpenAI Agents SDK](https://github.com/temporalio/ai-integrations/tree/main/python/openai_agents) plugin for Python
 - Temporal's Python SDK ships with a
   [LangGraph](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langgraph) plugin
 - [Temporal client and Worker plugin for Pydantic AI](https://github.com/pydantic/pydantic-ai/blob/d9b4b2540183a4426669b2824c87cdfc36144780/pydantic_ai_slim/pydantic_ai/durable_exec/temporal/__init__.py#L142)
@@ -223,8 +223,8 @@ See [testing](#testing-your-plugin) to see how to test for this. And, if you mak
 
 #### Example of a Workflow library that uses a Plugin in Python
 
-- [Implementation of the `OpenAIAgentsPlugin`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents)
-- [Example of replay testing](https://github.com/temporalio/sdk-python/blob/main/tests/contrib/openai_agents/test_openai_replay.py)
+- [Implementation of the `OpenAIAgentsPlugin`](https://github.com/temporalio/ai-integrations/tree/main/python/openai_agents/src/temporalio/openai_agents)
+- [Example of replay testing](https://github.com/temporalio/ai-integrations/blob/main/python/openai_agents/tests/test_openai_replay.py)
 
 ### Built-in Workflows
 
@@ -810,7 +810,7 @@ Interceptors are middleware that can run before and after various calls such as 
   </SdkTabs.Ruby>
 </SdkTabs>
 
-### Context Propagators {/* #context-propagators */}
+### Context propagators {/* #context-propagators */}
 
 Context propagators pass custom key-value data (such as tracing IDs, tenant IDs, or auth tokens) across Workflow, Activity, and Child Workflow boundaries via Temporal headers. See [Context Propagation](/encyclopedia/context-propagation) for details on how they work.
 
