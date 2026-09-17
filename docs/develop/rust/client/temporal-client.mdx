@@ -4,8 +4,8 @@ title: Temporal Client - Rust SDK
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description:
-  Discover how to connect and use Temporal Clients with Rust. Connect your Client to Temporal Service or Temporal Cloud,
-  start Workflow Executions, set Task Queues and Workflow Ids, and get Workflow results.
+  Connect to a development Temporal Service or Temporal Cloud from Rust, set a Task Queue and Workflow Id, and get
+  Workflow Execution results.
 tags:
   - Temporal Client
   - Rust SDK
@@ -327,7 +327,7 @@ let handle = client.start_workflow(
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-In most cases, the Task Queue is a required Workflow option.
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
 
 For a Workflow to make progress, at least one Worker must be polling the same Task Queue.
 
@@ -349,7 +349,8 @@ let handle = client
 
 You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
-A Workflow Id should usually map to a business process or business entity identifier, such as an order ID or customer ID.
+A Workflow Id should usually map to a business process or business entity identifier, such as an order identifier or
+customer identifier.
 
 In Rust, set the Workflow Id in `WorkflowStartOptions`:
 
@@ -365,7 +366,7 @@ let handle = client
     ).await?;
 ```
 
-## Get the results of a Workflow Execution {/* #get-workflow-results */}
+## Get Workflow results {/* #get-workflow-results */}
 
 If starting a Workflow succeeds, you get a Workflow handle.
 You can use that handle to wait for the result, describe the Workflow, or interact with it through Signals, Queries, and Updates.
