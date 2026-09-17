@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
-import NotFound from '@theme-original/NotFound';
-import type NotFoundType from '@theme/NotFound';
+import NotFoundContent from '@theme-original/NotFound/Content';
+import type NotFoundContentType from '@theme/NotFound/Content';
 import type { WrapperProps } from '@docusaurus/types';
 
-type Props = WrapperProps<typeof NotFoundType>;
+type Props = WrapperProps<typeof NotFoundContentType>;
 
 const hasConsent = () => ExecutionEnvironment.canUseDOM && hasAnalyticsConsent(readConsentFromDocumentCookie());
 
-export default function NotFoundWrapper(props: Props): JSX.Element {
+export default function NotFoundContentWrapper(props: Props): JSX.Element {
   useEffect(() => {
     if (hasConsent() && window.amplitude) {
       window.amplitude.track('Docs Page Not Found', {
@@ -19,5 +19,5 @@ export default function NotFoundWrapper(props: Props): JSX.Element {
     }
   }, []);
 
-  return <NotFound {...props} />;
+  return <NotFoundContent {...props} />;
 }
