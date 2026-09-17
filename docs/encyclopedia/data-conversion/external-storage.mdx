@@ -54,8 +54,7 @@ External Storage addresses several common scenarios:
   lets you migrate to Cloud without restructuring Workflows that exceed the 2 MB limit.
 - **Data governance.** While Temporal supports end-to-end client-side encryption, some organizations prefer to store
   payload data in infrastructure they control. Lower the offload size threshold to externalize all payloads regardless
-  of size. In the Python and TypeScript SDKs, set the threshold to 0. In the Go SDK, set it to 1, because 0 selects the
-  256 KiB default.
+  of size. The setting varies by SDK; see the SDK-specific usage guides below.
 
 For SDK-specific usage guides, see:
 
