@@ -1,23 +1,8 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 import clsx from 'clsx';
+import { isExternalHref } from '@site/src/utils/links';
 import styles from './GridCard.module.css';
-
-function isExternal(href: string): boolean {
-  return href.startsWith('http://') || href.startsWith('https://');
-}
-
-// A link to temporal.io itself (e.g. the Code Exchange) still opens in a new
-// tab like any other external href, but doesn't get the external-link icon —
-// it isn't "leaving Temporal" the way a partner's docs site is.
-function isOffTemporalDomain(href: string): boolean {
-  try {
-    const { hostname } = new URL(href);
-    return hostname !== 'temporal.io' && !hostname.endsWith('.temporal.io');
-  } catch {
-    return true;
-  }
-}
 
 function ExternalLinkIcon() {
   return (
@@ -55,19 +40,19 @@ export type GridCardProps = {
  * component so the two stay visually identical instead of drifting apart.
  */
 export default function GridCard({ title, description, href, tags = [], icon, analyticsId }: GridCardProps) {
-  const external = isExternal(href);
-  const showExternalIcon = external && isOffTemporalDomain(href);
+  const external = isExternalHref(href);
   return (
     <Link
       to={href}
       className={clsx('grid-card', styles.card)}
-      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
       {...(analyticsId ? { 'data-analytics-id': analyticsId, 'data-analytics-action': 'click' } : {})}
     >
       <div className={styles.cardHeader}>
         <h3 className={styles.cardName}>
           {title}
-          {showExternalIcon && <ExternalLinkIcon />}
+          {external && <ExternalLinkIcon />}
         </h3>
       </div>
       <p className={styles.cardDescription}>{description}</p>
