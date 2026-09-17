@@ -39,3 +39,9 @@ unmet Task Queue demand. On GCP Cloud Run, it resizes a Worker Pool of long-live
 - [**Amazon Bedrock AgentCore Runtime**](/production-deployment/worker-deployments/serverless-workers/agentcore) -
   Deploy a Serverless Worker to AgentCore Runtime. Temporal assumes an IAM role in your AWS account to invoke the
   Runtime endpoint as Tasks arrive.
+
+## Try it locally {/* #try-it-locally */}
+
+To evaluate Serverless Workers on AWS Lambda without an AWS account, you can run the entire loop on your machine with
+[LocalStack](https://www.localstack.cloud/) and the Temporal development server. See
+[Test a Serverless Worker locally with LocalStack](/production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development).
