@@ -101,14 +101,15 @@ temporal activity start \
 
 ## Get a handle to an existing Standalone Activity {/* #get-activity-handle */}
 
-Use `client.GetActivityHandle()` to create a handle to a previously started Standalone Activity:
+Use `client.GetActivityHandle()` to create a handle to a previously started Standalone Activity.
+Omit `runId` to target the latest run for that Activity Id:
 
 ```csharp
 // Without a known result type
-var handle = client.GetActivityHandle("my-activity-id", runId: "the-run-id");
+var handle = client.GetActivityHandle("my-activity-id");
 
 // With a known result type
-var typedHandle = client.GetActivityHandle<string>("my-activity-id", runId: "the-run-id");
+var typedHandle = client.GetActivityHandle<string>("my-activity-id");
 ```
 
 You can use the handle to wait for the result, describe, cancel, or terminate the Activity.
@@ -117,13 +118,15 @@ You can use the handle to wait for the result, describe, cancel, or terminate th
 
 Under the hood, calling `client.ExecuteActivityAsync()` is the same as calling
 `client.StartActivityAsync()` to durably enqueue the Standalone Activity, and then calling
-`await handle.GetResultAsync()` to wait for the Activity to be executed and return the result:
+`await handle.GetResultAsync()` to wait for the Activity to be executed and return the result.
+Use a typed handle (or `GetResultAsync<T>()`) so the result type is known:
 
 ```csharp
+var handle = client.GetActivityHandle<string>("my-activity-id");
 var result = await handle.GetResultAsync();
 ```
 
-Or use the Temporal CLI to wait for a result by Activity ID:
+Or use the Temporal CLI to wait for a result by Activity Id:
 
 ```bash
 temporal activity result --activity-id my-standalone-activity-id
