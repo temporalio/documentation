@@ -159,7 +159,7 @@ Running a Worker for Standalone Activities is the same as running a Worker for W
 Worker, register the Activity, and call `Run()`. The Worker doesn't need to know whether the Activity will be invoked
 from a Workflow or as a Standalone Activity.
 
-See [How to develop a Worker in Go](/develop/go/workers/run-worker-process#develop-worker) for more details on Worker setup and
+See [Develop a Worker in Go](/develop/go/workers/run-worker-process#develop-worker) for more details on Worker setup and
 configuration options.
 
 [standalone-activity/helloworld/worker/main.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/worker/main.go)
@@ -258,8 +258,8 @@ Execution. This is called from application code (for example, a starter program)
 `ExecuteActivity` returns an [`ActivityHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#ActivityHandle) that you
 can use to get the result, describe, cancel, or terminate the Activity.
 
-The following starter program demonstrates how to execute a Standalone Activity, get its result, list activities, and
-count activities:
+The following starter program executes a Standalone Activity, gets its result, lists activities, and counts
+activities:
 
 Create [standalone-activity/helloworld/starter/main.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/starter/main.go).
 
@@ -306,4 +306,4 @@ for mTLS and API key setup.
 
 - **[Standalone Activities Feature Guide](/develop/go/activities/standalone-activities)**: Get results, Activity handles, list and count Activities, and connect to Temporal Cloud.
 - **[Build a Job Queue with Standalone Activities](https://learn.temporal.io/tutorials/go/standalone-activities/)**: Tutorial that builds a durable job queue, with idempotency keys, server-side deduplication, throughput limits, [Priority and Fairness](/develop/task-queue-priority-fairness), and heartbeat checkpoints.
-- **[Activity basics](/develop/go/activities/basics)**: How to write and register Activities with the Go SDK.
+- **[Activity basics](/develop/go/activities/basics)**: Write and register Activities with the Go SDK.

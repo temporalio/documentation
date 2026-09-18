@@ -1,14 +1,14 @@
 ---
 id: execution
-title: Activity execution - Java SDK
-description: Shows how to perform Activity execution with the Java SDK
+title: Activity Execution - Java SDK
+description: Invoke Activities synchronously or asynchronously from a Java Workflow, set ActivityOptions and Timeouts, and read the ActivityExecutionContext.
 sidebar_label: Activity Execution
 slug: /develop/java/activities/execution
 toc_max_heading_level: 3
 tags:
+  - Activities
   - Java SDK
   - Temporal SDKs
-  - Activities
 ---
 
 ## Start an Activity Execution {/* #activity-execution */}
@@ -21,7 +21,7 @@ A single instance of the Activities implementation is shared across multiple sim
 Activity implementation code should be _idempotent_.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
-The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
+The entire Execution history is transferred from the Temporal Service to Workflow Workers when a Workflow state needs to recover.
 A large Execution history can thus adversely impact the performance of your Workflow.
 
 Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
@@ -33,7 +33,7 @@ Activities are not executable on their own. You cannot start an Activity Executi
 Note that before an Activity Execution is invoked:
 
 - Activity options (either [`setStartToCloseTimeout`](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) are required) must be set for the Activity.
-  For details, see [How to set Activity timeouts](/develop/java/activities/timeouts).
+  For details, see [Activity Timeouts](/develop/java/activities/timeouts).
 - The Activity must be registered with a Worker.
   See [Worker Program](/develop/java/workers/run-worker-process#run-a-dev-worker)
 - Activity code must be thread-safe.
@@ -42,11 +42,11 @@ Activities should only be instantiated using stubs from within a Workflow.
 An `ActivityStub` returns a client-side stub that implements an Activity interface.
 You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
 
-Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/references/events#activitytaskscheduled).
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal Service, and generates an [`ActivityTaskScheduled` Event](/references/events#activitytaskscheduled).
 
 Activities can be invoked synchronously or asynchronously.
 
-### Invoking Activities Synchronously
+### Invoke Activities synchronously {/* #invoking-activities-synchronously */}
 
 In the following example, we use the type-safe `Workflow.newActivityStub` within the "FileProcessingWorkflow" Workflow implementation to create a client-side stub of the `FileProcessingActivities` class. We also define `ActivityOptions` and set `setStartToCloseTimeout` option to one hour.
 
@@ -118,7 +118,7 @@ This is useful when the Activity type is not known at compile time, or to invoke
     activity.execute("ComposeGreeting", String.class, "Hello World", "Spanish");
 ```
 
-### Invoking Activities Asynchronously
+### Invoke Activities asynchronously {/* #invoking-activities-asynchronously */}
 
 Sometimes Workflows need to perform certain operations in parallel.
 The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
@@ -131,7 +131,7 @@ In the following asynchronous Activity invocation, the method reference is passe
 Promise<String> localNamePromise = Async.function(activities::download, sourceBucket, sourceFile);
 ```
 
-The following example shows how to call two Activity methods, "download" and "upload", in parallel on multiple files.
+The following example calls two Activity methods, "download" and "upload", in parallel on multiple files.
 
 ```java
   public void processFile(Arguments args) {
@@ -179,7 +179,7 @@ The following example shows how to call two Activity methods, "download" and "up
   }
 ```
 
-### Activity Execution Context
+### ActivityExecutionContext {/* #activity-execution-context */}
 
 `ActivityExecutionContext` is a context object passed to each Activity implementation by default.
 You can access it in your Activity implementations via `Activity.getExecutionContext()`.
@@ -213,7 +213,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 For details on getting the results of an Activity Execution, see [Activity Execution Result](#activity-execution-result).
 
-## Set required Activity Timeouts {/* #required-timeout */}
+## Set the required Activity Timeouts {/* #required-timeout */}
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
@@ -265,7 +265,7 @@ If you define options per-Activity Type options with `WorkflowImplementationOpti
 
 ## Java ActivityOptions reference {/* #activity-options-reference */}
 
-Use [`ActivityOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) to configure how to invoke an Activity Execution.
+Use [`ActivityOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) to configure an Activity Execution.
 
 You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
 Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
@@ -291,9 +291,6 @@ This or `StartToCloseTimeout` must be set.
 - Type: `Duration`
 - Default: Unlimited.
   Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
 
 - With `ActivityStub`
 
@@ -324,9 +321,6 @@ To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#s
 
 - Type: `Duration`
 - Default: Unlimited. This timeout is non-retryable.
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
 
 - With `ActivityStub`
 
@@ -363,9 +357,6 @@ This or `ScheduleToClose` must be set.
 - Type: `Duration`
 - Default: Defaults to [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) value
 
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
 - With `ActivityStub`
 
   ```java
@@ -396,9 +387,6 @@ To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat
 
 - Type: `Duration`
 - Default: None
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
 
 - With `ActivityStub`
 
@@ -540,7 +528,7 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
                 .build();
   ```
 
-## Get the result of an Activity Execution {/* #activity-execution-result */}
+## Get the results of an Activity Execution {/* #activity-execution-result */}
 
 The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
