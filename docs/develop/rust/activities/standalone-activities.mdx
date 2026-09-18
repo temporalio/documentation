@@ -39,7 +39,7 @@ This page covers the following:
 :::note
 
 This documentation uses source code from the
-[standalone_activity](https://github.com/temporalio/sdk-rust/tree/main/crates/sdk/examples/standalone_activities)
+[standalone_activities](https://github.com/temporalio/sdk-rust/tree/main/crates/sdk/examples/standalone_activities)
 sample.
 
 :::
@@ -198,8 +198,8 @@ temporal activity describe --activity-id standalone-activity-id
 
 ## Wait for the result of a Standalone Activity {/* #get-activity-result */}
 
-The Rust SDK has no single call that does both. To execute a Standalone Activity and wait for its
-result, call `start_activity` to durably enqueue the Activity, then
+The Rust SDK has no single call that both starts an Activity and waits for its result. Call
+`start_activity` to durably enqueue the Activity, then
 [`ActivityHandle::result`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html#method.result)
 to block until it completes and return the result:
 
