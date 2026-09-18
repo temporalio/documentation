@@ -2,9 +2,10 @@
 id: basics
 title: Activity basics - Rust SDK
 sidebar_label: Activity basics
-description: This section explains how to implement Activities with the Rust SDK
+description: Define an Activity as a Rust function, set its parameters and serializable return values, and give its Activity Type a custom name.
 toc_max_heading_level: 4
 tags:
+  - Activities
   - Rust SDK
   - Temporal SDKs
 ---
@@ -44,7 +45,7 @@ impl GreetingActivities {
 }
 ```
 
-### Activity parameters {/* #activity-parameters */}
+### Define Activity parameters {/* #activity-parameters */}
 
 There is a limit of 6 parameters that an [Activity Definition](/activity-definition) may support. There is also a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
