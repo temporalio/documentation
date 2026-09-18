@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { isExternalHref } from '@site/src/utils/links';
 
 type PatternCardItem = {
   href: string;
   title: string;
   description: string;
-  external?: boolean;
   icon?: string;
 };
 
@@ -31,7 +31,8 @@ export default function PatternCards({ items, className }: PatternCardsProps) {
           key={item.href}
           to={item.href}
           className="pattern-card"
-          {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          target={isExternalHref(item.href) ? '_blank' : undefined}
+          rel={isExternalHref(item.href) ? 'noopener noreferrer' : undefined}
         >
           <div className="pattern-content">
             {item.icon ? (
