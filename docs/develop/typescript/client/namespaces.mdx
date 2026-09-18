@@ -1,17 +1,19 @@
 ---
 id: namespaces
-title: Manage Namespaces - TypeScript SDK
+title: Namespaces - TypeScript SDK
 sidebar_label: Namespaces
-slug: /develop/typescript/client/namespaces
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 tags:
   - Namespaces
   - TypeScript SDK
   - Temporal SDKs
-description: Efficiently create and manage Namespaces on Temporal using CLI or SDK APIs. Isolate Workflow Executions, control access with custom Authorizers, and manage via Temporal Cloud UI or CLI.
+description: Register and manage Namespaces with the Temporal CLI or SDK APIs. Isolate Workflow Executions, match development lifecycles, and restrict access with a custom Authorizer.
 ---
 
-## How to create and manage Namespaces {/* #namespaces */}
+This page shows how to do the following:
+
+- [Register a Namespace](#register-namespace)
+- [Manage Namespaces](#manage-namespaces)
 
 You can create, update, deprecate or delete your [Namespaces](/namespaces) using either the Temporal CLI or SDK APIs.
 
@@ -28,7 +30,7 @@ Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your
 
 You must register a Namespace with the Temporal Service before setting it in the Temporal Client.
 
-### How to register Namespaces {/* #register-namespace */}
+## Register a Namespace {/* #register-namespace */}
 
 Registering a Namespace creates a Namespace on the Temporal Service or Temporal Cloud.
 
@@ -39,7 +41,7 @@ Note that these APIs and `temporal operator namespace` commands will not work wi
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Service to set restrictions on who can create, update, or deprecate Namespaces.
 
-### How to manage Namespaces {/* #manage-namespaces */}
+## Manage Namespaces {/* #manage-namespaces */}
 
 You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
 

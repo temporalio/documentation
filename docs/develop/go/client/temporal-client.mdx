@@ -3,8 +3,8 @@ id: temporal-client
 title: Temporal Client - Go SDK
 sidebar_label: Temporal Client
 description:
-  Connect to Temporal Service or Cloud, start Workflow Executions, manage Workflow options, and retrieve Workflow
-  results using the Go SDK. Follow detailed steps and code examples to effectively use Temporal’s capabilities.
+  Connect to a development Temporal Service or Temporal Cloud from Go, set StartWorkflowOptions, and get Workflow
+  Execution results.
 toc_max_heading_level: 4
 tags:
   - Temporal Client
@@ -223,7 +223,6 @@ func main() {
   }
 }
 ```
-{/* SNIPEND */}
 
 </TabItem>
 
@@ -563,11 +562,11 @@ apiKeyProvider.APIKey = myKeyUpdated
 
 </Tabs>
 
-## Start Workflow Execution {/* #start-workflow-execution */}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
-you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
-language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters. To start a Workflow Execution, you must
+supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific
+contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
 within another Workflow Execution, use either the [Child Workflow](/develop/go/workflows/child-workflows) or External Workflow
@@ -635,9 +634,9 @@ Workflow Type can be provided as a `string`.
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
 ```
 
-### Set Workflow Task Queue {/* #set-task-queue */}
+### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
 Queue name.
@@ -666,7 +665,7 @@ application load. For more information, refer to
 [Task Queues Processing Tuning](/develop/worker-performance/task-queues#task-queues-processing-tuning) and
 [Worker Versioning](/worker-versioning).
 
-### Set custom Workflow Id {/* #workflow-id */}
+### Set a Workflow Id {/* #workflow-id */}
 
 Although it is not required, we recommend providing your own
 [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
@@ -943,7 +942,7 @@ if err != nil {
 }
 ```
 
-### Get Workflow results {/* #get-workflow-results */}
+## Get Workflow results {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -972,8 +971,9 @@ following line.
 The instance of `WorkflowRun` has the following three methods:
 
 - `GetWorkflowID()`: Returns the Workflow Id of the invoked Workflow Execution.
-- `GetRunID()`: Always returns the Run Id of the initial Run (See [Continue As New](#)) in the series of Runs that make
-  up the full Workflow Execution.
+- `GetRunID()`: Always returns the Run Id of the initial Run (see
+  [Continue-As-New](/workflow-execution/continue-as-new)) in the series of Runs that make up the full Workflow
+  Execution.
 - `Get`: Takes a pointer as a parameter and populates the associated variable with the Workflow Execution result.
 
 To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of
@@ -994,11 +994,10 @@ To wait on the result of Workflow Execution in the same process that invoked it,
 ```
 
 However, the result of a Workflow Execution can be obtained from a completely different process. All that is needed is
-the [Workflow Id](#). (A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
-The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the
-system.
-
-{/* TODO (See [How long do Workflow Execution Histories persist](#)). */}
+the [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
+(A [Run Id](/workflow-execution/workflowid-runid#run-id) is optional if more than one closed Workflow Execution has
+the same Workflow Id.) The result of the Workflow Execution is available for as long as the Workflow Execution Event
+History remains in the system.
 
 Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the
 Workflow Execution. Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer
@@ -1017,7 +1016,7 @@ to populate the result.
  // ...
 ```
 
-**Get last completion result**
+### Get last completion result
 
 In the case of a [Temporal Cron Job](/cron-job), you might need to get the result of the previous Workflow Run and use
 it in the current Workflow Run.

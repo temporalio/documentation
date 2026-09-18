@@ -2,27 +2,16 @@
 id: temporal-client
 title: Temporal Client - PHP SDK
 sidebar_label: Temporal Client
-slug: /develop/php/client/temporal-client
-toc_max_heading_level: 3
+toc_max_heading_level: 4
 tags:
   - Temporal Client
   - PHP SDK
   - Temporal SDKs
   - Certificates
-description: Connect a Temporal Client to a Temporal Service and start Workflow Executions. This guide covers communication, including sending signals and queries.
+description:
+  Connect to a development Temporal Service or Temporal Cloud from PHP, start Workflow Executions, and configure RPC
+  retries and timeouts.
 ---
-
-This guide introduces Temporal Clients.
-It explains the role and use of Clients and shows you how to configure your PHP Client code to connect to the Temporal Service.
-
-This page shows how to do the following:
-
-- [Connect to a local development Temporal Service](#connect-to-a-dev-cluster)
-- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
-- [Start a Workflow Execution](#start-workflow-execution)
-- [Advanced connection options](#advanced-connection-options)
-
-## How to connect a Temporal Client to a Temporal Service {/* #connect-to-a-dev-cluster */}
 
 A [Temporal Client](/encyclopedia/temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
 Communication with a Temporal Service includes, but isn't limited to, the following:
@@ -35,12 +24,22 @@ Communication with a Temporal Service includes, but isn't limited to, the follow
 - Getting the results of a Workflow Execution.
 - Providing an Activity Task Token.
 
+This page shows you how to do the following using the PHP SDK with the Temporal Client:
+
+- [Connect to a local development Temporal Service](#connect-to-a-dev-cluster)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow Execution](#start-workflow-execution)
+- [Get Workflow results](#get-workflow-results)
+- [Advanced connection options](#advanced-connection-options)
+
 :::caution
 
 A Temporal Client cannot be initialized and used inside a Workflow.
 However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
+
+## Connect to development Temporal Service {/* #connect-to-a-dev-cluster */}
 
 When you are running a Temporal Service locally (such as the [Temporal CLI](/cli/command-reference/server#start-dev)), the number of connection options you must provide is minimal.
 Many SDKs default to `127.0.0.1:7233`.
@@ -69,7 +68,7 @@ $workflowClient = WorkflowClient::create($serviceClient);
 
 See the [Advanced connection options](#advanced-connection-options) section for more information on configuring the connection.
 
-## How to connect a Temporal Client to a Temporal Cloud {/* #connect-to-temporal-cloud */}
+## Connect to Temporal Cloud {/* #connect-to-temporal-cloud */}
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -127,16 +126,16 @@ $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
     ->withAuthKey('your-api-key');
 ```
 
-Rotating an mTLS client certificate without restarting the Worker isn't currently supported by the PHP SDK or RoadRunner
-— the certificate configured on `ServiceClient::createSSL()` or in RoadRunner's `tls:` block is fixed for the life of
-the process. To rotate a certificate, stage the new certificate alongside the old one on your Temporal Cloud Namespace,
-then restart your Worker (RoadRunner process) with the new certificate before removing the old one. See
+Rotating an mTLS client certificate without restarting the Worker isn't currently supported by the PHP SDK or
+RoadRunner. The certificate configured on `ServiceClient::createSSL()` or in RoadRunner's `tls:` block is fixed for the
+life of the process. To rotate a certificate, stage the new certificate alongside the old one on your Temporal Cloud
+Namespace, then restart your Worker (RoadRunner process) with the new certificate before removing the old one. See
 [Update certificates using Temporal Cloud UI/tcld](/cloud/certificates#manage-certificates) for the zero-downtime
 staging sequence.
 
-## How to start a Workflow Execution {/* #start-workflow-execution */}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters. To start a Workflow Execution, you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples following all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/php/workflows/child-workflows) or External Workflow APIs.
@@ -198,7 +197,7 @@ $stub->update('finish');
 
 A Workflow Execution can be started either synchronously or asynchronously.
 
-**Synchronous start**
+### Start a Workflow synchronously
 
 A synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
 invocation process and will continue executing even if the waiting process crashes or stops.
@@ -226,7 +225,7 @@ $accountTransfer = $workflowClient->newWorkflowStub(
 $result = $accountTransfer->transfer('fromID', 'toID', 'refID', 1000);
 ```
 
-**Asynchronous start**
+### Start a Workflow asynchronously
 
 An asynchronous start initiates a Workflow Execution and immediately returns to the caller without waiting for a result.
 This is the most common way to start Workflows in a live environment.
@@ -256,11 +255,11 @@ var_dump($run->describe());
 var_dump($run->getResult(timeout: 10));
 ```
 
-**Recurring start**
+### Start a Workflow on a schedule
 
 You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/develop/php/workflows/schedules#temporal-cron-jobs).
 
-### How to set a Workflow's Task Queue {/* #set-task-queue */}
+### Set a Workflow's Task Queue {/* #set-task-queue */}
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 When developing in PHP, the Task Queue name defaults to `"default"`.
@@ -285,11 +284,11 @@ $stub = $workflowClient->newWorkflowStub(
 );
 ```
 
-### How to set a Workflow Id {/* #workflow-id */}
+### Set a Workflow Id {/* #workflow-id */}
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
-Set the Workflow Id with the Workflow stub in the Client code using [`WorkflowOptions::withTaskQueue()`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#method_withWorkflowId).
+Set the Workflow Id with the Workflow stub in the Client code using [`WorkflowOptions::withWorkflowId()`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#method_withWorkflowId).
 
 ```php
 $stub = $workflowClient->newWorkflowStub(
@@ -299,7 +298,7 @@ $stub = $workflowClient->newWorkflowStub(
 );
 ```
 
-### How to get the results of a Workflow Execution {/* #get-workflow-results */}
+## Get Workflow results {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
