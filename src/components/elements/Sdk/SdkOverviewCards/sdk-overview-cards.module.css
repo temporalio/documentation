@@ -51,7 +51,7 @@
 .versionChip {
   flex: none;
   padding: 0.15rem 0.55rem;
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-emphasis-800);
   font-size: 0.75rem;
