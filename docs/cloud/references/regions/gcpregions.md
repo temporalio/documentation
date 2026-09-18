@@ -82,3 +82,14 @@
   - None
 - **Multi-Cloud Replication**:
   - None
+
+### Asia Pacific - Sydney (`australia-southeast1`)
+
+- **Cloud API Code**: `gcp-australia-southeast1`
+- **Regional Endpoint**: `gcp-australia-southeast1.region.tmprl.cloud`
+- **Private Service Connect Service Attachment URI**: `projects/prod-gy3tvq4cr4rh7sp5dh4472tyf/regions/australia-southeast1/serviceAttachments/pl-4pca7`
+- **Same Region Replication**:  Not Available
+- **Multi-Region Replication**:
+  - None
+- **Multi-Cloud Replication**:
+  - None
