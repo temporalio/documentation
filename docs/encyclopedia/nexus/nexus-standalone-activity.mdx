@@ -1,0 +1,67 @@
+---
+id: nexus-standalone-activity
+title: Nexus Standalone Activity
+sidebar_label: Nexus Standalone Activity
+description: A Nexus Operation can be backed by a Standalone Activity so callers get a typed contract and Namespace boundary around a single durable step.
+toc_max_heading_level: 4
+slug: /nexus/standalone-activity
+tags:
+  - Nexus
+  - Concepts
+---
+
+:::caution
+
+Activity-backed Nexus Operations are pre-release and built on the [Temporal Operation Handler](/nexus/temporal-operation-handler).
+`TemporalOperationHandler` is marked experimental in the SDKs and may change in backwards-incompatible ways.
+
+:::
+
+A Nexus Operation can be backed by a [Standalone Activity](/standalone-activity) as well as a Workflow.
+Starting the Operation starts an Activity Execution that has no parent Workflow, and the Operation completes when that Activity returns.
+
+Use Standalone Activities when the work behind an Operation is a single durable step rather than a process. Examples might be calling an external API, running a computation, or writing to another system.
+
+Two things combine here, and it is worth separating them.
+An [Activity](/activities) gives that step automatic retries, timeouts, and a durable record of what happened.
+Exposing it as a Nexus Operation puts a typed contract and a [Namespace](/namespaces) boundary in front of it, so another team can call it without sharing your code, your deployment, or write access to your Namespace.
+Because the Activity carries the durability, the Operation needs no Workflow behind it, and uses fewer [Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud than running the same single step through one.
+
+For how to implement Activity-backed Operations in each SDK, see [Activity-backed Nexus Operations](/develop/java/nexus/activity-backed-operations).
+
+## When to use an Activity-backed Operation
+
+The shape fits work that is one durable step sitting behind a team boundary.
+You get all of the following without building any of it yourself:
+
+- **Durability per call.** Retries on the policy you set, timeouts you control, and a record of every attempt including the last error.
+- **Deduplicated starts.** A stable Activity Id means a retried or redelivered request targets the same Activity Execution instead of starting a second one, so you do not need a separate store of processed Ids.
+- **Protection from a failing dependency.** Repeated retryable failures trip the [circuit breaker](/nexus/operations#circuit-breaking) rather than piling retries onto a system that is already struggling.
+- **A boundary between teams.** Callers get scoped access to named Operations, not write access to your Namespace, and they never see your Task Queues, your Workers, or your implementation.
+
+## How it works
+
+The Operation is implemented with a [Temporal Operation Handler](/nexus/temporal-operation-handler).
+On start, the handler calls `startActivity` (or the language equivalent) on the Nexus-aware Client and returns that result.
+The Operation completes when the Activity returns.
+
+Required options typically include a stable Activity Id (often derived from the Nexus request Id), a Start-To-Close Timeout, a Task Queue, and an Activity Id conflict policy that makes retries target the same Execution.
+
+Cancellation behaves like other Activity cancellations: the Activity must heartbeat to receive cancellation promptly.
+
+## Choose between an Activity and a Workflow
+
+Prefer an Activity-backed Operation when the work is one durable step.
+Prefer a Workflow-backed Operation when the work is a multi-step process, needs Timers or message handlers, or must wait on human input.
+
+## Related
+
+- Activity-backed Nexus Operations:
+  [Go](/develop/go/nexus/activity-backed-operations) ·
+  [Java](/develop/java/nexus/activity-backed-operations) ·
+  [.NET](/develop/dotnet/nexus/activity-backed-operations) ·
+  [Python](/develop/python/nexus/activity-backed-operations) ·
+  [TypeScript](/develop/typescript/nexus/activity-backed-operations)
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) — handler model
+- [Standalone Activity](/standalone-activity) — Activities without a parent Workflow
+- [Microservice Development Walkthrough](/develop/java/nexus/development-walkthrough) — end-to-end Java guide
