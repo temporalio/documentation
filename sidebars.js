@@ -458,6 +458,7 @@ const developJavaCategory = {
             items: [
               'develop/java/best-practices/data-handling/data-conversion',
               'develop/java/best-practices/data-handling/data-encryption',
+              'develop/java/best-practices/data-handling/external-storage',
             ],
           },
         ],
