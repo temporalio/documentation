@@ -153,7 +153,7 @@ You can then use the handle to wait for the result, describe, cancel, or termina
 
 ```rust
 handle.result().await?;                            // block until the activity completes
-handle.describe(Default::default()).await?;        // status, timestamps, attempt, last failure, ...
+handle.describe(Default::default()).await?;        // status, timestamps, attempt, ...
 handle.cancel(Default::default()).await?;          // request cancellation
 handle.terminate(Default::default()).await?;       // force-close the activity
 ```
@@ -161,9 +161,9 @@ handle.terminate(Default::default()).await?;       // force-close the activity
 [`describe`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html#method.describe)
 takes an
 [`ActivityDescribeOptions`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityDescribeOptions.html).
-Its `include_input`, `include_outcome`, and `include_heartbeat_details` fields are off by default,
-because those fields carry Payloads that can be arbitrarily large. Turn them on only when you need
-them:
+Its `include_input`, `include_outcome`, `include_heartbeat_details`, and `include_last_failure`
+fields are off by default, because those fields carry Payloads that can be arbitrarily large. Turn
+them on only when you need them:
 
 ```rust
 let description = handle
