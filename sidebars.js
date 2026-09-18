@@ -458,6 +458,7 @@ const developJavaCategory = {
             items: [
               'develop/java/best-practices/data-handling/data-conversion',
               'develop/java/best-practices/data-handling/data-encryption',
+              'develop/java/best-practices/data-handling/external-storage',
             ],
           },
         ],
@@ -640,6 +641,7 @@ const developPythonCategory = {
             },
             items: [
               'develop/python/workers/serverless-workers/aws-lambda',
+              'develop/python/workers/serverless-workers/agentcore',
               'develop/python/workers/serverless-workers/cloud-run',
             ],
           },
@@ -1196,17 +1198,17 @@ module.exports = {
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'evaluate/temporal-cloud/overview',
+            id: 'evaluate/cloud/index',
           },
           items: [
-            'evaluate/temporal-cloud/security',
-            'evaluate/temporal-cloud/service-availability',
-            'evaluate/temporal-cloud/regions',
-            'evaluate/temporal-cloud/limits',
-            'evaluate/temporal-cloud/sla',
-            'evaluate/temporal-cloud/pricing',
-            'evaluate/temporal-cloud/actions',
-            'evaluate/temporal-cloud/support',
+            'evaluate/cloud/security',
+            'evaluate/cloud/service-availability',
+            'evaluate/cloud/regions',
+            'evaluate/cloud/limits',
+            'evaluate/cloud/sla',
+            'evaluate/cloud/pricing',
+            'evaluate/cloud/actions',
+            'evaluate/cloud/support',
           ],
         },
         {
@@ -1601,7 +1603,20 @@ module.exports = {
                     id: 'production-deployment/worker-deployments/serverless-workers/aws-lambda/index',
                   },
                   items: [
+                    'production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development',
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'Amazon Bedrock AgentCore',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/agentcore',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/agentcore-self-hosted-setup',
                   ],
                 },
                 {
@@ -2042,6 +2057,7 @@ module.exports = {
               link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
               items: [
                 'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-agentcore',
                 'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
               ],
             },
@@ -2204,6 +2220,7 @@ module.exports = {
         id: 'guides/index',
       },
       items: [
+        'guides/durable-agent-on-agentcore',
         'guides/entity-pattern-loyalty-points',
         'guides/recover-without-restart',
         'guides/route-specialized-workloads',

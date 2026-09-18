@@ -141,7 +141,7 @@ To migrate latency alerts safely:
 
 - Compare like-for-like. To reproduce a former average-based alert, start on `temporal_cloud_v1_service_latency_p50`,
   then move to `_p95` / `_p99` deliberately once you have set an appropriate threshold.
-- Confirm which percentile your SLO targets. The Temporal Cloud [latency SLO](/cloud/service-availability#latency) is a
+- Confirm which percentile your SLO targets. The Temporal Cloud [latency SLO](/evaluate/cloud/service-availability#latency) is a
   **p99**; alerting on p95 against a p99 threshold trips earlier than the SLO.
 
 :::
@@ -394,6 +394,7 @@ See [API limits](/cloud/metrics/openmetrics/api-reference#api-limits) for detail
 OpenMetrics provides visibility into several new areas
 
 - **Activity execution and latency**: completion outcomes (success, fail, timeout, cancel, terminate, plus activity-task-level fail/timeout) and latency percentiles (start-to-close, schedule-to-close), including Standalone Activities.
+- **Schedule timeliness**: latency percentiles for the delay between an execution's scheduled time and its actual start, including overlap-policy wait.
 - **Task queue health**: approximate backlog depth and a rate of tasks added to queues with no active pollers.
 - **Namespace utilization and rate limits**: operations counters, throttled-action and throttled-operation rates, a billable-action breakdown, an open-workflow gauge, and configured-limit and on-demand-envelope-limit gauges to chart usage against quotas.
 - **Usage against limits**: a request-throttled rate and a pending-requests (active long-pollers) gauge.
@@ -412,6 +413,7 @@ OpenMetrics provides visibility into several new areas
 - `temporal_cloud_v1_activity_terminate_count`
 - `temporal_cloud_v1_activity_start_to_close_latency_p50` / `_p95` / `_p99`
 - `temporal_cloud_v1_activity_schedule_to_close_latency_p50` / `_p95` / `_p99`
+- `temporal_cloud_v1_schedule_action_e2e_delay_p50` / `_p95` / `_p99`
 - `temporal_cloud_v1_approximate_backlog_count`
 - `temporal_cloud_v1_no_poller_tasks_count`
 - `temporal_cloud_v1_namespace_open_workflows`
