@@ -30,6 +30,38 @@ Worker process.
 
 :::
 
+### Set the Activity cancellation type {/* #activity-cancellation-type */}
+
+The `cancellationType` Activity option decides what the Workflow does when an Activity it is waiting on is canceled,
+whether by a cancellation request against the Workflow Execution or by the
+[Cancellation Scope](/develop/typescript/workflows/cancellation-scopes) the Activity was started in.
+
+- `ActivityCancellationType.TRY_CANCEL` is the default. The Workflow asks the Temporal Service to cancel the Activity and
+  the Activity call fails right away with an `ActivityFailure` whose `cause` is a `CancelledFailure`. The Activity
+  Execution keeps running until its next Heartbeat delivers the cancellation, so Workflow code that continues, for
+  example to run compensation or to retry, can overlap with an Activity that is still executing.
+- `ActivityCancellationType.WAIT_CANCELLATION_COMPLETED` asks for the cancellation and keeps the Activity call pending
+  until the Activity Execution has acknowledged it or completed. Use this when the Workflow must not move on while the
+  Activity might still be running. The Activity has to Heartbeat, or the wait lasts until one of its timeouts fires.
+- `ActivityCancellationType.ABANDON` fails the Activity call right away and does not ask for the cancellation at all.
+  The Activity Execution runs to completion on its own.
+
+```typescript
+import { ActivityCancellationType, proxyActivities } from '@temporalio/workflow';
+import type * as activities from './activities';
+
+const { processOrder } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10 minutes',
+  heartbeatTimeout: '30 seconds',
+  cancellationType: ActivityCancellationType.WAIT_CANCELLATION_COMPLETED,
+});
+```
+
+Child Workflows and Nexus Operations have their own cancellation type options, and both of those default to waiting
+for the cancellation to complete. See
+[`ActivityOptions.cancellationType`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#cancellationtype)
+in the API reference for the full definitions.
+
 ## Reset a Workflow Execution {/* #reset */}
 
 Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
