@@ -72,7 +72,7 @@ With the Temporal Server and Worker running, open a new terminal in the `samples
 run:
 
 ```bash
-./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.StartActivity
+./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.StartActivity
 ```
 
 Or use the Temporal CLI:
@@ -148,7 +148,7 @@ client
 Run it:
 
 ```bash
-./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.ListActivities
+./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.ListActivities
 ```
 
 Or use the Temporal CLI:
@@ -182,7 +182,7 @@ resp.getGroups()
 Run it:
 
 ```bash
-./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.CountActivities
+./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.CountActivities
 ```
 
 Or use the Temporal CLI:

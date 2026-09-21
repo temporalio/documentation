@@ -148,7 +148,7 @@ factory.start();
 System.out.println("Worker running on task queue: " + TASK_QUEUE);`}
 </CodeSnippet>
 <CodeSnippet language="bash">
-{`./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.StandaloneActivityWorker`}
+{`./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.StandaloneActivityWorker`}
 </CodeSnippet>
 </>
 }>
@@ -158,7 +158,7 @@ System.out.println("Worker running on task queue: " + TASK_QUEUE);`}
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a `WorkerFactory`, register the Activity implementation, and call `factory.start()`. The
 Worker doesn't need to know whether the Activity will be invoked from a Workflow or as a Standalone
-Activity. See [How to run a Worker](/develop/java/workers/run-worker-process) for more details on
+Activity. See [Run a Worker](/develop/java/workers/run-worker-process) for more details on
 Worker setup and configuration options.
 
 [StandaloneActivityWorker.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities/StandaloneActivityWorker.java)
@@ -197,7 +197,7 @@ System.out.println("Activity result: " + result);`}
 String result = client.execute("ComposeGreeting", String.class, options, "Hello", "World");`}
 </CodeSnippet>
 <CodeSnippet language="bash">
-{`./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.ExecuteActivity`}
+{`./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.ExecuteActivity`}
 </CodeSnippet>
 <CodeSnippet language="bash">
 {`temporal activity execute \\
@@ -232,7 +232,10 @@ To run it:
 
 1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
 2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
-3. Open a new terminal, navigate to the `samples-java` directory, and run the Gradle command.
+3. Open a new terminal, navigate to the `samples-java` directory, and run:
+    ```
+    ./gradlew -q :core:execute -PmainClass=io.temporal.samples.standaloneactivities.ExecuteActivity
+    ```
 
 Or use the Temporal CLI.
 
@@ -255,4 +258,4 @@ for mTLS and API key setup.
 
 - **[Standalone Activities Feature Guide](/develop/java/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
 - **[Build a Job Queue with Standalone Activities](https://learn.temporal.io/tutorials/java/standalone-activities/)**: Tutorial that builds a durable job queue, with idempotency keys, server-side deduplication, throughput limits, [Priority and Fairness](/develop/task-queue-priority-fairness), and heartbeat checkpoints.
-- **[Activity basics](/develop/java/activities/basics)**: How to write and register Activities with the Java SDK.
+- **[Activity basics](/develop/java/activities/basics)**: Write and register Activities with the Java SDK.

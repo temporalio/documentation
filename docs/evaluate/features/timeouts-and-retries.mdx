@@ -86,7 +86,7 @@ Set Workflow timeouts and Retry Policies in your language:
 
 ## Activity timeouts
 
-Activity timeouts tell a Workflow which kind of Activity failure occurred, and the Activity's [Retry Policy](/encyclopedia/retry-policies) decides what happens next.
+Activity timeouts tell the caller — a Workflow, or the Client for a [Standalone Activity](/standalone-activity) — which kind of Activity failure occurred, and the Activity's [Retry Policy](/encyclopedia/retry-policies) decides what happens next.
 
 - **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**: the maximum time an [Activity Task](/tasks#activity-task) can sit in the Task Queue before a Worker picks it up. The default is infinite, and this timeout never triggers a retry, because a retry would return the Activity Task to the same Task Queue.
 - **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**: the maximum time for a single [Activity Task Execution](/tasks#activity-task-execution). The default matches the Schedule-To-Close Timeout.

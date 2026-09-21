@@ -8,12 +8,12 @@ const STEPS = [
     body: <>Tasks at a higher priority (lower number) are always dispatched before tasks at a lower priority. Every task at priority 1 is dispatched before any task at priority 2, and so on.</>,
   },
   {
-    title: 'Fairness distributes capacity within the tier',
-    body: <>Within a priority tier, tasks are dispatched proportionally by <code>fairnessWeight</code> using a weighted round-robin mechanism. This prevents any single <code>fairnessKey</code> from hogging Worker capacity, even if it has a deep backlog.</>,
+    title: 'Fairness distributes dispatches within the tier',
+    body: <>Within a priority tier, tasks are dispatched proportionally by <code>fairnessWeight</code> using weighted fair dispatch. This prevents any single <code>fairnessKey</code> from dominating dispatch, even if it has a deep backlog. Fairness governs dispatch order only — it doesn't allocate Worker capacity.</>,
   },
   {
-    title: <>No <code>fairnessKey</code> means FIFO within the tier</>,
-    body: <>If no <code>fairnessKey</code> is set, tasks at the same priority level are dispatched in arrival order.</>,
+    title: <>Unkeyed tasks form one Fairness group</>,
+    body: <>Tasks without a <code>fairnessKey</code> share an implicit empty-string key with a default weight of 1.0. They compete with named keys through weighted dispatch; tasks within that shared group dispatch in arrival order (FIFO).</>,
   },
   {
     title: 'Priority and Fairness are per Task Queue',
@@ -32,7 +32,7 @@ export default function HowItWorks({ onNext }) {
     <div className={styles.section}>
       <p className={styles.lead}>
         When a Worker polls for the next task, Temporal applies two rules in sequence: Priority
-        determines which tier goes first, and Fairness distributes capacity among keys within each
+        determines which tier goes first, and Fairness distributes dispatches among keys within each
         tier.
       </p>
 

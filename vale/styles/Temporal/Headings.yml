@@ -14,7 +14,12 @@ exceptions:
   - Docker
   - Emmet
   - gRPC
-  - I
+  # Word-anchored on purpose. Vale compiles these exceptions into one
+  # unanchored regex and substring-matches each word, so a bare "I" exempted
+  # every capitalized word containing an I -- "Interceptors", "Implementing",
+  # "Involvement" were all silently allowed. \bI\b keeps the pronoun exempt
+  # and nothing else.
+  - \bI\b
   - Kubernetes
   - Linux
   - macOS
@@ -61,6 +66,8 @@ exceptions:
   - History
   - ID
   - IDs
+  # Substring-matched, so this covers "Interceptors" too
+  - Interceptor
   - Local
   - Namespace
   - Namespaces
@@ -168,10 +175,7 @@ exceptions:
   # the SDK is flagged — "Temporal .NET technical resources" is reported
   # while the identical Go heading is not.
   - NET
-  # Identifier casing per this repo's style guide (Id, not ID)
-  - Id
   # Temporal feature / primitive names
-  - Versioning
   - Patching
   - Endpoint
   - Metrics
@@ -199,18 +203,37 @@ exceptions:
   # ("cancel" as a verb, "options" as in the unrelated "Activity options").
   - Request Cancel
   - Update Options
+  # Exact phrases; Retry Policy property names, capitalized as proper nouns in
+  # the headings and body prose of docs/encyclopedia/retry-policies.mdx. Kept
+  # as phrases so the bare words ("interval", "attempts") stay sentence-cased.
+  - Initial Interval
+  - Backoff Coefficient
+  - Maximum Interval
+  - Maximum Attempts
+  - Non-Retryable Errors
+  # Exact phrases; defined terms with their own acronym, capitalized wherever
+  # they appear in docs/ ("Worker Controller Instance (WCI)"), and the
+  # recognized industry term behind IaC.
+  - Worker Controller Instance
+  - Infrastructure as Code
   # Cloud provider / networking / industry acronyms
   - Amazon
   - AWS
   - GCP
+  - CPU
   - DNS
   - TLS
   - mTLS
   - SAML
   - SSO
+  - SCIM
   - API
   - APIs
   - UI
+  # Substring-matched, so "IP" covers "IPs"
+  - IP
+  - IO
+  - IRSA
   - HA
   - RTO
   - RPO
@@ -225,11 +248,16 @@ exceptions:
   - Azure Key Vault
   - Azure Workload Identity
   - GCP Workload Identity
+  - Pod Identity
   - Private Service Connect
   - Cloud Ops API
   - Terraform
   - Prometheus
   - Grafana
+  # gRPC status code named literally at the start of a troubleshooting heading.
+  # Only the leading word needs an entry: an all-caps acronym later in a
+  # heading already passes, which is why "INTERNAL" and "ECR" are absent.
+  - UNIMPLEMENTED
   # AI vendor and model-platform proper nouns
   - AI
   - Google

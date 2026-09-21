@@ -18,7 +18,7 @@ Application.
 
 <!-- _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_ -->
 
-#### [Actions Per Second (APS)](/cloud/limits#actions-per-second)
+#### [Actions Per Second (APS)](/evaluate/cloud/limits#actions-per-second)
 
 APS, or Actions per second, is specific to Temporal Cloud. Each Temporal Cloud Namespace enforces a rate limit, which is
 measured in Actions per second (APS). This is the number of Actions, such as starting or signaling a Workflow, that can
@@ -108,7 +108,7 @@ receives information about the API call, along with the role and permission clai
 
 An availability zone is a part of the Temporal system where tasks or operations are handled and executed. This design
 helps manage workloads and ensure tasks are completed. Temporal Cloud Namespaces are automatically distributed across
-three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/cloud/sla).
+three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/evaluate/cloud/sla).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -278,7 +278,7 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 High availability ensures that a system remains operational with minimal downtime. It achieves this with redundancy and
 failover mechanisms that handle failures, so end-users remain unaware of incidents. Temporal Cloud guarantees this high
-availability with its Service Level Agreements ([SLA](/cloud/sla))
+availability with its Service Level Agreements ([SLA](/evaluate/cloud/sla))
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
@@ -675,7 +675,7 @@ A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communi
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud](/cloud/overview)
+#### [Temporal Cloud](/evaluate/cloud)
 
 Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.
 

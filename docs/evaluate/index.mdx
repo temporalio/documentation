@@ -9,13 +9,46 @@ tags:
   - Temporal
 ---
 
-Temporal is designed to make developing distributed applications a delightful experience.
-Developers benefit from a clear approach to structure their code and visibility into the state of their application.
-Applications benefit from fault-tolerance and execution guarantees.
-Thousands of companies of all sizes are leveraging Temporal's capabilities for both mission critical and standard workloads.
+import PatternCards from '@site/src/components/PatternCards';
 
-- [Why Temporal](/evaluate/why-temporal)
-- [Development and production features](/evaluate/features)
-- [Use cases](/evaluate/use-cases-design-patterns)
-- [Temporal Cloud](/cloud)
-- [Security](/security)
+Temporal gives developers a clear way to structure distributed application code and see the state of a running application.
+Applications get fault tolerance and execution guarantees.
+Companies of all sizes run Temporal for both mission-critical and standard workloads.
+
+<PatternCards items={[
+  {
+    href: "/evaluate/why-temporal",
+    title: "Why Temporal",
+    description: "Durable Execution, simplified code structure, and state visibility, and what each one changes about building reliable applications.",
+  },
+  {
+    href: "/evaluate/understanding-temporal",
+    title: "Understanding Temporal",
+    description: "How the Temporal Service, Workers, Workflows, and Activities fit together to run your application code.",
+  },
+  {
+    href: "/evaluate/features",
+    title: "Features",
+    description: "Development and production capabilities available through a Temporal SDK, from core primitives to observability and data encryption.",
+  },
+  {
+    href: "/evaluate/cloud",
+    title: "Temporal Cloud",
+    description: "A fully managed durable execution platform on AWS and GCP, with consumption-based pricing and migration from self-hosted deployments.",
+  },
+  {
+    href: "/evaluate/product-release-stages",
+    title: "Product release stages",
+    description: "Pre-release, Public Preview, and General Availability compared by feature access, API stability, support, pricing, and regional coverage.",
+  },
+  {
+    href: "/security",
+    title: "Security",
+    description: "Security practices for Temporal Cloud and for self-hosted deployments, plus company compliance certifications.",
+  },
+  {
+    href: "/evaluate/use-cases-design-patterns",
+    title: "Use cases",
+    description: "How organizations run Temporal in production, and the architectural design patterns behind those applications.",
+  },
+]} />

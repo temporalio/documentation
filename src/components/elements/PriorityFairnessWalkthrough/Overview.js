@@ -16,9 +16,9 @@ export default function Overview({ onNext }) {
       <p className={styles.lead}>
         The core idea of{' '}
         <Link to="/develop/task-queue-priority-fairness">Task Queue Priority and Fairness</Link>{' '}
-        is that when tasks from different workloads compete for the same Workers, Priority controls 
-        which ones get picked first, and Fairness ensures no single tenant can block others by using 
-        all the resources.
+        is that when tasks from different workloads compete for the same Workers, Priority controls
+        which ones get picked first, and Fairness ensures no single tenant can block others by
+        dominating dispatch.
       </p>
 
       <div className={styles.featureGrid}>
@@ -62,7 +62,7 @@ export default function Overview({ onNext }) {
           </div>
           <p className={styles.featureCardBody}>
             Without Fairness, tasks at the same priority dispatch in FIFO order, so a backlog-heavy
-            tenant can hog Worker capacity and delay everyone else at that level. Fairness groups
+            tenant can dominate dispatch and delay everyone else at that level. Fairness groups
             tasks by a fairness key and dispatches them proportionally by fairness weight. A key with
             weight 2.0 is dispatched twice as often as a key with the default weight of 1.0.
           </p>
