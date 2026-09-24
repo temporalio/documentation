@@ -72,7 +72,6 @@ config:
   upstreams:
     - name: cloud
       hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
-      tls: {}
       credentials:
         static:
           apiKey:
@@ -135,7 +134,12 @@ readinessProbe:
 
 Naming a service is optional; omit it to check the empty service name. Either way the answer is the same, because the
 proxy's health is process-wide, and a service your configuration does not allow returns `NOT_FOUND`. See
-[Health checks](/production-deployment/temporal-proxy/configure#health-checks) for what the gateway publishes.
+[Report health](/production-deployment/temporal-proxy/configure#health-checks) for what the gateway publishes.
+
+The status your probe reads is refreshed by a check the proxy runs against itself every 30 seconds, tunable under the
+`health` block. The two cover different ground, which is why you want both: the internal check exercises the
+interceptor chain every forwarded request travels, and your probe proves the gateway still accepts a connection and
+completes a handshake, which the internal check deliberately skips.
 
 Kubernetes gRPC probes connect in plaintext, so they cannot reach a gateway that terminates TLS. When `config.tls` is
 set, probe the proxy some other way, such as an exec probe running a client that presents the right certificate.
