@@ -71,7 +71,8 @@ my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 
 #### Choose a tag set
 
-Tags group metrics work best when standardized across the organization. Every Worker across your organization emits the same keys, so decide on the set before teams adopt it.
+Tags are most useful when standardized across the organization, so that every Worker emits the same keys.
+Decide on the set before teams adopt it.
 These five suit most organizations:
 
 | Tag           | Example            | Question it answers                                    |
@@ -349,7 +350,7 @@ handle = await client.start_workflow(
 ```
 
 In this example, `CustomerId` and `MiscData` are set as Search Attributes.
-These attributes are useful for querying Workflows based on the customer ID or the date the order was placed.
+These attributes are useful for querying Workflows by customer identifier, or by whatever text you store in `MiscData`.
 
 ### Upsert Search Attributes {/* #upsert-search-attributes */}
 
@@ -366,7 +367,7 @@ workflow.upsert_search_attributes([
 
 ### Remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
-To remove a Search Attribute that was previously set, use `value_unset call` on the Search Attribute key.
+To remove a Search Attribute that was previously set, call `value_unset()` on the Search Attribute key.
 
 ```python
 workflow.upsert_search_attributes([

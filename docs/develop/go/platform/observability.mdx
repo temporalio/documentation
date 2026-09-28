@@ -26,6 +26,9 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
+- For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
+- For an end-to-end example that exposes metrics with the Go SDK, refer to the [samples-go](https://github.com/temporalio/samples-go/tree/main/metrics) repo.
+
 :::tip[Use the OpenTelemetry v2 integration]
 
 To instrument Temporal applications with OpenTelemetry, use the
@@ -35,18 +38,16 @@ It propagates OpenTelemetry context across Temporal boundaries and
 is replay-safe when instrumenting Workflows.
 
 :::
-- For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
-- For an end-to-end example that exposes metrics with the Go SDK, refer to the [samples-go](https://github.com/temporalio/samples-go/tree/main/metrics) repo.
 
 To emit metrics from the Temporal Client in Go, create a [metrics handler](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) from the [Client Options](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions) and specify a listener address to be used by Prometheus.
 
 ```go
-client.Options{
+c, err := client.Dial(client.Options{
     MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
-      ListenAddress: "0.0.0.0:9090",
-      TimerType:     "histogram",
-    }
-}
+        ListenAddress: "0.0.0.0:9090",
+        TimerType:     "histogram",
+    })),
+})
 ```
 
 The Go SDK provides metrics handlers for [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) and [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry). Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsHandler`](/references/server-options#withcustommetricshandler) API.
@@ -173,7 +174,7 @@ tracingInterceptor, err := opentracing.NewInterceptor(opentracing.TracerOptions{
 tracingInterceptor, err := tracing.NewTracingInterceptor(tracing.TracerOptions{})
 ```
 
- and register it by passing it to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions):
+Register the interceptor by passing it to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions):
 
 ```go
 c, err := client.Dial(client.Options{
@@ -203,31 +204,19 @@ In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.d
 
 ```go
 import (
-  "context"
-  "time"
-
-  "go.temporal.io/sdk/activity"
   "go.temporal.io/sdk/workflow"
 )
 
-// Workflow is a standard workflow definition.
-// Note that the Workflow and Activity don't need to care that
-// their inputs/results are being compressed.
-func Workflow(ctx workflow.Context, name string) (string, error) {
-// ...
-
-workflow.WithActivityOptions(ctx, ao)
-
-// Getting the logger from the context.
+func YourWorkflow(ctx workflow.Context, name string) (string, error) {
+  // Get the logger from the context.
   logger := workflow.GetLogger(ctx)
-// Logging a message with the key value pair `name` and `name`
-  logger.Info("Compressed Payloads workflow started", "name", name)
 
-  info := map[string]string{
-    "name": name,
-  }
+  // Log a message with the key-value pair "name".
+  logger.Info("Workflow started", "name", name)
 
-  logger.Info("Compressed Payloads workflow completed.", "result", result)
+  result := "Hello, " + name
+
+  logger.Info("Workflow completed", "result", result)
 
   return result, nil
 }
@@ -334,7 +323,7 @@ This `request` value returns only open Workflows.
 For more List Filter examples, see the [examples provided for List Filters in the Temporal Visibility guide.](/list-filter#list-filter-examples)
 
 ```go
-resp, err := temporalClient.ListWorkflow(ctx.Background(), request)
+resp, err := temporalClient.ListWorkflow(context.Background(), request)
 if err != nil {
   return err
 }
@@ -368,10 +357,10 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
   // ...
   searchAttributes := map[string]interface{}{
     "CustomerId": payload["customer"],
-    "MiscData": payload["miscData"]
+    "MiscData":   payload["miscData"],
   }
   options := client.StartWorkflowOptions{
-    SearchAttributes:   searchAttributes
+    SearchAttributes: searchAttributes,
     // ...
   }
   we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
@@ -418,10 +407,10 @@ map[string]interface{}{
 
 ### Remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
-To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
+To remove the value set for a Search Attribute from within Workflow code, upsert it with an empty array: `[]`.
 
-**There is no support for removing a field.**
+The Search Attribute itself stays defined on the Namespace. Removing a custom Search Attribute from the Visibility store is a separate operation, described in [Search Attributes](/search-attribute#usage), and is not supported on Temporal Cloud.
 
-However, to achieve a similar effect, set the field to some placeholder value.
+To match Workflows that never had a value set, set the field to a placeholder value.
 For example, you could set `CustomKeywordField` to `impossibleVal`.
 Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
