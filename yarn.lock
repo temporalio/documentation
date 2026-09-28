@@ -8446,18 +8446,18 @@ inline-style-parser@0.2.7:
   resolved "https://registry.yarnpkg.com/inline-style-parser/-/inline-style-parser-0.2.7.tgz#b1fc68bfc0313b8685745e4464e37f9376b9c909"
   integrity sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==
 
-instantsearch-ui-components@0.37.0:
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.37.0.tgz#05663961021f39df1342a619af9ef832b44ca767"
-  integrity sha512-HKsTAy8ckxfUXQzp/wLkwHAelsiuwss+at0+zq++iUWj+cMoBmiGlY1DeHAKkZ7kURV/PfXBock2M2KH6dzTxg==
+instantsearch-ui-components@0.40.0:
+  version "0.40.0"
+  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.40.0.tgz#1cb2b9a0dfee4fa2c6cd8285580e72d7e4eadcd5"
+  integrity sha512-iswxns+LY+CsK70eBxAGNk3rNgbbZsHf9Dy+PA+WHahSe/se1N0cZuHNXyvvRepwsuceogft7HGncA2Nqiv8Bw==
   dependencies:
     "@swc/helpers" "0.5.18"
     markdown-to-jsx "^7.7.15"
 
-instantsearch.js@4.113.0:
-  version "4.113.0"
-  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.113.0.tgz#b6534ad90cbe58ce37c225c9ac5431fe89471d81"
-  integrity sha512-AzRh95GdtLpslQjWkOWJnvaVCjCDjYidLnQuOL/EOJ9jvEQFH2lzHjRAyKxDqYuZj9bJ6uLKxRhoJQji1ouZHw==
+instantsearch.js@4.116.0:
+  version "4.116.0"
+  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.116.0.tgz#46722a5ccb78f9037b41b319f4c0acae7997309c"
+  integrity sha512-d3qolbGBPNCTmoTwSBgXVCXKv/6Ow+gx0AEmNinQyliaoCLXUBgTrh/0dzKJu/j7itw1PYrjUZ6FwtTA1bJnQw==
   dependencies:
     "@algolia/events" "^4.0.1"
     "@swc/helpers" "0.5.18"
@@ -8468,7 +8468,7 @@ instantsearch.js@4.113.0:
     algoliasearch-helper "3.29.3"
     hogan.js "^3.0.2"
     htm "^3.0.0"
-    instantsearch-ui-components "0.37.0"
+    instantsearch-ui-components "0.40.0"
     preact "^10.10.0"
     qs "^6.5.1"
     react ">= 0.14.0"
@@ -11982,25 +11982,25 @@ react-icons@^5.7.0:
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.7.0.tgz#8969db00968ffdfc57fdc2ec9dd1ed88e35b3de9"
   integrity sha512-LBLy340Rzqy6+/yVhZKT3B/QpP1BZaesGqasf09HPOBzRarcDIFH0WwXlXQfE7q7ipxK4MSiC5DIBWURCny6fw==
 
-react-instantsearch-core@7.46.0:
-  version "7.46.0"
-  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.46.0.tgz#ac6edc5a42e1143ff332d2731f291567e80201b6"
-  integrity sha512-I1z2mPu/Cy7KIUCaoO9DLJ1ql+Jng3Shmy7pdWDBj3HddHaCJad5PEN/adi98daSHfBhJI3UsVNZOon9fO7DLg==
+react-instantsearch-core@7.49.0:
+  version "7.49.0"
+  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.49.0.tgz#5befe6e51018541ee0aff2fbb40b0690b442cb6e"
+  integrity sha512-jSuVck9g/Z1MEfv9MRlBhU7Dx5AIHPyQtdyYbKDuSnR2oaFVSAFc02p+F4hR4xmuoc3XJd5VVB1qfRB0WivqNA==
   dependencies:
     "@swc/helpers" "0.5.18"
     algoliasearch-helper "3.29.3"
-    instantsearch.js "4.113.0"
+    instantsearch.js "4.116.0"
     use-sync-external-store "^1.0.0"
 
-react-instantsearch@^7.46.0:
-  version "7.46.0"
-  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.46.0.tgz#709b88401348c131ebd98d2503838ba0cb37d416"
-  integrity sha512-VaPoaQtDEmaTq9NxKLnPR1Qu5H0xeq+NnqI7fHs8LFQ/Q4Nml134tsn61ePMwYhq7KjSpsXSLVabmOb9D46P7A==
+react-instantsearch@^7.49.0:
+  version "7.49.0"
+  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.49.0.tgz#ccbda6a2653062d64c63eb6734dd8801f97eb073"
+  integrity sha512-08oXw0kw0Ij1qR66drS+lqPfR4R8zbjHtc7nZgK+lA4k6FmpvMEAQopFVeeeIhNQQXg1QoMaTcddIZZoj1dvtw==
   dependencies:
     "@swc/helpers" "0.5.18"
-    instantsearch-ui-components "0.37.0"
-    instantsearch.js "4.113.0"
-    react-instantsearch-core "7.46.0"
+    instantsearch-ui-components "0.40.0"
+    instantsearch.js "4.116.0"
+    react-instantsearch-core "7.49.0"
 
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"
