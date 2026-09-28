@@ -32,7 +32,7 @@ Metrics can be scraped by systems like Prometheus, and graphs can be created usi
 
 Metrics in Ruby are configured on the `metrics` argument of the `telemetry` argument when creating a global `Temporalio::Runtime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
 
-## Set a Prometheus endpoint
+### Set a Prometheus endpoint
 
 The following example exposes a Prometheus endpoint on port `9000`.
 
@@ -174,6 +174,9 @@ Temporalio::Activity::Context.current.logger.info("Some log #{some_value}")
 Visibility refers to Temporal features for listing, filtering, and inspecting Workflow Executions.
 
 ### Use Search Attributes {/* #search-attributes */}
+
+- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime`, and `ExecutionStatus` are automatically indexed.
+- [Custom Search Attributes](/search-attribute#custom-search-attribute) let you store domain-specific metadata for Workflows.
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 

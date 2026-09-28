@@ -250,7 +250,7 @@ When starting a Workflow Execution with your Client, include the Custom Search A
 ...
 
     // Further down in the file
-    private static SearchAttributes generateSearchAttributes() {
+    private static SearchAttributes generateSearchAttributes(){
         return SearchAttributes.newBuilder().set(Constants.IS_ORDER_FAILED, false).build();
     }
 ```
@@ -279,11 +279,15 @@ This method is particularly useful for Workflows whose attributes need to change
 
   // Existing Workflow Logic
 
+  Map<String, Object> searchAttribute = new HashMap<>();
+
   Distance distance;
   try {
     distance = activities.getDistance(address);
+    searchAttribute.put("isOrderFailed", false);
     Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueSet(false));
   } catch (NullPointerException e) {
+    searchAttribute.put("isOrderFailed", true);
     Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueSet(true));
     throw new NullPointerException("Unable to get distance");
   }
@@ -291,7 +295,7 @@ This method is particularly useful for Workflows whose attributes need to change
 
 ### How to remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
-To remove a Search Attribute that was previously set, upsert it with its value unset.
+To remove a Search Attribute that was previously set, unset its value.
 
 ```java
     // In a shared constants file, so all files have access

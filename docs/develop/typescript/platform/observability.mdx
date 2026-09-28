@@ -160,14 +160,13 @@ An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
 
-The SDK's own [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
 You can find the log levels supported by the `winston` package used in the examples below in [their official documentation](https://github.com/winstonjs/winston#logging-levels). The Temporal SDK core normally uses `WARN` as its default logging level.
 
 ### Logging from Activities
 
 Activities run in the standard Node.js environment and may therefore use any Node.js logger directly.
 
-The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's Logger](#custom-logger). Attributes from the current Activity context are automatically included as metadata on every log entry emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entry emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
@@ -185,6 +184,13 @@ export async function greet(name: string): Promise<string> {
 
 </details>
 
+{/*
+
+#### Customizing Activity logging with `ActivityOutboundCallsInterceptor`
+
+FIXME(JWH): Quick introduction to `ActivityOutboundCallsInterceptor.getLogAttributes()`.
+*/}
+
 ### Logging from Workflows
 
 Workflows may not use regular Node.js loggers because:
@@ -192,7 +198,7 @@ Workflows may not use regular Node.js loggers because:
 1. Workflows run in a sandboxed environment and cannot do any I/O.
 1. Workflow code might get replayed at any time, which would result in duplicated log messages.
 
-The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's Logger](#custom-logger). Attributes from the current Workflow context are automatically included as metadata on every log entry emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entry emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
@@ -212,10 +218,19 @@ export async function myWorkflow(name: string): Promise<string> {
 
 The Workflow Context Logger tries to avoid reemitting log messages on Workflow Replays.
 
+{/*
+
+#### Customizing Workflow logging using `WorkflowOutboundCallsInterceptor`
+
+FIXME(JWH): Quick introduction to `WorkflowOutboundCallsInterceptor.getLogAttributes()`.
+*/}
+
 #### Limitations of Workflow logs
 
 Internally, Workflow logging uses Sinks, and is consequently subject to the same limitations as Sinks.
 Notably, logged objects must be serializable using the V8 serialization.
+
+{/* FIXME(JWH): Add more details and link to actual Sinks documentation */}
 
 ### What is the Runtime's Logger
 
@@ -229,7 +244,7 @@ A Temporal Worker may emit logs in various ways, including:
 All of these messages are internally routed to a single logger object, called the Runtime's Logger.
 By default, the Runtime's Logger simply writes messages to the console (that is, the process's `STDOUT`).
 
-### How to provide a custom logger {/* #custom-logger */}
+#### How to customize the Runtime's Logger
 
 A custom Runtime Logger may be registered when the SDK `Runtime` is instantiated. This is done only once per process.
 
@@ -303,6 +318,28 @@ Runtime.install({
 });
 ```
 
+### How to provide a custom logger {/* #custom-logger */}
+
+#### Logging in Workers and Clients
+
+The Worker comes with a default logger, which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
+The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
+
+#### Customizing the default logger
+
+Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
+
+```ts
+import { DefaultLogger, Runtime } from '@temporalio/worker';
+
+const logger = new DefaultLogger('WARN', ({ level, message }) => {
+  console.log(`Custom logger: ${level} — ${message}`);
+});
+Runtime.install({ logger });
+```
+
+The previous code example sets the default logger to log only messages with level `WARN` and higher.
+
 #### Accumulate logs for testing and reporting
 
 ```ts
@@ -315,6 +352,32 @@ logger.debug('hey', { a: 1 });
 logger.info('ho');
 logger.warn('lets', { a: 1 });
 logger.error('go');
+```
+
+A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
+
+```ts
+import { 
+  DefaultLogger,
+  Runtime
+} from '@temporalio/worker';
+import winston from 'winston';
+
+const winstonLogger = winston.createLogger({
+  level: 'debug',
+});
+
+const logger = new DefaultLogger('DEBUG', (entry) => {
+  winstonLogger.log({
+    label: 'worker',
+    level: entry.level.toLowerCase(),
+    message: entry.message,
+    timestamp: Number(entry.timestampNanos / 1_000_000n),
+    ...entry.meta,
+  });
+});
+
+Runtime.install({ logger });
 ```
 
 ## Visibility APIs {/* #visibility */}
@@ -425,8 +488,8 @@ import { upsertSearchAttributes } from '@temporalio/workflow';
 async function yourWorkflow() {
   upsertSearchAttributes({ CustomIntField: [1] });
 
-  // ... later, to remove:
-  upsertSearchAttributes({ CustomIntField: [] });
+// ... later, to remove:
+upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
 
