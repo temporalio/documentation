@@ -3,24 +3,88 @@ id: index
 title: Temporal Platform references
 sidebar_label: References
 description:
-  Index of every Temporal reference page, covering SDK and Server APIs, Commands, Events, metrics, and Service and Web
-  UI configuration.
+  Index of every Temporal reference page, covering SDK, Server, CLI, and Cloud APIs, Commands, Events, metrics, and
+  Service and Web UI configuration.
 tags:
   - Reference
 ---
 
-- [API reference](/references/api-reference)
-- [Temporal Service metrics reference](/references/cluster-metrics)
-- [Commands reference](/references/commands)
-- [Temporal Service configuration reference](/references/configuration)
-- [Dynamic configuration reference](/references/dynamic-configuration)
-- [Errors reference](/references/errors)
-- [Events reference](/references/events)
-- [Environment configuration reference](/references/client-environment-configuration)
-- [Failures reference](/references/failures)
-- [Temporal Cloud Operation reference](/references/operation-list)
-- [SDK metrics reference](/references/sdk-metrics)
-- [Server options reference](/references/server-options)
-- [Temporal Web UI configuration reference](/references/web-ui-configuration)
-- [Web UI environment variables reference](/references/web-ui-environment-variables)
-- [Glossary](/glossary)
+import PatternCards from '@site/src/components/PatternCards';
+
+<PatternCards items={[
+  {
+    href: "/references/api-reference",
+    title: "API reference",
+    description: "API documentation for the Temporal SDKs, Temporal Server, Temporal CLI, and Temporal Cloud.",
+  },
+  {
+    href: "/references/cluster-metrics",
+    title: "Temporal Service metrics",
+    description: "Metrics a self-hosted Temporal Service emits, covering request rates, latencies, errors, and Nexus Operations.",
+  },
+  {
+    href: "/references/commands",
+    title: "Commands",
+    description: "Every Command a Worker can issue after completing a Workflow Task, and its corresponding Event.",
+  },
+  {
+    href: "/references/configuration",
+    title: "Temporal Service configuration",
+    description: "The development.yaml settings for global options, persistence, service roles, and archival.",
+  },
+  {
+    href: "/references/dynamic-configuration",
+    title: "Dynamic configuration",
+    description: "Keys that tune rate limits, size limits, and retry defaults without restarting the Temporal Service.",
+  },
+  {
+    href: "/references/errors",
+    title: "Errors",
+    description: "Every Workflow Task error, with its cause and resolution steps.",
+  },
+  {
+    href: "/references/events",
+    title: "Events",
+    description: "Every Event that can appear in a Workflow Execution's Event History.",
+  },
+  {
+    href: "/references/client-environment-configuration",
+    title: "Environment configuration",
+    description: "Environment variables and TOML keys that configure a Temporal Client or the Temporal CLI.",
+  },
+  {
+    href: "/references/failures",
+    title: "Failures",
+    description: "Failure types for Workflows, Activities, and Nexus Operations, and their SDK classes or exceptions.",
+  },
+  {
+    href: "/references/operation-list",
+    title: "Temporal Cloud operations",
+    description: "Operations Temporal Cloud rate-limits per Namespace, with each operation's priority and throttling effect.",
+  },
+  {
+    href: "/references/sdk-metrics",
+    title: "SDK metrics",
+    description: "Metrics emitted by Temporal Clients and Workers, with each metric's type and SDK availability.",
+  },
+  {
+    href: "/references/server-options",
+    title: "Server options",
+    description: "ServerOptions for embedding the Temporal Server in a Go application, including auth, TLS, and metrics.",
+  },
+  {
+    href: "/references/web-ui-configuration",
+    title: "Temporal Web UI configuration",
+    description: "The development.yaml settings for the Web UI Server, including auth, TLS, and Cloud UI options.",
+  },
+  {
+    href: "/references/web-ui-environment-variables",
+    title: "Web UI environment variables",
+    description: "Environment variables that configure the Temporal Web UI in Docker, such as TEMPORAL_ADDRESS and TLS.",
+  },
+  {
+    href: "/glossary",
+    title: "Glossary",
+    description: "Definitions of terms used across the Temporal Platform.",
+  },
+]} />
