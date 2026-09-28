@@ -320,6 +320,11 @@
       "permanent": true
     },
     {
+      "source": "/references/cluster-metrics",
+      "destination": "/references/service-metrics",
+      "permanent": true
+    },
+    {
       "source": "/cluster-deployment-guide:path*",
       "destination": "/self-hosted-guide",
       "permanent": true

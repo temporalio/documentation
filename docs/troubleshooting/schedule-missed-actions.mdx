@@ -31,7 +31,7 @@ sum by (temporal_namespace) (
 
 ### Self-hosted
 
-Alert on [`schedule_missed_catchup_window`](/references/cluster-metrics#schedule_missed_catchup_window) grouped by `namespace`.
+Alert on [`schedule_missed_catchup_window`](/references/service-metrics#schedule_missed_catchup_window) grouped by `namespace`.
 
 Example PromQL:
 
@@ -93,8 +93,8 @@ Once you have identified the Schedule with a non-zero `missedCatchupWindow`, use
 ### Common root causes
 
 - **Service or Namespace outage longer than the Catchup Window.** The default Catchup Window is one year, so a miss typically means the Schedule is configured with a tighter window (minimum ten seconds) and the outage exceeded it.
-- **Namespace rate limiting.** If scheduled starts are throttled, Actions can queue past the Catchup Window. Cross-check [`temporal_cloud_v1_schedule_rate_limited_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_rate_limited_count) (Cloud) or [`schedule_rate_limited`](/references/cluster-metrics#schedule_rate_limited) (self-hosted) in the same time range.
-- **Buffer overruns under `BufferAll`.** Long-running Workflow Executions under `BufferAll` can push buffered Actions past the Catchup Window. Cross-check [`temporal_cloud_v1_schedule_buffer_overruns_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_buffer_overruns_count) (Cloud) or [`schedule_buffer_overruns`](/references/cluster-metrics#schedule_buffer_overruns) (self-hosted) and examine `bufferSize`.
+- **Namespace rate limiting.** If scheduled starts are throttled, Actions can queue past the Catchup Window. Cross-check [`temporal_cloud_v1_schedule_rate_limited_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_rate_limited_count) (Cloud) or [`schedule_rate_limited`](/references/service-metrics#schedule_rate_limited) (self-hosted) in the same time range.
+- **Buffer overruns under `BufferAll`.** Long-running Workflow Executions under `BufferAll` can push buffered Actions past the Catchup Window. Cross-check [`temporal_cloud_v1_schedule_buffer_overruns_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_buffer_overruns_count) (Cloud) or [`schedule_buffer_overruns`](/references/service-metrics#schedule_buffer_overruns) (self-hosted) and examine `bufferSize`.
 
 ### Remediate
 
@@ -109,4 +109,4 @@ Once you have identified the Schedule with a non-zero `missedCatchupWindow`, use
 - [Catchup Window](/schedule#catchup-window)
 - [Temporal CLI schedule reference](/cli/command-reference/schedule)
 - [Temporal Cloud OpenMetrics metrics reference](/cloud/metrics/openmetrics/metrics-reference)
-- [Self-hosted cluster metrics reference](/references/cluster-metrics)
+- [Self-hosted Temporal Service metrics reference](/references/service-metrics)
