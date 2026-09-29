@@ -88,7 +88,7 @@ async def main() -> None:
     client = await Client.connect(
         os.environ["TEMPORAL_ADDRESS"],
         namespace=os.environ["TEMPORAL_NAMESPACE"],
-        api_key=os.environ.get("TEMPORAL_API_KEY"),
+        api_key=os.environ["TEMPORAL_API_KEY"].strip(),
         plugins=[CloudRunIdPlugin()],
         tls=True,
     )

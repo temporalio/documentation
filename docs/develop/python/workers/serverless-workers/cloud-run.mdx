@@ -133,26 +133,29 @@ For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/
 
 Run an OpenTelemetry Collector as a sidecar in the Worker Pool. The Cloud Run OpenTelemetry plugin exports metrics and traces by OTLP gRPC to the Collector at `localhost:4317`. It configures the endpoint, service name, Core SDK metrics, and tracer provider from Cloud Run defaults.
 
-Create the plugin and pass it to `Client.connect`. The sample reads its connection settings from the environment:
+Create the plugin and pass it to `Client.connect`. The sample also registers `CloudRunIdPlugin` on the same Client and
+reads its connection settings from the environment:
 
-<!--SNIPSTART python-cloud-run-otel-worker {"selectedLines": ["1-8"]}-->
-[gcp/cloud_run/opentelemetry/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/opentelemetry/worker.py)
+<!--SNIPSTART python-cloud-run {"selectedLines": ["1-10"]}-->
+[gcp/cloud_run/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/worker.py)
 ```py
+# OpenTelemetryPlugin exports Core metrics and traces to the collector
+# sidecar; CloudRunIdPlugin sets the client identity from instance metadata.
 plugin = OpenTelemetryPlugin(add_temporal_spans=True)
 client = await Client.connect(
     settings.address,
     namespace=settings.namespace,
     api_key=settings.api_key,
     tls=settings.tls,
-    plugins=[plugin],
+    plugins=[plugin, CloudRunIdPlugin()],
 )
 ```
 <!--SNIPEND-->
 
 Configure the Collector sidecar to receive OTLP gRPC on `localhost:4317`, export traces to Google Cloud, and export metrics to Google Managed Service for Prometheus:
 
-<!--SNIPSTART python-cloud-run-otel-collector-config-->
-[gcp/cloud_run/opentelemetry/collector-config.yaml](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/opentelemetry/collector-config.yaml)
+<!--SNIPSTART python-cloud-run-collector-config-->
+[gcp/cloud_run/collector-config.yaml](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/collector-config.yaml)
 ```yaml
 receivers:
   otlp:
@@ -223,23 +226,13 @@ service:
 ```
 <!--SNIPEND-->
 
-Wait until the Collector accepts connections before starting the Worker. On shutdown, call `plugin.shutdown()` after the Worker stops so traces can flush. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Python Cloud Run OpenTelemetry sample](https://github.com/temporalio/samples-python/pull/353).
+Wait until the Collector accepts connections before starting the Worker. On shutdown, call `plugin.shutdown()` after the Worker stops so traces can flush. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Python Cloud Run sample](https://github.com/temporalio/samples-python/pull/376).
 
 ## Set a Worker identity {/* #worker-identity */}
 
-Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The preceding example registers it
+on the Client alongside the OpenTelemetry plugin. It reads Cloud Run environment variables and instance metadata when
+the Client connects, then Workers created from that Client inherit the identity.
 
-<!--SNIPSTART python-cloud-run-id-->
-[gcp/cloud_run/id/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/id/worker.py)
-```py
-client = await Client.connect(
-    settings.address,
-    namespace=settings.namespace,
-    plugins=[CloudRunIdPlugin()],
-    api_key=settings.api_key,
-    tls=settings.tls,
-)
-```
-<!--SNIPEND-->
-
-The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [Python Cloud Run Id sample](https://github.com/temporalio/samples-python/pull/356).
+The Id plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete
+example, see the [Python Cloud Run sample](https://github.com/temporalio/samples-python/pull/376).
