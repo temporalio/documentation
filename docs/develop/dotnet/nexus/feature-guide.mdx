@@ -100,7 +100,7 @@ You write the contract once as a JSON or YAML definition file and run `nexgen` a
 runtime validators, and the Service definition itself.
 
 This is what makes a Nexus Service polyglot. Both sides generate from the same definition file: the handler implements
-the Service, the caller invokes its Operations, and neither hand-writes a request or response type. A Python handler
+the Service, the caller invokes its Operations, and neither hand-writes a request or response type. A C# handler
 and a Go caller share no code, but they both run off that same service contract - so they interoperate with no
 coordination between the teams beyond the contract itself.
 
