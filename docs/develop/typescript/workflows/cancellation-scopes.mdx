@@ -1,17 +1,17 @@
 ---
 id: cancellation-scopes
 title: Cancellation scopes - TypeScript SDK
-description: Shows cancellation scopes with the TypeScript SDK
+description: Control cancellation in TypeScript Workflows with the CancellationScope tree, including nonCancellable, withTimeout, nesting, and shared promises.
 sidebar_label: Cancellation scopes
 slug: /develop/typescript/workflows/cancellation-scopes
 toc_max_heading_level: 3
 tags:
   - TypeScript SDK
   - Temporal SDKs
-  - Workflow
+  - Workflows
 ---
 
-## Cancellation scopes in Typescript {/* #cancellation-scopes */}
+## Cancellation scopes in TypeScript {/* #cancellation-scopes */}
 
 In the TypeScript SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation
 behaviors you can specify. By default, everything runs in the "root" scope.

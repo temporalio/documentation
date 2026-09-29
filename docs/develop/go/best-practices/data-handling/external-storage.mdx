@@ -365,7 +365,7 @@ type PreferredSelector struct {
 }
 
 func (s *PreferredSelector) SelectDriver(
-	ctx converter.StorageDriverStoreContext,
+	ctx converter.StorageDriverSelectContext,
 	payload *commonpb.Payload,
 ) (converter.StorageDriver, error) {
 	return s.preferred, nil

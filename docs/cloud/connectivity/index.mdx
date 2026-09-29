@@ -86,12 +86,12 @@ Connectivity Rules cannot be updated in place. If you already have a public Conn
 An AWS PrivateLink (PL) private Connectivity Rule requires:
 
 - `connection-id`: The **VPC endpoint identifier** of the PL connection — the `vpce-…` value from your AWS account, *not* the endpoint service or DNS name (ex: `vpce-00939a7ed9EXAMPLE`).
-- `region`: The region of the PL connection, prefixed with `aws-` (ex: `aws-us-east-1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
+- `region`: The region of the PL connection, prefixed with `aws-` (ex: `aws-us-east-1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/evaluate/cloud/regions) for supported regions.
 
 A GCP Private Service Connect (PSC) private Connectivity Rule requires:
 
 - `connection-id`: The **PSC connection identifier** of the endpoint (ex: `1234567890123456789`). Find it on the endpoint's detail page in the Google Cloud console.
-- `region`: The region of the PSC connection, prefixed with `gcp-` (ex: `gcp-us-east1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
+- `region`: The region of the PSC connection, prefixed with `gcp-` (ex: `gcp-us-east1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/evaluate/cloud/regions) for supported regions.
 - `gcp-project-id`: The identifier of the GCP project where you created the PSC connection (ex: `my-example-project-123`).
 
 Connectivity Rules can be created and managed with the [Temporal Cloud CLI extension](/cli/cloud), [tcld](/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), or the [Cloud Ops API](/ops). There is no Temporal Cloud Web UI option for creating or managing Connectivity Rules at this time.
@@ -106,7 +106,7 @@ Without a Connectivity Rule, Temporal Cloud has no record that your PrivateLink 
 
 Only [Account Admins and Account Owners](/cloud/manage-access/roles-and-permissions#account-level-roles) can create and manage connectivity rules. Connectivity rules are visible to Account Developers, Account Admins, and Account Owners.
 
-By default each namespace is limited to 5 private connectivity rules, and each account is limited to 50 private connectivity rules. You can [contact support](/cloud/support#support-ticket) to request a higher limit.
+By default each namespace is limited to 5 private connectivity rules, and each account is limited to 50 private connectivity rules. You can [contact support](/evaluate/cloud/support#support-ticket) to request a higher limit.
 
 There is only one public rule allowed per account, because it's generic and can be reused for all namespaces that you want to be available on the internet. Trying to create more than one public rule will throw an error.
 

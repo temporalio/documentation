@@ -415,6 +415,11 @@
   color: var(--temporal-dark);
 }
 
+.custom-search-hit-language {
+  color: var(--temporal-text-muted);
+  font-weight: 400;
+}
+
 .custom-search-hit-path {
   font-size: 12px;
   color: var(--temporal-text-muted);
@@ -505,7 +510,9 @@
 .custom-search-language-filter-content {
   display: grid;
   grid-template-rows: 1fr;
-  transition: grid-template-rows 0.25s ease, opacity 0.2s ease;
+  transition:
+    grid-template-rows 0.25s ease,
+    opacity 0.2s ease;
   opacity: 1;
 }
 
@@ -745,7 +752,9 @@
   color: var(--ifm-font-color-base);
   outline: none;
   font-family: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .search-page-input:focus {

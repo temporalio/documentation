@@ -16,7 +16,7 @@ Temporal keeps your Workflows running even when a Worker crashes. But what happe
 In the cloud, outages are commonplace. An outage can bring down a whole data center, cluster, region, or cloud provider. To be durable in the cloud, Workflows and applications must handle these outages smoothly, just like Temporal handles a Worker crash.
 
 Temporal Cloud's High Availability features add extra reliability to Temporal Cloud Namespaces by handling cloud outages. Using asynchronous <ToolTipTerm term="replication"/> between multiple regions or cloud providers, combined with automatic outage detection and failover, High Availability keeps your Workflows running even during a cloud region outage.
-This extra availability comes with an enhanced [SLA](/cloud/sla) of 99.99%, _including_ cloud provider outages.
+This extra availability comes with an enhanced [SLA](/evaluate/cloud/sla) of 99.99%, _including_ cloud provider outages.
 
 :::tip White paper
 
@@ -26,7 +26,7 @@ For an in-depth guide covering everything from why you need High Availability to
 
 ## Built-in reliability
 
-Even without High Availability features, Temporal Cloud provides robust reliability and a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)) guarantee against service errors.
+Even without High Availability features, Temporal Cloud provides robust reliability and a 99.9% contractual Service Level Agreement ([SLA](/evaluate/cloud/sla)) guarantee against service errors.
 
 Each standard Temporal Namespace uses replication across three [Availability Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (AZs) to ensure high availability.
 An Availability Zone is akin to an isolated data center managed by a cloud hyperscaler, with independent power, networking, and cooling infrastructure.
@@ -59,7 +59,7 @@ High Availability features extend Temporal Cloud's replication across regions an
 
 You can usually choose your replica region, but the replica must be on the same continent as the primary region.
 This means that a few Temporal Cloud regions do not yet support Multi-region Replication or Multi-cloud Replication.
-See [Regions](/cloud/regions) for a full list of supported replica regions.
+See [Regions](/evaluate/cloud/regions) for a full list of supported replica regions.
 
 You can't enable both Multi-region Replication and Multi-cloud Replication on the same Namespace at the same time.
 
@@ -106,9 +106,9 @@ To keep passive-region Workers on standby until failover by disabling this forwa
 
 ## Service levels and recovery objectives
 
-Namespaces using High Availability have a 99.99% [uptime SLA](/cloud/sla) with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
+Namespaces using High Availability have a 99.99% [uptime SLA](/evaluate/cloud/sla) with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
 
-- [Service Level Agreement (SLA)](/cloud/sla)
+- [Service Level Agreement (SLA)](/evaluate/cloud/sla)
 - [Recovery Point Objective (RPO) and Recovery Time Objective (RTO)](/cloud/rpo-rto)
 
 ## Failover
@@ -130,7 +130,7 @@ These are often major concerns for financial services, e-commerce, gaming, globa
 
 In selected regions, you can add a replica to a Namespace in the same region.
 Temporal operates a "cell architecture" and will replicate the Namespace across multiple cells in that region.
-This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages) in selected regions.
+This feature is currently in [Public Preview](/evaluate/product-release-stages) in selected regions.
 
 Failovers between cells are always managed automatically by Temporal. Unlike Multi-region and Multi-cloud Replication, you cannot disable automatic failovers and you cannot trigger a manual failover for a Same-region Replication Namespace. See [Failovers](/cloud/high-availability/failovers) for details.
 

@@ -1,0 +1,78 @@
+---
+id: interceptors
+title: Interceptors
+sidebar_label: Interceptors
+description:
+  Implement Interceptors in the Temporal Go SDK to manage inbound and outbound SDK calls, enhance tracing, and add
+  authorization to your Workflows and Activities.
+toc_max_heading_level: 3
+tags:
+  - Interceptors
+  - Go SDK
+  - Temporal SDKs
+---
+
+Interceptors wrap inbound and outbound Temporal calls so you can apply shared behavior such as tracing, logging, or
+authorization. See [Interceptors](/encyclopedia/interceptors) for the inbound vs outbound model.
+
+Register them on the Client (`client.Options.Interceptors`), the Worker (`worker.Options.Interceptors`), or both. Full
+API: [`go.temporal.io/sdk/interceptor`](https://pkg.go.dev/go.temporal.io/sdk/interceptor).
+
+## Implement a Client interceptor
+
+Embed `ClientInterceptorBase` on a type that implements `InterceptClient`, and embed
+`ClientOutboundInterceptorBase` on a type that overrides the calls you want to intercept. Forward every call you don't
+override to `Next` so the rest of the chain still runs.
+
+```go
+type loggingClientInterceptor struct {
+	interceptor.ClientInterceptorBase
+}
+
+func (loggingClientInterceptor) InterceptClient(
+	next interceptor.ClientOutboundInterceptor,
+) interceptor.ClientOutboundInterceptor {
+	return &loggingClientOutboundInterceptor{
+		ClientOutboundInterceptorBase: interceptor.ClientOutboundInterceptorBase{Next: next},
+	}
+}
+
+type loggingClientOutboundInterceptor struct {
+	interceptor.ClientOutboundInterceptorBase
+}
+
+func (l *loggingClientOutboundInterceptor) ExecuteWorkflow(
+	ctx context.Context,
+	in *interceptor.ClientExecuteWorkflowInput,
+) (client.WorkflowRun, error) {
+	log.Printf("starting workflow %q (%s)", in.Options.ID, in.WorkflowType)
+	return l.Next.ExecuteWorkflow(ctx, in)
+}
+```
+
+Register the interceptor when you create the Client:
+
+```go
+c, err := client.Dial(client.Options{
+	Interceptors: []interceptor.ClientInterceptor{&loggingClientInterceptor{}},
+})
+```
+
+Worker interceptors follow the same pattern for `WorkerInterceptorBase`, `WorkflowInboundInterceptorBase` /
+`WorkflowOutboundInterceptorBase`, and `ActivityInboundInterceptorBase` / `ActivityOutboundInterceptorBase`. See the
+[Logging Interceptor sample](https://github.com/temporalio/samples-go/tree/main/logger-interceptor) for a complete
+Worker interceptor and its registration.
+
+:::warning Workflow interceptors and replay
+
+Workflow interceptor methods also run during [replay](/develop/go/best-practices/testing-suite#replay). Use replay-safe
+APIs for logging, randomness, and time.
+
+:::
+
+## Related
+
+- [Observability - Tracing](/develop/go/platform/observability#tracing)
+- [Context Propagation](/develop/go/best-practices/context-propagation)
+- [Logging Interceptor sample](https://github.com/temporalio/samples-go/tree/main/logger-interceptor)
+- [Plugins - Interceptors](/develop/plugins-guide#interceptors)

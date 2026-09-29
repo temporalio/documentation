@@ -44,22 +44,32 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Create PR
+      - name: Commit and push changes
         if: steps.diff.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
           git config user.name "temporal-cicd[bot]"
           git config user.email "temporal-cicd[bot]@users.noreply.github.com"
 
-          branch_name="update-sdk-versions-$(date +%Y%m%d)"
-          git checkout -b "$branch_name"
+          branch_name="update-sdk-versions/daily-update"
+          git checkout -B "$branch_name"
           git add src/data/sdk-versions.json
           git commit -m "Update SDK version chips"
-          git push origin "$branch_name"
+          git push --force origin "$branch_name"
 
-          gh pr create \
-            --title "Update SDK version chips" \
-            --body "Automated update of the latest SDK versions shown on /develop (src/data/sdk-versions.json), sourced from each SDK's package registry." \
-            --head "$branch_name" \
-            --base "main"
+      - name: Create or update PR
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          branch_name="update-sdk-versions/daily-update"
+          existing_pr=$(gh pr list --head "$branch_name" --state open --json number --jq '.[0].number')
+
+          if [ -n "$existing_pr" ]; then
+            echo "PR #$existing_pr already exists — updated with latest push."
+          else
+            gh pr create \
+              --title "Update SDK version chips" \
+              --body "Automated update of the latest SDK versions shown on /develop (src/data/sdk-versions.json), sourced from each SDK's package registry." \
+              --head "$branch_name" \
+              --base "main"
+          fi

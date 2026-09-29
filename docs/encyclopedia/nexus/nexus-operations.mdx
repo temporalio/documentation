@@ -14,7 +14,7 @@ import { CaptionedImage } from '@site/src/components';
 
 [Nexus Operations](/glossary#nexus-operation) can be synchronous or asynchronous. Unlike a traditional RPC, an asynchronous Nexus Operation has an operation token that can be used to re-attach to a long-running Operation backed by a Workflow.
 An Operation's lifecycle spans scheduling, reliable delivery with retries, handler execution, and result or callback completion.
-Use a synchronous Nexus Operation only when the complete execution path is highly reliable, has predictably low latency, and finishes well within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout).
+Use a synchronous Nexus Operation only when the complete execution path is highly reliable, has predictably low latency, and finishes well within the [10-second handler deadline](/evaluate/cloud/limits#nexus-operation-request-timeout).
 Use an asynchronous Nexus Operation when latency or availability is uncertain, the work might exceed the handler deadline, or execution depends on a potentially unreliable service or database.
 
 ## SDK support {/* #sdk-support */}
@@ -50,7 +50,7 @@ The Machinery ensures [at-least-once](#at-least-once-execution-semantics-and-ide
 
 ### Synchronous Operation lifecycle
 
-Synchronous Operations must complete within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout), as measured from the caller's Nexus Machinery.
+Synchronous Operations must complete within the [10-second handler deadline](/evaluate/cloud/limits#nexus-operation-request-timeout), as measured from the caller's Nexus Machinery.
 
 <CaptionedImage
     src="/img/cloud/nexus/nexus-sync-operation.png"
@@ -78,14 +78,14 @@ Lifecycle for a synchronous Operation (for example, to Signal, Query, or Update 
 
 :::tip
 
-Use a synchronous Operation only when its complete execution path is highly reliable, predictably low latency, and finishes well within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout).
+Use a synchronous Operation only when its complete execution path is highly reliable, predictably low latency, and finishes well within the [10-second handler deadline](/evaluate/cloud/limits#nexus-operation-request-timeout).
 Timed-out handlers are retried until the Operation's Schedule-to-Close timeout is exceeded.
 
 :::
 
 ### Asynchronous Operation lifecycle {/* #asynchronous-operation-lifecycle */}
 
-Asynchronous Operations can run up to [60 days](/cloud/limits#nexus-operation-duration-limits) (the maximum Schedule-to-Close timeout in Temporal Cloud).
+Asynchronous Operations can run up to [60 days](/evaluate/cloud/limits#nexus-operation-duration-limits) (the maximum Schedule-to-Close timeout in Temporal Cloud).
 Differences from the synchronous lifecycle are in **bold**.
 
 <CaptionedImage
@@ -114,7 +114,7 @@ Differences from the synchronous lifecycle are in **bold**.
 
 ### Executing code from a synchronous handler {/* #executing-arbitrary-code-from-a-sync-handler */}
 
-Synchronous handlers can execute code directly but must complete within the [handler deadline](/cloud/limits#nexus-operation-request-timeout).
+Synchronous handlers can execute code directly but must complete within the [handler deadline](/evaluate/cloud/limits#nexus-operation-request-timeout).
 Use the Temporal SDK Client to invoke Signals, Queries, Updates, or other reliable code.
 
 :::caution
@@ -174,7 +174,7 @@ The Nexus Machinery [automatically retries](#automatic-retries) failed requests 
 
 This timeout covers the full [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle). Asynchronous Operations are scheduled, started, and completed. Synchronous Operations don't have an intermediate started state because they complete as part of the start request.
 
-In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](/cloud/limits#nexus-operation-duration-limits).
+In Temporal Cloud, the [maximum Schedule-to-Close timeout is 60 days](/evaluate/cloud/limits#nexus-operation-duration-limits).
 
 ### Schedule-to-Start timeout {/* #schedule-to-start-timeout */}
 
@@ -329,7 +329,7 @@ Operations started with [New-Workflow-Run-Operation](/nexus/operations#sdk-suppo
 Additional callers can attach to the same handler Workflow using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy).
 
 
-Each handler Workflow has a [Callback limit](/workflow-execution/limits#workflow-execution-callback-limits) (configurable for self-hosted, see [Cloud limits](/cloud/limits#per-workflow-callback-limits) for Temporal Cloud).
+Each handler Workflow has a [Callback limit](/workflow-execution/limits#workflow-execution-callback-limits) (configurable for self-hosted, see [Cloud limits](/evaluate/cloud/limits#per-workflow-callback-limits) for Temporal Cloud).
 Callers that exceed the limit receive an error.
 
 When a handler Workflow uses [Continue-As-New](/workflow-execution/continue-as-new), existing completion Callbacks are copied to the new Execution.

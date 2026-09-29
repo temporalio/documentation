@@ -2,13 +2,11 @@
 id: cancellation
 title: Cancellation - .NET SDK
 sidebar_label: Cancellation
-description:
-  Interrupt Workflow Execution in .NET using the Temporal SDK. Cancel for graceful stops; terminate for forceful stops.
-  Handle Cancellation in Workflow and Activities efficiently.
+description: Handle Cancellation in .NET Workflows and Activities, request Cancellation from a Client, and choose between Cancellation, termination, and reset.
 toc_max_heading_level: 4
 tags:
   - Workflows
-  - .Net SDK
+  - .NET SDK
   - Temporal SDKs
 ---
 
@@ -126,7 +124,7 @@ var handle = myClient.GetWorkflowHandle("my-workflow-id");
 await handle.CancelAsync();
 ```
 
-#### How to request Cancellation of an Activity
+#### Request Cancellation of an Activity {/* #request-cancellation-of-an-activity */}
 
 By default, Activities are automatically cancelled when the Workflow is cancelled since the workflow cancellation token
 is used by activities by default. To issue a cancellation explicitly, a new cancellation token can be created.
