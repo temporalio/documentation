@@ -2506,6 +2506,11 @@
       "permanent": true
     },
     {
+      "source": "/nexus/code-generator",
+      "destination": "/nexus/nexgen",
+      "permanent": true
+    },
+    {
       "source": "/cloud/sla",
       "destination": "/evaluate/cloud/sla",
       "permanent": true

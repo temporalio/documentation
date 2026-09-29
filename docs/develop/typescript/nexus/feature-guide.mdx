@@ -134,7 +134,7 @@ Operation:
   `getWorkflowHandle`. The handler returns as soon as that Execution has started, and the Operation stays open until the
   Execution finishes, which may be days later. Its result is delivered to the caller through the Nexus completion
   callback. This is what lets an Operation outlive the
-  [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout).
+  [Nexus request timeout](/evaluate/cloud/limits#nexus-operation-request-timeout).
 
 A handler can perform any number of synchronous side effects, such as sending a Signal, but at most one asynchronous
 backing per invocation.
@@ -145,7 +145,7 @@ Return a synchronous result when the Operation can answer immediately. The handl
 and the Operation completes during the call.
 
 Handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking), and the whole
-call has to finish inside the [Nexus request timeout](/cloud/limits#nexus-operation-request-timeout).
+call has to finish inside the [Nexus request timeout](/evaluate/cloud/limits#nexus-operation-request-timeout).
 
 ```ts
 import * as nexus from 'nexus-rpc';
