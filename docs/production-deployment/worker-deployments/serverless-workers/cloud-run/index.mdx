@@ -139,11 +139,11 @@ Python Worker setup, see [Serverless Workers on GCP Cloud Run - Python SDK](/dev
 package main
 
 import (
+	"crypto/tls"
 	"log"
 	"os"
 
 	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/envconfig"
 	"go.temporal.io/sdk/contrib/gcp/cloudrun/id"
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
@@ -152,9 +152,13 @@ import (
 )
 
 func main() {
-	clientOptions := envconfig.MustLoadDefaultClientOptions()
-	clientOptions.Plugins = append(clientOptions.Plugins, id.NewCloudRunIDPlugin())
-	c, err := client.Dial(clientOptions)
+	c, err := client.Dial(client.Options{
+		HostPort:          os.Getenv("TEMPORAL_ADDRESS"),
+		Namespace:         os.Getenv("TEMPORAL_NAMESPACE"),
+		ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{}},
+		Credentials:       client.NewAPIKeyStaticCredentials(os.Getenv("TEMPORAL_API_KEY")),
+		Plugins:           []client.Plugin{id.NewCloudRunIDPlugin()},
+	})
 	if err != nil {
 		log.Fatalln("Unable to create client", err)
 	}
@@ -197,10 +201,8 @@ w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
 
 If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
 
-This example loads the Temporal Cloud connection settings with `envconfig`, then adds the Cloud Run Id plugin to identify
-each Worker as `<instance-id>@<revision>`. The [Go Cloud Run Id sample](https://github.com/temporalio/samples-go/pull/531)
-constructs `client.Options` directly for a plaintext connection. For more on the Go Worker setup, see
-[Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
+The example uses the Cloud Run Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+Go Worker setup, see [Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Go>
 <SdkTabs.TypeScript>
@@ -696,8 +698,7 @@ gcloud run worker-pools deploy my-temporal-worker-pool-build-1 \
 | `--set-env-vars`    | Non-secret Worker configuration. See [Environment configuration](/develop/environment-configuration).                   |
 | `--set-secrets`     | Maps a Secret Manager secret to an environment variable. Use for `TEMPORAL_API_KEY` or TLS client cert/key material.    |
 
-The environment configuration package reads environment variables and configuration files at startup. For the
-full list of supported environment variables, config file format, and profiles, see
+For the full list of supported environment variables, config file format, and profiles, see
 [Environment configuration](/develop/environment-configuration).
 
 ## 3. Grant Temporal permission to manage the Worker Pool (Cloud only) {/* #configure-iam */}
