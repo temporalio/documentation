@@ -25,13 +25,18 @@ such as:
 The following table provides a summary of the account-level roles and their primary purpose. Refer to the
 [Permissions reference](/cloud/manage-access/permissions-reference#account-level-access) for API-level details.
 
-| Role          | Primary purpose                             | Can create Namespaces | Automatic Namespace Admin               | Billing and usage access          |
-| ------------- | ------------------------------------------- | --------------------- | --------------------------------------- | --------------------------------- |
-| Account Owner | Owns and governs the account                | Yes                   | All Namespaces (cannot be revoked)      | Full billing, payments, and usage |
-| Global Admin  | Administers account configuration and users | Yes                   | All Namespaces (cannot be revoked)      | Usage only                        |
-| Developer     | Creates and manages Namespaces they own     | Yes                   | Namespaces they create (can be revoked) | None                              |
-| Finance Admin | Manages billing and payment information     | No                    | None                                    | Full billing, payments, and usage         |
-| Read-Only     | Views account configuration and resources   | No                    | None                                    | None                              |
+| Role              | Primary purpose                                | Can create Namespaces | Automatic Namespace Admin               | Billing and usage access          |
+| ----------------- | ---------------------------------------------- | --------------------- | --------------------------------------- | --------------------------------- |
+| Account Owner     | Owns and governs the account                   | Yes                   | All Namespaces (cannot be revoked)      | Full billing, payments, and usage |
+| Global Admin      | Administers account configuration and users    | Yes                   | All Namespaces (cannot be revoked)      | Usage only                        |
+| Developer         | Creates and manages Namespaces they own        | Yes                   | Namespaces they create (can be revoked) | None                              |
+| Finance Admin     | Manages billing and payment information        | No                    | None                                    | Full billing, payments, and usage |
+| Read-Only         | Views account configuration and resources      | No                    | None                                    | None                              |
+| Metrics Read-Only | Reads account metrics from the OpenMetrics API | No                    | None                                    | None                              |
+
+The Metrics Read-Only role is intended for Service Accounts used by observability integrations. It grants read access to
+the [Temporal Cloud OpenMetrics endpoint](/cloud/metrics/openmetrics) but no other permissions. An Account Owner or
+Global Admin must manage the Service Account and its API keys.
 
 Account-level roles don't govern day-to-day operations within a Namespace. Access to resources inside a Namespace, such
 as Workflows and Workflow Executions, is controlled by [Namespace-level permissions](#namespace-level-permissions).
