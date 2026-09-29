@@ -56,7 +56,7 @@ Nexus replaces all three with a contract between caller and handler, less code, 
 ## Limits to plan for
 
 - Nexus is available in the Go, Java, Python, TypeScript, .NET, and Rust SDKs. PHP and Ruby don't support it.
-- A Synchronous Operation must complete within a [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout). An Asynchronous Operation has a [maximum ScheduleToClose duration of 60 days](/cloud/limits#nexus-operation-duration-limits).
+- A Synchronous Operation must complete within a [10-second handler deadline](/evaluate/cloud/limits#nexus-operation-request-timeout). An Asynchronous Operation has a [maximum ScheduleToClose duration of 60 days](/evaluate/cloud/limits#nexus-operation-duration-limits).
 - A Workflow Execution can have 30 in-flight Nexus Operations at a time, and a handler Workflow accepts 2,000 callbacks, which sets how many callers can attach to it.
 - Temporal Cloud defaults to 100 Nexus Endpoints per Account and 1,000 caller Namespaces per Endpoint. Support can raise both.
 - The global Nexus Registry, runtime access controls, audit logging, and cross-region routing are Temporal Cloud features. On a self-hosted Temporal Service, you enable the HTTP API and Nexus dynamic configuration yourself, and external Nexus calls are still experimental.

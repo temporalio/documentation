@@ -1,0 +1,290 @@
+---
+id: standalone-activities-quickstart
+title: Standalone Activities Rust Quickstart
+sidebar_label: Quickstart
+description: Execute a Standalone Activity with the Temporal Rust SDK without writing a Workflow.
+tags:
+  - Activities
+  - Temporal Client
+  - Rust SDK
+  - setup
+  - getting started
+hide_table_of_contents: true
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components';
+
+# Quickstart
+
+Standalone Activities are Activities that run independently, without being orchestrated by a
+Workflow. Instead of executing an Activity from within a Workflow Definition using
+`ctx.execute_activity()`, you execute a Standalone Activity directly from a
+[`Client`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html).
+
+The way you write the Activity and register it with a Worker is identical to [Workflow
+Activities](/develop/rust/activities/basics). The only difference is that you execute a Standalone
+Activity directly from your Temporal Client.
+
+:::note
+
+This documentation uses source code from the
+[standalone_activities](https://github.com/temporalio/sdk-rust/tree/main/crates/sdk/examples/standalone_activities)
+sample.
+
+:::
+
+<SetupSteps>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+{`brew install temporal`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal --version`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal server start-dev`}
+</CodeSnippet>
+</>
+}>
+
+## Get started with Standalone Activities {/* #get-started */}
+
+Prerequisites:
+
+- **Rust** 1.92.0+
+
+- **Temporal Rust SDK** (v1.0.0 or higher). See the [Rust Quickstart](/develop/rust/quickstart) for install instructions.
+
+- **Temporal CLI** v1.9.1 or higher. Install with Homebrew, or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms. Verify the installation with `temporal --version`.
+
+Start the Temporal development server with `temporal server start-dev`.
+
+This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
+It uses an in-memory database, so do not use it for real use cases.
+
+The Temporal Server will now be available for client connections on `localhost:7233`, and the
+Temporal Web UI will now be accessible at [http://localhost:8233](http://localhost:8233).
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="toml" title="Cargo.toml">
+{`[dependencies]
+futures = "0.3"
+temporalio-client = "1.0.0"
+temporalio-macros = "1.0.0"
+temporalio-sdk = "1.0.0"
+tokio = { version = "1", features = ["full"] }
+`}
+</CodeSnippet>
+</>
+}>
+
+## Clone the sample
+
+Clone the [sdk-rust](https://github.com/temporalio/sdk-rust) repository to follow along:
+
+```bash
+git clone https://github.com/temporalio/sdk-rust.git
+cd sdk-rust/crates/sdk
+```
+
+The sample consists of separate programs in the `crates/sdk/examples/standalone_activities` directory:
+
+```
+standalone_activities/
+├── activities.rs           # Activity definition, shared by the programs below
+├── worker.rs               # Worker that processes Activity Tasks
+├── execute_activity.rs     # Executes an Activity and waits for the result
+├── start_activity.rs       # Starts an Activity without blocking
+├── get_activity_handle.rs  # Gets a handle to an existing Activity
+├── list_activities.rs      # Lists Activity Executions
+└── count_activities.rs     # Counts Activity Executions
+```
+
+To write the same code in your own project, add the dependencies shown here to your `Cargo.toml`.
+Standalone Activities need `temporalio-client` for the Client, `temporalio-sdk` and
+`temporalio-macros` for the Activity and Worker, and `tokio` as the async runtime. `futures` is
+needed to consume the stream returned by `list_activities`.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="rust" title="activities.rs">
+{`use temporalio_macros::activities;
+use temporalio_sdk::activities::{ActivityContext, ActivityError};
+
+pub struct GreetingActivities;
+
+#[activities]
+impl GreetingActivities {
+    #[activity]
+    pub async fn compose_greeting(
+        _ctx: ActivityContext,
+        input: (String, String),
+    ) -> Result<String, ActivityError> {
+        let (greeting, name) = input;
+        Ok(format!("{greeting}, {name}!"))
+    }
+}`}
+</CodeSnippet>
+</>
+}>
+
+## Define your Activity {/* #define-activity */}
+
+An Activity in the Temporal Rust SDK is an `async` method on an `impl` block marked with the
+`#[activities]` macro, annotated with `#[activity]`. The way you define a Standalone Activity is
+identical to how you define an Activity orchestrated by a Workflow. In fact, the same Activity can
+be executed both as a Standalone Activity and as a Workflow Activity.
+
+Each Activity method takes an
+[`ActivityContext`](https://docs.rs/temporalio-sdk/latest/temporalio_sdk/activities/struct.ActivityContext.html)
+as its first parameter and returns `Result<T, ActivityError>`. Use `_ctx` if you don't need the
+context. To pass more than one value to an Activity, take them as a tuple, as
+`compose_greeting` does here.
+
+By default, the macro names each Activity `<ImplType>::<method_name>`, so this one registers as
+`GreetingActivities::compose_greeting`. That's the name to use from the Temporal CLI and in [List
+Filter](/list-filter) queries.
+
+[activities.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/activities.rs)
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="rust" title="worker.rs">
+{`#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let runtime = Runtime::from_current_tokio(Default::default())?;
+    let (conn_opts, client_opts) =
+        ClientOptions::load_from_config(LoadClientConfigProfileOptions::default())?;
+    let connection = Connection::connect(conn_opts).await?;
+    let client = Client::new(connection, client_opts)?;
+
+    // A Worker that only runs Standalone Activities needs no registered workflows.
+    let worker_options = WorkerOptions::new("standalone-activities")
+        .register_activities(GreetingActivities)
+        .build();
+
+    let mut worker = Worker::new(&runtime, client, worker_options)?;
+    println!("Worker started on task queue: standalone-activities");
+    worker.run().await?;
+
+    Ok(())
+}`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`cargo run --features examples --example standalone-activities-worker`}
+</CodeSnippet>
+</>
+}>
+
+## Run a Worker with the Activity registered {/* #run-worker */}
+
+Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
+you build [`WorkerOptions`](https://docs.rs/temporalio-sdk/latest/temporalio_sdk/struct.WorkerOptions.html)
+for a Task Queue, register the Activities with `register_activities`, and call `worker.run()`. The
+Worker doesn't need to know whether the Activity will be invoked from a Workflow or as a Standalone
+Activity, and a Worker that runs Standalone Activities needs no registered Workflows at all. See
+[How to run a Worker](/develop/rust/workers/worker-process) for more details on Worker setup and
+configuration options.
+
+[worker.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/worker.rs)
+
+Open a new terminal, navigate to the `crates/sdk` directory, and run the Worker.
+Leave this terminal running — the Worker needs to stay up to process activities.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="rust" title="execute_activity.rs">
+{`let options = ActivityStartOptions::with_start_to_close_timeout(
+    "standalone-activities",
+    "standalone-activity-id",
+    Duration::from_secs(10),
+)
+.build();
+
+// There is no single "execute" call: start the activity, then await its result.
+let handle = client
+    .start_activity(
+        GreetingActivities::compose_greeting,
+        ("Hello".to_string(), "Temporal".to_string()),
+        options,
+    )
+    .await?;
+
+let result = handle.result().await?;
+println!("Activity result: {result}");`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`cargo run --features examples --example standalone-activities-execute`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+{`temporal activity execute \\
+  --type 'GreetingActivities::compose_greeting' \\
+  --activity-id standalone-activity-id \\
+  --task-queue standalone-activities \\
+  --start-to-close-timeout 10s \\
+  --input '["Hello","Temporal"]'`}
+</CodeSnippet>
+</>
+}>
+
+## Execute a Standalone Activity {/* #execute-activity */}
+
+Use [`Client::start_activity`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html#method.start_activity)
+to start a Standalone Activity, then
+[`ActivityHandle::result`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html#method.result)
+to block until it completes. Call these from your application code, not from inside a Workflow
+Definition. `start_activity` durably enqueues your Standalone Activity in the Temporal Server, and
+`result` waits for it to be executed on your Worker and returns the result.
+
+[execute_activity.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/execute_activity.rs)
+
+The first argument to `start_activity` is the Activity to run. Passing the Activity method itself,
+`GreetingActivities::compose_greeting`, gives you a typed
+[`ActivityHandle`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html),
+so the input and output types are checked at compile time and `result` returns the Activity's own
+return type. The second argument is the Activity's input.
+
+[`ActivityStartOptions`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityStartOptions.html)
+requires a Task Queue, an Activity ID, and a close timeout. The `with_start_to_close_timeout` and
+`with_schedule_to_close_timeout` constructors return a builder with that timeout already set; call
+`.build()` to finish.
+
+To run it:
+
+1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
+2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
+3. Open a new terminal, navigate to the `crates/sdk` directory, and run the execute command.
+
+Or use the Temporal CLI. Because `compose_greeting` takes its two values as a tuple, the CLI input
+is a single two-element JSON array.
+
+</SetupStep>
+
+</SetupSteps>
+
+## Run with Temporal Cloud
+
+All code samples on this page use
+[`ClientOptions::load_from_config`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ClientOptions.html#method.load_from_config)
+to configure the Temporal Client connection. It responds to [environment
+variables](/references/client-environment-configuration) and [TOML configuration
+files](/references/client-environment-configuration), so the same code works against a local dev
+server and Temporal Cloud without changes. See [Run Standalone Activities with Temporal
+Cloud](/develop/rust/activities/standalone-activities#run-standalone-activities-temporal-cloud) in the Feature Guide
+for mTLS and API key setup.
+
+## Next steps
+
+- **[Standalone Activities Feature Guide](/develop/rust/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
+- **[Activity basics](/develop/rust/activities/basics)**: How to write and register Activities with the Rust SDK.
