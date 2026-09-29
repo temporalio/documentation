@@ -202,10 +202,10 @@ The [OpenTelemetry sample](https://github.com/temporalio/samples-dotnet/tree/mai
 
 ## Set a Worker identity {/* #worker-identity */}
 
-Use `WorkerIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
 
-<!--SNIPSTART dotnet-cloud-run-worker-id-->
-[src/Gcp/CloudRun/WorkerId/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/Gcp/CloudRun/WorkerId/Program.cs)
+<!--SNIPSTART dotnet-cloud-run-id-->
+[src/Gcp/CloudRun/Id/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/Gcp/CloudRun/Id/Program.cs)
 ```cs
 var address = GetEnvironmentVariable("TEMPORAL_ADDRESS") ?? "localhost:7233";
 var temporalNamespace = GetEnvironmentVariable("TEMPORAL_NAMESPACE") ?? "default";
@@ -214,25 +214,18 @@ var taskQueue = GetEnvironmentVariable("TEMPORAL_TASK_QUEUE") ?? "cloud-run-work
 using var loggerFactory = LoggerFactory.Create(builder => builder.
     AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
     SetMinimumLevel(LogLevel.Information));
-var logger = loggerFactory.CreateLogger("CloudRunWorkerId");
+var logger = loggerFactory.CreateLogger("CloudRunId");
 
-// Register the Cloud Run plugin once on the client. At connect time it reads the Cloud Run instance
-// id from the metadata server, and the worker pool / service name and revision from the environment,
-// then sets the client Identity to the worker identity "{instanceId}@{revision}" (unless one was
-// already configured). Every worker created from this client inherits that identity. The plugin only
-// sets the worker identity; it does not configure anything else.
-//
-// NOTE: this requires the process to be running on a Cloud Run worker pool or service. Running it
-// elsewhere throws at connect time because the metadata server is unreachable.
+// Derives the client identity "{instanceId}@{revision}" from Cloud Run metadata at connect time.
 var clientOptions = new TemporalClientConnectOptions(address)
 {
     Namespace = temporalNamespace,
     LoggerFactory = loggerFactory,
-    Plugins = new[] { new WorkerIdPlugin() },
+    Plugins = new[] { new CloudRunIdPlugin() },
 };
 
 var client = await TemporalClient.ConnectAsync(clientOptions);
 ```
 <!--SNIPEND-->
 
-The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run Worker Id sample](https://github.com/temporalio/samples-dotnet/pull/219).
+The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run Id sample](https://github.com/temporalio/samples-dotnet/pull/219).

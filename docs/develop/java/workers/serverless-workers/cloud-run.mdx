@@ -156,7 +156,7 @@ Run an OpenTelemetry Collector as a sidecar in the Worker Pool. The Cloud Run Op
 Create the plugin and register it on `WorkflowServiceStubsOptions` before you create the Client:
 
 <!--SNIPSTART java-cloud-run-otel-worker-->
-[gcp/cloud-run/opentelemetry/src/main/java/io/temporal/samples/gcp/cloudrun/CloudRunWorker.java](https://github.com/temporalio/samples-java/blob/gcp-cloud-run-otel/gcp/cloud-run/opentelemetry/src/main/java/io/temporal/samples/gcp/cloudrun/CloudRunWorker.java)
+[gcp/cloud-run/opentelemetry/src/main/java/io/temporal/samples/gcp/cloudrun/opentelemetry/CloudRunWorker.java](https://github.com/temporalio/samples-java/blob/main/gcp/cloud-run/opentelemetry/src/main/java/io/temporal/samples/gcp/cloudrun/opentelemetry/CloudRunWorker.java)
 ```java
 ClientConfigProfile profile = ClientConfigProfile.load();
 CloudRunOpenTelemetryPlugin telemetryPlugin = CloudRunOpenTelemetryPlugin.newBuilder().build();
@@ -266,34 +266,27 @@ On shutdown, stop the `WorkerFactory`, then run `telemetryPlugin.newFlushHook()`
 
 ## Set a Worker identity {/* #worker-identity */}
 
-Use `WorkerIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. Fetch the Cloud Run metadata during process startup, then register the plugin on `WorkflowClientOptions`. Workers created from that Client inherit the identity.
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. Register the plugin on `WorkflowClientOptions` before creating the Client. Workers created from that Client inherit the identity.
 
-<!--SNIPSTART java-cloud-run-worker-id-->
-[gcp/cloud-run/workerid/src/main/java/io/temporal/samples/gcp/cloudrun/workerid/CloudRunWorker.java](https://github.com/temporalio/samples-java/blob/main/gcp/cloud-run/workerid/src/main/java/io/temporal/samples/gcp/cloudrun/workerid/CloudRunWorker.java)
+[gcp/cloud-run/id/src/main/java/io/temporal/samples/gcp/cloudrun/id/CloudRunWorker.java](https://github.com/temporalio/samples-java/blob/main/gcp/cloud-run/id/src/main/java/io/temporal/samples/gcp/cloudrun/id/CloudRunWorker.java)
 ```java
-GoogleCloudRunMetadata metadata = GoogleCloudRunMetadata.fetch();
-
 String address = envOrDefault(ADDRESS_ENV, DEFAULT_ADDRESS);
 String namespace = envOrDefault(NAMESPACE_ENV, DEFAULT_NAMESPACE);
 String taskQueue = envOrDefault(TASK_QUEUE_ENV, DEFAULT_TASK_QUEUE);
 
-// Plaintext connection to the Temporal Service. Configure TLS or an API key here for a secured
-// Service such as Temporal Cloud.
+// Plaintext connection; add TLS or an API key here for Temporal Cloud.
 WorkflowServiceStubs service =
     WorkflowServiceStubs.newServiceStubs(
         WorkflowServiceStubsOptions.newBuilder().setTarget(address).build());
 
-// Register WorkerIdPlugin on the client. It sets the derived worker identity
-// ({instanceId}@{revision}) on the client, and workers created from the client inherit it.
-// Passing the already-fetched metadata avoids a second call to the Cloud Run metadata server.
+// CloudRunIdPlugin sets the client identity to {instanceId}@{revision} from metadata.
 WorkflowClient client =
     WorkflowClient.newInstance(
         service,
         WorkflowClientOptions.newBuilder()
             .setNamespace(namespace)
-            .setPlugins(new WorkerIdPlugin(metadata))
+            .setPlugins(new CloudRunIdPlugin())
             .build());
 ```
-<!--SNIPEND-->
 
-Fetching the metadata fails when the Worker runs outside Cloud Run. For a complete example, see the [Java Cloud Run Worker Id sample](https://github.com/temporalio/samples-java/pull/795).
+The plugin requires Cloud Run metadata, so Client creation fails when the Worker runs outside Cloud Run. For a complete example, see the [Java Cloud Run Id sample](https://github.com/temporalio/samples-java/pull/795).

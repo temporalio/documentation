@@ -135,18 +135,15 @@ Run an OpenTelemetry Collector as a sidecar in the Worker Pool. The Cloud Run Op
 
 Create the plugin and pass it to `Client.connect`. The sample reads its connection settings from the environment:
 
-<!--SNIPSTART python-cloud-run-otel-worker {"selectedLines": ["1-11"]}-->
-[gcp/cloud_run/opentelemetry/worker.py](https://github.com/temporalio/samples-python/blob/gcp-cloud-run-otel/gcp/cloud_run/opentelemetry/worker.py)
+<!--SNIPSTART python-cloud-run-otel-worker {"selectedLines": ["1-8"]}-->
+[gcp/cloud_run/opentelemetry/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/opentelemetry/worker.py)
 ```py
-# Endpoint, service name, Core metrics, and tracer provider all use the GCP
-# plugin defaults. The opt-in adds named Temporal operation spans.
 plugin = OpenTelemetryPlugin(add_temporal_spans=True)
 client = await Client.connect(
     settings.address,
     namespace=settings.namespace,
     api_key=settings.api_key,
-    # TLS for Temporal Cloud (api key present); plaintext for a dev server.
-    tls=bool(settings.api_key),
+    tls=settings.tls,
     plugins=[plugin],
 )
 ```
@@ -230,19 +227,19 @@ Wait until the Collector accepts connections before starting the Worker. On shut
 
 ## Set a Worker identity {/* #worker-identity */}
 
-Use `WorkerIDPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
 
-<!--SNIPSTART python-cloud-run-worker-id-->
-[gcp/cloud_run/worker_id/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/worker_id/worker.py)
+<!--SNIPSTART python-cloud-run-id-->
+[gcp/cloud_run/id/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/id/worker.py)
 ```py
 client = await Client.connect(
     settings.address,
     namespace=settings.namespace,
-    plugins=[WorkerIDPlugin()],
+    plugins=[CloudRunIdPlugin()],
     api_key=settings.api_key,
     tls=settings.tls,
 )
 ```
 <!--SNIPEND-->
 
-The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [Python Cloud Run Worker Id sample](https://github.com/temporalio/samples-python/pull/356).
+The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [Python Cloud Run Id sample](https://github.com/temporalio/samples-python/pull/356).
