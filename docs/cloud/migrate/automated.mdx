@@ -100,7 +100,7 @@ Metrics are used for cloud-side resource planning. For each Namespace, collect t
 - Total number of open/closed Workflows
 - Total storage used
 - Current retention policy. Note that this may differ from the
-  [default retention policy](/cloud/limits#default-retention-period) in Temporal Cloud.
+  [default retention policy](/evaluate/cloud/limits#default-retention-period) in Temporal Cloud.
 - Peak [action per second](/glossary#actions-per-second-aps) (APS). For instructions on collecting these metrics, see
   [Estimate Actions for migration](/cloud/migrate/estimate-actions).
 
@@ -146,7 +146,7 @@ public internet or via [private connectivity](/cloud/connectivity).
 
 
 ### Report collected data
-Provide all collected data to Temporal via a [support ticket](/cloud/support#ticketing). 
+Provide all collected data to Temporal via a [support ticket](/evaluate/cloud/support#ticketing). 
 
 In your ticket, please provide:
 * mTLS certificate - base64 encoded pem file works well for easy submission in the ticket
@@ -538,7 +538,7 @@ Yes. Under the hood, Schedules are essentially Workflows.
 
 ### I have a long retention period for my Workflows. Is this compatible with Temporal Cloud?
 Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#retention-period) are in excess of what
-is [supported](/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
+is [supported](/evaluate/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
 [archival](/temporal-service/archival) to store closed Workflows that cannot be migrated. In general, archival is
 recommended over large retention periods since the extra data can stress the persistence layer of the system.
 

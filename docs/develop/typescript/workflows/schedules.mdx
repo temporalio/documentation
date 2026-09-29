@@ -9,7 +9,7 @@ tags:
   - Schedules
   - TypeScript SDK
   - Temporal SDKs
-description: Schedule automated tasks effortlessly with Temporal. Create, backfill, delete, describe, list, pause, trigger, and update Schedules. Control your Workflow execution with Temporal Cron Jobs and ensure timely, automated business processes. Automate repetitive tasks and reduce manual intervention now!
+description: Create, backfill, pause, trigger, and update Schedules with the TypeScript SDK, plus Temporal Cron Jobs and Start Delay.
 ---
 
 This page shows how to do the following:
@@ -26,7 +26,7 @@ This page shows how to do the following:
 - [Temporal Cron Jobs](#temporal-cron-jobs)
 - [Start Delay](#start-delay)
 
-## How to Schedule a Workflow {/* #schedule-a-workflow */}
+## Schedule a Workflow {/* #schedule-a-workflow */}
 
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes.
 
@@ -297,8 +297,6 @@ Temporal Workflow Schedule Cron strings follow this format:
 ```
 
 ## Start Delay {/* #start-delay */}
-
-**How to use Start Delay**
 
 Use the `startDelay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
 

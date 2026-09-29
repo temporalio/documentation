@@ -53,7 +53,9 @@ function stripV(version) {
   return version.replace(/^v/, "");
 }
 
-const STABLE_SEMVER = /^v?\d+\.\d+\.\d+$/;
+// The patch component is optional because the PHP SDK sometimes tags a stable
+// release as "vX.Y" with no patch number (e.g. v2.18, v2.19).
+const STABLE_SEMVER = /^v?\d+\.\d+(\.\d+)?$/;
 
 // One fetcher per SDK in src/constants/sdks.js. Keep the id keys in sync with
 // that file's SDKS[].id.

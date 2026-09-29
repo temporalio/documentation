@@ -2,9 +2,10 @@
 id: basics
 title: Activity basics - Python SDK
 sidebar_label: Activity basics
-description: This section explains Activity Basics with the Python SDK
+description: Define an Activity with the activity.defn decorator, pass a single dataclass parameter, return serializable data, and set a custom Activity Type.
 toc_max_heading_level: 4
 tags:
+  - Activities
   - Python SDK
   - Temporal SDKs
 ---
@@ -56,7 +57,7 @@ async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-### Develop Activity Parameters {/* #activity-parameters */}
+### Define Activity parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may
 support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -96,7 +97,7 @@ All data returned from an Activity must be serializable.
 
 Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there
 is a hard limit of 4MB for any gRPC message size in the Event History transaction
-([see Cloud limits here](/cloud/limits#per-message-grpc-limit)). Keep in mind that all return
+([see Cloud limits here](/evaluate/cloud/limits#per-message-grpc-limit)). Keep in mind that all return
 values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 An Activity Execution can return inputs and other Activity values.
@@ -115,8 +116,8 @@ async def your_activity(input: YourParams) -> str:
 
 ### Customize your Activity Type {/* #activity-type */}
 
-Activities have a Type that are referred to as the Activity name. The following examples demonstrate how to set a custom
-name for your Activity Type.
+Activities have a Type that are referred to as the Activity name. The following examples set a custom name for
+your Activity Type.
 
 You can customize the Activity name with a custom name in the decorator argument. For example,
 `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the

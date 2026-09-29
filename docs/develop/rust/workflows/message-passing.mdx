@@ -273,22 +273,14 @@ ctx.external_workflow("workflow-id-1", Some("run-id-1".into()))
 ### Signal-With-Start {/* #signal-with-start */}
 
 ```rust
-let signal_input = vec![ApproveInput {
-    name: "Ziggy".to_string(),
-}
-.as_json_payload()?]
-.into_payloads();
-
-let wf_handle = client.start_workflow(
+let wf_handle = client.signal_with_start_workflow(
     GreetingsWorkflow::run,
     (),
-    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10")
-        .start_signal(
-            WorkflowStartSignal::new("approve")
-                .maybe_input(signal_input)
-                .build(),
-        )
-        .build(),
+    GreetingsWorkflow::approve,
+    ApproveInput {
+        name: "Ziggy".to_string(),
+    },
+    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
 ).await?;
 ```
 
@@ -340,7 +332,7 @@ let update_handle = main_wf_handle.start_update(
 
 Signal and Update handlers can be `async fn` as well as `fn`. Using `async fn` allows you to use await with Activities, Child Workflows, Timers, etc. This expands the possibilities for what can be done by a handler, but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
-It's essential to understand the things that could go wrong in order to use `async fn` handlers safely. See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the Safe message handlers sample and the sections below.
+To use `async fn` handlers safely, understand what can go wrong. See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the Safe message handlers sample and the sections below.
 
 The following code executes an Activity that makes a network call to a remote service:
 

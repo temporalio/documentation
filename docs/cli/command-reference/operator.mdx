@@ -204,7 +204,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--yes`, `-y` | No | **bool** Request confirmation before deletion. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm deletion. |
 
 ### describe
 
@@ -254,6 +254,10 @@ temporal operator namespace update \
     --active-cluster NewActiveCluster
 ```
 
+Active Cluster changes cannot be combined with other Namespace updates.
+Update Namespace configuration, including the replication Cluster list,
+before changing the active Cluster in a separate command.
+
 Promote a Namespace for multi-region data replication:
 
 ```
@@ -276,7 +280,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--active-cluster` | No | **string** Active Cluster (Service) name. |
+| `--active-cluster` | No | **string** Active Cluster (Service) name. Cannot be combined with options that modify Namespace configuration. |
 | `--cluster` | No | **string[]** Cluster (Service) names. |
 | `--data` | No | **string[]** Namespace data as `KEY=VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey={"your": "value"}` Can be passed multiple times. |
 | `--description` | No | **string** Namespace description. |
@@ -515,7 +519,7 @@ The following options can be used with any command.
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
-| `--profile` | No | **string** Profile to use for config file. |  |
+| `--profile` | No | **string** Configuration profile to use. Overrides the TEMPORAL_PROFILE environment variable and defaults to "default". |  |
 | `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
 | `--tls` | No | **bool** Enable base TLS encryption. Auto-enabled when api-key or TLS options are set. |  |
 | `--tls-ca-data` | No | **string** Inline server CA certificate data. |  |

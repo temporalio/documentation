@@ -1,0 +1,4 @@
+{
+  "feed": "https://github.com/vale-cli/Std/releases.atom",
+  "vale_version": ">=3.20.0"
+}

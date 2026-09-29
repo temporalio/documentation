@@ -1,6 +1,6 @@
 ---
 id: observability
-title: Observability - Java SDK
+title: Observability
 sidebar_label: Observability
 description: Explore the observability features of Temporal, including Metrics, Tracing, Logging, and Visibility. Emit Metrics with the Java SDK, set up Tracing, and use Search Attributes.
 toc_max_heading_level: 4
@@ -55,6 +55,70 @@ The following example shows how to use `MicrometerClientStatsReporter` to define
 
 For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/637c2e66fd2dab43d9f3f39e5fd9c55e4f3884f0/core/src/main/java/io/temporal/samples/metrics).
 For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://docs.micrometer.io/micrometer/reference/implementations/prometheus.html#_configuring) documentation.
+
+### Attach global tags to metrics
+
+SDK metrics arrive tagged with Temporal information such as `namespace` and `task_queue`.
+Global tags add your organization's information next to them, so a dashboard can group Workers by the team, service, or environment that owns them.
+
+Pass the tags to `RootScopeBuilder.tags` when you build the metrics scope.
+Every metric reported through that scope carries them, from both the Client and the Worker.
+
+```java
+//...
+// Set up prometheus registry and stats reported
+    PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+    StatsReporter reporter = new MicrometerClientStatsReporter(registry);
+
+    Map<String, String> globalTags = new HashMap<>();
+    globalTags.put("team", "content-platform");
+    globalTags.put("service", "checkout");
+    globalTags.put("cost_center", "cc-1042");
+    globalTags.put("environment", "production");
+
+    Scope scope = new RootScopeBuilder()
+        .tags(globalTags)
+        .reporter(reporter)
+        .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
+
+    WorkflowServiceStubsOptions stubOptions =
+        WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
+//...
+```
+
+#### Choose a tag set
+
+Tags are most useful when standardized across the organization, so that every Worker emits the same keys.
+Decide on the set before teams adopt it.
+These five suit most organizations:
+
+| Tag           | Example            | Question it answers                                       |
+| ------------- | ------------------ | --------------------------------------------------------- |
+| `team`        | `content-platform` | Who owns the Workers behind this Namespace or Task Queue? |
+| `service`     | `checkout`         | Which application emits these metrics?                    |
+| `cost_center` | `cc-1042`          | Which budget does this Worker fleet belong to?            |
+| `environment` | `production`       | Is this production traffic, or staging or test?           |
+| `region`      | `us-east-2`        | Where does the Worker fleet run?                          |
+
+The built-in tags identify where a metric came from inside Temporal.
+`namespace` and `task_queue` do not record which team runs the Workers behind them, so a dashboard grouped only by those tags cannot answer an ownership question.
+
+That gap costs you time during an incident.
+When several Namespaces degrade at once, what you need first is the name of the team that owns the affected Workers, so you can ask whether they deployed recently.
+Standardized tags put that name on the dashboard, which turns a broad question about the Temporal Service into a direct message to one team.
+
+Grouping by `team` also tells you which case you are looking at:
+
+- The affected Workers share one `team` value. Check that team's recent deploys first, because a deploy that restarts a Worker fleet causes a short disturbance in its metrics.
+- The affected Workers span several `team` values. A single team's deploy no longer explains the pattern, so you can rule it out and look for a shared cause.
+
+The same grouping answers questions outside incidents.
+A `cost_center` tag shows which budget owner drives Workflow and Activity volume.
+SDK metrics count what your Workers and Clients do, which is not the same as the [Actions](/cloud/pricing#action) Temporal Cloud bills for, so use them to compare teams rather than to reconcile a bill.
+
+Keep tag values low cardinality.
+Your metrics backend stores one series per distinct combination of tag values, so a value that changes per Workflow Execution, such as a Workflow Id or a customer identifier, multiplies what it stores.
+Ownership and deployment identifiers avoid this because they stay fixed for the life of the process.
 
 ## Set up tracing {/* #tracing */}
 

@@ -1,0 +1,25 @@
+# Extracted from errata-ai/Google (MIT). See NOTICE.
+#
+extends: existence
+message: "First-person plural: '%s'."
+level: suggestion
+ignorecase: true
+tokens:
+  - we
+  - we'(?:ve|re)
+  - ours?
+  - us
+  - let's
+tests:
+  - name: fires
+    input: >
+      We recommend restarting. Let's begin, and the choice is ours.
+    want: |
+      1:1:Std.Usage.FirstPersonPlural:First-person plural: 'We'.
+      1:26:Std.Usage.FirstPersonPlural:First-person plural: 'Let's'.
+      1:57:Std.Usage.FirstPersonPlural:First-person plural: 'ours'.
+
+  - name: clean
+    input: >
+      Restarting is recommended.
+    want: ""

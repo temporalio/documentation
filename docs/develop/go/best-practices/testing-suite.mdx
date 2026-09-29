@@ -313,7 +313,7 @@ s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
 
 With the mock set up we can now execute the Workflow via the `s.env.ExecuteWorkflow(...)` method and assert that the Workflow completed successfully and returned the expected error.
 
-Simply mocking the execution to return a desired value or error is a pretty powerful mechanism to isolate Workflow logic.
+Mocking the execution to return a desired value or error isolates Workflow logic for testing.
 However, sometimes we want to replace the Activity with an alternate implementation to support a more complex test scenario.
 Let's assume we want to validate that the Activity gets called with the correct parameters.
 

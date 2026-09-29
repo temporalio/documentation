@@ -60,11 +60,11 @@ edition = "2024"
 [dependencies]
 futures = "0.3"
 serde = { version = "1", features = ["derive"] }
-temporalio-client = "0.7.0"
-temporalio-common = "0.7.0"
-temporalio-macros = "0.7.0"
-temporalio-sdk = "0.7.0"
-temporalio-workflow = "0.7.0"
+temporalio-client = "1.0.0"
+temporalio-common = "1.0.0"
+temporalio-macros = "1.0.0"
+temporalio-sdk = "1.0.0"
+temporalio-workflow = "1.0.0"
 tokio = { version = "1", features = ["full"] }
 `}
 </CodeSnippet>
@@ -255,7 +255,7 @@ use crate::activities::MyActivities;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let runtime = Runtime::new_assume_tokio(Default::default())?;
+    let runtime = Runtime::from_current_tokio(Default::default())?;
 
     // Set up client connection options, loading from config if available
     let (connection_options, client_options) = ClientOptions::load_from_config(

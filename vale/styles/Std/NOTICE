@@ -1,0 +1,22 @@
+Std
+Copyright (c) 2026 Joseph Kato and contributors
+
+Every rule in this package was extracted from an existing MIT-licensed Vale
+style rather than written fresh; the point of the package is that these
+patterns are already proven. Sources:
+
+  - errata-ai/Google (MIT, Copyright (c) Joseph Kato):
+    Grammar.PassiveVoice, Usage.FirstPersonPlural,
+    Abbreviations.Acronyms, DateTime.TimeFormat, DateTime.DateFormat,
+    Usage.GenderedPronouns, Punctuation.OxfordComma, and the base of
+    Abbreviations.Latin, Punctuation.Ellipses, and Usage.GenderedTerms.
+  - errata-ai/Microsoft (MIT, Copyright (c) 2018-2019 Joseph Kato):
+    Usage.FirstPersonSingular, Grammar.Contractions,
+    Punctuation.Spacing, and entries in Usage.GenderedTerms.
+  - errata-ai/IBM (MIT):
+    Readability.SentenceLength, and entries in Abbreviations.Latin and
+    Punctuation.Ellipses.
+
+Messages and levels were neutralized; each file names its source in a header
+comment. The Google and Microsoft styles are themselves implementations of
+their respective public style guides.
