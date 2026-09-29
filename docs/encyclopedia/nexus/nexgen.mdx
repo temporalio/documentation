@@ -1,10 +1,10 @@
 ---
-id: nexus-code-generator
-title: Nexus Code Generator
-sidebar_label: Nexus Code Generator
-description: The Nexus Code Generator turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
+id: nexgen
+title: NexGen
+sidebar_label: NexGen
+description: NexGen is a Code Generator which turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
 toc_max_heading_level: 4
-slug: /nexus/code-generator
+slug: /nexus/nexgen
 tags:
   - Nexus
   - Concepts
@@ -15,6 +15,12 @@ import { ReleaseNoteHeader } from '@site/src/components';
 <ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript"]} guidePath="nexus/feature-guide">
   APIs are experimental and may be subject to backwards-incompatible changes.
 </ReleaseNoteHeader>
+
+:::note
+
+For setup instructions, please see the [NexGen Github Project](https://github.com/temporalio/nexgen#installation)
+
+:::
 
 A [Nexus Service](/nexus/services) is called across a team boundary, often by a caller written in a different language than the handler implementation and deployed on its own schedule.
 When each side hand-writes its own request and response types, the two copies drift, and nothing catches it until a call fails.
