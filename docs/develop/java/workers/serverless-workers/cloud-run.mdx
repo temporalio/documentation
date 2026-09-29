@@ -272,7 +272,6 @@ Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revis
 ```java
 String address = envOrDefault(ADDRESS_ENV, DEFAULT_ADDRESS);
 String namespace = envOrDefault(NAMESPACE_ENV, DEFAULT_NAMESPACE);
-String taskQueue = envOrDefault(TASK_QUEUE_ENV, DEFAULT_TASK_QUEUE);
 
 // Plaintext connection; add TLS or an API key here for Temporal Cloud.
 WorkflowServiceStubs service =

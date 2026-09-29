@@ -29,9 +29,9 @@ A Cloud Run Worker Pool runs long-lived instances that poll the Task Queue conti
 through the Cloud Run admin API as work arrives and drains. For how the pool scales and how instances are shut down, see
 [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run).
 
-Cloud Run runs a standard long-lived Worker, so there is no Cloud Run-specific handler or package and any Temporal SDK
-can run on a Worker Pool. The one addition is [Worker Versioning](/worker-versioning), which Serverless Workers require. The tabs below cover
-the SDKs with a Cloud Run guide today.
+Cloud Run runs a standard long-lived Worker, so no Cloud Run-specific handler is needed and any Temporal SDK can run on
+a Worker Pool. Serverless Workers require [Worker Versioning](/worker-versioning). The Go, Python, Java, and .NET examples
+below also register a Cloud Run Id plugin to give each instance a distinct Worker Identity.
 
 ## Prerequisites {/* #prerequisites */}
 
@@ -460,6 +460,18 @@ For more on the Rust Worker setup, see
 
 </SdkTabs.Rust>
 </SdkTabs>
+
+The Cloud Run Id plugins in the Go, Python, Java, and .NET examples require the Cloud Run metadata server. To run these
+Workers outside Cloud Run, omit the plugin registration and add it back before deploying.
+
+:::tip
+
+The TypeScript, Ruby, and Rust examples use the SDK's default [Worker Identity](/workers#worker-identity). On Cloud Run,
+it can resolve to `1@localhost`, which does not distinguish Worker instances in the Temporal UI. Set a unique Worker
+Identity using [Cloud Run environment variables](https://cloud.google.com/run/docs/container-contract#worker-pools-env-vars)
+and instance metadata.
+
+:::
 
 ## 2. Deploy to a Cloud Run Worker Pool {/* #deploy-worker-pool */}
 
