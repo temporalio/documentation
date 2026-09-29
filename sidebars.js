@@ -2120,7 +2120,7 @@ module.exports = {
             'encyclopedia/nexus/nexus-metrics',
             // Pre-release features, kept at the bottom of the section.
             'encyclopedia/nexus/temporal-operation-handler',
-            'encyclopedia/nexus/nexus-code-generator',
+            'encyclopedia/nexus/nexgen',
             'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-standalone-activity',
           ],

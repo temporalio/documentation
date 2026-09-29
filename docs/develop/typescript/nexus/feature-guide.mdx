@@ -13,18 +13,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { CaptionedImage } from '@site/src/components';
 
+:::caution[Currently in: Pre-release]
+This Feature Guide includes the new Nexus developer experience: pre-release APIs for the [Temporal Operation Handler](/nexus/temporal-operation-handler) and [Nexus Standalone Activity](/nexus/standalone-activity). These APIs are experimental and subject to change.
+:::
+
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
 :::tip
 
 New to Nexus? Start with the [Nexus TypeScript Quickstart](/develop/typescript/nexus/quickstart).
-
-:::
-
-
-:::note
-
-This Feature Guide includes the new Nexus developer experience: pre-release APIs for the [Temporal Operation Handler](/nexus/temporal-operation-handler), [Nexus Standalone Activity](/nexus/standalone-activity), and (where supported) the [Nexus Code Generator](/nexus/code-generator). These APIs are experimental and subject to change.
 
 :::
 
@@ -50,14 +47,17 @@ This documentation uses source code derived from the [TypeScript Nexus sample](h
 Prerequisites:
 
 - [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/typescript/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli)
-  (`v1.3.0` or higher recommended)
+  (`v1.9.1` or higher recommended)
 - [Install the latest Temporal TypeScript SDK](https://learn.temporal.io/getting_started/typescript/dev_environment/#add-temporal-typescript-sdk-dependencies)
-  (`v1.23.0` or higher recommended)
+  (`v1.24.0` or higher recommended)
 
 The first step in working with Temporal Nexus involves starting a Temporal Server with Nexus enabled.
 
 ```
-temporal server start-dev
+temporal server start-dev \
+  --dynamic-config-value history.enableUpdateCallbacks=true \
+  --dynamic-config-value history.enableCHASMSignalBacklinks=true \
+  --dynamic-config-value history.enableSignalWithStartFromWorkflow=true
 ```
 
 This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace. It uses an in-memory database, so do not use it for real use cases.

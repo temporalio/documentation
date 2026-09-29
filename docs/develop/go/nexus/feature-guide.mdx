@@ -15,18 +15,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { CaptionedImage } from '@site/src/components';
 
+:::caution[Currently in: Pre-release]
+This Feature Guide includes the new Nexus developer experience: pre-release APIs for the [Temporal Operation Handler](/nexus/temporal-operation-handler) and [Nexus Standalone Activity](/nexus/standalone-activity). These APIs are experimental and subject to change.
+:::
+
 Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
 :::tip
 
 New to Nexus? Start with the [Nexus Go Quickstart](/develop/go/nexus/quickstart).
-
-:::
-
-
-:::note
-
-This Feature Guide includes the new Nexus developer experience: pre-release APIs for the [Temporal Operation Handler](/nexus/temporal-operation-handler), [Nexus Standalone Activity](/nexus/standalone-activity), and (where supported) the [Nexus Code Generator](/nexus/code-generator). These APIs are experimental and subject to change.
 
 :::
 
@@ -51,13 +48,16 @@ This documentation uses source code derived from the [Go Nexus sample](https://g
 
 Prerequisites:
 
-- [Install the latest Temporal CLI](/develop/run-a-development-server) (v1.3.0 or higher recommended)
-- [Install the latest Temporal Go SDK](/develop/go/set-up-your-local-go) (v1.48.0 or higher recommended)
+- [Install the latest Temporal CLI](/develop/run-a-development-server) (v1.9.1 or higher recommended)
+- [Install the latest Temporal Go SDK](/develop/go/set-up-your-local-go) (v1.49.0 or higher recommended)
 
 The first step in working with Temporal Nexus involves starting a Temporal server with Nexus enabled.
 
 ```
-temporal server start-dev
+temporal server start-dev \
+  --dynamic-config-value history.enableUpdateCallbacks=true \
+  --dynamic-config-value history.enableCHASMSignalBacklinks=true \
+  --dynamic-config-value history.enableSignalWithStartFromWorkflow=true
 ```
 
 This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace. It uses an in-memory database, so do not use it for real use cases.
