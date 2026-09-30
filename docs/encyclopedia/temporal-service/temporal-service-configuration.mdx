@@ -44,7 +44,7 @@ Depending on how you want to deploy your self-hosted Temporal Service, your stat
 Static configuration values cannot be changed at runtime.
 Some values, such as the Metrics configuration or Server log level can be changed in the static configuration but require restarting the Temporal Service for the changes to take effect.
 
-For details on static configuration keys, see [Temporal Service configuration reference](/references/configuration).
+For details on static configuration keys, see [Temporal Service configuration reference](/references/service-configuration).
 
 For static configuration examples, see [https://github.com/temporalio/temporal/tree/main/config](https://github.com/temporalio/temporal/tree/main/config).
 
@@ -53,7 +53,7 @@ For static configuration examples, see [https://github.com/temporalio/temporal/t
 Dynamic configuration contains configuration keys that you can update in your Temporal Service setup without having to restart the server processes.
 
 All dynamic configuration keys provided by Temporal have default values that are used by the Temporal Service.
-You can override the default values by setting different values for the keys in a YAML file and setting the [dynamic configuration client](/references/configuration#dynamicconfigclient) to poll this file for updates.
+You can override the default values by setting different values for the keys in a YAML file and setting the [dynamic configuration client](/references/service-configuration#dynamicconfigclient) to poll this file for updates.
 Setting dynamic configuration for your Temporal Service is optional.
 
 Setting overrides for some configuration keys updates the Temporal Service configuration immediately.
@@ -75,7 +75,7 @@ For details on setting up your Temporal Service security, see [Temporal Platform
 
 Temporal supports Mutual Transport Layer Security (mTLS) to encrypt network traffic between services within a Temporal Service, or between application processes and a Temporal Service.
 
-On the self-hosted Temporal Service, configure mTLS in the `tls` section of the [Temporal Service configuration](/references/configuration#tls).
+On the self-hosted Temporal Service, configure mTLS in the `tls` section of the [Temporal Service configuration](/references/service-configuration#tls).
 mTLS configuration is a [static configuration](#static-configuration) property.
 
 You can then use either the [`WithConfig`](/references/server-options#withconfig) or [`WithConfigLoader`](/references/server-options#withconfigloader) server option to start your Temporal Service with this configuration.
@@ -93,9 +93,9 @@ Use CA certificates to authenticate client connections to your Temporal Service.
 
 On Temporal Cloud, you can [set your CA certificates in your Temporal Cloud settings](/cloud/certificates) and use the end-entity certificates in your client calls.
 
-On the self-hosted Temporal Service, you can restrict access to Temporal Service endpoints by using the `clientCAFiles` or `clientCAData` property and the [`requireClientAuth`](/references/configuration#tls) property in your Temporal Service configuration.
-These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
-For details, see the [tls configuration reference](/references/configuration#tls).
+On the self-hosted Temporal Service, you can restrict access to Temporal Service endpoints by using the `clientCAFiles` or `clientCAData` property and the [`requireClientAuth`](/references/service-configuration#tls) property in your Temporal Service configuration.
+These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/service-configuration#tls).
+For details, see the [tls configuration reference](/references/service-configuration#tls).
 
 ### Server name specification
 
@@ -106,7 +106,7 @@ This ensures that the server certificate presented to any connected client has t
 
 This measure can be used for `internode` and `frontend` endpoints.
 
-For more information on mTLS configuration, see [tls configuration reference](/references/configuration#tls).
+For more information on mTLS configuration, see [tls configuration reference](/references/service-configuration#tls).
 
 ### Authentication and authorization
 

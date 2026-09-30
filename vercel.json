@@ -51,6 +51,11 @@
   ],
   "redirects": [
     {
+      "source": "/references/configuration",
+      "destination": "/references/service-configuration",
+      "permanent": true
+    },
+    {
       "source": "/llms-quickstart.txt",
       "destination": "/llms.txt",
       "permanent": true

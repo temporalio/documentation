@@ -1861,7 +1861,7 @@ module.exports = {
         'references/api-reference',
         'references/service-metrics',
         'references/commands',
-        'references/configuration',
+        'references/service-configuration',
         'references/dynamic-configuration',
         'references/errors',
         'references/events',
