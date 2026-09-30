@@ -234,8 +234,25 @@ Use the Cloud Run Id plugin to identify each Worker instance as `<instance-id>@<
 Register the plugin on the Client options before connecting:
 
 ```go
+import (
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+	"go.temporal.io/sdk/contrib/gcp/cloudrun/id"
+)
+
+// In your Worker startup function:
+clientOptions, err := envconfig.LoadDefaultClientOptions()
+if err != nil {
+	log.Fatalln("Unable to load Temporal client options", err)
+}
 clientOptions.Plugins = append(clientOptions.Plugins, id.NewCloudRunIDPlugin())
 c, err := client.Dial(clientOptions)
+if err != nil {
+	log.Fatalln("Unable to create Temporal client", err)
+}
+defer c.Close()
 ```
 
 The [preceding example](#opentelemetry) registers `id.NewCloudRunIDPlugin()` alongside the OpenTelemetry plugin.

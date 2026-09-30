@@ -236,6 +236,12 @@ the Client connects, then Workers created from that Client inherit the identity.
 Register the plugin when connecting the Client:
 
 ```python
+from temporalio.client import Client
+from temporalio.contrib.gcp.cloud_run.id import CloudRunIdPlugin
+
+from gcp.cloud_run.settings import load_settings
+
+settings = load_settings()
 client = await Client.connect(
     settings.address,
     namespace=settings.namespace,
