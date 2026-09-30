@@ -229,7 +229,7 @@ On shutdown, stop the Worker and call `otelPlugin.Shutdown` with a deadline shor
 
 ## Set a Worker identity {/* #worker-identity */}
 
-Use the Cloud Run Id plugin to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata once when the Client connects, then Workers created from that Client inherit the identity.
+Use the Cloud Run ID plugin to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata once when the Client connects, then Workers created from that Client inherit the identity.
 
 Register the plugin on the Client options before connecting:
 

@@ -29,7 +29,7 @@ through the Cloud Run admin API as work arrives and drains. For how the pool sca
 
 Cloud Run runs a standard long-lived Worker, so no Cloud Run-specific handler is needed and any Temporal SDK can run on
 a Worker Pool. Serverless Workers require [Worker Versioning](/worker-versioning). The Go, Python, Java, and .NET examples
-below also register a Cloud Run Id plugin to give each instance a distinct Worker Identity.
+below also register a Cloud Run ID plugin to give each instance a distinct Worker Identity.
 
 ## Prerequisites {/* #prerequisites */}
 
@@ -127,7 +127,7 @@ class MyWorkflow:
         ...
 ```
 
-The example uses the Cloud Run Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+The example uses the Cloud Run ID plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
 Python Worker setup, see [Serverless Workers on GCP Cloud Run - Python SDK](/develop/python/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Python>
@@ -198,7 +198,7 @@ w := worker.New(c, os.Getenv("TEMPORAL_TASK_QUEUE"), worker.Options{
 
 If a Version is set and neither is specified, registration panics with `workflow type does not have a versioning behavior`.
 
-The example uses the Cloud Run Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+The example uses the Cloud Run ID plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
 Go Worker setup, see [Serverless Workers on GCP Cloud Run - Go SDK](/develop/go/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Go>
@@ -310,7 +310,7 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 `AUTO_UPGRADE`. Set it per Workflow with the `@WorkflowVersioningBehavior` annotation, or set a Worker-level default
 with `setDefaultVersioningBehavior` as shown above.
 
-The example uses the Cloud Run Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+The example uses the Cloud Run ID plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
 Java Worker setup, see [Serverless Workers on GCP Cloud Run - Java SDK](/develop/java/workers/serverless-workers/cloud-run).
 
 </SdkTabs.Java>
@@ -344,7 +344,7 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 `AutoUpgrade`. Set it per Workflow with `[Workflow(VersioningBehavior = ...)]`, or set a Worker-level default with
 `DefaultVersioningBehavior` as shown above.
 
-The example uses the Cloud Run Id plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
+The example uses the Cloud Run ID plugin to identify each Worker as `<instance-id>@<revision>`. For more on the
 .NET Worker setup, see [Serverless Workers on GCP Cloud Run - .NET SDK](/develop/dotnet/workers/serverless-workers/cloud-run).
 
 </SdkTabs.DotNet>
@@ -448,7 +448,7 @@ For more on the Rust Worker setup, see
 </SdkTabs.Rust>
 </SdkTabs>
 
-The Cloud Run Id plugins in the Go, Python, Java, and .NET examples require the Cloud Run metadata server. To run these
+The Cloud Run ID plugins in the Go, Python, Java, and .NET examples require the Cloud Run metadata server. To run these
 Workers outside Cloud Run, omit the plugin registration and add it back before deploying.
 
 :::tip
