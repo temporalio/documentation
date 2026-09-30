@@ -19,10 +19,20 @@ import { ReleaseNoteHeader } from '@site/src/components';
 </ReleaseNoteHeader>
 
 The proxy reads a single YAML file. Three sections are the core of it: the gateway listener (`hostPort`), `routing`, and
-the `upstreams` it forwards to. The optional `allowedServices`, `tls`, `auth`, `encryption`, and `extensionServers`
-sections narrow which gRPC services the proxy forwards and add inbound TLS, inbound authentication and authorization,
-and payload encryption. Values support `${VAR}` and `$VAR` environment variable expansion, and an upstream's `hostPort`
-can be a template that resolves per request (for example, `{{ .RemoteNamespace }}`).
+the `upstreams` it forwards to.
+
+Everything else is optional.
+
+- `allowedServices` narrows which gRPC services the proxy forwards
+- `tls` and `auth` secure and admit inbound connections
+- `encryption` seals payloads
+- `extensionServers` declares the servers `auth` and `encryption` delegate to
+- `health` tunes the liveness check
+- `metrics` configures the Prometheus endpoint
+- `apiTranslations` overrides how the proxy reaches Temporal Cloud's control plane
+
+Values support `${VAR}` and `$VAR` environment variable expansion, and an upstream's `hostPort` can be a template that
+resolves per request (for example, `{{ .RemoteNamespace }}`).
 
 The example below is the proxy's
 [Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud), which connects a Worker
@@ -42,7 +52,6 @@ upstreams:
   # Namespace, so one entry serves any number of Namespaces.
   - name: cloud
     hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
-    tls: {} # Enable outbound TLS with defaults.
     namespaces:
       rules:
         suffix: .$TEMPORAL_ACCOUNT # quickstart becomes quickstart.<account>
@@ -54,11 +63,13 @@ upstreams:
   # fixed endpoint. Any Namespace endpoint in the account answers them.
   - name: system
     hostPort: ${TEMPORAL_NAMESPACE}.${TEMPORAL_ACCOUNT}.tmprl.cloud:7233
-    tls: {}
     credentials:
       static:
         apiKey: ${TEMPORAL_API_KEY}
 ```
+
+Neither upstream declares a `tls` block, because the proxy dials over TLS by default. See
+[Configure TLS](#configure-tls).
 
 The [chart `values.yaml`](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy) and the
 [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) hold the complete, current set of options.
@@ -94,13 +105,34 @@ gateway. Allowing `grpc.reflection.v1.ServerReflection` also allows the supersed
 `grpc.reflection.v1alpha.ServerReflection`, because clients probe `v1` and fall back to it. The relation runs one way:
 allowing only the superseded spelling does not allow the current one.
 
-### Health checks {/* #health-checks */}
+## Health checks {/*#health-checks*/}
 
 The gateway serves the standard gRPC health service and publishes an entry for every allowed service under its proto
 full name, alongside the usual empty service name. Each entry reports the same status, since the proxy's health is
 process-wide. A Client health check that names a service, such as the Go SDK's `CheckHealth`, therefore gets a status,
 and so does a per-service liveness probe. A service your configuration does not allow returns `NOT_FOUND` instead of
 claiming a status.
+
+Behind that status is a liveness check the proxy runs against itself. On each interval it calls
+`grpc.health.v1.Health/Watch` over an in-process connection, reads one message, and reports whether the exchange was
+answered at all. `Watch` is a streaming method, so the call travels the same interceptor chain every forwarded request
+goes through, and a stall in that chain shows up in the reported status instead of going unnoticed. The call never
+leaves the process, so the check behaves the same whether the gateway serves plaintext, TLS, or mutual TLS.
+
+What the check does not cover is anything below that chain: accepting on the real listener, and the TLS handshake above
+it. Those belong to whatever probes the proxy from outside. See
+[Probe the gateway](/production-deployment/temporal-proxy/deploy-kubernetes#probe-the-gateway) for the Kubernetes side.
+
+Tune the cadence under the top-level `health` block. Both fields are optional:
+
+```yaml
+health:
+  interval: 30s # How often the liveness check runs. Defaults to 30s.
+  timeout: 5s # Bounds one run. Defaults to 5s.
+```
+
+`timeout` must be positive and strictly shorter than `interval`, so a check always finishes before the next one begins.
+A configuration that breaks that rule fails at startup.
 
 ## Route requests
 
@@ -159,7 +191,6 @@ callers only ever see the local name.
 upstreams:
   - name: cloud
     hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
-    tls: {}
     namespaces:
       rules:
         prefix: '' # Optional string prepended to the local name.
@@ -183,6 +214,75 @@ Namespaces. Available variables:
 - `{{ .Metadata.<key> }}` or `{{ index .Metadata "<key>" }}`: a request metadata value.
 
 Upstreams with a static `hostPort` connect eagerly at startup; templated ones connect lazily on first use.
+
+### Translate to a Temporal Cloud upstream
+
+Temporal Cloud takes a fully qualified `<name>.<account-id>`, so the proxy checks the names a Cloud upstream's rules
+produce:
+
+- `suffix` must be `.<account-id>`.
+- Each override's `remote` must be a complete Cloud Namespace identifier.
+
+A Namespace name runs 2 to 39 characters, starts with a letter, ends with a letter or number, and holds only lowercase
+letters, numbers, and `-`. An account identifier runs 5 to 20 characters. Both are checked at startup, so rules that
+cannot produce a valid Cloud name fail before the proxy serves anything.
+
+The proxy recognizes Cloud from the address: any `.tmprl.cloud` host, templated ones included. A `tls.serverName` on the
+Cloud domain counts too, since a private-link upstream reaches Cloud through a per-VPC hostname but still pins Cloud's
+certificate. When neither names the Cloud domain, declare it:
+
+```yaml
+upstreams:
+  - name: cloud
+    hostPort: my-vpc-endpoint.example.internal:7233
+    cloud: true # Declare Cloud for an address carrying no Cloud domain.
+    namespaces:
+      rules:
+        suffix: .acct
+```
+
+A templated `hostPort` resolves per request, so the name it produces cannot be checked at startup. The proxy logs a
+warning when a translated name is not shaped like a Cloud Namespace and forwards the request unchanged.
+
+## Answer the methods Cloud does not serve
+
+Temporal Cloud does not serve every `WorkflowService` method on a Namespace endpoint. `ListNamespaces` is one this
+affects, for example: Cloud pins a request to the endpoint's Namespace, and a `ListNamespaces` request names none, so the call
+can never succeed on a Namespace frontend. Cloud exposes the same capability as `CloudService.GetNamespaces` on its
+control plane.
+
+The proxy answers such a call from the control plane and converts the reply back into the response the caller expected.
+This needs no configuration. It follows from an upstream already being Temporal Cloud, and the control plane is reached
+at `saas-api.tmprl.cloud:443` with that upstream's own credentials, since one Temporal Cloud API key authorizes both.
+The connection opens on first use rather than at startup, so a control plane you cannot reach does not stop the proxy
+serving everything else.
+
+Only Namespace-less calls are affected, which means only the upstream that serves them, named by `routing.system` or
+falling back to `routing.default`. To get the untranslated failure back, route those requests at a Temporal Service that
+serves them.
+
+Override the control plane under `apiTranslations.cloudApi`, which takes the same keys as an upstream:
+
+```yaml
+apiTranslations:
+  cloudApi:
+    hostPort: saas-api.tmprl.cloud:443 # Defaults to Cloud's control plane.
+    credentials:
+      static:
+        apiKey: ${TEMPORAL_CLOUD_API_KEY}
+```
+
+Set `cloudApi` in two cases:
+
+- **The upstream authenticates with a client certificate.** Set an API key under `credentials`. The Cloud Ops API
+  accepts only API keys, so the proxy has no credential to inherit from the upstream, and it refuses translated calls
+  until you provide one.
+- **You need to reach a different Cloud environment.** Set `hostPort` to that environment's control plane. If the
+  address isn't a Cloud endpoint, the proxy reports it at startup but still accepts it, because test doubles and private
+  environments often use addresses outside the Cloud domain.
+
+TLS is not inherited from the upstream, since the control plane is a different host and the upstream's server name or
+client certificate would not apply. The dial default stands instead, verifying against the system root pool.
 
 ## Authenticate and authorize inbound requests
 
@@ -289,7 +389,6 @@ Temporal Cloud:
 upstreams:
   - name: cloud
     hostPort: my-ns.acct.tmprl.cloud:7233
-    tls: {} # Required whenever credentials are set.
     credentials:
       static:
         apiKey: ${TEMPORAL_API_KEY} # Required.
@@ -297,28 +396,45 @@ upstreams:
         scheme: Bearer # Optional scheme override.
 ```
 
-Credentials require TLS to the upstream. If you set `credentials` without a `tls` block, the configuration fails to
-load.
+Credentials require TLS to the upstream. The proxy dials over TLS by default, so this is only an issue when you also set
+`insecure: true`. Credentials on a plaintext hop fail the configuration at startup rather than putting the key on the
+wire in the clear.
 
-## Configure TLS {/* #configure-tls */}
+## Configure TLS {/*#configure-tls*/}
 
-TLS is terminated in two independent places, both using the same keys: `ca`, `cert`, `key`, and `serverName`. `ca`,
+TLS is configured in two independent places, both using the same keys: `ca`, `cert`, `key`, and `serverName`. `ca`,
 `cert`, and `key` are paths to PEM files on disk, not inline PEM content. On Kubernetes, let the chart mount them from a
 Secret and fill in the paths for you, as described in
 [Supply TLS material](/production-deployment/temporal-proxy/deploy-kubernetes#supply-tls-material).
 
+The two directions default differently, because a dialer can fall back on the system root pool and a listener has no
+certificate to fall back on.
+
 **Inbound, on the gateway.** The top-level `tls` block secures connections from your applications. Set `cert` and `key`
 for server TLS, and add `ca` to enforce mutual TLS, which requires each client to present a certificate signed by that
-CA. Local development commonly omits `tls` and connects in plaintext.
+CA. A gateway with no `tls` block serves plaintext, which is what local development usually handles.
 
-**Outbound, per upstream.** Each upstream's `tls` block secures the connection from its proxy to the Temporal Service:
+**Outbound, per upstream.** Each upstream dials over TLS whether or not it declares a `tls` block:
 
-- `tls: {}` verifies the upstream against the system root certificate pool and presents no client certificate. This is
-  what Temporal Cloud with an API key needs.
+- No `tls` block verifies the upstream against the system root certificate pool and presents no client certificate. This
+  is what Temporal Cloud with an API key needs.
 - `ca` alone verifies the upstream against a private trust anchor, still presenting no client certificate.
 - `cert` and `key` together select mutual TLS and require `ca`. They must be set as a pair.
+- `insecure: true` dials plaintext, for a local development Service that terminates no TLS.
 
 Set `serverName` when the host you dial does not match the common name or SAN on the server's certificate.
+
+`insecure` and a `tls` block cannot be set together because they are opposite, so the configuration fails at startup
+rather than silently picking one. The same rules govern every outbound hop, so an `extensionServers` entry and the
+`apiTranslations.cloudApi` block read exactly the same way.
+
+:::note Version note
+
+v0.6.0 made TLS the default for everything the proxy dials. Before it, an upstream with no `tls` block connected in
+plaintext. A `tls: {}` block still means what it always did, so configurations that declared one keep working, but an
+upstream that relied on the old plaintext default now needs `insecure: true`.
+
+:::
 
 For payload encryption (envelope encryption, cloud KMS, and custom key backends), see
 [Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads).
