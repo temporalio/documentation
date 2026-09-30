@@ -19,7 +19,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
   Please contact your Temporal account executive prior to planning your migration project.
 </ReleaseNoteHeader>
 
-## Process Overview
+## Process overview
 
 Automated migration is designed to provide a zero-downtime, secure means of migrating to Temporal Cloud. This guide
 outlines the current process for transitioning Workflows from self-hosted Temporal Server to a namespace hosted within
@@ -123,7 +123,7 @@ temporal schedule list
 
 ### Prepare mTLS certificates
 
-mTLS is used to secure the [S2S Proxy](#s2s-proxy-configuration) communications channel. Provide a single certificate using the process outlined
+mTLS is used to secure the [S2S Proxy](#configure-the-proxy) communications channel. Provide a single certificate using the process outlined
 [here](/cloud/certificates#issue-certificates).
 
 Verify your end-entity certificate with the following command.
@@ -193,12 +193,12 @@ discuss the available options.
 Namespaces migrating from the same self-hosted server share that server's proxy and endpoint. You can migrate more than
 one Namespace from a server at the same time, provided each source Namespace and its cloud-side target are listed in
 the `namespaceTranslation` mappings of that server's proxy configuration. See
-[S2S Proxy configuration](#s2s-proxy-configuration).
+[Configure the proxy](#configure-the-proxy).
 
 Tell Temporal how many self-hosted servers you plan to migrate from, and whether you intend to migrate from them in
 parallel, so that the required cloud-side resources are in place.
 
-### S2S Proxy configuration
+### Configure the proxy
 
 The [S2S Proxy](https://github.com/temporalio/s2s-proxy) requires a cloud-side inbound endpoint. Proceed with deployment
 only after receiving the endpoint from Temporal.
@@ -546,7 +546,7 @@ unique cluster name and Initial Failover Version. See [Plan migration endpoints]
 
 Yes. Those Namespaces share the server's proxy and endpoint, so no additional cloud-side resources are needed. Include
 each source Namespace and its cloud-side target in the `namespaceTranslation` mappings of that server's proxy
-configuration. See [S2S Proxy configuration](#s2s-proxy-configuration).
+configuration. See [Configure the proxy](#configure-the-proxy).
 
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
 No. All Workflows will be migrated.
