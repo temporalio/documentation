@@ -536,6 +536,17 @@ migrated and in many cases will dramatically reduce overall migration time.
 ### Is the migration of Schedules supported?
 Yes. Under the hood, Schedules are essentially Workflows.
 
+### Does automated migration migrate Worker Deployments?
+
+Yes. Automated migration transfers the [Worker Deployment](/worker-versioning#deployments) state stored in the source
+Namespace. This state includes Worker Deployment Versions, Build IDs, Task Queue membership, and routing configuration
+for Current and Ramping Versions.
+
+Automated migration does not deploy Worker code or move running Worker Processes. You are responsible for deploying or
+reconfiguring Workers to connect to the target Cloud Namespace. Before you confirm the migration, verify that Workers can
+reach the Cloud Namespace and that each Worker Deployment has the expected Current and Ramping Versions. For connection
+options, see [Transfer clients to cloud](#transfer-clients-to-cloud).
+
 ### I have a long retention period for my Workflows. Is this compatible with Temporal Cloud?
 Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#retention-period) are in excess of what
 is [supported](/evaluate/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
