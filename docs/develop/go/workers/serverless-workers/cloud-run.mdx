@@ -231,6 +231,13 @@ On shutdown, stop the Worker and call `otelPlugin.Shutdown` with a deadline shor
 
 Use the Cloud Run Id plugin to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata once when the Client connects, then Workers created from that Client inherit the identity.
 
-The preceding example registers `id.NewCloudRunIDPlugin()` alongside the OpenTelemetry plugin.
+Register the plugin on the Client options before connecting:
+
+```go
+clientOptions.Plugins = append(clientOptions.Plugins, id.NewCloudRunIDPlugin())
+c, err := client.Dial(clientOptions)
+```
+
+The [preceding example](#opentelemetry) registers `id.NewCloudRunIDPlugin()` alongside the OpenTelemetry plugin.
 
 The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [Go Cloud Run sample](https://github.com/temporalio/samples-go/tree/gcp-cloud-run/gcp/cloudrun).

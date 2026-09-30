@@ -230,9 +230,22 @@ Wait until the Collector accepts connections before starting the Worker. On shut
 
 ## Set a Worker identity {/* #worker-identity */}
 
-Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The preceding example registers it
-on the Client alongside the OpenTelemetry plugin. It reads Cloud Run environment variables and instance metadata when
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. It reads Cloud Run environment variables and instance metadata when
 the Client connects, then Workers created from that Client inherit the identity.
+
+Register the plugin when connecting the Client:
+
+```python
+client = await Client.connect(
+    settings.address,
+    namespace=settings.namespace,
+    api_key=settings.api_key,
+    tls=settings.tls,
+    plugins=[CloudRunIdPlugin()],
+)
+```
+
+The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry plugin.
 
 The Id plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete
 example, see the [Python Cloud Run sample](https://github.com/temporalio/samples-python/tree/gcp-cloud-run/gcp/cloud_run).

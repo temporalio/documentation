@@ -163,6 +163,13 @@ termination window. For the Collector sidecar configuration and deployment steps
 
 Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
 
-The preceding example registers `CloudRunIdPlugin` alongside the OpenTelemetry defaults.
+Register the plugin on the Client options before connecting:
+
+```csharp
+connectOptions.Plugins = new ITemporalClientPlugin[] { new CloudRunIdPlugin() };
+var client = await TemporalClient.ConnectAsync(connectOptions);
+```
+
+The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry defaults.
 
 The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/gcp-cloud-run/src/Gcp/CloudRun).

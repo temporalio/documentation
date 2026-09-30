@@ -265,7 +265,18 @@ On shutdown, stop the `WorkerFactory`, then run `otelPlugin.newFlushHook()` befo
 
 ## Set a Worker identity {/* #worker-identity */}
 
-Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The preceding example registers the plugin on `WorkflowServiceStubsOptions` alongside the OpenTelemetry plugin.
-Clients and Workers created from those service stubs inherit the identity.
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. Register it on
+`WorkflowServiceStubsOptions` before creating the service stubs. Clients and Workers created from those service stubs
+inherit the identity:
+
+```java
+WorkflowServiceStubsOptions serviceOptions =
+    WorkflowServiceStubsOptions.newBuilder(profile.toWorkflowServiceStubsOptions())
+        .setPlugins(new CloudRunIdPlugin())
+        .build();
+WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceOptions);
+```
+
+The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry plugin.
 
 The plugin requires Cloud Run metadata, so Client creation fails when the Worker runs outside Cloud Run. For a complete example, see the [Java Cloud Run sample](https://github.com/temporalio/samples-java/tree/gcp-cloud-run/gcp/cloud-run).
