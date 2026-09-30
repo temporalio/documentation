@@ -2,7 +2,7 @@
 id: nexgen
 title: NexGen
 sidebar_label: NexGen
-description: NexGen is a Code Generator which turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
+description: NexGen turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
 toc_max_heading_level: 4
 slug: /nexus/nexgen
 tags:
@@ -18,7 +18,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 :::note
 
-For setup instructions, please see the [NexGen Github Project](https://github.com/temporalio/nexgen#installation)
+For setup instructions, see the [NexGen GitHub project](https://github.com/temporalio/nexgen#installation)
 
 :::
 
@@ -48,7 +48,7 @@ Generate from it in each language and they interoperate, with no coordination be
 
 ## Data validation
 
-The generated validators check every payload against the contract, when a value is parsed off the wire and again when it is serialized onto it.
+The generated validators check every payload against the contract when a value is parsed off the wire and again when it is serialized onto it.
 Bad data is rejected at the boundary instead of reaching your Workflow or Activity.
 
 Failures aggregate into a single error listing every violation, each naming the offending field and the constraint it broke.

@@ -1,7 +1,7 @@
 ---
 id: feature-guide
-title: Feature guide - TypeScript SDK feature guide
-sidebar_label: Feature guide
+title: Temporal Nexus - TypeScript SDK feature guide
+sidebar_label: Feature Guide
 description: Use Temporal Nexus within the TypeScript SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
 tags:
@@ -96,16 +96,16 @@ Defining a clear contract for the Nexus Service is crucial for smooth communicat
 In this example, there is a service module that describes the Service and Operation names along with input/output types
 for caller Workflows to use the Nexus Endpoint.
 
-You can hand-write that module, but the preferred way is to generate it with the [Nexus Code Generator](https://github.com/temporalio/nexgen).
+You can hand-write that module, but the preferred way is to generate it with [NexGen](/nexus/nexgen).
 You write the contract once as a JSON or YAML definition file and run `nexgen` against it, and it emits the typed models,
 runtime validators, and the Service definition itself.
 
 This is what makes a Nexus Service polyglot. Both sides generate from the same definition file: the handler implements
-the Service, the caller invokes its Operations, and neither hand-writes a request or response type. A Python handler
-and a Go caller share no code, but they both run off that same service contract - so they interoperate with no
+the Service, the caller invokes its Operations, and neither side hand-writes request or response types. A TypeScript
+handler and a Go caller share no code, but they both run off that same service contract, so they interoperate with no
 coordination between the teams beyond the contract itself.
 
-The generated validators check every payload against the contract, when a value is parsed off the wire and again when
+The generated validators check every payload against the contract when a value is parsed off the wire and again when
 it is serialized onto it, so bad data is rejected at the boundary rather than reaching your Workflow or Activity. A value validates
 identically in every language, which is what lets a caller and a handler written in different languages trust the same
 contract. See the [`chat.nexusrpc.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/chat.nexusrpc.yaml)
@@ -217,7 +217,7 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
       client.startWorkflow(helloWorkflow, {
         args: [input],
 
-        // Workflow IDs should typically be business-meaningful IDs and are used to dedupe workflow starts.
+        // Workflow Ids should typically be business-meaningful identifiers and are used to dedupe Workflow starts.
         workflowId: `hello-${input.name}-${input.language}`,
 
         // Task queue defaults to the task queue this Operation is handled on.
@@ -226,8 +226,8 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
 });
 ```
 
-Workflow IDs should typically be business-meaningful IDs and are used to dedupe Workflow starts.
-In general, the ID should be passed in the Operation input as part of the Nexus Service contract.
+Workflow Ids should typically be business-meaningful identifiers and are used to dedupe Workflow starts.
+In general, the Id should be passed in the Operation input as part of the Nexus Service contract.
 
 :::tip RESOURCES
 
