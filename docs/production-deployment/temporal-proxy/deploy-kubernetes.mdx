@@ -134,10 +134,10 @@ readinessProbe:
 
 Naming a service is optional; omit it to check the empty service name. Either way the answer is the same, because the
 proxy's health is process-wide, and a service your configuration does not allow returns `NOT_FOUND`. See
-[Report health](/production-deployment/temporal-proxy/configure#health-checks) for what the gateway publishes.
+[Health checks](/production-deployment/temporal-proxy/configure#health-checks) for what the gateway publishes.
 
 The status your probe reads is refreshed by a check the proxy runs against itself every 30 seconds, tunable under the
-`health` block. The two cover different ground, which is why you want both: the internal check exercises the
+`health` block. The two cover different scenarios, which is why you want both. The internal check exercises the
 interceptor chain every forwarded request travels, and your probe proves the gateway still accepts a connection and
 completes a handshake, which the internal check deliberately skips.
 

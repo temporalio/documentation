@@ -105,7 +105,7 @@ gateway. Allowing `grpc.reflection.v1.ServerReflection` also allows the supersed
 `grpc.reflection.v1alpha.ServerReflection`, because clients probe `v1` and fall back to it. The relation runs one way:
 allowing only the superseded spelling does not allow the current one.
 
-## Report health {/*#health-checks*/}
+## Health checks {/*#health-checks*/}
 
 The gateway serves the standard gRPC health service and publishes an entry for every allowed service under its proto
 full name, alongside the usual empty service name. Each entry reports the same status, since the proxy's health is
@@ -246,8 +246,8 @@ warning when a translated name is not shaped like a Cloud Namespace and forwards
 
 ## Answer the methods Cloud does not serve
 
-Temporal Cloud does not serve every `WorkflowService` method on a Namespace endpoint. `ListNamespaces` is the one this
-affects today: Cloud pins a request to the endpoint's Namespace, and a `ListNamespaces` request names none, so the call
+Temporal Cloud does not serve every `WorkflowService` method on a Namespace endpoint. `ListNamespaces` is one this
+affects, for example: Cloud pins a request to the endpoint's Namespace, and a `ListNamespaces` request names none, so the call
 can never succeed on a Namespace frontend. Cloud exposes the same capability as `CloudService.GetNamespaces` on its
 control plane.
 
@@ -272,11 +272,14 @@ apiTranslations:
         apiKey: ${TEMPORAL_CLOUD_API_KEY}
 ```
 
-Two cases need it. The Cloud Ops API accepts an API key only, so an upstream that authenticates with a client
-certificate has no credential to inherit and must name an API key here or its translated calls are refused. The other is
-reaching a different Cloud environment. An address that is not a Cloud endpoint is reported at startup rather than
-rejected, because a test double or a private environment legitimately carries no Cloud domain and the proxy cannot tell
-that apart from a typo.
+Set `cloudApi` in two cases:
+
+- **The upstream authenticates with a client certificate.** Set an API key under `credentials`. The Cloud Ops API
+  accepts only API keys, so the proxy has no credential to inherit from the upstream, and it refuses translated calls
+  until you provide one.
+- **You need to reach a different Cloud environment.** Set `hostPort` to that environment's control plane. If the
+  address isn't a Cloud endpoint, the proxy reports it at startup but still accepts it, because test doubles and private
+  environments often use addresses outside the Cloud domain.
 
 TLS is not inherited from the upstream, since the control plane is a different host and the upstream's server name or
 client certificate would not apply. The dial default stands instead, verifying against the system root pool.
@@ -394,7 +397,7 @@ upstreams:
 ```
 
 Credentials require TLS to the upstream. The proxy dials over TLS by default, so this is only an issue when you also set
-`insecure: true`: credentials on a plaintext hop fail the configuration at startup rather than putting the key on the
+`insecure: true`. Credentials on a plaintext hop fail the configuration at startup rather than putting the key on the
 wire in the clear.
 
 ## Configure TLS {/*#configure-tls*/}
@@ -409,7 +412,7 @@ certificate to fall back on.
 
 **Inbound, on the gateway.** The top-level `tls` block secures connections from your applications. Set `cert` and `key`
 for server TLS, and add `ca` to enforce mutual TLS, which requires each client to present a certificate signed by that
-CA. A gateway with no `tls` block serves plaintext, which is what local development usually wants.
+CA. A gateway with no `tls` block serves plaintext, which is what local development usually handles.
 
 **Outbound, per upstream.** Each upstream dials over TLS whether or not it declares a `tls` block:
 
@@ -421,7 +424,7 @@ CA. A gateway with no `tls` block serves plaintext, which is what local developm
 
 Set `serverName` when the host you dial does not match the common name or SAN on the server's certificate.
 
-`insecure` and a `tls` block cannot be set together. They say opposite things, so the configuration fails at startup
+`insecure` and a `tls` block cannot be set together because they are opposite, so the configuration fails at startup
 rather than silently picking one. The same rules govern every outbound hop, so an `extensionServers` entry and the
 `apiTranslations.cloudApi` block read exactly the same way.
 
