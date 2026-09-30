@@ -17,9 +17,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
-  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
-  Create a [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team for access, and
-  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+  Cloud Run support is in Public Preview.
 </ReleaseNoteHeader>
 
 This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) to a GCP Cloud Run Worker Pool.
@@ -139,11 +137,11 @@ Python Worker setup, see [Serverless Workers on GCP Cloud Run - Python SDK](/dev
 package main
 
 import (
-	"crypto/tls"
 	"log"
 	"os"
 
 	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
 	"go.temporal.io/sdk/contrib/gcp/cloudrun/id"
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
@@ -152,13 +150,12 @@ import (
 )
 
 func main() {
-	c, err := client.Dial(client.Options{
-		HostPort:          os.Getenv("TEMPORAL_ADDRESS"),
-		Namespace:         os.Getenv("TEMPORAL_NAMESPACE"),
-		ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{}},
-		Credentials:       client.NewAPIKeyStaticCredentials(os.Getenv("TEMPORAL_API_KEY")),
-		Plugins:           []client.Plugin{id.NewCloudRunIDPlugin()},
-	})
+	clientOptions, err := envconfig.LoadDefaultClientOptions()
+	if err != nil {
+		log.Fatalln("Unable to load Temporal client options", err)
+	}
+	clientOptions.Plugins = append(clientOptions.Plugins, id.NewCloudRunIDPlugin())
+	c, err := client.Dial(clientOptions)
 	if err != nil {
 		log.Fatalln("Unable to create client", err)
 	}
@@ -263,9 +260,9 @@ For more on the TypeScript Worker setup, see
 package example;
 
 import io.temporal.client.WorkflowClient;
-import io.temporal.client.WorkflowClientOptions;
 import io.temporal.common.VersioningBehavior;
 import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.envconfig.ClientConfigProfile;
 import io.temporal.gcp.cloudrun.id.CloudRunIdPlugin;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
@@ -275,24 +272,17 @@ import io.temporal.worker.WorkerFactory;
 import io.temporal.worker.WorkerOptions;
 
 public class WorkerMain {
-  public static void main(String[] args) {
-    String apiKey = System.getenv("TEMPORAL_API_KEY");
+  public static void main(String[] args) throws java.io.IOException {
+    ClientConfigProfile profile = ClientConfigProfile.load();
 
     WorkflowServiceStubs service =
         WorkflowServiceStubs.newServiceStubs(
-            WorkflowServiceStubsOptions.newBuilder()
-                .setTarget(System.getenv("TEMPORAL_ADDRESS"))
-                .setEnableHttps(true)
-                .addApiKey(() -> apiKey)
+            WorkflowServiceStubsOptions.newBuilder(profile.toWorkflowServiceStubsOptions())
+                .setPlugins(new CloudRunIdPlugin())
                 .build());
 
     WorkflowClient client =
-        WorkflowClient.newInstance(
-            service,
-            WorkflowClientOptions.newBuilder()
-                .setNamespace(System.getenv("TEMPORAL_NAMESPACE"))
-                .setPlugins(new CloudRunIdPlugin())
-                .build());
+        WorkflowClient.newInstance(service, profile.toWorkflowClientOptions());
 
     WorkerFactory factory = WorkerFactory.newInstance(client);
 
@@ -328,16 +318,13 @@ Java Worker setup, see [Serverless Workers on GCP Cloud Run - Java SDK](/develop
 
 ```csharp
 using Temporalio.Client;
+using Temporalio.Common.EnvConfig;
 using Temporalio.Extensions.Gcp.CloudRun.Id;
 using Temporalio.Worker;
 
-var client = await TemporalClient.ConnectAsync(new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
-{
-    Namespace = Environment.GetEnvironmentVariable("TEMPORAL_NAMESPACE")!,
-    ApiKey = Environment.GetEnvironmentVariable("TEMPORAL_API_KEY"),
-    Plugins = new[] { new CloudRunIdPlugin() },
-    Tls = new(),
-});
+var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+connectOptions.Plugins = new ITemporalClientPlugin[] { new CloudRunIdPlugin() };
+var client = await TemporalClient.ConnectAsync(connectOptions);
 
 var options = new TemporalWorkerOptions(Environment.GetEnvironmentVariable("TEMPORAL_TASK_QUEUE")!)
 {

@@ -15,9 +15,7 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
-  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
-  Create a [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team for access, and
-  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+  Cloud Run support is in Public Preview.
 </ReleaseNoteHeader>
 
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
@@ -137,7 +135,7 @@ Create the plugin and pass it to `Client.connect`. The sample also registers `Cl
 reads its connection settings from the environment:
 
 <!--SNIPSTART python-cloud-run {"selectedLines": ["1-10"]}-->
-[gcp/cloud_run/worker.py](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/worker.py)
+[gcp/cloud_run/worker.py](https://github.com/temporalio/samples-python/blob/gcp-cloud-run/gcp/cloud_run/worker.py)
 ```py
 # OpenTelemetryPlugin exports Core metrics and traces to the collector
 # sidecar; CloudRunIdPlugin sets the client identity from instance metadata.
@@ -155,7 +153,7 @@ client = await Client.connect(
 Configure the Collector sidecar to receive OTLP gRPC on `localhost:4317`, export traces to Google Cloud, and export metrics to Google Managed Service for Prometheus:
 
 <!--SNIPSTART python-cloud-run-collector-config-->
-[gcp/cloud_run/collector-config.yaml](https://github.com/temporalio/samples-python/blob/main/gcp/cloud_run/collector-config.yaml)
+[gcp/cloud_run/collector-config.yaml](https://github.com/temporalio/samples-python/blob/gcp-cloud-run/gcp/cloud_run/collector-config.yaml)
 ```yaml
 receivers:
   otlp:
@@ -175,6 +173,7 @@ processors:
   resource_detection:
     detectors: [gcp]
     timeout: 10s
+  # Rename Temporal datapoint labels that collide with the target labels Managed Service for Prometheus injects (e.g. namespace).
   transform/collision:
     metric_statements:
       - context: datapoint
@@ -191,6 +190,7 @@ processors:
           - delete_key(attributes, "instance")
           - set(attributes["exported_project_id"], attributes["project_id"])
           - delete_key(attributes, "project_id")
+  # The Telemetry API expects the Google Cloud project in gcp.project_id.
   transform/set_project_id:
     error_mode: ignore
     trace_statements:
@@ -226,7 +226,7 @@ service:
 ```
 <!--SNIPEND-->
 
-Wait until the Collector accepts connections before starting the Worker. On shutdown, call `plugin.shutdown()` after the Worker stops so traces can flush. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Python Cloud Run sample](https://github.com/temporalio/samples-python/pull/376).
+Wait until the Collector accepts connections before starting the Worker. On shutdown, call `plugin.shutdown()` after the Worker stops so traces can flush. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Python Cloud Run sample](https://github.com/temporalio/samples-python/tree/gcp-cloud-run/gcp/cloud_run).
 
 ## Set a Worker identity {/* #worker-identity */}
 
@@ -235,4 +235,4 @@ on the Client alongside the OpenTelemetry plugin. It reads Cloud Run environment
 the Client connects, then Workers created from that Client inherit the identity.
 
 The Id plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete
-example, see the [Python Cloud Run sample](https://github.com/temporalio/samples-python/pull/376).
+example, see the [Python Cloud Run sample](https://github.com/temporalio/samples-python/tree/gcp-cloud-run/gcp/cloud_run).

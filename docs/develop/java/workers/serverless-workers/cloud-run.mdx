@@ -15,9 +15,7 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
-  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
-  Create a [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team for access, and
-  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+  Cloud Run support is in Public Preview.
 </ReleaseNoteHeader>
 
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
@@ -153,17 +151,18 @@ For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/
 
 Run an OpenTelemetry Collector as a sidecar in the Worker Pool. The Cloud Run OpenTelemetry plugin exports metrics and traces by OTLP gRPC to the Collector at `localhost:4317`. It configures the endpoint and service name from Cloud Run defaults.
 
-Create the plugin and register it on `WorkflowServiceStubsOptions` before you create the Client:
+Create both Cloud Run plugins and register them on `WorkflowServiceStubsOptions` before you create the Client:
 
-<!--SNIPSTART java-cloud-run-otel-worker-->
-[gcp/cloud-run/opentelemetry/src/main/java/io/temporal/samples/gcp/cloudrun/opentelemetry/CloudRunWorker.java](https://github.com/temporalio/samples-java/blob/main/gcp/cloud-run/opentelemetry/src/main/java/io/temporal/samples/gcp/cloudrun/opentelemetry/CloudRunWorker.java)
+<!--SNIPSTART java-cloud-run-worker-->
+[gcp/cloud-run/src/main/java/io/temporal/samples/gcp/cloudrun/CloudRunWorker.java](https://github.com/temporalio/samples-java/blob/gcp-cloud-run/gcp/cloud-run/src/main/java/io/temporal/samples/gcp/cloudrun/CloudRunWorker.java)
 ```java
 ClientConfigProfile profile = ClientConfigProfile.load();
-CloudRunOpenTelemetryPlugin telemetryPlugin = CloudRunOpenTelemetryPlugin.newBuilder().build();
+CloudRunOpenTelemetryPlugin otelPlugin = CloudRunOpenTelemetryPlugin.newBuilder().build();
+CloudRunIdPlugin idPlugin = new CloudRunIdPlugin();
 
 WorkflowServiceStubsOptions serviceOptions =
     WorkflowServiceStubsOptions.newBuilder(profile.toWorkflowServiceStubsOptions())
-        .setPlugins(telemetryPlugin)
+        .setPlugins(otelPlugin, idPlugin)
         .build();
 WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceOptions);
 ```
@@ -171,8 +170,8 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceOptio
 
 Configure the Collector sidecar to receive OTLP gRPC on `localhost:4317`, export traces to Google Cloud, and export metrics to Google Managed Service for Prometheus:
 
-<!--SNIPSTART java-cloud-run-otel-collector-config-->
-[gcp/cloud-run/opentelemetry/collector-config.yaml](https://github.com/temporalio/samples-java/blob/main/gcp/cloud-run/opentelemetry/collector-config.yaml)
+<!--SNIPSTART java-cloud-run-collector-config-->
+[gcp/cloud-run/collector-config.yaml](https://github.com/temporalio/samples-java/blob/gcp-cloud-run/gcp/cloud-run/collector-config.yaml)
 ```yaml
 receivers:
   otlp:
@@ -262,30 +261,11 @@ service:
 ```
 <!--SNIPEND-->
 
-On shutdown, stop the `WorkerFactory`, then run `telemetryPlugin.newFlushHook()` before the Cloud Run termination window ends. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Java Cloud Run OpenTelemetry sample](https://github.com/temporalio/samples-java/pull/792).
+On shutdown, stop the `WorkerFactory`, then run `otelPlugin.newFlushHook()` before the Cloud Run termination window ends. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Java Cloud Run sample](https://github.com/temporalio/samples-java/tree/gcp-cloud-run/gcp/cloud-run).
 
 ## Set a Worker identity {/* #worker-identity */}
 
-Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. Register the plugin on `WorkflowClientOptions` before creating the Client. Workers created from that Client inherit the identity.
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The preceding example registers the plugin on `WorkflowServiceStubsOptions` alongside the OpenTelemetry plugin.
+Clients and Workers created from those service stubs inherit the identity.
 
-[gcp/cloud-run/id/src/main/java/io/temporal/samples/gcp/cloudrun/id/CloudRunWorker.java](https://github.com/temporalio/samples-java/blob/main/gcp/cloud-run/id/src/main/java/io/temporal/samples/gcp/cloudrun/id/CloudRunWorker.java)
-```java
-String address = envOrDefault(ADDRESS_ENV, DEFAULT_ADDRESS);
-String namespace = envOrDefault(NAMESPACE_ENV, DEFAULT_NAMESPACE);
-
-// Plaintext connection; add TLS or an API key here for Temporal Cloud.
-WorkflowServiceStubs service =
-    WorkflowServiceStubs.newServiceStubs(
-        WorkflowServiceStubsOptions.newBuilder().setTarget(address).build());
-
-// CloudRunIdPlugin sets the client identity to {instanceId}@{revision} from metadata.
-WorkflowClient client =
-    WorkflowClient.newInstance(
-        service,
-        WorkflowClientOptions.newBuilder()
-            .setNamespace(namespace)
-            .setPlugins(new CloudRunIdPlugin())
-            .build());
-```
-
-The plugin requires Cloud Run metadata, so Client creation fails when the Worker runs outside Cloud Run. For a complete example, see the [Java Cloud Run Id sample](https://github.com/temporalio/samples-java/pull/795).
+The plugin requires Cloud Run metadata, so Client creation fails when the Worker runs outside Cloud Run. For a complete example, see the [Java Cloud Run sample](https://github.com/temporalio/samples-java/tree/gcp-cloud-run/gcp/cloud-run).
