@@ -264,6 +264,82 @@ Number of Workflows that successfully completed.
 
 Number of Workflows that timed out before completing execution.
 
+## Multi-Cluster Replication metrics
+
+Use these metrics together to determine whether a passive Temporal Service is caught up and ready for a planned
+Namespace handover. For the complete list of emitted metrics, see
+[`metric_defs.go`](https://github.com/temporalio/temporal/blob/main/common/metrics/metric_defs.go).
+
+### `replication_stream_stuck`
+
+Counts replication streams that stop making forward progress. A non-zero rate requires investigation before a planned
+handover.
+
+### `replication_stream_error`
+
+Counts errors that close or reconnect a replication stream. Connection recycling can produce errors while replication
+remains healthy, so evaluate this metric with `replication_stream_stuck`, `replication_tasks_lag`, and
+`replication_latency`.
+
+### `replication_dlq_enqueue_failed`
+
+Counts failures to write an unprocessable replication task to the replication dead-letter queue. A non-zero rate can
+mean a replication task was not retained for later recovery.
+
+### `replication_tasks_lag`
+
+A histogram of the difference between the source replication task identifier and the destination's acknowledged task
+identifier. A rising value means the passive Temporal Service is falling behind.
+
+### `replication_latency`
+
+A histogram of the end-to-end time between replication task generation on the active Temporal Service and application
+on the passive Temporal Service.
+
+### `replication_tasks_recv_backlog`
+
+A histogram of replication tasks buffered by the passive Temporal Service while waiting to be applied. A sustained
+increase can trigger receiver flow control and stop the source from sending more tasks.
+
+### `replication_tasks_applied`
+
+Counts replication tasks that the destination Temporal Service applies. After a handover, use this metric on the former
+active Temporal Service to verify that the reverse replication stream is processing tasks.
+
+### `task_errors_discarded`
+
+Counts standby tasks discarded after their required Event History does not arrive before the configured discard delay.
+A non-zero rate can indicate that affected Workflow Executions will need task recovery after failover.
+
+### `catchup_ready_shard_count`
+
+A gauge of History shards that meet a `namespace-handover-v2` Workflow's initial catchup conditions. The metric is
+tagged with the Namespace and destination Temporal Service.
+
+### `catchup_not_ready_shard_count`
+
+A gauge of History shards that do not yet meet a `namespace-handover-v2` Workflow's initial catchup conditions. This
+value must reach zero before the Workflow enters the drain phase.
+
+### `handover_ready_shard_count`
+
+A gauge of History shards that have completely drained the Namespace's replication tasks during the handover phase.
+The value must reach `numHistoryShards` before the handover timeout.
+
+### `handover_wait_latency`
+
+A histogram of how long API requests wait for a Namespace to leave the `handover` replication state.
+
+### `client_redirection_requests`
+
+Counts requests that a passive Temporal Service forwards to the active Temporal Service. After a handover, an increase
+on the former active Temporal Service confirms that connected Clients and Workers are being forwarded.
+
+### `client_redirection_errors`
+
+Counts forwarded requests that return an error. Use the `error_type` tag to distinguish connectivity, throttling, and
+unsupported-forwarding failures.
+
 ## Nexus metrics
 
 These metrics pertain to Nexus Operations.
