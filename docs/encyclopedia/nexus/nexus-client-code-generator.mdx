@@ -1,0 +1,49 @@
+---
+id: nexus-client-code-generator
+title: Nexus Client Code Generator
+sidebar_label: Nexus Client Code Generator
+description: The Nexus Client Code Generator turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
+toc_max_heading_level: 4
+slug: /nexus/client-code-generator
+tags:
+  - Nexus
+  - Concepts
+---
+
+:::caution
+
+`nexgen` is pre-release software and may not retain backwards compatibility with previous versions of the tool.
+It is not yet published to any package registry, so you build it from source.
+
+:::
+
+A [Nexus Service](/nexus/services) is a contract meant to be shared across team boundaries.
+Those teams often work in different languages, so the same request and response types get hand-written for each SDK.
+Hand-written copies drift: a field is required on one side and optional on the other, a bound is enforced by the caller but not the handler.
+
+The **[Nexus Client Code Generator](https://github.com/temporalio/nexgen)** removes those copies.
+You describe your types and [Nexus Operations](/nexus/operations) once in a definition file, and the generator emits the equivalent library code for Go, Java, Python, and TypeScript.
+The generator is a command-line tool named `nexgen`, distributed from the [temporalio/nexgen](https://github.com/temporalio/nexgen) repository.
+
+## What the generator produces
+
+The generator produces a client library for the inputs and outputs of your Nexus Operations. The generated types check values against the contract as they are sent and received, so a violation surfaces as an error rather than as bad data.
+
+That client library contains three things:
+
+- **A typed model.** An idiomatic struct, class, interface, or dataclass, with doc comments carried over from the schema.
+- **A runtime validator.** One validator per type, applied when a value is parsed off the wire and again when it is serialized onto it.
+- **A [Nexus Service Contract](/glossary#nexus-service-contract) definition**, for a file that declares Services. These are the Service and Operation declarations you register on a Worker and call from a caller Workflow. A pure JSON Schema file declares none, so it produces only the models and their validators.
+
+Constraint failures are aggregated into a single native error listing every violation, each naming the offending field and the bound it broke.
+A handler maps that error to a `BAD_REQUEST` [Nexus error](/nexus/error-handling), so a malformed request tells the caller everything that was wrong with it in one response.
+
+## Related
+
+- How to use the Nexus Client Code Generator:
+  [Go](/develop/go/nexus/client-code-generator) ·
+  [Java](/develop/java/nexus/client-code-generator) ·
+  [Python](/develop/python/nexus/client-code-generator) ·
+  [TypeScript](/develop/typescript/nexus/client-code-generator)
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) — implement generated Service Operations
+- [Microservice Development Walkthrough](/develop/java/nexus/development-walkthrough) — end-to-end Java guide

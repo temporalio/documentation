@@ -1,0 +1,174 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
+:::caution
+
+This walkthrough covers the [Temporal Operation Handler](/nexus/temporal-operation-handler), which is pre-release.
+APIs are experimental and may change in backwards-incompatible ways.
+
+:::
+
+This walkthrough builds one Nexus Service from nothing to a complete API, adding a single Nexus capability at each step.
+
+A [Nexus Service](/evaluate/nexus) is a contract that one team publishes and other teams call, across [Namespace](/namespaces) boundaries, without sharing code or a deployment.
+
+## The walkthrough problem
+
+This guide creates a purchase approval Workflow — a common Temporal and Nexus use case.
+
+**A purchase request needs approval before it can proceed.**
+
+Approval is slow and human-driven: someone has to look at the request and decide. The system needs to survive that wait, which may be minutes or weeks. While a request is pending, other systems might need to nudge the approver or attach information to the request. Eventually a decision arrives, and the requesting system needs the outcome.
+
+Concretely, the Service needs to:
+
+- Tell a caller whether a purchase needs approval at all, before any durable work starts
+- Start an approval and, eventually, return `APPROVED` or `DENIED`
+- Accept a nudge that asks the approver again, and count how many have been sent
+- Accept supporting information for a purchase, whether or not its approval exists yet
+- Accept a decision from the caller and confirm it was recorded
+- Send a notification when the decision is final
+
+Each of those needs a different Nexus capability, introduced one step at a time.
+
+## One contract, every language
+
+**This walkthrough builds the Service in Java.** The same contract has a sample implementation in every language the generator supports. The reasoning at each step — what the contract should say, what backs each Operation, which message type to reach for — is the same in all of them.
+
+Working sample code, all built from the one contract:
+
+| Language | Sample |
+| --- | --- |
+| Java (this walkthrough) | [nexuswalkthrough](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough) |
+| Go | `{sample repo link}` |
+| Python | `{sample repo link}` |
+| TypeScript | `{sample repo link}` |
+
+**Any caller can call any handler, because the contract is the only thing the two sides share.** A Go caller can drive the Python handler; the TypeScript caller can drive the Java handler. [Step 6](/develop/java/nexus/development-walkthrough?step=call) builds the Java caller and then points at the other languages' samples.
+
+:::note
+
+Sample repos for each language will land once the docs settle. The idea is that you can run the client from any sample against the handler from any other sample.
+
+:::
+
+The [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) takes the contract and emits typed models, validators, and Service definitions for Go, Java, Python, and TypeScript.
+
+## How to follow along
+
+Two kinds of code block appear in this walkthrough. Mousing over either will give you a copy icon to the right of the code block.
+
+**A terminal window is a command to run.** This one is worth running now, to confirm you have a
+pre-release CLI. Make sure the server version is 1.32.0 or higher:
+
+<RunThis>
+
+```bash title="Run: check your CLI version"
+temporal --version
+```
+
+</RunThis>
+
+**Every terminal command has to be run, in order**, or later steps may fail. Each step that adds
+an Operation also ends with a terminal window that exercises what you just built, so you get a
+result at the end of every step rather than after five steps of unverified work.
+
+**A block headed by a file path is sample code**, shown so you can read it. Nothing needs to be
+typed as this will be present in the [sample codebase](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough).
+The file name will a link to the file in the sample repo.
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java)
+
+```java
+  public static String forItem(String itemId) {
+    return "approval-" + itemId;
+  }
+```
+
+Output a command produces is shown in a plain block with no header, like this:
+
+```
+temporal version 1.8.3-server-1.32.0-162.0 (Server 1.32.0-162.0, UI 2.53.1)
+```
+
+## Before you start
+
+### Clone the sample project
+
+This walkthrough runs inside a clone of the [samples-java](https://github.com/temporalio/samples-java)
+repository. Every command and file path below is relative to the repository root, and the finished
+Service lives in
+[core/src/main/java/io/temporal/samples/nexuswalkthrough](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough).
+
+<RunThis>
+
+```bash title="Run 1 of 3: clone the sample"
+git clone https://github.com/temporalio/samples-java.git
+cd samples-java
+```
+
+</RunThis>
+
+The sample is the finished Service, so you can view and run the code in the repository to follow
+along with the guide. Each step shows the code it is introducing and then runs it.
+
+### Use the pre-release CLI
+
+The Temporal Operation Handler is pre-release, so you need a pre-release [Temporal CLI](/cli) and
+the development server that ships with it which can be [downloaded here](https://github.com/temporalio/cli/releases).
+Check the what's changed section and ensure it is not a backport! A stock build currently rejects the Operations this walkthrough
+runs. See [Debugging and tips](/develop/java/nexus/development-walkthrough?step=tips)
+for what each failure looks like.
+
+### Start the development server
+
+Two dynamic config values are required:
+
+<RunThis>
+
+```bash title="Run 2 of 3: start the development server"
+temporal server start-dev \
+  --dynamic-config-value 'nexusoperation.enableStandalone=true' \
+  --dynamic-config-value 'activity.enableCallbacks=true'
+```
+
+</RunThis>
+
+`nexusoperation.enableStandalone` allows a Client to start an Operation without a caller Workflow,
+which is how you run each Operation from the command line as you build it.
+`activity.enableCallbacks` allows a completion callback on a Standalone Activity Execution, which
+the `notifyRequester` Operation in [step 9](/develop/java/nexus/development-walkthrough?step=activity)
+needs.
+
+### Create the Namespaces and the Endpoint
+
+Create these in a second terminal. The handler and the caller each get their own Namespace, so the walkthrough
+crosses a real Namespace boundary.
+
+<RunThis>
+
+```bash title="Run 3 of 3: create the Namespaces and the Endpoint"
+temporal operator namespace create --namespace approval-handler-namespace
+temporal operator namespace create --namespace approval-caller-namespace
+
+temporal operator nexus endpoint create \
+  --name approval-endpoint \
+  --target-namespace approval-handler-namespace \
+  --target-task-queue approval-handler-task-queue \
+  --description-file ./core/src/main/java/io/temporal/samples/nexuswalkthrough/description.md
+```
+
+</RunThis>
+
+[Steo 5](/develop/java/nexus/development-walkthrough?step=publish) explains what the Endpoint does
+and covers Temporal Cloud, where the same Endpoint also needs an allowed-caller list. Creating it
+now means every Operation is callable the moment you write it.
+
+### Run an Operation at the end of each step
+
+Each step that adds an Operation ends by running it, so you get a result before moving on rather
+than after five steps of unverified work. Those runs use `temporal nexus operation execute`, which
+starts a [Standalone Nexus Operation](/standalone-nexus-operation): the CLI is the caller, so no
+caller Workflow and no caller Worker are needed until
+[step 6](/develop/java/nexus/development-walkthrough?step=call).
+
+New to Nexus? Read [Nexus Services](/nexus/services) and [Nexus Operations](/nexus/operations), or work through the shorter [Java Nexus quickstart](/develop/java/nexus/quickstart).
