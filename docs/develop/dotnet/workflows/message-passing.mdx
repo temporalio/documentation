@@ -5,7 +5,8 @@ sidebar_label: Message passing
 description: Develop with Queries, Signals, and Updates with the Temporal .NET SDK.
 toc_max_heading_level: 3
 tags:
-  - .Net SDK
+  - Workflows
+  - .NET SDK
   - Temporal SDKs
 ---
 
@@ -421,7 +422,7 @@ Signal and Update handlers can be asynchronous as well as blocking.
 Using asynchronous calls allows you to `await` Activities, Child Workflows, [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) wait conditions, etc.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
-It's essential to understand the things that could go wrong in order to use asynchronous handlers safely.
+To use asynchronous handlers safely, understand what can go wrong.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
 The following code executes an Activity that simulates a network call to a remote service:

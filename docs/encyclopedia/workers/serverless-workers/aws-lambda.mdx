@@ -24,26 +24,38 @@ For a step-by-step deployment guide, see [Deploy a Serverless Worker on AWS Lamb
 
 ## Autoscaling {/* #autoscaling */}
 
-The Lambda autoscaling algorithm is event-driven and reactive.
+The autoscaling algorithm in this section applies to Serverless Workers on AWS Lambda and Amazon Bedrock AgentCore
+Runtime. The compute providers have different Worker lifecycles after a scale-out action. For AgentCore Runtime
+lifecycle details, see [Serverless Workers on Amazon Bedrock AgentCore Runtime](/serverless-workers/agentcore#lifecycle).
+
+The autoscaling algorithm is event-driven and reactive.
 Sync match failure is the primary control signal, and backlog aids sizing.
 
-When the [WCI](/serverless-workers#worker-controller-instance) needs more capacity, it calls the Lambda `InvokeFunction` API to start new Workers.
-Each call is a discrete action ("invoke N more functions"), not a target state.
-Temporal calls that API from outside your network, so no inbound connection to the function is needed.
-The WCI does not manage a fleet of instances.
+When the [WCI](/serverless-workers#worker-controller-instance) needs more capacity, it invokes the compute provider to
+start new Workers: the Lambda `InvokeFunction` API for Lambda or an AgentCore Runtime endpoint for AgentCore Runtime.
+Each call is a discrete action ("start N more Workers"), not a target state. Temporal calls the provider API from
+outside your network, so no inbound connection to the Worker is needed. The WCI does not manage a fleet of instances.
 
 ### Scale-out {/* #scale-out */}
 
-On sync match failure, the WCI invokes new Lambda functions.
-Because Lambda cold start is sub-second to low single-digit seconds, reactive-only control does not create meaningful backlog overshoot.
-The WCI can scale from zero with low latency.
+On sync match failure, the WCI starts new Workers through the compute provider API.
+
+For Lambda, cold start is sub-second to low single-digit seconds, so reactive-only control does not create meaningful
+backlog overshoot. The WCI can scale from zero with low latency.
+
+For AgentCore Runtime startup and session behavior, see
+[Lifecycle](/serverless-workers/agentcore#lifecycle).
 
 ### Scale-in {/* #scale-in */}
 
-Scale-in is automatic.
-Each Lambda invocation runs until the Worker has finished processing available Tasks or approaches the 15-minute execution time limit, then shuts down.
-There is no drain logic or stabilization window.
-The WCI does not need to actively remove capacity.
+The WCI does not maintain a target number of Workers or actively remove capacity. The provider and Worker lifecycle
+determine when a Worker stops.
+
+On Lambda, each invocation runs until the Worker has finished processing available Tasks or approaches the 15-minute
+execution time limit, then shuts down. There is no drain logic or stabilization window.
+
+On AgentCore Runtime, Worker shutdown and AgentCore session lifecycle settings determine when a Worker stops. See
+[Lifecycle](/serverless-workers/agentcore#lifecycle).
 
 ### Instance model {/* #instance-model */}
 

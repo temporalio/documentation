@@ -21,7 +21,7 @@ your application may fail in sporadic and unexpected ways. Which one you should
 use depends on your use case. This section provides guidance to help you choose
 the best approach.
 
-## The Python Asynchronous Event Loop and Blocking Calls
+## The Python asynchronous event loop and blocking calls
 
 First, let's look at how async event loops work in Python. The Python async
 event loop runs in a thread and executes all tasks in its thread. When any
@@ -189,7 +189,7 @@ with ThreadPoolExecutor(max_workers=42) as executor:
     )
 ```
 
-## How to Implement Asynchronous Activities
+## How to implement asynchronous Activities
 
 The following code is an implementation of the preceding Activity, but as an
 asynchronous Activity Definition.
@@ -254,7 +254,7 @@ in an asynchronous function:
 - [`loop.run_in_executor()`](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor), which is also mentioned in the ["running blocking code" section of the "developing with asyncio" guide](https://docs.python.org/3/library/asyncio-dev.html#running-blocking-code)
 - [`asyncio.to_thread()`](https://docs.python.org/3/library/asyncio-task.html#running-in-threads)
 
-## When Should You Use Async Activities
+## When should you use async Activities
 
 Asynchronous Activities have many advantages, such as potential speed up of execution.
 However, as discussed above, making unsafe calls within the async event loop
