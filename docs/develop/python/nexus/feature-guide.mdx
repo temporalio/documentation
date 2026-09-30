@@ -125,7 +125,7 @@ retryable errors, blocking all Operations from the caller to that Endpoint.
 
 Every Operation is written with a [Temporal Operation Handler](/nexus/temporal-operation-handler). The
 `@nexus.temporal_operation` decorator hands your start method three things: a context, a Client, and the Operation
-input. What you do with the Client decides what backs the Operation:
+input. What you do with the Client determines what backs the Operation:
 
 - **Synchronous.** Return `nexus.TemporalOperationResult.sync(...)` and the Operation completes during the handler call.
   The caller has its result as soon as the call returns.
@@ -170,7 +170,7 @@ handler call, so they have to finish inside the
 [Nexus request timeout](/evaluate/cloud/limits#nexus-operation-request-timeout).
 
 Updates are the exception. Do not wait for one inside the handler. Start it with `start_workflow_update` and it backs
-the Operation. The handler returns straight away, and the Operation completes when the Update does, however long it
+the Operation. The handler returns immediately, and the Operation completes when the Update does, however long it
 takes.
 
 The [nexus_messaging](https://github.com/temporalio/samples-python/tree/main/nexus_messaging)
@@ -178,11 +178,11 @@ sample shows a Nexus Service that Queries and Signals a running Workflow from sy
 Operation with a Workflow Update.
 
 The Client your handler receives is not an ordinary Temporal Client. It propagates
-[bidirectional links](/nexus/execution-debugging#bi-directional-linking) and request Ids on every call, so the
+[bidirectional links](/nexus/execution-debugging#bi-directional-linking) and request IDs on every call, so the
 caller-side and handler-side Executions are connected in the UI without wiring anything. Reach the Workflow Client
 through `client.client` rather than constructing your own.
 
-In this example the Workflow Id is derived from an identifier carried in the Operation input, so the caller only needs
+In this example the Workflow ID is derived from an identifier carried in the Operation input, so the caller only needs
 the identifier it cares about:
 
 ```python
@@ -233,7 +233,7 @@ class MyNexusServiceHandler:
         )
 ```
 
-Workflow Ids should typically be business-meaningful identifiers and are used to dedupe Workflow starts. In general, the Id should be passed in the Operation input as part of the Nexus Service contract.
+Workflow IDs should typically be business-meaningful identifiers and are used to dedupe Workflow starts. In general, the Workflow ID should be passed in the Operation input as part of the Nexus Service contract.
 
 :::tip RESOURCES
 
@@ -321,12 +321,12 @@ See [hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blo
 
 ## Make Nexus calls across Namespaces with a development Server {/* #nexus-calls-across-namespaces-dev-server */}
 
-In one terminal, run the Temporal worker in the handler namespace:
+In one terminal, run the Temporal Worker in the handler Namespace:
 ```
 uv run handler/worker.py
 ```
 
-In another terminal, run the Temporal worker in the caller namespace and start the caller workflow:
+In another terminal, run the Temporal Worker in the caller Namespace and start the caller Workflow:
 ```
 uv run caller/app.py
 ```
@@ -353,7 +353,7 @@ Once the caller Workflow completes, the caller's Nexus Machinery stops attemptin
 been canceled, letting them run to completion.
 
 It's okay to leave operations running in some use cases. To ensure cancellations are delivered, wait for all pending
-operations to deliver their cancellation requests before exiting the Workflow.
+operations to finish before exiting the Workflow.
 
 See the [Nexus cancellation sample](https://github.com/temporalio/samples-python/tree/main/nexus_cancel) for reference.
 
@@ -456,7 +456,7 @@ tcld nexus endpoint create \
 </TabItem>
 </Tabs>
 
-The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in Runtime Access Control.
+The `--allow-namespace` flag builds an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in [Runtime Access Controls](/nexus/security#runtime-access-controls).
 
 Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
 

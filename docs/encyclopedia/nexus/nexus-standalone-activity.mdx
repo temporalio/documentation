@@ -33,14 +33,14 @@ The [Activity](/activities) supplies durability — retries on the policy you se
 The Operation supplies a typed contract and a [Namespace](/namespaces) boundary, so another team can call it without sharing your code, your deployment, or write access to your Namespace.
 
 Because the Activity carries the durability, no Workflow is needed behind the Operation.
-A Workflow wrapping a single Activity costs two [Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud — one to start the Workflow, one to start the Activity — where a Standalone Activity costs one.
+A Workflow wrapping a single Activity costs two [Billable Actions](/cloud/actions-usage#actions-in-workflows) in Temporal Cloud — one to start the Workflow, one to start the Activity — whereas a Standalone Activity costs one.
 Retries and heartbeats are billed the same way in either shape.
 
 ## Required options
 
 Starting an Activity this way needs values a Workflow-called Activity does not, because there is no parent Workflow to supply them:
 
-- **An Activity Id**, unique within the Namespace. Deriving it from the Nexus request Id makes the start idempotent, so a retried request targets the same Activity Execution instead of sending a second notification or charge.
+- **An Activity ID**, unique within the Namespace. Deriving it from the Nexus request ID makes the start idempotent, so a retried request targets the same Activity Execution instead of sending a second notification or charge.
 - **A timeout.** At least one of start-to-close or schedule-to-close.
 
 The Task Queue is optional and defaults to the one the Operation is running on. Set it explicitly to run the Activity on its own Worker fleet.
