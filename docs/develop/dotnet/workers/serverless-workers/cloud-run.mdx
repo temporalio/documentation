@@ -170,9 +170,11 @@ using Temporalio.Client;
 using Temporalio.Common.EnvConfig;
 using Temporalio.Extensions.Gcp.CloudRun.Id;
 
-var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
-connectOptions.Plugins = new ITemporalClientPlugin[] { new CloudRunIdPlugin() };
-var client = await TemporalClient.ConnectAsync(connectOptions);
+// ...
+    var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+    connectOptions.Plugins = new ITemporalClientPlugin[] { new CloudRunIdPlugin() };
+    var client = await TemporalClient.ConnectAsync(connectOptions);
+    // ...
 ```
 
 The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry defaults.

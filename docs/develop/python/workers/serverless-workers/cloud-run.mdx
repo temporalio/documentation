@@ -241,14 +241,16 @@ from temporalio.contrib.gcp.cloud_run.id import CloudRunIdPlugin
 
 from gcp.cloud_run.settings import load_settings
 
-settings = load_settings()
-client = await Client.connect(
-    settings.address,
-    namespace=settings.namespace,
-    api_key=settings.api_key,
-    tls=settings.tls,
-    plugins=[CloudRunIdPlugin()],
-)
+# ...
+    settings = load_settings()
+    client = await Client.connect(
+        settings.address,
+        namespace=settings.namespace,
+        api_key=settings.api_key,
+        tls=settings.tls,
+        plugins=[CloudRunIdPlugin()],
+    )
+    # ...
 ```
 
 The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry plugin.

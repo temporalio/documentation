@@ -276,13 +276,15 @@ import io.temporal.gcp.cloudrun.id.CloudRunIdPlugin;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 
-ClientConfigProfile profile = ClientConfigProfile.load();
-WorkflowServiceStubsOptions serviceOptions =
-    WorkflowServiceStubsOptions.newBuilder(profile.toWorkflowServiceStubsOptions())
-        .setPlugins(new CloudRunIdPlugin())
-        .build();
-WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceOptions);
-WorkflowClient client = WorkflowClient.newInstance(service, profile.toWorkflowClientOptions());
+// ...
+    ClientConfigProfile profile = ClientConfigProfile.load();
+    WorkflowServiceStubsOptions serviceOptions =
+        WorkflowServiceStubsOptions.newBuilder(profile.toWorkflowServiceStubsOptions())
+            .setPlugins(new CloudRunIdPlugin())
+            .build();
+    WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceOptions);
+    WorkflowClient client = WorkflowClient.newInstance(service, profile.toWorkflowClientOptions());
+    // ...
 ```
 
 The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry plugin.
