@@ -283,7 +283,7 @@ def spend_report(self) -> SpendReport:
 <!--SNIPSTART python-openrouter-budget-gate-pause-->
 [openrouter/budget_gate/workflow.py](https://github.com/temporalio/samples-python/blob/main/openrouter/budget_gate/workflow.py)
 ```py
-async def _reserve(self, prompt: str, estimate: float, timeout: timedelta) -> bool:
+async def _reserve(self, prompt: str, estimate: float) -> bool:
     """Reserve `estimate` against the budget, parking until it fits."""
 
     def fits() -> bool:
@@ -296,22 +296,35 @@ async def _reserve(self, prompt: str, estimate: float, timeout: timedelta) -> bo
             self._budget_usd,
             prompt,
         )
-        self._paused[prompt] = "soft_budget_exhausted"
-        try:
-            # Durable pause: survives Worker restarts and can wait for hours.
-            await workflow.wait_condition(fits, timeout=timeout)
-        except asyncio.TimeoutError:
+        if not await self._park(prompt, "soft_budget_exhausted", fits):
             return False
-        finally:
-            self._paused.pop(prompt, None)
     self._reserved_usd += estimate
     return True
+
+async def _park(self, prompt: str, reason: str, until: Callable[[], bool]) -> bool:
+    """Durable pause until `until()` holds or the batch deadline passes.
+
+    Survives Worker restarts and can wait for hours. Returns False when the
+    deadline passed first.
+    """
+    remaining = self._deadline - workflow.now()
+    if remaining <= timedelta(0):
+        return False
+    self._paused[prompt] = reason
+    try:
+        await workflow.wait_condition(until, timeout=remaining)
+        return True
+    except asyncio.TimeoutError:
+        return False
+    finally:
+        self._paused.pop(prompt, None)
 ```
 <!--SNIPEND-->
 
 The validator rejects lowering the budget. Sending the current budget unchanged is how an operator says "I topped up
-credits at OpenRouter"; it bumps a version counter that prompts parked on a 402 are waiting for. If nobody acts within
-the approval timeout, the batch completes with the remaining prompts listed as skipped.
+credits at OpenRouter"; it bumps a version counter that prompts parked on an out-of-credits error are waiting for. If
+nobody acts before the batch's approval deadline (one deadline shared by every parked prompt), the batch completes
+with the remaining prompts listed as skipped.
 
 The soft budget is a soft budget. The cost of a call is only known after the response. Overshoot is at most
 `max_concurrency * estimated_cost_usd`, plus the gap between the estimate and the real cost of calls already in
@@ -378,9 +391,10 @@ def openrouter_provider() -> OpenAIProvider:
 ```
 <!--SNIPEND-->
 
-Pass the provider to `OpenAIAgentsPlugin(model_provider=...)` and set the agent's `model` to any OpenRouter model slug,
-or to `openrouter/auto`. The plugin runs each model call as an Activity, so the Activity Retry Policy applies to
-OpenRouter calls the same way it does to OpenAI calls.
+Pass the provider to `OpenAIAgentsPlugin(model_provider=...)` and set the agent's `model` to `openrouter/auto` or any
+OpenRouter model slug. The plugin runs each model call as an Activity, so the Activity Retry Policy applies to
+OpenRouter calls the same way it does to OpenAI calls. Tools that run inside the Workflow must be `async`: the Agents
+SDK runs sync tools in a thread, which the Workflow sandbox does not allow.
 
 ## Samples
 
