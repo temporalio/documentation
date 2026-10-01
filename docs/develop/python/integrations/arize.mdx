@@ -46,8 +46,8 @@ script that verifies traces through the Phoenix API.
 - Ensure you have set up your local development environment by following the
   [Set up your local development environment](/develop/python/set-up-your-local-python) guide. When you're done, leave
   the Temporal Development Server running if you want to test your code locally.
-- A place to send traces: a local Phoenix (`docker run -p 6006:6006 arizephoenix/phoenix:version-20.9.0`, or
-  `uvx --from "arize-phoenix==20.9.0" phoenix serve`), or an Arize AX space ID and API key.
+- A place to send traces: a local Phoenix (`docker run -p 6006:6006 arizephoenix/phoenix:version-20.16.0`, or
+  `uvx --from "arize-phoenix==20.16.0" phoenix serve`), or an Arize AX space ID and API key.
 
 ## Install
 
@@ -55,12 +55,19 @@ Install the Temporal Python SDK with the OpenTelemetry extra, an OTLP/HTTP expor
 conventions, and the OpenInference instrumentation for the LLM SDK you call from Activities.
 
 ```bash
-uv add "temporalio[opentelemetry]>=1.32.0" opentelemetry-exporter-otlp-proto-http \
+uv add "temporalio[opentelemetry]>=1.33.0" opentelemetry-exporter-otlp-proto-http \
   openinference-semantic-conventions openinference-instrumentation-openai
 ```
 
-For the OpenAI Agents SDK variant, also add `"temporalio[openai-agents]"` and
-`openinference-instrumentation-openai-agents`.
+For the OpenAI Agents SDK variant, also add the standalone plugin package with its OpenInference extra:
+
+```bash
+uv add "temporalio-openai-agents[openinference]"
+```
+
+If you used the earlier `temporalio[openai-agents]` extra, replace it with `temporalio-openai-agents` and change imports
+from `temporalio.contrib.openai_agents` to `temporalio.openai_agents`. The
+[OpenAI Agents SDK integration](/develop/python/integrations/openai-agents) guide has the details.
 
 ## Configure the tracer provider and exporter
 
@@ -109,7 +116,9 @@ def setup_tracing(service_name: str) -> None:
 <!--SNIPEND-->
 
 Phoenix and Arize AX both ingest OTLP over HTTP. One exporter helper covers both: Phoenix by default, Arize AX when a
-space ID and API key are present.
+space ID and API key are present. This guide and the sample were validated against Phoenix. The Arize AX settings
+follow [Arize's Temporal guide](https://arize.com/docs/ax/integrations/python-agent-frameworks/temporal/temporal-tracing)
+and were not exercised against an Arize AX space.
 
 <!--SNIPSTART python-arize-tracing-exporter-->
 [arize_tracing/telemetry.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/telemetry.py)
@@ -393,16 +402,20 @@ finally:
 ```
 <!--SNIPEND-->
 
-The bridge is Public Preview in the Temporal SDK. The sample's `telemetry.py` includes a small logging filter for a
-known, harmless "Failed to detach context" message that the bridge produces when an agent span outlives a Workflow
-Task.
+The bridge ships in the `temporalio-openai-agents` package and is Public Preview; it may change before general
+availability. The sample's `telemetry.py` includes a small logging filter for a harmless "Failed to detach context"
+message that version 1.0.0 of the bridge logs when an agent span outlives a Workflow Task (fixed upstream in
+[temporalio/ai-integrations#26](https://github.com/temporalio/ai-integrations/pull/26)).
 
 :::caution
 
-Until [temporalio/sdk-python#1852](https://github.com/temporalio/sdk-python/issues/1852) is fixed, a Worker process that
-runs both the Workflow and its Activities exports the `temporal:startActivity` spans with a parent that is not in the
-trace, so the model-call and tool subtrees appear detached from the agent turns in Arize. Run the Workflow and the
-Activities in separate Worker processes, as the sample's `--role workflows` and `--role activities` Worker flags do.
+`temporalio-openai-agents` 1.0.0, like `temporalio.contrib.openai_agents`, exports the `temporal:startActivity` spans
+with a parent that is not in the trace when one Worker process runs both the Workflow and its Activities, so the
+model-call and tool subtrees appear detached from the agent turns in Arize
+([temporalio/sdk-python#1852](https://github.com/temporalio/sdk-python/issues/1852)). The fix is merged upstream in
+[temporalio/ai-integrations#26](https://github.com/temporalio/ai-integrations/pull/26) but not yet released. Until a
+release contains it, run the Workflow and the Activities in separate Worker processes, as the sample's
+`--role workflows` and `--role activities` Worker flags do.
 
 :::
 
@@ -628,6 +641,9 @@ context, so its `RunWorkflow` span appears as a second child of the same `StartW
   Arize's guide to the same integration.
 - [OpenInference semantic conventions](https://github.com/Arize-ai/openinference/blob/main/spec/semantic_conventions.md):
   the attributes Arize reads.
+- [Agent evaluation](https://arize.com/guides/ai-agent-handbook/agent-evaluation/): Arize's guide to evaluating agents
+  from the traces you send.
+- [LLM evaluation](https://arize.com/resources/llm-evaluation/): Arize's overview of evaluation methods and metrics.
 - [Set up tracing](/develop/python/platform/observability#tracing): the Python SDK's OpenTelemetry options.
 - [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents): the plugin behind the agents scenario.
 - [Temporal Plugins guide](/develop/plugins-guide): the Plugin system the OpenTelemetry plugin is built on.
