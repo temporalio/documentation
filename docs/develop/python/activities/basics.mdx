@@ -2,9 +2,10 @@
 id: basics
 title: Activity basics - Python SDK
 sidebar_label: Activity basics
-description: This section explains Activity Basics with the Python SDK
+description: Define an Activity with the activity.defn decorator, pass a single dataclass parameter, return serializable data, and set a custom Activity Type.
 toc_max_heading_level: 4
 tags:
+  - Activities
   - Python SDK
   - Temporal SDKs
 ---
@@ -56,7 +57,7 @@ async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-### Activity parameters {/* #activity-parameters */}
+### Define Activity parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may
 support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -115,8 +116,8 @@ async def your_activity(input: YourParams) -> str:
 
 ### Customize your Activity Type {/* #activity-type */}
 
-Activities have a Type that are referred to as the Activity name. The following examples demonstrate how to set a custom
-name for your Activity Type.
+Activities have a Type that are referred to as the Activity name. The following examples set a custom name for
+your Activity Type.
 
 You can customize the Activity name with a custom name in the decorator argument. For example,
 `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the

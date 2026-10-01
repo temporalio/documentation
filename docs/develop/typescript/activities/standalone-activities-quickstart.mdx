@@ -152,9 +152,9 @@ run().catch((err) => {
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a Worker, register the Activity, and run the Worker. The Worker doesn't need to know
-whether the Activity will be invoked from a Workflow or as a Standalone Activity. See [How to run a
-Worker](/develop/typescript/workers/run-worker-process#run-a-dev-worker) for more details on Worker setup and
-configuration options.
+whether the Activity will be invoked from a Workflow or as a Standalone Activity. See
+[Run a Worker](/develop/typescript/workers/run-worker-process#run-a-dev-worker) for more details on Worker setup
+and configuration options.
 
 [standalone-activity/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/worker.ts)
 
@@ -288,4 +288,4 @@ for mTLS and API key setup.
 
 - **[Standalone Activities Feature Guide](/develop/typescript/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
 - **[Build a Job Queue with Standalone Activities](https://learn.temporal.io/tutorials/typescript/standalone-activities/)**: Tutorial that builds a durable job queue, with idempotency keys, server-side deduplication, throughput limits, [Priority and Fairness](/develop/task-queue-priority-fairness), and heartbeat checkpoints.
-- **[Activity basics](/develop/typescript/activities/basics)**: How to write and register Activities with the TypeScript SDK.
+- **[Activity basics](/develop/typescript/activities/basics)**: Write and register Activities with the TypeScript SDK.

@@ -367,6 +367,14 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### [NexGen](/nexus/nexgen)
+
+NexGen generates client code for Go, Java, Python, and TypeScript from a schema file that defines the contract. Both
+sides can then use code generated from the same file, which gives data validation and type safety across the languages
+and helps prevent drift.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 #### Nexus Async Completion Callback
 
 A Nexus Async Completion Callback is the completion callback for an asynchronous Nexus Operation.
@@ -446,6 +454,14 @@ is polling a Nexus Endpoint's target Namespace and Task Queue.
 
 A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as
 associated input/output types a Service will accept for a given Operation.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Nexus Standalone Activity](/nexus/standalone-activity)
+
+An Activity-backed Nexus Operation runs a Standalone Activity and completes when that Activity returns. Use it when the
+work behind an Operation is one durable step rather than a process: calling an external API, running a computation,
+writing to another system.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -726,6 +742,14 @@ Temporal Service configuration is the setup and configuration details of your Te
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to
 spawn a Workflow Execution.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Temporal Operation Handler](/nexus/temporal-operation-handler)
+
+The Temporal Operation Handler is a single handler type that backs a Nexus Operation with a Workflow, an Update, or an
+Activity, and links every Execution back to the caller. What runs behind an Operation remains private to the handler,
+so you can change it later without touching the contract or any caller.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
