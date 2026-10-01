@@ -119,21 +119,24 @@ async def _send(self, request: OpenRouterRequest) -> OpenRouterResult:
             },
         )
     except APIStatusError as e:
-        raise_for_status(
-            e.status_code, _error_message(e.body) or e.message, e.response.headers
-        )
+        error = _error_object(e.body)
+        error.setdefault("message", e.message)
+        raise_for_status(e.status_code, error, e.response.headers)
     # Connection errors and timeouts propagate as-is: Temporal retries them.
 
     payload = json.loads(raw.text)
-    error = payload.get("error")
-    if isinstance(error, dict):
+    if isinstance(payload.get("error"), dict):
         # OpenRouter can return HTTP 200 with an error body and no choices
         # when the upstream provider failed after the request was accepted.
-        raise_for_status(
-            int(error.get("code") or 500), _error_message(payload), raw.headers
-        )
-
+        error = _error_object(payload)
+        raise_for_status(_error_code(error, 500), error, raw.headers)
     choices = payload.get("choices") or []
+    choice_error = choices[0].get("error") if choices else None
+    if isinstance(choice_error, dict):
+        # Or a 200 with a partial answer and the provider's error on the
+        # choice itself; a partial answer is not an answer.
+        raise_for_status(_error_code(choice_error, 500), choice_error, raw.headers)
+
     usage = payload.get("usage") or {}
     cost = usage.get("cost")
     if not isinstance(cost, (int, float)):
@@ -184,13 +187,14 @@ matching retry posture, and passes a `Retry-After` header through as the next re
 | 500, 502, 503, 524, 529 | Server error, model down, no provider available, edge timeout, provider overloaded | Yes |
 | 400 | Bad request | No |
 | 401 | Invalid API key | No |
-| 402 | The account is out of credits | No; raised as `OpenRouterOutOfCredits`, see [Pause when money runs out](#pause-when-money-runs-out) |
-| 403 with `Key limit exceeded` | The API key hit its own credit limit | No; raised as `OpenRouterOutOfCredits` |
+| 402 with `error.metadata.limit_source` of `openrouter_in_flight_budget` | In-flight budget cap, transient | Yes, honoring `Retry-After` |
+| 402, other | The account or API key is out of credits | No; raised as `OpenRouterOutOfCredits`, see [Pause when money runs out](#pause-when-money-runs-out) |
+| 403 with `Key limit exceeded` | A per-key limit, as observed in practice | No; raised as `OpenRouterOutOfCredits` |
 | 403, other | Moderation or permission block | No |
 
 OpenRouter can also return HTTP 200 with an `error` object in the body and no `choices` when the upstream provider
-failed after the request was accepted. The Activity reads the raw body first and classifies that case by the code
-inside the error.
+failed after the request was accepted, or with a partial answer and an `error` on the choice. The Activity reads the
+raw body first and classifies both cases by the code inside the error.
 
 ### Make retries free with response caching
 
@@ -243,9 +247,9 @@ when a person raises the budget. Two things can pause it:
 - A soft budget in the Workflow input, checked against the cost OpenRouter reports on every response. The Workflow
   reserves an estimate per in-flight call and parks a prompt when `spent + reserved + estimate` would exceed the
   budget.
-- OpenRouter refusing the call for lack of credits: 402 when the account is out of credits, or 403 `Key limit exceeded`
-  when the API key hit its own limit. The Activity raises both as the non-retryable `OpenRouterOutOfCredits`; the
-  Workflow catches that type and parks the prompt instead of skipping it.
+- OpenRouter refusing the call for lack of credits: a 402 for the account or the API key, or the 403 `Key limit
+  exceeded` seen in practice for a per-key limit. The Activity raises both as the non-retryable
+  `OpenRouterOutOfCredits`; the Workflow catches that type and parks the prompt instead of skipping it.
 
 Either way the prompt waits on `workflow.wait_condition`, which costs nothing while it waits and survives Worker
 restarts. A `raise_budget` Update wakes every parked prompt. A `spend_report` Query shows the spend so far, the
@@ -283,7 +287,6 @@ def spend_report(self) -> SpendReport:
         reserved_usd=round(self._reserved_usd, 6),
         completed=len(self._ledger),
         paused=dict(self._paused),
-        paused_reason=next(iter(self._paused.values()), None),
         ledger=list(self._ledger),
     )
 ```
@@ -300,7 +303,8 @@ async def _reserve(self, prompt: str, estimate: float) -> bool:
 
     # Loop rather than check once: when the budget is raised, every parked
     # prompt is woken before any of them runs, so each must re-check after
-    # waking in case an earlier one already took the new headroom.
+    # waking in case an earlier one already took the new headroom. (Each
+    # re-park starts a new timer for the remaining time; fine at this scale.)
     while not fits():
         workflow.logger.info(
             "Soft budget reached (spent $%.6f of $%.6f); pausing %r",
@@ -340,11 +344,10 @@ with the remaining prompts listed as skipped.
 
 The soft budget is a soft budget. It counts what OpenRouter reported on final attempts, charging the estimate when a
 response carries no cost, so it tracks reported spend rather than the bill. The cost of a call is only known after the
-response. Overshoot is at most
-`max_concurrency * estimated_cost_usd`, plus the gap between the estimate and the real cost of calls already in
-flight.
+response, and reservations count against the budget, so overshoot is at most `max_concurrency` times how far a
+call's real cost exceeds the estimate.
 To bound one call's cost, set `provider.max_price` in the request. The hard cap is the credit limit on the OpenRouter
-API key, which is what produces the `403 Key limit exceeded`.
+API key, which is what produces the out-of-credits error.
 
 Interacting with a paused batch from the Temporal CLI:
 
@@ -399,8 +402,8 @@ def openrouter_provider() -> OpenAIProvider:
         max_retries=0,
         default_headers=default_headers or None,
     )
-    # Chat Completions is OpenRouter's primary endpoint; the Agents SDK
-    # defaults to the Responses API, which OpenRouter offers only in beta.
+    # These samples use Chat Completions, OpenRouter's primary endpoint; the
+    # Agents SDK defaults to the Responses API, which OpenRouter also offers.
     return OpenAIProvider(openai_client=client, use_responses=False)
 ```
 <!--SNIPEND-->
