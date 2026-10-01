@@ -20,13 +20,21 @@ Future pricing may apply to high-volume usage that exceeds standard [limits](/cl
 
 Temporal Cloud's [OpenMetrics](https://openmetrics.io/) endpoint provides operational metrics for your Temporal Cloud workloads in industry-standard Prometheus format, enabling comprehensive monitoring across Namespaces, Workflows, and Task Queues with your existing observability stack.
 
+## Metrics Read-Only role {/* #metrics-read-only-role */}
+
+Metrics Read-Only is an account-level role intended for Service Accounts that scrape the OpenMetrics endpoint. It grants
+read access to the OpenMetrics endpoint but no other permissions.
+
+An Account Owner or Global Admin must create and manage the Service Account and all of its API keys. A Metrics Read-Only
+Service Account cannot create, update, or delete API keys, including its own.
+
 ## Quickstart
 
 Stream metrics from Temporal Cloud into your observability tool in about 5 minutes.
 
 **Prerequisites**
 
-- An **Account Owner** or **Global Admin** role on the Temporal Cloud account. The Metrics Read-Only role is an account-level role and can only be granted by these roles. A Namespace Admin cannot complete these steps.
+- An **Account Owner** or **Global Admin** role on the Temporal Cloud account. The [Metrics Read-Only role](#metrics-read-only-role) can only be granted by these roles. A Namespace Admin cannot complete these steps.
 - An account in the observability tool you want to use, such as Datadog, Grafana Cloud, New Relic, ClickStack, or self-hosted Prometheus.
 
 **Steps**
