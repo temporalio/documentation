@@ -68,9 +68,9 @@ Visibility is built for finding and filtering across many executions, not for re
 
 ## Visibility availability in Temporal Cloud {/* #availability */}
 
-Temporal Cloud targets 99.9% availability for Visibility read requests, measured over a rolling 30-day window. This covers List and Count operations against Workflow Executions, Activity Executions, Nexus Operations, Schedules, and Batch Operations.
+Temporal Cloud targets 99.5% availability for Visibility read requests, measured over a rolling 30-day window. This covers List and Count operations against Workflow Executions, Activity Executions, Nexus Operations, Schedules, and Batch Operations.
 
-This is a service level objective rather than a contractual commitment. Visibility API requests are not covered by the Temporal Cloud availability [SLA](/evaluate/cloud/sla), and no service credits are associated with this objective.
+This is a service level objective rather than a contractual commitment. Visibility API requests are not covered by the Temporal Cloud availability [SLA](/evaluate/cloud/sla), and no service credits are associated with this objective. The target is deliberately lower than the availability guaranteed for core Workflow Service APIs, because Visibility is a search index intended for operational discovery rather than a critical path for application logic.
 
 The objective measures whether a Visibility read request returns a valid response. Requests that fail for reasons within your control are not counted against it, including requests that exceed your Namespace's rate limits and requests rejected as malformed or unsupported.
 
