@@ -57,7 +57,7 @@ flowchart LR
 ```yaml
 encryption:
   enabled: true # Encrypt new payloads. Optional; defaults to false.
-  cacheSize: 100 # Bounds the in-memory decrypted-DEK cache. Must be non-negative.
+  cacheSize: 100 # Bounds the in-memory decrypted-DEK cache. Omit for 100; 0 disables it.
   default: # Fallback key policy for any Namespace without an override.
     uri: awskms:///arn:aws:kms:us-east-1:123456789012:key/abcd-1234?region=us-east-1
     duration: 1h # How long a DEK is used for new encryption before it rotates.
@@ -75,8 +75,9 @@ encryption:
 - `overrides` maps a local Namespace to its own key policy, which takes precedence over `default`. The keys are the
   local (pre-translation) Namespace names. Reach for overrides to scope blast radius, spread load across KMS keys, or
   keep a tenant's key in its own region or provider.
-- `cacheSize` bounds the in-memory cache of decrypted DEKs, which avoids a KMS call on every message. It must be
-  non-negative.
+- `cacheSize` bounds the in-memory cache of decrypted DEKs, which avoids a KMS call on every message. Omit it for the
+  default of 100; `0` disables the cache, so every decryption unwraps its DEK through the KMS. Before v0.6.0 an absent
+  `cacheSize` disabled the cache, so upgrading a configuration that never set one turns the cache on.
 
 :::note Scope of fail-closed behavior
 
@@ -282,8 +283,9 @@ encryption:
   and every `extension://` URI must name a configured server.
 - `hostPort` must be a literal address. Unlike an upstream, an extension server is dialed at a fixed address rather than
   resolved per request, so a templated value is rejected at startup.
-- `tls` takes the same keys as an upstream's, and `credentials` works the same way, including the rule that credentials
-  require TLS.
+- `tls` takes the same keys as an upstream's, and `credentials` works the same way. The proxy dials an extension server
+  over TLS by default, so a plaintext one needs `insecure: true`, and credentials on a plaintext hop fail the
+  configuration at startup.
 - The path segment in the key URI, `payloads` above, is a proxy-side key name. It never reaches the extension server,
   which selects keys by Namespace, but it must be unique across `default` and every `overrides` entry.
 
@@ -299,6 +301,17 @@ Two constraints follow from that shape. `Decrypt` gets ciphertext and nothing el
 `Encrypt` must carry enough information to identify the key that produced it. And the Namespace on `Encrypt` is always
 the local, pre-translation name, so a server keying on Namespace must use that name rather than the translated remote
 one.
+
+The proxy repository ships [`pkg/ext`](https://github.com/temporalio/temporal-proxy/tree/main/pkg/ext), a Go starting
+point for building one. Implement its `KMS` interface and hand it to `ext.Serve`, which supplies the listener, signal
+handling, graceful shutdown, and the gRPC health service. Its `NewKeyWrapper` and `NewSealWrapper` helpers handle the
+framing constraint above, so an implementation brings key material and writes no cryptography of its own:
+`NewKeyWrapper` seals DEKs with an AEAD over keys you supply, and `NewSealWrapper` delegates the sealing to a backend
+that will not hand over its keys, such as an HSM. Both record the key version alongside the material, so anything
+already sealed stays readable across a rotation.
+
+Whichever route you take, secure the server itself. `ext.Serve` listens in plaintext unless you supply credentials, and
+the proxy dials an extension server over TLS unless its entry sets `insecure: true`, so the two ends have to agree.
 
 The proxy builds the connection when it builds its key policies, so a malformed address, credentials without TLS, or an
 unreadable `ca` file all fail at startup. Peer verification happens later, because gRPC connects lazily: a `ca` or

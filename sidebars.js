@@ -1859,9 +1859,9 @@ module.exports = {
       },
       items: [
         'references/api-reference',
-        'references/cluster-metrics',
+        'references/service-metrics',
         'references/commands',
-        'references/configuration',
+        'references/service-configuration',
         'references/dynamic-configuration',
         'references/errors',
         'references/events',
@@ -2164,7 +2164,6 @@ module.exports = {
           items: [
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
-            'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
             'encyclopedia/nexus/nexus-patterns',
@@ -2172,6 +2171,11 @@ module.exports = {
             'encyclopedia/nexus/nexus-execution-debugging',
             'encyclopedia/nexus/nexus-error-handling',
             'encyclopedia/nexus/nexus-metrics',
+            // Pre-release features, kept at the bottom of the section.
+            'encyclopedia/nexus/temporal-operation-handler',
+            'encyclopedia/nexus/nexgen',
+            'encyclopedia/nexus/standalone-nexus-operation',
+            'encyclopedia/nexus/nexus-standalone-activity',
           ],
         },
         {
