@@ -43,7 +43,7 @@ The https://github.com/temporalio/samples-server repo offers two examples, which
 
 Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a Temporal Service and also between application processes and a Temporal Service.
 Self-signed or properly minted certificates can be used for mTLS.
-mTLS is set in Temporal's [TLS configuration](/references/configuration#tls).
+mTLS is set in Temporal's [TLS configuration](/references/service-configuration#tls).
 The configuration includes two sections such that intra-Temporal Service and external traffic can be encrypted with different sets of certificates and settings:
 
 - `internode`: Configuration for encrypting communication between nodes in the Temporal Service.
@@ -51,7 +51,7 @@ The configuration includes two sections such that intra-Temporal Service and ext
 
 A customized configuration can be passed using either the [WithConfig](/references/server-options#withconfig) or [WithConfigLoader](/references/server-options#withconfigloader) Server options.
 
-See [TLS configuration reference](/references/configuration#tls) for more details.
+See [TLS configuration reference](/references/service-configuration#tls) for more details.
 
 ### Authentication
 
@@ -68,7 +68,7 @@ More guidance on mTLS setup can be found in [the `samples-server` repo](https://
 ### Client connections
 
 To restrict a client's network access to Temporal Service endpoints you can limit it to clients with certificates issued by a specific Certificate Authority (CA).
-Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
+Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in both the `internode` and `frontend` sections of the [mTLS configuration](/references/service-configuration#tls).
 
 ### Users
 
@@ -383,7 +383,7 @@ Rotation and revocation therefore only take effect when a stream is reestablishe
 #### Transport security
 
 `auth.TokenCredentials` requires transport security, so the gRPC runtime refuses to attach the credential to a plaintext dial.
-Configuring `WithTokenProvider` therefore requires also configuring TLS for the destination, either through [`global.tls.remoteClusters`](/references/configuration) in the YAML config or by passing a custom provider through [`temporal.WithTLSConfigFactory`](/references/server-options#withtlsconfigfactory).
+Configuring `WithTokenProvider` therefore requires also configuring TLS for the destination, either through [`global.tls.remoteClusters`](/references/service-configuration) in the YAML config or by passing a custom provider through [`temporal.WithTLSConfigFactory`](/references/server-options#withtlsconfigfactory).
 
 :::note
 
@@ -437,7 +437,7 @@ For details on how to set up a Codec Server, see [Codec Server setup](/productio
 
 Temporal provides extensive configuration options to limit and control which callers can access your services and how those services behave in different environments. These options help you enforce stricter security boundaries in self-hosted deployments and tune behavior for production use cases. For more details on available settings and how to configure them, see the following references:
 
-- [Cluster & Server configuration](/references/configuration) — Static configuration settings for servers and services.  
+- [Cluster & Server configuration](/references/service-configuration) — Static configuration settings for servers and services.  
 
 - [Dynamic configuration](/references/dynamic-configuration) — Runtime-updatable settings for tuning and behavior control.  
 

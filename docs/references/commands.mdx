@@ -8,132 +8,160 @@ tags:
   - Reference
 ---
 
-A [Command](/workflow-execution#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/temporal-service) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
+A [Command](/workflow-execution#command) is an action a [Worker](/workers#worker) requests from the [Temporal Service](/temporal-service) when it completes a [Workflow Task Execution](/tasks#workflow-task-execution).
+The SDK generates Commands from your Workflow code, such as a call to execute an Activity or start a Timer.
+The Temporal Service records an [Event](/workflow-execution/event#event) in the [Event History](/workflow-execution/event#event-history) for each Command.
 
-The following is a complete list of possible Commands.
+Commands are defined in the [`CommandType` enum](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/command_type.proto) and [command messages](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto) of the Temporal gRPC API.
+
+Each Command on this page lists the following:
+
+- **Awaitable:** Whether the Workflow can wait on the result of the Command.
+- **Corresponding Event:** The Event the Temporal Service records for the Command.
+- **Limit:** The default maximum number of pending operations of this type per Workflow Execution, if one applies.
+  When a Workflow Execution reaches the limit, the Workflow Task fails and is retried.
+  See [Workflow Execution limits](/workflow-execution/limits#workflow-execution-limits).
+
+## Workflow Execution close Commands
+
+Each of these Commands closes the Workflow Execution.
+Its corresponding Event is the last Event in the Event History.
 
 ### CompleteWorkflowExecution
 
-This Command is triggered when the Workflow Function Execution returns.
-It indicates to the Temporal Service that the [Workflow Execution](/workflow-execution) is complete.
-The corresponding [Event](/workflow-execution/event#event) for this Command is one of the few Events that will be the last in a Workflow Execution [Event History](/workflow-execution/event#event-history).
+The Worker issues this Command when the Workflow Function returns.
 
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
+- Awaitable: No
 - Corresponding Event: [WorkflowExecutionCompleted](/references/events#workflowexecutioncompleted)
 
 ### ContinueAsNewWorkflowExecution
 
-This Command is triggered when there is a call to [Continue-As-New](/workflow-execution/continue-as-new) from within the [Workflow](/workflows).
-The corresponding Event for this Command is one of the few Events that will be the last in a Workflow Execution Event History.
+The Worker issues this Command when the Workflow calls [Continue-As-New](/workflow-execution/continue-as-new).
 
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
+- Awaitable: No
 - Corresponding Event: [WorkflowExecutionContinuedAsNew](/references/events#workflowexecutioncontinuedasnew)
 
 ### FailWorkflowExecution
 
-This Command is triggered when the Workflow Execution returns an error or an exception is thrown.
+The Worker issues this Command when the Workflow returns an error or throws an exception that fails the Workflow Execution.
 
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
+- Awaitable: No
 - Corresponding Event: [WorkflowExecutionFailed](/references/events#workflowexecutionfailed)
 
 ### CancelWorkflowExecution
 
-This Command is triggered when the Workflow has successfully cleaned up after receiving a Cancellation Request (which will be present as [WorkflowExecutionCancelRequestedEvent](/references/events#workflowexecutioncancelrequested) in the Event History).
-The Corresponding Event for this Command is one of the few Events that will be the last in a Workflow Execution Event History.
+The Worker issues this Command when the Workflow finishes cleaning up after a Cancellation Request.
+The request appears in the Event History as a [WorkflowExecutionCancelRequested](/references/events#workflowexecutioncancelrequested) Event.
 
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
+- Awaitable: No
 - Corresponding Event: [WorkflowExecutionCanceled](/references/events#workflowexecutioncanceled)
 
-### StartChildWorkflowExecution
-
-This Command is triggered by a call to spawn a [Child Workflow Execution](/child-workflows).
-
-- Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
-- Corresponding Event: [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted)
-
-By default, you cannot have more than 2,000 pending Child Workflows.
-
-### SignalExternalWorkflowExecution
-
-This Command is triggered by a call to [Signal](/sending-messages#sending-signals) another Workflow Execution.
-
-- Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
-- Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated)
-
-By default, you cannot have more than 2,000 pending Signals to other Workflows.
-
-### RequestCancelExternalWorkflowExecution
-
-This Command is triggered by a call to request cancellation of another Workflow Execution.
-
-- Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
-- Corresponding Event: [RequestCancelExternalWorkflowExecutionInitiated](/references/events#requestcancelexternalworkflowexecutioninitiated)
-
-By default, you cannot have more than 2,000 pending Cancellation Requests to other Workflows.
+## Activity Commands
 
 ### ScheduleActivityTask
 
-This Command is triggered by a call to execute an [Activity](/activities).
+The Worker issues this Command when the Workflow calls an [Activity](/activities).
 
-- Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
+- Awaitable: Yes
 - Corresponding Event: [ActivityTaskScheduled](/references/events#activitytaskscheduled)
-
-By default, you cannot schedule more than 2,000 Activities concurrently.
+- Limit: 2,000 pending Activities
 
 ### RequestCancelActivityTask
 
-This Command is triggered by a call to request the cancellation of an [Activity Task](/tasks#activity-task).
+The Worker issues this Command when the Workflow requests cancellation of an [Activity Task](/tasks#activity-task).
 
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
+- Awaitable: No
 - Corresponding Event: [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested)
+
+## Timer Commands
 
 ### StartTimer
 
-This Command is triggered by a call to start a Timer.
+The Worker issues this Command when the Workflow starts a Timer, such as a call to sleep.
 
-- Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
+- Awaitable: Yes
 - Corresponding Event: [TimerStarted](/references/events#timerstarted)
 
 ### CancelTimer
 
-This Command is triggered by a call to cancel a Timer.
+The Worker issues this Command when the Workflow cancels a Timer.
 
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
+- Awaitable: No
 - Corresponding Event: [TimerCanceled](/references/events#timercanceled)
+
+## Child and external Workflow Commands
+
+### StartChildWorkflowExecution
+
+The Worker issues this Command when the Workflow starts a [Child Workflow Execution](/child-workflows).
+
+- Awaitable: Yes
+- Corresponding Event: [StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated)
+- Limit: 2,000 pending Child Workflows
+
+### SignalExternalWorkflowExecution
+
+The Worker issues this Command when the Workflow [sends a Signal](/sending-messages#sending-signals) to another Workflow Execution.
+
+- Awaitable: Yes
+- Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated)
+- Limit: 2,000 pending Signals to other Workflows
+
+### RequestCancelExternalWorkflowExecution
+
+The Worker issues this Command when the Workflow requests cancellation of another Workflow Execution.
+
+- Awaitable: Yes
+- Corresponding Event: [RequestCancelExternalWorkflowExecutionInitiated](/references/events#requestcancelexternalworkflowexecutioninitiated)
+- Limit: 2,000 pending Cancellation Requests to other Workflows
+
+## Nexus Commands
+
+### ScheduleNexusOperation
+
+The Worker issues this Command when the caller Workflow executes a Nexus Operation.
+
+- Awaitable: Yes
+- Corresponding Event: [NexusOperationScheduled](/references/events#nexusoperationscheduled)
+- Limit: 30 pending Nexus Operations.
+  See [Nexus Operation limits](/workflow-execution/limits#workflow-execution-nexus-operation-limits).
+
+### RequestCancelNexusOperation
+
+The Worker issues this Command when the caller Workflow requests cancellation of a Nexus Operation.
+
+- Awaitable: No
+- Corresponding Event: [NexusOperationCancelRequested](/references/events#nexusoperationcancelrequested)
+
+## Workflow metadata and SDK Commands
 
 ### RecordMarker
 
-This Command is triggered by the SDK.
+The SDK issues this Command to record data it needs to replay the Workflow deterministically, such as the result of a Side Effect, a Local Activity, or a version check.
+Your Workflow code doesn't issue it directly.
 
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
+- Awaitable: No
 - Corresponding Event: [MarkerRecorded](/references/events#markerrecorded)
 
 ### UpsertWorkflowSearchAttributes
 
-This Command is triggered by a call to "upsert" Workflow [Search Attributes](/search-attribute).
+The Worker issues this Command when the Workflow adds or updates its [Search Attributes](/search-attribute).
 
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
+- Awaitable: No
 - Corresponding Event: [UpsertWorkflowSearchAttributes](/references/events#upsertworkflowsearchattributes)
 
-### ProtocolMessageCommand
+### ModifyWorkflowProperties
 
-This Command helps guarantee ordering constraints for features such as Updates.
+The Worker issues this Command when the Workflow adds or updates its Memo.
+The new values merge with the existing Memo.
 
-This Command points at the message from which the Event is created.
-Therefore, just from the Command, you can't predict the resulting Event type.
+- Awaitable: No
+- Corresponding Event: WorkflowPropertiesModified
 
-### ScheduleNexusOperation
+### ProtocolMessage {/* #protocolmessagecommand */}
 
-This Command is triggered by a call to execute a Nexus Operation in the caller Workflow.
+The Worker issues this Command to keep protocol messages, such as responses to Updates, in order with the Workflow's other Commands.
 
-- Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
-- Corresponding Event: [NexusOperationScheduled](/references/events#nexusoperationscheduled)
-
-By default, you can't schedule more than 30 Nexus Operations concurrently, see [Limits](/workflow-execution/limits#workflow-execution-nexus-operation-limits) for details.
-
-### RequestCancelNexusOperation
-
-This Command is triggered by a call to request the cancellation of a Nexus Operation.
-
-- Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
-- Corresponding Event: [NexusOperationCancelRequested](/references/events#nexusoperationcancelrequested)
+The Command points to a protocol message, and the Temporal Service creates the Event from that message.
+The Command alone doesn't determine the resulting Event type.
+For Updates, the Events are [WorkflowExecutionUpdateAccepted](/references/events#workflowexecutionupdateacceptedevent) and [WorkflowExecutionUpdateCompleted](/references/events#workflowexecutionupdatecompletedevent).
