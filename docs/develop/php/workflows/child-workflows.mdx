@@ -9,10 +9,10 @@ tags:
   - Child Workflows
   - PHP SDK
   - Temporal SDKs
-description: Start a Child Workflow Execution within a parent Workflow using Temporal in PHP. Configure ChildWorkflowOptions, handle Parent Close Policy, and implement asynchronous calls with promises.
+description: Start a Child Workflow Execution in PHP, configure ChildWorkflowOptions, set a Parent Close Policy, and call children asynchronously with promises.
 ---
 
-## How to start a Child Workflow Execution {/* #child-workflows */}
+## Start a Child Workflow Execution {/* #child-workflows */}
 
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
@@ -76,7 +76,7 @@ $childResult = yield Workflow::executeChildWorkflow(
 );
 ```
 
-#### How to set a Parent Close Policy {/* #parent-close-policy */}
+#### Set a Parent Close Policy {/* #parent-close-policy */}
 
 A [Parent Close Policy](/parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 

@@ -302,6 +302,7 @@ you to import, create, update, and delete Nexus Endpoints with Terraform.
 
 You must use an Identity with [Developer role (or higher)](/cloud/manage-access/roles-and-permissions#account-level-roles) and
 [Namespace Admin permission](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) on the Endpoint's target Namespace.
+Changing an Endpoint's target Namespace requires Namespace Admin on both the current target Namespace and the new target Namespace.
 
 **How do I create a Nexus Endpoint with Terraform?**
 
@@ -893,7 +894,7 @@ output "regions" {
 }
 ```
 
-## Community Involvement
+## Community involvement
 
 Do you have feedback about the provider? Want to report a bug or request a feature? We'd love to hear from you.
 

@@ -1,0 +1,54 @@
+---
+id: sla
+title: Service Level Agreement (SLA)
+sidebar_label: SLA
+description: Standard Namespaces carry a 99.9% contractual guarantee against service errors and High Availability Namespaces carry 99.99%, measured per Namespace.
+toc_max_heading_level: 4
+tags:
+  - Temporal Cloud
+  - Support
+---
+
+Temporal Cloud publishes two numbers for each deployment mode: the [service availability](https://en.wikipedia.org/wiki/Reliability,_availability_and_serviceability) it operates to, and the contractual [service level agreement](https://en.wikipedia.org/wiki/Service-level_agreement) (SLA) it guarantees against service errors.
+
+| Deployment mode                                       | Service availability | Contractual SLA |
+| ----------------------------------------------------- | -------------------- | --------------- |
+| Standard single-region Namespace                      | 99.99%               | 99.9%           |
+| Namespace using the [High Availability](/cloud/high-availability) feature | 99.99%               | 99.99%          |
+
+The SLA that covers normal Worker requests, meaning commands and polling, also covers Nexus requests in both the caller and handler Namespaces.
+
+## How the service-error rate is calculated
+
+Temporal Cloud captures every request that arrives in a Namespace during a five-minute interval and records the gRPC service errors among them.
+For each Namespace, the service-error rate is 1 - (count of errors / count of requests).
+Rates are averaged per month and reset quarterly.
+
+Errors counted against the SLA are service errors, such as the `UNAVAILABLE` [gRPC status code](https://grpc.github.io/grpc/core/md_doc_statuscodes.html).
+The following errors are _not_ counted against the SLA:
+
+- `ClientVersionNotSupported`
+- `InvalidArgument`
+- `NamespaceAlreadyExists`
+- `NamespaceInvalidState`
+- `NamespaceNotActive`
+- `NamespaceNotFound`
+- `NotFound`
+- `PermissionDenied`
+- `QueryFailed`
+- `RetryReplication`
+- `StickyWorkerUnavailable`
+- `TaskAlreadyStarted`
+- `Throttling (resources exhausted; triggers retry)`
+- `WorkflowExecutionAlreadyStarted`
+- `WorkflowNotReady`
+
+## How Temporal measures against the SLA
+
+Temporal alerts on a [service level objective](https://en.wikipedia.org/wiki/Service-level_objective) (SLO) that covers all errors, not only the errors that count against the SLA.
+A missed SLO pages an on-call engineer, so many issues are resolved before they are noticeable.
+
+Temporal Cloud runs a cell architecture.
+Each cell holds the software and services needed to host a Namespace, and the components in a cell are distributed across at least three availability zones per region.
+
+For current system status and recent incidents, see [Temporal Status](https://status.temporal.io).

@@ -1,0 +1,33 @@
+# Marketing/AI-slop vocabulary that has a single correct replacement. Ported
+# from jdkato/voices' Voices.InflatedWords rule
+# (https://github.com/jdkato/voices, MIT License), itself derived from
+# no-ai-slop (https://github.com/petergyang/no-ai-slop, MIT License).
+#
+# 'utilize' and 'facilitate' are dropped from the upstream list -- badwords.yml
+# and complexwords.yml already cover them.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  leverage: use
+  leverages: uses
+  leveraged: used
+  leveraging: using
+  streamline: simplify
+  streamlines: simplifies
+  streamlined: simplified
+  streamlining: simplifying
+  elevate: raise
+  elevates: raises
+  elevated: raised
+  elevating: raising
+  supercharge: speed up
+  supercharges: speeds up
+  supercharged: sped up
+  supercharging: speeding up
+  robust: strong
+  meticulous: careful
+  intricate: complex

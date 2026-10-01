@@ -78,8 +78,10 @@ For each request, the gateway:
 
 The per-upstream proxy then rewrites the local Namespace to the name the upstream expects, attaches that upstream's TLS
 and credentials, forwards to the Temporal Service, and translates the Namespace back on responses. When payload
-encryption is enabled, it also seals payloads on the way out and opens them on the way back, so the upstream only ever
-stores ciphertext.
+encryption is enabled, it also seals codec-capable Payloads on the way out and opens them on the way back. New Payloads
+sent through the proxy reach the upstream as ciphertext. See
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the scope and limits of this fail-closed
+behavior.
 
 ### Terms
 
@@ -139,49 +141,97 @@ proxy serve -c config.yaml
 ```
 
 `--config` also reads the `PROXY_CONFIG` environment variable, which is how the Helm chart points the proxy at its
-mounted configuration. See [Observability](#observability) for the remaining flags.
+mounted configuration. See [Observability](#observability) for the log level flag and the metrics settings.
 
 ## Observability {/* #observability */}
 
-The proxy serves Prometheus metrics at `/metrics` on `:9090` and logs JSON to stderr. The gateway also serves the
-standard gRPC health service, with an entry for every allowed service, which is what a Client health check or a liveness
-probe reads. See [Health checks](/production-deployment/temporal-proxy/configure#health-checks) for what it reports.
+The proxy serves Prometheus metrics at `/metrics` on `:9090` by default and logs JSON to stderr. The gateway also serves
+the standard gRPC health service, with an entry for every allowed service, which is what a Client health check or a
+liveness probe reads. See [Report health](/production-deployment/temporal-proxy/configure#health-checks) for what it
+reports.
 
-Both the metrics listener and the log level are set with flags on `proxy serve`, each with an environment variable
-equivalent:
+`proxy serve` takes two flags, each with an environment variable equivalent:
 
-| Flag                  | Environment variable | Default       | Sets                                         |
-| --------------------- | -------------------- | ------------- | -------------------------------------------- |
-| `--config`, `-c`      | `PROXY_CONFIG`       | none          | Path to the configuration file. Required.    |
-| `--level`             | `LOG_LEVEL`          | `info`        | Log level: `debug`, `info`, `warn`, `error`. |
-| `--metrics-addr`      | `METRICS_ADDR`       | `:9090`       | The `host:port` serving `/metrics`.          |
-| `--metrics-namespace` | `METRICS_NAMESPACE`  | `tmprl_proxy` | Prometheus namespace prefixed onto metrics.  |
+| Flag             | Environment variable | Default | Sets                                         |
+| ---------------- | -------------------- | ------- | -------------------------------------------- |
+| `--config`, `-c` | `PROXY_CONFIG`       | none    | Path to the configuration file. Required.    |
+| `--level`        | `LOG_LEVEL`          | `info`  | Log level: `debug`, `info`, `warn`, `error`. |
+
+Everything else about metrics comes from the `metrics` block in the configuration file:
+
+```yaml
+metrics:
+  hostPort: :9090 # Address serving /metrics.
+  namespace: tmprl_proxy # Prometheus namespace prefixed onto every metric.
+  labels:
+    namespace: false # Report the Temporal Namespace on metrics that can name one.
+    fixed: # Constant labels stamped on every series.
+      region: us-east-1
+    metadata: # Inbound headers reported as labels, written <header>:<name>.
+      - x-tenant:tenant
+```
+
+:::note Version note
+
+`metrics.hostPort` and `metrics.namespace` replace the `--metrics-addr` and `--metrics-namespace` flags, removed in
+v0.6.0 along with their `METRICS_ADDR` and `METRICS_NAMESPACE` environment variables. The defaults are the same, so a
+deployment that never set them needs no change.
+
+:::
+
+- `labels.namespace` decides whether the metrics that can name a Temporal Namespace report it. It is `false` by default. The value comes from the request, so every Namespace a Client names adds another series. The label is declared either
+  way and only its value is dropped, so a query that already ignores it reads the same before and after you turn enable it.
+  The name reported is the local, pre-translation one, the same key you write under `encryption.overrides`.
+- `labels.fixed` maps a label name to a constant value stamped on every series the proxy publishes, such as the region
+  or cluster a deployment runs in.
+- `labels.metadata` reports an inbound request header as a label on the request-scoped series, written
+  `<header>:<name>`. Values are truncated at 256 bytes.
+
+:::caution
+
+Do not list a header that carries a credential, such as an API key or bearer token, under `labels.metadata`. The
+`/metrics` endpoint doesn't require authentication, so anyone who can reach the port can read the header's value.
+
+Also avoid headers whose values the caller can set freely. Each distinct value creates a new copy of every
+request-scoped series, so an unbounded header causes unbounded metric cardinality.
+
+:::
 
 Metric names are `<namespace>_<subsystem>_<name>`, so with the default namespace the routing counter is
 `tmprl_proxy_router_decisions_total`. There are three subsystems:
 
-| Subsystem    | Metric                     | Labels                             | Reports                                           |
-| ------------ | -------------------------- | ---------------------------------- | ------------------------------------------------- |
-| `server`     | `requests_total`           | `method`, `code`                   | RPCs served, by gRPC status code                  |
-| `server`     | `request_duration_seconds` | `method`                           | End-to-end time serving an RPC                    |
-| `router`     | `decisions_total`          | `upstream`, `outcome`              | Routing decisions, by chosen upstream             |
-| `router`     | `forwarding_errors_total`  | `upstream`, `reason`               | Forwarding failures the router originated         |
-| `encryption` | `vault_ops_total`          | `operation`, `result`, `namespace` | Envelope operations, sealing and opening payloads |
-| `encryption` | `vault_ops_duration_secs`  | `operation`, `namespace`           | Time per envelope operation, end to end           |
-| `encryption` | `dek_ops_total`            | `operation`, `result`              | Outcome of the AES-256-GCM step alone             |
-| `encryption` | `dek_ops_duration_secs`    | `operation`                        | Time in the AES-256-GCM step alone                |
-| `encryption` | `kek_ops_total`            | `provider`, `operation`, `result`  | DEK wrap and unwrap calls to your KMS             |
-| `encryption` | `kek_ops_duration_secs`    | `provider`, `operation`            | Time spent wrapping and unwrapping DEKs           |
-| `encryption` | `dek_rotations_total`      | `reason`                           | DEK rotations, by why the DEK was replaced        |
-| `encryption` | `dek_cache_hits_total`     | none                               | Reads served from the decrypted-DEK cache         |
-| `encryption` | `dek_cache_misses_total`   | none                               | Reads that required a KMS unwrap                  |
-| `encryption` | `dek_cache_size`           | none                               | Current entries in the decrypted-DEK cache        |
+| Subsystem    | Metric                       | Labels                             | Reports                                           |
+| ------------ | ---------------------------- | ---------------------------------- | ------------------------------------------------- |
+| `server`     | `requests_total`             | `method`, `code`                   | RPCs served, by gRPC status code                  |
+| `server`     | `request_duration_seconds`   | `method`                           | End-to-end time serving an RPC                    |
+| `router`     | `decisions_total`            | `upstream`, `outcome`              | Routing decisions, by chosen upstream             |
+| `router`     | `forwarding_errors_total`    | `upstream`, `reason`               | Forwarding failures the router originated         |
+| `encryption` | `vault_ops_total`            | `operation`, `result`, `namespace` | Envelope operations, sealing and opening payloads |
+| `encryption` | `vault_ops_duration_seconds` | `operation`, `namespace`           | Time per envelope operation, end to end           |
+| `encryption` | `dek_ops_total`              | `operation`, `result`              | Outcome of the AES-256-GCM step alone             |
+| `encryption` | `dek_ops_duration_seconds`   | `operation`                        | Time in the AES-256-GCM step alone                |
+| `encryption` | `kek_ops_total`              | `provider`, `operation`, `result`  | DEK wrap and unwrap calls to your KMS             |
+| `encryption` | `kek_ops_duration_seconds`   | `provider`, `operation`            | Time spent wrapping and unwrapping DEKs           |
+| `encryption` | `dek_rotations_total`        | `reason`                           | DEK rotations, by why the DEK was replaced        |
+| `encryption` | `dek_cache_hits_total`       | none                               | Reads served from the decrypted-DEK cache         |
+| `encryption` | `dek_cache_misses_total`     | none                               | Reads that required a KMS unwrap                  |
+| `encryption` | `dek_cache_size`             | none                               | Current entries in the decrypted-DEK cache        |
+
+:::note Version note
+
+v0.6.0 renamed the three `*_duration_secs` histograms to `*_duration_seconds` to follow the Prometheus convention.
+Update any dashboard or alert that names the old spelling.
+
+:::
+
+The `namespace` label reports a value only when `metrics.labels.namespace` is on. It is declared either way, so the
+series exist regardless.
 
 The `encryption` metrics only move when [payload encryption](/production-deployment/temporal-proxy/encrypt-payloads) is
 configured. They are layered, so pick the one that matches the question you are asking:
 
 - `vault_ops_*` is the whole envelope operation end to end, including any KEK call and cache lookup, and is the pair to
-  alert on. It carries the local Namespace.
+  alert on.
 - `dek_ops_*` is the symmetric AES-256-GCM step by itself, with the KEK work excluded. Its `result` is that step's own
   outcome, so a payload that encrypts cleanly and then fails to wrap its DEK counts as a success here and an error under
   `kek_ops_total`, which keeps the blame with the KMS.
