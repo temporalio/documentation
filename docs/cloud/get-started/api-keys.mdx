@@ -442,6 +442,9 @@ Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This 
 Namespaces. For Namespaces with [High Availability](/cloud/high-availability), the Namespace endpoint automatically
 directs traffic to the active region, so Workers and Clients don't need to change endpoints during a failover.
 
+A Namespace created with API key authentication cannot later enable mTLS alongside API keys. See
+[Enable both API key and mTLS](/cloud/namespaces#enable-both-api-key-and-mtls).
+
 See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
 ## Use API keys to authenticate {/* #using-apikeys */}
