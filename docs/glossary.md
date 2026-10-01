@@ -108,7 +108,7 @@ receives information about the API call, along with the role and permission clai
 
 An availability zone is a part of the Temporal system where tasks or operations are handled and executed. This design
 helps manage workloads and ensure tasks are completed. Temporal Cloud Namespaces are automatically distributed across
-three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/evaluate/cloud/sla).
+three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/cloud/slo#sla).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -278,7 +278,7 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 High availability ensures that a system remains operational with minimal downtime. It achieves this with redundancy and
 failover mechanisms that handle failures, so end-users remain unaware of incidents. Temporal Cloud guarantees this high
-availability with its Service Level Agreements ([SLA](/evaluate/cloud/sla))
+availability with its Service Level Agreements ([SLA](/cloud/slo#sla))
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 

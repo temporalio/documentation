@@ -1077,7 +1077,7 @@
     },
     {
       "source": "/cloud/operating-envelope",
-      "destination": "/cloud/service-availability"
+      "destination": "/cloud/slo"
     },
     {
       "source": "/external-resources",
@@ -2387,7 +2387,7 @@
     },
     {
       "source": "/evaluate/development-production-features/low-latency",
-      "destination": "/cloud/service-availability#latency",
+      "destination": "/cloud/slo#latency",
       "permanent": true
     },
     {
@@ -2432,7 +2432,7 @@
     },
     {
       "source": "/evaluate/features/low-latency",
-      "destination": "/cloud/service-availability#latency",
+      "destination": "/cloud/slo#latency",
       "permanent": true
     },
     {
@@ -2502,7 +2502,12 @@
     },
     {
       "source": "/cloud/service-availability",
-      "destination": "/evaluate/cloud/service-availability",
+      "destination": "/cloud/slo",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/cloud/service-availability",
+      "destination": "/cloud/slo",
       "permanent": true
     },
     {
@@ -2522,7 +2527,12 @@
     },
     {
       "source": "/cloud/sla",
-      "destination": "/evaluate/cloud/sla",
+      "destination": "/cloud/slo#sla",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/cloud/sla",
+      "destination": "/cloud/slo#sla",
       "permanent": true
     },
     {

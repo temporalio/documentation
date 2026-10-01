@@ -1211,10 +1211,9 @@ module.exports = {
           },
           items: [
             'evaluate/cloud/security',
-            'evaluate/cloud/service-availability',
+            { type: 'link', label: 'Uptime, latency, and SLOs', href: '/cloud/slo' },
             'evaluate/cloud/regions',
             'evaluate/cloud/limits',
-            'evaluate/cloud/sla',
             'evaluate/cloud/pricing',
             'evaluate/cloud/actions',
             'evaluate/cloud/support',
@@ -1370,6 +1369,7 @@ module.exports = {
             'cloud/high-availability/ha-connectivity',
           ],
         },
+        'cloud/slo',
         'cloud/rpo-rto',
         {
           type: 'category',
