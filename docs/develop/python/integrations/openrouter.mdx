@@ -17,13 +17,13 @@ of models from many providers. It picks the provider and model for each request,
 what every response cost.
 
 Temporal handles everything around those calls. Each call runs as an Activity, so it gets retries with backoff, a
-timeout, and a durable record in Event History of what was called and what it cost. The Workflow around the
+timeout, and a durable record in Event History of its result, its cost, and how many attempts it took. The Workflow around the
 Activities can fan out over a batch with bounded concurrency, survive a Worker crash without re-running finished
 calls, and pause for hours until a person acts.
 
 The division of labor is simple. OpenRouter decides *which provider and model* serve a request, in milliseconds.
 Temporal decides *what happens over time*: waiting out a rate limit, surviving a crash, parking until someone raises a
-budget, and keeping the audit trail.
+budget, and keeping the record of what happened.
 
 This integration is a sample pattern rather than a plugin: OpenRouter needs nothing inside Workflow code. Code snippets
 in this guide are taken from the [OpenRouter samples](https://github.com/temporalio/samples-python/tree/main/openrouter).
@@ -59,8 +59,9 @@ up to an hour, which hides attempts from Temporal.
 ## Call OpenRouter from an Activity
 
 Build one client for the Worker's lifetime with client-side retries turned off, and pass it to the Activity class. The
-Activity makes exactly one HTTP call per attempt, so every attempt is visible in Event History and the Activity's Retry
-Policy is the only retry policy in play.
+Activity makes exactly one HTTP call per attempt, so the Activity's Retry Policy is the only retry policy in play.
+Event History records each Activity's result, attempt count, and last failure; the sample logs each attempt's model,
+cost, and cache status from the Worker.
 
 ```python
 from openai import AsyncOpenAI
@@ -297,7 +298,10 @@ async def _reserve(self, prompt: str, estimate: float) -> bool:
     def fits() -> bool:
         return self._spent_usd + self._reserved_usd + estimate <= self._budget_usd
 
-    if not fits():
+    # Loop rather than check once: when the budget is raised, every parked
+    # prompt is woken before any of them runs, so each must re-check after
+    # waking in case an earlier one already took the new headroom.
+    while not fits():
         workflow.logger.info(
             "Soft budget reached (spent $%.6f of $%.6f); pausing %r",
             self._spent_usd,
@@ -360,7 +364,7 @@ OpenRouter and Temporal both retry, at different time scales, for different reas
 | A 429 with a 30-second `Retry-After` | Temporal: the Activity retries after 30 seconds, visibly |
 | Worker crash mid-call | Temporal: Heartbeat Timeout, retry, cache hit |
 | Waiting hours for a human to raise a budget or add credits | Temporal: `wait_condition` and an Update |
-| Audit of every attempt, model, and cost | Temporal Event History plus OpenRouter's generation ids |
+| Record of each call's result, cost, and retries | Temporal Event History (result, attempt count, last failure), Worker logs per attempt, OpenRouter's generation IDs |
 
 Passing `models: ["a/first", "b/second"]` replaces the Auto Router: OpenRouter tries the list in order within one
 request, and the response's `model` field reports which one answered.
