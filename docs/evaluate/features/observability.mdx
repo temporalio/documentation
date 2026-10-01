@@ -32,7 +32,7 @@ It's built for finding Executions across many, not for reading the authoritative
 Temporal emits two independent, Prometheus-compatible metric sets, and you need both:
 
 - **[SDK metrics](/references/sdk-metrics)** come from your Workers and Clients: task slot availability, Schedule-To-Start latency, Activity failures. They tell you whether your Workers are keeping up with the work.
-- **Temporal Service metrics** come from the Service: request rates, latencies, and errors. On Temporal Cloud these stream from the [OpenMetrics endpoint](/cloud/metrics/openmetrics) into Datadog, Grafana Cloud, New Relic, or your own Prometheus. Self-hosted deployments scrape [Temporal Service metrics](/references/cluster-metrics) directly.
+- **Temporal Service metrics** come from the Service: request rates, latencies, and errors. On Temporal Cloud these stream from the [OpenMetrics endpoint](/cloud/metrics/openmetrics) into Datadog, Grafana Cloud, New Relic, or your own Prometheus. Self-hosted deployments scrape [Temporal Service metrics](/references/service-metrics) directly.
 
 Watching one side alone hides the most common failure mode: the Service is accepting and serving work normally while Tasks pile up in a Task Queue because the Workers are under-provisioned.
 
