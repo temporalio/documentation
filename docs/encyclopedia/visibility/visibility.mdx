@@ -66,6 +66,18 @@ Visibility is a search index that Temporal updates asynchronously. After a chang
 
 Visibility is built for finding and filtering across many executions, not for reading the current state of one execution. When you need the authoritative, up-to-date state of a specific Workflow Execution, use `DescribeWorkflowExecution` instead of a Visibility query.
 
+## Visibility availability in Temporal Cloud {/* #availability */}
+
+Temporal Cloud targets 99.5% availability for Visibility read requests, measured over a rolling 30-day window. This covers List and Count operations against Workflow Executions, Activity Executions, Nexus Operations, Schedules, and Batch Operations.
+
+This is a service level objective rather than a contractual commitment. Visibility API requests are not covered by the Temporal Cloud availability [SLA](/evaluate/cloud/sla), and no service credits are associated with this objective. The target is deliberately lower than the availability guaranteed for core Workflow Service APIs, because Visibility is a search index intended for operational discovery rather than a critical path for application logic.
+
+The objective measures whether a Visibility read request returns a valid response. Requests that fail for reasons within your control are not counted against it, including requests that exceed your Namespace's rate limits and requests rejected as malformed or unsupported.
+
+It says nothing about how current your results are. As described above, Visibility is eventually consistent, and an empty result is a valid response. It also does not cover query latency, which varies with the complexity of your query and the size of your result set.
+
+For self-hosted deployments, Visibility availability depends on the database you operate.
+
 ## When to use Visibility
 
 Visibility is intended for operational discovery and search: finding, filtering, and counting executions for monitoring, tooling, dashboards, and investigation. Use it when you want to search or filter executions by Search Attribute in the UI, CLI, or an operational tool, or when you want to count or sample executions for reporting.
