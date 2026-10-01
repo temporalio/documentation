@@ -136,6 +136,9 @@ async def _send(self, request: OpenRouterRequest) -> OpenRouterResult:
         # Or a 200 with a partial answer and the provider's error on the
         # choice itself; a partial answer is not an answer.
         raise_for_status(_error_code(choice_error, 500), choice_error, raw.headers)
+    if not choices:
+        # No error and no answer: treat like a server error and retry.
+        raise_for_status(500, {"message": "Response has no choices"}, raw.headers)
 
     usage = payload.get("usage") or {}
     cost = usage.get("cost")
@@ -183,7 +186,7 @@ matching retry posture, and passes a `Retry-After` header through as the next re
 
 | Status | Meaning | Retry? |
 |---|---|---|
-| 408, 429 | Timeout, rate limited (`Retry-After` may be set) | Yes, honoring `Retry-After` |
+| 408, 429 | Timeout, rate limited (`Retry-After` may be set) | Yes, honoring `Retry-After` up to five minutes |
 | 500, 502, 503, 524, 529 | Server error, model down, no provider available, edge timeout, provider overloaded | Yes |
 | 400 | Bad request | No |
 | 401 | Invalid API key | No |
