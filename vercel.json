@@ -2421,12 +2421,12 @@
     },
     {
       "source": "/cloud/sla",
-      "destination": "/cloud/slo#sla",
+      "destination": "/cloud/slo#uptime",
       "permanent": true
     },
     {
       "source": "/evaluate/cloud/sla",
-      "destination": "/cloud/slo#sla",
+      "destination": "/cloud/slo#uptime",
       "permanent": true
     },
     {

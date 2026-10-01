@@ -37,7 +37,7 @@ These measure the time from when a Workflow is scheduled until it closes, includ
 ## Monitor Temporal Service errors
 
 Check for Temporal Service gRPC API errors.
-Note that Service API errors are not equivalent to guarantees mentioned in the [Temporal Cloud SLA](/cloud/slo#sla).
+Note that Service API errors are not equivalent to guarantees mentioned in the [Temporal Cloud SLA](https://temporal.io/sla).
 
 ### Reference Metrics
 
@@ -122,7 +122,7 @@ Temporal owns replication lag.
 **What guarantees are available?**
 There is no SLA for replication lag.
 Temporal recommends that customers do not trigger failovers except for testing or emergency situations.
-High Availability feature's four-9 guarantee SLA means Temporal will handle failovers and ensure high availability.
+The High Availability [SLA](https://temporal.io/sla) means Temporal will handle failovers and ensure high availability.
 Temporal also monitors replication lag.
 Customers who decide to trigger failovers should look at this metric before moving forward.
 

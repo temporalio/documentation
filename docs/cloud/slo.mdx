@@ -3,11 +3,10 @@ id: slo
 title: Uptime, latency, and SLOs
 sidebar_label: Uptime, latency, and SLOs
 slug: /cloud/slo
-description: Temporal Cloud's 99.9% and 99.99% uptime SLA, the 200ms p99 latency objective, Visibility availability, and measured latency for common operations.
+description: Temporal Cloud's 99.99% uptime objective, the 200ms p99 latency SLO, Visibility availability, and measured latency for starting and signaling Workflows.
 toc_max_heading_level: 3
 tags:
   - Temporal Cloud
-  - Support
 ---
 
 :::note
@@ -17,7 +16,7 @@ This page describes Temporal's current operational practices and does not create
 :::
 
 Temporal maintains multiple internal [service level objectives](https://en.wikipedia.org/wiki/Service-level_objective) (SLOs) and an internal alerting system based on those SLOs.
-The alerting system accounts for all errors, not only the service errors that count against the [SLA](#sla), and also monitors latency.
+The alerting system accounts for all errors, not only the service errors that count against the [Temporal Cloud SLA](https://temporal.io/sla), and also monitors latency.
 Temporal personnel receive an alert when an SLO is not being met, and on-call engineers are paged, which often means that issues are resolved before you notice them.
 
 For current system status and recent incidents, see [Temporal Status](https://status.temporal.io).
@@ -25,57 +24,27 @@ For the regions you can run in, see [Service regions](/evaluate/cloud/regions); 
 
 ## Service levels at a glance {/* #summary */}
 
-| Measure                                                          | Applies to                                                                  | Target           | Type            |
-| ---------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------- | --------------- |
-| [Uptime](#sla)                                                   | Standard single-region Namespaces                                           | 99.9%            | Contractual SLA |
-| [Uptime](#sla)                                                   | Namespaces using [High Availability](/cloud/high-availability)              | 99.99%           | Contractual SLA |
-| [Uptime](#sla)                                                   | All Namespaces                                                              | 99.99%           | SLO             |
-| [Latency](#latency)                                              | Worker requests, p99 per region                                             | 200ms            | SLO             |
-| [Visibility API availability](#visibility-availability)          | List and Count requests, rolling 30-day window                              | 99.5%            | SLO             |
-| [Cloud Ops API availability](/ops#availability)                  | HTTP and gRPC requests, monthly                                             | 99.99%           | SLO             |
-| [Recovery Time Objective (RTO)](/cloud/rpo-rto)                  | Namespaces using High Availability, during a cell, region, or cloud outage  | Under 20 minutes | Objective       |
-| [Recovery Point Objective (RPO)](/cloud/rpo-rto)                 | Namespaces using High Availability, during a cell, region, or cloud outage  | Under 1 minute   | Objective       |
+| Measure                                                 | Applies to                                                                 | Target                                                | Type            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------- | --------------- |
+| [Uptime](#uptime)                                       | All Namespaces                                                             | 99.99%                                                | SLO             |
+| [Uptime](https://temporal.io/sla)                       | Covered APIs, per Namespace                                                | See the [Temporal Cloud SLA](https://temporal.io/sla) | Contractual SLA |
+| [Latency](#latency)                                     | Worker requests, p99 per region                                            | 200ms                                                 | SLO             |
+| [Visibility API availability](#visibility-availability) | List and Count requests, rolling 30-day window                             | 99.5%                                                 | SLO             |
+| [Cloud Ops API availability](/ops#availability)         | HTTP and gRPC requests, monthly                                            | 99.99%                                                | SLO             |
+| [Recovery Time Objective (RTO)](/cloud/rpo-rto)         | Namespaces using High Availability, during a cell, region, or cloud outage | Under 20 minutes                                      | Objective       |
+| [Recovery Point Objective (RPO)](/cloud/rpo-rto)        | Namespaces using High Availability, during a cell, region, or cloud outage | Under 1 minute                                        | Objective       |
 
-## Uptime and the SLA {/* #sla */}
+## Uptime {/* #uptime */}
 
-Temporal Cloud publishes two uptime numbers for each deployment mode: the [service availability](https://en.wikipedia.org/wiki/Reliability,_availability_and_serviceability) it operates to, and the contractual [service level agreement](https://en.wikipedia.org/wiki/Service-level_agreement) (SLA) it guarantees against service errors.
+Temporal Cloud operates every Namespace to a 99.99% [service availability](https://en.wikipedia.org/wiki/Reliability,_availability_and_serviceability) objective, whether or not the Namespace uses [High Availability](/cloud/high-availability).
 
-| Deployment mode                                                           | Service availability (SLO) | Contractual SLA |
-| ------------------------------------------------------------------------- | -------------------------- | --------------- |
-| Standard single-region Namespace                                          | 99.99%                     | 99.9%           |
-| Namespace using the [High Availability](/cloud/high-availability) feature | 99.99%                     | 99.99%          |
-
-The SLA that covers normal Worker requests, meaning commands and polling, also covers Nexus requests in both the caller and handler Namespaces.
+The contractual uptime commitment is the [Temporal Cloud Service Level Agreement (SLA)](https://temporal.io/sla).
+It defines which APIs are covered, how availability is calculated, what is excluded, and the service credits that apply.
+Namespaces using High Availability have a higher SLA than standard single-region Namespaces.
 
 Temporal Cloud runs a cell architecture.
 Each cell holds the software and services needed to host a Namespace, and the components in a cell are distributed across at least three availability zones per region.
-Whether errors during an outage count against the SLA depends on the type of outage and the High Availability features the Namespace uses.
-See [Outages and Recovery Objectives](/cloud/rpo-rto) for each outage type.
-
-### How the service-error rate is calculated
-
-Temporal Cloud captures every request that arrives in a Namespace during a five-minute interval and records the gRPC service errors among them.
-For each Namespace, the service-error rate is 1 - (count of errors / count of requests).
-Rates are averaged per month and reset quarterly.
-
-Errors counted against the SLA are service errors, such as the `UNAVAILABLE` [gRPC status code](https://grpc.github.io/grpc/core/md_doc_statuscodes.html).
-The following errors are _not_ counted against the SLA:
-
-- `ClientVersionNotSupported`
-- `InvalidArgument`
-- `NamespaceAlreadyExists`
-- `NamespaceInvalidState`
-- `NamespaceNotActive`
-- `NamespaceNotFound`
-- `NotFound`
-- `PermissionDenied`
-- `QueryFailed`
-- `RetryReplication`
-- `StickyWorkerUnavailable`
-- `TaskAlreadyStarted`
-- `Throttling (resources exhausted; triggers retry)`
-- `WorkflowExecutionAlreadyStarted`
-- `WorkflowNotReady`
+For how Temporal Cloud handles each type of outage, see [Outages and Recovery Objectives](/cloud/rpo-rto).
 
 ## Latency {/* #latency */}
 
@@ -136,7 +105,7 @@ This target is deliberately lower than the availability guaranteed for core Work
 Visibility is a search index intended for operational discovery, not a critical path for application logic.
 
 This is a service level objective rather than a contractual commitment.
-Visibility API requests are not covered by the [SLA](#sla), and no service credits are associated with this objective.
+Visibility API requests are not covered by the [Temporal Cloud SLA](https://temporal.io/sla), and no service credits are associated with this objective.
 
 The objective measures whether a request returns a valid response, not how current the results are.
 For what it excludes and how to interpret it alongside Visibility's eventual consistency, see [Visibility availability in Temporal Cloud](/visibility#availability).
@@ -152,8 +121,9 @@ See [Capacity Modes](/cloud/capacity-modes) for how each mode sets your limit.
 
 ## Related
 
-- [Outages and Recovery Objectives (RTO / RPO)](/cloud/rpo-rto): Recovery targets for each type of outage, and how outages count against the SLA.
-- [High Availability](/cloud/high-availability): Replication and failover options that raise a Namespace's SLA to 99.99%.
+- [Temporal Cloud SLA](https://temporal.io/sla): The contractual uptime commitment, including covered APIs, calculation, exclusions, and service credits.
+- [Outages and Recovery Objectives (RTO / RPO)](/cloud/rpo-rto): Recovery targets for each type of outage.
+- [High Availability](/cloud/high-availability): Replication and failover options for a higher contractual SLA.
 - [Higher throughput and lower latency: Temporal Cloud's custom persistence layer](https://temporal.io/blog/higher-throughput-and-lower-latency-temporal-clouds-custom-persistence-layer): How sharding, the write-ahead log, and tiered storage are built.
 - [Benchmarking latency: Temporal Cloud versus self-hosted Temporal](https://temporal.io/blog/benchmarking-latency-temporal-cloud-vs-self-hosted-temporal): Measured comparison of the two deployment options.
 - [Replay conference talk: Custom persistence layer](https://www.youtube.com/watch?v=SQv9ot-jB6o&list=PLl9kRkvFJrlREHL7fiEKBWTp5QuFeYS2r&index=5): Walkthrough of the persistence design.
