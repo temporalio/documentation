@@ -135,21 +135,25 @@ async def _send(self, request: OpenRouterRequest) -> OpenRouterResult:
     choices = payload.get("choices") or []
     usage = payload.get("usage") or {}
     cost = usage.get("cost")
+    if not isinstance(cost, (int, float)):
+        # OpenRouter reports cost on every response; if it is ever missing,
+        # say so rather than pretending the call was free.
+        activity.logger.warning("OpenRouter response has no usage.cost")
     result = OpenRouterResult(
         prompt=request.prompt,
         model=str(payload.get("model", model)),
         answer=_content_to_text((choices[0].get("message") or {}).get("content"))
         if choices
         else "",
-        cost_usd=float(cost) if isinstance(cost, (int, float)) else 0.0,
+        cost_usd=float(cost) if isinstance(cost, (int, float)) else None,
         generation_id=str(payload.get("id", "")),
         cache_status=raw.headers.get("x-openrouter-cache-status", ""),
     )
     activity.logger.info(
-        "OpenRouter call completed: attempt=%d model=%s cost_usd=%.6f cache=%s id=%s",
+        "OpenRouter call completed: attempt=%d model=%s cost_usd=%s cache=%s id=%s",
         activity.info().attempt,
         result.model,
-        result.cost_usd,
+        "unknown" if result.cost_usd is None else f"{result.cost_usd:.6f}",
         result.cache_status or "-",
         result.generation_id,
     )
@@ -221,7 +225,9 @@ outcomes = await asyncio.gather(
 <!--SNIPEND-->
 
 Each result carries the concrete model OpenRouter's [Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router)
-chose, OpenRouter's reported `usage.cost`, the generation ID, and the cache status.
+chose, OpenRouter's reported `usage.cost`, the generation ID, and the cache status. The batch's `reported_cost_usd`
+sums what OpenRouter reported on each prompt's final, successful attempt. It is not a bill: an attempt that was billed
+but whose response never reached Temporal is not in it. OpenRouter's dashboard is the source of truth for spend.
 
 Each Activity adds a few events to Event History, and every answer is part of the Workflow result payload. The sample
 caps a batch at 100 prompts. For larger batches, start one Workflow per slice, or use the
@@ -260,6 +266,8 @@ def raise_budget(self, new_budget_usd: float) -> SpendReport:
 
 @raise_budget.validator
 def validate_raise_budget(self, new_budget_usd: float) -> None:
+    if not math.isfinite(new_budget_usd):
+        raise ValueError("The budget must be a finite number.")
     if new_budget_usd < self._budget_usd:
         raise ValueError(
             f"New budget ${new_budget_usd} is below the current budget "
@@ -326,7 +334,9 @@ credits at OpenRouter"; it bumps a version counter that prompts parked on an out
 nobody acts before the batch's approval deadline (one deadline shared by every parked prompt), the batch completes
 with the remaining prompts listed as skipped.
 
-The soft budget is a soft budget. The cost of a call is only known after the response. Overshoot is at most
+The soft budget is a soft budget. It counts what OpenRouter reported on final attempts, charging the estimate when a
+response carries no cost, so it tracks reported spend rather than the bill. The cost of a call is only known after the
+response. Overshoot is at most
 `max_concurrency * estimated_cost_usd`, plus the gap between the estimate and the real cost of calls already in
 flight.
 To bound one call's cost, set `provider.max_price` in the request. The hard cap is the credit limit on the OpenRouter
