@@ -1211,7 +1211,6 @@ module.exports = {
           },
           items: [
             'evaluate/cloud/security',
-            { type: 'link', label: 'Uptime, latency, and SLOs', href: '/cloud/slo' },
             'evaluate/cloud/regions',
             'evaluate/cloud/limits',
             'evaluate/cloud/pricing',
