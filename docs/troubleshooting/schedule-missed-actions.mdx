@@ -152,11 +152,25 @@ Configure the Catchup Window to include the maximum expected overlap delay.
 
 ### `BufferAll` can create a backlog
 
-`BufferAll` starts only one non-overlapping Action after each preceding Workflow Execution closes.
-If Workflow Executions take longer than the Schedule interval, the backlog grows faster than it drains.
-Buffered Actions are subject to an internal safety limit of approximately 1,000 per Schedule by default.
-The effective limit can vary by deployment and Scheduler implementation.
-Actions can also expire outside the Catchup Window, so `BufferAll` should not be treated as an unlimited durable queue.
+`BufferAll` runs buffered Actions in FIFO order, starting the next Action after the preceding Workflow Execution closes.
+If Workflow Executions take longer than the Schedule interval, Actions accumulate faster than they can run.
+
+For example, if a Schedule fires every five minutes and each Workflow Execution takes twenty minutes:
+
+```text
+09:00  starts
+09:05  is buffered
+09:10  is buffered
+09:15  is buffered
+09:20  the 09:00 Workflow Execution closes; the 09:05 Action starts
+```
+
+Four new Actions become due for every one Workflow Execution that closes, so the backlog continues to grow.
+The Scheduler has an internal buffer limit of 1,000 Actions per Schedule by default, configurable by deployment.
+Once the buffer is full, additional automatically scheduled Actions are dropped.
+
+Buffered Actions can also expire outside the Catchup Window.
+The default Catchup Window is 365 days, but a shorter configured window can cause Actions to expire while waiting.
 
 For example, with a five-minute Catchup Window:
 
@@ -169,8 +183,10 @@ For example, with a five-minute Catchup Window:
 09:22  the 09:00 Workflow Execution closes
 ```
 
-At `09:22`, only the `09:20` Action is still inside the five-minute window.
-On the current Scheduler implementation, the `09:05`, `09:10`, and `09:15` Actions expire, and the `09:20` Action starts.
+At `09:22`, the `09:05`, `09:10`, and `09:15` Actions have exceeded the Catchup Window and are discarded as the Scheduler processes the buffer.
+The `09:20` Action starts if it is still within the window when processed.
+
+These limits mean `BufferAll` should not be treated as an unlimited durable queue.
 
 ### Cancellation is asynchronous
 
