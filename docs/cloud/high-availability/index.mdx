@@ -2,7 +2,7 @@
 id: index
 title: High Availability
 slug: /cloud/high-availability
-description: Temporal Cloud's Namespace with High Availability features offers automatic failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+description: Temporal Cloud's Namespace with High Availability features offers automatic failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and a higher uptime SLA.
 tags:
   - Temporal Cloud
   - Production
@@ -16,7 +16,7 @@ Temporal keeps your Workflows running even when a Worker crashes. But what happe
 In the cloud, outages are commonplace. An outage can bring down a whole data center, cluster, region, or cloud provider. To be durable in the cloud, Workflows and applications must handle these outages smoothly, just like Temporal handles a Worker crash.
 
 Temporal Cloud's High Availability features add extra reliability to Temporal Cloud Namespaces by handling cloud outages. Using asynchronous <ToolTipTerm term="replication"/> between multiple regions or cloud providers, combined with automatic outage detection and failover, High Availability keeps your Workflows running even during a cloud region outage.
-This extra availability comes with an enhanced [SLA](/evaluate/cloud/sla) of 99.99%, _including_ cloud provider outages.
+This extra availability comes with an enhanced [SLA](https://temporal.io/sla), _including_ cloud provider outages.
 
 :::tip White paper
 
@@ -26,14 +26,14 @@ For an in-depth guide covering everything from why you need High Availability to
 
 ## Built-in reliability
 
-Even without High Availability features, Temporal Cloud provides robust reliability and a 99.9% contractual Service Level Agreement ([SLA](/evaluate/cloud/sla)) guarantee against service errors.
+Even without High Availability features, Temporal Cloud provides robust reliability and a contractual [Service Level Agreement (SLA)](https://temporal.io/sla) against service errors.
 
 Each standard Temporal Namespace uses replication across three [Availability Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (AZs) to ensure high availability.
 An Availability Zone is akin to an isolated data center managed by a cloud hyperscaler, with independent power, networking, and cooling infrastructure.
 
 Replication across AZs makes sure that any changes to Workflow state or History are saved in all three AZs _before_ the Temporal Service acknowledges a change back to the Client.
 As a result, your standard Temporal Namespace stays operational even if one of its three AZs becomes unavailable.
-This provides the basis of the 99.9% service level agreement for Temporal Cloud Namespaces.
+This provides the basis of the SLA for standard Temporal Cloud Namespaces.
 
 However some critical use cases--such as customer-facing applications--require even better availability. That is where Temporal Cloud's High Availability features come in.
 
@@ -106,9 +106,10 @@ To keep passive-region Workers on standby until failover by disabling this forwa
 
 ## Service levels and recovery objectives
 
-Namespaces using High Availability have a 99.99% [uptime SLA](/evaluate/cloud/sla) with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
+Namespaces using High Availability have a higher [uptime SLA](https://temporal.io/sla), with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
 
-- [Service Level Agreement (SLA)](/evaluate/cloud/sla)
+- [Temporal Cloud Service Level Agreement (SLA)](https://temporal.io/sla)
+- [Uptime, latency, and SLOs](/cloud/slo)
 - [Recovery Point Objective (RPO) and Recovery Time Objective (RTO)](/cloud/rpo-rto)
 
 ## Failover
