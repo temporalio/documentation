@@ -17,17 +17,20 @@ Use the [common pitfalls](#common-pitfalls) below to recognize these behaviors, 
 
 ## Alert on missed catchup window
 
-The Temporal Service emits a counter each time it skips a scheduled Action because it could not run it within the configured Catchup Window. Alert on any non-zero value.
+The Temporal Service records each scheduled Action that it drops because the Action fell outside the configured Catchup Window.
+Alert when this metric reports missed Actions.
 
 ### Temporal Cloud
 
 Alert on [`temporal_cloud_v1_schedule_missed_catchup_window_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_missed_catchup_window_count) grouped by `temporal_namespace`.
 
-Example PromQL:
+Cloud metrics are [precomputed per-second rates](/cloud/metrics/openmetrics/api-reference#metric-types).
+Use the reported rate directly rather than applying `rate()` or `increase()`.
+The following example alerts if any sample in the last five minutes reports a miss:
 
-```
+```promql
 sum by (temporal_namespace) (
-  increase(temporal_cloud_v1_schedule_missed_catchup_window_count[5m])
+  max_over_time(temporal_cloud_v1_schedule_missed_catchup_window_count[5m])
 ) > 0
 ```
 
@@ -44,6 +47,39 @@ sum by (namespace) (
 ```
 
 The metric is scoped to the Namespace, not to individual Schedules. A non-zero value tells you that at least one Schedule in the Namespace missed an Action, but not which one.
+
+## Monitor overlap skips
+
+Catchup Window misses do not include Actions skipped by an Overlap Policy.
+Monitor overlap skips separately to detect Actions dropped by `Skip` or by `BufferOne` when its waiting slot is occupied.
+These skips can be expected behavior, so choose an alert threshold that reflects whether your application can tolerate them.
+
+### Temporal Cloud
+
+[`temporal_cloud_v1_schedule_overlap_skipped_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_overlap_skipped_count) is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+It reports dropped Actions per second, including overlap skips during Backfills.
+Group by `temporal_namespace` and `schedule_overlap_policy` to see which policy caused the skips.
+
+The following example detects any reported overlap skips in the last five minutes:
+
+```promql
+sum by (temporal_namespace, schedule_overlap_policy) (
+  max_over_time(temporal_cloud_v1_schedule_overlap_skipped_count[5m])
+) > 0
+```
+
+### Self-hosted
+
+Use the `schedule_overlap_skipped` counter, grouped by `namespace` and `schedule_overlap_policy`:
+
+```promql
+sum by (namespace, schedule_overlap_policy) (
+  increase(schedule_overlap_skipped[5m])
+) > 0
+```
+
+These metrics identify the affected Namespace and policy, not the individual Schedule.
+Use `DescribeSchedule` and its `overlapSkipped` counter to narrow the investigation.
 
 ## Investigate which Schedule missed an Action
 
@@ -73,30 +109,33 @@ temporal schedule describe \
 
 | Field | Meaning |
 |-------|---------|
-| `missedCatchupWindow` | Actions skipped because they could not run within the Catchup Window. Non-zero here identifies the Schedule responsible for the alert. |
-| `overlapSkipped` | Actions skipped because the previous run was still in progress and the Overlap Policy is `Skip`. |
+| `missedCatchupWindow` | Actions skipped because they could not run within the Catchup Window. |
+| `overlapSkipped` | Actions skipped by `Skip`, or by `BufferOne` when its waiting slot was occupied. |
 | `bufferDropped` | Buffered Actions dropped because the buffer was full under `BufferOne` or `BufferAll`. |
 | `bufferSize` | Current depth of the Action buffer. |
 | `recentActions` | Most recent Action times and results. |
 | `runningWorkflows` | Workflow Executions currently running for this Schedule. |
 
+These counters are cumulative.
+Compare snapshots before and after the alerting interval to identify which Schedules recorded new misses or skips; a non-zero total can reflect older events.
+
 Scripting the fan-out against the JSON output (`temporal schedule describe -o json`) is usually faster than inspecting each Schedule interactively.
 
 ## Interpret the result
 
-Once you have identified the Schedule with a non-zero `missedCatchupWindow`, use the rest of the `DescribeSchedule` output to determine impact and root cause.
+Once you have identified a Schedule whose miss or skip counter increased, use the rest of the `DescribeSchedule` output to determine impact and root cause.
 
 ### Assess impact
 
 - Compare `recentActions` to the Schedule's Spec to determine how many Actions were skipped and over what time period.
-- If the Schedule uses the `Skip` Overlap Policy and the preceding run was long-running, the miss may reflect that run exceeding the Catchup Window, not a Service outage.
+- An increase in `overlapSkipped` means the Overlap Policy discarded Actions. It does not imply that those Actions exceeded the Catchup Window or that the Service was unavailable.
 - For business-critical Schedules, [Backfill](/schedule#backfill) the skipped interval once the underlying cause is resolved.
 
 ### Common root causes
 
 - **Service or Namespace outage longer than the Catchup Window.** The default Catchup Window is one year, so a miss typically means the Schedule is configured with a tighter window (minimum ten seconds) and the outage exceeded it.
 - **Namespace rate limiting.** If scheduled starts are throttled, Actions can queue past the Catchup Window. Cross-check [`temporal_cloud_v1_schedule_rate_limited_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_rate_limited_count) (Cloud) or [`schedule_rate_limited`](/references/service-metrics#schedule_rate_limited) (self-hosted) in the same time range.
-- **Buffer overruns under `BufferAll`.** Long-running Workflow Executions under `BufferAll` can push buffered Actions past the Catchup Window. Cross-check [`temporal_cloud_v1_schedule_buffer_overruns_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_buffer_overruns_count) (Cloud) or [`schedule_buffer_overruns`](/references/service-metrics#schedule_buffer_overruns) (self-hosted) and examine `bufferSize`.
+- **Buffer overruns under `BufferAll`.** Long-running Workflow Executions under `BufferAll` can fill the buffer, causing new Actions to be dropped. This is separate from Catchup Window expiry. Cross-check [`temporal_cloud_v1_schedule_buffer_overruns_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_buffer_overruns_count) (Cloud) or [`schedule_buffer_overruns`](/references/service-metrics#schedule_buffer_overruns) (self-hosted) and examine `bufferSize`.
 
 ### Remediate
 
