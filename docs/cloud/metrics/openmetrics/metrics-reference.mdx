@@ -896,7 +896,6 @@ See [backlog accuracy limitations](/develop/worker-performance/task-queues#backl
 #### temporal\_cloud\_v1\_approximate\_backlog\_age
 
 The approximate age, in seconds, of the oldest task in a task queue backlog.
-When a task queue has more than one partition or Worker Deployment Version, the metric reports the oldest age across them rather than a sum.
 
 :::note Known accuracy limitations
 This metric is approximate and is subject to the same limitations as `temporal_cloud_v1_approximate_backlog_count`.
