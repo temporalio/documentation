@@ -19,6 +19,7 @@
     "check:metrics": "node ./bin/check-metrics-reference.js",
     "check:metrics:sdks": "node ./bin/check-metrics-against-sdks.js",
     "check:orphans": "node ./bin/check-orphan-pages.js",
+    "check:redirects": "node ./bin/validate-redirects.js",
     "test": "node --test",
     "lint": "vale --output=JSON docs/**/**/*.mdx > vale-output.json; vale --output=JSON docs/**/**/*.md > vale-md-output.json",
     "lint:go": "vale docs/develop/go/*.mdx",
@@ -103,6 +104,7 @@
     "eslint-plugin-react": "^7.23.2",
     "global-jsdom": "^30.0.0",
     "husky": "^9.1.7",
-    "hyperlink": "^5.0.4"
+    "hyperlink": "^5.0.4",
+    "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0"
   }
 }
