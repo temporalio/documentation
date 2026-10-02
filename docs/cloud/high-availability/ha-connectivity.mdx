@@ -199,13 +199,15 @@ Steps:
 
 7. **Drain and remove Workers and the VPC Endpoint in the old region.** Once you are confident the new region is handling all new work and you no longer need old-region Workers, stop them and tear down the old region's VPC Endpoint and PHZ.
 
-8. **Remove the replica in the old region.** See [Migrate between regions](/cloud/migrate/migrate-within-cloud) for the replica-removal step. The Namespace is now single-region in the new location, and the HA pricing surcharge no longer applies.
+8. **Remove the replica in the old region.** First, complete the [replica-removal connectivity checklist](/cloud/high-availability/enable#prepare-connectivity-before-removing-a-replica) to confirm no Workers or Clients still depend on the old region's Regional Endpoint or private connection. Then see [Migrate between regions](/cloud/migrate/migrate-within-cloud) for the replica-removal step. The Namespace is now single-region in the new location, and the HA pricing surcharge no longer applies.
 
-:::note Per-region PHZ vs. shared regional-record PHZ
+:::note Per-region PHZ versus shared regional-record PHZ
 
 This pattern is **different** from the long-term HA setup described in [Single-cloud HA on AWS PrivateLink](#single-cloud-ha-on-aws-privatelink), which uses one shared PHZ holding regional records (`aws-<region>.region.tmprl.cloud`) and relies on DNS-based failover to switch Workers between regions. The region-change pattern instead uses one PHZ per region, each overriding the Namespace Endpoint itself, and relies on Temporal Cloud's cross-region task forwarding rather than DNS to keep Workers productive across the cutover.
 
 :::
+
+If you disable HA after using the shared regional-record private DNS setup below, [change private DNS back to the single-region setup](/cloud/high-availability/enable#prepare-connectivity-before-removing-a-replica) before removing the replica.
 
 ## Single-cloud HA on AWS PrivateLink
 
