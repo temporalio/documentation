@@ -104,7 +104,7 @@ When you connect to Temporal Cloud through GCP Private Service Connect you norma
 
 By creating a **private Cloud DNS zone (PZ)** that maps the public Temporal Cloud hostname (or the region hostname) directly to the PSC endpoint IP address, you can:
 
-- Keep using the standard Temporal Cloud hostnames in code and configuration.
+- Keep using the standard Temporal Cloud hostnames in code and configuration, so SDK samples, demos, and existing deployments work over Private Service Connect unchanged.
 - Eliminate the need to set a custom SNI override.
 - Make future endpoint rotations transparent—only the DNS record changes.
 
@@ -119,13 +119,49 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 | Cloud DNS API enabled and roles/dns.admin permissions | Needed to create private zones and records.                                       |
 | Namespace details                                     | Determines which hostname pattern you override (table below).                     |
 
-### Choose the override domain and endpoint
+### Choose a private DNS pattern {/* #choose-a-private-dns-pattern */}
 
-| Temporal Cloud setup                       | Use this PHZ domain                | Example                                        |
-| ------------------------------------------ | ---------------------------------- | ---------------------------------------------- |
-| Single-region namespace with mTLS auth     | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔️ `X.X.X.X`       |
-| Single-region namespace with API-key auth  | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X`  |
-| Multi-region namespace | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X` |
+Each pattern below resolves a Temporal Cloud hostname to your Private Service Connect endpoint from inside your network, so Workers and Clients keep dialing the [Namespace Endpoint](/cloud/namespaces#access-namespaces) with no SNI override. They differ in how much per-Namespace work they take, and in what happens to Namespaces with [High Availability features](/cloud/high-availability) during a failover.
+
+| Pattern                         | Private zone DNS name               | Record name                            | Use when                                                                                                                                                                    |
+| ------------------------------- | ----------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A. One record per Namespace** | `<namespace>.<account>.tmprl.cloud` | `<namespace>.<account>.tmprl.cloud`    | Single-region Namespaces. Direct and predictable, at the cost of one zone and record per Namespace.                                                                          |
+| **B. Wildcard record**          | `<account>.tmprl.cloud`             | `*.<account>.tmprl.cloud`              | Single-region Namespaces, when you don't want to add a record for every new Namespace. Do not use it in a network that also reaches Namespaces with High Availability features. |
+| **C. Regional records**         | `region.tmprl.cloud`                | `gcp-<region>.region.tmprl.cloud`      | Namespaces with High Availability features, which are the only Namespaces this pattern supports. See the [failover limitation](#high-availability-and-private-service-connect) above.  |
+
+In all three patterns the record is an `A` record whose value is the internal IP address of your PSC endpoint.
+
+#### Pattern A: one record per Namespace
+
+Create a private zone for the Namespace Endpoint itself and add a single `A` record in it. Nothing else resolves through that zone, so a mistake affects one Namespace. Follow the [step-by-step instructions](#step-by-step-instructions) below.
+
+#### Pattern B: wildcard record for the account
+
+Create one private zone for `<account>.tmprl.cloud` and add a wildcard `A` record at `*.<account>.tmprl.cloud`, pointing at the same PSC endpoint IP address. Every Namespace in the account then resolves to that endpoint, and new Namespaces work with no DNS change at all. The Cloud DNS mechanics are otherwise identical to pattern A.
+
+:::warning A wildcard blocks failover for Namespaces with High Availability features
+
+The wildcard also matches the Namespace Endpoint of every Namespace with [High Availability features](/cloud/high-availability) in the account. The resolver answers from the private zone before consulting public DNS, so Temporal Cloud's active-region CNAME is never followed and Workers stay pinned to one region's PSC endpoint. After a failover, those Workers cannot read or write in the new active region. Use pattern C for those Namespaces.
+
+:::
+
+#### Pattern C: regional records
+
+Create a private zone for `region.tmprl.cloud` and add one `A` record per region, each pointing at that region's PSC endpoint IP address. Workers resolve `<namespace>.<account>.tmprl.cloud` through public DNS to `gcp-<active-region>.region.tmprl.cloud`, and only then through your private zone to a PSC endpoint. Because the public CNAME is still followed, resolution tracks the active region rather than pinning to one endpoint.
+
+This pattern is available only for Namespaces with High Availability features. They are the only Namespaces whose Namespace Endpoint is guaranteed to resolve through a regional record — see [Deterministic DNS behavior is unique to HA Namespace Endpoints](/cloud/high-availability/ha-connectivity).
+
+For the full setup, including cross-region reachability and multi-cloud replicas, see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity), and note the [PSC failover limitation](#high-availability-and-private-service-connect) above.
+
+#### Both kinds of Namespace in one network
+
+Use pattern A for the single-region Namespaces and pattern C for those with High Availability features. The two coexist: pattern A's zones name individual Namespaces, while pattern C's records live in the separate `region.tmprl.cloud` zone that only HA Namespace Endpoints resolve through. Do not add a pattern B wildcard to that network — it would match the HA Namespace Endpoints too.
+
+:::note Pinning a Client to a region
+
+To pin a Client to a specific Temporal Cloud region rather than following the active one, create the private zone for the regional endpoint hostname (`<region>.<cloud>.api.temporal.io`, for example `us-central1.gcp.api.temporal.io`) instead. The Client dials that hostname and sets its TLS server name to the Namespace Endpoint, which gives up the configuration and failover advantages described above.
+
+:::
 
 ### Step-by-step instructions
 
@@ -146,7 +182,7 @@ Save the internal IP -- you will point the A record at it.
 1. Open _Network Services → Cloud DNS → Create zone_.
 2. Select zone type **Private**.
 3. Enter a **Zone name** (for example, `temporal-cloud`).
-4. Enter a **DNS name** based on the table above (for example, `payments.abcde.tmprl.cloud` or `us-east-1.aws.api.temporal.io`).
+4. Enter a **DNS name** based on the table above: `payments.abcde.tmprl.cloud` for pattern A or `abcde.tmprl.cloud` for a pattern B wildcard.
 5. Select **Add networks** and choose the Project and Network that contains your PSC endpoint.
 6. Click **Create**.
 
@@ -156,7 +192,7 @@ Inside the new zone, add a _standard A record_:
 
 | Field                | Value                                                          |
 | -------------------- | -------------------------------------------------------------- |
-| DNS name             | the namespace endpoint (for example, `payments.abcde.tmprl.cloud`)     |
+| DNS name             | The Namespace Endpoint (for example, `payments.abcde.tmprl.cloud`) or `*.abcde.tmprl.cloud` for a pattern B wildcard. |
 | Resource record type | A                                                              |
 | TTL                  | 60s is typical, but you can adjust as needed.                  |
 | IPv4 Address         | the internal IP address of your PSC endpoint (for example, `10.1.2.3`) |
