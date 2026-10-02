@@ -4,6 +4,7 @@ title: Set up metrics for Temporal Cloud
 sidebar_label: Set up metrics
 description: Monitor Temporal Cloud workloads with Cloud metrics and SDK metrics.
 slug: /cloud/metrics/
+unlisted: true
 toc_max_heading_level: 4
 tags:
   - Metrics
@@ -49,21 +50,3 @@ For a Worker-focused view of how to combine these signals, see [Monitor worker h
 
 SDK metrics are emitted by your Workers and Clients.
 For setup instructions, see [SDK metrics setup](/cloud/metrics/sdk-metrics-setup).
-
-## PromQL Endpoint (Deprecated) {/* #promql-deprecated */}
-
-:::danger PromQL endpoint deprecated
-
-The PromQL endpoint and its `temporal_cloud_v0_*` metrics were deprecated on April 2, 2026 and are no longer accepting new users.
-The PromQL endpoint will be disabled for all users on **October 5, 2026**.
-
-Migrate to the [OpenMetrics endpoint](/cloud/metrics/openmetrics).
-See the [migration guide](/cloud/metrics/openmetrics/migration-guide) for a complete v0-to-v1 metric mapping.
-
-:::
-
-The legacy PromQL endpoint uses mTLS certificate authentication and exposes `temporal_cloud_v0_*` metrics via a Prometheus query API.
-
-- [PromQL endpoint](/cloud/metrics/promql)
-- [PromQL metrics reference](/cloud/metrics/reference)
-- [PromQL setup with Grafana](/cloud/metrics/prometheus-grafana)

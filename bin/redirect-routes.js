@@ -92,7 +92,8 @@ function buildRouteIndex(root = process.cwd()) {
 
   addDocs(urls, path.join(root, 'docs'), '/', { applyDocsExclude: true });
   const cookbookDir = path.join(root, COOKBOOK_DIR);
-  if (fs.existsSync(cookbookDir)) addDocs(urls, cookbookDir, COOKBOOK_ROUTE, { applyDocsExclude: false });
+  const cookbookPresent = fs.existsSync(cookbookDir);
+  if (cookbookPresent) addDocs(urls, cookbookDir, COOKBOOK_ROUTE, { applyDocsExclude: false });
   addPages(urls, path.join(root, 'src', 'pages'));
   addStatic(urls, path.join(root, 'static'));
   addApi(urls, path.join(root, 'api'));
@@ -107,10 +108,13 @@ function buildRouteIndex(root = process.cwd()) {
     const p = normalizePath(urlPath);
     if (urls.has(p)) return true;
     if (p.endsWith('/llms.txt')) return true; // per-section llms.txt files
+    // The cookbook landing page also gets a Markdown alternate at build time.
+    // CI checks redirects before the separate cookbook repository is cloned.
+    if (!cookbookPresent && p === `/${COOKBOOK_ROUTE}.md`) return true;
     return UNVERIFIABLE_PREFIXES.some((prefix) => p === prefix || p.startsWith(`${prefix}/`));
   };
 
-  return { has, maybe, urls, cookbookPresent: fs.existsSync(cookbookDir) };
+  return { has, maybe, urls, cookbookPresent };
 }
 
 module.exports = { buildRouteIndex, docUrl };

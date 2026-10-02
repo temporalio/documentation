@@ -1415,45 +1415,20 @@ module.exports = {
           items: [
             {
               type: 'category',
-              label: 'Set up metrics',
+              label: 'Set up Cloud metrics',
               collapsed: true,
               link: {
                 type: 'doc',
-                id: 'cloud/metrics/index',
+                id: 'cloud/metrics/openmetrics/index',
               },
               items: [
-                {
-                  type: 'category',
-                  label: 'Set up Cloud metrics',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'cloud/metrics/openmetrics/index',
-                  },
-                  items: [
-                    'cloud/metrics/openmetrics/metrics-integrations',
-                    'cloud/metrics/openmetrics/migration-guide',
-                    'cloud/metrics/openmetrics/api-reference',
-                    'cloud/metrics/openmetrics/metrics-reference',
-                  ],
-                },
-                'cloud/metrics/sdk-metrics-setup',
-                {
-                  type: 'category',
-                  label: 'Legacy PromQL endpoint (deprecated)',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'cloud/metrics/promql',
-                  },
-                  items: [
-                    'cloud/metrics/general-setup',
-                    'cloud/metrics/reference',
-                    'cloud/metrics/prometheus-grafana'
-                  ],
-                },
+                'cloud/metrics/openmetrics/metrics-integrations',
+                'cloud/metrics/openmetrics/api-reference',
+                'cloud/metrics/openmetrics/metrics-reference',
+                'cloud/metrics/openmetrics/faq',
               ],
             },
+            'cloud/metrics/sdk-metrics-setup',
             'cloud/worker-health',
             'cloud/service-health',
             'cloud/notifications',
