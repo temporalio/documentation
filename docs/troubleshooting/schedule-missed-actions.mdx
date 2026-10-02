@@ -194,19 +194,25 @@ Configure the Catchup Window to include the maximum expected overlap delay.
 `BufferAll` runs buffered Actions in FIFO order, starting the next Action after the preceding Workflow Execution closes.
 If Workflow Executions take longer than the Schedule interval, Actions accumulate faster than they can run.
 
-For example, if a Schedule fires every five minutes and each Workflow Execution takes twenty minutes:
+The Scheduler has an internal buffer limit of 1,000 Actions per Schedule by default, configurable by deployment.
+Once the buffer is full, additional automatically scheduled Actions are dropped.
+
+For illustration, consider a buffer with room for three waiting Actions, a Schedule that fires every five minutes, and the default Catchup Window:
 
 ```text
 09:00  starts
-09:05  is buffered
-09:10  is buffered
-09:15  is buffered
-09:20  the 09:00 Workflow Execution closes; the 09:05 Action starts
+09:05  is buffered; one Action is waiting
+09:10  is buffered; two Actions are waiting
+09:15  is buffered; three Actions are waiting and the buffer is full
+09:20  is dropped because the buffer is full
+09:22  the 09:00 Workflow Execution closes; the 09:05 Action starts
+       two Actions remain waiting, leaving room for another Action
+09:25  is buffered; three Actions are waiting and the buffer is full again
 ```
 
-Four new Actions become due for every one Workflow Execution that closes, so the backlog continues to grow.
-The Scheduler has an internal buffer limit of 1,000 Actions per Schedule by default, configurable by deployment.
-Once the buffer is full, additional automatically scheduled Actions are dropped.
+The `09:20` Action is permanently dropped; it is not retried when buffer capacity becomes available.
+The `09:10` and `09:15` Actions remain ahead of `09:25` in FIFO order.
+The drop increments `bufferDropped` in `DescribeSchedule` and the [buffer-overruns metric](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_schedule_buffer_overruns_count).
 
 Buffered Actions can also expire outside the Catchup Window.
 The default Catchup Window is 365 days, but a shorter configured window can cause Actions to expire while waiting.
