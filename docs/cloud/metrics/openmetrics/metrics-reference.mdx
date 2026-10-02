@@ -57,8 +57,8 @@ When an opt-in label is enabled, it is populated on **all metrics** that support
 | Label | Available on | Description |
 | ----- | ----- | ----- |
 | `temporal_activity_type` | Activity metrics | The activity type name |
-| `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment name |
-| `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment Version Build ID |
+| `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count`, `temporal_cloud_v1_approximate_backlog_age` | The Worker Deployment name |
+| `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count`, `temporal_cloud_v1_approximate_backlog_age` | The Worker Deployment Version Build ID |
 | `nexus_service` | Nexus metrics | The Nexus Service name |
 | `nexus_operation` | Nexus metrics | The Nexus Operation name |
 
@@ -888,6 +888,25 @@ See [backlog accuracy limitations](/develop/worker-performance/task-queues#backl
 | `temporal_task_queue` | The task queue name |
 | `task_type` | Type of task: `workflow` or `activity` |
 | `task_priority` | The task priority |
+| `temporal_worker_deployment_name` | The Worker Deployment name (opt-in) |
+| `temporal_worker_build_id` | The Worker Deployment Version Build ID (opt-in) |
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_approximate\_backlog\_age
+
+The approximate age, in seconds, of the oldest task in a task queue backlog.
+When a task queue has more than one partition or Worker Deployment Version, the metric reports the oldest age across them rather than a sum.
+
+:::note Known accuracy limitations
+This metric is approximate and is subject to the same limitations as `temporal_cloud_v1_approximate_backlog_count`.
+See [backlog accuracy limitations](/develop/worker-performance/task-queues#backlog-accuracy-limitations) for details.
+:::
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `task_type` | Type of task: `workflow` or `activity` |
 | `temporal_worker_deployment_name` | The Worker Deployment name (opt-in) |
 | `temporal_worker_build_id` | The Worker Deployment Version Build ID (opt-in) |
 
