@@ -78,6 +78,46 @@ For each flagged file, decide whether it:
 
 This utility highlights potential issues — it's up to you to decide what belongs in our published documentation.
 
+## validate-redirects
+
+`bin/validate-redirects.js` (run via `yarn check:redirects`) checks the `redirects` in `vercel.json` for rules that
+can't work as written. It runs in the Check Redirects workflow on every pull request and fails on findings.
+
+Vercel compiles each `source` with path-to-regexp 6.1.0 and applies the first rule that matches. The script uses that
+same library, installed as the `vercel-path-to-regexp` dev dependency, so a rule matches in the script exactly when it
+matches in production. It builds the set of URLs the site serves from `docs/`, `src/pages/`, and `static/` (using the
+same URL resolution as the `markdown-pages` plugin), not from `build/`.
+
+| Check                     | What it finds                                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `invalid-pattern`         | A source that doesn't compile.                                                                         |
+| `source-no-leading-slash` | A source that doesn't start with `/`.                                                                  |
+| `source-trailing-slash`   | A source ending in `/`. Vercel redirects `/x/` to `/x` before matching, so it never matches.           |
+| `source-fragment`         | A source containing `#`. Browsers never send the fragment.                                             |
+| `glued-param`             | `/foo:path*` instead of `/foo/:path*`, which matches only text appended to `foo`, never `/foo/bar`.    |
+| `relative-destination`    | A destination with no leading `/` or scheme, which resolves against the requested URL.                 |
+| `undefined-param`         | A destination that uses a `:name` the source doesn't define.                                           |
+| `duplicate-source`        | The same source twice. The later rule never runs.                                                      |
+| `shadowed`                | A rule whose every match is already claimed by an earlier rule, such as `/cookbook` after `/cookbook/:path*`. |
+| `redirect-loop`           | A rule that loops back on itself or takes more than 10 hops.                                           |
+| `hides-live-page`         | A source that is a page the site serves, which makes the page unreachable.                             |
+| `broken-destination`      | A destination that, after following further redirects, isn't a page the site serves.                   |
+
+A parameterized rule such as `/foo/:path*` also matches `/foo`, so it shadows any later rule for `/foo`. Put the more
+specific rule first.
+
+Pages from the `ai-cookbook/` repository are cloned at build time, so `/ai/cookbook/*` destinations, tag pages, and
+Vercel functions are treated as served without being verified. The script does not check that a destination's `#anchor`
+exists on the page.
+
+Known, accepted findings are recorded with a note in `bin/redirect-baseline.json`. The check also fails on baseline
+entries that no longer match a finding. Regenerate the baseline with
+`node bin/validate-redirects.js --update-baseline`, then fill in the note for each new entry. `--json` prints the
+findings as JSON.
+
+`bin/check-redirects-for-moved-pages.js` is a separate check: it uses the same matcher to fail a pull request that moves
+or deletes a docs page without adding a redirect.
+
 ## visual-comparison
 
 The `visual-comparison` label triggers the visual comparison workflow on the PR. The workflow will do the following:
