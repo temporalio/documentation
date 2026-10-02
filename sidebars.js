@@ -1423,9 +1423,9 @@ module.exports = {
               },
               items: [
                 'cloud/metrics/openmetrics/metrics-integrations',
-                'cloud/metrics/openmetrics/faq',
                 'cloud/metrics/openmetrics/api-reference',
                 'cloud/metrics/openmetrics/metrics-reference',
+                'cloud/metrics/openmetrics/faq',
               ],
             },
             'cloud/metrics/sdk-metrics-setup',
