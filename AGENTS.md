@@ -181,6 +181,7 @@ Reference page checks:
 yarn check:metrics       # SDK metrics reference against itself; runs in CI on PRs
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
 yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
+yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
@@ -191,6 +192,10 @@ that should stay linkable without navigation belongs in frontmatter as `unlisted
 don't build in production at all, which 404s any inbound links). A page that's a known, accepted exception for now
 belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See
 [UTILITIES.md](./readme/UTILITIES.md) for details.
+
+`yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
+containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
+serve. Fix the rule. A known, accepted exception belongs in `bin/redirect-baseline.json` with a note.
 
 Vale linting (style). Requires Vale 3.20+ (CI already runs 3.20.0; upgrade a local install with
 `brew upgrade vale`) — `vale/styles/Std` needs it for its nested rule directories.
