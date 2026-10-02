@@ -1860,9 +1860,9 @@ module.exports = {
       },
       items: [
         'references/api-reference',
-        'references/cluster-metrics',
+        'references/service-metrics',
         'references/commands',
-        'references/configuration',
+        'references/service-configuration',
         'references/dynamic-configuration',
         'references/errors',
         'references/events',
