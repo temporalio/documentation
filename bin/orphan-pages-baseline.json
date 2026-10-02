@@ -48,10 +48,6 @@
     {
       "path": "docs/evaluate/development-production-features/cloud-vs-self-hosted.mdx",
       "note": "Pending triage. Reachable only via inline prose links from evaluate/development-production-features/low-latency.mdx and production-deployment/self-hosted-guide/checklist.mdx, not from any sidebar."
-    },
-    {
-      "path": "docs/getting-started.mdx",
-      "note": "Pending triage. Predates the current sidebar structure (added 2023, PR #2738) and is still prose-linked from several SDKs' serverless-workers pages plus develop/python/index.mdx, but was never re-added to sidebars.js."
     }
   ]
 }
