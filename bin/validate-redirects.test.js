@@ -2,6 +2,7 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const {
   compileRedirects,
@@ -231,6 +232,25 @@ describe('route index', () => {
 
   it('treats the cookbook as unverifiable rather than missing', () => {
     assert.ok(routes.maybe('/ai/cookbook/anything'));
+  });
+
+  it('accepts Cookbook markdown landing redirects without generated content', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'redirect-routes-'));
+    try {
+      const freshRoutes = buildRouteIndex(root);
+      assert.strictEqual(freshRoutes.cookbookPresent, false);
+      assert.strictEqual(freshRoutes.has('/ai/cookbook.md'), false);
+      assert.ok(freshRoutes.maybe('/ai/cookbook.md'));
+      assert.deepStrictEqual(checksFor([
+        { source: '/cookbook.md', destination: '/ai/cookbook.md' },
+        { source: '/ai-cookbook.md', destination: '/ai/cookbook.md' },
+      ], freshRoutes), []);
+      assert.deepStrictEqual(checksFor([
+        { source: '/old', destination: '/ai/cookbook-missing.md' },
+      ], freshRoutes), ['broken-destination:/old']);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
   });
 });
 
