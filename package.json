@@ -31,7 +31,7 @@
     "lint:mermaid": "node ./scripts/lint-mermaid.mjs",
     "fix-vale": "node vale/auto-fix-vale.js vale-output.json",
     "serve": "docusaurus serve",
-    "snipsync": "snipsync",
+    "snipsync": "node ./bin/snipsync.js",
     "start": "node ./bin/ensure-ai-cookbook.js && docusaurus start",
     "sync:ai-cookbook": "node ./bin/sync-ai-cookbook.js",
     "swizzle": "docusaurus swizzle",
