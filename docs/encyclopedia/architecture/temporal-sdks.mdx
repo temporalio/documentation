@@ -246,7 +246,7 @@ The Temporal Service creates a new Workflow Task which the Worker picks up.
     src="/diagrams/how-sdk-works-1.svg"
     title="The Worker picks up the new Task" />
 
-This is when the SDK Worker Replays the Workflow code, using the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
+This is when the SDK Worker Replays the Workflow code, using the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/workflow-task-errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 
