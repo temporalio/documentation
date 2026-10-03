@@ -4,8 +4,8 @@ title: Temporal Client - TypeScript SDK
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description:
-  The Temporal Client SDK enables seamless communication with the Temporal Service, allowing applications to start
-  Workflow Executions, send Signals, and query Workflows efficiently.
+  Connect to a development Temporal Service or Temporal Cloud from TypeScript, connect a Worker with NativeConnection,
+  and get Workflow Execution results.
 tags:
   - Temporal Client
   - TypeScript SDK
@@ -637,11 +637,11 @@ When instantiating a `Connection`, you specify most connection options except fo
 Service endpoint, TLS settings, and authentication credentials. When instantiating a `Client`, you provide the
 `Connection` object and the Namespace you want to connect to, along with other client options.
 
-## Start Workflow Execution {/* #start-workflow-execution */}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
-you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
-language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters. To start a Workflow Execution, you must
+supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific
+contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
 within another Workflow Execution, use either the Child Workflow or External Workflow APIs.
@@ -676,12 +676,12 @@ You can test this by executing a Client command without a matching Worker. Tempo
 History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue
 and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a
+Workflow Executions run in a separate V8 isolate context to provide a
 [deterministic runtime](/workflow-definition#deterministic-constraints).
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
 Queue name.
@@ -782,7 +782,7 @@ const handle = await client.workflow.start(example, {
 
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
 
-### Get the results of a Workflow Execution {/* #get-workflow-results */}
+## Get Workflow results {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -804,7 +804,7 @@ return 'Completed ' + wf.workflowInfo().workflowId + ', Total Charged: ' + total
 `totalCharged` is just a function declared in your code. For a full example, see
 [subscription-workflow-project-template-typescript/src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/main/src/workflows.ts).
 
-A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result
+A Workflow function may return a result. If it doesn't (in which case the return type is `Promise<void>`), the result
 will be `undefined`.
 
 If you started a Workflow with `client.workflow.start()`, you can choose to wait for the result anytime with
@@ -816,8 +816,6 @@ const result = await handle.result();
 ```
 
 Using a Workflow Handle isn't necessary with `client.workflow.execute()`.
-
-Workflows that prematurely end will throw a `WorkflowFailedError` if you call `result()`.
 
 If you call `result()` on a Workflow that prematurely ended for some reason, it throws a
 [`WorkflowFailedError` error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError/) that reflects the
