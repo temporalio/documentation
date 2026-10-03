@@ -29,6 +29,7 @@ const developDotnetCategory = {
           'develop/dotnet/workflows/timers',
           'develop/dotnet/workflows/dynamic-workflow',
           'develop/dotnet/workflows/versioning',
+          'develop/dotnet/workflows/workflow-streams',
         ],
       },
       {
