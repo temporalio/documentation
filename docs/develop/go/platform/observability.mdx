@@ -45,7 +45,7 @@ client.Options{
     MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
       ListenAddress: "0.0.0.0:9090",
       TimerType:     "histogram",
-    }
+    })),
 }
 ```
 
@@ -334,7 +334,7 @@ This `request` value returns only open Workflows.
 For more List Filter examples, see the [examples provided for List Filters in the Temporal Visibility guide.](/list-filter#list-filter-examples)
 
 ```go
-resp, err := temporalClient.ListWorkflow(ctx.Background(), request)
+resp, err := temporalClient.ListWorkflow(context.Background(), request)
 if err != nil {
   return err
 }
@@ -368,10 +368,10 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
   // ...
   searchAttributes := map[string]interface{}{
     "CustomerId": payload["customer"],
-    "MiscData": payload["miscData"]
+    "MiscData": payload["miscData"],
   }
   options := client.StartWorkflowOptions{
-    SearchAttributes:   searchAttributes
+    SearchAttributes:   searchAttributes,
     // ...
   }
   we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
