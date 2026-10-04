@@ -302,7 +302,11 @@ async def _reserve(self, prompt: str, estimate: float) -> bool:
     """Reserve `estimate` against the budget, parking until it fits."""
 
     def fits() -> bool:
-        return self._spent_usd + self._reserved_usd + estimate <= self._budget_usd
+        # Tolerance absorbs float accumulation; see BUDGET_TOLERANCE_USD.
+        return (
+            self._spent_usd + self._reserved_usd + estimate
+            <= self._budget_usd + BUDGET_TOLERANCE_USD
+        )
 
     # Loop rather than check once: when the budget is raised, every parked
     # prompt is woken before any of them runs, so each must re-check after
