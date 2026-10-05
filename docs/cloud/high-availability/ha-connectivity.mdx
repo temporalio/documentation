@@ -108,6 +108,12 @@ This section describes how to configure routing for Namespaces with High Availab
 
 These instructions assume you already have the private connections in place. If not, follow the [AWS PrivateLink](/cloud/connectivity/aws-connectivity) or [GCP Private Service Connect](/cloud/connectivity/gcp-connectivity) creation guides first.
 
+:::info "Private Endpoint" in this section
+
+Because this page covers both clouds, **Private Endpoint** means the endpoint you create and own in your own network to reach Temporal Cloud privately: a **VPC Endpoint** on AWS and a **Private Service Connect endpoint** on GCP. The cloud-specific sections below use each provider's own term.
+
+:::
+
 ## How HA + private connectivity works
 
 A Namespace with High Availability features has two replicas — a primary and a secondary, in different regions or different cloud providers. At any moment, one is **active** and one is **passive**. On failover, Temporal Cloud changes the active replica.
@@ -128,16 +134,23 @@ This is the **only** place in Temporal Cloud where you can depend on Temporal-ma
 
 For private connectivity, your job is to make sure that:
 
-- Override the Regional Endpoint's DNS zone to resolve to a VPC Endpoint.
+- Override the Regional Endpoint's DNS zone to resolve to a Private Endpoint.
 - Ensure network connectivity between the two regions.
+
+Overriding the regional records, rather than the Namespace Endpoint, is what makes a failover transparent over a private connection. Workers keep the same address and TLS configuration they would use over the public internet, and resolution follows Temporal Cloud's active-region CNAME into whichever region's Private Endpoint is currently active. It also means a Temporal Cloud outage confined to one region does not strand the Workers in that region: after the failover, they resolve the Namespace Endpoint to the surviving region's Private Endpoint and keep working, as long as they have a network path to it.
 
 :::warning Do not override the Namespace Endpoint in your private hosted zone
 
-For HA Namespaces, the PHZ must override only the regional records (`<provider>-<region>.region.tmprl.cloud`) — never the Namespace Endpoint itself (`<ns>.<account>.tmprl.cloud`).
+For HA Namespaces, the PHZ must override only the regional records (`<provider>-<region>.region.tmprl.cloud`) — never the Namespace Endpoint itself (`<ns>.<account>.tmprl.cloud`). This is [pattern C](/cloud/connectivity/aws-connectivity#choose-a-private-dns-pattern) of the private DNS patterns, and it is the only one that supports failover.
 
-If the PHZ holds a record for the Namespace Endpoint, the resolver answers from the PHZ before consulting public DNS, so Temporal Cloud's active-region CNAME is never followed. On failover, Workers keep resolving to the old (now passive) region's VPC Endpoint and never reach the new active region.
+If the PHZ holds a record for the Namespace Endpoint, the resolver answers from the PHZ before consulting public DNS, so Temporal Cloud's active-region CNAME is never followed. On failover, Workers keep resolving to the old (now passive) region's Private Endpoint and never reach the new active region.
 
-This matters most when **enabling HA on a Namespace that previously used the [single-region PHZ pattern](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink)**, where the Namespace Endpoint itself was the overridden name. See [How to enable HA on a Namespace using Private Connectivity](#how-to-enable-ha-on-a-namespace-using-private-connectivity) below for the migration steps.
+Two setups run into this:
+
+- **A wildcard record.** A `*.<account>.tmprl.cloud` record matches the Namespace Endpoint of every Namespace in the account, including HA Namespaces. Do not use a wildcard in a network that reaches HA Namespaces. If you want a wildcard for your single-region Namespaces, put them in a separate network from the HA ones.
+- **Enabling HA on a Namespace that previously used the [single-region PHZ pattern](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink)**, where the Namespace Endpoint itself was the overridden name. See [How to enable HA on a Namespace using Private Connectivity](#how-to-enable-ha-on-a-namespace-using-private-connectivity) below for the migration steps.
+
+If one network reaches both single-region and HA Namespaces, use a per-Namespace record for each single-region Namespace and the regional records for the HA ones. The two coexist, because only HA Namespace Endpoints resolve through `region.tmprl.cloud`.
 
 :::
 
