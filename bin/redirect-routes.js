@@ -107,7 +107,9 @@ function buildRouteIndex(root = process.cwd()) {
     const p = normalizePath(urlPath);
     if (urls.has(p)) return true;
     if (p.endsWith('/llms.txt')) return true; // per-section llms.txt files
-    return UNVERIFIABLE_PREFIXES.some((prefix) => p === prefix || p.startsWith(`${prefix}/`));
+    // A prefix's own .md alternate (/ai/cookbook.md) is as unverifiable as the prefix.
+    const page = p.replace(/\.md$/, '');
+    return UNVERIFIABLE_PREFIXES.some((prefix) => page === prefix || page.startsWith(`${prefix}/`));
   };
 
   return { has, maybe, urls, cookbookPresent: fs.existsSync(cookbookDir) };
