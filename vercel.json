@@ -55,6 +55,11 @@
   ],
   "redirects": [
     {
+      "source": "/references/errors",
+      "destination": "/references/workflow-task-errors",
+      "permanent": true
+    },
+    {
       "source": "/references/configuration",
       "destination": "/references/service-configuration",
       "permanent": true
