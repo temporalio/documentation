@@ -95,6 +95,7 @@
     "sharp": "^0.35.4",
     "snipsync": "^1.13.0",
     "uuid": "^14.0.2",
+    "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0",
     "wait-on": "^9.1.0",
     "yaml": "^2.9.0"
   },
@@ -106,7 +107,6 @@
     "global-jsdom": "^30.0.0",
     "husky": "^9.1.7",
     "hyperlink": "^5.0.4",
-    "typescript": "^6.0.3",
-    "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0"
+    "typescript": "^6.0.3"
   }
 }
