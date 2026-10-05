@@ -297,17 +297,13 @@ We strongly recommend using private DNS instead of updating client server and TL
 If you are unable to configure private DNS, you must update two settings in your Temporal clients:
 
 1. Set the endpoint server address to the PrivateLink or Private Service Connect endpoint (for example, `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233` or `<GCP PSC IP address>:7233`).
-2. Set TLS configuration to override the TLS server name (the Namespace Endpoint, for example, `my-namespace.my-account.tmprl.cloud`).
+2. Set TLS configuration to override the TLS server name with the Namespace Endpoint, for example `my-namespace.my-account.tmprl.cloud`.
 
-The TLS server name override depends on your authentication method:
+Use the Namespace Endpoint as the TLS server name for both API key and mTLS authentication, on single-region Namespaces and on Namespaces with [High Availability features](/cloud/high-availability/ha-connectivity).
+The one exception is a Namespace with both API key and mTLS authentication enabled: API key clients can't authenticate through that Namespace's Namespace Endpoint, so set their TLS server name to the regional endpoint, for example `us-east-1.aws.api.temporal.io`.
+See [How to access a Namespace](/cloud/namespaces#access-namespaces).
 
-| Authentication | TLS server name to use |
-| -------------- | ---------------------- |
-| mTLS (single-region Namespace) | The Namespace Endpoint, for example `my-namespace.my-account.tmprl.cloud` |
-| API key (single-region Namespace) | The regional API endpoint, for example `us-east-1.aws.api.temporal.io` or `us-central1.gcp.api.temporal.io` |
-| Multi-region Namespace (mTLS or API key) | The active region endpoint, for example `us-east-1.aws.api.temporal.io` |
-
-If you authenticate with an API key over PrivateLink/PSC and use the wrong server name, the TLS handshake will fail with errors such as `connection reset by peer` even though `nc` reports the port as open.
+If a client connects over PrivateLink or Private Service Connect with the wrong TLS server name, the TLS handshake fails with errors such as `connection reset by peer`, even though `nc` reports the port as open.
 
 Updating these settings depends on the client you're using.
 
