@@ -739,7 +739,7 @@ When scheduling a Workflow, you must specify `taskQueue`.
 ```ts
 import { Client, Connection } from '@temporalio/client';
 // This is the code that is used to start a Workflow.
-const connection = await Connection.create();
+const connection = await Connection.connect();
 const client = new Client({ connection });
 const result = await client.workflow.execute(yourWorkflow, {
   // required
