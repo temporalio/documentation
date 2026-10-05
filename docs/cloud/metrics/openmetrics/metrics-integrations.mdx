@@ -121,6 +121,21 @@ SigNoz is an OpenTelemetry-native observability platform, available as a cloud s
 
 For SigNoz-side details, see the [SigNoz integration page](https://signoz.io/docs/integrations/temporal-cloud-metrics/).
 
+### Parseable
+
+Parseable uses an OpenTelemetry Collector to scrape the OpenMetrics endpoint and send Temporal Cloud metrics to a Parseable metrics dataset over OTLP/HTTP.
+
+1. In Parseable, create an API key with ingest access to your metrics dataset and copy your workspace's ingest base URL.
+2. Configure the Collector's Prometheus receiver to scrape `https://metrics.temporal.io/v1/metrics` with your Temporal Cloud API key as a Bearer token and `honor_timestamps: true`.
+   Configure its OTLP/HTTP exporter with your Parseable ingest URL, API key, and `X-P-Stream` header for the metrics dataset.
+   Follow the [Parseable Temporal Cloud metrics guide](https://www.parseable.com/docs/ingest-data/ai-agents/temporal?tab=temporal-cloud-metrics) for the collector template.
+3. Run the Collector, then open **Metrics** in Parseable. Select your dataset and verify that `temporal_cloud_v1_*` series arrive.
+
+For Parseable Cloud, use the ingest URL and authentication headers shown in your workspace's **Add Data** page. Some workspaces require `X-API-Key` and `X-P-Tenant` instead of the Bearer header in the generic collector example.
+
+To monitor Workers alongside Cloud metrics, add their [SDK metrics endpoints](/cloud/metrics/sdk-metrics-setup) as separate scrape targets.
+Parseable's [Temporal dashboard template](https://github.com/parseablehq/dashboards/tree/main/temporal-workflow-observability) also includes logs, traces, and non-Cloud metrics; select your metrics dataset and adapt the metric queries to the `temporal_cloud_v1_*` names before using its Cloud panels.
+
 ### Prometheus \+ Grafana {/* #prometheus-grafana */}
 
 Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.
