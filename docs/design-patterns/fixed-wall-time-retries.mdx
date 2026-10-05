@@ -200,6 +200,7 @@ public class PaymentAuthWorkflowImpl implements PaymentAuthWorkflow {
 
 ```typescript
 // workflows.ts
+import { TimeoutType } from '@temporalio/common';
 import * as wf from '@temporalio/workflow';
 import type * as activities from './activities';
 
@@ -219,7 +220,7 @@ export async function paymentAuthWorkflow(transactionId: string): Promise<string
     } catch (err) {
         if (err instanceof wf.ActivityFailure) {
             const cause = err.cause;
-            if (cause instanceof wf.TimeoutFailure && cause.type === wf.TimeoutType.SCHEDULE_TO_CLOSE) {
+            if (cause instanceof wf.TimeoutFailure && cause.timeoutType === TimeoutType.SCHEDULE_TO_CLOSE) {
                 wf.log.error('Authorization failed — 2-minute SLA breached', { transactionId });
             }
         }
