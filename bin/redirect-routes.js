@@ -106,9 +106,6 @@ function buildRouteIndex(root = process.cwd()) {
   const maybe = (urlPath) => {
     const p = normalizePath(urlPath);
     if (urls.has(p)) return true;
-    // The generated Cookbook landing page also has a markdown alternate.
-    // It sits beside /ai/cookbook, outside the /ai/cookbook/* prefix.
-    if (p === `/${COOKBOOK_ROUTE}.md`) return true;
     if (p.endsWith('/llms.txt')) return true; // per-section llms.txt files
     // A prefix's own .md alternate (/ai/cookbook.md) is as unverifiable as the prefix.
     const page = p.replace(/\.md$/, '');
