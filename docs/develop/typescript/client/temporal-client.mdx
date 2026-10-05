@@ -664,7 +664,6 @@ const handle = await client.workflow.start(example, {
   taskQueue: 'your-task-queue',
   args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
 });
-const handle = client.getHandle(workflowId);
 const result = await handle.result();
 ```
 
@@ -811,7 +810,7 @@ If you started a Workflow with `client.workflow.start()`, you can choose to wait
 `handle.result()`.
 
 ```typescript
-const handle = client.getHandle(workflowId);
+const handle = client.workflow.getHandle(workflowId);
 const result = await handle.result();
 ```
 
@@ -822,7 +821,7 @@ If you call `result()` on a Workflow that prematurely ended for some reason, it 
 reason. For that reason, it is recommended to catch that error.
 
 ```typescript
-const handle = client.getHandle(workflowId);
+const handle = client.workflow.getHandle(workflowId);
 try {
   const result = await handle.result();
 } catch (err) {

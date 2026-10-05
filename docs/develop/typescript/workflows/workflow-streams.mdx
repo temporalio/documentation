@@ -411,9 +411,13 @@ export async function streamCompletion(prompt: string): Promise<string> {
 <TabItem value="workflow" label="workflows.ts">
 
 ```typescript
-import { condition, defineSignal, executeActivity, setHandler } from '@temporalio/workflow';
+import { condition, defineSignal, proxyActivities, setHandler } from '@temporalio/workflow';
 import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
 import type * as activities from './activities';
+
+const { streamCompletion } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '5 minutes',
+});
 
 export const subscriberAcknowledgedTerminator = defineSignal('subscriberAcknowledgedTerminator');
 
@@ -428,9 +432,7 @@ export async function chatWorkflow(input: ChatInput): Promise<string> {
     subscriberDone = true;
   });
 
-  const result = await executeActivity<typeof activities.streamCompletion>('streamCompletion', input.prompt, {
-    startToCloseTimeout: '5 minutes',
-  });
+  const result = await streamCompletion(input.prompt);
 
   // Wait for the subscriber to ack the terminal `close` event. The timeout
   // is a fallback for when no subscriber is attached; with the ack, the
