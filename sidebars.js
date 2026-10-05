@@ -459,6 +459,7 @@ const developJavaCategory = {
             items: [
               'develop/java/best-practices/data-handling/data-conversion',
               'develop/java/best-practices/data-handling/data-encryption',
+              'develop/java/best-practices/data-handling/external-storage',
             ],
           },
         ],
@@ -641,6 +642,7 @@ const developPythonCategory = {
             },
             items: [
               'develop/python/workers/serverless-workers/aws-lambda',
+              'develop/python/workers/serverless-workers/agentcore',
               'develop/python/workers/serverless-workers/cloud-run',
             ],
           },
@@ -919,6 +921,15 @@ const developRustCategory = {
         items: [
           'develop/rust/activities/basics',
           'develop/rust/activities/execution',
+          {
+            type: 'category',
+            label: 'Standalone Activities',
+            collapsed: true,
+            items: [
+              'develop/rust/activities/standalone-activities-quickstart',
+              'develop/rust/activities/standalone-activities',
+            ],
+          },
           'develop/rust/activities/timeouts',
         ],
       },
@@ -1602,7 +1613,20 @@ module.exports = {
                     id: 'production-deployment/worker-deployments/serverless-workers/aws-lambda/index',
                   },
                   items: [
+                    'production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development',
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'Amazon Bedrock AgentCore',
+                  collapsed: true,
+                  link: {
+                    type: 'doc',
+                    id: 'production-deployment/worker-deployments/serverless-workers/agentcore',
+                  },
+                  items: [
+                    'production-deployment/worker-deployments/serverless-workers/agentcore-self-hosted-setup',
                   ],
                 },
                 {
@@ -1836,11 +1860,11 @@ module.exports = {
       },
       items: [
         'references/api-reference',
-        'references/cluster-metrics',
+        'references/service-metrics',
         'references/commands',
-        'references/configuration',
+        'references/service-configuration',
         'references/dynamic-configuration',
-        'references/errors',
+        'references/workflow-task-errors',
         'references/events',
         'references/client-environment-configuration',
         'references/failures',
@@ -2043,6 +2067,7 @@ module.exports = {
               link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
               items: [
                 'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-agentcore',
                 'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
               ],
             },
@@ -2140,7 +2165,6 @@ module.exports = {
           items: [
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
-            'encyclopedia/nexus/standalone-nexus-operation',
             'encyclopedia/nexus/nexus-endpoints',
             'encyclopedia/nexus/nexus-registry',
             'encyclopedia/nexus/nexus-patterns',
@@ -2148,6 +2172,11 @@ module.exports = {
             'encyclopedia/nexus/nexus-execution-debugging',
             'encyclopedia/nexus/nexus-error-handling',
             'encyclopedia/nexus/nexus-metrics',
+            // Pre-release features, kept at the bottom of the section.
+            'encyclopedia/nexus/temporal-operation-handler',
+            'encyclopedia/nexus/nexgen',
+            'encyclopedia/nexus/standalone-nexus-operation',
+            'encyclopedia/nexus/nexus-standalone-activity',
           ],
         },
         {
@@ -2205,6 +2234,7 @@ module.exports = {
         id: 'guides/index',
       },
       items: [
+        'guides/durable-agent-on-agentcore',
         'guides/entity-pattern-loyalty-points',
         'guides/recover-without-restart',
         'guides/route-specialized-workloads',

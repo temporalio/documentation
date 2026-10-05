@@ -294,24 +294,29 @@ We strongly recommend using private DNS instead of updating client server and TL
 - [How to set up private DNS in AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink)
 - [How to set up private DNS in GCP](/cloud/connectivity/gcp-connectivity#configuring-private-dns-for-gcp-private-service-connect)
 
+Choose the private DNS records based on the number of regions your Namespace uses and the endpoint your Clients and Workers use.
+Both mTLS and API key authentication support both Namespace Endpoints and Regional Endpoints; the authentication method does not determine which endpoint or TLS server name to use.
+
+| Regions | Endpoint clients use | Private DNS records to configure |
+| ------- | -------------------- | -------------------------------- |
+| Single region | Namespace Endpoint | An A record for each Namespace Endpoint, such as `my-namespace.my-account.tmprl.cloud`, or a wildcard record for `*.my-account.tmprl.cloud`. |
+| Single region | Regional Endpoint | A single record for the Regional Endpoint in the Namespace's region. |
+| Multiple regions with High Availability | Namespace Endpoint (recommended) | A record for each regional FQDN, such as `aws-us-east-1.region.tmprl.cloud`, that the Namespace Endpoint can CNAME to. Keep the Temporal-managed Namespace CNAME so it follows the active region on failover. |
+| Multiple regions with High Availability | Regional Endpoint (not recommended) | A single record for the Regional Endpoint in the client's active region. To withstand a regional outage, run a Worker pool in each region and configure each pool to use its region's Regional Endpoint. |
+
+Configure these records to resolve to the corresponding region's PrivateLink or Private Service Connect endpoint.
+For the multi-region setup, follow [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
+
 If you are unable to configure private DNS, you must update two settings in your Temporal clients:
 
 1. Set the endpoint server address to the PrivateLink or Private Service Connect endpoint (for example, `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233` or `<GCP PSC IP address>:7233`).
-2. Set TLS configuration to override the TLS server name (the Namespace Endpoint, for example, `my-namespace.my-account.tmprl.cloud`).
+2. Set TLS configuration to override the TLS server name with the Temporal Cloud hostname, for example, the Namespace Endpoint `my-namespace.my-account.tmprl.cloud`.
 
-The TLS server name override depends on your authentication method:
-
-| Authentication | TLS server name to use |
-| -------------- | ---------------------- |
-| mTLS (single-region Namespace) | The Namespace Endpoint, for example `my-namespace.my-account.tmprl.cloud` |
-| API key (single-region Namespace) | The regional API endpoint, for example `us-east-1.aws.api.temporal.io` or `us-central1.gcp.api.temporal.io` |
-| Multi-region Namespace (mTLS or API key) | The active region endpoint, for example `us-east-1.aws.api.temporal.io` |
-
-If you authenticate with an API key over PrivateLink/PSC and use the wrong server name, the TLS handshake will fail with errors such as `connection reset by peer` even though `nc` reports the port as open.
+Using the wrong TLS server name over PrivateLink or Private Service Connect can cause the TLS handshake to fail even when the port is reachable, regardless of the authentication method.
 
 Updating these settings depends on the client you're using.
 
-#### temporal CLI
+#### Temporal CLI
 ```bash
 TEMPORAL_ADDRESS=vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233
 TEMPORAL_NAMESPACE=my-namespace.my-account
@@ -429,7 +434,7 @@ Different hostnames are used for different parts of the service.
 - `web.onboarding.tmprl.cloud` (required for Web UI)
 - `web.saas-api.tmprl.cloud` (required for Web UI)
 
-### AWS PrivateLink connectivity to Temporal Cloud Control Plane
+### AWS PrivateLink connectivity to Temporal Cloud control plane
 
 Temporal Cloud supports [AWS PrivateLink](https://aws.amazon.com/privatelink/) connections to the Control Plane, which allows access from applications running in VPCs that cannot egress to the public internet. Temporal Cloud does **not** support restricting an account so that private connectivity is the sole connectivity method to the Control Plane; the Control Plane is always accessible via public internet.
 
@@ -450,7 +455,7 @@ For Temporal clients to access the Control Plane over AWS PrivateLink, you must 
 Without this step, your clients may connect to the Temporal Cloud Control Plane over the internet, or they may not connect at all.
 :::
 
-#### Extend the Control Plane PrivateLink endpoint to other AWS regions with VPC Peering
+#### Extend the control plane PrivateLink endpoint to other AWS regions with VPC peering
 
 The Temporal Cloud Control Plane PrivateLink Service is only exposed in `us-west-2`. To reach the Control Plane privately from another AWS region, set up a us-west-2 VPC with a VPC Endpoint to the Control Plane, then [VPC-Peer](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html) that VPC to your other-region VPCs.
 

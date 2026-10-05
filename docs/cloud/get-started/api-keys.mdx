@@ -425,8 +425,9 @@ Temporal API keys automatically expire based on the specified expiration time. [
 
 :::tip
 
-Service Accounts can rotate their own API keys irrespective of their configured permissions. To use this feature, have
-your Service Account create a new API key using the [Cloud Ops APIs](/ops) or the CLI before the current
+Service Accounts can create replacement API keys for themselves regardless of their configured permissions, except for
+Service Accounts with the [Metrics Read-Only role](/cloud/metrics/openmetrics#metrics-read-only-role). To use this
+feature, have your Service Account create a new API key using the [Cloud Ops APIs](/ops) or the CLI before the current
 one expires. Service Accounts cannot delete their own API keys without the requisite permissions, which helps keep
 Workflow access secure.
 
@@ -440,6 +441,9 @@ key authentication" during setup.
 Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This is the recommended endpoint for all
 Namespaces. For Namespaces with [High Availability](/cloud/high-availability), the Namespace endpoint automatically
 directs traffic to the active region, so Workers and Clients don't need to change endpoints during a failover.
+
+A Namespace created with API key authentication cannot later enable mTLS alongside API keys. See
+[How to access a Namespace](/cloud/namespaces#access-namespaces).
 
 See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 

@@ -20,6 +20,15 @@ import TabItem from '@theme/TabItem';
 
 This guide walks through deploying a Temporal [Serverless Worker](/serverless-workers) on AWS Lambda.
 
+:::tip Try it locally
+
+To evaluate Serverless Workers with no AWS account, or to iterate on Worker code before deploying to AWS, run this whole
+flow on your machine with [LocalStack](https://www.localstack.cloud/) in place of AWS and the Temporal dev server in
+place of a Temporal Service. See
+[Test a Serverless Worker locally with LocalStack](/production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development).
+
+:::
+
 ## Prerequisites {/* #prerequisites */}
 
 - A Temporal Cloud account with an AWS-hosted Namespace, or a self-hosted Temporal Service v1.31.0 or later. The
@@ -441,7 +450,7 @@ aws lambda create-function \
 ```bash
 aws lambda create-function \
   --function-name my-temporal-worker \
-  --runtime dotnet8 \
+  --runtime dotnet10 \
   --handler MyAssembly::MyNamespace.Function::HandlerAsync \
   --role <EXECUTION_ROLE_ARN> \
   --zip-file fileb://function.zip \
@@ -453,7 +462,7 @@ aws lambda create-function \
 | Parameter         | Description                                                                                                            |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `--function-name` | Name of the Lambda function.                                                                                           |
-| `--runtime`       | Lambda runtime. Use `dotnet8` or another supported .NET version.                                                       |
+| `--runtime`       | Lambda runtime. Use `dotnet10` or another supported .NET version.                                                       |
 | `--handler`       | Entry point in `Assembly::Namespace.Class::Method` format. Must point to the method that calls the worker handler.     |
 | `SSL_CERT_FILE`   | Required. The .NET Lambda runtime sets a default certificate path that the Temporal SDK cannot read. This overrides it with the system CA bundle so TLS connections work. |
 

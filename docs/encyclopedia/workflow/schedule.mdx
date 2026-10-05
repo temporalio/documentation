@@ -187,10 +187,10 @@ The following options are available:
 - `BufferOne`: Starts the Workflow Execution as soon as the current one completes.
   The buffer is limited to one.
   If another Workflow Execution is supposed to start, but one is already in the buffer, only the one in the buffer eventually starts.
-- `BufferAll`: Allows an unlimited number of Workflows to buffer.
-  They are started sequentially.
+- `BufferAll`: Buffers Actions while another Workflow Execution is running.
+  They are started sequentially, subject to the Catchup Window and internal buffer limits.
 - `CancelOther`: Cancels the running Workflow Execution, and then starts the new one after the old one completes cancellation.
-- `TerminateOther`: Terminates the running Workflow Execution and starts the new one immediately.
+- `TerminateOther`: Terminates the running Workflow Execution and then starts the new one without waiting for Workflow cooperation.
 - `AllowAll` Starts any number of concurrent Workflow Executions.
   With this policy (and only this policy), more than one Workflow Execution, started by the Schedule, can run simultaneously.
 
@@ -208,10 +208,10 @@ This affects regularly scheduled Actions, manual triggers, and Backfills:
 
 - With `Skip`, each new scheduled Action is skipped while the previous scheduled Workflow Execution remains Paused.
 - With `BufferOne`, one Action can wait behind the Paused Workflow Execution. Additional Actions are skipped while the buffer is full.
-- With `BufferAll`, every matching Action is buffered and won't start until the Paused Workflow Execution closes.
+- With `BufferAll`, matching Actions are buffered, subject to the Catchup Window and internal buffer limits, and won't start until the Paused Workflow Execution closes.
 - With `AllowAll`, new Workflow Executions can start even while the earlier Workflow Execution is Paused.
 - With `CancelOther`, the Schedule requests cancellation of the Paused Workflow Execution and starts the next Workflow Execution only after the canceled Workflow Execution closes. If the Paused Workflow Execution can't process cancellation until it is unpaused, the next start still waits.
-- With `TerminateOther`, the Schedule terminates the Paused Workflow Execution and starts the next Workflow Execution immediately.
+- With `TerminateOther`, the Schedule terminates the Paused Workflow Execution and then starts the next Workflow Execution without waiting for Workflow cooperation.
 
 If you pause a Workflow Execution for investigation and don't want the Schedule to skip or buffer future Actions, pause the Schedule too.
 When you're ready to resume the automation, unpause the Workflow Execution and then unpause the Schedule.
@@ -219,11 +219,15 @@ If Actions were skipped while the Workflow Execution was Paused, use [Backfill](
 
 #### Catchup Window
 
-The Temporal Service might be down or unavailable at the time when a Schedule should take an Action.
-When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
+The Temporal Service might be down or unavailable, or an Overlap Policy might delay an Action past its scheduled time.
+The Catchup Window controls how late an automated Action can be taken.
 The default is one year, meaning Actions will be taken unless over one year late.
-If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
+If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage or other delay longer than the window could lead to missed Actions.
+The window is measured from the jitter-adjusted Action time, if jitter is configured.
+Manual triggers and Backfills are not restricted by the Catchup Window.
 (But you can always [Backfill](#backfill).)
+
+For examples of skipped Actions, buffering delays, and cancellation behavior, see [Common pitfalls](/troubleshooting/schedule-missed-actions#common-pitfalls).
 
 #### Pause-on-failure
 
