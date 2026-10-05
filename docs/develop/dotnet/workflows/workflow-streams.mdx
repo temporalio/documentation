@@ -9,9 +9,7 @@ tags:
   - Streaming
   - .NET SDK
   - Temporal SDKs
-description:
-  Workflow Streams in the Temporal .NET SDK sends events from Workflows and Activities to external subscribers through
-  durable topics.
+description: Workflow Streams in .NET supports typed events, Activity publishers, and subscriptions that retain offsets across Continue-As-New.
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
@@ -19,14 +17,17 @@ import { ReleaseNoteHeader } from '@site/src/components';
 <ReleaseNoteHeader featureName="workflowStreams" />
 
 [Workflow Streams](/workflow-streams) adds a durable event channel to a Workflow, letting outside observers follow its
-progress in real time. This page explains how to enable a stream, publish events from Workflows and Activities, subscribe
-to a stream, and keep a stream running across long-lived Workflows.
+progress in real time.
 
-Workflow Streams is available in the .NET SDK v1.20.0 and later. Install the extension package:
+Workflow Streams is available through the experimental `Temporalio.Extensions.WorkflowStreams` package in
+[.NET SDK v1.20.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.20.0) and later. Install the extension package:
 
 ```bash
 dotnet add package Temporalio.Extensions.WorkflowStreams --version 1.20.0
 ```
+
+See the [basic publish/subscribe sample](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams/BasicPublishSubscribe)
+for a complete Worker and client setup using the released package.
 
 ## Enable streaming on a Workflow
 
@@ -99,12 +100,15 @@ public class OrderWorkflow
         await DispatchOrderAsync(input.OrderId);
 
         status.Publish(new("completed", 100));
+        await Workflow.DelayAsync(TimeSpan.FromSeconds(30));
     }
 }
 ```
 
 `Publish()` runs the Workflow's payload converter and appends the resulting `Payload` directly to the in-memory log. A
 Workflow-side publication isn't buffered and doesn't need to be flushed.
+The delay keeps poll Updates available for subscribers to receive the final status. See
+[Close the stream](#closing-the-stream) for an acknowledgment-based alternative.
 
 The type binding belongs to the handle, not to the stream protocol. If separate publishers use different types for the
 same topic name, publication succeeds and a typed subscriber can fail while decoding the mismatched value.
@@ -237,7 +241,8 @@ var options = new WorkflowStreamSubscribeOptions
 {
     Topics = new[] { "status", "progress" },
 };
-var converter = temporalClient.Options.DataConverter.PayloadConverter;
+var converter = temporalClient.Options.DataConverter.WithSerializationContext(
+    new ISerializationContext.Workflow(temporalClient.Options.Namespace, workflowId)).PayloadConverter;
 
 await foreach (var item in streamClient.SubscribeAsync(options))
 {
@@ -255,6 +260,8 @@ await foreach (var item in streamClient.SubscribeAsync(options))
 ```
 
 An empty topic collection subscribes to every topic. The empty string represents the cross-SDK no-topic value.
+Use the target Workflow's Namespace and Workflow ID for the converter's serialization context, as typed subscriptions
+do automatically. Payload codecs apply to the enclosing Signal or Update payload; don't apply them again to each item.
 
 ### Close the stream {/* #closing-the-stream */}
 
@@ -398,23 +405,41 @@ An Activity can publish model output as it arrives while the Workflow waits for 
 renders deltas, clears output when an Activity retry begins, and stops on a terminal event. This pattern works for a
 terminal client, desktop UI, or Server-Sent Events endpoint.
 
+The following example uses the OpenAI .NET client, as in the
+[LLM token streaming sample](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams/LlmTokenStreaming).
+Install the client package and set `OPENAI_API_KEY` before running it:
+
+```bash
+dotnet add package OpenAI --version 2.13.0
+```
+
 <Tabs>
 <TabItem value="activity" label="LlmActivities.cs">
 
 ```csharp
+using System.ClientModel;
+using System.ClientModel.Primitives;
 using System.Text;
+using OpenAI;
+using OpenAI.Chat;
 using Temporalio.Activities;
 using Temporalio.Extensions.WorkflowStreams;
 
 public record TextDelta(string Text);
 public record RetryEvent(int Attempt);
-public record TextComplete(bool Done);
+public record TextComplete(string FullText);
 
 public static class LlmActivities
 {
     [Activity]
-    public static async Task<string> StreamCompletionAsync(string prompt)
+    public static async Task<string> StreamCompletionAsync(LlmInput input)
     {
+        var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        if (string.IsNullOrWhiteSpace(apiKey))
+        {
+            throw new InvalidOperationException("OPENAI_API_KEY must be set");
+        }
+
         var context = ActivityExecutionContext.Current;
         await using var streamClient = WorkflowStreamClient.FromActivity(
             new() { BatchInterval = TimeSpan.FromMilliseconds(200) });
@@ -428,21 +453,33 @@ public static class LlmActivities
             retries.Publish(new(context.Info.Attempt), forceFlush: true);
         }
 
-        var fullText = new StringBuilder();
-        var first = true;
-        // GenerateDeltasAsync wraps the model call and yields text as it arrives.
         // Disable provider retries and let the Activity Retry Policy own retries.
-        await foreach (var text in GenerateDeltasAsync(
-            prompt,
-            context.CancellationToken))
+        var clientOptions = new OpenAIClientOptions
         {
-            deltas.Publish(new(text), forceFlush: first);
-            first = false;
-            fullText.Append(text);
+            RetryPolicy = new ClientRetryPolicy(0),
+        };
+        var chatClient = new ChatClient(input.Model, new ApiKeyCredential(apiKey), clientOptions);
+        var fullText = new StringBuilder();
+        var updates = chatClient.CompleteChatStreamingAsync(
+            [new UserChatMessage(input.Prompt)],
+            cancellationToken: context.CancellationToken);
+        await foreach (var update in updates)
+        {
+            foreach (var contentPart in update.ContentUpdate)
+            {
+                if (string.IsNullOrEmpty(contentPart.Text))
+                {
+                    continue;
+                }
+                deltas.Publish(new(contentPart.Text));
+                fullText.Append(contentPart.Text);
+            }
         }
 
-        complete.Publish(new(true), forceFlush: true);
-        return fullText.ToString();
+        var result = fullText.ToString();
+        complete.Publish(new(result), forceFlush: true);
+        await streamClient.FlushAsync();
+        return result;
     }
 }
 ```
@@ -456,6 +493,7 @@ using Temporalio.Workflows;
 
 public record LlmInput(
     string Prompt,
+    string Model = "gpt-4o-mini",
     WorkflowStreamState? StreamState = null);
 
 [Workflow]
@@ -468,7 +506,7 @@ public class LlmWorkflow
     public async Task<string> RunAsync(LlmInput input)
     {
         var result = await Workflow.ExecuteActivityAsync(
-            () => LlmActivities.StreamCompletionAsync(input.Prompt),
+            () => LlmActivities.StreamCompletionAsync(input),
             new() { StartToCloseTimeout = TimeSpan.FromMinutes(2) });
 
         // Give the subscriber's in-flight poll time to receive the terminal event.
@@ -493,7 +531,8 @@ public static async Task<string> StreamResponseAsync(
     CancellationToken cancellationToken)
 {
     await using var streamClient = new WorkflowStreamClient(temporalClient, workflowId);
-    var converter = temporalClient.Options.DataConverter.PayloadConverter;
+    var converter = temporalClient.Options.DataConverter.WithSerializationContext(
+        new ISerializationContext.Workflow(temporalClient.Options.Namespace, workflowId)).PayloadConverter;
     var output = new StringBuilder();
     var options = new WorkflowStreamSubscribeOptions
     {
@@ -528,12 +567,24 @@ public static async Task<string> StreamResponseAsync(
 </Tabs>
 
 The Activity publishes a `RetryEvent` when its attempt number is greater than one. This tells the subscriber to discard
-partial output from the previous attempt. Only the first delta, retries, and the terminal event force a flush; later
-deltas use the 200 millisecond batch interval to reduce Signal volume. The Workflow uses the fixed-delay closing pattern;
-use an [acknowledgment handshake](#closing-the-stream) when it should return as soon as a subscriber confirms receipt.
+partial output from the previous attempt. Deltas use the 200 millisecond batch interval to reduce Signal volume;
+retries and the terminal event force a flush. Supply your own `Render()` function to update your UI, or use the sample's
+terminal renderer. The Workflow uses the fixed-delay closing pattern; use an
+[acknowledgment handshake](#closing-the-stream) when it should return as soon as a subscriber confirms receipt.
 
 ## See also
 
-- [Workflow Streams samples (samples-dotnet)](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams): six runnable scenarios covering basic publish/subscribe, concurrent subscriptions, reconnecting subscribers, external publishers, bounded logs, and LLM streaming.
+The [Workflow Streams samples](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams) contain six
+runnable scenarios:
+
+| Sample | What it demonstrates |
+| --- | --- |
+| [Basic publish/subscribe](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams/BasicPublishSubscribe) | Publish from a Workflow and an Activity, and consume heterogeneous topics. |
+| [Concurrent subscriptions](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams/ConcurrentSubscriptions) | Consume streams from two Workflows concurrently. |
+| [Reconnecting subscriber](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams/ReconnectingSubscriber) | Resume from a saved global offset after disconnecting. |
+| [External publisher](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams/ExternalPublisher) | Publish from an external client across Continue-As-New. |
+| [Bounded log](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams/BoundedLog) | Truncate retained events and wait for subscriber acknowledgments before closing. |
+| [LLM token streaming](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkflowStreams/LlmTokenStreaming) | Stream OpenAI output and reset the subscriber's display on Activity retries. |
+
 - [`Temporalio.Extensions.WorkflowStreams` API reference](https://dotnet.temporal.io/api/Temporalio.Extensions.WorkflowStreams.html).
 - [Workflow message passing](/develop/dotnet/workflows/message-passing): Signals, Updates, and Queries that Workflow Streams is built on.
