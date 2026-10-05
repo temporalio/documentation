@@ -82,7 +82,7 @@ The Task Queue is optional and defaults to the one the Operation is running on. 
 
 The same pattern applies to any Operation whose work is externally visible and cannot be taken back: charging a card, posting to a webhook, creating a ticket, writing to a system with no dedup of its own. Deriving the Id from the request Id costs nothing and removes the whole class of duplicate-side-effect bugs.
 
-Deriving the Id from the Operation *input* instead is a different tool for a different job: it makes several Operations share one Activity Execution and all receive its result. See [Nexus Standalone Activity](/develop/java/nexus/activity-backed-operations#required-options).
+Deriving the Id from the Operation *input* instead is a different tool for a different job: it makes several Operations share one Activity Execution and all receive its result. See [Nexus Standalone Activity](/nexus/standalone-activity#required-options).
 
 ## Register the Activity on the Worker
 

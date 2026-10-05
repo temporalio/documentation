@@ -4,7 +4,7 @@ Generate the library code from the contract before writing any implementation. B
 
 ## What generation produces
 
-For each type in the contract, the [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) emits a typed model and a runtime validator. If the contract declares Services, it will also create a Nexus Service definition.
+For each type in the contract, [NexGen](/nexus/nexgen) emits a typed model and a runtime validator. If the contract declares Services, it will also create a Nexus Service definition.
 
 The generated Service definition carries one member per Operation, in whatever form is idiomatic for the language. It is used on both sides and in two different ways:
 
@@ -19,7 +19,7 @@ The generated validators run when a payload is parsed and again when it is seria
 
 Generation is one command per language, with a few per-language flags — Java, for instance, requires a package name whose last segment matches the output directory name.
 
-**[Generate code](/develop/java/nexus/client-code-generator#generate-code)** has the full command shape and the flags each language takes, with examples for each.
+**[Usage](https://github.com/temporalio/nexgen#usage)** in the `nexgen` README has the full command shape and the flags each language takes, with examples for each.
 
 The command below is the one for this walkthrough, and it is written for the `samples-java` clone
 you made in [Before you start](/develop/java/nexus/development-walkthrough?step=overview#clone-the-sample-project).
@@ -55,7 +55,7 @@ contract.
 One constraint does carry over. Generation **clears the output directory**, so keep the contract
 outside it. A schema stored in the output directory is deleted the first time you regenerate.
 
-Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. When a generated name is wrong for your language, fix it in the contract with a per-language naming override rather than editing the output. See the **[Nexus Client Code Generator](/develop/java/nexus/client-code-generator)** for more details.
+Commit the generated code, and regenerate whenever the contract changes. Do not hand-edit it — the files are marked as generated, and your edits are lost on the next run. When a generated name is wrong for your language, fix it in the contract with a per-language naming override rather than editing the output. See **[Naming & overrides](https://github.com/temporalio/nexgen#naming--overrides)** in the `nexgen` README for more details.
 
 ## One contract, four languages
 
@@ -66,7 +66,8 @@ This is the step where the contract-first ordering pays off, and it is what make
 
 :::tip RESOURCES
 
-- [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) for installation, per-language commands, and the supported JSON Schema subset.
-- [Use the generated code](/develop/java/nexus/client-code-generator#use-the-generated-code) for how validation is wired in each language.
+- [NexGen](/nexus/nexgen) for what the generator produces.
+- The [`nexgen` README](https://github.com/temporalio/nexgen) for installation, per-language commands, and the supported JSON Schema subset.
+- [Data validation](/nexus/nexgen#data-validation) for how the generated validators behave.
 
 :::

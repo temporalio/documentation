@@ -227,7 +227,7 @@ Check the README in each repository for how to run its client. Point it at the E
 
 The interop runs both directions. Every one of those clients can call this Java Service, and the Java caller built in this step can call the Service from any of those repositories. The contract is the only thing the two sides share, so neither side needs to know the other's language, Namespace, or deployment.
 
-To generate a caller for another language from this contract yourself rather than running a sample, see [Generate code](/develop/java/nexus/client-code-generator#generate-code).
+To generate a caller for another language from this contract yourself rather than running a sample, see [Usage](https://github.com/temporalio/nexgen#usage) in the `nexgen` README.
 
 ## Calling without a caller Workflow
 
@@ -242,6 +242,6 @@ If you only need to run one Operation and have nothing to orchestrate, a Client 
 
 - [Nexus Operations](/nexus/operations) for the Operation lifecycle and timeouts.
 - [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
-- [Nexus Client Code Generator](/develop/java/nexus/client-code-generator) for generating callers in other languages.
+- [NexGen](/nexus/nexgen) for generating callers in other languages.
 
 :::
