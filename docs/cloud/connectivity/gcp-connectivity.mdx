@@ -121,11 +121,15 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 ### Choose the override domain and endpoint
 
-| Temporal Cloud setup                       | Use this PHZ domain                | Example                                        |
-| ------------------------------------------ | ---------------------------------- | ---------------------------------------------- |
-| Single-region namespace with mTLS auth     | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔️ `X.X.X.X`       |
-| Single-region namespace with API-key auth  | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X`  |
-| Multi-region namespace | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X` |
+| Temporal Cloud setup                       | Override this DNS name                                      | Example                                          |
+| ------------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------ |
+| Single-region Namespace (API key or mTLS)  | The Namespace Endpoint, `<namespace>.<account>.tmprl.cloud` | `payments.abcde.tmprl.cloud` ↔️ `X.X.X.X`         |
+| Namespace with High Availability features  | One `gcp-<region>.region.tmprl.cloud` record per region     | `gcp-us-central1.region.tmprl.cloud` ↔️ `X.X.X.X` |
+| Client pinned to one Temporal Cloud region | The regional endpoint, `<region>.gcp.api.temporal.io`       | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X`    |
+
+The steps below use the Namespace Endpoint pattern.
+For a Namespace with High Availability features, don't override the Namespace Endpoint.
+Follow [Single-cloud HA on GCP Private Service Connect](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect) instead, which uses the same Cloud DNS steps on the regional records.
 
 ### Step-by-step instructions
 
@@ -146,7 +150,7 @@ Save the internal IP -- you will point the A record at it.
 1. Open _Network Services → Cloud DNS → Create zone_.
 2. Select zone type **Private**.
 3. Enter a **Zone name** (for example, `temporal-cloud`).
-4. Enter a **DNS name** based on the table above (for example, `payments.abcde.tmprl.cloud` or `us-east-1.aws.api.temporal.io`).
+4. Enter a **DNS name** based on the table above (for example, `payments.abcde.tmprl.cloud` or `us-central1.gcp.api.temporal.io`).
 5. Select **Add networks** and choose the Project and Network that contains your PSC endpoint.
 6. Click **Create**.
 
