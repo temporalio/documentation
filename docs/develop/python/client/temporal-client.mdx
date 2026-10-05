@@ -4,8 +4,8 @@ title: Temporal Client - Python SDK
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description:
-  Discover how to connect and use Temporal Clients with Python. Link your Client to Temporal Service, Temporal Cloud,
-  start Workflow Executions, set Task Queues, Workflow Ids, and get Workflow results.
+  Connect to a development Temporal Service or Temporal Cloud from Python, set a Task Queue and Workflow Id, and get
+  Workflow Execution results.
 tags:
   - Temporal Client
   - Python SDK
@@ -37,7 +37,7 @@ options directly in code, load them from **environment variables**, or a **TOML 
 [`envconfig`](https://python.temporal.io/temporalio.envconfig.html) helpers. We recommend environment variables or a
 configuration file for secure, repeatable configuration.
 
-When you’re running a Temporal Service locally (such as with the
+When you're running a Temporal Service locally (such as with the
 [Temporal CLI dev server](/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
@@ -485,9 +485,9 @@ Heartbeats, and so on); calls already in flight on the old client finish normall
 
 ## Start a Workflow Execution {/* #start-workflow-execution */}
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
-you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
-language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters. To start a Workflow Execution, you must
+supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific
+contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
 within another Workflow Execution, use either the [Child Workflow](/develop/python/workflows/child-workflows) or External Workflow
@@ -527,7 +527,7 @@ if __name__ == "__main__":
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
 Queue name.
@@ -559,7 +559,7 @@ if __name__ == "__main__":
 
 You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
-When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an
+When setting a Workflow Id, we recommend mapping it to a business process or business entity identifier, such as an
 order identifier or customer identifier.
 
 To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either
@@ -587,7 +587,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Get the results of a Workflow Execution {/* #get-workflow-results */}
+## Get Workflow results {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
