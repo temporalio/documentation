@@ -98,6 +98,7 @@ describe('markdownRedirect', () => {
     { source: '/blog/:path*', destination: 'https://temporal.io/blog/:path*' },
     { source: '/loop', destination: '/loop' },
     { source: '/sitemap_index.xml', destination: '/sitemap.xml' },
+    { source: '/tags/worker', destination: '/tags/workers' },
   ]);
 
   it("sends a redirected page's .md to the destination's .md", () => {
@@ -120,11 +121,12 @@ describe('markdownRedirect', () => {
     assert.deepStrictEqual(markdownRedirect('/temporary.md', rules), { status: 307, location: '/c.md' });
   });
 
-  it('ignores pages that are not redirected, paths without .md, external destinations, files, and loops', () => {
+  it('ignores unredirected pages, paths without .md, loops, and destinations with no .md', () => {
     assert.strictEqual(markdownRedirect('/other.md', rules), null);
     assert.strictEqual(markdownRedirect('/old', rules), null);
     assert.strictEqual(markdownRedirect('/blog/post.md', rules), null);
     assert.strictEqual(markdownRedirect('/sitemap_index.xml.md', rules), null);
+    assert.strictEqual(markdownRedirect('/tags/worker.md', rules), null);
     assert.strictEqual(markdownRedirect('/loop.md', rules), null);
   });
 });

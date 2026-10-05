@@ -66,8 +66,8 @@ Redirect rules in `vercel.json` match page paths, so the rule for `/old` never m
 sends every `.md` request that has no file to `api/markdown-not-found.js`. That function follows the `vercel.json`
 redirects for the page path, using the same matcher as `yarn check:redirects` (`bin/redirect-utils.js`), and returns a
 308 to the destination's `.md` (307 if a rule on the way sets `permanent: false`). When nothing matches, or the
-destination is off the site or a file rather than a page, it returns a Markdown 404 that links to `llms.txt` and the
-sitemap.
+destination has no `.md` (it's off the site, a file, or a generated tag page), it returns a Markdown 404 that links to
+`llms.txt` and the sitemap.
 
 Vercel applies redirects before it looks for files, so a wildcard rule can match a `.md` URL before the function sees
 it. `/docs/:path*` to `/:path*` carries `.md` through to the destination, which works. A page renamed inside a

@@ -131,14 +131,15 @@ function followRedirects(start, compiled, options = {}) {
 // This follows the rules for `/old` and returns `{ status, location }` for the
 // destination's `.md`, or null when `urlPath` isn't a `.md` path, the page
 // isn't redirected, or the destination has no Markdown alternate (it's off the
-// site, or it's a file such as /sitemap.xml rather than a page).
+// site, it's a file such as /sitemap.xml, or it's a tag page, which Docusaurus
+// generates and the markdown-pages plugin doesn't write a .md for).
 function markdownRedirect(urlPath, compiled) {
   const p = normalizePath(urlPath);
   if (!p.endsWith('.md')) return null;
 
   const result = followRedirects(p.slice(0, -'.md'.length) || '/', compiled);
   if (result.chain.length === 0 || result.external || result.loop || result.tooLong) return null;
-  if (/\.[^/]*$/.test(result.final)) return null;
+  if (/\.[^/]*$/.test(result.final) || /^\/tags(\/|$)/.test(result.final)) return null;
 
   // The home page's Markdown is /index.md, not /.md.
   const page = result.final === '/' ? '/index' : result.final;
