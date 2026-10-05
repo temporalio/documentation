@@ -153,7 +153,7 @@ worker.run(shutdown_signals: ['SIGINT'])`}
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a [`Temporalio::Worker`](https://ruby.temporal.io/Temporalio/Worker.html), register the Activity class, and call `worker.run`. The Worker
 doesn't need to know whether the Activity will be invoked from a Workflow or as a Standalone
-Activity. See [How to run a Worker](/develop/ruby/workers/run-worker-process) for more details on
+Activity. See [Run a Worker](/develop/ruby/workers/run-worker-process) for more details on
 Worker setup and configuration options.
 
 [worker.rb](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity/worker.rb)
@@ -233,4 +233,4 @@ for mTLS and API key setup.
 ## Next steps
 
 - **[Standalone Activities Feature Guide](/develop/ruby/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
-- **[Activity basics](/develop/ruby/activities/basics)**: How to write and register Activities with the Ruby SDK.
+- **[Activity basics](/develop/ruby/activities/basics)**: Write and register Activities with the Ruby SDK.
