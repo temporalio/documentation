@@ -232,6 +232,8 @@ describe('route index', () => {
 
   it('treats the cookbook as unverifiable rather than missing', () => {
     assert.ok(routes.maybe('/ai/cookbook/anything'));
+    assert.ok(routes.maybe('/ai/cookbook.md'));
+    assert.ok(!routes.maybe('/ai/cookbookx.md'));
   });
 
   it('accepts Cookbook markdown landing redirects without generated content', () => {

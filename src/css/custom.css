@@ -88,7 +88,6 @@ html[data-theme='dark']:root {
   --ifm-link-color: #f9fafb;
   --ifm-link-hover-color: var(--ifm-color-primary);
   --alert--competency-background: #00474a;
-  --alert--copycode-background: #29005e;
   --alert--info-background: #353536;
   --feedback-primary-color: #fff; /* submit button, accents */
   --feedback-light-color: #2a2a2a; /* canvas/tool backgrounds */
@@ -136,7 +135,6 @@ html[data-theme='light']:root {
   --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-preview-text: #141414;
   --alert--competency-background: #a8fcff;
-  --alert--copycode-background: #e0cdfa;
   --alert--info-background: #ebeded;
   --last-updated-color: #465a78;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
@@ -175,10 +173,6 @@ a:hover {
 
 .alert--competency {
   background-color: var(--alert--competency-background);
-}
-
-.alert--copycode {
-  background-color: var(--alert--copycode-background);
 }
 
 .alert--info {
