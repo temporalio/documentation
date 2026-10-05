@@ -21,7 +21,9 @@ import {
   dedent,
   scanMarkdownImports,
   COMPONENT_REGISTRY,
+  RELEASE_NOTE_LABELS,
 } from "../scripts/mdx-to-md.mjs";
+import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { jsonToMarkdownTable } from "../scripts/component-handlers/data-tables.mjs";
 import {
   selectIntegrations,
@@ -747,9 +749,15 @@ test("self-closing ReleaseNoteHeader does NOT swallow the page body", () => {
 });
 
 test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
-  const input = `<ReleaseNoteHeader featureName="cloudCli" />\n\nCommand reference content.`;
+  // Derived from the feature map so the test survives release-stage changes.
+  // Prefer a feature whose stage differs from the publicPreview default, so a
+  // broken lookup can't pass by falling through to the default.
+  const entries = Object.entries(FEATURE_RELEASE_TYPES);
+  const [featureName, mappedType] =
+    entries.find(([, type]) => type !== "publicPreview") ?? entries[0];
+  const input = `<ReleaseNoteHeader featureName="${featureName}" />\n\nCommand reference content.`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Public Preview**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
   assertContains(markdown, "Command reference content.");
   assertNotContains(markdown, "ReleaseNoteHeader");
 });
@@ -763,9 +771,13 @@ test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
 });
 
 test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
-  const input = `<ReleaseNoteHeader featureName="serverlessWorkersCloudRun" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  // Derived from the feature map so the test survives release-stage changes.
+  const [featureName, mappedType] = Object.entries(FEATURE_RELEASE_TYPES)[0];
+  const explicitType = mappedType === "prerelease" ? "publicPreview" : "prerelease";
+  const input = `<ReleaseNoteHeader featureName="${featureName}" type="${explicitType}">\nBody.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Pre-release**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
+  assertNotContains(markdown, `> **${RELEASE_NOTE_LABELS[explicitType]}**`);
 });
 
 // ---------------------------------------------------------------------------
