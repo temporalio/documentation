@@ -2433,6 +2433,156 @@
       "source": "/cloud/support",
       "destination": "/evaluate/cloud/support",
       "permanent": true
+    },
+    {
+      "source": "/img/favicon.ico",
+      "destination": "/favicon.ico",
+      "permanent": true
+    },
+    {
+      "source": "/img/favicon.svg",
+      "destination": "/img/favicon.png",
+      "permanent": true
+    },
+    {
+      "source": "/apple-touch-icon.png",
+      "destination": "/img/favicon.png",
+      "permanent": true
+    },
+    {
+      "source": "/apple-touch-icon-precomposed.png",
+      "destination": "/img/favicon.png",
+      "permanent": true
+    },
+    {
+      "source": "/img/open-graph-shiny.png",
+      "destination": "/img/assets/open-graph-shiny.jpg",
+      "permanent": true
+    },
+    {
+      "source": "/img/temporal-logo-dark.svg",
+      "destination": "/img/assets/temporal-logo-dark.svg",
+      "permanent": true
+    },
+    {
+      "source": "/assets/images/banner-python-temporal-0d345d125b6892840c54f7e1460c8a5a.png",
+      "destination": "/img/assets/banner-python-temporal.png",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/durable-execution",
+      "destination": "/temporal#durable-execution",
+      "permanent": true
+    },
+    {
+      "source": "/durable-execution",
+      "destination": "/temporal#durable-execution",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/activities",
+      "destination": "/activities",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/workflows",
+      "destination": "/workflows",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/workflow-execution",
+      "destination": "/workflow-execution",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/application-message-passing",
+      "destination": "/encyclopedia/workflow-message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/workflow-execution/event-history",
+      "destination": "/encyclopedia/event-history",
+      "permanent": true
+    },
+    {
+      "source": "/schedules",
+      "destination": "/schedule",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/setup",
+      "destination": "/self-hosted-guide/deployment",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/persistence",
+      "destination": "/temporal-service/persistence",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/get-started/how-to-guides",
+      "destination": "/cloud/get-started",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/durable-execution",
+      "destination": "/develop/python",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/openai-agents",
+      "destination": "/develop/python/integrations/openai-agents",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/integrations/openai-agents-sdk",
+      "destination": "/develop/python/integrations/openai-agents",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/use-cases-design-patterns\\*\\*",
+      "destination": "/evaluate/use-cases-design-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/limits.md",
+      "destination": "/evaluate/cloud/limits.md",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/actions.md",
+      "destination": "/evaluate/cloud/actions.md",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/message-passing.md",
+      "destination": "/develop/python/workflows/message-passing.md",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/message-passing.md",
+      "destination": "/develop/typescript/workflows/message-passing.md",
+      "permanent": true
+    },
+    {
+      "source": "/mcp",
+      "destination": "/with-ai#temporal-knowledge-base-mcp-server",
+      "permanent": true
+    },
+    {
+      "source": "/status",
+      "destination": "https://status.temporal.io",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap_index.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap-index.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
     }
   ]
 }
