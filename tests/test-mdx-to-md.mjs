@@ -748,13 +748,16 @@ test("self-closing ReleaseNoteHeader does NOT swallow the page body", () => {
   assertNotContains(markdown, "ReleaseNoteHeader");
 });
 
-test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
-  // Derived from the feature map so the test survives release-stage changes.
-  // Prefer a feature whose stage differs from the publicPreview default, so a
-  // broken lookup can't pass by falling through to the default.
+// Picks a feature from the feature map so the featureName tests survive
+// release-stage changes. Prefers a stage other than the publicPreview default,
+// so a broken lookup can't pass by falling through to the default.
+function pickMappedFeature() {
   const entries = Object.entries(FEATURE_RELEASE_TYPES);
-  const [featureName, mappedType] =
-    entries.find(([, type]) => type !== "publicPreview") ?? entries[0];
+  return entries.find(([, type]) => type !== "publicPreview") ?? entries[0];
+}
+
+test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
+  const [featureName, mappedType] = pickMappedFeature();
   const input = `<ReleaseNoteHeader featureName="${featureName}" />\n\nCommand reference content.`;
   const { markdown } = transformMdx(input);
   assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
@@ -763,9 +766,10 @@ test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
 });
 
 test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
-  const input = `<ReleaseNoteHeader featureName="standaloneActivity">\nAvailable in preview.\n</ReleaseNoteHeader>`;
+  const [featureName, mappedType] = pickMappedFeature();
+  const input = `<ReleaseNoteHeader featureName="${featureName}">\nAvailable in preview.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Public Preview**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
   assertContains(markdown, "Available in preview.");
   assertNotContains(markdown, "> ****");
 });
