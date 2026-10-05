@@ -6,7 +6,8 @@
 // path-to-regexp that other packages in node_modules depend on), so a rule
 // matches here exactly when it matches in production.
 //
-// Used by bin/validate-redirects.js and bin/check-redirects-for-moved-pages.js.
+// Used by bin/validate-redirects.js, bin/check-redirects-for-moved-pages.js,
+// and api/markdown-not-found.js (at request time, so it ships with that function).
 
 const { parse, pathToRegexp } = require('vercel-path-to-regexp');
 
@@ -30,6 +31,8 @@ function compileRule(rule, index) {
     index,
     source: rule.source,
     destination: rule.destination,
+    // Vercel treats a rule without `permanent` as permanent (308).
+    permanent: rule.permanent !== false,
     // Rules with `has`/`missing` depend on request headers, cookies, or query
     // strings. They can't be evaluated from a path alone, so matching skips them.
     conditional: Boolean(rule.has || rule.missing),
@@ -123,6 +126,26 @@ function followRedirects(start, compiled, options = {}) {
   return { chain, final: current, loop: false, tooLong: true, external: false };
 }
 
+// Where a request for the Markdown alternate of a redirected page should go.
+// Rules match page paths, so the rule for `/old` doesn't match `/old.md`.
+// This follows the rules for `/old` and returns `{ status, location }` for the
+// destination's `.md`, or null when `urlPath` isn't a `.md` path, the page
+// isn't redirected, or the destination has no Markdown alternate (it's off the
+// site, or it's a file such as /sitemap.xml rather than a page).
+function markdownRedirect(urlPath, compiled) {
+  const p = normalizePath(urlPath);
+  if (!p.endsWith('.md')) return null;
+
+  const result = followRedirects(p.slice(0, -'.md'.length) || '/', compiled);
+  if (result.chain.length === 0 || result.external || result.loop || result.tooLong) return null;
+  if (/\.[^/]*$/.test(result.final)) return null;
+
+  // The home page's Markdown is /index.md, not /.md.
+  const page = result.final === '/' ? '/index' : result.final;
+  const permanent = result.chain.every((hop) => hop.rule.permanent);
+  return { status: permanent ? 308 : 307, location: `${page}.md` };
+}
+
 // Two representative request paths that match `rule`: the shortest (optional
 // and zero-or-more parameters omitted) and a longer one (repeating parameters
 // given two segments). Returns null when the rule has a parameter with a
@@ -168,6 +191,7 @@ module.exports = {
   substitute,
   findRedirect,
   followRedirects,
+  markdownRedirect,
   sampleSource,
   destinationBase,
 };

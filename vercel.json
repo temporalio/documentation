@@ -9,6 +9,10 @@
       "destination": "/img/assets/open-graph-shiny.jpg"
     },
     {
+      "source": "/(.*)\\.md",
+      "destination": "/api/markdown-not-found"
+    },
+    {
       "source": "/:path((?!api/).*)",
       "has": [
         {
