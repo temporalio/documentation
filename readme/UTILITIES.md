@@ -84,7 +84,7 @@ This utility highlights potential issues — it's up to you to decide what belon
 can't work as written. It runs in the Check Redirects workflow on every pull request and fails on findings.
 
 Vercel compiles each `source` with path-to-regexp 6.1.0 and applies the first rule that matches. The script uses that
-same library, installed as the `vercel-path-to-regexp` dev dependency, so a rule matches in the script exactly when it
+same library, installed as the `vercel-path-to-regexp` dependency, so a rule matches in the script exactly when it
 matches in production. It builds the set of URLs the site serves from `docs/`, `src/pages/`, and `static/` (using the
 same URL resolution as the `markdown-pages` plugin), not from `build/`.
 
@@ -117,6 +117,10 @@ findings as JSON.
 
 `bin/check-redirects-for-moved-pages.js` is a separate check: it uses the same matcher to fail a pull request that moves
 or deletes a docs page without adding a redirect.
+
+`api/markdown-not-found.js` uses the same matcher at request time, so a redirect for a page path also covers the page's
+`.md` URL. Don't add a separate `.md` rule unless a wildcard rule would catch the `.md` URL first. See
+[Moved pages](./MARKDOWN_PIPELINE.md#moved-pages).
 
 ## visual-comparison
 

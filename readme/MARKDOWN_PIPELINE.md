@@ -57,6 +57,23 @@ docs/**/*.mdx ──(postBuild)──▶ markdown-pages plugin ──▶ transfo
 > a single page's conversion without a full build, run `transformMdx` on it directly — that's what
 > the unit tests do.)
 
+## Moved pages
+
+When you move a page, add a redirect for the page path only. A `.md` URL follows it automatically: `/cloud/limits.md`
+redirects to `/evaluate/cloud/limits.md` because `/cloud/limits` redirects to `/evaluate/cloud/limits`.
+
+Redirect rules in `vercel.json` match page paths, so the rule for `/old` never matches `/old.md`. Instead, a rewrite
+sends every `.md` request that has no file to `api/markdown-not-found.js`. That function follows the `vercel.json`
+redirects for the page path, using the same matcher as `yarn check:redirects` (`bin/redirect-utils.js`), and returns a
+308 to the destination's `.md` (307 if a rule on the way sets `permanent: false`). When nothing matches, or the
+destination has no `.md` (it's off the site, a file, or a generated tag page), it returns a Markdown 404 that links to
+`llms.txt` and the sitemap.
+
+Vercel applies redirects before it looks for files, so a wildcard rule can match a `.md` URL before the function sees
+it. `/docs/:path*` to `/:path*` carries `.md` through to the destination, which works. A page renamed inside a
+wildcard's range needs its own `.md` rule placed before the wildcard. For example, `/ai-cookbook/basic-python.md` has a
+rule because `/ai-cookbook/:path*` would otherwise send it to `/ai/cookbook/basic-python.md`, which doesn't exist.
+
 ## Design principles
 
 - **Output, not source.** Generated `.md` lives in the build output (`outDir`), never in the
@@ -91,6 +108,7 @@ docs/**/*.mdx ──(postBuild)──▶ markdown-pages plugin ──▶ transfo
 | `scripts/component-handlers/cards.mjs` | Handler for `<QuickstartCards>` / `<PatternCards>` — parses the inline `items={[{href,title,description}]}` prop into a Markdown link list. |
 | `scripts/component-handlers/event-history-walkthrough.mjs` | Handler for the Event History walkthrough demos (`<CodeToCommandsDemo>` etc. + `<WalkthroughStep>`/`<WalkthroughCommand>`/`<WalkthroughEvent>`) — renders each authored step to a `#### Step N` heading with its Command/Event ledger entries. |
 | `scripts/audit-components.mjs` | Inventory/coverage tool. Scans all docs, reports per-component coverage, writes `readme/COMPONENT_REGISTRY.md`. |
+| `api/markdown-not-found.js` | Vercel function for `.md` URLs with no file. Redirects a moved page's `.md` to its new `.md` (see [Moved pages](#moved-pages)); otherwise returns a Markdown 404. |
 | `src/components/LLMActions/LLMActions.tsx` | On-page actions (Copy, View as Markdown, Open in ChatGPT/Claude). Points at the generated `/<path>.md` (not the raw MDX). |
 | `tests/` | Zero-framework test suites. Fixtures in `fixtures/docs/`, golden snapshots in `tests/snapshots/`. |
 | `COMPONENT_REGISTRY.md` | Generated coverage report under `readme/` (intentionally *not* under `docs/`, so it is never published). |
