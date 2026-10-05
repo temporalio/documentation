@@ -827,7 +827,7 @@ Set a value from the `go.temporal.io/api/enums/v1` package.
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  WorkflowIdReusePolicy: enums.WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE,
+  WorkflowIDReusePolicy: enums.WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE,
   // ...
 }
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
