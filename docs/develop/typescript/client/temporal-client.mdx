@@ -703,61 +703,52 @@ The Worker needs three main things:
     `require.resolve('./workflows')`. Workflows are bundled with their dependencies.
   - If you prefer to handle the bundling yourself, pass a prebuilt bundle to `workflowBundle`.
 
+<!--SNIPSTART typescript-worker-create -->
+[snippets/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/worker.ts)
 ```ts
 import { Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-  // Step 1: Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
   const worker = await Worker.create({
     workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'snippets',
     activities,
-    taskQueue: 'hello-world',
   });
-  // Worker connects to localhost by default and uses console.error for logging.
-  // Customize the Worker by passing more options to create():
-  // https://typescript.temporal.io/api/classes/worker.Worker
-  // If you need to configure server connection parameters, see docs:
-  // /typescript/security#encryption-in-transit-with-mtls
 
-  // Step 2: Start accepting tasks on the `hello-world` queue
   await worker.run();
 }
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
 ```
+<!--SNIPEND-->
 
 `taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and
 Activities with the Worker.
 
-When scheduling a Workflow, you must specify `taskQueue`.
+When you start a Workflow, set `taskQueue` to the name of the Task Queue that the Worker polls.
 
+<!--SNIPSTART typescript-start-workflow -->
+[snippets/src/start-workflow.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/start-workflow.ts)
 ```ts
 import { Client, Connection } from '@temporalio/client';
-// This is the code that is used to start a Workflow.
-const connection = await Connection.connect();
-const client = new Client({ connection });
-const result = await client.workflow.execute(yourWorkflow, {
-  // required
-  taskQueue: 'your-task-queue',
-  // required
-  workflowId: 'your-workflow-id',
-});
-```
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { nanoid } from 'nanoid';
+import { example } from './workflows';
 
-When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
+async function run() {
+  const config = loadClientConnectConfig();
+  const connection = await Connection.connect(config.connectionOptions);
+  const client = new Client({ connection });
 
-```ts
-const worker = await Worker.create({
-  // imported elsewhere
-  activities,
-  taskQueue: 'your-task-queue',
-});
+  const handle = await client.workflow.start(example, {
+    // required
+    taskQueue: 'snippets',
+    // required
+    workflowId: 'workflow-' + nanoid(),
+  });
+  console.log(`Started Workflow ${handle.workflowId}`);
+}
 ```
+<!--SNIPEND-->
 
 Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option
 to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify `taskQueue`, the TypeScript SDK
