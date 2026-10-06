@@ -64,7 +64,7 @@ Imagine you want to revise this Workflow by adding another Activity to calculate
 If an existing Workflow Execution was started by the original version of the Workflow code, where there was no `calculateChecksum()` Activity, and then resumed running on a new Worker where this Activity had been added, the server side Event History would be out of sync.
 This would cause the Workflow to fail with a nondeterminism error.
 
-To resolve this, you can use `workflow.GetVersion()` to patch to your Workflow:
+To resolve this, you can use `Workflow.getVersion()` to patch your Workflow:
 
 ```java
 public void processFile(Arguments args) {
@@ -92,7 +92,7 @@ public void processFile(Arguments args) {
 }
 ```
 
-When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `GetVersion` for this change id — `checksumAdded` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
+When `Workflow.getVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `getVersion` for this change ID — `checksumAdded` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
 
 After all the Workflow Executions prior to version 1 have left retention, you can remove the code for that version.
 
