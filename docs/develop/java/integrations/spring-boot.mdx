@@ -15,7 +15,7 @@ This guide introduces the [Temporal Spring Boot](https://central.sonatype.com/ar
 
 This section includes the following topics:
 
-- [Setup Dependency](#setup-dependency)
+- [Set up the dependency](#setup-dependency)
 - [Connect to your Temporal Service](#connect)
 - [Configure Workers](#configure-workers)
 - [Customize Options](#customize-options)
@@ -23,7 +23,7 @@ This section includes the following topics:
 - [Integrations](#integrations)
 - [Testing](#testing)
 
-## Setup Dependency {/* #setup-dependency */}
+## Set up the dependency {/* #setup-dependency */}
 
 To start using the Temporal Spring Boot integration, you need to add [`io.temporal:temporal-spring-boot-starter`](https://search.maven.org/artifact/io.temporal/temporal-spring-boot-starter)
 as a dependency to your Spring project:
@@ -128,7 +128,7 @@ spring.temporal:
         - activity-bean-name1
 ```
 
-### Auto Discovery
+### Auto-discovery
 
 Auto Discovery allows you to skip specifying Workflow classes, Activity beans, and Nexus Service beans explicitly in the config by referencing Worker Task Queue names or Worker Names on Workflow, Activity implementations, and Nexus Service implementations. Auto-discovery is applied after and on top of an explicit configuration.
 
@@ -185,7 +185,7 @@ You can set up [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sle
 
 Alternatively, you can define a custom `io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for an OpenTracing bean in the application context.
 
-## Customization of Options {/* #customize-options */}
+## Customization of options {/* #customize-options */}
 
 To programmatically customize the various options that are created by the Spring Boot integration, you can create beans that implement the `io.temporal.spring.boot.TemporalOptionsCustomizer<OptionsBuilderType>` interface. This will be called after the options in your properties files are applied.
 
