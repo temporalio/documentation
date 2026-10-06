@@ -18,7 +18,7 @@ Application.
 
 <!-- _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_ -->
 
-#### [Actions Per Second (APS)](/evaluate/cloud/limits#actions-per-second)
+#### [Actions per second (APS)](/evaluate/cloud/limits#actions-per-second)
 
 APS, or Actions per second, is specific to Temporal Cloud. Each Temporal Cloud Namespace enforces a rate limit, which is
 measured in Actions per second (APS). This is the number of Actions, such as starting or signaling a Workflow, that can
@@ -375,9 +375,9 @@ and helps prevent drift.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus Async Completion Callback
+#### Nexus async completion callback
 
-A Nexus Async Completion Callback is the completion callback for an asynchronous Nexus Operation.
+A Nexus async completion callback is the completion callback for an asynchronous Nexus Operation.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -418,7 +418,7 @@ including `Nexus Operation Scheduled`, `Nexus Operation Started`, `Nexus Operati
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus Operation Handler
+#### Nexus Operation handler
 
 The Nexus handler code in a Temporal Worker typically created using Temporal SDK builder functions that make it easy to
 abstract Temporal primitives and expose a clean service contract for others to use.
@@ -450,7 +450,7 @@ is polling a Nexus Endpoint's target Namespace and Task Queue.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus Service Contract
+#### Nexus Service contract
 
 A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as
 associated input/output types a Service will accept for a given Operation.
@@ -515,13 +515,13 @@ endpoints.
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
+#### [Replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
+#### [Requests per second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
 
 RPS, or Requests per second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud). This is
 a measure that controls the rate of requests at the service level, such as the Frontend, History, or Matching Service.
@@ -709,9 +709,9 @@ A Cloud Namespace ID is a globally unique identifier for a Namespace in Temporal
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name)
+#### [Temporal Cloud Namespace name](/cloud/namespaces#temporal-cloud-namespace-name)
 
-A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.
+A Cloud Namespace name is a customer-supplied name for a Namespace in Temporal Cloud.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -938,7 +938,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 ## Deprecated terms
 
-#### tctl (_deprecated_)
+#### `tctl` (_deprecated_)
 
 tctl is a command-line tool that you can use to interact with a Temporal Service. It is superseded by the
 [Temporal CLI utility](#cli).

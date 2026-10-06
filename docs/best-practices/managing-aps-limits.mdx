@@ -69,7 +69,7 @@ Common bursty patterns include:
 - Retry Storms: when a large number of Workflows get stuck on an Activity, and that Activity is failing, if retry delay is very short, this can cause a spike in Actions.
 - Timer Storms: a large number of Workflows all set a Timer for the exact same time--triggering a spike as those Timers fire and then Activities run, causing a lot of actions all at the same time.
 
-These types of processes can result in your Namespace averaging 200 APS over a day, but spiking to 800 APS or more during your peak hour/day/event/etc. 
+These types of processes can result in your Namespace averaging 200 APS over a day, but spiking to 800 APS or more during your peak hour, day, or event. 
 
 #### How to mitigate
 
@@ -151,7 +151,7 @@ Each separate Activity adds Action overhead.
 
 ### Multiple use cases in one Namespace
 Often when starting with Temporal, the first use case is implemented in a single Namespace, generally one per logical environment. 
-When the second Temporal use case is implemented, it runs in the same Namespace, the same for the third, fourth, etc. 
+When the second Temporal use case is implemented, it runs in the same Namespace, as do the third, fourth, and any later ones. 
 
 An APS limit is set per Namespace, so multiple use cases with multiple traffic patterns in the same Namespace can exhaust this limit quickly.
 
@@ -221,7 +221,7 @@ See the documentation on [detecting resource exhaustion](/cloud/service-health#r
 If you're considering Provisioned capacity, set up monitoring to understand your usage patterns:
 
 - **Use [OpenMetrics](/cloud/metrics/openmetrics)**: For real-time visibility into APS consumption, integrate Temporal Cloud metrics with your observability stack
-- **Track APS usage vs. limits**: Monitor [`temporal_cloud_v1_total_action_throttled_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_throttled_count) to detect throttling events
+- **Track APS usage against limits**: Monitor [`temporal_cloud_v1_total_action_throttled_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_throttled_count) to detect throttling events
 - **Set alerts at 70-80% utilization**: This gives you time to provision TRUs before hitting limits
 - **Analyze historical patterns**: Understanding your traffic patterns helps you decide between reactive TRU provisioning and proactive automation
 
