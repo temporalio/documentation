@@ -105,18 +105,18 @@ The Workflow's call to the Activity throws the Activity Failure, and your Workfl
 
 A Nexus Operation ends in one of four states: completed, failed, canceled, or timed out.
 
-The caller's Nexus machinery splits an Operation into one or more StartOperation requests and completion callbacks.
+The caller's Nexus service splits an Operation into one or more StartOperation requests and completion callbacks.
 It retries these requests as long as they fail with retryable errors.
 
 The Operation times out only when the schedule-to-close timeout set by the caller Workflow expires.
-The caller's Nexus machinery enforces this timeout.
+The caller's Nexus service enforces this timeout.
 
 The Operation reaches one of the other three states when one of these happens:
 
 - The Operation handler returns a synchronous response or error.
 - An asynchronous Operation, such as one backed by a Workflow, reaches a terminal state.
 
-A Nexus Operation handler returns a retryable or non-retryable error to tell the caller's Nexus machinery whether to retry the request.
+A Nexus Operation handler returns a retryable or non-retryable error to tell the caller's Nexus service whether to retry the request.
 If a request times out before the handler sends a response, the caller retries it.
 
 Errors are retryable by default. These errors aren't retried:
@@ -190,7 +190,7 @@ When an Activity or Workflow throws an Application Failure, Temporal compares th
 If the type is in the list, the Activity or Workflow isn't retried.
 To stop retries regardless of the Retry Policy, set the Application Failure's `non_retryable` field to `true`.
 
-When a Nexus Operation handler throws an Application Failure, the caller retries it with a built-in Retry Policy that you can't customize.
+When a Nexus Operation handler throws an Application Failure, the caller retries it with a built-in Retry Policy that cannot be customized.
 To stop retries, set the Application Failure's `non_retryable` field to `true`.
 A non-retryable error from a Nexus handler fails the Nexus Operation Execution, and the caller's Workflow Execution receives it as a [Nexus Operation Failure](#nexus-operation-failure).
 
