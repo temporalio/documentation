@@ -261,6 +261,11 @@ describe('formatDelta', () => {
     assert.strictEqual(formatDelta(10, 10.01), '±0.0 pts');
     assert.strictEqual(formatDelta(null, 10), '');
   });
+
+  it('matches the rounded percentages it sits next to', () => {
+    assert.strictEqual(formatDelta(15.024, 15.072), '+0.1 pts');
+    assert.strictEqual(formatDelta(15.04, 15.01), '±0.0 pts');
+  });
 });
 
 describe('refLabel', () => {

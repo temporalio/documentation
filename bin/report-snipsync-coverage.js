@@ -289,9 +289,11 @@ function formatPercent(value) {
   return value === null ? 'n/a' : `${value.toFixed(1)}%`;
 }
 
+// The change between two percentages as shown, so 15.0% → 15.1% reads +0.1
+// even when the unrounded change is smaller.
 function formatDelta(before, after) {
   if (before === null || after === null) return '';
-  const delta = after - before;
+  const delta = Number(after.toFixed(1)) - Number(before.toFixed(1));
   if (Math.abs(delta) < 0.05) return '±0.0 pts';
   return `${delta > 0 ? '+' : '−'}${Math.abs(delta).toFixed(1)} pts`;
 }
