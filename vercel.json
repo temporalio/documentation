@@ -55,6 +55,11 @@
   ],
   "redirects": [
     {
+      "source": "/cloud/metrics",
+      "destination": "/cloud/monitor",
+      "permanent": true
+    },
+    {
       "source": "/cloud/metrics/promql",
       "destination": "/cloud/metrics/openmetrics",
       "permanent": true
@@ -1335,7 +1340,7 @@
     },
     {
       "source": "/kb/prometheus-grafana-setup-cloud",
-      "destination": "/cloud/metrics#prometheus-and-grafana-setup"
+      "destination": "/cloud/metrics/openmetrics/metrics-integrations#prometheus-grafana"
     },
     {
       "source": "/kb/cloud-namespace-naming-considerations",
