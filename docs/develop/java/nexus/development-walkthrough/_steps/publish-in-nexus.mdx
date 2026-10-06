@@ -1,18 +1,21 @@
 import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
 
-The Service is implemented and a Worker is polling, but no caller can reach it. A [Nexus Endpoint](/nexus/endpoints) is what makes it reachable, and the [Nexus Registry](/nexus/registry) is where Endpoints live.
+A Worker is now polling, but callers reach a Service only through a [Nexus Endpoint](/nexus/endpoints), stored in the [Nexus Registry](/nexus/registry).
 
-An Endpoint routes incoming Operation requests to a target Namespace and Task Queue. Callers address the Endpoint by name and never learn the Namespace or Task Queue behind it, which is what lets you move the handler later without changing caller code.
+An Endpoint routes Operation requests to a target Namespace and Task Queue. Callers address the Endpoint by name and never see the Namespace or Task Queue behind it, so you can move the handler later without changing caller code.
 
 ## Create the Endpoint
 
-An Endpoint needs three things: a unique name, the target Namespace where the handler runs, and the target Task Queue the handler's Worker polls. The Task Queue must match what your Worker registered in [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker), or requests arrive and nothing picks them up.
+An Endpoint needs a unique name, the target Namespace where the handler runs, and the target Task Queue the handler's Worker polls. The Task Queue must match the one your Worker uses from [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker), or requests arrive and nothing picks them up.
 
-On a development server, create it with the CLI. This is the command already run in
-[Before you start](/develop/java/nexus/development-walkthrough?step=overview#create-the-namespaces-and-the-endpoint),
-repeated here with the parts explained:
+The caller runs in its own Namespace, so the walkthrough crosses a real Namespace boundary. On the
+development server, create the caller Namespace and the Endpoint with the CLI:
 
-```bash
+<RunThis>
+
+```bash title="Run 1 of 5: create the caller Namespace and the Endpoint"
+temporal operator namespace create --namespace approval-caller-namespace
+
 temporal operator nexus endpoint create \
   --name approval-endpoint \
   --target-namespace approval-handler-namespace \
@@ -20,53 +23,53 @@ temporal operator nexus endpoint create \
   --description-file ./core/src/main/java/io/temporal/samples/nexuswalkthrough/description.md
 ```
 
-`--description-file` is optional. It attaches Markdown shown to anyone browsing the Registry, which
-is where you say what the Service is for and who owns it.
+</RunThis>
 
-In Temporal Cloud, create it in the UI under Nexus, or with `tcld`. See [Create a Nexus Endpoint](/nexus/registry#create-a-nexus-endpoint).
+`--description-file` is optional. It attaches Markdown that anyone browsing the Registry sees, so
+use it to say what the Service is for and who owns it.
 
-Endpoint names are unique within the Registry. In Temporal Cloud the Registry is global across your whole Account and spans every Namespace; in a self-hosted deployment it is scoped to the Cluster.
+In Temporal Cloud, create the Endpoint in the UI under Nexus, or with `tcld`. See [Create a Nexus Endpoint](/nexus/registry#create-a-nexus-endpoint).
+
+Endpoint names are unique within the Registry. In Temporal Cloud the Registry spans every Namespace in your Account; in a self-hosted deployment it is scoped to the Temporal Service.
 
 ## Allow caller Namespaces
 
 :::note This section applies to Temporal Cloud only
 
-Endpoint caller authorization is a Temporal Cloud feature. If you are working through this walkthrough against a development server or a self-hosted Temporal Service on your own machine, skip to [Verify it is reachable](#verify-it-is-reachable) — there is no allowed-caller list to configure.
+On a development server or a self-hosted Temporal Service, skip to [Verify it is reachable](#verify-it-is-reachable). There is no allowed-caller list to configure.
 
 :::
 
-In Temporal Cloud this is the step people miss, because the failure looks like a routing problem rather than a permissions one.
+A Temporal Cloud Endpoint **rejects callers that are not on its allowed list**. Add the caller Namespace, including its Account suffix, when you create or edit the Endpoint in the UI or with `tcld`.
 
-An Endpoint **rejects callers that are not on its allowed list**. Creating the Endpoint is not enough — you have to name the Namespaces permitted to call it. The caller Namespace in this walkthrough is separate from the handler Namespace, so it has to be added explicitly.
-
-Set the allowed caller Namespaces when you create or edit the Endpoint in the UI, or with `tcld`. Add the caller Namespace, including its Account suffix.
-
-If a call fails as unauthorized and the Endpoint clearly exists, check this list first.
+This step is easy to miss because the failure looks like a routing problem. If a call fails as unauthorized and the Endpoint exists, check this list first.
 
 ## Set up credentials
 
-On a development server there is nothing to configure. Both Namespaces are local and unauthenticated.
+A development server needs no credentials. Both Namespaces are local and unauthenticated.
 
-For Temporal Cloud, the caller and handler connect as separate clients, each to its own Namespace. Generate an API key with access to both Namespaces, or use mTLS certificates. The SDK's [environment configuration](/develop/environment-configuration) support lets you keep one profile per Namespace and select between them with an environment variable, which is cleaner than passing connection options in code.
+For Temporal Cloud, the caller and handler connect as separate clients, each to its own Namespace, using an API key with access to both or mTLS certificates. With [environment configuration](/develop/environment-configuration), keep one profile per Namespace and select it with an environment variable instead of passing connection options in code.
 
 ## Verify it is reachable
 
-Before writing a caller, confirm the wiring independently. Check that the Endpoint exists in the
-Registry and targets the right Namespace and Task Queue:
+Before calling the Service, confirm the wiring. Come back to these checks whenever a later call
+stops working.
+
+Check that the Endpoint exists and targets the right Namespace and Task Queue:
 
 <RunThis>
 
-```bash title="Run 1 of 2: check the Endpoint exists"
+```bash title="Run 2 of 5: check the Endpoint exists"
 temporal operator nexus endpoint get --name approval-endpoint
 ```
 
 </RunThis>
 
-Then check that your handler Worker is polling that Task Queue:
+Then check that the handler Worker is polling that Task Queue:
 
 <RunThis>
 
-```bash title="Run 2 of 2: check the Worker is polling"
+```bash title="Run 3 of 5: check the Worker is polling"
 temporal task-queue describe \
   --namespace approval-handler-namespace \
   --task-queue approval-handler-task-queue
@@ -74,13 +77,64 @@ temporal task-queue describe \
 
 </RunThis>
 
-A Worker that is not polling is the other common cause of a call that appears to hang: the request is accepted and queued, and nothing serves it.
+A Worker that isn't polling is the other common cause of a call that appears to hang: the request is accepted and queued, and nothing serves it.
 
-You have already exercised the Endpoint end to end in
-[step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-operations), so if
-those Operations returned, the wiring above is already good. Come back to these commands when a
-later call stops working.
+## Run the Operation
 
+The Service is now reachable through the Endpoint.
+`temporal nexus operation start` starts a [Standalone Nexus Operation](/standalone-nexus-operation),
+which makes the CLI the caller, so you don't need a caller Workflow or caller Worker yet.
+
+`requestApproval` blocks until someone decides the approval, so use `start`, which returns as soon as
+the Operation has started, rather than `execute`, which waits for the result.
+The Operation name is `RequestApproval`, not the `requestApproval` key in the contract: the generator
+emits the wire name in Pascal case, and the Endpoint routes on that name.
+
+<RunThis>
+
+```bash title="Run 4 of 5: request an approval"
+temporal nexus operation start \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation RequestApproval \
+  --operation-id approval-1 \
+  --input '{"itemId":"laptop-42","requester":"tao","amount":2500}'
+```
+
+</RunThis>
+
+The handler will say that it is at 87% after running - this is actually output from Gradle, not the workflow, and can be ignored.
+
+`describe` shows the Operation still open, waiting durably on the Workflow:
+
+<RunThis>
+
+```bash title="Run 5 of 5: describe the pending Operation"
+temporal nexus operation describe \
+  --namespace approval-caller-namespace --operation-id approval-1
+```
+
+</RunThis>
+
+```
+  Operation       RequestApproval
+  Status          Running
+  State           Started
+  OperationToken  eyJ0IjoxLCJucyI6ImFwcHJvdmFsLWhhbmRsZXItbmFtZXNwYWNlIiwid2lkIjoiYXBwcm92YWwtbGFwdG9wLTQyIn0
+
+Links: 1
+
+  Link  temporal:///namespaces/approval-handler-namespace/workflows/approval-laptop-42/...
+```
+
+The Workflow Id is `approval-laptop-42`, derived from the item id as decided in
+[step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id).
+The link points from the Operation to the approval Workflow in the handler Namespace; the
+Nexus-aware Client added it automatically.
+
+The approval stays open until something decides it. [Step 7](/develop/java/nexus/development-walkthrough?step=messaging)
+adds the Operation that does.
 
 :::tip RESOURCES
 

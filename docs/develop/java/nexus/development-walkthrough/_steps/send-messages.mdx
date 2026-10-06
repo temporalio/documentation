@@ -1,30 +1,33 @@
 import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
 
-From the caller's side, the messaging Operations are just Operations. They are called through the same generated stub as `requestApproval`, with the same type checking.
+:::note Keep these running
 
-The caller does not know that one is a Signal and one is an Update. That is the handler's implementation detail, and it can change without breaking callers.
+This step uses the processes started earlier. Leave them running:
+
+- The development server, from [step 4](/develop/java/nexus/development-walkthrough?step=implement#start-the-development-server).
+- The handler Worker, from [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker).
+- The caller Worker, from [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow).
+
+:::
+
+To the caller, the messaging Operations are ordinary Operations, called through the same generated stub as `requestApproval` with the same type checking. Whether each one is a Signal or an Update is the handler's private detail.
 
 ## Nudge and decide
 
-The caller calls both Operations exactly like any other, as shown in the caller Workflow in [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow). `remindApprover` returns nothing, so there is nothing to assign; `submitDecision` returns the confirmation the Update produced.
+The caller Workflow in [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow) calls both. They differ in what comes back:
 
-What differs between them is what you get back and how long it takes.
+- `remindApprover` returns nothing and completes as soon as the Signal is accepted. Accepted means durably recorded, not yet handled; a caller that needs confirmation that the nudge took effect needs an Update.
+- `submitDecision` returns confirmation that the decision was recorded. The approval Workflow then completes, which resolves the `requestApproval` Operation the original caller is awaiting.
 
-`remindApprover` returns nothing and completes as soon as the Signal is accepted. Accepted is not the same as handled — the Signal is durably recorded and the Workflow will process it, but the Operation does not wait for that. If the caller needs confirmation that the nudge took effect, it needs an Update, not a Signal.
-
-`submitDecision` returns confirmation that the decision was recorded. This is the point of using an Update: the caller learns the outcome of its own message. Once it succeeds, the approval Workflow unblocks and completes, which resolves the `requestApproval` Operation that the original caller is still awaiting.
-
-Both require the approval to already be running. A nudge or a decision for a purchase nobody has requested approval for has nothing to reach, and the Operation fails.
+Both fail if no approval is running for the purchase.
 
 ## Attach information before the approval exists
 
-The next Operation does not have that requirement, and the reason is worth the detail.
+`attachApprovalContext` does not need a running approval.
 
-Supporting information for a purchase — a justification, a link to a quote, a manager's note — comes from a different system than the one requesting approval. Those two systems run independently, so their messages arrive in whatever order the network and their schedules produce. Sometimes the context arrives first.
+Supporting information, such as a justification or a manager's note, comes from a different system than the approval request, so it sometimes arrives first. A plain Signal to a Workflow that does not exist fails, which is wrong for a message meant to be accepted whenever it shows up.
 
-A plain Signal cannot handle that. Sending one to a Workflow that does not exist fails, and "fail if the approval has not been requested yet" is the wrong behavior for a message whose whole job is to be available whenever it shows up.
-
-`attachApprovalContext` uses **Signal-with-Start** instead. If the approval is already running, the note is delivered to it. If it is not, the approval is started and then the note is delivered. Either order works, and the caller does not have to know which happened.
+`attachApprovalContext` uses **Signal-with-Start** instead. If the approval is running, the note is delivered to it. If not, the approval is started and the note is delivered. The caller doesn't need to know which happened.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-attach-context-->
 
@@ -60,27 +63,21 @@ A plain Signal cannot handle that. Sending one to a Workflow that does not exist
 
 <!--SNIPEND-->
 
-Signal-with-Start is sync messaging on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client), so the Operation completes during the handler call and returns nothing. The caller gets no confirmation that a human read the note, only that it was durably attached.
+Signal-with-Start is sync messaging on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client), so the Operation completes during the handler call and returns nothing. The caller learns only that the note was durably attached.
 
 ### Input needs enough to start the Workflow
 
-Look at the contract from [step 1](/develop/java/nexus/development-walkthrough?step=contract#plan-the-operations) and `attachApprovalContext` carries more than it seems to need: the item id, the requester, the amount, *and* the note. `remindApprover` gets by with just the item id.
+In the [contract](/develop/java/nexus/development-walkthrough?step=contract#plan-the-operations), `attachApprovalContext` takes the item id, requester, amount, *and* note, while `remindApprover` takes only the item id. Because the Operation might start the approval Workflow, it must carry what the Workflow needs to start.
 
-That is a direct consequence of Signal-with-Start. The Operation might have to start the approval Workflow, and starting it requires whatever the Workflow needs to run. An Operation that can create the thing it messages has to carry enough input to create it.
-
-This is the general rule for any with-Start message: its input is the union of what the message needs and what the Workflow's start needs.
+In general, a with-Start message's input is the union of what the message needs and what the Workflow's start needs.
 
 ## When the approval already exists
 
-Signal-with-Start introduces a case the Service did not have before. `attachApprovalContext` can create the approval, so by the time anyone calls `requestApproval` for that purchase, a Workflow with that Id may already be running.
+Because `attachApprovalContext` can create the approval, a Workflow with that Id may already be running when someone calls `requestApproval`. Both Operations derive the same Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id), so that they agree on which approval they mean.
 
-Both Operations derive the same Workflow Id from the same item id, as decided in [step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id). That is deliberate — it is what lets them agree on which approval they mean — and it is also what creates the collision.
+**By default, `requestApproval` fails in this situation**, because starting a Workflow whose Id is already running is an error. A Workflow-backed Operation has only started once its completion callback is attached. If a conflicting start did nothing, the Operation would report success with no callback, and the caller would wait for a decision that never arrives.
 
-**By default, `requestApproval` fails in this situation.** Starting a Workflow whose Id is already running is an error, and the Nexus Operation fails with it.
-
-That default is not arbitrary strictness. A Workflow-backed Operation has only started successfully once its completion callback is attached to a Workflow. If the start quietly did nothing on a conflict, the Operation would report success with no callback attached, and the caller would wait for a decision that could never be delivered. Failing immediately is better than hanging forever.
-
-The fix is to change the Workflow Id conflict policy on `requestApproval` from its default to **use-existing**. With that set, a start against an already-running approval attaches the Operation's completion callback to that Execution instead of failing. The caller then awaits the approval that is already in flight and receives its decision when it completes.
+That is why `requestApproval` sets the Workflow Id conflict policy to **use-existing**. A start against a running approval then attaches the Operation's completion callback to that Execution, and the caller receives its decision when it completes.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
 
@@ -105,18 +102,16 @@ The fix is to change the Workflow Id conflict policy on `requestApproval` from i
 
 <!--SNIPEND-->
 
-Two things follow from this, and both are useful.
+This has two effects:
 
-**More than one caller can await the same approval.** Every caller whose callback is attached is notified when the Workflow completes, so several systems can each call `requestApproval` for the same purchase and all receive the same decision. The first call creates the approval; the rest attach to it.
+- **More than one caller can await the same approval.** Every attached callback is notified when the Workflow completes, so several systems can call `requestApproval` for one purchase and all receive the same decision.
+- **The Operation is idempotent across separate callers**, not only across server retries of one request.
 
-**The Operation becomes idempotent for callers, not just for retries.** [Step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id) made the start idempotent against server retries of one request. Use-existing extends that to genuinely separate callers, which is what you want for a purchase that two systems might both submit.
-
-One limit to know: use-existing attaches to a *running* Execution. If the approval has already completed, there is nothing to attach to, and the call starts a fresh approval rather than returning the old decision. Whoever needs the outcome of a finished approval has to have been attached while it was open, or be told by the handler — which is what the notification in the next step does.
+Use-existing attaches only to a *running* Execution. If the approval has completed, the call starts a new approval rather than returning the old decision. A system that needs the outcome of a finished approval must have attached while it was open, or be notified by the handler, which the next step adds.
 
 ## Run it in the harder order
 
-The point of Signal-with-Start is that the note can arrive first, so run it that way. Restart the
-handler Worker, then pick an item id that has no approval yet:
+Send the note first, for an item id that has no approval yet:
 
 <RunThis>
 
@@ -138,7 +133,7 @@ Results:
   Result  null
 ```
 
-No approval existed for `desk-7`, so the Operation created one and delivered the note to it:
+No approval existed for `desk-7`, so the Operation created one and delivered the note:
 
 <RunThis>
 
@@ -149,12 +144,15 @@ temporal workflow list --namespace approval-handler-namespace
 </RunThis>
 
 ```
-  Status    WorkflowId       Type
-  Running   approval-desk-7  ApprovalWorkflow
+   Status        WorkflowId            Type
+  Running    approval-desk-7     ApprovalWorkflow
+  Completed  approval-laptop-42  ApprovalWorkflow
 ```
 
-Now request the approval for that same item. Under the default conflict policy this would fail,
-because a Workflow with that Id is already running. With use-existing it attaches instead:
+`approval-laptop-42` is the approval from step 5, decided in step 7.
+
+Now request the approval for the same item. Under the default conflict policy this would fail; with
+use-existing it attaches:
 
 <RunThis>
 
@@ -170,19 +168,19 @@ temporal nexus operation start \
 
 </RunThis>
 
-`temporal workflow list` still shows one `approval-desk-7`. The second call did not start a second
-approval; it attached its completion callback to the one the note created. Decide it with
-`SubmitDecision` as in [step 7](/develop/java/nexus/development-walkthrough?step=messaging#run-the-messaging-operations)
+`temporal workflow list` still shows one `approval-desk-7`: the call attached its completion
+callback to the approval the note created. Decide it with `SubmitDecision` as in
+[step 7](/develop/java/nexus/development-walkthrough?step=messaging#run-the-messaging-operations)
 and the result arrives on the Operation started here.
 
 :::note The two Workflow Id policies
 
-Two policies govern a start against a Workflow Id already in use, and they cover cases that never overlap:
+Two policies govern a start against a Workflow Id already in use:
 
-- The [Workflow Id conflict policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) applies while a Workflow with that Id is **running**. It defaults to failing with `Workflow execution already started` — the default this section replaces with use-existing.
+- The [Workflow Id conflict policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) applies while a Workflow with that Id is **running**. It defaults to failing with `Workflow execution already started`, which this section replaces with use-existing.
 - The [Workflow Id reuse policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy) applies once the previous Workflow with that Id has **closed**. It defaults to Allow Duplicate, which permits a new Execution.
 
-Setting use-existing changes only the running case. A start against a completed approval falls to the reuse policy and opens a new one. Set the reuse policy as well if a second approval for the same item is not what you want.
+A start against a completed approval falls to the reuse policy and opens a new one. Set the reuse policy too if you don't want a second approval for the same item.
 
 :::
 

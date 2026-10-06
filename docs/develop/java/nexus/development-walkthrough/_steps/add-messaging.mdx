@@ -1,21 +1,32 @@
 import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
 
-The approval blocks waiting for a decision. **Messages** give callers a way to interact with it while it waits.
+:::note Keep these running
 
-Two Operations get added to the workflow sample problem. Which [message](/sending-messages) type each one uses is decided by what the caller needs back, not by preference.
+This step uses the processes started earlier. Leave them running:
+
+- The development server, from [step 4](/develop/java/nexus/development-walkthrough?step=implement#start-the-development-server).
+- The handler Worker, from [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker).
+- The caller Worker, from [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow).
+
+The commands at the end of this step also act on the approval that
+[step 5](/develop/java/nexus/development-walkthrough?step=publish#run-the-operation) left open.
+
+:::
+
+The approval blocks waiting for a decision. **Messages** let callers interact with it while it waits.
+
+This step adds two Operations. What the caller needs back decides which [message](/sending-messages) type each one uses:
 
 | Operation | Message type | Why this type |
 | --- | --- | --- |
-| `remindApprover` | Signal | Fire-and-forget. The caller does not need a response, only for the nudge to happen. |
-| `submitDecision` | Update | Changes state *and* returns a result the caller needs — confirmation the decision was recorded. |
+| `remindApprover` | Signal | Fire-and-forget. The caller needs the nudge to happen, not a response. |
+| `submitDecision` | Update | Changes state *and* returns confirmation that the decision was recorded. |
 
-That is the whole rule. If the caller can proceed without hearing anything back, a Signal is enough. If the caller needs to know what the message did, it needs an Update.
+If the caller can proceed without hearing back, use a Signal. If the caller needs to know what the message did, use an Update.
 
 ## Add the handlers to the Workflow
 
-On the Workflow, add a Signal handler that increments the reminder count and an Update handler that records the decision and unblocks the wait.
-
-The Update is what ends the approval. It records `APPROVED` or `DENIED`, which satisfies the condition the Workflow is blocked on, and the Workflow then returns that decision as its result.
+Add a Signal handler that increments the reminder count and an Update handler that records the decision. Recording `APPROVED` or `DENIED` satisfies the condition the Workflow is blocked on, so the Workflow returns that decision as its result.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-->
 
@@ -80,17 +91,17 @@ public interface ApprovalWorkflow {
 
 ## Expose them as Nexus Operations
 
-Both use `TemporalOperationHandler`, and they divide along the line described in [The Nexus-aware Client](/nexus/temporal-operation-handler#the-nexus-aware-client): a Signal is **sync messaging**, and an Update is an **async backing**.
+Both use `TemporalOperationHandler`. As described in [The Nexus-aware Client](/nexus/temporal-operation-handler#the-nexus-aware-client), a Signal is **sync messaging** and an Update is an **async backing**.
 
 ### Signal
 
-Send the Signal through the Client, then return a synchronous result. The Operation completes immediately, during the handler call.
+Send the Signal through the Client and return a synchronous result. The Operation completes during the handler call.
 
 :::caution The handler has under 10 seconds
 
-A synchronous handler must finish inside the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout), and the budget you actually get is smaller: the clock starts on the caller's side and the request still has to route through matching.
+A synchronous handler must finish inside the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout), and the real budget is smaller because the clock starts on the caller's side and the request still routes through matching.
 
-Sending one Signal is comfortably inside it. A handler that sends several messages, or does slow work before returning, is not. Overrunning gives the caller a context deadline exceeded error, which it then retries with exponential backoff until the schedule-to-close timeout expires.
+One Signal fits easily. A handler that sends several messages or does slow work may not. Overrunning gives the caller a context deadline exceeded error, which it retries with exponential backoff until the schedule-to-close timeout expires.
 
 :::
 
@@ -117,17 +128,15 @@ Sending one Signal is comfortably inside it. A handler that sends several messag
 
 ### Update
 
-Start the Update on the Client. This is an async backing: the Operation completes when the Update completes, and its result is delivered through the Nexus completion callback. If the Update happens to come back already complete — a retried request, or one that failed validation — the result returns synchronously instead.
+Start the Update on the Client. The Operation completes when the Update completes, and the result arrives through the Nexus completion callback. If the Update is already complete when it returns, such as a retried request or one that failed validation, the result returns synchronously.
 
-An Update-backed Operation carries two requirements. It targets a Workflow that already exists, so a `submitDecision` for a purchase with no approval running fails. And because it is an async backing, there is at most one per Operation invocation, though a handler can still combine it with sync side effects.
+An Update-backed Operation targets a Workflow that already exists, so `submitDecision` fails for a purchase with no running approval. As an async backing, it is limited to one per Operation invocation, though the handler can combine it with sync messaging.
 
 ### Reject a bad Update before it changes anything
 
-An Update can also refuse a request, which is the other thing a Signal cannot do. By the time a Signal handler runs the message has already been accepted and written to history; there is nowhere left to say no.
+An Update can refuse a request; a Signal cannot, because by the time its handler runs, the Signal is already in history.
 
-The approval uses that. A **validator** runs before the handler and rejects a second decision for an approval that has already been decided — without it, the later decision would silently overwrite the earlier one. A rejected Update never runs the handler, never reaches Event History, and surfaces to the caller as a failed Operation.
-
-The validator is the method annotated `@UpdateValidatorMethod` in the Workflow interface above. It takes the same arguments as the handler, returns nothing, and must not change Workflow state.
+The approval's **validator**, the `@UpdateValidatorMethod` in the Workflow interface above, rejects a second decision for an approval that is already decided. Without it, the later decision would overwrite the first. A rejected Update never runs the handler or reaches Event History, and the caller sees a failed Operation. A validator takes the same arguments as the handler, returns nothing, and must not change Workflow state.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-submit-decision-->
 
@@ -161,24 +170,18 @@ The validator is the method annotated `@UpdateValidatorMethod` in the Workflow i
 
 ## Do not poll for the decision
 
-There is one design mistake worth naming, because it is the most common one in this shape: reaching for a message to fetch the final decision.
+Don't use a message to fetch the final decision. The decision is the result of `requestApproval`, and it reaches the caller without anyone asking.
 
-The decision is the result of `requestApproval`, and it reaches the caller without anyone asking for it.
+When the handler started the approval, Nexus attached a [completion callback](/glossary#nexus-async-completion-callback) to the Workflow. When the Workflow returns, the handler's Namespace delivers the callback to the caller, which records a `NexusOperationCompleted` event in the caller Workflow's history, and the caller Workflow resumes with the decision. See the [asynchronous Operation lifecycle](/nexus/operations#asynchronous-operation-lifecycle).
 
-When the handler started the approval, Nexus attached a [completion callback](/glossary#nexus-async-completion-callback) to that Workflow. The moment the Workflow returns, the handler's Namespace delivers the callback to the caller's Nexus Machinery, which records a `NexusOperationCompleted` event in the caller Workflow's history. The caller Worker picks that up on its next Workflow Task, and the caller Workflow resumes with the decision. See the [asynchronous Operation lifecycle](/nexus/operations#asynchronous-operation-lifecycle) for the full sequence.
+Messages change a running approval; they don't read its outcome. Both also stop working once the approval completes: the Temporal Service accepts a Signal or an Update only while the Workflow is running, and rejects one sent to a closed Workflow with `NOT_FOUND: workflow execution already completed`. That happens as soon as the decision lands, not when the [Retention Period](/temporal-service/temporal-server#retention-period) expires.
 
-A caller that instead asks the approval for its status in a loop is polling for something already on its way.
-
-Messages are for changing a running approval or nudging it along, not for collecting its outcome. `remindApprover` asks the approver again. `submitDecision` supplies the decision and confirms it landed. Neither is a way to read the result.
-
-Both also stop working the moment the approval completes. The Temporal Service accepts a Signal or an Update only while the Workflow is still running, and rejects one sent to a closed Workflow with `NOT_FOUND: workflow execution already completed`. That happens as soon as the decision lands, not when the [Retention Period](/temporal-service/temporal-server#retention-period) later expires and the Execution is deleted. A second `submitDecision` for an approval that has already been decided fails this way, and so does any attempt to use these Operations to look up a past decision.
-
-If more than one system needs the outcome, see [step 8](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists) for how additional callers attach to a running approval and receive the same decision.
+If more than one system needs the outcome, [step 8](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists) shows how additional callers attach to a running approval and receive the same decision.
 
 ## Run the messaging Operations
 
-Restart the handler Worker to pick up the two new Operations, then nudge the approval left running
-at the end of [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-operations).
+The handler Worker from step 4 already serves these Operations. Nudge the approval left running at
+the end of [step 5](/develop/java/nexus/development-walkthrough?step=publish#run-the-operation).
 The Signal returns nothing:
 
 <RunThis>
@@ -201,8 +204,7 @@ Results:
   Result  null
 ```
 
-The Update returns the confirmation the caller needs, including the reminder count the Workflow has
-been keeping:
+The Update returns confirmation, including the Workflow's reminder count:
 
 <RunThis>
 
@@ -224,8 +226,8 @@ Results:
   Result  {"recorded":"APPROVED","remindersSent":1}
 ```
 
-That decision unblocks the approval Workflow, which returns and completes the `requestApproval`
-Operation still open from step 4. Collect its result:
+The decision unblocks the approval Workflow, which returns and completes the `requestApproval`
+Operation from step 5. Collect its result:
 
 <RunThis>
 
@@ -242,8 +244,7 @@ Results:
   Result  {"decision":"APPROVED"}
 ```
 
-Nothing polled for that decision. The Operation completed because the approval Workflow returned,
-and `result` waited on the completion callback rather than asking the approval for its status.
+Nothing polled for that decision: the Operation completed because the approval Workflow returned.
 
 
 :::tip RESOURCES

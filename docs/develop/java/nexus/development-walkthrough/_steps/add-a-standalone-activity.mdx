@@ -1,14 +1,20 @@
 import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
 
-The last Operation is `notifyRequester`, which tells the requester their approval was `APPROVED` or `DENIED`.
+:::note Keep these running
 
-This one is not a Workflow. It is a single outbound notification with no state, nothing to wait for, and nothing to orchestrate — the [Standalone Activity](/nexus/standalone-activity) shape chosen in [step 3](/develop/java/nexus/development-walkthrough?step=backing).
+This step uses the processes started earlier. Leave them running:
+
+- The development server, from [step 4](/develop/java/nexus/development-walkthrough?step=implement#start-the-development-server). It must have been started with `activity.enableCallbacks=true`, or `notifyRequester` fails with `completion callbacks are not enabled for this namespace`.
+- The handler Worker, from [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker).
+- The caller Worker, from [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow).
+
+:::
+
+The last Operation, `notifyRequester`, tells the requester whether their approval was `APPROVED` or `DENIED`. It is a single outbound notification with no state and nothing to wait for, so it is backed by a [Standalone Activity](/nexus/standalone-activity), as chosen in [step 3](/develop/java/nexus/development-walkthrough?step=backing).
 
 ## Write the Activity
 
-The Activity is an ordinary Activity. In this walkthrough it is a placeholder that does nothing — no email is sent. Real logic would call an email provider, push to a notification service, or write to an outbox.
-
-Nothing in it is Nexus-specific. The same Activity Function can be invoked from a Workflow and started behind this Operation with no code changes — what differs is what starts it, not how it is written.
+The Activity is ordinary and has nothing Nexus-specific in it; a Workflow could call the same Activity unchanged. In this walkthrough it is a placeholder that sends no email. Real logic would call an email provider, push to a notification service, or write to an outbox.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-activities-->
 
@@ -39,9 +45,9 @@ public interface ApprovalActivities {
 
 ## Back the Operation with it
 
-Use `TemporalOperationHandler` as with every other Operation, but start an Activity on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) instead of a Workflow. The Operation starts an Activity Execution with no parent Workflow and completes when the Activity returns.
+Use `TemporalOperationHandler`, but start an Activity on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) instead of a Workflow. The Operation starts an Activity Execution with no parent Workflow and completes when the Activity returns.
 
-This is the right shape whenever an Operation is one durable step behind a team boundary. The Activity supplies the durability — retries on the policy you set, timeouts you control, and a record of every attempt — and the Operation supplies the contract, so the notification is reachable by other teams without them sharing your code or your Namespace.
+The Activity provides retries, timeouts, and a record of every attempt. The Operation provides the contract, so other teams can trigger the notification without sharing your code or your Namespace.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-notify-requester-->
 
@@ -74,19 +80,17 @@ This is the right shape whenever an Operation is one durable step behind a team 
 
 ### Options an Activity-backed Operation requires
 
-`StartActivityOptions` needs an **Activity Id**, unique within the Namespace, which a Workflow-called Activity does not, because there is no parent Workflow to scope it.
+`StartActivityOptions` needs an **Activity Id**, unique within the Namespace, because there is no parent Workflow to scope it.
 
-The Task Queue is optional and defaults to the one the Operation is running on. Set it explicitly to run notifications on their own Worker fleet rather than the one the Endpoint targets.
+The Task Queue is optional and defaults to the one the Operation runs on. Set it to run notifications on their own Worker fleet.
 
-**To keep server retries from sending a second email, derive the Activity Id from the Nexus request Id.** The server retries Nexus start requests, and the request Id travels with them, so every retry lands on the same Activity Id and the notification goes out once. Without that, a retried request is a duplicate message to a real person.
+**Derive the Activity Id from the Nexus request Id so that server retries don't send a second email.** Retried Nexus start requests carry the same request Id, so every retry lands on the same Activity Id and the notification goes out once. Use the same pattern for any externally visible side effect that can't be undone, such as charging a card, posting to a webhook, or creating a ticket.
 
-The same pattern applies to any Operation whose work is externally visible and cannot be taken back: charging a card, posting to a webhook, creating a ticket, writing to a system with no dedup of its own. Deriving the Id from the request Id costs nothing and removes the whole class of duplicate-side-effect bugs.
-
-Deriving the Id from the Operation *input* instead is a different tool for a different job: it makes several Operations share one Activity Execution and all receive its result. See [Nexus Standalone Activity](/nexus/standalone-activity#required-options).
+To make several Operations share one Activity Execution and all receive its result, derive the Id from the Operation *input* instead. See [Nexus Standalone Activity](/nexus/standalone-activity#required-options).
 
 ## Register the Activity on the Worker
 
-Add the Activity implementation to the same Worker that hosts the Nexus Service. An Activity-backed Operation needs no Workflow implementation registered for it.
+Register the Activity implementation on the Worker that hosts the Nexus Service. An Activity-backed Operation needs no Workflow registration.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-handler-worker-->
 
@@ -111,14 +115,11 @@ Add the Activity implementation to the same Worker that hosts the Nexus Service.
 
 ## Cancellation needs heartbeating
 
-This notification finishes immediately, so cancellation never comes up for it. It does come up for any longer Activity-backed Operation, and the behavior differs from a Workflow-backed one: an Activity is not interrupted by a cancellation request, so an Activity that never heartbeats runs to completion or to its timeout no matter how many cancellations arrive.
-
-If you write a long-running Activity-backed Operation, read [Activity cancellation](/activity-execution#cancellation) before you ship it. None of the mechanics are Nexus-specific.
+This notification finishes immediately, so cancellation doesn't matter here. For a longer Activity-backed Operation it does: a cancellation request doesn't interrupt an Activity, so an Activity that never heartbeats runs until it completes or times out. Before shipping a long-running Activity-backed Operation, read [Activity cancellation](/activity-execution#cancellation).
 
 ## Run it
 
-Restart the handler Worker and call the Operation. From the command line it looks like every other
-Operation, which is the point:
+From the command line, this Operation looks like every other one:
 
 <RunThis>
 
@@ -140,8 +141,7 @@ Results:
   Result  {"deliveredTo":"tao@example.com"}
 ```
 
-The difference is on the handler side. There is no Workflow for this one, and the Activity
-Execution shows up with no parent:
+On the handler side there is no Workflow, only an Activity Execution with no parent:
 
 <RunThis>
 
@@ -156,14 +156,13 @@ temporal activity list --namespace approval-handler-namespace
   Completed   notify-0f816331-6b85-404d-9dfa-dd249041c1ea  NotifyRequester  now
 ```
 
-The Activity Id is the one the handler derived from the Nexus request Id. Run the same command
-again with a new `--operation-id` and a second Activity Execution appears; a server retry of the
-*same* request reuses the first one, which is what keeps a retry from sending a second
-notification.
+The handler derived the Activity Id from the Nexus request Id. Running the command again with a new
+`--operation-id` creates a second Activity Execution, but a server retry of the *same* request reuses
+the first.
 
 If this fails with `completion callbacks are not enabled for this namespace`, the development
 server was started without `activity.enableCallbacks=true`. See
-[Before you start](/develop/java/nexus/development-walkthrough?step=overview#start-the-development-server).
+[step 4](/develop/java/nexus/development-walkthrough?step=implement#start-the-development-server).
 
 
 :::tip RESOURCES

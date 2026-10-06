@@ -1,19 +1,19 @@
 import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
 
-[Step 3](/develop/java/nexus/development-walkthrough?step=backing#build-the-operation-that-needs-no-backing) implemented the one Operation that needs no backing. This step adds the one at the center of the Service: back `requestApproval` with the approval Workflow, then run a Worker that hosts the Service, the Workflow, and the Activities.
+This step implements the Operation at the center of the Service: back `requestApproval` with the approval Workflow, then start the development server and a Worker that hosts the Service, the Workflow, and the Activities.
 
 ## Write the approval Workflow
 
-The Workflow is an ordinary Temporal Workflow — the interactive one chosen in [step 3](/develop/java/nexus/development-walkthrough?step=backing#workflow). Nothing in it is Nexus-specific, and it could be started directly by a Client instead. What makes it interactive is the message handlers added in [step 7](/develop/java/nexus/development-walkthrough?step=messaging) and a Workflow Id you can predict.
+The approval is an ordinary Temporal Workflow, as chosen in [step 3](/develop/java/nexus/development-walkthrough?step=backing#workflow). Nothing in it is Nexus-specific, and a Client could start it directly. The message handlers added in [step 7](/develop/java/nexus/development-walkthrough?step=messaging) make it interactive.
 
-For the approval, it needs to:
+The Workflow:
 
-1. Run an Activity that evaluates whether the request can be auto-decided. In this walkthrough it is a placeholder that does nothing — real logic would apply policy, check limits, or call a risk service.
-2. Run an Activity that tells a human the request is waiting. Also a placeholder.
-3. Block until a decision arrives.
-4. Return `APPROVED` or `DENIED`.
+1. Runs an Activity that evaluates whether the request can be auto-decided. In this walkthrough it is a placeholder; real logic would apply policy, check limits, or call a risk service.
+2. Runs an Activity that tells a human the request is waiting. Also a placeholder.
+3. Blocks until a decision arrives.
+4. Returns `APPROVED` or `DENIED`.
 
-The blocking step is the reason this is a Workflow. It may wait weeks, across Worker restarts and deployments, and the wait costs nothing while it is idle.
+The blocking step is why this is a Workflow. It may wait weeks, across Worker restarts and deployments, and costs nothing while idle.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-impl-->
 
@@ -101,13 +101,11 @@ public class ApprovalWorkflowImpl implements ApprovalWorkflow {
 
 ## Implement the Operation with TemporalOperationHandler
 
-The Operation is what calls the Workflow.
+Use `TemporalOperationHandler` for every Temporal-backed Operation. It is the entry point to the [Temporal Operation Handler](/nexus/temporal-operation-handler), and it lets an Operation later gain a Signal or change its backing without changing shape.
 
-Use `TemporalOperationHandler` for every Temporal-backed Operation, including simple ones. It is the entry point to the [Temporal Operation Handler](/nexus/temporal-operation-handler) programming model, and starting with it means an Operation can later gain a Signal or change its backing without changing shape.
+`TemporalOperationHandler.create(...)` gives your start handler a context, a Nexus-aware Client, and the Operation input. Call `startWorkflow` on that Client and return its result. The Operation completes when the Workflow returns, delivering the Workflow's return value to the caller.
 
-`TemporalOperationHandler.create(...)` gives your start handler a context, a Nexus-aware Client, and the Operation input. Call `startWorkflow` on that Client and return its result. The Operation then completes when the Workflow returns, delivering the Workflow's return value to the caller.
-
-The Client is not an ordinary Temporal Client. It propagates bidirectional links and request Ids automatically, so the caller's Execution and the approval Workflow are connected in the UI without you wiring anything. Fetching your own Client inside a handler works, and the Operation behaves correctly, but you give up that linking. This is the single biggest reason to use the injected Client for anything that starts or messages an Execution.
+Use the injected Client for anything that starts or messages an Execution. It propagates bidirectional links and request Ids, so the caller's Execution and the approval Workflow are connected in the UI with no extra code. A Client you create yourself works, but loses that linking.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
 
@@ -134,11 +132,42 @@ The Client is not an ordinary Temporal Client. It propagates bidirectional links
 
 Set the Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id).
 
-By default, starting a Workflow whose Id is already running **fails the Operation**. That is the right default here: the Operation has only started successfully once its completion callback is attached to a Workflow, so failing loudly beats reporting success to a caller that would then wait forever. [Step 8](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists) revisits this option, because once another Operation can create the approval first, this Operation needs to attach to it instead of failing.
+By default, starting a Workflow whose Id is already running **fails the Operation**. The Operation has only started once its completion callback is attached to a Workflow, so failing loudly beats reporting success to a caller that would then wait forever. The code above already sets `USE_EXISTING` instead, because once another Operation can create the approval first, this one must attach to it. [Step 8](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists) explains why.
+
+## Start the development server
+
+The Worker needs a running Temporal Service and a Namespace to poll. Start the development server
+with two dynamic config values that later steps rely on:
+
+<RunThis>
+
+```bash title="Run 1 of 3: start the development server"
+temporal server start-dev \
+  --dynamic-config-value 'nexusoperation.enableStandalone=true' \
+  --dynamic-config-value 'activity.enableCallbacks=true'
+```
+
+</RunThis>
+
+`nexusoperation.enableStandalone` lets a Client start an Operation without a caller Workflow,
+which is how you run each Operation from the command line as you build it.
+`activity.enableCallbacks` allows a completion callback on a Standalone Activity Execution, which
+the `notifyRequester` Operation in [step 9](/develop/java/nexus/development-walkthrough?step=activity)
+needs.
+
+In a second terminal, create the Namespace the handler runs in:
+
+<RunThis>
+
+```bash title="Run 2 of 3: create the handler Namespace"
+temporal operator namespace create --namespace approval-handler-namespace
+```
+
+</RunThis>
 
 ## Run the Worker
 
-One Worker hosts the Nexus Service implementation, the Workflow implementation, and the Activity implementations. Its Task Queue has to match the Task Queue the Nexus Endpoint targets, which you create in the next step.
+One Worker hosts the Nexus Service, Workflow, and Activity implementations. It polls `approval-handler-task-queue`, which the Nexus Endpoint targets in the next step.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-handler-worker-->
 
@@ -161,13 +190,13 @@ One Worker hosts the Nexus Service implementation, the Workflow implementation, 
 
 <!--SNIPEND-->
 
-A Worker registering a Nexus Service does not need to be the same Worker that runs the backing Workflow. Splitting them is a normal choice for larger deployments — see [Nexus patterns](/nexus/patterns).
+The Worker that registers a Nexus Service doesn't have to run the backing Workflow. Larger deployments often split them; see [Nexus patterns](/nexus/patterns).
 
-Start it from the repository root, and leave it running:
+In that second terminal, start it from the repository root and leave it running:
 
 <RunThis>
 
-```bash title="Run 1 of 4: start the handler Worker"
+```bash title="Run 3 of 3: start the handler Worker"
 ./gradlew -q :core:execute \
   -PmainClass=io.temporal.samples.nexuswalkthrough.handler.HandlerWorker \
   --args="-target-host localhost:7233 -namespace approval-handler-namespace"
@@ -176,99 +205,19 @@ Start it from the repository root, and leave it running:
 </RunThis>
 
 Qualify the task as `:core:execute`. An unqualified `execute` also runs the `lambda-worker:starter`
-task, which ignores `-PmainClass` and starts an unrelated sample. Like any Worker this one runs
-until you stop it, so Gradle keeps reporting the task as executing.
+task, which ignores `-PmainClass` and starts an unrelated sample. The Worker runs until you stop it,
+so Gradle keeps reporting the task as executing.
 
-## Run the Operations
-
-The Service is now reachable through the Endpoint you created in
-[Before you start](/develop/java/nexus/development-walkthrough?step=overview#create-the-namespaces-and-the-endpoint),
-so both Operations written so far can be run from the command line. No caller Workflow and no caller
-Worker exist yet, and none are needed: `temporal nexus operation execute` starts a
-[Standalone Nexus Operation](/standalone-nexus-operation), which makes the CLI the caller.
-
-Start with `checkApprovalRequired` from [step 3](/develop/java/nexus/development-walkthrough?step=backing#build-the-operation-that-needs-no-backing).
-The sample sets the spend threshold at 500, so this amount is over it:
-
-<RunThis>
-
-```bash title="Run 2 of 4: check whether approval is required"
-temporal nexus operation execute \
-  --namespace approval-caller-namespace \
-  --endpoint approval-endpoint \
-  --service temporal.samples.approval.v1.ApprovalService \
-  --operation CheckApprovalRequired \
-  --operation-id check-1 \
-  --input '{"itemId":"laptop-42","requester":"tao","amount":2500}'
-```
-
-</RunThis>
-
-```
-Results:
-  Status  COMPLETED
-  Result  {"approvalRequired":true,"threshold":500}
-```
-
-The Operation names on the command line are `CheckApprovalRequired` and `RequestApproval`, not the
-`checkApprovalRequired` and `requestApproval` keys in the contract. The generator emits the wire
-name in Pascal case, and that is the name the Endpoint routes on.
-
-Now `requestApproval`. It is Workflow-backed and the approval blocks for a decision, so it does not
-return during the call. Use `start` rather than `execute`, which returns as soon as the Operation
-has started:
-
-<RunThis>
-
-```bash title="Run 3 of 4: request an approval"
-temporal nexus operation start \
-  --namespace approval-caller-namespace \
-  --endpoint approval-endpoint \
-  --service temporal.samples.approval.v1.ApprovalService \
-  --operation RequestApproval \
-  --operation-id approval-1 \
-  --input '{"itemId":"laptop-42","requester":"tao","amount":2500}'
-```
-
-</RunThis>
-
-`describe` shows it sitting open, which is the durability the Workflow backing buys you:
-
-<RunThis>
-
-```bash title="Run 4 of 4: describe the pending Operation"
-temporal nexus operation describe \
-  --namespace approval-caller-namespace --operation-id approval-1
-```
-
-</RunThis>
-
-```
-  Operation       RequestApproval
-  Status          Running
-  State           Started
-  OperationToken  eyJ0IjoxLCJucyI6ImFwcHJvdmFsLWhhbmRsZXItbmFtZXNwYWNlIiwid2lkIjoiYXBwcm92YWwtbGFwdG9wLTQyIn0
-
-Links: 1
-
-  Link  temporal:///namespaces/approval-handler-namespace/workflows/approval-laptop-42/...
-```
-
-Two things in that output are worth reading. The Workflow Id is `approval-laptop-42`, derived from
-the item id as decided in [step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id).
-And the link points from the Operation to the approval Workflow in the handler Namespace, which the
-Nexus-aware Client attached without any code to do it.
-
-The approval stays open until something decides it. [Step 7](/develop/java/nexus/development-walkthrough?step=messaging)
-adds the Operation that does, and closes this one out.
+The Worker is polling, but no caller can reach the Service yet.
+[Step 5](/develop/java/nexus/development-walkthrough?step=publish) publishes it and runs
+`requestApproval` for the first time.
 
 ## Handle failures
 
-Two failure categories behave differently, and callers can tell them apart.
+Callers can tell two kinds of failure apart:
 
-A **contract violation** — a payload the generated validator rejects — should surface as `BAD_REQUEST`. It is the caller's fault and retrying will not help. The generated validators aggregate every violation into one error, so the caller learns everything that was wrong in a single response.
-
-An **application failure** — the approval cannot proceed for a business reason — is a failed Operation. Whether it retries depends on the error type you raise. See [Nexus error handling](/nexus/error-handling).
+- A **contract violation**, a payload the generated validator rejects, surfaces as `BAD_REQUEST`. Retrying won't help, and the single error lists every violation.
+- An **application failure**, where the approval cannot proceed for a business reason, fails the Operation. Whether it retries depends on the error type you raise. See [Nexus error handling](/nexus/error-handling).
 
 
 :::tip RESOURCES
