@@ -13,9 +13,9 @@ This page defines some of the underlying concepts used in [Worker Versioning](/p
 
 - [Worker Deployments](#deployments)
 - [Worker Deployment Versions](#deployment-versions)
-- [Versioning Behaviors](#versioning-behaviors)
+- [Versioning behaviors](#versioning-behaviors)
 - [Versioning Definitions](#versioning-definitions)
-- [Versioning Statuses](#versioning-statuses)
+- [Versioning statuses](#versioning-statuses)
 - [Continue-as-new, Child Workflow, and Retry Semantics](#inheritance-semantics)
 
 ## Worker Deployments {/* #deployments */}
@@ -31,7 +31,7 @@ The deployment name groups related Workers across versions, and the Build ID ide
 Each Deployment Version consists of Workers that share the same code build and environment.
 When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
 
-## Versioning Behaviors {/* #versioning-behaviors */}
+## Versioning behaviors {/* #versioning-behaviors */}
 
 You can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade, in your Workflow configuration using an SDK or the CLI.
 
@@ -70,7 +70,7 @@ Since Independent Activities aren't part of a Workflow's version, they can run i
 - **Ramping Worker Deployment Version**: The version where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and Auto-Upgrade Workflows will go to the Current Version.
 - **Target Worker Deployment Version**: The version your Workflow will upgrade to next. This could be the Deployment's Current Version or the Ramping Version. For example, if an Auto-Upgrade Workflow was running on Version A, the Current Version is B, and there is a 5% ramp to C, there is a 95% chance that its Target Version is B and 5% that it's C. Workflow ID determines whether the workflow falls into the 95% group or the 5% group.
 
-## Versioning Statuses {/* #versioning-statuses */}
+## Versioning statuses {/* #versioning-statuses */}
 
 A Worker Deployment Version moves through the following states:
 
@@ -92,14 +92,14 @@ A Workflow can start a new run through:
 - Retrying per its [Retry Policy](/encyclopedia/retry-policies)
 - Starting another iteration of a [Cron Job](/cron-job) (superseded by [Schedules](/schedule))
 
-### Inheritance Rules Overview
+### Inheritance rules overview
 
 Auto-upgrade Workflows never inherit versions.
 By default, Pinned workflows will pass their version to any Pinned children.
 
 This section provides more detail on specific inheritance scenarios.
 
-### Inheritance by Scenario
+### Inheritance by scenario
 
 #### Child Workflows
 
@@ -143,7 +143,7 @@ This section provides more detail on specific inheritance scenarios.
 
 - **Never inherit** versioning behavior or version
 
-### Versioning Override Inheritance
+### Versioning Override inheritance
 
 - Children, crons, retries, and continue-as-new inherit the source run's override **if**:
   - The override is pinned, **AND**

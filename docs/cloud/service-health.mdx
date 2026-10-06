@@ -139,7 +139,7 @@ See [operations and metrics](/cloud/high-availability) for Namespaces with High 
 - [temporal\_cloud\_v1\_replication\_lag\_p95](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p95)
 - [temporal\_cloud\_v1\_replication\_lag\_p50](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p50)
 
-## Monitoring Trends Against Limits {/* #rps-aps-rate-limits */}
+## Monitoring trends against limits {/* #rps-aps-rate-limits */}
 
 Tracking trends against your account limits is the most important throttling signal to monitor. Unlike [Resource Exhaustion](#detecting-resource-exhaustion), which usually self-heals through retries, hitting a limit slows or stalls progress until the workload backs off or your capacity is increased.
 
@@ -226,7 +226,7 @@ To understand a spiky workload, always read all three metrics in the row as a se
 
 A non-zero throttle value means throttling occurred during that window, even when the count sits comfortably below the limit. Most often this reflects a sub-minute burst in your own workload. If you cannot find a matching burst in your SDK metrics, the cause may be a shared limit or another Cloud-side condition rather than your namespace. In that case, contact [Temporal Support](/evaluate/cloud/support#support-ticket). For spiky or latency-sensitive workloads, alert on the throttle metric directly (any value greater than zero) rather than relying only on a count-versus-limit threshold, which can hide sub-minute bursts. The same logic applies to all three limit types — Actions (APS), service requests (RPS), and operations — using each row of the [limit / count / throttle table](#rps-aps-rate-limits) above.
 
-## Detecting Resource Exhaustion
+## Detecting resource exhaustion
 
 Resource exhaustion happens when a single resource (a Namespace, Task Queue, or Workflow ID) receives a burst of operations larger than that resource can absorb in the moment. The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` increments and `ResourceExhausted` gRPC errors are returned to the client. SDKs retry these errors gracefully, so workflow progress is rarely impacted.
 
