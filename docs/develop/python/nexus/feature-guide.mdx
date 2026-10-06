@@ -12,11 +12,14 @@ tags:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
-:::caution[Currently in: Pre-release]
-This Feature Guide includes the new Nexus developer experience: pre-release APIs for the [Temporal Operation Handler](/nexus/temporal-operation-handler) and [Nexus Standalone Activity](/nexus/standalone-activity). These APIs are experimental and subject to change.
-:::
+<ReleaseNoteHeader type="prerelease">
+  Three parts of this guide use pre-release APIs: the
+  [Temporal Operation Handler](/nexus/temporal-operation-handler),
+  [Nexus Standalone Activity](/nexus/standalone-activity), and [NexGen](/nexus/nexgen). Every section that uses them is
+  labeled. The rest of this page does not use pre-release APIs. These APIs are experimental and subject to change.
+</ReleaseNoteHeader>
 
 Use [Temporal Nexus](/evaluate/features/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
@@ -97,7 +100,8 @@ Defining a clear contract for the Nexus Service is crucial for smooth communicat
 In this example, there is a service module that describes the Service and Operation names along with input/output types
 for caller Workflows to use the Nexus Endpoint.
 
-You can hand-write that module, but the preferred way is to generate it with [NexGen](/nexus/nexgen).
+You can hand-write that module, but the preferred way is to generate it with [NexGen](/nexus/nexgen), which is in
+[Pre-release](/evaluate/product-release-stages#pre-release).
 You write the contract once as a JSON or YAML definition file and run `nexgen` against it, and it emits the typed models,
 runtime validators, and the Service definition itself.
 
@@ -114,6 +118,12 @@ sample contract and the [Definition files](https://github.com/temporalio/nexgen#
 `nexgen` README for the file format.
 
 ## Develop a Nexus Service and Operation handlers {/* #develop-nexus-service-operation-handlers */}
+
+<ReleaseNoteHeader type="prerelease">
+  This section and its subsections use the [Temporal Operation Handler](/nexus/temporal-operation-handler) APIs,
+  including the [Nexus Standalone Activity](/nexus/standalone-activity) backing. They are experimental and subject to
+  change.
+</ReleaseNoteHeader>
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous. They can invoke underlying
