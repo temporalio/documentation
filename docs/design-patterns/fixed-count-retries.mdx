@@ -190,6 +190,7 @@ public class PaymentWorkflowImpl implements PaymentWorkflow {
 
 ```typescript
 // workflows.ts
+import { RetryState } from '@temporalio/common';
 import * as wf from '@temporalio/workflow';
 import type * as activities from './activities';
 
@@ -202,7 +203,7 @@ export async function paymentWorkflow(orderId: string): Promise<string> {
     try {
         return await chargePaymentApi(orderId);
     } catch (err) {
-        if (err instanceof wf.ActivityFailure && err.retryState === wf.RetryState.MAXIMUM_ATTEMPTS_REACHED) {
+        if (err instanceof wf.ActivityFailure && err.retryState === RetryState.MAXIMUM_ATTEMPTS_REACHED) {
             // All retries exhausted — handle the failure here.
             // Options: alert on-call, trigger a compensation activity, or escalate to a human.
             wf.log.error('Payment failed: all 3 attempts exhausted', { orderId });

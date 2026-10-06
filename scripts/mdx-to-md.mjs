@@ -141,7 +141,7 @@ const EVENT_HISTORY_DEMO_COMPONENTS = COMPONENTS_BY_STRATEGY("event-history-demo
 
 // Availability labels for ReleaseNoteHeader resolved `type` values.
 // Mirrors ReleaseNoteHeader.BASE_RELEASE_STAGES labels in the React component.
-const RELEASE_NOTE_LABELS = {
+export const RELEASE_NOTE_LABELS = {
   prerelease: "Pre-release",
   publicPreview: "Public Preview",
   publicpreview: "Public Preview",
