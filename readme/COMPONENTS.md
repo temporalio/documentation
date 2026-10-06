@@ -100,7 +100,7 @@ For example:
 
 ```
 <RelatedReadItem
-    path="/cloud/metrics/prometheus-grafana"
+    path="/cloud/metrics/openmetrics/metrics-integrations"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide"
 />
@@ -315,7 +315,7 @@ Usage:
 
 ```
 <RelatedReadContainer>
-  <RelatedReadItem path="/cloud/metrics/prometheus-grafana"
+  <RelatedReadItem path="/cloud/metrics/openmetrics/metrics-integrations"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide" />
   <RelatedReadItem path="/cloud/worker-health"
