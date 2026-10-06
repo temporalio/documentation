@@ -128,6 +128,8 @@ The library needs a small config module with lease and backoff defaults, a funct
 
 Create a file named `distributed_lock/config.py`:
 
+<!--SNIPSTART throwaway-coverage-test-->
+[config.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/config.py)
 ```python
 # THROWAWAY: testing the Snipsync Coverage workflow
 # config.py
@@ -155,6 +157,7 @@ def permit_workflow_id(resource: str, slot: str) -> str:
 async def connect_temporal_client() -> Client:
     return await Client.connect(**ClientConfig.load_client_connect_config())
 ```
+<!--SNIPEND-->
 
 The `permit_workflow_id` function produces IDs like `permit:gpu-pool:2`. That string is the lock: Temporal will reject any second attempt to start a Workflow with the same ID while the first is running.
 The default lease and backoff values are conservative starting points. Adjust these values based on the resource you're gating.
