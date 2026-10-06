@@ -90,7 +90,7 @@ For a few common tasks, another approach works better:
 
 Keeping per-workflow work on these paths gives you strongly consistent reads and keeps the shared Visibility index healthy under load.
 
-## Legacy: standard Visibility {/* #standard-visibility */}
+## Legacy: Standard Visibility {/* #standard-visibility */}
 
 Prior to Temporal Server v1.20, Temporal had two Visibility modes: "standard" and "advanced." Standard Visibility supported only predefined filters such as Workflow Type, Workflow Id, Run Id, and Execution Status, without custom Search Attributes. Advanced Visibility required Elasticsearch.
 
