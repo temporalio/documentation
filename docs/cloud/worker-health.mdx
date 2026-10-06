@@ -23,7 +23,7 @@ This page is a guide to monitoring a Temporal Worker fleet and covers the follow
 
 This page assumes you are monitoring both Worker-side SDK metrics and Cloud-side metrics. Use SDK metrics to understand
 what your Workers are doing, and Cloud metrics to understand what Temporal Cloud is seeing at the Task Queue and service
-level. For an overview of how these signals fit together, see [Temporal Cloud metrics](/cloud/metrics).
+level. For an overview of how these signals fit together, see [metric sources](/cloud/monitor#understand-metric-sources).
 
 :::tip
 
@@ -41,13 +41,13 @@ These alerts should be configured and understood first to gain intelligence into
 - Alert at >200ms for your p99 value
 - Plot >100ms for your p95 value
 
-2. Create a [Grafana](/cloud/metrics/prometheus-grafana) panel called Sync Match Rate.
+2. Create a [Grafana](/cloud/metrics/openmetrics/metrics-integrations#prometheus-grafana) panel called Sync Match Rate.
    See the [Sync Match Rate section](#sync-match-rate) to explore example queries and appropriate responses that accompany these values.
 
 - Alert at \<95% for your p99 value
 - Plot \<99% for your p95 value
 
-3. Create a [Grafana](/cloud/metrics/prometheus-grafana) panel called Poll Success Rate.
+3. Create a [Grafana](/cloud/metrics/openmetrics/metrics-integrations#prometheus-grafana) panel called Poll Success Rate.
    See the [Detect greedy Workers section](#detect-greedy-workers) for example queries and appropriate responses that accompany these values.
 
 - Alert at \<90% for your p99 value
