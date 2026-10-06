@@ -194,6 +194,8 @@ exceptions:
   - Terminate
   - Delete
   - Paused
+  # Exact feature name; generic "streams" should remain sentence-cased.
+  - Workflow Streams
   # Exact phrases; "Audit Logging" is the canonical term in Temporal/terms.yml,
   # so keep "Log"/"Logs" out of the single-word list above.
   - Audit Log
