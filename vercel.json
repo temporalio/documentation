@@ -55,6 +55,36 @@
   ],
   "redirects": [
     {
+      "source": "/cloud/metrics",
+      "destination": "/cloud/monitor",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/promql",
+      "destination": "/cloud/metrics/openmetrics",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/general-setup",
+      "destination": "/cloud/metrics/openmetrics",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/reference",
+      "destination": "/cloud/metrics/openmetrics/metrics-reference",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/prometheus-grafana",
+      "destination": "/cloud/metrics/openmetrics/metrics-integrations",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/openmetrics/migration-guide",
+      "destination": "/cloud/metrics/openmetrics/faq",
+      "permanent": true
+    },
+    {
       "source": "/references/errors",
       "destination": "/references/workflow-task-errors",
       "permanent": true
@@ -1274,7 +1304,7 @@
     },
     {
       "source": "/cloud/how-to-monitor-temporal-cloud-metrics",
-      "destination": "/cloud/metrics"
+      "destination": "/cloud/monitor"
     },
     {
       "source": "/cloud/introduction/security-cloud/:path*",
@@ -1310,7 +1340,7 @@
     },
     {
       "source": "/kb/prometheus-grafana-setup-cloud",
-      "destination": "/cloud/metrics#prometheus-and-grafana-setup"
+      "destination": "/cloud/metrics/openmetrics/metrics-integrations#prometheus-grafana"
     },
     {
       "source": "/kb/cloud-namespace-naming-considerations",
