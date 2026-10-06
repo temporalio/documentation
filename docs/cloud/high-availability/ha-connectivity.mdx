@@ -23,7 +23,7 @@ See [How to access a Namespace](/cloud/namespaces#access-namespaces) for the gen
 Format: `<namespace>.<account>.tmprl.cloud:7233`
 
 The Namespace Endpoint always connects to whichever region is currently active.
-Under the hood, it is a CNAME that points at the active region's Regional Endpoint.
+Under the hood, it is a CNAME that points at the active region's regional record.
 When Temporal Cloud fails the Namespace over, it updates the CNAME to point at the new active region.
 The DNS <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a> is 15 seconds, so Clients converge within about 30 seconds with no configuration change on your side.
 
@@ -128,7 +128,7 @@ This is the **only** place in Temporal Cloud where you can depend on Temporal-ma
 
 For private connectivity, your job is to make sure that:
 
-- Override the Regional Endpoint's DNS zone to resolve to a VPC Endpoint.
+- Override the regional records (`<provider>-<region>.region.tmprl.cloud`) to resolve to a VPC Endpoint.
 - Ensure network connectivity between the two regions.
 
 :::warning Do not override the Namespace Endpoint in your private hosted zone
@@ -307,6 +307,6 @@ The following tables list the available Temporal regions and the DNS record over
 
 <JsonTable filename="/json/privatelink_gcp.json" />
 
-When using a Namespace with High Availability features, the Namespace's DNS record `<ns>.<account>.tmprl.cloud` points to a regional DNS record in the format `<provider>-<region>.region.tmprl.cloud`, where `<provider>-<region>` is the currently active region for your Namespace.
+When using a Namespace with High Availability features, the Namespace's DNS record `<ns>.<account>.tmprl.cloud` points to a regional record in the format `<provider>-<region>.region.tmprl.cloud`, where `<provider>-<region>` is the currently active region for your Namespace.
 
 During failover, Temporal Cloud changes the target of the Namespace DNS record from one region to another. Namespace DNS records are configured with a 15-second <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a>. Any DNS cache should re-resolve the record within this time. As a rule of thumb, receiving an updated DNS record takes about twice (2x) the TTL — clients should converge to the newly targeted region within, at most, a 30-second delay, assuming their resolver and language runtime honor the TTL.

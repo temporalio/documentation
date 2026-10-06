@@ -301,7 +301,7 @@ Both mTLS and API key authentication support both Namespace Endpoints and Region
 | ------- | -------------------- | -------------------------------- |
 | Single region | Namespace Endpoint | An A record for each Namespace Endpoint, such as `my-namespace.my-account.tmprl.cloud`, or a wildcard record for `*.my-account.tmprl.cloud`. |
 | Single region | Regional Endpoint | A single record for the Regional Endpoint in the Namespace's region. |
-| Multiple regions with High Availability | Namespace Endpoint (recommended) | A record for each regional FQDN, such as `aws-us-east-1.region.tmprl.cloud`, that the Namespace Endpoint can CNAME to. Keep the Temporal-managed Namespace CNAME so it follows the active region on failover. |
+| Multiple regions with High Availability | Namespace Endpoint (recommended) | A record overriding each regional record, such as `aws-us-east-1.region.tmprl.cloud`, that the Namespace Endpoint can CNAME to. Keep the Temporal-managed Namespace CNAME so it follows the active region on failover. |
 | Multiple regions with High Availability | Regional Endpoint (not recommended) | A single record for the Regional Endpoint in the client's active region. To withstand a regional outage, run a Worker pool in each region and configure each pool to use its region's Regional Endpoint. |
 
 Configure these records to resolve to the corresponding region's PrivateLink or Private Service Connect endpoint.
