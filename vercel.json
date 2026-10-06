@@ -1304,7 +1304,7 @@
     },
     {
       "source": "/cloud/how-to-monitor-temporal-cloud-metrics",
-      "destination": "/cloud/metrics"
+      "destination": "/cloud/monitor"
     },
     {
       "source": "/cloud/introduction/security-cloud/:path*",
