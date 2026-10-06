@@ -122,7 +122,7 @@ Temporal owns replication lag.
 **What guarantees are available?**
 There is no SLA for replication lag.
 Temporal recommends that customers do not trigger failovers except for testing or emergency situations.
-The High Availability [SLA](https://temporal.io/sla) means Temporal will handle failovers and ensure high availability.
+By default, Temporal fails over Namespaces that use High Availability automatically during an outage. For recovery targets, see [Outages and Recovery Objectives](/cloud/rpo-rto).
 Temporal also monitors replication lag.
 Customers who decide to trigger failovers should look at this metric before moving forward.
 
