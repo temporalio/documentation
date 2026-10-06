@@ -360,7 +360,7 @@ For additional information, see [Inject work into the main Workflow](/handling-m
 ### Add async handlers {/* #async-handlers */}
 
 Signal and Update handlers can be asynchronous as well as blocking.
-Using asynchronous calls allows you to wait for Activities, Child Workflows, Durable Timers, wait conditions, etc.
+Using asynchronous calls allows you to wait for Activities, Child Workflows, Durable Timers, wait conditions, and so on.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
 To use asynchronous handlers safely, understand what can go wrong.
@@ -428,7 +428,7 @@ end
 
 After updating the code for asynchronous calls, your Update handler can schedule an Activity and await the result.
 Although an async Signal handler can initiate similar network tasks, using an Update handler allows the Client to receive a result or error once the Activity completes.
-This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
+This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, and so on.
 
 ### Use wait conditions {/* #block-with-wait */}
 

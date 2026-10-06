@@ -23,7 +23,7 @@ When serializing to Payloads, the Payload Converter is applied first to convert 
 
 Use a custom Payload Codec to transform your Payloads; for example, implementing compression and/or encryption on your Workflow Execution data.
 
-### Operational Chain
+### Operational chain
 
 In practice, the [Payload Converter](/payload-converter) and Payload Codec operate in a chain to handle data securely. Incoming data first passes through a Payload Converter through the `toPayload` method, turning application objects into Payloads. These Payloads are then processed by the Payload Codec through the `encode` method, which adjusts the Payload according to the required security or efficiency needs before it is sent to the Temporal Cluster.
 
