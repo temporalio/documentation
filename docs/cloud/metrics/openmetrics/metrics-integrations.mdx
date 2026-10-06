@@ -121,6 +121,11 @@ SigNoz is an OpenTelemetry-native observability platform, available as a cloud s
 
 For SigNoz-side details, see the [SigNoz integration page](https://signoz.io/docs/integrations/temporal-cloud-metrics/).
 
+### Parseable
+
+Parseable uses an OpenTelemetry Collector to scrape Temporal Cloud's OpenMetrics endpoint and export metrics to Parseable over OTLP/HTTP.
+Follow the [Parseable Temporal Cloud metrics guide](https://www.parseable.com/docs/ingest-data/ai-agents/temporal?tab=temporal-cloud-metrics) to configure the Collector and verify that metrics appear in Parseable.
+
 ### Prometheus \+ Grafana {/* #prometheus-grafana */}
 
 Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.

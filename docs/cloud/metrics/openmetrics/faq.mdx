@@ -1,0 +1,35 @@
+---
+id: faq
+title: OpenMetrics FAQ
+sidebar_label: FAQ
+description: Answers to common questions about querying, scraping limits, and missing Temporal Cloud OpenMetrics data.
+tags:
+  - Metrics
+  - OpenMetrics
+  - Observability
+  - Temporal Cloud
+---
+
+## Which Cloud metrics and labels are available?
+
+OpenMetrics includes metrics for Activity outcomes and latency, Task Queue backlog, Namespace usage and limits, service requests, and Workflow outcomes. Metrics can include labels such as `region`, `temporal_task_queue`, and `temporal_workflow_type`. Some high-cardinality labels, including `temporal_activity_type`, require you to opt in when scraping.
+
+For the current list of metric names, descriptions, and labels, see the [OpenMetrics metrics reference](/cloud/metrics/openmetrics/metrics-reference).
+
+## Can I query Cloud metrics directly?
+
+The OpenMetrics endpoint returns the most recently completed aggregation window for scraping. It does not provide a time-series query API. Configure an [observability tool](/cloud/metrics/openmetrics/metrics-integrations) to collect and retain the metrics, then query them in that tool.
+
+## How often can I scrape, and how much data can I retrieve?
+
+See [OpenMetrics API limits](/cloud/metrics/openmetrics/api-reference#api-limits) for the request and datapoint limits. If a scrape exceeds the datapoint limit, use [Namespace or metric filtering](/cloud/metrics/openmetrics/api-reference#managing-high-cardinality) to reduce the response size.
+
+## Why are some metrics missing from a scrape?
+
+The OpenMetrics endpoint returns only metrics reported during its one-minute aggregation window. For example, `temporal_cloud_v1_workflow_failed_count` is absent if no Workflows failed in that window. A Task Queue with no activity can also have no metrics in a scrape. The set of returned metrics can therefore vary between scrapes.
+
+If a dashboard or alert should treat an absent series as zero, handle that in your observability tool. For example, in Prometheus:
+
+```promql
+sum(temporal_cloud_v1_workflow_failed_count) or vector(0)
+```
