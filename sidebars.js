@@ -1838,7 +1838,7 @@ module.exports = {
         'references/commands',
         'references/service-configuration',
         'references/dynamic-configuration',
-        'references/errors',
+        'references/workflow-task-errors',
         'references/events',
         'references/client-environment-configuration',
         'references/failures',

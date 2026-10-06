@@ -1,0 +1,486 @@
+---
+id: workflow-task-errors
+title: Workflow Task errors reference
+sidebar_label: Errors
+description: Workflow Task failure causes and Resource Exhausted causes in Temporal, with what triggers each one and how to resolve it in your Workflow or Worker.
+toc_max_heading_level: 4
+tags:
+  - Reference
+---
+
+:::info
+
+For the Failure types that Workflows, Activities, and Nexus Operations return, see the [Temporal Failures reference](/references/failures).
+For symptom-based guidance, see [Troubleshooting Workflow Execution failures](/troubleshooting/execution-failures).
+
+:::
+
+When a [Workflow Task](/tasks#workflow-task) fails, the Temporal Service records a [WorkflowTaskFailed](/references/events#workflowtaskfailed) Event with a cause in `workflow_task_failed_event_attributes`.
+The Temporal Service retries the failed Workflow Task, and the Workflow Execution stays open unless the entry says otherwise.
+Many of these failures come from a [Command](/references/commands) the Worker sent with unset or invalid attributes.
+
+Workflow Task failure causes are defined in the [`WorkflowTaskFailedCause` enum](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/failed_cause.proto) of the Temporal gRPC API.
+The [Resource Exhausted causes](#resource-exhausted-causes) on this page come from the `ResourceExhaustedCause` enum in the same file.
+They're carried on a gRPC `RESOURCE_EXHAUSTED` response, not on a Workflow Task failure Event.
+
+Each error on this page lists its enum value as **Cause**.
+
+## Command attribute errors
+
+The Temporal Service validates the attributes of each Command.
+If a required attribute is unset or a value exceeds a size limit, the Workflow Task fails.
+The SDK sets most Command attributes, so an unset attribute can indicate an outdated SDK.
+
+### Bad Cancel Timer Attributes {/* #bad-cancel-timer-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_CANCEL_TIMER_ATTRIBUTES`
+
+The [CancelTimer](/references/commands#canceltimer) Command is missing a Timer ID.
+
+Set a valid Timer ID and deploy the change to your Workers.
+
+### Bad Cancel Workflow Execution Attributes {/* #bad-cancel-workflow-execution-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_CANCEL_WORKFLOW_EXECUTION_ATTRIBUTES`
+
+The [CancelWorkflowExecution](/references/commands#cancelworkflowexecution) Command has unset attributes.
+
+Set the missing attributes and deploy the change to your Workers.
+
+### Bad Complete Workflow Execution Attributes {/* #bad-complete-workflow-execution-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_COMPLETE_WORKFLOW_EXECUTION_ATTRIBUTES`
+
+The [CompleteWorkflowExecution](/references/commands#completeworkflowexecution) Command has unset attributes, or its result exceeds the Payload size limit.
+
+Set the missing attributes.
+If the Workflow result is too large, store the data in external storage and return a reference to it.
+See [Payload size limit](/troubleshooting/blob-size-limit-error).
+
+### Bad Continue as New Attributes {/* #bad-continue-as-new-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_CONTINUE_AS_NEW_ATTRIBUTES`
+
+The [ContinueAsNewWorkflowExecution](/references/commands#continueasnewworkflowexecution) Command has an unset or invalid attribute.
+
+Set the missing attributes.
+If the input or Memo exceeds the size limit, reduce its size.
+Check that every [Search Attribute](/search-attribute) the new run sets is registered on the Namespace.
+
+### Bad Fail Workflow Execution Attributes {/* #bad-fail-workflow-execution-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_FAIL_WORKFLOW_EXECUTION_ATTRIBUTES`
+
+The [FailWorkflowExecution](/references/commands#failworkflowexecution) Command has unset attributes, such as a missing Failure, or its Failure exceeds the size limit.
+
+Reduce the size of the error details the Workflow returns.
+If the attributes are unset, upgrade to the latest release of your [Temporal SDK](/encyclopedia/architecture/temporal-sdks).
+
+### Bad Modify Workflow Properties Attributes {/* #bad-modify-workflow-properties-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_MODIFY_WORKFLOW_PROPERTIES_ATTRIBUTES`
+
+The [ModifyWorkflowProperties](/references/commands#modifyworkflowproperties) Command has unset attributes, or the [Memo](/workflow-execution#memo) update exceeds the size limit.
+
+Set the missing attributes and reduce the size of the Memo.
+
+### Bad Record Marker Attributes {/* #bad-record-marker-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_RECORD_MARKER_ATTRIBUTES`
+
+The [RecordMarker](/references/commands#recordmarker) Command has an unset or invalid [Marker](/references/events#markerrecorded) name.
+
+The SDK issues RecordMarker Commands, not your Workflow code.
+Upgrade to the latest release of your Temporal SDK.
+
+### Bad Request Cancel Activity Attributes {/* #bad-request-cancel-activity-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_REQUEST_CANCEL_ACTIVITY_ATTRIBUTES`
+
+The [RequestCancelActivityTask](/references/commands#requestcancelactivitytask) Command has unset attributes, or the SDK's History Builder is in an invalid state.
+
+Upgrade to the latest release of your Temporal SDK.
+If the error continues, check your Workflow code for [non-deterministic changes](/workflow-definition#non-deterministic-change).
+
+### Bad Request Cancel External Workflow Execution Attributes {/* #bad-request-cancel-external-workflow-execution */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_ATTRIBUTES`
+
+The [RequestCancelExternalWorkflowExecution](/references/commands#requestcancelexternalworkflowexecution) Command has unset or invalid attributes.
+
+Set any missing attributes, such as the Workflow ID or Run ID, and shorten any fields that exceed length limits.
+
+A Workflow Task can't both start a [Child Workflow](/child-workflows) and request its cancellation.
+If your Workflow does both in the same Workflow Task, request the cancellation in a later Workflow Task.
+
+### Bad Request Cancel Nexus Operation Attributes {/* #bad-request-cancel-nexus-operation-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_REQUEST_CANCEL_NEXUS_OPERATION_ATTRIBUTES`
+
+The [RequestCancelNexusOperation](/references/commands#requestcancelnexusoperation) Command has unset or invalid attributes.
+
+Read the reason in the error message for the attribute that failed validation.
+
+### Bad Schedule Activity Attributes {/* #bad-schedule-activity-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_SCHEDULE_ACTIVITY_ATTRIBUTES`
+
+The [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command has unset or invalid attributes, or the Activity input exceeds the Payload size limit.
+
+Set a Start-To-Close Timeout or a Schedule-To-Close Timeout on the [Activity](/activities).
+If the input is too large, store the data in external storage and pass a reference to the Activity.
+
+### Bad Schedule Nexus Operation Attributes {/* #bad-schedule-nexus-operation-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_SCHEDULE_NEXUS_OPERATION_ATTRIBUTES`
+
+The [ScheduleNexusOperation](/references/commands#schedulenexusoperation) Command has unset or invalid attributes.
+For example, the Nexus Endpoint name in the caller Workflow doesn't exist.
+
+Read the reason in the error message for the attribute that failed validation.
+
+### Bad Search Attributes {/* #bad-search-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_SEARCH_ATTRIBUTES`
+
+The Workflow set unset or invalid [Search Attributes](/search-attribute).
+The Workflow Task keeps failing on retry until you fix the Search Attributes.
+
+Register each Search Attribute on the Namespace with the type your Workflow uses, and keep values within the size limits.
+
+### Bad Signal Input Size {/* #bad-signal-input-size */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_SIGNAL_INPUT_SIZE`
+
+The input of a [Signal](/sending-messages#sending-signals) sent to another Workflow Execution exceeds the size limit.
+
+Reduce the size of the Signal input and deploy the change to your Workers.
+
+### Bad Signal Workflow Execution Attributes {/* #bad-signal-workflow-execution-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_SIGNAL_WORKFLOW_EXECUTION_ATTRIBUTES`
+
+The [SignalExternalWorkflowExecution](/references/commands#signalexternalworkflowexecution) Command has unset or invalid attributes, or its input exceeds the size limit.
+
+Set the missing attributes and reduce the size of the input.
+
+### Bad Start Child Execution Attributes {/* #bad-start-child-execution-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_START_CHILD_EXECUTION_ATTRIBUTES`
+
+The [StartChildWorkflowExecution](/references/commands#startchildworkflowexecution) Command has unset or invalid attributes, or its input exceeds the size limit.
+
+Reduce the size of the Child Workflow input.
+Check that every Search Attribute the Child Workflow sets is registered on the Namespace.
+
+### Bad Start Timer Attributes {/* #bad-start-timer-attributes */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_START_TIMER_ATTRIBUTES`
+
+The [StartTimer](/references/commands#starttimer) Command is missing a Timer ID.
+
+Set a valid Timer ID and deploy the change to your Workers.
+
+### Cause Bad Update {/* #cause-bad-update */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_UPDATE_WORKFLOW_EXECUTION_MESSAGE`
+
+A [Workflow Update](/sending-messages#sending-updates) message from the [Worker](/workers#worker) (Acceptance, Rejection, or Response) has an invalid format or is missing required fields.
+
+This error can indicate an unsupported SDK.
+Use a [supported SDK](/encyclopedia/architecture/temporal-sdks) and upgrade to its latest release.
+
+## Duplicate ID errors
+
+### Schedule Activity Duplicate ID {/* #schedule-activity-duplicate-id */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_SCHEDULE_ACTIVITY_DUPLICATE_ID`
+
+The Workflow scheduled an [Activity](/activities) with an Activity ID that's already in use in the Workflow Execution.
+
+Give each Activity in the Workflow a unique Activity ID.
+
+### Start Timer Duplicate ID {/* #start-timer-duplicate-id */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_START_TIMER_DUPLICATE_ID`
+
+The Workflow started a Timer with a Timer ID that's already in use in the Workflow Execution.
+
+Give each Timer in the Workflow a unique Timer ID.
+
+## Pending operation limit errors
+
+A Workflow Execution has a maximum number of pending operations of each type.
+When a Command would exceed a limit, the Workflow Task fails and is retried.
+See [Workflow Execution limits](/workflow-execution/limits#workflow-execution-limits).
+
+On a self-hosted Temporal Service, you can change these limits with [dynamic configuration](/references/dynamic-configuration#size-limit-settings).
+
+### Pending Activities Limit Exceeded {/* #pending-activities-limit-exceeded */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_PENDING_ACTIVITIES_LIMIT_EXCEEDED`
+- Default limit: 2,000 pending Activities
+
+Scheduling another [Activity](/activities) would exceed the Workflow Execution's limit of pending Activities.
+
+Reduce the number of Activities the Workflow runs at the same time, for example by processing work in batches.
+
+### Pending Child Workflows Limit Exceeded {/* #pending-child-workflows-limit-exceeded */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_PENDING_CHILD_WORKFLOWS_LIMIT_EXCEEDED`
+- Default limit: 2,000 pending Child Workflows
+
+Starting another [Child Workflow](/child-workflows) would exceed the Workflow Execution's limit of pending Child Workflows.
+
+Reduce the number of Child Workflows the Workflow runs at the same time.
+
+### Pending Nexus Operations Limit Exceeded {/* #pending-nexus-operations-limit-exceeded */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_PENDING_NEXUS_OPERATIONS_LIMIT_EXCEEDED`
+- Default limit: 30 pending Nexus Operations
+
+Scheduling another Nexus Operation would exceed the Workflow Execution's limit of pending Nexus Operations.
+
+Reduce the number of Nexus Operations the Workflow runs at the same time.
+See [Workflow Execution Nexus Operation limits](/workflow-execution/limits#workflow-execution-nexus-operation-limits) and, for Temporal Cloud, [Per Workflow Nexus Operation limits](/evaluate/cloud/limits#per-workflow-nexus-operation-limits).
+
+### Pending Request Cancel Limit Exceeded {/* #pending-request-cancel-limit-exceeded */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_PENDING_REQUEST_CANCEL_LIMIT_EXCEEDED`
+- Default limit: 2,000 pending Cancellation Requests to other Workflows
+
+Requesting cancellation of another Workflow Execution would exceed the limit of pending Cancellation Requests.
+
+Reduce the number of Cancellation Requests the Workflow sends at the same time.
+
+### Pending Signals Limit Exceeded {/* #pending-signals-limit-exceeded */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_PENDING_SIGNALS_LIMIT_EXCEEDED`
+- Default limit: 2,000 pending Signals to other Workflows
+
+Sending another [Signal](/sending-messages#sending-signals) to an external Workflow Execution would exceed the limit of pending outgoing Signals.
+
+Reduce the number of Signals the Workflow sends to other Workflow Executions at the same time.
+
+## Size limit errors
+
+### gRPC Message Too Large {/* #grpc-message-too-large */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_GRPC_MESSAGE_TOO_LARGE`
+
+The Workflow Task completion exceeds the 4 MB gRPC message size limit.
+Replay produces the same oversized request, so the Temporal Service terminates the Workflow Execution.
+
+This error usually means the Workflow schedules too many Activities, Child Workflows, or Commands in a single Workflow Task, or returns a large result.
+
+Fix your Workflow code and start a new Workflow Execution.
+Split work into smaller batches, return smaller results, use [Continue-As-New](/workflow-execution/continue-as-new) for long-running Workflows, or compress large Payloads with a custom [Payload Codec](/payload-codec).
+See [gRPC message size limit](/troubleshooting/blob-size-limit-error).
+
+### Payloads Too Large {/* #payloads-too-large */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`
+
+A Payload in the Workflow Task completion exceeds the Payload size limit.
+SDKs that report this cause, such as Python SDK 1.23.0 and later and Go SDK 1.43.0 and later, leave the Workflow Execution open.
+
+Store large data in external storage, pass a reference through the Workflow, and deploy the fix to your Workers.
+See [Payload size limit](/troubleshooting/blob-size-limit-error).
+
+## Workflow code and Worker errors
+
+### Nondeterminism Error {/* #non-deterministic-error */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_NON_DETERMINISTIC_ERROR`
+
+During Replay, the Workflow code produced Commands that don't match the Event History.
+This happens when Workflow code changes in a [non-deterministic way](/workflow-definition#non-deterministic-change) while Workflow Executions are open.
+
+See [Non-determinism error](/troubleshooting/execution-failures#non-determinism-error) for how to find and fix the change.
+
+### Workflow Worker Unhandled Failure {/* #workflow-worker-unhandled-failure */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_WORKFLOW_WORKER_UNHANDLED_FAILURE`
+
+The [Workflow Definition](/workflow-definition) raised an error or panic that the SDK doesn't treat as a Workflow Execution failure.
+
+Read the stack trace in the WorkflowTaskFailed Event or the Worker logs, fix the code, and deploy the change to your Workers.
+
+### Unhandled Command {/* #unhandled-command */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_UNHANDLED_COMMAND`
+
+New [Events](/references/events), such as Signals, arrived while the Workflow Task was running, and the Workflow tried to close without handling them.
+The Temporal Service fails the Workflow Task and schedules a new one that includes the new Events.
+
+This error is common when a Workflow receives many [Signals](/sending-messages#sending-signals).
+Before the Workflow completes, process every pending Signal.
+In the Go SDK, drain the Signal Channel with `ReceiveAsync`.
+
+### Cause Unhandled Update {/* #cause-unhandled-update */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_UNHANDLED_UPDATE`
+
+The Temporal Service received a Workflow Update while the Worker processed a Workflow Task that would close the Workflow Execution.
+
+The Temporal Service rejects the Workflow Task completion and rewinds the Workflow so that Workflow code handles the pending Update.
+This error is common when a Workflow receives frequent Updates.
+
+### Cause Bad Binary {/* #cause-bad-binary */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_BAD_BINARY`
+
+The [Worker](/workers) that completed the Workflow Task has a binary checksum that's marked as bad on the Namespace.
+
+Deploy a Worker build that isn't marked as bad.
+
+### Cause Unspecified {/* #cause-unspecified */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_UNSPECIFIED`
+
+The Workflow Task failed without a specific cause.
+
+Read the failure message in the WorkflowTaskFailed Event and check your Workflow Definition.
+
+## Temporal Service errors
+
+The Temporal Service fails these Workflow Tasks because of an operation outside your Workflow code.
+
+### Cause Reset Workflow {/* #cause-reset-workflow */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_RESET_WORKFLOW`
+
+The Workflow Task failed because the Workflow Execution was [reset](/workflow-execution/event#reset).
+
+The reset starts a new run of the Workflow Execution.
+If the new run didn't start, reset the Workflow Execution again.
+
+### Reset Sticky Task Queue {/* #reset-sticky-task-queue */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_RESET_STICKY_TASK_QUEUE`
+
+The Worker failed the Workflow Task so that the next Workflow Task goes to the normal [Task Queue](/task-queue) instead of the Sticky Task Queue.
+
+No action is needed.
+The Temporal Service schedules the next Workflow Task automatically.
+
+### Failover Close Command {/* #failover-close-command */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_FAILOVER_CLOSE_COMMAND`
+
+A [Namespace](/namespaces) failover forced the Workflow Task to close.
+
+No action is needed.
+The Temporal Service schedules a retry automatically.
+
+### Force Close Command {/* #force-close-command */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_FORCE_CLOSE_COMMAND`
+
+The Temporal Service forced the Workflow Task to close.
+If the error is recoverable, the Temporal Service schedules a retry.
+
+### Feature Disabled {/* #feature-disabled */}
+
+- Cause: `WORKFLOW_TASK_FAILED_CAUSE_FEATURE_DISABLED`
+
+The Workflow Task requested a feature that's disabled on the Temporal Service, either for the whole Temporal Service or, more often, for the Workflow's Namespace.
+
+Read the failure message in the WorkflowTaskFailed Event for the feature name, then turn on the feature for the Namespace or remove its use from the Workflow.
+
+## Resource Exhausted causes {/* #resource-exhausted-causes */}
+
+The Temporal Service returns a gRPC `RESOURCE_EXHAUSTED` error with one of these causes when it throttles a request.
+SDKs retry these requests automatically.
+For triage steps, see [RESOURCE_EXHAUSTED on user-facing operations](/troubleshooting/request-failures#resource_exhausted-on-user-facing-operations).
+
+### Resource Exhausted Cause APS Limit {/* #resource-exhausted-cause-aps-limit */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_APS_LIMIT`
+
+The caller exceeded the Namespace's actions per second limit.
+
+Reduce your request rate, or on Temporal Cloud, compare your throughput with the Namespace [limits](/evaluate/cloud/limits) and request an increase.
+
+### Resource Exhausted Cause Busy Workflow {/* #resource-exhausted-cause-busy-workflow */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_BUSY_WORKFLOW`
+
+The target Workflow Execution is busy.
+
+Reduce the rate of requests, such as Signals and Updates, that you send to a single Workflow Execution.
+
+### Resource Exhausted Cause Circuit Breaker Open {/* #resource-exhausted-cause-circuit-breaker-open */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN`
+
+A circuit breaker in the Temporal Service is open or half-open, and the Temporal Service is shedding load.
+
+Treat this cause as a capacity problem.
+Raising a rate limit doesn't help.
+Add capacity to the Temporal Service or slow down your workload.
+
+### Resource Exhausted Cause Concurrent Limit {/* #resource-exhausted-cause-concurrent-limit */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_CONCURRENT_LIMIT`
+
+The caller exceeded the maximum number of concurrent requests, such as long-poll requests from Workers.
+
+Reduce the [poller count](/develop/worker-performance/task-queues#poller-count) per [Worker](/workers) or the number of Workers polling the Namespace.
+
+### Resource Exhausted Cause Ops Limit {/* #resource-exhausted-cause-ops-limit */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_OPS_LIMIT`
+
+The Namespace exceeded its operations rate limit.
+
+Reduce your request rate, or on Temporal Cloud, compare your throughput with the Namespace [limits](/evaluate/cloud/limits) and request an increase.
+
+### Resource Exhausted Cause Persistence Limit {/* #resource-exhausted-cause-persistence-limit */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_PERSISTENCE_LIMIT`
+
+The Namespace exceeded the persistence rate limit.
+
+On a self-hosted Temporal Service, check persistence latency and the [persistence QPS limits](/references/dynamic-configuration#qps-limits-for-persistence-store).
+
+### Resource Exhausted Cause Persistence Storage Limit {/* #resource-exhausted-cause-persistence-storage-limit */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_PERSISTENCE_STORAGE_LIMIT`
+
+The persistence storage limit was exceeded.
+
+### Resource Exhausted Cause RPS Limit {/* #resource-exhausted-cause-rps-limit */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT`
+
+The caller exceeded the requests per second limit.
+
+Reduce your request rate.
+On Temporal Cloud, compare your throughput with the Namespace [limits](/evaluate/cloud/limits) and request an increase.
+On a self-hosted Temporal Service, check the [Service-level RPS limits](/references/dynamic-configuration#service-level-rps-limits) after you confirm that persistence is healthy.
+
+### Resource Exhausted Cause System Overload {/* #resource-exhausted-cause-system-overload */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED`
+
+The Temporal Service is overloaded and is shedding load to protect itself.
+
+Treat this cause as a capacity problem.
+Raising a rate limit doesn't help.
+Add capacity to the Temporal Service or slow down your workload.
+
+### Resource Exhausted Cause Worker Deployment Limits {/* #resource-exhausted-cause-worker-deployment-limits */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_WORKER_DEPLOYMENT_LIMITS`
+
+The request reached a [Worker Versioning limit](/evaluate/cloud/limits#worker-versioning-level), such as the maximum number of Worker Deployments in a Namespace or Versions in a Worker Deployment.
+
+To free space for a new Version, stop polling from an old, drained Version so the Temporal Service can delete it.
+See [Garbage collection](/production-deployment/worker-deployments/worker-versioning/sunset-and-gc#garbage-collection).
+
+### Resource Exhausted Cause Unspecified {/* #resource-exhausted-cause-unspecified */}
+
+- Cause: `RESOURCE_EXHAUSTED_CAUSE_UNSPECIFIED`
+
+The Temporal Service throttled the request without a specific cause.
