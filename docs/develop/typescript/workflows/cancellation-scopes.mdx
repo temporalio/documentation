@@ -144,7 +144,7 @@ export async function handleExternalWorkflowCancellationWhileActivityRunning(url
 ```
 <!--SNIPEND-->
 
-### nonCancellable example
+### `nonCancellable` example
 
 `CancellationScope.nonCancellable` prevents cancellation from propagating to children.
 
@@ -182,7 +182,7 @@ export function multipleActivitiesSingleTimeout(urls: string[], timeoutMs: numbe
 ```
 <!--SNIPEND-->
 
-### scope.cancelRequested
+### `scope.cancelRequested`
 
 You can await `cancelRequested` to make a Workflow aware of cancellation while waiting on `nonCancellable` scopes.
 

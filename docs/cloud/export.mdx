@@ -191,7 +191,7 @@ It can be useful to convert protos to another format to perform analytics on the
 
 ## Export and High Availability Namespaces {/* #export-ha */}
 
-### Export Region Persistence
+### Export region persistence
 
 When Export is configured for a [High Availability](/cloud/high-availability) Namespace, the export is tied to the specific region where it was initially set up. The export configuration does not automatically failover with the Namespace.
 
@@ -200,7 +200,7 @@ When Export is configured for a [High Availability](/cloud/high-availability) Na
 - The export process is independent of Namespace failover events
 - Export does not fail over automatically because we prioritize data completeness and consistency over real-time availability for exports. HA data replication has inherent latency, which could result in incomplete or inconsistent exports during a failover.
 
-### Failover Scenarios
+### Failover scenarios
 
 **Namespace Failover with Healthy Primary Region**: When a Namespace fails over to a secondary region but the primary region remains healthy (including its blob storage), the export job continues to operate from the primary region. It does not automatically switch to export data from the secondary region.
 
