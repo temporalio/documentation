@@ -20,7 +20,7 @@ import { RelatedReadContainer, RelatedReadItem, ReleaseNoteHeader } from '@site/
 This page covers the following:
 
 - [What are Workflow Streams?](#what-are-workflow-streams)
-- [How a stream works](#how-workflow-streams-works)
+- [How Workflow Streams works](#how-workflow-streams-works)
 - [Choose where to host the stream](#choose-where-to-host-the-stream)
 - [Closing the stream](#closing-the-stream)
 - [How events are delivered](#how-events-are-delivered)
@@ -68,7 +68,7 @@ publishers and subscribers per Workflow, not thousands.
   />
 </RelatedReadContainer>
 
-## How a stream works {/* #how-workflow-streams-works */}
+## How Workflow Streams works
 
 The stream lives inside a Workflow, not on a separate broker.
 A Workflow creates the stream by constructing a `WorkflowStream` object, which sets up an in-memory, append-only event
