@@ -119,9 +119,8 @@ sample contract and the [Definition files](https://github.com/temporalio/nexgen#
 ## Develop a Nexus Service and Operation handlers {/* #develop-nexus-service-operation-handlers */}
 
 <ReleaseNoteHeader type="prerelease">
-  This section and its subsections use the [Temporal Operation Handler](/nexus/temporal-operation-handler) APIs,
-  including the [Nexus Standalone Activity](/nexus/standalone-activity) backing. They are experimental and subject to
-  change.
+  This section uses the [Temporal Operation Handler](/nexus/temporal-operation-handler) APIs, including the
+  [Nexus Standalone Activity](/nexus/standalone-activity) backing. They are experimental and subject to change.
 </ReleaseNoteHeader>
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
@@ -149,6 +148,11 @@ backing per invocation.
 
 ### Develop a Synchronous Nexus Operation handler
 
+<ReleaseNoteHeader type="prerelease">
+  Uses the [Temporal Operation Handler](/nexus/temporal-operation-handler) APIs, which are experimental and subject to
+  change.
+</ReleaseNoteHeader>
+
 Return a synchronous result when the Operation can answer immediately. The handler computes the answer and returns it,
 and the Operation completes during the call.
 
@@ -173,6 +177,11 @@ public class HelloService
 ```
 
 ### Use the Temporal Client for Signals, Queries, and Updates
+
+<ReleaseNoteHeader type="prerelease">
+  Uses the [Temporal Operation Handler](/nexus/temporal-operation-handler) APIs, which are experimental and subject to
+  change.
+</ReleaseNoteHeader>
 
 A common pattern is to reach a Workflow that is already running. Query it or Signal it from a synchronous Operation, or
 use Signal-With-Start to make sure the Workflow exists before the Signal arrives. Those calls complete during the
@@ -215,6 +224,11 @@ There are two examples of messaging through Nexus in the sample code: the [calle
 The caller pattern shows how to send messages to an existing Workflow, while the on-demand pattern shows how to start a Workflow through Nexus and then send Signals to it.
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
+
+<ReleaseNoteHeader type="prerelease">
+  Uses the [Temporal Operation Handler](/nexus/temporal-operation-handler) APIs, which are experimental and subject to
+  change.
+</ReleaseNoteHeader>
 
 Call `StartWorkflowAsync` on the Client. The Operation completes when the Workflow returns, and the Workflow's return
 value is delivered to the caller as the Operation's result.
