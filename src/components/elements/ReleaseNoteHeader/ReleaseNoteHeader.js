@@ -21,6 +21,13 @@ export const BASE_RELEASE_STAGES = {
     borderColor: "var(--release-public-preview-border)",
     textColor: "var(--release-public-preview-text)",
   },
+  ga: {
+    label: "General Availability",
+    descriptionLink: "/evaluate/product-release-stages#general-availability",
+    backgroundColor: "var(--release-ga-bg)",
+    borderColor: "var(--release-ga-border)",
+    textColor: "var(--release-ga-text)",
+  },
 };
 
 const LANGUAGE_TO_SDK_SVG = {
@@ -59,7 +66,7 @@ function getTheme(type, overrides = {}) {
 }
 
 export default function ReleaseNoteHeader({
-  // type can be "prerelease" or "publicPreview"
+  // type can be "prerelease", "publicPreview", or "ga"
   type = "publicPreview",
   // name of the feature being released
   featureName,

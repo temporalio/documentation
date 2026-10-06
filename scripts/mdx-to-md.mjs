@@ -145,7 +145,7 @@ export const RELEASE_NOTE_LABELS = {
   prerelease: "Pre-release",
   publicPreview: "Public Preview",
   publicpreview: "Public Preview",
-  ga: "Generally Available",
+  ga: "General Availability",
   deprecated: "Deprecated",
 };
 
