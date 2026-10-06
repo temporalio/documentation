@@ -207,6 +207,7 @@ Non-Retryable Errors = []
   - If this limit is exceeded, the execution fails without retrying again. When this happens an error is returned.
   - Setting the value to 0 also means unlimited.
   - Setting the value to 1 means a single execution attempt and no retries.
+  - Setting the value to 3 allows the initial execution attempt plus three retries, for four attempts in total.
   - Setting the value to a negative integer results in an error when the execution is invoked.
 - **Use case:** Use this attribute to ensure that retries do not continue indefinitely. In most cases, we recommend
   using the Workflow Execution Timeout for [Workflows](/workflows) or the Schedule-To-Close Timeout for Activities to
