@@ -197,6 +197,8 @@ The entire Workflow Execution Event History, in JSON format, can be downloaded f
 
 Workflow Executions can request a Cancellation, send a Signal or Update, or Reset and Terminate directly from the UI.
 Start a new Workflow Execution with pre-filled values with the Start Workflow Like This One button.
+Signal and Update input, and the pre-filled Workflow input, are each a single argument. See
+[Pass input from the Web UI](#input).
 
 ### Relationships
 
@@ -220,12 +222,50 @@ call stack shows each location where Workflow code is waiting.
 
 ### Queries
 
-Lists all Queries sent to the Workflow Execution.
+Lists all Queries sent to the Workflow Execution. A Query you send from this tab takes a single argument. See
+[Pass input from the Web UI](#input).
 
 ### Metadata
 
 Displays User Metadata including static Workflow Summary and Details and dynamic Current Details. Lists all Events with
 User Metadata data to give you a human-readable log of what's happening in your Workflow.
+
+## Pass input from the Web UI {/* #input */}
+
+The **Data** box on the Start Workflow form, the Signal and Update dialogs, the Queries tab, and the Schedule form takes
+a single JSON value. The Web UI sends that value to your code as one argument.
+
+- For a Workflow, Signal, Update, or Query that takes one argument, enter the argument as a JSON value, such as
+  `"order-123"` or `{"orderId": "order-123", "quantity": 2}`.
+- You can't pass more than one argument from the Web UI. A JSON array such as `["order-123", 2]` arrives as one argument
+  whose value is the array.
+
+To pass more than one argument, use the [Temporal CLI](/cli/command-reference/workflow) and repeat `--input` once for each
+argument, in order:
+
+```command
+temporal workflow start \
+    --type YourWorkflowType \
+    --task-queue YourTaskQueue \
+    --workflow-id YourWorkflowId \
+    --input '"order-123"' \
+    --input 2
+```
+
+`temporal workflow signal`, `temporal workflow update execute`, and `temporal workflow query` accept `--input` the same
+way. To start a Workflow from the Web UI, give its Workflow Definition a single object parameter instead of several
+parameters.
+
+If the Web UI sends fewer arguments than a Workflow Definition or Signal handler declares, the result depends on the SDK.
+For example:
+
+- In the Python SDK, the Workflow Task fails with a `TypeError` and retries. The Workflow Execution stays Running without
+  making progress and can appear in the [Task Failures view](#task-failures-view).
+- In the Go SDK, a Workflow Execution runs with the zero value for each missing argument. If the input can't be decoded
+  into the first parameter, the Workflow Execution fails.
+
+**Start Workflow Like This One** copies only the first argument of the original Workflow Execution. If the original
+Workflow Execution took more than one argument, start the new one with the CLI.
 
 ## Schedules
 
@@ -233,6 +273,8 @@ On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page li
 created on the selected Namespace.
 
 Click a Schedule to see details, such as configured frequency, start and end times, and recent and upcoming runs.
+The Workflow input you set when you create a Schedule in the Web UI is a single argument. See
+[Pass input from the Web UI](#input).
 
 :::tip Setting Schedules with Strings
 
