@@ -58,6 +58,20 @@ s, err := temporal.NewServer(
 )
 ```
 
+## WithDynamicConfigClient
+
+Sets the `dynamicconfig.Client` that the server reads [dynamic configuration](/references/dynamic-configuration) from.
+`dynamicconfig.Client` is defined in the `go.temporal.io/server/common/dynamicconfig` package.
+
+Without this option, the server reads the file named in the [`dynamicConfigClient`](/references/service-configuration#dynamicconfigclient) section of its static configuration.
+If that section is also missing, the server uses the default value for every dynamic configuration key.
+
+```go
+s, err := temporal.NewServer(
+    temporal.WithDynamicConfigClient(myDynamicConfigClient),
+)
+```
+
 ## ForServices
 
 Sets the Temporal services the server runs.
@@ -136,6 +150,19 @@ Configure it with [`global.tls.remoteClusters`](/references/service-configuratio
 ```go
 s, err := temporal.NewServer(
     temporal.WithTokenProvider(myTokenProvider),
+)
+```
+
+## WithLogger
+
+Sets the `log.Logger` that the server writes its logs to.
+`log.Logger` is defined in the `go.temporal.io/server/common/log` package.
+
+Without this option, the server builds a logger from the [`log`](/references/service-configuration#log) section of its static configuration.
+
+```go
+s, err := temporal.NewServer(
+    temporal.WithLogger(myLogger),
 )
 ```
 

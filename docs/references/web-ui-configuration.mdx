@@ -311,6 +311,7 @@ cors:
 - `allowOrigins`: List of origins that can make cross-origin requests to the Web UI Server APIs.
   A value of `*` allows every origin.
   - Environment variable: [`TEMPORAL_CORS_ORIGINS`](/references/web-ui-environment-variables#temporal_cors_origins)
+  - Default: empty, which allows no cross-origin requests
 - `unsafeAllowAllOrigins`: Set to `true` to accept cross-origin requests from any origin and ignore `allowOrigins`.
   Use it only for local development.
   - Environment variable:
@@ -362,6 +363,7 @@ auth:
   - Default: empty
 - `providers`: List of IdPs.
   The Web UI Server uses only the first provider in the list.
+  - Default: empty
 
 ### providers
 
@@ -370,30 +372,39 @@ When `enabled` is `true`, the Web UI Server doesn't start unless `providerUrl`, 
 
 - `label`: Label for the IdP.
   - Environment variable: [`TEMPORAL_AUTH_LABEL`](/references/web-ui-environment-variables#temporal_auth_label)
+  - Default: empty
 - `type`: Authentication type.
   Only `oidc` is supported.
   - Environment variable: [`TEMPORAL_AUTH_TYPE`](/references/web-ui-environment-variables#temporal_auth_type)
+  - Default: empty
 - `providerUrl`: IdP URL that the Web UI Server uses for OpenID Connect (OIDC) discovery, such as
   `https://accounts.google.com`.
   - Environment variable:
     [`TEMPORAL_AUTH_PROVIDER_URL`](/references/web-ui-environment-variables#temporal_auth_provider_url)
+  - Default: empty
 - `issuerUrl`: URL of the token issuer.
   Set it only when the issuer differs from `providerUrl`.
   - Environment variable: [`TEMPORAL_AUTH_ISSUER_URL`](/references/web-ui-environment-variables#temporal_auth_issuer_url)
+  - Default: empty
 - `clientId`: OAuth client ID that the IdP issued for the Web UI.
   - Environment variable: [`TEMPORAL_AUTH_CLIENT_ID`](/references/web-ui-environment-variables#temporal_auth_client_id)
+  - Default: empty
 - `clientSecret`: OAuth client secret that the IdP issued for the Web UI.
   - Environment variable:
     [`TEMPORAL_AUTH_CLIENT_SECRET`](/references/web-ui-environment-variables#temporal_auth_client_secret)
+  - Default: empty
 - `callbackUrl`: URL that the IdP redirects users to after they sign in, such as
   `https://xxxx.com:8080/auth/sso/callback`.
   - Environment variable:
     [`TEMPORAL_AUTH_CALLBACK_URL`](/references/web-ui-environment-variables#temporal_auth_callback_url)
+  - Default: empty
 - `scopes`: List of OIDC scopes to request, such as `openid`, `profile`, and `email`.
   - Environment variable: [`TEMPORAL_AUTH_SCOPES`](/references/web-ui-environment-variables#temporal_auth_scopes)
+  - Default: empty
 - `options`: Map of query parameters that the Web UI Server adds to the redirect URL for the IdP.
   Use it for IdP-specific sign-in flows, such as the Auth0 `audience` and `organization` parameters.
   - Environment variable: none
+  - Default: empty
 - `useIdTokenAsBearer`: Set to `true` to send the ID token instead of the access token as the bearer token in the
   `Authorization` header.
   - Environment variable:
@@ -405,6 +416,7 @@ When `enabled` is `true`, the Web UI Server doesn't start unless `providerUrl`, 
   When neither is available, the Web UI Server assumes a lifetime of 7 days.
   - Environment variable:
     [`TEMPORAL_AUTH_REFRESH_TOKEN_DURATION`](/references/web-ui-environment-variables#temporal_auth_refresh_token_duration)
+  - Default: empty
 
 ## tls
 
@@ -426,20 +438,26 @@ tls:
 
 - `caFile`: Path to the Certificate Authority (CA) certificate that verifies the Frontend Service's certificate.
   - Environment variable: [`TEMPORAL_TLS_CA`](/references/web-ui-environment-variables#temporal_tls_ca)
+  - Default: empty
 - `certFile`: Path to the client certificate that the Web UI Server presents to the Frontend Service for mutual TLS
   (mTLS).
   - Environment variable: [`TEMPORAL_TLS_CERT`](/references/web-ui-environment-variables#temporal_tls_cert)
+  - Default: empty
 - `keyFile`: Path to the private key for the certificate in `certFile`.
   - Environment variable: [`TEMPORAL_TLS_KEY`](/references/web-ui-environment-variables#temporal_tls_key)
+  - Default: empty
 - `caData`: PEM data for the CA certificate.
   Use it instead of `caFile`.
   - Environment variable: [`TEMPORAL_TLS_CA_DATA`](/references/web-ui-environment-variables#temporal_tls_ca_data)
+  - Default: empty
 - `certData`: PEM data for the client certificate.
   Use it instead of `certFile`.
   - Environment variable: [`TEMPORAL_TLS_CERT_DATA`](/references/web-ui-environment-variables#temporal_tls_cert_data)
+  - Default: empty
 - `keyData`: PEM data for the private key.
   Use it instead of `keyFile`.
   - Environment variable: [`TEMPORAL_TLS_KEY_DATA`](/references/web-ui-environment-variables#temporal_tls_key_data)
+  - Default: empty
 - `enableHostVerification`: Set to `true` to verify that the Frontend Service's certificate matches its hostname.
   - Environment variable:
     [`TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`](/references/web-ui-environment-variables#temporal_tls_enable_host_verification)
@@ -447,6 +465,7 @@ tls:
 - `serverName`: Overrides the server name sent for Server Name Indication (SNI) and checked against the Frontend
   Service's certificate.
   - Environment variable: [`TEMPORAL_TLS_SERVER_NAME`](/references/web-ui-environment-variables#temporal_tls_server_name)
+  - Default: empty
 
 ## uiServerTLS
 
@@ -462,9 +481,11 @@ uiServerTLS:
 - `certFile`: Path to the certificate that the Web UI Server presents to browsers.
   - Environment variable:
     [`TEMPORAL_UI_SERVER_TLS_CERT`](/references/web-ui-environment-variables#temporal_ui_server_tls_cert)
+  - Default: empty
 - `keyFile`: Path to the private key for the certificate in `certFile`.
   - Environment variable:
     [`TEMPORAL_UI_SERVER_TLS_KEY`](/references/web-ui-environment-variables#temporal_ui_server_tls_key)
+  - Default: empty
 
 ## codec
 
@@ -481,6 +502,7 @@ codec:
 
 - `endpoint`: URL of the Codec Server.
   - Environment variable: [`TEMPORAL_CODEC_ENDPOINT`](/references/web-ui-environment-variables#temporal_codec_endpoint)
+  - Default: empty
 - `passAccessToken`: Set to `true` to send the user's access token in the `Authorization` header of requests to the
   Codec Server.
   - Environment variable:
@@ -494,8 +516,10 @@ codec:
   When empty, the Web UI shows its built-in message.
   - Environment variable:
     [`TEMPORAL_CODEC_DEFAULT_ERROR_MESSAGE`](/references/web-ui-environment-variables#temporal_codec_default_error_message)
+  - Default: empty
 - `defaultErrorLink`: Link that the Web UI shows in its error banner when it can't reach the Codec Server.
   When empty, the Web UI links to
   [Set your Codec Server endpoints with Web UI and CLI](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli).
   - Environment variable:
     [`TEMPORAL_CODEC_DEFAULT_ERROR_LINK`](/references/web-ui-environment-variables#temporal_codec_default_error_link)
+  - Default: empty
