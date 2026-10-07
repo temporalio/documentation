@@ -57,7 +57,7 @@ Task Queues in Temporal are dynamically created when first referenced. Rate limi
 
 ### Rate limiting configuration options
 
-The Python SDK provides four rate limiting controls:
+The Python SDK provides three rate limiting controls:
 
 1. **max_task_queue_activities_per_second** (global): Limits Activity dispatch across ALL Workers on this queue. Enforced by Temporal Server. Best for API rate limits. Last value wins.
 
@@ -65,9 +65,7 @@ The Python SDK provides four rate limiting controls:
 
 3. **max_concurrent_activities** (concurrency): Limits concurrent executions. Use when API has concurrent connection limits (for example, database pool size).
 
-4. **disable_eager_activity_execution** (Worker option): Set to `True` on the Worker that runs your Workflows to stop it from requesting eager execution of the Activities those Workflows schedule.
-
-**Important:** If a rate-limited Task Queue also hosts the Workflows that call its Activities, set `disable_eager_activity_execution=True` on that Worker. Eager execution applies only when an Activity is scheduled on the same Task Queue as its Workflow and the Worker running the Workflow has the Activity registered. In that case the Temporal Service returns the Activity Task directly to that Worker instead of dispatching it through the Task Queue, so the Task Queue's rate limit doesn't apply. This guide schedules each API's Activities on a dedicated Task Queue, separate from the Workflow Task Queue, so its Activities never run eagerly.
+**Important:** Eager Activity execution can bypass a Task Queue's rate limit. It applies only when an Activity is scheduled on the same Task Queue as its Workflow and the Worker running the Workflow has the Activity registered. The Temporal Service then returns the Activity Task directly to that Worker instead of dispatching it through the Task Queue. A Worker that sets `max_task_queue_activities_per_second` never requests eager execution, so set it on every Worker that polls a rate-limited queue. This guide schedules each API's Activities on a dedicated Task Queue, separate from the Workflow Task Queue, so its Activities never run eagerly.
 
 ### Handling HTTP 429 responses
 
