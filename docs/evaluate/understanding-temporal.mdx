@@ -25,7 +25,10 @@ then go deeper with [Temporal architecture](/encyclopedia/architecture/temporal-
 Temporal runs your application code as a Durable Execution. Once a [Workflow](/workflows) starts, it
 runs to completion, whether that takes a second or a year. If the process running it crashes, the
 Temporal Service hands the work to another process, which rebuilds the state of the execution and
-resumes at the point where it stopped, with local variables and progress intact.
+resumes at the point where it stopped, with local variables and progress intact. If retrying can't
+fix the failure, as with a bug or bad input, the execution keeps its state until you deploy a fix or
+correct the data, and then continues. See [What is Durable Execution?](/durable-execution) for how
+Temporal handles each kind of failure.
 
 Without that guarantee, a crash loses the state of an in-flight process. Recovering it takes a state
 table, checkpoint columns, a reconciliation job, and retry logic at every call site — code that has

@@ -64,7 +64,7 @@ Worker Processes are hosted and operated by you and execute your code. Workers r
 A Temporal Application is a set of [Temporal Workflow Executions](/workflow-execution).
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
 
-Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
+Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, under arbitrary load, and through crashes, outages, and other [transient failures](/durable-execution#transient-failures).
 
 ## Next steps {/* #next-steps */}
 
