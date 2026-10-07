@@ -332,5 +332,23 @@
       "Temporal Cloud"
     ],
     "href": "https://docs.vantage.sh/connecting_temporal/"
+  },
+  {
+    "name": "xMemory",
+    "description": "Store and recall agent memory across Workflow Executions with xMemory.",
+    "tags": [
+      "Agent memory"
+    ],
+    "sdk": "Python",
+    "href": "https://xmemory.ai/temporal/#quickstart--python"
+  },
+  {
+    "name": "xMemory",
+    "description": "Store and recall agent memory across Workflow Executions with xMemory.",
+    "tags": [
+      "Agent memory"
+    ],
+    "sdk": "TypeScript",
+    "href": "https://xmemory.ai/temporal/#quickstart--typescript"
   }
 ]
