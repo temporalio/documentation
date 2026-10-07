@@ -80,7 +80,10 @@ For the causes the Temporal Service records for each Workflow Task Failure, see 
 Throw an Application Failure in a Workflow to fail the Workflow Execution.
 The Workflow Execution moves to the Failed state, and the Temporal Service makes no more attempts to progress it.
 
-To create a custom exception that fails the Workflow Execution, extend the [Application Failure](#application-failure) class for your SDK.
+To fail the Workflow Execution with your own error category, throw an [Application Failure](#application-failure) and set its `type` field.
+Don't extend the Application Failure class or any other Failure class. See [How Temporal represents failures](/encyclopedia/application-failures#failure-representation).
+
+The TypeScript, Java, Python, .NET, and Ruby SDKs also let you list your own exception types in Worker or Workflow options so that they fail the Workflow Execution instead of the Workflow Task.
 
 ### Errors in Activities
 
