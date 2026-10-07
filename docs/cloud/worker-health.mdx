@@ -31,7 +31,7 @@ You can also inspect Workers and the Workers assigned to a Task Queue directly i
 
 :::
 
-## Minimal Observations {/* #minimal-observations */}
+## Minimal observations {/* #minimal-observations */}
 
 These alerts should be configured and understood first to gain intelligence into your application health and behaviors.
 
@@ -76,7 +76,7 @@ The following alerts build on the above to dive deeper into specific potential c
 
 - Alert when the value is growing over time for a given Task Queue
 
-## Detect Task Backlog {/* #detect-task-backlog */}
+## Detect Task backlog {/* #detect-task-backlog */}
 
 ### Symptoms of high Task backlog
 
@@ -91,7 +91,7 @@ Metrics to monitor:
 - **Temporal Cloud metric**: [temporal_cloud_v1_poll_success_sync_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_success_sync_count)
 - **Temporal Cloud metric**: [temporal_cloud_v1_approximate_backlog_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_approximate_backlog_count)
 
-### Schedule To Start latency
+### Schedule-To-Start latency
 
 The Schedule To Start metric represents how long Tasks are staying unprocessed in the Task Queues.
 It is the time between when a Task is enqueued and when it is started by a Worker.
@@ -138,7 +138,7 @@ sum(increase(temporal_activity_schedule_to_start_latency_seconds_count[5m])) by 
 This latency should be very low, close to zero.
 Any higher value indicates a bottleneck.
 
-### Sync Match Rate {/* #sync-match-rate */}
+### Sync match rate {/* #sync-match-rate */}
 
 The sync match rate measures the rate of Tasks that are delivered to workers without having to be persisted (workers are up and available to pick them up) to the rate of all delivered tasks.
 
@@ -174,7 +174,7 @@ The Sync Match Rate should be at least >95%, but preferably >99%.
 
 Once you have detected the condition of a high Task backlog, consider the scenarios below to take action.
 
-#### High Schedule To Start latency and high sync match rate
+#### High Schedule-To-Start latency and high sync match rate
 
 There are three typical causes for this:
 
@@ -189,7 +189,7 @@ Consider
 - Increasing the worker configuration value for concurrent pollers for workers/task executions (if your worker resources can accommodate the increased load)
 - Doing some combination of these
 
-#### High Schedule To Start latency and low sync match rate
+#### High Schedule-To-Start latency and low sync match rate
 
 Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations and note that this timeout is non-retryable.
 

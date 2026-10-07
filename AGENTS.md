@@ -156,6 +156,9 @@ Adding or moving pages usually requires:
 - Prefer code extracted from CI-enabled sample repos via [Snipsync](https://github.com/temporalio/snipsync).
 - Snippets are wrapped in `<!--SNIPSTART id-->` / `<!--SNIPEND-->`. Edit the **source repo** named inside the wrapper,
   then run `yarn snipsync`.
+- `yarn report:snipsync-coverage` reports the share of SDK code lines that come from Snipsync. On a pull request, the
+  Snipsync Coverage workflow comments when the change moves that number. Replacing a synced block with hand-written code
+  lowers it. See [UTILITIES.md](./readme/UTILITIES.md#snipsync-coverage).
 
 ## Pull requests
 
@@ -182,6 +185,8 @@ yarn check:metrics       # SDK metrics reference against itself; runs in CI on P
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
 yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
+yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
+yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
@@ -196,6 +201,12 @@ belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silen
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
 serve. Fix the rule. A known, accepted exception belongs in `bin/redirect-baseline.json` with a note.
+
+`yarn check:ts-samples` and `yarn check:py-samples` type-check the TypeScript and Python code blocks that aren't
+synced by Snipsync against the latest SDK release, and report classes, methods, exports, and arguments the SDK doesn't
+have. The TypeScript check also reports docs links in code comments that don't resolve. Pass page paths to check only
+those pages. A sample that shows an API on purpose belongs in that language's `bin/*-samples-baseline.json` with a
+note.
 
 Vale linting (style). Requires Vale 3.20+ (CI already runs 3.20.0; upgrade a local install with
 `brew upgrade vale`) — `vale/styles/Std` needs it for its nested rule directories.
