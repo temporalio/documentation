@@ -24,156 +24,29 @@
 // their latest version, so a sample can start failing when an SDK release
 // removes something, and a page may deliberately show an older API.
 //
+// The command line, baseline, and reporting are shared with the other sample
+// checkers; see bin/code-samples.js.
+//
 //   node bin/check-typescript-samples.js                       # report
 //   node bin/check-typescript-samples.js docs/develop/typescript/client
-//   node bin/check-typescript-samples.js --json                # machine-readable
-//   node bin/check-typescript-samples.js --github              # also print Actions annotations
-//   node bin/check-typescript-samples.js --update-baseline     # accept current findings
 //   node bin/check-typescript-samples.js --sdk-version 1.24.0  # instead of latest
-//   node bin/check-typescript-samples.js --cache-dir /tmp/ts-sdk
-//
-// Exit codes: 0 clean, 2 findings (or stale baseline entries), 1 the check
-// could not run at all, for example because npm was unreachable.
 
 const { execFile } = require('child_process');
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const { promisify } = require('util');
 const ts = require('typescript');
+const { DOCS_DIR, main } = require('./code-samples');
 
 const execFileAsync = promisify(execFile);
 
-const DOCS_DIR = 'docs';
 const BASELINE = path.join('bin', 'typescript-samples-baseline.json');
-
-const DEFAULT_COMMENT =
-  'Findings from bin/check-typescript-samples.js that we have decided to leave as they are, for ' +
-  'example a sample that deliberately shows an older API. Each entry is a page, a kind, and a subject; ' +
-  'line numbers are left out so an entry survives edits elsewhere on the page. An empty note means the ' +
-  'entry has not been reviewed yet; either fix the sample or fill in the note explaining why it stays. ' +
-  'Regenerate with: node bin/check-typescript-samples.js --update-baseline';
 
 const LANGUAGES = new Set(['ts', 'typescript', 'js', 'javascript']);
 
 // ---------------------------------------------------------------------------
-// Extraction
+// Packages
 // ---------------------------------------------------------------------------
-
-// Snipsync wraps synced code in either an HTML comment or an MDX comment.
-const SNIPSTART = /^\s*(?:<!--|\{\/\*)\s*SNIPSTART\b/;
-const SNIPEND = /^\s*(?:<!--|\{\/\*)\s*SNIPEND\b/;
-
-const FENCE_OPEN = /^(\s*)(`{3,}|~{3,})\s*([^\s`{]*)/;
-const FENCE_CLOSE = /^\s*(`{3,}|~{3,})\s*$/;
-
-// The closing token of a comment that opens on this line and doesn't close,
-// or null. Fenced code inside an unclosed comment is never rendered.
-function openComment(line) {
-  const rest = line.replace(/<!--.*?-->/g, '').replace(/\{\/\*.*?\*\/\}/g, '');
-  if (rest.includes('<!--')) return '-->';
-  if (rest.includes('{/*')) return '*/}';
-  return null;
-}
-
-function dedent(line, indent) {
-  let i = 0;
-  while (i < indent && (line[i] === ' ' || line[i] === '\t')) i++;
-  return line.slice(i);
-}
-
-// Every fenced code block on a page, with the 1-based line of its first line
-// of code and whether Snipsync manages it. Code inside a list item or a JSX
-// component is indented to match its fence; that indentation is removed.
-function extractCodeBlocks(source) {
-  const lines = source.split('\n');
-  const blocks = [];
-  let fence = null;
-  let snipsync = false;
-  let comment = null;
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    if (fence) {
-      const close = line.match(FENCE_CLOSE);
-      if (close && close[1][0] === fence.marker[0] && close[1].length >= fence.marker.length) {
-        blocks.push({
-          lang: fence.lang,
-          line: fence.line,
-          code: fence.body.join('\n'),
-          snipsync: fence.snipsync,
-        });
-        fence = null;
-      } else {
-        fence.body.push(dedent(line, fence.indent));
-      }
-      continue;
-    }
-
-    if (comment) {
-      if (line.includes(comment)) comment = null;
-      continue;
-    }
-
-    if (SNIPSTART.test(line)) {
-      snipsync = true;
-      continue;
-    }
-    if (SNIPEND.test(line)) {
-      snipsync = false;
-      continue;
-    }
-
-    const open = line.match(FENCE_OPEN);
-    if (open) {
-      fence = {
-        marker: open[2],
-        indent: open[1].length,
-        lang: open[3].toLowerCase(),
-        line: i + 2,
-        body: [],
-        snipsync,
-      };
-      continue;
-    }
-
-    comment = openComment(line);
-  }
-
-  return blocks;
-}
-
-// The hand-written TypeScript and JavaScript samples on a page.
-function extractSamples(source) {
-  return extractCodeBlocks(source).filter((b) => LANGUAGES.has(b.lang) && !b.snipsync);
-}
-
-function walkMdx(target) {
-  const stat = fs.statSync(target);
-  if (stat.isFile()) return target.endsWith('.mdx') ? [target] : [];
-  return fs
-    .readdirSync(target, { withFileTypes: true })
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .flatMap((entry) => walkMdx(path.join(target, entry.name)));
-}
-
-function collectSamples(targets) {
-  const samples = [];
-  let snipsync = 0;
-  for (const file of [...new Set(targets.flatMap(walkMdx))]) {
-    const blocks = extractCodeBlocks(fs.readFileSync(file, 'utf8'));
-    for (const block of blocks) {
-      if (!LANGUAGES.has(block.lang)) continue;
-      if (block.snipsync) {
-        snipsync++;
-        continue;
-      }
-      samples.push({ file: file.split(path.sep).join('/'), line: block.line, code: block.code });
-    }
-  }
-  return { samples, snipsync };
-}
 
 // The @temporalio package names a sample imports or requires.
 function importedPackages(code) {
@@ -184,10 +57,6 @@ function importedPackages(code) {
   }
   return names;
 }
-
-// ---------------------------------------------------------------------------
-// Packages
-// ---------------------------------------------------------------------------
 
 // Always fetched, because the ambient declarations below refer to them.
 const CORE_PACKAGES = ['client', 'worker', 'workflow', 'activity', 'testing', 'common'].map(
@@ -759,42 +628,8 @@ function checkCommentLinks(samples, site) {
 }
 
 // ---------------------------------------------------------------------------
-// Baseline and reporting
+// Running
 // ---------------------------------------------------------------------------
-
-const keyOf = (f) => `${f.file}\u0000${f.kind}\u0000${f.subject}`;
-
-// Accepted findings are recorded without line numbers, so one entry covers
-// every occurrence of the same subject on a page.
-function applyBaseline(findings, baseline) {
-  const known = new Set(baseline.findings.map(keyOf));
-  const found = new Set(findings.map(keyOf));
-  return {
-    remaining: findings.filter((f) => !known.has(keyOf(f))),
-    baselined: findings.filter((f) => known.has(keyOf(f))).length,
-    stale: baseline.findings.filter((e) => !found.has(keyOf(e))),
-  };
-}
-
-function updatedBaseline(findings, baseline) {
-  const notes = new Map(baseline.findings.map((e) => [keyOf(e), e.note]));
-  const entries = new Map();
-  for (const f of findings) {
-    const key = keyOf(f);
-    if (!entries.has(key)) {
-      entries.set(key, { file: f.file, kind: f.kind, subject: f.subject, note: notes.get(key) ?? '' });
-    }
-  }
-  return {
-    comment: baseline.comment || DEFAULT_COMMENT,
-    findings: [...entries.values()].sort((a, b) => keyOf(a).localeCompare(keyOf(b))),
-  };
-}
-
-function loadBaseline() {
-  if (!fs.existsSync(BASELINE)) return { comment: DEFAULT_COMMENT, findings: [] };
-  return JSON.parse(fs.readFileSync(BASELINE, 'utf8'));
-}
 
 function describeSources(packages) {
   const fetched = packages.filter((p) => p.version);
@@ -811,74 +646,7 @@ function describeSources(packages) {
   return lines;
 }
 
-function report({ remaining, baselined, stale }, { packages, sampleCount, snipsync, fullScan }) {
-  const lines = [...describeSources(packages)];
-  lines.push(`${sampleCount} hand-written samples checked; ${snipsync} Snipsync samples skipped.`, '');
-
-  const byFile = new Map();
-  for (const f of remaining) {
-    if (!byFile.has(f.file)) byFile.set(f.file, []);
-    byFile.get(f.file).push(f);
-  }
-  for (const [file, list] of byFile) {
-    lines.push(file);
-    for (const f of list) lines.push(`  ${String(f.line).padStart(5)}  ${f.kind.padEnd(14)}  ${f.message}`);
-    lines.push('');
-  }
-
-  if (fullScan && stale.length) {
-    lines.push('Baseline entries that no longer match anything (remove them):');
-    for (const e of stale) lines.push(`  ${e.file}  ${e.kind}  ${e.subject}`);
-    lines.push('');
-  }
-
-  const accepted = baselined ? ` (${baselined} more accepted in ${BASELINE})` : '';
-  lines.push(
-    remaining.length === 0
-      ? `No findings${accepted}.`
-      : `${remaining.length} finding(s) in ${byFile.size} page(s)${accepted}.`
-  );
-  return lines.join('\n');
-}
-
-// GitHub Actions workflow commands, one warning per finding.
-function annotations(findings) {
-  const escape = (s) => s.replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
-  return findings.map(
-    (f) => `::warning file=${f.file},line=${f.line},title=TypeScript sample (${f.kind})::${escape(f.message)}`
-  );
-}
-
-function optionValue(args, name) {
-  const i = args.indexOf(name);
-  if (i === -1) return null;
-  const value = args[i + 1];
-  if (!value || value.startsWith('--')) throw new Error(`${name} needs a value.`);
-  args.splice(i, 2);
-  return value;
-}
-
-async function main() {
-  const args = process.argv.slice(2);
-  const version = optionValue(args, '--sdk-version') ?? 'latest';
-  const cacheDir = path.resolve(
-    optionValue(args, '--cache-dir') ?? path.join(os.tmpdir(), 'temporal-typescript-samples')
-  );
-  const flags = new Set(args.filter((a) => a.startsWith('--')));
-  const targets = args.filter((a) => !a.startsWith('--'));
-  const fullScan = targets.length === 0;
-
-  for (const flag of flags) {
-    if (!['--json', '--github', '--update-baseline'].includes(flag)) throw new Error(`Unknown option ${flag}.`);
-  }
-  if (!fullScan && flags.has('--update-baseline')) {
-    throw new Error('--update-baseline needs a full scan; drop the paths.');
-  }
-
-  const missing = targets.filter((t) => !fs.existsSync(t));
-  if (missing.length) throw new Error(`No such file or directory: ${missing.join(', ')}`);
-  const { samples, snipsync } = collectSamples(fullScan ? [DOCS_DIR] : targets);
-
+async function check(samples, { version, cacheDir }) {
   const requested = new Set(CORE_PACKAGES);
   for (const sample of samples) for (const name of importedPackages(sample.code)) requested.add(name);
   const packages = await fetchPackages(requested, version, cacheDir);
@@ -891,51 +659,28 @@ async function main() {
     throw new Error(`Could not fetch ${absent.map((name) => `${name}@${version}`).join(', ')} from npm.`);
   }
 
-  const findings = [
-    ...checkSamples(samples, { root: cacheDir, packages: packageMap }),
-    ...checkCommentLinks(samples, loadSite()),
-  ].sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
-
-  const baseline = loadBaseline();
-
-  if (flags.has('--update-baseline')) {
-    const updated = updatedBaseline(findings, baseline);
-    fs.writeFileSync(BASELINE, `${JSON.stringify(updated, null, 2)}\n`);
-    console.log(`Wrote ${BASELINE} with ${updated.findings.length} entries. Add a note for any entry that has none.`);
-    return 0;
-  }
-
-  const result = applyBaseline(findings, baseline);
-  if (!fullScan) result.stale = [];
-
-  if (flags.has('--json')) {
-    console.log(
-      JSON.stringify(
-        {
-          packages: packages.map(({ dependencies, ...p }) => p),
-          samples: samples.length,
-          snipsync,
-          ...result,
-        },
-        null,
-        2
-      )
-    );
-  } else {
-    console.log(report(result, { packages, sampleCount: samples.length, snipsync, fullScan }));
-  }
-  if (flags.has('--github')) {
-    for (const line of annotations(result.remaining)) console.log(line);
-  }
-
-  return result.remaining.length + result.stale.length;
+  return {
+    findings: [
+      ...checkSamples(samples, { root: cacheDir, packages: packageMap }),
+      ...checkCommentLinks(samples, loadSite()),
+    ],
+    sources: describeSources(packages),
+    details: { packages: packages.map(({ dependencies, ...p }) => p) },
+  };
 }
+
+const CHECKER = {
+  script: 'bin/check-typescript-samples.js',
+  languages: LANGUAGES,
+  baseline: BASELINE,
+  title: 'TypeScript sample',
+  check,
+};
 
 module.exports = {
   AMBIENT,
   BASELINE,
-  extractCodeBlocks,
-  extractSamples,
+  LANGUAGES,
   importedPackages,
   createSampleProgram,
   checkSamples,
@@ -944,17 +689,6 @@ module.exports = {
   anchorsOf,
   checkLink,
   loadSite,
-  applyBaseline,
-  updatedBaseline,
-  annotations,
 };
 
-if (require.main === module) {
-  main().then(
-    (count) => process.exit(count > 0 ? 2 : 0),
-    (error) => {
-      console.error(error.message);
-      process.exit(1);
-    }
-  );
-}
+if (require.main === module) main(CHECKER);

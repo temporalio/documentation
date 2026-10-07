@@ -16,6 +16,7 @@ on:
       - Update SDK Versions
       - Check Metrics Against SDKs
       - Check TypeScript Samples
+      - Check Python Samples
       - CLI Docs Update
       - Delete Visual Tests Reports
       - Warm Build Cache
@@ -29,13 +30,13 @@ permissions:
 
 jobs:
   notify:
-    # `Check Metrics Against SDKs`, `Check TypeScript Samples`, `Environment
-    # config drift`, and `Snipsync Coverage` also run on pull_request; exclude
-    # those runs so this only reports invocations that have nowhere else to
-    # surface, such as the scheduled ones.
+    # `Check Metrics Against SDKs`, the sample checks, `Environment config
+    # drift`, and `Snipsync Coverage` also run on pull_request; exclude those
+    # runs so this only reports invocations that have nowhere else to surface,
+    # such as the scheduled ones.
     if: >-
-      github.event.workflow_run.event != 'pull_request' &&
-      contains(fromJSON('["failure", "timed_out", "startup_failure"]'), github.event.workflow_run.conclusion)
+      github.event.workflow_run.event != 'pull_request' && contains(fromJSON('["failure", "timed_out",
+      "startup_failure"]'), github.event.workflow_run.conclusion)
     runs-on: ubuntu-latest
     steps:
       - name: Post failure to Slack
