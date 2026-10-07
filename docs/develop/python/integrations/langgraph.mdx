@@ -175,7 +175,7 @@ plugin = LangGraphPlugin(
 )
 ```
 
-To mitigate potential determinism bugs, `execute_in` cannot be set in `default_activity_options` — you must set it on each node or task individually.  See [Activity vs. Workflow execution](#activity-vs-workflow-execution).
+To mitigate potential determinism bugs, `execute_in` cannot be set in `default_activity_options` — you must set it on each node or task individually.  See [Activity versus Workflow execution](#activity-vs-workflow-execution).
 
 ## Functional API
 
@@ -464,7 +464,7 @@ and `runtime.store` is `None` inside nodes.
 Use Workflow state for per-run memory, or an external database (Postgres, Redis, etc.) configured on each worker if you
 need shared memory across runs.
 
-## Activity vs. Workflow execution
+## Activity versus Workflow execution {/* #activity-vs-workflow-execution */}
 
 Every graph node and `@task` must specify `execute_in` — set it to `"activity"` to run as a Temporal Activity, or
 `"workflow"` to run directly inside the Workflow. The plugin raises an error if you forget to set it.
@@ -547,7 +547,7 @@ plugin = LangGraphPlugin(
 )
 ```
 
-### Example: subgraph orchestration
+### Example: Subgraph orchestration
 
 A common pattern is a parent node that runs in the Workflow and dispatches to a child graph whose nodes run as
 Activities:

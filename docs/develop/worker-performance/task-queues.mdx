@@ -200,12 +200,12 @@ If you see
 
 then you might have too many workers, consider sizing down.
 
-### Worker Executor Slots sizing
+### Worker executor slots sizing
 
 The main area to focus on when tuning is the number of Worker Executor Slots.
 Increase the maximum number of working slots by adjusting `maxConcurrentWorkflowTaskExecutionSize` or `maxConcurrentActivityExecutionSize` if both of the following conditions are met:
 
-1. The Worker hosts are underutilized (no bottlenecks on CPU, load average, etc.).
+1. The Worker hosts are underutilized (for example, no bottlenecks on CPU or load average).
 2. The `worker_task_slots_available` metric from the corresponding Worker type frequently shows a depleted number of available Worker slots.
 
 Alternatively, consider using a resource-based slot supplier as described [here](/develop/worker-performance#slot-suppliers).
@@ -218,7 +218,7 @@ You can simply use automated poller tuning to handle this automatically.
 
 Consider manual adjustment if:
 
-1. The Worker hosts are underutilized, for example, there are no bottlenecks on CPU, load average, etc.
+1. The Worker hosts are underutilized, for example, there are no bottlenecks on CPU or load average.
 2. `worker_task_slots_available` metric from the corresponding Worker type shows that a significant percentage of Worker slots are available on a regular basis.
 3. The `schedule_to_start` metric is abnormally long.
 
