@@ -2,16 +2,22 @@
 id: server-options
 title: Temporal Server options reference
 sidebar_label: Server options
-description: Reference for the ServerOptions used to embed and run the Temporal Server as a Go application, including auth, TLS, and metrics options.
+description: ServerOption functions for embedding the Temporal Server as a Go library with temporal.NewServer(), covering config, shutdown, auth, TLS, and metrics.
 toc_max_heading_level: 4
 tags:
   - Reference
 ---
 
-You can run the [Temporal Server](/temporal-service/temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
+:::info
 
-The Temporal Server services can be run in various ways.
-We recommend this approach for a limited number of situations.
+For when and how to run the Temporal Server in-process, see [Embedding Temporal server as a Go library](/self-hosted-guide/embedded-server).
+
+For the settings in the configuration file, see the [Temporal Service configuration reference](/references/service-configuration).
+
+:::
+
+You can run the [Temporal Server](/temporal-service/temporal-server) as a Go application.
+Import the `go.temporal.io/server/temporal` package, then create and start a server with `temporal.NewServer()`.
 
 ```go
 s, err := temporal.NewServer()
@@ -19,21 +25,22 @@ if err != nil {
     log.Fatal(err)
 }
 err = s.Start()
-if err != nil{
+if err != nil {
     log.Fatal(err)
 }
 ```
 
-`NewServer()` accepts functions as parameters.
-Each function returns a `ServerOption` that is applied to the instance.
-Source code for parameter reference is here: https://github.com/temporalio/temporal/blob/main/temporal/server_option.go
+`NewServer()` accepts functions that each return a `ServerOption`.
+The server applies each option to the instance it creates.
 
-### WithConfig
+Server options are defined in [server_option.go](https://github.com/temporalio/temporal/blob/main/temporal/server_option.go) in the Temporal Server repository.
 
-To launch a Temporal Server, a configuration file is required. The server automatically searches for this configuration
-in the default location ./config/development.yaml when starting. If you need to use a custom configuration, you can
-specify it through the server's configuration option. For comprehensive details about configuration parameters and
-structure, refer to the [official configuration documentation](https://pkg.go.dev/go.temporal.io/server/common/config).
+## WithConfig
+
+Sets the static configuration the server starts with.
+Without this option, the server looks for a configuration file at `./config/development.yaml`.
+
+For the configuration structure, see the [`config` package](https://pkg.go.dev/go.temporal.io/server/common/config) and the [Temporal Service configuration reference](/references/service-configuration).
 
 ```go
 s, err := temporal.NewServer(
@@ -41,9 +48,9 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithConfigLoader
+## WithConfigLoader
 
-Load a custom configuration from a file.
+Loads the configuration from files in `configDir`, selected by environment (`env`) and availability zone (`zone`).
 
 ```go
 s, err := temporal.NewServer(
@@ -51,10 +58,10 @@ s, err := temporal.NewServer(
 )
 ```
 
-### ForServices
+## ForServices
 
-Sets the list of all valid Temporal services.
-The default can be used from the `go.temporal.io/server/temporal` package.
+Sets the Temporal services the server runs.
+To run every service, pass `temporal.DefaultServices` from the `go.temporal.io/server/temporal` package.
 
 ```go
 s, err := temporal.NewServer(
@@ -62,14 +69,17 @@ s, err := temporal.NewServer(
 )
 ```
 
-### InterruptOn
+## InterruptOn
 
-This option provides a channel that interrupts the server on the signal from that channel.
+Sets a channel that stops the server when it receives a signal.
+The value you pass controls whether `s.Start()` blocks:
 
-- If `temporal.InterruptOn()` is not passed, `server.Start()` is never blocked and you need to call `server.Stop()` somewhere.
-- If `temporal.InterruptOn(nil)` is passed, `server.Start()` blocks forever until the process is killed.
-- If `temporal.InterruptOn(temporal.InterruptCh())` is passed, `server.Start()` blocks until you use Ctrl+C, which then gracefully shuts the server down.
-- If `temporal.Interrupt(someCustomChan)` is passed, `server.Start()` blocks until a signal is sent to `someCustomChan`.
+| Value                                          | Behavior of `s.Start()`                                               |
+| ---------------------------------------------- | --------------------------------------------------------------------- |
+| Option not passed                              | Returns without blocking. Call `s.Stop()` to stop the server.         |
+| `temporal.InterruptOn(nil)`                    | Blocks until the process is killed.                                   |
+| `temporal.InterruptOn(temporal.InterruptCh())` | Blocks until you press Ctrl+C, then shuts the server down gracefully. |
+| `temporal.InterruptOn(yourCustomChan)`         | Blocks until a signal is sent to `yourCustomChan`.                    |
 
 ```go
 s, err := temporal.NewServer(
@@ -77,9 +87,9 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithAuthorizer
+## WithAuthorizer
 
-Sets a low level [authorization mechanism](/self-hosted-guide/security#authorizer-plugin) that determines whether to allow or deny inbound API calls.
+Sets the [`Authorizer`](/self-hosted-guide/security#authorizer-plugin) that allows or denies inbound API calls.
 
 ```go
 s, err := temporal.NewServer(
@@ -87,7 +97,7 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithTLSConfigFactory
+## WithTLSConfigFactory
 
 Overrides the default TLS configuration provider.
 `TLSConfigProvider` is defined in the `go.temporal.io/server/common/rpc/encryption` package.
@@ -98,27 +108,30 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithClaimMapper
+## WithClaimMapper
 
-Configures a [mechanism to map roles](/self-hosted-guide/security#claim-mapper) to `Claims` for authorization.
+Sets the [`ClaimMapper`](/self-hosted-guide/security#claim-mapper) that maps a caller's credentials to `Claims` for authorization.
 
 ```go
 s, err := temporal.NewServer(
-  temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
-      logger := getYourLogger() // Replace with how you retrieve or initialize your logger
-    return authorization.NewDefaultJWTClaimMapper(
-      authorization.NewDefaultTokenKeyProvider(&cfg.Global.Authorization, logger),
-      &cfg.Global.Authorization,
-      logger,
-    )
-  }),
+    temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
+        logger := getYourLogger() // Replace with how you retrieve or initialize your logger
+        return authorization.NewDefaultJWTClaimMapper(
+            authorization.NewDefaultTokenKeyProvider(&cfg.Global.Authorization, logger),
+            &cfg.Global.Authorization,
+            logger,
+        )
+    }),
 )
 ```
 
-### WithTokenProvider
+## WithTokenProvider
 
-Configures a [`TokenProvider`](/self-hosted-guide/security#token-provider) that supplies bearer tokens for outbound cross-cluster RPCs.
+Sets the [`TokenProvider`](/self-hosted-guide/security#token-provider) that supplies bearer tokens for outbound RPCs to remote clusters in [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication).
 `TokenProvider` is defined in the `go.temporal.io/server/common/rpc/auth` package.
+
+The token requires TLS to the remote cluster.
+Configure it with [`global.tls.remoteClusters`](/references/service-configuration#tls) or with [WithTLSConfigFactory](#withtlsconfigfactory).
 
 ```go
 s, err := temporal.NewServer(
@@ -126,9 +139,11 @@ s, err := temporal.NewServer(
 )
 ```
 
-### WithCustomMetricsHandler
+## WithCustomMetricsHandler
 
-Sets a custom implementation of the `metrics.Handler` interface for publishing metric events.
+Sets a custom implementation of the `metrics.Handler` interface that publishes the server's metrics.
+
+For the metrics the Temporal Server emits, see the [Temporal Service metrics reference](/references/service-metrics).
 
 ```go
 s, err := temporal.NewServer(
