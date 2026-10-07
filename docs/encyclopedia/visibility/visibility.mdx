@@ -62,7 +62,7 @@ Operations that look up a single entity by ID, such as `DescribeWorkflowExecutio
 
 ## How current is Visibility data
 
-Visibility is a search index that Temporal updates asynchronously. After a change is recorded, it takes some time to propagate to the index, so a List or Count query can briefly return stale results. This propagation delay is variable. It is usually fast, but it can be several seconds or longer, and Temporal Cloud does not publish an [SLA](/evaluate/cloud/sla) for how quickly changes become visible. Treat Visibility as eventually consistent and avoid depending on a fixed or guaranteed delay.
+Visibility is a search index that Temporal updates asynchronously. After a change is recorded, it takes some time to propagate to the index, so a List or Count query can briefly return stale results. This propagation delay is variable. It is usually fast, but it can be several seconds or longer, and Temporal Cloud does not publish an [SLA](https://temporal.io/sla) for how quickly changes become visible. Treat Visibility as eventually consistent and avoid depending on a fixed or guaranteed delay.
 
 Visibility is built for finding and filtering across many executions, not for reading the current state of one execution. When you need the authoritative, up-to-date state of a specific Workflow Execution, use `DescribeWorkflowExecution` instead of a Visibility query.
 
@@ -70,7 +70,7 @@ Visibility is built for finding and filtering across many executions, not for re
 
 Temporal Cloud targets 99.5% availability for Visibility read requests, measured over a rolling 30-day window. This covers List and Count operations against Workflow Executions, Activity Executions, Nexus Operations, Schedules, and Batch Operations.
 
-This is a service level objective rather than a contractual commitment. Visibility API requests are not covered by the Temporal Cloud availability [SLA](/evaluate/cloud/sla), and no service credits are associated with this objective. The target is deliberately lower than the availability guaranteed for core Workflow Service APIs, because Visibility is a search index intended for operational discovery rather than a critical path for application logic.
+This is a service level objective rather than a contractual commitment. Visibility API requests are not covered by the Temporal Cloud availability [SLA](https://temporal.io/sla), and no service credits are associated with this objective. The target is deliberately lower than the availability guaranteed for core Workflow Service APIs, because Visibility is a search index intended for operational discovery rather than a critical path for application logic.
 
 The objective measures whether a Visibility read request returns a valid response. Requests that fail for reasons within your control are not counted against it, including requests that exceed your Namespace's rate limits and requests rejected as malformed or unsupported.
 
@@ -90,7 +90,7 @@ For a few common tasks, another approach works better:
 
 Keeping per-workflow work on these paths gives you strongly consistent reads and keeps the shared Visibility index healthy under load.
 
-## Legacy: standard Visibility {/* #standard-visibility */}
+## Legacy: Standard Visibility {/* #standard-visibility */}
 
 Prior to Temporal Server v1.20, Temporal had two Visibility modes: "standard" and "advanced." Standard Visibility supported only predefined filters such as Workflow Type, Workflow Id, Run Id, and Execution Status, without custom Search Attributes. Advanced Visibility required Elasticsearch.
 

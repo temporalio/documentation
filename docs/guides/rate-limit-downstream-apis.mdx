@@ -1,7 +1,7 @@
 ---
 id: rate-limit-downstream-apis
 title: Rate-limit downstream APIs with separate Task Queues
-description: Protect limited resources and avoid Workflow failures by setting limits on downstream APIs with separate Task Queues.
+description: Avoid HTTP 429 errors from APIs such as Stripe, OpenAI, and Twilio by giving each API its own Task Queue with a queue-wide Activity rate limit, in Python.
 sidebar_label: Rate-limit downstream APIs
 toc_max_heading_level: 3
 author: Cecil Phillip
@@ -188,7 +188,7 @@ This implementation requires Worker configuration, Activity error handling, and 
 
 ## Architecture diagram(s)
 
-### Rate-Limited Task Queues architecture
+### Rate-limited Task Queues architecture
 
 ```mermaid
 flowchart TB

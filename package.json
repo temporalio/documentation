@@ -22,6 +22,7 @@
     "check:redirects": "node ./bin/validate-redirects.js",
     "check:py-samples": "node ./bin/check-python-samples.js",
     "check:ts-samples": "node ./bin/check-typescript-samples.js",
+    "report:snipsync-coverage": "node ./bin/report-snipsync-coverage.js",
     "test": "node --test",
     "lint": "vale --output=JSON docs/**/**/*.mdx > vale-output.json; vale --output=JSON docs/**/**/*.md > vale-md-output.json",
     "lint:go": "vale docs/develop/go/*.mdx",

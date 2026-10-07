@@ -156,6 +156,9 @@ Adding or moving pages usually requires:
 - Prefer code extracted from CI-enabled sample repos via [Snipsync](https://github.com/temporalio/snipsync).
 - Snippets are wrapped in `<!--SNIPSTART id-->` / `<!--SNIPEND-->`. Edit the **source repo** named inside the wrapper,
   then run `yarn snipsync`.
+- `yarn report:snipsync-coverage` reports the share of SDK code lines that come from Snipsync. On a pull request, the
+  Snipsync Coverage workflow comments when the change moves that number. Replacing a synced block with hand-written code
+  lowers it. See [UTILITIES.md](./readme/UTILITIES.md#snipsync-coverage).
 
 ## Pull requests
 

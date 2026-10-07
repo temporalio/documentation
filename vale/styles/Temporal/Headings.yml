@@ -6,6 +6,20 @@ scope: heading
 match: $sentence
 indicators:
   - ":"
+# How Vale scores a heading, which decides whether a term needs an entry here:
+# - A heading passes when at least 80% of its words are acceptable, so one
+#   stray capital in a long heading slips through and the same word in a short
+#   heading fails. Don't read "it passed elsewhere" as "it's allowed".
+# - All-caps acronyms are NOT exempt on their own; they need an entry.
+# - Mixed-case first words (QoS, PingFederate, ActiveRecord) need an entry.
+# - The word after a ":" must be capitalized ("Example: Subgraph orchestration").
+# - Inline `code` is skipped, so code identifiers belong in backticks rather
+#   than in this list.
+# - Single-word entries are substring-matched ("URL" also covers "URLs").
+#   Multi-word entries match only the exact phrase, so list plurals too
+#   ("Audit Log" and "Audit Logs").
+# Add a term only when it's a proper noun or a Temporal term that docs/ body
+# prose capitalizes consistently. Otherwise fix the heading.
 exceptions:
   # From Google/Headings.yml
   - Azure
@@ -30,7 +44,8 @@ exceptions:
   - REPL
   - Studio
   - TypeScript
-  - URLs
+  # Substring-matched, so this covers "URLs" too
+  - URL
   - Visual
   - VS
   - Windows
@@ -194,6 +209,8 @@ exceptions:
   - Terminate
   - Delete
   - Paused
+  # Exact feature name; generic "streams" should remain sentence-cased.
+  - Workflow Streams
   # Exact phrases; "Audit Logging" is the canonical term in Temporal/terms.yml,
   # so keep "Log"/"Logs" out of the single-word list above.
   - Audit Log
@@ -216,6 +233,57 @@ exceptions:
   # recognized industry term behind IaC.
   - Worker Controller Instance
   - Infrastructure as Code
+  # Worker Versioning terms, capitalized throughout docs/ body prose. Pinned
+  # and Auto-Upgrade are the two Versioning Behavior names. The three-word
+  # phrases come first: overlapping entries match left to right, so "Worker
+  # Deployment" would otherwise consume the word "Deployment Versions" needs.
+  - Worker Deployment Version
+  - Worker Deployment Versions
+  - Worker Deployment
+  - Worker Deployments
+  - Deployment Version
+  - Deployment Versions
+  - Versioning Override
+  - Pinned
+  - Auto-Upgrade
+  # Other defined Temporal terms that docs/ body prose capitalizes
+  # consistently. Kept as phrases where the bare words are generic.
+  - Cancellation
+  - Catchup Window
+  - Dynamic Handler
+  - Dynamic Handlers
+  - Nexus Machinery
+  - Spec
+  - Temporal Operation Handler
+  - Workflow Execution Chain
+  - Workflow History Export
+  # Go SDK primitives (workflow.Selector, workflow.Future, workflow.Channel)
+  # and Go Worker Sessions, capitalized as type and feature names on the Go
+  # pages.
+  - Selector
+  - Future
+  - Channel
+  - Session
+  # Temporal Cloud and Web UI feature and role names. "Connectivity Rule" also
+  # heads a section of the generated custom role permissions table.
+  - Capacity Mode
+  - Capacity Modes
+  - Connectivity Rule
+  - Connectivity Rules
+  - Read-Only
+  - Saved View
+  - Saved Views
+  - User Metadata
+  - Web UI
+  # Worker deployment pattern names on the High Availability architecture page
+  - Active/Passive
+  - Active/Hot-Passive
+  - Active/Active
+  # Named agent skills and the sample program name
+  - Temporal Developer
+  - Temporal Ops
+  - Cloud Setup
+  - Hello World
   # Cloud provider / networking / industry acronyms
   - Amazon
   - AWS
@@ -244,25 +312,69 @@ exceptions:
   - PrivateLink
   - KMS
   - CA
+  - CORS
+  # Substring-matched, so "FAQ" covers "FAQs"
+  - FAQ
+  - HTTP
+  - IdP
+  - JDK
+  - JWT
+  - QoS
+  - Q&A
+  - RPC
+  - TOML
+  - C#
+  - Node.js
   # Cloud provider product names (exact phrase, not the individual words)
+  - Availability Zone
   - Azure Key Vault
   - Azure Workload Identity
   - GCP Workload Identity
+  - Microsoft Entra
+  - Multi-Region Access Points
   - Pod Identity
   - Private Service Connect
   - Cloud Ops API
   - Terraform
   - Prometheus
   - Grafana
-  # gRPC status code named literally at the start of a troubleshooting heading.
-  # Only the leading word needs an entry: an all-caps acronym later in a
-  # heading already passes, which is why "INTERNAL" and "ECR" are absent.
+  # Observability, identity, and infrastructure products
+  - ClickStack
+  - New Relic
+  - OpenTelemetry Collector
+  - PingFederate
+  - SigNoz
+  - Alpine
+  - Docker Compose
+  - Helm
+  - Cassandra
+  - Elasticsearch
+  - MySQL
+  - PostgreSQL
+  - SQLite
+  # Standards and protocols
+  - JSON Web Token
+  - Model Context Protocol
+  # Libraries and tools named in SDK pages
+  - ActiveModel
+  - ActiveRecord
+  - DLoad
+  - JUnit
+  - LangGraph
+  - NexGen
+  - Pydantic
+  # gRPC status codes named literally at the start of a troubleshooting heading.
+  # All-caps words are not exempt on their own; "INTERNAL" and "ECR" pass only
+  # because they sit in headings long enough to clear the 80% threshold.
   - UNIMPLEMENTED
+  - NOT_FOUND
   # AI vendor and model-platform proper nouns
   - AI
   - Google
   - Gemini
   - Vertex
+  - Claude Code
+  - Claude Desktop
   # Temporal product/site section proper nouns (exact phrase, not the individual words)
   - AI Cookbook
   - Code Exchange
