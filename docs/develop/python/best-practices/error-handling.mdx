@@ -18,11 +18,12 @@ This page shows you how to build on these capabilities to create robust error ha
 **Key concepts:**
 
 Not all failures should be handled the same way.
-**Transient failures** (like brief network hiccups) resolve on their own and should be retried immediately.
-**Intermittent failures** (like rate limiting) need increasing delays between retries.
-**Permanent failures** (like invalid input) won't resolve through retries and need different data or code changes.
+**Transient failures** resolve if you retry. Some are one-time events (like brief network hiccups) that a quick retry resolves; others are intermittent (like rate limiting) and need increasing delays between retries.
+**Permanent failures** (like invalid input or a bug) won't resolve through retries and need different data or code changes.
+**Negative results** (like insufficient funds) aren't failures. Your code decides whether to return them, fail on them, or wait and try again.
+See [Durable Execution](/durable-execution) for how Temporal handles each category.
 
-Temporal distinguishes between **Workflow Task failures** (bugs that can be fixed with redeployment) and **Workflow Execution failures** (business logic failures that should stop the Workflow).
+Temporal distinguishes between **Workflow Task failures** (bugs that can be fixed with redeployment) and **Workflow Execution failures** (failures your code raises on purpose to stop the Workflow).
 Task failures retry automatically so you can fix and redeploy without losing state.
 Execution failures require you to explicitly raise an `ApplicationError`.
 
@@ -165,7 +166,8 @@ This way, you can decide whether an error should not be retried automatically by
 This can be useful for deliberately failing a Workflow due to bad input data, rather than waiting for a timeout to elapse. You can alternately specify a list of errors that are non-retryable in your Activity [Retry Policy](/develop/python/activities/timeouts#activity-retries).
 
 This puts the Workflow Execution in "Failed" state with no automatic retries.
-Use this for permanent failures where retrying won't help—like the customer being too far away.
+Use this when retrying won't help and the Workflow should stop, like the customer being too far away.
+That's a [negative result](/durable-execution#negative-results), and failing the Workflow is one way to handle it.
 
 ### Trigger a Workflow Task retry
 
@@ -364,7 +366,7 @@ An `ApplicationError` with `non_retryable=True` will never retry, regardless of 
 
 Use non-retryable errors for:
 - Invalid input data that prevents the Activity from proceeding
-- Business rule violations
+- Negative results you choose to handle as failures, like business rule violations
 - Authorization failures
 
 **Use this sparingly.**
@@ -544,7 +546,7 @@ These retry automatically, letting you fix bugs and redeploy without losing Work
 **Workflow Execution failures** occur when Workflow code raises a Temporal exception like `ApplicationError`.
 These put the Workflow in "Failed" state with no automatic retries.
 
-Example of a permanent failure that should fail the Workflow:
+Example of a negative result that this Workflow handles by failing:
 
 ```python
 if distance.kilometers > MAX_DELIVERY_DISTANCE:
