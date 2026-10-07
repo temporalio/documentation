@@ -20,26 +20,20 @@ For background on how Temporal represents and propagates failures, see
 
 ## Categorize failures {/* #categorize-failures */}
 
-When an operation fails, the appropriate response depends on the nature of the failure. Failures fall into three
-categories based on whether retrying can resolve them.
+When an operation doesn't succeed, the appropriate response depends on whether retrying can resolve it.
+[Durable Execution](/durable-execution) sorts these outcomes into three categories: transient failures, permanent
+failures, and negative results.
 
 ### Transient failures
 
-A transient failure is a one-off event that resolves on its own without intervention. For example, a Worker happens to
-make a network request at the exact moment an administrator replaces a network cable. The cause is unlikely to affect
-future requests.
+A transient failure is one where retrying the operation can eventually succeed. Some transient failures are one-time
+events. For example, a Worker happens to make a network request at the exact moment an administrator replaces a network
+cable, and the next request succeeds. Others are intermittent. For example, a service that uses rate limiting rejects
+requests once the threshold is reached, but accepts requests again after the rate limiter resets.
 
-Transient failures are resolved by retrying the operation shortly after the failure. Temporal's default
-[Retry Policy](/encyclopedia/retry-policies) handles transient failures automatically.
-
-### Intermittent failures
-
-An intermittent failure is one that recurs but resolves over time. For example, a service that uses rate limiting will
-reject requests once the threshold is reached, but will accept requests again after the rate limiter resets.
-
-Intermittent failures require retries spaced out over a longer period. Configure your
-[Retry Policy](/encyclopedia/retry-policies) with an appropriate `backoffCoefficient` and `maximumInterval` to avoid
-overwhelming the failing service.
+Temporal's default [Retry Policy](/encyclopedia/retry-policies) handles transient failures automatically. For
+intermittent failures, configure the Retry Policy with an appropriate `backoffCoefficient` and `maximumInterval` to
+space retries out over a longer period and avoid overwhelming the failing service.
 
 ### Permanent failures
 
@@ -48,8 +42,30 @@ to an invalid email address will continue to fail no matter how many times the o
 to correct the email address.
 
 Permanent failures cannot be resolved through retries. They require different input data, a code fix, or some external
-intervention. Mark these errors as [non-retryable](#non-retryable-errors) to fail fast instead of consuming resources on
-retries that will not succeed.
+intervention. Mark these errors as [non-retryable](#non-retryable-errors) so the Activity stops retrying instead of
+consuming resources on retries that will not succeed.
+
+Failing the Activity fast doesn't have to fail the Workflow. Durable Execution keeps the Workflow's state and progress,
+so the Workflow can catch the failure, wait for corrected data through a Signal or Update, and then run the Activity
+again. See the [Resumable Activity pattern](/design-patterns/resumable-activity) and
+[Pause a Workflow on failure and resume it after a fix](/guides/recover-without-restart). Bugs in Workflow code work
+differently: they fail the Workflow Task, not the Workflow Execution, so the Workflow Execution stays open until you
+deploy a fix.
+
+### Negative results
+
+Some outcomes aren't failures. They are your business logic reaching an expected, but negative, result: a customer
+outside the service area, an order exceeding a credit limit, an expired promotion code, or a card with insufficient
+funds.
+
+Durable Execution doesn't decide whether a negative result is a dead end or worth waiting on. That depends on your
+domain, so the decision belongs in your code. You can:
+
+- Return the result as a value and branch on it in the Workflow.
+- Raise a [non-retryable](#non-retryable-errors) Application Failure and handle it in the Workflow, for example with
+  [compensation](#saga-pattern).
+- Treat it as transient: wait, for example for a Signal that the customer updated their payment details, and then try
+  again.
 
 ## Mark permanent errors as non-retryable {/* #non-retryable-errors */}
 
@@ -60,8 +76,8 @@ background on what Application Failures are and how the `non_retryable` flag wor
 Use non-retryable errors for situations like:
 
 - **Invalid input data**: A malformed email address, a negative payment amount, or a missing required field.
-- **Business rule violations**: A customer outside the service area, an order exceeding credit limits, or an expired
-  promotion code.
+- **Negative results you handle as failures**: A customer outside the service area, an order exceeding credit limits,
+  or an expired promotion code. See [Negative results](#negative-results).
 - **Authorization failures**: The caller does not have permission to perform the operation.
 - **Data validation errors**: A referenced record does not exist, or data fails integrity checks.
 

@@ -116,8 +116,10 @@ The table summarizes the differences:
 **Workflow Task failure example:** A new deployment introduces non-determinism, existing Workflows fail Workflow Tasks,
 and the executions stay Open and retry. After deploying a fix, the Workflows automatically continue.
 
-**Workflow Execution failure example:** A payment Activity fails due to a declined card, the failure propagates
-uncaught, and the Workflow closes as Failed. The customer updates payment details and restarts the order.
+**Workflow Execution failure example:** A payment Activity raises a non-retryable failure for a declined card, the
+failure propagates uncaught, and the Workflow closes as Failed. The customer updates payment details and restarts the
+order. A declined card is a [negative result](/durable-execution#negative-results), so failing the Workflow is a choice.
+The Workflow could instead catch the failure and wait for a Signal with new payment details, keeping its progress.
 
 ## What is an Activity Task? {/* #activity-task */}
 

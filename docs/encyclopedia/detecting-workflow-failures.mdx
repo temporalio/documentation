@@ -109,10 +109,10 @@ It's worth mentioning that although you can extend the timeout up to the maximum
 ## Detecting Workflow Task Failures
 
 Use the `TemporalReportedProblems` Search Attribute to detect Workflows with failed Workflow Tasks. 
-A failed Workflow Task does not cause the Workflow to fail. Some Tasks within a Workflow may be intended to fail.
-For example, a Workflow Task may check a remote data source for new messages. If there aren't any, the Task will fail as intended.
-If your Task has code to handle the failure, the Workflow will proceed.
-However, if your Workflow has a Task that fails and the failure is not handled, the Workflow will continue to run, but will not complete.
+A failed Workflow Task does not cause the Workflow to fail.
+A Workflow Task fails when the Worker can't complete it, for example because of a bug, such as an unhandled exception or panic in Workflow code, or a non-determinism error.
+The Temporal Service retries the Workflow Task, and the Workflow Execution stays open with its progress intact, but it will not complete until you deploy a fix.
+For causes and fixes, see the [Workflow Task errors reference](/references/workflow-task-errors).
 Detecting Workflows in this state is a common troubleshooting issue.
 
 To identify Workflows with Task failures, you can use the Temporal Web UI. See [Task Failures View](/web-ui/#task-failures-view) for more details.
