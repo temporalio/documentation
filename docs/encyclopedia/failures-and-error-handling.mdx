@@ -8,8 +8,9 @@ tags:
   - Failures
 ---
 
-Temporal provides Durable Execution, which guarantees that your application runs to completion despite infrastructure issues, network problems, and Worker crashes.
-However, not all failures are handled automatically by the platform.
+Temporal provides [Durable Execution](/durable-execution), which keeps your application running through transient failures such as infrastructure issues, network problems, and Worker crashes.
+Not every failure clears on retry.
+Permanent failures, such as bugs and bad input, need a fix before the operation can continue, and negative results, such as insufficient funds, are for your code to decide.
 Understanding the difference between platform-level and application-level failures is key to building reliable Temporal applications.
 
 This section covers:

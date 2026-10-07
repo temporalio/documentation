@@ -728,12 +728,14 @@ During the first execution, the random number is 84, so the Workflow starts a Ti
 `TimerStarted` and `TimerFired`. During Replay, the random number is 14, so the Workflow skips the Timer and produces a
 `ScheduleActivityTask` Command where the Event History expects `StartTimer`. That mismatch is what makes Replay fail.
 
-Note that non-deterministic failures do not fail the Workflow Execution by default. A non-deterministic failure is
-considered a [Workflow Task Failure](/references/failures#workflow-task-failures) which is considered a transient
-failure, meaning it retries over and over. Users can also fix the source of non-determinism, perhaps by removing the
-Activity, and then restart the Workers. This means that this type of failure can recover by itself. You can also use a
-strategy called versioning to address this non-determinism error. See [versioning](/develop/go/workflows/versioning) to
-learn more.
+Note that non-deterministic failures do not fail the Workflow Execution by default. A non-deterministic failure is a
+[Workflow Task Failure](/references/failures#workflow-task-failures), which the Temporal Service retries over and over
+while the Workflow Execution stays open with its progress intact. Retrying alone won't resolve it, because the cause is a
+bug in the Workflow Definition, which makes it a [permanent failure](/durable-execution#permanent-failures). Fix the
+source of non-determinism, perhaps by removing the Activity, and deploy the fix to your Workers. The next Workflow Task
+retry replays the Event History with the fixed code, and the Workflow Execution continues from where it stopped. You can
+also use a strategy called versioning to address this non-determinism error. See
+[versioning](/develop/go/workflows/versioning) to learn more.
 
 For more information on how Temporal handles Durable Execution or to see these walkthroughs in video format with more
 explanation, check out our free, self-paced courses: [Temporal 102](https://learn.temporal.io/courses/temporal_102/) and
