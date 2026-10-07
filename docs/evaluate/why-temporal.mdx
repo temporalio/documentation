@@ -23,7 +23,10 @@ Temporal runs your application code as a _Durable Execution_. Once started, a
 [Workflow](/workflows) runs to completion, whether that takes seconds or months. When a
 [Worker](/workers) crashes, the Temporal Service hands the work to another Worker, which
 replays the [Event History](/encyclopedia/event-history) and resumes at the line where execution
-stopped, with local variables and progress intact.
+stopped, with local variables and progress intact. A bug or bad input doesn't have to lose that
+progress either. The Workflow keeps its state while you deploy a fix or correct the data, and then
+continues. See [Durable Execution](/durable-execution) for which failures Temporal retries on its
+own and which need a fix.
 
 :::tip See Temporal in action
 Watch the following video to see how Temporal ensures an order-fulfillment system can recover from various failures, from process crashes to unreachable APIs.
