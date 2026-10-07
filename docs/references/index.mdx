@@ -23,9 +23,14 @@ import PatternCards from '@site/src/components/PatternCards';
     description: "Metrics a self-hosted Temporal Service emits, covering request rates, latencies, errors, and Nexus Operations.",
   },
   {
-    href: "/references/commands",
-    title: "Commands",
-    description: "Every Command a Worker can issue after completing a Workflow Task, and its corresponding Event.",
+    href: "/references/sdk-metrics",
+    title: "SDK metrics",
+    description: "Metrics emitted by Temporal Clients and Workers, with each metric's type and SDK availability.",
+  },
+  {
+    href: "/references/client-environment-configuration",
+    title: "Environment configuration",
+    description: "Environment variables and TOML keys that configure a Temporal Client or the Temporal CLI.",
   },
   {
     href: "/references/service-configuration",
@@ -38,6 +43,26 @@ import PatternCards from '@site/src/components/PatternCards';
     description: "Keys that tune rate limits, size limits, and retry defaults without restarting the Temporal Service.",
   },
   {
+    href: "/references/web-ui-configuration",
+    title: "Temporal Web UI configuration",
+    description: "The development.yaml settings for the Web UI Server, including auth, TLS, and Cloud UI options.",
+  },
+  {
+    href: "/references/web-ui-environment-variables",
+    title: "Web UI environment variables",
+    description: "Environment variables that configure the Temporal Web UI in Docker, such as TEMPORAL_ADDRESS and TLS.",
+  },
+  {
+    href: "/references/server-options",
+    title: "Server options",
+    description: "ServerOptions for embedding the Temporal Server in a Go application, including auth, TLS, and metrics.",
+  },
+  {
+    href: "/references/commands",
+    title: "Commands",
+    description: "Every Command a Worker can issue after completing a Workflow Task, and its corresponding Event.",
+  },
+  {
     href: "/references/workflow-task-errors",
     title: "Errors",
     description: "Workflow Task failure causes and Resource Exhausted causes, with how to resolve each one.",
@@ -48,11 +73,6 @@ import PatternCards from '@site/src/components/PatternCards';
     description: "Every Event that can appear in a Workflow Execution's Event History.",
   },
   {
-    href: "/references/client-environment-configuration",
-    title: "Environment configuration",
-    description: "Environment variables and TOML keys that configure a Temporal Client or the Temporal CLI.",
-  },
-  {
     href: "/references/failures",
     title: "Failures",
     description: "Failure types for Workflows, Activities, and Nexus Operations, and their SDK classes or exceptions.",
@@ -61,26 +81,6 @@ import PatternCards from '@site/src/components/PatternCards';
     href: "/references/operation-list",
     title: "Temporal Cloud operations",
     description: "Operations Temporal Cloud rate-limits per Namespace, with each operation's priority and throttling effect.",
-  },
-  {
-    href: "/references/sdk-metrics",
-    title: "SDK metrics",
-    description: "Metrics emitted by Temporal Clients and Workers, with each metric's type and SDK availability.",
-  },
-  {
-    href: "/references/server-options",
-    title: "Server options",
-    description: "ServerOptions for embedding the Temporal Server in a Go application, including auth, TLS, and metrics.",
-  },
-  {
-    href: "/references/web-ui-configuration",
-    title: "Temporal Web UI configuration",
-    description: "The development.yaml settings for the Web UI Server, including auth, TLS, and Cloud UI options.",
-  },
-  {
-    href: "/references/web-ui-environment-variables",
-    title: "Web UI environment variables",
-    description: "Environment variables that configure the Temporal Web UI in Docker, such as TEMPORAL_ADDRESS and TLS.",
   },
   {
     href: "/glossary",
