@@ -1,0 +1,78 @@
+---
+id: generate-code
+title: Generate code from the contract
+sidebar_label: 2. Generate code
+description: NexGen emits typed models, runtime validators, and a Nexus Service definition for each language, so handler and caller agree without hand-written types.
+tags:
+  - Nexus
+  - Java SDK
+  - Temporal SDKs
+---
+
+import { RunThis } from '@site/src/components';
+
+Generate code from the contract before writing any implementation. Both sides use it: the handler implements the generated Service definition, and the caller invokes Operations through it.
+
+## What generation produces
+
+For each type in the contract, [NexGen](/nexus/nexgen) emits a typed model and a runtime validator. For each Service, it also emits a Nexus Service definition with one member per Operation, in the form that is idiomatic for the language.
+
+- The **handler** implements the Service definition, and the Worker registers that implementation.
+- The **caller** invokes Operations through it, so calls are type-checked against the contract.
+
+The validators run when a payload is parsed and again when it is serialized, so a request that violates the contract is rejected at the boundary instead of reaching your Workflow. Violations aggregate into one error naming every field that failed, which a handler maps to `BAD_REQUEST`.
+
+## Generate the code
+
+Generation is one command per language. See **[Usage](https://github.com/temporalio/nexgen#usage)** in the `nexgen` README for each language's flags.
+
+Run this command from the root of the `samples-java` clone you made in
+[Before you start](/develop/java/nexus/development-walkthrough#clone-the-sample-project).
+It reads
+[approval.nexusrpc.yaml](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml),
+the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract#write-the-contract).
+
+{/*
+MERGE DEPENDENCY, not page content. Keep this commented until the sample lands.
+
+The two links above, and every Snipsync block in this walkthrough, point at
+core/src/main/java/io/temporal/samples/nexuswalkthrough in samples-java, which
+does not exist on GitHub yet. They resolve once temporalio/samples-java#793
+merges. Until then the link checker in CI will report them, and `yarn snipsync`
+finds no matching samples-java-nexus-walkthrough-* snippet ids.
+*/}
+
+<RunThis>
+
+```bash title="Run: generate the Java code"
+nexgen java \
+  --output core/src/main/java/io/temporal/samples/nexuswalkthrough/generatedservice \
+  --package-name io.temporal.samples.nexuswalkthrough.generatedservice \
+  core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml
+```
+
+</RunThis>
+
+**Java requires the package name's last segment to match the output directory's name**, which is
+why both end in `generatedservice`. The rest of each path is this repository's layout. In your own
+project, point `--output` and `--package-name` wherever your source tree keeps generated code.
+
+Generation **clears the output directory**, so keep the contract outside it, or it is deleted the
+first time you regenerate.
+
+Commit the generated code and regenerate whenever the contract changes. Don't edit the generated files, because the next run overwrites them. When a generated name is wrong for your language, fix it in the contract with a per-language naming override. See **[Naming & overrides](https://github.com/temporalio/nexgen#naming--overrides)** in the `nexgen` README.
+
+## One contract, four languages
+
+Run the generator once per language to get that language's typed models, validators, and Service definition. You still write the handler and the caller yourself, but the part both sides must agree on comes from one source. A handler doesn't need to know which languages its callers use, and a caller doesn't need to know which language implements the handler.
+
+That is what lets the cross-language call in [step 6](/develop/java/nexus/development-walkthrough/call-the-service) work with no coordination beyond the contract.
+
+:::tip RESOURCES
+
+- [NexGen](/nexus/nexgen) for what the generator produces.
+- The [`nexgen` README](https://github.com/temporalio/nexgen) for installation, per-language commands, and the supported JSON Schema subset.
+- [Data validation](/nexus/nexgen#data-validation) for how the generated validators behave.
+
+:::
+
