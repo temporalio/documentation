@@ -181,6 +181,20 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
+### Workflow parameters {/* #workflow-parameters */}
+
+A Workflow Definition can accept more than one parameter, but give it a single parameter instead: an object, such as a `dataclass` in Python, a `struct` in Go, or a class in Java and .NET.
+Put all input fields on that object.
+
+- **You can add fields without breaking existing Workflows.**
+  Adding an optional field to the object doesn't change the Workflow Definition's signature, so Workflow Executions that are already running keep working.
+  Adding, removing, or retyping a separate parameter changes the signature.
+- **Type-safe Client calls need a single parameter.**
+  In several SDKs, the type-safe forms of starting a Workflow only accept a single argument.
+  With multiple parameters, you fall back to starting the Workflow by Workflow Type name without type checking.
+- **The Web UI sends one argument.**
+  You can't start a multi-parameter Workflow from the Web UI. See [Pass input from the Web UI](/web-ui#input).
+
 ### Deterministic constraints {/* #deterministic-constraints */}
 
 A critical aspect of developing Workflow Definitions is ensuring that they are deterministic.
