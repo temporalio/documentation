@@ -197,8 +197,40 @@ The entire Workflow Execution Event History, in JSON format, can be downloaded f
 
 Workflow Executions can request a Cancellation, send a Signal or Update, or Reset and Terminate directly from the UI.
 Start a new Workflow Execution with pre-filled values with the Start Workflow Like This One button.
+Signal and Update input, and the pre-filled Workflow input, are each a single argument. See
+[Pass input from the Web UI](#input).
 
-#### Pass input from the Web UI {/* #input */}
+### Relationships
+
+Displays the full hierarchy of a Workflow Execution with all parent and child nodes displayed in a tree.
+
+### Workers
+
+Displays the Workers currently polling on the Workflow Task Queue with a count. If no Workers are polling, an error
+displays.
+
+### Pending Activities
+
+Displays a summary of recently active and/or pending Activity Executions. Clicking a pending Activity directs the user
+to the Pending Activities tab to view details.
+
+### Call stack
+
+The screen shows the captured result from the [\_\_stack_trace](/sending-messages#stack-trace-query) Query. The Query is
+performed when the tab is selected. It works only if a Worker is running and available to return the call stack. The
+call stack shows each location where Workflow code is waiting.
+
+### Queries
+
+Lists all Queries sent to the Workflow Execution. A Query you send from this tab takes a single argument. See
+[Pass input from the Web UI](#input).
+
+### Metadata
+
+Displays User Metadata including static Workflow Summary and Details and dynamic Current Details. Lists all Events with
+User Metadata data to give you a human-readable log of what's happening in your Workflow.
+
+## Pass input from the Web UI {/* #input */}
 
 The **Data** box on the Start Workflow form, the Signal and Update dialogs, the Queries tab, and the Schedule form takes
 a single JSON value. The Web UI sends that value to your code as one argument.
@@ -224,44 +256,16 @@ temporal workflow start \
 way. To start a Workflow from the Web UI, give its Workflow Definition a single object parameter instead of several
 parameters.
 
-If the Web UI sends fewer arguments than the handler declares, the result depends on the SDK. For example:
+If the Web UI sends fewer arguments than a Workflow Definition or Signal handler declares, the result depends on the SDK.
+For example:
 
 - In the Python SDK, the Workflow Task fails with a `TypeError` and retries. The Workflow Execution stays Running without
   making progress and can appear in the [Task Failures view](#task-failures-view).
-- In the Go SDK, the Workflow Execution runs with the zero value for each missing argument. If the input can't be
-  decoded into the first parameter, the Workflow Execution fails.
+- In the Go SDK, a Workflow Execution runs with the zero value for each missing argument. If the input can't be decoded
+  into the first parameter, the Workflow Execution fails.
 
 **Start Workflow Like This One** copies only the first argument of the original Workflow Execution. If the original
 Workflow Execution took more than one argument, start the new one with the CLI.
-
-### Relationships
-
-Displays the full hierarchy of a Workflow Execution with all parent and child nodes displayed in a tree.
-
-### Workers
-
-Displays the Workers currently polling on the Workflow Task Queue with a count. If no Workers are polling, an error
-displays.
-
-### Pending Activities
-
-Displays a summary of recently active and/or pending Activity Executions. Clicking a pending Activity directs the user
-to the Pending Activities tab to view details.
-
-### Call stack
-
-The screen shows the captured result from the [\_\_stack_trace](/sending-messages#stack-trace-query) Query. The Query is
-performed when the tab is selected. It works only if a Worker is running and available to return the call stack. The
-call stack shows each location where Workflow code is waiting.
-
-### Queries
-
-Lists all Queries sent to the Workflow Execution.
-
-### Metadata
-
-Displays User Metadata including static Workflow Summary and Details and dynamic Current Details. Lists all Events with
-User Metadata data to give you a human-readable log of what's happening in your Workflow.
 
 ## Schedules
 
@@ -269,6 +273,8 @@ On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page li
 created on the selected Namespace.
 
 Click a Schedule to see details, such as configured frequency, start and end times, and recent and upcoming runs.
+The Workflow input you set when you create a Schedule in the Web UI is a single argument. See
+[Pass input from the Web UI](#input).
 
 :::tip Setting Schedules with Strings
 
