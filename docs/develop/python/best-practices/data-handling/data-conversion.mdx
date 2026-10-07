@@ -54,7 +54,7 @@ This Data Converter supports conversion of all [types supported by Pydantic](htt
 In addition to Pydantic models, supported types include:
 
 - Everything that [`json.dumps()`](https://docs.python.org/3/library/json.html#py-to-json-table) supports by default.
-- Several standard library types that `json.dumps()` does not support, including dataclasses, types from the datetime module, sets, UUID, etc.
+- Several standard library types that `json.dumps()` does not support, including dataclasses, types from the datetime module, sets, and UUID.
 - Custom types composed of any of these, with any degree of nesting.
   For example, a list of Pydantic models with `datetime` fields.
 
@@ -157,4 +157,4 @@ my_data_converter = dataclasses.replace(
 )
 ```
 
-Now `IPv4Address` can be used in type hints including collections, optionals, etc.
+Now `IPv4Address` can be used in type hints, including collections and optionals.

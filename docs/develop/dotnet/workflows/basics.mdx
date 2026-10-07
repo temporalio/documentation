@@ -37,9 +37,12 @@ public class MyWorkflow
 }
 ```
 
+### Define Workflow parameters {/* #workflow-parameters */}
+
 Temporal Workflows may have any number of custom parameters.
-However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+However, we strongly recommend that you pass a single class parameter that contains all the input fields, so that you can add fields without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
+For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
 
 ### Use Workflow constructors
 
@@ -156,7 +159,7 @@ If your goal is to always take action when something new is happening, check tha
 is false instead. That is false during read-only operations like Queries and Update validators. This is what the SDK's
 built-in logger and tracing interceptors use internally.
 
-### .NET Task Determinism
+### .NET Task determinism
 
 Some calls in .NET do unsuspecting non-deterministic things and are easy to accidentally use.
 This is especially true with `Task`s.

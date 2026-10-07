@@ -608,21 +608,21 @@ connection finish normally.
 
 </Tabs>
 
-## NativeConnection, Connection, and Client
+## `NativeConnection`, `Connection`, and `Client`
 
 `NativeConnection`, `Connection`, and `Client` are all classes provided by the TypeScript SDK to facilitate
 communication with the Temporal Service. This section explains the differences between these classes and their
 respective use cases. For detailed information about each class, refer to the
 [Temporal TypeScript API documentation](https://typescript.temporal.io/api/namespaces/client).
 
-### NativeConnection vs. Connection {/* #native-connection-vs-connection */}
+### `NativeConnection` versus `Connection` {/* #native-connection-vs-connection */}
 
 The TypeScript SDK provides two types of connection classes to connect to the Temporal Service: `NativeConnection` and
 `Connection`. The `NativeConnection` class is used to connect from a Worker, while the `Connection` class is used to
 connect from a Temporal Application or from within an Activity, typically through a `Client` object. Both connection
 classes accept the same set of connection options.
 
-### Connection vs. Client {/* #connection-vs-client */}
+### `Connection` versus `Client` {/* #connection-vs-client */}
 
 A `Client` object is a high-level, lightweight abstraction that simplifies interaction with the Temporal Service. It
 internally manages a `Connection` object to handle the low-level communication details. The `Client` class provides
@@ -664,7 +664,6 @@ const handle = await client.workflow.start(example, {
   taskQueue: 'your-task-queue',
   args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
 });
-const handle = client.getHandle(workflowId);
 const result = await handle.result();
 ```
 
@@ -811,7 +810,7 @@ If you started a Workflow with `client.workflow.start()`, you can choose to wait
 `handle.result()`.
 
 ```typescript
-const handle = client.getHandle(workflowId);
+const handle = client.workflow.getHandle(workflowId);
 const result = await handle.result();
 ```
 
@@ -822,7 +821,7 @@ If you call `result()` on a Workflow that prematurely ended for some reason, it 
 reason. For that reason, it is recommended to catch that error.
 
 ```typescript
-const handle = client.getHandle(workflowId);
+const handle = client.workflow.getHandle(workflowId);
 try {
   const result = await handle.result();
 } catch (err) {

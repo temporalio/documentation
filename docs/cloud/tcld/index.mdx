@@ -63,13 +63,14 @@ brew install temporalio/brew/tcld
 
 ### Build tcld from source
 
-1. Verify that you have Go 1.18 or later installed.
+1. Verify that you have the minimum Go version listed in the tcld
+   [`go.mod`](https://github.com/temporalio/tcld/blob/main/go.mod) file.
 
    ```bash
    go version
    ```
 
-   If Go 1.18 or later is not installed, follow the [Download and install](https://go.dev/doc/install) instructions on the Go website.
+   If that version of Go is not installed, follow the [Download and install](https://go.dev/doc/install) instructions on the Go website.
 
 1. Clone the tcld repository and run make.
 

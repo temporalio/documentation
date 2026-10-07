@@ -78,13 +78,46 @@ For each flagged file, decide whether it:
 
 This utility highlights potential issues — it's up to you to decide what belongs in our published documentation.
 
+## snipsync-coverage
+
+`bin/report-snipsync-coverage.js` (run via `yarn report:snipsync-coverage`) reports how much of the SDK code in `docs/`
+comes from Snipsync. Code that Snipsync pulls from a sample repository is built in that repository's CI. Code written
+into a page by hand isn't compiled anywhere, so the percentage is the share of SDK code we know builds.
+
+The headline counts non-blank lines inside fenced code blocks tagged with an SDK language: Python, TypeScript or
+JavaScript, Go, Java, C#, Ruby, PHP, and Rust. A second line counts every fenced block except mermaid diagrams. A block
+counts as synced when it sits between `SNIPSTART` and `SNIPEND` markers, in either the `<!-- -->` or the `{/* */}` form.
+The source link Snipsync writes above a block isn't counted as code, but its URL is how the report attributes synced
+lines to a source repository.
+
+The report breaks the numbers down by section (the top-level directory under `docs/`, with `develop/` split by SDK), by
+language, and by source repository.
+
+```bash
+yarn report:snipsync-coverage                                       # the working tree
+yarn report:snipsync-coverage --ref <ref>                           # docs/ at a commit, without a checkout
+yarn report:snipsync-coverage --base origin/main                    # what this branch changes
+yarn report:snipsync-coverage --history --since 2026-01-01 --every month   # the trend, as CSV
+```
+
+Add `--json` or `--markdown` to any of the first three. `--history` samples the last commit in each day, week (the
+default), or month on the first-parent history of `origin/main` (or `--branch`), oldest first.
+
+The Snipsync Coverage workflow runs the comparison on every pull request that changes `docs/`, writes it to the job
+summary, and keeps one PR comment up to date. It only comments when the SDK line counts change. On `main` it writes the
+current numbers to the job summary. Nothing is stored. The numbers depend only on the files in `docs/`, so `--history`
+rebuilds the trend whenever you need it.
+
+The code block parser lives in `bin/code-blocks.js`, so other scripts that need to tell synced code from hand-written
+code can share it.
+
 ## validate-redirects
 
 `bin/validate-redirects.js` (run via `yarn check:redirects`) checks the `redirects` in `vercel.json` for rules that
 can't work as written. It runs in the Check Redirects workflow on every pull request and fails on findings.
 
 Vercel compiles each `source` with path-to-regexp 6.1.0 and applies the first rule that matches. The script uses that
-same library, installed as the `vercel-path-to-regexp` dev dependency, so a rule matches in the script exactly when it
+same library, installed as the `vercel-path-to-regexp` dependency, so a rule matches in the script exactly when it
 matches in production. It builds the set of URLs the site serves from `docs/`, `src/pages/`, and `static/` (using the
 same URL resolution as the `markdown-pages` plugin), not from `build/`.
 
@@ -117,6 +150,10 @@ findings as JSON.
 
 `bin/check-redirects-for-moved-pages.js` is a separate check: it uses the same matcher to fail a pull request that moves
 or deletes a docs page without adding a redirect.
+
+`api/markdown-not-found.js` uses the same matcher at request time, so a redirect for a page path also covers the page's
+`.md` URL. Don't add a separate `.md` rule unless a wildcard rule would catch the `.md` URL first. See
+[Moved pages](./MARKDOWN_PIPELINE.md#moved-pages).
 
 ## visual-comparison
 

@@ -1,0 +1,42 @@
+name: Check Python Samples
+
+# Type-checks the hand-written Python samples in docs/ with Pyright against
+# the latest temporalio release on PyPI, and reports SDK classes, functions,
+# modules, and arguments that the samples use but the package doesn't have.
+# Advisory; the steps are shared with the other languages in
+# check-code-samples.yml.
+
+on:
+  schedule:
+    # Mondays at 11:30 UTC.
+    - cron: '30 11 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docs/develop/python/**'
+      - 'bin/check-python-samples.js'
+      - 'bin/check-python-samples.test.js'
+      - 'bin/python-samples-baseline.json'
+      - 'bin/code-samples.js'
+      - 'bin/code-samples.test.js'
+      - '.github/workflows/check-python-samples.yml'
+      - '.github/workflows/check-code-samples.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-python-samples-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    permissions:
+      contents: read
+      issues: write
+    uses: ./.github/workflows/check-code-samples.yml
+    with:
+      language: Python
+      checker: bin/check-python-samples.js
+      baseline: bin/python-samples-baseline.json
+      yarn-script: check:py-samples
