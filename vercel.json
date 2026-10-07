@@ -2515,12 +2515,7 @@
     },
     {
       "source": "/encyclopedia/durable-execution",
-      "destination": "/temporal#durable-execution",
-      "permanent": true
-    },
-    {
-      "source": "/durable-execution",
-      "destination": "/temporal#durable-execution",
+      "destination": "/durable-execution",
       "permanent": true
     },
     {

@@ -14,7 +14,7 @@ description:
 Temporal's Google GenAI integration lets you call [Gemini](https://ai.google.dev/gemini-api/docs) models from inside
 Temporal Workflows, so a sequence of model calls keeps its place across Worker restarts, deploys, and transient failures.
 
-Temporal gives your code [Durable Execution](/temporal#durable-execution). The
+Temporal gives your code [Durable Execution](/durable-execution). The
 [Google Gen AI SDK](https://googleapis.github.io/python-genai/) gives you the model API: content generation, automatic
 function calling, chat sessions, structured output, files, and MCP. The integration connects the two so that you write
 ordinary Gemini SDK code and run it as a Workflow, without writing your own retry loop or checkpointing.
