@@ -55,6 +55,21 @@
   ],
   "redirects": [
     {
+      "source": "/:path*/null",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)\\)\\.",
+      "destination": "/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)\\)",
+      "destination": "/:path",
+      "permanent": true
+    },
+    {
       "source": "/cloud/metrics",
       "destination": "/cloud/monitor",
       "permanent": true
@@ -2606,6 +2621,71 @@
     {
       "source": "/develop/typescript/message-passing.md",
       "destination": "/develop/typescript/workflows/message-passing.md",
+      "permanent": true
+    },
+    {
+      "source": "/workflow-execution/message-passing",
+      "destination": "/encyclopedia/workflow-message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/temporal-clients",
+      "destination": "/develop/go/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/temporal-clients",
+      "destination": "/develop/python/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/workflow-determinism",
+      "destination": "/workflow-definition#deterministic-constraints",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/production-deployment",
+      "destination": "/self-hosted-guide/production-checklist",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/self-hosted",
+      "destination": "/self-hosted-guide",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/worker-versioning",
+      "destination": "/production-deployment/worker-deployments/worker-versioning",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/workers",
+      "destination": "/workers",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/activities/activity-definition",
+      "destination": "/activity-definition",
+      "permanent": true
+    },
+    {
+      "source": "/workflow-execution/timers",
+      "destination": "/workflow-execution/timers-delays",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dev-server",
+      "destination": "/develop/run-a-development-server",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/api",
+      "destination": "/ops",
+      "permanent": true
+    },
+    {
+      "source": "/pdf/temporal-tos-2021-07-24.pdf",
+      "destination": "https://temporal.io/terms-of-service",
       "permanent": true
     },
     {
