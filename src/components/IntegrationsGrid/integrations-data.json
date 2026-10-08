@@ -244,6 +244,15 @@
     "href": "https://github.com/parseablehq/temporal-plugin/blob/main/INTEGRATION.md"
   },
   {
+    "name": "Pi Durable",
+    "description": "Run Pi Durable agents on Temporal with an experimental community integration.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "TypeScript",
+    "href": "https://github.com/h0rv/pi-durable-temporal"
+  },
+  {
     "name": "Prometheus + Grafana",
     "description": "Scrape Temporal Cloud metrics with self-hosted Prometheus and visualize with Grafana dashboards.",
     "tags": [
