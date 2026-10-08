@@ -423,7 +423,7 @@ from dataclasses import asdict
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.common import RetryPolicy
+from temporalio.common import RetryPolicy, SearchAttributeKey
 
 with workflow.unsafe.imports_passed_through():
     from activities import (
@@ -444,6 +444,9 @@ with workflow.unsafe.imports_passed_through():
         DocumentSubmission,
     )
 
+
+# Custom Search Attribute that tracks where the document is in the approval process.
+APPROVAL_STATUS_KEY = SearchAttributeKey.for_keyword("ApprovalStatus")
 
 # Retry policy for notification Activities.
 NOTIFICATION_RETRY_POLICY = RetryPolicy(
@@ -649,6 +652,11 @@ class DocumentApprovalWorkflow:
         # Wait for all in-flight Signal and Update handlers to complete
         # before returning
         await workflow.wait_condition(workflow.all_handlers_finished)
+
+        # Record the final status so you can filter closed Workflows by it
+        workflow.upsert_search_attributes(
+            [APPROVAL_STATUS_KEY.value_set(self._state.status.value)]
+        )
 
         return result
 
@@ -1038,8 +1046,7 @@ class DocumentApprovalWorkflow:
         decision_data = asdict(self._state.decision)
         report_url = await workflow.execute_activity(
             generate_approval_report,
-            self._state.document.document_id,
-            [decision_data],
+            args=[self._state.document.document_id, [decision_data]],
             start_to_close_timeout=timedelta(minutes=5),
             heartbeat_timeout=timedelta(minutes=2),
             retry_policy=REPORT_RETRY_POLICY,
@@ -1237,8 +1244,12 @@ from __future__ import annotations
 import asyncio
 import os
 
-from temporalio.api.common.v1 import SearchAttributes
 from temporalio.client import Client
+from temporalio.common import (
+    SearchAttributeKey,
+    SearchAttributePair,
+    TypedSearchAttributes,
+)
 
 from models import (
     ApprovalDecision,
@@ -1246,10 +1257,13 @@ from models import (
     ApproverConfig,
     DocumentSubmission,
 )
-from workflows import DocumentApprovalWorkflow
+from workflows import APPROVAL_STATUS_KEY, DocumentApprovalWorkflow
 
 TASK_QUEUE = os.getenv("TEMPORAL_TASK_QUEUE", "document-approval")
 NAMESPACE = os.getenv("TEMPORAL_NAMESPACE", "document-approval")
+
+DOCUMENT_ID_KEY = SearchAttributeKey.for_keyword("DocumentId")
+SUBMITTER_EMAIL_KEY = SearchAttributeKey.for_keyword("SubmitterEmail")
 
 
 async def main() -> None:
@@ -1274,10 +1288,10 @@ async def main() -> None:
 
     workflow_id = f"approval-{document.document_id}"
 
-    search_attributes = SearchAttributes.from_pairs([
-        ("DocumentId", document.document_id),
-        ("SubmitterEmail", document.submitter_email),
-        ("ApprovalStatus", "SUBMITTED"),
+    search_attributes = TypedSearchAttributes([
+        SearchAttributePair(DOCUMENT_ID_KEY, document.document_id),
+        SearchAttributePair(SUBMITTER_EMAIL_KEY, document.submitter_email),
+        SearchAttributePair(APPROVAL_STATUS_KEY, "SUBMITTED"),
     ])
 
     handle = await client.start_workflow(
@@ -1304,13 +1318,9 @@ async def main() -> None:
     )
     print("Approval Signal sent")
 
+    # The Workflow sets the final ApprovalStatus Search Attribute before it completes
     result = await handle.result()
     print(f"Workflow result: {result}")
-
-    search_attributes = SearchAttributes.from_pairs([
-        ("ApprovalStatus", result["status"].upper()),
-    ])
-    await client.update_workflow_search_attributes(workflow_id, search_attributes)
 
     # Query the audit trail
     audit_trail = await handle.query(
