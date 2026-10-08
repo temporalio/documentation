@@ -25,6 +25,8 @@ Automated migration is designed to provide a zero-downtime, secure means of migr
 outlines the current process for transitioning Workflows from self-hosted Temporal Server to a namespace hosted within
 Temporal Cloud.
 
+For the opposite direction, see [Migrate from Temporal Cloud to self-hosted Temporal](/cloud/migrate/reverse).
+
 ### Namespace migration schedule
 
 When planning a migration it is highly recommended to migrate in the order of least-critical to most-critical Namespace.
@@ -520,6 +522,13 @@ history.enableReplicationStream:
 Enabling this configuration will require a restart of your history pods.
 
 ## Frequently asked questions
+
+### Can I migrate back to self-hosted after confirming an S2C migration?
+
+**Yes.** Start a new [Cloud-to-self-hosted (C2S) migration](/cloud/migrate/reverse) with Temporal.
+This early-release process requires Temporal to initiate the migration; there is no `tcld` command to start it.
+If you reuse the original self-hosted Namespace name, delete that Namespace and wait for deletion to finish first.
+Handover within an ongoing migration remains available in either direction until confirmation.
 
 ### How many Temporal Cloud accounts do I need?
 

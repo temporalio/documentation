@@ -1,0 +1,199 @@
+---
+id: reverse
+title: Migrate from Temporal Cloud to self-hosted Temporal
+sidebar_label: Reverse migration
+description:
+  Reverse migration replicates Cloud Workflows to a self-hosted Temporal Service, with steps to prepare the destination,
+  hand over, and confirm.
+slug: /cloud/migrate/reverse
+tags:
+  - Temporal Service
+  - Temporal Cloud
+  - Self-hosting
+  - Production
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Cloud-to-self-hosted migration is in early release. Contact your Temporal account team to plan and start the
+  migration.
+</ReleaseNoteHeader>
+
+Reverse migration, also called Cloud-to-self-hosted (C2S) migration, replicates a Temporal Cloud Namespace to a
+self-hosted Temporal Service. It uses the same S2S Proxy and replication process as
+[automated self-hosted-to-Cloud (S2C) migration](/cloud/migrate/automated), with the source and destination reversed.
+Running Workflows continue on the destination after handover.
+
+Temporal must initiate C2S migrations. There is no `tcld` command to start a C2S migration. After Temporal starts it,
+you can use `tcld` to monitor progress, hand over, abort, and confirm completion.
+
+## Understand the migration lifecycle
+
+Only one side is active at a time. While the migration is connected, requests sent to the passive side are forwarded to
+the active side, and Workflow changes replicate from the active side to the passive side.
+
+| Phase                         | Active Namespace | Passive Namespace       | Replication direction |
+| ----------------------------- | ---------------- | ----------------------- | --------------------- |
+| Initial replication           | Temporal Cloud   | Self-hosted             | Cloud to self-hosted  |
+| After handover to self-hosted | Self-hosted      | Temporal Cloud          | Self-hosted to Cloud  |
+| After confirmation            | Self-hosted      | Cloud replica abandoned | Replication stops     |
+
+Before confirmation, you can hand over between the two sides to validate application behavior. After confirmation,
+returning to Cloud requires a new S2C migration.
+
+## Prepare the destination
+
+Work with your Temporal account team to confirm eligibility and the migration plan before changing your self-hosted
+Temporal Service. Start with a non-production Namespace and test the full process before migrating production workloads.
+
+Provide the following information through a [support ticket](/evaluate/cloud/support#support-ticket):
+
+- Source Cloud Namespace name, including its account suffix, and the destination self-hosted Namespace name.
+- Destination Temporal Server version and configuration. Use the
+  [configuration capture instructions](/cloud/migrate/automated#capture-cluster-configurations).
+- Custom Search Attributes in the Cloud Namespace, including their names and types.
+- Workflow counts, storage usage, Retention Period, and Schedules to migrate.
+- Any existing S2S Proxy deployment and migration endpoint from a previous S2C migration.
+
+Review the [automated migration limitations](/cloud/migrate/automated#limitations) with Temporal for your destination,
+including server version, History Shard count, and Global Namespace configuration requirements. Allocate enough
+persistence, CPU, and I/O capacity to receive the replicated data and run the production workload after handover. Agree
+on which closed Workflows to migrate and the destination Retention Period with Temporal.
+
+### Remove an existing destination Namespace
+
+The destination Namespace name must not conflict with an existing Namespace in your self-hosted Temporal Service. If you
+are returning to the same self-hosted deployment after a confirmed S2C migration, delete the old self-hosted Namespace
+and wait for deletion to finish before Temporal starts C2S migration. Alternatively, use a different destination
+Namespace name that does not already exist.
+
+:::warning Delete only the destination Namespace
+
+Deleting a Namespace permanently removes its Workflow Executions and data. Verify that you are targeting the self-hosted
+destination and that its existing data is no longer needed. Keep the source Cloud Namespace intact.
+
+:::
+
+Use the [self-hosted Namespace deletion command](/cli/command-reference/operator#delete) if deletion is required.
+Coordinate with Temporal to verify completion; submitting the deletion request is not sufficient. Leave the destination
+Namespace absent for the migration process rather than registering it manually.
+
+### Match Custom Search Attributes
+
+Ensure that every Custom Search Attribute in the source Cloud Namespace exists in the destination self-hosted Temporal
+Service with the **same name and type**. Check the appropriate scope for your Visibility store: self-hosted SQL
+Visibility uses Namespace-scoped Search Attributes, while Elasticsearch/OpenSearch uses shared Search Attributes.
+Coordinate Namespace-scoped setup with Temporal because the destination Namespace does not exist before migration.
+
+Use the [Search Attribute commands](/cloud/migrate/automated#capture-custom-search-attributes) to inspect the
+self-hosted definitions and the [Search Attribute guide](/search-attribute#custom-search-attribute) to manage them. Tell
+Temporal if you add a Custom Search Attribute after the initial check so the destination definitions can be updated
+before the corresponding data replicates.
+
+## Set up and test connectivity
+
+Follow the shared automated migration instructions to:
+
+1. [Prepare mTLS certificates](/cloud/migrate/automated#prepare-mtls-certificates).
+2. [Configure the S2S Proxy](/cloud/migrate/automated#configure-the-proxy) with the endpoint provided by Temporal.
+3. [Modify the self-hosted configuration](/cloud/migrate/automated#modify-cluster-configuration), including API
+   forwarding and Global Namespace settings, using values provided by Temporal.
+
+If you are migrating back to the same self-hosted Temporal Service, the existing proxy and infrastructure can be reused
+after Temporal verifies them. Do not change previously configured failover values without coordinating with Temporal.
+
+Proxy Namespace mappings retain their local and remote meanings regardless of migration direction: `local` is the
+self-hosted Namespace and `remote` is the full Cloud Namespace name, including its account suffix. For example, the
+following mapping sends data between self-hosted `your_namespace` and Cloud `your_namespace.abcd`:
+
+```yaml
+namespaceTranslation:
+  mappings:
+    - local: 'your_namespace'
+      remote: 'your_namespace.abcd'
+```
+
+This is a mapping excerpt, not a complete proxy configuration. Include the self-hosted Namespace in
+`aclPolicy.allowedNamespaces` and retain the required `temporal-system` entry, as shown in the shared proxy guide.
+
+Have Temporal validate the connection, permissions, configuration, Namespace mapping, and Search Attributes. Run an
+end-to-end C2S test migration with both running and closed Workflows and any Schedules your application uses. Validate
+the replicated data and application behavior before proceeding with a production Namespace.
+
+## Start and monitor replication
+
+Ask Temporal to start the C2S migration after preparation and testing are complete. Temporal provides a new migration
+identifier. Use that identifier for every command below; do not reuse the identifier from a completed S2C migration. The
+Cloud Namespace remains active while the self-hosted Namespace becomes a passive replica and receives Workflow data.
+
+Run [`tcld migration get`](/cloud/tcld/migration#get) to inspect the migration:
+
+```command
+tcld migration get --id <migration-id>
+```
+
+Replace `<migration-id>` with the identifier provided by Temporal. The `--id` flag selects the migration. Check its
+state, replica states, replication progress, and any failure message. Wait until replication is complete and the
+migration is ready for handover before making the self-hosted side active. Coordinate with Temporal if progress stops or
+the migration reports a failure.
+
+## Hand over and transfer Clients
+
+Prepare Workers and Clients to use the self-hosted endpoint, destination Namespace name, and self-hosted authentication
+configuration. Retain any Payload Codecs and encryption keys needed to read existing Workflow data. You can run Workers
+against both endpoints during migration, then gradually move Clients to self-hosted. Requests to either endpoint are
+served by the active side while forwarding is enabled.
+
+Once replication is complete, run [`tcld migration handover`](/cloud/tcld/migration#handover) to make self-hosted
+active:
+
+```command
+tcld migration handover --id <migration-id> --to-replica-id on-prem
+```
+
+The `--to-replica-id on-prem` flag selects the self-hosted replica. After handover completes, Cloud becomes passive and
+receives replication from self-hosted. Verify Worker polling, Workflow completion, new Workflow starts, Schedules, and
+the Signals, Queries, and Updates your application uses. Check Workflow counts, Event Histories, and Visibility results
+on both sides.
+
+If you need to return to Cloud during validation, hand over to the Cloud replica:
+
+```command
+tcld migration handover --id <migration-id> --to-replica-id cloud
+```
+
+The `--to-replica-id cloud` flag makes Cloud active again without completing the migration. Wait for each handover to
+finish before requesting another. Hand over to `on-prem` again when you are ready to continue with C2S migration.
+
+## Confirm or abort the migration
+
+Before confirming, ensure that:
+
+- The self-hosted replica is active and the migration is ready for confirmation.
+- All Workers and Clients use the self-hosted endpoint and destination Namespace.
+- Replicated Workflow data and Schedules have been validated.
+- The self-hosted Temporal Service can sustain the workload, with monitoring and alerting in place.
+
+Run [`tcld migration confirm`](/cloud/tcld/migration#confirm) after validation:
+
+```command
+tcld migration confirm --id <migration-id>
+```
+
+Confirmation is final. It stops replication and forwarding between Cloud and self-hosted for this migration, leaving
+self-hosted active. Clients that still point to Cloud can no longer rely on forwarding to the self-hosted Temporal
+Service. Use `tcld migration get --id <migration-id>` to verify that the migration has completed. Coordinate any Cloud
+Namespace cleanup separately with Temporal.
+
+If you decide to cancel before confirmation, coordinate the rollback with Temporal. If you have already handed over to
+self-hosted, hand back to `cloud` and wait for that handover to complete. Ensure that your Workers and Clients point to
+Cloud. Run [`tcld migration abort`](/cloud/tcld/migration#abort) to end the migration and keep Cloud as the active side:
+
+```command
+tcld migration abort --id <migration-id>
+```
+
+Aborting ends the replication connection, so Clients must be able to reach Cloud directly. After a confirmed C2S
+migration, `handover` and `abort` cannot restore the connection; use a new [S2C migration](/cloud/migrate/automated) to
+return to Cloud.
