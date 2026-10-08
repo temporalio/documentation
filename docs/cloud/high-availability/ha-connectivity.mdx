@@ -169,7 +169,7 @@ Follow these steps in order to update your private DNS overrides without interru
 
 5. **Remove the Namespace-endpoint PHZ record.** Delete the `<ns>.<account>.tmprl.cloud` record from the PHZ. With it gone, Workers resolve the name through public DNS → regional CNAME → PHZ regional override → VPC Endpoint, which is the correct HA chain. **Do not skip this step.** If the Namespace-endpoint override remains, failover does not work.
 
-6. **Test failover end-to-end.** Use [forced failover](/cloud/high-availability/failovers) in a staging environment to confirm Workers converge to the new active region within the expected window (about 30 seconds after the public CNAME update, given the 15-second TTL).
+6. **Test failover end-to-end.** Trigger a [manual failover](/cloud/high-availability/failovers#manual-failover) in a staging environment to confirm Workers converge to the new active region within the expected window (about 30 seconds after the public CNAME update, given the 15-second TTL).
 
 :::caution Order matters
 
@@ -197,7 +197,7 @@ Steps:
 
 5. **Start Workers in the new region.** They begin processing tasks immediately, even though they are connecting to the passive replica, because Temporal Cloud forwards Workflow and Activity tasks across regions transparently. This is what keeps the region change zero-downtime.
 
-6. **Failover to the new region.** Trigger a [forced failover](/cloud/high-availability/failovers) to make the new region active. Workers in the old region keep running and keep using the old VPC Endpoint — they now connect to the passive replica that lives in the old region, and Temporal Cloud forwards their tasks to the new active region.
+6. **Failover to the new region.** Trigger a [manual failover](/cloud/high-availability/failovers#manual-failover) to make the new region active. Workers in the old region keep running and keep using the old VPC Endpoint — they now connect to the passive replica that lives in the old region, and Temporal Cloud forwards their tasks to the new active region.
 
 7. **Drain and remove Workers and the VPC Endpoint in the old region.** Once you are confident the new region is handling all new work and you no longer need old-region Workers, stop them. Complete the [replica-removal connectivity checklist](/cloud/high-availability/enable#prepare-connectivity-before-removing-a-replica) to confirm no other Workers or Clients still depend on the old region's Regional Endpoint or private connection, then tear down the old region's VPC Endpoint and PHZ.
 
