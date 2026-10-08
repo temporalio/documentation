@@ -111,18 +111,6 @@ Run `yarn build` to see if there are any build warnings or errors.
 
 Use `yarn format` to format changes automatically.
 
-# Broken links
-
-[hyperlink](https://www.npmjs.com/package/hyperlink) is a command-line tool to find broken links.
-
-In a terminal, run:
-
-```bash
-yarn check-links
-```
-
-This command will start the hyperlink checker.
-
 # Snipsync
 
 This repository is configured for [Snipsync](https://github.com/temporalio/snipsync), which checks in the snippets included throughout our documentation.
