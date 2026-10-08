@@ -128,7 +128,8 @@ spec:
 
 The `connectionRef` points to a `Connection` resource that holds the Temporal Service address and either mTLS or API key credentials.
 A `Connection` uses either mTLS or an API key, not both.
-If you use an API key with Temporal Cloud, set `hostPort` to the regional endpoint, such as `us-east-1.aws.api.temporal.io:7233`, because the Namespace endpoint requires mTLS.
+For Temporal Cloud, use the Namespace endpoint (`<namespace>.<account>.tmprl.cloud:7233`) as the `hostPort`.
+If a Namespace that also allows mTLS rejects your API key connection with a `tls: certificate required` error, switch `hostPort` to the Namespace's [Regional Endpoint](/cloud/connectivity), such as `us-east-1.aws.api.temporal.io:7233`.
 For examples, see the [Configuration reference](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/configuration.md#connection-configuration).
 
 When you ship a new image, the Worker Controller detects the new version and gradually makes it the **Current Version** of the Worker Deployment.
