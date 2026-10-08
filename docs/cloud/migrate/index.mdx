@@ -2,13 +2,20 @@
 id: index
 title: Migrate
 slug: /cloud/migrate
-description: Migrate Temporal workflows with zero downtime, whether it's from self-hosted Temporal Server to Temporal Cloud, or between different regions or cloud providers within Temporal Cloud.
+description:
+  Temporal migration guides cover transfers to and from Cloud, moves between Cloud regions or providers, and estimates
+  for migration planning.
 ---
 
-Learn how to migrate your Temporal workflows with zero downtime:
+Choose a migration process for your Temporal Workflows:
 
-- [Automated Migration](/cloud/migrate/automated) - This process automates the transition from self-hosted Temporal instances to Temporal Cloud.
-- [Manual Migration](/cloud/migrate/manual) - This process enables transitions from self-hosted Temporal instances to Temporal Cloud by updating clients
-  and workflows to utilize new resources within Temporal Cloud.
-- [Migrate between regions](/cloud/migrate/migrate-within-cloud) - This process allows you to migrate a Temporal Cloud Namespace between regions or providers.
-- [Estimate Actions](/cloud/migrate/estimate-actions) - This process helps you estimate Actions and Actions per second from a self-hosted Temporal Service before migrating to Temporal Cloud.
+- [Automated Migration](/cloud/migrate/automated) - This process automates the transition from self-hosted Temporal
+  instances to Temporal Cloud.
+- [Reverse migration](/cloud/migrate/reverse) - Replicate a Cloud Namespace to a self-hosted Temporal Service. Temporal
+  starts this early-release migration; you can monitor, hand over, abort, and confirm it with `tcld`.
+- [Manual Migration](/cloud/migrate/manual) - This process enables transitions from self-hosted Temporal instances to
+  Temporal Cloud by updating clients and workflows to utilize new resources within Temporal Cloud.
+- [Migrate between regions](/cloud/migrate/migrate-within-cloud) - This process allows you to migrate a Temporal Cloud
+  Namespace between regions or providers.
+- [Estimate Actions](/cloud/migrate/estimate-actions) - This process helps you estimate Actions and Actions per second
+  from a self-hosted Temporal Service before migrating to Temporal Cloud.

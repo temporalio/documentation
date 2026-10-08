@@ -1397,6 +1397,7 @@ module.exports = {
           },
           items: [
             'cloud/migrate/automated',
+            'cloud/migrate/reverse',
             'cloud/migrate/manual',
             'cloud/migrate/migrate-within-cloud',
             'cloud/migrate/estimate-actions',
