@@ -1632,6 +1632,7 @@ module.exports = {
             'production-deployment/temporal-proxy/configure',
             'production-deployment/temporal-proxy/encrypt-payloads',
             'production-deployment/temporal-proxy/deploy-kubernetes',
+            'production-deployment/temporal-proxy/operational-guidebook',
           ],
         },
       ],
