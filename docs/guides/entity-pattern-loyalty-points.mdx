@@ -2,7 +2,7 @@
 id: entity-pattern-loyalty-points
 title: Track customer loyalty points with durable Workflows
 description: How to run a customer loyalty program with durable Workflows provided by Temporal
-sidebar_label: Customer loyalty program
+sidebar_label: Customer loyalty program v2
 toc_max_heading_level: 3
 author: Cecil Phillip
 tags:
@@ -17,86 +17,35 @@ tags:
 
 **by Cecil Phillip**
 
-Loyalty programs look simple until you're running them at scale: points have to accrue correctly across every purchase, tiers have to recalculate at the right moment, redemptions have to be consistent, and all of it has to hold up across years of customer interactions. This guide shows how to give each customer their own dedicated, durable account — one that holds state, enforces business rules, responds to purchases and redemptions in real time, and never needs a cron job to stay current.
+Customer loyalty programs can be great for your business, but they’re notoriously difficult to scale. Points have to accrue correctly across every purchase, tiers have to recalculate at the right moment, redemptions have to be consistent, and all of it has to hold up across years of customer interactions. Doing this with a shared database means locking, retry logic across services, and cron jobs that periodically recalculate who qualifies for what. 
 
-## Problem statement
+A scalable solution is to give each customer their own dedicated, durable account — one that holds state, enforces business rules, responds to purchases and redemptions in real time, and never needs a cron job to stay current. In Temporal terms, each customer has a Workflow: a persistent, running process identified by their customer ID. It holds the account's points balance, tier status, and activity history in memory. When a purchase happens, a Signal adds the points. When a customer redeems at checkout, an Update validates and applies the redemption synchronously. When a mobile app needs to display the current balance, a Query reads the state without touching the database. Tier upgrades happen as part of normal business logic, not from a nightly job. The Workflow runs for as long as the customer relationship does — years if needed — and resets its internal history automatically to stay within platform limits.
 
-Every customer in a loyalty program is their own entity. Their points accumulate across purchases, their tier changes when they hit thresholds, and their redemptions need to be validated and applied without double-spending. Doing this with a shared database means locking, retry logic across services, and cron jobs that periodically recalculate who qualifies for what. When a points accrual succeeds in one service but the tier upgrade notification fails in another, you have an inconsistency that's difficult to detect and expensive to fix. The longer the customer relationship, the more chances there are for these gaps to accumulate.
+With this guide, you'll build a loyalty system where:
 
-## Solution
+* **Each customer account is independent and durable:** state is held per-customer, survives infrastructure failures, and picks up exactly where it left off
+* **Tier upgrades happen in real time:** business rules run in the Workflow itself, triggered by point accruals — no scheduler, no batch job
+* **Redemptions are consistent:** synchronous Updates validate and apply changes atomically, with the response going back to the caller
+* **In-memory Balance reads:** Queries read in-memory state without generating Events or hitting a database
+* **The Workflow runs for the life of the customer:** Continue-As-New keeps history size in check so nothing needs to be migrated or restarted
+* **Failures are isolated:** a notification failing doesn't roll back a point accrual; each concern fails independently
 
-Each customer gets their own Workflow — a persistent, running process identified by their customer ID. It holds the account's points balance, tier status, and activity history in memory. When a purchase happens, a Signal adds the points. When a customer redeems at checkout, an Update validates and applies the redemption synchronously. When a mobile app needs to display the current balance, a Query reads the state without touching the database. Tier upgrades happen as part of normal business logic, not from a nightly job. The Workflow runs for as long as the customer relationship does — years if needed — and resets its internal history automatically to stay within platform limits.
-
-## Outcomes
-
-After working through this guide, you'll have a loyalty system where:
-
-- **Each customer account is independent and durable**: state is held per-customer, survives infrastructure failures, and picks up exactly where it left off
-- **Tier upgrades happen in real time**: business rules run in the Workflow itself, triggered by point accruals — no scheduler, no batch job
-- **Redemptions are consistent**: synchronous Updates validate and apply changes atomically, with the response going back to the caller
-- **In-memory Balance reads**: Queries read in-memory state without generating Events or hitting a database
-- **The Workflow runs for the life of the customer**: Continue-As-New keeps history size in check so nothing needs to be migrated or restarted
-- **Failures are isolated**: a notification failing doesn't roll back a point accrual; each concern fails independently
 
 ## Background and best practices
 
-### What is an Entity Workflow?
-
-Although "Workflow" is a Temporal SDK primitive, when we talk about an "entity workflow," we're describing an architectural pattern. An entity workflow represents something that persists over time — a customer, a device, an order, a bank account. Contrast this with a "process workflow," which has a definite end. The key distinction is that an entity is a thing, whereas a process workflow does a thing. An entity workflow has an indefinite lifetime and reacts to events as they arrive. In the loyalty context, the customer account is the entity: it exists as long as the customer relationship does, and it responds to purchases, redemptions, and status queries throughout that lifetime.
-
-Entity Workflows share three defining characteristics:
-
-- They run for an **indefinite duration**. You do not know at start time when or if they will complete.
-- They **react to external messages** at any point in their lifecycle via Signals, Updates, and Queries.
-- They **maintain mutable state** that evolves over time in response to those messages.
+Although "Workflow" is a Temporal SDK primitive, when we talk about an "entity workflow," we're describing an architectural pattern. An entity workflow represents something that persists over time — a customer, a device, an order, a bank account. Contrast this with a "process workflow," which has a definite end. The key distinction is that an entity is a thing, whereas a process workflow does a thing. For more information about the Entity Workflow pattern, see [Entity Workflow Pattern](/design-patterns/entity-workflow).
 
 In the loyalty points use case, each customer has their own Entity Workflow. The Workflow holds the points balance and tier status. External services send Signals to add points after a purchase, send Updates to redeem points at checkout, and send Queries to display the current balance in a mobile app. The Workflow runs for as long as the customer account exists.
 
-### How Entity Workflows differ from actors
-
-The [Entity Workflow pattern](/design-patterns/entity-workflow) shares characteristics with the Actor Model: both receive messages, maintain state, and can create new instances. However, there is an important distinction. An entity **represents state** and responds to interactions. It is closer to a data cache than a process orchestrator. It holds and serves state, evaluates business rules against that state, and delegates side effects to Activities. An actor, by contrast, **takes actions**. It may write to databases, call external APIs, or send emails as part of its core behavior.
-
-In this pattern, the loyalty Entity Workflow does not directly write to a database or send an email. When it needs a side effect, such as sending a tier upgrade notification, it delegates that work to an Activity. The Workflow itself remains a pure state container with business rules.
-
-### Why Temporal is well suited for this pattern
-
-Temporal provides several capabilities that make Entity Workflows practical:
-
-- **Durable Timers**: A Workflow can sleep for hours, days, or months without consuming compute resources. The Timer is persisted by the Temporal Server; the Worker is freed to handle other tasks.
-- **Message passing**: Signals, Queries, and Updates provide three distinct interaction patterns — fire-and-forget, read-only, and request-response — covering the full range of entity interactions.
-- **Event History**: Every state transition is recorded in an append-only log, giving a complete audit trail for compliance and debugging.
-- **Continue-As-New**: When the Event History approaches size limits, the Workflow resets itself with a fresh history while preserving current state, allowing Entity Workflows to run for years.
-- **Deterministic replay**: If a Worker crashes, the Workflow resumes from its last known state by replaying the Event History — no state is lost and no external coordination is needed.
-
-### Operational considerations
-
-Before implementing this pattern, keep the following constraints in mind:
-
-**Event History limits.** Temporal enforces a hard limit of 51,200 Events and 50 MB per Workflow Execution, with warnings starting around 10,000 Events. Each Signal generates approximately 4 Events; each Activity execution approximately 11. A loyalty entity processing 100 point accruals per day (each triggering one Activity) generates roughly 1,500 Events per day — plan your Continue-As-New threshold accordingly.
-
-**Payload size limits.** Individual payloads for Workflow and Activity inputs and outputs are limited to 2 MB. If the serialized entity state approaches this limit, store large data externally and reference it by identifier.
-
-**Workflow Definition determinism.** Activities can include non-deterministic code, but the Workflow Definition must remain deterministic. Use `workflow.now()` instead of `datetime.now()`, `workflow.random()` instead of `random`, and `workflow.uuid4()` instead of `uuid.uuid4()`. All I/O must be performed in Activities.
-
-**Signal delivery guarantees.** Temporal delivers Signals at least once. Include a deduplication key in Signal payloads and make your Signal processing logic idempotent.
-
-## Target audience
-
-The following roles are involved in this pattern:
-
-- **Temporal Workflow and Activity developers**: Responsible for implementing the loyalty Entity Workflow, defining Activities, and writing client code to interact with the entity
-- **Platform operators**: Responsible for deploying and managing Temporal Workers, configuring Task Queues, and monitoring Event History growth
-- **Domain architects**: Responsible for deciding which loyalty business rules belong in the Workflow versus in Activities, and defining the message contracts for Signals, Updates, and Queries
+## Prerequisites
 
 This guide requires Python, a Temporal Worker, and either a local development server or Temporal Cloud.
-
-## Prerequisites
 
 ### Required software and infrastructure
 
 - Python 3.9 or later
 - Temporal Python SDK (`temporalio`) version 1.7.0 or later (required for `@workflow.init`, `workflow.all_handlers_finished`, and Workflow Updates)
-- A running Temporal Server, either via the [Temporal CLI](/cli) for local development or [Temporal Cloud](https://temporal.io/cloud) for production
+- A running Temporal Server, either via the [Temporal CLI](https://docs.temporal.io/cli) for local development or [Temporal Cloud](https://temporal.io/cloud) for production
 - `pip` or `uv` for Python dependency management
 
 ### Resources and access privileges
@@ -108,10 +57,22 @@ This guide requires Python, a Temporal Worker, and either a local development se
 
 You should be familiar with the following before proceeding:
 
-- [Temporal Workflows](/workflows): The durable, stateful functions that Temporal orchestrates
-- [Temporal Activities](/activities): The functions that perform side effects such as API calls and database writes
-- [Temporal Workers](/workers): The processes that host and execute Workflow and Activity code
-- [Temporal Task Queues](/task-queue): The named queues that route work from the Temporal Server to Workers
+- [Temporal Workflows](https://docs.temporal.io/workflows): The durable, stateful functions that Temporal orchestrates
+- [Temporal Activities](https://docs.temporal.io/activities): The functions that perform side effects such as API calls and database writes
+- [Temporal Workers](https://docs.temporal.io/workers): The processes that host and execute Workflow and Activity code
+- [Temporal Task Queues](https://docs.temporal.io/task-queues): The named queues that route work from the Temporal Server to Workers
+
+### Operational considerations
+
+Before implementing this pattern, keep the following constraints in mind:
+
+**Event History limits.** Temporal enforces a hard limit of 51,200 Events and 50 MB per Workflow Execution, with warnings starting around 10,000 Events. Each Signal generates approximately 4 Events; each Activity execution approximately 11. A loyalty entity processing 100 point accruals per day (each triggering one Activity) generates roughly 1,500 Events per day — plan your Continue-As-New threshold accordingly.
+
+**Payload size limits.** Individual payloads for Workflow and Activity inputs and outputs are limited to 2 MB. If the serialized entity state approaches this limit, store large data externally and reference it by identifier.
+
+**Workflow Determinism.** Activities can include non-deterministic code, but the Workflow itself must remain deterministic. Use `workflow.now()` instead of `datetime.now()`, `workflow.random()` instead of `random`, and `workflow.uuid4()` instead of `uuid.uuid4()`. All I/O must be performed in Activities.
+
+**Signal delivery guarantees.** Temporal delivers Signals at least once. Include a deduplication key in Signal payloads and make your Signal processing logic idempotent.
 
 ## Architecture diagrams
 
@@ -180,46 +141,55 @@ sequenceDiagram
     W-->>Client: Return {redeemed: 200, remaining: 300}
 ```
 
-## Implementation plan
+## Step 1: Define the loyalty state and data models
 
-This section walks you through building a complete customer loyalty Entity Workflow in Python. You will define the data model, implement the Workflow with Signal, Query, and Update handlers, write Activities for side effects, configure Continue-As-New, set up the Worker, and write client code to interact with the entity.
+Entity Workflows carry their current state as their primary input, which enables Continue-As-New to resume seamlessly. Use Python `dataclass` objects — they serialize cleanly with Temporal's default JSON converter and allow new fields with defaults without breaking existing Executions.
 
-### Phase 1: Define the loyalty state and data models
-
-Entity Workflows carry their current state as their primary input, so Continue-As-New can resume with that state intact. Use Python `dataclass` objects — they serialize cleanly with Temporal's default JSON converter and allow new fields with defaults without breaking existing Executions.
-
-Create a file named `models.py` with the following content:
+Create a file named `models.py`. Start by importing `dataclass`, `field`, and `Enum`. 
 
 ```python
 # models.py
 from dataclasses import dataclass, field
 from enum import Enum
+```
 
+Entity Workflows carry their current state as their primary input, so Continue-As-New can resume with that state intact. You’ll use Python `dataclass` objects because they serialize cleanly with Temporal's default JSON converter and allow new fields with defaults without breaking existing Executions. 
 
+Create a class LoyaltyTier with four levels:
+
+```python
 class LoyaltyTier(str, Enum):
-    """Loyalty tiers based on lifetime points earned."""
     BRONZE = "Bronze"
     SILVER = "Silver"
     GOLD = "Gold"
     PLATINUM = "Platinum"
+```
 
+Nothing fancy here; you’re defining the levels of the tiers.
 
+Next you’ll need a class that defines an event, called `PointsEvent`. You want to keep all the available information you’ll need about the event in a single object for easier serialization.
+
+```python
 @dataclass
 class PointsEvent:
-    """A single points transaction to be processed by the entity."""
     event_id: str          # Unique identifier for idempotent processing
     points: int            # Positive for accrual, negative for redemption
     reason: str            # Human-readable description (e.g., "purchase", "signup_bonus")
     source: str = ""       # Originating service or channel
+```
 
+This class has four members:
 
+* `event_id` A string that provides a unique identifier for idempotent processing
+* `points` An int that holds the number of points associated with this event. This value will be positive if the user accrues points, negative if the user redeems points.
+* `reason` A string that holds a human-readable description of the event, such as “purchase” or “signup_bonus.”
+* `source` A string that records the originating service or channel for the event. This is set to an empty string by default.
+
+The next dataclass holds the state of the customer’s loyalty account. Create a class `LoyaltyState` like this: 
+
+```python
 @dataclass
 class LoyaltyState:
-    """The complete state of a customer's loyalty account.
-
-    This is the data that survives Continue-As-New transitions.
-    Keep it small and serializable — well under the 2 MB payload limit.
-    """
     customer_id: str
     points_balance: int = 0
     lifetime_points: int = 0
@@ -227,43 +197,69 @@ class LoyaltyState:
     is_active: bool = True
     processed_event_ids: list[str] = field(default_factory=list)
 
-    # Unprocessed events carried across Continue-As-New transitions
     pending_events: list[dict] = field(default_factory=list)
+```
 
+`LoyaltyState` holds only what's needed to reconstruct the entity after a Continue-As-New transition. Some of that information is basic identification data for the user:
 
+* `customer_id`
+* `points_balance`
+* `lifetime_points`
+* `tier` (from the LoyaltyTier enum you defined earlier)
+* `is_active`
+
+The most important thing here is the list of processed and pending events. The processed events are a list of event IDs that indicate events that have already been applied to this account. Pending events, however, are Signals that arrived, but weren’t processed before the transition. You’ll need to keep these events around for processing in the event of a failure or a Continue-As-New, so there won’t be any loss of data. You want this data to be small and serializable, so it will stay under the 2 MB payload limit. Limit this to a recent window (for example, the last 1,000 IDs) and rely on an external store for long-term deduplication. 
+
+Create a `LoyaltySummary` class. This is a read-only view of the account status, for use by Queries. It only reports the values of the fields.
+
+```python
 @dataclass
 class LoyaltySummary:
-    """Read-only view of the loyalty account returned by Queries."""
     customer_id: str
     points_balance: int
     lifetime_points: int
     tier: str
     is_active: bool
+```
 
+Next, you’ll need two classes to use when the user wants to redeem points from their account. The best way to handle redemptions in this pattern is with an Update. You’ll create a `redeem_points` Update later, but here you’ll create the `RedemptionRequest`, which provides the input for the `redeem_points` Update.
 
+```python
 @dataclass
 class RedemptionRequest:
-    """Input for the redeem_points Update."""
     event_id: str       # Idempotency key for the redemption
     points: int         # Number of points to redeem (must be positive)
     reward: str         # What the points are being redeemed for
+```
 
+The class has three fields to use in the Update:
 
+* `event_id` the idempotency key for the redemption
+* `points` the number of points to be redeemed, which must be a positive integer
+* `reward` a string indicating what the points are being redeemed for
+
+Create the corresponding class for the output of the Update:
+
+```python
 @dataclass
 class RedemptionResult:
-    """Output from the redeem_points Update."""
     redeemed: int
     remaining_balance: int
     reward: str
 ```
 
-`LoyaltyState` holds only what's needed to reconstruct the entity after a Continue-As-New transition. `processed_event_ids` enables idempotent Signal processing — in production, limit this to a recent window (for example, last 1,000 IDs) and rely on an external store for long-term deduplication. `pending_events` carries any Signals that arrived but weren't processed before the transition.
+This class also has three fields:
+* `redeemed` the number of points redeemed, a positive integer
+* `remaining_balance` the number of points remaining in the user’s account
+* `reward` the same value as the input reward string
 
-### Phase 2: Implement the Activities
+You've now set up everything you need for the data model, which will preserve the state through Continue-As-New events. The next thing is to create the Activities to interact with the data.
 
-Activities hold all non-deterministic code: database writes, API calls, and notifications. The Workflow stays a pure state container.
+### Step 2: Implement the Activities
 
-Create a file named `activities.py`:
+Activities hold all non-deterministic code: database writes, API calls, and notifications. The Workflow stays a pure state container. Each Activity uses `@activity.defn` and `activity.logger` for context-aware logging.
+
+Create a file named `activities.py` and import `logging` and `activity`:
 
 ```python
 # activities.py
@@ -272,15 +268,13 @@ import logging
 from temporalio import activity
 
 logger = logging.getLogger(__name__)
+```
 
+You’re going to define three Activities in this file, for recording a points transaction, recording a redemption, and notifying the user when they’ve changed tiers. Start with the points transaction:
 
+```python
 @activity.defn
 async def record_points_transaction(transaction: dict) -> bool:
-    """Record a points transaction in the loyalty database.
-
-    Must be idempotent: use event_id as the key to prevent duplicate records
-    on retry. Example: INSERT ... ON CONFLICT (event_id) DO NOTHING.
-    """
     activity.logger.info(
         "Recording points transaction for customer %s: %s points (%s)",
         transaction["customer_id"],
@@ -289,15 +283,15 @@ async def record_points_transaction(transaction: dict) -> bool:
     )
     # await db.execute("INSERT INTO points_transactions ... ON CONFLICT (event_id) DO NOTHING", ...)
     return True
+```
 
+`record_points_transaction` records a points transaction in the loyalty database. The activity takes a `dict` as a single input, as recommended, containing the fields to be recorded. The activity must be idempotent, so to prevent duplicate records in the database, you use the `event_id` as a key. Calling the Activity twice with the same `event_id` produces the same result, which is essential because Temporal may retry Activities on failure.
 
+The Activity to sent a tier change notification is next:
+
+```python
 @activity.defn
 async def send_tier_change_notification(notification: dict) -> bool:
-    """Send a notification when a customer's loyalty tier changes.
-
-    Non-critical: if this Activity fails after all retries, the Workflow
-    logs the failure and continues rather than terminating the account.
-    """
     activity.logger.info(
         "Sending tier change notification to customer %s: %s -> %s",
         notification["customer_id"],
@@ -306,15 +300,15 @@ async def send_tier_change_notification(notification: dict) -> bool:
     )
     # await email_service.send(template="tier_change", to=..., context={...})
     return True
+```
 
+This Activity sends a notification (using `activity.logger`) when a customer’s loyalty tier changes. This is a non-critical Activity, meaning that if this Activity fails after all retries, the Workflow logs the failure and continues, rather than terminating. 
 
+Finally, the Activity to record a redemption is similar to recording a points transaction:
+
+```python
 @activity.defn
 async def record_redemption(redemption: dict) -> bool:
-    """Record a points redemption in the loyalty database.
-
-    Must be idempotent: use event_id as the key to prevent duplicate records
-    on retry. Example: INSERT ... ON CONFLICT (event_id) DO NOTHING.
-    """
     activity.logger.info(
         "Recording redemption for customer %s: %s points for %s",
         redemption["customer_id"],
@@ -325,13 +319,15 @@ async def record_redemption(redemption: dict) -> bool:
     return True
 ```
 
-Each Activity uses `@activity.defn` and `activity.logger` for context-aware logging. All three are idempotent by design: calling them twice with the same `event_id` produces the same result, which is essential because Temporal may retry Activities on failure.
+The `record_redemption activity` follows the same pattern as `record_points_transaction`. A redemption removes points from the user’s balance rather than adding them, but that makes no difference to the Activity; you’re recording the transaction.
 
-### Phase 3: Implement the Entity Workflow
+With the Activities in place, you'll next connect them with the Workflow.
+
+### Step 3: Implement the Entity Workflow
 
 The Entity Workflow is the core of the pattern: it initializes state, waits for messages, processes them sequentially, and performs Continue-As-New when history grows large.
 
-Create a file named `workflows.py`:
+Create a file named `workflows.py`. To start with, you'll import some basics: `deque` and `asdict` to help manage the payload as a dictionary, to support using a `dict` as a single import, and `timedelta` for tracking time for retries:
 
 ```python
 # workflows.py
@@ -339,11 +335,19 @@ import asyncio
 from collections import deque
 from dataclasses import asdict
 from datetime import timedelta
+```
 
+Next, some Temporal-specific imports: `workflow`, `RetryPolicy`, and `ApplicationError`. These are standards for most Workflow definitions:
+
+```python
 from temporalio import workflow
 from temporalio.common import RetryPolicy
 from temporalio.exceptions import ApplicationError
+```
 
+Now you'll need to import the Activities and data classes you created in Steps 1 and 2. You need to indicate to the Workflow that these items are safe to use during the Replay process, so you wrap them in `workflow.unsafe.imports_passed_through()`:
+
+```python
 with workflow.unsafe.imports_passed_through():
     from activities import (
         record_points_transaction,
@@ -358,60 +362,65 @@ with workflow.unsafe.imports_passed_through():
         RedemptionRequest,
         RedemptionResult,
     )
+```
 
+With the imports in place, you'll define two [Retry Policies](/retry_policies). Temporal Workflows retry by default, and often you don't need a specific Retry Policy. But you can specify the policy if you want, and you'll do that here so you can create different behaviors for database writes and notifications. Start with the policy for database writes:
 
-# Retry policy for database writes: retry transient failures with backoff
+```python
 DB_RETRY_POLICY = RetryPolicy(
     initial_interval=timedelta(seconds=1),
     backoff_coefficient=2.0,
     maximum_interval=timedelta(seconds=30),
     maximum_attempts=10,
 )
+```
 
-# Retry policy for notifications: more aggressive retry since these are non-critical
+This Retry Policy sets the initial retry at one second. The backoff coefficient is the factor by which the interval is increased each time. In this case, that means it doubles every interval. The interval never grows longer than 30 seconds, and the Workfow stops retrying after 10 attempts. This is a reasonable policy for database writes, because a connection failure may resolve quickly, but if the database is down for a while, you don't want to keep retrying. 
+
+Next, define the Retry Policy for notifications: 
+
+```python
 NOTIFICATION_RETRY_POLICY = RetryPolicy(
     initial_interval=timedelta(seconds=2),
     backoff_coefficient=2.0,
     maximum_interval=timedelta(minutes=1),
     maximum_attempts=5,
 )
+```
 
+Notifications aren't as critical as database retries, so the intervals are set higher, and the Workflow gives up after fewer attempts.
 
+With the setup complete, it's time to define the workflow. As an entity workflow, each instance manages a single customer's loyalty account. Each customer has their own instance identified by a stable Workflow ID (such as "loyalty-cust-123"). All non-deterministic side effects are handled in Activities.
+
+Start with `@workflow.init`, which initializes the Workflow state. 
+
+```python
 @workflow.defn
 class LoyaltyEntityWorkflow:
-    """Manages a single customer's loyalty account as a long-lived Entity Workflow.
-
-    Each customer has their own instance identified by a stable Workflow Id
-    (e.g. "loyalty-cust-123"). All side effects are delegated to Activities.
-    """
 
     @workflow.init
     def __init__(self, state: LoyaltyState | None = None) -> None:
-        """Initialize Workflow state.
-
-        The @workflow.init decorator ensures this runs before any Signal
-        or Update handler, preventing race conditions with Signal-with-Start.
-
-        Args:
-            state: Existing state from Continue-As-New, or None for a new account.
-        """
         if state is not None:
             self._state = state
         else:
-            # First start only (not Continue-As-New); customer_id set in run().
             self._state = LoyaltyState(customer_id="")
 
-        # Signal queue: handlers append, main loop pops one at a time.
         self._pending_signals: deque[dict] = deque(self._state.pending_events)
-        self._state.pending_events = []  # Clear after restoring
+        self._state.pending_events = []
 
         self._shutdown_requested: bool = False
+```
 
+The @workflow.init decorator ensures this runs before any Signal or Update handler, preventing race conditions with Signal-with-Start. If this is the first time the Workflow has run, the state is initialized with an empty string, and the value of `customer_id` is set in `workflow.run`. If not, the Workflow is initiated as a Continue-As-New, and the customer ID is persisted. 
+
+After the initial state, the Signal queue is handled. Any queued events from before the Continue-As-New are appended to the pending signals dictionary, and then the pending events dictionary is cleared.
+
+With the initialization handled, it's time to add the main loop of the Entity Workflow:
+
+```python
     @workflow.run
     async def run(self, state: LoyaltyState | None = None) -> LoyaltyState:
-        """Main entity loop: wait for messages, process them, and Continue-As-New when needed."""
         if state is None:
-            # First start: derive customer_id from the Workflow Id convention.
             self._state.customer_id = workflow.info().workflow_id.replace("loyalty-", "", 1)
 
         workflow.logger.info(
@@ -422,8 +431,6 @@ class LoyaltyEntityWorkflow:
         )
 
         while not self._shutdown_requested:
-            # Block until a Signal arrives, shutdown is requested,
-            # CAN is suggested, or 24 hours pass.
             await workflow.wait_condition(
                 lambda: (
                     bool(self._pending_signals)
@@ -433,24 +440,19 @@ class LoyaltyEntityWorkflow:
                 timeout=timedelta(hours=24),
             )
 
-            # Process all queued Signals sequentially
             while self._pending_signals:
                 event_data = self._pending_signals.popleft()
                 await self._process_points_event(event_data)
 
-                # Check if we should Continue-As-New after each event
                 if workflow.info().is_continue_as_new_suggested():
                     break
 
-            # Exit if shutdown was requested
             if self._shutdown_requested:
                 break
 
-            # Trigger Continue-As-New when Temporal suggests it
             if workflow.info().is_continue_as_new_suggested():
                 await self._do_continue_as_new()
 
-        # Wait for all in-flight handlers before completing.
         await workflow.wait_condition(workflow.all_handlers_finished)
 
         workflow.logger.info(
@@ -459,31 +461,46 @@ class LoyaltyEntityWorkflow:
             self._state.points_balance,
         )
         return self._state
+```
 
+The first thing that happens is if there's no state (meaning this is the first time the entity has been run, not after a Continue-As-New), then a customer ID is created and logged as an event.
+
+Next is the core loop. This loop continues until a shutdown is requested. Within each loop, it blocks until one of the following conditions is met:
+
+* A shutdown is requested
+* A Signal arrives
+* Continue-As-New is suggested
+* 24 hours have passed since the last Continue-As-New
+
+The shutdown request breaks out of the loop. The Workflow waits until all handlers have completed, then logs the Workflow as ending and ends.
+
+When a Signal arrives, it appears in the `_pending_signals` queue, and the event data is processed. 
+
+After each Signal, there's a check to see if a Continue-As-New is recommended. Temporal tracks the Workflow's progress against 
+[Event History Limits](/workflow-execution/event#event-history) and recommends when a Continue-As-New will prevent degraded performance. If that check returns true, the Workflow performs a Continue-As-New.
+
+Now that you have the code for the primary loop, you'll need additional code to process the Signals that the Workflow can receive. There are only two: either a points event has happened, or a shutdown has been requested.
+
+```python
     @workflow.signal
     def add_points(self, event: dict) -> None:
-        """Enqueue a points accrual event for processing in the main loop.
-
-        Signal handlers must be synchronous — they only append to the queue.
-        All processing happens in the main loop to ensure sequential execution.
-
-        Args:
-            event: dict with keys event_id, points, reason, and optionally source.
-        """
         self._pending_signals.append(event)
 
     @workflow.signal
     def shutdown(self) -> None:
-        """Signal the entity to drain pending events and terminate gracefully."""
         self._shutdown_requested = True
+```
 
-    # ------------------------------------------------------------------
-    # Query handlers
-    # ------------------------------------------------------------------
+The first Signal adds a point event to the queue for processing in the main loop. Signal handlers must be synchronous, so they only append to the queue. All processing happens in the main loop to ensure sequential execution.
+
+The second Signal, for a requested shutdown, sets `_shutdown_requested` to true, after which the loop will terminate.
+
+After the Signals, add the Query handlers. The Queries in this case return the current state. No Events are generated, making these queries safe to use often.
+
+```python
 
     @workflow.query
     def get_loyalty_summary(self) -> LoyaltySummary:
-        """Return a read-only summary (no Events generated, safe at high frequency)."""
         return LoyaltySummary(
             customer_id=self._state.customer_id,
             points_balance=self._state.points_balance,
@@ -494,24 +511,20 @@ class LoyaltyEntityWorkflow:
 
     @workflow.query
     def get_points_balance(self) -> int:
-        """Return the current points balance."""
         return self._state.points_balance
 
     @workflow.query
     def get_tier(self) -> str:
-        """Return the current loyalty tier."""
         return self._state.tier
+```
 
+The first query returns a summary of the entity's full state. The other two return just the points balance and the loyalty tier, respectively.
+
+After the Queries, add the Update code. There's only one Update, but it's an important one. This is where redeeming loyalty points is handled.
+
+```python
     @workflow.update
     async def redeem_points(self, request: RedemptionRequest) -> RedemptionResult:
-        """Redeem loyalty points for a reward.
-
-        Blocks until the Update completes and the caller receives the result,
-        making it ideal for checkout flows that need confirmed point deduction.
-
-        Raises:
-            ApplicationError: If the account is inactive or has insufficient points.
-        """
         if not self._state.is_active:
             raise ApplicationError(
                 "Cannot redeem points: account is inactive",
@@ -527,7 +540,6 @@ class LoyaltyEntityWorkflow:
                 non_retryable=True,
             )
 
-        # Idempotency: return without re-processing if already applied.
         if request.event_id in self._state.processed_event_ids:
             return RedemptionResult(
                 redeemed=request.points,
@@ -537,7 +549,6 @@ class LoyaltyEntityWorkflow:
 
         self._state.points_balance -= request.points
 
-        # Record the redemption via an Activity (idempotent on event_id).
         await workflow.execute_activity(
             record_redemption,
             {
@@ -550,7 +561,6 @@ class LoyaltyEntityWorkflow:
             retry_policy=DB_RETRY_POLICY,
         )
 
-        # Track this event as processed.
         self._state.processed_event_ids.append(request.event_id)
         self._trim_processed_ids()
 
@@ -567,20 +577,34 @@ class LoyaltyEntityWorkflow:
             remaining_balance=self._state.points_balance,
             reward=request.reward,
         )
+```
 
+If the account is inactive or has insufficient points for the redemption, the Update raises an application error. 
+
+The next block is the idempotency check: If the `event_id` has already been processed, the Update returns the event without re-processing it. 
+
+After that is the subtraction that deducts the redeemed points. The Update then records the event, adds the event ID to the list of processed events, logs the event as processed, and returns the result.
+
+The `redeem_points` Update calls the `record_redemption` Acitivity directly via `await` rather than enqueuing it for the main loop. The Python and TypeScript SDKs support `async` Update handlers, making this safe. The trade-off keeps redemption logic self-contained and returns the confirmed result to the caller in a single round trip. It is safe here because `record_redemption` is idempotent — a replay detects the duplicate `event_id` and returns without creating a second record. If you are using the Java SDK, Update handlers cannot be `async`; enqueue the work for the main loop instead.
+
+Next, add an [Update Validator](handling-messages#update-validators) to handle errors:
+
+```python
     @redeem_points.validator
     def validate_redemption(self, request: RedemptionRequest) -> None:
-        """Run before the Update is accepted into Event History. Rejection here writes no Event."""
         if request.points <= 0:
             raise ApplicationError(
                 "Redemption amount must be a positive number",
                 type="ValidationError",
             )
+```
 
+The Validator runs before the Update is accepted into Event History. Rejection here (because the redemption amount is negative) writes no Event.
+
+Now add the function to process the events:
+
+```python
     async def _process_points_event(self, event_data: dict) -> None:
-        """Process a single points event: check for duplicates, record the
-        transaction via an Activity, update in-memory state, and evaluate tier.
-        """
         event_id = event_data.get("event_id", "")
         points = event_data.get("points", 0)
         reason = event_data.get("reason", "unknown")
@@ -593,8 +617,6 @@ class LoyaltyEntityWorkflow:
             )
             return
 
-        # Record the transaction BEFORE updating in-memory state to avoid
-        # double-counting if the Activity retries.
         await workflow.execute_activity(
             record_points_transaction,
             {
@@ -607,7 +629,6 @@ class LoyaltyEntityWorkflow:
             retry_policy=DB_RETRY_POLICY,
         )
 
-        # Update state after Activity confirms success.
         self._state.points_balance += points
         if points > 0:
             self._state.lifetime_points += points
@@ -625,9 +646,14 @@ class LoyaltyEntityWorkflow:
         )
 
         await self._evaluate_tier()
+```
 
+This function processes a single points event. First it checks for duplicate event IDs and skips the transaction if one is found. Next it records the transaction via an Activity. Recording the transaction before updating the state means that it won't be double-counted if the Activity retries. Once the Activity has confirms, it updates in-memory state, appends the list of processed events, and logs the event. Finally, it evaluates whether the user is at a new tier.
+
+Add the functions to evaluate the tier next:
+
+```python
     async def _evaluate_tier(self) -> None:
-        """Recalculate tier; send notification if it changed (non-critical)."""
         new_tier = self._calculate_tier(self._state.lifetime_points)
 
         if new_tier != self._state.tier:
@@ -641,7 +667,6 @@ class LoyaltyEntityWorkflow:
                 new_tier,
             )
 
-            # Notification is non-critical — log and continue on failure.
             try:
                 await workflow.execute_activity(
                     send_tier_change_notification,
@@ -669,22 +694,30 @@ class LoyaltyEntityWorkflow:
         if lifetime_points >= 1_000:
             return LoyaltyTier.SILVER.value
         return LoyaltyTier.BRONZE.value
+```
 
+The `_evaluate_tier` function uses `_calculate_tier` to determine whether the user's tier has changed. If it has, it uses the `send_tier_change_notification` Activity to send the notification. The Activity remains idempotent no matter how many times it repeats -- the same input produces the same output. In addition, this Activity is non-essential, so it's wrapped in a `try` block. If the notification fails repeatedly, the Workflow logs the error and continues, rather than failing.
+
+The `_calculate_tier` function is a pure logic function: it takes the number of points, and returns a tier value. There are no side effects associated with the function. Again, that means the function is idempotent. The point thresholds for each tier are hard-coded here; depending on your needs, you may want to set those values elsewhere. As long as the function only calculates the tier based on set values, it remains idempotent.
+
+Add one more helper function to limit the number of event IDs stored:
+
+```python
     def _trim_processed_ids(self) -> None:
-        """Keep only the most recent 1,000 processed event IDs to prevent unbounded growth."""
         max_ids = 1_000
         if len(self._state.processed_event_ids) > max_ids:
             self._state.processed_event_ids = self._state.processed_event_ids[
                 -max_ids:
             ]
+```
 
+This function trims the list of processed IDs to the most recent 1,000 IDs. You don't want the list to grow unbounded, because it's passed during Continue-As-New, as you'll see next.
+
+The last function specifies what happens on a Continue-As-New. Remember that a Continue-As-New occurs at least once every 24 hours, and you want the entities (which represent user accounts) to persist indefinitely. You want to deal with any pending Signals, either by processing them or serializing them to the current state. You want to wait for all handlers to finish, and then call `continue_as_new`:
+
+```python
     async def _do_continue_as_new(self) -> None:
-        """Perform Continue-As-New: drain excess pending signals, serialize
-        remaining unprocessed signals into state, wait for all handlers to
-        finish, then call continue_as_new with the current state.
-        """
         # Drain excess pending signals before serializing into the CAN input.
-        # Keeps the LoyaltyState payload well under the 2 MB limit.
         MAX_PENDING_CARRY = 500
         while len(self._pending_signals) > MAX_PENDING_CARRY:
             event_data = self._pending_signals.popleft()
@@ -706,17 +739,19 @@ class LoyaltyEntityWorkflow:
         workflow.continue_as_new(self._state)
 ```
 
-Two design decisions in this Workflow deserve extra attention:
+Because Continue-As-New has a 2MB limit on payload, you're choosing here to carry no more than 500 pending Signals. If the number of pending Signals is greater than that limit, the excess Signals are processed before Continue-As-New. The remaining pending Signals are serialized to state. If this guard fires frequently, Signals are arriving faster than Workers can process them, and you should scale your Worker pool.
 
-**Activity call inside an Update handler.** The `redeem_points` Update calls `record_redemption` directly via `await` rather than enqueuing it for the main loop. The Python and TypeScript SDKs support `async` Update handlers, making this safe. The trade-off keeps redemption logic self-contained and returns the confirmed result to the caller in a single round trip. It is safe here because `record_redemption` is idempotent — a replay detects the duplicate `event_id` and returns without creating a second record. If you are using the Java SDK, Update handlers cannot be `async`; enqueue the work for the main loop instead.
+Waiting for outstanding async handlers is done by awaiting the `all_handlers_finished` condition.
 
-**Continue-As-New payload size.** Unprocessed Signals are serialized into the CAN input, which must stay under the 2 MB payload limit. The `MAX_PENDING_CARRY` guard drains the queue to a safe size before serializing. Lower the limit if your Signal payloads are large. If the guard fires frequently, Signals are arriving faster than Workers can process them — scale your Worker pool.
+Finally, after logging the action, the function calls `continue_as_new` on the Workflow. 
 
-### Phase 4: Configure and run the Worker
+With the Workflow code complete, you'll need to configure some Workers to run it.
+
+### Step 4: Configure and run the Worker
 
 The Worker hosts your Workflow and Activity code, polls a Task Queue, and executes work.
 
-Create a file named `worker.py`:
+Create a file named `worker.py` and add some basic imports:
 
 ```python
 # worker.py
@@ -740,10 +775,14 @@ logger = logging.getLogger(__name__)
 TASK_QUEUE = "loyalty-points-queue"
 TEMPORAL_ADDRESS = "localhost:7233"
 TEMPORAL_NAMESPACE = "default"
+```
 
+You're importing with the Activities and the Workflow you created in previous steps. Then you define some convenience variables. We're using the default values for `TEMPORAL_ADDRESS` and `TEMPORAL_NAMESPACE`, but you should modify these as necessary for your environment.
 
+Now you need to define the worker:
+
+```python
 async def main() -> None:
-    """Start a Worker that hosts the LoyaltyEntityWorkflow and its Activities."""
     client = await Client.connect(
         TEMPORAL_ADDRESS,
         namespace=TEMPORAL_NAMESPACE,
@@ -780,11 +819,13 @@ To start the Worker, run:
 python worker.py
 ```
 
-The Worker connects to the Temporal Server and begins polling. It will continue running until you stop the process.
+The Worker connects to the Temporal Server and begins polling. 
 
-### Phase 5: Write client code to interact with the entity
+You now have a running Workflow, and a Worker to run it. The Worker will continue running until you stop the process, but it won't do much that's useful until you add some client code.
 
-The client code starts Entity Workflows, sends Signals, executes Updates, and runs Queries. In production this typically lives in an API server or background service.
+### Step 5: Write client code to interact with the entity
+
+The client code starts Entity Workflows, sends Signals, executes Updates, and runs Queries. In production this typically lives in an API server or background service, but in this guide we're running it locally.
 
 Create a file named `starter.py`:
 
@@ -807,21 +848,31 @@ async def main() -> None:
         TEMPORAL_ADDRESS,
         namespace=TEMPORAL_NAMESPACE,
     )
+```
 
+As before, you're starting by importing the data model and the Workflow. Then you start `main()` and set up the client connection. 
+
+Add the code to start the entity:
+
+```python
     customer_id = "cust-42"
     workflow_id = f"loyalty-{customer_id}"
 
-    # Start the entity — Workflow Id is stable per customer.
-    # If it's already running, start_workflow raises WorkflowAlreadyStartedError.
     handle = await client.start_workflow(
         LoyaltyEntityWorkflow.run,
         id=workflow_id,
         task_queue=TASK_QUEUE,
-        # No initial state — the Workflow derives customer_id from the Workflow Id.
     )
     print(f"Started loyalty entity: {workflow_id}")
+```
 
-    # Signals are fire-and-forget: the call returns once the Server accepts them.
+We're hard-coding a customer ID for example purposes and setting up the convention for the Workflow ID. 
+
+The `handle` calls `start_workflow`. There's no initial state needed here, because the Workflow derives the customer ID from the Workflow ID. If the Workflow is already running, `start_workflow` raises a `WorkflowAlreadyStartedError`.
+
+Add some code to test Signals:
+
+```python
     await handle.signal(
         LoyaltyEntityWorkflow.add_points,
         {
@@ -846,16 +897,25 @@ async def main() -> None:
 
     # Allow time for the Worker to process the Signals
     await asyncio.sleep(2)
+```
 
-    # Queries are synchronous and read-only — no Events generated.
+Signals are fire-and-forget. They return immediately after the Server accepts the Signal.
+
+Now add some client code to simulate a Query:
+
+```python
     summary = await handle.query(LoyaltyEntityWorkflow.get_loyalty_summary)
     print(
         f"Query result: {summary.points_balance} points, "
         f"tier={summary.tier}, lifetime={summary.lifetime_points}"
     )
+```
 
-    # Updates block until the Workflow processes them and returns a result —
-    # ideal for checkout where the caller needs confirmation.
+Queries are read-only, and generate no events, so they're safe at high frequency.
+
+Now add an Update, with a Query after to verify the results:
+
+```python
     try:
         result = await handle.execute_update(
             LoyaltyEntityWorkflow.redeem_points,
@@ -877,6 +937,13 @@ async def main() -> None:
     tier = await handle.query(LoyaltyEntityWorkflow.get_tier)
     print(f"After redemption: balance={balance}, tier={tier}")
 
+```
+
+Updates block until the Workflow processes them and returns a result. This makes them ideal for checkout processes, where the caller needs confirmation.
+
+Finally, simulate a batch of points events.
+
+```python
     print("\nSending batch of points events...")
     for i in range(10):
         await handle.signal(
@@ -906,13 +973,13 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-This client code demonstrates the three interaction patterns:
+This code uses a loop to send a bunch of Signals at once, which is followed by a pause so the Workflow can processes them. Then there's another Query to check the final balance. 
 
-- **Signals** (`add_points`): Fire-and-forget; returns immediately after the Server accepts the Signal.
-- **Queries** (`get_loyalty_summary`, `get_points_balance`, `get_tier`): Read-only, no Events generated — safe at high frequency.
-- **Updates** (`redeem_points`): Synchronous request-response; the caller blocks until the Workflow returns a confirmed result.
+You've got all the pieces working now, and the client code will show the correct results from the tests.
 
-### Phase 6: Handle Continue-As-New for indefinite execution
+The Continue-As-New feature means that you can run this same Workflow as long as you want, even as the client code changes. There's a little more you should know about how that works.
+
+### Step 6: Handle Continue-As-New for indefinite execution
 
 Continue-As-New allows an Entity Workflow to run for years without unbounded history. When `workflow.info().is_continue_as_new_suggested()` returns `True`, the history is approaching the suggested threshold (~4,096 Events).
 
@@ -929,11 +996,11 @@ The `_do_continue_as_new` method handles the transition in three steps:
 
 After the transition, clients continue interacting with the same Workflow Id. Temporal automatically routes Signals, Queries, and Updates to the latest Run. Do not specify a Run Id when obtaining a Workflow handle, or your interactions will target a stale Execution.
 
-### Phase 7: Ensure Workflow Definition determinism
+### Step 7: Ensure Workflow determinism
 
 Temporal replays Event History to resume a Workflow after a crash. The code must produce the same sequence of Commands on every replay.
 
-The Python SDK sandbox blocks most non-deterministic operations, but you must still follow these rules:
+The Python SDK sandbox blocks most non-deterministic operations, but in a few cases, you should use Temporal's Workflow-safe operations instead of standard ones:
 
 | Do not use | Use instead | Reason |
 |---|---|---|
@@ -944,7 +1011,7 @@ The Python SDK sandbox blocks most non-deterministic operations, but you must st
 | `print()` | `workflow.logger.info()` | Replay-safe; only logs on initial execution |
 | Direct I/O (HTTP, file reads) | Activities | All I/O must happen in Activities |
 
-**Testing for determinism.** Use the `Replayer` to verify code changes against a saved Event History:
+If you update your code, and you're not sure whether it's safe for determinism, Use the `Replayer` to verify code changes against a saved Event History:
 
 ```python
 # test_determinism.py
@@ -976,13 +1043,13 @@ if __name__ == "__main__":
     asyncio.run(test_replay_compatibility())
 ```
 
-Run this test as part of your continuous integration pipeline before deploying Workflow code changes. If the replay fails with a `NondeterminismError`, the code change is not backward-compatible. Use Worker Versioning (see Phase 8) to deploy the change safely.
+Run this test as part of your continuous integration pipeline before deploying Workflow code changes. If the replay fails with a `NondeterminismError`, the code change is not backward-compatible. Use Worker Versioning (see Step 8) to deploy the change safely.
 
-### (Optional) Phase 8: Manage Workflow evolution with Worker Versioning
+### (Optional) Step 8: Manage Workflow evolution with Worker Versioning
 
 Entity Workflows are the hardest case for code evolution: a loyalty account can span years and dozens of deployments. Any change that alters the sequence of Commands the Workflow generates causes a `NondeterminismError` during replay for in-progress Executions.
 
-[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is the recommended solution: run multiple builds simultaneously, route each Execution to the build it started on, and drain old builds without any code-level branching.
+[Worker Versioning](https://docs.temporal.io/production-deployment/worker-deployments/worker-versioning) is the recommended solution: run multiple builds simultaneously, route each Execution to the build it started on, and drain old builds without any code-level branching.
 
 > Worker Versioning requires Python SDK v1.11.0 or later, Temporal Server v1.29.1 or later, and Temporal CLI v1.4.1 or later.
 
@@ -1119,13 +1186,12 @@ You've built a loyalty account system where each customer is an independent, sel
 
 ## Related resources
 
-- [Entity Workflow Pattern](/design-patterns/entity-workflow) — pattern catalog reference for this Workflow with Go, Java, Python, and TypeScript implementations
-- [Continue-As-New Pattern](/design-patterns/continue-as-new) — pattern catalog reference covering common pitfalls and history-size triggers
-- [Temporal Python SDK documentation](/develop/python)
+- [Temporal Python SDK documentation](https://docs.temporal.io/develop/python)
 - [Temporal Python SDK API Reference](https://python.temporal.io)
-- [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
-- [Continue-As-New](/develop/python/workflows/continue-as-new)
-- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning)
-- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/best-practices/error-handling)
+- [Message Passing — Signals, Queries, Updates](https://docs.temporal.io/develop/python/message-passing)
+- [Continue-As-New](https://docs.temporal.io/develop/python/continue-as-new)
+- [Worker Versioning](https://docs.temporal.io/production-deployment/worker-deployments/worker-versioning)
+- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](https://docs.temporal.io/develop/python/failure-detection)
 - [Temporal Python SDK samples](https://github.com/temporalio/samples-python)
-- Companion article: [Player Sessions That Survive Anything](/guides/durable-gaming-sessions) — covers the related Actor Workflow pattern for entities that take action
+
+<!-- - [Companion article: Actor Workflow Pattern](ActorWorkflow_PlayerSessions.md) — covers the related Actor Workflow pattern for autonomous agents that take action -->
