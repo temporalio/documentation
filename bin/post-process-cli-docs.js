@@ -5,6 +5,7 @@
 // - Regenerates the command-reference indexes from the generated command pages.
 // - Removes generated keyword metadata and escapes literal brace placeholders.
 // - Injects a ReleaseNoteHeader component into cloud CLI reference pages.
+// - Omits retired certificate-authenticated Cloud metrics commands from the account reference.
 //
 // Gen-docs must be run twice because the main CLI and cloud CLI have
 // overlapping option sets (e.g. "client", "common"). Running them in a
@@ -28,6 +29,7 @@ const {
   escapeGeneratedMdxPlaceholders,
   stripKeywordsFromFrontmatter,
 } = require("./escape-generated-mdx-placeholders.js");
+const { stripRetiredCloudMetrics } = require("./strip-retired-cloud-metrics.js");
 
 const CMD_REF_DIR = path.join(
   __dirname,
@@ -140,7 +142,10 @@ let escapedPlaceholderCount = 0;
 
 for (const filePath of getMdxFiles(CMD_REF_DIR)) {
   const originalContent = fs.readFileSync(filePath, "utf-8");
-  const withoutKeywords = stripKeywordsFromFrontmatter(originalContent);
+  const withoutRetiredMetrics = filePath === path.join(CLOUD_DIR, "account.mdx")
+    ? stripRetiredCloudMetrics(originalContent)
+    : originalContent;
+  const withoutKeywords = stripKeywordsFromFrontmatter(withoutRetiredMetrics);
   const content = escapeGeneratedMdxPlaceholders(withoutKeywords);
   if (content === originalContent) continue;
 

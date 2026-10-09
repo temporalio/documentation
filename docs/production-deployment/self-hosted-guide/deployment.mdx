@@ -98,7 +98,7 @@ If you use a custom configuration template, be aware of the following:
 - Refer to the [sprig documentation](http://masterminds.github.io/sprig/) for supported template functions
 - Use `temporal-server render-config` to verify your templates render correctly
 
-#### Helm Chart configuration
+#### Helm chart configuration
 
 When deploying with Helm charts versions 0.73.1 or later, you may need to adjust the following configuration options
 depending on the images you are using.
@@ -125,7 +125,8 @@ project.
 You might want to do this to pass custom plugins or any other customizations through the
 [Server Options](/references/server-options). Then you can build and run a binary that contains your customizations.
 
-This requires Go v1.19 or later, as specified in the Temporal Server
+This requires the minimum Go version listed in the Temporal Server
+[`go.mod`](https://github.com/temporalio/temporal/blob/main/go.mod) file. See the Temporal Server
 [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
 
 ## Use Helm charts

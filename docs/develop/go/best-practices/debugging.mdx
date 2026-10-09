@@ -42,7 +42,7 @@ You can debug production Workflows using:
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/develop/worker-performance).
 For more information, see [Metrics](/develop/go/platform/observability#metrics) for setting up SDK metrics.
 
-Debug Server performance with [Cloud metrics](/cloud/metrics/) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics/openmetrics) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
 
 ## How to test Workflow Definitions in Go {/* #testing-and-debugging */}
 
@@ -137,7 +137,7 @@ Timeout for the entire test can be set using `SetTestTimeout` in the Workflow or
 
 Finally, we create a regular test function recognized by the `go test` command, and pass the struct to `suite.Run`.
 
-#### A Simple Test
+#### A simple test
 
 The simplest test case we can write is to have the test environment execute the Workflow and then
 evaluate the results.

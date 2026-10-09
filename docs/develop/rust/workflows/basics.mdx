@@ -131,7 +131,7 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
 
 ## Define Workflow parameters {/* #workflow-parameters */}
 
-Temporal Workflows may have any number of custom parameters. However, we strongly recommend that structs are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable.
+Temporal Workflows may have any number of custom parameters. However, we strongly recommend that structs are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable. For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
 
 A method annotated with `#[init]` can have any number of parameters. We recommend passing a single struct that contains all the input fields:
 

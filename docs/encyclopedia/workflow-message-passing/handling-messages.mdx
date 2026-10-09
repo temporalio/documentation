@@ -16,7 +16,7 @@ import { RelatedReadContainer, RelatedReadItem, CaptionedImage } from '@site/src
 When Signals, Updates, and Queries arrive at your Workflow, the handlers for these messages will operate on the current state of your Workflow and can use the fields you have set.
 In this section, we’ll give you an overview of how messages work with Temporal and cover how to write correct and robust handlers by covering topics like atomicity, guaranteeing completion before the Workflow exits, exceptions, and idempotency.
 
-## Handling Messages {/* #handling-messages */}
+## Handling messages {/* #handling-messages */}
 
 ### Message handler concurrency {/* #message-handler-concurrency */}
 
@@ -121,7 +121,7 @@ See examples of the above patterns.
     <RelatedReadItem path="/develop/rust/workflows/message-passing#message-handler-patterns" text="Author message handler patterns in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Update Validators {/* #update-validators */}
+### Update validators {/* #update-validators */}
 
 When you define an Update handler, you may optionally define an Update Validator: a read operation that's responsible for accepting or rejecting the Update. You can use Validators to verify arguments or make sure the Workflow is ready to accept your Updates.
 
@@ -178,7 +178,7 @@ If you throw any other exception, by default, it will cause a [Workflow Task Fai
 
 In Go, returning an error behaves like an [Application Failure](/references/failures#application-failure) in the other SDKs. Panics behave like non-Application Failure exceptions in other languages, in that they cause a [Workflow Task Failure](/references/failures#workflow-task-failures).
 
-### Writing Signal Handlers {/* #writing-signal-handlers */}
+### Writing Signal handlers {/* #writing-signal-handlers */}
 
 Use these links to see a simple Signal handler.
 
@@ -193,7 +193,7 @@ Use these links to see a simple Signal handler.
     <RelatedReadItem path="/develop/rust/workflows/message-passing#signals" text="Handle Signals in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Writing Update Handlers {/* #writing-update-handlers */}
+### Writing Update handlers {/* #writing-update-handlers */}
 
 Use these links to see a simple update handler.
 
@@ -208,7 +208,7 @@ Use these links to see a simple update handler.
     <RelatedReadItem path="/develop/rust/workflows/message-passing#updates" text="Handle Updates in Rust" archetype="feature-guide" />
 </RelatedReadContainer>
 
-### Writing Query Handlers {/* #writing-query-handlers */}
+### Writing Query handlers {/* #writing-query-handlers */}
 
 Author queries using these per-language guides.
 

@@ -1,7 +1,7 @@
 ---
 id: durable-gaming-sessions
-title: Player Sessions That Survive Anything
-description: Protect player sessions from backend failures by using the Actor pattern.
+title: Build durable multiplayer game sessions with the actor model
+description: Model each player as an Actor Workflow that holds session state, runs game actions, and survives server crashes, with a complete Python implementation.
 sidebar_label: Durable gaming sessions
 toc_max_heading_level: 3
 author: Cecil Phillip
@@ -489,7 +489,7 @@ import asyncio
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.common import RetryPolicy, SearchAttributes, SearchAttributeKey
+from temporalio.common import RetryPolicy, SearchAttributeKey
 
 with workflow.unsafe.imports_passed_through():
     from activities import (
@@ -916,15 +916,15 @@ class PlayerSessionWorkflow:
         players above a certain level, or find all players with a
         particular status.
         """
-        pairs = [
-            (PLAYER_STATUS_KEY, self._state.status.value),
-            (PLAYER_LEVEL_KEY, self._state.level),
+        updates = [
+            PLAYER_STATUS_KEY.value_set(self._state.status.value),
+            PLAYER_LEVEL_KEY.value_set(self._state.level),
         ]
         if self._state.current_room:
-            pairs.append(
-                (CURRENT_ROOM_KEY, self._state.current_room.room_id)
+            updates.append(
+                CURRENT_ROOM_KEY.value_set(self._state.current_room.room_id)
             )
-        workflow.upsert_search_attributes(pairs)
+        workflow.upsert_search_attributes(updates)
 ```
 
 The `PlayerSessionWorkflow` is the central piece of this system. Several design decisions are worth examining in detail:
@@ -1037,7 +1037,11 @@ from __future__ import annotations
 import asyncio
 
 from temporalio.client import Client
-from temporalio.common import SearchAttributes, SearchAttributeKey
+from temporalio.common import (
+    SearchAttributeKey,
+    SearchAttributePair,
+    TypedSearchAttributes,
+)
 
 from models import (
     CombatMoveRequest,
@@ -1084,9 +1088,9 @@ async def start_player_session(
         initial_state,
         id=f"player-session-{player_id}",
         task_queue="player-session-queue",
-        search_attributes=SearchAttributes.from_pairs([
-            (PLAYER_STATUS_KEY, "online"),
-            (PLAYER_LEVEL_KEY, 1),
+        search_attributes=TypedSearchAttributes([
+            SearchAttributePair(PLAYER_STATUS_KEY, "online"),
+            SearchAttributePair(PLAYER_LEVEL_KEY, 1),
         ]),
     )
     print(f"Started session for {display_name} ({player_id})")

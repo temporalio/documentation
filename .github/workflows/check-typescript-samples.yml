@@ -1,0 +1,42 @@
+name: Check TypeScript Samples
+
+# Type-checks the hand-written TypeScript and JavaScript samples in docs/
+# against the latest published @temporalio packages, and reports SDK methods,
+# properties, and exports that the samples use but the packages don't have.
+# The same pass checks docs links written in code comments. Advisory; the
+# steps are shared with the other languages in check-code-samples.yml.
+
+on:
+  schedule:
+    # Mondays at 11:00 UTC.
+    - cron: '0 11 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docs/develop/typescript/**'
+      - 'bin/check-typescript-samples.js'
+      - 'bin/check-typescript-samples.test.js'
+      - 'bin/typescript-samples-baseline.json'
+      - 'bin/code-samples.js'
+      - 'bin/code-samples.test.js'
+      - '.github/workflows/check-typescript-samples.yml'
+      - '.github/workflows/check-code-samples.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-typescript-samples-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    permissions:
+      contents: read
+      issues: write
+    uses: ./.github/workflows/check-code-samples.yml
+    with:
+      language: TypeScript
+      checker: bin/check-typescript-samples.js
+      baseline: bin/typescript-samples-baseline.json
+      yarn-script: check:ts-samples
