@@ -1,7 +1,7 @@
 ---
 id: activity-execution
 title: Activity Execution
-description: Learn how to start an Activity as a durable Activity Execution with built-in retries, timeouts, and failure handling.
+description: How Workflow, Standalone, and Local Activity Executions run, from lifecycle and cancellation to Activity IDs and Asynchronous Activity Completion.
 slug: /activity-execution
 toc_max_heading_level: 4
 tags:

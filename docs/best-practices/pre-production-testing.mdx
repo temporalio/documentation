@@ -1,7 +1,7 @@
 ---
 title: Pre-production testing
 sidebar_label: Pre-Production Testing
-description: Experience-driven testing practices for teams running Temporal applications, covering failure injection, load testing, and operational validation.
+description: Run Worker kill, load, failover, and network-loss tests, plus a game day runbook, to confirm recovery and observability before go-live.
 toc_max_heading_level: 4
 tags:
   - Best Practices

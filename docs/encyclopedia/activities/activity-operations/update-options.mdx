@@ -2,7 +2,7 @@
 id: update-options
 title: Update Activity Options
 sidebar_label: Update Options
-description: Change an Activity's timeouts, Retry Policy, or Task Queue while it runs, without restarting the Execution or losing retry state.
+description: Adjust the timeouts, Retry Policy, or Task Queue of a Paused or running Activity, such as extending a Schedule-To-Close Timeout before Unpausing.
 slug: /activity-operations/update-options
 toc_max_heading_level: 4
 tags:
