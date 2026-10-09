@@ -168,7 +168,7 @@
       "Agent framework"
     ],
     "sdk": "TypeScript",
-    "href": "https://mastra.ai/guides/deployment/temporal"
+    "href": "https://mastra.ai/integrations/deploy/temporal"
   },
   {
     "name": "New Relic",
@@ -259,7 +259,7 @@
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "https://ai.pydantic.dev/durable_execution/temporal/"
+    "href": "https://pydantic.dev/docs/ai/capabilities/durable_execution/temporal/"
   },
   {
     "name": "Rails",
