@@ -364,7 +364,7 @@ with workflow.unsafe.imports_passed_through():
     )
 ```
 
-With the imports in place, you'll define two [Retry Policies](/retry_policies). Temporal Workflows retry by default, and often you don't need a specific Retry Policy. But you can specify the policy if you want, and you'll do that here so you can create different behaviors for database writes and notifications. Start with the policy for database writes:
+With the imports in place, you'll define two [Retry Policies](encyclopedia/retry_policies). Temporal Workflows retry by default, and often you don't need a specific Retry Policy. But you can specify the policy if you want, and you'll do that here so you can create different behaviors for database writes and notifications. Start with the policy for database writes:
 
 ```python
 DB_RETRY_POLICY = RetryPolicy(
@@ -587,7 +587,7 @@ After that is the subtraction that deducts the redeemed points. The Update then 
 
 The `redeem_points` Update calls the `record_redemption` Acitivity directly via `await` rather than enqueuing it for the main loop. The Python and TypeScript SDKs support `async` Update handlers, making this safe. The trade-off keeps redemption logic self-contained and returns the confirmed result to the caller in a single round trip. It is safe here because `record_redemption` is idempotent — a replay detects the duplicate `event_id` and returns without creating a second record. If you are using the Java SDK, Update handlers cannot be `async`; enqueue the work for the main loop instead.
 
-Next, add an [Update Validator](handling-messages#update-validators) to handle errors:
+Next, add an [Update Validator](/handling-messages#update-validators) to handle errors:
 
 ```python
     @redeem_points.validator
