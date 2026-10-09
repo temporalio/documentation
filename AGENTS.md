@@ -174,7 +174,6 @@ Requires Node.js 24+ and Yarn.
 yarn              # Install dependencies
 yarn start        # Dev server at http://localhost:3000
 yarn build        # Production build; catches MDX/build errors
-yarn check-links  # Broken link check (run after build)
 yarn snipsync     # Refresh Snipsync code snippets
 ```
 

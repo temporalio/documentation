@@ -94,7 +94,7 @@
     "react-markdown": "^10.1.0",
     "satori": "^0.33.4",
     "search-insights": "^2",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "snipsync": "^1.13.0",
     "uuid": "^14.0.2",
     "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0",
