@@ -1,0 +1,145 @@
+---
+id: durable-execution
+title: What is Durable Execution?
+sidebar_label: Durable Execution
+description: Durable Execution preserves state and progress so code resumes after transient failures, waits out permanent ones, and leaves negative results to you.
+slug: /durable-execution
+toc_max_heading_level: 4
+tags:
+  - Durable Execution
+  - Concepts
+  - Failures
+---
+
+Durable Execution lets you write your code as though failures don't exist.
+It preserves the state and progress of an operation as it runs.
+When a failure occurs, execution resumes where it left off and continues until the operation completes.
+You write the business logic, and the platform makes sure that logic runs to completion.
+
+In Temporal, the operation is a [Workflow Execution](/workflow-execution), and the steps it takes are
+[Activities](/activities), Timers, and messages.
+
+What Durable Execution can do depends on the kind of failure:
+
+- **[Transient failures](#transient-failures)** go away if you try again. Durable Execution keeps trying until the
+  operation succeeds.
+- **[Permanent failures](#permanent-failures)** never go away on their own. Durable Execution can't fix them, but it
+  keeps the operation's state so that the operation resumes once someone fixes the cause.
+- **[Negative results](#negative-results)** aren't failures. Your code decides what to do with them.
+
+## How Durable Execution preserves progress {/* #how-it-works */}
+
+Temporal records each step of a Workflow Execution in its [Event History](/workflow-execution/event#event-history):
+Activities scheduled and their results, Timers started and fired, and messages received.
+If the Worker running a Workflow Execution stops, another Worker replays the Event History to rebuild the Workflow's
+state, including local variables, and continues from the point where execution stopped.
+Steps that already completed don't run again. Replay uses their recorded results instead.
+
+For a step-by-step walkthrough, see [How Temporal works](/encyclopedia/architecture/how-temporal-works) and
+[Event History](/encyclopedia/event-history).
+
+## Transient failures {/* #transient-failures */}
+
+A transient failure is one where trying the operation again can eventually succeed.
+Some transient failures are one-time events, such as a network request sent at the moment a cable is replaced.
+Others are intermittent, such as a rate-limited API that rejects requests until its limit resets.
+Durable Execution treats both the same way.
+
+Examples of transient failures:
+
+- Process crashes and Worker restarts
+- Hardware failures
+- Network outages
+- Timeouts
+- A temporary outage in a dependency, such as an external service that is down
+
+Durable Execution keeps trying until a transient failure clears, so you can write most of your code as though these
+failures don't happen:
+
+- **Activities retry under a [Retry Policy](/encyclopedia/retry-policies).** The default Retry Policy retries with
+  exponential backoff and no limit on attempts. A Start-To-Close or Heartbeat Timeout counts as a failed attempt and is
+  retried too.
+- **Work moves off a crashed Worker.** The Temporal Service hands the crashed Worker's Workflow Tasks to another Worker,
+  which replays the Event History and continues. Activities that were running on the crashed Worker time out and retry
+  on another Worker.
+
+You can customize how often Temporal tries again.
+Set the Retry Policy's initial interval, backoff coefficient, and maximum interval to space out attempts.
+This matters most for timeouts and rate limits, where retrying too often adds load to a dependency that is already
+struggling.
+If you cap retries with a maximum number of attempts or a Schedule-To-Close Timeout, a failure that outlasts the cap
+reaches your Workflow code as an Activity Failure.
+
+## Permanent failures {/* #permanent-failures */}
+
+A permanent failure is one where trying again never succeeds.
+Something has to change first: the input data, the code, or the dependency.
+That intervention might be manual or automated, but without it the failure keeps happening.
+
+Examples of permanent failures:
+
+- Bad or invalid data
+- A bug in the code
+- An application or dependency that goes permanently offline
+
+In most systems, a permanent failure loses the work that was in progress.
+With Durable Execution, the state and progress of the operation are stored durably.
+Once an intervention clears the failure, the operation resumes where it left off and runs to completion.
+
+How that works in Temporal depends on where the failure happens:
+
+- **A bug in Workflow code.** An unhandled exception, a panic, or a non-determinism error fails the Workflow Task, not
+  the Workflow Execution. The Temporal Service retries the Workflow Task, and the Workflow Execution stays open with its
+  state intact. Deploy a fix, and the next attempt replays the Event History and
+  continues. See [Workflow Task failures vs Workflow Execution failures](/encyclopedia/application-failures#task-vs-execution).
+- **A bug in Activity code.** Errors thrown from an Activity are retryable unless you mark them non-retryable, so the
+  Activity keeps retrying under its Retry Policy. Deploy a fix, and the next attempt runs the fixed code.
+- **Bad input data.** Raise a non-retryable Application Failure from the Activity so it stops retrying. The Workflow can
+  catch the failure, wait for corrected data through a [Signal or Update](/encyclopedia/workflow-message-passing), and
+  run the Activity again. See the [Resumable Activity pattern](/design-patterns/resumable-activity) and
+  [Pause a Workflow on failure and resume it after a fix](/guides/recover-without-restart).
+- **A dependency that is down for good.** [Pause the Activity](/activity-operations/pause) (Public Preview) to stop
+  retries while you repair or replace the dependency, then unpause it.
+- **Steps that already ran with a bug.** [Reset](/workflow-execution/event#reset) the Workflow Execution to a point
+  before the bug affected it. The new run continues from that point with the fixed code.
+
+Durable Execution preserves progress only while the Workflow Execution stays open.
+If Workflow code throws an Application Failure, or a Workflow timeout expires, the Workflow Execution closes, and
+recovering means resetting it or starting a new one.
+Decide which failures should end the Workflow Execution and which should wait for a fix.
+
+For specific errors and how to fix them, see
+[Troubleshoot Workflow and Activity execution failures](/troubleshooting/execution-failures).
+
+## Negative results {/* #negative-results */}
+
+Some results aren't failures.
+They are your business logic reaching an expected, but negative, outcome.
+
+Examples of negative results:
+
+- Inventory out of stock
+- A credit card with insufficient funds
+- No ride-share driver available
+
+Durable Execution doesn't decide whether a negative result is a dead end or worth waiting on.
+The right response depends on your domain, so the decision belongs in your code.
+Common choices are:
+
+- Return the result as a value, and branch on it in the Workflow. For example, notify the customer that an item is out
+  of stock.
+- Raise a non-retryable Application Failure, and handle it in the Workflow. For example, run compensating Activities
+  with the [Saga pattern](/design-patterns/saga-pattern).
+- Treat the result as transient. Retry, or wait for a Timer or a Signal, such as a restock notification, and then try
+  again. Durable Execution keeps the operation going until it completes.
+
+For guidance on modeling these choices, see [Error handling](/best-practices/error-handling).
+
+## Summary {/* #summary */}
+
+|                       | Transient failure                                  | Permanent failure                                               | Negative result                       |
+| :-------------------- | :------------------------------------------------- | :-------------------------------------------------------------- | :------------------------------------ |
+| **Does retrying help?** | Yes, eventually                                    | No, not until something changes                                 | Your code decides                     |
+| **Who resolves it**   | Temporal, by trying again                          | An intervention: a fix, new data, or a replacement dependency   | Your Workflow code                    |
+| **What Temporal does** | Retries Activities and moves work off failed Workers | Preserves state and progress so the operation resumes after the intervention | Records the result for your code to act on |
+| **Examples**          | Crashes, network outages, timeouts                 | Bad data, bugs, a dependency that is gone for good              | Out of stock, insufficient funds      |
