@@ -20,6 +20,8 @@
     "check:metrics:sdks": "node ./bin/check-metrics-against-sdks.js",
     "check:orphans": "node ./bin/check-orphan-pages.js",
     "check:redirects": "node ./bin/validate-redirects.js",
+    "check:py-samples": "node ./bin/check-python-samples.js",
+    "check:ts-samples": "node ./bin/check-typescript-samples.js",
     "report:snipsync-coverage": "node ./bin/report-snipsync-coverage.js",
     "test": "node --test",
     "lint": "vale --output=JSON docs/**/**/*.mdx > vale-output.json; vale --output=JSON docs/**/**/*.md > vale-md-output.json",
@@ -92,7 +94,7 @@
     "react-markdown": "^10.1.0",
     "satori": "^0.33.4",
     "search-insights": "^2",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "snipsync": "^1.13.0",
     "uuid": "^14.0.2",
     "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0",
@@ -106,6 +108,8 @@
     "eslint-plugin-react": "^7.23.2",
     "global-jsdom": "^30.0.0",
     "husky": "^9.1.7",
-    "hyperlink": "^5.0.4"
+    "hyperlink": "^5.0.4",
+    "pyright": "^1.1.414",
+    "typescript": "^6.0.3"
   }
 }

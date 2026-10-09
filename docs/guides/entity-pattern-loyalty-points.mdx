@@ -1013,7 +1013,8 @@ Update `worker.py` to declare the deployment name and build ID:
 
 ```python
 import os
-from temporalio.worker import Worker, WorkerDeploymentOptions
+from temporalio.common import WorkerDeploymentVersion
+from temporalio.worker import Worker, WorkerDeploymentConfig
 
 # BUILD_ID should be injected by CI/CD (e.g. a Git SHA). All Workers from the same build must match.
 BUILD_ID = os.environ["BUILD_ID"]
@@ -1033,9 +1034,11 @@ async def main() -> None:
                 send_tier_change_notification,
             ],
             activity_executor=activity_executor,
-            worker_deployment_options=WorkerDeploymentOptions(
-                deployment_name=DEPLOYMENT_NAME,
-                build_id=BUILD_ID,
+            deployment_config=WorkerDeploymentConfig(
+                version=WorkerDeploymentVersion(
+                    deployment_name=DEPLOYMENT_NAME,
+                    build_id=BUILD_ID,
+                ),
                 use_worker_versioning=True,
             ),
             max_concurrent_workflow_tasks=200,
@@ -1089,7 +1092,7 @@ temporal worker deployment describe-version \
 
 Because `LoyaltyEntityWorkflow` already calls `workflow.continue_as_new()` to manage Event History, you can upgrade long-running Executions to a new build at that boundary — without patching.
 
-In `_do_continue_as_new`, check `get_target_worker_deployment_version_changed()` before transitioning:
+In `_do_continue_as_new`, check `is_target_worker_deployment_version_changed()` before transitioning:
 
 ```python
 from temporalio.workflow import ContinueAsNewVersioningBehavior
@@ -1103,15 +1106,17 @@ async def _do_continue_as_new(self) -> None:
     self._state.pending_events = list(self._pending_signals)
     await workflow.wait_condition(workflow.all_handlers_finished)
 
-    can_options = {}
-    if workflow.info().get_target_worker_deployment_version_changed():
+    initial_versioning_behavior = None
+    if workflow.info().is_target_worker_deployment_version_changed():
         # Newer build available — upgrade on this CaN boundary.
-        can_options["versioning_behavior"] = ContinueAsNewVersioningBehaviorAutoUpgrade
+        initial_versioning_behavior = ContinueAsNewVersioningBehavior.AUTO_UPGRADE
 
-    workflow.continue_as_new(self._state, **can_options)
+    workflow.continue_as_new(
+        self._state, initial_versioning_behavior=initial_versioning_behavior
+    )
 ```
 
-When `get_target_worker_deployment_version_changed()` is `False`, the CaN run stays on the same pinned build. This flag is refreshed after each Workflow Task, so upgrades are picked up on the next natural CaN boundary.
+When `is_target_worker_deployment_version_changed()` is `False`, the CaN run stays on the same pinned build. This flag is refreshed after each Workflow Task, so upgrades are picked up on the next natural CaN boundary.
 
 ## Outcomes
 

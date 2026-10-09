@@ -174,7 +174,6 @@ Requires Node.js 24+ and Yarn.
 yarn              # Install dependencies
 yarn start        # Dev server at http://localhost:3000
 yarn build        # Production build; catches MDX/build errors
-yarn check-links  # Broken link check (run after build)
 yarn snipsync     # Refresh Snipsync code snippets
 ```
 
@@ -185,6 +184,8 @@ yarn check:metrics       # SDK metrics reference against itself; runs in CI on P
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
 yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
+yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
+yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
@@ -199,6 +200,12 @@ belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silen
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
 serve. Fix the rule. A known, accepted exception belongs in `bin/redirect-baseline.json` with a note.
+
+`yarn check:ts-samples` and `yarn check:py-samples` type-check the TypeScript and Python code blocks that aren't
+synced by Snipsync against the latest SDK release, and report classes, methods, exports, and arguments the SDK doesn't
+have. The TypeScript check also reports docs links in code comments that don't resolve. Pass page paths to check only
+those pages. A sample that shows an API on purpose belongs in that language's `bin/*-samples-baseline.json` with a
+note.
 
 Vale linting (style). Requires Vale 3.20+ (CI already runs 3.20.0; upgrade a local install with
 `brew upgrade vale`) — `vale/styles/Std` needs it for its nested rule directories.
