@@ -250,7 +250,7 @@ When starting a Workflow Execution with your Client, include the Custom Search A
 ...
 
     // Further down in the file
-    private static Map<String, Object> generateSearchAttributes(){
+    private static SearchAttributes generateSearchAttributes(){
         return SearchAttributes.newBuilder().set(Constants.IS_ORDER_FAILED, false).build();
     }
 ```
@@ -295,7 +295,7 @@ This method is particularly useful for Workflows whose attributes need to change
 
 ### How to remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
-To remove a Search Attribute that was previously set, set it to an empty Map.
+To remove a Search Attribute that was previously set, unset its value.
 
 ```java
     // In a shared constants file, so all files have access

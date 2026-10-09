@@ -166,7 +166,7 @@ You can find the log levels supported by the `winston` package used in the examp
 
 Activities run in the standard Node.js environment and may therefore use any Node.js logger directly.
 
-The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entries emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entry emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
@@ -198,7 +198,7 @@ Workflows may not use regular Node.js loggers because:
 1. Workflows run in a sandboxed environment and cannot do any I/O.
 1. Workflow code might get replayed at any time, which would result in duplicated log messages.
 
-The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entries emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entry emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
@@ -486,10 +486,10 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 import { upsertSearchAttributes } from '@temporalio/workflow';
 
 async function yourWorkflow() {
-  upsertSearchAttributes({ CustomIntField: 1 });
+  upsertSearchAttributes({ CustomIntField: [1] });
 
 // ... later, to remove:
-upsertSearchAttributes({ CustomIntField: null });
+upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
 
