@@ -424,6 +424,7 @@ const developJavaCategory = {
           'develop/java/nexus/quickstart',
           'develop/java/nexus/feature-guide',
           'develop/java/nexus/standalone-operations',
+          'develop/java/nexus/development-walkthrough/index',
         ],
       },
       {

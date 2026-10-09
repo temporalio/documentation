@@ -1,0 +1,96 @@
+Most Nexus problems are wiring problems with a few recognizable symptoms. Start from the symptom.
+
+## Pre-release build errors
+
+Two errors mean the development server is missing a setting that is off by default. See
+[Start the development server](/develop/java/nexus/development-walkthrough?step=implement#start-the-development-server).
+
+**`Standalone Nexus operation is disabled`** comes from `temporal nexus operation execute`,
+`start`, `describe`, and `result` when the server was started without
+`nexusoperation.enableStandalone=true`. Operations called from a caller Workflow are unaffected, so
+this only shows up on the command line.
+
+**`completion callbacks are not enabled for this namespace`** fails only `notifyRequester`, when the
+server was started without `activity.enableCallbacks=true`. The other four Operations are unaffected.
+
+If `temporal nexus --help` doesn't list `operation`, you are on a released CLI rather than the
+pre-release build this walkthrough needs.
+
+## The call hangs and nothing happens
+
+Check these causes in order:
+
+1. **No Worker is polling the target Task Queue.** Check that the handler Worker is running and shows as a poller on the Endpoint's target Task Queue.
+2. **The Task Queue names don't match.** The Endpoint's target Task Queue and your Worker's Task Queue must be identical strings. A typo queues the request where nobody is listening.
+3. **The Operation is waiting as designed.** A human approval with a multi-day schedule-to-close timeout is supposed to sit there. Check in the UI that the Operation is pending rather than stuck.
+
+## The call fails as unauthorized
+
+Add the caller Namespace to the Endpoint's allowed caller list. Creating an Endpoint does not authorize anyone to call it, and in Temporal Cloud the Namespace name includes an Account suffix that is easy to omit. See [Nexus security](/nexus/security).
+
+## The caller and handler are not linked in the UI
+
+Use the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) that `TemporalOperationHandler` provides for anything that starts or messages an Execution. A Client you construct yourself works, but loses the [bidirectional links](/nexus/execution-debugging#bi-directional-linking) that connect the two Executions.
+
+## The Operation fails because the Workflow already exists
+
+By default, starting a Workflow whose Id is already running is an error, so when two Operations derive the same Workflow Id, the second fails. This is intended: a Workflow-backed Operation has only started once its completion callback is attached, so failing beats reporting success to a caller that would wait forever.
+
+To have the second caller join the running Execution, set the Workflow Id conflict policy to use-existing. See [When the approval already exists](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists).
+
+## Pitfalls that are easy to miss
+
+### Polling for a result that is already being delivered
+
+The decision is the result of `requestApproval`, pushed to every caller awaiting the Operation when the Workflow completes. Asking the approval for its status in a loop polls for something already on its way, and stops working once its [Retention Period](/temporal-service/temporal-server#retention-period) expires.
+
+Use the Operation result for outcomes, and messages to change a running approval.
+
+### Expecting a late caller to collect a finished result
+
+Only callers attached to an Operation receive its result. While the approval is running, additional callers can attach with the use-existing conflict policy. After it completes, they can't, so attach before it finishes or have the handler notify them, as `notifyRequester` does.
+
+### An Activity-backed Operation that will not cancel
+
+Cancellation doesn't interrupt an Activity. Without heartbeats and a heartbeat timeout, a cancellation request has no effect and the Operation runs to its timeout. Let the resulting cancellation exception propagate: a cancelled Activity is not retried, but one that swallows the cancellation and throws an ordinary failure is. See [Activity cancellation](/activity-execution#cancellation).
+
+### Duplicate side effects on retry
+
+The server retries Nexus start requests, so a backing Execution whose Id isn't derived from something stable gets started twice. Derive the Workflow Id or Activity Id from the Nexus request Id, or from the Operation input when several Operations should share one Execution. This matters most for external side effects, such as notifications.
+
+### Sending a Signal to a Workflow that may not exist
+
+A Signal to a missing Workflow fails. Use Signal-with-Start when the target may not be running yet, and include in its input whatever the Workflow needs to start. See [Attach information before the approval exists](/develop/java/nexus/development-walkthrough?step=send#attach-information-before-the-approval-exists).
+
+### More than one async backing per handler invocation
+
+A handler can send any number of sync messages but start at most one async backing. Starting a Workflow and a Workflow Update in the same invocation is not valid. Pick one thing for the caller to await.
+
+### Hand-editing generated code
+
+Generated files are overwritten on the next run. When a generated name is wrong, fix it with a per-language naming override in the contract. See [Naming & overrides](https://github.com/temporalio/nexgen#naming--overrides) in the `nexgen` README.
+
+### Letting the contract drift
+
+Callers and handlers deploy independently, so different contract versions run at the same time. Adding an optional field is safe. Making a field required, removing one, or changing a type breaks whichever side deploys second.
+
+## Tips
+
+**Verify the wiring before writing a caller.** Confirm the Endpoint exists, targets the right Namespace and Task Queue, and has a Worker polling it.
+
+**Set timeouts to match reality.** A human approval measured in days needs a schedule-to-close timeout in days.
+
+**Let contract violations be `BAD_REQUEST`.** The generated validators report every violation in one error, so the caller can fix them all at once. See [Nexus error handling](/nexus/error-handling).
+
+**Use `TemporalOperationHandler` for every Operation.** An Operation that starts synchronous can later gain an async backing without changing shape.
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
+
+:::tip RESOURCES
+
+- [Nexus execution debugging](/nexus/execution-debugging) for tracing Operations across Namespaces.
+- [Nexus error handling](/nexus/error-handling) for the error model and retry behavior.
+- [Nexus security](/nexus/security) for Endpoint authorization.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for current per-SDK capability status.
+
+:::

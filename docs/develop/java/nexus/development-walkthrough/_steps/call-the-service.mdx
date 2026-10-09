@@ -1,0 +1,217 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
+Call the approval Operations from a Workflow in the caller Namespace. The caller knows only the Endpoint name and the contract from [step 1](/develop/java/nexus/development-walkthrough?step=contract).
+
+This caller is Java, like the handler, but it doesn't have to be. See [Call it from another language](#call-it-from-another-language).
+
+## What the caller gets from the contract
+
+The caller doesn't hand-write request types, response types, or Operation names. It uses the code generated in [step 2](/develop/java/nexus/development-walkthrough?step=generate):
+
+- **A Service definition**, so an Operation name is a symbol rather than a string you can misspell.
+- **Typed models** for every input and output.
+- **Runtime validators** that reject a payload that violates the contract before it reaches the wire.
+
+So the contract is enforced twice: a field the contract lacks fails at build time in a typed language, and a payload the contract forbids fails at the boundary rather than inside the handler's Workflow.
+
+## Call the Operations from a caller Workflow
+
+In Java, the generated Service interface works directly as a Nexus Service stub. Create it inside the caller Workflow with Operation options, then call its methods as if they were local. This Workflow runs the whole flow, including Operations that later steps add.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-caller-workflow-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/ApprovalCallerWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/ApprovalCallerWorkflowImpl.java)
+
+```java
+public class ApprovalCallerWorkflowImpl implements ApprovalCallerWorkflow {
+
+  private static final Logger logger = Workflow.getLogger(ApprovalCallerWorkflowImpl.class);
+
+  // STEP 6 - In Java the Service interface works directly as a Nexus Service stub. Because the stub
+  // is that interface, every call below is type-checked against the contract at compile time.
+  //
+  // The schedule-to-close timeout bounds the whole Operation. A human approval measured in days
+  // would need a timeout in days; this sample decides in seconds, so a short one is fine. The
+  // default would not be right for a real approval.
+  private final ApprovalService approvalService =
+      Workflow.newNexusServiceStub(
+          ApprovalService.class,
+          NexusServiceOptions.newBuilder()
+              .setOperationOptions(
+                  NexusOperationOptions.newBuilder()
+                      .setScheduleToCloseTimeout(Duration.ofMinutes(2))
+                      .build())
+              .build());
+
+  @Override
+  public String runApprovalFlow(String itemId, String requester, double amount, String note) {
+
+    // -------------------------------------------------------------------------------------------
+    // STEP 8 - Attach information before the approval exists.
+    //
+    // This is deliberately called BEFORE requestApproval, which is the harder ordering. Because
+    // attachApprovalContext is Signal-with-Start, this call creates the approval Workflow and
+    // delivers the note to it.
+    // -------------------------------------------------------------------------------------------
+    approvalService.attachApprovalContext(
+        new AttachApprovalContextInput(itemId, requester, amount, note));
+    logger.info("attachApprovalContext -> note attached, approval now exists");
+
+    // -------------------------------------------------------------------------------------------
+    // STEP 6 - Request the approval.
+    //
+    // The approval Workflow is already running thanks to the call above, so this start would fail
+    // under the default conflict policy. The handler sets USE_EXISTING, so instead this attaches
+    // the Operation's completion callback to the running Execution.
+    //
+    // startNexusOperation returns a handle rather than blocking, so this Workflow can keep working
+    // while the approval is pending. The wait is durable: this caller can be evicted and its Worker
+    // can restart, and the result still arrives.
+    // -------------------------------------------------------------------------------------------
+    NexusOperationHandle<RequestApprovalOutput> approvalHandle =
+        Workflow.startNexusOperation(
+            approvalService::requestApproval, new RequestApprovalInput(itemId, requester, amount));
+
+    // Wait for the Operation to be started before messaging it. NexusOperationExecution carries the
+    // Operation token for an asynchronous Operation.
+    approvalHandle.getExecution().get();
+    logger.info("requestApproval -> started and attached to the existing approval");
+
+    // -------------------------------------------------------------------------------------------
+    // STEP 8 - Nudge the pending approval. A Signal, so there is no result to collect.
+    // -------------------------------------------------------------------------------------------
+    approvalService.remindApprover(new RemindApproverInput(itemId));
+    logger.info("remindApprover -> approver nudged");
+
+    // -------------------------------------------------------------------------------------------
+    // STEP 8 - Submit the decision. An Update, so the caller gets confirmation back.
+    //
+    // In a real system this arrives from a human through a separate caller. The sample submits it
+    // here so the flow completes without one.
+    // -------------------------------------------------------------------------------------------
+    SubmitDecisionOutput ack =
+        approvalService.submitDecision(
+            new SubmitDecisionInput(itemId, SubmitDecisionInput.Decision.DECISION_APPROVED));
+    logger.info(
+        "submitDecision -> recorded={} after {} reminder(s)",
+        ack.getRecorded().getValue(),
+        ack.getRemindersSent());
+
+    // -------------------------------------------------------------------------------------------
+    // STEP 6 - Await the decision.
+    //
+    // The caller does not poll. The decision is the result of requestApproval, pushed here through
+    // the Nexus completion callback the moment the approval Workflow returns. Asking the approval
+    // for its status in a loop would be polling for something already on its way.
+    // -------------------------------------------------------------------------------------------
+    RequestApprovalOutput.Decision decision = approvalHandle.getResult().get().getDecision();
+    logger.info("requestApproval -> decision {}", decision.getValue());
+
+    // -------------------------------------------------------------------------------------------
+    // STEP 10 - Call the Standalone Activity.
+    //
+    // From the caller this looks like any other Operation. It does not know that nothing but a
+    // single Activity Execution sits behind it.
+    // -------------------------------------------------------------------------------------------
+    NotifyRequesterOutput notified =
+        approvalService.notifyRequester(
+            new NotifyRequesterInput(
+                requester, NotifyRequesterInput.Decision.fromString(decision.getValue())));
+    logger.info("notifyRequester -> delivered to {}", notified.getDeliveredTo());
+
+    return decision.getValue();
+  }
+}
+```
+
+<!--SNIPEND-->
+
+The Endpoint name is bound once, when the caller Worker registers the Workflow, so the Workflow
+refers to the Service by its contract alone:
+
+<!--SNIPSTART samples-java-nexus-walkthrough-caller-worker-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerWorker.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerWorker.java)
+
+```java
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    Worker worker = factory.newWorker(DEFAULT_TASK_QUEUE_NAME);
+
+    worker.registerWorkflowImplementationTypes(
+        WorkflowImplementationOptions.newBuilder()
+            .setNexusServiceOptions(
+                Collections.singletonMap(
+                    SERVICE_NAME,
+                    NexusServiceOptions.newBuilder().setEndpoint(DEFAULT_ENDPOINT_NAME).build()))
+            .build(),
+        ApprovalCallerWorkflowImpl.class);
+
+    factory.start();
+  }
+```
+
+<!--SNIPEND-->
+
+The caller doesn't know which Task Queue the handler's Worker polls, or that `requestApproval` is backed by a Workflow while `notifyRequester` is backed by a single Activity. The handler team can change a backing, move the handler to another Namespace, or rewrite it in another language, and this caller keeps working.
+
+Run the caller Worker in another terminal, alongside the handler Worker from
+[step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker):
+
+<RunThis>
+
+```bash title="Run: start the caller Worker"
+./gradlew -q :core:execute \
+  -PmainClass=io.temporal.samples.nexuswalkthrough.caller.CallerWorker \
+  --args="-target-host localhost:7233 -namespace approval-caller-namespace"
+```
+
+</RunThis>
+
+It polls the caller Namespace and waits until a caller Workflow starts, which happens in
+[Finish](/develop/java/nexus/development-walkthrough?step=call-activity#run-the-whole-flow).
+
+## Await the decision
+
+`requestApproval` returns the approval Workflow's return value, `APPROVED` or `DENIED`, delivered through the Nexus completion callback when the Workflow finishes.
+
+The caller doesn't poll. It awaits the Operation, and the wait is durable: the caller Workflow can be evicted and its Worker can restart, and the result still arrives.
+
+### Set timeouts
+
+A caller sets three timeouts on a Nexus Operation:
+
+- **Schedule-to-close** bounds the whole Operation. Set it to how long an approval can legitimately take: a human approval measured in days needs a timeout in days.
+- **Schedule-to-start** bounds how long the caller waits for the handler to pick the Operation up. Set it so a handler that is down fails fast, even though the approval itself may run for days.
+- **Start-to-close** bounds an asynchronous Operation after it has started. Synchronous Operations such as `remindApprover` ignore it, because they complete as part of the start request.
+
+See [Nexus Operations](/nexus/operations#timeouts) for the full timeout model.
+
+## Call it from another language
+
+Each language has a sample that builds this approval Service from the same contract, with both a caller and a handler:
+
+| Language | Sample |
+| --- | --- |
+| Go | `{sample repo link}` |
+| Python | `{sample repo link}` |
+| TypeScript | `{sample repo link}` |
+
+Each repository's README explains how to run its client. Point it at the Endpoint from [step 5](/develop/java/nexus/development-walkthrough?step=publish) and it drives the Java handler built here, with no changes on either side. The reverse also works: the Java caller can call the handler from any of those samples.
+
+To generate a caller from this contract yourself, see [Usage](https://github.com/temporalio/nexgen#usage) in the `nexgen` README.
+
+## Calling without a caller Workflow
+
+A caller Workflow gives the call durability and lets you orchestrate around it. To run one Operation with nothing to orchestrate, a Client can start it directly as a [Standalone Nexus Operation](/standalone-nexus-operation), using the same contract, handler, and Endpoint. See [Java: Standalone Operations](/develop/java/nexus/standalone-operations).
+
+
+:::tip RESOURCES
+
+- [Nexus Operations](/nexus/operations) for the Operation lifecycle and timeouts.
+- [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
+- [NexGen](/nexus/nexgen) for generating callers in other languages.
+
+:::

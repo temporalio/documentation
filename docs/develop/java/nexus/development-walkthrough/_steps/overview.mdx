@@ -1,0 +1,116 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
+:::caution
+
+This walkthrough covers the [Temporal Operation Handler](/nexus/temporal-operation-handler), which is pre-release.
+APIs are experimental and may change in backwards-incompatible ways.
+
+:::
+
+This walkthrough builds one Nexus Service from nothing to a complete API, adding one Nexus capability at each step.
+
+A [Nexus Service](/evaluate/features/nexus) is a contract that one team publishes and other teams call across [Namespace](/namespaces) boundaries, without sharing code or a deployment.
+
+## The walkthrough problem
+
+**A purchase request needs approval before it can proceed.**
+
+Approval is slow and human-driven, so the system has to survive a wait of minutes or weeks. While a request is pending, other systems might nudge the approver or attach information to the request. When a decision arrives, the requesting system needs the outcome.
+
+The Service needs to:
+
+- Start an approval and eventually return `APPROVED` or `DENIED`
+- Accept a nudge that asks the approver again, and count how many have been sent
+- Accept supporting information for a purchase, whether or not its approval exists yet
+- Accept a decision and confirm it was recorded
+- Send a notification when the decision is final
+
+Each of those needs a different Nexus capability, introduced one step at a time.
+
+## One contract, every language
+
+**This walkthrough builds the Service in Java.** The same contract has a sample implementation in every language that [NexGen](/nexus/nexgen) generates code for. The reasoning at each step is the same in all of them.
+
+| Language | Sample |
+| --- | --- |
+| Java (this walkthrough) | [nexuswalkthrough](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough) |
+| Go | `{sample repo link}` |
+| Python | `{sample repo link}` |
+| TypeScript | `{sample repo link}` |
+
+**Any caller can call any handler, because the contract is the only thing the two sides share.** A Go caller can drive the Python handler, and the TypeScript caller can drive the Java handler. [Step 6](/develop/java/nexus/development-walkthrough?step=call) builds the Java caller and points at the other languages' samples.
+
+:::note
+
+Sample repos for each language will land once the docs settle. The idea is that you can run the client from any sample against the handler from any other sample.
+
+:::
+
+## How to follow along
+
+Two kinds of code block appear in this walkthrough. Hover over either one to get a copy icon.
+
+**A terminal window is a command to run.** Run this one now to confirm you have a pre-release CLI with server version 1.32.0 or later:
+
+<RunThis>
+
+```bash title="Run: check your CLI version"
+temporal --version
+```
+
+</RunThis>
+
+**Run every terminal command, in order**, or later steps may fail.
+
+**A block headed by a file path is sample code** to read. You don't need to type it: it's already in the [sample codebase](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough), and the file name links to the file.
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java)
+
+```java
+  public static String forItem(String itemId) {
+    return "approval-" + itemId;
+  }
+```
+
+Command output appears in a plain block with no header:
+
+```
+temporal version 1.8.3-server-1.32.0-162.0 (Server 1.32.0-162.0, UI 2.53.1)
+```
+
+## Before you start
+
+### Clone the sample project
+
+This walkthrough runs inside a clone of the [samples-java](https://github.com/temporalio/samples-java)
+repository. Every command and file path is relative to the repository root.
+
+<RunThis>
+
+```bash title="Run: clone the sample"
+git clone https://github.com/temporalio/samples-java.git
+cd samples-java
+```
+
+</RunThis>
+
+The sample is the finished Service. Each step shows the code it introduces and then runs it.
+
+### Use the pre-release CLI
+
+The Temporal Operation Handler is pre-release, so you need a pre-release [Temporal CLI](/cli) and
+its development server, which you can [download from the CLI releases page](https://github.com/temporalio/cli/releases).
+Check the release's "What's changed" section to make sure it is not a backport. A stock build rejects the Operations this walkthrough
+runs. See [Debugging and tips](/develop/java/nexus/development-walkthrough?step=tips)
+for what each failure looks like.
+
+### Run each Operation as you build it
+
+[Step 4](/develop/java/nexus/development-walkthrough?step=implement)
+starts the development server, and [step 5](/develop/java/nexus/development-walkthrough?step=publish)
+makes the Service reachable. From then on, each step that adds an Operation ends by running it, so
+you see a result before moving on. Those runs use `temporal nexus operation`, which starts a
+[Standalone Nexus Operation](/standalone-nexus-operation): the CLI is the caller, so you need no
+caller Workflow or caller Worker until [step 6](/develop/java/nexus/development-walkthrough?step=call).
+
+New to Nexus? Read [Nexus Services](/nexus/services) and [Nexus Operations](/nexus/operations), or work through the shorter [Java Nexus quickstart](/develop/java/nexus/quickstart).

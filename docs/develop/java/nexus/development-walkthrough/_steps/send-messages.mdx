@@ -1,0 +1,194 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
+:::note Keep these running
+
+This step uses the processes started earlier. Leave them running:
+
+- The development server, from [step 4](/develop/java/nexus/development-walkthrough?step=implement#start-the-development-server).
+- The handler Worker, from [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker).
+- The caller Worker, from [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow).
+
+:::
+
+To the caller, the messaging Operations are ordinary Operations, called through the same generated stub as `requestApproval` with the same type checking. Whether each one is a Signal or an Update is the handler's private detail.
+
+## Nudge and decide
+
+The caller Workflow in [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow) calls both. They differ in what comes back:
+
+- `remindApprover` returns nothing and completes as soon as the Signal is accepted. Accepted means durably recorded, not yet handled; a caller that needs confirmation that the nudge took effect needs an Update.
+- `submitDecision` returns confirmation that the decision was recorded. The approval Workflow then completes, which resolves the `requestApproval` Operation the original caller is awaiting.
+
+Both fail if no approval is running for the purchase.
+
+## Attach information before the approval exists
+
+`attachApprovalContext` does not need a running approval.
+
+Supporting information, such as a justification or a manager's note, comes from a different system than the approval request, so it sometimes arrives first. A plain Signal to a Workflow that does not exist fails, which is wrong for a message meant to be accepted whenever it shows up.
+
+`attachApprovalContext` uses **Signal-with-Start** instead. If the approval is running, the note is delivered to it. If not, the approval is started and the note is delivered. The caller doesn't need to know which happened.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-attach-context-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<AttachApprovalContextInput, Void> attachApprovalContext() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) -> {
+          WorkflowClient workflowClient = client.getWorkflowClient();
+          ApprovalWorkflow stub =
+              workflowClient.newWorkflowStub(
+                  ApprovalWorkflow.class,
+                  WorkflowOptions.newBuilder()
+                      .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
+                      .setTaskQueue(HandlerWorker.DEFAULT_TASK_QUEUE_NAME)
+                      .build());
+
+          // signalWithStart delivers the Signal, starting the Workflow first if it is not already
+          // running. When the approval already exists, only the Signal is delivered.
+          BatchRequest request = workflowClient.newSignalWithStartRequest();
+          request.add(stub::attachContext, input.getNote());
+          request.add(
+              stub::runApproval,
+              new RequestApprovalInput(input.getItemId(), input.getRequester(), input.getAmount()));
+          workflowClient.signalWithStart(request);
+
+          return TemporalOperationResult.sync(null);
+        });
+  }
+```
+
+<!--SNIPEND-->
+
+Signal-with-Start is sync messaging on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client), so the Operation completes during the handler call and returns nothing. The caller learns only that the note was durably attached.
+
+### Input needs enough to start the Workflow
+
+In the [contract](/develop/java/nexus/development-walkthrough?step=contract#plan-the-operations), `attachApprovalContext` takes the item id, requester, amount, *and* note, while `remindApprover` takes only the item id. Because the Operation might start the approval Workflow, it must carry what the Workflow needs to start.
+
+In general, a with-Start message's input is the union of what the message needs and what the Workflow's start needs.
+
+## When the approval already exists
+
+Because `attachApprovalContext` can create the approval, a Workflow with that Id may already be running when someone calls `requestApproval`. Both Operations derive the same Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id), so that they agree on which approval they mean.
+
+**By default, `requestApproval` fails in this situation**, because starting a Workflow whose Id is already running is an error. A Workflow-backed Operation has only started once its completion callback is attached. If a conflicting start did nothing, the Operation would report success with no callback, and the caller would wait for a decision that never arrives.
+
+That is why `requestApproval` sets the Workflow Id conflict policy to **use-existing**. A start against a running approval then attaches the Operation's completion callback to that Execution, and the caller receives its decision when it completes.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<RequestApprovalInput, RequestApprovalOutput> requestApproval() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) ->
+            client.startWorkflow(
+                ApprovalWorkflow.class,
+                ApprovalWorkflow::runApproval,
+                input,
+                WorkflowOptions.newBuilder()
+                    .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
+                    .setWorkflowIdConflictPolicy(
+                        WorkflowIdConflictPolicy.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING)
+                    .build()));
+  }
+```
+
+<!--SNIPEND-->
+
+This has two effects:
+
+- **More than one caller can await the same approval.** Every attached callback is notified when the Workflow completes, so several systems can call `requestApproval` for one purchase and all receive the same decision.
+- **The Operation is idempotent across separate callers**, not only across server retries of one request.
+
+Use-existing attaches only to a *running* Execution. If the approval has completed, the call starts a new approval rather than returning the old decision. A system that needs the outcome of a finished approval must have attached while it was open, or be notified by the handler, which the next step adds.
+
+## Run it in the harder order
+
+Send the note first, for an item id that has no approval yet:
+
+<RunThis>
+
+```bash title="Run 1 of 3: attach context before the approval exists"
+temporal nexus operation execute \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation AttachApprovalContext \
+  --operation-id attach-1 \
+  --input '{"itemId":"desk-7","requester":"tao","amount":1250,"note":"Approved in the Q3 budget"}'
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  null
+```
+
+No approval existed for `desk-7`, so the Operation created one and delivered the note:
+
+<RunThis>
+
+```bash title="Run 2 of 3: confirm only one approval was created"
+temporal workflow list --namespace approval-handler-namespace
+```
+
+</RunThis>
+
+```
+   Status        WorkflowId            Type
+  Running    approval-desk-7     ApprovalWorkflow
+  Completed  approval-laptop-42  ApprovalWorkflow
+```
+
+`approval-laptop-42` is the approval from step 5, decided in step 7.
+
+Now request the approval for the same item. Under the default conflict policy this would fail; with
+use-existing it attaches:
+
+<RunThis>
+
+```bash title="Run 3 of 3: request the approval that already exists"
+temporal nexus operation start \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation RequestApproval \
+  --operation-id approval-desk-7 \
+  --input '{"itemId":"desk-7","requester":"tao","amount":1250}'
+```
+
+</RunThis>
+
+`temporal workflow list` still shows one `approval-desk-7`: the call attached its completion
+callback to the approval the note created. Decide it with `SubmitDecision` as in
+[step 7](/develop/java/nexus/development-walkthrough?step=messaging#run-the-messaging-operations)
+and the result arrives on the Operation started here.
+
+:::note The two Workflow Id policies
+
+Two policies govern a start against a Workflow Id already in use:
+
+- The [Workflow Id conflict policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) applies while a Workflow with that Id is **running**. It defaults to failing with `Workflow execution already started`, which this section replaces with use-existing.
+- The [Workflow Id reuse policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy) applies once the previous Workflow with that Id has **closed**. It defaults to Allow Duplicate, which permits a new Execution.
+
+A start against a completed approval falls to the reuse policy and opens a new one. Set the reuse policy too if you don't want a second approval for the same item.
+
+:::
+
+
+:::tip RESOURCES
+
+- [Sending messages](/sending-messages) for Signal and Update semantics.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for sync messaging and async backings.
+- [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
+
+:::
