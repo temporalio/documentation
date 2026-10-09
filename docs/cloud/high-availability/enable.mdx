@@ -19,6 +19,14 @@ Using private network connectivity with a HA namespace requires extra setup. See
 There are charges associated with Replication and enabling High Availability features. For pricing details, visit
 Temporal Cloud's [Pricing](/cloud/pricing) page.
 
+:::caution GCP capacity restriction
+
+Adding a GCP replica requires an approved exception for your account.
+This applies to both Multi-Region Replication and Multi-Cloud Replication.
+See [GCP capacity restrictions](/evaluate/cloud/regions#gcp-capacity-restriction) for details and how to request an exception.
+
+:::
+
 ## Create a Namespace with High Availability features {/* #create */}
 
 To create a new Namespace with High Availability features, you can use the Temporal Cloud UI or the command line
