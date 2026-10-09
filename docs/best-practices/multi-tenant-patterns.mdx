@@ -2,7 +2,7 @@
 id: multi-tenant-patterns
 title: Multi-tenant application patterns
 sidebar_label: Multi-tenant patterns
-description: Learn how to build multi-tenant applications using Temporal with task queue isolation patterns, worker design, and best practices.
+description: Compare four tenant isolation patterns, from per-tenant Task Queues to Task Queue Fairness and Namespaces, with Worker design and capacity planning.
 slug: /best-practices/multi-tenant-patterns
 toc_max_heading_level: 4
 tags:

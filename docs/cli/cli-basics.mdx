@@ -2,9 +2,7 @@
 id: cli-basics
 title: CLI basics
 slug: /cli/common-operations
-description:
-  Common Temporal CLI operations for running a development server, starting and managing Workflows, and working with
-  Schedules and Namespaces.
+description: Start a development server, run and inspect Workflows, send Signals, use Schedules and Namespaces, and filter CLI output, with examples for each.
 hide_table_of_contents: true
 ---
 

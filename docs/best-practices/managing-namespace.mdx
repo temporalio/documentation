@@ -1,7 +1,7 @@
 ---
 id: managing-namespace
 title: Namespace best practices
-description: Best practices for organizing and managing Temporal Namespaces, including naming conventions, organizational patterns, and production safeguards.
+description: Pick Namespace boundaries and names, add production safeguards such as deletion protection and High Availability, and tag Namespaces.
 toc_max_heading_level: 4
 tags:
   - Best Practices

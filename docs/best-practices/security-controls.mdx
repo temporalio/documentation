@@ -2,7 +2,7 @@
 id: security-controls
 title: Security controls for Temporal Cloud
 sidebar_label: Security controls for Cloud
-description: Best practices for implementing and managing security controls in Temporal Cloud environments.
+description: Secure a Temporal Cloud account with SSO, least-privilege roles, mTLS, private connectivity, client-side encryption, and High Availability.
 toc_max_heading_level: 4
 tags:
   - Best Practices

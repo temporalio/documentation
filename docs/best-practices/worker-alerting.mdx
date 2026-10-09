@@ -2,7 +2,7 @@
 id: worker-alerting
 title: Alerting on Worker metrics
 sidebar_label: Worker alerting
-description: A recommended alert set for Temporal Workers, with tag filters, thresholds, and links to triage guidance
+description: Five starting alerts for Worker health, with thresholds, tag filters, and severity routing, for Temporal Cloud and self-hosted Temporal Services.
 toc_max_heading_level: 4
 tags:
   - Metrics

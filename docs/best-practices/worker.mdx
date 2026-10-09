@@ -1,6 +1,6 @@
 ---
 title: Worker deployment and performance
-description: Best practices for deploying and optimizing Temporal Workers for performance and reliability.
+description: Package, version, scale, and tune Workers, with a checklist and a reference Order Management System application that shows the practices.
 toc_max_heading_level: 4
 tags:
   - Best Practices
