@@ -364,7 +364,7 @@ with workflow.unsafe.imports_passed_through():
     )
 ```
 
-With the imports in place, you'll define two [Retry Policies](encyclopedia/retry_policies). Temporal Workflows retry by default, and often you don't need a specific Retry Policy. But you can specify the policy if you want, and you'll do that here so you can create different behaviors for database writes and notifications. Start with the policy for database writes:
+With the imports in place, you'll define two [Retry Policies](/encyclopedia/retry_policies). Temporal Workflows retry by default, and often you don't need a specific Retry Policy. But you can specify the policy if you want, and you'll do that here so you can create different behaviors for database writes and notifications. Start with the policy for database writes:
 
 ```python
 DB_RETRY_POLICY = RetryPolicy(
