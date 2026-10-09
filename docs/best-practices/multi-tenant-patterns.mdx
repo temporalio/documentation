@@ -165,7 +165,7 @@ for _, tenant := range assignedTenants {
 }
 ```
 
-### Routing requests to Task Queues
+### Route requests to Task Queues {/* #routing-requests-to-task-queues */}
 
 Your application needs to route [Workflow](/workflows) starts and other operations to the correct tenant [Task Queue](/task-queue):
 
@@ -207,7 +207,7 @@ Key questions to answer through performance testing:
 - `MaxConcurrentActivityTaskPollers`
 - Worker replicas (in Kubernetes deployments)
 
-### Provisioning new tenants
+### Provision new tenants {/* #provisioning-new-tenants */}
 
 Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
@@ -299,7 +299,7 @@ Track these [metrics](/references/sdk-metrics) per tenant:
 - [Worker resource utilization](/references/sdk-metrics#worker_task_slots_used)
 - [Workflow failure rates](/encyclopedia/detecting-workflow-failures)
 
-### Handling noisy neighbors
+### Handle noisy neighbors {/* #handling-noisy-neighbors */}
 
 Even with [Task Queue](/task-queue) isolation, monitor for tenants that:
 - Generate excessive load

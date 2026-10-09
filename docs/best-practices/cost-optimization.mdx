@@ -23,7 +23,7 @@ Premature optimization can compromise observability and create operational chall
 Every optimization involves tradeoffs.
 This guide helps you make informed decisions about where and how to optimize based on your specific requirements.
 
-Should you need additional guidance on Workflow design considerations, please reach out to a Temporal Solutions Architect.
+If you need more guidance on Workflow design, contact a Temporal Solutions Architect.
 
 ## Common anti-patterns
 
@@ -48,9 +48,9 @@ Workflows running days or weeks or processing thousands of events require [Conti
 
 ### High volume of Activity retries
 
-Generally, the default values for [Activity retries](/encyclopedia/retry-policies) are quite good.
+Generally, the default values for [Activity retries](/encyclopedia/retry-policies) work well in most cases.
 However, excessive Activity retries often indicate underlying issues like timeouts that are too short or Activities that frequently fail.
-Detect Activity retry frequency and if high, consider increasing retry intervals or Activity timeouts before failures occur.
+Monitor Activity retry frequency. If it is high, consider increasing retry intervals or Activity timeouts before failures occur.
 See [Spooky Stories: Chilling Temporal Anti-Patterns](https://temporal.io/blog/spooky-stories-chilling-temporal-anti-patterns-part-2#2-hiding-behind-the-chainsaws) for guidance on retry defaults and patterns.
 
 ### Large payloads in Event History
