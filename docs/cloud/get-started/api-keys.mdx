@@ -27,7 +27,7 @@ Temporal Cloud API keys offer industry-standard identity-based authentication fo
 - [API keys for Namespace authentication](#namespace-authentication)
 - [Use API keys to authenticate](#using-apikeys)
 - [Troubleshoot your API key use](#troubleshooting)
-- [API keys: Frequently Asked Questions](#faqs)
+- [API keys: Frequently asked questions](#faqs)
 
 ## API key overview {/* #overview */}
 
@@ -50,7 +50,7 @@ The authentication process follows this pathway:
   them into your apps. This lets you restart your Workers to refresh your rotated keys without recompiling your code.
 - **Monitor API key usage**: Check usage metrics and logs regularly. Revoke the key immediately if you detect any
   unexpected or unauthorized activity.
-- **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
+- **Use a Key Management System (KMS)**: Use a Key Management System to minimize the risk of key leaks.
 
 For guidance on which identities should own API keys, when to use Namespace-scoped Service Accounts, and how to align
 API keys with your Namespace topology, see [Managing Temporal Cloud access control](/best-practices/cloud-access-control).
@@ -179,7 +179,7 @@ tcld apikey create \
 
 Duration specifies the time until the API key expires, for example, "30d" or "4d12h".
 
-### Enable or Disable an API key
+### Enable or disable an API key {/* #enable-or-disable-an-api-key */}
 
 You can enable or disable API keys. When disabled, an API key cannot authenticate with Temporal Cloud.
 
@@ -279,7 +279,7 @@ Namespace Admins can manage and generate API keys for the Namespace-scoped Servi
 
 This is different for non-admin users, who manage and generate their own API keys.
 
-### Generate an API Key for a Service Account
+### Generate an API key for a Service Account
 
 Create API keys for Service Accounts using one of the following methods:
 
@@ -332,7 +332,7 @@ tcld apikey create \
 </TabItem>
 </Tabs>
 
-### Enable or Disable an API key
+### Enable or disable an API key {/* #enable-or-disable-an-api-key-1 */}
 
 Global Administrators and Account Owners can manage API key access for any user in their account using the Temporal
 Cloud UI or the CLI.
