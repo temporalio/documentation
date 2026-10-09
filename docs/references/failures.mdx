@@ -59,8 +59,9 @@ An error in a Workflow causes either a Workflow Task Failure or a Workflow Execu
 A Workflow Task Failure retries the Workflow Task.
 A Workflow Execution Failure closes the Workflow Execution with a Failed status.
 
-Only exceptions that are Temporal Failures fail the Workflow Execution.
+By default, only exceptions that are Temporal Failures fail the Workflow Execution.
 All other exceptions fail the Workflow Task, and the Workflow Task is retried.
+The TypeScript, Java, Python, .NET, and Ruby SDKs let you list your own exception types in Worker or Workflow options so that they fail the Workflow Execution instead.
 In Go, any error the Workflow returns fails the Workflow Execution, and a panic fails the Workflow Task.
 
 Temporal raises most Failure types for you, such as a [Cancelled Failure](#cancelled-failure) when the Workflow is canceled or an [Activity Failure](#activity-failure) when an Activity fails.
@@ -70,7 +71,7 @@ In Go, return any error.
 #### Workflow Task Failures
 
 A Workflow Task Failure means the Worker couldn't process a Workflow Task.
-It happens when your Workflow code throws an exception that isn't a Temporal Failure, or panics in Go.
+It happens when your Workflow code throws an exception that isn't a Temporal Failure or one of your listed exception types, or panics in Go.
 The Temporal Service retries the Workflow Task until the Workflow Execution Timeout, which is unlimited by default.
 
 For the causes the Temporal Service records for each Workflow Task Failure, see the [Workflow Task errors reference](/references/workflow-task-errors).
@@ -80,7 +81,8 @@ For the causes the Temporal Service records for each Workflow Task Failure, see 
 Throw an Application Failure in a Workflow to fail the Workflow Execution.
 The Workflow Execution moves to the Failed state, and the Temporal Service makes no more attempts to progress it.
 
-To create a custom exception that fails the Workflow Execution, extend the [Application Failure](#application-failure) class for your SDK.
+To fail the Workflow Execution with your own error category, throw an [Application Failure](#application-failure) and set its `type` field.
+Don't extend the Application Failure class or any other Failure class. See [How Temporal represents failures](/encyclopedia/application-failures#failure-representation).
 
 ### Errors in Activities
 
