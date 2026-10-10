@@ -20,30 +20,25 @@ Subscribe there to get an email whenever Temporal creates, updates, or resolves 
 
 :::
 
-## Create Namespaces during the GCP capacity restriction {/* #gcp-capacity-restriction */}
+## GCP capacity restriction {/* #gcp-capacity-restriction */}
 
 :::warning GCP capacity restriction
 
-New Temporal Cloud Namespace provisioning is temporarily restricted in all GCP regions due to limited GCP compute capacity.
-The restriction applies to all accounts by default, including Namespace creation through the Temporal Cloud UI, CLI, and Cloud API.
-Temporal is conserving available GCP capacity to support existing Namespaces.
+Starting in October 2026, new Temporal Cloud Namespace provisioning is temporarily restricted in all GCP regions due to limited GCP compute capacity.
 
 :::
 
-Deploy new workloads in an [AWS region](#aws-service-regions) where possible.
-If your workload requires GCP, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
+Existing GCP Namespaces continue to operate as normal.
+For Namespaces using [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity), additional Temporal Resource Units (TRUs) are limited and may be unavailable, depending on the region.
+
+If your new namespace must be in GCP, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
 Include the required GCP regions, expected Action volume, and business requirements for your workload.
-Temporal reviews exception requests based on available regional capacity and workload criticality.
-Approval depends on available capacity.
 
-Existing GCP Namespaces continue to operate.
-For Namespaces using [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity), additional Temporal Resource Units (TRUs) are limited and may be unavailable in a region.
-
-### Can I add a replica for High Availability?
-
-Adding a GCP replica requires an approved exception for your account, whether you use Multi-Region Replication or Multi-Cloud Replication.
+Adding a new GCP replica to an existing Namespace requires an approved exception for your account, whether you intend to use Multi-Region Replication or Multi-Cloud Replication.
 You can still add an AWS replica to an existing GCP Namespace without an exception, where that replication option is [supported](#gcp-service-regions).
 See [Enable and manage High Availability](/cloud/high-availability/enable) for instructions.
+
+In the interim, you can deploy new workloads in an [AWS region](#aws-service-regions).
 
 ## AWS service regions
 
