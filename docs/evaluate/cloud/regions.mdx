@@ -11,7 +11,7 @@ tags:
 You can reach Temporal Cloud from anywhere with Internet connectivity, wherever your Namespaces are located, and your applications can run in the cloud environment or data center of your choice.
 Create Namespaces in a region close to where you host your Workers to reduce latency.
 
-This page lists the regions where you can create a Temporal Cloud Namespace.
+This page lists supported Temporal Cloud regions and any restrictions on creating Namespaces.
 
 :::tip Service availability
 
@@ -19,6 +19,26 @@ Check the status of supported regions at [status.temporal.io](https://status.tem
 Subscribe there to get an email whenever Temporal creates, updates, or resolves an incident.
 
 :::
+
+## GCP capacity restriction {/* #gcp-capacity-restriction */}
+
+:::warning GCP capacity restriction
+
+Starting in October 2026, new Temporal Cloud Namespace provisioning is temporarily restricted in all GCP regions due to limited GCP compute capacity.
+
+:::
+
+Existing GCP Namespaces continue to operate as normal.
+For Namespaces using [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity), additional Temporal Resource Units (TRUs) are limited and may be unavailable, depending on the region.
+
+If your new namespace must be in GCP, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
+Include the required GCP regions, expected Action volume, and business requirements for your workload.
+
+Adding a new GCP replica to an existing Namespace requires an approved exception for your account, whether you intend to use Multi-Region Replication or Multi-Cloud Replication.
+You can still add an AWS replica to an existing GCP Namespace without an exception, where that replication option is [supported](#gcp-service-regions).
+See [Enable and manage High Availability](/cloud/high-availability/enable) for instructions.
+
+In the interim, you can deploy new workloads in an [AWS region](#aws-service-regions).
 
 ## AWS service regions
 

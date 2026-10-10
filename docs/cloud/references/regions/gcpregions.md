@@ -1,5 +1,6 @@
 ### North America - Iowa (`us-central1`)
 
+- **Namespace provisioning**: [Temporarily restricted; account exception required](/evaluate/cloud/regions#gcp-capacity-restriction). New GCP replicas also require an exception.
 - **Cloud API Code**: `gcp-us-central1`
 - **Regional Endpoint**: `us-central1.gcp.api.temporal.io:7233`
 - **Private Service Connect Service Attachment URI**: `projects/prod-d9ch6v2ybver8d2a8fyf7qru9/regions/us-central1/serviceAttachments/pl-5xzng`
@@ -15,6 +16,7 @@
 
 ### North America - Oregon (`us-west1`)
 
+- **Namespace provisioning**: [Temporarily restricted; account exception required](/evaluate/cloud/regions#gcp-capacity-restriction). New GCP replicas also require an exception.
 - **Cloud API Code**: `gcp-us-west1`
 - **Regional Endpoint**: `us-west1.gcp.api.temporal.io:7233`
 - **Private Service Connect Service Attachment URI**: `projects/prod-rbe76zxxzydz4cbdz2xt5b59q/regions/us-west1/serviceAttachments/pl-94w0x`
@@ -30,6 +32,7 @@
 
 ### North America - Northern Virginia (`us-east4`)
 
+- **Namespace provisioning**: [Temporarily restricted; account exception required](/evaluate/cloud/regions#gcp-capacity-restriction). New GCP replicas also require an exception.
 - **Cloud API Code**: `gcp-us-east4`
 - **Regional Endpoint**: `us-east4.gcp.api.temporal.io:7233`
 - **Private Service Connect Service Attachment URI**: `projects/prod-y399cvr9c2b43es2w3q3e4gvw/regions/us-east4/serviceAttachments/pl-8awsy`
@@ -45,6 +48,7 @@
 
 ### Europe - Frankfurt (`europe-west3`)
 
+- **Namespace provisioning**: [Temporarily restricted; account exception required](/evaluate/cloud/regions#gcp-capacity-restriction). New GCP replicas also require an exception.
 - **Cloud API Code**: `gcp-europe-west3`
 - **Regional Endpoint**: `europe-west3.gcp.api.temporal.io:7233`
 - **Private Service Connect Service Attachment URI**: `projects/prod-kwy7d4faxp6qgrgd9x94du36g/regions/europe-west3/serviceAttachments/pl-acgsh`
@@ -58,6 +62,7 @@
 
 ### Asia Pacific - Mumbai (`asia-south1`)
 
+- **Namespace provisioning**: [Temporarily restricted; account exception required](/evaluate/cloud/regions#gcp-capacity-restriction). New GCP replicas also require an exception.
 - **Cloud API Code**: `gcp-asia-south1`
 - **Regional Endpoint**: `asia-south1.gcp.api.temporal.io:7233`
 - **Private Service Connect Service Attachment URI**: `projects/prod-d5spc2sfeshws33bg33vwdef7/regions/asia-south1/serviceAttachments/pl-7w7tw`
@@ -74,6 +79,7 @@
 
 ### Asia Pacific - Jakarta (`asia-southeast2`)
 
+- **Namespace provisioning**: [Temporarily restricted; account exception required](/evaluate/cloud/regions#gcp-capacity-restriction). New GCP replicas also require an exception.
 - **Cloud API Code**: `gcp-asia-southeast2`
 - **Regional Endpoint**: `gcp-asia-southeast2.region.tmprl.cloud`
 - **Private Service Connect Service Attachment URI**: `projects/prod-bsbyrfwqqq885qkcr3s43y524/regions/asia-southeast2/serviceAttachments/pl-c3ayi`
