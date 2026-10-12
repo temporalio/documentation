@@ -47,7 +47,7 @@ import {
 } from "./component-handlers/event-history-walkthrough.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, resolve, dirname, relative } from "path";
 
 // ---------------------------------------------------------------------------
 // COMPONENT_REGISTRY
@@ -100,6 +100,7 @@ export const COMPONENT_REGISTRY = {
   CommunityCard: "hero-card",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
+  NoZoom: "strip-tag",
   DT: "strip-tag",
   DD: "strip-tag",
 
@@ -653,7 +654,10 @@ export function transformMdx(mdxContent, options = {}) {
     if (!projectRoot) return null;
     let rel = importPath;
     if (rel.startsWith("@site/")) rel = rel.slice("@site/".length);
-    const full = join(projectRoot, rel);
+    // Relative imports (./_partial.mdx) resolve against the importing file.
+    const full = importPath.startsWith(".")
+      ? resolve(projectRoot, dirname(sourceFile), importPath)
+      : join(projectRoot, rel);
     if (!existsSync(full)) {
       warnings.push(`[${sourceFile}] transclusion target not found: ${importPath}`);
       return null;
@@ -661,7 +665,7 @@ export function transformMdx(mdxContent, options = {}) {
     try {
       const raw = readFileSync(full, "utf8");
       const inner = transformMdx(raw, {
-        sourceFile: importPath,
+        sourceFile: relative(projectRoot, full),
         projectRoot,
         mdxDir: options.mdxDir,
         _depth: depth + 1,
