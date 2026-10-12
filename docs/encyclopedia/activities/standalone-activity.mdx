@@ -316,7 +316,7 @@ Your Activity code and Worker registration are unchanged. The Worker must belong
 Temporal knows what to invoke.
 
 AWS Lambda support is in [Public Preview](/evaluate/product-release-stages#public-preview) and
-GCP Cloud Run is in [Pre-release](/evaluate/product-release-stages#pre-release). See
+GCP Cloud Run is in [Public Preview](/evaluate/product-release-stages#public-preview). See
 [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
 
 ## Standalone Activity versus Workflow Activity
@@ -396,8 +396,9 @@ The `temporal activity` subcommand supports Standalone Activities with `start`, 
 
 Standalone Activities are Generally Available in Temporal Cloud, in all [regions](/evaluate/cloud/regions).
 
-Service Level Objectives and the Service Level Agreement match those for Workflows. See
-[Service availability](/evaluate/cloud/service-availability) and [SLA](/evaluate/cloud/sla).
+Standalone Activity requests have the same [latency SLO](/cloud/slo#latency) as Workflow requests, and List and Count
+requests for Activity Executions are covered by the [Visibility availability SLO](/cloud/slo#visibility-availability).
+See the [Temporal Cloud SLA](https://temporal.io/sla) for contractual coverage.
 
 :::tip RESOURCES
 

@@ -21,7 +21,7 @@ Also many Ruby ORMs do many lazy things and therefore provide unclear serializat
 Instead, consider having models specific for Workflows/Activities and translate to/from existing models as needed.
 See the [ActiveModel section](/develop/ruby/best-practices/data-handling/data-conversion#active-model) on how to do this with ActiveModel objects.
 
-## Lazy/Eager Loading
+## Lazy/eager loading
 
 By default, Rails eagerly loads all application code on application start in production, but lazily loads it in non-production environments.
 Temporal Workflows by default disallow use of IO during the Workflow run.

@@ -58,5 +58,5 @@ raise Temporalio::Error::ApplicationError, 'Timer expired' if sleep_fut.done?
 Temporalio::Workflow.logger.info("Act result: #{act_result}")
 ```
 
-There are several other details not covered here about futures, such as how exceptions are handled, how to use a setter
-proc instead of a block, etc. See the [API documentation](https://ruby.temporal.io/Temporalio/Workflow/Future.html) for details.
+There are several other details not covered here about futures, such as how exceptions are handled and how to use a setter
+proc instead of a block. See the [API documentation](https://ruby.temporal.io/Temporalio/Workflow/Future.html) for details.

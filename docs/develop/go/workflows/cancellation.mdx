@@ -36,14 +36,14 @@ const WorkflowId = "example-cancellation-workflow"
 const TaskQueueName = "cancellation"
 
 func YourWorkflow(ctx workflow.Context) error {
-	logger := workflow.GetLogger(ctx)
-	var a *Activities
-	activityOptions := workflow.ActivityOptions{
-            StartToCloseTimeout: 30 * time.Minute,
-            HeartbeatTimeout:    5 * time.Second,
-            WaitForCancellation: true,
-	}
-	defer func() {
+    logger := workflow.GetLogger(ctx)
+    var a *Activities
+    activityOptions := workflow.ActivityOptions{
+        StartToCloseTimeout: 30 * time.Minute,
+        HeartbeatTimeout:    5 * time.Second,
+        WaitForCancellation: true,
+    }
+    defer func() {
         if !errors.Is(ctx.Err(), workflow.ErrCanceled) {
             return
         }
@@ -54,18 +54,18 @@ func YourWorkflow(ctx workflow.Context) error {
         if err != nil {
             logger.Error("CleanupActivity failed", "Error", err)
         }
-	}()
+    }()
 
-	ctx = workflow.WithActivityOptions(ctx, activityOptions)
-	var result string
+    ctx = workflow.WithActivityOptions(ctx, activityOptions)
+    var result string
 
-	err := workflow.ExecuteActivity(ctx, a.ActivityToBeCanceled).Get(ctx, &result)
-	logger.Info(fmt.Sprintf("ActivityToBeCanceled returns %v, %v", result, err))
+    err := workflow.ExecuteActivity(ctx, a.ActivityToBeCanceled).Get(ctx, &result)
+    logger.Info(fmt.Sprintf("ActivityToBeCanceled returns %v, %v", result, err))
 
-	err = workflow.ExecuteActivity(ctx, a.ActivityToBeSkipped).Get(ctx, nil)
-	logger.Error("Error from ActivityToBeSkipped", "Error", err)
+    err = workflow.ExecuteActivity(ctx, a.ActivityToBeSkipped).Get(ctx, nil)
+    logger.Error("Error from ActivityToBeSkipped", "Error", err)
 
-	return err
+    return err
 }
 ```
 

@@ -121,11 +121,21 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 ### Choose the override domain and endpoint
 
-| Temporal Cloud setup                       | Use this PHZ domain                | Example                                        |
-| ------------------------------------------ | ---------------------------------- | ---------------------------------------------- |
-| Single-region namespace with mTLS auth     | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔️ `X.X.X.X`       |
-| Single-region namespace with API-key auth  | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X`  |
-| Multi-region namespace | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X` |
+Choose the private DNS records based on the number of regions your Namespace uses and the endpoint your Clients and Workers use.
+Both mTLS and API key authentication support both Namespace Endpoints and Regional Endpoints.
+
+| Regions | Endpoint clients use | Private DNS records to configure |
+| ------- | -------------------- | -------------------------------- |
+| Single region | Namespace Endpoint | An A record for each Namespace Endpoint, such as `payments.abcde.tmprl.cloud`, or a wildcard record for `*.abcde.tmprl.cloud`. |
+| Single region | Regional Endpoint | A single A record for the Regional Endpoint in the Namespace's region. |
+| Multiple regions with High Availability | Namespace Endpoint (recommended) | An A record for each regional FQDN, such as `gcp-us-central1.region.tmprl.cloud`, that the Namespace Endpoint can CNAME to. Keep the Temporal-managed Namespace CNAME so it follows the active region on failover. |
+| Multiple regions with High Availability | Regional Endpoint (not recommended) | A single A record for the Regional Endpoint in the client's active region. To withstand a regional outage, run a Worker pool in each region and configure each pool to use its region's Regional Endpoint. |
+
+Point each A record at the corresponding region's PSC endpoint IP address.
+For High Availability Namespaces, follow [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) to configure regional DNS overrides and network routing.
+Do not override the Namespace Endpoint when relying on its CNAME to follow the active region on failover.
+
+The steps below use a single-region Namespace Endpoint as the example.
 
 ### Step-by-step instructions
 
@@ -146,7 +156,7 @@ Save the internal IP -- you will point the A record at it.
 1. Open _Network Services → Cloud DNS → Create zone_.
 2. Select zone type **Private**.
 3. Enter a **Zone name** (for example, `temporal-cloud`).
-4. Enter a **DNS name** based on the table above (for example, `payments.abcde.tmprl.cloud` or `us-east-1.aws.api.temporal.io`).
+4. Enter a **DNS name** that covers the records from the table above (for example, `abcde.tmprl.cloud` for Namespace or wildcard records, or `gcp-us-central1.region.tmprl.cloud` for a regional record).
 5. Select **Add networks** and choose the Project and Network that contains your PSC endpoint.
 6. Click **Create**.
 
@@ -156,7 +166,7 @@ Inside the new zone, add a _standard A record_:
 
 | Field                | Value                                                          |
 | -------------------- | -------------------------------------------------------------- |
-| DNS name             | the namespace endpoint (for example, `payments.abcde.tmprl.cloud`)     |
+| DNS name             | The hostname or wildcard from the table above (for example, `payments.abcde.tmprl.cloud` or `*.abcde.tmprl.cloud`). |
 | Resource record type | A                                                              |
 | TTL                  | 60s is typical, but you can adjust as needed.                  |
 | IPv4 Address         | the internal IP address of your PSC endpoint (for example, `10.1.2.3`) |

@@ -107,7 +107,7 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method that cancels the Activity Context.
 
 ```ts
-import { CancelledFailure, heatbeat, sleep } from '@temporalio/activity';
+import { CancelledFailure, heartbeat, sleep } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
 

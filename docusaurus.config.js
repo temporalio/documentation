@@ -280,7 +280,7 @@ module.exports = async function createConfigAsync() {
             // // below remark plugin disabled until we can figure out why it is not transpiling to ESNext properly - swyx
             // // original PR https://github.com/temporalio/documentation/pull/496/files
             admonitions: {
-              keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency', 'copycode'],
+              keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency'],
             },
             remarkPlugins: [require('./plugins/og-image/remarkPlugin')],
           },
@@ -333,11 +333,6 @@ module.exports = async function createConfigAsync() {
           'I need a Workflow written in TypeScript',
           'How do Signals work?',
         ],
-        async: true,
-        defer: true,
-      },
-      {
-        src: '/scripts/copycode-notice.js',
         async: true,
         defer: true,
       },

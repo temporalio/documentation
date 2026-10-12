@@ -1,7 +1,7 @@
 ---
 id: rate-limit-downstream-apis
 title: Rate-limit downstream APIs with separate Task Queues
-description: Protect limited resources and avoid Workflow failures by setting limits on downstream APIs with separate Task Queues.
+description: Avoid HTTP 429 errors from APIs such as Stripe, OpenAI, and Twilio by giving each API its own Task Queue with a queue-wide Activity rate limit, in Python.
 sidebar_label: Rate-limit downstream APIs
 toc_max_heading_level: 3
 author: Cecil Phillip
@@ -65,9 +65,7 @@ The Python SDK provides three rate limiting controls:
 
 3. **max_concurrent_activities** (concurrency): Limits concurrent executions. Use when API has concurrent connection limits (for example, database pool size).
 
-4. **disable_eager_activity_execution** (Client configuration): Set to `True` when starting Workflows to prevent Activities from being eagerly assigned to the Workflow Worker, ensuring they go through the rate-limited Task Queue instead.
-
-**Important:** Without `disable_eager_activity_execution=True`, Activities may bypass your rate-limited Task Queues entirely. Eager execution runs Activities on the same Worker as the Workflow, which circumvents the rate limiting controls configured on the Activity-specific Task Queues. Always disable eager execution when using rate-limited Task Queues for API calls.
+**Important:** Eager Activity execution can bypass a Task Queue's rate limit. It applies only when an Activity is scheduled on the same Task Queue as its Workflow and the Worker running the Workflow has the Activity registered. The Temporal Service then returns the Activity Task directly to that Worker instead of dispatching it through the Task Queue. A Worker that sets `max_task_queue_activities_per_second` never requests eager execution, so set it on every Worker that polls a rate-limited queue. This guide schedules each API's Activities on a dedicated Task Queue, separate from the Workflow Task Queue, so its Activities never run eagerly.
 
 ### Handling HTTP 429 responses
 
@@ -83,7 +81,9 @@ Even with rate limiting, occasional 429 errors may occur due to:
 3. If not present, raise the exception normally to use the Activity's Retry Policy
 
 ```python
-retry_policy=workflow.RetryPolicy(
+from temporalio.common import RetryPolicy
+
+retry_policy=RetryPolicy(
     initial_interval=timedelta(seconds=1),
     maximum_interval=timedelta(minutes=10),
     backoff_coefficient=2.0,
@@ -188,7 +188,7 @@ This implementation requires Worker configuration, Activity error handling, and 
 
 ## Architecture diagram(s)
 
-### Rate-Limited Task Queues architecture
+### Rate-limited Task Queues architecture
 
 ```mermaid
 flowchart TB
@@ -317,8 +317,6 @@ async def main():
         # Set to 1.5/sec for safety buffer
         # This limit applies GLOBALLY across all workers on this queue
         max_task_queue_activities_per_second=1.5,
-
-        disable_eager_activity_execution=True,
 
         # Optional: Also limit per-worker to prevent single worker bursts
         max_activities_per_second=0.5,
@@ -645,6 +643,7 @@ async def create_payment(payment_data: dict) -> dict:
 from datetime import timedelta
 from dataclasses import dataclass
 from temporalio import workflow
+from temporalio.common import RetryPolicy
 
 with workflow.unsafe.imports_passed_through():
     from task_queues import SENDGRID_API_QUEUE, OPENAI_API_QUEUE, STRIPE_API_QUEUE
@@ -685,7 +684,7 @@ class NotificationWorkflow:
                 },
                 task_queue=SENDGRID_API_QUEUE,
                 start_to_close_timeout=timedelta(minutes=2),
-                retry_policy=workflow.RetryPolicy(
+                retry_policy=RetryPolicy(
                     initial_interval=timedelta(seconds=1),
                     maximum_interval=timedelta(minutes=10),
                     backoff_coefficient=2.0,
@@ -701,7 +700,7 @@ class NotificationWorkflow:
                 f"Generate notification: {request.data}",
                 task_queue=OPENAI_API_QUEUE,
                 start_to_close_timeout=timedelta(minutes=5),
-                retry_policy=workflow.RetryPolicy(
+                retry_policy=RetryPolicy(
                     initial_interval=timedelta(seconds=1),
                     maximum_interval=timedelta(minutes=10),
                     backoff_coefficient=2.0,
@@ -740,8 +739,6 @@ async def main():
             request,
             id=f"notification-{i}",
             task_queue="workflows",
-            # Disable eager execution to ensure activities go through rate-limited queues
-            disable_eager_activity_execution=True,
         )
 
         print(f"Started workflow {i}: {handle.id}")

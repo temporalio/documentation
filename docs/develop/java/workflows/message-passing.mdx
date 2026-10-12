@@ -474,7 +474,7 @@ For additional information, see [Inject work into the main Workflow](/handling-m
 ### Do blocking operations in handlers {/* #blocking-handlers */}
 
 Signal and Update handlers can block.
-This allows you to use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), Activities, Child Workflows, [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, etc.
+This allows you to use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), Activities, Child Workflows, [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, and so on.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
 To use blocking handlers safely, understand what can go wrong.
@@ -507,7 +507,7 @@ public static class GreetingWorkflowImpl implements GreetingWorkflow {
 ```
 
 Although a Signal handler can also make blocking calls like this, using an Update handler allows the Client to receive a result or error once the Activity completes.
-This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
+This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, and so on.
 
 ### Add blocking wait conditions {/* #block-with-wait */}
 

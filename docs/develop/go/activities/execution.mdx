@@ -94,13 +94,12 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 | Field                                               | Required                          | Type                                                                        |
 | --------------------------------------------------- | --------------------------------- | --------------------------------------------------------------------------- |
 | [`ActivityID`](#activityid)                         | No                                | `string`                                                                    |
-| [`TaskQueueName`](#taskqueuename)                   | No                                | `string`                                                                    |
+| [`TaskQueue`](#taskqueue)                           | No                                | `string`                                                                    |
 | [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (or `StartToCloseTimeout`)    | `time.Duration`                                                             |
 | [`ScheduleToStartTimeout`](#scheduletostarttimeout) | No                                | `time.Duration`                                                             |
 | [`StartToCloseTimeout`](#scheduletoclosetimeout)    | Yes (or `ScheduleToCloseTimeout`) | `time.Duration`                                                             |
 | [`HeartbeatTimeout`](#heartbeattimeout)             | No                                | `time.Duration`                                                             |
 | [`WaitForCancellation`](#waitforcancellation)       | No                                | `bool`                                                                      |
-| [`OriginalTaskQueueName`](#originaltaskqueuename)   | No                                | `string`                                                                    |
 | [`RetryPolicy`](#retrypolicy)                       | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) |
 
 #### ActivityID
@@ -122,14 +121,14 @@ if err != nil {
 
 - [What is an Activity Id](/activity-execution#activity-id)
 
-#### TaskQueueName
+#### TaskQueue
 
 - Type: `string`
 - Default: Inherits the TaskQueue name from the Workflow.
 
 ```go
 activityOptions := workflow.ActivityOptions{
-  TaskQueueName: "your-task-queue-name",
+  TaskQueue: "your-task-queue-name",
 }
 ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
@@ -228,20 +227,6 @@ If `true` the Activity Execution will finish executing should there be a Cancell
 ```go
 activityOptions := workflow.ActivityOptions{
   WaitForCancellation: false,
-}
-ctx = workflow.WithActivityOptions(ctx, activityOptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-#### OriginalTaskQueueName
-
-```go
-activityOptions := workflow.ActivityOptions{
-  OriginalTaskQueueName: "your-original-task-queue-name",
 }
 ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult

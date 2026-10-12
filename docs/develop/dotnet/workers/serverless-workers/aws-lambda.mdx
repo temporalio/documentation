@@ -108,7 +108,7 @@ Encrypt sensitive values like TLS keys or API keys. Refer to [AWS documentation]
 ### TLS/CA loading on Lambda {/* #tls-ca-loading */}
 
 Some AWS Lambda .NET images override the `SSL_CERT_FILE` environment variable in a way that prevents the SDK's Rust-based runtime from loading system root CAs.
-If you encounter TLS certificate errors on Lambda, see the [AWS Lambda .NET CA loading workaround](https://github.com/temporalio/sdk-dotnet#aws-lambda-net-ca-loading-issues) in the SDK README.
+If you encounter TLS certificate errors on Lambda, see the [AWS Lambda .NET CA loading workaround](https://github.com/temporalio/sdk-dotnet/blob/main/src/Temporalio/README.md#aws-lambda-net-8-ca-loading-issues) in the SDK README.
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 

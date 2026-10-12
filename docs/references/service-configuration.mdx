@@ -1,0 +1,635 @@
+---
+id: service-configuration
+title: Temporal Service configuration reference
+sidebar_label: Service configuration
+description: Settings in the development.yaml file for a self-hosted Temporal Service, covering global options, persistence, service roles, TLS, and archival.
+toc_max_heading_level: 4
+tags:
+  - Reference
+---
+
+:::info
+
+The information on this page is relevant to open source [Temporal Service deployments](/temporal-service).
+
+For settings you can change without a restart, see the [Dynamic configuration reference](/references/dynamic-configuration).
+
+:::
+
+A self-hosted Temporal Service reads its static configuration from the `development.yaml` file.
+Changes to this file take effect after you restart the Temporal Service process.
+
+The configuration structs are defined in [config.go](https://github.com/temporalio/temporal/blob/main/common/config/config.go) in the Temporal Server repository.
+
+The file can contain the following top-level sections:
+
+- [`global`](#global): Process-wide settings for membership, metrics, profiling, TLS, and authorization.
+- [`persistence`](#persistence): Data stores for Workflow state and Visibility.
+- [`log`](#log): Log output and level.
+- [`clusterMetadata`](#clustermetadata): Local cluster information for Multi-Cluster Replication.
+- [`services`](#services): Network settings for each service role.
+- [`publicClient`](#publicclient): How internal services connect to the Frontend Service.
+- [`archival`](#archival): Archival of Event History and Visibility data.
+- [`namespaceDefaults`](#namespacedefaults): Default Archival settings for new Namespaces.
+- [`dcRedirectionPolicy`](#dcredirectionpolicy): API forwarding between clusters.
+- [`dynamicConfigClient`](#dynamicconfigclient): Location of the dynamic configuration file.
+
+Settings marked **Required** must be set.
+Settings with a default use that value when you leave them out.
+
+## global
+
+The `global` section contains process-wide settings.
+The following example shows a minimal configuration:
+
+```yaml
+global:
+  membership:
+    broadcastAddress: '127.0.0.1'
+  metrics:
+    prometheus:
+      framework: 'tally'
+      listenAddress: '127.0.0.1:8000'
+```
+
+### membership
+
+The `membership` section configures the gossip layer that hosts in the Temporal Service use to discover each other.
+
+#### maxJoinDuration
+
+The amount of time the service tries to join the gossip layer before it fails.
+
+Default: `10s`
+
+#### broadcastAddress
+
+The address the gossip protocol advertises to other hosts in the same Temporal Service.
+Use an IP address that the other hosts can reach.
+If the Temporal Service runs on one host, you can use `127.0.0.1`.
+
+Only IPv4 addresses are supported.
+For supported syntax, see [`net.ParseIP`](https://pkg.go.dev/net#ParseIP).
+
+### metrics
+
+The `metrics` section configures the metrics the Temporal Service emits.
+Configure a provider by using its name as the key: [`statsd`](#statsd), [`prometheus`](#prometheus), or [`m3`](#m3).
+
+For the metrics the Temporal Service emits, see the [Temporal Service metrics reference](/references/service-metrics).
+
+#### prefix
+
+The prefix added to the name of every metric the Temporal Service emits.
+
+#### tags
+
+Key-value pairs added to every metric the Temporal Service emits.
+
+#### excludeTags
+
+A map of tag names to lists of tag values.
+Use it to drop tags with unbounded cardinality, such as `task_queue`.
+The Temporal Service still reports the tag values you list.
+
+#### statsd
+
+:::caution
+
+Temporal does not support `statsd` natively.
+
+:::
+
+- `hostPort`: The `host:port` of the statsd server.
+- `prefix`: The prefix for metrics reported to statsd.
+- `flushInterval`: The maximum interval between packets.
+  - Default: `300ms`.
+- `flushBytes`: The maximum UDP packet size, in bytes.
+  - Default: `1432`.
+
+#### prometheus
+
+- `framework`: The metrics framework. Supported values are `tally` and `opentelemetry`.
+  - Default: `tally`.
+- `listenAddress`: The address the Temporal Service listens on for Prometheus scrape requests.
+- `handlerPath`: The HTTP path of the metrics handler.
+  - Default: `/metrics`.
+
+#### m3
+
+- `hostPort`: The `host:port` of the M3 server.
+- `service`: The service tag that this client emits.
+- `queue`: The M3 reporter queue size.
+  - Default: 4k.
+- `packetSize`: The maximum M3 reporter packet size.
+ - Default: 32k.
+
+### pprof
+
+- `port`: The port for [pprof](https://pkg.go.dev/net/http/pprof).
+  When set, the Temporal Service starts pprof on this port at process start.
+
+### tls
+
+The `tls` section configures TLS for network traffic.
+It has two subsections:
+
+- `internode`: Traffic between service roles in the Temporal Service.
+- `frontend`: Traffic from SDK Clients to the Frontend Service.
+
+Each subsection contains a `server` section and a `client` section.
+
+The `server` section supports the following settings:
+
+- `certFile`: Path to the PEM-encoded certificate.
+- `keyFile`: Path to the PEM-encoded private key.
+- `requireClientAuth`: Boolean. When `true`, clients must present a certificate (mutual TLS).
+- `clientCaFiles`: Paths to PEM-encoded Certificate Authority (CA) certificates to trust for client authentication.
+  The Temporal Service ignores this setting when `requireClientAuth` is `false`.
+
+The `client` section supports the following settings:
+
+- `serverName`: The DNS name expected in the server certificate.
+  Service roles connect to each other by IP address, so set this unless your server certificates include IP Subject Alternative Names.
+- `rootCaFiles`: Paths to the CA certificates that signed the server certificate.
+  Set this when the client host doesn't trust the server's root CA.
+
+For more TLS configurations, see the [server samples repository](https://github.com/temporalio/samples-server/tree/main/tls).
+
+The following example enables TLS between SDKs and the Frontend Service:
+
+```yaml
+global:
+  tls:
+    frontend:
+      server:
+        certFile: /path/to/cert/file
+        keyFile: /path/to/key/file
+      client:
+        serverName: dnsSanInFrontendCertificate
+```
+
+The following example adds the root CA for the Frontend Service:
+
+```yaml
+global:
+  tls:
+    frontend:
+      server:
+        certFile: /path/to/cert/file
+        keyFile: /path/to/key/file
+      client:
+        serverName: dnsSanInFrontendCertificate
+        rootCaFiles:
+          - /path/to/frontend/server/CA/files
+```
+
+The following example uses mutual TLS for both Frontend and internode traffic, with CAs set manually:
+
+```yaml
+global:
+  tls:
+    internode:
+      server:
+        certFile: /path/to/internode/cert/file
+        keyFile: /path/to/internode/key/file
+        requireClientAuth: true
+        clientCaFiles:
+          - /path/to/internode/serverCa
+      client:
+        serverName: dnsSanInInternodeCertificate
+        rootCaFiles:
+          - /path/to/internode/serverCa
+    frontend:
+      server:
+        certFile: /path/to/frontend/cert/file
+        keyFile: /path/to/frontend/key/file
+        requireClientAuth: true
+        clientCaFiles:
+          - /path/to/internode/serverCa
+          - /path/to/sdkClientPool1/ca
+          - /path/to/sdkClientPool2/ca
+      client:
+        serverName: dnsSanInFrontendCertificate
+        rootCaFiles:
+          - /path/to/frontend/serverCa
+```
+
+When client authentication is enabled, service roles use the `internode.server` certificate as their client certificate.
+This adds the following requirements:
+
+- Specify the `internode.server` certificate on every role, including Frontend-only configurations.
+- Mint internode server certificates with either no Extended Key Usages (EKUs) or both the ServerAuth and ClientAuth EKUs.
+- If your CAs aren't trusted by the host, as in the previous example, add the internode server CA to each of the following settings:
+  - `internode.server.clientCaFiles`
+  - `internode.client.rootCaFiles`
+  - `frontend.server.clientCaFiles`
+
+### authorization
+
+The `authorization` section configures authentication for the Temporal Service.
+It selects the plugins that validate inbound gRPC tokens, the signing keys to trust, and the credentials the Temporal Service attaches to outbound cross-cluster replication RPCs.
+
+For how the `ClaimMapper`, `Authorizer`, and `TokenProvider` plugins work together, see [How to secure a Temporal Service](/self-hosted-guide/security).
+
+The section has two subsections, one for each direction of traffic:
+
+- [`jwtKeyProvider`](#jwtkeyprovider): Signing keys for verifying inbound JWTs.
+- [`remoteClusterAuth`](#remoteclusterauth): Bearer tokens for outbound cross-cluster RPCs.
+
+The following top-level settings select and configure the inbound plugins:
+
+- `authorizer`: String. The inbound authorizer.
+  - Default: `""`.
+  An empty string disables authorization, and every request is allowed.
+  `default` enables the built-in role-based authorizer.
+  The value is case-insensitive.
+- `claimMapper`: String. The `ClaimMapper` that extracts roles from a verified token.
+  - Default: `""`.
+  An empty string disables claim mapping.
+  `default` enables the built-in JWT `ClaimMapper`.
+- `audience`: String. The `aud` claim value that inbound JWTs must contain.
+  - Default: `""`.
+  When empty, the Temporal Service skips audience validation.
+- `authHeaderName`: String. The gRPC metadata header the `ClaimMapper` reads the bearer token from.
+  - Default: `authorization`.
+
+The following example enables JWT-based inbound authorization with the built-in plugins:
+
+```yaml
+global:
+  authorization:
+    jwtKeyProvider:
+      keySourceURIs:
+        - https://idp.example.com/.well-known/jwks.json
+      refreshInterval: 1m
+    authorizer: default
+    claimMapper: default
+    audience: temporal-frontend
+```
+
+#### jwtKeyProvider
+
+The `jwtKeyProvider` section configures where the built-in `ClaimMapper` gets the signing keys for verifying inbound JWTs.
+
+- `keySourceURIs`: List of strings. URLs that return JWKS-formatted public keys.
+  The built-in `ClaimMapper` fetches and caches the keys from every URL.
+- `refreshInterval`: Go duration string, such as `1m` or `5m`. How often to fetch the keys again.
+  - Default: `0`.
+  With `0`, the Temporal Service loads keys once at startup and doesn't rotate them.
+
+#### remoteClusterAuth
+
+The `remoteClusterAuth` section controls the bearer tokens a [`TokenProvider`](/self-hosted-guide/security#token-provider) attaches to outbound cross-cluster RPCs.
+It has no effect unless you also configure a `TokenProvider` with [`temporal.WithTokenProvider`](/references/server-options#withtokenprovider).
+
+- `require`: Boolean.
+  - Default: `false`.
+  When `true`, every outbound cross-cluster RPC must carry a non-empty token.
+  If the token is empty, the RPC fails with `Unauthenticated` instead of sending an empty `authorization` header.
+  The Temporal Service doesn't start when `require` is `true` and no `TokenProvider` is configured.
+
+The following example configures inbound JWT validation and outbound replication authentication on a sending cluster:
+
+```yaml
+global:
+  authorization:
+    jwtKeyProvider:
+      keySourceURIs:
+        - https://idp.example.com/.well-known/jwks.json
+      refreshInterval: 1m
+    authorizer: default
+    claimMapper: default
+    audience: temporal-frontend
+    remoteClusterAuth:
+      require: true
+```
+
+## persistence
+
+The `persistence` section configures the data stores for the Temporal Service.
+The following example configures a password-protected Cassandra data store, with Elasticsearch as a secondary Visibility store:
+
+```yaml
+persistence:
+  defaultStore: default
+  visibilityStore: cass-visibility # The primary Visibility store.
+  secondaryVisibilityStore: es-visibility # A secondary Visibility store added to enable Dual Visibility.
+  numHistoryShards: 512
+  datastores:
+    default:
+      cassandra:
+        hosts: '127.0.0.1'
+        keyspace: 'temporal'
+        user: 'username'
+        password: 'password'
+    cass-visibility:
+      cassandra:
+        hosts: '127.0.0.1'
+        keyspace: 'temporal_visibility'
+    es-visibility:
+      elasticsearch:
+        version: 'v7'
+        logLevel: 'error'
+        url:
+          scheme: 'http'
+          host: '127.0.0.1:9200'
+        indices:
+          visibility: temporal_visibility_v1_dev
+        closeIdleConnectionsInterval: 15s
+```
+
+### numHistoryShards
+
+**Required.** The number of History shards to create when the Temporal Service first starts.
+
+:::warning
+
+You can't change this value after the first run.
+The Temporal Service ignores any later changes.
+Set it high enough for your expected peak load.
+
+:::
+
+### defaultStore
+
+**Required.** The name of the data store in [`datastores`](#datastores) that the Temporal Server uses for Workflow state.
+
+### visibilityStore
+
+**Required.** The name of the data store in [`datastores`](#datastores) to use as the primary [Visibility](/temporal-service/visibility) store.
+
+### secondaryVisibilityStore
+
+The name of the data store in [`datastores`](#datastores) to use as the secondary Visibility store for [Dual Visibility](/dual-visibility).
+
+### datastores
+
+**Required.** Named data store definitions.
+Each key is a name, such as `default` or `cass-visibility` in the previous example, that other `persistence` settings reference.
+
+Each definition must be one of `cassandra`, `sql`, `elasticsearch`, or `customDatastore`.
+
+#### cassandra
+
+- `hosts`: **Required.** Comma-separated Cassandra endpoints, such as `192.168.1.2,192.168.1.3,192.168.1.4`.
+- `keyspace`: **Required.** The Cassandra keyspace.
+- `port`: The port the `gocql` client connects to.
+  - Default: `9042`.
+- `user`: The username the `gocql` client authenticates with.
+- `password`: The password the `gocql` client authenticates with.
+- `datacenter`: The data center filter for Cassandra.
+- `maxConns`: The maximum number of connections to this data store for a single TLS configuration.
+- `tls`: TLS settings. See [tls](#tls-1).
+
+#### sql
+
+- `pluginName`: **Required.** The SQL database type. Supported values are `mysql` and `postgres`.
+- `databaseName`: **Required.** The name of the SQL database.
+- `connectAddr`: **Required.** The remote address of the database, such as `192.168.1.2`.
+- `connectProtocol`: **Required.** The protocol for `connectAddr`. Supported values are `tcp` and `unix`.
+- `user`: The username for authentication.
+- `password`: The password for authentication.
+- `connectAttributes`: A map of key-value attributes added to the connection `data_source_name` URL.
+  SQLite supports the following attributes:
+  - `cache`: The SQLite shared-cache mode.
+    With `private`, each database connection uses its own cache instead of a shared one.
+    Use `private` with the Temporal Server.
+  - `setup`: When set, the Temporal Server creates the SQLite database schema at startup.
+- `maxConns`: The maximum number of connections to this data store.
+- `maxIdleConns`: The maximum number of idle connections to this data store.
+- `maxConnLifetime`: The maximum time a connection stays open.
+- `tls`: TLS settings. See [tls](#tls-1).
+
+#### tls
+
+The `tls` and `mtls` sections of a data store support the following settings:
+
+- `enabled`: Boolean. Enables TLS.
+- `serverName`: The name of the server that hosts the data store.
+- `certFile`: Path to the certificate file.
+- `keyFile`: Path to the key file.
+- `caFile`: Path to the CA file.
+- `enableHostVerification`: Boolean. When `true`, the client verifies the hostname and server certificate.
+  This is the inverse of `InsecureSkipVerify` in the Go [`crypto/tls`](https://pkg.go.dev/crypto/tls#Config) package.
+
+`certFile` and `keyFile` are optional, depending on your data store configuration.
+To connect without a client certificate, leave out both.
+
+## log
+
+The `log` section configures logging for the Temporal Service.
+
+- `stdout`: Boolean. When `true`, logs go to standard output.
+- `level`: The minimum log level. Supported values are `debug`, `info`, `warn`, `error`, and `fatal`.
+  - Default: `info`.
+- `outputFile`: Path to a log file.
+
+## clusterMetadata
+
+The `clusterMetadata` section describes the local cluster for [Multi-Cluster Replication](/temporal-service/multi-cluster-replication).
+
+```yaml
+clusterMetadata:
+  enableGlobalNamespace: true
+  failoverVersionIncrement: 10
+  masterClusterName: 'active'
+  currentClusterName: 'active'
+  clusterInformation:
+    active:
+      enabled: true
+      initialFailoverVersion: 0
+      rpcAddress: '127.0.0.1:7233'
+  #replicationConsumer:
+  #type: kafka
+```
+
+- `currentClusterName`: **Required.** The name of the local cluster.
+  You can't change this value after the first run. The Temporal Service ignores any later changes.
+- `enableGlobalNamespace`: Boolean. Enables Global Namespaces.
+  - Default: `false`.
+- `replicationConsumer`: How the cluster consumes replication tasks. Supported values for `type` are `kafka` and `rpc`.
+- `failoverVersionIncrement`: The amount each cluster's failover version increases by on failover.
+- `masterClusterName`: The name of the primary cluster.
+  Only the primary cluster can register or update Namespaces. Any cluster can fail over a Namespace.
+- `clusterInformation`: A map of cluster names to cluster definitions.
+  The local cluster's name must match `currentClusterName`.
+  Each definition supports the following settings:
+  - `enabled`: Boolean. Enables replication with this cluster.
+  - `initialFailoverVersion`: The cluster's starting failover version.
+  - `rpcAddress`: The `host:port` of the cluster. The host can be a DNS name.
+    Add the `dns:///` prefix to round-robin between the IP addresses of a DNS name.
+
+## services
+
+The `services` section configures each service role.
+The supported roles are `frontend`, `internal-frontend`, `matching`, `worker`, and `history`.
+
+The following example configures the `frontend` role:
+
+```yaml
+services:
+  frontend:
+    rpc:
+      grpcPort: 8233
+      membershipPort: 8933
+      bindOnIP: '0.0.0.0'
+```
+
+### rpc
+
+**Required.** Network settings for the service role.
+
+- `grpcPort`: The port the gRPC server listens on.
+- `membershipPort`: The port for membership traffic with other hosts in the same Temporal Service.
+  Each role needs a different port.
+  If multiple Temporal Services share a network, such as in one Kubernetes cluster, give each Temporal Service different membership ports.
+- `bindOnLocalHost`: Boolean. When `true`, the role listens on `127.0.0.1`.
+- `bindOnIP`: The IP address the role listens on, or `0.0.0.0` for all interfaces.
+  Only IPv4 addresses are supported.
+  You can't set both `bindOnIP` and `bindOnLocalHost`.
+
+Use the same port values for a role on every host.
+
+## publicClient
+
+The `publicClient` section configures how the History, Matching, and Worker roles connect to the Frontend Service.
+Most configurations use one of the following options:
+
+- To connect to `internal-frontend` through membership with internode TLS, leave out `publicClient` and add an `internal-frontend` role under [`services`](#services).
+- To connect to `frontend` through membership with Frontend TLS, leave out `publicClient` and don't add an `internal-frontend` role.
+- To connect to a specific endpoint without membership, set `hostPort`.
+
+The Temporal Service doesn't start if you configure both an `internal-frontend` role and a non-empty `publicClient` section.
+
+- `hostPort`: The IPv4 `host:port` or DNS name of the Frontend Service.
+  Add the `dns:///` prefix to round-robin between the IP addresses of a DNS name.
+  For supported formats, see [gRPC name resolution](https://github.com/grpc/grpc/blob/master/doc/naming.md).
+
+```yaml
+publicClient:
+  hostPort: 'localhost:8933'
+```
+
+## archival
+
+The `archival` section configures the [Archival](/temporal-service/archival) store for Event History and Visibility data.
+It has a `history` subsection and a `visibility` subsection, which each support the following settings:
+
+- `state`: Supported values are `enabled` and `disabled`.
+  Set it to `enabled` to use Archival with any Namespace in the Temporal Service.
+  - `enabled`: Also set `URI` and [`namespaceDefaults`](#namespacedefaults).
+  - `disabled`: Also set `enableRead` to `false`, and set `state` to `disabled` in `namespaceDefaults` with no `provider` or `URI`.
+- `enableRead`: Boolean. When `true`, clients can read archived data.
+- `provider`: Where to store archived data.
+  Supported providers are `filestore`, `gstorage`, `s3`, and custom providers.
+  The default configuration uses `filestore`.
+
+The following example enables Archival:
+
+```yaml
+# Service-level Archival config enabled
+archival:
+  # Event History configuration
+  history:
+    # Archival is enabled for the History Service data.
+    state: 'enabled'
+    enableRead: true
+    # Namespaces can use either the local filestore provider or the Google Cloud provider.
+    provider:
+      filestore:
+        fileMode: '0666'
+        dirMode: '0766'
+      gstorage:
+        credentialsPath: '/tmp/gcloud/keyfile.json'
+  # Configuration for archiving Visibility data.
+  visibility:
+    # Archival is enabled for Visibility data.
+    state: 'enabled'
+    enableRead: true
+    provider:
+      filestore:
+        fileMode: '0666'
+        dirMode: '0766'
+```
+
+The following example disables Archival:
+
+```yaml
+# Service-level Archival config disabled
+archival:
+  history:
+    state: 'disabled'
+    enableRead: false
+  visibility:
+    state: 'disabled'
+    enableRead: false
+
+namespaceDefaults:
+  archival:
+    history:
+      state: 'disabled'
+    visibility:
+      state: 'disabled'
+```
+
+For setup steps, see [Set up Archival](/self-hosted-guide/archival#set-up-archival).
+
+## namespaceDefaults
+
+The `namespaceDefaults` section sets the default Archival settings for new Namespaces, for both `history` and `visibility` data.
+
+- `state`: The default Archival state. Supported values are `enabled` and `disabled`.
+- `URI`: The default Archival URI.
+
+```yaml
+# Default values for a Namespace if none are provided at creation.
+namespaceDefaults:
+  # Archival defaults.
+  archival:
+    # Event History defaults.
+    history:
+      state: 'enabled'
+      # New Namespaces will default to the local provider.
+      URI: 'file:///tmp/temporal_archival/development'
+    visibility:
+      state: 'disabled'
+      URI: 'file:///tmp/temporal_vis_archival/development'
+```
+
+For more information, see [Create an archiving Namespace](/self-hosted-guide/archival#create-an-archiving-namespace).
+
+## dcRedirectionPolicy
+
+The `dcRedirectionPolicy` section configures whether the Frontend Service forwards API calls to the active cluster for a Namespace in cross-cluster replication.
+
+- `policy`: Supported values are `noop`, `selected-apis-forwarding`, and `all-apis-forwarding`.
+  - Default: `noop`.
+  - `noop`: No forwarding.
+  - `selected-apis-forwarding`: Forwards the following APIs to the active cluster for the Namespace:
+    - `StartWorkflowExecution`
+    - `SignalWithStartWorkflowExecution`
+    - `SignalWorkflowExecution`
+    - `RequestCancelWorkflowExecution`
+    - `TerminateWorkflowExecution`
+    - `QueryWorkflow`
+  - `all-apis-forwarding`: Forwards all APIs for the Namespace to the active cluster.
+
+```yaml
+dcRedirectionPolicy:
+  policy: 'selected-apis-forwarding'
+```
+
+## dynamicConfigClient
+
+The `dynamicConfigClient` section configures the file-based [dynamic configuration](/temporal-service/configuration#dynamic-configuration) client.
+Set it to use dynamic configuration.
+
+- `filepath`: Path to the dynamic configuration YAML file, relative to the root directory.
+- `pollInterval`: How often the client checks the file for changes. Minimum: `5s`.
+
+```yaml
+dynamicConfigClient:
+  filepath: 'config/dynamicconfig/development-cass.yaml'
+  pollInterval: '10s'
+```
