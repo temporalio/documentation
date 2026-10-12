@@ -53,7 +53,7 @@ User group names must be 3-64 characters long and can only contain lowercase let
 
 <TabItem value="create-group-webui" label="Web UI">
 
-1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
 1. Click the Create Group button
 1. Name the group
 1. Assign an account-level role to the group (you can assign namespace-level permissions after the group is created)
@@ -85,7 +85,7 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 <TabItem value="assign-roles-webui" label="Web UI">
 
 To edit the account role of a group:
-  1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+  1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
   1. Click Edit Group
   1. Click the Account Role dropdown
@@ -93,7 +93,7 @@ To edit the account role of a group:
   1. Click Save
 
 To add namespace permissions to a group:
-  1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+  1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
   1. Click Edit Group
   1. Click Add Namespaces
@@ -132,7 +132,7 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 <TabItem value="assign-group-members-webui" label="Web UI">
 
 To add users to the group:
-  1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+  1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
   1. Click Edit Group
   1. Under Members, search for the user you’d like to add 
@@ -166,7 +166,7 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 <Tabs>
 <TabItem value="delete-group-webui" label="Web UI">
 
-  1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+  1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
   1. Click the dropdown next to the edit button
   1. Click Delete
