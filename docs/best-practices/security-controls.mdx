@@ -159,12 +159,14 @@ Temporal Cloud Namespace has a [Retention Period](/temporal-service/temporal-ser
 
 Temporal Cloud’s platform is engineered for fault-tolerance out of the box, but you determine which Namespaces merit the very highest availability guarantees. Use the table below to decide when to turn on different High Availability models and how to operationalize them.
 
-| Namespace scope | Use Case | Uptime SLA | Recovery Time Objective (RTO) | Recovery Point Objective (RPO) |
-|-----------------|----------|------------|--------------------------------|--------------------------------|
-| **Single-Region** | **If your application is built for one region and does not have stringent high-availability or disaster recovery requirements.** | 99.9% | ≤ 8 hours | ≤ 8 hours |
-| **Same-Region Replication** | **If you want higher availability but your application is designed for a single region or if cross region latency doesn’t meet SLAs for application** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
-| **Multi-Region Replication** | **If a disruption of your workflow will cause loss of revenue, poor end-user experience, or issues with regulatory compliance.** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
-| **Multi-Cloud Replication** | **If you need the highest level of disaster tolerance, protecting against outages of an entire cloud provider (for example, AWS or GCP)** | 99.99% | ≤ 20 minutes | Near-zero (≈ seconds) |
+| Namespace scope | Use Case | Recovery Time Objective (RTO) | Recovery Point Objective (RPO) |
+|-----------------|----------|--------------------------------|--------------------------------|
+| **Single-Region** | **If your application is built for one region and does not have stringent high-availability or disaster recovery requirements.** | ≤ 8 hours | ≤ 8 hours |
+| **Same-Region Replication** | **If you want higher availability but your application is designed for a single region or if cross region latency doesn’t meet SLAs for application** | ≤ 20 minutes | Near-zero (≈ seconds) |
+| **Multi-Region Replication** | **If a disruption of your workflow will cause loss of revenue, poor end-user experience, or issues with regulatory compliance.** | ≤ 20 minutes | Near-zero (≈ seconds) |
+| **Multi-Cloud Replication** | **If you need the highest level of disaster tolerance, protecting against outages of an entire cloud provider (for example, AWS or GCP)** | ≤ 20 minutes | Near-zero (≈ seconds) |
+
+For the contractual uptime commitment for each deployment type, see the [Temporal Cloud SLA](https://temporal.io/sla).
 
 ### Identify availability-sensitive Namespaces
 
@@ -174,8 +176,8 @@ Run a business-impact analysis to flag workflows where a regional outage would c
 
 For many organizations, ensuring High Availability (HA) is required because of strict uptime requirements, compliance, and regulatory needs. 
 
-For these critical use cases, enable High Availability features for specific namespaces for a [99.99% contractual SLA](/cloud/high-availability#high-availability-features). When choosing between [same-region, multi-region, and multi-cloud replication](/cloud/high-availability), it is recommended to use multi-region/multi-cloud replication to distribute your dependencies across regions. Using physically separated regions improves the fault tolerance of your application.
+For these critical use cases, enable High Availability features for specific namespaces for a [higher contractual SLA](https://temporal.io/sla). When choosing between [same-region, multi-region, and multi-cloud replication](/cloud/high-availability), it is recommended to use multi-region/multi-cloud replication to distribute your dependencies across regions. Using physically separated regions improves the fault tolerance of your application.
 
-By default, Temporal Cloud provides a [99.9% contractual SLA guarantee](/cloud/high-availability) against service errors for all namespaces. 
+By default, Temporal Cloud provides a [contractual SLA](https://temporal.io/sla) against service errors for all namespaces. 
 
 Note: [enabling HA features for namespaces will 2x the consumption cost.](/cloud/pricing#high-availability-features)

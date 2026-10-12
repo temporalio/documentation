@@ -269,7 +269,7 @@ For details on configuration options, Lambda-tuned defaults, and observability, 
 
 Build your Worker for the Lambda runtime, package it as a zip, and deploy it to AWS Lambda.
 
-### i. Build and package {/* #build-and-package */}
+### 2.1 Build and package {/* #build-and-package */}
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
@@ -354,7 +354,7 @@ cd publish && zip -r ../function.zip . && cd ..
 </SdkTabs.DotNet>
 </SdkTabs>
 
-### ii. Deploy Lambda function {/* #deploy-lambda-function-step */}
+### 2.2 Deploy Lambda function {/* #deploy-lambda-function-step */}
 
 Replace the placeholder values and run the following command to create the Lambda function in your AWS environment.
 
@@ -511,9 +511,9 @@ aws lambda update-function-code \
 ```
 
 After updating, increment the Build ID in your Worker code and publish a new Lambda function version.
-See [Step iii](#publish-lambda-version) for details.
+See [Step 2.3](#publish-lambda-version) for details.
 
-### iii. Publish a Lambda function version {/* #publish-lambda-version */}
+### 2.3 Publish a Lambda function version {/* #publish-lambda-version */}
 
 Publish a [Lambda function version](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) after creating your function and after each subsequent `update-function-code` to create an immutable snapshot of your Lambda code:
 
@@ -805,7 +805,7 @@ temporal worker deployment create-version \
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--deployment-name`                    | Worker Deployment name. Must match `DeploymentName` in your Worker code.                                                                                                                                                                          |
 | `--build-id`                           | Worker Deployment Version build ID. Must match `BuildID` in your Worker code.                                                                                                                                                                     |
-| `--aws-lambda-function-arn`            | Qualified versioned ARN of the Lambda function Temporal invokes for this version (for example, `function:my-worker:5`). See [Step iii](#publish-lambda-version).                                                                                  |
+| `--aws-lambda-function-arn`            | Qualified versioned ARN of the Lambda function Temporal invokes for this version (for example, `function:my-worker:5`). See [Step 2.3](#publish-lambda-version).                                                                                  |
 | `--aws-lambda-assume-role-arn`         | IAM role Temporal assumes to invoke the function. This is the `RoleARN` output from the CloudFormation stack in [Step 3](#configure-iam). This is not the Lambda execution role from [Step 2](#deploy-lambda-function) or your own IAM user/role. |
 | `--aws-lambda-assume-role-external-id` | External ID configured in the IAM role trust policy.                                                                                                                                                                                              |
 

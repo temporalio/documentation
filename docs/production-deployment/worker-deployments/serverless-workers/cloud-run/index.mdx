@@ -460,7 +460,7 @@ identify your Serverless Workers.
 
 Containerize the Worker, push the image to Artifact Registry, and create the Worker Pool.
 
-### i. Containerize the Worker {/* #containerize */}
+### 2.1 Containerize the Worker {/* #containerize */}
 
 Package the Worker and its dependencies into a container image that Cloud Run runs for each Worker Pool instance. The
 image's entrypoint must start your Worker process, so an instance begins polling the Task Queue as soon as it starts.
@@ -632,7 +632,7 @@ The build stage needs `libprotobuf-dev` alongside `protobuf-compiler`, because t
 </SdkTabs.Rust>
 </SdkTabs>
 
-### ii. Build and push the image {/* #build-and-push */}
+### 2.2 Build and push the image {/* #build-and-push */}
 
 Build the image and push it to Artifact Registry:
 
@@ -643,7 +643,7 @@ gcloud builds submit \
   --region <REGION>
 ```
 
-### iii. Create the Worker Pool {/* #create-worker-pool */}
+### 2.3 Create the Worker Pool {/* #create-worker-pool */}
 
 Create an empty Worker Pool. Start it at zero instances: the WCI raises the instance count once the Worker Deployment
 Version is current and Tasks arrive.
@@ -687,7 +687,7 @@ gcloud run worker-pools deploy my-temporal-worker-pool-build-1 \
 
 | Parameter           | Description                                                                                                             |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `--image`           | The Worker image you pushed in [Step ii](#build-and-push).                                                               |
+| `--image`           | The Worker image you pushed in [Step 2.2](#build-and-push).                                                              |
 | `--service-account` | The [runner service account](#runner-service-account) the Worker Pool instances run as. It needs read access to the secrets referenced below. This is distinct from the invoker service account in [Step 3](#configure-iam), which Temporal impersonates to scale the pool. |
 | `--instances`       | Initial instance count. Set to `0`; the WCI manages the count after the version is current.                             |
 | `--set-env-vars`    | Non-secret Worker configuration. See [Environment configuration](/develop/environment-configuration).                   |

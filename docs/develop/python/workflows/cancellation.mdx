@@ -86,9 +86,9 @@ async def run_activity(input: ComposeArgsInput):
     return input.arg1 + input.arg2
 
 @workflow.defn
- class GreetingWorkflow:
-     @workflow.run
-     async def run(self, input: ComposeArgsInput) -> None:
+class GreetingWorkflow:
+    @workflow.run
+    async def run(self, input: ComposeArgsInput) -> None:
         activity_handle = workflow.start_activity(
             cancellable_activity,
             ComposeArgsInput(input.arg1, input.arg2),

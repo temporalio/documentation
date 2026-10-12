@@ -108,7 +108,7 @@ err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdC
    TaskQueue: "your_task_queue_name",
    Operation: &client.BuildIDOpAddNewCompatibleVersion{
       BuildID:                   "deadbeef",
-      ExistingCompatibleBuildId: "some-existing-build-id",
+      ExistingCompatibleBuildID: "some-existing-build-id",
    },
 })
 ```

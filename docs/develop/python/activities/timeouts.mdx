@@ -165,7 +165,7 @@ To get just the handle to wait and cancel separately, use `start_activity()`. `e
 ```python
 workflow.execute_activity(
     activity="your-activity",
-    name,
+    arg=name,
     schedule_to_close_timeout=timedelta(seconds=5),
     heartbeat_timeout=timedelta(seconds=1),
 )

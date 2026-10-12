@@ -36,6 +36,7 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
+For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
 
 The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type.
 It is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
@@ -207,7 +208,7 @@ In Go, Workflow Definition code cannot directly do the following:
   Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map.
   This technique provides deterministic results.
   You can also use a Side Effect or an Activity to process the map instead.
-- Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
+- Call an external API, conduct a file I/O operation, talk to another service, and so on. (Use an Activity for these.)
 
 The Temporal Go SDK has APIs to handle equivalent Go constructs:
 
