@@ -169,7 +169,9 @@ retries it based on your configuration.
 
 Create an Activity file (activity.go):
 
+{/* SNIPSTART go-quickstart-activity */}
 ```go
+
 package greeting
 
 import (
@@ -181,6 +183,7 @@ func Greet(ctx context.Context, name string) (string, error) {
   return fmt.Sprintf("Hello %s", name), nil
 }
 ```
+{/* SNIPEND */}
 
 ### 2. Create the Workflow
 
@@ -190,6 +193,7 @@ automatically recreate its pre-failure state so it can continue right where it l
 
 Create a Workflow file (workflow.go):
 
+{/* SNIPSTART go-quickstart-workflow */}
 ```go
 package greeting
 
@@ -213,8 +217,8 @@ func SayHelloWorkflow(ctx workflow.Context, name string) (string, error) {
 
   return result, nil
 }
-
 ```
+{/* SNIPEND */}
 
 ### 3. Create and Run the Worker
 
@@ -228,6 +232,7 @@ Workflows and Activities. For more information on Workers, see
 
 Create a Worker file (worker/main.go):
 
+{/* SNIPSTART go-quickstart-worker */}
 ```go
 package main
 
@@ -258,6 +263,7 @@ func main() {
   }
 }
 ```
+{/* SNIPEND */}
 
 Run the Worker:
 
@@ -271,6 +277,7 @@ Now that your Worker is running, it's time to start a Workflow Execution.
 
 Create a separate file called start/main.go:
 
+{/* SNIPSTART go-quickstart-start-workflow */}
 ```go
 package main
 
@@ -310,6 +317,7 @@ func main() {
   log.Println("Workflow result:", result)
 }
 ```
+{/* SNIPEND */}
 
 Then run:
 
