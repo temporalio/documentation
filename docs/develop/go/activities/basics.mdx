@@ -1,6 +1,6 @@
 ---
 id: basics
-title: Activity basics - Go SDK
+title: Activity basics
 sidebar_label: Activity basics
 description: An Activity Definition in Go is an exportable function or struct method. Set its parameters, return values, and a custom Activity Type name.
 toc_max_heading_level: 4
@@ -37,6 +37,7 @@ only using struct methods for Activities.
 
 :::
 
+{/* SNIPSTART go-activities-basics */}
 ```go
 package yourapp
 
@@ -71,6 +72,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
     return result, nil
 }
 ```
+{/* SNIPEND */}
 
 ### Define Activity parameters {/* #activity-parameters */}
 
@@ -95,7 +97,8 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can't be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-```go {6-9,11}
+{/* SNIPSTART go-activities-basics  {"highlightedLines": "6-9,11", "selectedLines": ["14-22,29-43"]} */}
+```go
 type YourActivityParam struct {
     ActivityParamX string
     ActivityParamY int
@@ -122,6 +125,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
     return result, nil
 }
 ```
+{/* SNIPEND */}
 
 ### Define Activity return values {/* #activity-return-values */}
 
@@ -132,7 +136,8 @@ Activity return values are subject to payload size limits in Temporal. The defau
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-```go {2-5,14-17}
+{/* SNIPSTART go-activities-basics  {"highlightedLines": "2-5,14-17", "selectedLines": ["19-43"]} */}
+```go
 // ...
 type YourActivityResultObject struct {
     ResultFieldX string
@@ -160,7 +165,8 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
-```go {8,22-25}
+{/* SNIPSTART go-activities-worker  {"highlightedLines": "8,22-25", "selectedLines": ["13-39"]} */}
+```go
 func main() {
     temporalClient, err := client.Dial(client.Options{})
     if err != nil {
