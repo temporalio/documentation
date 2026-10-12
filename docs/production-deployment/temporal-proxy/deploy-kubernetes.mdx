@@ -23,6 +23,10 @@ proxy needs: a Deployment, a Service, the ConfigMap that holds your configuratio
 HorizontalPodAutoscaler and PodDisruptionBudget. The `extraObjects` value renders additional manifests as-is, for
 example an ExternalSecret that supplies upstream credentials.
 
+For capacity planning, scaling, and rollout settings, see
+[Operate on Kubernetes](/production-deployment/temporal-proxy/operate). Validate the
+[reference measurements](/production-deployment/temporal-proxy/performance) against your own workload.
+
 ## Supply the configuration
 
 `config` mirrors the proxy's own configuration schema. Whatever you put under it is what lands in the ConfigMap the
@@ -118,9 +122,30 @@ name from them. To manage certificate files yourself instead, skip `secretName` 
 
 ## Probe the gateway
 
-The gateway serves the standard gRPC health service, so a Kubernetes gRPC probe can read it directly. The chart passes
-`livenessProbe` and `readinessProbe` through to the container as written, and its defaults are HTTP GETs against the
-gateway port, which a gRPC listener does not answer:
+The chart passes `livenessProbe` and `readinessProbe` through to the container as written. Published chart 0.2.1 defaults
+to HTTP GET probes, which the gRPC listener does not answer. The chart source on `main` uses TCP socket probes instead.
+Override the probes in chart 0.2.1 with the following values. The named `http` port is the gateway's gRPC port despite
+its name:
+
+```yaml
+livenessProbe:
+  tcpSocket:
+    port: http
+  periodSeconds: 10
+  failureThreshold: 6
+readinessProbe:
+  tcpSocket:
+    port: http
+  periodSeconds: 5
+  failureThreshold: 2
+```
+
+The listener opens after startup dependencies have connected, so a TCP probe detects an uninitialized or stopped
+process. It does not validate TLS certificates, upstream or KMS reachability after startup, or whether requests can
+complete. Monitor those separately. Keep liveness independent of upstream and KMS availability so an outage does not
+trigger repeated restarts.
+
+For a plaintext gateway, a Kubernetes gRPC probe can also read the standard health service:
 
 ```yaml
 livenessProbe:
@@ -142,18 +167,25 @@ interceptor chain every forwarded request travels, and your probe proves the gat
 completes a handshake, which the internal check deliberately skips.
 
 Kubernetes gRPC probes connect in plaintext, so they cannot reach a gateway that terminates TLS. When `config.tls` is
-set, probe the proxy some other way, such as an exec probe running a client that presents the right certificate.
+set, use a TCP probe for listener readiness and monitor successful TLS requests separately. The default scratch-based
+image has no shell or probe executable, so an exec probe requires a custom image that supplies one.
 
 ## Shut down cleanly
 
-On `SIGTERM` the proxy stops accepting connections and drains in-flight RPCs. Each serving tier, meaning the gateway and
-each upstream proxy, drains within five seconds, and the whole stop sequence is bounded at 30 seconds. Long-poll methods
+On `SIGTERM` the proxy reports `NOT_SERVING` and drains in-flight RPCs. The gateway's default drain timeout is five
+seconds, and the whole stop sequence is bounded at 30 seconds. Long-poll methods
 block for much longer than that, so a rollout normally cuts some of them short: the proxy logs a warning naming the
 deadline that ended the drain and still exits zero, because the callers re-poll. Treat that warning as ordinary on a
 restart rather than a failed shutdown.
 
-An ordinary drain finishes in about five seconds, well inside the Kubernetes default `terminationGracePeriodSeconds`
-of 30.
+Allow time for Kubernetes to remove the pod from Service endpoints before shutdown. The chart source on `main` uses a
+native 15-second `preStop` sleep and `terminationGracePeriodSeconds: 60`, covering the delay plus the proxy's shutdown
+budget. Published chart 0.2.1 does not expose these fields; add them with a post-renderer or manage the Deployment directly.
+The sleep handler is enabled by default in Kubernetes 1.30 and later; verify support before using it. The default image
+has no `sleep` binary, so an exec hook that runs `sleep` does not work.
+
+See [Control rollouts and disruptions](/production-deployment/temporal-proxy/operate#control-rollouts-and-disruptions)
+for the full Helm values example, readiness interval, rollout strategy, and disruption budget.
 
 ## Grant access to your KMS key
 
