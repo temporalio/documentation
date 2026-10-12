@@ -183,7 +183,7 @@ Reference page checks:
 yarn check:metrics       # SDK metrics reference against itself; runs in CI on PRs
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
 yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
-yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs weekly in CI, not on PRs
+yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs weekly and on checker PRs, not docs-only PRs
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
 yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
