@@ -61,7 +61,8 @@ These are the SDK's typed error classes for failures that surface to application
 Platform failures like Worker crashes and network interruptions do not produce Temporal failure objects. The platform handles those transparently through retries.
 
 The SDK uses whether an error is a Temporal failure to determine how to handle it.
-In Workflow code, throwing a Temporal failure fails the Workflow Execution, while throwing any other error fails the Workflow Task and is retried automatically.
+By default, in Workflow code, throwing a Temporal failure fails the Workflow Execution, while throwing any other error fails the Workflow Task and is retried automatically.
+Most SDKs let you list other exception types that fail the Workflow Execution. See [Errors in Workflows](/references/failures#errors-in-workflows).
 
 The Temporal failure types are:
 
