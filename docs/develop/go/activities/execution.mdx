@@ -1,6 +1,6 @@
 ---
 id: execution
-title: Activity Execution - Go SDK
+title: Activity Execution
 description: Call an Activity from a Go Workflow with workflow.ExecuteActivity, set the required Timeout, and look up every ActivityOptions field in one table.
 sidebar_label: Activity Execution
 slug: /develop/go/activities/execution
@@ -27,13 +27,14 @@ A large Execution history can thus adversely impact the performance of your Work
 Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
 Otherwise, no additional limitations exist on Activity implementations.
 
-    To spawn an [Activity Execution](/activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteActivity) inside your Workflow Definition.
-    The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package.
-    The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-        The Activity function name can be provided as a variable object (no quotations) or as a string.
-        The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
-        The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
+To spawn an [Activity Execution](/activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteActivity) inside your Workflow Definition.
+The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package.
+The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
+The Activity function name can be provided as a variable object (no quotations) or as a string.
+The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
+The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
+{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["20-46"]} */}
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
   activityOptions := workflow.ActivityOptions{
@@ -55,6 +56,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
   }
 }
 ```
+{/* SNIPEND */}
 
 ### Set the required Activity Timeouts {/* #required-timeout */}
 
@@ -70,6 +72,7 @@ Available timeouts are:
 - `ScheduleToClose`
 - `ScheduleToStartTimeout`
 
+{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["21-32"]} */}
 ```go
 activityOptions := workflow.ActivityOptions{
   // Set Activity Timeout duration
@@ -84,6 +87,7 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 ### Go ActivityOptions reference {/* #activity-options-reference */}
 
@@ -107,6 +111,7 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 - Type: `string`
 - Default: None
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "2","selectedLines": ["21-33"]} */}
 ```go
 activityOptions := workflow.ActivityOptions{
   ActivityID: "your-activity-id",
@@ -118,6 +123,7 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 - [What is an Activity Id](/activity-execution#activity-id)
 
@@ -126,6 +132,7 @@ if err != nil {
 - Type: `string`
 - Default: Inherits the TaskQueue name from the Workflow.
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "3","selectedLines": ["21-33"]} */}
 ```go
 activityOptions := workflow.ActivityOptions{
   TaskQueue: "your-task-queue-name",
@@ -137,6 +144,7 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 - [What is a Task Queue](/task-queue)
 
@@ -149,6 +157,7 @@ This or `StartToCloseTimeout` must be set.
 - Type: `time.Duration`
 - Default: ∞ (infinity - no limit)
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "5","selectedLines": ["21-33"]} */}
 ```go
 activityOptions := workflow.ActivityOptions{
   ScheduleToCloseTimeout: 10 * time.Second,
@@ -160,6 +169,7 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 #### ScheduleToStartTimeout
 
@@ -168,6 +178,7 @@ To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#s
 - Type: `time.Duration`
 - Default: ∞ (infinity - no limit)
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "6","selectedLines": ["21-33"]} */}
 ```go
 activityOptions := workflow.ActivityOptions{
   ScheduleToStartTimeout: 10 * time.Second,
@@ -179,6 +190,7 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 #### StartToCloseTimeout
 
@@ -189,6 +201,7 @@ This or `ScheduleToCloseTimeout` must be set.
 - Type: `time.Duration`
 - Default: Same as the `ScheduleToCloseTimeout`
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "4","selectedLines": ["21-33"]} */}
 ```go
 activityOptions := workflow.ActivityOptions{
   StartToCloseTimeout: 10 * time.Second,
@@ -200,11 +213,13 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 #### HeartbeatTimeout
 
 To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `HeartbeatTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "4","selectedLines": ["21-33"]} */}
 ```go
 activityOptions := workflow.ActivityOptions{
   HeartbeatTimeout: 10 * time.Second,
@@ -216,6 +231,7 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 #### WaitForCancellation
 
@@ -224,6 +240,7 @@ If `true` the Activity Execution will finish executing should there be a Cancell
 - Type: `bool`
 - Default: `false`
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "4","selectedLines": ["21-36"]} */}
 ```go
 activityOptions := workflow.ActivityOptions{
   WaitForCancellation: false,
@@ -235,6 +252,7 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 #### RetryPolicy
 
@@ -243,6 +261,7 @@ To set a [RetryPolicy](/encyclopedia/retry-policies), create an instance of `Act
 - Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default:
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "4","selectedLines": ["22-28"]} */}
 ```go
 retryPolicy := &temporal.RetryPolicy{
   InitialInterval:    time.Second,
@@ -252,9 +271,11 @@ retryPolicy := &temporal.RetryPolicy{
   NonRetryableErrorTypes: []string, // empty
 }
 ```
+{/* SNIPEND */}
 
 Providing a Retry Policy here is a customization that overwrites individual Field defaults.
 
+{/* SNIPSTART go-activities-execution-workflow {"highlightedLines": "1-5,8","selectedLines": ["22-39"]} */}
 ```go
 retryPolicy := &temporal.RetryPolicy{
   InitialInterval:    time.Second,
@@ -272,6 +293,7 @@ if err != nil {
   // ...
 }
 ```
+{/* SNIPEND */}
 
 ### Get the results of an Activity Execution {/* #get-activity-results */}
 
@@ -288,6 +310,7 @@ The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https:
 Call the `Get()` method on the instance of `workflow.Future` to get the result of the Activity Execution.
 The type of the result parameter must match the type of the return value declared by the Activity function.
 
+{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["21,45-52"]} */}
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
@@ -299,9 +322,11 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
  // ...
 }
 ```
+{/* SNIPEND */}
 
 Use the `IsReady()` method first to make sure the `Get()` call doesn't cause the Workflow Execution to wait on the result.
 
+{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["21,47-55"]} */}
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
@@ -316,6 +341,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
  // ...
 }
 ```
+{/* SNIPEND */}
 
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
 Therefore, it is also idiomatic to either block on the results of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
