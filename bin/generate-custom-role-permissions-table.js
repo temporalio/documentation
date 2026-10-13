@@ -4,8 +4,14 @@ const https = require("https");
 const fs = require("fs");
 const path = require("path");
 
-const GITHUB_API_URL =
-  "https://api.github.com/repos/temporalio/saas-proto/contents/protogen/custom_role_permissions.json";
+const GITHUB_CONTENTS_URL =
+  "https://api.github.com/repos/temporalio/saas-proto/contents";
+const PERMISSIONS_URL = `${GITHUB_CONTENTS_URL}/protogen/custom_role_permissions.json`;
+const SERVICE_PROTO_URL = `${GITHUB_CONTENTS_URL}/proto/temporal/api/cloud/cloudservice/v1/service.proto`;
+
+// RPCs annotated with these comments in service.proto are not in the public
+// temporalio/cloud-api repo, so their permissions must not be documented.
+const NON_PUBLIC_MARKERS = ["temporal:dev", "temporal:ui"];
 
 const CLOUD_OPS_SERVICE =
   "temporal.api.cloud.cloudservice.v1.CloudService";
@@ -82,7 +88,7 @@ const CLOUD_OPS_API_LINKS = {
   GetBillingReport: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/billing-reports/%7BbillingReportId%7D",
 };
 
-function fetchJSON(url) {
+function fetchFile(url) {
   return new Promise((resolve, reject) => {
     const options = {
       headers: {
@@ -105,8 +111,7 @@ function fetchJSON(url) {
         }
         try {
           const json = JSON.parse(data);
-          const content = Buffer.from(json.content, "base64").toString("utf-8");
-          resolve(JSON.parse(content));
+          resolve(Buffer.from(json.content, "base64").toString("utf-8"));
         } catch (e) {
           reject(e);
         }
@@ -116,9 +121,47 @@ function fetchJSON(url) {
   });
 }
 
-function buildTable(permissions) {
+// Returns the custom role permission strings used only by RPCs marked as not
+// public (see NON_PUBLIC_MARKERS) in service.proto. A permission shared with a
+// public RPC stays documented.
+function findNonPublicPermissions(protoSource) {
+  const nonPublic = new Set();
+  const publicPerms = new Set();
+  let comments = [];
+  let inRpc = false;
+  let rpcIsNonPublic = false;
+
+  for (const line of protoSource.split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("//")) {
+      comments.push(trimmed);
+      continue;
+    }
+    if (trimmed === "") continue;
+
+    if (/^rpc\s+\w+\s*\(/.test(trimmed)) {
+      inRpc = true;
+      rpcIsNonPublic = comments.some((c) =>
+        NON_PUBLIC_MARKERS.some((m) => c.includes(m))
+      );
+    }
+    comments = [];
+
+    const match = trimmed.match(/custom_role_permission:\s*"([^"]+)"/);
+    if (inRpc && match) {
+      (rpcIsNonPublic ? nonPublic : publicPerms).add(match[1]);
+    }
+  }
+  for (const permission of publicPerms) nonPublic.delete(permission);
+  return nonPublic;
+}
+
+function buildTable(permissions, nonPublicPermissions) {
   const cloudOpsPerms = permissions.filter(
-    (p) => p.service === CLOUD_OPS_SERVICE && !p.is_internal_permission
+    (p) =>
+      p.service === CLOUD_OPS_SERVICE &&
+      !p.is_internal_permission &&
+      !nonPublicPermissions.has(p.permission)
   );
 
   const byResource = {};
@@ -178,19 +221,29 @@ function buildTable(permissions) {
 }
 
 async function main() {
-  let permissionsData;
+  let permissionsRaw;
+  let protoSource;
 
+  // Optional local files: <custom_role_permissions.json> <service.proto>
   const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
-  const localPath = args[0];
-  if (localPath) {
-    const raw = fs.readFileSync(localPath, "utf-8");
-    permissionsData = JSON.parse(raw);
-  } else {
+  if (args.length === 2) {
+    permissionsRaw = fs.readFileSync(args[0], "utf-8");
+    protoSource = fs.readFileSync(args[1], "utf-8");
+  } else if (args.length === 0) {
     console.error("Fetching permissions from GitHub...");
-    permissionsData = await fetchJSON(GITHUB_API_URL);
+    [permissionsRaw, protoSource] = await Promise.all([
+      fetchFile(PERMISSIONS_URL),
+      fetchFile(SERVICE_PROTO_URL),
+    ]);
+  } else {
+    throw new Error(
+      "Pass both <custom_role_permissions.json> and <service.proto>, or neither."
+    );
   }
 
-  const table = buildTable(permissionsData.permissions);
+  const permissionsData = JSON.parse(permissionsRaw);
+  const nonPublic = findNonPublicPermissions(protoSource);
+  const table = buildTable(permissionsData.permissions, nonPublic);
 
   if (process.argv.includes("--write")) {
     const outPath = path.join(
