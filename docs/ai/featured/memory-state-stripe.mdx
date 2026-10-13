@@ -337,9 +337,10 @@ the agent knows from one run to the next.
   up, it is part of working memory, and a summary the agent keeps of it is
   long-term memory. When they disagree, the order row still wins.
 - **Authority, not lifespan.** Execution state isn't simply short-lived, and
-  memory isn't simply durable. Event History survives Worker restarts but is
-  deleted after its retention period, while a memory store can keep a fact for
-  years. When they disagree, the owner's record wins, however long each one
+  memory isn't simply durable. Event History survives Worker restarts for as
+  long as the Workflow Execution is open, and is deleted once the Namespace
+  retention period passes after the Execution closes. A memory store can keep a
+  fact for years. When they disagree, the owner's record wins, however long each one
   lasts.
 - **After the effect.** If the process dies after Stripe accepts the refund but
   before anything on your side records it, only Stripe knows the refund went
