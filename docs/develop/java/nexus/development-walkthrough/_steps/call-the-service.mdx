@@ -84,6 +84,19 @@ public class ApprovalCallerWorkflowImpl implements ApprovalCallerWorkflow {
     logger.info("remindApprover -> approver nudged");
 
     // -------------------------------------------------------------------------------------------
+    // STEP 8 - Check progress. A Query, so the caller gets the approval's state back without
+    // changing it. This is a one-off read, not a loop: the decision arrives as the result of
+    // requestApproval below.
+    // -------------------------------------------------------------------------------------------
+    GetApprovalStatusOutput status =
+        approvalService.getApprovalStatus(new GetApprovalStatusInput(itemId));
+    logger.info(
+        "getApprovalStatus -> pending={}, {} reminder(s), {} note(s)",
+        status.getPending(),
+        status.getRemindersSent(),
+        status.getNotesAttached());
+
+    // -------------------------------------------------------------------------------------------
     // STEP 8 - Submit the decision. An Update, so the caller gets confirmation back.
     //
     // In a real system this arrives from a human through a separate caller. The sample submits it

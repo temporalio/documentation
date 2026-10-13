@@ -19,19 +19,22 @@ Writing the contract first is what makes the Service polyglot.
 
 Work backwards from what callers need, not from what your Workflow happens to do.
 
-Callers of the approval Service need to start an approval and learn its outcome, nudge a pending approval, attach supporting information to a purchase, submit a decision, and be notified when the decision is final. That produces five Operations:
+Callers of the approval Service need to start an approval and learn its outcome, nudge a pending approval, check its progress, attach supporting information to a purchase, submit a decision, and be notified when the decision is final. That produces six Operations:
 
 | Operation | Input | Output | Added in |
 | --- | --- | --- | --- |
 | `requestApproval` | Item id, requester, amount | `APPROVED` or `DENIED` | Step 4 |
 | `remindApprover` | Item id | Nothing | Step 7 |
+| `getApprovalStatus` | Item id | Whether a decision is pending, and how many reminders and notes it has received | Step 7 |
 | `submitDecision` | Item id, decision | The decision recorded, and how many reminders preceded it | Step 7 |
 | `attachApprovalContext` | Item id, requester, amount, note | Nothing | Step 8 |
 | `notifyRequester` | Requester, decision | Where the notification was delivered | Step 9 |
 
-Two of these are easy to get wrong:
+Three of these are easy to get wrong:
 
 **`requestApproval` returns the final decision, not an approval id for the caller to poll.** The Operation is Workflow-backed, so it completes when that Workflow returns, and the Workflow's return value *is* the Operation's result. The caller awaits the Operation and receives `APPROVED` or `DENIED`.
+
+**`getApprovalStatus` reports in-flight progress only.** It says whether a decision is still pending, not what the decision was. The decision already arrives as the result of `requestApproval`, so a caller that polls this Operation for the outcome is waiting for something already on its way.
 
 **`attachApprovalContext` does not require the approval to exist.** Supporting information, such as a justification or a manager's note, comes from a different system than the approval request, and the two can arrive in either order. Because either one might have to start the approval Workflow, this Operation's input includes the purchase details the Workflow needs to start. [Step 8](/develop/java/nexus/development-walkthrough?step=send#attach-information-before-the-approval-exists) covers this in detail.
 
@@ -88,6 +91,13 @@ services:
         description: Ask the approver again. Returns nothing.
         input: { $ref: "#/$defs/RemindApproverInput" }
 
+      # A Query. Reads in-flight progress without changing it. It does not return the decision;
+      # requestApproval does - see step 7.
+      getApprovalStatus:
+        description: Report the progress of an approval without changing it.
+        input: { $ref: "#/$defs/GetApprovalStatusInput" }
+        output: { $ref: "#/$defs/GetApprovalStatusOutput" }
+
       # An Update. The caller needs confirmation back, which is what makes this an Update rather
       # than a Signal - see step 7.
       submitDecision:
@@ -137,6 +147,22 @@ $defs:
     properties:
       itemId: { type: string }
     required: [itemId]
+
+  GetApprovalStatusInput:
+    type: object
+    additionalProperties: false
+    properties:
+      itemId: { type: string }
+    required: [itemId]
+
+  GetApprovalStatusOutput:
+    type: object
+    additionalProperties: false
+    properties:
+      pending: { description: True until a decision is recorded., type: boolean }
+      remindersSent: { description: How many reminders have been sent so far., type: integer }
+      notesAttached: { description: How many notes have been attached so far., type: integer }
+    required: [pending, remindersSent, notesAttached]
 
   SubmitDecisionInput:
     type: object

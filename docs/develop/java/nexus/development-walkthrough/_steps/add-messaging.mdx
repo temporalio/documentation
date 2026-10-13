@@ -15,18 +15,19 @@ The commands at the end of this step also act on the approval that
 
 The approval blocks waiting for a decision. **Messages** let callers interact with it while it waits.
 
-This step adds two Operations. What the caller needs back decides which [message](/sending-messages) type each one uses:
+This step adds three Operations. What the caller needs back decides which [message](/sending-messages) type each one uses:
 
 | Operation | Message type | Why this type |
 | --- | --- | --- |
 | `remindApprover` | Signal | Fire-and-forget. The caller needs the nudge to happen, not a response. |
+| `getApprovalStatus` | Query | Reads the approval's progress without changing it. |
 | `submitDecision` | Update | Changes state *and* returns confirmation that the decision was recorded. |
 
-If the caller can proceed without hearing back, use a Signal. If the caller needs to know what the message did, use an Update.
+If the caller can proceed without hearing back, use a Signal. If the caller only needs to read state, use a Query. If the caller needs to know what the message did, use an Update.
 
 ## Add the handlers to the Workflow
 
-Add a Signal handler that increments the reminder count and an Update handler that records the decision. Recording `APPROVED` or `DENIED` satisfies the condition the Workflow is blocked on, so the Workflow returns that decision as its result.
+Add a Signal handler that increments the reminder count, a Query handler that returns the current progress, and an Update handler that records the decision. Recording `APPROVED` or `DENIED` satisfies the condition the Workflow is blocked on, so the Workflow returns that decision as its result.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-->
 
@@ -68,6 +69,16 @@ public interface ApprovalWorkflow {
   void attachContext(String note);
 
   /**
+   * STEP 7 - A Query. Reads in-flight progress without changing it. A Query handler must not block
+   * and must not change Workflow state; it returns only what is already in memory.
+   *
+   * <p>It reports whether a decision is still pending, not what the decision was. The decision is
+   * the result of requestApproval, delivered to the caller without anyone asking.
+   */
+  @QueryMethod
+  GetApprovalStatusOutput getApprovalStatus();
+
+  /**
    * STEP 7 - An Update. The caller needs a result back - confirmation that the decision was
    * recorded - which is what makes this an Update rather than a Signal.
    */
@@ -89,9 +100,11 @@ public interface ApprovalWorkflow {
 
 <!--SNIPEND-->
 
+A Query handler must not block and must not change Workflow state. Return only what is already in memory, as the `getApprovalStatus` handler in the [step 4 Workflow](/develop/java/nexus/development-walkthrough?step=implement#write-the-approval-workflow) does.
+
 ## Expose them as Nexus Operations
 
-Both use `TemporalOperationHandler`. As described in [The Nexus-aware Client](/nexus/temporal-operation-handler#the-nexus-aware-client), a Signal is **sync messaging** and an Update is an **async backing**.
+All three use `TemporalOperationHandler`. As described in [The Nexus-aware Client](/nexus/temporal-operation-handler#the-nexus-aware-client), a Signal is **sync messaging** and an Update is an **async backing**. A Query is sent the same way as the Signal.
 
 ### Signal
 
@@ -125,6 +138,32 @@ One Signal fits easily. A handler that sends several messages or does slow work 
 ```
 
 <!--SNIPEND-->
+
+### Query
+
+Send the Query through the same Client and return its answer as a synchronous result. Like the Signal, the Operation completes during the handler call and has the same handler deadline. Unlike the Signal, it returns the approval's progress.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-get-approval-status-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<GetApprovalStatusInput, GetApprovalStatusOutput> getApprovalStatus() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) ->
+            TemporalOperationResult.sync(
+                client
+                    .getWorkflowClient()
+                    .newWorkflowStub(
+                        ApprovalWorkflow.class, ApprovalWorkflowId.forItem(input.getItemId()))
+                    .getApprovalStatus()));
+  }
+```
+
+<!--SNIPEND-->
+
+A Worker answers the Query, so the Operation fails if no Worker is polling the approval's Task Queue.
 
 ### Update
 
@@ -170,11 +209,13 @@ The approval's **validator**, the `@UpdateValidatorMethod` in the Workflow inter
 
 ## Do not poll for the decision
 
-Don't use a message to fetch the final decision. The decision is the result of `requestApproval`, and it reaches the caller without anyone asking.
+Don't use a message to fetch the final decision. The decision is the result of `requestApproval`, and it reaches the caller without anyone asking. That is why `getApprovalStatus` reports whether a decision is pending but not what it is.
 
 When the handler started the approval, Nexus attached a [completion callback](/glossary#nexus-async-completion-callback) to the Workflow. When the Workflow returns, the handler's Namespace delivers the callback to the caller, which records a `NexusOperationCompleted` event in the caller Workflow's history, and the caller Workflow resumes with the decision. See the [asynchronous Operation lifecycle](/nexus/operations#asynchronous-operation-lifecycle).
 
-Messages change a running approval; they don't read its outcome. Both also stop working once the approval completes: the Temporal Service accepts a Signal or an Update only while the Workflow is running, and rejects one sent to a closed Workflow with `NOT_FOUND: workflow execution already completed`. That happens as soon as the decision lands, not when the [Retention Period](/temporal-service/temporal-server#retention-period) expires.
+Signals and Updates change a running approval, and both stop working once it completes: the Temporal Service accepts a Signal or an Update only while the Workflow is running, and rejects one sent to a closed Workflow with `NOT_FOUND: workflow execution already completed`. That happens as soon as the decision lands, not when the [Retention Period](/temporal-service/temporal-server#retention-period) expires.
+
+A Query still answers after the approval completes, until the Retention Period expires and the history it replays is gone. Calling `getApprovalStatus` in a loop until `pending` turns false polls for a decision that is already on its way.
 
 If more than one system needs the outcome, [step 8](/develop/java/nexus/development-walkthrough?step=send#when-the-approval-already-exists) shows how additional callers attach to a running approval and receive the same decision.
 
@@ -186,7 +227,7 @@ The Signal returns nothing:
 
 <RunThis>
 
-```bash title="Run 1 of 3: nudge the approver"
+```bash title="Run 1 of 4: nudge the approver"
 temporal nexus operation execute \
   --namespace approval-caller-namespace \
   --endpoint approval-endpoint \
@@ -204,11 +245,33 @@ Results:
   Result  null
 ```
 
+The Query returns the approval's progress. It is still pending, with the one reminder just sent:
+
+<RunThis>
+
+```bash title="Run 2 of 4: check the approval's progress"
+temporal nexus operation execute \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation GetApprovalStatus \
+  --operation-id status-1 \
+  --input '{"itemId":"laptop-42"}'
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  {"notesAttached":0,"pending":true,"remindersSent":1}
+```
+
 The Update returns confirmation, including the Workflow's reminder count:
 
 <RunThis>
 
-```bash title="Run 2 of 3: submit the decision"
+```bash title="Run 3 of 4: submit the decision"
 temporal nexus operation execute \
   --namespace approval-caller-namespace \
   --endpoint approval-endpoint \
@@ -231,7 +294,7 @@ Operation from step 5. Collect its result:
 
 <RunThis>
 
-```bash title="Run 3 of 3: collect the approval result"
+```bash title="Run 4 of 4: collect the approval result"
 temporal nexus operation result \
   --namespace approval-caller-namespace --operation-id approval-1
 ```
@@ -249,8 +312,8 @@ Nothing polled for that decision: the Operation completed because the approval W
 
 :::tip RESOURCES
 
-- [Workflow message passing](/encyclopedia/workflow-message-passing) for Signals and Updates.
-- [Handling messages](/handling-messages) for handler constraints.
+- [Workflow message passing](/encyclopedia/workflow-message-passing) for Signals, Queries, and Updates.
+- [Handling messages](/handling-messages) for handler constraints, including Query restrictions.
 - [Temporal Operation Handler](/nexus/temporal-operation-handler) for the sync messaging and async backing distinction.
 
 :::

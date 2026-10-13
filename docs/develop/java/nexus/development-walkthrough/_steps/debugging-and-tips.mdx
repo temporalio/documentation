@@ -11,7 +11,7 @@ Two errors mean the development server is missing a setting that is off by defau
 this only shows up on the command line.
 
 **`completion callbacks are not enabled for this namespace`** fails only `notifyRequester`, when the
-server was started without `activity.enableCallbacks=true`. The other four Operations are unaffected.
+server was started without `activity.enableCallbacks=true`. The other five Operations are unaffected.
 
 If `temporal nexus --help` doesn't list `operation`, you are on a released CLI rather than the
 pre-release build this walkthrough needs.
@@ -32,6 +32,15 @@ Add the caller Namespace to the Endpoint's allowed caller list. Creating an Endp
 
 Use the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) that `TemporalOperationHandler` provides for anything that starts or messages an Execution. A Client you construct yourself works, but loses the [bidirectional links](/nexus/execution-debugging#bi-directional-linking) that connect the two Executions.
 
+## A Query fails or returns unexpected data
+
+A Query handler has two constraints, and breaking either one fails in confusing ways:
+
+- **It must not block.** Waiting on anything stalls the Query instead of delaying it.
+- **It must not change Workflow state.** A change made during a Query is not recorded in Event History, so it doesn't survive. Return only what is already in memory.
+
+A Worker answers every Query, so `getApprovalStatus` also fails when no Worker is polling the approval's Task Queue. Against a completed approval, it fails once the [Retention Period](/temporal-service/temporal-server#retention-period) has expired and the history it needs is gone.
+
 ## The Operation fails because the Workflow already exists
 
 By default, starting a Workflow whose Id is already running is an error, so when two Operations derive the same Workflow Id, the second fails. This is intended: a Workflow-backed Operation has only started once its completion callback is attached, so failing beats reporting success to a caller that would wait forever.
@@ -42,9 +51,9 @@ To have the second caller join the running Execution, set the Workflow Id confli
 
 ### Polling for a result that is already being delivered
 
-The decision is the result of `requestApproval`, pushed to every caller awaiting the Operation when the Workflow completes. Asking the approval for its status in a loop polls for something already on its way, and stops working once its [Retention Period](/temporal-service/temporal-server#retention-period) expires.
+The decision is the result of `requestApproval`, pushed to every caller awaiting the Operation when the Workflow completes. Calling `getApprovalStatus` in a loop until `pending` turns false polls for something already on its way, and stops working once the approval's [Retention Period](/temporal-service/temporal-server#retention-period) expires.
 
-Use the Operation result for outcomes, and messages to change a running approval.
+Use the Operation result for outcomes, `getApprovalStatus` for in-flight progress, and Signals and Updates to change a running approval.
 
 ### Expecting a late caller to collect a finished result
 

@@ -10,16 +10,17 @@ This step uses the processes started earlier. Leave them running:
 
 :::
 
-To the caller, the messaging Operations are ordinary Operations, called through the same generated stub as `requestApproval` with the same type checking. Whether each one is a Signal or an Update is the handler's private detail.
+To the caller, the messaging Operations are ordinary Operations, called through the same generated stub as `requestApproval` with the same type checking. Whether each one is a Signal, a Query, or an Update is the handler's private detail.
 
-## Nudge and decide
+## Nudge, check, and decide
 
-The caller Workflow in [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow) calls both. They differ in what comes back:
+The caller Workflow in [step 6](/develop/java/nexus/development-walkthrough?step=call#call-the-operations-from-a-caller-workflow) calls all three. They differ in what comes back:
 
 - `remindApprover` returns nothing and completes as soon as the Signal is accepted. Accepted means durably recorded, not yet handled; a caller that needs confirmation that the nudge took effect needs an Update.
+- `getApprovalStatus` returns the approval's progress: whether it is still pending, and how many reminders and notes it has. The caller checks it once; the decision itself arrives as the result of `requestApproval`.
 - `submitDecision` returns confirmation that the decision was recorded. The approval Workflow then completes, which resolves the `requestApproval` Operation the original caller is awaiting.
 
-Both fail if no approval is running for the purchase.
+`remindApprover` and `submitDecision` fail if no approval is running for the purchase. `getApprovalStatus` fails if the purchase never had an approval, but still answers after the approval completes.
 
 ## Attach information before the approval exists
 
@@ -187,7 +188,7 @@ A start against a completed approval falls to the reuse policy and opens a new o
 
 :::tip RESOURCES
 
-- [Sending messages](/sending-messages) for Signal and Update semantics.
+- [Sending messages](/sending-messages) for Signal, Query, and Update semantics.
 - [Temporal Operation Handler](/nexus/temporal-operation-handler) for sync messaging and async backings.
 - [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the caller API.
 
