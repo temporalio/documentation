@@ -41,6 +41,7 @@ import { cookbookPreviewToMarkdown, cookbookHomeToMarkdown } from "./component-h
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
+import { guidesGridToMarkdown } from "./component-handlers/guides-grid.mjs";
 import {
   extractQuotedProp,
   renderWalkthroughStep,
@@ -81,6 +82,7 @@ export const COMPONENT_REGISTRY = {
   CookbookPreview: "cookbook-preview",
   CookbookHome: "cookbook-home",
   SdkOverviewCards: "sdk-overview-cards",
+  GuidesGrid: "guides-grid",
   ViewSourceCodeNotice: "view-source-code-notice",
 
   // Homepage hero (docs/index.mdx). Copy is authored in the MDX and composed
@@ -1452,6 +1454,21 @@ export function transformMdx(mdxContent, options = {}) {
       const md = sdkOverviewCardsToMarkdown({ projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
+      continue;
+    }
+
+    // --- GuidesGrid (self-closing, no props) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<GuidesGrid\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const md = guidesGridToMarkdown({ projectRoot, warnings, sourceFile });
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
       continue;
     }
 
