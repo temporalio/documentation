@@ -17,8 +17,8 @@
 | `cloud.billingreport.create` | [CreateBillingReport](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/billing-reports) | Account |
 | `cloud.billingreport.get` | [GetBillingReport](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/billing-reports/%7BbillingReportId%7D) | Account |
 | `cloud.connectivityrule.list` | [GetConnectivityRules](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules) | Account, Project |
-| `cloud.customrole.create` | CreateCustomRole | Account, Project |
-| `cloud.customrole.list` | GetCustomRoles | Account, Project |
+| `cloud.customrole.create` | [CreateCustomRole](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/POST/cloud/custom-roles) | Account, Project |
+| `cloud.customrole.list` | [GetCustomRoles](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/GET/cloud/custom-roles) | Account, Project |
 | `cloud.namespace.list` | [GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces) | Account, Project |
 | `cloud.nexusendpoint.list` | [GetNexusEndpoints](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints) | Account, Project |
 | `cloud.region.get` | [GetRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions/%7Bregion%7D) | Account |
@@ -52,8 +52,8 @@
 | `cloud.namespace.exportsink.validate` | [ValidateNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sink-validate) | Namespace |
 | `cloud.namespace.failoverRegion` | [FailoverNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/%7Bnamespace%7D/failover-region) | Namespace |
 | `cloud.namespace.get` | [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D) | Namespace |
-| `cloud.namespace.getServiceAccountNamespaceAssignments` | GetServiceAccountNamespaceAssignments | Namespace |
-| `cloud.namespace.getUserGroupNamespaceAssignments` | GetUserGroupNamespaceAssignments | Namespace |
+| `cloud.namespace.getServiceAccountNamespaceAssignments` | [GetServiceAccountNamespaceAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/namespaces/%7Bnamespace%7D/service-account-assignments) | Namespace |
+| `cloud.namespace.getUserGroupNamespaceAssignments` | [GetUserGroupNamespaceAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/namespaces/%7Bnamespace%7D/user-group-assignments) | Namespace |
 | `cloud.namespace.getUserNamespaceAssignments` | [GetUserNamespaceAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/namespaces/%7Bnamespace%7D/user-assignments) | Namespace |
 | `cloud.namespace.renameCustomSearchAttribute` | [RenameCustomSearchAttribute](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/rename-custom-search-attribute) | Namespace |
 | `cloud.namespace.setUserAccess` | [SetUserNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/namespaces/%7Bnamespace%7D/users/%7BuserId%7D/access) | Namespace |
@@ -67,8 +67,8 @@
 | ---------- | ------------- | ------------- |
 | `cloud.connectivityrule.create` | [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules) | Project |
 | `cloud.connectivityrule.list` | [GetConnectivityRules](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules) | Account, Project |
-| `cloud.customrole.create` | CreateCustomRole | Account, Project |
-| `cloud.customrole.list` | GetCustomRoles | Account, Project |
+| `cloud.customrole.create` | [CreateCustomRole](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/POST/cloud/custom-roles) | Account, Project |
+| `cloud.customrole.list` | [GetCustomRoles](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/GET/cloud/custom-roles) | Account, Project |
 | `cloud.namespace.create` | [CreateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces) | Project |
 | `cloud.namespace.list` | [GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces) | Account, Project |
 | `cloud.nexusendpoint.create` | [CreateNexusEndpoint](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints) | Project |
@@ -93,7 +93,7 @@
 
 | Permission | Cloud Ops API | Resource type |
 | ---------- | ------------- | ------------- |
-| `cloud.customrole.delete` | DeleteCustomRole | Custom Role |
-| `cloud.customrole.get` | GetCustomRole | Custom Role |
-| `cloud.customrole.update` | UpdateCustomRole | Custom Role |
+| `cloud.customrole.delete` | [DeleteCustomRole](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/DELETE/cloud/custom-roles/%7BroleId%7D) | Custom Role |
+| `cloud.customrole.get` | [GetCustomRole](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/GET/cloud/custom-roles/%7BroleId%7D) | Custom Role |
+| `cloud.customrole.update` | [UpdateCustomRole](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/POST/cloud/custom-roles/%7BroleId%7D) | Custom Role |
 
