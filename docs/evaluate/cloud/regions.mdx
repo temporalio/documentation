@@ -3,7 +3,7 @@ id: regions
 title: Service regions
 sidebar_label: Service regions
 toc_max_heading_level: 3
-description: The AWS and GCP regions where you can create a Temporal Cloud Namespace, and how region choice affects latency between your Workers and the Service.
+description: Supported AWS and GCP regions for Temporal Cloud Namespaces, any current restrictions on creating them, and how region choice affects latency to your Workers.
 tags:
   - Temporal Cloud
 ---
@@ -22,7 +22,7 @@ Subscribe there to get an email whenever Temporal creates, updates, or resolves 
 
 ## GCP capacity restriction {/* #gcp-capacity-restriction */}
 
-:::warning GCP capacity restriction
+:::warning
 
 Starting in October 2026, new Temporal Cloud Namespace provisioning is temporarily restricted in all GCP regions due to limited GCP compute capacity.
 
@@ -31,7 +31,7 @@ Starting in October 2026, new Temporal Cloud Namespace provisioning is temporari
 Existing GCP Namespaces continue to operate as normal.
 For Namespaces using [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity), additional Temporal Resource Units (TRUs) are limited and may be unavailable, depending on the region.
 
-If your new namespace must be in GCP, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
+If your new Namespace must be in GCP, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
 Include the required GCP regions, expected Action volume, and business requirements for your workload.
 
 Adding a new GCP replica to an existing Namespace requires an approved exception for your account, whether you intend to use Multi-Region Replication or Multi-Cloud Replication.
@@ -51,6 +51,12 @@ import AWSRegions from '@site/docs/cloud/references/regions/awsregions.md';
 ## GCP service regions
 
 Temporal Cloud operates in the following Google Cloud (GCP) regions:
+
+:::caution GCP capacity restriction
+
+New Namespaces and new replicas in all of these regions require an approved exception for your account. See [GCP capacity restriction](#gcp-capacity-restriction).
+
+:::
 
 import GCPRegions from '@site/docs/cloud/references/regions/gcpregions.md';
 
