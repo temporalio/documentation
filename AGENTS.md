@@ -148,6 +148,7 @@ the [Style guide](#style-guide) above (terminology, filler, intensifiers, word c
 Adding or moving pages usually requires:
 
 - Updating `sidebars.js` for navigation placement
+- Setting `slug: /<path>`, with no trailing slash, on a new `index.mdx` or a file named after its folder
 - Adding redirects in `vercel.json` when the public URL changes
 - Fixing internal links across the repo
 
@@ -183,6 +184,8 @@ Reference page checks:
 yarn check:metrics       # SDK metrics reference against itself; runs in CI on PRs
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
 yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
+yarn check:index-slugs   # docs pages whose URL ends in a slash; runs in CI on PRs
+yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs weekly and on checker PRs, not docs-only PRs
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
 yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
@@ -196,6 +199,11 @@ that should stay linkable without navigation belongs in frontmatter as `unlisted
 don't build in production at all, which 404s any inbound links). A page that's a known, accepted exception for now
 belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See
 [UTILITIES.md](./readme/UTILITIES.md) for details.
+
+`yarn check:index-slugs` reports pages whose URL ends in `/`, which happens to an `index.mdx` (or a file named after
+its folder) that has no `slug`. Vercel redirects that URL to the same path without the slash, so the page's canonical
+URL and sidebar links point at a redirect. Add the `slug` the check prints. It doesn't change the URL the page is
+served at, so it needs no redirect.
 
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
