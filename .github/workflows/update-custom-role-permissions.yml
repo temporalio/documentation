@@ -21,7 +21,8 @@ jobs:
           app-id: ${{ secrets.TEMPORAL_CICD_APP_ID }}
           private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
           # Without owner/repositories the token is scoped to this repo only, so
-          # reading custom_role_permissions.json from the private saas-proto repo
+          # reading custom_role_permissions.json and service.proto from the private
+          # saas-proto repo
           # returns 404 (GitHub hides private repos a token cannot see rather
           # than returning 403). documentation must stay in the list because the
           # later steps push a branch and open the PR with this same token.
@@ -71,6 +72,6 @@ jobs:
 
           gh pr create \
             --title "Update custom role permissions reference" \
-            --body "Automated update from \`temporalio/saas-proto\` \`custom_role_permissions.json\`." \
+            --body "Automated update from \`temporalio/saas-proto\` \`custom_role_permissions.json\` and \`service.proto\`." \
             --head "$branch_name" \
             --base "main"
