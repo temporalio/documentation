@@ -72,6 +72,6 @@ jobs:
 
           gh pr create \
             --title "Update custom role permissions reference" \
-            --body "Automated update from \`temporalio/saas-proto\` \`custom_role_permissions.json\` and \`service.proto\`." \
+            --body "Automated update from \`temporalio/saas-proto\` \`custom_role_permissions.json\` and \`service.proto\`, with API links from the public Cloud Ops API spec." \
             --head "$branch_name" \
             --base "main"

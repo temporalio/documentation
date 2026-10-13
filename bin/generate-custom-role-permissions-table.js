@@ -7,6 +7,8 @@ const path = require("path");
 const GITHUB_CONTENTS_URL =
   "https://api.github.com/repos/temporalio/saas-proto/contents";
 const PERMISSIONS_URL = `${GITHUB_CONTENTS_URL}/protogen/custom_role_permissions.json`;
+const SPEC_URL = "https://saas-api.tmprl.cloud/spec.json";
+const API_DOCS_URL = "https://saas-api.tmprl.cloud/docs/httpapi.html";
 const SERVICE_PROTO_URL = `${GITHUB_CONTENTS_URL}/proto/temporal/api/cloud/cloudservice/v1/service.proto`;
 
 // RPCs annotated with these comments in service.proto are not in the public
@@ -25,75 +27,24 @@ const RESOURCE_TYPE_LABELS = {
   RESOURCE_TYPE_CUSTOM_ROLE: "Custom Role",
 };
 
-const CLOUD_OPS_API_LINKS = {
-  GetAccount: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/account",
-  UpdateAccount: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/account",
-  GetUsage: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/usage",
-  GetAuditLogs: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-logs",
-  ValidateAccountAuditLogSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sink-validate",
-  CreateAccountAuditLogSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks",
-  GetAccountAuditLogSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-log-sinks/%7Bname%7D",
-  GetAccountAuditLogSinks: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-log-sinks",
-  UpdateAccountAuditLogSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks/%7Bspec.name%7D",
-  DeleteAccountAuditLogSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/DELETE/cloud/audit-log-sinks/%7Bname%7D",
-  GetAsyncOperation: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/operations/GET/cloud/operations/%7BasyncOperationId%7D",
-  CreateUser: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users",
-  GetUser: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users/%7BuserId%7D",
-  GetUsers: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users",
-  UpdateUser: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users/%7BuserId%7D",
-  DeleteUser: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/DELETE/cloud/users/%7BuserId%7D",
-  ResendUserInvite: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/users",
-  SetUserNamespaceAccess: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/POST/cloud/namespaces/%7Bnamespace%7D/users/%7BuserId%7D/access",
-  GetUserNamespaceAssignments: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/namespaces/%7Bnamespace%7D/user-assignments",
-  CreateNamespace: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces",
-  GetNamespaces: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces",
-  GetNamespaceIDs: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces",
-  GetNamespace: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D",
-  UpdateNamespace: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D",
-  DeleteNamespace: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/DELETE/cloud/namespaces/%7Bnamespace%7D",
-  RenameCustomSearchAttribute: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/rename-custom-search-attribute",
-  UpdateNamespaceTags: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/update-tags",
-  GetNamespaceCapacityInfo: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D/capacity-info",
-  FailoverNamespaceRegion: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/%7Bnamespace%7D/failover-region",
-  AddNamespaceRegion: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/%7Bnamespace%7D/add-region",
-  DeleteNamespaceRegion: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/DELETE/cloud/namespaces/%7Bnamespace%7D/regions/%7Bregion%7D",
-  CreateNamespaceExportSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sinks",
-  GetNamespaceExportSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bname%7D",
-  GetNamespaceExportSinks: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks",
-  UpdateNamespaceExportSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bspec.name%7D",
-  DeleteNamespaceExportSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/DELETE/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bname%7D",
-  ValidateNamespaceExportSink: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/POST/cloud/namespaces/%7Bnamespace%7D/export-sink-validate",
-  SetServiceAccountNamespaceAccess: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/namespaces/%7Bnamespace%7D/service-accounts/%7BserviceAccountId%7D/access",
-  SetUserGroupNamespaceAccess: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/namespaces/%7Bnamespace%7D/user-groups/%7BgroupId%7D/access",
-  GetRegions: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions",
-  GetRegion: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/regions/GET/cloud/regions/%7Bregion%7D",
-  GetNexusEndpoints: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints",
-  GetNexusEndpoint: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints/%7BendpointId%7D",
-  CreateNexusEndpoint: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints",
-  UpdateNexusEndpoint: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/POST/cloud/nexus/endpoints/%7BendpointId%7D",
-  DeleteNexusEndpoint: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/DELETE/cloud/nexus/endpoints/%7BendpointId%7D",
-  GetServiceAccountNamespaceAssignments: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/namespaces/%7Bnamespace%7D/service-account-assignments",
-  GetUserGroupNamespaceAssignments: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/namespaces/%7Bnamespace%7D/user-group-assignments",
-  GetCustomRoles: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/GET/cloud/custom-roles",
-  CreateCustomRole: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/POST/cloud/custom-roles",
-  GetCustomRole: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/GET/cloud/custom-roles/%7BroleId%7D",
-  UpdateCustomRole: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/POST/cloud/custom-roles/%7BroleId%7D",
-  DeleteCustomRole: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/custom-roles/DELETE/cloud/custom-roles/%7BroleId%7D",
-  GetUserGroups: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups",
-  GetUserGroup: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D",
-  CreateUserGroup: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups",
-  UpdateUserGroup: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D",
-  DeleteUserGroup: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/DELETE/cloud/user-groups/%7BgroupId%7D",
-  AddUserGroupMember: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/members",
-  RemoveUserGroupMember: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/remove-member",
-  GetUserGroupMembers: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D/members",
-  GetConnectivityRules: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules",
-  GetConnectivityRule: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/GET/cloud/connectivity-rules/%7BconnectivityRuleId%7D",
-  CreateConnectivityRule: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules",
-  DeleteConnectivityRule: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/DELETE/cloud/connectivity-rules/%7BconnectivityRuleId%7D",
-  CreateBillingReport: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/billing-reports",
-  GetBillingReport: "https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/billing-reports/%7BbillingReportId%7D",
-};
+function fetchPublic(url) {
+  return new Promise((resolve, reject) => {
+    https
+      .get(url, { headers: { "User-Agent": "temporal-docs-generator" } }, (res) => {
+        let data = "";
+        res.on("data", (chunk) => (data += chunk));
+        res.on("end", () => {
+          if (res.statusCode !== 200) {
+            reject(new Error(`HTTP ${res.statusCode} fetching ${url}`));
+            return;
+          }
+          resolve(data);
+        });
+        res.on("error", reject);
+      })
+      .on("error", reject);
+  });
+}
 
 function fetchFile(url) {
   return new Promise((resolve, reject) => {
@@ -128,12 +79,16 @@ function fetchFile(url) {
   });
 }
 
-// Returns the custom role permission strings used only by RPCs marked as not
-// public (see NON_PUBLIC_MARKERS) in service.proto. A permission shared with a
-// public RPC stays documented.
-function findNonPublicPermissions(protoSource) {
+// Parses service.proto and returns:
+// - nonPublicPermissions: custom role permission strings used only by RPCs
+//   marked as not public (see NON_PUBLIC_MARKERS). A permission shared with a
+//   public RPC stays documented.
+// - routes: each RPC's HTTP verb and path, keyed by RPC name.
+function parseServiceProto(protoSource) {
   const nonPublic = new Set();
   const publicPerms = new Set();
+  const routes = {};
+  let rpcName = null;
   let comments = [];
   let inRpc = false;
   let rpcIsNonPublic = false;
@@ -146,7 +101,9 @@ function findNonPublicPermissions(protoSource) {
     }
     if (trimmed === "") continue;
 
-    if (/^rpc\s+\w+\s*\(/.test(trimmed)) {
+    const rpc = trimmed.match(/^rpc\s+(\w+)\s*\(/);
+    if (rpc) {
+      rpcName = rpc[1];
       inRpc = true;
       rpcIsNonPublic = comments.some((c) =>
         NON_PUBLIC_MARKERS.some((m) => c.includes(m))
@@ -154,16 +111,42 @@ function findNonPublicPermissions(protoSource) {
     }
     comments = [];
 
+    const route = trimmed.match(/^(get|post|put|patch|delete):\s*"([^"]+)"/);
+    if (inRpc && route) {
+      routes[rpcName] = { verb: route[1].toUpperCase(), path: route[2] };
+    }
+
     const match = trimmed.match(/custom_role_permission:\s*"([^"]+)"/);
     if (inRpc && match) {
       (rpcIsNonPublic ? nonPublic : publicPerms).add(match[1]);
     }
   }
   for (const permission of publicPerms) nonPublic.delete(permission);
-  return nonPublic;
+  return { nonPublicPermissions: nonPublic, routes };
 }
 
-function buildTable(permissions, nonPublicPermissions) {
+// Indexes the anchors in the API reference by operationId and by "VERB /path".
+// The route index covers operations the spec names differently from the RPC
+// (for example, GetUsers is listUsers in the spec).
+function buildApiLinks(spec) {
+  const links = {};
+  for (const [route, methods] of Object.entries(spec.paths)) {
+    for (const [verb, op] of Object.entries(methods)) {
+      if (!op.operationId || !op.tags || !op.tags[0]) continue;
+      const tag = op.tags[0].toLowerCase().replace(/\s+/g, "-");
+      const anchor = route
+        .replace(/^\//, "")
+        .replace(/\{/g, "%7B")
+        .replace(/\}/g, "%7D");
+      const link = `${API_DOCS_URL}#tag/${tag}/${verb.toUpperCase()}/${anchor}`;
+      links[op.operationId] = link;
+      links[`${verb.toUpperCase()} ${route}`] = link;
+    }
+  }
+  return links;
+}
+
+function buildTable(permissions, nonPublicPermissions, apiLinks, routes) {
   const cloudOpsPerms = permissions.filter(
     (p) =>
       p.service === CLOUD_OPS_SERVICE &&
@@ -212,7 +195,10 @@ function buildTable(permissions, nonPublicPermissions) {
     md += `| ---------- | ------------- | ------------- |\n`;
 
     for (const perm of perms) {
-      const apiLink = CLOUD_OPS_API_LINKS[perm.method];
+      const route = routes[perm.method];
+      const apiLink =
+        (route && apiLinks[`${route.verb} ${route.path}`]) ||
+        apiLinks[perm.method];
       const apiCol = apiLink
         ? `[${perm.method}](${apiLink})`
         : perm.method;
@@ -231,11 +217,14 @@ async function main() {
   let permissionsRaw;
   let protoSource;
 
-  // Optional local files: <custom_role_permissions.json> <service.proto>
+  let specRaw;
+
+  // Optional local files: <custom_role_permissions.json> <service.proto> [spec.json]
   const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
-  if (args.length === 2) {
+  if (args.length === 2 || args.length === 3) {
     permissionsRaw = fs.readFileSync(args[0], "utf-8");
     protoSource = fs.readFileSync(args[1], "utf-8");
+    if (args[2]) specRaw = fs.readFileSync(args[2], "utf-8");
   } else if (args.length === 0) {
     console.error("Fetching permissions from GitHub...");
     [permissionsRaw, protoSource] = await Promise.all([
@@ -244,13 +233,20 @@ async function main() {
     ]);
   } else {
     throw new Error(
-      "Pass both <custom_role_permissions.json> and <service.proto>, or neither."
+      "Pass <custom_role_permissions.json> <service.proto> [spec.json], or no arguments."
     );
   }
+  if (!specRaw) specRaw = await fetchPublic(SPEC_URL);
 
   const permissionsData = JSON.parse(permissionsRaw);
-  const nonPublic = findNonPublicPermissions(protoSource);
-  const table = buildTable(permissionsData.permissions, nonPublic);
+  const { nonPublicPermissions, routes } = parseServiceProto(protoSource);
+  const apiLinks = buildApiLinks(JSON.parse(specRaw));
+  const table = buildTable(
+    permissionsData.permissions,
+    nonPublicPermissions,
+    apiLinks,
+    routes
+  );
 
   if (process.argv.includes("--write")) {
     const outPath = path.join(
