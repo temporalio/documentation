@@ -185,6 +185,12 @@ To move a Namespace to a new Temporal Cloud Region while keeping Private Connect
 
 This is not the only way to handle a region change with Private Connectivity, but it is the most commonly used.
 
+:::caution GCP capacity restriction
+
+Adding a replica in a GCP region requires an approved exception for your account. See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction).
+
+:::
+
 Steps:
 
 1. **Keep the existing Namespace Endpoint PHZ override in the original region.** Do not change anything in the original region's private DNS setup yet.
