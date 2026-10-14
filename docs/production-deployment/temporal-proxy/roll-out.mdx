@@ -44,15 +44,24 @@ replace those calls or import the service's codec logic and keys.
 | Current setup | First stage: connect through Proxy | Second stage: enable Proxy encryption (optional) |
 | --- | --- | --- |
 | No payload encryption and no Codec Server | Change connections; keep your existing Data Converters. | Prepare all readers for proxy-encrypted data and provide a Codec Server for the Cloud UI and direct CLI access. |
-| SDK encryption, without a Codec Server | Keep the SDK codecs and keys while changing connections. | Preserve legacy decoding in the SDKs; provide an HTTP decoder that understands both formats if operators need to inspect them. |
-| SDK encryption with an existing Codec Server | Keep the SDK codecs, keys, and Codec Server endpoint. | Keep or extend the existing server to decode legacy and proxy formats before changing how new payloads are encrypted. |
+| Existing payload encryption with a Codec Server | Keep your existing encryption, keys, and Codec Server endpoint. | Keep or extend the existing server to decode legacy and proxy formats before changing how new payloads are encrypted. |
 
-Record the Cloud endpoint and full Namespace name, authentication method, Task Queues, SDK codecs and their encoding
-metadata, and keys used by retained history. Include Schedule actions, asynchronous Activity completion processes,
-administrative scripts, and other payload producers or consumers alongside your application Clients and Workers.
+:::note SDK encryption without a Codec Server
 
-Decide whether to stop after the first stage or continue to the optional second stage. Keeping SDK encryption and
-leaving proxy encryption disabled is a valid final state.
+SDKs can encrypt payloads directly without a Codec Server, but this is an uncommon setup. These Clients and Workers can
+still route through Proxy while keeping their local encryption. After Proxy encryption is enabled and validated, you
+can optionally stop local encryption of new payloads. First ensure your application decoders accept both legacy
+ciphertext and the payloads Proxy returns after decryption. Keep the legacy decoding logic and keys for existing
+history. Without a Codec Server, the Cloud UI cannot decode those encrypted payloads.
+
+:::
+
+Record the Cloud endpoint and full Namespace name, authentication method, Task Queues, payload encoding metadata, and
+keys used by retained history. Include Schedule actions, asynchronous Activity completion processes, administrative
+scripts, and other payload producers or consumers alongside your application Clients and Workers.
+
+Decide whether to stop after the first stage or continue to the optional second stage. Keeping your existing encryption
+and Codec Server while leaving proxy encryption disabled is a valid final state.
 
 ## Plan the network paths
 
@@ -90,8 +99,8 @@ graph LR
     Browser -->|HTTPS| Codec
 ```
 
-With proxy encryption, the proxy sees application payloads in plaintext unless an SDK codec has already encrypted
-them. Keep it inside your trust boundary. Protect the application-to-proxy connection separately from the
+With proxy encryption, the proxy sees application payloads in plaintext unless your existing Payload Codec has
+encrypted them. Keep it inside your trust boundary. Protect the application-to-proxy connection separately from the
 proxy-to-Cloud TLS connection.
 
 Provide enough proxy capacity and redundancy for Worker long polls and Client requests. In a shared deployment, losing
@@ -155,8 +164,7 @@ Continue the first stage by moving a test Client and Worker onto the proxy, then
    shutdown mechanism and verify replacement Workers poll the intended Task Queues.
 
 While encryption is disabled, direct and proxied applications can share the Namespace because Proxy does not change
-payload encoding. An existing Codec Server continues to work with the same payloads and endpoint. This also applies to
-SDK encryption without a Codec Server: Proxy forwards those encoded payloads without needing their keys.
+payload encoding. An existing Codec Server continues to work with the same payloads and endpoint.
 
 Compare request errors, latency, Worker polling, and Task Queue backlog with your baseline. Proxy health alone does not
 prove that Cloud authentication, routing, or payload decoding works; exercise an application request. Keep enough
@@ -193,9 +201,9 @@ Worker cannot execute tasks containing proxy-encrypted inputs with the default D
 read encrypted results with it either. Moving only Workflow starters is insufficient: Activity Workers, message
 senders, and asynchronous Activity completion processes must participate too.
 
-If you already use SDK encryption, keep the legacy decoder and its keys. Proxy does not decode arbitrary custom codec
-formats. You can keep SDK encryption as the only layer, or configure `encryption.skipEncodings` to avoid wrapping
-payloads already encrypted by your SDK while Proxy encrypts other payloads:
+For deployments with an existing Codec Server, keep the legacy payload decoder and its keys in both your applications
+and the Codec Server. Proxy does not decode arbitrary custom codec formats. Configure `encryption.skipEncodings` to
+avoid wrapping payloads already encrypted by your existing codec while Proxy encrypts other payloads:
 
 ```yaml
 encryption:
@@ -213,15 +221,16 @@ does not verify that a payload carrying a skipped encoding is encrypted. If you 
 passes through encrypted responses that reference keys it does not know, so monitor unknown-key results. Check your
 version's [skip behavior](https://github.com/temporalio/temporal-proxy/blob/main/pkg/codec/encryptor.go) before using it.
 
-To move encryption entirely to Proxy, first deploy SDK decoders that accept both legacy ciphertext and the serialized
-payloads Proxy returns after decryption. Then enable proxy encryption, and only afterward stop the SDK codecs from
-encrypting new data. Preserve their decode logic and any compression, custom serialization, or Failure Converter
-behavior still needed by existing history. Test both formats across every SDK you use; sharing an encoding name or a
-KMS key does not prove compatibility.
+To move encryption entirely to Proxy, first update application decoders to accept both legacy ciphertext and the
+serialized payloads Proxy returns after decryption. Update your Codec Server to decode both legacy and proxy-encrypted
+data. Then enable proxy encryption, and only afterward stop encrypting new data with your previous codec. Preserve its
+decode logic and any compression, custom serialization, or Failure Converter behavior still needed by existing history.
+Test both formats across every SDK you use; sharing an encoding name or a KMS key does not prove compatibility.
 
-Without `skipEncodings`, Proxy adds an outer encryption layer to SDK-encrypted payloads. Proxy removes its layer on
-responses, and the SDK removes the remaining layer. Any direct reader's Codec Server must reverse both layers in that
-order. Avoid introducing this extra layer unless you have tested the complete decode path.
+Without `skipEncodings`, Proxy adds an outer encryption layer to payloads encrypted by your existing codec. Proxy
+removes its layer on responses, and your application decoder removes the remaining layer. Any direct reader's Codec
+Server must reverse both layers in that order. Avoid introducing this extra layer unless you have tested the complete
+decode path.
 
 ## Preserve Cloud UI and CLI access
 
@@ -274,7 +283,7 @@ For the CLI, choose and test one of these paths:
 Also test **encoding** when operators start Workflows or send Signals directly from the Cloud UI or CLI. Inputs must
 use a format your Workers accept. The proxy cannot encrypt requests that bypass its gateway, so direct writes require
 a compatible `/encode` endpoint if you require payload encryption. During the migration, keep its output compatible
-with any remaining legacy SDK decoders.
+with any remaining legacy decoders.
 
 ## Enable encryption and validate the transition
 
@@ -285,7 +294,7 @@ can decode both old and new history.
 Set `encryption.enabled: true` and restart proxies in batches. Keep the key policy and any tested `skipEncodings`
 settings. During this restart, decrypt-only replicas can read the enabled replicas' output, but still write payloads
 without proxy encryption. If every new write must be encrypted from a specific point onward, pause unencrypted
-producers until all replicas are enabled or preserve SDK encryption during the transition.
+producers until all replicas are enabled or preserve your existing encryption during the transition.
 
 Validate these behaviors before advancing each batch:
 
@@ -314,15 +323,16 @@ part of the encryption design.
 ## Roll back without losing access to history {/* #roll-back */}
 
 Before you write any proxy-encrypted data in the second stage, you can restore the previous direct Cloud connections
-and Cloud credentials while keeping your original SDK codecs.
+and Cloud credentials while keeping your existing encryption and Codec Server.
 
 After you write proxy-encrypted data in the second stage, keep a compatible decryption path. Restore the previous
 application release against the proxy, or set `encryption.enabled: false` to stop new proxy encryption while keeping
 key policies and KMS decrypt access. If `encryption.failures` is enabled, turn it off too. Restart the proxies and verify both old and new
 history remain readable. Disabling encryption does not decrypt stored history.
 
-Do not reconnect applications directly to Cloud unless they can decode every stored format. If you disabled SDK
-encryption during adoption, restore it before disabling proxy encryption when new payloads must remain encrypted.
+Do not reconnect applications directly to Cloud unless they can decode every stored format. If you disabled your
+previous encryption during adoption, restore it before disabling proxy encryption when new payloads must remain
+encrypted.
 
 Keep legacy codecs, Codec Server support, and keys for as long as retained data needs them. Include open Workflow
 Executions, Schedule payloads, retained closed histories, exports, and any archived data you still need to read;
