@@ -1845,6 +1845,7 @@ module.exports = {
       link: { type: 'doc', id: 'ai/index' },
       items: [
         { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+        'ai/featured/memory-state-stripe',
       ],
     },
     {
