@@ -7,7 +7,7 @@ tags:
   - Nexus
 ---
 
-Nexus provides SDK metrics, Cloud metrics, and OSS Cluster metrics in addition to integrated [execution debugging](/nexus/execution-debugging).
+Nexus provides SDK metrics, Cloud metrics, and self-hosted Temporal Service metrics in addition to integrated [execution debugging](/nexus/execution-debugging).
 
 ## SDK Metrics
 
@@ -15,7 +15,7 @@ Nexus provides SDK metrics, Cloud metrics, and OSS Cluster metrics in addition t
 
 - [nexus_poll_no_task](/references/sdk-metrics#nexus_poll_no_task)
 - [nexus_task_schedule_to_start_latency](/references/sdk-metrics#nexus_task_schedule_to_start_latency)
-- [nexus_task_execution_failed	Worker](/references/sdk-metrics#nexus_task_execution_failed)
+- [nexus_task_execution_failed](/references/sdk-metrics#nexus_task_execution_failed)
 - [nexus_task_execution_latency](/references/sdk-metrics#nexus_task_execution_latency)
 - [nexus_task_endtoend_latency](/references/sdk-metrics#nexus_task_endtoend_latency)
 
@@ -31,7 +31,7 @@ These metrics are in
 
 ## Self-hosted metrics
 
-[Cluster metrics](/references/cluster-metrics#nexus-metrics) are emitted from an OSS Cluster, including:
+A self-hosted Temporal Service emits [Nexus metrics](/references/service-metrics#nexus-metrics), including:
 
 - History Service metrics
 - Concurrency Limiter metrics

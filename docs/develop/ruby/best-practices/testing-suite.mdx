@@ -20,7 +20,7 @@ This page shows how to do the following:
 
 The Ruby test-suite feature guide describes the frameworks that facilitate Workflow and integration testing.
 
-## Types of Tests {/* #types-of-tests */}
+## Types of tests {/* #types-of-tests */}
 
 In the context of Temporal, you can create these types of automated tests:
 
@@ -223,7 +223,7 @@ Simply write different/empty/fake/asserting ones and pass those to the Worker to
 
 Unit testing an Activity or any code that could run in an Activity is done via the `Temporalio::Testing::ActivityEnvironment` class.
 Simply instantiate the class, and any code inside the block to `run` will be invoked inside the activity context.
-Several things about the activity environment can be customized via parameters when constructing the environment including setting the info, providing a proc to call back on each heartbeat, setting the cancellation to be used, etc.
+Several things about the activity environment can be customized via parameters when constructing the environment including setting the info, providing a proc to call back on each heartbeat, and setting the cancellation to be used.
 
 ## Replay test {/* #replay-test */}
 

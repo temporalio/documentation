@@ -18,7 +18,7 @@ Application.
 
 <!-- _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_ -->
 
-#### [Actions Per Second (APS)](/evaluate/cloud/limits#actions-per-second)
+#### [Actions per second (APS)](/evaluate/cloud/limits#actions-per-second)
 
 APS, or Actions per second, is specific to Temporal Cloud. Each Temporal Cloud Namespace enforces a rate limit, which is
 measured in Actions per second (APS). This is the number of Actions, such as starting or signaling a Workflow, that can
@@ -108,7 +108,7 @@ receives information about the API call, along with the role and permission clai
 
 An availability zone is a part of the Temporal system where tasks or operations are handled and executed. This design
 helps manage workloads and ensure tasks are completed. Temporal Cloud Namespaces are automatically distributed across
-three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/evaluate/cloud/sla).
+three availability zones, which is the basis of the uptime commitment in the Temporal Cloud [SLA](https://temporal.io/sla).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -278,7 +278,7 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 High availability ensures that a system remains operational with minimal downtime. It achieves this with redundancy and
 failover mechanisms that handle failures, so end-users remain unaware of incidents. Temporal Cloud guarantees this high
-availability with its Service Level Agreements ([SLA](/evaluate/cloud/sla))
+availability with its Service Level Agreements ([SLA](https://temporal.io/sla))
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
@@ -367,9 +367,17 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus Async Completion Callback
+#### [NexGen](/nexus/nexgen)
 
-A Nexus Async Completion Callback is the completion callback for an asynchronous Nexus Operation.
+NexGen generates client code for Go, Java, Python, and TypeScript from a schema file that defines the contract. Both
+sides can then use code generated from the same file, which gives data validation and type safety across the languages
+and helps prevent drift.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### Nexus async completion callback
+
+A Nexus async completion callback is the completion callback for an asynchronous Nexus Operation.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -410,7 +418,7 @@ including `Nexus Operation Scheduled`, `Nexus Operation Started`, `Nexus Operati
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus Operation Handler
+#### Nexus Operation handler
 
 The Nexus handler code in a Temporal Worker typically created using Temporal SDK builder functions that make it easy to
 abstract Temporal primitives and expose a clean service contract for others to use.
@@ -442,10 +450,18 @@ is polling a Nexus Endpoint's target Namespace and Task Queue.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus Service Contract
+#### Nexus Service contract
 
 A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as
 associated input/output types a Service will accept for a given Operation.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Nexus Standalone Activity](/nexus/standalone-activity)
+
+An Activity-backed Nexus Operation runs a Standalone Activity and completes when that Activity returns. Use it when the
+work behind an Operation is one durable step rather than a process: calling an external API, running a computation,
+writing to another system.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -499,13 +515,13 @@ endpoints.
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
+#### [Replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
+#### [Requests per second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
 
 RPS, or Requests per second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud). This is
 a measure that controls the rate of requests at the service level, such as the Frontend, History, or Matching Service.
@@ -514,8 +530,9 @@ a measure that controls the rate of requests at the service level, such as the F
 
 #### [Reset](/workflow-execution/event#reset)
 
-A Reset terminates a Workflow Execution, removes the progress in the Event History up to the reset point, and then
-creates a new Workflow Execution with the same Workflow Type and ID to continue.
+A Reset terminates a Workflow Execution and creates a new Workflow Execution with the same Workflow Type and Workflow
+ID. The new Workflow Execution starts from a copy of the Event History up to the reset point, so progress made after the
+reset point is discarded.
 
 <!-- _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanation)_ -->
 
@@ -693,9 +710,9 @@ A Cloud Namespace ID is a globally unique identifier for a Namespace in Temporal
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name)
+#### [Temporal Cloud Namespace name](/cloud/namespaces#temporal-cloud-namespace-name)
 
-A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.
+A Cloud Namespace name is a customer-supplied name for a Namespace in Temporal Cloud.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -726,6 +743,14 @@ Temporal Service configuration is the setup and configuration details of your Te
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to
 spawn a Workflow Execution.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Temporal Operation Handler](/nexus/temporal-operation-handler)
+
+The Temporal Operation Handler is a single handler type that backs a Nexus Operation with a Workflow, an Update, or an
+Activity, and links every Execution back to the caller. What runs behind an Operation remains private to the handler,
+so you can change it later without touching the contract or any caller.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -914,7 +939,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 ## Deprecated terms
 
-#### tctl (_deprecated_)
+#### `tctl` (_deprecated_)
 
 tctl is a command-line tool that you can use to interact with a Temporal Service. It is superseded by the
 [Temporal CLI utility](#cli).

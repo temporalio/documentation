@@ -3,12 +3,13 @@ id: temporal-client
 title: Temporal Client - Ruby SDK
 sidebar_label: Temporal Client
 description:
-  Create a Temporal Client, connect to Temporal Cloud, start a Workflow, and get Workflow results using the Temporal
-  Ruby SDK.
+  Connect to a development Temporal Service or Temporal Cloud from Ruby, set a Task Queue and Workflow Id, and get
+  Workflow Execution results.
+toc_max_heading_level: 4
 tags:
+  - Temporal Client
   - Ruby SDK
   - Temporal SDKs
-  - Temporal Client
   - Certificates
 ---
 
@@ -36,7 +37,7 @@ these options directly in code, load them from **environment variables**, or a *
 [`EnvConfig`](https://ruby.temporal.io/Temporalio/EnvConfig.html) helpers. We recommend environment variables or a
 configuration file for secure, repeatable configuration.
 
-When you’re running a Temporal Service locally (such as with the
+When you're running a Temporal Service locally (such as with the
 [Temporal CLI dev server](/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
@@ -435,7 +436,7 @@ client finish normally.
 
 </Tabs>
 
-## Start a Workflow {/* #start-workflow */}
+## Start a Workflow Execution {/* #start-workflow */}
 
 To start a Workflow Execution, supply:
 
@@ -454,6 +455,38 @@ result = my_client.execute_workflow(
   id: 'my-workflow-id', task_queue: 'my-task-queue'
 )
 puts "Result: #{result}"
+```
+
+### Set a Workflow's Task Queue {/* #set-task-queue */}
+
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
+
+For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
+Queue name.
+
+To set a Task Queue in Ruby, specify the `task_queue` keyword argument on `start_workflow` or `execute_workflow`.
+
+```ruby
+result = my_client.execute_workflow(
+  MyWorkflow, 'some-input',
+  id: 'my-workflow-id', task_queue: 'my-task-queue'
+)
+```
+
+### Set a Workflow Id {/* #workflow-id */}
+
+You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
+
+When setting a Workflow Id, we recommend mapping it to a business process or business entity identifier, such as an
+order identifier or customer identifier.
+
+To set a Workflow Id in Ruby, specify the `id` keyword argument on `start_workflow` or `execute_workflow`.
+
+```ruby
+result = my_client.execute_workflow(
+  MyWorkflow, 'some-input',
+  id: 'my-workflow-id', task_queue: 'my-task-queue'
+)
 ```
 
 ## Get Workflow results {/* #get-workflow-results */}

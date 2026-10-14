@@ -1,5 +1,6 @@
 ---
 title: Worker performance
+slug: /develop/worker-performance
 description: Optimize Temporal SDK performance by fine-tuning maxConcurrentWorkflowTaskExecutionSize, Worker Cache options, and Poll Success Rate. Ensure balanced Worker resources and monitor metrics for best results.
 toc_max_heading_level: 3
 tags:
@@ -88,7 +89,7 @@ Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options
 
 :::
 
-### Task Pollers 
+### Task pollers 
 
 A Worker's **Task Pollers** play a crucial role in the Temporal architecture by efficiently ingesting work to Workers to support scalable, resilient Workflow Execution. 
 Pollers create long-polling connections to the Temporal Service and actively poll a Task Queue for Tasks to process. When a Task Poller receives a Task, it delivers the Task to the appropriate Executor Slot for processing.

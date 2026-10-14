@@ -7,14 +7,14 @@ tags:
   - Workers
 ---
 
-# Worker Shutdown Behavior
+# Worker shutdown behavior
 
 When a Worker shuts down, it stops polling for new tasks and begins the shutdown sequence.
 In the case of in-flight Workflow Tasks, shutdown may cause them to fail if they aren’t completed in time, after exhausting Retry Policy attempts.
 
 There are two types of shutdown behavior that can occur, depending on whether an idea of “graceful shutdown” is configured.
 
-## Graceful Shutdown
+## Graceful shutdown
 
 Graceful shutdown configures how much time a Worker has to complete its current task before shutting down.
 An Activity is able to determine that the Worker it’s running on is being shut down, through the Activity context.
@@ -42,7 +42,7 @@ If the Local Activity is unable to complete by the graceful shutdown period, the
 In this case, no new Local Activities will be retried or started, and the Worker is shut down.
 The Worker still waits for the current Workflow Task to complete, meaning you can eventually hit your Workflow Task or execution timeout, unless another Worker is spun up.
 
-## Non-Graceful Period Shutdown
+## Non-graceful period shutdown
 
 This behavior is for either no graceful period being specified, or if the shutdown has taken longer than the configured graceful period.
 In all cases, the Activity context is canceled and the Worker will finish shutdown when the current Workflow Task completes (with either success or failure).
@@ -60,7 +60,7 @@ Go and Core SDKs behave differently when we pass task timeout and the Activity o
 The Local Activity is sent a cancel signal, then the Workflow Task heartbeats stop, and no new Local Activities will be retried or started.
 The Worker still waits for the current Workflow Task to complete, meaning you can eventually hit your Workflow Task or execution timeout, unless another Worker is spun up.
 
-## General Developer Guidance
+## General developer guidance
 
 - Ensure Activities and Local Activities **honor context cancellation** or other shutdown signals.
 - Expect that **long or hung Local Activities may block shutdown** unless you fail early.

@@ -1,0 +1,4 @@
+{
+  "comment": "Findings from bin/check-python-samples.js that we have decided to leave as they are, for example a sample that deliberately shows an older API. Each entry is a page, a kind, and a subject; line numbers are left out so an entry survives edits elsewhere on the page. An empty note means the entry has not been reviewed yet; either fix the sample or fill in the note explaining why it stays. Regenerate with: node bin/check-python-samples.js --update-baseline",
+  "findings": []
+}

@@ -3,12 +3,13 @@ id: temporal-client
 title: Temporal Client - .NET SDK
 sidebar_label: Temporal Client
 description:
-  Create a Temporal Client, connect to Temporal Cloud, start a Workflow, and get Workflow results using the Temporal
-  .NET SDK with detailed steps and code examples.
+  Connect to a development Temporal Service or Temporal Cloud from .NET, set a Task Queue and Workflow Id, and get
+  Workflow Execution results.
+toc_max_heading_level: 4
 tags:
+  - Temporal Client
   - .NET SDK
   - Temporal SDKs
-  - Temporal Client
   - Certificates
 ---
 
@@ -37,7 +38,7 @@ configuration. You can provide these options directly in code, or load them from
 **TOML configuration file** using the `Temporalio.Client.EnvConfig` helpers. We recommend environment variables or a
 configuration file for secure, repeatable configuration.
 
-When you’re running a Temporal Service locally (such as with the
+When you're running a Temporal Service locally (such as with the
 [Temporal CLI dev server](/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
@@ -314,10 +315,10 @@ tls_client_key_path = "your-tls-client-key-path"
 ```
 
 With the connections options defined in the configuration file, use the `ClientEnvConfig.LoadClientConnectOptions`
-method to create a Temporal Client using the `staging` profile as follows. After loading the profile, you can also
+method to create a Temporal Client from a named profile as follows. After loading the profile, you can also
 programmatically override specific connection options before creating the client.
 
-```csharp title="LoadProfile.cs" {25. 41}
+```csharp title="LoadProfile.cs" {25,41}
 using Temporalio.Client;
 using Temporalio.Client.EnvConfig;
 
@@ -467,7 +468,7 @@ var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
 });
 ```
 
-Unlike `ApiKey`, `TlsOptions` is not mutable on an existing connection — the certificate bytes are fixed once the
+Unlike `ApiKey`, `TlsOptions` is not mutable on an existing connection. The certificate bytes are fixed once the
 connection is established. To rotate an mTLS client certificate without restarting your Worker, connect a new client
 with the new certificate and assign it to the running `TemporalWorker`'s `Client` property:
 
@@ -493,11 +494,11 @@ completion, Activity Heartbeats, and so on); calls already in flight on the old 
 
 </Tabs>
 
-## Start a Workflow {/* #start-workflow */}
+## Start a Workflow Execution {/* #start-workflow */}
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
-you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
-language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters. To start a Workflow Execution, you must
+supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific
+contextual data, and Workflow Function parameters.
 
 A request to spawn a Workflow Execution causes the Temporal Service to create the first Event
 ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History. The
@@ -513,6 +514,38 @@ var result = await client.ExecuteWorkflowAsync(
     (MyWorkflow wf) => wf.RunAsync(),
     new(id: "my-workflow-id", taskQueue: "my-task-queue");
 Console.WriteLine("Result: {0}", result);
+```
+
+### Set a Workflow's Task Queue {/* #set-task-queue */}
+
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
+
+For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
+Queue name.
+
+To set a Task Queue in .NET, specify the `taskQueue` argument in the `WorkflowOptions` given to `StartWorkflowAsync()`
+or `ExecuteWorkflowAsync()`.
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue"));
+```
+
+### Set a Workflow Id {/* #workflow-id */}
+
+You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
+
+When setting a Workflow Id, we recommend mapping it to a business process or business entity identifier, such as an
+order identifier or customer identifier.
+
+To set a Workflow Id in .NET, specify the `id` argument in the `WorkflowOptions` given to `StartWorkflowAsync()` or
+`ExecuteWorkflowAsync()`.
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue"));
 ```
 
 ## Get Workflow results {/* #get-workflow-results */}

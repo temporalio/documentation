@@ -129,11 +129,10 @@ const handle = await client.workflow.start('helloWorld', {
 var workerV1 = new WorkerDeploymentVersion("deploy-name", "1.0");
 var handle = await Client.StartWorkflowAsync(
     (HelloWorld wf) => wf.RunAsync(),
-      	new(id: "MyWorkflowId", taskQueue: "MyTaskQueue")
-      	{
-           VersioningOverride = new VersioningOverride.Pinned(workerV1),
-        }
-);
+    new(id: "MyWorkflowId", taskQueue: "MyTaskQueue")
+    {
+        VersioningOverride = new VersioningOverride.Pinned(workerV1),
+    });
 ```
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
