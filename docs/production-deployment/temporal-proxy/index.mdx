@@ -1,6 +1,7 @@
 ---
 id: index
 title: Temporal Proxy
+slug: /production-deployment/temporal-proxy
 description:
   Route requests between Temporal SDK clients and Workers and one or more upstream Temporal Services with the Temporal
   Proxy, a gRPC proxy that handles namespace translation, TLS, authentication, and payload encryption.
@@ -248,6 +249,26 @@ configured. They are layered, so pick the one that matches the question you are 
 pre-rotation, and `on_demand` for a DEK replaced at request time because no fresh one was ready. A rising `on_demand`
 rate means rotation is falling behind, so raise `renewBefore`. Compare the cache counters against `cacheSize` to see
 whether the cache is absorbing read traffic.
+
+## Versions and support
+
+The following support policy applies to Temporal Proxy v1.0 and later. Support for Temporal customers includes
+troubleshooting through Temporal Support and maintenance releases with critical fixes for security, data loss, and
+reliability issues.
+
+Temporal supports the current minor release and at least the three preceding minor releases, when available. Versions
+earlier than v1.0 are excluded from this support window. For example, when v1.4 is current, the supported minor releases
+include v1.1, v1.2, v1.3, and v1.4; when v1.1 is current, they include v1.0 and v1.1.
+
+Each major version receives support for at least 12 months after its general availability release. Temporal provides at
+least six months' notice before ending support for a major version.
+
+Temporal Support may require you to upgrade to the latest bugfix (patch) release within your supported minor version
+before proceeding with support if that patch introduces critical functionality related to your reported issue.
+
+Temporal publishes CVE advisories when a fix is available. Report vulnerabilities privately to
+[security@temporal.io](mailto:security@temporal.io), following the
+[Temporal Proxy security policy](https://github.com/temporalio/temporal-proxy/blob/main/SECURITY.md).
 
 ## Related
 

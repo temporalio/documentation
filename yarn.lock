@@ -4102,10 +4102,10 @@
   resolved "https://registry.npmjs.org/@types/ms/-/ms-2.1.0.tgz"
   integrity sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==
 
-"@types/node@*", "@types/node@^26.5.1":
-  version "26.5.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.5.1.tgz#b19c390e15813f402a94b86e3af9042f792138be"
-  integrity sha512-CzNm2FezW4VR/LjG6yUdiEgLE/rAQ9Slj5gCu/C2VrdcW7I0ahNZ8DRbHT7zOZ6r3ONgd/bsQIeSaoDGrd1C6g==
+"@types/node@*", "@types/node@^26.6.3":
+  version "26.6.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.6.3.tgz#411dccb5fc25687c958fe35b6ca3741d48a8d13c"
+  integrity sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg==
   dependencies:
     undici-types "~8.9.0"
 
@@ -4277,10 +4277,10 @@
     d3-selection "^3.0.0"
     d3-transition "^3.0.1"
 
-"@vercel/cli-config@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@vercel/cli-config/-/cli-config-0.2.4.tgz#59f6f1ecf4f4511db0c7d3459edd30fe7c737ddc"
-  integrity sha512-kZ5SojbrV06GHoU6QIWGwDXLov+s9rWZ7QqdqKfJfBGCNUieGfgaCjeeenNy8Y+QC0bwC0dZ2B4l5Hvdmrgpdw==
+"@vercel/cli-config@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@vercel/cli-config/-/cli-config-0.3.0.tgz#3657e4e6886c6e5da93796c129e0d7958dad724c"
+  integrity sha512-kQLt5Pm8wKd7/imzDY9/9u0tf8OuRkAuXI+s7j057FSUrXapAmumJSKwDqnR4ZZqdWoUcNLlFAgVIAdiwcGTcw==
   dependencies:
     xdg-app-paths "5"
     zod "4.1.11"
@@ -4292,19 +4292,19 @@
   dependencies:
     execa "5.1.1"
 
-"@vercel/functions@^3.9.5":
-  version "3.9.5"
-  resolved "https://registry.yarnpkg.com/@vercel/functions/-/functions-3.9.5.tgz#a151d02afd8371c0a78500197321b91adfec58d8"
-  integrity sha512-EUfqlb7AzoEh7URlMNAO4jbJiLWz9grDBHvfjKTDvEP9c8y3DqX3SWPvfaQkUjtkm3b83flhaUUMuewdHa+qmw==
+"@vercel/functions@^3.9.9":
+  version "3.9.9"
+  resolved "https://registry.yarnpkg.com/@vercel/functions/-/functions-3.9.9.tgz#8f53f037e3f221ba868d4c1fc25c57f4cb8383c1"
+  integrity sha512-ocN/BNsIswReoyqfU1huilNyBM9tvY9kFXgYj0LlyPRATC1dt35gj2jN5hs9+Nag/CRyVQOX58L2FEhvL+0sSA==
   dependencies:
-    "@vercel/oidc" "3.8.5"
+    "@vercel/oidc" "3.8.9"
 
-"@vercel/oidc@3.8.5":
-  version "3.8.5"
-  resolved "https://registry.yarnpkg.com/@vercel/oidc/-/oidc-3.8.5.tgz#24a500f9b60dff4649cf5e6cfc568eba3de6918b"
-  integrity sha512-RwXYtnt6za+5UO4IaLywN/6B95AlLqynPRUWRJxeJ/qufwkcLUbZNUxYtzT0uMpuraWhlNcGqPNGkTnZr4BGBw==
+"@vercel/oidc@3.8.9":
+  version "3.8.9"
+  resolved "https://registry.yarnpkg.com/@vercel/oidc/-/oidc-3.8.9.tgz#4f93c73be236bcffb9176d29437f65fae3da025d"
+  integrity sha512-TcbdH3YtGS2KU98T99dN4sbf+E4vbJZsJTRN97wKQ7QWQ0BR7U02QX3KN4+5GHxBtKTj1c5CnvTTitc2ZRad0A==
   dependencies:
-    "@vercel/cli-config" "0.2.4"
+    "@vercel/cli-config" "0.3.0"
     "@vercel/cli-exec" "1.0.1"
     jose "^5.9.6"
 
@@ -5254,10 +5254,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@1.0.30001781, caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001774, caniuse-lite@^1.0.30001809:
-  version "1.0.30001781"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001781.tgz#344b47c03eb8168b79c3c158b872bcfbdd02a400"
-  integrity sha512-RdwNCyMsNBftLjW6w01z8bKEvT6e/5tpPVEgtn22TiLGlstHOVecsX2KHFkD5e/vRnIE4EGzpuIODb3mtswtkw==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001774, caniuse-lite@^1.0.30001809:
+  version "1.0.30001815"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001815.tgz#7cf8faa82c998b06873a113e9d3d9544f2022ac0"
+  integrity sha512-uDybUEyfgbyJJ93J1vikTylBX31AkdVYeVPeffMQpf8XN7hSfr0oZOn4VFOIMNvtU5+rHvC5Udg2TgtJKHm23Q==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -8447,18 +8447,18 @@ inline-style-parser@0.2.7:
   resolved "https://registry.yarnpkg.com/inline-style-parser/-/inline-style-parser-0.2.7.tgz#b1fc68bfc0313b8685745e4464e37f9376b9c909"
   integrity sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==
 
-instantsearch-ui-components@0.40.0:
-  version "0.40.0"
-  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.40.0.tgz#1cb2b9a0dfee4fa2c6cd8285580e72d7e4eadcd5"
-  integrity sha512-iswxns+LY+CsK70eBxAGNk3rNgbbZsHf9Dy+PA+WHahSe/se1N0cZuHNXyvvRepwsuceogft7HGncA2Nqiv8Bw==
+instantsearch-ui-components@0.41.0:
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.41.0.tgz#ad64501a92349c897a3bb50e870858b33525341f"
+  integrity sha512-7Wrb7HHcZIFOOjh0FPjmLtVULbp0m5PuXnGS2pdRu21yIsN9USHKkMc/1Qk0UUwmm5szCp8mAgGtxiXlZi91FA==
   dependencies:
     "@swc/helpers" "0.5.18"
     markdown-to-jsx "^7.7.15"
 
-instantsearch.js@4.116.0:
-  version "4.116.0"
-  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.116.0.tgz#46722a5ccb78f9037b41b319f4c0acae7997309c"
-  integrity sha512-d3qolbGBPNCTmoTwSBgXVCXKv/6Ow+gx0AEmNinQyliaoCLXUBgTrh/0dzKJu/j7itw1PYrjUZ6FwtTA1bJnQw==
+instantsearch.js@4.118.0:
+  version "4.118.0"
+  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.118.0.tgz#89c98ab70bc8839de89e74c92cf5d92723663dc3"
+  integrity sha512-W7APUVZwPY+nmENkgh/WM8nMzcu2/yKKhtxNHgD9vjd8/O+zrw/iL13cTPBD1KAfRnxakRowWWdmSiWR8TwieQ==
   dependencies:
     "@algolia/events" "^4.0.1"
     "@swc/helpers" "0.5.18"
@@ -8469,7 +8469,7 @@ instantsearch.js@4.116.0:
     algoliasearch-helper "3.29.3"
     hogan.js "^3.0.2"
     htm "^3.0.0"
-    instantsearch-ui-components "0.40.0"
+    instantsearch-ui-components "0.41.0"
     preact "^10.10.0"
     qs "^6.5.1"
     react ">= 0.14.0"
@@ -11990,25 +11990,25 @@ react-icons@^5.7.0:
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.7.0.tgz#8969db00968ffdfc57fdc2ec9dd1ed88e35b3de9"
   integrity sha512-LBLy340Rzqy6+/yVhZKT3B/QpP1BZaesGqasf09HPOBzRarcDIFH0WwXlXQfE7q7ipxK4MSiC5DIBWURCny6fw==
 
-react-instantsearch-core@7.49.0:
-  version "7.49.0"
-  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.49.0.tgz#5befe6e51018541ee0aff2fbb40b0690b442cb6e"
-  integrity sha512-jSuVck9g/Z1MEfv9MRlBhU7Dx5AIHPyQtdyYbKDuSnR2oaFVSAFc02p+F4hR4xmuoc3XJd5VVB1qfRB0WivqNA==
+react-instantsearch-core@7.50.0:
+  version "7.50.0"
+  resolved "https://registry.yarnpkg.com/react-instantsearch-core/-/react-instantsearch-core-7.50.0.tgz#d7104742b5b6fd6439961dcbbd56e5572bafc3de"
+  integrity sha512-CBOEY/RPc8NNwUSQH2rTMabYqTLbggKet/1nXyBhz59d1qIg3F9Y/udn4nK+ympYMf3R7LNdlYKsUN72SYwkHg==
   dependencies:
     "@swc/helpers" "0.5.18"
     algoliasearch-helper "3.29.3"
-    instantsearch.js "4.116.0"
+    instantsearch.js "4.118.0"
     use-sync-external-store "^1.0.0"
 
-react-instantsearch@^7.49.0:
-  version "7.49.0"
-  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.49.0.tgz#ccbda6a2653062d64c63eb6734dd8801f97eb073"
-  integrity sha512-08oXw0kw0Ij1qR66drS+lqPfR4R8zbjHtc7nZgK+lA4k6FmpvMEAQopFVeeeIhNQQXg1QoMaTcddIZZoj1dvtw==
+react-instantsearch@^7.50.0:
+  version "7.50.0"
+  resolved "https://registry.yarnpkg.com/react-instantsearch/-/react-instantsearch-7.50.0.tgz#45c7e75ac0364f6640abe9b149b553f7b86c922a"
+  integrity sha512-npQxHZx8lsPhiba2KlKC8YOPshr5SMLp2ei4LhiKdSrXje8hEhF7k2J926KVGJRAMrWhMzstTO+0n30lMqjJNA==
   dependencies:
     "@swc/helpers" "0.5.18"
-    instantsearch-ui-components "0.40.0"
-    instantsearch.js "4.116.0"
-    react-instantsearch-core "7.49.0"
+    instantsearch-ui-components "0.41.0"
+    instantsearch.js "4.118.0"
+    react-instantsearch-core "7.50.0"
 
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"
@@ -12587,10 +12587,10 @@ safe-regex-test@^1.1.0:
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-satori@^0.33.4:
-  version "0.33.4"
-  resolved "https://registry.yarnpkg.com/satori/-/satori-0.33.4.tgz#3aba54abc159aa7da259124cca0537740e935380"
-  integrity sha512-dCnaW6D/tkCJxG5UvpZPWnnvfTdGTVVSAq1tzH6xC5MeOhAeeswRcSq5zT7C6lRCdTGow9PRGus7PCzdp5JJYw==
+satori@^0.33.5:
+  version "0.33.5"
+  resolved "https://registry.yarnpkg.com/satori/-/satori-0.33.5.tgz#408dae33d3af0e2b4e309335c9f866445af4bd2f"
+  integrity sha512-PNW6ktrQ8SM6kk7u4aOuTkkUewkzyTOrj+QeEzXSsnNMAdff4ire9CAqIz8+4C3rCiBtK8QTELv52AZEd1PbRw==
   dependencies:
     "@shuding/opentype.js" "1.4.0-beta.0"
     css-background-parser "^0.1.0"

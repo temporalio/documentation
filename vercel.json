@@ -245,6 +245,11 @@
       "permanent": true
     },
     {
+      "source": "/ai/featured",
+      "destination": "/ai",
+      "permanent": false
+    },
+    {
       "source": "/cookbook/:path*",
       "destination": "/ai/cookbook/:path*",
       "permanent": true

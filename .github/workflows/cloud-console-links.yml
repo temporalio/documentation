@@ -1,0 +1,41 @@
+name: 'Cloud console links'
+
+# Docusaurus fails the build on broken internal links, but links into the
+# Temporal Cloud console (cloud.temporal.io) aren't checked, and the console's
+# routes change independently of this repo. This job reports console links that
+# no longer resolve.
+#
+# Like env-config-drift.yml, it runs on a schedule rather than on every docs PR:
+# it fetches over the network, and one stale link shouldn't block unrelated
+# PRs. It also runs on demand, and on PRs that change the checker itself.
+on:
+  schedule:
+    # Mondays at 15:00 UTC.
+    - cron: '0 15 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'bin/check-cloud-console-links.js'
+      - 'bin/check-cloud-console-links.test.js'
+      - '.github/workflows/cloud-console-links.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: 'Check links into the Temporal Cloud console'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
+      - name: Check Cloud console links
+        run: node bin/check-cloud-console-links.js

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { absolutizeImageUrls } = require('./image-urls');
 const { walkDir, resolveUrlPath: resolveUrlPathShared } = require('../shared/docsRouting');
 
 // Accepts either a single {docsDir, routeBasePath} (back-compat) or a
@@ -363,7 +364,18 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
               sourceFile: path.relative(context.siteDir, filePath),
               projectRoot: context.siteDir,
             });
-            fs.writeFileSync(outputPath, withAgentDirective(markdown, siteUrl) + '\n');
+            const withImages = absolutizeImageUrls(markdown, {
+              siteUrl,
+              urlPath,
+              sourceDir: path.dirname(filePath),
+              fileExists: fs.existsSync,
+              copyAsset: (from, publishedPath) => {
+                const dest = path.join(outDir, publishedPath);
+                fs.mkdirSync(path.dirname(dest), { recursive: true });
+                fs.copyFileSync(from, dest);
+              },
+            });
+            fs.writeFileSync(outputPath, withAgentDirective(withImages, siteUrl) + '\n');
             totalWarnings += warnings.length;
             generated++;
 
@@ -374,7 +386,7 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
                 sidebarLabel: frontmatter.sidebar_label || '',
                 description: frontmatter.description || '',
                 relPath: path.relative(docsDir, filePath).replace(/\\/g, '/'),
-                body: markdown,
+                body: withImages,
               });
             }
           }
