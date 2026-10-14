@@ -21,6 +21,7 @@ on:
       - Delete Visual Tests Reports
       - Warm Build Cache
       - Environment config drift
+      - Cloud console links
       - Snipsync Coverage
     types:
       - completed
@@ -31,7 +32,7 @@ permissions:
 jobs:
   notify:
     # `Check Metrics Against SDKs`, the sample checks, `Environment config
-    # drift`, and `Snipsync Coverage` also run on pull_request; exclude those
+    # drift`, `Cloud console links`, and `Snipsync Coverage` also run on pull_request; exclude those
     # runs so this only reports invocations that have nowhere else to surface,
     # such as the scheduled ones.
     if: >-
