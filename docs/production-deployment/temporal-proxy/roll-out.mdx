@@ -147,8 +147,9 @@ Worker capacity available throughout the rollout. See
 [Shut down cleanly](/production-deployment/temporal-proxy/deploy-kubernetes#shut-down-cleanly) for proxy restarts.
 
 This completes the first stage. Stop here if you want to keep your current encryption setup. To continue to the
-optional second stage, complete the reader and Codec Server preparation below before any proxy begins encrypting new
-payloads.
+optional second stage, complete the reader preparation below and verify UI and CLI decoding before any proxy begins
+encrypting new payloads. To replace a separate Codec Server, follow
+[Configure UI and CLI to use Temporal Proxy](#configure-ui-and-cli) at the end of this guide.
 
 ## Prepare every reader for proxy encryption
 
@@ -207,59 +208,6 @@ removes its layer on responses, and your application decoder removes the remaini
 Server must reverse both layers in that order. Avoid introducing this extra layer unless you have tested the complete
 decode path.
 
-## Preserve Cloud UI and CLI access
-
-As part of the second stage, prepare the HTTP decode path before enabling encryption. The hosted Cloud UI does not
-use your proxy's gRPC gateway. Your browser retrieves encrypted history from Cloud and sends payloads to the configured
-Codec Server for decoding.
-
-If you have no existing Codec Server, you can use Proxy's built-in Codec Server for proxy-encrypted payloads. It serves
-HTTP on a separate listener from the gRPC gateway. The following fragment uses the current `http.codecServer` schema;
-older versions may use different settings. Add it to the proxy configuration with your key policy, supply the TLS
-files, and restart the proxy:
-
-```yaml
-http:
-  hostPort: :8443
-  tls:
-    cert: /etc/temporal-proxy/certs/codec/tls.crt
-    key: /etc/temporal-proxy/certs/codec/tls.key
-  codecServer:
-    enabled: true
-    cors:
-      origins:
-        - https://cloud.temporal.io
-      credentials: true
-    auth:
-      jwks:
-        url: https://login.tmprl.cloud/.well-known/jwks.json
-```
-
-This fragment authenticates Cloud UI tokens. Configure your Namespace's Codec Server endpoint in the Cloud UI to the
-HTTPS base URL that reaches this listener, and enable **Pass access token**. The operator's browser must be able to
-reach that URL and trust its TLS certificate. Authentication alone does not restrict decoding per Namespace; add
-authorization appropriate to your users and keys. See the
-[Proxy Codec Server reference](https://github.com/temporalio/temporal-proxy#codec-server) for supported authentication
-and authorization settings.
-
-If you have an existing Codec Server, keep it available for legacy payloads. Extend it with a tested decoder for
-Proxy's format, or expose a combined handler that applies the proxy decoder before the legacy decoder when both layers
-are present. Proxy's built-in server does not automatically run your existing custom codec. Test histories containing
-plaintext, legacy ciphertext, proxy ciphertext, and both layers if you use them. If you use
-[External Storage](/codec-server#external-storage), preserve its retrieval and decoding order too.
-
-For the CLI, choose and test one of these paths:
-
-- Connect through the gRPC proxy and let it decode its encryption layer. An additional legacy layer still needs a
-  compatible Codec Server or decoder.
-- Connect directly to Cloud with Cloud credentials and set `--codec-endpoint` to an HTTP endpoint that decodes every
-  format present in the history. Supply the Codec Server credentials required by your chosen authentication method.
-
-Also test **encoding** when operators start Workflows or send Signals directly from the Cloud UI or CLI. Inputs must
-use a format your Workers accept. The proxy cannot encrypt requests that bypass its gateway, so direct writes require
-a compatible `/encode` endpoint if you require payload encryption. During the migration, keep its output compatible
-with any remaining legacy decoders.
-
 ## Enable encryption and validate the transition
 
 Complete the optional second stage by enabling encryption in a test Namespace first. For the existing Namespace,
@@ -314,3 +262,61 @@ Executions, Schedule payloads, retained closed histories, exports, and any archi
 waiting one retention period after the connection change is not sufficient for long-running Workflows. Retire a
 decoder only after verifying no required data uses its format. See
 [Key policies](/production-deployment/temporal-proxy/encrypt-payloads) for retaining old keys with `decryptURIs`.
+
+## Configure UI and CLI to use Temporal Proxy instead of a Codec Server {/* #configure-ui-and-cli */}
+
+Use Temporal Proxy's built-in Codec Server endpoint to replace a separate Codec Server for proxy-encrypted payloads.
+The hosted Cloud UI continues to connect directly to Temporal Cloud; your browser calls Proxy's HTTP endpoint to
+encode inputs and decode encrypted history. This endpoint uses a separate listener from Proxy's gRPC gateway.
+
+If you need decoded UI and CLI access during the second stage, configure and test this endpoint before enabling
+proxy encryption. The following fragment uses the current `http.codecServer` schema; older versions may use different
+settings. Add it to the proxy configuration with your key policy, supply the TLS files, and restart the proxy:
+
+```yaml
+http:
+  hostPort: :8443
+  tls:
+    cert: /etc/temporal-proxy/certs/codec/tls.crt
+    key: /etc/temporal-proxy/certs/codec/tls.key
+  codecServer:
+    enabled: true
+    cors:
+      origins:
+        - https://cloud.temporal.io
+      credentials: true
+    auth:
+      jwks:
+        url: https://login.tmprl.cloud/.well-known/jwks.json
+```
+
+This fragment authenticates Cloud UI tokens. Configure the UI to use Proxy:
+
+1. In your Namespace's Cloud UI Codec Server settings, replace the existing endpoint with the HTTPS base URL that
+   reaches Proxy's HTTP listener. If no endpoint is configured, add that URL.
+2. Enable **Pass access token**.
+3. Verify that the operator's browser can reach the URL, trust its TLS certificate, and display decoded payloads from
+   a Workflow encrypted by Proxy.
+
+Authentication alone does not restrict decoding per Namespace; add authorization appropriate to your users and keys.
+See the
+[Proxy Codec Server reference](https://github.com/temporalio/temporal-proxy#codec-server) for supported authentication
+and authorization settings.
+
+For CLI commands that connect directly to Cloud, keep your Cloud connection and credentials, and replace the existing
+`--codec-endpoint` with Proxy's HTTPS base URL. If you have no existing endpoint, set that flag to the Proxy URL. Supply
+credentials accepted by the HTTP endpoint's authentication configuration and verify a Workflow's payloads decode.
+
+You can also connect the CLI through Proxy's gRPC gateway, which decodes the proxy encryption layer without an HTTP
+codec request. Any remaining legacy encryption layer still needs a compatible Codec Server or decoder.
+
+Also test **encoding** when operators start Workflows or send Signals directly from the Cloud UI or CLI. Inputs must
+use a format your Workers accept. The proxy cannot encrypt requests that bypass its gateway, so direct writes require
+a compatible `/encode` endpoint if you require payload encryption. During the migration, keep its output compatible
+with any remaining legacy decoders.
+
+Before removing your existing Codec Server, verify that the replacement endpoint decodes all required history.
+Proxy's built-in server does not automatically run your existing custom codec. Keep the existing server available for
+legacy payloads, or provide a combined handler that decodes the proxy layer before the legacy layer when both are
+present. Test plaintext, legacy ciphertext, proxy ciphertext, and both layers if you use them. If you use
+[External Storage](/codec-server#external-storage), preserve its retrieval and decoding order too.
