@@ -132,7 +132,7 @@
       "Agent observability"
     ],
     "sdk": "Python",
-    "href": "https://laminar.sh/docs/tracing/integrations/temporal"
+    "href": "https://laminar.sh/docs/integrations/temporal"
   },
   {
     "name": "Laminar",
@@ -141,7 +141,7 @@
       "Agent observability"
     ],
     "sdk": "TypeScript",
-    "href": "https://laminar.sh/docs/tracing/integrations/temporal"
+    "href": "https://laminar.sh/docs/integrations/temporal"
   },
   {
     "name": "LangGraph",
