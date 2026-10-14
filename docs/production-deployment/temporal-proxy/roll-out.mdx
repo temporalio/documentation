@@ -1,8 +1,8 @@
 ---
 id: roll-out
-title: Roll out Temporal Proxy to an existing Cloud deployment
-sidebar_label: Roll out to Temporal Cloud
-description: Add Temporal Proxy to existing Temporal Cloud connections, preserve encrypted history, and stage payload encryption with Codec Server support.
+title: Migrate from Codec Server to Temporal Proxy
+sidebar_label: Migrate from Codec Server
+description: Migrate existing Temporal Cloud connections and payload encryption to Temporal Proxy while preserving access to history and replacing a Codec Server.
 toc_max_heading_level: 3
 tags:
   - Temporal Service
@@ -19,7 +19,11 @@ import { ReleaseNoteHeader } from '@site/src/components';
   features.
 </ReleaseNoteHeader>
 
-We recommend a rollout with two stages:
+This guide is for teams with Clients and Workers already connected to Temporal Cloud and a separate Codec Server for
+UI and CLI payload encoding and decoding. It describes how to insert Temporal Proxy into that existing architecture,
+move payload encryption to Proxy, and replace the separate Codec Server while retaining access to existing history.
+
+We recommend a migration with two stages:
 
 1. Move your Clients and Workers onto the proxy without changing how they encode payloads.
 2. Enable proxy encryption if you want the proxy to manage it.
@@ -27,8 +31,7 @@ We recommend a rollout with two stages:
 Keep the same Temporal Cloud Namespace, Task Queues, and Workflow IDs through both stages. Existing Workflow
 Executions continue in that Namespace; this rollout does not copy or restart them.
 
-This guide assumes you already have Clients and Workers connected to Temporal Cloud. Use
-[Configure the proxy](/production-deployment/temporal-proxy/configure) for configuration details and
+Use [Configure the proxy](/production-deployment/temporal-proxy/configure) for configuration details and
 [Deploy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes) for Helm installation and secrets.
 
 ## Identify your current encryption setup
