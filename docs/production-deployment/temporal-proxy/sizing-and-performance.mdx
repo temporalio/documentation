@@ -45,6 +45,10 @@ key cache. The test report does not identify the pre-release proxy version or co
 | Small payloads, encryption | About 10,500 to 11,400 requests per second | 0.33 to 0.36 |
 | Encrypted payloads averaging about 900 KB, up to 1.9 MB | About 5,000 requests per second | About 0.8 |
 
+CPU use depends on both request rate and the payload bytes processed per second, especially with encryption enabled.
+At the same request rate, larger payloads require more CPU. Compare requests-per-second figures only for similar
+payload sizes and request mixes.
+
 These tests were CPU-bound: beyond saturation, throughput fell. Payload size reduced throughput by more than half.
 Request mix matters too: long polls and Activity result polls dominated the reference workload, so a mix with more
 payload-carrying calls can have a lower ceiling. Compressible payloads can also increase CPU cost.
