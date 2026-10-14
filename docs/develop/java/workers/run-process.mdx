@@ -124,11 +124,14 @@ An Activity that ignores the exception keeps running, but the Temporal Service s
 To let Activities keep sending Heartbeats while the Worker drains, set `setAllowActivityHeartbeatDuringShutdown(true)` on the Worker options.
 This matches the behavior of the other Temporal SDKs.
 
+<!--SNIPSTART java-worker-heartbeat-during-shutdown-->
+[java-sandbox/worker-shutdown/src/main/java/io/temporal/docs/workershutdown/HeartbeatDuringShutdownExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/worker-shutdown/src/main/java/io/temporal/docs/workershutdown/HeartbeatDuringShutdownExamples.java)
 ```java
 WorkerOptions options =
     WorkerOptions.newBuilder().setAllowActivityHeartbeatDuringShutdown(true).build();
 Worker worker = factory.newWorker("your-task-queue", options);
 ```
+<!--SNIPEND-->
 
 With this option enabled, `heartbeat()` no longer throws `ActivityWorkerShutdownException`, so an Activity can't use that exception to detect shutdown.
 Each Activity must finish within the timeout you pass to `awaitTermination()`, or use another signal to detect shutdown.
