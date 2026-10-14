@@ -1,0 +1,443 @@
+---
+id: operational-guidebook
+title: Temporal Proxy operational guidebook
+sidebar_label: Operational guidebook
+description:
+  Size, scale, and roll out Temporal Proxy on Kubernetes with per-core throughput, memory limits, replica counts,
+  autoscaling, failure modes, and alerts.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
+  the definitive configuration schema.
+</ReleaseNoteHeader>
+
+Use this guide if you run Temporal Proxy in your own Kubernetes clusters, between your Temporal Workers and Clients and
+Temporal Cloud. It covers capacity, scaling, and rollouts on any cloud, node type, and node autoscaler.
+
+How to read this guide:
+
+- Sections 1-7 give principles and methods. Product names (AWS Graviton, Karpenter, Cluster Autoscaler, and so on)
+  appear only as labeled examples.
+- Numbers marked **Measured** come from our reference tests (Appendix A). They are reference results under specific
+  conditions, not guarantees.
+- Numbers marked **Recommended** are starting points that you should validate. **Load-test your own workload before you
+  rely on any figure here.** In our tests, payload size alone cut throughput by more than half.
+- All YAML is an example. Adapt it to your environment.
+
+## Summary
+
+- **Plan capacity from per-core throughput, then pick the instance size.** We measured about **0.29-0.31 cores per 1,000
+  req/s** with small unencrypted payloads and about **0.33** with payload encryption. MB-sized payloads cost several
+  times more. Every measurement used **4 CPU per instance**. Linear scaling to 2 or 8 CPU is an assumption you need to
+  verify.
+- **Size statically for peak plus headroom.** Clients don't rebalance across replicas after a scale-out or rollout
+  (Section 4), so a CPU-based Horizontal Pod Autoscaler (HPA) adds little today. Use one only as a safety net.
+- **Keep each replica at or below 65-75% of its ceiling, and at or below 75% after losing a zone.**
+- **Always set `GOMEMLIMIT`** to 85-90% of the memory limit. Never autoscale on memory.
+- **Keep upstream `connection.maxConnections` at about 32.** That's the default for every upstream. On older releases,
+  where the default is 1, set it explicitly: 1 connection starves long polls.
+- **Treat the key management service (KMS) and extension servers as hard dependencies.** A pod can't start while any of
+  them is unreachable. In a fleet, running pods also need the KMS.
+
+## 1. Sizing an instance
+
+### Per-core throughput
+
+The proxy is CPU-bound, and its CPU use tracks request rate almost linearly. Plan in **cores per 1,000 req/s**, then
+divide by the instance size you choose.
+
+| Workload                                                                            | Cores per 1k req/s (Measured) | 4-CPU ceiling (Measured)  | Notes                                                                                                                                 |
+| ----------------------------------------------------------------------------------- | ----------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Small payloads, no encryption                                                       | 0.29-0.31                     | \~12.9k req/s             | Past saturation, throughput falls rather than leveling off                                                                            |
+| Small payloads, payload encryption (KMS-backed, data encryption key (DEK) cache on) | \~0.33                        | \~10.5-11.4k req/s        | \~+8% CPU per request against a 0.305 baseline, \~+14% against 0.29. A controlled A/B run at \~10k req/s measured 0.35-0.36 (+14-17%) |
+| \~900 KB average payloads (up to 1.9 MB), encrypted                                 | \~0.8                         | **\~5k req/s, CPU-bound** | **Cost scales with payload bytes, not request count**                                                                                 |
+
+| Instance size | Small plain, ceiling / at 65%           | Small encrypted (10.5k basis), ceiling / at 65% |
+| ------------- | --------------------------------------- | ----------------------------------------------- |
+| 2 CPU         | \~6.4k / \~4.2k _(extrapolated)_        | \~5.2k / \~3.4k _(extrapolated)_                |
+| **4 CPU**     | **\~12.9k / \~8.4k (Measured ceiling)** | **\~10.5k / \~6.8k (Measured ceiling)**         |
+| 8 CPU         | \~25.8k / \~16.8k _(extrapolated)_      | \~21k / \~13.7k _(extrapolated)_                |
+
+Factors to weigh:
+
+- **Request mix.** Cheap calls dominated our request rate: long polls and Activity result polls. A mix with more
+  payload-carrying calls has a lower ceiling.
+- **Smaller instances.** These give finer-grained capacity and a smaller blast radius per pod.
+- **Larger instances.** These need fewer connections to Temporal Cloud and fewer pods to balance, but we haven't
+  verified the extra capacity.
+- **Workers per instance.** About 100 SDK Workers per 4-CPU instance ran comfortably. At 200, the CPU saturated and
+  error rates rose during client restarts (Measured).
+- **Measure your own figure** with the PromQL in Section 7, and use it in place of ours.
+
+### Memory
+
+**What we measured.** All throughput ceilings used a 12Gi limit with `GOMEMLIMIT=11GiB`, so garbage collection (GC) had
+plenty of room.
+
+| Condition                                                                         | RSS (resident set size, Measured) |
+| --------------------------------------------------------------------------------- | --------------------------------- |
+| \~10-11k req/s, small payloads, 20 Workers (65-hour encrypted soak)               | \~1 GiB, flat                     |
+| \~12-13k req/s, small payloads, 20 Workers                                        | \~1.4-1.7 GiB                     |
+| \~10k req/s reconnect burst, few clients, **2Gi limit with `GOMEMLIMIT=1700MiB`** | Peak 1.65 GiB, survived           |
+| 100-200 Workers, \~11-14k req/s                                                   | 2.7-3.9 GiB                       |
+| \~900 KB payloads, \~5k req/s                                                     | 5-7 GiB                           |
+
+**Recommended starting points (provisional).** We **haven't validated these below 12Gi at 100 or more Workers per
+instance**. Validate them in your environment.
+
+| Profile                                                       | Memory request = limit            | `GOMEMLIMIT` |
+| ------------------------------------------------------------- | --------------------------------- | ------------ |
+| Small payloads, few clients (under \~30 Workers per instance) | 3Gi                               | `2700MiB`    |
+| Small payloads, 100+ Workers per instance                     | 6Gi                               | `5400MiB`    |
+| MB-sized payloads                                             | 12Gi (the measured configuration) | `11GiB`      |
+
+A tighter heap cap makes GC run more often, which costs CPU on a CPU-bound process. **Re-measure cores per 1k at the
+memory limit you choose.**
+
+**Always set `GOMEMLIMIT` to about 85-90% of the container memory limit.**
+
+- The Go runtime doesn't read the container memory limit. Without `GOMEMLIMIT`, the heap can grow to about twice the
+  live data, so a reconnect burst can push it past the limit, and Kubernetes OOM-kills (out-of-memory kills) the pod.
+- With `GOMEMLIMIT` set, GC works harder as the heap approaches the limit, which keeps RSS bounded.
+- `GOMEMLIMIT` is a soft limit. If the live working set exceeds it, the process spends its CPU on GC, and Kubernetes
+  OOM-kills it anyway. Leave enough headroom.
+
+**Do not autoscale on memory.** RSS is sticky and doesn't fall with load. Current charts leave memory out by default. On
+older charts, set `targetMemoryUtilizationPercentage` to `null`.
+
+### Upstream connections
+
+The upstream setting `connection.maxConnections` defaults to **32** per target. A templated upstream has a target per
+Namespace, so it opens 32 connections for each Namespace it serves. The maximum is **64**. Older releases default to 1
+for every upstream, so set the value explicitly there.
+
+- Every SDK long poll holds an HTTP/2 stream. With only 1-4 connections, the proxy runs out of streams, and new calls
+  stall or time out (Measured).
+- **32 worked well** at about 13k req/s with 200 Workers (Measured).
+- A templated upstream opens its pool per Namespace, so the number of Namespaces multiplies the connection count. Lower
+  `maxConnections` if one upstream serves many Namespaces.
+- The total number of connections to Temporal Cloud is about `maxConnections` × targets × replicas, plus 1 if you
+  configure the Temporal Cloud Ops API upstream.
+
+```yaml
+# Example: proxy config (chart: values.config)
+upstreams:
+  - name: cloud
+    hostPort: <namespace>.<account>.tmprl.cloud:7233
+    connection:
+      maxConnections: 32
+```
+
+### CPU requests, limits, and QoS
+
+Kubernetes assigns each pod a quality of service (QoS) class based on its requests and limits.
+
+| Choice                                                                              | Benefits                                                                                                | Costs                                                                                      |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Guaranteed QoS**: request = limit for CPU _and_ memory, matching what we measured | Predictable per-replica capacity. `GOMAXPROCS` equals the limit. Last to be evicted under node pressure | Reconnect storms can't burst above the limit. Lower bin-packing density                    |
+| **Burstable**: CPU request below the limit, or no CPU limit at all                  | Packs more densely and can absorb storms with spare node CPU                                            | Capacity depends on what the neighbors are doing. Plan from the **request**, not the limit |
+
+- **GOMAXPROCS.** Recent Go versions, including the ones current proxy releases are built with, set `GOMAXPROCS` from
+  the cgroup CPU limit. With no CPU limit, `GOMAXPROCS` equals the node's core count. If you run without a limit, set
+  the `GOMAXPROCS` environment variable explicitly, for example, to the request rounded up.
+- **The HPA doesn't need a CPU limit.** It measures utilization against the **request**, so you must set a CPU request.
+- **Static CPU manager policy (advanced).** Guaranteed pods with an integer CPU value can get exclusive cores under the
+  kubelet's `static` CPU manager policy. It's optional. Use it if your platform allows it.
+- **Throttling.** Watch `container_cpu_cfs_throttled_periods_total`. Sustained throttling under a limit means the
+  replica is saturated: add replicas.
+
+## 2. Node sizing and placement
+
+The scheduler places pods against **node allocatable**: node capacity minus system and kubelet reservations. Subtract
+DaemonSet requests on the node as well.
+
+```text
+proxies_per_node = floor((allocatable_cpu − daemonset_cpu_requests) / proxy_cpu_request)
+```
+
+Check the same calculation for memory, and use the smaller result.
+
+- **A Guaranteed N-CPU pod never fits an N-vCPU node**, because allocatable is always a little below capacity.
+- **The leftover per node is roughly constant**, so larger nodes waste a smaller share of their capacity.
+
+**Example (AWS Graviton c6g family, 4-CPU proxy, about 0.5 CPU of DaemonSet requests assumed; measure your own):**
+
+| Node             | Allocatable CPU   | Proxies per node | Idle CPU |
+| ---------------- | ----------------- | ---------------- | -------- |
+| 8 vCPU / 16 GiB  | \~7.9 (Measured)  | 1                | \~43%    |
+| 16 vCPU / 32 GiB | \~15.9 (estimate) | 3                | \~22%    |
+| 32 vCPU / 64 GiB | \~31.8 (estimate) | 7                | \~10%    |
+
+Placement considerations:
+
+- **Fit the request to the node.** For example, a 3.5-CPU request with a 4-CPU limit (Burstable) fits two per 8-vCPU
+  node in the preceding example. That trades some predictability for density. Plan from 3.5 cores.
+- **Memory can bind first.** With MB-sized payloads at 12Gi per pod, a 32 GiB node holds 2 proxies, not 3.
+- **Rollout headroom.** `maxSurge: 1` needs a free slot of one full proxy request somewhere in the cluster (Section 5).
+- **Zone spread.** Use a replica count that is a multiple of the zone count, with `topologySpreadConstraints` on
+  `topology.kubernetes.io/zone` and `whenUnsatisfiable: DoNotSchedule`. `ScheduleAnyway` doesn't guarantee an even
+  spread.
+- **Dedicated node pool (optional).** This isolates the proxy from noisy neighbors and from consolidation churn, but
+  costs idle capacity. A shared pool is fine if you control disruption (Section 5).
+- **Serverless and node-less platforms** (for example, EKS Fargate or GKE Autopilot) make most of this section moot. You
+  pay for the request, so the main question becomes the request shape.
+
+## 3. Replicas and capacity planning
+
+```text
+per_replica_plan = per_replica_ceiling × target_util            # target_util 0.65-0.75
+replicas         = ceil(peak_req_s / per_replica_plan) + 1      # N+1 for loss and rollouts
+zone-redundant   = smallest multiple of the zone count such that
+                   peak_req_s / (replicas × (Z−1)/Z) ≤ 0.75 × per_replica_ceiling
+```
+
+**Worked examples** (4-CPU replicas, target 0.65, 3 zones, ceilings from Appendix A):
+
+| Peak                              | Small plain (12.9k): N+1 / zone-redundant                  | Small encrypted (10.5k): N+1 / zone-redundant   |
+| --------------------------------- | ---------------------------------------------------------- | ----------------------------------------------- |
+| 10k req/s                         | 3 / **3** (losing 1 zone leaves 5k per pod, 39%)           | 3 / **3** (48%)                                 |
+| 30k req/s                         | 5 / **6** (losing 2 leaves 7.5k per pod, 58%)              | 6 / **6** (71%)                                 |
+| 100k req/s                        | 13 / **18** (losing 6 leaves 8.3k per pod, 65%)            | 16 / **21** (losing 7 leaves 7.1k per pod, 68%) |
+| 15k req/s, \~900 KB payloads (5k) | 6 / **6** (losing 2 leaves 3.75k per pod, 75%: borderline) | n/a                                             |
+
+Caveats:
+
+- **We didn't load-test a fleet.** These numbers extrapolate single-replica results. Run a multi-replica soak before you
+  rely on N+1.
+- **Load isn't evenly spread.** Without client rebalancing (Section 4), per-pod load can be very uneven. We saw 99.6% /
+  0.4% across 2 pods after a rollout. Load balances per **client connection**, so per-pod load can never be more even
+  than the number of client connections per pod allows. The proxy can't spread a few large clients evenly.
+- **Temporal Cloud limits come first.** Your Namespace's rate limits apply. Contact Temporal before you plan beyond
+  them. Adding proxy replicas doesn't raise them.
+
+## 4. Autoscaling
+
+**Should you use an HPA?** Only as a safety net. Clients don't rebalance across replicas when you scale out, so size
+replicas statically for peak and let the HPA cover only unexpected load.
+
+- A replica that the HPA adds gets only **new** connections. Clients rarely open new ones, so the hot pod stays hot.
+- The idle newcomer pulls the average CPU down, so the HPA may decide that it has done enough.
+- Set `minReplicas` to your static peak sizing.
+
+**How to configure one:**
+
+- **Metric:** CPU utilization against the request. You don't need a CPU limit. Average CPU hides one saturated pod, so
+  also alert on per-pod CPU and skew (Section 7). You can also scale on per-pod maximum CPU or request rate through KEDA
+  or a metrics adapter.
+- **Target:** about 65%.
+- **Behavior:** scale up quickly and scale down slowly, one pod at a time. Removing a loaded pod causes a reconnect dip
+  on the survivors (Appendix A).
+- **KMS dependency:** a scale-up during a KMS or extension outage produces pods that can't start (Section 6).
+
+**Chart support.** Current charts default the HPA to a 65% CPU target, no memory target, `minReplicas: 2`, and the
+scaling behavior below, which you can override through `autoscaling.behavior`. With `autoscaling.enabled: true`, the
+Deployment omits `replicas:`, so `helm upgrade` doesn't reset the HPA's count.
+
+- **Older charts** have no `behavior` field and add a memory target unless `targetMemoryUtilizationPercentage` is null.
+  Either set it to null and accept the Kubernetes default behavior, or add `behavior` with a post-renderer.
+- **If you manage your own HPA** (for example, through `extraObjects`) while `autoscaling.enabled` is false, the
+  Deployment still renders `replicas:`, and every `helm upgrade` resets the replica count. Remove that field with a
+  post-renderer.
+
+```yaml
+# Example chart values: set minReplicas to your static peak sizing
+autoscaling:
+  enabled: true
+  minReplicas: 6 # static peak sizing; never below 2
+  maxReplicas: 12 # keep below what your Cloud namespace limits can absorb
+  targetCPUUtilizationPercentage: 65
+  targetMemoryUtilizationPercentage: null
+  behavior: # the chart default; shown here to adapt
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies: [{ type: Pods, value: 2, periodSeconds: 60 }]
+    scaleDown:
+      stabilizationWindowSeconds: 900
+      policies: [{ type: Pods, value: 1, periodSeconds: 300 }]
+```
+
+## 5. Rollouts and disruptions
+
+**Readiness.** Use `tcpSocket` probes on the gRPC port. The client listener opens only after the upstreams and extension
+servers have connected, so an open socket roughly means "initialized".
+
+| `tcpSocket` catches                                              | `tcpSocket` misses                                                                                      |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| A process that hasn't started, crashed, or is still initializing | Broken or expired TLS certificates, upstream loss after startup, KMS loss, GC thrash, or a hung process |
+
+Keep liveness lenient and independent of the upstream and KMS. Otherwise a dependency outage becomes a restart storm,
+and pods can't start during that outage anyway.
+
+**Strategy options:**
+
+| Option                                           | When to use it                                                                                                                                                                                           |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `maxSurge: 1, maxUnavailable: 0` (chart default) | You have a free slot of one full proxy request. Capacity never drops. A rollout of a bad version stalls instead of removing capacity                                                                     |
+| `maxSurge: 0, maxUnavailable: 1`                 | You run peak+1 replicas and have no free node slot. It uses your spare replica during the rollout and needs no extra node. **It requires a meaningful readiness probe**, or a broken pod counts as Ready |
+
+**Configuration:**
+
+- **`minReadySeconds: 30` (the chart default).** A new pod must stay Ready for 30 seconds before the rollout continues.
+- **preStop.** Use the Kubernetes `sleep` lifecycle handler. The image is built `FROM scratch` and has no shell or
+  `sleep` binary, so an `exec` preStop can't work. The chart defaults to `preStop: { sleep: { seconds: 15 } }`, set
+  through `lifecycle`. The `sleep` handler requires Kubernetes 1.30 or later, where it's on by default. On older
+  clusters, there's no preStop delay, and nothing protects against slow endpoint propagation.
+- **`terminationGracePeriodSeconds` of at least 60.** On SIGTERM, the gRPC health service reports `NOT_SERVING`. The
+  listener then drains for up to 5 seconds, plus up to about 5 seconds for the upstream tiers, inside a 30-second
+  shutdown budget. The grace period must exceed the preStop sleep plus 30 seconds.
+- **PodDisruptionBudget, for example `maxUnavailable: 1`.** It governs evictions such as node drains and autoscaler
+  consolidation. It doesn't govern Deployment rollouts. The chart templates this through `podDisruptionBudget`.
+- **Node autoscaler disruption.** Each involuntary move costs 2-5 minutes of reduced throughput and adds skew
+  (Measured). Limit voluntary disruption of proxy nodes to maintenance windows. Examples:
+  - Karpenter: a NodePool with `consolidationPolicy: WhenEmpty`, or the pod annotation
+    `karpenter.sh/do-not-disrupt: "true"`.
+  - Cluster Autoscaler: `cluster-autoscaler.kubernetes.io/safe-to-evict: "false"`.
+  - None of these prevent spot reclaims or node failures.
+
+The chart templates `strategy`, `minReadySeconds`, `terminationGracePeriodSeconds`, `lifecycle`, the liveness and
+readiness probes, `env`, and `resources`, with the defaults listed earlier in this section. It can't template
+`startupProbe` or `topologySpreadConstraints`. Apply those with a post-renderer (for example, Kustomize), or manage the
+manifests directly.
+
+```yaml
+# Example chart values (the strategy, minReadySeconds, grace period and preStop shown are the defaults)
+strategy: { type: RollingUpdate, rollingUpdate: { maxSurge: 1, maxUnavailable: 0 } }
+minReadySeconds: 30
+terminationGracePeriodSeconds: 60
+lifecycle: { preStop: { sleep: { seconds: 15 } } }
+readinessProbe: { tcpSocket: { port: http }, periodSeconds: 5, failureThreshold: 2 }
+livenessProbe: { tcpSocket: { port: http }, periodSeconds: 10, failureThreshold: 6 }
+env: [{ name: GOMEMLIMIT, value: '5400MiB' }]
+resources:
+  requests: { cpu: '4', memory: 6Gi }
+  limits: { cpu: '4', memory: 6Gi }
+```
+
+```yaml
+# Example Deployment fragment for what the chart cannot template (apply via post-renderer)
+spec:
+  template:
+    spec:
+      containers:
+        - name: temporal-proxy
+          startupProbe: { tcpSocket: { port: http }, periodSeconds: 5, failureThreshold: 24 }
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector: { matchLabels: { app.kubernetes.io/name: temporal-proxy } }
+```
+
+## 6. Dependencies and failure modes
+
+| Dependency                               | Behavior                                                                                                                                                                                                                                                                                                                                                                           | What to do                                                                                                                                                                                                                              |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Temporal Cloud Namespace rate limits** | Throttling appears as `ResourceExhausted` from upstream while proxy CPU is **not** saturated                                                                                                                                                                                                                                                                                       | Contact Temporal to raise the limits. Cap HPA `maxReplicas` to match                                                                                                                                                                    |
+| **Upstream reachability at startup**     | If a configured upstream is unreachable, startup fails and the pod crash-loops. The proxy doesn't check upstreams with templated addresses                                                                                                                                                                                                                                         | Pause rollouts during a Temporal Cloud connectivity incident                                                                                                                                                                            |
+| **KMS and extension servers at startup** | Startup fails if **any** configured extension server or KMS key is unreachable, including keys used only for decryption. Startup times out after about 15 seconds. CrashLoopBackOff can then stretch recovery to **about 5 minutes** after the dependency returns                                                                                                                  | Avoid restarts, rollouts, evictions, and scale-ups during a KMS incident. Keep `minReplicas` at peak. Alert on reachability. Remove keys and extensions you no longer need                                                              |
+| **KMS while running (a fleet)**          | Each pod seals with **its own** DEK per Namespace and rotates it on schedule, which needs a KMS wrap. Decrypting a payload sealed by another replica, or by an older DEK, needs a KMS unwrap on a DEK cache miss (default 100 entries). During a KMS outage, running pods can only use DEKs already in their cache. Rotation and cross-replica decryption fail                     | Size `cacheSize` to cover replicas × Namespaces × DEKs alive in your Retention Period. Set `renewBefore` longer than a plausible KMS outage. **Never set `cacheSize: 0`**: in our tests that caused about 2.8k KMS calls/s and +22% CPU |
+| **Request size**                         | The client listener caps requests at **4 MiB** (gRPC default; not configurable). Larger requests fail with `ResourceExhausted: received message larger than max`. We saw 5.1-6.8 MB Workflow Task completions. Temporal also limits payloads (documented as about 2 MB per payload), gRPC requests (about 4 MB), and Event History size; check the current limits for your account | Scaling doesn't help. Keep payloads small, return fewer large Local Activity results per Workflow Task, or use a claim-check (external payload storage) pattern                                                                         |
+| **Encryption keys over time**            | Payloads stay sealed in Event History for the whole Retention Period                                                                                                                                                                                                                                                                                                               | Keep every key that sealed data available as a decrypt key for as long as that data exists                                                                                                                                              |
+
+## 7. Observability
+
+The proxy serves metrics at `/metrics` on `metrics.hostPort` (default `:9090`), with the prefix set by
+`metrics.namespace` (default `tmprl_proxy`, giving `tmprl_proxy_`). Set both in the `metrics` section of the proxy
+config (chart: `values.config`). The following queries assume the defaults. The chart doesn't declare a container port
+or a `PodMonitor` for metrics, so point your `PodMonitor` or scrape config at that port. The proxy also exposes Go
+runtime `go_*` and `process_*` series.
+
+| Metric                                                                                          | Use                                                                 |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `tmprl_proxy_server_requests_total{method,code}`                                                | Per-pod load, skew, and error mix                                   |
+| `tmprl_proxy_server_request_duration_seconds{method}`                                           | Latency. Exclude long polls (`Poll*` methods), which sit near 60 s  |
+| `tmprl_proxy_router_forwarding_errors_total{upstream,…}`                                        | Errors the proxy originates, as distinct from Temporal Cloud errors |
+| `tmprl_proxy_encryption_kek_ops_total{operation,result}`, `…_kek_ops_duration_seconds`          | KMS calls, failures, and latency                                    |
+| `tmprl_proxy_encryption_dek_cache_hits_total` / `_misses_total`, `_dek_rotations_total{reason}` | DEK cache effectiveness and rotation health                         |
+| `process_cpu_seconds_total`, `process_resident_memory_bytes`, `go_goroutines`, `go_gc_*`        | Saturation, memory headroom, connected clients, and parked polls    |
+
+```text
+# req/s per pod
+sum by (pod) (rate(tmprl_proxy_server_requests_total[2m]))
+
+# Skew: max / average per-pod load
+max(sum by (pod) (rate(tmprl_proxy_server_requests_total[5m])))
+  / avg(sum by (pod) (rate(tmprl_proxy_server_requests_total[5m])))
+
+# Cores per 1k req/s: your own planning figure (adjust the job selector)
+sum(rate(process_cpu_seconds_total{job="temporal-proxy"}[5m]))
+  / (sum(rate(tmprl_proxy_server_requests_total[5m])) / 1000)
+
+# Real error ratio: excludes client Canceled / DeadlineExceeded, which are normal for long polls
+sum(rate(tmprl_proxy_server_requests_total{code=~"Unavailable|Internal|Unknown|ResourceExhausted"}[5m]))
+  / sum(rate(tmprl_proxy_server_requests_total[5m]))
+
+# Proxy-originated size rejections are most likely on workflow task completions
+sum(rate(tmprl_proxy_server_requests_total{code="ResourceExhausted", method=~".*RespondWorkflowTaskCompleted"}[5m]))
+```
+
+**Suggested alerts:**
+
+| Alert               | Condition                                                                                     | Meaning                                                                                                                                                                                               |
+| ------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pod saturated       | Per-pod CPU above 85% of its request or limit for 10 min                                      | Scale out or rebalance                                                                                                                                                                                |
+| Skew                | Skew above 1.5 for 15 min                                                                     | Rebalance clients (Section 4)                                                                                                                                                                         |
+| Errors              | Real error ratio above 1% for 5 min                                                           | Our steady state was 0.1-0.8%                                                                                                                                                                         |
+| `ResourceExhausted` | Nonzero for 5 min                                                                             | Split it before you act. On `RespondWorkflowTaskCompleted`, with "larger than max" in the logs, it's the proxy's 4 MiB cap. Otherwise, with low CPU, it's likely your Temporal Cloud Namespace limits |
+| Memory              | RSS above 90% of `GOMEMLIMIT` for 10 min                                                      | Not enough memory headroom                                                                                                                                                                            |
+| Restarts            | Any restart, or `CrashLoopBackOff`                                                            | Check KMS, extension, and upstream reachability                                                                                                                                                       |
+| KMS                 | `kek_ops_total{result="error"}` nonzero, or DEK cache miss ratio above 1% sustained           | KMS failures, or a DEK cache that is too small                                                                                                                                                        |
+| Stalled pod         | A pod that had traffic drops to near 0 req/s with CPU under 0.1 core while its peers are busy | A `tcpSocket` probe won't catch this                                                                                                                                                                  |
+
+**Cardinality.** Every configured metadata label multiplies every request series. Never label per Worker. Expose the
+proxy only to trusted callers, because the `method` label takes whatever path a caller sends.
+
+## Appendix A: Reference results (not guarantees)
+
+**Conditions:**
+
+- One Temporal Proxy replica at 4 CPU (request = limit), 12Gi memory, `GOMEMLIMIT=11GiB`, `maxConnections: 32`.
+- AWS Graviton arm64 nodes (c6g family). x86 results might differ.
+- mTLS on both legs.
+- Temporal Cloud upstream, with Namespace rate limits raised so that they didn't cap throughput.
+- omes `throughput_stress` load with 20-200 Go SDK Workers. Payloads were random bytes, so gzip was cheap; compressible
+  data costs more.
+- A recent pre-release build. Re-measure on the release you deploy.
+
+**Throughput:**
+
+| Measurement                                                                | Result                                                                                                  |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Small payloads, no encryption                                              | \~12.9k req/s sustained (peak 13.3k), 0.29-0.31 cores per 1k. Past saturation, throughput fell to 12.2k |
+| Small payloads, encryption (KMS extension with 5 ms latency, DEK cache on) | \~10.5-11.4k req/s, \~0.33-0.36 cores per 1k. KMS latency was invisible with the cache on               |
+| Encryption with the DEK cache disabled                                     | \~2.8k KMS calls/s, +22% CPU per request against plain                                                  |
+| \~900 KB average payloads (up to 1.9 MB), encrypted                        | \~5k req/s CPU-bound, 5-7 GiB RSS. Each payload crosses the proxy \~4-5 times                           |
+| Workers                                                                    | 100 comfortable at \~13k req/s. 200 saturated the CPU at 3.98 cores                                     |
+
+**Resilience:**
+
+| Event                                                                                  | Result                                                                                                                                   |
+| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Proxy pod deletion or eviction                                                         | Throughput 85-100% of steady within the first minute on the new pod, steady within \~2-5 min. Errors under 1%                            |
+| All clients restarted at once                                                          | Dip to 69-86% of steady for \~1 min, recovered within \~3-7 min. One 3.7% `Unavailable` burst at 200 Workers while the CPU was saturated |
+| 65-hour encrypted soak at \~10-11k req/s                                               | Memory flat at \~1 GiB, with no restarts                                                                                                 |
+| Reconnect burst under a 2Gi limit with `GOMEMLIMIT=1700MiB` (\~10k req/s, few clients) | Peak RSS 1.65 GiB, no OOM                                                                                                                |
+| Rolling deploy to 2 replicas                                                           | Load split \~99.6% / 0.4% afterward (no rebalancing)                                                                                     |
+| Rollout with no readiness probe                                                        | A pod that crash-looped replaced a healthy one, causing \~4.5 min of outage. A readiness probe prevents this                             |
+
+**To re-run this test for your own workload:**
+
+1. Use your production request mix and payload sizes.
+2. Run at your chosen CPU and memory limits.
+3. Ramp concurrency until throughput stops rising.
+4. Record cores per 1k req/s, RSS, error ratio, and proxy network bytes per second.
+5. Delete a pod and restart all clients to see recovery.
