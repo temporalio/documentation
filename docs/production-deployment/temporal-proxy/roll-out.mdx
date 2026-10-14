@@ -21,10 +21,8 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 We recommend a rollout with two stages:
 
-1. **First stage: connect through Proxy.** Move your Clients and Workers onto the proxy without changing how they
-   encode payloads.
-2. **Second stage: enable Proxy encryption (optional).** Prepare readers and Codec Server paths, then enable proxy
-   encryption if you want the proxy to manage it.
+1. Move your Clients and Workers onto the proxy without changing how they encode payloads.
+2. Enable proxy encryption if you want the proxy to manage it.
 
 Keep the same Temporal Cloud Namespace, Task Queues, and Workflow IDs through both stages. Existing Workflow
 Executions continue in that Namespace; this rollout does not copy or restart them.
