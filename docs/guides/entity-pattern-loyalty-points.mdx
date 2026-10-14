@@ -45,7 +45,7 @@ This guide requires Python, a Temporal Worker, and either a local development se
 
 - Python 3.9 or later
 - Temporal Python SDK (`temporalio`) version 1.7.0 or later (required for `@workflow.init`, `workflow.all_handlers_finished`, and Workflow Updates)
-- A running Temporal Server, either via the [Temporal CLI](https://docs.temporal.io/cli) for local development or [Temporal Cloud](https://temporal.io/cloud) for production
+- A running Temporal Server, either via the [Temporal CLI](/cli) for local development or [Temporal Cloud](https://temporal.io/cloud) for production
 - `pip` or `uv` for Python dependency management
 
 ### Resources and access privileges
@@ -57,9 +57,9 @@ This guide requires Python, a Temporal Worker, and either a local development se
 
 You should be familiar with the following before proceeding:
 
-- [Temporal Workflows](https://docs.temporal.io/workflows): The durable, stateful functions that Temporal orchestrates
-- [Temporal Activities](https://docs.temporal.io/activities): The functions that perform side effects such as API calls and database writes
-- [Temporal Workers](https://docs.temporal.io/workers): The processes that host and execute Workflow and Activity code
+- [Temporal Workflows](/workflows): The durable, stateful functions that Temporal orchestrates
+- [Temporal Activities](/activities): The functions that perform side effects such as API calls and database writes
+- [Temporal Workers](/workers): The processes that host and execute Workflow and Activity code
 - [Temporal Task Queues](https://docs.temporal.io/task-queues): The named queues that route work from the Temporal Server to Workers
 
 ### Operational considerations
@@ -255,7 +255,7 @@ This class also has three fields:
 
 You've now set up everything you need for the data model, which will preserve the state through Continue-As-New events. The next thing is to create the Activities to interact with the data.
 
-### Step 2: Implement the Activities
+## Step 2: Implement the Activities
 
 Activities hold all non-deterministic code: database writes, API calls, and notifications. The Workflow stays a pure state container. Each Activity uses `@activity.defn` and `activity.logger` for context-aware logging.
 
@@ -323,7 +323,7 @@ The `record_redemption activity` follows the same pattern as `record_points_tran
 
 With the Activities in place, you'll next connect them with the Workflow.
 
-### Step 3: Implement the Entity Workflow
+## Step 3: Implement the Entity Workflow
 
 The Entity Workflow is the core of the pattern: it initializes state, waits for messages, processes them sequentially, and performs Continue-As-New when history grows large.
 
@@ -747,7 +747,7 @@ Finally, after logging the action, the function calls `continue_as_new` on the W
 
 With the Workflow code complete, you'll need to configure some Workers to run it.
 
-### Step 4: Configure and run the Worker
+## Step 4: Configure and run the Worker
 
 The Worker hosts your Workflow and Activity code, polls a Task Queue, and executes work.
 
@@ -823,7 +823,7 @@ The Worker connects to the Temporal Server and begins polling.
 
 You now have a running Workflow, and a Worker to run it. The Worker will continue running until you stop the process, but it won't do much that's useful until you add some client code.
 
-### Step 5: Write client code to interact with the entity
+## Step 5: Write client code to interact with the entity
 
 The client code starts Entity Workflows, sends Signals, executes Updates, and runs Queries. In production this typically lives in an API server or background service, but in this guide we're running it locally.
 
@@ -979,7 +979,7 @@ You've got all the pieces working now, and the client code will show the correct
 
 The Continue-As-New feature means that you can run this same Workflow as long as you want, even as the client code changes. There's a little more you should know about how that works.
 
-### Step 6: Handle Continue-As-New for indefinite execution
+## Step 6: Handle Continue-As-New for indefinite execution
 
 Continue-As-New allows an Entity Workflow to run for years without unbounded history. When `workflow.info().is_continue_as_new_suggested()` returns `True`, the history is approaching the suggested threshold (~4,096 Events).
 
@@ -996,7 +996,7 @@ The `_do_continue_as_new` method handles the transition in three steps:
 
 After the transition, clients continue interacting with the same Workflow Id. Temporal automatically routes Signals, Queries, and Updates to the latest Run. Do not specify a Run Id when obtaining a Workflow handle, or your interactions will target a stale Execution.
 
-### Step 7: Ensure Workflow determinism
+## Step 7: Ensure Workflow determinism
 
 Temporal replays Event History to resume a Workflow after a crash. The code must produce the same sequence of Commands on every replay.
 
@@ -1045,7 +1045,7 @@ if __name__ == "__main__":
 
 Run this test as part of your continuous integration pipeline before deploying Workflow code changes. If the replay fails with a `NondeterminismError`, the code change is not backward-compatible. Use Worker Versioning (see Step 8) to deploy the change safely.
 
-### (Optional) Step 8: Manage Workflow evolution with Worker Versioning
+## (Optional) Step 8: Manage Workflow evolution with Worker Versioning
 
 Entity Workflows are the hardest case for code evolution: a loyalty account can span years and dozens of deployments. Any change that alters the sequence of Commands the Workflow generates causes a `NondeterminismError` during replay for in-progress Executions.
 
@@ -1053,7 +1053,7 @@ Entity Workflows are the hardest case for code evolution: a loyalty account can 
 
 > Worker Versioning requires Python SDK v1.11.0 or later, Temporal Server v1.29.1 or later, and Temporal CLI v1.4.1 or later.
 
-#### Why PINNED is the right choice for Entity Workflows
+### Why PINNED is the right choice for Entity Workflows
 
 `PINNED` is the canonical versioning behavior for Entity Workflows: each execution runs entirely on the Worker Deployment Version where it started. At a Continue-As-New boundary the Workflow can optionally upgrade to the latest build.
 
@@ -1062,7 +1062,7 @@ Entity Workflows are the hardest case for code evolution: a loyalty account can 
 | `PINNED` | Each execution completes on the version where it started | Long-lived entities; no patching needed within a run |
 | `AUTO_UPGRADE` | Moves to the latest version automatically | Short Workflows that complete before the next deploy |
 
-#### Step 1: Annotate the Workflow
+### Step 1: Annotate the Workflow
 
 Add `versioning_behavior=VersioningBehavior.PINNED` to `@workflow.defn` in `workflows.py`:
 
@@ -1074,7 +1074,7 @@ class LoyaltyEntityWorkflow:
     ...
 ```
 
-#### Step 2: Configure the Worker
+### Step 2: Configure the Worker
 
 Update `worker.py` to declare the deployment name and build ID:
 
@@ -1114,7 +1114,7 @@ async def main() -> None:
         await worker.run()
 ```
 
-#### Step 3: Roll out changes with the CLI
+### Step 3: Roll out changes with the CLI
 
 **Initial deployment** — start the first versioned build and make it Current:
 
@@ -1155,7 +1155,7 @@ temporal worker deployment describe-version \
 # DrainageStatus: drained  ← safe to shut down
 ```
 
-#### Upgrading at the Continue-As-New boundary
+### Upgrading at the Continue-As-New boundary
 
 Because `LoyaltyEntityWorkflow` already calls `workflow.continue_as_new()` to manage Event History, you can upgrade long-running Executions to a new build at that boundary — without patching.
 
