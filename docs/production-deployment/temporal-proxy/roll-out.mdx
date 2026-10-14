@@ -63,49 +63,24 @@ scripts, and other payload producers or consumers alongside your application Cli
 Decide whether to stop after the first stage or continue to the optional second stage. Keeping your existing encryption
 and Codec Server while leaving proxy encryption disabled is a valid final state.
 
-## Plan the network paths
+## Plan your Temporal Proxy deployment model
 
-Deploy the proxy in infrastructure you control. A sidecar or local process gives each application a loopback endpoint;
-a shared deployment gives applications a network endpoint. For a shared endpoint, configure gateway TLS and inbound
-authentication or authorization before moving traffic. The proxy's Cloud credentials do not authorize callers to use
-the gateway. See [Configure TLS](/production-deployment/temporal-proxy/configure#configure-tls) and
-[Authenticate and authorize inbound requests](/production-deployment/temporal-proxy/configure#authenticate-and-authorize-inbound-requests).
+Choose how your existing Clients and Workers will reach Proxy before changing their connections. Use the Proxy guides
+for deployment and connection details:
 
-The diagram shows the connection change. Dashed paths are the original direct connections; solid paths are the target
-connections. The Cloud UI continues to connect to Temporal Cloud, and your browser calls a Codec Server separately
-when decoding is needed.
+- [Choose a deployment model](/production-deployment/temporal-proxy/deploy-kubernetes#choose-a-deployment-model) for
+  sidecar and shared-service considerations.
+- [Configure TLS](/production-deployment/temporal-proxy/configure#configure-tls) for securing application-to-proxy and
+  proxy-to-Cloud connections, and [Route requests](/production-deployment/temporal-proxy/configure#route-requests) for
+  selecting upstream endpoints.
+- [Authenticate and authorize inbound requests](/production-deployment/temporal-proxy/configure#authenticate-and-authorize-inbound-requests)
+  and [Present credentials to upstreams](/production-deployment/temporal-proxy/configure#present-credentials-to-upstreams)
+  for configuring access to Proxy and Temporal Cloud separately.
+- [Deploy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes) for Helm configuration, Secrets, health
+  probes, shutdown, and KMS access.
 
-```mermaid
-graph LR
-    subgraph Environment[Your environment]
-        Clients[SDK Clients]
-        Workers[Workers]
-        Proxy[Temporal Proxy]
-        Codec["Codec Server<br/>if needed"]
-    end
-    subgraph Cloud[Temporal Cloud]
-        Namespace[Existing Namespace]
-    end
-    subgraph Operator[Operator device]
-        Browser["Browser<br/>Cloud UI"]
-    end
-
-    Clients -.-> Namespace
-    Workers -.-> Namespace
-    Clients --> Proxy
-    Workers --> Proxy
-    Proxy --> Namespace
-    Browser --> Namespace
-    Browser -->|HTTPS| Codec
-```
-
-With proxy encryption, the proxy sees application payloads in plaintext unless your existing Payload Codec has
-encrypted them. Keep it inside your trust boundary. Protect the application-to-proxy connection separately from the
-proxy-to-Cloud TLS connection.
-
-Provide enough proxy capacity and redundancy for Worker long polls and Client requests. In a shared deployment, losing
-the proxy interrupts every application using that endpoint. If you run proxies in multiple regions, prepare the Cloud
-connectivity and KMS access in each region and test decryption across regions before enabling encryption.
+Once you have chosen the deployment model and connection settings, deploy Proxy with encryption disabled for the first
+stage of the rollout.
 
 ## Deploy Proxy without changing payload encoding
 

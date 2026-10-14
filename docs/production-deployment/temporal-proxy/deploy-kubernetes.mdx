@@ -23,6 +23,21 @@ proxy needs: a Deployment, a Service, the ConfigMap that holds your configuratio
 HorizontalPodAutoscaler and PodDisruptionBudget. The `extraObjects` value renders additional manifests as-is, for
 example an ExternalSecret that supplies upstream credentials.
 
+## Choose a deployment model
+
+Choose whether applications connect to a proxy in their own Pod or to a shared proxy service:
+
+- **Sidecar:** add a proxy container to each Client or Worker Pod and connect through a loopback endpoint. Each
+  application's deployment controls its proxy version, configuration, and restarts. Provision resources and upstream
+  credentials for every proxy instance.
+- **Shared service:** deploy a separate proxy fleet and connect applications through its Service endpoint. Manage proxy
+  configuration and capacity centrally, secure the network connection, and plan for the applications affected by a
+  proxy disruption. The Helm chart deploys this model.
+
+For connection security, see [Configure TLS](/production-deployment/temporal-proxy/configure#configure-tls) and
+[Authenticate and authorize inbound requests](/production-deployment/temporal-proxy/configure#authenticate-and-authorize-inbound-requests).
+The sections below describe how to configure the Helm deployment.
+
 ## Supply the configuration
 
 `config` mirrors the proxy's own configuration schema. Whatever you put under it is what lands in the ConfigMap the
