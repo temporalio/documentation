@@ -23,9 +23,14 @@ proxy needs: a Deployment, a Service, the ConfigMap that holds your configuratio
 HorizontalPodAutoscaler and PodDisruptionBudget. The `extraObjects` value renders additional manifests as-is, for
 example an ExternalSecret that supplies upstream credentials.
 
-Choose CPU, memory, and replica counts using
-[Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance), then apply the Kubernetes
-settings below.
+**Recommended starting size:** For a new Temporal Proxy instance, use **4 CPUs and 12 GiB of memory**, with
+`GOMEMLIMIT=11GiB`. With payload encryption enabled, use **3,000 requests per second and 100 SDK Workers per instance**
+as initial planning limits, then validate your request mix and payload sizes. These are planning targets, not guaranteed
+capacity for every payload size. For more efficient sizing based on the features and payload sizes you use, see
+[Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance).
+
+Beyond either planning limit, add Proxy replicas behind a gRPC-compatible load balancer. Established Client connections
+do not automatically redistribute when you add replicas, so check per-replica load as well as total capacity.
 
 ## Supply the configuration
 
@@ -126,21 +131,21 @@ Set CPU and memory requests so Kubernetes reserves the capacity you used in your
 for both resources give the pod Guaranteed quality of service; a lower CPU request or no CPU limit allows bursts but
 makes capacity depend on spare node CPU. Plan from the CPU request, not potential bursts.
 
-This Helm values example uses four CPUs and a provisional 6Gi memory limit. Validate it for your workload using
-[Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance):
+This Helm values example applies the standard per-instance sizing. Add replicas for availability or additional
+capacity using [Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance):
 
 ```yaml
-replicaCount: 6
+replicaCount: 1
 env:
   - name: GOMEMLIMIT
-    value: '5400MiB'
+    value: '11GiB'
 resources:
   requests:
     cpu: '4'
-    memory: 6Gi
+    memory: 12Gi
   limits:
     cpu: '4'
-    memory: 6Gi
+    memory: 12Gi
 ```
 
 Use node allocatable CPU and memory, minus DaemonSet requests, when checking whether replicas fit. A four-CPU request

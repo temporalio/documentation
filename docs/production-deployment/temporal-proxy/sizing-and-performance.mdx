@@ -16,8 +16,19 @@ import { ReleaseNoteHeader } from '@site/src/components';
   reference results, not throughput guarantees.
 </ReleaseNoteHeader>
 
-Size Temporal Proxy for your peak request rate, payload sizes, and encryption settings, with spare capacity for
-reconnects and replica failures. Use the measurements below as starting points, then load-test your own workload.
+**Recommended starting size:** For a new Temporal Proxy instance, use **4 CPUs and 12 GiB of memory**, with
+`GOMEMLIMIT=11GiB`. With payload encryption enabled, use **3,000 requests per second and 100 SDK Workers per instance**
+as initial planning limits, then validate your request mix and payload sizes. These are planning targets, not guaranteed
+capacity for every payload size. For more efficient sizing based on the features and payload sizes you use, see
+the [measurements and sizing steps below](#compare-reference-throughput).
+
+Beyond either planning limit, add Proxy replicas behind a gRPC-compatible load balancer. Established Client connections
+do not automatically redistribute when you add replicas, so check per-replica load as well as total capacity.
+
+The 3,000-request planning target leaves 40% headroom below the measured ceiling for large encrypted payloads. The
+100-Worker target comes from small-payload tests; the report does not establish capacity for 100 Workers with large
+payloads. Load-test that combination before relying on it.
+
 For Kubernetes resource settings, placement, autoscaling, and rollouts, see
 [Deploy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes).
 

@@ -24,6 +24,15 @@ side and one or more upstream Temporal Services on the other. It handles Namespa
 optional payload encryption so your applications can target a single local endpoint while the proxy routes each request
 to the right upstream, whether that is a local development Service, a self-hosted Service, or Temporal Cloud.
 
+**Recommended starting size:** For a new Temporal Proxy instance, use **4 CPUs and 12 GiB of memory**, with
+`GOMEMLIMIT=11GiB`. With payload encryption enabled, use **3,000 requests per second and 100 SDK Workers per instance**
+as initial planning limits, then validate your request mix and payload sizes. These are planning targets, not guaranteed
+capacity for every payload size. For more efficient sizing based on the features and payload sizes you use, see
+[Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance).
+
+Beyond either planning limit, add Proxy replicas behind a gRPC-compatible load balancer. Established Client connections
+do not automatically redistribute when you add replicas, so check per-replica load as well as total capacity.
+
 ## Why use it
 
 Without the proxy, connection details leak into your application code. Every Worker and Client has to know the
