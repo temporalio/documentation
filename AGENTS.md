@@ -185,6 +185,7 @@ yarn check:metrics       # SDK metrics reference against itself; runs in CI on P
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
 yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
 yarn check:index-slugs   # docs pages whose URL ends in a slash; runs in CI on PRs
+yarn check:snipsync-markers  # SNIPSTART/SNIPEND markers Snipsync would skip; runs in CI on PRs
 yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs weekly and on checker PRs, not docs-only PRs
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
@@ -204,6 +205,11 @@ belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silen
 its folder) that has no `slug`. Vercel redirects that URL to the same path without the slash, so the page's canonical
 URL and sidebar links point at a redirect. Add the `slug` the check prints. It doesn't change the URL the page is
 served at, so it needs no redirect.
+
+`yarn check:snipsync-markers` reports a `SNIPSTART` with no `SNIPEND`, or one that closes in the other marker style
+(`<!--SNIPSTART id-->` with `{/* SNIPEND */}`, or the reverse). Snipsync warns, skips the snippet, and exits 0, so the
+code block stops refreshing. Open and close each snippet in the same style. Use the `<!--` style unless the page already
+uses `{/* */}`.
 
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't

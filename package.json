@@ -20,6 +20,7 @@
     "check:metrics:sdks": "node ./bin/check-metrics-against-sdks.js",
     "check:orphans": "node ./bin/check-orphan-pages.js",
     "check:index-slugs": "node ./bin/check-index-slugs.js",
+    "check:snipsync-markers": "node ./bin/check-snipsync-markers.js",
     "check:cloud-links": "node ./bin/check-cloud-console-links.js",
     "check:redirects": "node ./bin/validate-redirects.js",
     "check:py-samples": "node ./bin/check-python-samples.js",
