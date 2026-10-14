@@ -133,5 +133,5 @@ Worker worker = factory.newWorker("your-task-queue", options);
 With this option enabled, `heartbeat()` no longer throws `ActivityWorkerShutdownException`, so an Activity can't use that exception to detect shutdown.
 Each Activity must finish within the timeout you pass to `awaitTermination()`, or use another signal to detect shutdown.
 
-The option has no effect on `shutdownNow()`, which cancels running Activities.
+The option has no effect on `shutdownNow()`, which attempts to stop running Activities by interrupting their threads. An Activity that ignores the interrupt may keep running.
 `setAllowActivityHeartbeatDuringShutdown` is experimental and requires Java SDK v1.36.0 or later.
