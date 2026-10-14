@@ -25,6 +25,9 @@ An Activity is able to determine that the Worker it’s running on is being shut
 
 > Java - `shutdown()` followed by `awaitTermination(timeout, unit)`
 
+In the Java SDK, Activities can't Heartbeat during graceful shutdown by default. `heartbeat()` throws `ActivityWorkerShutdownException` instead.
+See [Heartbeat during shutdown](/develop/java/workers/run-worker-process#heartbeat-during-shutdown) to change this.
+
 ### Workflow tasks
 
 Any in-flight Workflow Tasks are (attempted to be) completed.
