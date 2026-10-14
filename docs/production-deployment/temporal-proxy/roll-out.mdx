@@ -19,10 +19,15 @@ import { ReleaseNoteHeader } from '@site/src/components';
   features.
 </ReleaseNoteHeader>
 
-Add Temporal Proxy in two stages: first move your Clients and Workers onto the proxy without changing how they encode
-payloads, then enable proxy encryption if you want the proxy to manage it. Keep the same Temporal Cloud Namespace,
-Task Queues, and Workflow IDs. Existing Workflow Executions continue in that Namespace; this rollout does not copy or
-restart them.
+We recommend a rollout with two stages:
+
+1. **First stage: connect through Proxy.** Move your Clients and Workers onto the proxy without changing how they
+   encode payloads.
+2. **Second stage: enable Proxy encryption (optional).** Prepare readers and Codec Server paths, then enable proxy
+   encryption if you want the proxy to manage it.
+
+Keep the same Temporal Cloud Namespace, Task Queues, and Workflow IDs through both stages. Existing Workflow
+Executions continue in that Namespace; this rollout does not copy or restart them.
 
 This guide assumes you already have Clients and Workers connected to Temporal Cloud. Use
 [Configure the proxy](/production-deployment/temporal-proxy/configure) for configuration details and
@@ -38,7 +43,7 @@ payloads. It is a separate connection from the gRPC connection to Temporal Cloud
 If your applications call a remote codec, include that service in the inventory too. Adding Proxy does not automatically
 replace those calls or import the service's codec logic and keys.
 
-| Current setup | First rollout stage | If you enable proxy encryption later |
+| Current setup | First stage: connect through Proxy | Second stage: enable Proxy encryption (optional) |
 | --- | --- | --- |
 | No payload encryption and no Codec Server | Change connections; keep your existing Data Converters. | Prepare all readers for proxy-encrypted data and provide a Codec Server for the Cloud UI and direct CLI access. |
 | SDK encryption, without a Codec Server | Keep the SDK codecs and keys while changing connections. | Preserve legacy decoding in the SDKs; provide an HTTP decoder that understands both formats if operators need to inspect them. |
@@ -48,7 +53,7 @@ Record the Cloud endpoint and full Namespace name, authentication method, Task Q
 metadata, and keys used by retained history. Include Schedule actions, asynchronous Activity completion processes,
 administrative scripts, and other payload producers or consumers alongside your application Clients and Workers.
 
-Decide whether you want Proxy only for routing and credentials, or also for encryption. Keeping SDK encryption and
+Decide whether to stop after the first stage or continue to the optional second stage. Keeping SDK encryption and
 leaving proxy encryption disabled is a valid final state.
 
 ## Plan the network paths
@@ -97,8 +102,9 @@ connectivity and KMS access in each region and test decryption across regions be
 
 ## Deploy Proxy without changing payload encoding
 
-Start with encryption disabled. Preserve the full Cloud Namespace name in applications and omit Namespace translation
-for this stage. This avoids changing both connection settings and Namespace names at once.
+For the first stage, deploy Proxy with encryption disabled. Preserve the full Cloud Namespace name in applications
+and omit Namespace translation for this stage. This avoids changing both connection settings and Namespace names at
+once.
 
 For a local proxy, save the following as `config.yaml`. Set `TEMPORAL_CLOUD_ADDRESS` to your existing Cloud endpoint,
 including port `7233`, and supply `TEMPORAL_API_KEY` through your secret management system. The API key must have access
@@ -139,7 +145,7 @@ credentials.
 
 ## Move Clients and Workers in batches
 
-Move a test Client and Worker first, then expand one deployment at a time:
+Continue the first stage by moving a test Client and Worker onto the proxy, then expand one deployment at a time:
 
 1. Change the SDK connection address to the proxy endpoint. For the loopback example, use `127.0.0.1:7233`, disable
    Cloud-specific TLS on that local connection, and remove the Cloud API key or Cloud client certificate from that
@@ -159,14 +165,16 @@ prove that Cloud authentication, routing, or payload decoding works; exercise an
 Worker capacity available throughout the rollout. See
 [Shut down cleanly](/production-deployment/temporal-proxy/deploy-kubernetes#shut-down-cleanly) for proxy restarts.
 
-Stop here if you want to keep your current encryption setup. If you want proxy encryption, complete the reader and
-Codec Server preparation below before any proxy begins encrypting new payloads.
+This completes the first stage. Stop here if you want to keep your current encryption setup. To continue to the
+optional second stage, complete the reader and Codec Server preparation below before any proxy begins encrypting new
+payloads.
 
 ## Prepare every reader for proxy encryption
 
-Configure the same KMS key policies and decrypt permissions on every proxy that serves the Namespace, initially with
-`enabled: false`. Add this fragment to the existing configuration after provisioning your key and granting the proxy
-identity access. Replace the example AWS key ARN with your own; other providers are described in
+Begin the optional second stage by configuring the same KMS key policies and decrypt permissions on every proxy that
+serves the Namespace, initially with `enabled: false`. Add this fragment to the existing configuration after
+provisioning your key and granting the proxy identity access. Replace the example AWS key ARN with your own; other
+providers are described in
 [Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads).
 
 ```yaml
@@ -219,8 +227,9 @@ order. Avoid introducing this extra layer unless you have tested the complete de
 
 ## Preserve Cloud UI and CLI access
 
-Prepare the HTTP decode path before enabling encryption. The hosted Cloud UI does not use your proxy's gRPC gateway.
-Your browser retrieves encrypted history from Cloud and sends payloads to the configured Codec Server for decoding.
+As part of the second stage, prepare the HTTP decode path before enabling encryption. The hosted Cloud UI does not
+use your proxy's gRPC gateway. Your browser retrieves encrypted history from Cloud and sends payloads to the configured
+Codec Server for decoding.
 
 If you have no existing Codec Server, you can use Proxy's built-in Codec Server for proxy-encrypted payloads. It serves
 HTTP on a separate listener from the gRPC gateway. The following fragment uses the current `http.codecServer` schema;
@@ -271,8 +280,9 @@ with any remaining legacy SDK decoders.
 
 ## Enable encryption and validate the transition
 
-Enable encryption in a test Namespace first. For the existing Namespace, proceed only after every proxy can decrypt
-the configured keys, every application reader is compatible, and operators can decode both old and new history.
+Complete the optional second stage by enabling encryption in a test Namespace first. For the existing Namespace,
+proceed only after every proxy can decrypt the configured keys, every application reader is compatible, and operators
+can decode both old and new history.
 
 Set `encryption.enabled: true` and restart proxies in batches. Keep the key policy and any tested `skipEncodings`
 settings. During this restart, decrypt-only replicas can read the enabled replicas' output, but still write payloads
@@ -305,12 +315,12 @@ part of the encryption design.
 
 ## Roll back without losing access to history {/* #roll-back */}
 
-Before any proxy-encrypted data is written, you can restore the previous direct Cloud connections and Cloud
-credentials while keeping your original SDK codecs.
+Before you write any proxy-encrypted data in the second stage, you can restore the previous direct Cloud connections
+and Cloud credentials while keeping your original SDK codecs.
 
-After proxy-encrypted data is written, keep a compatible decryption path. Restore the previous application release
-against the proxy, or set `encryption.enabled: false` to stop new proxy encryption while keeping key policies and KMS
-decrypt access. If `encryption.failures` is enabled, turn it off too. Restart the proxies and verify both old and new
+After you write proxy-encrypted data in the second stage, keep a compatible decryption path. Restore the previous
+application release against the proxy, or set `encryption.enabled: false` to stop new proxy encryption while keeping
+key policies and KMS decrypt access. If `encryption.failures` is enabled, turn it off too. Restart the proxies and verify both old and new
 history remain readable. Disabling encryption does not decrypt stored history.
 
 Do not reconnect applications directly to Cloud unless they can decode every stored format. If you disabled SDK
