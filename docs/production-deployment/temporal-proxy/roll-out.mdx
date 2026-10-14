@@ -20,7 +20,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 </ReleaseNoteHeader>
 
 This guide is for teams with Clients and Workers already connected to Temporal Cloud and a separate Codec Server for
-UI and CLI payload encoding and decoding. It describes how to insert Temporal Proxy into that existing architecture,
+payload encoding and decoding. It describes how to insert Temporal Proxy into that existing architecture,
 move payload encryption to Proxy, and replace the separate Codec Server while retaining access to existing history.
 
 We recommend a migration with two stages:
@@ -34,15 +34,16 @@ Executions continue in that Namespace; this rollout does not copy or restart the
 Use [Configure the proxy](/production-deployment/temporal-proxy/configure) for configuration details and
 [Deploy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes) for Helm installation and secrets.
 
-## Identify your current encryption setup
+## Why to move from a Payload Codec to Temporal Proxy
 
-Check the Data Converter configuration in every Client and Worker, rather than inferring it from whether you have a
-Codec Server. A [Payload Codec](/payload-codec) normally encrypts data inside your SDK applications. A
-[Codec Server](/codec-server) exposes that codec over HTTP so the Web UI and CLI can encode inputs and decode stored
-payloads. It is a separate connection from the gRPC connection to Temporal Cloud.
+Existing architectures commonly use a [Payload Codec](/payload-codec) to encrypt and transform data inside SDK applications.
+A [Codec Server](/codec-server) exposes that codec over HTTP so the Web UI and CLI can encode inputs and decode stored
+payloads. 
 
-If your applications call a remote codec, include that service in the inventory too. Adding Proxy does not automatically
-replace those calls or import the service's codec logic and keys.
+Temporal Proxy can handle these concerns in the connection path, replacing the need for a Payload Codec and a Codec Server. 
+Many platform teams find it easier to operate Temporal Proxy than a Codec Server, since a proxy can offer more features--such
+as auth and routing--and prevent developer misconfiguration. Developers find it easier to connect Workers and gRPC Clients
+transparently to Temporal Proxy rather than using the Payload Codec in their code.
 
 | Current setup | First stage: connect through Proxy | Second stage: enable Proxy encryption (optional) |
 | --- | --- | --- |
@@ -58,13 +59,6 @@ ciphertext and the payloads Proxy returns after decryption. Keep the legacy deco
 history. Without a Codec Server, the Cloud UI cannot decode those encrypted payloads.
 
 :::
-
-Record the Cloud endpoint and full Namespace name, authentication method, Task Queues, payload encoding metadata, and
-keys used by retained history. Include Schedule actions, asynchronous Activity completion processes, administrative
-scripts, and other payload producers or consumers alongside your application Clients and Workers.
-
-Decide whether to stop after the first stage or continue to the optional second stage. Keeping your existing encryption
-and Codec Server while leaving proxy encryption disabled is a valid final state.
 
 ## Plan your Temporal Proxy deployment model
 
@@ -85,7 +79,7 @@ for deployment and connection details:
 Once you have chosen the deployment model and connection settings, deploy Proxy with encryption disabled for the first
 stage of the rollout.
 
-## Deploy Proxy without changing payload encoding
+## Phase 1: Deploy Proxy without changing payload encoding
 
 For the first stage, deploy Proxy with encryption disabled. Preserve the full Cloud Namespace name in applications
 and omit Namespace translation for this stage. This avoids changing both connection settings and Namespace names at
@@ -156,7 +150,7 @@ encrypting new payloads. To replace a separate Codec Server, follow
 
 ## Prepare every reader for proxy encryption
 
-Begin the optional second stage by configuring the same KMS key policies and decrypt permissions on every proxy that
+Begin the second stage by configuring the same KMS key policies and decrypt permissions on every proxy that
 serves the Namespace, initially with `enabled: false`. Add this fragment to the existing configuration after
 provisioning your key and granting the proxy identity access. Replace the example AWS key ARN with your own; other
 providers are described in
