@@ -23,12 +23,6 @@ proxy needs: a Deployment, a Service, the ConfigMap that holds your configuratio
 HorizontalPodAutoscaler and PodDisruptionBudget. The `extraObjects` value renders additional manifests as-is, for
 example an ExternalSecret that supplies upstream credentials.
 
-**Recommended starting size:** For a Temporal Proxy instance that applies payload encryption for all payload sizes,
-use **4 CPUs and 12 GiB of memory**, with `GOMEMLIMIT=11GiB`, and plan for each instance to handle up to
-**3,000 requests per second and 100 SDK Workers**. Scale beyond these limits by adding more Proxy replicas (instances)
-behind a gRPC-compatible load balancer. For more efficient sizing based on the features and payload sizes you use, see
-[Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance).
-
 ## Supply the configuration
 
 `config` mirrors the proxy's own configuration schema. Whatever you put under it is what lands in the ConfigMap the
@@ -122,121 +116,11 @@ Keep upstream `name` values DNS-safe, meaning lowercase alphanumeric characters 
 name from them. To manage certificate files yourself instead, skip `secretName` and mount them with the chart's generic
 `volumes` and `volumeMounts` values.
 
-## Configure capacity
+## Probe the gateway
 
-Set CPU and memory requests so Kubernetes reserves the capacity you used in your load test. Equal requests and limits
-for both resources give the pod Guaranteed quality of service; a lower CPU request or no CPU limit allows bursts but
-makes capacity depend on spare node CPU. Plan from the CPU request, not potential bursts.
-
-This Helm values example applies the standard per-instance sizing. Add replicas for availability or additional
-capacity using [Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance):
-
-```yaml
-replicaCount: 1
-env:
-  - name: GOMEMLIMIT
-    value: '11GiB'
-resources:
-  requests:
-    cpu: '4'
-    memory: 12Gi
-  limits:
-    cpu: '4'
-    memory: 12Gi
-```
-
-Use node allocatable CPU and memory, minus DaemonSet requests, when checking whether replicas fit. A four-CPU request
-generally cannot fit on a four-vCPU node because some capacity is reserved for the system. Reserve an additional pod
-slot if your rollout strategy uses a surge replica.
-
-To tolerate zone loss, spread replicas across zones with `topologySpreadConstraints`, using
-`topology.kubernetes.io/zone`, `maxSkew: 1`, and `whenUnsatisfiable: DoNotSchedule`. Match the selector to your release's
-pod labels. The chart does not expose this field; add it with a post-renderer or manage the Deployment directly.
-
-## Configure autoscaling
-
-Size for peak traffic and use a HorizontalPodAutoscaler (HPA) as a safety net. New replicas receive new connections but
-do not draw established connections away from a saturated replica. Average CPU can hide a hot pod, so monitor each pod.
-
-Start with CPU utilization against the request, a 65% target, and a minimum replica count that meets your peak sizing.
-Avoid memory-based scaling because resident set size (RSS) can stay high after traffic falls. These values work with chart 0.2.1:
-
-```yaml
-autoscaling:
-  enabled: true
-  minReplicas: 6
-  maxReplicas: 12
-  targetCPUUtilizationPercentage: 65
-  targetMemoryUtilizationPercentage: null
-```
-
-Choose the replica bounds from your capacity plan and upstream limits. With `autoscaling.enabled: true`, the chart omits
-Deployment `replicas`, so Helm upgrades do not reset the HPA's count. If you create an HPA yourself while that setting is
-false, remove `replicas` with a post-renderer.
-
-Scale down slowly, one pod at a time, because removing a loaded pod forces its Clients to reconnect. The chart source
-on `main` supports `autoscaling.behavior`; chart 0.2.1 needs a post-renderer to add HPA behavior. If you need to
-redistribute traffic, test and stagger Client reconnects rather than restarting all Clients together.
-
-## Control rollouts and disruptions
-
-Keep spare capacity during rolling upgrades. Use `maxSurge: 1` and `maxUnavailable: 0` when a node has room for a full
-replacement pod. Use `maxSurge: 0` and `maxUnavailable: 1` only when your replica count includes a spare and no surge
-slot is available. Both depend on readiness detecting a faulty replacement; a TCP probe cannot detect every failure.
-
-The chart source on `main` exposes the following settings. Published chart 0.2.1 does not render `strategy`,
-`minReadySeconds`, `terminationGracePeriodSeconds`, or `lifecycle`; add those fields through a post-renderer or manage
-the Deployment directly. This example waits 30 seconds after readiness before continuing the rollout:
-
-```yaml
-strategy:
-  type: RollingUpdate
-  rollingUpdate:
-    maxSurge: 1
-    maxUnavailable: 0
-minReadySeconds: 30
-terminationGracePeriodSeconds: 60
-lifecycle:
-  preStop:
-    sleep:
-      seconds: 15
-podDisruptionBudget:
-  maxUnavailable: 1
-```
-
-A PodDisruptionBudget limits voluntary evictions such as node drains. It does not govern Deployment rollouts or prevent
-node failures. Limit voluntary node disruption during busy periods: pod moves can cause several minutes of reconnects
-and uneven traffic. Use your node autoscaler's disruption controls and validate pod-loss recovery under load.
-
-For slow startup, add a TCP `startupProbe` through a post-renderer; the chart does not expose it. This delays liveness
-checks during initialization but cannot make an unreachable dependency available.
-
-### Probe the gateway
-
-The chart passes `livenessProbe` and `readinessProbe` through to the container as written. Published chart 0.2.1 defaults
-to HTTP GET probes, which the gRPC listener does not answer. The chart source on `main` uses TCP socket probes instead.
-Override the probes in chart 0.2.1 with the following values. The named `http` port is the gateway's gRPC port despite
-its name:
-
-```yaml
-livenessProbe:
-  tcpSocket:
-    port: http
-  periodSeconds: 10
-  failureThreshold: 6
-readinessProbe:
-  tcpSocket:
-    port: http
-  periodSeconds: 5
-  failureThreshold: 2
-```
-
-The listener opens after startup dependencies have connected, so a TCP probe detects an uninitialized or stopped
-process. It does not validate TLS certificates, upstream or KMS reachability after startup, or whether requests can
-complete. Monitor those separately. Keep liveness independent of upstream and KMS availability so an outage does not
-trigger repeated restarts.
-
-For a plaintext gateway, a Kubernetes gRPC probe can also read the standard health service:
+The gateway serves the standard gRPC health service, so a Kubernetes gRPC probe can read it directly. The chart passes
+`livenessProbe` and `readinessProbe` through to the container as written, and its defaults are HTTP GETs against the
+gateway port, which a gRPC listener does not answer:
 
 ```yaml
 livenessProbe:
@@ -258,39 +142,18 @@ interceptor chain every forwarded request travels, and your probe proves the gat
 completes a handshake, which the internal check deliberately skips.
 
 Kubernetes gRPC probes connect in plaintext, so they cannot reach a gateway that terminates TLS. When `config.tls` is
-set, use a TCP probe for listener readiness and monitor successful TLS requests separately. The default scratch-based
-image has no shell or probe executable, so an exec probe requires a custom image that supplies one.
+set, probe the proxy some other way, such as an exec probe running a client that presents the right certificate.
 
-### Shut down cleanly
+## Shut down cleanly
 
-On `SIGTERM` the proxy reports `NOT_SERVING` and drains in-flight RPCs. The gateway's default drain timeout is five
-seconds, and the whole stop sequence is bounded at 30 seconds. Long-poll methods
+On `SIGTERM` the proxy stops accepting connections and drains in-flight RPCs. Each serving tier, meaning the gateway and
+each upstream proxy, drains within five seconds, and the whole stop sequence is bounded at 30 seconds. Long-poll methods
 block for much longer than that, so a rollout normally cuts some of them short: the proxy logs a warning naming the
 deadline that ended the drain and still exits zero, because the callers re-poll. Treat that warning as ordinary on a
 restart rather than a failed shutdown.
 
-Allow time for Kubernetes to remove the pod from Service endpoints before shutdown. The rollout example uses a native
-15-second `preStop` sleep and `terminationGracePeriodSeconds: 60`, covering the delay plus the proxy's shutdown budget.
-The sleep handler is enabled by default in Kubernetes 1.30 and later; verify support before using it. The default image
-has no `sleep` binary, so an exec hook that runs `sleep` does not work.
-
-## Monitor the deployment
-
-Configure your scraper to reach `/metrics` on `metrics.hostPort`, default `:9090`. The chart does not declare a metrics
-container port or create a PodMonitor. See the [metric definitions](/production-deployment/temporal-proxy#observability)
-and [capacity queries](/production-deployment/temporal-proxy/sizing-and-performance#measure-your-workload).
-
-Monitor per-pod CPU, RSS, request rates, errors, and restarts. Investigate sustained CPU throttling or uneven traffic,
-even when average utilization looks healthy. Watch KMS errors, cache misses, and DEK rotation when encryption is enabled.
-A TCP probe cannot detect a pod that accepts connections but no longer completes requests.
-
-During an upstream, KMS, or extension-server outage, avoid unnecessary restarts, evictions, and rollouts. Static
-upstreams and extension servers must connect during startup; failure to open a configured KMS key also prevents
-startup, including decrypt-only keys. Cloud KMS providers determine which checks occur when a key is opened. Running
-pods can use cached DEKs for some requests, but rotation and cache misses still need KMS access.
-
-Restrict access to metrics and avoid unbounded request metadata labels. Never expose credentials as labels. See the
-[metrics configuration](/production-deployment/temporal-proxy#observability) for label controls.
+An ordinary drain finishes in about five seconds, well inside the Kubernetes default `terminationGracePeriodSeconds`
+of 30.
 
 ## Grant access to your KMS key
 

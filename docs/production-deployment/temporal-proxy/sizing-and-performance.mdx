@@ -115,7 +115,7 @@ zones leave four survivors, each handling 7,500 requests per second, about 71% o
 **Check load on each replica.** Long-lived Client connections do not redistribute automatically when you add a replica.
 One test left two replicas carrying 99.6% and 0.4% of requests after a rollout. A few high-traffic Clients can overload
 one replica while others remain idle. Provision for peak traffic rather than relying on autoscaling to relieve a hot
-replica; see [Configure autoscaling](/production-deployment/temporal-proxy/deploy-kubernetes#configure-autoscaling).
+replica.
 
 Adding proxy replicas does not increase [Temporal Cloud Namespace limits](/evaluate/cloud/limits).
 Likewise, a request exceeding the proxy's 4 MiB receive limit needs smaller payloads, not more replicas.
