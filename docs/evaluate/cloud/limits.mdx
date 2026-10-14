@@ -46,13 +46,19 @@ The following limits apply at the Temporal Cloud Account level (per account).
   - Automatically increased as you start creating Namespaces
   - [Contact support](/evaluate/cloud/support#support-ticket) for large-scale needs
 
+### Connectivity Rules
+
+- Scope: Account
+- Default limit: 50 private Connectivity Rules. The Default Project uses this Account limit and can have one public Connectivity Rule.
+- How to increase: [Contact support](/evaluate/cloud/support#support-ticket)
+
 ## Project level {/* #project-level */}
 
 <ReleaseNoteHeader
   featureName="projects"
 />
 
-The following limits apply at the Project level for any new Project created. The Default Project uses the Account-level resource limits rather than the per-Project defaults shown above. For example, the Default Project inherits the Account's Namespace quota and Account-level limits for Service Accounts, Nexus Endpoints, and Connectivity Rules.
+The following limits apply at the Project level for any new Project created. A Project's Namespace and Connectivity Rule limits apply within the Account limits above. A Project cannot exceed the Account limit. The Default Project uses the Account-level resource limits rather than these per-Project defaults. For example, the Default Project inherits the Account's Namespace quota and Account-level limits for Service Accounts, Nexus Endpoints, and Connectivity Rules.
 
 ### Namespaces and Project-scoped Service accounts
 
@@ -68,8 +74,9 @@ The following limits apply at the Project level for any new Project created. The
 
 ### Connectivity rules
 
-- Scope: Project. Each non-default Project supports up to one Public Connectivity Rule.
+- Scope: Project. Rules in a Project count toward the Account Connectivity Rule limit. The Project limit cannot exceed the Account limit.
 - Default: 6
+- Each non-default Project supports up to one public Connectivity Rule. That rule is separate from the Default Project's public Connectivity Rule, and it still counts toward the Account limit.
 - How to increase: [Contact support](/evaluate/cloud/support#support-ticket)
 
 ## Namespace level

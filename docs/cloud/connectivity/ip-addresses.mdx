@@ -91,7 +91,7 @@ After the rule exists, attach it to a Namespace with [`temporal cloud namespace 
 
 To enable Stable IPs:
 
-1. Create a public Connectivity Rule with Stable IPs enabled: `temporal cloud connectivity public create --enable-stable-ips`. Only one public Connectivity Rule exists per account, so if you already have one without Stable IPs enabled, delete and recreate it. See [How to enable Stable IPs with curl](#how-to-enable-stable-ips-with-curl) for a Cloud Ops API alternative.
+1. Create a public Connectivity Rule with Stable IPs enabled: `temporal cloud connectivity public create --enable-stable-ips`. Each Project can have one public Connectivity Rule. The Default Project uses the Account-level public rule. If this Project already has a public rule without Stable IPs, delete and recreate that rule. A public rule in another Project can stay. The new rule counts toward the Account's Connectivity Rule limit. See [Limits](/evaluate/cloud/limits#project-level) and [How to enable Stable IPs with curl](#how-to-enable-stable-ips-with-curl).
 2. Attach the rule to your Namespace: `temporal cloud namespace connectivity attach --namespace <namespace>.<account> --connectivity-rule-id <rule-id>`.
 3. Retrieve the list of Stable IPs from the [public JSON file](/cloud/connectivity/ip-addresses#how-to-view-stable-ip-ranges).
 4. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region.
@@ -127,7 +127,7 @@ H_AUTH="Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY"
 
 **Step 1. Create a public Connectivity Rule with Stable IPs enabled.**
 
-Only one public Connectivity Rule exists per account. If your account already has one, update or recreate that rule with Stable IPs enabled rather than creating a second.
+Each Project can have one public Connectivity Rule. The Default Project uses the Account-level public rule. If this Project already has a public rule, recreate that rule with Stable IPs enabled. A public rule in another Project is separate, and you do not need to delete it. The new rule counts toward the Account's Connectivity Rule limit. See [Limits](/evaluate/cloud/limits#project-level).
 
 Creating the rule returns both the new rule's ID and an async operation that tracks activation:
 
@@ -163,7 +163,7 @@ curl -sS "https://saas-api.tmprl.cloud/cloud/connectivity-rules" \
   jq '.connectivityRules[] | {id, state, spec}'
 ```
 
-The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`. This also shows you whether the account already has a public rule, which matters because only one is allowed.
+The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`. This also shows you whether this Project already has a public rule. Each Project can have one. The Default Project uses the Account-level public rule.
 
 **Step 2. Attach the rule to the Namespace.**
 
@@ -231,7 +231,7 @@ PROTO_FLAGS=(-import-path ./api-cloud -import-path ./proto -proto temporal/api/c
 
 **Step 1. Create a public Connectivity Rule with Stable IPs enabled.**
 
-Only one public Connectivity Rule exists per account. If your account already has one, update or recreate that rule with Stable IPs enabled rather than creating a second.
+Each Project can have one public Connectivity Rule. The Default Project uses the Account-level public rule. If this Project already has a public rule, recreate that rule with Stable IPs enabled. A public rule in another Project is separate, and you do not need to delete it. The new rule counts toward the Account's Connectivity Rule limit. See [Limits](/evaluate/cloud/limits#project-level).
 
 Creating the rule returns both the new rule's ID and an async operation that tracks activation:
 
@@ -272,7 +272,7 @@ grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
   jq '.connectivityRules[] | {id, state, spec}'
 ```
 
-The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`. This also shows you whether the account already has a public rule, which matters because only one is allowed.
+The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`. This also shows you whether this Project already has a public rule. Each Project can have one. The Default Project uses the Account-level public rule.
 
 **Step 2. Attach the rule to the Namespace.**
 
@@ -416,20 +416,20 @@ Two things do not change in this migration:
 **Prerequisites:**
 
 - Note your existing private (PrivateLink) Connectivity Rule ID — you'll keep it attached during the overlap window.
-- Check whether your account already has a public Connectivity Rule. Only one is allowed per account; if one exists without Stable IPs enabled, you'll need to delete and recreate it (see [Permissions and limits](/cloud/connectivity#permissions-and-limits)).
+- Check whether this Project already has a public Connectivity Rule. Each Project can have one. The Default Project uses the Account-level public rule. If this Project already has a public rule without Stable IPs, delete and recreate that rule. A public rule in another Project does not block this. See [Permissions and limits](/cloud/connectivity#permissions-and-limits).
 - Confirm that the VPCs and security groups that host your Workers and Temporal Clients allow egress to the Stable IP ranges on port `443`. If your egress is currently locked down to the PrivateLink VPC endpoint, you must expand it first.
 
 **Steps:**
 
 1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from [https://docs.temporal.io/json/stable-ip-ranges-prod.json](/json/stable-ip-ranges-prod.json) and add them to your egress allowlist before changing anything else. If you skip this step, traffic will be lost.
 
-2. **Create the account's public Connectivity Rule with Stable IPs enabled.** Use the Temporal CLI:
+2. **Create a public Connectivity Rule with Stable IPs enabled in the Namespace's Project.** Use the Temporal CLI:
 
    ```command
    temporal cloud connectivity public create --enable-stable-ips
    ```
 
-   If you already have a public Connectivity Rule without Stable IPs, delete and recreate it — there is no in-place update flag, and creating a second public rule returns an error. Wait for the rule to reach `ACTIVE` before continuing.
+   If that Project already has a public Connectivity Rule without Stable IPs, delete and recreate it. There is no in-place update flag, and creating a second public rule in the same Project returns an error. A public rule in another Project can stay. Wait for the rule to reach `ACTIVE` before continuing.
 
 3. **Attach the public rule to the Namespace.** Keep the existing private rule attached during the overlap window, then add the public rule:
 
