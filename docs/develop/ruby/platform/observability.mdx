@@ -32,7 +32,7 @@ Metrics can be scraped by systems like Prometheus, and graphs can be created usi
 
 Metrics in Ruby are configured on the `metrics` argument of the `telemetry` argument when creating a global `Temporalio::Runtime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
 
-## Set a Prometheus endpoint
+### Set a Prometheus endpoint
 
 The following example exposes a Prometheus endpoint on port `9000`.
 
@@ -216,7 +216,7 @@ end
 
 ### Set Custom Search Attributes {/* #custom-search-attributes */}
 
-After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 To set custom Search Attributes, use the `search_attributes` parameter for `start_workflow` or `execute_workflow`.
 Keys should be predefined for reuse.
