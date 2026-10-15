@@ -213,7 +213,7 @@ A move changes which Project contains the Namespace and recalculates Project-lev
 
 The move preserves explicit Namespace roles. Once the Namespace is in the destination Project, a user with Project Admin there already has Namespace Admin access. An explicit Namespace Admin, Write, or Read role on that same Namespace creates a role validation conflict.
 
-Role-precedence validation rejects a redundant lower-scope role when a broader-scope role already grants equal or greater access. A Project Admin cannot also have an explicit Namespace role on a Namespace in that Project. This keeps role assignments aligned with effective access. The Cloud UI removes redundant Namespace roles during an Account-role upgrade. A Namespace move does not do that cleanup.
+[Role precedence](#role-precedence) rejects this overlap. A Project Admin cannot also have an explicit Namespace role on a Namespace in that Project. The Cloud UI removes redundant Namespace roles during an Account-role upgrade. A Namespace move does not do that cleanup.
 
 The move itself succeeds. The next update to that user fails validation while the overlapping Namespace role remains. The error reports a conflicting role. Remove the Namespace-level role, keep the Project Admin role on the destination Project, and the update succeeds.
 
@@ -427,9 +427,32 @@ Project Developer is a compatibility role that is automatically inherited by use
 
 :::
 
-A principal automatically inherits a Project-level access from their Account-level role. For example, a Global Admin automatically inherits the Project Admin access for every Project in the Account. 
+A principal automatically inherits a Project-level access from their Account-level role. For example, a Global Admin automatically inherits the Project Admin access for every Project in the Account.
 
 Project-level permissions are additive. Granting a Project-level role does not reduce permissions inherited from Account-level or Namespace-level roles. A principal's effective permissions are the union of all applicable Account-, Project-, and Namespace-level role assignments.
+
+### Role precedence {/* #role-precedence */}
+
+Role-precedence validation rejects a redundant lower-scope role when a broader-scope role already grants equal or greater access. This keeps role assignments aligned with effective access.
+
+When the principal's Account role is:
+
+| Existing Account role | Project role you can assign |
+| --- | --- |
+| Account Owner or Global Admin | None. These roles already include Project Admin on every Project. |
+| Developer | Project Admin, Project Write, Project Read, or Project Contribute. |
+| Finance Admin or Read-Only | Any Project role. |
+
+When the principal's Project role is:
+
+| Existing Project role | Namespace role you can assign in that Project |
+| --- | --- |
+| Project Admin | None. Project Admin already includes Namespace Admin on every Namespace in the Project. |
+| Project Write | Namespace Admin. |
+| Project Read | Namespace Admin or Namespace Write. |
+| Project Contribute, Project List, or Project Member | Any Namespace role. |
+
+The Cloud UI removes redundant Namespace roles when you upgrade an Account role. A [Namespace move](#move-a-namespace) does not. After a move, remove an explicit Namespace role that overlaps with Project Admin on the destination Project before you update that user again.
 
 ## Modify an existing Project
 
