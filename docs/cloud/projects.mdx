@@ -209,6 +209,16 @@ A move changes which Project contains the Namespace and recalculates Project-lev
 - Access that comes only from the source Project does not carry over. A role on the destination Project applies after the move.
 - Project-scoped Service Accounts remain in their Project. A Service Account scoped to the source Project does not move with the Namespace.
 
+### Resolve overlapping roles after the move
+
+The move preserves explicit Namespace roles. Once the Namespace is in the destination Project, a user with Project Admin there already has Namespace Admin access. An explicit Namespace Admin, Write, or Read role on that same Namespace creates a role validation conflict.
+
+Role-precedence validation rejects a redundant lower-scope role when a broader-scope role already grants equal or greater access. A Project Admin cannot also have an explicit Namespace role on a Namespace in that Project. This keeps role assignments aligned with effective access. The Cloud UI removes redundant Namespace roles during an Account-role upgrade. A Namespace move does not do that cleanup.
+
+The move itself succeeds. The next update to that user fails validation while the overlapping Namespace role remains. The error reports a conflicting role. Remove the Namespace-level role, keep the Project Admin role on the destination Project, and the update succeeds.
+
+As soon as the move completes, update each affected user to remove their explicit role on the moved Namespace. Keep their Project Admin role on the destination Project. Submit this role cleanup before any other update to that user.
+
 Running Workflows continue, but subsequent requests from workers or clients that relied on source-Project access can fail authorization. Review the identities used by your workers, clients, and automation before moving a production Namespace. See [Manage Project access](#manage-project-access).
 
 The destination Project must be operational and under its Namespace limit. The Namespace must be active. A suspended Namespace, a Namespace that is still updating, or a Namespace with a migration in progress cannot be moved.
@@ -220,7 +230,8 @@ If **Move to Project** is not available, [contact Support](/evaluate/cloud/suppo
 1. Confirm that you are an Account Owner or Global Admin, or a Project Admin on both Projects.
 2. Find the source and destination Project IDs in **Project Settings**, or run `temporal cloud project list`.
 3. Grant any destination-Project roles that workers, clients, and administrators need after the move.
-4. Check the Namespace's [Connectivity Rules](/cloud/connectivity). A rule belongs to a Project and does not move with the Namespace. Create the replacement rules in the destination Project before the move.
+4. Identify users who will have Project Admin on the destination Project and an explicit role on the Namespace. Plan to remove those Namespace roles immediately after the move completes. Keep them in place until then so existing automations retain their access.
+5. Check the Namespace's [Connectivity Rules](/cloud/connectivity). A rule belongs to a Project and does not move with the Namespace. Create the replacement rules in the destination Project before the move.
 
 A Namespace with no Connectivity Rules accepts connections without rule-based network restrictions. Detach rules only when that is the intended result.
 
@@ -305,6 +316,8 @@ temporal cloud async-operation await \
 ### Verify the move
 
 Confirm that the Namespace is in the destination Project and has the Connectivity Rules you intended. Test the identities used by your workers and clients, including any that previously relied on a source-Project role or a Project-scoped Service Account.
+
+After the move completes, remove each affected user's explicit role on the moved Namespace. Confirm their Project Admin role on the destination Project remains assigned. If roles are managed through automation, update that automation so it does not restore the Namespace role.
 
 ## Use Nexus across Projects {/* #use-nexus-across-projects */}
 
