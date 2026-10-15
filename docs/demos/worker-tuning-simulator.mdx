@@ -1,0 +1,38 @@
+---
+id: worker-tuning-simulator
+title: Worker tuning simulator
+sidebar_label: Worker tuning simulator
+slug: /demos/worker-tuning-simulator
+description: Change Poller, Slot, Workflow cache, CPU, memory, and I/O settings on a simulated Worker and watch Task throughput and Task Queue backlog respond.
+hide_table_of_contents: true
+tags:
+  - Workers
+  - Performance
+---
+
+This simulator shows how Worker settings affect Task throughput and Task Queue backlog.
+It models Pollers, Slots, the Workflow cache, and CPU, memory, and I/O capacity on a Worker, and runs entirely in your browser.
+
+The simulator is a teaching tool.
+It doesn't connect to Temporal, read metrics from your Workers, or recommend production settings.
+The numbers show relative behavior, so use them to see which limit a Worker hits first, not to size a real deployment.
+
+Press **Start continuous** to begin generating Workflows, then change a setting while the simulation runs.
+The page works best on a desktop-width screen.
+
+import { WorkerTuningSimulator } from '@site/src/components';
+
+<WorkerTuningSimulator />
+
+## What to try
+
+Use the **Preset** menu to load a scenario that is limited by one resource, run it until a backlog builds, then open **Custom settings** and raise the limit the preset names.
+Each preset starts with Task Queue backlog in a different place:
+
+- **Poller constrained**: Few Pollers for the Workflow Task rate. Add Pollers and watch the backlog.
+- **Slot constrained**: Few Slots, so Tasks wait even when Pollers are available. Compare adding Slots with adding Pollers.
+- **CPU constrained** and **I/O constrained**: Tasks that demand more CPU or I/O than the Worker has. The resource charts show when the Worker is throttled.
+- **Memory constrained**: A small Workflow cache on a Worker with little memory. Watch cache hits, evictions, and replays.
+
+For the settings and metrics behind each of these on a real Worker, see [Worker performance](/develop/worker-performance) and the [Worker tuning quick reference](/develop/worker-tuning-reference).
+To diagnose a backlog on a running system, see [Troubleshoot Worker capacity](/troubleshooting/worker-capacity).

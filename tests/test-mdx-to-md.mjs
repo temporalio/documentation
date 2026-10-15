@@ -550,6 +550,14 @@ test("multiline DocCardList with children is stripped", () => {
   assertNotContains(markdown, "Card");
 });
 
+test("WorkerTuningSimulator is stripped without a warning", () => {
+  const { markdown, warnings } = transformMdx(`Before\n<WorkerTuningSimulator />\nAfter`);
+  assertContains(markdown, "Before");
+  assertContains(markdown, "After");
+  assertNotContains(markdown, "WorkerTuningSimulator");
+  assert(!warnings.some((w) => w.includes("WorkerTuningSimulator")), "Unexpected warning");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — warnings for unknown components
 // ---------------------------------------------------------------------------
