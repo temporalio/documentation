@@ -77,11 +77,13 @@ the keys actively being read across replicas and Namespaces, and monitor its hit
 
 ## Size the connection pool
 
-Use `connection.maxConnections: 32` per upstream target as a starting point. Each SDK long poll occupies an HTTP/2
-stream. In the reference tests, pools of one to four connections exhausted available streams and caused calls to stall
-or time out. Increasing replicas does not fix a connection pool that is too small on each replica.
+Starting with v0.9.0, `connection.maxConnections` defaults to 32 per upstream target, the pool size the reference tests
+used. Each SDK long poll occupies an HTTP/2 stream. In the reference tests, pools of one to four connections exhausted
+available streams and caused calls to stall or time out. Increasing replicas does not fix a connection pool that is too
+small on each replica.
 
-Set the pool size in your [proxy configuration](/production-deployment/temporal-proxy/configure):
+Change the pool size in your
+[proxy configuration](/production-deployment/temporal-proxy/configure#tune-upstream-connections):
 
 ```yaml
 upstreams:
