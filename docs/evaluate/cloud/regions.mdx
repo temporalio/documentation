@@ -34,7 +34,8 @@ For Namespaces using [Provisioned Capacity](/cloud/capacity-modes#provisioned-ca
 If your new Namespace must be in GCP, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
 Include the required GCP regions, expected Action volume, and business requirements for your workload.
 
-Adding a new GCP replica to an existing Namespace requires an approved exception for your account, whether you intend to use Multi-Region Replication or Multi-Cloud Replication.
+To add a GCP replica using Multi-Region Replication or Multi-Cloud Replication, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
+An approved exception enables self-service creation of single-region GCP Namespaces only; adding a GCP replica still requires assistance from Support.
 You can still add an AWS replica to an existing GCP Namespace without an exception, where that replication option is [supported](#gcp-service-regions).
 See [Enable and manage High Availability](/cloud/high-availability/enable) for instructions.
 
@@ -54,7 +55,9 @@ Temporal Cloud operates in the following Google Cloud (GCP) regions:
 
 :::caution GCP capacity restriction
 
-New Namespaces and new replicas in all of these regions require an approved exception for your account. See [GCP capacity restriction](#gcp-capacity-restriction).
+New Namespaces in all of these regions require an approved exception for your account.
+Adding a GCP replica also requires assistance from Support, even with an approved exception.
+See [GCP capacity restriction](#gcp-capacity-restriction).
 
 :::
 
