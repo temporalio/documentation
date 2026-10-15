@@ -1,6 +1,7 @@
 ---
 id: index
 title: Temporal Proxy
+slug: /production-deployment/temporal-proxy
 description:
   Route requests between Temporal SDK clients and Workers and one or more upstream Temporal Services with the Temporal
   Proxy, a gRPC proxy that handles namespace translation, TLS, authentication, and payload encryption.
@@ -103,6 +104,12 @@ behavior.
   toolchain.
 
 ## Install the proxy
+
+**Recommended starting size:** For a Temporal Proxy instance that applies payload encryption for all payload sizes,
+use **4 CPUs and 12 GiB of memory**, with `GOMEMLIMIT=11GiB`, and plan for each instance to handle up to
+**3,000 requests per second and 100 SDK Workers**. Scale beyond these limits by adding more Proxy replicas (instances)
+behind a gRPC-compatible load balancer. For more efficient sizing based on the features and payload sizes you use, see
+[Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance).
 
 Install the `proxy` binary with Go:
 
@@ -243,8 +250,29 @@ pre-rotation, and `on_demand` for a DEK replaced at request time because no fres
 rate means rotation is falling behind, so raise `renewBefore`. Compare the cache counters against `cacheSize` to see
 whether the cache is absorbing read traffic.
 
+## Versions and support
+
+The following support policy applies to Temporal Proxy v1.0 and later. Support for Temporal customers includes
+troubleshooting through Temporal Support and maintenance releases with critical fixes for security, data loss, and
+reliability issues.
+
+Temporal supports the current minor release and at least the three preceding minor releases, when available. Versions
+earlier than v1.0 are excluded from this support window. For example, when v1.4 is current, the supported minor releases
+include v1.1, v1.2, v1.3, and v1.4; when v1.1 is current, they include v1.0 and v1.1.
+
+Each major version receives support for at least 12 months after its general availability release. Temporal provides at
+least six months' notice before ending support for a major version.
+
+Temporal Support may require you to upgrade to the latest bugfix (patch) release within your supported minor version
+before proceeding with support if that patch introduces critical functionality related to your reported issue.
+
+Temporal publishes CVE advisories when a fix is available. Report vulnerabilities privately to
+[security@temporal.io](mailto:security@temporal.io), following the
+[Temporal Proxy security policy](https://github.com/temporalio/temporal-proxy/blob/main/SECURITY.md).
+
 ## Related
 
+- [Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance)
 - [Temporal Proxy repository](https://github.com/temporalio/temporal-proxy)
 - [Temporal Proxy Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy)
 - [Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud)
