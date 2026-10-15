@@ -46,12 +46,15 @@ The following limits apply at the Temporal Cloud Account level (per account).
   - Automatically increased as you start creating Namespaces
   - [Contact support](/evaluate/cloud/support#support-ticket) for large-scale needs
 
-### Connectivity Rules
+### Connectivity Rules {/* #connectivity-rules */}
+
+Without [Projects](/cloud/projects), the Account allows 50 private Connectivity Rules and 1 public Connectivity Rule, for a total of 51.
 
 - Scope: Account
-- Default limit: 50 private Connectivity Rules and 1 public Connectivity Rule, counted together as 51 Connectivity Rules across every Project.
-- A public Connectivity Rule created on the Default Project counts every public Connectivity Rule in the Account and stops at 1.
+- Default limit: 50 private Connectivity Rules and 1 public Connectivity Rule (51 total)
 - How to increase: [Contact support](/evaluate/cloud/support#support-ticket)
+
+With [Projects](/cloud/projects) enabled, each Project has its own Connectivity Rule limits. Connectivity Rules across all Projects still count toward this Account total of 51. See [Project Connectivity Rules](#project-connectivity-rules).
 
 ## Project level {/* #project-level */}
 
@@ -59,7 +62,7 @@ The following limits apply at the Temporal Cloud Account level (per account).
   featureName="projects"
 />
 
-The following limits apply at the Project level for any new Project created. Every Connectivity Rule counts toward the Account total of 51 above. A public Connectivity Rule on the Default Project counts every public Connectivity Rule in the Account and stops at 1. Each other Project allows 1 public Connectivity Rule, counted only in that Project. The Default Project uses the Account-level resource limits rather than these per-Project defaults. For example, the Default Project inherits the Account's Namespace quota and Account-level limits for Service Accounts, Nexus Endpoints, and Connectivity Rules.
+The following limits apply at the Project level for any new Project created when [Projects](/cloud/projects) are enabled. The Default Project uses the Account-level resource limits rather than these per-Project defaults for Namespaces, Service Accounts, and Nexus Endpoints. Connectivity Rule limits are listed below.
 
 ### Namespaces and Project-scoped Service accounts
 
@@ -73,11 +76,13 @@ The following limits apply at the Project level for any new Project created. Eve
 - Default: 5
 - How to increase: [Contact support](/evaluate/cloud/support#support-ticket)
 
-### Connectivity rules
+### Connectivity rules {/* #project-connectivity-rules */}
 
-- Scope: Project. Rules in a Project count toward the Account total of 51 Connectivity Rules.
-- Default: 6, made up of 5 private Connectivity Rules and 1 public Connectivity Rule. This cap applies to each Project other than the Default Project.
-- A non-default Project allows 1 public Connectivity Rule, counted only in that Project. A public rule on the Default Project or on another Project does not block it. The new rule still counts toward the Account total of 51. Delete a rule in another Project only when the Account is already at 51 Connectivity Rules.
+These limits apply when [Projects](/cloud/projects) are enabled.
+
+- Each Project allows 1 public Connectivity Rule.
+- Each Project allows up to 5 private Connectivity Rules.
+- The total number of Connectivity Rules, public and private, across all Projects is subject to the Account limit of 51.
 - How to increase: [Contact support](/evaluate/cloud/support#support-ticket)
 
 ## Namespace level
