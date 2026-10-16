@@ -37,7 +37,7 @@ it reaches a different upstream, with no change to the Worker.
 
 ## How it works
 
-The proxy is built from a gateway and one proxy per upstream, connected by unix sockets:
+The proxy is built from a gateway and one proxy per upstream, running in a single process:
 
 - The **gateway** is the single inbound endpoint that every Worker, SDK Client, and the Web UI connects to.
 - Each **upstream** has its own proxy that handles communication with that destination.
@@ -50,11 +50,11 @@ flowchart LR
 
     subgraph Proxy[Temporal Proxy]
         direction LR
-        Gateway["Gateway<br/>routes by Namespace<br/>codec-transparent (no payload parsing)"]
+        Gateway["Gateway<br/>routes by Namespace"]
         ProxyA["Per-upstream proxy A<br/>Namespace translation<br/>payload encryption (optional)"]
         ProxyB["Per-upstream proxy B<br/>Namespace translation<br/>payload encryption (optional)"]
-        Gateway -->|unix socket| ProxyA
-        Gateway -->|unix socket| ProxyB
+        Gateway -->|in process| ProxyA
+        Gateway -->|in process| ProxyB
     end
 
     Cloud[Temporal Cloud]
@@ -71,11 +71,10 @@ For each request, the gateway:
 
 1. refuses the call if its gRPC service is not one the configuration allows, before any upstream work. By default that
    allows `WorkflowService` and `OperatorService` and nothing else.
-2. peeks the target Namespace without parsing the payload; it is codec-transparent and relays raw frames in both
-   directions.
+2. reads the target Namespace from the request.
 3. picks an upstream: the first matching routing rule, otherwise the system upstream for Namespace-less calls, otherwise
    the default.
-4. hands the request to that upstream's proxy over a unix socket.
+4. hands the request to that upstream's proxy, in the same process.
 
 The per-upstream proxy then rewrites the local Namespace to the name the upstream expects, attaches that upstream's TLS
 and credentials, forwards to the Temporal Service, and translates the Namespace back on responses. When payload
@@ -84,11 +83,22 @@ sent through the proxy reach the upstream as ciphertext. See
 [Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the scope and limits of this fail-closed
 behavior.
 
+The proxy reads only the Namespace and the fields it translates, so it needs no knowledge of your Data Converter or
+codec, and payload data passes through untouched unless encryption is configured. The gateway accepts gzip-compressed
+requests, so a Client with gRPC compression turned on works through it.
+
+:::note Version note
+
+Before v0.9.0, the gateway and each per-upstream proxy were connected by unix sockets. v0.9.0 serves every upstream in
+the gateway's process. Nothing in the configuration changes, but per-upstream sockets no longer exist to dial directly.
+
+:::
+
 ### Terms
 
 | Term             | Meaning                                                                                                                                                                                         |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| gateway          | The single inbound gRPC endpoint that every SDK Client, Worker, and the Web UI connects to. It routes each request to an upstream by Namespace and request metadata, and never parses payloads. |
+| gateway          | The single inbound gRPC endpoint that every SDK Client, Worker, and the Web UI connects to. It routes each request to an upstream by Namespace and request metadata.                           |
 | upstream         | A configured destination the proxy forwards to: a Temporal Service (local dev, self-hosted, or Temporal Cloud), or another Temporal Proxy.                                                      |
 | system upstream  | The upstream that handles Namespace-less requests, such as the SDK's `GetSystemInfo` call on connect.                                                                                           |
 | extension server | A gRPC service you run that the proxy calls out to for a capability it has no built-in backend for: wrapping data encryption keys, or deciding whether an inbound call may proceed.             |
@@ -150,6 +160,19 @@ proxy serve -c config.yaml
 `--config` also reads the `PROXY_CONFIG` environment variable, which is how the Helm chart points the proxy at its
 mounted configuration. See [Observability](#observability) for the log level flag and the metrics settings.
 
+:::caution Upgrade to v0.9.0
+
+Two v0.9.0 changes stop an older configuration from starting:
+
+- A configuration with encryption keys must set `encryption.namespaceBinding`. Set `off` before you upgrade a
+  deployment that already holds encrypted payloads, then follow
+  [Bind payloads to their Namespace](/production-deployment/temporal-proxy/encrypt-payloads#namespace-binding) to move
+  to `strict`.
+- The v0.8.0 top-level `codecServer` block moved to `http.codecServer`. See
+  [Run a codec server](/production-deployment/temporal-proxy/codec-server).
+
+:::
+
 ## Observability {/* #observability */}
 
 The proxy serves Prometheus metrics at `/metrics` on `:9090` by default and logs JSON to stderr. The gateway also serves
@@ -192,7 +215,9 @@ deployment that never set them needs no change.
 - `labels.fixed` maps a label name to a constant value stamped on every series the proxy publishes, such as the region
   or cluster a deployment runs in.
 - `labels.metadata` reports an inbound request header as a label on the request-scoped series, written
-  `<header>:<name>`. Values are truncated at 256 bytes.
+  `<header>:<name>`. Values are truncated at 256 bytes. An encryption operation that came from the
+  [codec server](/production-deployment/temporal-proxy/codec-server) reports these labels blank, because an HTTP request
+  carries no gRPC metadata.
 
 :::caution
 
@@ -205,24 +230,30 @@ request-scoped series, so an unbounded header causes unbounded metric cardinalit
 :::
 
 Metric names are `<namespace>_<subsystem>_<name>`, so with the default namespace the routing counter is
-`tmprl_proxy_router_decisions_total`. There are three subsystems:
+`tmprl_proxy_router_decisions_total`. There are four subsystems:
 
-| Subsystem    | Metric                       | Labels                             | Reports                                           |
-| ------------ | ---------------------------- | ---------------------------------- | ------------------------------------------------- |
-| `server`     | `requests_total`             | `method`, `code`                   | RPCs served, by gRPC status code                  |
-| `server`     | `request_duration_seconds`   | `method`                           | End-to-end time serving an RPC                    |
-| `router`     | `decisions_total`            | `upstream`, `outcome`              | Routing decisions, by chosen upstream             |
-| `router`     | `forwarding_errors_total`    | `upstream`, `reason`               | Forwarding failures the router originated         |
-| `encryption` | `vault_ops_total`            | `operation`, `result`, `namespace` | Envelope operations, sealing and opening payloads |
-| `encryption` | `vault_ops_duration_seconds` | `operation`, `namespace`           | Time per envelope operation, end to end           |
-| `encryption` | `dek_ops_total`              | `operation`, `result`              | Outcome of the AES-256-GCM step alone             |
-| `encryption` | `dek_ops_duration_seconds`   | `operation`                        | Time in the AES-256-GCM step alone                |
-| `encryption` | `kek_ops_total`              | `provider`, `operation`, `result`  | DEK wrap and unwrap calls to your KMS             |
-| `encryption` | `kek_ops_duration_seconds`   | `provider`, `operation`            | Time spent wrapping and unwrapping DEKs           |
-| `encryption` | `dek_rotations_total`        | `reason`                           | DEK rotations, by why the DEK was replaced        |
-| `encryption` | `dek_cache_hits_total`       | none                               | Reads served from the decrypted-DEK cache         |
-| `encryption` | `dek_cache_misses_total`     | none                               | Reads that required a KMS unwrap                  |
-| `encryption` | `dek_cache_size`             | none                               | Current entries in the decrypted-DEK cache        |
+| Subsystem      | Metric                             | Labels                               | Reports                                                  |
+| -------------- | ---------------------------------- | ------------------------------------ | -------------------------------------------------------- |
+| `server`       | `requests_total`                   | `method`, `code`                     | RPCs served, by gRPC status code                         |
+| `server`       | `request_duration_seconds`         | `method`                             | End-to-end time serving an RPC                           |
+| `server`       | `panics_total`                     | `method`                             | Panics the server recovered from while serving an RPC    |
+| `router`       | `decisions_total`                  | `upstream`, `outcome`                | Routing decisions, by chosen upstream                    |
+| `router`       | `forwarding_errors_total`          | `upstream`, `reason`                 | Forwarding failures the router originated                |
+| `encryption`   | `vault_ops_total`                  | `operation`, `result`, `namespace`   | Envelope operations, sealing and opening payloads        |
+| `encryption`   | `vault_ops_duration_seconds`       | `operation`, `namespace`             | Time per envelope operation, end to end                  |
+| `encryption`   | `payloads_skipped_total`           | `operation`, `encoding`, `namespace` | Payloads passed through under `skipEncodings`            |
+| `encryption`   | `vault_unbound_opens_total`        | `namespace`                          | Payloads with no Namespace binding handed to decrypt     |
+| `encryption`   | `vault_namespace_mismatches_total` | `namespace`                          | Payloads bound to another Namespace handed to decrypt    |
+| `encryption`   | `dek_ops_total`                    | `operation`, `result`                | Outcome of the AES-256-GCM step alone                    |
+| `encryption`   | `dek_ops_duration_seconds`         | `operation`                          | Time in the AES-256-GCM step alone                       |
+| `encryption`   | `kek_ops_total`                    | `provider`, `operation`, `result`    | DEK wrap and unwrap calls to your KMS                    |
+| `encryption`   | `kek_ops_duration_seconds`         | `provider`, `operation`              | Time spent wrapping and unwrapping DEKs                  |
+| `encryption`   | `dek_rotations_total`              | `reason`                             | DEK rotations, by why the DEK was replaced               |
+| `encryption`   | `dek_cache_hits_total`             | none                                 | Reads served from the decrypted-DEK cache                |
+| `encryption`   | `dek_cache_misses_total`           | none                                 | Reads that required a KMS unwrap                         |
+| `encryption`   | `dek_cache_size`                   | none                                 | Current entries in the decrypted-DEK cache               |
+| `codec_server` | `requests_total`                   | `route`, `code`                      | Codec server requests, by HTTP status code               |
+| `codec_server` | `request_duration_seconds`         | `route`                              | Time serving a codec server request                      |
 
 :::note Version note
 
@@ -244,6 +275,17 @@ configured. They are layered, so pick the one that matches the question you are 
   `kek_ops_total`, which keeps the blame with the KMS.
 - `kek_ops_*` is the calls to your KMS. Watch `kek_ops_total{result="error"}`, since a failure to wrap or unwrap a DEK
   fails the request that needed it.
+
+Besides `success` and `error`, `vault_ops_total` reports three refusals by `result`:
+
+- `unknown_key`: the payload was sealed under a KMS key this proxy doesn't hold.
+- `unbound`: `strict` [Namespace binding](/production-deployment/temporal-proxy/encrypt-payloads#namespace-binding)
+  refused a payload that carries no binding.
+- `mismatch`: `strict` binding refused a payload bound to another Namespace.
+
+The `codec_server` metrics only move when the [codec server](/production-deployment/temporal-proxy/codec-server) is
+enabled. Their `route` label is the matched pattern, such as `/decode`, never the request path, and the subsystem has
+no Namespace label, so a Namespace in the path cannot grow the series count.
 
 `dek_rotations_total` splits by `reason`: `initial` for a Namespace's first DEK, `scheduled` for the `renewBefore`
 pre-rotation, and `on_demand` for a DEK replaced at request time because no fresh one was ready. A rising `on_demand`
@@ -273,6 +315,7 @@ Temporal publishes CVE advisories when a fix is available. Report vulnerabilitie
 ## Related
 
 - [Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance)
+- [Run a codec server](/production-deployment/temporal-proxy/codec-server)
 - [Temporal Proxy repository](https://github.com/temporalio/temporal-proxy)
 - [Temporal Proxy Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy)
 - [Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud)
