@@ -34,29 +34,7 @@ When designing a multi-tenant Temporal application, follow these principles:
 
 There are four main patterns for multi-tenant applications in Temporal, listed from most to least recommended:
 
-### 1. Task queues per tenant (Recommended)
-
-**Use different [Task Queues](/task-queue) for each tenant's [Workflows](/workflows) and [Activities](/activities).**
-
-This is the recommended pattern for most use cases. Each tenant gets dedicated Task Queue(s), with [Workers](/workers) polling multiple tenant Task Queues in a single process.
-
-**Pros:**
-- Strong isolation between tenants
-- Efficient resource utilization
-- Flexible worker scaling
-- Easy to add new tenants
-- Can handle thousands of tenants per [Namespace](/namespaces)
-
-**Cons:**
-- Requires worker configuration management
-- Potential for uneven resource distribution
-- Need to prevent "noisy neighbor" issues at the worker level
-
-<RelatedReadContainer>
-  <RelatedReadItem path="#task-queue-isolation-pattern" text="Task Queue Isolation Pattern Details" archetype="feature-guide" />
-</RelatedReadContainer>
-
-### 2. Single Task Queue with Fairness
+### 1. Single Task Queue with Fairness (Recommended)
 
 **Use a single [Task Queue](/task-queue) with [Fairness keys](/develop/task-queue-priority-fairness#task-queue-fairness) to distribute work across tenants.**
 
@@ -82,6 +60,29 @@ This pattern works well when you have many tenants with different service tiers 
   <RelatedReadItem path="/develop/task-queue-priority-fairness#task-queue-fairness" text="Task Queue Fairness Reference" archetype="feature-guide" />
   <RelatedReadItem path="/design-patterns/fairness" text="Fairness pattern" />
   <RelatedReadItem path="/design-patterns/priority-task-queues" text="Priority pattern" />
+</RelatedReadContainer>
+
+
+### 2. Task queues per tenant 
+
+**Use different [Task Queues](/task-queue) for each tenant's [Workflows](/workflows) and [Activities](/activities).**
+
+This is the recommended pattern for most use cases. Each tenant gets dedicated Task Queue(s), with [Workers](/workers) polling multiple tenant Task Queues in a single process.
+
+**Pros:**
+- Strong isolation between tenants
+- Efficient resource utilization
+- Flexible worker scaling
+- Easy to add new tenants
+- Can handle thousands of tenants per [Namespace](/namespaces)
+
+**Cons:**
+- Requires worker configuration management
+- Potential for uneven resource distribution
+- Need to prevent "noisy neighbor" issues at the worker level
+
+<RelatedReadContainer>
+  <RelatedReadItem path="#task-queue-isolation-pattern" text="Task Queue Isolation Pattern Details" archetype="feature-guide" />
 </RelatedReadContainer>
 
 ### 3. Shared Workflow Task Queues, separate Activity Task Queues
