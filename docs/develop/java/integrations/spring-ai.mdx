@@ -38,7 +38,7 @@ You also need the [`temporal-spring-boot-starter`](/develop/java/integrations/sp
 
 ## Add the dependency
 
-Add `io.temporal:spring-ai:0.1.0` alongside `temporal-spring-boot-starter` and a Spring AI model starter (for example, `spring-ai-starter-model-openai`). The Spring AI integration is versioned separately from the Temporal Java SDK.
+Add `io.temporal:spring-ai` alongside `temporal-spring-boot-starter` and a Spring AI model starter (for example, `spring-ai-starter-model-openai`). The Spring AI integration is versioned separately from the Temporal Java SDK.
 
 **[Apache Maven](https://maven.apache.org/):**
 
@@ -46,14 +46,14 @@ Add `io.temporal:spring-ai:0.1.0` alongside `temporal-spring-boot-starter` and a
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>spring-ai</artifactId>
-    <version>0.1.0</version>
+    <version>${temporal-spring-ai.version}</version>
 </dependency>
 ```
 
 **[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
-implementation "io.temporal:spring-ai:0.1.0"
+implementation "io.temporal:spring-ai:${temporalSpringAiVersion}"
 ```
 
 When `io.temporal:spring-ai` is on the classpath, the `SpringAiPlugin` auto-registers `ChatModelActivity` with all Temporal Workers created by the Spring Boot integration. Optional Activities are auto-configured when their dependencies are present:
@@ -64,7 +64,7 @@ When `io.temporal:spring-ai` is on the classpath, the `SpringAiPlugin` auto-regi
 | Embeddings   | `spring-ai-rag` | `EmbeddingModelActivity` |
 | MCP          | `spring-ai-mcp` | `McpClientActivity`      |
 
-### Upgrade from Spring AI 1
+### Upgrade from Spring AI 1.x
 
 `io.temporal:spring-ai:0.1.0` targets Spring AI 2 and Spring Boot 4. Spring AI 1 / Spring Boot 3 applications should remain on `io.temporal:temporal-spring-ai:1.40.x`.
 
@@ -380,7 +380,7 @@ chatClients.put(
 ```
 <!--SNIPEND-->
 
-Spring AI 2 options are immutable. Pass their builder to `defaultOptions(...)`, or call `.mutate()` on an existing options object. The integration preserves provider-specific fields across the Activity boundary.
+Spring AI options are immutable. Pass their builder to `defaultOptions(...)`, or call `.mutate()` on an existing options object. The integration preserves provider-specific fields across the Activity boundary.
 
 ## Media in messages
 
