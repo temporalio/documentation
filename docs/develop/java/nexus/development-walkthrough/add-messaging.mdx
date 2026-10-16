@@ -1,0 +1,268 @@
+---
+id: add-messaging
+title: Add messaging to the Service
+sidebar_label: 7. Add messaging
+description: A Signal nudges a pending approval and an Update records the decision and confirms it, so what the caller needs back decides the message type.
+tags:
+  - Nexus
+  - Java SDK
+  - Temporal SDKs
+---
+
+import { RunThis } from '@site/src/components';
+
+:::note Keep these running
+
+This step uses the processes started earlier. Leave them running:
+
+- The development server, from [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server).
+- The handler Worker, from [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker).
+- The caller Worker, from [step 6](/develop/java/nexus/development-walkthrough/call-the-service#call-the-operations-from-a-caller-workflow).
+
+The commands at the end of this step also act on the approval that
+[step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus#run-the-operation) left open.
+
+:::
+
+The approval blocks waiting for a decision. **Messages** let callers interact with it while it waits.
+
+This step adds two Operations. What the caller needs back decides which [message](/sending-messages) type each one uses:
+
+| Operation | Message type | Why this type |
+| --- | --- | --- |
+| `remindApprover` | Signal | Fire-and-forget. The caller needs the nudge to happen, not a response. |
+| `submitDecision` | Update | Changes state *and* returns confirmation that the decision was recorded. |
+
+If the caller can proceed without hearing back, use a Signal. If the caller needs to know what the message did, use an Update.
+
+## Add the handlers to the Workflow
+
+Add a Signal handler that increments the reminder count and an Update handler that records the decision. Recording `APPROVED` or `DENIED` satisfies the condition the Workflow is blocked on, so the Workflow returns that decision as its result.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflow.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflow.java)
+
+```java
+public interface ApprovalWorkflow {
+
+  /**
+   * The Update handler's name on the wire. The Update-backed Operation has to name the Update
+   * explicitly when it starts one, so the name is declared once here and reused there rather than
+   * being spelled as a literal in two places.
+   */
+  String SUBMIT_DECISION_UPDATE = "submitDecision";
+
+  /**
+   * STEP 4 - The Workflow method. Its return value is the result of the requestApproval Operation:
+   * the Operation completes when this Workflow returns, and the caller receives this value through
+   * the Nexus completion callback.
+   *
+   * <p>Because the Workflow's return value is delivered straight to the caller as the Operation
+   * result, it has to be the Operation's declared output type.
+   */
+  @WorkflowMethod
+  RequestApprovalOutput runApproval(RequestApprovalInput input);
+
+  /**
+   * STEP 7 - A Signal. Fire-and-forget: the caller gets no result back, which is why a Signal is
+   * the right message type for a nudge, and why the contract declares no output for it.
+   */
+  @SignalMethod
+  void remindApprover();
+
+  /**
+   * STEP 8 - A Signal that also carries supporting information. Reached through Signal-with-Start,
+   * so it may be the message that creates this Workflow.
+   */
+  @SignalMethod
+  void attachContext(String note);
+
+  /**
+   * STEP 7 - An Update. The caller needs a result back - confirmation that the decision was
+   * recorded - which is what makes this an Update rather than a Signal.
+   */
+  @UpdateMethod(name = ApprovalWorkflow.SUBMIT_DECISION_UPDATE)
+  SubmitDecisionOutput submitDecision(SubmitDecisionInput.Decision decision);
+
+  /**
+   * STEP 7 - The Update's validator. An Update can reject a request before it changes anything,
+   * which a Signal cannot: a Signal has already been accepted by the time the handler runs.
+   *
+   * <p>Here it rejects a second decision for an approval that has already been decided. Without it
+   * the later decision would silently overwrite the earlier one. A rejected Update does not appear
+   * in Event History and does not run the handler.
+   */
+  @UpdateValidatorMethod(updateName = ApprovalWorkflow.SUBMIT_DECISION_UPDATE)
+  void validateSubmitDecision(SubmitDecisionInput.Decision decision);
+}
+```
+
+<!--SNIPEND-->
+
+## Expose them as Nexus Operations
+
+Both use `TemporalOperationHandler`. As described in [The Nexus-aware Client](/nexus/temporal-operation-handler#the-nexus-aware-client), a Signal is **sync messaging** and an Update is an **async backing**.
+
+### Signal
+
+Send the Signal through the Client and return a synchronous result. The Operation completes during the handler call.
+
+:::caution The handler has under 10 seconds
+
+A synchronous handler must finish inside the [10-second handler deadline](/evaluate/cloud/limits#nexus-operation-request-timeout), and the real budget is smaller because the clock starts on the caller's side and the request still routes through matching.
+
+One Signal fits easily. A handler that sends several messages or does slow work may not. Overrunning gives the caller a context deadline exceeded error, which it retries with exponential backoff until the schedule-to-close timeout expires.
+
+:::
+
+<!--SNIPSTART samples-java-nexus-walkthrough-remind-approver-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<RemindApproverInput, Void> remindApprover() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) -> {
+          client
+              .getWorkflowClient()
+              .newWorkflowStub(
+                  ApprovalWorkflow.class, ApprovalWorkflowId.forItem(input.getItemId()))
+              .remindApprover();
+          return TemporalOperationResult.sync(null);
+        });
+  }
+```
+
+<!--SNIPEND-->
+
+### Update
+
+Start the Update on the Client. The Operation completes when the Update completes, and the result arrives through the Nexus completion callback. If the Update is already complete when it returns, such as a retried request or one that failed validation, the result returns synchronously.
+
+An Update-backed Operation targets a Workflow that already exists, so `submitDecision` fails for a purchase with no running approval. As an async backing, it is limited to one per Operation invocation, though the handler can combine it with sync messaging.
+
+### Reject a bad Update before it changes anything
+
+An Update can refuse a request; a Signal cannot, because by the time its handler runs, the Signal is already in history.
+
+The approval's **validator**, the `@UpdateValidatorMethod` in the Workflow interface above, rejects a second decision for an approval that is already decided. Without it, the later decision would overwrite the first. A rejected Update never runs the handler or reaches Event History, and the caller sees a failed Operation. A validator takes the same arguments as the handler, returns nothing, and must not change Workflow state.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-submit-decision-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<SubmitDecisionInput, SubmitDecisionOutput> submitDecision() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) ->
+            client.startWorkflowUpdate(
+                ApprovalWorkflow.class,
+                ApprovalWorkflowId.forItem(input.getItemId()),
+                ApprovalWorkflow::submitDecision,
+                input.getDecision(),
+                UpdateOptions.<SubmitDecisionOutput>newBuilder()
+                    .setResultClass(SubmitDecisionOutput.class)
+                    // The Update to invoke has to be named explicitly; the method reference above
+                    // supplies the argument types but not the wire name.
+                    .setUpdateName(ApprovalWorkflow.SUBMIT_DECISION_UPDATE)
+                    // An Update-backed Operation must wait for the ACCEPTED stage. The Operation
+                    // completes later, when the Update completes, through the completion callback.
+                    // Any other stage is rejected with "nexus op workflow updates only support
+                    // WorkflowUpdateStageAccepted for async updates".
+                    .setWaitForStage(WorkflowUpdateStage.ACCEPTED)
+                    .build()));
+  }
+```
+
+<!--SNIPEND-->
+
+## Do not poll for the decision
+
+Don't use a message to fetch the final decision. The decision is the result of `requestApproval`, and it reaches the caller without anyone asking.
+
+When the handler started the approval, Nexus attached a [completion callback](/glossary#nexus-async-completion-callback) to the Workflow. When the Workflow returns, the handler's Namespace delivers the callback to the caller, which records a `NexusOperationCompleted` event in the caller Workflow's history, and the caller Workflow resumes with the decision. See the [asynchronous Operation lifecycle](/nexus/operations#asynchronous-operation-lifecycle).
+
+Messages change a running approval; they don't read its outcome. Both also stop working once the approval completes: the Temporal Service accepts a Signal or an Update only while the Workflow is running, and rejects one sent to a closed Workflow with `NOT_FOUND: workflow execution already completed`. That happens as soon as the decision lands, not when the [Retention Period](/temporal-service/temporal-server#retention-period) expires.
+
+If more than one system needs the outcome, [step 8](/develop/java/nexus/development-walkthrough/send-messages#when-the-approval-already-exists) shows how additional callers attach to a running approval and receive the same decision.
+
+## Run the messaging Operations
+
+The handler Worker from step 4 already serves these Operations. Nudge the approval left running at
+the end of [step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus#run-the-operation).
+The Signal returns nothing:
+
+<RunThis>
+
+```bash title="Run 1 of 3: nudge the approver"
+temporal nexus operation execute \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation RemindApprover \
+  --operation-id remind-1 \
+  --input '{"itemId":"laptop-42"}'
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  null
+```
+
+The Update returns confirmation, including the Workflow's reminder count:
+
+<RunThis>
+
+```bash title="Run 2 of 3: submit the decision"
+temporal nexus operation execute \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation SubmitDecision \
+  --operation-id decide-1 \
+  --input '{"itemId":"laptop-42","decision":"APPROVED"}'
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  {"recorded":"APPROVED","remindersSent":1}
+```
+
+The decision unblocks the approval Workflow, which returns and completes the `requestApproval`
+Operation from step 5. Collect its result:
+
+<RunThis>
+
+```bash title="Run 3 of 3: collect the approval result"
+temporal nexus operation result \
+  --namespace approval-caller-namespace --operation-id approval-1
+```
+
+</RunThis>
+
+```
+Results:
+  Status  COMPLETED
+  Result  {"decision":"APPROVED"}
+```
+
+Nothing polled for that decision: the Operation completed because the approval Workflow returned.
+
+
+:::tip RESOURCES
+
+- [Workflow message passing](/encyclopedia/workflow-message-passing) for Signals and Updates.
+- [Handling messages](/handling-messages) for handler constraints.
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for the sync messaging and async backing distinction.
+
+:::
+

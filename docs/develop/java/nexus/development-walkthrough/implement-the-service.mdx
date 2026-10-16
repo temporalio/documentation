@@ -1,0 +1,241 @@
+---
+id: implement-the-service
+title: Implement the Service
+sidebar_label: 4. Implement the Service
+description: TemporalOperationHandler backs requestApproval with a Workflow that blocks for a human decision, hosted on one Worker with the Activities it runs.
+tags:
+  - Nexus
+  - Java SDK
+  - Temporal SDKs
+---
+
+import { RunThis } from '@site/src/components';
+
+This step implements the Operation at the center of the Service: back `requestApproval` with the approval Workflow, then start the development server and a Worker that hosts the Service, the Workflow, and the Activities.
+
+## Write the approval Workflow
+
+The approval is an ordinary Temporal Workflow, as chosen in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#workflow). Nothing in it is Nexus-specific, and a Client could start it directly. The message handlers added in [step 7](/develop/java/nexus/development-walkthrough/add-messaging) make it interactive.
+
+The Workflow:
+
+1. Runs an Activity that evaluates whether the request can be auto-decided. In this walkthrough it is a placeholder; real logic would apply policy, check limits, or call a risk service.
+2. Runs an Activity that tells a human the request is waiting. Also a placeholder.
+3. Blocks until a decision arrives.
+4. Returns `APPROVED` or `DENIED`.
+
+The blocking step is why this is a Workflow. It may wait weeks, across Worker restarts and deployments, and costs nothing while idle.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-impl-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowImpl.java)
+
+```java
+public class ApprovalWorkflowImpl implements ApprovalWorkflow {
+
+  private static final Logger logger = Workflow.getLogger(ApprovalWorkflowImpl.class);
+
+  private final ApprovalActivities activities =
+      Workflow.newActivityStub(
+          ApprovalActivities.class,
+          ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(10)).build());
+
+  // Durable intermediate state. This is the other reason the approval is a Workflow: an Activity
+  // could not hold any of it.
+  private SubmitDecisionInput.Decision decision;
+  private int remindersSent;
+  private final List<String> notes = new ArrayList<>();
+
+  @Override
+  public RequestApprovalOutput runApproval(RequestApprovalInput input) {
+    // Placeholder. Real logic would apply policy, check limits, or call a risk service.
+    activities.evaluateAutoDecision(input.getItemId(), input.getAmount());
+
+    // Placeholder. Real logic would page an approver, open a ticket, or send email.
+    activities.notifyApproverOfPendingRequest(input.getItemId(), input.getRequester());
+
+    // Block until submitDecision supplies a decision. This wait is durable and unbounded - the
+    // Worker can restart and redeploy while it is pending.
+    Workflow.await(() -> decision != null);
+
+    logger.info(
+        "Approval for {} decided {} after {} reminder(s) and {} note(s)",
+        input.getItemId(),
+        decision.getValue(),
+        remindersSent,
+        notes.size());
+
+    // This return value becomes the result of the requestApproval Nexus Operation, delivered to
+    // every caller whose completion callback is attached to this Execution.
+    return new RequestApprovalOutput(Decisions.toRequestApprovalOutput(decision));
+  }
+
+  // STEP 7 - Signal handler. Records the nudge and returns nothing.
+  @Override
+  public void remindApprover() {
+    remindersSent++;
+    logger.info("Approver reminded, {} reminder(s) so far", remindersSent);
+  }
+
+  // STEP 8 - Signal handler reached through Signal-with-Start. When the note arrives before anyone
+  // has called requestApproval, the Signal-with-Start creates this Workflow and this handler runs
+  // on the fresh Execution.
+  @Override
+  public void attachContext(String note) {
+    notes.add(note);
+    logger.info("Context attached: {}", note);
+  }
+
+  // STEP 7 - The Update's validator. Runs before the handler and can reject the request without
+  // changing anything or writing to Event History. Throwing here rejects the Update; the Workflow
+  // is untouched and the caller's Operation fails.
+  @Override
+  public void validateSubmitDecision(SubmitDecisionInput.Decision decision) {
+    if (this.decision != null) {
+      throw new IllegalStateException(
+          "approval already decided " + this.decision.getValue() + ", cannot decide again");
+    }
+  }
+
+  // STEP 7 - Update handler. Records the decision, which satisfies the condition the Workflow
+  // method is blocked on, and returns confirmation to the caller. The validator above guarantees
+  // this runs at most once.
+  @Override
+  public SubmitDecisionOutput submitDecision(SubmitDecisionInput.Decision decision) {
+    this.decision = decision;
+    return new SubmitDecisionOutput(Decisions.toSubmitDecisionOutput(decision), remindersSent);
+  }
+}
+```
+
+<!--SNIPEND-->
+
+## Implement the Operation with TemporalOperationHandler
+
+Use `TemporalOperationHandler` for every Temporal-backed Operation. It is the entry point to the [Temporal Operation Handler](/nexus/temporal-operation-handler), and it lets an Operation later gain a Signal or change its backing without changing shape.
+
+`TemporalOperationHandler.create(...)` gives your start handler a context, a Nexus-aware Client, and the Operation input. Call `startWorkflow` on that Client and return its result. The Operation completes when the Workflow returns, delivering the Workflow's return value to the caller.
+
+Use the injected Client for anything that starts or messages an Execution. It propagates bidirectional links and request Ids, so the caller's Execution and the approval Workflow are connected in the UI with no extra code. A Client you create yourself works, but loses that linking.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+
+```java
+  @OperationImpl
+  public OperationHandler<RequestApprovalInput, RequestApprovalOutput> requestApproval() {
+    return TemporalOperationHandler.create(
+        (ctx, client, input) ->
+            client.startWorkflow(
+                ApprovalWorkflow.class,
+                ApprovalWorkflow::runApproval,
+                input,
+                WorkflowOptions.newBuilder()
+                    .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
+                    .setWorkflowIdConflictPolicy(
+                        WorkflowIdConflictPolicy.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING)
+                    .build()));
+  }
+```
+
+<!--SNIPEND-->
+
+Set the Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id).
+
+By default, starting a Workflow whose Id is already running **fails the Operation**. The Operation has only started once its completion callback is attached to a Workflow, so failing loudly beats reporting success to a caller that would then wait forever. The code above already sets `USE_EXISTING` instead, because once another Operation can create the approval first, this one must attach to it. [Step 8](/develop/java/nexus/development-walkthrough/send-messages#when-the-approval-already-exists) explains why.
+
+## Start the development server
+
+The Worker needs a running Temporal Service and a Namespace to poll. Start the development server
+with two dynamic config values that later steps rely on:
+
+<RunThis>
+
+```bash title="Run 1 of 3: start the development server"
+temporal server start-dev \
+  --dynamic-config-value 'nexusoperation.enableStandalone=true' \
+  --dynamic-config-value 'activity.enableCallbacks=true'
+```
+
+</RunThis>
+
+`nexusoperation.enableStandalone` lets a Client start an Operation without a caller Workflow,
+which is how you run each Operation from the command line as you build it.
+`activity.enableCallbacks` allows a completion callback on a Standalone Activity Execution, which
+the `notifyRequester` Operation in [step 9](/develop/java/nexus/development-walkthrough/add-a-standalone-activity)
+needs.
+
+In a second terminal, create the Namespace the handler runs in:
+
+<RunThis>
+
+```bash title="Run 2 of 3: create the handler Namespace"
+temporal operator namespace create --namespace approval-handler-namespace
+```
+
+</RunThis>
+
+## Run the Worker
+
+One Worker hosts the Nexus Service, Workflow, and Activity implementations. It polls `approval-handler-task-queue`, which the Nexus Endpoint targets in the next step.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-handler-worker-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/HandlerWorker.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/HandlerWorker.java)
+
+```java
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    Worker worker = factory.newWorker(DEFAULT_TASK_QUEUE_NAME);
+
+    worker.registerWorkflowImplementationTypes(ApprovalWorkflowImpl.class);
+    worker.registerActivitiesImplementations(new ApprovalActivitiesImpl());
+    worker.registerNexusServiceImplementation(new ApprovalServiceImpl());
+
+    factory.start();
+  }
+```
+
+<!--SNIPEND-->
+
+The Worker that registers a Nexus Service doesn't have to run the backing Workflow. Larger deployments often split them; see [Nexus patterns](/nexus/patterns).
+
+In that second terminal, start it from the repository root and leave it running:
+
+<RunThis>
+
+```bash title="Run 3 of 3: start the handler Worker"
+./gradlew -q :core:execute \
+  -PmainClass=io.temporal.samples.nexuswalkthrough.handler.HandlerWorker \
+  --args="-target-host localhost:7233 -namespace approval-handler-namespace"
+```
+
+</RunThis>
+
+Qualify the task as `:core:execute`. An unqualified `execute` also runs the `lambda-worker:starter`
+task, which ignores `-PmainClass` and starts an unrelated sample. The Worker runs until you stop it,
+so Gradle keeps reporting the task as executing.
+
+The Worker is polling, but no caller can reach the Service yet.
+[Step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus) publishes it and runs
+`requestApproval` for the first time.
+
+## Handle failures
+
+Callers can tell two kinds of failure apart:
+
+- A **contract violation**, a payload the generated validator rejects, surfaces as `BAD_REQUEST`. Retrying won't help, and the single error lists every violation.
+- An **application failure**, where the approval cannot proceed for a business reason, fails the Operation. Whether it retries depends on the error type you raise. See [Nexus error handling](/nexus/error-handling).
+
+
+:::tip RESOURCES
+
+- [Temporal Operation Handler](/nexus/temporal-operation-handler) for the handler type and the Nexus-aware Client.
+- [Java Nexus feature guide](/develop/java/nexus/feature-guide) for the full handler and Worker API.
+- [Nexus error handling](/nexus/error-handling) for mapping failures to Nexus errors.
+
+:::
+

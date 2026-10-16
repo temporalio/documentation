@@ -1,0 +1,119 @@
+---
+id: call-the-standalone-activity
+title: Call the Standalone Activity
+sidebar_label: 10. Finish the flow
+description: Running the approval end to end shows the caller crossing a Namespace boundary without learning a Workflow Id, a Task Queue, or what backs an Operation.
+tags:
+  - Nexus
+  - Java SDK
+  - Temporal SDKs
+---
+
+import { RunThis } from '@site/src/components';
+
+Call `notifyRequester` once the decision is final.
+
+## The caller cannot tell the difference
+
+The caller Workflow from [step 6](/develop/java/nexus/development-walkthrough/call-the-service#call-the-operations-from-a-caller-workflow) calls `notifyRequester` exactly like `requestApproval`: through the same generated stub and Endpoint, with the same type checking and error handling. Nothing reveals that one is backed by an Activity and the other by a Workflow. The handler team could replace the notification Activity with a Workflow that retries across providers and escalates on failure, and no caller would change.
+
+## Complete the flow
+
+With every step in place, the caller runs the whole approval:
+
+1. Call `requestApproval` and await it. The Operation starts the approval Workflow in the handler Namespace, or attaches to one that another Operation already started.
+2. While it is pending, other systems call `remindApprover` to nudge the approver and `attachApprovalContext` to add supporting information.
+3. Someone calls `submitDecision` with `APPROVED` or `DENIED`. The Update records it, confirms to that caller, and unblocks the approval Workflow.
+4. The approval Workflow returns the decision, which resolves the `requestApproval` Operation for every attached caller.
+5. The caller calls `notifyRequester` with the decision.
+
+<!--SNIPSTART samples-java-nexus-walkthrough-caller-starter-->
+
+[core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java)
+
+```java
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkflowOptions options =
+        WorkflowOptions.newBuilder().setTaskQueue(CallerWorker.DEFAULT_TASK_QUEUE_NAME).build();
+
+    // Runs the whole flow: context attached first, approval requested, approver reminded, decision
+    // submitted, decision awaited, requester notified.
+    ApprovalCallerWorkflow workflow = client.newWorkflowStub(ApprovalCallerWorkflow.class, options);
+    String result =
+        workflow.runApprovalFlow(
+            "standing-desk-" + UUID.randomUUID(),
+            "dana@example.com",
+            1250.00,
+            "Approved in the Q3 ergonomics budget");
+    logger.info("Purchase result: {}", result);
+  }
+```
+
+<!--SNIPEND-->
+
+## Run the whole flow
+
+The handler Worker from
+[step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker) and the caller
+Worker from [step 6](/develop/java/nexus/development-walkthrough/call-the-service) should already be
+running. From the repository root, start the Starter in another terminal:
+
+<RunThis>
+
+```bash title="Run: run the whole flow"
+./gradlew -q :core:execute \
+  -PmainClass=io.temporal.samples.nexuswalkthrough.caller.CallerStarter \
+  --args="-target-host localhost:7233 -namespace approval-caller-namespace"
+```
+
+</RunThis>
+
+```
+INFO  i.t.s.n.caller.CallerStarter - Purchase result: APPROVED
+```
+
+The Starter exits when the run finishes; the two Workers keep running. The handler Worker shows the
+purchase moving through every Operation:
+
+```
+INFO  ApprovalWorkflowImpl   - Context attached: Approved in the Q3 ergonomics budget
+INFO  ApprovalActivitiesImpl - Evaluating auto-decision rules for standing-desk-... at 1250.0
+INFO  ApprovalActivitiesImpl - Approver notified that standing-desk-... is waiting
+INFO  ApprovalWorkflowImpl   - Approver reminded, 1 reminder(s) so far
+INFO  ApprovalWorkflowImpl   - Approval for standing-desk-... decided APPROVED after 1 reminder(s) and 1 note(s)
+INFO  ApprovalActivitiesImpl - Notifying dana@example.com that their request was APPROVED
+```
+
+The context is attached *before* the approval is requested, the Signal-with-Start ordering from
+[step 8](/develop/java/nexus/development-walkthrough/send-messages#run-it-in-the-harder-order).
+`requestApproval` then attached to the approval the note created.
+
+Every call crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or what backed any Operation. One Operation started a Workflow, two sent messages to it, one started it if it was not already running, and one started an Activity. To the caller, they were all Operations.
+
+## Trace it end to end
+
+Open the caller Workflow in the UI and follow the links. Because the handlers used the injected [Client](/nexus/temporal-operation-handler#the-nexus-aware-client), each Operation links to the Execution it started or messaged in the handler Namespace, so you can move between the two Namespaces in one view.
+
+## Where to go next
+
+The Service is complete but minimal. Possible extensions:
+
+- **Timeouts and escalation.** Give the approval a deadline and escalate or auto-deny when it passes.
+- **Split the Workers.** Run the Nexus Service, the approval Workflow, and the notification Activity on separate Worker fleets. See [Nexus patterns](/nexus/patterns).
+- **Callers in other languages.** Generate a caller from the same contract in Go, Python, or TypeScript. See [NexGen](/nexus/nexgen).
+- **Standalone invocation.** Call an Operation from a Client with no caller Workflow. See [Standalone Nexus Operation](/standalone-nexus-operation).
+
+Before running this against anything real, read [Debugging, common pitfalls, and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips).
+
+Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
+
+:::tip RESOURCES
+
+- [Nexus execution debugging](/nexus/execution-debugging) for tracing across Namespaces.
+- [Nexus patterns](/nexus/patterns) for Worker and Service topology.
+- [Nexus Standalone Activity](/nexus/standalone-activity) for Activity-backed Operations.
+
+:::
+
