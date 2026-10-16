@@ -7,7 +7,7 @@ tags:
   - Google ADK
   - Go SDK
   - Temporal SDKs
-description: Run Google ADK agents with durable execution using the Temporal Go SDK and the googleadk contrib integration.
+description: Run Google ADK agents with durable execution using the Temporal Go SDK and the standalone googleadk module for model calls and tools.
 ---
 
 Temporal's integration with [Google ADK](https://google.github.io/adk-docs/) (`adk-go`) gives your agents
@@ -27,20 +27,13 @@ Tools run **in-workflow by default** (the idiomatic Temporal model: the Workflow
 the network, clock, or disk goes through an Activity). Opt a tool into an Activity with `googleadk.ActivityAsTool`, or
 use `googleadk.NewMCPToolset` for MCP.
 
-:::info
-
-The `googleadk` contrib module is new. It depends on determinism seams (`platform.WithTimeProvider`,
-`WithUUIDProvider`, `WithTaskRunner`) that merged into `google.golang.org/adk/v2` after its latest tagged release, so
-`go.mod` pins `adk/v2` to a `main`-branch pseudo-version until a release ships that includes them.
-
-:::
-
 Code snippets in this guide are taken from the
 [Google ADK plugin samples](https://github.com/temporalio/samples-go/tree/main/googleadk). Refer to the samples for the
 complete, runnable code.
 
 ## Prerequisites
 
+- Go 1.26.6 or later.
 - This guide assumes you are already familiar with Google ADK. If you aren't, refer to the
   [Google ADK documentation](https://google.github.io/adk-docs/) for more details.
 - If you are new to Temporal, read [Understanding Temporal](/evaluate/understanding-temporal) or take the
@@ -54,15 +47,19 @@ complete, runnable code.
 
 ## Install the plugin
 
-Install the `googleadk` contrib module:
+Install the standalone [`go.temporal.io/googleadk`](https://pkg.go.dev/go.temporal.io/googleadk) module:
 
 ```bash
-go get go.temporal.io/sdk/contrib/googleadk@latest
+go get go.temporal.io/googleadk@latest
 ```
 
 ```go
-import "go.temporal.io/sdk/contrib/googleadk"
+import "go.temporal.io/googleadk"
 ```
+
+The module uses Google ADK v2.3.0 or later, including its determinism providers for time, UUIDs, and task execution.
+The source and releases are maintained in
+[`temporalio/ai-integrations`](https://github.com/temporalio/ai-integrations/tree/main/go/googleadk).
 
 ## Run an agent with Durable Execution
 
