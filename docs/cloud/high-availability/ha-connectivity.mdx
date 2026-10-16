@@ -209,7 +209,7 @@ Steps:
 
 7. **Drain and remove Workers and the VPC Endpoint in the old region.** Once you are confident the new region is handling all new work and you no longer need old-region Workers, stop them. Complete the [replica-removal connectivity checklist](/cloud/high-availability/enable#prepare-connectivity-before-removing-a-replica) to confirm no other Workers or Clients still depend on the old region's Regional Endpoint or private connection, then tear down the old region's VPC Endpoint and PHZ.
 
-8. **Remove the replica in the old region.** See [Migrate between regions](/cloud/migrate/migrate-within-cloud) for the replica-removal step. The Namespace is now single-region in the new location, and the HA pricing surcharge no longer applies.
+8. **Remove the replica in the old region.** See [Migrate between regions or cloud providers](/cloud/migrate/between-regions-or-cloud-providers) for the replica-removal step. The Namespace is now single-region in the new location, and the HA pricing surcharge no longer applies.
 
 :::note Per-region PHZ versus shared regional-record PHZ
 

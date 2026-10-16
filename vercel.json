@@ -1474,6 +1474,11 @@
       "permanent": true
     },
     {
+      "source": "/cloud/migrate/migrate-within-cloud",
+      "destination": "/cloud/migrate/between-regions-or-cloud-providers",
+      "permanent": true
+    },
+    {
       "source": "/cloud/security/aws-privatelink",
       "destination": "/cloud/connectivity/aws-connectivity",
       "permanent": true

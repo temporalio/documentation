@@ -1399,7 +1399,7 @@ module.exports = {
           items: [
             'cloud/migrate/automated',
             'cloud/migrate/manual',
-            'cloud/migrate/migrate-within-cloud',
+            'cloud/migrate/between-regions-or-cloud-providers',
             'cloud/migrate/estimate-actions',
           ],
         },
