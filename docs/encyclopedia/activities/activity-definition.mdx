@@ -1,8 +1,7 @@
 ---
 id: activity-definition
 title: Activity Definition
-description: Learn how to define a Temporal Activity; Activity Types, parameters, constraints, idempotency, and retry behavior for the function your Worker runs.
-
+description: Write the function a Worker runs for an Activity, including its Activity Type, parameters, idempotency, retry policy, and Worker registration.
 slug: /activity-definition
 toc_max_heading_level: 4
 tags:
