@@ -371,8 +371,13 @@ exceptions:
   - NOT_FOUND
   # AI vendor and model-platform proper nouns
   - AI
+  - Arize
   - Google
   - Gemini
+  - OpenAI
+  - OpenInference
+  - OTLP
+  - Phoenix
   - Vertex
   - Claude Code
   - Claude Desktop
