@@ -60,6 +60,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 	if err := future.Get(ctx, &activityResult); err != nil {
 		return nil, err
 	}
+// ...
+}
 ```
 {/* SNIPEND */}
 

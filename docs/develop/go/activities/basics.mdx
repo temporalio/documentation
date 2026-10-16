@@ -141,27 +141,28 @@ A Go-based Activity Definition can return either just an `error` or a `customVal
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
 {/* SNIPSTART go-activities-basics  {"highlightedLines": "2-5,14-17", "selectedLines": ["23-42"]} */}
+[go-sandbox/activities/basics/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/activity.go)
 ```go {2-5,14-17}
 // ...
 type YourActivityResultObject struct {
-    ResultFieldX string
-    ResultFieldY int
+	ResultFieldX string
+	ResultFieldY int
 }
 
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
-    // Use Activities for calling external APIs.
-    // This is just an example of using the logger to print "Hello World!"
-    logger := activity.GetLogger(ctx)
-    logger.Info("The message is:", param.ActivityParamX)
-    logger.Info("The number is:", param.ActivityParamY)
-    // Return data using a Struct so that the function signature is backward compatible.
-    result := &YourActivityResultObject{
-        ResultFieldX: "Success",
-        ResultFieldY: 1,
-    }
-    // Return the results back to the Workflow Execution.
-    // The results persist within the Event History of the Workflow Execution.
-    return result, nil
+	// Use Activities for calling external APIs.
+	// This is just an example of using the logger to print "Hello World!"
+	logger := activity.GetLogger(ctx)
+	logger.Info("The message is:", param.ActivityParamX)
+	logger.Info("The number is:", param.ActivityParamY)
+	// Return data using a Struct so that the function signature is backward compatible.
+	result := &YourActivityResultObject{
+		ResultFieldX: "Success",
+		ResultFieldY: 1,
+	}
+	// Return the results back to the Workflow Execution.
+	// The results persist within the Event History of the Workflow Execution.
+	return result, nil
 }
 ```
 {/* SNIPEND */}
@@ -171,37 +172,35 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
 {/* SNIPSTART go-activities-worker  {"highlightedLines": "8,22-25", "selectedLines": ["13-39"]} */}
+[go-sandbox/activities/workers/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/workers/main.go)
 ```go {8,22-25}
+// ...
+
 func main() {
-    temporalClient, err := client.Dial(client.Options{})
-    if err != nil {
-        log.Fatalln("Unable to create client", err)
-    }
-    defer temporalClient.Close()
-    
-    yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
-    yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
-    registerWFOptions := workflow.RegisterOptions{
-        Name: "JustAnotherWorkflow",
-    }
-    yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
-    
-    message := "This could be a connection string or endpoint details"
-    number := 100
-    activities := &yourapp.YourActivityObject{
-        Message: &message,
-        Number:  &number,
-    }
-    
-    registerAOptions := activity.RegisterOptions{
-        Name: "JustAnotherActivity",
-    }
-    yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
-    
-    err = yourWorker.Run(worker.InterruptCh())
-    if err != nil {
-        log.Fatalln("Unable to start Worker", err)
-    }
-}
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+	yourWorker.RegisterWorkflow(basics.YourWorkflowDefinition)
+	registerWFOptions := workflow.RegisterOptions{
+		Name: "JustAnotherWorkflow",
+	}
+	yourWorker.RegisterWorkflowWithOptions(basics.YourSimpleWorkflowDefinition, registerWFOptions)
+
+	message := "This could be a connection string or endpoint details"
+	number := 100
+	activities := &basics.YourActivityObject{
+		Message: &message,
+		Number:  &number,
+	}
+	yourWorker.RegisterActivity(activities)
+
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(basics.YourSimpleActivityDefinition, registerAOptions)
 ```
 {/* SNIPEND */}
