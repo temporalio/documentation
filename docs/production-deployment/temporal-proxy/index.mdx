@@ -124,15 +124,18 @@ behind a gRPC-compatible load balancer. For more efficient sizing based on the f
 Install the `proxy` binary with Go:
 
 ```bash
-go install github.com/temporalio/temporal-proxy/cmd/proxy@latest
+go install go.temporal.io/proxy/cmd/proxy@latest
 ```
 
 Pin an explicit version instead of `@latest`, using a tag from the
 [releases page](https://github.com/temporalio/temporal-proxy/releases):
 
 ```bash
-go install github.com/temporalio/temporal-proxy/cmd/proxy@vX.Y.Z
+go install go.temporal.io/proxy/cmd/proxy@vX.Y.Z
 ```
+
+The `go.temporal.io/proxy` module path starts with v0.10.0. Install an earlier release from
+`github.com/temporalio/temporal-proxy/cmd/proxy`.
 
 Pull the container image:
 
