@@ -25,6 +25,34 @@ Automated migration is designed to provide a zero-downtime, secure means of migr
 outlines the current process for transitioning Workflows from self-hosted Temporal Server to a namespace hosted within
 Temporal Cloud.
 
+### Migration scope
+
+Automated migration transfers Temporal data-plane state and provisions the infrastructure required for the migration.
+It does not copy customer-managed infrastructure or configuration from the self-hosted Temporal Service.
+
+The following table summarizes what the migration transfers or configures. Create and configure an empty target Cloud
+Namespace before starting the migration.
+
+| Resource | Migration behavior |
+| --- | --- |
+| Workflow Executions | Open Workflows and the selected range of closed Workflows are migrated, including Event Histories, payloads, Memo, and Search Attribute values. |
+| Schedules | Migrated as system Workflows. Capture the source Schedules during preparation so Temporal can verify compatibility. |
+| Task Queue user data and Worker Deployments | Migrated. This includes Worker Deployment Versions, Build IDs, Task Queue membership, and Current and Ramping Version routing configuration. |
+| Custom Search Attribute definitions | Validated during preparation. SQL-backed Namespace mappings can be synchronized during migration. Elasticsearch and OpenSearch definitions and proxy mappings can require configuration before migration. |
+| Target Cloud Namespace | Not created by the migration. Create an empty target Namespace and configure it before migration starts. |
+| Namespace retention | Not copied from the source. Configure the target Namespace with the required retention period before migration. |
+| Workers and Clients | Not moved or redeployed. You can generally keep the same code and run the processes in the same location, changing only their connection configuration to point to the Cloud Namespace. To avoid changing Worker and Client configuration, deploy [Temporal Proxy](/production-deployment/temporal-proxy) at the existing endpoint and configure the proxy to route requests to Temporal Cloud. |
+| Nexus Endpoints | Not migrated. Recreate each Endpoint and its target Namespace and Task Queue binding in Temporal Cloud. |
+| Production connectivity | Not copied from the source. Configure public or [private connectivity](/cloud/connectivity), including PrivateLink or Private Service Connect resources, Connectivity Rules, routing, DNS, and firewalls. The temporary S2S Proxy tunnel is separate from production connectivity. |
+| Self-hosted archival and Cloud Export | Archived histories, archival configuration, object storage, and access configuration are not migrated. Configure [Workflow History Export](/cloud/export) separately if required. |
+| Temporal Service and storage configuration | Not migrated. The migration replicates Temporal Namespace data; it does not copy dynamic configuration, history shard topology, persistence or Visibility store configuration, or Elasticsearch and OpenSearch indexes. Temporal Cloud supplies and manages the target infrastructure. |
+| High Availability | Not migrated or enabled during migration. Complete and [confirm](#confirm-complete) the migration before you [enable High Availability](/cloud/high-availability/enable#upgrade) on the Cloud Namespace. |
+| Payload decoding for the Temporal Cloud UI | Existing encoded payloads remain encoded. Configure the Temporal Cloud UI to use a [Codec Server](/production-deployment/data-encryption#codec-server-setup) or [Temporal Proxy](/production-deployment/temporal-proxy) to decode them. |
+| Other Cloud control-plane resources | Configure Projects, tags, delete protection, audit-log sinks, customer monitoring integrations, and other Cloud resources in Temporal Cloud. |
+
+Temporal provisions the Cloud-side migration server, S2S Proxy endpoint, replication connection, and migration
+monitoring. These resources support the migration and are removed or reconfigured after it is complete.
+
 ### Namespace migration schedule
 
 When planning a migration it is highly recommended to migrate in the order of least-critical to most-critical Namespace.
@@ -443,9 +471,18 @@ impacting your Workflows, if needed:
 tcld migration abort --id <migration-id>
 ```
 
+After the confirmation command completes, you can
+[enable High Availability](/cloud/high-availability/enable#upgrade) on the Cloud Namespace. Do not enable High
+Availability before the migration is confirmed.
+
 ## Transfer clients to cloud
 
-There are two options for switching Temporal clients to the cloud.
+Workers and Clients can generally continue running with the same code and in the same location. If they connect directly
+to the Temporal Service, update their connection configuration to use the Cloud Namespace endpoint. You can avoid
+changing Worker and Client configuration by deploying [Temporal Proxy](/production-deployment/temporal-proxy) at the
+existing endpoint and configuring its upstream and Namespace translation to route requests to Temporal Cloud.
+
+There are two options for switching Clients that connect directly to the Temporal Service.
 
 ### Option 1 (recommended)
 
@@ -571,6 +608,20 @@ migrated and in many cases will dramatically reduce overall migration time.
 ### Is the migration of Schedules supported?
 Yes. Under the hood, Schedules are essentially Workflows.
 
+### Does automated migration migrate Worker Deployments?
+
+Yes. Automated migration transfers the [Worker Deployment](/worker-versioning#deployments) state stored in the source
+Namespace. This state includes Worker Deployment Versions, Build IDs, Task Queue membership, and routing configuration
+for Current and Ramping Versions.
+
+Automated migration does not deploy Worker code or move running Worker Processes. You are responsible for deploying or
+reconfiguring Workers to connect to the target Cloud Namespace. You can generally use the same Worker code and location,
+changing only the connection configuration. To avoid changing Worker configuration, use
+[Temporal Proxy](/production-deployment/temporal-proxy) to route the existing endpoint and Namespace to Temporal Cloud.
+Before you confirm the migration, verify that Workers can reach the Cloud Namespace and that each Worker Deployment has
+the expected Current and Ramping Versions. For connection options, see
+[Transfer clients to cloud](#transfer-clients-to-cloud).
+
 ### I have a long retention period for my Workflows. Is this compatible with Temporal Cloud?
 Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#retention-period) are in excess of what
 is [supported](/evaluate/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
@@ -579,8 +630,6 @@ recommended over large retention periods since the extra data can stress the per
 
 ### I am using payload encryption in my self-hosted Temporal cluster. Is this supported in cloud?
 Yes. If payloads are already [encrypted](/payload-codec#encryption) in your self-hosted server via data converter, then 
-they will remain encrypted during and after migration.
-
-### I would like to enable payload encryption as part of the migration. Is this supported?
-The automated migration tooling cannot add payload encryption. To encrypt payloads sent to Temporal Cloud, you must encrypt
-payloads in your cluster before starting the automated migration process.
+they will remain encrypted during and after migration. Configure the Temporal Cloud UI to use a
+[Codec Server](/production-deployment/data-encryption#codec-server-setup) or
+[Temporal Proxy](/production-deployment/temporal-proxy) to decode payloads.
