@@ -21,7 +21,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
 Register Workflows and Activities the same way you would with any other .NET Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
-A Cloud Run Worker needs no Cloud Run-specific package.
+A Cloud Run Worker needs no Cloud Run-specific runtime or handler.
 The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
@@ -133,7 +133,50 @@ public static string Process(IReadOnlyList<string> items)
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
-## Add observability {/* #add-observability */}
+## Configure OpenTelemetry {/* #opentelemetry */}
 
-A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
-For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - .NET SDK](/develop/dotnet/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
+Run an OpenTelemetry Collector as a sidecar in the Worker Pool. Call `ApplyGoogleCloudRunOpenTelemetryDefaults()`
+to configure tracing and Temporal Core metrics for OTLP export to the Collector at `localhost:4317`. Load the Client
+connection settings with `ClientEnvConfig.LoadClientConnectOptions()`, then configure both plugins before connecting:
+
+<!--SNIPSTART dotnet-cloud-run-->
+[src/Gcp/CloudRun/Program.cs](https://github.com/temporalio/samples-dotnet/blob/gcp-cloud-run/src/Gcp/CloudRun/Program.cs)
+```cs
+// The Cloud Run Id plugin sets the client identity to "{instanceId}@{revision}" from Cloud Run
+// metadata at connect time; every Worker created from the client inherits it.
+connectOptions.Plugins = new ITemporalClientPlugin[] { new CloudRunIdPlugin() };
+
+// ApplyGoogleCloudRunOpenTelemetryDefaults adds the tracing interceptor and a runtime exporting Core
+// metrics + traces over OTLP to the collector sidecar; the returned handle owns the tracer provider.
+// Both plugins configure the same connect options.
+using var telemetry = connectOptions.ApplyGoogleCloudRunOpenTelemetryDefaults();
+
+var client = await TemporalClient.ConnectAsync(connectOptions);
+```
+<!--SNIPEND-->
+
+After the Worker stops, call `telemetry.FlushAsync(TimeSpan.FromSeconds(2))` to flush traces within the Cloud Run
+termination window. For the Collector sidecar configuration and deployment steps, see the
+[.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/gcp-cloud-run/src/Gcp/CloudRun).
+
+## Set a Worker identity {/* #worker-identity */}
+
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata when the Client connects, then Workers created from that Client inherit the identity.
+
+Register the plugin on the Client options before connecting:
+
+```csharp
+using Temporalio.Client;
+using Temporalio.Common.EnvConfig;
+using Temporalio.Extensions.Gcp.CloudRun.Id;
+
+// ...
+    var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+    connectOptions.Plugins = new ITemporalClientPlugin[] { new CloudRunIdPlugin() };
+    var client = await TemporalClient.ConnectAsync(connectOptions);
+    // ...
+```
+
+The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry defaults.
+
+The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/gcp-cloud-run/src/Gcp/CloudRun).

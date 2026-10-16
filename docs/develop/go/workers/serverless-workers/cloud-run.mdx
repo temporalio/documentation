@@ -21,7 +21,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
 Register Workflows and Activities the same way you would with any other Go Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
-A Cloud Run Worker needs no Cloud Run-specific package.
+A Cloud Run Worker needs no Cloud Run-specific runtime or handler.
 The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
@@ -110,7 +110,152 @@ func MyActivity(ctx context.Context, input MyInput) (string, error) {
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
-## Add observability {/* #add-observability */}
+## Configure OpenTelemetry {/* #opentelemetry */}
 
-A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
-For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - Go SDK](/develop/go/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
+Run an OpenTelemetry Collector as a sidecar in the Worker Pool. The Cloud Run OpenTelemetry plugin exports metrics and traces by OTLP gRPC to the Collector at `localhost:4317`. By default, it derives the service name from `OTEL_SERVICE_NAME`, `CLOUD_RUN_WORKER_POOL`, or `K_SERVICE`.
+
+Create both Cloud Run plugins before connecting, then add them to the Client options. Client plugins that implement
+`worker.Plugin` also apply to Workers created from that Client:
+
+<!--SNIPSTART go-cloud-run {"selectedLines": ["24-43"]}-->
+[gcp/cloudrun/worker/main.go](https://github.com/temporalio/samples-go/blob/gcp-cloud-run/gcp/cloudrun/worker/main.go)
+```go
+// ...
+	// Exports OTLP metrics and traces to the collector sidecar (defaults to localhost:4317).
+	otelPlugin, err := otel.NewPlugin(ctx, otel.PluginOptions{})
+	if err != nil {
+		log.Fatalln("Unable to create OpenTelemetry plugin", err)
+	}
+	// Sets the client identity to "<instanceID>@<revision>" from Cloud Run instance metadata.
+	idPlugin := id.NewCloudRunIDPlugin()
+
+	// A client plugin that also implements worker.Plugin is applied to workers automatically.
+	clientOptions, err := envconfig.LoadDefaultClientOptions()
+	if err != nil {
+		log.Fatalln("Unable to load Temporal client options", err)
+	}
+	clientOptions.Plugins = append(clientOptions.Plugins, otelPlugin, idPlugin)
+
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+		log.Fatalln("Unable to create Temporal client", err)
+	}
+	log.Println("Client identity:", idPlugin.Metadata().Identity())
+```
+<!--SNIPEND-->
+
+Configure the Collector sidecar to receive OTLP gRPC on `localhost:4317`, export traces to Google Cloud, and export metrics to Google Managed Service for Prometheus:
+
+<!--SNIPSTART go-cloud-run-otel-collector-config-->
+[gcp/cloudrun/otel-collector-config.yaml](https://github.com/temporalio/samples-go/blob/gcp-cloud-run/gcp/cloudrun/otel-collector-config.yaml)
+```yaml
+# Google-Built OpenTelemetry Collector sidecar: metrics -> Managed Service for Prometheus, traces -> Cloud Trace.
+# Auth uses the worker-pool service account (ADC).
+receivers:
+    otlp:
+        protocols:
+            grpc:
+                endpoint: localhost:4317
+
+processors:
+    memory_limiter:
+        check_interval: 1s
+        limit_percentage: 65
+        spike_limit_percentage: 20
+    resourcedetection:
+        detectors: [gcp]
+        timeout: 10s
+    # Batch traces for throughput. Do NOT batch the cumulative-metrics pipeline: a shutdown flush
+    # could be merged with a recent periodic export of the same series and rejected as a duplicate.
+    batch/traces:
+        send_batch_size: 200
+        timeout: 5s
+    # Rename Temporal datapoint labels that collide with the target labels Managed Service for Prometheus injects (e.g. namespace).
+    transform/collision:
+        metric_statements:
+            - context: datapoint
+              statements:
+                  - set(attributes["exported_location"], attributes["location"])
+                  - delete_key(attributes, "location")
+                  - set(attributes["exported_cluster"], attributes["cluster"])
+                  - delete_key(attributes, "cluster")
+                  - set(attributes["exported_namespace"], attributes["namespace"])
+                  - delete_key(attributes, "namespace")
+                  - set(attributes["exported_job"], attributes["job"])
+                  - delete_key(attributes, "job")
+                  - set(attributes["exported_instance"], attributes["instance"])
+                  - delete_key(attributes, "instance")
+                  - set(attributes["exported_project_id"], attributes["project_id"])
+                  - delete_key(attributes, "project_id")
+    # The Telemetry API expects the Google Cloud project in gcp.project_id.
+    transform/set_project_id:
+        error_mode: ignore
+        trace_statements:
+            - set(resource.attributes["gcp.project_id"], resource.attributes["gcp.project.id"]) where resource.attributes["gcp.project.id"] != nil
+            - set(resource.attributes["gcp.project_id"], resource.attributes["cloud.account.id"]) where resource.attributes["gcp.project_id"] == nil and resource.attributes["cloud.account.id"] != nil
+
+exporters:
+    googlemanagedprometheus:
+    otlp_grpc:
+        endpoint: telemetry.googleapis.com:443
+        compression: none
+        balancer_name: pick_first
+        auth:
+            authenticator: googleclientauth
+
+extensions:
+    googleclientauth:
+    health_check:
+        endpoint: 0.0.0.0:13133
+
+service:
+    extensions: [googleclientauth, health_check]
+    pipelines:
+        metrics:
+            receivers: [otlp]
+            processors: [memory_limiter, resourcedetection, transform/collision]
+            exporters: [googlemanagedprometheus]
+        traces:
+            receivers: [otlp]
+            processors: [memory_limiter, resourcedetection, transform/set_project_id, batch/traces]
+            exporters: [otlp_grpc]
+    telemetry:
+        logs:
+            level: info
+```
+<!--SNIPEND-->
+
+On shutdown, stop the Worker and call `otelPlugin.Shutdown` with a deadline shorter than Cloud Run's termination window so telemetry can flush. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Go Cloud Run sample](https://github.com/temporalio/samples-go/tree/gcp-cloud-run/gcp/cloudrun).
+
+## Set a Worker identity {/* #worker-identity */}
+
+Use the Cloud Run ID plugin to identify each Worker instance as `<instance-id>@<revision>`. The plugin reads Cloud Run environment variables and instance metadata once when the Client connects, then Workers created from that Client inherit the identity.
+
+Register the plugin on the Client options before connecting:
+
+```go
+import (
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+	"go.temporal.io/sdk/contrib/gcp/cloudrun/id"
+)
+
+// ...
+	clientOptions, err := envconfig.LoadDefaultClientOptions()
+	if err != nil {
+		log.Fatalln("Unable to load Temporal client options", err)
+	}
+	clientOptions.Plugins = append(clientOptions.Plugins, id.NewCloudRunIDPlugin())
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+		log.Fatalln("Unable to create Temporal client", err)
+	}
+	defer c.Close()
+	// ...
+```
+
+The [preceding example](#opentelemetry) registers `id.NewCloudRunIDPlugin()` alongside the OpenTelemetry plugin.
+
+The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [Go Cloud Run sample](https://github.com/temporalio/samples-go/tree/gcp-cloud-run/gcp/cloudrun).
