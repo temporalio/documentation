@@ -657,11 +657,21 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 Or you can choose one of these variations.
 
-Use the `type` prop to set a specific type if the release stage is only for one page.
+Use the `type` prop to set a specific type if the release stage is only for one page. Valid types are `prerelease`,
+`publicPreview`, and `ga`.
 ```js
 <ReleaseNoteHeader
   type="publicPreview"
 />
+```
+
+Use `type="ga"` on a page whose feature is Generally Available but which also covers capabilities at an earlier stage.
+Label those sections individually so the page-level header is not read as their stage.
+```js
+<ReleaseNoteHeader type="ga">
+  Three capabilities covered here are in [Pre-release](/evaluate/product-release-stages#pre-release).
+  Every section that uses them is labeled.
+</ReleaseNoteHeader>
 ```
 
 Add `children` for more detailed messaging.
