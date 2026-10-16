@@ -309,7 +309,7 @@ Confirm that the Namespace is in the destination Project and has the Connectivit
 
 ### Resolve overlapping roles after the move
 
-A Namespace move keeps its explicit Namespace roles. If a user becomes a Project Admin in the destination Project after the move, that user has a role conflict between the Project role and the Namespace role because of [role precedence](#role-precedence). The move succeeds, but later updates to that user fail until the conflict is resolved.
+A Namespace move keeps its explicit Namespace roles. If a user becomes a Project Admin in the destination Project after the move, that user has a role conflict between the Project role and the Namespace role because of [role precedence](#role-precedence). The conflict doesn't block the move, but any later update to that user fails until you remove the overlapping role.
 
 **Immediately after the move**, remove the user's redundant roles on the moved Namespace and keep their Project Admin role. Do this before any other update to that user. Keep the Namespace role in place until the move completes so automations that depend on it continue to work.
 
