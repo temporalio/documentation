@@ -1,0 +1,146 @@
+import { RunThis } from '@site/src/components/elements/NexusMicroserviceWalkthrough';
+
+A Worker is now polling, but callers reach a Service only through a [Nexus Endpoint](/nexus/endpoints), stored in the [Nexus Registry](/nexus/registry).
+
+An Endpoint routes Operation requests to a target Namespace and Task Queue. Callers address the Endpoint by name and never see the Namespace or Task Queue behind it, so you can move the handler later without changing caller code.
+
+## Create the Endpoint
+
+An Endpoint needs a unique name, the target Namespace where the handler runs, and the target Task Queue the handler's Worker polls. The Task Queue must match the one your Worker uses from [step 4](/develop/java/nexus/development-walkthrough?step=implement#run-the-worker), or requests arrive and nothing picks them up.
+
+The caller runs in its own Namespace, so the walkthrough crosses a real Namespace boundary. On the
+development server, create the caller Namespace and the Endpoint with the CLI:
+
+<RunThis>
+
+```bash title="Run 1 of 5: create the caller Namespace and the Endpoint"
+temporal operator namespace create --namespace approval-caller-namespace
+
+temporal operator nexus endpoint create \
+  --name approval-endpoint \
+  --target-namespace approval-handler-namespace \
+  --target-task-queue approval-handler-task-queue \
+  --description-file ./core/src/main/java/io/temporal/samples/nexuswalkthrough/description.md
+```
+
+</RunThis>
+
+`--description-file` is optional. It attaches Markdown that anyone browsing the Registry sees, so
+use it to say what the Service is for and who owns it.
+
+In Temporal Cloud, create the Endpoint in the UI under Nexus, or with `tcld`. See [Create a Nexus Endpoint](/nexus/registry#create-a-nexus-endpoint).
+
+Endpoint names are unique within the Registry. In Temporal Cloud the Registry spans every Namespace in your Account; in a self-hosted deployment it is scoped to the Temporal Service.
+
+## Allow caller Namespaces
+
+:::note This section applies to Temporal Cloud only
+
+On a development server or a self-hosted Temporal Service, skip to [Verify it is reachable](#verify-it-is-reachable). There is no allowed-caller list to configure.
+
+:::
+
+A Temporal Cloud Endpoint **rejects callers that are not on its allowed list**. Add the caller Namespace, including its Account suffix, when you create or edit the Endpoint in the UI or with `tcld`.
+
+This step is easy to miss because the failure looks like a routing problem. If a call fails as unauthorized and the Endpoint exists, check this list first.
+
+## Set up credentials
+
+A development server needs no credentials. Both Namespaces are local and unauthenticated.
+
+For Temporal Cloud, the caller and handler connect as separate clients, each to its own Namespace, using an API key with access to both or mTLS certificates. With [environment configuration](/develop/environment-configuration), keep one profile per Namespace and select it with an environment variable instead of passing connection options in code.
+
+## Verify it is reachable
+
+Before calling the Service, confirm the wiring. Come back to these checks whenever a later call
+stops working.
+
+Check that the Endpoint exists and targets the right Namespace and Task Queue:
+
+<RunThis>
+
+```bash title="Run 2 of 5: check the Endpoint exists"
+temporal operator nexus endpoint get --name approval-endpoint
+```
+
+</RunThis>
+
+Then check that the handler Worker is polling that Task Queue:
+
+<RunThis>
+
+```bash title="Run 3 of 5: check the Worker is polling"
+temporal task-queue describe \
+  --namespace approval-handler-namespace \
+  --task-queue approval-handler-task-queue
+```
+
+</RunThis>
+
+A Worker that isn't polling is the other common cause of a call that appears to hang: the request is accepted and queued, and nothing serves it.
+
+## Run the Operation
+
+The Service is now reachable through the Endpoint.
+`temporal nexus operation start` starts a [Standalone Nexus Operation](/standalone-nexus-operation),
+which makes the CLI the caller, so you don't need a caller Workflow or caller Worker yet.
+
+`requestApproval` blocks until someone decides the approval, so use `start`, which returns as soon as
+the Operation has started, rather than `execute`, which waits for the result.
+The Operation name is `RequestApproval`, not the `requestApproval` key in the contract: the generator
+emits the wire name in Pascal case, and the Endpoint routes on that name.
+
+<RunThis>
+
+```bash title="Run 4 of 5: request an approval"
+temporal nexus operation start \
+  --namespace approval-caller-namespace \
+  --endpoint approval-endpoint \
+  --service temporal.samples.approval.v1.ApprovalService \
+  --operation RequestApproval \
+  --operation-id approval-1 \
+  --input '{"itemId":"laptop-42","requester":"tao","amount":2500}'
+```
+
+</RunThis>
+
+The handler will say that it is at 87% after running - this is actually output from Gradle, not the workflow, and can be ignored.
+
+`describe` shows the Operation still open, waiting durably on the Workflow:
+
+<RunThis>
+
+```bash title="Run 5 of 5: describe the pending Operation"
+temporal nexus operation describe \
+  --namespace approval-caller-namespace --operation-id approval-1
+```
+
+</RunThis>
+
+```
+  Operation       RequestApproval
+  Status          Running
+  State           Started
+  OperationToken  eyJ0IjoxLCJucyI6ImFwcHJvdmFsLWhhbmRsZXItbmFtZXNwYWNlIiwid2lkIjoiYXBwcm92YWwtbGFwdG9wLTQyIn0
+
+Links: 1
+
+  Link  temporal:///namespaces/approval-handler-namespace/workflows/approval-laptop-42/...
+```
+
+The Workflow Id is `approval-laptop-42`, derived from the item id as decided in
+[step 3](/develop/java/nexus/development-walkthrough?step=backing#give-the-approval-workflow-a-stable-id).
+The link points from the Operation to the approval Workflow in the handler Namespace; the
+Nexus-aware Client added it automatically.
+
+The approval stays open until something decides it. [Step 7](/develop/java/nexus/development-walkthrough?step=messaging)
+adds the Operation that does.
+
+:::tip RESOURCES
+
+- [Nexus Endpoints](/nexus/endpoints) and [Nexus Registry](/nexus/registry) for the concepts and management surfaces.
+- [Nexus security](/nexus/security) for the Endpoint authorization model.
+- [Temporal Cloud Nexus](/cloud/nexus) for Cloud-specific setup and limits.
+- [Environment configuration](/develop/environment-configuration) for managing two Namespace profiles.
+
+:::
