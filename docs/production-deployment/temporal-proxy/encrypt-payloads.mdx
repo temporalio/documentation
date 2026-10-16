@@ -344,7 +344,9 @@ a payload copied from one Namespace into another can't be opened there.
 The label is the Namespace's name on the upstream, after
 [translation](/production-deployment/temporal-proxy/configure#translate-namespaces). Renaming a local Namespace in the
 configuration is safe, and two proxies that name one Namespace differently agree. Changing a translation rule changes
-the label, though, so payloads sealed before the change no longer match.
+the label, though, so payloads sealed before the change no longer match. To label payloads with another upstream's
+translation, for example while Namespaces move to Temporal Cloud, see
+[Move Namespaces between upstreams](#move-namespaces-between-upstreams).
 
 When the proxy opens a payload, it also compares the label with the request's Namespace, translated the same way. Nexus
 payloads that cross Namespaces by design are exempt, along with everything nested in them, such as an Operation's
@@ -391,6 +393,45 @@ After you turn on `permissive` or `strict`, downgrading to a release earlier tha
 unreadable to it.
 
 :::
+
+### Move Namespaces between upstreams {/* #move-namespaces-between-upstreams */}
+
+Because the label follows the routed upstream's translation, two proxies can label the same Namespace differently. A
+migration to Temporal Cloud is the common case. Until handoff, each Namespace routes to an on-premises upstream with no
+translation, so the proxy labels payloads `ns1`. Meanwhile, s2s-proxy replicates that history to Cloud and translates
+`ns1` to `ns1.acct`. For `strict` to hold on both sides of the handoff, both have to label payloads `ns1.acct`.
+
+Set `namespaces.bindingLabelsFrom` on the upstream the Namespaces are leaving, and name the upstream they are moving to:
+
+```yaml
+upstreams:
+  - name: local
+    hostPort: temporal.internal:7233
+    namespaces:
+      bindingLabelsFrom: cloud # Label payloads with cloud's name for each Namespace.
+  - name: cloud
+    hostPort: my-region.tmprl.cloud:7233
+    namespaces:
+      rules:
+        suffix: .acct
+```
+
+Payloads sealed or opened through `local` are labeled with the name `cloud` gives the Namespace, `ns1.acct`. Requests to
+`local` still use its own translation, and keys are still chosen by the local Namespace name.
+
+- `bindingLabelsFrom` must name another configured upstream, and that upstream can't set `bindingLabelsFrom` itself. The
+  proxy refuses to start otherwise.
+- Setting or changing it changes the label for every Namespace routed through that upstream, the same as changing a
+  translation rule. On a deployment that already labels payloads, switch to `permissive` first and watch
+  `vault_namespace_mismatches_total`.
+- Once every Namespace routes to `cloud`, removing the setting, or the `local` upstream, leaves every label unchanged.
+
+The [codec server](/production-deployment/temporal-proxy/codec-server#name-the-namespace) has no upstream to consult and
+compares payloads with the Namespace the request names. A Web UI or CLI pointed at the on-premises Temporal Service names
+`ns1`, so under `strict` it can't open payloads labeled `ns1.acct`. Use `permissive` during the migration if that view
+needs to decode payloads.
+
+`bindingLabelsFrom` is new in v0.10.0.
 
 ## Encrypt failures {/* #encrypt-failures */}
 
