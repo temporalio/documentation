@@ -220,7 +220,8 @@ If **Move to Project** is not available, [contact Support](/evaluate/cloud/suppo
 1. Confirm that you are an Account Owner or Global Admin, or a Project Admin on both Projects.
 2. Find the source and destination Project IDs in **Project Settings**, or run `temporal cloud project list`.
 3. Grant any destination-Project roles that workers, clients, and administrators need after the move.
-4. Check the Namespace's [Connectivity Rules](/cloud/connectivity). A rule belongs to a Project and does not move with the Namespace. Create the replacement rules in the destination Project before the move.
+4. Identify users who will have Project Admin on the destination Project and an explicit role on the Namespace. Plan to remove those Namespace roles immediately after the move completes. Keep them in place until then so existing automations retain their access.
+5. Check the Namespace's [Connectivity Rules](/cloud/connectivity). A rule belongs to a Project and does not move with the Namespace. Create the replacement rules in the destination Project before the move.
 
 A Namespace with no Connectivity Rules accepts connections without rule-based network restrictions. Detach rules only when that is the intended result.
 
@@ -305,6 +306,12 @@ temporal cloud async-operation await \
 ### Verify the move
 
 Confirm that the Namespace is in the destination Project and has the Connectivity Rules you intended. Test the identities used by your workers and clients, including any that previously relied on a source-Project role or a Project-scoped Service Account.
+
+### Resolve overlapping roles after the move
+
+A Namespace move keeps its explicit Namespace roles. If a user becomes a Project Admin in the destination Project after the move, that user has a role conflict between the Project role and the Namespace role because of [role precedence](#role-precedence). The conflict doesn't block the move, but any later update to that user fails until you remove the overlapping role.
+
+**Immediately after the move**, remove the user's redundant roles on the moved Namespace and keep their Project Admin role. Do this before any other update to that user. Keep the Namespace role in place until the move completes so automations that depend on it continue to work.
 
 ## Use Nexus across Projects {/* #use-nexus-across-projects */}
 
@@ -414,9 +421,32 @@ Project Developer is a compatibility role that is automatically inherited by use
 
 :::
 
-A principal automatically inherits a Project-level access from their Account-level role. For example, a Global Admin automatically inherits the Project Admin access for every Project in the Account. 
+A principal automatically inherits a Project-level access from their Account-level role. For example, a Global Admin automatically inherits the Project Admin access for every Project in the Account.
 
 Project-level permissions are additive. Granting a Project-level role does not reduce permissions inherited from Account-level or Namespace-level roles. A principal's effective permissions are the union of all applicable Account-, Project-, and Namespace-level role assignments.
+
+### Role precedence {/* #role-precedence */}
+
+Role-precedence validation rejects a redundant lower-scope role when a broader-scope role already grants equal or greater access. This keeps role assignments aligned with effective access.
+
+When the principal's Account role is:
+
+| Existing Account role | Project role you can assign |
+| --- | --- |
+| Account Owner or Global Admin | None. These roles already include Project Admin on every Project. |
+| Developer | Project Admin, Project Write, Project Read, or Project Contribute. |
+| Finance Admin or Read-Only | Any Project role. |
+
+When the principal's Project role is:
+
+| Existing Project role | Namespace role you can assign in that Project |
+| --- | --- |
+| Project Admin | None. Project Admin already includes Namespace Admin on every Namespace in the Project. |
+| Project Write | Namespace Admin. |
+| Project Read | Namespace Admin or Namespace Write. |
+| Project Contribute, Project List, or Project Member | Any Namespace role. |
+
+The Cloud UI removes redundant Namespace roles when you upgrade an Account role. A [Namespace move](#move-a-namespace) does not. After a move, remove an explicit Namespace role that overlaps with Project Admin on the destination Project before you update that user again.
 
 ## Modify an existing Project
 
