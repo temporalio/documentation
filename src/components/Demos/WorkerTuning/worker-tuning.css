@@ -1,0 +1,259 @@
+.worker-tuning-sim {
+  --color-page: #141414;
+  --color-surface: #1c1c1c;
+  --color-inset: #181818;
+  --color-border: #2a2a2a;
+  --color-border-strong: #3a3a3a;
+  --color-text: #f8fafc;
+  --color-text-secondary: #d9dde3;
+  --color-text-muted: #92979f;
+  --color-workflow: #3acee9;
+  --color-activity: #4cfc94;
+  --color-cpu: #ffab40;
+  --color-io: #7a8cff;
+  --color-replay: var(--color-warning);
+  --color-success: #d1fdfc;
+  --color-warning: #ffab40;
+  --color-danger: #e83a16;
+  --color-cache: #f4d35e;
+  --color-pause: #d1fdfc;
+  --color-control: #444ce7;
+  --color-magenta: #ff6cff;
+  --color-active-task: var(--color-magenta);
+  --font-primary: var(--ifm-font-family-base);
+  --font-secondary: 'Courier New', Courier, monospace;
+  color: var(--color-text);
+  background: var(--color-page);
+  font-family: var(--font-primary);
+  font-weight: 300;
+  font-synthesis: none;
+}
+
+.worker-tuning-sim, .worker-tuning-sim * { box-sizing: border-box; }
+.worker-tuning-sim { margin: 1.5rem 0; border-radius: 8px; overflow-x: auto; background: var(--color-page); }
+.worker-tuning-sim .worker-tuning-main > * { min-width: 0; }
+.worker-tuning-sim button, .worker-tuning-sim input, .worker-tuning-sim select { font: inherit; }
+.worker-tuning-sim button, .worker-tuning-sim select { color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 0.4rem 0.65rem; }
+.worker-tuning-sim button:not(:disabled):active {
+  border-color: var(--color-control);
+  background: var(--color-control);
+  color: var(--color-text);
+}
+.worker-tuning-sim input[type='range'], .worker-tuning-sim input[type='radio'], .worker-tuning-sim input[type='checkbox'] { accent-color: var(--color-control); }
+.worker-tuning-sim button:disabled { opacity: 0.45; }
+.worker-tuning-sim .worker-tuning-main { max-width: 1440px; margin: 0 auto; padding: 1rem 1.25rem 2rem; }
+.worker-tuning-sim header { display: flex; justify-content: space-between; align-items: end; gap: 2rem; }
+.worker-tuning-sim h2 { margin: 0; font-size: 1.35rem; font-weight: 650; }
+.worker-tuning-sim .clock { color: var(--color-text-muted); white-space: nowrap; }
+.worker-tuning-sim .clock strong { color: var(--color-text); }
+.worker-tuning-sim .workflow-generation-controls { display: grid; grid-template-columns: auto minmax(300px, 1fr) auto; align-items: center; gap: 0.65rem 1rem; margin: 1rem 0 0.65rem; padding: 0.7rem 0.8rem; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-surface); }
+.worker-tuning-sim .simulation-time-controls { grid-column: 1 / -1; display: flex; align-items: center; padding-bottom: 0.65rem; border-bottom: 1px solid var(--color-border); }
+.worker-tuning-sim .generation-config-label { grid-column: 1 / -1; color: var(--color-text-muted); font-size: 0.72rem; font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; }
+.worker-tuning-sim .generation-mode { display: flex; gap: 0.8rem; color: var(--color-text-secondary); font-size: 0.82rem; }
+.worker-tuning-sim .generation-mode label { display: flex; align-items: center; gap: 0.3rem; }
+.worker-tuning-sim .top-count-control, .worker-tuning-sim .top-rate-control { display: flex; align-items: center; gap: 0.65rem; color: var(--color-text-secondary); font-size: 0.8rem; }
+.worker-tuning-sim .top-count-control > label, .worker-tuning-sim .top-rate-control > label { white-space: nowrap; }
+.worker-tuning-sim .top-count-control .count-stepper { width: min(320px, 100%); }
+.worker-tuning-sim .top-rate-control input { width: 6rem; }
+.worker-tuning-sim .top-rate-control input, .worker-tuning-sim .top-rate-control select { color: var(--color-text); background: var(--color-inset); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 0.35rem; }
+.worker-tuning-sim .generation-actions { display: flex; align-items: center; gap: 0.45rem; }
+.worker-tuning-sim .generation-actions .start-workflow-button { width: auto; min-width: 150px; margin: 0; }
+.worker-tuning-sim .simulator-config { grid-column: 1 / -1; border-top: 1px solid var(--color-border); padding-top: 0.5rem; }
+.worker-tuning-sim .simulator-config-title { color: var(--color-text-secondary); font-size: 0.8rem; }
+.worker-tuning-sim .simulator-config-sections { margin-top: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-inset); }
+.worker-tuning-sim .preset-control { display: flex; width: min(420px, 100%); align-items: center; gap: 0.75rem; padding: 0.55rem 0.65rem; color: var(--color-text-secondary); font-size: 0.8rem; }
+.worker-tuning-sim .preset-control span { min-width: 90px; }
+.worker-tuning-sim .preset-control select { flex: 1; color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 0.35rem 0.45rem; }
+.worker-tuning-sim .custom-settings { border-top: 1px solid var(--color-border); }
+.worker-tuning-sim .custom-settings > summary { cursor: pointer; padding: 0.55rem 0.65rem; color: var(--color-text-secondary); font-size: 0.8rem; }
+.worker-tuning-sim .custom-settings-sections { border-top: 1px solid var(--color-border); }
+.worker-tuning-sim .config-section + .config-section { border-top: 1px solid var(--color-border); }
+.worker-tuning-sim .config-section > summary { cursor: pointer; padding: 0.55rem 0.65rem; color: var(--color-text-secondary); font-size: 0.8rem; }
+.worker-tuning-sim .config-section-content { padding: 0 0.7rem 0.7rem; }
+.worker-tuning-sim .workflow-shape-controls p { margin: 0 0 0.45rem; color: var(--color-text-muted); font-size: 0.72rem; }
+.worker-tuning-sim .workflow-shape-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding-top: 0.35rem; }
+.worker-tuning-sim .workflow-shape-tally { display: flex; gap: 1.25rem; margin-top: 0.45rem; padding-top: 0.5rem; border-top: 1px solid var(--color-border); color: var(--color-text-secondary); font-size: 0.76rem; }
+.worker-tuning-sim .workflow-shape-tally strong { color: var(--color-text); font-variant-numeric: tabular-nums; }
+.worker-tuning-sim .simulation-panel { padding: 0.75rem 0.9rem 0.9rem; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-surface); }
+.worker-tuning-sim .simulation-panel h2 { margin: 0 0 0.55rem; color: var(--color-text); font-size: 0.95rem; font-weight: 650; text-transform: uppercase; }
+.worker-tuning-sim .simulation-scene { display: block; width: 100%; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-surface); }
+.worker-tuning-sim .monitoring-panel { margin-top: 0.75rem; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-surface); }
+.worker-tuning-sim .monitoring-panel > summary { cursor: pointer; padding: 0.75rem 0.9rem; color: var(--color-text); font-size: 0.95rem; font-weight: 650; }
+.worker-tuning-sim .monitoring-sections { border-top: 1px solid var(--color-border); }
+.worker-tuning-sim .monitoring-section + .monitoring-section { border-top: 1px solid var(--color-border); }
+.worker-tuning-sim .monitoring-section > summary { cursor: pointer; padding: 0.65rem 0.9rem; color: var(--color-text-secondary); font-size: 0.85rem; font-weight: 650; }
+.worker-tuning-sim .monitoring-charts { padding: 0 0.8rem 0.8rem; border-top: 1px solid var(--color-border); }
+.worker-tuning-sim .monitoring-charts .chart-panel:first-child { margin-top: 0.8rem; }
+.worker-tuning-sim .region { fill: var(--color-surface); stroke: var(--color-border-strong); stroke-width: 1.5; }
+.worker-tuning-sim .temporal-region { fill: var(--color-surface); }
+.worker-tuning-sim .worker-region { fill: var(--color-surface); }
+.worker-tuning-sim .region-title { fill: var(--color-text); font-size: 16px; font-weight: 700; letter-spacing: 1.4px; }
+.worker-tuning-sim .section-label { fill: var(--color-text-secondary); font-size: 13px; }
+.worker-tuning-sim .small-label, .worker-tuning-sim .overflow, .worker-tuning-sim .metric-value { fill: var(--color-text-muted); font-size: 12px; }
+.worker-tuning-sim .queue { fill: var(--color-inset); stroke: var(--color-border-strong); }
+.worker-tuning-sim .service-core { fill: var(--color-inset); stroke: var(--color-border-strong); stroke-width: 1.5; }
+.worker-tuning-sim .core-title { fill: var(--color-text); font-size: 15px; font-weight: 650; }
+.worker-tuning-sim .core-subtitle { fill: var(--color-text-muted); font-size: 11px; }
+.worker-tuning-sim .queue-group-label { fill: var(--color-text-muted); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; }
+.worker-tuning-sim .path-label { fill: var(--color-text-muted); font-size: 10px; }
+.worker-tuning-sim .workflow-execution { fill: var(--color-text); stroke: var(--color-text); stroke-width: 1.5; }
+.worker-tuning-sim .workflow-execution.completed { fill: var(--color-inset); stroke: var(--color-success); }
+.worker-tuning-sim .workflow-check { fill: var(--color-success); font-size: 12px; font-weight: 800; pointer-events: none; }
+.worker-tuning-sim .workflow-task-count { fill: var(--color-inset); font-size: 10px; font-weight: 800; pointer-events: none; }
+.worker-tuning-sim .client-emitter { fill: var(--color-text-secondary); stroke: var(--color-text); stroke-width: 1; }
+.worker-tuning-sim .workflow-start { fill: var(--color-text); stroke: var(--color-text); stroke-width: 1.5; }
+.worker-tuning-sim .flow-line { stroke: var(--color-border-strong); stroke-width: 1.5; }
+.worker-tuning-sim .arrow-head { fill: var(--color-border-strong); }
+.worker-tuning-sim .poller { fill: var(--color-surface); stroke: var(--color-text-secondary); stroke-width: 2; }
+.worker-tuning-sim .poller.task-received { fill: var(--color-border-strong); stroke: var(--color-text); }
+.worker-tuning-sim .poll-request { stroke: var(--color-border-strong); stroke-width: 1; stroke-dasharray: 2 4; opacity: 0.35; animation: poll-request-pulse 1.4s ease-in-out infinite; }
+@keyframes poll-request-pulse {
+  0%, 100% { opacity: 0.18; }
+  50% { opacity: 0.48; }
+}
+.worker-tuning-sim .slot { fill: var(--color-inset); stroke: var(--color-border-strong); stroke-width: 1.5; }
+.worker-tuning-sim .slot.reserved { stroke: var(--color-warning); stroke-dasharray: 3 2; }
+.worker-tuning-sim .slot.occupied { fill: var(--color-surface); }
+.worker-tuning-sim .slot.replaying { fill: var(--color-inset); stroke: var(--color-replay); stroke-width: 2; }
+.worker-tuning-sim .slot.draining { opacity: 0.45; }
+.worker-tuning-sim .replay-glyph { fill: var(--color-replay); font-size: 11px; font-weight: 800; pointer-events: none; }
+.worker-tuning-sim .workflow-warm-badge { fill: var(--color-success); stroke: var(--color-success); stroke-width: 0.75; }
+.worker-tuning-sim .workflow-warm-label { fill: var(--color-inset); font-size: 6px; font-weight: 900; pointer-events: none; }
+.worker-tuning-sim .worker-cache-card { fill: var(--color-surface); stroke: var(--color-border-strong); stroke-width: 0.75; }
+.worker-tuning-sim .worker-card-outline { fill: none; stroke: var(--color-border); stroke-width: 1; }
+.worker-tuning-sim .worker-card-title { fill: var(--color-text-secondary); font-size: 9px; font-weight: 800; letter-spacing: 0.5px; }
+.worker-tuning-sim .cache-cell { fill: var(--color-inset); stroke: var(--color-border-strong); stroke-width: 1; }
+.worker-tuning-sim .cache-cell.occupied { fill: var(--color-surface); stroke: var(--color-border-strong); }
+.worker-tuning-sim .cache-cell.hit { animation: cache-hit-pulse 500ms ease-out; }
+.worker-tuning-sim .cache-cell-label { fill: var(--color-cache); font-size: 9px; font-weight: 700; pointer-events: none; }
+.worker-tuning-sim .cache-disabled, .worker-tuning-sim .cache-hit-rate { fill: var(--color-text-muted); font-size: 10px; }
+.worker-tuning-sim .cache-evicted { fill: var(--color-danger); font-size: 9px; animation: cache-eviction-fade 800ms ease-out; }
+@keyframes cache-hit-pulse {
+  0% { fill: var(--color-cache); stroke: var(--color-text); stroke-width: 2.5; }
+  100% { fill: var(--color-surface); stroke: var(--color-border-strong); stroke-width: 1; }
+}
+@keyframes cache-eviction-fade {
+  0% { opacity: 1; }
+  100% { opacity: 0.35; }
+}
+.worker-tuning-sim .task { stroke-width: 1.5; }
+.worker-tuning-sim .task-workflow { fill: var(--color-workflow); stroke: var(--color-workflow); }
+.worker-tuning-sim .task-workflow.replaying { fill: var(--color-inset); stroke: var(--color-replay); stroke-width: 2; }
+.worker-tuning-sim .task-activity { fill: var(--color-activity); stroke: var(--color-activity); }
+.worker-tuning-sim .task.io-bound { fill-opacity: 0.25; stroke-dasharray: 2 2; }
+.worker-tuning-sim .sticky-wait-ring { fill: none; stroke: var(--color-success); stroke-width: 1; stroke-dasharray: 2 2; animation: sticky-wait-spin 1.2s linear infinite; transform-box: fill-box; transform-origin: center; }
+.worker-tuning-sim .sticky-worker-badge { fill: var(--color-success); font-size: 8px; font-weight: 800; }
+.worker-tuning-sim .sticky-fallback .task { animation: sticky-fallback-pulse 700ms ease-out; }
+@keyframes sticky-wait-spin { to { transform: rotate(360deg); } }
+@keyframes sticky-fallback-pulse {
+  0% { stroke: var(--color-danger); stroke-width: 4; }
+  100% { stroke-width: 1.5; }
+}
+.worker-tuning-sim .queue-claim-line, .worker-tuning-sim .active-dispatch-line { stroke-width: 1.5; stroke-dasharray: 4 4; }
+.worker-tuning-sim .workflow-path { stroke: var(--color-workflow); }
+.worker-tuning-sim .activity-path { stroke: var(--color-activity); }
+.worker-tuning-sim .poller-claim-ring { fill: none; stroke: var(--color-text); stroke-width: 2; }
+.worker-tuning-sim .result-line { fill: none; stroke: var(--color-text-muted); stroke-width: 1.25; stroke-dasharray: 3 5; }
+.worker-tuning-sim .result-pulse { fill: var(--color-text); stroke: var(--color-text); stroke-width: 1; }
+.worker-tuning-sim .return-rail { fill: none; stroke: var(--color-border-strong); stroke-width: 1.5; stroke-dasharray: 5 6; opacity: 0.28; transition: opacity 120ms linear; }
+.worker-tuning-sim .return-rail.active { opacity: 0.78; }
+.worker-tuning-sim .return-arrow-head { fill: var(--color-text-muted); }
+.worker-tuning-sim .return-rail-label { fill: var(--color-text-muted); font-size: 10px; font-weight: 650; letter-spacing: 1px; }
+.worker-tuning-sim .resource-track { fill: var(--color-inset); stroke: var(--color-border-strong); }
+.worker-tuning-sim .resource-fill { transition: width 100ms linear; }
+.worker-tuning-sim .cpu-fill { fill: var(--color-cpu); }
+.worker-tuning-sim .memory-fill { fill: var(--color-border-strong); }
+.worker-tuning-sim .memory-base-fill { fill: var(--color-text-muted); }
+.worker-tuning-sim .memory-task-fill { fill: var(--color-active-task); }
+.worker-tuning-sim .memory-cache-fill { fill: var(--color-cache); }
+.worker-tuning-sim .memory-legend { fill: var(--color-text-muted); font-size: 8px; }
+.worker-tuning-sim .io-fill { fill: var(--color-io); }
+.worker-tuning-sim .resource-fill.throttled { animation: resource-throttle-pulse 700ms ease-in-out infinite; }
+@keyframes resource-throttle-pulse {
+  0%, 100% { fill: var(--color-danger); filter: drop-shadow(0 0 1px color-mix(in srgb, var(--color-danger) 45%, transparent)); }
+  50% { fill: var(--color-danger); filter: drop-shadow(0 0 5px color-mix(in srgb, var(--color-danger) 90%, transparent)); }
+}
+.worker-tuning-sim .chart-panel { margin-top: 0.75rem; padding: 0.75rem 0.9rem 0.45rem; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-surface); }
+.worker-tuning-sim .chart-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+.worker-tuning-sim .chart-header h2 { margin: 0; color: var(--color-text); font-size: 0.95rem; font-weight: 650; text-transform: uppercase; }
+.worker-tuning-sim .chart-header p { margin: 0.2rem 0 0; color: var(--color-text-muted); font-size: 0.75rem; }
+.worker-tuning-sim .chart-header strong { color: var(--color-text); font-size: 1rem; font-variant-numeric: tabular-nums; }
+.worker-tuning-sim .chart-status { display: flex; flex-direction: column; align-items: end; gap: 0.25rem; }
+.worker-tuning-sim .chart-throttle-key, .worker-tuning-sim .chart-auto-pause-key { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--color-text-secondary); font-size: 0.68rem; font-weight: 500; }
+.worker-tuning-sim .chart-throttle-key i { width: 14px; height: 8px; }
+.worker-tuning-sim .chart-throttle-key i { border: 1px solid color-mix(in srgb, var(--color-danger) 75%, transparent); background: color-mix(in srgb, var(--color-danger) 24%, transparent); }
+.worker-tuning-sim .chart-auto-pause-key i { width: 8px; height: 11px; border-left: 1px dashed var(--color-pause); }
+.worker-tuning-sim .task-throughput-chart { display: block; width: 100%; margin-top: 0.35rem; }
+.worker-tuning-sim .chart-legend { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.45rem; color: var(--color-text-muted); font-size: 0.72rem; }
+.worker-tuning-sim .chart-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.worker-tuning-sim .legend-swatch { display: inline-block; width: 18px; height: 2px; }
+.worker-tuning-sim .chart-grid-line { stroke: var(--color-border); stroke-width: 1; stroke-dasharray: 3 5; }
+.worker-tuning-sim .chart-throttle-band { fill: var(--color-danger); fill-opacity: 0.24; }
+.worker-tuning-sim .chart-auto-pause-line { stroke: var(--color-pause); stroke-width: 1.5; stroke-dasharray: 5 5; vector-effect: non-scaling-stroke; }
+.worker-tuning-sim .chart-axis { stroke: var(--color-border-strong); stroke-width: 1; }
+.worker-tuning-sim .chart-line { fill: none; stroke: var(--color-workflow); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.worker-tuning-sim .chart-line.throughput-total { stroke: var(--color-text); stroke-width: 2.25; }
+.worker-tuning-sim .chart-line.throughput-workflow { stroke: var(--color-workflow); }
+.worker-tuning-sim .chart-line.throughput-activity { stroke: var(--color-activity); }
+.worker-tuning-sim .chart-line.resource-cpu { stroke: var(--color-cpu); }
+.worker-tuning-sim .chart-line.resource-memory { stroke: var(--color-magenta); }
+.worker-tuning-sim .chart-line.resource-io { stroke: var(--color-io); }
+.worker-tuning-sim .legend-swatch.throughput-total { background: var(--color-text); }
+.worker-tuning-sim .legend-swatch.throughput-workflow { background: var(--color-workflow); }
+.worker-tuning-sim .legend-swatch.throughput-activity { background: var(--color-activity); }
+.worker-tuning-sim .chart-label { fill: var(--color-text-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.worker-tuning-sim .load-test-table-scroll { margin-top: 0.75rem; overflow-x: auto; }
+.worker-tuning-sim .load-test-table { width: 100%; border-collapse: collapse; color: var(--color-text-secondary); font-family: var(--font-secondary); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+.worker-tuning-sim .load-test-table th, .worker-tuning-sim .load-test-table td { padding: 0.55rem 0.65rem; border-top: 1px solid var(--color-border); text-align: right; white-space: nowrap; }
+.worker-tuning-sim .load-test-table thead th { color: var(--color-text-muted); font-weight: 400; }
+.worker-tuning-sim .load-test-table th:first-child { text-align: left; }
+.worker-tuning-sim .load-test-table tbody th { color: var(--color-text); font-weight: 400; }
+.worker-tuning-sim .speed-control { display: flex; align-items: center; gap: 0.45rem; margin-left: auto; color: var(--color-text-secondary); font-size: 0.85rem; }
+.worker-tuning-sim .speed-control input[type='range'] { width: 180px; }
+.worker-tuning-sim .speed-number { width: 4.4rem; color: var(--color-text); background: var(--color-inset); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 0.35rem; }
+.worker-tuning-sim .speed-control button.active { border-color: var(--color-control); color: var(--color-text); }
+.worker-tuning-sim .range-control { display: grid; grid-template-columns: 155px 1fr 78px; align-items: center; gap: 0.65rem; margin: 0.45rem 0; color: var(--color-text-secondary); font-size: 0.8rem; }
+.worker-tuning-sim .range-control output { color: var(--color-text); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.worker-tuning-sim .worker-config-controls .range-control { width: min(760px, 100%); grid-template-columns: 210px 1fr 94px; }
+.worker-tuning-sim .worker-config-controls .range-control output, .worker-tuning-sim .task-resource-panel .range-control output { text-align: left; }
+.worker-tuning-sim .task-resource-panel { padding-top: 0.1rem; }
+.worker-tuning-sim .task-resource-header { display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; }
+.worker-tuning-sim .profile-lock { display: flex; align-items: center; gap: 0.35rem; color: var(--color-text-secondary); font-size: 0.76rem; white-space: nowrap; }
+.worker-tuning-sim .profile-lock input[type='checkbox'] {
+  appearance: none;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 0.2rem;
+  background-color: var(--color-surface);
+}
+.worker-tuning-sim .profile-lock input[type='checkbox']:checked {
+  border-color: var(--color-control);
+  background-color: var(--color-control);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.2 6.2 4.8 8.6 9.8 3.3' fill='none' stroke='%23f8fafc' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.worker-tuning-sim .profile-lock input[type='checkbox']:focus-visible { outline: 2px solid var(--color-control); outline-offset: 2px; }
+.worker-tuning-sim .task-profile-group { margin-top: 0.6rem; padding-top: 0.55rem; border-top: 1px solid var(--color-border); }
+.worker-tuning-sim .task-profile-name { color: var(--color-text); font-size: 0.78rem; font-weight: 650; }
+.worker-tuning-sim .task-resource-panel .workload-mode { margin-block: 0.4rem 0.3rem; }
+.worker-tuning-sim .task-resource-panel .range-control { width: min(760px, 100%); grid-template-columns: 190px 1fr 94px; }
+.worker-tuning-sim .workload-mode { display: flex; gap: 1rem; margin: 0.35rem 0 0.65rem; color: var(--color-text-secondary); font-size: 0.82rem; }
+.worker-tuning-sim .workload-mode label { display: flex; align-items: center; gap: 0.35rem; }
+.worker-tuning-sim .count-stepper { display: grid; grid-template-columns: auto minmax(70px, 1fr) auto; gap: 0.35rem; }
+.worker-tuning-sim .count-stepper input { min-width: 0; color: var(--color-text); background: var(--color-inset); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 0.35rem; text-align: center; }
+.worker-tuning-sim .start-workflow-button { width: 100%; margin: 0 0 0.45rem; border-color: var(--color-border-strong); color: var(--color-text); padding-block: 0.55rem; }
+.worker-tuning-sim .diagnostics { margin-top: 0.75rem; border: 1px solid var(--color-border); border-radius: 6px; padding: 0.65rem 0.8rem; background: var(--color-inset); }
+.worker-tuning-sim .diagnostics summary { cursor: pointer; color: var(--color-text-secondary); }
+.worker-tuning-sim .diagnostics pre { max-height: 440px; overflow: auto; color: var(--color-text-muted); font-family: var(--font-secondary); font-size: 0.72rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .worker-tuning-sim .resource-fill.throttled { animation: none; fill: var(--color-danger); }
+  .worker-tuning-sim .cache-cell.hit, .worker-tuning-sim .cache-evicted, .worker-tuning-sim .poll-request, .worker-tuning-sim .sticky-wait-ring, .worker-tuning-sim .sticky-fallback .task { animation: none; }
+}
+
+@media (max-width: 1100px) {
+  .worker-tuning-sim .worker-tuning-main { padding-inline: 0.75rem; }
+  .worker-tuning-sim .workflow-generation-controls { grid-template-columns: 1fr 1fr; }
+  .worker-tuning-sim .generation-actions { grid-column: 1 / -1; }
+}

@@ -189,6 +189,7 @@ These cross-cutting pages live outside any SDK folder:
 - `worker-tuning-reference.mdx` — Reference tables for worker config (sidebar: under Worker performance).
 - `task-queue-priority-fairness.mdx` — Task queue priority and fairness features.
 - `activity-retry-simulator.mdx` — Interactive tool for visualizing retry behavior.
+- `demos/worker-tuning-simulator.mdx` — Interactive simulator of Worker Pollers, Slots, cache, and resource limits (sidebar: Interactive Demos).
 - `run-a-development-server.mdx` — Installing and running the Temporal CLI dev server.
 
 ### Issues

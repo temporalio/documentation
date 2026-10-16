@@ -118,6 +118,7 @@ export const COMPONENT_REGISTRY = {
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
   ServerlessWorkerDemo: "strip-block",
+  WorkerTuningSimulator: "strip-block",
   WalkthroughDemo: "event-history-demo",
   WalkthroughStep: "walkthrough-step",
   WalkthroughCommand: "walkthrough-entry",
