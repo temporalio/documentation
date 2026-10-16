@@ -169,7 +169,7 @@ retries it based on your configuration.
 
 Create an Activity file (activity.go):
 
-{/* SNIPSTART go-quickstart-activity */}
+<!--SNIPSTART go-quickstart-activity-->
 [go-sandbox/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activity.go)
 ```go
 package quickstart
@@ -183,7 +183,7 @@ func Greet(ctx context.Context, name string) (string, error) {
 	return fmt.Sprintf("Hello %s", name), nil
 }
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 ### 2. Create the Workflow
 
@@ -193,7 +193,7 @@ automatically recreate its pre-failure state so it can continue right where it l
 
 Create a Workflow file (workflow.go):
 
-{/* SNIPSTART go-quickstart-workflow */}
+<!--SNIPSTART go-quickstart-workflow-->
 [go-sandbox/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflow.go)
 ```go
 package quickstart
@@ -219,7 +219,7 @@ func SayHelloWorkflow(ctx workflow.Context, name string) (string, error) {
 	return result, nil
 }
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 ### 3. Create and Run the Worker
 
@@ -233,7 +233,7 @@ Workflows and Activities. For more information on Workers, see
 
 Create a Worker file (worker/main.go):
 
-{/* SNIPSTART go-worker-main */}
+<!--SNIPSTART go-worker-main-->
 [go-sandbox/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/worker/main.go)
 ```go
 package main
@@ -265,7 +265,7 @@ func main() {
 	}
 }
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 Run the Worker:
 
@@ -279,7 +279,7 @@ Now that your Worker is running, it's time to start a Workflow Execution.
 
 Create a separate file called start/main.go:
 
-{/* SNIPSTART go-quickstart-start-workflow */}
+<!--SNIPSTART go-quickstart-start-workflow-->
 [go-sandbox/start/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/start/main.go)
 ```go
 package main
@@ -320,7 +320,7 @@ func main() {
 	log.Println("Workflow result:", result)
 }
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 Then run:
 
