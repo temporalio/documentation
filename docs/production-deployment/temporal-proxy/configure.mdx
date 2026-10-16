@@ -212,6 +212,9 @@ upstreams:
 - `overrides` lists explicit `local` and `remote` pairs for names that do not follow the prefix and suffix convention.
   An override takes precedence over the prefix and suffix rules. Each local name and each remote name may appear only
   once.
+- `bindingLabelsFrom` names another upstream whose rules label encrypted payloads in place of this upstream's own. Use
+  it while Namespaces move between upstreams. See
+  [Move Namespaces between upstreams](/production-deployment/temporal-proxy/encrypt-payloads#move-namespaces-between-upstreams).
 
 An upstream's `hostPort` and `tls.serverName` can be Go templates resolved per request, so one upstream can serve many
 Namespaces. Available variables:

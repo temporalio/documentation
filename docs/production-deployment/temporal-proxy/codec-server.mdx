@@ -114,7 +114,9 @@ Under `strict`, it requires a Namespace on every request.
 
 Name the Namespace as the Temporal Service knows it, such as `orders.acct` on Temporal Cloud, not the local name a
 Worker uses through the gateway. Payloads are labeled with that name, and the codec server maps it to the local name
-itself to pick keys.
+itself to pick keys. The codec server ignores an upstream's `bindingLabelsFrom`, so during a
+[migration between upstreams](/production-deployment/temporal-proxy/encrypt-payloads#move-namespaces-between-upstreams)
+a client that names the on-premises Namespace can't open payloads labeled with the Cloud name under `strict`.
 
 The Temporal CLI sends the Namespace for you, so either endpoint form works:
 
