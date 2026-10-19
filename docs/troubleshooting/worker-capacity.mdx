@@ -121,7 +121,7 @@ Fires when the rate reaches 0 while the Task Queue still has demand, held for 5m
 The SDK only bumps this counter after a response succeeds, so a zero rate means nothing is landing.
 
 **Check for demand before you act on this one.**
-A zero rate looks the same whether your Workers are broken or the Task Queue is simply quiet: outside business hours, or a batch workload between runs, zero is the correct answer.
+A zero rate looks the same whether your Workers are broken or the Task Queue is quiet: outside business hours, or a batch workload between runs, zero is the correct answer.
 The metric is tagged `namespace` and `operation`, not `task_queue`, so you can't narrow it to one Task Queue on its own either.
 
 Look for a non-zero Workflow or Activity start rate, a growing Task backlog, or schedule-to-start latency climbing.
