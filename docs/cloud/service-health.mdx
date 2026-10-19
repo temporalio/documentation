@@ -179,7 +179,7 @@ Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed
 
 Use [`temporal_cloud_v1_provisioned_capacity_tru_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_provisioned_capacity_tru_count) to track the number of TRUs configured for each Namespace. A value of `0` means the Namespace uses On-Demand Capacity.
 
-Each TRU provides 500 Actions per second. The first TRU has no minimum usage charge. Each additional TRU has a minimum of 360,000 Actions per calendar hour, equal to 20% of its capacity. Billing uses the highest TRU count configured during the hour. When workload usage falls below the hourly minimum, Temporal records `ns_capacity:tru` Actions equal to the shortfall.
+Each TRU provides 500 Actions per second. The first TRU has no hourly minimum. Each TRU after the first carries a minimum hourly charge of 360,000 Actions, equal to 20% of its capacity. Billing uses the highest TRU count configured during the hour. If workload usage falls below the minimum, Temporal adds Actions equal to the shortfall.
 
 The hourly minimum is
 
@@ -187,13 +187,13 @@ The hourly minimum is
 (maximum TRU count during the hour - 1) * 360,000 Actions
 ```
 
-Use [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` and [`temporal_cloud_v1_action_limit`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_action_limit) to track usage against provisioned capacity. Divide the Action count by the Action limit to calculate utilization.
+Use [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` and [`temporal_cloud_v1_action_limit`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_action_limit) to estimate APS utilization. Sum the Action-rate series for the Namespace, then divide by its Action limit.
 
-To alert on minimum charges, convert the Action rate to a calendar-hour total and compare it with the minimum. OpenMetrics reports one-minute rates and current limits. [Usage](/cloud/actions-usage) and [Billing](/cloud/billing) report billed Actions.
+To estimate whether usage falls below the hourly minimum, compare the Namespace's hourly average Action rate with `(maximum observed TRU count - 1) * 100 APS`. Align the window to the calendar hour. OpenMetrics samples the current configuration and estimates Action usage, so it does not reproduce billing records. Use the [Usage dashboard](/cloud/actions-usage#usage) or [Billing API](/cloud/billing-api) for billed Actions.
 
 The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes panels for provisioned capacity utilization and limits.
 
-Low utilization can be intentional when a workload needs capacity available for traffic spikes or unpredictable demand. The hourly minimum charge still applies.
+Some workloads intentionally run at low utilization to preserve capacity for traffic spikes or unpredictable demand. The hourly minimum charge still applies.
 
 ### Why does throttling occur when count metrics stay below the limit?
 
