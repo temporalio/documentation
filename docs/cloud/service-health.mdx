@@ -177,24 +177,21 @@ Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed
 
 ### Provisioned capacity utilization
 
-For Namespaces in [provisioned capacity](/cloud/capacity-modes#provisioned-capacity) mode, the limit and count metrics also reveal the lower bound: how much of your reserved capacity you are actually using.
-This matters because provisioned capacity is reserved by the hour whether or not you use it.
-Each TRU beyond the first carries a minimum hourly Action charge of 360,000 Actions, which is 20% of that TRU's 500 APS, so a Namespace that runs well below its limit can accrue charges for capacity it never uses.
-See [Capacity Mode Pricing](/cloud/pricing#capacity-modes-pricing) for how the minimum is calculated.
+Use [`temporal_cloud_v1_provisioned_capacity_tru_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_provisioned_capacity_tru_count) to track the number of TRUs configured for each Namespace. A value of `0` means the Namespace uses On-Demand Capacity.
 
-Utilization is the ratio of `temporal_cloud_v1_total_action_count` to `temporal_cloud_v1_action_limit`.
-Sustained utilization well below 20% while provisioned indicates you may be paying for reserved capacity you are not using; consider alerting when the ratio stays under 20% over a sustained window, such as several hours, so you can reduce TRUs or return to on-demand mode.
-The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes provisioned-capacity panels for utilization and limits.
+Each TRU provides 500 Actions per second. The first TRU has no minimum usage charge. Each additional TRU has a minimum of 360,000 Actions per calendar hour, equal to 20% of its capacity. Billing uses the highest TRU count configured during the hour. When workload usage falls below the hourly minimum, Temporal records `ns_capacity:tru` Actions equal to the shortfall.
 
-Low utilization is not always a problem.
-If your traffic is spiky or unpredictable, you may intentionally keep capacity provisioned so it is ready the moment you need it.
+The hourly minimum is
 
-:::note
+```text
+(maximum TRU count during the hour - 1) * 360,000 Actions
+```
 
-These metrics are approximate measures of TRU capacity based on real-time TRU quotas, and do not capture the fact that TRUs are billed by the calendar hour.
-Please use [Usage](/cloud/actions-usage) and [Billing](/cloud/billing) as the source of truth for TRU and action accounting.
+Use [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` and [`temporal_cloud_v1_action_limit`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_action_limit) to track usage against provisioned capacity. Divide the Action count by the Action limit to calculate utilization.
 
-:::
+To alert on minimum charges, convert the Action rate to a calendar-hour total and compare it with the minimum. OpenMetrics reports one-minute rates and current limits. [Usage](/cloud/actions-usage) and [Billing](/cloud/billing) report billed Actions.
+
+The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes panels for provisioned capacity utilization and limits.
 
 ### Why does throttling occur when count metrics stay below the limit?
 
