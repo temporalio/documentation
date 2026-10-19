@@ -177,17 +177,17 @@ Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed
 
 ### Provisioned capacity utilization
 
-Each TRU provides 500 Actions per second. The first TRU has no hourly minimum. Each TRU after the first carries a minimum hourly charge of 360,000 Actions, equal to 20% of its capacity. Billing uses the highest TRU count configured during the hour. If workload usage falls below the minimum, Temporal adds Actions equal to the shortfall.
+Each TRU provides 500 Actions per second. The first TRU has an hourly minimum of 0 Actions. Each TRU after the first has an hourly minimum of 360,000 Actions, equal to 20% of its capacity. Billing uses the highest TRU count configured during the hour. If workload Actions fall below the hourly minimum Actions, Temporal adds Actions equal to the shortfall.
 
-To estimate the additional billed Actions caused by usage below the minimum, calculate the shortfall for each calendar hour by comparing workload Actions with the hourly minimum.
+To estimate the additional billed Actions caused when workload Actions fall below the hourly minimum Actions, calculate the shortfall for each calendar hour by comparing workload Actions with hourly minimum Actions.
 
 ```text
-additional billed Actions = max(0, hourly minimum - workload Actions)
+additional billed Actions = max(0, hourly minimum Actions - workload Actions)
 ```
 
 Calculate workload Actions by summing [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` across the Namespace's series for each one-minute interval, multiplying each rate by 60, and summing the results for the calendar hour.
 
-Calculate the hourly minimum by subtracting one from the maximum observed TRU count during the hour and multiplying by 360,000 Actions. Use [`temporal_cloud_v1_provisioned_capacity_tru_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_provisioned_capacity_tru_count) to track the number of TRUs configured for each Namespace. A value of `0` means the Namespace uses On-Demand Capacity.
+Calculate hourly minimum Actions by subtracting one from the maximum observed TRU count during the hour and multiplying by 360,000 Actions. Use [`temporal_cloud_v1_provisioned_capacity_tru_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_provisioned_capacity_tru_count) to track the number of TRUs configured for each Namespace. A value of `0` means the Namespace uses On-Demand Capacity.
 
 Add the hourly shortfalls to estimate additional billed Actions over a longer period.
 
@@ -195,7 +195,7 @@ The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/mas
 
 OpenMetrics estimates usage. Use [Usage](/cloud/actions-usage#usage) and [Billing](/cloud/billing) as the source of truth for billed Actions.
 
-Some workloads intentionally run at low utilization to preserve capacity for traffic spikes or unpredictable demand. The hourly minimum charge still applies.
+Some workloads intentionally run at low utilization to preserve capacity for traffic spikes or unpredictable demand. The hourly minimum Actions still apply.
 
 ### Why does throttling occur when count metrics stay below the limit?
 
