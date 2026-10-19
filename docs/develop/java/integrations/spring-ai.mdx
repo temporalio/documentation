@@ -29,7 +29,10 @@ You also need the [`temporal-spring-boot-starter`](/develop/java/integrations/sp
 
 ## Add the dependency
 
-Add `io.temporal:spring-ai:0.1.1` alongside `temporal-spring-boot-starter` and a Spring AI model starter (for example, `spring-ai-starter-model-openai`). The Spring AI integration is versioned separately from the Temporal Java SDK.
+Add `io.temporal:spring-ai` alongside `temporal-spring-boot-starter` and a Spring AI model starter (for example, `spring-ai-starter-model-openai`). The Spring AI integration is versioned separately from the Temporal Java SDK.
+
+Choose a compatible [release from Maven Central](https://central.sonatype.com/artifact/io.temporal/spring-ai).
+Set `temporal-spring-ai.version` in Maven or `temporalSpringAiVersion` in Gradle to that version.
 
 **[Apache Maven](https://maven.apache.org/):**
 
@@ -37,14 +40,14 @@ Add `io.temporal:spring-ai:0.1.1` alongside `temporal-spring-boot-starter` and a
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>spring-ai</artifactId>
-    <version>0.1.1</version>
+    <version>${temporal-spring-ai.version}</version>
 </dependency>
 ```
 
 **[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
-implementation "io.temporal:spring-ai:0.1.1"
+implementation "io.temporal:spring-ai:${temporalSpringAiVersion}"
 ```
 
 When `io.temporal:spring-ai` is on the classpath, the `SpringAiPlugin` auto-registers `ChatModelActivity` with all Temporal Workers created by the Spring Boot integration. Optional Activities are auto-configured when their dependencies are present:
@@ -55,13 +58,16 @@ When `io.temporal:spring-ai` is on the classpath, the `SpringAiPlugin` auto-regi
 | Embeddings   | `spring-ai-rag` | `EmbeddingModelActivity` |
 | MCP          | `spring-ai-mcp` | `McpClientActivity`      |
 
-### Upgrade from Spring AI 1.x
+### Migrate from the previous package
 
-`io.temporal:spring-ai` targets Spring AI 2 and Spring Boot 4. Spring AI 1 / Spring Boot 3 applications should remain on `io.temporal:temporal-spring-ai:1.40.x`.
+When moving from `io.temporal:temporal-spring-ai`, follow the
+[migration guide](https://github.com/temporalio/ai-integrations/tree/main/java/spring-ai#moving-from-spring-ai-1)
+to align your application's Spring AI and Spring Boot BOMs.
 
-Align your application's Spring AI and Spring Boot BOMs with the integration's compatibility requirements. Spring AI 2 uses Jackson 3 and immutable chat options. Pass option builders to `ChatClient`, such as `.defaultOptions(OpenAiChatOptions.builder().reasoningEffort("high"))`, or call `.mutate()` on existing options.
+Pass option builders to `ChatClient`, such as `.defaultOptions(OpenAiChatOptions.builder().reasoningEffort("high"))`, or call `.mutate()` on existing options.
 
-Spring AI 1 Workflow histories are incompatible with this upgrade. Complete existing executions before switching versions or use separate Worker deployments for the two versions.
+Complete existing Workflow Executions before switching, or keep them on separate Worker deployments. Workflow histories
+created with `io.temporal:temporal-spring-ai` are incompatible with `io.temporal:spring-ai`.
 
 ## Call a chat model from a Workflow
 

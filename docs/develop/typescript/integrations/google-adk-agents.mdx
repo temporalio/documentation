@@ -35,23 +35,25 @@ Code snippets on this page come from the
 - Set up your local development environment by following
   [Set up your local with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript). Leave the Temporal
   development server running to run the samples locally.
-- Install Node.js 22.12.0 or later.
+- Use Node.js, Temporal SDK, and Google ADK versions that satisfy the integration's
+  [package requirements](https://github.com/temporalio/ai-integrations/blob/main/typescript/google-adk/package.json).
 
 ## Install the Google ADK integration
 
-Install the standalone [`@temporalio/google-adk`](https://www.npmjs.com/package/@temporalio/google-adk) package. It
-requires Temporal TypeScript SDK 1.24.0 or later and is versioned separately from the SDK.
+Install the standalone [`@temporalio/google-adk`](https://www.npmjs.com/package/@temporalio/google-adk) package. It is
+versioned separately from the Temporal TypeScript SDK.
 
 ```bash
 npm install @temporalio/google-adk
 ```
 
-Version 0.1.0 of the integration supports `@google/adk` versions `>=2.0.0 <2.1.0` and `@google/genai` `^2.9.0`.
-The ADK upper bound is required because the Workflow bundle uses compatibility shims for that ADK line. Install
-`@modelcontextprotocol/sdk` if you use `TemporalMCPToolset`.
+Keep `@google/adk` within the package's supported peer dependency range. The Workflow bundle uses compatibility shims
+for that range. Install `@modelcontextprotocol/sdk` if you use `TemporalMCPToolset`.
 
-When upgrading from `@temporalio/google-adk-agents` with ADK 1.5, complete existing Workflow Executions before switching
-versions or run the two versions on separate Task Queues. Workers using ADK 2.0 cannot replay ADK 1.5 Workflow histories.
+When migrating from `@temporalio/google-adk-agents`, follow the
+[upgrade guidance](https://github.com/temporalio/ai-integrations/tree/main/typescript/google-adk#upgrading-from-adk-15).
+Complete existing Workflow Executions before switching, or keep them on separate Task Queues. The standalone integration
+cannot replay Workflow histories created with `@temporalio/google-adk-agents`.
 
 The Worker reads Gemini credentials from `GOOGLE_GENAI_API_KEY` or `GEMINI_API_KEY`. Credentials remain in the Worker
 process. Model requests and responses are Activity inputs and results, so they are stored in Event History. Use a

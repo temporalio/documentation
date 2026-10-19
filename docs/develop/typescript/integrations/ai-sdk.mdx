@@ -45,7 +45,8 @@ The standalone integration is maintained in
 - Ensure you have set up your local development environment by following the
   [Set up your local with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript) guide. When you are
   done, leave the Temporal Development Server running if you want to test your code locally.
-- Install Node.js 22.12.0 or later and Vercel AI SDK 7.
+- Use Node.js, Temporal SDK, and Vercel AI SDK versions that satisfy the integration's
+  [package requirements](https://github.com/temporalio/ai-integrations/blob/main/typescript/vercel-ai-sdk/package.json).
 
 ## Configure Workers to use the AI SDK
 
@@ -56,7 +57,7 @@ the Vercel AI SDK, you need to create a Worker and configure it to use the AI SD
 Follow the steps below to configure your Worker.
 
 1. Install the standalone [`@temporalio/vercel-ai-sdk`](https://www.npmjs.com/package/@temporalio/vercel-ai-sdk) package.
-   The integration is versioned separately from the Temporal TypeScript SDK and requires SDK 1.24.0 or later.
+   The integration is versioned separately from the Temporal TypeScript SDK.
 
    ```bash
    npm install @temporalio/vercel-ai-sdk

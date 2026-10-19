@@ -51,15 +51,16 @@ or with pip:
 pip install temporalio-langgraph
 ```
 
-The package installs the Temporal Python SDK and LangGraph dependencies. It requires Python 3.10 or later and Temporal
-Python SDK 1.34.0 or later.
+The package installs the Temporal Python SDK and LangGraph dependencies. Refer to the
+[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/langgraph/pyproject.toml)
+for supported Python and dependency versions.
 
 :::note
 
-Python 3.11 or newer is required for the Functional API (`@entrypoint` / `@task`), for `interrupt()`, and for streaming
-from a node running in the Workflow. On older Python versions the plugin loads but emits a warning, and those features
-will not work because LangGraph relies on `contextvars` propagation through `asyncio.create_task()`, which is only
-available from Python 3.11 onward.
+Use a Python runtime that supports the `context` parameter of
+[`asyncio.create_task()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) for the Functional API
+(`@entrypoint` / `@task`), `interrupt()`, and streaming from a node running in the Workflow. LangGraph uses this parameter
+to propagate `contextvars`. The plugin warns if your runtime does not support these features.
 
 :::
 
@@ -408,9 +409,8 @@ print(await handle.result())
 
 :::note
 
-Streaming from a node running in the Workflow (`execute_in: "workflow"`) requires Python
-3.11 or newer, because LangGraph relies on `contextvars` propagation through
-`asyncio.create_task()`. See the [installation note](#install-the-plugin) above.
+For streaming from a node running in the Workflow (`execute_in: "workflow"`), check the Python runtime requirements
+in the [installation note](#install-the-plugin).
 
 :::
 
