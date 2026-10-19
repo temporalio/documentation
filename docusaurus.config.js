@@ -499,6 +499,13 @@ module.exports = async function createConfigAsync() {
         admonitions: true,
       },
       mermaid: true,
+      // Adds default frontmatter (currently `tags`) from `_frontmatter.yml` files in
+      // each page's folder and its ancestors. See plugins/shared/frontmatterDefaults.js.
+      parseFrontMatter: async (params) => {
+        const result = await params.defaultParseFrontMatter(params);
+        const { applyDefaults } = require('./plugins/shared/frontmatterDefaults');
+        return { ...result, frontMatter: applyDefaults(params.filePath, result.frontMatter, { rootDir: __dirname }) };
+      },
     },
     themes: ['@docusaurus/theme-mermaid'],
     future: {

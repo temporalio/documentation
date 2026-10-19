@@ -150,6 +150,23 @@ If you are considering using a custom slug, answer these questions first:
 - Did you already check the redirects in `vercel.json`?
 - Is it in the page in a folder under the topic that makes the most sense?
 
+# Folder-level default tags
+
+A folder under `docs/` can contain a `_frontmatter.yml` file that adds default front matter to every page below it, including pages in subfolders. Use it when every page in a section shares tags, such as `docs/develop/java/`:
+
+```yaml
+tags:
+  - Java SDK
+  - Temporal SDKs
+```
+
+- `tags` is the only key you can set. Any other key fails the build with the file and key named in the error.
+- Tags are additive. A page's tags are the tags from each `_frontmatter.yml` above it, outermost folder first, followed by the page's own `tags`. Duplicates are dropped. A page can add tags but can't remove an inherited one. If a page shouldn't get a folder's tags, move the page or narrow the folder's file.
+- Before you add `tags` to a new page, check the folders above it for a `_frontmatter.yml`. Tags that the file already supplies don't need to be repeated.
+- The dev server doesn't watch `_frontmatter.yml`. After you edit one, restart `yarn start` or save one of the pages under it.
+
+The logic lives in `plugins/shared/frontmatterDefaults.js`.
+
 # Social share images (og:image)
 
 Every doc page automatically gets a social-share preview card generated at build time — the image that
