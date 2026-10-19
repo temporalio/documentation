@@ -38,6 +38,10 @@ The Metrics Read-Only role is intended for Service Accounts used by observabilit
 the [Temporal Cloud OpenMetrics endpoint](/cloud/metrics/openmetrics) but no other permissions. An Account Owner or
 Global Admin must manage the Service Account and its API keys.
 
+Account Owner is the only role that can assign Finance Admin. This applies to users, groups, and Service
+Accounts. Global Admin can create these principals but cannot assign Finance Admin. Global Admin has usage visibility,
+not billing or payment access.
+
 Account-level roles don't govern day-to-day operations within a Namespace. Access to resources inside a Namespace, such
 as Workflows and Workflow Executions, is controlled by [Namespace-level permissions](#namespace-level-permissions).
 

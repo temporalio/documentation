@@ -105,7 +105,7 @@ See [Nexus Security](/nexus/security) for more information.
 
 :::
 
-**In transit**: All connections to Temporal Cloud use TLS 1.3 encryption, regardless of your authentication method ([API keys](/cloud/api-keys) or [mTLS certificates](/cloud/certificates)).
+**In transit**: All connections to Temporal Cloud use TLS 1.2 or higher (TLS 1.3 preferred), regardless of your authentication method ([API keys](/cloud/api-keys) or [mTLS certificates](/cloud/certificates)).
 
 **At rest**: Data is stored in two locations: an Elasticsearch instance (used when filtering Workflows in SDK clients, the [CLI](/cloud/tcld), or the Web UI) and the core Temporal Cloud persistence layer.
 Both are encrypted at rest with AES-256-GCM.

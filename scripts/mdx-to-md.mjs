@@ -41,13 +41,14 @@ import { cookbookPreviewToMarkdown, cookbookHomeToMarkdown } from "./component-h
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
+import { guidesGridToMarkdown } from "./component-handlers/guides-grid.mjs";
 import {
   extractQuotedProp,
   renderWalkthroughStep,
 } from "./component-handlers/event-history-walkthrough.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, resolve, dirname, relative } from "path";
 
 // ---------------------------------------------------------------------------
 // COMPONENT_REGISTRY
@@ -81,6 +82,7 @@ export const COMPONENT_REGISTRY = {
   CookbookPreview: "cookbook-preview",
   CookbookHome: "cookbook-home",
   SdkOverviewCards: "sdk-overview-cards",
+  GuidesGrid: "guides-grid",
   ViewSourceCodeNotice: "view-source-code-notice",
 
   // Homepage hero (docs/index.mdx). Copy is authored in the MDX and composed
@@ -100,6 +102,7 @@ export const COMPONENT_REGISTRY = {
   CommunityCard: "hero-card",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
+  NoZoom: "strip-tag",
   DT: "strip-tag",
   DD: "strip-tag",
 
@@ -141,7 +144,7 @@ const EVENT_HISTORY_DEMO_COMPONENTS = COMPONENTS_BY_STRATEGY("event-history-demo
 
 // Availability labels for ReleaseNoteHeader resolved `type` values.
 // Mirrors ReleaseNoteHeader.BASE_RELEASE_STAGES labels in the React component.
-const RELEASE_NOTE_LABELS = {
+export const RELEASE_NOTE_LABELS = {
   prerelease: "Pre-release",
   publicPreview: "Public Preview",
   publicpreview: "Public Preview",
@@ -653,7 +656,10 @@ export function transformMdx(mdxContent, options = {}) {
     if (!projectRoot) return null;
     let rel = importPath;
     if (rel.startsWith("@site/")) rel = rel.slice("@site/".length);
-    const full = join(projectRoot, rel);
+    // Relative imports (./_partial.mdx) resolve against the importing file.
+    const full = importPath.startsWith(".")
+      ? resolve(projectRoot, dirname(sourceFile), importPath)
+      : join(projectRoot, rel);
     if (!existsSync(full)) {
       warnings.push(`[${sourceFile}] transclusion target not found: ${importPath}`);
       return null;
@@ -661,7 +667,7 @@ export function transformMdx(mdxContent, options = {}) {
     try {
       const raw = readFileSync(full, "utf8");
       const inner = transformMdx(raw, {
-        sourceFile: importPath,
+        sourceFile: relative(projectRoot, full),
         projectRoot,
         mdxDir: options.mdxDir,
         _depth: depth + 1,
@@ -1448,6 +1454,21 @@ export function transformMdx(mdxContent, options = {}) {
       const md = sdkOverviewCardsToMarkdown({ projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
+      continue;
+    }
+
+    // --- GuidesGrid (self-closing, no props) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<GuidesGrid\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const md = guidesGridToMarkdown({ projectRoot, warnings, sourceFile });
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
       continue;
     }
 

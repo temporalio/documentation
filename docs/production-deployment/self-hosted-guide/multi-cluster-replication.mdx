@@ -17,7 +17,7 @@ Temporal's Multi-Cluster Replication feature is considered **experimental** and 
 
 When a client connects to a standby Cluster, its requests can be forwarded to the
 active Cluster. This is off by default; enable it by setting
-[`dcRedirectionPolicy`](/references/configuration#dcredirectionpolicy).
+[`dcRedirectionPolicy`](/references/service-configuration#dcredirectionpolicy).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
@@ -500,7 +500,7 @@ After the above conditions are satisfied, you can start to configure a multi-clu
 
 #### Set up Multi-Cluster Replication prior to v1.14
 
-You can set this up with [`clusterMetadata` configuration](/references/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
+You can set this up with [`clusterMetadata` configuration](/references/service-configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
 
 :::tip
 
@@ -550,7 +550,7 @@ clusterMetadata:
 
 #### Set up Multi-Cluster Replication in v1.14 and later
 
-You still need to set up local cluster [`clusterMetadata` configuration](/references/configuration#clustermetadata)
+You still need to set up local cluster [`clusterMetadata` configuration](/references/service-configuration#clustermetadata)
 
 For example:
 

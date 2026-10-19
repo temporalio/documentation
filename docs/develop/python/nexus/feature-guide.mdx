@@ -1,7 +1,7 @@
 ---
 id: feature-guide
 slug: /develop/python/nexus/feature-guide
-title: Temporal Nexus - Python SDK feature guide
+title: Temporal Nexus
 sidebar_label: Feature Guide
 description: Use Temporal Nexus within the Python SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
@@ -39,8 +39,7 @@ This page shows how to do the following:
 
 :::note
 
-This documentation uses source code derived from the [Python Nexus sample](https://github.com/temporalio/samples-python/tree/main/hello_nexus).
-
+This documentation uses source code derived from the [Python Nexus sample](https://github.com/temporalio/samples-python/tree/main/hello_nexus) and the [nexus_messaging_temporal_operation sample](https://github.com/temporalio/samples-python/tree/main/nexus_messaging_temporal_operation).
 :::
 
 ## Run the Temporal Development Server with Nexus enabled {/* #run-the-temporal-nexus-development-server */}
@@ -391,16 +390,16 @@ If you already have these Namespaces, you don't need to do this.
 temporal cloud login
 
 temporal cloud namespace create \
-	--name <your-caller-namespace> \
-	--region aws-us-west-2 \
-	--ca-certificate-file 'path/to/your/ca.pem' \
-	--retention-days 1
+  --name <your-caller-namespace> \
+  --region aws-us-west-2 \
+  --ca-certificate-file 'path/to/your/ca.pem' \
+  --retention-days 1
 
 temporal cloud namespace create \
-	--name <your-target-namespace> \
-	--region aws-us-west-2 \
-	--ca-certificate-file 'path/to/your/ca.pem' \
-	--retention-days 1
+  --name <your-target-namespace> \
+  --region aws-us-west-2 \
+  --ca-certificate-file 'path/to/your/ca.pem' \
+  --retention-days 1
 ```
 </TabItem>
 <TabItem value="tcld" label="tcld">
@@ -425,7 +424,7 @@ tcld namespace create \
 </TabItem>
 </Tabs>
 
-Alternatively, you can create Namespaces through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces).
+Alternatively, you can create Namespaces through the UI: [https://cloud.temporal.io/namespaces](https://cloud.temporal.io/namespaces).
 
 ### Create a Nexus Endpoint to route requests from caller to handler
 

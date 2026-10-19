@@ -14,7 +14,7 @@ A **Worker Tuner** instance exists per-Worker, providing slot suppliers for diff
 A tuner assigns different suppliers to each slot type.
 For example, it might provide a fixed assignment slot supplier for Workflows and use a resource-based supplier for Activities.
 
-### Choosing slot supplier types {/* #choosing-slot-supplier-types */}
+## Choosing slot supplier types {/* #choosing-slot-supplier-types */}
 
 Temporal offers three types of slot suppliers: fixed assignment, resource-based, and custom.
 **For most workloads, Temporal recommends fixed-size slot suppliers.**
@@ -22,7 +22,7 @@ A fixed-size tuner with appropriately chosen values delivers better performance 
 
 Each SDK provides [default slot counts](/develop/worker-tuning-reference#compute-defaults-by-sdk), but Temporal recommends [actively tuning these values](/best-practices/worker#actively-tune-worker-options-instead-of-relying-on-defaults) for your workload.
 
-#### When to use resource-based slot suppliers
+### When to use resource-based slot suppliers
 
 Resource-based slot suppliers are suited to specific use cases.
 
@@ -37,12 +37,12 @@ Resource-based slot suppliers are suited to specific use cases.
 
 Scenarios with tasks that have variable, or very high, per-task resource needs should rely on fixed-size suppliers and manual tuning rather than resource-based suppliers.
 
-#### When to use custom slot suppliers
+### When to use custom slot suppliers
 
 For the highest level of control over slot allocation, consider custom slot suppliers.
 Custom suppliers let you tailor the logic of how slots are allocated based on your system requirements, providing flexibility to optimize for specific use cases that fixed assignment and resource-based suppliers do not fully address.
 
-### Implement Custom Slot Suppliers {/* #custom-slot-implementation */}
+## Implement custom slot suppliers {/* #custom-slot-implementation */}
 
 Implement your own Slot Supplier to control how Workers are allocated Tasks and manage the processing of Workflows, Activities, and Nexus Operations.
 Custom Slot Suppliers let you fine-tune task processing based on your application's needs.
@@ -71,7 +71,7 @@ Custom Slot Suppliers must implement these functions:
 Custom policies require more effort, but provide finer control over Task processing.
 By implementing your own Slot Supplier, you can tailor how Workflows, Activities, and Nexus Operations are handled, optimizing performance for your specific needs.
 
-### Slot supplier throttles
+## Slot supplier throttles
 
 Auto-tuned suppliers may diverge from requested thresholds.
 The resources a given Task will use can't be known ahead of time.
