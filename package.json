@@ -112,6 +112,6 @@
     "husky": "^9.1.7",
     "hyperlink": "^5.0.4",
     "pyright": "^1.1.414",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   }
 }
