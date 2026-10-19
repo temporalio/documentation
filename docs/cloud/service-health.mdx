@@ -189,9 +189,11 @@ The hourly minimum is
 
 Use [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` and [`temporal_cloud_v1_action_limit`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_action_limit) to estimate APS utilization. Sum the Action-rate series for the Namespace, then divide by its Action limit.
 
-To estimate whether usage falls below the hourly minimum, compare the Namespace's hourly average Action rate with `(maximum observed TRU count - 1) * 100 APS`. Align the window to the calendar hour. OpenMetrics samples the current configuration and estimates Action usage, so it does not reproduce billing records. Use the [Usage dashboard](/cloud/actions-usage#usage) or [Billing API](/cloud/billing-api) for billed Actions.
+To estimate whether usage falls below the hourly minimum, compare the Namespace's hourly average Action rate with `(maximum observed TRU count - 1) * 100 APS`. Align the window to the calendar hour.
 
 The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes panels for provisioned capacity utilization and limits.
+
+OpenMetrics samples the current configuration and estimates Action usage, so it does not reproduce billing records. Use the [Usage dashboard](/cloud/actions-usage#usage) or [Billing API](/cloud/billing-api) for billed Actions.
 
 Some workloads intentionally run at low utilization to preserve capacity for traffic spikes or unpredictable demand. The hourly minimum charge still applies.
 
