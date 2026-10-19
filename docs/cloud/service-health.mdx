@@ -189,7 +189,18 @@ The hourly minimum is
 
 Use [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` and [`temporal_cloud_v1_action_limit`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_action_limit) to estimate APS utilization. Sum the Action-rate series for the Namespace, then divide by its Action limit.
 
-To estimate whether usage falls below the hourly minimum, compare the Namespace's hourly average Action rate with `(maximum observed TRU count - 1) * 100 APS`. Align the window to the calendar hour.
+To estimate the additional billed Actions caused by usage below the minimum, calculate the shortfall for each calendar hour.
+
+```text
+estimated additional billed Actions =
+max(
+  0,
+  ((maximum observed TRU count during the hour - 1) * 360,000)
+  - estimated workload Actions during the hour
+)
+```
+
+To estimate workload Actions, sum `temporal_cloud_v1_total_action_count` with `is_background=false` across the Namespace's series for each one-minute interval, multiply each rate by 60, and sum the results for the calendar hour. Add the hourly shortfalls to estimate additional billed Actions over a longer period.
 
 The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes panels for provisioned capacity utilization and limits.
 
