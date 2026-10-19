@@ -187,6 +187,8 @@ The hourly minimum is
 (maximum TRU count during the hour - 1) * 360,000 Actions
 ```
 
+Low utilization can be intentional when a workload needs capacity available for traffic spikes or unpredictable demand. The hourly minimum charge still applies.
+
 Use [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` and [`temporal_cloud_v1_action_limit`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_action_limit) to track usage against provisioned capacity. Divide the Action count by the Action limit to calculate utilization.
 
 To alert on minimum charges, convert the Action rate to a calendar-hour total and compare it with the minimum. OpenMetrics reports one-minute rates and current limits. [Usage](/cloud/actions-usage) and [Billing](/cloud/billing) report billed Actions.
