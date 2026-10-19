@@ -747,6 +747,12 @@ terraform output role_arn
 
 Use this role ARN in your Worker Deployment Version's compute configuration.
 
+If your AWS account belongs to an AWS Organization, a
+[resource control policy (RCP)](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_rcps.html)
+can block Temporal from assuming the role even when the trust policy allows it. Ask your AWS Organizations
+administrator to confirm that no RCP denies `sts:AssumeRole` to the Temporal principals in the trust policy. See
+[Troubleshoot Serverless Workers on AWS Lambda](/troubleshooting/serverless-workers/aws-lambda#validate-connection).
+
 ## 4. Create Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute
