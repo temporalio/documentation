@@ -114,9 +114,10 @@ tags:
 - Write `description` as a single clear sentence. See [Meta descriptions](#meta-descriptions) below.
 - Do not change `id` or `slug` without a redirect plan.
 - Match `tags` to sibling pages in the same section. Use existing tags; don't add new ones unless it's a new feature.
-- A folder's `_frontmatter.yml` adds its `tags` to every page below it. Check the folders above a page before listing
-  tags by hand, and don't repeat tags the file supplies. See
-  [Folder-level default tags](./readme/CONTRIBUTING.md#folder-level-default-tags).
+- A folder's `_frontmatter.yml` adds its `tags` to every page below it and can set a `section_title` that's appended to
+  the page title in the browser tab. Check the folders above a page before listing tags by hand, and don't repeat tags
+  or a section name the file supplies. See
+  [Folder-level frontmatter defaults](./readme/CONTRIBUTING.md#folder-level-frontmatter-defaults).
 - Do not add a `keywords` field. It isn't used by the site.
 
 ### Meta descriptions

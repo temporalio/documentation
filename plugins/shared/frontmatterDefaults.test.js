@@ -97,9 +97,33 @@ describe('applyDefaults', () => {
   it('lets the page win for a key declared as replace', () => {
     write(`docs/${DEFAULTS_FILENAME}`, 'unlisted: true\n');
     write(`docs/a/${DEFAULTS_FILENAME}`, 'unlisted: false\n');
-    const keys = { unlisted: 'replace' };
+    const keys = { unlisted: { merge: 'replace' } };
     assert.deepStrictEqual(apply('docs/a/page.mdx', {}, { keys }), { unlisted: false });
     assert.deepStrictEqual(apply('docs/a/page.mdx', { unlisted: true }, { keys }), { unlisted: true });
+  });
+
+  it('inherits section_title from the nearest folder, and the page wins', () => {
+    write(`docs/${DEFAULTS_FILENAME}`, 'section_title: Docs\n');
+    write(`docs/java/${DEFAULTS_FILENAME}`, 'section_title: Java SDK\n');
+    assert.strictEqual(apply('docs/java/workflows/page.mdx', {}).section_title, 'Java SDK');
+    assert.strictEqual(apply('docs/java/page.mdx', { section_title: 'Custom' }).section_title, 'Custom');
+    assert.strictEqual(apply('docs/other/page.mdx', {}).section_title, 'Docs');
+  });
+
+  it('sets tags and section_title from the same file', () => {
+    write(`docs/java/${DEFAULTS_FILENAME}`, 'tags: [Java SDK]\nsection_title: Java SDK\n');
+    assert.deepStrictEqual(apply('docs/java/page.mdx', { title: 'T' }), {
+      title: 'T',
+      tags: ['Java SDK'],
+      section_title: 'Java SDK',
+    });
+  });
+
+  it('throws when section_title is not a non-empty string', () => {
+    write(`docs/${DEFAULTS_FILENAME}`, 'section_title: [a]\n');
+    assert.throws(() => apply('docs/page.mdx', {}), /must set "section_title" as a non-empty string/);
+    write(`docs/b/${DEFAULTS_FILENAME}`, 'section_title: ""\n');
+    assert.throws(() => apply('docs/b/page.mdx', {}), /must set "section_title" as a non-empty string/);
   });
 
   it('throws for a key that is not inheritable, naming the file and key', () => {
