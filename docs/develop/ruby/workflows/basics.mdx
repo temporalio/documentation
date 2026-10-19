@@ -32,8 +32,11 @@ class MyWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
+### Define Workflow parameters {/* #workflow-parameters */}
+
 Temporal Workflows may have any number of custom parameters.
-However, we strongly recommend that hashes or objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+However, we strongly recommend that you pass a single hash or object parameter that contains all the input fields, so that you can add fields without breaking the signature of the Workflow.
+For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
 
 ### Customize Workflow Type {/* #workflow-type */}
 

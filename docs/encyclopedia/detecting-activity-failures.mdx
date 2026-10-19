@@ -90,9 +90,11 @@ A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task
   <RelatedReadItem path="/develop/typescript/activities/timeouts" text="Set a Start-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-**The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
+**The Start-To-Close Timeout has no default value of its own.**
+If you set only the [Schedule-To-Close Timeout](#schedule-to-close-timeout), the Temporal Service uses that value as the Start-To-Close Timeout.
+If you set neither timeout, the Temporal Service rejects the Activity.
+For a Workflow Activity, the Workflow Task fails with a [Bad Schedule Activity Attributes](/references/workflow-task-errors#bad-schedule-activity-attributes) error.
 
-An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](#schedule-to-close-timeout) set.
 We recommend always setting this timeout; however, make sure that Start-To-Close Timeout is always set to be longer than the maximum possible time for the Activity Execution to complete.
 For long running Activity Executions, we recommend also using [Activity Heartbeats](#activity-heartbeat) and [Heartbeat Timeouts](#heartbeat-timeout).
 

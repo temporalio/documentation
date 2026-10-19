@@ -313,6 +313,7 @@ exceptions:
   - KMS
   - CA
   - CORS
+  - CSRF
   # Substring-matched, so "FAQ" covers "FAQs"
   - FAQ
   - HTTP

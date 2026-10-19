@@ -32,9 +32,10 @@ export async function example(args: ExampleArgs): Promise<{ greeting: string }> 
 
 ## Define Workflow parameters {/* #workflow-parameters */}
 
-Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as
-parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All
-Workflow Definition parameters must be serializable.
+Temporal Workflows may have any number of custom parameters. However, we strongly recommend that you pass a single object
+parameter that contains all the input fields, so that you can add fields without breaking the signature of the Workflow.
+All Workflow Definition parameters must be serializable. For more reasons, see
+[Workflow parameters](/workflow-definition#workflow-parameters).
 
 You can define and pass parameters in your Workflow. In this example, you define your arguments in your `client.ts` file
 and pass those parameters to `workflow.ts` through your Workflow function.

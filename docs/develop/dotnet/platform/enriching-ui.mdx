@@ -30,7 +30,7 @@ var handle = await client.StartWorkflowAsync(
     (YourWorkflow wf) => wf.RunAsync("Workflow input"),
     new WorkflowOptions
     {
-        Id = "your-Workflow-id",
+        Id = "your-workflow-id",
         TaskQueue = "your-task-queue",
         StaticSummary = "Order processing for customer #12345",
         StaticDetails = "Processing premium order with expedited shipping"
@@ -49,7 +49,7 @@ var result = await client.ExecuteWorkflowAsync(
     (YourWorkflow wf) => wf.RunAsync("Workflow input"),
     new WorkflowOptions
     {
-        Id = "your-Workflow-id",
+        Id = "your-workflow-id",
         TaskQueue = "your-task-queue",
         StaticSummary = "Order processing for customer #12345",
         StaticDetails = "Processing premium order with expedited shipping"

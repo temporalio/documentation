@@ -37,9 +37,12 @@ public class MyWorkflow
 }
 ```
 
+### Define Workflow parameters {/* #workflow-parameters */}
+
 Temporal Workflows may have any number of custom parameters.
-However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+However, we strongly recommend that you pass a single class parameter that contains all the input fields, so that you can add fields without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
+For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
 
 ### Use Workflow constructors
 
