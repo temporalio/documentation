@@ -40,17 +40,23 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 ## Install
 
-Make sure you have the Temporal Python SDK (requires version 1.28.0 or later). Then install the `google-adk`:
+Install the standalone `temporalio-google-adk` package:
 
 ```bash
-uv add "temporalio[google-adk]>=1.28.0"
+uv add temporalio-google-adk
 ```
 
 If you use pip:
 
 ```bash
-pip install "temporalio[google-adk]>=1.28.0"
+pip install temporalio-google-adk
 ```
+
+The package installs the Temporal Python SDK and Google ADK dependencies. It requires Python 3.10 or later and Temporal
+Python SDK 1.34.0 or later.
+
+Import `GoogleAdkPlugin` and `TemporalModel` from `temporalio.google_adk`. Import Workflow helpers such as `activity_as_tool`
+from `temporalio.google_adk.workflow`.
 
 ## Define an agent in a Workflow
 
@@ -172,7 +178,7 @@ class WeatherAgentWorkflow:
     async def run(self, prompt: str) -> str:
         # activity_as_tool runs the tool call as a real Temporal activity, so it's
         # retryable and shows up in history.
-        weather_tool = temporalio.contrib.google_adk_agents.workflow.activity_as_tool(
+        weather_tool = temporalio.google_adk.workflow.activity_as_tool(
             get_weather, start_to_close_timeout=timedelta(seconds=60)
         )
 
@@ -265,6 +271,12 @@ The `summary` you set on each `ActivityConfig` becomes the Activity name in the 
 which agent ran and when.
 
 ## Use MCP tool servers
+
+Install the package's `mcp` extra:
+
+```bash
+uv add "temporalio-google-adk[mcp]"
+```
 
 To give an agent tools from an [MCP](https://modelcontextprotocol.io/) server, use `TemporalMcpToolSet`. It runs the
 server's list-tools and call-tool operations as Activities because connecting to an MCP server is external I/O. You define a factory function for the toolset and register it with the plugin

@@ -29,7 +29,7 @@ You also need the [`temporal-spring-boot-starter`](/develop/java/integrations/sp
 
 ## Add the dependency
 
-Add `io.temporal:spring-ai` alongside `temporal-spring-boot-starter` and a Spring AI model starter (for example, `spring-ai-starter-model-openai`). The Spring AI integration is versioned separately from the Temporal Java SDK.
+Add `io.temporal:spring-ai:0.1.1` alongside `temporal-spring-boot-starter` and a Spring AI model starter (for example, `spring-ai-starter-model-openai`). The Spring AI integration is versioned separately from the Temporal Java SDK.
 
 **[Apache Maven](https://maven.apache.org/):**
 
@@ -37,14 +37,14 @@ Add `io.temporal:spring-ai` alongside `temporal-spring-boot-starter` and a Sprin
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>spring-ai</artifactId>
-    <version>${temporal-spring-ai.version}</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
 **[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
-implementation "io.temporal:spring-ai:${temporalSpringAiVersion}"
+implementation "io.temporal:spring-ai:0.1.1"
 ```
 
 When `io.temporal:spring-ai` is on the classpath, the `SpringAiPlugin` auto-registers `ChatModelActivity` with all Temporal Workers created by the Spring Boot integration. Optional Activities are auto-configured when their dependencies are present:
@@ -57,7 +57,7 @@ When `io.temporal:spring-ai` is on the classpath, the `SpringAiPlugin` auto-regi
 
 ### Upgrade from Spring AI 1.x
 
-`io.temporal:spring-ai:0.1.0` targets Spring AI 2 and Spring Boot 4. Spring AI 1 / Spring Boot 3 applications should remain on `io.temporal:temporal-spring-ai:1.40.x`.
+`io.temporal:spring-ai` targets Spring AI 2 and Spring Boot 4. Spring AI 1 / Spring Boot 3 applications should remain on `io.temporal:temporal-spring-ai:1.40.x`.
 
 Align your application's Spring AI and Spring Boot BOMs with the integration's compatibility requirements. Spring AI 2 uses Jackson 3 and immutable chat options. Pass option builders to `ChatClient`, such as `.defaultOptions(OpenAiChatOptions.builder().reasoningEffort("high"))`, or call `.mutate()` on existing options.
 

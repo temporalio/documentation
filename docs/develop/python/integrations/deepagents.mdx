@@ -42,19 +42,22 @@ samples for the complete code.
 
 ## Install the plugin
 
-Install the Temporal Python SDK with Deep Agents support:
+Install the standalone `temporalio-deepagents` package:
 
 ```bash
-uv add "temporalio[deepagents]>=1.32.0"
+uv add temporalio-deepagents
 ```
 
 or with pip:
 
 ```bash
-pip install "temporalio[deepagents]>=1.32.0"
+pip install temporalio-deepagents
 ```
 
-Requires Python 3.11 or newer, the same floor that `deepagents` sets.
+The package installs the Temporal Python SDK and Deep Agents dependencies. It requires Python 3.11 or later and Temporal
+Python SDK 1.34.0 or later.
+
+Import `DeepAgentsPlugin`, `TemporalBackend`, and other integration helpers from `temporalio.deepagents`.
 
 ## Hello world
 
@@ -102,7 +105,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.deepagents import DeepAgentsPlugin
+from temporalio.deepagents import DeepAgentsPlugin
 from temporalio.worker import Worker
 
 from deepagents_plugin.hello_world.workflow import HelloWorldAgent
@@ -257,7 +260,7 @@ from datetime import timedelta
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 from temporalio import workflow
-from temporalio.contrib.deepagents import TemporalBackend
+from temporalio.deepagents import TemporalBackend
 
 
 @workflow.defn
@@ -355,7 +358,7 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
 from temporalio import workflow
-from temporalio.contrib.deepagents import tool_as_activity
+from temporalio.deepagents import tool_as_activity
 
 
 @workflow.defn
@@ -447,7 +450,7 @@ from typing import Any
 
 from deepagents import create_deep_agent
 from temporalio import workflow
-from temporalio.contrib.deepagents import run_deep_agent
+from temporalio.deepagents import run_deep_agent
 
 
 @workflow.defn
@@ -497,8 +500,8 @@ so external subscribers can attach by Workflow ID.
 ```py
 from langchain_core.messages import HumanMessage
 from temporalio import workflow
-from temporalio.contrib.deepagents import TemporalModel
 from temporalio.contrib.workflow_streams import WorkflowStream
+from temporalio.deepagents import TemporalModel
 
 STREAMING_TOPIC = "model-chunks"
 
@@ -525,7 +528,7 @@ class StreamingWorkflow:
 ## Compose with an observability plugin
 
 This plugin carries no tracing context of its own. For observability, compose it with an observability plugin such as
-[`temporalio.contrib.langsmith`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith) or
+[`temporalio.langsmith`](/develop/python/integrations/langsmith) or
 `temporalio.contrib.opentelemetry`. Registration order of the two plugins does not matter; the observability plugin
 captures the LLM calls that `DeepAgentsPlugin` runs as Activities. The Workflow itself is an ordinary Deep Agent — the tracing
 comes entirely from composing the plugins on the Client.

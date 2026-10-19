@@ -39,17 +39,20 @@ samples for the complete code.
 
 ## Install the plugin
 
-Install the Temporal Python SDK with LangGraph support (requires `temporalio` 1.27.0 or later):
+Install the standalone `temporalio-langgraph` package:
 
 ```bash
-uv add "temporalio[langgraph]"
+uv add temporalio-langgraph
 ```
 
 or with pip:
 
 ```bash
-pip install "temporalio[langgraph]"
+pip install temporalio-langgraph
 ```
+
+The package installs the Temporal Python SDK and LangGraph dependencies. It requires Python 3.10 or later and Temporal
+Python SDK 1.34.0 or later.
 
 :::note
 
@@ -73,7 +76,7 @@ from datetime import timedelta
 
 from langgraph.graph import START, StateGraph
 from temporalio import workflow
-from temporalio.contrib.langgraph import graph
+from temporalio.langgraph import graph
 
 
 async def process_query(query: str) -> str:
@@ -111,7 +114,7 @@ Create a `LangGraphPlugin` with your graphs and pass it to the Worker:
 import asyncio
 
 from temporalio.client import Client
-from temporalio.contrib.langgraph import LangGraphPlugin
+from temporalio.langgraph import LangGraphPlugin
 from temporalio.worker import Worker
 
 
@@ -190,7 +193,7 @@ from datetime import timedelta
 from langgraph.func import entrypoint as lg_entrypoint
 from langgraph.func import task
 from temporalio import workflow
-from temporalio.contrib.langgraph import entrypoint
+from temporalio.langgraph import entrypoint
 
 
 @task
@@ -241,7 +244,7 @@ class ReactAgentWorkflow:
 ### Configure the Worker with the Functional API
 
 ```python
-from temporalio.contrib.langgraph import LangGraphPlugin
+from temporalio.langgraph import LangGraphPlugin
 
 plugin = LangGraphPlugin(
     entrypoints={"react-agent": react_agent},
@@ -279,7 +282,7 @@ from `runtime.context`:
 from langgraph.runtime import Runtime
 from typing_extensions import TypedDict
 
-from temporalio.contrib.langgraph import graph
+from temporalio.langgraph import graph
 
 
 class Context(TypedDict):
@@ -309,7 +312,7 @@ or `entrypoint(name, cache=...)` in the new run to skip re-executing nodes that 
 
 ```python
 from temporalio import workflow
-from temporalio.contrib.langgraph import cache, graph
+from temporalio.langgraph import cache, graph
 
 
 @workflow.defn
@@ -344,7 +347,7 @@ from langgraph.graph import START, StateGraph
 from typing_extensions import TypedDict
 
 from temporalio import workflow
-from temporalio.contrib.langgraph import LangGraphPlugin, graph
+from temporalio.langgraph import LangGraphPlugin, graph
 from temporalio.contrib.workflow_streams import WorkflowStream, WorkflowStreamClient
 
 
@@ -451,7 +454,7 @@ For a complete working example, see the
 ## Tracing
 
 For tracing your LangGraph Workflows and Activities, we recommend the
-[Temporal LangSmith plugin](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith). It
+[Temporal LangSmith plugin](/develop/python/integrations/langsmith). It
 composes with `LangGraphPlugin` — pass both plugins to your Worker.
 
 ## Stores are not supported
