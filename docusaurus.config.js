@@ -234,7 +234,16 @@ module.exports = async function createConfigAsync() {
         searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
         searchParameters: {
-          attributesToRetrieve: ['hierarchy', 'content', 'anchor', 'url', 'url_without_anchor', 'type', 'sdk_language'],
+          attributesToRetrieve: [
+            'hierarchy',
+            'content',
+            'anchor',
+            'url',
+            'url_without_anchor',
+            'type',
+            'sdk_language',
+            'section_title',
+          ],
         },
       },
       mermaid: {

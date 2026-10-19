@@ -5,8 +5,9 @@ const yaml = require('js-yaml');
 // Folder-level frontmatter defaults. A folder may contain `_frontmatter.yml`;
 // its values apply to every .md/.mdx file below that folder.
 //
-// Only keys listed in INHERITABLE_KEYS may appear in the file, and each key
-// declares how it combines with the page's own value:
+// Only keys listed in INHERITABLE_KEYS may appear in the file. Each key
+// declares how it combines with the page's own value (`merge`) and, optionally,
+// the shape its value must have (`type`: 'list' or 'string'):
 //   'union'   - ancestor folders first, then nearer folders, then the page;
 //               duplicates dropped. A page can add values but not remove them.
 //   'replace' - the page's value wins, then the nearest folder, then ancestors.
@@ -20,7 +21,13 @@ const yaml = require('js-yaml');
 const DEFAULTS_FILENAME = '_frontmatter.yml';
 
 const INHERITABLE_KEYS = {
-  tags: 'union',
+  tags: { merge: 'union', type: 'list' },
+  section_title: { merge: 'replace', type: 'string' },
+};
+
+const TYPE_CHECKS = {
+  list: { test: Array.isArray, description: 'a list' },
+  string: { test: (value) => typeof value === 'string' && value.trim() !== '', description: 'a non-empty string' },
 };
 
 const sharedCache = new Map();
@@ -56,8 +63,9 @@ function loadDefaultsFile(filePath, { keys = INHERITABLE_KEYS, cache = sharedCac
         `${filePath} sets "${key}", which can't be inherited. Allowed keys: ${Object.keys(keys).join(', ')}.`,
       );
     }
-    if (keys[key] === 'union' && !Array.isArray(value[key])) {
-      throw new Error(`${filePath} must set "${key}" as a list.`);
+    const check = TYPE_CHECKS[keys[key].type];
+    if (check && !check.test(value[key])) {
+      throw new Error(`${filePath} must set "${key}" as ${check.description}.`);
     }
   }
 
@@ -110,7 +118,7 @@ function asList(value) {
  *
  * @param {string} docPath Path to the .md/.mdx file.
  * @param {Record<string, unknown>} frontMatter The page's own frontmatter.
- * @param {{ rootDir: string, keys?: Record<string, 'union' | 'replace'>, cache?: Map }} options
+ * @param {{ rootDir: string, keys?: Record<string, { merge: 'union' | 'replace', type?: 'list' | 'string' }>, cache?: Map }} options
  *   rootDir bounds the upward search for `_frontmatter.yml` files.
  * @returns {Record<string, unknown>} A new object; the input is not modified.
  */
@@ -119,11 +127,11 @@ function applyDefaults(docPath, frontMatter, { rootDir, keys = INHERITABLE_KEYS,
   if (layers.length === 0) return frontMatter;
 
   const result = { ...frontMatter };
-  for (const [key, strategy] of Object.entries(keys)) {
+  for (const [key, { merge }] of Object.entries(keys)) {
     const inherited = layers.filter((layer) => Object.hasOwn(layer, key));
     if (inherited.length === 0) continue;
 
-    if (strategy === 'union') {
+    if (merge === 'union') {
       result[key] = unionValues([...inherited.flatMap((layer) => asList(layer[key])), ...asList(frontMatter[key])]);
     } else if (!Object.hasOwn(frontMatter, key)) {
       result[key] = inherited[inherited.length - 1][key];
