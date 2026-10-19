@@ -150,6 +150,51 @@ If you are considering using a custom slug, answer these questions first:
 - Did you already check the redirects in `vercel.json`?
 - Is it in the page in a folder under the topic that makes the most sense?
 
+# Folder-level frontmatter defaults
+
+A folder under `docs/` can contain a `_frontmatter.yml` file that sets default front matter for every page below it, including pages in subfolders. Use it when every page in a section shares a value, such as `docs/develop/java/`:
+
+```yaml
+tags:
+  - Java SDK
+  - Temporal SDKs
+section_title: Java SDK
+```
+
+Only these keys can be set. Any other key fails the build with the file and key named in the error.
+
+| Key             | How it combines with the page                                                                                                                                                                      |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tags`          | Additive. A page's tags are the tags from each `_frontmatter.yml` above it, outermost folder first, then the page's own. Duplicates are dropped. A page can add tags but can't remove inherited ones. |
+| `section_title` | Replaces. The page's own value wins, then the nearest folder's, then ancestors'. It's a single string.                                                                                              |
+
+If a page shouldn't get a folder's tags, move the page or narrow the folder's file. Before you add `tags` to a new page, check the folders above it for a `_frontmatter.yml` so you don't repeat tags the file already supplies.
+
+## Section title
+
+`section_title` adds a label after the page title in the browser tab and social-share title: `Workflow basics - Java SDK | Temporal Documentation`. The page heading, sidebar, and search results use the plain `title`, so don't put the section in `title`. If the page title already contains the section title, as in "Set up your local with the Java SDK", nothing is added. The section title is also appended to page titles in `llms.txt`.
+
+## Search results
+
+Algolia search shows the page heading, so it doesn't see `section_title` unless the page tells the crawler. Every page with a section title emits `<meta name="docsearch:section_title" content="Java SDK">`. The Algolia Crawler dashboard (not this repo) has to copy that tag into each record as a `section_title` attribute. In the `recordExtractor`, wrap the result of `helpers.docsearch(...)`:
+
+```js
+recordExtractor: ({ $, helpers }) => {
+  const sectionTitle = $('meta[name="docsearch:section_title"]').attr('content');
+  return helpers
+    .docsearch({ /* existing recordProps */ })
+    .map((record) => (sectionTitle ? { ...record, section_title: sectionTitle } : record));
+},
+```
+
+The search modal and the `/search` page request `section_title` and show it after the result title (`src/theme/SearchBar/sectionLabel.ts`), skipping it when the title already contains it. Until a page is recrawled with the attribute, they fall back to the SDK label from `sdk_language`.
+
+## Editing and previewing
+
+The dev server doesn't watch `_frontmatter.yml`. After you edit one, restart `yarn start` or save one of the pages under it. The page `<title>` is only set reliably in a production build, so check it with `yarn build` and `yarn serve`.
+
+The logic lives in `plugins/shared/frontmatterDefaults.js` and `src/utils/sectionTitle.js`.
+
 # Social share images (og:image)
 
 Every doc page automatically gets a social-share preview card generated at build time — the image that
