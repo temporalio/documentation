@@ -189,6 +189,15 @@
     "href": "https://mastra.ai/integrations/deploy/temporal"
   },
   {
+    "name": "Model Context Protocol (MCP)",
+    "description": "Call MCP tools, prompts, and resources from Python Workflows as durable Temporal Activities.",
+    "tags": [
+      "Framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/mcp"
+  },
+  {
     "name": "New Relic",
     "description": "Export Temporal Cloud metrics to New Relic via the nri-flex infrastructure agent integration.",
     "tags": [
