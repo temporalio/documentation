@@ -19,6 +19,9 @@
     "check:metrics": "node ./bin/check-metrics-reference.js",
     "check:metrics:sdks": "node ./bin/check-metrics-against-sdks.js",
     "check:orphans": "node ./bin/check-orphan-pages.js",
+    "check:index-slugs": "node ./bin/check-index-slugs.js",
+    "check:snipsync-markers": "node ./bin/check-snipsync-markers.js",
+    "check:cloud-links": "node ./bin/check-cloud-console-links.js",
     "check:redirects": "node ./bin/validate-redirects.js",
     "check:py-samples": "node ./bin/check-python-samples.js",
     "check:ts-samples": "node ./bin/check-typescript-samples.js",
@@ -48,7 +51,6 @@
     "e2e": "playwright test"
   },
   "resolutions": {
-    "caniuse-lite": "1.0.30001781",
     "qs": "6.14.1"
   },
   "browserslist": {
@@ -78,7 +80,7 @@
     "@temporalio-web/consent-banner": "^1.0.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
-    "@vercel/functions": "^3.9.5",
+    "@vercel/functions": "^3.9.11",
     "algoliasearch": "^5.59.0",
     "chart.js": "^4.4.1",
     "clsx": "^2.1.1",
@@ -90,20 +92,20 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-icons": "^5.7.0",
-    "react-instantsearch": "^7.49.0",
+    "react-instantsearch": "^7.51.0",
     "react-markdown": "^10.1.0",
-    "satori": "^0.33.4",
+    "satori": "^0.33.5",
     "search-insights": "^2",
     "sharp": "^0.35.5",
     "snipsync": "^1.13.0",
     "uuid": "^14.0.2",
     "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0",
-    "wait-on": "^9.1.0",
+    "wait-on": "^9.5.1",
     "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "@types/node": "^26.5.1",
+    "@types/node": "^26.6.3",
     "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.23.2",
     "global-jsdom": "^30.0.0",
