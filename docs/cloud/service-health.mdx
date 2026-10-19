@@ -181,11 +181,15 @@ Each TRU provides 500 Actions per second. The first TRU has no hourly minimum. E
 
 To estimate the additional billed Actions caused by usage below the minimum, calculate the shortfall for each calendar hour by comparing workload Actions with the hourly minimum.
 
+```text
+additional billed Actions = max(0, hourly minimum - workload Actions)
+```
+
 Calculate workload Actions by summing [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` across the Namespace's series for each one-minute interval, multiplying each rate by 60, and summing the results for the calendar hour.
 
 Calculate the hourly minimum by subtracting one from the maximum observed TRU count during the hour and multiplying by 360,000 Actions. Use [`temporal_cloud_v1_provisioned_capacity_tru_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_provisioned_capacity_tru_count) to track the number of TRUs configured for each Namespace. A value of `0` means the Namespace uses On-Demand Capacity.
 
-The estimated additional billed Actions are the hourly minimum minus workload Actions, or zero if workload Actions meet or exceed the minimum. Add the hourly shortfalls to estimate additional billed Actions over a longer period.
+Add the hourly shortfalls to estimate additional billed Actions over a longer period.
 
 The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes panels for provisioned capacity utilization and limits.
 
