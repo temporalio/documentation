@@ -1399,7 +1399,7 @@ module.exports = {
           items: [
             'cloud/migrate/automated',
             'cloud/migrate/manual',
-            'cloud/migrate/migrate-within-cloud',
+            'cloud/migrate/between-regions-or-cloud-providers',
             'cloud/migrate/estimate-actions',
           ],
         },
@@ -1632,7 +1632,9 @@ module.exports = {
           items: [
             'production-deployment/temporal-proxy/configure',
             'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/codec-server',
             'production-deployment/temporal-proxy/deploy-kubernetes',
+            'production-deployment/temporal-proxy/sizing-and-performance',
           ],
         },
       ],
@@ -1845,6 +1847,7 @@ module.exports = {
       link: { type: 'doc', id: 'ai/index' },
       items: [
         { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+        'ai/featured/memory-state-stripe',
       ],
     },
     {

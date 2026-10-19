@@ -19,6 +19,9 @@
     "check:metrics": "node ./bin/check-metrics-reference.js",
     "check:metrics:sdks": "node ./bin/check-metrics-against-sdks.js",
     "check:orphans": "node ./bin/check-orphan-pages.js",
+    "check:index-slugs": "node ./bin/check-index-slugs.js",
+    "check:snipsync-markers": "node ./bin/check-snipsync-markers.js",
+    "check:cloud-links": "node ./bin/check-cloud-console-links.js",
     "check:redirects": "node ./bin/validate-redirects.js",
     "check:py-samples": "node ./bin/check-python-samples.js",
     "check:ts-samples": "node ./bin/check-typescript-samples.js",
@@ -48,7 +51,6 @@
     "e2e": "playwright test"
   },
   "resolutions": {
-    "caniuse-lite": "1.0.30001781",
     "qs": "6.14.1"
   },
   "browserslist": {

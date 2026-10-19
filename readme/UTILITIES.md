@@ -155,6 +155,54 @@ or deletes a docs page without adding a redirect.
 `.md` URL. Don't add a separate `.md` rule unless a wildcard rule would catch the `.md` URL first. See
 [Moved pages](./MARKDOWN_PIPELINE.md#moved-pages).
 
+## check-index-slugs
+
+`bin/check-index-slugs.js` (run via `yarn check:index-slugs`) reports docs pages whose URL ends in `/`. It runs in the
+Check Index Slugs workflow on pull requests that change `docs/` and fails on findings.
+
+Docusaurus gives a category index doc a URL ending in `/` unless its frontmatter sets `slug`. A category index is
+`index.md(x)`, `README.md(x)`, or a file named after its folder, such as `event-history/event-history.mdx`.
+`docusaurus.config.js` leaves `trailingSlash` unset, so the slash ends up in the page's canonical link, `og:url`,
+sitemap entry, JSON-LD, and every sidebar and breadcrumb link to it. `vercel.json` sets `"trailingSlash": false`, so
+each of those URLs redirects (308) to the same path without the slash.
+
+The check prints the fix for each page: add a `slug`, or remove the trailing slash from the existing one. Docusaurus
+writes the page to the same `<path>/index.html` file either way, so the URL the page is served at doesn't change and no
+redirect is needed.
+
+The script computes each URL with Docusaurus's own slug function, so it matches the build, including number prefixes and
+relative slugs. There's no baseline file, because Vercel redirects every trailing-slash URL and no page should have
+one. Two pages keep the slash:
+
+- `docs/index.mdx`, served at `/`.
+- `/ai/cookbook/`, the root page of the `ai-cookbook` docs instance. A `slug` can't remove the slash from the root of
+  a docs instance, and the files are synced from another repository, so the check skips `ai-cookbook/`.
+
+```bash
+yarn check:index-slugs                       # report
+node ./bin/check-index-slugs.js --json       # machine-readable
+```
+
+## check-snipsync-markers
+
+`bin/check-snipsync-markers.js` (run via `yarn check:snipsync-markers`) reports Snipsync markers in `docs/` that
+Snipsync would skip. It runs in the Check Snipsync Markers workflow on pull requests that change `docs/` and fails on
+findings.
+
+Snipsync accepts two marker styles: `<!--SNIPSTART id-->` with `<!--SNIPEND-->`, and `{/* SNIPSTART id */}` with
+`{/* SNIPEND */}`. A snippet has to open and close in the same style. When it doesn't, `yarn snipsync` logs "mismatched
+end marker", skips the snippet, and exits 0. The code block stops refreshing and drifts from its source repository
+without anything failing.
+
+The check also reports a `SNIPSTART` opened inside another snippet, a `SNIPSTART` with no `SNIPEND` by the end of the
+file, and a `SNIPEND` outside any snippet. It prints the fix for each finding. It reads only the pages, so it needs no
+sample repositories or network access, and it has no baseline file.
+
+```bash
+yarn check:snipsync-markers                       # report
+node ./bin/check-snipsync-markers.js --json       # machine-readable
+```
+
 ## visual-comparison
 
 The `visual-comparison` label triggers the visual comparison workflow on the PR. The workflow will do the following:
