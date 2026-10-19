@@ -140,7 +140,7 @@ to configure tracing and Temporal Core metrics for OTLP export to the Collector 
 connection settings with `ClientEnvConfig.LoadClientConnectOptions()`, then configure both plugins before connecting:
 
 <!--SNIPSTART dotnet-cloud-run-->
-[src/Gcp/CloudRun/Program.cs](https://github.com/temporalio/samples-dotnet/blob/gcp-cloud-run/src/Gcp/CloudRun/Program.cs)
+[src/Gcp/CloudRun/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/Gcp/CloudRun/Program.cs)
 ```cs
 // The Cloud Run Id plugin sets the client identity to "{instanceId}@{revision}" from Cloud Run
 // metadata at connect time; every Worker created from the client inherits it.
@@ -157,7 +157,7 @@ var client = await TemporalClient.ConnectAsync(connectOptions);
 
 After the Worker stops, call `telemetry.FlushAsync(TimeSpan.FromSeconds(2))` to flush traces within the Cloud Run
 termination window. For the Collector sidecar configuration and deployment steps, see the
-[.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/gcp-cloud-run/src/Gcp/CloudRun).
+[.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Gcp/CloudRun).
 
 ## Set a Worker identity {/* #worker-identity */}
 
@@ -179,4 +179,4 @@ using Temporalio.Extensions.Gcp.CloudRun.Id;
 
 The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry defaults.
 
-The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/gcp-cloud-run/src/Gcp/CloudRun).
+The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Gcp/CloudRun).
