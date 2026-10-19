@@ -181,30 +181,15 @@ Use [`temporal_cloud_v1_provisioned_capacity_tru_count`](/cloud/metrics/openmetr
 
 Each TRU provides 500 Actions per second. The first TRU has no hourly minimum. Each TRU after the first carries a minimum hourly charge of 360,000 Actions, equal to 20% of its capacity. Billing uses the highest TRU count configured during the hour. If workload usage falls below the minimum, Temporal adds Actions equal to the shortfall.
 
-The hourly minimum is
+To estimate the additional billed Actions caused by usage below the minimum, calculate the shortfall for each calendar hour by comparing workload Actions with the hourly minimum.
 
-```text
-(maximum TRU count during the hour - 1) * 360,000 Actions
-```
+Calculate workload Actions by summing [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` across the Namespace's series for each one-minute interval, multiplying each rate by 60, and summing the results for the calendar hour.
 
-Use [`temporal_cloud_v1_total_action_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_count) with `is_background=false` and [`temporal_cloud_v1_action_limit`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_action_limit) to estimate APS utilization. Sum the Action-rate series for the Namespace, then divide by its Action limit.
-
-To estimate the additional billed Actions caused by usage below the minimum, calculate the shortfall for each calendar hour.
-
-```text
-estimated additional billed Actions =
-max(
-  0,
-  ((maximum observed TRU count during the hour - 1) * 360,000)
-  - estimated workload Actions during the hour
-)
-```
-
-To estimate workload Actions, sum `temporal_cloud_v1_total_action_count` with `is_background=false` across the Namespace's series for each one-minute interval, multiply each rate by 60, and sum the results for the calendar hour. Add the hourly shortfalls to estimate additional billed Actions over a longer period.
+Calculate the hourly minimum by subtracting one from the maximum observed TRU count during the hour and multiplying by 360,000 Actions. The estimated additional billed Actions are the hourly minimum minus workload Actions, or zero if workload Actions meet or exceed the minimum. Add the hourly shortfalls to estimate additional billed Actions over a longer period.
 
 The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes panels for provisioned capacity utilization and limits.
 
-OpenMetrics samples the current configuration and estimates Action usage, so it does not reproduce billing records. Use the [Usage dashboard](/cloud/actions-usage#usage) or [Billing API](/cloud/billing-api) for billed Actions.
+OpenMetrics estimates usage. Use [Usage](/cloud/actions-usage#usage) and [Billing](/cloud/billing) as the source of truth for billed Actions.
 
 Some workloads intentionally run at low utilization to preserve capacity for traffic spikes or unpredictable demand. The hourly minimum charge still applies.
 
