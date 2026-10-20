@@ -14,7 +14,7 @@ import { SdkTabs, AnnotatedCode } from '@site/src/components';
 Each Worker can be configured by providing custom Worker options (`WorkerOptions`) at instantiation.
 Options are specific to individual Workers and do not affect other members of your fleet.
 
-### Executor slot options
+## Executor slot options
 
 The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` options define the number of total available Workflow Task and Activity Task slots for a Worker.
 
@@ -25,11 +25,11 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 
 :::
 
-### Configuring poller options {/* #configuring-poller-options */}
+## Configuring poller options {/* #configuring-poller-options */}
 
-#### Recommended approach
+### Recommended approach
 
-The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs.
+The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK examples section below.
 
 :::tip
 
@@ -37,7 +37,7 @@ The Temporal SDKs support Poller Autoscaling, which automatically selects an app
 
 :::
 
-#### Manual configuration
+### Manual configuration
 
 There are options available to manually configure minimum, maximum, and initial poller counts, but it is not recommended to set these values manually for production use cases. To set these values manually, the following options are available: 
 
@@ -46,7 +46,7 @@ There are options available to manually configure minimum, maximum, and initial 
 
 These options define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues, respectively. 
 
-#### SDK examples
+### SDK examples
 
 Select a concept to highlight the matching poller option:
 
@@ -263,7 +263,7 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-### Cache options (Java SDK) {/* #cache-options */}
+## Cache options (Java SDK) {/* #cache-options */}
 
 A [Workflow Cache](/workflow-execution#workflow-cache) is created and shared between all Workers on a single host.
 It's designed to limit the resources used by the cache for each host/process.
@@ -279,13 +279,13 @@ This includes memory and the total thread count, which should be limited per hos
 
 For Go, use [`SetStickyWorkflowCacheSize`](https://pkg.go.dev/go.temporal.io/sdk/worker#SetStickyWorkflowCacheSize). For Python, use the `max_cached_workflows` Worker option.
 
-### "Large value" drawbacks
+## "Large value" drawbacks
 
 There are drawbacks when you use "large values everywhere."
 As with any multithreading system, specifying excessively large values without monitoring with the SDK and system metrics leads to constant resource contention/stealing
 This decreases the total throughput and increases latency jitter of the system.
 
-### Invariants (JavaSDK only) {/* #invariants */}
+## Invariants (JavaSDK only) {/* #invariants */}
 
 These properties should always be true for a Worker's configuration.
 

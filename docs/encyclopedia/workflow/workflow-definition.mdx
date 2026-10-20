@@ -326,13 +326,13 @@ Temporal offers two Versioning strategies:
 
 - [Worker Versioning](#worker-versioning): keep Workers tied to specific code revisions, so that old Workers can run old code paths and new Workers can run new code paths.
 
-:::note
-Support for the experimental method of Worker Versioning prior to 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance.
-:::
-
 - [Versioning with patching](#workflow-patching): make sure your code changes are compatible across versions of your Workflow.
 
 You can use either strategy, or a combination.
+
+:::note
+Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance.
+:::
 
 #### Worker Versioning {/* #worker-versioning */}
 

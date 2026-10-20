@@ -1,6 +1,6 @@
 ---
 id: versioning
-title: Versioning - Go SDK
+title: Versioning
 description: Patch Go Workflow code with GetVersion, deprecate old Workflow versions, and plan cutovers without breaking running Executions.
 sidebar_label: Versioning
 toc_max_heading_level: 4
@@ -23,7 +23,7 @@ There are two primary Versioning methods that you can use:
 - [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 
 :::danger
-Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/go/worker-versioning-legacy) docs if needed. 
+Support for the experimental Worker Versioning method before 2025 was scheduled for removal from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/go/worker-versioning-legacy) docs if needed.
 :::
 
 ## Worker Versioning
@@ -158,16 +158,16 @@ To clean these up, you can gradually deprecate older Workflow versions.
 You can safely remove support for older Workflow versions once you are certain that there are no longer any open Workflow Executions based on that version. You can use the following [List Filter](/list-filter) syntax for this (the 1 near the end of the last line represents the version number):
 
 ```
-WorkflowType = "PizzaWorkflow" 
-    AND ExecutionStatus = "Running" 
+WorkflowType = "PizzaWorkflow"
+    AND ExecutionStatus = "Running"
     AND TemporalChangeVersion="ChangedNotificationActivityType-1"
 ```
 
 Since Workflow Executions that were started before `GetVersion` was added to the code won't have the associated Marker in their Event History, you'll need to use a different query to determine if any of those are still running:
 
 ```
-WorkflowType = "PizzaWorkflow" 
-    AND ExecutionStatus = "Running" 
+WorkflowType = "PizzaWorkflow"
+    AND ExecutionStatus = "Running"
     AND TemporalChangeVersion IS NULL
 ```
 
