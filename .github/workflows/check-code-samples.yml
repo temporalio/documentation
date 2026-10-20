@@ -1,0 +1,183 @@
+name: Check Code Samples
+
+# Shared by the per-language sample checks, such as Check TypeScript Samples
+# and Check Python Samples. Each of those sets its own triggers and calls this
+# with its checker. See bin/code-samples.js for what the checkers share.
+#
+# This is advisory. Findings never fail the job: the SDK is fetched at its
+# latest release, so a release can break a sample without any docs change,
+# and a page may deliberately show an older API. On pull requests it annotates
+# the changed pages. On the default branch it opens a tracking issue per
+# language, updates it while findings remain, and closes it once they're gone.
+# The job fails only when the check can't run at all, for example when the
+# package registry is unreachable.
+
+on:
+  workflow_call:
+    inputs:
+      language:
+        description: The language name used in the summary and the tracking issue, such as Python.
+        required: true
+        type: string
+      checker:
+        description: The checker script, such as bin/check-python-samples.js. Its tests are the same path with .test.js.
+        required: true
+        type: string
+      baseline:
+        description: The checker's baseline file.
+        required: true
+        type: string
+      yarn-script:
+        description: The package.json script that runs the checker, named in the tracking issue.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check samples against the SDK
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    env:
+      LANGUAGE: ${{ inputs.language }}
+      CHECKER: ${{ inputs.checker }}
+      BASELINE: ${{ inputs.baseline }}
+      YARN_SCRIPT: ${{ inputs.yarn-script }}
+      ISSUE_TITLE: Hand-written ${{ inputs.language }} samples need fixes
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Pull requests diff against their base to find the changed pages.
+          # (0 is falsy in an expression, so the condition is written this way.)
+          fetch-depth: ${{ github.event_name != 'pull_request' && 1 || 0 }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Test the checker
+        run: node --test bin/code-samples.test.js "${CHECKER%.js}.test.js"
+
+      # A pull request that changes the checker gets a full scan. Otherwise it
+      # gets only the pages it changes, so it isn't annotated with findings on
+      # pages it didn't touch.
+      - name: Choose the pages to check
+        id: scope
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$EVENT" != "pull_request" ]; then
+            echo "mode=full" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          changed=$(git diff --name-only --diff-filter=d "$BASE_SHA"...HEAD)
+          if echo "$changed" | grep -qxF -e "$CHECKER" -e "${CHECKER%.js}.test.js" -e "$BASELINE" \
+              -e bin/code-samples.js -e bin/code-samples.test.js \
+            || echo "$changed" | grep -qE '^\.github/workflows/check-[a-z-]*samples\.yml$'; then
+            echo "mode=full" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          pages=$(echo "$changed" | grep -E '^docs/.*\.mdx$' | tr '\n' ' ' || true)
+          if [ -z "$pages" ]; then
+            echo "mode=none" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=pages" >> "$GITHUB_OUTPUT"
+            echo "pages=$pages" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check the samples
+        id: check
+        if: steps.scope.outputs.mode != 'none'
+        env:
+          PAGES: ${{ steps.scope.outputs.pages }}
+        run: |
+          set -f
+          set +e
+          # --github adds a workflow command per finding, which annotates the
+          # page as tee echoes it. The report proper is everything else.
+          node "$CHECKER" --github $PAGES 2>&1 | tee output.txt
+          status=${PIPESTATUS[0]}
+          set -e
+
+          grep -v '^::' output.txt > report.txt || true
+
+          # 0 is clean and 2 is findings. Anything else means the check could
+          # not run, usually because a package download failed.
+          if [ "$status" -ne 0 ] && [ "$status" -ne 2 ]; then
+            echo "::error::The $LANGUAGE sample check could not run. See the log above."
+            exit "$status"
+          fi
+
+          if [ "$status" -eq 2 ]; then
+            echo "findings=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "findings=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          {
+            echo "### $LANGUAGE samples (informational; does not block merge)"
+            echo
+            echo '```'
+            cat report.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open or update the tracking issue
+        if: >-
+          github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch &&
+          steps.check.outputs.findings == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          {
+            echo "\`$CHECKER\` found hand-written $LANGUAGE samples in \`docs/\` that"
+            echo "use SDK APIs the latest SDK release doesn't have."
+            echo
+            echo '```'
+            cat report.txt
+            echo '```'
+            echo
+            echo "To resolve, fix the sample, or record the finding with a note in"
+            echo "\`$BASELINE\` if the page shows that API on purpose."
+            echo "Reproduce locally with \`yarn $YARN_SCRIPT\`."
+            echo
+            echo "_Updated by [${GITHUB_WORKFLOW}](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})._"
+          } > issue-body.md
+
+          number=$(gh issue list --state open --search "in:title \"$ISSUE_TITLE\"" --json number --jq '.[0].number // empty')
+
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file issue-body.md
+            echo "Updated issue #$number."
+          else
+            gh issue create --title "$ISSUE_TITLE" --body-file issue-body.md
+          fi
+
+      - name: Close the tracking issue
+        if: >-
+          github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch &&
+          steps.check.outputs.findings == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          number=$(gh issue list --state open --search "in:title \"$ISSUE_TITLE\"" --json number --jq '.[0].number // empty')
+
+          if [ -n "$number" ]; then
+            gh issue close "$number" --comment "The checker no longer finds anything to fix."
+          fi

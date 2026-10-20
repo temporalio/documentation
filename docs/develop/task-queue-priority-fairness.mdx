@@ -665,7 +665,7 @@ There should only be one fairness weight assigned to each fairness key within a 
 
 - **Priority alone** when you need strict priority ordering - for example, separating real-time Tasks from batch Tasks.
 - **Fairness alone** when you need tier or tenant isolation so no group is starved, but you don't need to preempt any group ahead of another.
-- **Both** when you have a tiered SLA hierarchy - Priority for the broad tier (for example, paid vs. free), Fairness for per-tenant equity within a tier.
+- **Both** when you have a tiered SLA hierarchy - Priority for the broad tier (for example, paid versus free), Fairness for per-tenant equity within a tier.
 
 When you use Priority and Fairness together, the next Task to dispatch is chosen by walking three rules in order:
 

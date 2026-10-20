@@ -1,0 +1,113 @@
+name: Snipsync Coverage
+
+# Reports the share of SDK code lines in docs/ that Snipsync pulls from a
+# sample repository, as opposed to code written into the page by hand. This is
+# informational, not a merge gate: the job never fails on its numbers.
+#
+# On a pull request it compares the merge result with the base it merges into,
+# writes the numbers to the job summary, and keeps one PR comment up to date.
+# It only posts that comment when the SDK line counts change, so PRs that don't
+# touch code samples stay quiet. On main it writes the numbers to the job
+# summary. The numbers depend only on the files in docs/, so the full trend is
+# rebuilt from git history with `yarn report:snipsync-coverage --history`
+# rather than stored anywhere.
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "bin/code-blocks.js"
+      - "bin/report-snipsync-coverage.js"
+      - ".github/workflows/snipsync-coverage.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: snipsync-coverage-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  snipsync-coverage:
+    name: Report Snipsync coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # On a pull request HEAD is the merge commit, and HEAD^1 is the base
+          # it merges into, so the comparison covers exactly this PR's changes.
+          fetch-depth: 2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+
+      - name: Report coverage
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            base="$(git rev-parse HEAD^1)"
+            node bin/report-snipsync-coverage.js --base "$base" --ref HEAD --markdown > report.md
+            node bin/report-snipsync-coverage.js --base "$base" --ref HEAD --json > report.json
+          else
+            node bin/report-snipsync-coverage.js --markdown > report.md
+          fi
+          cat report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        # A pull request from a fork gets a read-only token and can't comment.
+        # The numbers are still in the job summary.
+        continue-on-error: true
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- snipsync-coverage -->';
+            const { changed } = JSON.parse(fs.readFileSync('report.json', 'utf8'));
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+            const existing = comments.find(
+              (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
+            );
+
+            // Most pull requests don't change any code samples. Don't post a
+            // comment saying so unless an earlier push changed them.
+            if (!changed && !existing) {
+              core.info('SDK code line counts are unchanged and there is no earlier comment; skipping.');
+              return;
+            }
+
+            const body = `${marker}\n${fs.readFileSync('report.md', 'utf8')}`;
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info(`Updated the Snipsync coverage comment (${existing.id}).`);
+            } else {
+              const { data: comment } = await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+              core.info(`Created the Snipsync coverage comment (${comment.id}).`);
+            }

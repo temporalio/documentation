@@ -51,7 +51,7 @@ Restrictions apply at both the Workflow import level and the Workflow run time.
 
 A default set of restrictions that prevents most dangerous standard library calls.
 
-## Skip Workflow Sandboxing
+## Skip Workflow sandboxing
 
 The following techniques aren't recommended, but they allow you to avoid, skip, or break through the sandbox environment.
 
@@ -179,7 +179,7 @@ my_restrictions = dataclasses.replace(
 my_worker = Worker(..., workflow_runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
 ```
 
-### Import Notification Policy
+### Import notification policy
 
 The sandbox's import notification policy specifies how the sandbox behaves when it imports modules in a way that may be unintentional. It covers two common scenarios: dynamic imports and enforcing module passthrough. Each can be controlled independently.
 

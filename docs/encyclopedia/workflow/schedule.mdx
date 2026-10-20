@@ -97,7 +97,7 @@ Use a phase offset when you need your recurring Schedule to fire at a specific, 
 
 There is an `offset` parameter you can set so an `interval` spec fires exactly at a pre-determined date and time. Here's an example of how you can calculate the `offset` and apply it to your Schedules.
 
-Timestamps are measured with UNIX time. That means 7 days is 604,800 seconds (7 * 24 * 60 * 60), 5 days is 432,000 (5 * 24 * 60 * 60), etc. The Schedule fires when the following condition is true:
+Timestamps are measured with UNIX time. That means 7 days is 604,800 seconds (7 * 24 * 60 * 60), 5 days is 432,000 (5 * 24 * 60 * 60), and so on. The Schedule fires when the following condition is true:
 
 ```
 ((currentTimestampUTC - phase offset) % interval) == 0

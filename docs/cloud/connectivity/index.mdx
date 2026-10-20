@@ -75,11 +75,11 @@ Each Connectivity Rule specifies either generic public (internet) access or a sp
 
 A public Connectivity Rule can optionally enable [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses), so Namespaces attached to it resolve their Namespace endpoint to a published, fixed set of IP addresses you can allowlist in your firewall.
 
-Only one public Connectivity Rule is allowed per account (see [Permissions and limits](#permissions-and-limits) below). 
+Each Project allows 1 public Connectivity Rule and up to 5 private Connectivity Rules. To learn more about limits, see [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules).
 
 :::caution
 
-Connectivity Rules cannot be updated in place. If you already have a public Connectivity Rule and want to turn on Stable IPs, you must delete the existing public rule, create a new one with Stable IPs enabled, and re-attach it to every Namespace that needs it. Attempting to create a second public rule alongside the existing one returns an error.
+Connectivity Rules cannot be updated in place. If this Project already has a public Connectivity Rule and you want to turn on Stable IPs, delete that Project's public rule, create a new one with Stable IPs enabled, and re-attach it to every Namespace in that Project that needs it. A public rule in another Project can stay. Creating a second public rule in the same Project returns an error. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules).
 
 :::
 
@@ -106,9 +106,9 @@ Without a Connectivity Rule, Temporal Cloud has no record that your PrivateLink 
 
 Only [Account Admins and Account Owners](/cloud/manage-access/roles-and-permissions#account-level-roles) can create and manage connectivity rules. Connectivity rules are visible to Account Developers, Account Admins, and Account Owners.
 
-By default each namespace is limited to 5 private connectivity rules, and each account is limited to 50 private connectivity rules. You can [contact support](/evaluate/cloud/support#support-ticket) to request a higher limit.
+By default each Namespace is limited to 5 private Connectivity Rules. Without [Projects](/cloud/projects), the Account allows 50 private Connectivity Rules and 1 public Connectivity Rule, for a total of 51. With Projects enabled, each Project allows 1 public Connectivity Rule and up to 5 private Connectivity Rules. Connectivity Rules across all Projects count toward the Account total of 51. You can [contact support](/evaluate/cloud/support#support-ticket) to request a higher limit. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules).
 
-There is only one public rule allowed per account, because it's generic and can be reused for all namespaces that you want to be available on the internet. Trying to create more than one public rule will throw an error.
+A public Connectivity Rule can be reused for every Namespace in that Project that should be available on the internet. Creating a second public rule in the same Project returns an error.
 
 ## Creating a connectivity rule
 
@@ -129,7 +129,7 @@ Create a private connectivity rule (GCP):
 temporal cloud connectivity private create --connection-id "1234567890" --region "gcp-us-central1" --gcp-project-id "my-project-123"
 ```
 
-Create a public connectivity rule. You only need to do this once for your account:
+Create a public Connectivity Rule once for the Project. Each Project allows 1 public Connectivity Rule. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules):
 
 ```bash
 temporal cloud connectivity public create
@@ -150,7 +150,7 @@ Create a private connectivity rule (GCP):
 tcld connectivity-rule create --connectivity-type private --connection-id "1234567890" --region "gcp-us-central1" --gcp-project-id "my-project-123"
 ```
 
-Create a public connectivity rule. You only need to do this once for your account:
+Create a public Connectivity Rule once for the Project. Each Project allows 1 public Connectivity Rule. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules):
 
 ```bash
 tcld connectivity-rule create --connectivity-type public
@@ -327,7 +327,7 @@ TEMPORAL_TLS_SERVER_NAME=my-namespace.my-account.tmprl.cloud
 temporal workflow count -n $TEMPORAL_NAMESPACE
 ```
 
-#### grpcurl
+#### `grpcurl`
 ```bash
 grpcurl \
     -servername my-namespace.my-account.tmprl.cloud \

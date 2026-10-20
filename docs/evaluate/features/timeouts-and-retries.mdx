@@ -89,7 +89,7 @@ Set Workflow timeouts and Retry Policies in your language:
 Activity timeouts tell the caller — a Workflow, or the Client for a [Standalone Activity](/standalone-activity) — which kind of Activity failure occurred, and the Activity's [Retry Policy](/encyclopedia/retry-policies) decides what happens next.
 
 - **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**: the maximum time an [Activity Task](/tasks#activity-task) can sit in the Task Queue before a Worker picks it up. The default is infinite, and this timeout never triggers a retry, because a retry would return the Activity Task to the same Task Queue.
-- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**: the maximum time for a single [Activity Task Execution](/tasks#activity-task-execution). The default matches the Schedule-To-Close Timeout.
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**: the maximum time for a single [Activity Task Execution](/tasks#activity-task-execution). It has no default of its own. If you set only a Schedule-To-Close Timeout, Start-To-Close uses that value.
 - **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)**: the maximum time for the whole [Activity Execution](/activity-execution), from the first Activity Task being scheduled to the last one closing. The default is infinite.
 - **[Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout)**: the maximum time between [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat), the pings a Worker sends to report that an Activity Execution is still making progress.
 
