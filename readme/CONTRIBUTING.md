@@ -176,18 +176,28 @@ If a page shouldn't get a folder's tags, move the page or narrow the folder's fi
 
 ## Search results
 
-Algolia search shows the page heading, so it doesn't see `section_title` unless the page tells the crawler. Every page with a section title emits `<meta name="docsearch:section_title" content="Java SDK">`. The Algolia Crawler dashboard (not this repo) has to copy that tag into each record as a `section_title` attribute. In the `recordExtractor`, wrap the result of `helpers.docsearch(...)`:
+Algolia indexes the page heading, so it doesn't see `section_title` unless the page tells the crawler. Every page with a section title emits `<meta name="docsearch:section_title" content="Java SDK">`. Two changes in Algolia, which this repo doesn't manage, make search use it.
 
-```js
-recordExtractor: ({ $, helpers }) => {
-  const sectionTitle = $('meta[name="docsearch:section_title"]').attr('content');
-  return helpers
-    .docsearch({ /* existing recordProps */ })
-    .map((record) => (sectionTitle ? { ...record, section_title: sectionTitle } : record));
-},
-```
+1. **Crawler `recordExtractor`.** Read the meta tag and add `section_title` next to `sdk_language` on every record of the page:
+
+   ```js
+   const sectionTitle = $('meta[name="docsearch:section_title"]').attr('content')?.trim();
+   const extraAttributes = {
+     ...(sdkLanguage ? { sdk_language: sdkLanguage } : {}),
+     ...(sectionTitle ? { section_title: sectionTitle } : {}),
+   };
+   return Object.keys(extraAttributes).length
+     ? records.map((record) => ({ ...record, ...extraAttributes }))
+     : records;
+   ```
+
+   The crawler editor type-checks plain JavaScript, so building the object in one literal avoids a "property does not exist on type" error. Don't add a TypeScript annotation such as `: any`.
+
+2. **Index settings.** Make `section_title` searchable, so a query like "java workflow basics" still matches pages whose heading no longer says "Java SDK". Add `unordered(section_title)` to `searchableAttributes` as its own entry directly after `unordered(hierarchy.lvl1)`, and add `section_title` to `attributesToRetrieve`. The crawler's `initialIndexSettings` only seeds a new index, so change the live index in the Algolia dashboard and mirror the change in `initialIndexSettings`.
 
 The search modal and the `/search` page request `section_title` and show it after the result title (`src/theme/SearchBar/sectionLabel.ts`), skipping it when the title already contains it. Until a page is recrawled with the attribute, they fall back to the SDK label from `sdk_language`.
+
+The crawler caches pages it has already processed. If you change the `recordExtractor` after the site change has deployed and crawled, clear the crawler cache so unchanged pages are extracted again.
 
 ## Editing and previewing
 
