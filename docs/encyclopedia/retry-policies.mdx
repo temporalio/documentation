@@ -221,10 +221,12 @@ occur, the execution is not retried.
 
 #### Non-Retryable Errors for Activities
 
-When writing software applications, you will encounter three types of failures: transient, intermittent, and permanent.
-While transient and intermittent failures may resolve themselves upon retrying without further intervention, permanent
-failures will not. Permanent failures, by definition, require you to make some change to your logic or your input.
-Therefore, it is better to surface them than to retry them.
+When writing software applications, you will encounter two types of failures: transient and permanent. Transient
+failures, including intermittent ones such as rate limiting, may resolve themselves upon retrying without further
+intervention. [Permanent failures](/durable-execution#permanent-failures) will not. Permanent failures, by definition,
+require you to make some change to your logic or your input. Therefore, it is better to surface them than to retry them.
+Some business outcomes, such as insufficient funds, aren't failures at all, but you can model these
+[negative results](/durable-execution#negative-results) as non-retryable errors too.
 
 Non-Retryable Errors are errors that will not be retried, regardless of a Retry Policy.
 
@@ -363,8 +365,9 @@ set to `true` will always be non-retryable.
 </Tabs>
 
 For example, checking for bad input data is a reasonable time to use a non-retryable error. If the Activity cannot
-proceed with the input it has, that error should be surfaced immediately so that the input can be corrected on the next
-attempt.
+proceed with the input it has, that error should be surfaced immediately so that the input can be corrected. The
+Workflow keeps its progress, so it can wait for the corrected input and then run the Activity again. See the
+[Resumable Activity pattern](/design-patterns/resumable-activity).
 
 If responsibility for your application is distributed across multiple maintainers, or if you are developing a library to
 integrate into somebody else's application, you can think of the decision to hardcode non-retryable errors as following
