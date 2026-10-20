@@ -1,7 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { absolutizeImageUrls } = require('./image-urls');
 const { walkDir, resolveUrlPath: resolveUrlPathShared } = require('../shared/docsRouting');
+const { applyDefaults } = require('../shared/frontmatterDefaults');
+const { titleWithSection } = require('../../src/utils/sectionTitle');
 
 // Accepts either a single {docsDir, routeBasePath} (back-compat) or a
 // `targets` array, so one plugin instance can walk multiple docs plugin
@@ -346,7 +349,8 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
 
         for (const filePath of files) {
           const raw = fs.readFileSync(filePath, 'utf8');
-          const { data: frontmatter } = matter(raw);
+          const { data: pageFrontmatter } = matter(raw);
+          const frontmatter = applyDefaults(filePath, pageFrontmatter, { rootDir: context.siteDir });
 
           const urlPath = resolveUrlPathShared(docsDir, filePath, frontmatter, routeBasePath);
           const outputPath = path.join(outDir, urlPath + '.md');
@@ -363,18 +367,29 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
               sourceFile: path.relative(context.siteDir, filePath),
               projectRoot: context.siteDir,
             });
-            fs.writeFileSync(outputPath, withAgentDirective(markdown, siteUrl) + '\n');
+            const withImages = absolutizeImageUrls(markdown, {
+              siteUrl,
+              urlPath,
+              sourceDir: path.dirname(filePath),
+              fileExists: fs.existsSync,
+              copyAsset: (from, publishedPath) => {
+                const dest = path.join(outDir, publishedPath);
+                fs.mkdirSync(path.dirname(dest), { recursive: true });
+                fs.copyFileSync(from, dest);
+              },
+            });
+            fs.writeFileSync(outputPath, withAgentDirective(withImages, siteUrl) + '\n');
             totalWarnings += warnings.length;
             generated++;
 
             if (llmsTxt && frontmatter.title) {
               pages.push({
                 urlPath,
-                title: frontmatter.title,
+                title: titleWithSection(frontmatter.title, frontmatter.section_title),
                 sidebarLabel: frontmatter.sidebar_label || '',
                 description: frontmatter.description || '',
                 relPath: path.relative(docsDir, filePath).replace(/\\/g, '/'),
-                body: markdown,
+                body: withImages,
               });
             }
           }

@@ -24,7 +24,7 @@ covers why workloads hit APS limits, how to design Workflows that use actions ef
 [Provisioned Capacity](#provisioned-capacity-and-trus) — Temporal Resource Units (TRUs) that reserve additional
 capacity for spiky or unpredictable workloads.
 
-## Understanding actions in Temporal
+## Understand actions in Temporal {/* #understanding-actions-in-temporal */}
 
 ### What counts as an action?
 
@@ -36,7 +36,7 @@ The following is a partial list — see [the full list in our documentation](/ev
 - Signals, Updates, and Queries 
 
 Actions that count toward an APS limit are, with a few exemptions, the same as actions that are billable. 
-The key insight here is that nearly everything that happens in Temporal--state changes, decision points, interactions--is counted as an action.
+Nearly everything that happens in Temporal (state changes, decision points, interactions) counts as an action.
 
 ### The action multiplier effect
 
@@ -210,13 +210,13 @@ Since you understand your workload patterns better than any auto-scaling system,
 - **Schedule capacity changes**: Use [Temporal Schedules](/schedule) or Workflows to increase TRUs before known events
 - **React to leading indicators**: If your application has upstream signals (incoming order queue depth, marketing campaign start), use those to trigger capacity changes proactively
 
-## Knowing if you're hitting APS limits
+## Know if you're hitting APS limits {/* #knowing-if-youre-hitting-aps-limits */}
 
 In addition to understanding the patterns that can affect APS limits on a Temporal Namespace, it's also important to know if you're approaching (or exceeding) these limits.
 Temporal Cloud provides several metrics that, if tracked, will tell you if you're being rate limited due to APS.
 See the documentation on [detecting resource exhaustion](/cloud/service-health#rps-aps-rate-limits) for an explanation of those metrics as well as a sample Grafana dashboard that shows how they could be viewed.
 
-### Monitoring for TRU decisions
+### Monitor for TRU decisions {/* #monitoring-for-tru-decisions */}
 
 If you're considering Provisioned capacity, set up monitoring to understand your usage patterns:
 

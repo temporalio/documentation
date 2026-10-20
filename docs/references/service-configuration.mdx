@@ -74,7 +74,7 @@ For supported syntax, see [`net.ParseIP`](https://pkg.go.dev/net#ParseIP).
 ### metrics
 
 The `metrics` section configures the metrics the Temporal Service emits.
-Configure a provider by using its name as the key: [`statsd`](#statsd), [`prometheus`](#prometheus), or [`m3`](#m3).
+Configure a provider by using its name as the key: [`statsd`](#statsd) or [`prometheus`](#prometheus).
 
 For the metrics the Temporal Service emits, see the [Temporal Service metrics reference](/references/service-metrics).
 
@@ -114,15 +114,6 @@ Temporal does not support `statsd` natively.
 - `listenAddress`: The address the Temporal Service listens on for Prometheus scrape requests.
 - `handlerPath`: The HTTP path of the metrics handler.
   - Default: `/metrics`.
-
-#### m3
-
-- `hostPort`: The `host:port` of the M3 server.
-- `service`: The service tag that this client emits.
-- `queue`: The M3 reporter queue size.
-  - Default: 4k.
-- `packetSize`: The maximum M3 reporter packet size.
- - Default: 32k.
 
 ### pprof
 

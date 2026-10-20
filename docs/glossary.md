@@ -530,8 +530,9 @@ a measure that controls the rate of requests at the service level, such as the F
 
 #### [Reset](/workflow-execution/event#reset)
 
-A Reset terminates a Workflow Execution, removes the progress in the Event History up to the reset point, and then
-creates a new Workflow Execution with the same Workflow Type and ID to continue.
+A Reset terminates a Workflow Execution and creates a new Workflow Execution with the same Workflow Type and Workflow
+ID. The new Workflow Execution starts from a copy of the Event History up to the reset point, so progress made after the
+reset point is discarded.
 
 <!-- _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanation)_ -->
 
