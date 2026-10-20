@@ -54,8 +54,11 @@ A Workflow Execution is durable because it executes a Temporal Workflow Definiti
 
 Reliability is responsiveness in the presence of failure.
 
-A Workflow Execution is reliable, because it is fully recoverable after a failure.
-The Temporal Platform ensures the state of the Workflow Execution persists in the face of failures and outages and resumes execution from the latest state.
+A Workflow Execution is reliable, because it is recoverable after a failure.
+The Temporal Platform persists the state of the Workflow Execution through failures and outages.
+After a transient failure, such as a Worker crash, execution resumes from the latest state.
+After a permanent failure, such as a bug, the state is kept so that execution can resume once the cause is fixed.
+See [Durable Execution](/durable-execution).
 
 **Scalability**
 
