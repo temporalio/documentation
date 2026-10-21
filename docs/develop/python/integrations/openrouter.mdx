@@ -174,7 +174,6 @@ async def _send(self, request: OpenRouterRequest) -> OpenRouterResult:
         )
 
     return result
-
 ```
 <!--SNIPEND-->
 
@@ -294,7 +293,6 @@ def spend_report(self) -> SpendReport:
         paused=dict(self._paused),
         ledger=list(self._ledger),
     )
-
 ```
 <!--SNIPEND-->
 
@@ -347,7 +345,6 @@ async def _park(self, prompt: str, reason: str, until: Callable[[], bool]) -> bo
         return False
     finally:
         self._paused.pop(prompt, None)
-
 ```
 <!--SNIPEND-->
 
@@ -419,8 +416,6 @@ def openrouter_provider() -> OpenAIProvider:
     # These samples use Chat Completions, OpenRouter's primary endpoint; the
     # Agents SDK defaults to the Responses API, which OpenRouter also offers.
     return OpenAIProvider(openai_client=client, use_responses=False)
-
-
 ```
 <!--SNIPEND-->
 
