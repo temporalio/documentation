@@ -23,11 +23,10 @@ Encrypted Payloads are unreadable in the Web UI and CLI, which is what a [Codec 
 It's an HTTP server you run that holds the same decode logic as your codec.
 The Web UI and CLI send Payloads to it and display what it returns, so decrypted values reach the browser and the terminal only. The copy on the Temporal Service stays encrypted.
 
-You can also use [Temporal Proxy](/production-deployment/temporal-proxy/encrypt-payloads) to encrypt payloads without
-changing Worker or Client code. Temporal Proxy's encryption code and security model have been vetted by security teams
-at global banks and independent penetration testing firms. You run the proxy in your environment, where it has access
-to plaintext payloads and your KMS. See the proxy's
-[encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for its encryption design and coverage limits.
+You can also use [Temporal Proxy](/production-deployment/temporal-proxy) to encrypt payloads without changing Worker or
+Client code. You run the proxy in your environment, where it has access to plaintext payloads and your KMS. See the
+proxy's [encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for its encryption design and coverage
+limits.
 
 ## What you operate
 

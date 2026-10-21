@@ -141,9 +141,12 @@ Temporal's data encryption capabilities ensure the security and confidentiality 
 
 ### Enable client-side encryption for Workflow data
 
-Temporal provides an optional [data conversion framework](/dataconversion) (Data Converter) and payload codec interface; customers must implement, deploy, and operate their own custom codec and manage encryption keys. 
+Temporal provides an optional [data conversion framework](/dataconversion) (Data Converter) and Payload Codec interface that you can use to encrypt data before it reaches Temporal Cloud. You implement, deploy, and operate the codec and manage encryption keys. Because encryption keys stay under your control, you are responsible for key generation, secure storage, rotation, and versioning. Implementing this involves developing a custom Payload Codec in your Temporal SDK and optionally (if you need to inspect decrypted payloads in the Web UI or CLI) deploying a dedicated Codec Server.
 
-In practice, this means you can encrypt any sensitive data before it is sent to Temporal Cloud and only decrypt it on the Client/Worker side. Because encryption keys stay under your control, you are responsible for key generation, secure storage, rotation, and versioning. Implementing this involves developing a custom codec plugin in your Temporal SDK and optionally (if you need to inspect decrypted payloads in the Web UI or CLI) deploying a dedicated codec server.
+Alternatively, [Temporal Proxy](/production-deployment/temporal-proxy) encrypts payloads in your environment before
+forwarding them to Temporal Cloud, without changing Worker or Client code. See
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the encryption design, configuration, and
+coverage limits.
 
 ### Encode Workflow failure details with a Failure Converter
 
