@@ -325,6 +325,139 @@ export async function agentsAsTools(prompt: string): Promise<string> {
 Nested approval interruptions are not supported. If a nested run pauses for approval, the tool invocation fails with an
 `ApplicationFailure` of type `NestedAgentInterruption`.
 
+## Sandbox agents
+
+A `SandboxAgent` works in a sandbox, a workspace where it can run shell commands and read and edit files. The
+integration runs every sandbox operation as an Activity: creating the sandbox session, each command, file read, and file
+edit, and the teardown. Sandbox operations retry like any other Activity, and completed operations aren't repeated when
+the Workflow replays. Sandbox support is experimental. For sandbox concepts such as manifests, capabilities, and
+backends, see OpenAI's
+[sandbox agents concepts guide](https://openai.github.io/openai-agents-js/guides/sandbox-agents/concepts/).
+
+On the Worker, wrap an OpenAI Agents SDK sandbox client in a `SandboxClientProvider` from `@temporalio/openai-agents`,
+under a name that no other sandbox or MCP server provider on the plugin uses, and pass it to the plugin in
+`sandboxClientProviders`:
+
+<!--SNIPSTART typescript-openai-agents-sandboxes-worker-configuration-->
+[openai-agents/src/sandboxes/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/sandboxes/worker.ts)
+```ts
+plugins: [
+  new OpenAIAgentsPlugin({
+    modelProvider: new OpenAIProvider({ apiKey }),
+    sandboxClientProviders: [new SandboxClientProvider('local', new UnixLocalSandboxClient())],
+    resolvableWorkerEnvVars: ['SANDBOX_SERVICE_TOKEN'],
+  }),
+],
+```
+<!--SNIPEND-->
+
+`UnixLocalSandboxClient`, from `@openai/agents-core/sandbox/local`, runs the agent's commands directly on the Worker
+host as the Worker's OS user, so use it only for local development. To isolate the agent, register a different backend
+under the same name, such as `DockerSandboxClient` or one of the hosted backends in OpenAI's
+[sandbox clients guide](https://openai.github.io/openai-agents-js/guides/sandbox-agents/clients/). Only the Worker
+changes.
+
+In Workflow code, set `runConfig.sandbox.client` to `temporalSandboxClient()` with the provider's name, not the backend
+client itself:
+
+<!--SNIPSTART typescript-openai-agents-sandboxes-workflow-->
+[openai-agents/src/sandboxes/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/sandboxes/workflows.ts)
+```ts
+import { Manifest, SandboxAgent } from '@openai/agents-core/sandbox';
+import { TemporalOpenAIRunner, temporalSandboxClient, workerEnvValue } from '@temporalio/openai-agents/workflow';
+import { ApplicationFailure } from '@temporalio/workflow';
+
+export async function sandboxWorkflow(prompt: string): Promise<string> {
+  const agent = new SandboxAgent({
+    name: 'SandboxAgent',
+    instructions:
+      'Use the sandbox to do the work rather than answering from memory, then report what the commands returned. ' +
+      'Run each command to completion in a single exec_command call instead of leaving a process running to check ' +
+      'on later. SERVICE_TOKEN holds a credential: you may use it, but never print its value.',
+    defaultManifest: new Manifest({
+      environment: { SERVICE_TOKEN: workerEnvValue('SANDBOX_SERVICE_TOKEN') },
+    }),
+  });
+  const result = await new TemporalOpenAIRunner().run(agent, prompt, {
+    runConfig: { sandbox: { client: temporalSandboxClient('local') } },
+  });
+  if (typeof result.finalOutput !== 'string') {
+    throw ApplicationFailure.nonRetryable('SandboxAgent returned no final output');
+  }
+  return result.finalOutput;
+}
+```
+<!--SNIPEND-->
+
+The run fails immediately with a non-retryable error if `runConfig.sandbox` is missing and the agent passed to `run`,
+or any agent reachable from it through handoffs, is a `SandboxAgent`. It also fails if `runConfig.sandbox.client`
+wasn't created by `temporalSandboxClient()`.
+
+Each sandbox Activity has a five-minute
+[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) unless you pass Activity
+options as the second argument to `temporalSandboxClient()`. Options you pass replace that default rather than merging
+with it, so include a timeout.
+
+Workflow history records the input of every sandbox Activity, including the session's manifest, so a literal manifest
+environment value is stored in history, even one marked `ephemeral: true`. To keep a value out of history, use
+`workerEnvValue()`, as the Workflow above does for `SERVICE_TOKEN`. The manifest then holds only the name of a Worker
+environment variable.
+
+Set that variable in the environment of every Worker that can run the session's operations, since a Worker that
+reconnects to the session reads it again from its own environment. List its name in the plugin's
+`resolvableWorkerEnvVars`, as the Worker above does. A `workerEnvValue()` that names an unlisted variable fails the
+sandbox Activity with a non-retryable error, but a listed variable that isn't set resolves to an empty string without an
+error.
+
+`workerEnvValue()` keeps the resolved value out of history, but it doesn't stop a secret from reaching history another
+way. Workflow code can still write one there. Sandbox Activity results are recorded too, so a command that prints a
+secret puts it in history. The Workflow above tells the agent never to print `SERVICE_TOKEN`, which makes that less
+likely but can't rule it out. The session state that a backend reports is also recorded, and keeping secrets out of it
+is the backend's responsibility. To protect what does reach history, encrypt payloads with a
+[Payload Codec](/develop/typescript/best-practices/data-handling/data-encryption).
+
+The runner creates the sandbox session when the run reaches a `SandboxAgent` and tears it down when the run completes
+or fails. A run that pauses for approval keeps its session. To resume that session instead of creating a new one, pass
+the `RunState` back to `run` as in [Run state and approvals](#run-state-and-approvals), and add the same
+`runConfig.sandbox`, with the same provider name, to that call. If the Workflow is canceled, terminated, or times out,
+or a paused run is never resumed, the session isn't torn down. Remove it through your sandbox backend, for example by
+deleting the Docker container or the hosted sandbox.
+
+Temporal can hand a sandbox operation to any Worker that polls the Task Queue. A Worker that doesn't hold the session,
+such as a restarted Worker or a different one, reconnects to it with the backend's `resume()`. Resuming a paused run
+reconnects the same way, even on the Worker that ran it before the pause. A backend without `resume()` fails those
+operations with a non-retryable `SandboxOperationUnsupported` error, so it can't resume a paused run. What `resume()`
+can restore varies by backend, as described in
+[Resume and snapshots](https://openai.github.io/openai-agents-js/guides/sandbox-agents/clients/#resume-and-snapshots).
+
+Unix-local and Docker sessions stay on the machine that created them, in a local workspace directory or container, so a
+Worker on another machine can't reconnect to them. An operation that reaches such a Worker fails, and Temporal retries
+it. With those backends, run every Worker that handles sandbox Activities on one host, for example by passing
+`temporalSandboxClient()` Activity options with a `taskQueue` that only that host's Workers poll, along with a
+`startToCloseTimeout`. A Docker session keeps its workspace across a reconnect while its container is running. A
+Unix-local session doesn't: when a restarted Worker, or another Worker process on the same host, reconnects to it, the
+workspace is restored from the snapshot taken when the session was created or last paused, and changes made since then
+are lost. For Unix-local, let a single Worker process handle sandbox Activities, and don't restart it while a run is in
+progress. On both backends, resuming a paused run keeps the workspace as it was at the pause.
+
+If a command is still running when `exec_command` returns, the agent gets a process identifier to pass to `write_stdin`
+later. Unix-local and Docker can't reconnect running processes. Once the session reconnects, including when a paused run
+resumes, process identifiers start over, so `write_stdin` with an earlier identifier either reports `session not found`
+or reaches a different process that the agent started after the reconnect. A process started before a pause keeps
+running, on Unix-local even after the session is torn down. With those backends, have the agent wait for each command to
+finish in the `exec_command` call that starts it, so it doesn't need a process identifier later. `exec_command` returns
+when the command finishes or when `yield_time_ms` passes, so tell the agent to raise it for slower commands, up to a
+limit below the Activity's Start-To-Close Timeout.
+
+Sandbox Activities are traced like other Activities, as described in [Tracing](#tracing). With `addTemporalSpans: true`,
+sandbox operations also get `sandbox:*` spans in the Workflow and matching `:result` spans on the Worker. An agent's
+commands, for example, appear as `sandbox:session-exec-command` and `sandbox:session-exec-command:result`. These spans
+carry only the session identifier and, depending on the operation, a port, an exit code, or the size of the result. The
+OpenAI Agents SDK's own sandbox spans, such as `sandbox.exec`, aren't limited this way and can include the command text.
+
+The [sandboxes sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/sandboxes) has a
+runnable Worker, Workflow, and Client for this setup.
+
 ## MCP servers
 
 The integration supports stateless and stateful [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
