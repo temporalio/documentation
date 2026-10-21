@@ -122,6 +122,38 @@ Components imported this way use the "Components." prefix before their name:
 </Components.RelatedRead>
 ```
 
+## Using SetupSteps and CodeSnippet
+
+`SetupSteps` lays out quickstart steps as prose on the left and code on the right. Each `SetupStep` takes its code
+column from either a `code={…}` prop or its `<CodeSnippet>` children.
+
+To keep a snippet in sync with a sample repository, put the `CodeSnippet` inside the `SetupStep` body instead of the
+`code={…}` prop. The prop is a JavaScript expression, so MDX doesn't parse Markdown or `<!--SNIPSTART-->` markers in
+it. Leave blank lines around the Snipsync markers:
+
+```mdx
+<SetupStep>
+
+<CodeSnippet title="service.go">
+
+<!--SNIPSTART go-nexus-quickstart-service-->
+<!--SNIPEND-->
+
+</CodeSnippet>
+
+## 1. Define the Nexus Service
+
+Create a file called `service.go`.
+
+</SetupStep>
+```
+
+After `yarn snipsync` fills the markers, `CodeSnippet` renders the synced code block with the source file as its title,
+linked to the sample repository. A `title` prop replaces the file path text. The fence's language is used unless you
+pass `language`.
+
+`CodeSnippet` still accepts a hand-written template literal: ``<CodeSnippet language="go">{`...`}</CodeSnippet>``.
+
 ## Using IntegrationsGrid
 
 Role: Display a searchable, filterable grid of Temporal integrations with partner tools and services.

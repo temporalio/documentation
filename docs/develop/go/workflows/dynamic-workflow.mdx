@@ -18,8 +18,9 @@ You must register the Workflow with the Worker before it can be invoked.
 Only one Dynamic Workflow can be present on a Worker.
 
 The Workflow Definition must then accept a single argument of type `converter.EncodedValues`.
-This code snippet is taken from the [Dynamic Workflow example from samples-go](https://github.com/temporalio/samples-go/tree/main/dynamic-workflows).
 
+<!--SNIPSTART go-dynamic-workflow-definition-->
+[go-sandbox/workflows/dynamic/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/dynamic/workflow.go)
 ```go
 func DynamicWorkflow(ctx workflow.Context, args converter.EncodedValues) (string, error) {
 	var result string
@@ -44,3 +45,4 @@ func DynamicWorkflow(ctx workflow.Context, args converter.EncodedValues) (string
 	return result, nil
 }
 ```
+<!--SNIPEND-->

@@ -40,23 +40,26 @@ When you want to make substantive code changes that may affect existing Workflow
 
 Consider the following Workflow Definition:
 
+<!--SNIPSTART go-versioning-original-->
+[go-sandbox/workflows/versioning/original.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/original.go)
 ```go
 func YourWorkflow(ctx workflow.Context, data string) (string, error) {
-        ao := workflow.ActivityOptions{
-                ScheduleToStartTimeout: time.Minute,
-                StartToCloseTimeout:    time.Minute,
-        }
-        ctx = workflow.WithActivityOptions(ctx, ao)
-        var result1 string
-        err := workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
-        if err != nil {
-                return "", err
-        }
-        var result2 string
-        err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
-        return result2, err
+	ao := workflow.ActivityOptions{
+		ScheduleToStartTimeout: time.Minute,
+		StartToCloseTimeout:    time.Minute,
+	}
+	ctx = workflow.WithActivityOptions(ctx, ao)
+	var result1 string
+	err := workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+	if err != nil {
+		return "", err
+	}
+	var result2 string
+	err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
+	return result2, err
 }
 ```
+<!--SNIPEND-->
 
 Suppose you replaced `ActivityA` with `ActivityC` and deployed the updated code.
 
@@ -65,38 +68,44 @@ This would cause the Workflow to fail with a nondeterminism error.
 
 To resolve this, you can use `workflow.GetVersion()` to patch to your Workflow:
 
+<!--SNIPSTART go-versioning-get-version-->
+[go-sandbox/workflows/versioning/patched.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/patched.go)
 ```go
 var err error
 v := workflow.GetVersion(ctx, "Step1", workflow.DefaultVersion, 1)
 if v == workflow.DefaultVersion {
-        err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
 } else {
-        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
 }
 if err != nil {
-        return "", err
+	return "", err
 }
 
 var result2 string
 err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
 return result2, err
 ```
+<!--SNIPEND-->
 
-When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `GetVersion` for this change Id — `Step 1` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
+When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `GetVersion` for this change ID — `Step1` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
 
 If you make an additional change, such as replacing ActivityC with ActivityD, you need to
 add some additional code:
 
+<!--SNIPSTART go-versioning-second-change-->
+[go-sandbox/workflows/versioning/patched.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/patched.go)
 ```go
 v := workflow.GetVersion(ctx, "Step1", workflow.DefaultVersion, 2)
 if v == workflow.DefaultVersion {
-        err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
 } else if v == 1 {
-        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
 } else {
-        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
 }
 ```
+<!--SNIPEND-->
 
 Note that we changed `maxSupported` from 1 to 2.
 A Workflow that has already passed this `GetVersion()` call before it was introduced returns `DefaultVersion`.
@@ -105,49 +114,58 @@ New Workflows return 2.
 
 After all the Workflow Executions prior to version 1 have left retention, you can remove the code for that version:
 
+<!--SNIPSTART go-versioning-remove-default-->
+[go-sandbox/workflows/versioning/patched.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/patched.go)
 ```go
 v := workflow.GetVersion(ctx, "Step1", 1, 2)
 if v == 1 {
-        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
 } else {
-        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
 }
 ```
+<!--SNIPEND-->
 
 You'll note that `minSupported` has changed from `DefaultVersion` to `1`.
 If an older version of the Workflow Execution history is replayed on this code, it fails because the minimum expected version is 1.
 After all the Workflow Executions for version 1 have left retention, you can remove version 1 so that your code looks like the following:
 
+<!--SNIPSTART go-versioning-keep-get-version-->
+[go-sandbox/workflows/versioning/patched.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/patched.go)
 ```go
-_ := workflow.GetVersion(ctx, "Step1", 2, 2)
+workflow.GetVersion(ctx, "Step1", 2, 2)
 err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
 ```
+<!--SNIPEND-->
 
 Note that we have preserved the call to `GetVersion()`. There are two reasons to preserve this call:
 
 1. This ensures that if there is a Workflow Execution still running for an older version, it will
    fail here and not proceed.
 2. If you need to make additional changes for `Step1`, such as changing ActivityD to ActivityE, you
-   only need to update `maxVersion` from 2 to 3 and branch from there.
+   only need to update `maxSupported` from 2 to 3 and branch from there.
 
 You need to preserve only the first call to `GetVersion()` for each `changeID`.
-All subsequent calls to `GetVersion()` with the same change Id are safe to remove.
+All subsequent calls to `GetVersion()` with the same change ID are safe to remove.
 If necessary, you can remove the first `GetVersion()` call, but you need to ensure the following:
 
 - All executions with an older version have left retention.
-- You can no longer use `Step1` for the changeId. If you need to make changes to that same part in
-  the future, such as change from ActivityD to ActivityE, you would need to use a different changeId
-  like `Step1-fix2`, and start minVersion from DefaultVersion again. The code would look like the
+- You can no longer use `Step1` for the `changeID`. If you need to make changes to that same part in
+  the future, such as change from ActivityD to ActivityE, you would need to use a different `changeID`
+  like `Step1-fix2`, and start `minSupported` from `DefaultVersion` again. The code would look like the
   following:
 
+<!--SNIPSTART go-versioning-new-change-id-->
+[go-sandbox/workflows/versioning/patched.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/patched.go)
 ```go
 v := workflow.GetVersion(ctx, "Step1-fix2", workflow.DefaultVersion, 1)
 if v == workflow.DefaultVersion {
-        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
 } else {
-        err = workflow.ExecuteActivity(ctx, ActivityE, data).Get(ctx, &result1)
+	err = workflow.ExecuteActivity(ctx, ActivityE, data).Get(ctx, &result1)
 }
 ```
+<!--SNIPEND-->
 
 You can add multiple calls to `GetVersion` in a single Workflow.
 This can become challenging to manage if you have many long-running Workflows, as you will wind up with many code branches over time.
@@ -173,14 +191,17 @@ WorkflowType = "PizzaWorkflow"
 
 If you have found that there are no longer any open executions for the first two versions of the Workflow, for example, then you could remove support for them by changing the code as shown below:
 
+<!--SNIPSTART go-versioning-deprecate-->
+[go-sandbox/workflows/versioning/deprecate.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/deprecate.go)
 ```go
-version := GetVersion(ctx, "ChangedNotificationActivityType", 2, 3)
-if version  == 2 {
-    err = workflow.ExecuteActivity(ctx, SendTextMessage).Get(ctx, nil)
+version := workflow.GetVersion(ctx, "ChangedNotificationActivityType", 2, 3)
+if version == 2 {
+	err = workflow.ExecuteActivity(ctx, SendTextMessage).Get(ctx, nil)
 } else {
-    err = workflow.ExecuteActivity(ctx, SendTweet).Get(ctx, nil)
+	err = workflow.ExecuteActivity(ctx, SendTweet).Get(ctx, nil)
 }
 ```
+<!--SNIPEND-->
 
 Patching allows you to make changes to currently running Workflows.
 It introduces compatible changes without causing non-determinism errors.
@@ -195,25 +216,33 @@ To do this, you can copy the Workflow Definition function, giving it a different
 
 For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
 
+<!--SNIPSTART go-versioning-cutover-->
+[go-sandbox/workflows/versioning/pizza/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/pizza/workflow.go)
 ```go
 func PizzaWorkflow(ctx workflow.Context, order PizzaOrder) (OrderConfirmation, error) {
-    // this function contains the original code
+	// this function contains the original code
+	return OrderConfirmation{OrderNumber: order.OrderNumber, Status: "SUCCESS"}, nil
 }
 
 func PizzaWorkflowV2(ctx workflow.Context, order PizzaOrder) (OrderConfirmation, error) {
-    // this function contains the updated code
+	// this function contains the updated code
+	return OrderConfirmation{OrderNumber: order.OrderNumber, Status: "CONFIRMED"}, nil
 }
 ```
+<!--SNIPEND-->
 
 You can use any name you like for the new function, so long as the first character remains uppercase (this is a requirement for any Workflow Definition, since it must use an exported function).
 Using some type of version identifier, such as V2 in this example, will make it easier to identify the change.
 
 You would then need to update the Worker configuration, and any other identifier strings, to register both Workflow Types:
 
+<!--SNIPSTART go-versioning-cutover-register-->
+[go-sandbox/workflows/versioning/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/versioning/worker/main.go)
 ```go
 w.RegisterWorkflow(pizza.PizzaWorkflow)
 w.RegisterWorkflow(pizza.PizzaWorkflowV2)
 ```
+<!--SNIPEND-->
 
 The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow.
 This can become impractical over time.
