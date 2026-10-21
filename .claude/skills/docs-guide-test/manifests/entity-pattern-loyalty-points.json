@@ -1,0 +1,24 @@
+{
+  "guide": "docs/guides/entity-pattern-loyalty-points.mdx",
+  "language": "python",
+  "python": "3.12",
+  "pip": ["temporalio>=1.7.0"],
+  "extract": {
+    "mode": "comment-header",
+    "exclude": ["test_determinism.py"]
+  },
+  "worker": "python worker.py",
+  "driver": "python starter.py",
+  "startup_wait_seconds": 4,
+  "driver_timeout_seconds": 120,
+  "assert": {
+    "driver_exit_zero": true,
+    "stdout_contains": [
+      "Query result: 1250 points, tier=Silver, lifetime=1250",
+      "Redemption successful: 200 points for free_shipping, remaining: 1050",
+      "After redemption: balance=1050, tier=Silver",
+      "Final state: 2050 points, tier=Silver, lifetime=2250"
+    ]
+  },
+  "_notes": "Self-contained: the Activities only log, no external APIs. starter.py drives the full lifecycle. Expected end state is derived from the guide's logic: +500 +750 -> balance/lifetime 1250, tier Silver (>=1000); redeem 200 -> balance 1050; 10x +100 -> balance 2050, lifetime 2250, still Silver (<5000 for Gold). test_determinism.py is excluded because it needs a pre-saved history.json."
+}

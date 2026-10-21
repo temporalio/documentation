@@ -1,0 +1,4 @@
+{
+  "guide": "docs/guides/route-specialized-workloads.mdx",
+  "skip": "External/infra-bound and not internally consistent. GPU Activities import torch and sentence_transformers (which downloads a HuggingFace model), and the pattern needs CPU/GPU/high-memory Worker pools on separate Task Queues. The inline code also doesn't assemble: the starter targets task_queue='workflows' that no Worker polls, and block filenames come from markdown '**File:**' labels (not `# header` comments), with the Worker importing `from workflows import ...` while the Workflow block is named ml_pipeline_workflow.py."
+}
