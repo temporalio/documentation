@@ -5,8 +5,6 @@ sidebar_label: 5. Publish in Nexus
 description: A Nexus Endpoint routes Operation requests to the handler Namespace and Task Queue, so callers address it by name and never see what sits behind it.
 tags:
   - Nexus
-  - Java SDK
-  - Temporal SDKs
 ---
 
 import { RunThis } from '@site/src/components';
@@ -19,8 +17,14 @@ An Endpoint routes Operation requests to a target Namespace and Task Queue. Call
 
 An Endpoint needs a unique name, the target Namespace where the handler runs, and the target Task Queue the handler's Worker polls. The Task Queue must match the one your Worker uses from [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker), or requests arrive and nothing picks them up.
 
-The caller runs in its own Namespace, so the walkthrough crosses a real Namespace boundary. On the
-development server, create the caller Namespace and the Endpoint with the CLI:
+The caller runs in its own Namespace, so the walkthrough crosses a real Namespace boundary.
+
+The development server and the handler Worker from
+[step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker) each hold
+a terminal open, so open a third terminal for this step and for the commands in the steps that
+follow.
+
+On the development server, create the caller Namespace and the Endpoint with the CLI:
 
 <RunThis>
 
@@ -114,8 +118,6 @@ temporal nexus operation start \
 ```
 
 </RunThis>
-
-The handler will say that it is at 87% after running - this is actually output from Gradle, not the workflow, and can be ignored.
 
 `describe` shows the Operation still open, waiting durably on the Workflow:
 
