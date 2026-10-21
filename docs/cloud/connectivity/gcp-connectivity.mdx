@@ -197,6 +197,14 @@ The DNS resolver inside your network returns the private endpoint IP address, wh
 
 The following table lists the available Temporal regions, PrivateLink endpoints, and regional endpoints used for DNS record overrides:
 
+:::caution GCP capacity restriction
+
+New single-region Namespaces in all GCP regions require an approved exception for your account.
+To add a GCP replica, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
+See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction).
+
+:::
+
 import GCPRegions from '@site/docs/cloud/references/regions/gcpregions.md';
 
 <GCPRegions />

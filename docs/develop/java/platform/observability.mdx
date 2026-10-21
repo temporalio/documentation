@@ -8,8 +8,6 @@ tags:
   - Observability
   - Workflows
   - Search Attributes
-  - Java SDK
-  - Temporal SDKs
 ---
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
@@ -250,7 +248,7 @@ When starting a Workflow Execution with your Client, include the Custom Search A
 ...
 
     // Further down in the file
-    private static Map<String, Object> generateSearchAttributes(){
+    private static SearchAttributes generateSearchAttributes(){
         return SearchAttributes.newBuilder().set(Constants.IS_ORDER_FAILED, false).build();
     }
 ```
@@ -295,7 +293,7 @@ This method is particularly useful for Workflows whose attributes need to change
 
 ### How to remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
-To remove a Search Attribute that was previously set, set it to an empty Map.
+To remove a Search Attribute that was previously set, unset its value.
 
 ```java
     // In a shared constants file, so all files have access
