@@ -16,6 +16,12 @@ The Temporal Service persists data from your Workflow Executions, including inpu
 sensitive data, use a [Payload Codec](/payload-codec) to encrypt payloads before they reach the Temporal Service. With
 encryption enabled, data exists unencrypted only on the Client and the Worker process, on hosts that you control.
 
+Alternatively, use [Temporal Proxy](/production-deployment/temporal-proxy/encrypt-payloads) to encrypt payloads before
+they reach the Temporal Service without changing Worker or Client code. Temporal Proxy's encryption code and security
+model have been vetted by security teams at global banks and independent penetration testing firms. You run the proxy
+in your environment, where it has access to plaintext payloads and your KMS. See the proxy's
+[encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for configuration and coverage limits.
+
 The following data is persisted in the Event History and can be encrypted:
 
 - Inputs and outputs/results in your [Workflow](/workflow-execution), [Activity](/activity-execution), and [Child Workflow](/child-workflows)

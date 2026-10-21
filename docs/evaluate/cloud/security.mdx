@@ -35,6 +35,13 @@ Data stored in Temporal Cloud stays encrypted even if the service itself is comp
 
 Deploy a [Codec Server](/production-deployment/data-encryption) to decrypt data in the [Temporal Web UI](/web-ui) without sharing encryption keys with Temporal.
 
+Alternatively, [Temporal Proxy](/production-deployment/temporal-proxy/encrypt-payloads) encrypts payloads in your
+environment before forwarding them to Temporal Cloud, without changing Worker or Client code. Temporal Proxy's
+encryption code and security model have been vetted by security teams at global banks and independent penetration
+testing firms. The proxy has access to plaintext payloads and your KMS; Temporal Cloud receives encrypted payloads.
+See the proxy's [encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for configuration and coverage
+limits.
+
 ## The platform {/* #the-platform */}
 
 ### Namespace isolation

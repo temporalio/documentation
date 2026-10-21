@@ -24,7 +24,10 @@ the proxy seals codec-capable Payloads before they leave and opens them on the w
 proxy reach the upstream Temporal Service as ciphertext. Encryption is transparent, requiring no change to Worker or
 Client code.
 
-It uses envelope encryption: a short-lived data encryption key (DEK) encrypts each payload with AES-256-GCM, and a KMS
+Temporal Proxy's encryption code and security model have been vetted by security teams at global banks and independent
+penetration testing firms.
+
+The proxy uses envelope encryption: a short-lived data encryption key (DEK) encrypts each payload with AES-256-GCM, and a KMS
 key you own wraps the DEK. The wrapped DEK and a reference to the key that wrapped it travel with the payload, so the
 proxy never holds key material; it calls your KMS to wrap and unwrap DEKs. Supported key schemes are `awskms`,
 `azurekeyvault`, and `gcpkms` for cloud KMS, `extension` for a
