@@ -1,6 +1,6 @@
 ---
 id: index
-title: Nexus Microservice Development Walkthrough
+title: Microservice Development Walkthrough with Nexus in Java
 slug: /develop/java/nexus/development-walkthrough
 sidebar_label: Overview
 description: Build a Nexus Service end to end in Java, starting from a data contract and adding one Nexus capability at a time to solve a purchase approval problem.
@@ -8,7 +8,7 @@ tags:
   - Nexus
 ---
 
-import { RunThis } from '@site/src/components';
+import { RunThis, CallToAction } from '@site/src/components';
 
 :::caution
 
@@ -137,17 +137,15 @@ caller Workflow or caller Worker until [step 6](/develop/java/nexus/development-
 New to Nexus? Read [Nexus Services](/nexus/services) and [Nexus Operations](/nexus/operations), or work through the shorter [Java Nexus quickstart](/develop/java/nexus/quickstart).
 
 
-## The steps
+## Start the walkthrough
 
-1. [Define the data contract](/develop/java/nexus/development-walkthrough/define-the-data-contract). The five Operations callers need, and the types they carry.
-2. [Generate code](/develop/java/nexus/development-walkthrough/generate-code). Typed models, validators, and a Service definition from that one contract.
-3. [Choose a backing](/develop/java/nexus/development-walkthrough/choose-backing-implementation). Workflow, Standalone Activity, Update, or sync messaging, one per Operation.
-4. [Implement the Service](/develop/java/nexus/development-walkthrough/implement-the-service). The approval Workflow, the handler, the development server, and a Worker.
-5. [Publish in Nexus](/develop/java/nexus/development-walkthrough/publish-in-nexus). An Endpoint, and the first run of `requestApproval`.
-6. [Call the Service](/develop/java/nexus/development-walkthrough/call-the-service). A caller Workflow in its own Namespace.
-7. [Add messaging](/develop/java/nexus/development-walkthrough/add-messaging). A Signal to nudge the approval, an Update to decide it.
-8. [Send messages](/develop/java/nexus/development-walkthrough/send-messages). Signal-with-Start, and several callers awaiting one approval.
-9. [Add a Standalone Activity](/develop/java/nexus/development-walkthrough/add-a-standalone-activity). An Operation with no Workflow behind it.
-10. [Finish the flow](/develop/java/nexus/development-walkthrough/call-the-standalone-activity). The whole approval end to end.
+Ten steps build the Service, and the sidebar lists them all. Work through them in order, because
+each one runs against what the last one left running.
 
-[Debugging and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips) collects the failures each step can produce, indexed by symptom.
+<CallToAction href="/develop/java/nexus/development-walkthrough/define-the-data-contract" analyticsId="nexus-walkthrough-step-1-cta">
+  <h3>Step 1: Define the data contract</h3>
+  <p>The five Operations callers need, and the types they carry.</p>
+</CallToAction>
+
+[Debugging and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips) collects the
+failures each step can produce, indexed by symptom. Keep it open in a tab.

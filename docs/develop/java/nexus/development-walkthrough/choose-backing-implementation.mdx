@@ -7,6 +7,8 @@ tags:
   - Nexus
 ---
 
+import { CallToAction } from '@site/src/components';
+
 The contract says nothing about what runs behind an Operation. That is the handler's private decision, and it can change later without touching callers.
 
 Picking the wrong backing is the most common source of trouble later. This step chooses one for each Operation in the approval Service.
@@ -75,3 +77,9 @@ In [step 8](/develop/java/nexus/development-walkthrough/send-messages), `attachA
 
 :::
 
+## Next step
+
+<CallToAction href="/develop/java/nexus/development-walkthrough/implement-the-service" analyticsId="nexus-walkthrough-step-4-cta">
+  <h3>Step 4: Implement the Service</h3>
+  <p>The approval Workflow, the handler, the development server, and a Worker.</p>
+</CallToAction>
