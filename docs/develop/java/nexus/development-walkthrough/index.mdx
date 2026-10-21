@@ -66,9 +66,9 @@ the handler from any other sample."
 
 ## How to follow along
 
-Two kinds of code block appear in this walkthrough. Hover over either one to get a copy icon.
+Three kinds of code block appear in this walkthrough. Hover over a block to get a copy icon.
 
-**A terminal window is a command to run.** Run this one now to confirm you have a pre-release CLI with server version 1.32.0 or later:
+**A terminal window is a command to run.** Run this one now to confirm you have [Temporal CLI](/cli) 1.9.1 or later:
 
 <RunThis>
 
@@ -93,7 +93,7 @@ temporal --version
 Command output appears in a plain block with no header:
 
 ```
-temporal version 1.8.3-server-1.32.0-162.0 (Server 1.32.0-162.0, UI 2.53.1)
+temporal version 1.9.1 (Server 1.32.0, UI 2.54.1)
 ```
 
 ## Before you start
@@ -114,13 +114,16 @@ cd samples-java
 
 The sample is the finished Service. Each step shows the code it introduces and then runs it.
 
-### Use the pre-release CLI
+### Check your CLI version
 
-The Temporal Operation Handler is pre-release, so you need a pre-release [Temporal CLI](/cli) and
-its development server, which you can [download from the CLI releases page](https://github.com/temporalio/cli/releases).
-Check the release's "What's changed" section to make sure it is not a backport. A stock build rejects the Operations this walkthrough
-runs. See [Debugging and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips)
-for what each failure looks like.
+This walkthrough needs [Temporal CLI](/cli) 1.9.1 or later and its development server. Each step
+runs an Operation from the command line with `temporal nexus operation`, so check that your CLI has
+those commands before you start. If `temporal nexus --help` doesn't list `operation`, upgrade.
+
+The development server also needs two dynamic config values that are off by default.
+[Step 4](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server)
+sets them, and [Debugging and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips)
+shows what each one fails with when it's missing.
 
 ### Run each Operation as you build it
 

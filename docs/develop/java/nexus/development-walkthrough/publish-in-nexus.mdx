@@ -94,6 +94,12 @@ temporal task-queue describe \
 
 A Worker that isn't polling is the other common cause of a call that appears to hang: the request is accepted and queued, and nothing serves it.
 
+The `Pollers` section lists a `workflow` and an `activity` poller, and no Nexus entry, so this
+confirms a Worker is alive on the Task Queue rather than that it registered the Nexus Service. If
+pollers are listed and calls still fail, check that the Worker calls
+`registerNexusServiceImplementation`, as in
+[step 4](/develop/java/nexus/development-walkthrough/implement-the-service#run-the-worker).
+
 ## Run the Operation
 
 The Service is now reachable through the Endpoint.
