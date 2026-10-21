@@ -1069,7 +1069,7 @@ workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflo
 
 The instance of `WorkflowRun` has the following three methods:
 
-- `GetWorkflowID()`: Returns the Workflow ID of the invoked Workflow Execution.
+- `GetID()`: Returns the Workflow ID of the invoked Workflow Execution.
 - `GetRunID()`: Always returns the Run ID of the initial Run (see
   [Continue-As-New](/workflow-execution/continue-as-new)) in the series of Runs that make up the full Workflow
   Execution.
