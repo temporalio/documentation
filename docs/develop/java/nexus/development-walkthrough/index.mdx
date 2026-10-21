@@ -10,11 +10,8 @@ tags:
 
 import { RunThis, CallToAction } from '@site/src/components';
 
-:::caution
-
-This walkthrough covers the [Temporal Operation Handler](/nexus/temporal-operation-handler), which is pre-release.
-APIs are experimental and may change in backwards-incompatible ways.
-
+:::caution[Currently in: Pre-release]
+This walkthrough uses the new Nexus developer experience: pre-release APIs for the [Temporal Operation Handler](/nexus/temporal-operation-handler) and [Nexus Standalone Activity](/nexus/standalone-activity). These APIs are experimental and subject to change.
 :::
 
 This walkthrough builds one Nexus Service from nothing to a complete API, adding one Nexus capability at each step.
@@ -23,7 +20,10 @@ A [Nexus Service](/evaluate/features/nexus) is a contract that one team publishe
 
 ## The walkthrough problem
 
-**A purchase request needs approval before it can proceed.**
+A purchase request needs approval before it can proceed. One team owns that approval process, and
+other teams across the company need to start an approval and find out how it went, without taking
+on that team's code or running it themselves. That split is what makes this a Nexus problem: the
+approval team publishes a Service, and everyone else calls it.
 
 Approval is slow and human-driven, so the system has to survive a wait of minutes or weeks. While a request is pending, other systems might nudge the approver or attach information to the request. When a decision arrives, the requesting system needs the outcome.
 
@@ -98,7 +98,7 @@ temporal version 1.9.1 (Server 1.32.0, UI 2.54.1)
 
 ## Before you start
 
-### Clone the sample project
+### 1. Clone the sample project {/* #clone-the-sample-project */}
 
 This walkthrough runs inside a clone of the [samples-java](https://github.com/temporalio/samples-java)
 repository. Every command and file path is relative to the repository root.
@@ -114,7 +114,7 @@ cd samples-java
 
 The sample is the finished Service. Each step shows the code it introduces and then runs it.
 
-### Check your CLI version
+### 2. Check your CLI version {/* #check-your-cli-version */}
 
 This walkthrough needs [Temporal CLI](/cli) 1.9.1 or later and its development server. Each step
 runs an Operation from the command line with `temporal nexus operation`, so check that your CLI has
@@ -125,7 +125,7 @@ The development server also needs two dynamic config values that are off by defa
 sets them, and [Debugging and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips)
 shows what each one fails with when it's missing.
 
-### Run each Operation as you build it
+### 3. Run each Operation as you build it {/* #run-each-operation-as-you-build-it */}
 
 [Step 4](/develop/java/nexus/development-walkthrough/implement-the-service)
 starts the development server, and [step 5](/develop/java/nexus/development-walkthrough/publish-in-nexus)
