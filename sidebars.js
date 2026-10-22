@@ -1300,7 +1300,7 @@ module.exports = {
         {
           type: 'category',
           label: 'Account access',
-          collapsed: false,
+          collapsed: true,
           link: {
             type: 'doc',
             id: 'cloud/manage-access/index',
