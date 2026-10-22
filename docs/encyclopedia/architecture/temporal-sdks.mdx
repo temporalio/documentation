@@ -134,7 +134,7 @@ Developers use the Client as the main entry point for interacting with the appli
 
 <SdkGuideLinks path="client/temporal-client" title="Temporal Client" />
 
-### APIs to Develop Workflows
+### APIs to develop Workflows
 
 Workflows are defined as code: either a function or an object method, depending on the language.
 
@@ -246,7 +246,7 @@ The Temporal Service creates a new Workflow Task which the Worker picks up.
     src="/diagrams/how-sdk-works-1.svg"
     title="The Worker picks up the new Task" />
 
-This is when the SDK Worker Replays the Workflow code, using the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
+This is when the SDK Worker Replays the Workflow code, using the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/workflow-task-errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 

@@ -100,7 +100,7 @@ For example:
 
 ```
 <RelatedReadItem
-    path="/cloud/metrics/prometheus-grafana"
+    path="/cloud/metrics/openmetrics/metrics-integrations"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide"
 />
@@ -121,6 +121,38 @@ Components imported this way use the "Components." prefix before their name:
 ...Content that is folded away...
 </Components.RelatedRead>
 ```
+
+## Using SetupSteps and CodeSnippet
+
+`SetupSteps` lays out quickstart steps as prose on the left and code on the right. Each `SetupStep` takes its code
+column from either a `code={…}` prop or its `<CodeSnippet>` children.
+
+To keep a snippet in sync with a sample repository, put the `CodeSnippet` inside the `SetupStep` body instead of the
+`code={…}` prop. The prop is a JavaScript expression, so MDX doesn't parse Markdown or `<!--SNIPSTART-->` markers in
+it. Leave blank lines around the Snipsync markers:
+
+```mdx
+<SetupStep>
+
+<CodeSnippet title="service.go">
+
+<!--SNIPSTART go-nexus-quickstart-service-->
+<!--SNIPEND-->
+
+</CodeSnippet>
+
+## 1. Define the Nexus Service
+
+Create a file called `service.go`.
+
+</SetupStep>
+```
+
+After `yarn snipsync` fills the markers, `CodeSnippet` renders the synced code block with the source file as its title,
+linked to the sample repository. A `title` prop replaces the file path text. The fence's language is used unless you
+pass `language`.
+
+`CodeSnippet` still accepts a hand-written template literal: ``<CodeSnippet language="go">{`...`}</CodeSnippet>``.
 
 ## Using IntegrationsGrid
 
@@ -196,7 +228,7 @@ Add a new entry to the `integrations` array with the following shape:
 | --- | --- | --- | --- |
 | `name` | `string` | Yes | Display name of the integration. |
 | `description` | `string` | Yes | One-sentence summary shown on the card. |
-| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
+| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent memory`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
 | `sdk` | `SDK` | No | The language SDK this integration targets. Omit for language-agnostic integrations (such as Temporal Cloud metrics exporters). |
 | `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/langsmith`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
 
@@ -315,7 +347,7 @@ Usage:
 
 ```
 <RelatedReadContainer>
-  <RelatedReadItem path="/cloud/metrics/prometheus-grafana"
+  <RelatedReadItem path="/cloud/metrics/openmetrics/metrics-integrations"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide" />
   <RelatedReadItem path="/cloud/worker-health"

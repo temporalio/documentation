@@ -1,6 +1,7 @@
 ---
 id: index
 title: Worker Versioning
+slug: /production-deployment/worker-deployments/worker-versioning
 description:
   Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for
   patching to support multiple code paths.
@@ -152,7 +153,7 @@ CaN boundary without patching. See [Upgrading on Continue-as-New](/production-de
 
 :::
 
-### Default Versioning Behavior Considerations
+### Default versioning behavior considerations
 
 If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning.
 Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.

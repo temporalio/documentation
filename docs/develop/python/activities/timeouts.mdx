@@ -1,6 +1,6 @@
 ---
 id: timeouts
-title: Activity Timeouts - Python SDK
+title: Activity Timeouts
 sidebar_label: Timeouts
 description: Set the Schedule-To-Close, Start-To-Close, and Heartbeat Timeouts on a Python Activity, tune its Retry Policy, and override the next retry delay.
 toc_max_heading_level: 4
@@ -165,7 +165,7 @@ To get just the handle to wait and cancel separately, use `start_activity()`. `e
 ```python
 workflow.execute_activity(
     activity="your-activity",
-    name,
+    arg=name,
     schedule_to_close_timeout=timedelta(seconds=5),
     heartbeat_timeout=timedelta(seconds=1),
 )

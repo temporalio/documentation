@@ -92,7 +92,8 @@ function buildRouteIndex(root = process.cwd()) {
 
   addDocs(urls, path.join(root, 'docs'), '/', { applyDocsExclude: true });
   const cookbookDir = path.join(root, COOKBOOK_DIR);
-  if (fs.existsSync(cookbookDir)) addDocs(urls, cookbookDir, COOKBOOK_ROUTE, { applyDocsExclude: false });
+  const cookbookPresent = fs.existsSync(cookbookDir);
+  if (cookbookPresent) addDocs(urls, cookbookDir, COOKBOOK_ROUTE, { applyDocsExclude: false });
   addPages(urls, path.join(root, 'src', 'pages'));
   addStatic(urls, path.join(root, 'static'));
   addApi(urls, path.join(root, 'api'));
@@ -107,10 +108,12 @@ function buildRouteIndex(root = process.cwd()) {
     const p = normalizePath(urlPath);
     if (urls.has(p)) return true;
     if (p.endsWith('/llms.txt')) return true; // per-section llms.txt files
-    return UNVERIFIABLE_PREFIXES.some((prefix) => p === prefix || p.startsWith(`${prefix}/`));
+    // A prefix's own .md alternate (/ai/cookbook.md) is as unverifiable as the prefix.
+    const page = p.replace(/\.md$/, '');
+    return UNVERIFIABLE_PREFIXES.some((prefix) => page === prefix || page.startsWith(`${prefix}/`));
   };
 
-  return { has, maybe, urls, cookbookPresent: fs.existsSync(cookbookDir) };
+  return { has, maybe, urls, cookbookPresent };
 }
 
 module.exports = { buildRouteIndex, docUrl };

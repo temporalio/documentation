@@ -1,7 +1,7 @@
 ---
 id: message-passing
-title: Workflow message passing - Go SDK
-sidebar_label: Messages
+title: Workflow message passing
+sidebar_label: Message passing
 description: Develop with Queries, Signals, and Updates with the Temporal Go SDK.
 toc_max_heading_level: 3
 tags:
@@ -23,7 +23,7 @@ This page introduces these features for the Temporal Go SDK.
 ## Handle messages {/* #handling-messages */}
 
 :::info
-The code that follows is part of a working message passing [sample](https://github.com/temporalio/samples-go/tree/message-passing/message-passing-intro).
+The code that follows is part of a working message passing [sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/go-sandbox/workflows/messagepassing).
 :::
 
 Follow these guidelines when writing message handlers:
@@ -36,7 +36,10 @@ Follow these guidelines when writing message handlers:
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
+<!--SNIPSTART go-message-greeting-workflow {"selectedLines": ["11-19", "23-25", "31", "35-47", "74"]}-->
+[go-sandbox/workflows/messagepassing/message/greeting.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/greeting.go)
 ```go
+// ...
 type Language string
 
 const Chinese Language = "chinese"
@@ -46,28 +49,30 @@ const Spanish Language = "spanish"
 const Portuguese Language = "portuguese"
 
 const GetLanguagesQuery = "GetLanguages"
-
+// ...
 type GetLanguagesInput struct {
 	IncludeUnsupported bool
 }
-
+// ...
 func GreetingWorkflow(ctx workflow.Context) (string, error) {
-    ...
-    greeting := map[Language]string{English: "Hello", Chinese: "你好，世界"}
-    err := workflow.SetQueryHandler(ctx, GetLanguagesQuery, func(input GetLanguagesInput) ([]Language, error) {
-        // 👉 A Query handler returns a value: it can inspect but must not mutate the Workflow state.
-        if input.IncludeUnsupported {
-            return []Language{Chinese, English, French, Spanish, Portuguese}, nil
-        } else {
-            // Range over map is a nondeterministic operation.
-            // It is OK to have a non-deterministic operation in a query function.
-            //workflowcheck:ignore
-            return maps.Keys(greeting), nil
-        }
-    })
-    ...
+// ...
+	greeting := map[Language]string{English: "Hello", Chinese: "你好，世界"}
+
+	err := workflow.SetQueryHandler(ctx, GetLanguagesQuery, func(input GetLanguagesInput) ([]Language, error) {
+		// 👉 A Query handler returns a value: it can inspect but must not mutate the Workflow state.
+		if input.IncludeUnsupported {
+			return []Language{Chinese, English, French, Spanish, Portuguese}, nil
+		}
+		// Sort the map keys so the result is the same every time.
+		return slices.Sorted(maps.Keys(greeting)), nil
+	})
+	if err != nil {
+		return "", err
+	}
+// ...
 }
 ```
+<!--SNIPEND-->
 
 - Use [`SetQueryHandler`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetQueryHandler) to set a Query Handler that listens for a Query by name.
 - The handler must be a function that returns two values, a serializable result and an error.
@@ -78,46 +83,55 @@ func GreetingWorkflow(ctx workflow.Context) (string, error) {
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow.
 Handle Signal messages by receiving them from their channel:
 
+<!--SNIPSTART go-message-greeting-workflow {"selectedLines": ["20", "27-29", "31-33", "67-71", "74"]}-->
+[go-sandbox/workflows/messagepassing/message/greeting.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/greeting.go)
 ```go
+// ...
 const ApproveSignal = "approve"
-
+// ...
 type ApproveInput struct {
 	Name string
 }
-
-func GreetingWorkflow(ctx workflow.Context) error {
-    logger := workflow.GetLogger(ctx)
+// ...
+func GreetingWorkflow(ctx workflow.Context) (string, error) {
+	logger := workflow.GetLogger(ctx)
 	approverName := ""
-	...
+// ...
 	// Block until the language is approved
 	var approveInput ApproveInput
 	workflow.GetSignalChannel(ctx, ApproveSignal).Receive(ctx, &approveInput)
 	approverName = approveInput.Name
 	logger.Info("Received approval", "Approver", approverName)
-	...
+// ...
 }
 ```
+<!--SNIPEND-->
 
 - Pass the Signal's name to [`GetSignalChannel`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetSignalChannel) to get the Signal Channel that listens for Signals of that type.
 
 Alternatively, you might want the Workflow to proceed and still be capable of handling external Signals.
 
+<!--SNIPSTART go-message-signal-async-->
+[go-sandbox/workflows/messagepassing/message/signals.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/signals.go)
 ```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-   var signal MySignal
-   signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
- 	workflow.Go(ctx, func(ctx workflow.Context) {
- 		for {
- 			selector := workflow.NewSelector(ctx)
- 			selector.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
- 				c.Receive(ctx, &signal)
- 			})
- 			selector.Select(ctx)
- 		}
- 	})
-   // You could now submit an activity; any signals will still be received while the activity is pending.
- }
+func SignalAsyncWorkflow(ctx workflow.Context, param YourWorkflowParam) error {
+	var signal MySignal
+	signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
+	workflow.Go(ctx, func(ctx workflow.Context) {
+		for {
+			selector := workflow.NewSelector(ctx)
+			selector.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
+				c.Receive(ctx, &signal)
+				workflow.GetLogger(ctx).Info("Received Signal", "Message", signal.Message)
+			})
+			selector.Select(ctx)
+		}
+	})
+	// You could now submit an activity; any signals will still be received while the activity is pending.
+	return workflow.Sleep(ctx, time.Minute)
+}
 ```
+<!--SNIPEND-->
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
 
@@ -127,18 +141,21 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
 - Delay calling `workflow.GetSignalChannel` until the Workflow initialization needed to process the Signal channel has finished.
   This is safe because the SDK buffers signals when there are no channels created for them.
 
+<!--SNIPSTART go-message-signal-drain-->
+[go-sandbox/workflows/messagepassing/message/signals.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/signals.go)
 ```go
 reportCompletionChannel := workflow.GetSignalChannel(ctx, "ReportCompletion")
 // Drain signals async
 for {
-	var recordId int
-	ok := reportCompletionChannel.ReceiveAsync(&recordId)
+	var recordID int
+	ok := reportCompletionChannel.ReceiveAsync(&recordID)
 	if !ok {
 		break
 	}
-	s.recordCompletion(ctx, recordId)
+	s.recordCompletion(ctx, recordID)
 }
 ```
+<!--SNIPEND-->
 
 ### Update handlers and validators {/* #updates */}
 
@@ -147,14 +164,19 @@ It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
 
+<!--SNIPSTART go-message-greeting-workflow {"selectedLines": ["11", "21", "31", "34-35", "49-65", "74"]}-->
+[go-sandbox/workflows/messagepassing/message/greeting.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/greeting.go)
 ```go
+// ...
 type Language string
-
+// ...
 const SetLanguageUpdate = "set-language"
-
-func GreetingWorkflow(ctx workflow.Context) error {
+// ...
+func GreetingWorkflow(ctx workflow.Context) (string, error) {
+// ...
 	language := English
-
+	greeting := map[Language]string{English: "Hello", Chinese: "你好，世界"}
+// ...
 	err = workflow.SetUpdateHandlerWithOptions(ctx, SetLanguageUpdate, func(ctx workflow.Context, newLanguage Language) (Language, error) {
 		// 👉 An Update handler can mutate the Workflow state and return a value.
 		var previousLanguage Language
@@ -169,9 +191,13 @@ func GreetingWorkflow(ctx workflow.Context) error {
 			return nil
 		},
 	})
-  ...
+	if err != nil {
+		return "", err
+	}
+// ...
 }
 ```
+<!--SNIPEND-->
 
 - Register an Update handler for a given name using either [workflow.SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) or [workflow.SetUpdateHandlerWithOptions](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandlerWithOptions).
 - The handler must be a function that accepts a `workflow.Context` as its first parameter.
@@ -221,20 +247,21 @@ Queries are sent from a Temporal Client.
 
 Use [`Client.QueryWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.QueryWorkflow) or [`Client.QueryWorkflowWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.QueryWorkflowWithOptions).
 
+<!--SNIPSTART go-message-send-query-->
+[go-sandbox/workflows/messagepassing/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/starter/main.go)
 ```go
-// ...
 supportedLangResult, err := temporalClient.QueryWorkflow(context.Background(), we.GetID(), we.GetRunID(), message.GetLanguagesQuery, message.GetLanguagesInput{IncludeUnsupported: false})
 if err != nil {
-    log.Fatalf("Unable to query workflow: %v", err)
+	log.Fatalf("Unable to query workflow: %v", err)
 }
 var supportedLang []message.Language
 err = supportedLangResult.Get(&supportedLang)
 if err != nil {
-    log.Fatalf("Unable to get query result: %v", err)
+	log.Fatalf("Unable to get query result: %v", err)
 }
 log.Println("Supported languages:", supportedLang)
-// ...
 ```
+<!--SNIPEND-->
 
 - Sending a Query doesn’t add events to a Workflow's Event History.
 
@@ -253,17 +280,18 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 Use [`Client.SignalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.SignalWorkflow).
 
-Pass in both the [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) and [Run Id](/workflow-execution/workflowid-runid#run-id) to uniquely identify the Workflow Execution.
-If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is running receives the Signal.
+Pass in both the [Workflow ID](/workflow-execution/workflowid-runid#workflow-id) and [Run ID](/workflow-execution/workflowid-runid#run-id) to uniquely identify the Workflow Execution.
+If only the Workflow ID is supplied (provide an empty string as the Run ID param), the Workflow Execution that is running receives the Signal.
 
+<!--SNIPSTART go-message-send-signal-->
+[go-sandbox/workflows/messagepassing/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/starter/main.go)
 ```go
-// ...
-err = temporalClient.SignalWorkflow(context.Background(), we.GetID(), we.GetRunID(), message.ApproveSignal, message.ApproveInput{Name: ""})
+err := temporalClient.SignalWorkflow(context.Background(), we.GetID(), we.GetRunID(), message.ApproveSignal, message.ApproveInput{Name: ""})
 if err != nil {
-    log.Fatalf("Unable to signal workflow: %v", err)
+	log.Fatalf("Unable to signal workflow: %v", err)
 }
-// ...
 ```
+<!--SNIPEND-->
 
 - The call returns when the server accepts the Signal; it does _not_ wait for the Signal to be delivered to the Workflow Execution.
 
@@ -273,20 +301,23 @@ if err != nil {
 
 A Workflow can send a Signal to another Workflow, in which case it's called an External Signal.
 
+<!--SNIPSTART go-message-signal-external-->
+[go-sandbox/workflows/messagepassing/message/signals.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/signals.go)
 ```go
-// ...
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-  ...
-  signal := MySignal {
-    Message: "Some important data",
-  }
-  err :=  workflow.SignalExternalWorkflow(ctx, "some-workflow-id", "", "your-signal-name", signal).Get(ctx, nil)
-  if err != nil {
-    // ...
-  }
-// ...
+func SendExternalSignalWorkflow(ctx workflow.Context, param YourWorkflowParam) error {
+	// ...
+	signal := MySignal{
+		Message: "Some important data",
+	}
+	err := workflow.SignalExternalWorkflow(ctx, "some-workflow-id", "", "your-signal-name", signal).Get(ctx, nil)
+	if err != nil {
+		return err
+	}
+	// ...
+	return nil
 }
 ```
+<!--SNIPEND-->
 
 When an External Signal is sent:
 
@@ -296,25 +327,31 @@ When an External Signal is sent:
 #### Signal-With-Start {/* #signal-with-start */}
 
 Signal-With-Start is used from the Client.
-It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+It takes a Workflow ID, Workflow arguments, a Signal name, and Signal arguments.
 
-If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
+If there's a Workflow running with the given Workflow ID, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
 
 Use the [`Client.SignalWithStartWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.SignalWithStartWorkflow) API to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
 
-Because the Workflow Execution might not exist, this API does not take a Run Id as a parameter
+Because the Workflow Execution might not exist, this API does not take a Run ID as a parameter.
+It also takes the `StartWorkflowOptions`, Workflow, and Workflow arguments to use if it starts a new Workflow Execution.
 
+<!--SNIPSTART go-message-signal-with-start-->
+[go-sandbox/workflows/messagepassing/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/starter/main.go)
 ```go
-// ...
-signal := MySignal {
-  Message: "Some important data",
+signal := message.MySignal{
+	Message: "Some important data",
 }
-err = temporalClient.SignalWithStartWorkflow(context.Background(), "your-workflow-id", "your-signal-name", signal)
+workflowOptions := client.StartWorkflowOptions{
+	TaskQueue: message.TaskQueue,
+}
+we, err := temporalClient.SignalWithStartWorkflow(context.Background(), "your-workflow-id", "your-signal-name", signal,
+	workflowOptions, message.SignalAsyncWorkflow, message.YourWorkflowParam{})
 if err != nil {
 	log.Fatalln("Error sending the Signal", err)
-	return
 }
 ```
+<!--SNIPEND-->
 
 ### Send an Update {/* #send-update-from-client */}
 
@@ -330,8 +367,8 @@ If you need a response as soon as the Server receives the request, use a Signal 
 
 Use the [`Client.UpdateWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.UpdateWorkflow) API to send an Update to a Workflow Execution.
 
-You must provide the Workflow Id, but specifying a Run Id is optional.
-If you supply only the Workflow Id (and provide an empty string as the Run Id param), the running Workflow Execution receives the Update.
+You must provide the Workflow ID, but specifying a Run ID is optional.
+If you supply only the Workflow ID (and provide an empty string as the Run ID param), the running Workflow Execution receives the Update.
 
 You must provide a `WaitForStage` when calling `UpdateWorkflow()`.
 This parameter controls the stage the update must reach before returning a handle to the caller:
@@ -341,33 +378,36 @@ This parameter controls the stage the update must reach before returning a handl
 
 You can't send Updates directly from one Workflow to another. If you need to send Updates across Workflows, like to Child Workflows, use an Activity.
 
+<!--SNIPSTART go-message-send-update-->
+[go-sandbox/workflows/messagepassing/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/starter/main.go)
 ```go
 ctxWithTimeout, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 defer cancel()
 
 updateHandle, err := temporalClient.UpdateWorkflow(ctxWithTimeout, client.UpdateWorkflowOptions{
-    WorkflowID:   we.GetID(),
-    RunID:        we.GetRunID(),
-    UpdateName:   message.SetLanguageUpdate,
-    WaitForStage: client.WorkflowUpdateStageAccepted,
-    Args:         []interface{}{message.Chinese},
+	WorkflowID:   we.GetID(),
+	RunID:        we.GetRunID(),
+	UpdateName:   message.SetLanguageUpdate,
+	WaitForStage: client.WorkflowUpdateStageAccepted,
+	Args:         []interface{}{message.Chinese},
 })
 if err != nil {
-    log.Fatalf("Unable to update workflow: %v", err)
+	log.Fatalf("Unable to update workflow: %v", err)
 }
 
 var previousLang message.Language
 err = updateHandle.Get(ctxWithTimeout, &previousLang)
 if err != nil {
-    log.Fatalf("Unable to get update result: %v", err)
+	log.Fatalf("Unable to get update result: %v", err)
 }
 ```
+<!--SNIPEND-->
 
 #### Update-With-Start {/* #update-with-start */}
 
 :::tip
 
-For open source server users, Temporal Server version [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) is recommended.
+For open source server users, [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) is recommended.
 
 :::
 
@@ -384,7 +424,7 @@ Use [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#Workfl
 You will need to provide:
 
 - [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
-  The [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) is required.
+  The [Workflow ID Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) is required.
   Choose "Use Existing" and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
   Not all `StartWorkflowOptions` are allowed.
   For example, specifying a Cron Schedule will result in an error.
@@ -392,9 +432,9 @@ You will need to provide:
 
 - [`UpdateWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#UpdateWorkflowOptions).
   Same as for [Update Workflow](/develop/go/workflows/message-passing#send-update-from-client), the update name and an update wait stage must be specified.
-  For Update-with-Start, the Workflow Id is optional.
-  When specified, the Id must match the one used in `StartWorkflowOptions`.
-  Since a running Workflow Execution may not already exist, you can't set a Run Id.
+  For Update-with-Start, the Workflow ID is optional.
+  When specified, the ID must match the one used in `StartWorkflowOptions`.
+  Since a running Workflow Execution may not already exist, you can't set a Run ID.
 
 - [`Client.NewWithStartWorkflowOperation`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.NewWithStartWorkflowOperation).
   Specify the workflow options, method and arguments.
@@ -403,43 +443,47 @@ You will need to provide:
 
 The following example shows the creation, configuration, and use of UpdateWithStart:
 
+<!--SNIPSTART go-message-update-with-start-->
+[go-sandbox/workflows/messagepassing/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/starter/main.go)
 ```go
 ctxWithTimeout, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 defer cancel()
 
 workflowOptions := client.StartWorkflowOptions{
-    ID:                       "some-workflow-id",
-    TaskQueue:                "some-task-queue",
-    WorkflowIDConflictPolicy: enumspb.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING,
+	ID:                       "some-workflow-id",
+	TaskQueue:                message.TaskQueue,
+	WorkflowIDConflictPolicy: enumspb.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING,
 }
 
 updateOptions := client.UpdateWorkflowOptions{
-    UpdateName:   message.SetLanguageUpdate,
-    WaitForStage: client.WorkflowUpdateStageCompleted,
+	UpdateName:   message.SetLanguageUpdate,
+	WaitForStage: client.WorkflowUpdateStageCompleted,
+	Args:         []interface{}{message.Chinese},
 }
 
-startWorkflowOp := temporalClient.NewWithStartWorkflowOperation(workflowOptions, MyWorkflow)
+startWorkflowOp := temporalClient.NewWithStartWorkflowOperation(workflowOptions, message.GreetingWorkflow)
 updateHandle, err := temporalClient.UpdateWithStartWorkflow(
 	ctxWithTimeout,
 	client.UpdateWithStartWorkflowOptions{
-        StartWorkflowOperation: startWorkflowOp,
-        UpdateOptions:          updateOptions,
-    })
+		StartWorkflowOperation: startWorkflowOp,
+		UpdateOptions:          updateOptions,
+	})
 if err != nil {
-    log.Fatalf("Unable to execute update-with-start: %v", err)
+	log.Fatalf("Unable to execute update-with-start: %v", err)
 }
 
 var previousLang message.Language
 err = updateHandle.Get(ctxWithTimeout, &previousLang)
 if err != nil {
-    log.Fatalf("Unable to obtain update result: %v", err)
+	log.Fatalf("Unable to obtain update result: %v", err)
 }
 
 workflowRun, err := startWorkflowOp.Get(ctxWithTimeout)
 if err != nil {
-    log.Fatalf("Unable to obtain workflow run: %v", err)
+	log.Fatalf("Unable to obtain workflow run: %v", err)
 }
 ```
+<!--SNIPEND-->
 
 For more examples, see the [Go sample for early-return pattern](https://github.com/temporalio/samples-go/tree/main/early-return).
 
@@ -457,7 +501,7 @@ For additional information, see [Inject work into the main Workflow](/handling-m
 ### Blocking handlers {/* #blocking-handlers */}
 
 Signal and Update handlers can block.
-This allows you to use Activities, Child Workflows, durable [workflow.Sleep](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) Timers, [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) conditions, etc.
+This allows you to use Activities, Child Workflows, durable [workflow.Sleep](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) Timers, [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) conditions, and so on.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
 To use blocking handlers safely, understand what can go wrong.
@@ -466,31 +510,43 @@ See [Workflow message passing](/encyclopedia/workflow-message-passing) for guida
 The following code modifies the Update handler from earlier on in this page.
 The Update handler now makes a blocking call to execute an Activity:
 
+<!--SNIPSTART go-message-blocking-update-->
+[go-sandbox/workflows/messagepassing/message/patterns.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/patterns.go)
 ```go
-func GreetingWorkflow(ctx workflow.Context) error {
+func BlockingGreetingWorkflow(ctx workflow.Context) (string, error) {
 	language := English
+	greeting := map[Language]string{English: "Hello", Chinese: "你好，世界"}
 
-	err = workflow.SetUpdateHandler(ctx, SetLanguageUpdate, func(ctx workflow.Context, newLanguage Language) (Language, error) {
-        if _, ok := greeting[newLanguage]; !ok {
-            ao := workflow.ActivityOptions{
-                StartToCloseTimeout: 10 * time.Second,
-            }
-            ctx = workflow.WithActivityOptions(ctx, ao)
+	err := workflow.SetUpdateHandler(ctx, SetLanguageUpdate, func(ctx workflow.Context, newLanguage Language) (Language, error) {
+		if _, ok := greeting[newLanguage]; !ok {
+			ao := workflow.ActivityOptions{
+				StartToCloseTimeout: 10 * time.Second,
+			}
+			ctx = workflow.WithActivityOptions(ctx, ao)
 
-            var greeting string
-            err := workflow.ExecuteActivity(ctx, CallGreetingService, newLanguage).Get(ctx, &greeting)
-            if err != nil {
-                return nil, err
-            }
-            greeting[newLanguage] = greeting
-        }
+			var newGreeting string
+			err := workflow.ExecuteActivity(ctx, CallGreetingService, newLanguage).Get(ctx, &newGreeting)
+			if err != nil {
+				return "", err
+			}
+			greeting[newLanguage] = newGreeting
+		}
 		var previousLanguage Language
 		previousLanguage, language = language, newLanguage
 		return previousLanguage, nil
 	})
-  ...
+	if err != nil {
+		return "", err
+	}
+	// ...
+	workflow.GetSignalChannel(ctx, ApproveSignal).Receive(ctx, nil)
+	if err := workflow.Await(ctx, func() bool { return workflow.AllHandlersFinished(ctx) }); err != nil {
+		return "", err
+	}
+	return greeting[language], nil
 }
 ```
+<!--SNIPEND-->
 
 ### Add blocking wait conditions {/* #block-with-wait */}
 
@@ -499,49 +555,65 @@ You can use [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Aw
 You specify the condition by passing a function that returns `true` or `false`.
 This is an important feature that helps you control your handler logic.
 
-Here are three important use cases for `Workflow.await`:
+Here are three important use cases for `workflow.Await`:
 
 - Waiting until a specific Update has arrived.
 - Waiting in a handler until it is appropriate to continue.
 - Waiting in the main Workflow until all active handlers have finished.
 
+<!--SNIPSTART go-message-await-in-handler-->
+[go-sandbox/workflows/messagepassing/message/patterns.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/patterns.go)
 ```go
-err = workflow.SetUpdateHandler(ctx, "UpdateHandler", func(ctx workflow.Context, input UpdateInput) error {
-    workflow.Await(ctx, updateUnblockedFunc)
-    ...
+err := workflow.SetUpdateHandler(ctx, "UpdateHandler", func(ctx workflow.Context, input UpdateInput) error {
+	if err := workflow.Await(ctx, updateUnblockedFunc); err != nil {
+		return err
+	}
+	// ...
+	handled++
+	return nil
 })
 ```
+<!--SNIPEND-->
 
 This is necessary if your Update handlers require something in the main Workflow function to be done first, since an Update handler can execute concurrently with the main Workflow function.
 
-You can also use `Workflow.await` anywhere else in the handler to wait for a specific condition to become true.
+You can also use `workflow.Await` anywhere else in the handler to wait for a specific condition to become true.
 This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become true.
 
 #### Ensure your handlers finish before the Workflow completes {/* #wait-for-message-handlers */}
 
-`Workflow.await` can ensure your handler completes before a Workflow finishes.
+`workflow.Await` can ensure your handler completes before a Workflow finishes.
 When your Workflow uses blocking Update handlers, your main Workflow method can return or Continue-as-New while a handler is still waiting on an async task, such as an Activity.
 The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying to retrieve Update results.
 Use [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) to wait for [`AllHandlersFinished`](https://pkg.go.dev/go.temporal.io/sdk/workflow#AllHandlersFinished) to return `true` to address this problem and allow your Workflow to end smoothly:
 
+<!--SNIPSTART go-message-wait-all-handlers-->
+[go-sandbox/workflows/messagepassing/message/patterns.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/patterns.go)
 ```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-    ...
-	err = workflow.Await(ctx, func() bool {
+func WaitForHandlersWorkflow(ctx workflow.Context, param YourWorkflowParam) error {
+	// ...
+	err := workflow.Await(ctx, func() bool {
 		return workflow.AllHandlersFinished(ctx)
 	})
-    return nil
+	if err != nil {
+		return err
+	}
+	return nil
 }
 ```
+<!--SNIPEND-->
 
 By default, your Worker will log a warning if you allow your Workflow Execution to finish with unfinished Update handler executions.
 You can silence these warnings on a per-handler basis by setting `UnfinishedPolicy` field on [`workflow.UpdateHandlerOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpdateHandlerOptions) struct:
 
+<!--SNIPSTART go-message-unfinished-policy-->
+[go-sandbox/workflows/messagepassing/message/patterns.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/patterns.go)
 ```go
-err = workflow.SetUpdateHandlerWithOptions(ctx, UpdateHandlerName, UpdateFunc, workflow.UpdateHandlerOptions{
-       UnfinishedPolicy: workflow.HandlerUnfinishedPolicyAbandon,
+err := workflow.SetUpdateHandlerWithOptions(ctx, UpdateHandlerName, UpdateFunc, workflow.UpdateHandlerOptions{
+	UnfinishedPolicy: workflow.HandlerUnfinishedPolicyAbandon,
 })
 ```
+<!--SNIPEND-->
 
 See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
@@ -553,62 +625,94 @@ Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
+<!--SNIPSTART go-message-handler-concurrency-bad-->
+[go-sandbox/workflows/messagepassing/message/concurrency.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/concurrency.go)
 ```go
-// ...
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-    ...
-    err := workflow.SetUpdateHandler(ctx, "BadUpdateHandler", func(ctx workflow.Context) error {
-        ao := workflow.ActivityOptions{
-            StartToCloseTimeout: 10 * time.Second,
-        }
-        ctx = workflow.WithActivityOptions(ctx, ao)
+func BadHandlerWorkflow(ctx workflow.Context, param YourWorkflowParam) (Data, error) {
+	var x, y int
+	// ...
+	err := workflow.SetUpdateHandler(ctx, "BadUpdateHandler", func(ctx workflow.Context) error {
+		ao := workflow.ActivityOptions{
+			StartToCloseTimeout: 10 * time.Second,
+		}
+		ctx = workflow.WithActivityOptions(ctx, ao)
 
-        var result Data
-        err := workflow.ExecuteActivity(ctx, FetchData, name).Get(ctx, &result)
-        x = result.x
-        // 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
-        // there may be times when the Workflow has self.x from one Activity execution and self.y from another.
-        err = workflow.Sleep(ctx, time.Second)
-        if err != nil {
-            return err
-        }
-        y = result.y
-    })
-    ...
+		var result Data
+		err := workflow.ExecuteActivity(ctx, FetchData, param.Name).Get(ctx, &result)
+		if err != nil {
+			return err
+		}
+		x = result.X
+		// 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
+		// there may be times when the Workflow has x from one Activity execution and y from another.
+		err = workflow.Sleep(ctx, time.Second)
+		if err != nil {
+			return err
+		}
+		y = result.Y
+		return nil
+	})
+	if err != nil {
+		return Data{}, err
+	}
+	// ...
+	workflow.GetSignalChannel(ctx, ApproveSignal).Receive(ctx, nil)
+	if err := workflow.Await(ctx, func() bool { return workflow.AllHandlersFinished(ctx) }); err != nil {
+		return Data{}, err
+	}
+	return Data{X: x, Y: y}, nil
 }
 ```
+<!--SNIPEND-->
 
 Coordinating access with `workflow.Mutex` corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
+<!--SNIPSTART go-message-handler-concurrency-mutex-->
+[go-sandbox/workflows/messagepassing/message/concurrency.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/messagepassing/message/concurrency.go)
 ```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-    ...
-    err := workflow.SetUpdateHandler(ctx, "SafeUpdateHandler", func(ctx workflow.Context) error {
-        err := mutex.Lock(ctx)
-        if err != nil {
-            return err
-        }
-        defer mutex.Unlock()
-        ao := workflow.ActivityOptions{
-            StartToCloseTimeout: 10 * time.Second,
-        }
-        ctx = workflow.WithActivityOptions(ctx, ao)
+func SafeHandlerWorkflow(ctx workflow.Context, param YourWorkflowParam) (Data, error) {
+	var x, y int
+	mutex := workflow.NewMutex(ctx)
+	// ...
+	err := workflow.SetUpdateHandler(ctx, "SafeUpdateHandler", func(ctx workflow.Context) error {
+		err := mutex.Lock(ctx)
+		if err != nil {
+			return err
+		}
+		defer mutex.Unlock()
+		ao := workflow.ActivityOptions{
+			StartToCloseTimeout: 10 * time.Second,
+		}
+		ctx = workflow.WithActivityOptions(ctx, ao)
 
-        var result Data
-        err := workflow.ExecuteActivity(ctx, FetchData, name).Get(ctx, &result)
-        x = data.x
-        // ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
-        // method, but no other execution of this handler can run until this execution finishes.
-        err = workflow.Sleep(ctx, time.Second)
-        if err != nil {
-            return err
-        }
-        self.y = data.y
-    })
-    ...
+		var result Data
+		err = workflow.ExecuteActivity(ctx, FetchData, param.Name).Get(ctx, &result)
+		if err != nil {
+			return err
+		}
+		x = result.X
+		// ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
+		// method, but no other execution of this handler can run until this execution finishes.
+		err = workflow.Sleep(ctx, time.Second)
+		if err != nil {
+			return err
+		}
+		y = result.Y
+		return nil
+	})
+	if err != nil {
+		return Data{}, err
+	}
+	// ...
+	workflow.GetSignalChannel(ctx, ApproveSignal).Receive(ctx, nil)
+	if err := workflow.Await(ctx, func() bool { return workflow.AllHandlersFinished(ctx) }); err != nil {
+		return Data{}, err
+	}
+	return Data{X: x, Y: y}, nil
 }
 ```
+<!--SNIPEND-->
 
 ## Troubleshooting
 

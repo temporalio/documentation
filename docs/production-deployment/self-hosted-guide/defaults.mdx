@@ -32,8 +32,8 @@ These limits might apply specifically to each Workflow Execution and do not pert
 - **gRPC:** gRPC has a limit of 4 MB for [each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466).
 - **Event batch size:** The `DefaultTransactionSizeLimit` limit is [4 MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size allowed for the persistence of Event Histories.
-- **Blob size limit** for Payloads (including Workflow context and each Workflow and Activity argument and return value; _[source](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134)_):
-  - Temporal warns at 256 KB: `Blob size exceeds limit.`
+- **Blob size limit** for Payloads (including Workflow context and each Workflow and Activity argument and return value; _[source](https://github.com/temporalio/temporal/blob/v1.32.1/common/dynamicconfig/constants.go#L386-L396)_):
+  - Temporal warns at 512 KB: `Blob size exceeds limit.`
   - Temporal errors at 2 MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
   - Refer to [Troubleshoot blob size limit error](/troubleshooting/blob-size-limit-error).
 - **Workflow Execution Update limits**:
