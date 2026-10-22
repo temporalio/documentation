@@ -46,8 +46,8 @@
       "note": "Pending triage. Unlike the per-SDK worker-versioning-legacy pages above, no inbound links were found anywhere for this one either — looks like a genuine leftover."
     },
     {
-      "path": "docs/evaluate/development-production-features/cloud-vs-self-hosted.mdx",
-      "note": "Pending triage. Reachable only via inline prose links from evaluate/development-production-features/low-latency.mdx and production-deployment/self-hosted-guide/checklist.mdx, not from any sidebar."
+      "path": "docs/evaluate/features/cloud-vs-self-hosted.mdx",
+      "note": "Pending triage. Moved here from evaluate/development-production-features/ in #5157, which left this entry pointing at the old path. Reachable only via an inline prose link from production-deployment/self-hosted-guide/checklist.mdx, not from any sidebar."
     }
   ]
 }

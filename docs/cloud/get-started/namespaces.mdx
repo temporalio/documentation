@@ -184,6 +184,13 @@ different gRPC endpoint types and how to access them.
 
 ## How to create a Namespace in Temporal Cloud {/* #create-a-namespace */}
 
+:::caution GCP capacity restriction
+
+New Namespaces in all GCP regions require an approved exception for your account.
+Use AWS where possible, or [request an exception](/evaluate/cloud/regions#gcp-capacity-restriction) through Temporal Support.
+
+:::
+
 :::info
 
 The user who creates a [Namespace](/namespaces) is automatically granted
@@ -352,7 +359,7 @@ For accessing the Temporal Web UI, use the HTTPS endpoint in the form:
 
 ### Access Namespaces with encryption and private connectivity
 
-To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.3. 
+To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.2 or higher (TLS 1.3 preferred).
 
 For enhanced protection:
 - Set up [private connectivity](/cloud/connectivity#private-network-connectivity-for-namespaces) to the Namespace.

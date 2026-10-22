@@ -1,6 +1,6 @@
 ---
 id: temporal-client
-title: Temporal Client - TypeScript SDK
+title: Temporal Client
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description:
@@ -608,21 +608,21 @@ connection finish normally.
 
 </Tabs>
 
-## NativeConnection, Connection, and Client
+## `NativeConnection`, `Connection`, and `Client`
 
 `NativeConnection`, `Connection`, and `Client` are all classes provided by the TypeScript SDK to facilitate
 communication with the Temporal Service. This section explains the differences between these classes and their
 respective use cases. For detailed information about each class, refer to the
 [Temporal TypeScript API documentation](https://typescript.temporal.io/api/namespaces/client).
 
-### NativeConnection vs. Connection {/* #native-connection-vs-connection */}
+### `NativeConnection` versus `Connection` {/* #native-connection-vs-connection */}
 
 The TypeScript SDK provides two types of connection classes to connect to the Temporal Service: `NativeConnection` and
 `Connection`. The `NativeConnection` class is used to connect from a Worker, while the `Connection` class is used to
 connect from a Temporal Application or from within an Activity, typically through a `Client` object. Both connection
 classes accept the same set of connection options.
 
-### Connection vs. Client {/* #connection-vs-client */}
+### `Connection` versus `Client` {/* #connection-vs-client */}
 
 A `Client` object is a high-level, lightweight abstraction that simplifies interaction with the Temporal Service. It
 internally manages a `Connection` object to handle the low-level communication details. The `Client` class provides
@@ -718,7 +718,7 @@ async function run() {
   // Customize the Worker by passing more options to create():
   // https://typescript.temporal.io/api/classes/worker.Worker
   // If you need to configure server connection parameters, see docs:
-  // /typescript/security#encryption-in-transit-with-mtls
+  // /develop/typescript/client/temporal-client#connect-to-temporal-service-from-a-worker
 
   // Step 2: Start accepting tasks on the `hello-world` queue
   await worker.run();

@@ -114,6 +114,10 @@ tags:
 - Write `description` as a single clear sentence. See [Meta descriptions](#meta-descriptions) below.
 - Do not change `id` or `slug` without a redirect plan.
 - Match `tags` to sibling pages in the same section. Use existing tags; don't add new ones unless it's a new feature.
+- A folder's `_frontmatter.yml` adds its `tags` to every page below it and can set a `section_title` that's appended to
+  the page title in the browser tab. Check the folders above a page before listing tags by hand, and don't repeat tags
+  or a section name the file supplies. See
+  [Folder-level frontmatter defaults](./readme/CONTRIBUTING.md#folder-level-frontmatter-defaults).
 - Do not add a `keywords` field. It isn't used by the site.
 
 ### Meta descriptions
@@ -148,6 +152,7 @@ the [Style guide](#style-guide) above (terminology, filler, intensifiers, word c
 Adding or moving pages usually requires:
 
 - Updating `sidebars.js` for navigation placement
+- Setting `slug: /<path>`, with no trailing slash, on a new `index.mdx` or a file named after its folder
 - Adding redirects in `vercel.json` when the public URL changes
 - Fixing internal links across the repo
 
@@ -156,6 +161,9 @@ Adding or moving pages usually requires:
 - Prefer code extracted from CI-enabled sample repos via [Snipsync](https://github.com/temporalio/snipsync).
 - Snippets are wrapped in `<!--SNIPSTART id-->` / `<!--SNIPEND-->`. Edit the **source repo** named inside the wrapper,
   then run `yarn snipsync`.
+- `yarn report:snipsync-coverage` reports the share of SDK code lines that come from Snipsync. On a pull request, the
+  Snipsync Coverage workflow comments when the change moves that number. Replacing a synced block with hand-written code
+  lowers it. See [UTILITIES.md](./readme/UTILITIES.md#snipsync-coverage).
 
 ## Pull requests
 
@@ -171,7 +179,6 @@ Requires Node.js 24+ and Yarn.
 yarn              # Install dependencies
 yarn start        # Dev server at http://localhost:3000
 yarn build        # Production build; catches MDX/build errors
-yarn check-links  # Broken link check (run after build)
 yarn snipsync     # Refresh Snipsync code snippets
 ```
 
@@ -181,7 +188,12 @@ Reference page checks:
 yarn check:metrics       # SDK metrics reference against itself; runs in CI on PRs
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
 yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
+yarn check:index-slugs   # docs pages whose URL ends in a slash; runs in CI on PRs
+yarn check:snipsync-markers  # SNIPSTART/SNIPEND markers Snipsync would skip; runs in CI on PRs
+yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs weekly and on checker PRs, not docs-only PRs
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
+yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
+yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
@@ -193,9 +205,25 @@ don't build in production at all, which 404s any inbound links). A page that's a
 belongs in `bin/orphan-pages-baseline.json` with a note, rather than being silently ignored. See
 [UTILITIES.md](./readme/UTILITIES.md) for details.
 
+`yarn check:index-slugs` reports pages whose URL ends in `/`, which happens to an `index.mdx` (or a file named after
+its folder) that has no `slug`. Vercel redirects that URL to the same path without the slash, so the page's canonical
+URL and sidebar links point at a redirect. Add the `slug` the check prints. It doesn't change the URL the page is
+served at, so it needs no redirect.
+
+`yarn check:snipsync-markers` reports a `SNIPSTART` with no `SNIPEND`, or one that closes in the other marker style
+(`<!--SNIPSTART id-->` with `{/* SNIPEND */}`, or the reverse). Snipsync warns, skips the snippet, and exits 0, so the
+code block stops refreshing. Open and close each snippet in the same style. Use the `<!--` style unless the page already
+uses `{/* */}`.
+
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
 serve. Fix the rule. A known, accepted exception belongs in `bin/redirect-baseline.json` with a note.
+
+`yarn check:ts-samples` and `yarn check:py-samples` type-check the TypeScript and Python code blocks that aren't
+synced by Snipsync against the latest SDK release, and report classes, methods, exports, and arguments the SDK doesn't
+have. The TypeScript check also reports docs links in code comments that don't resolve. Pass page paths to check only
+those pages. A sample that shows an API on purpose belongs in that language's `bin/*-samples-baseline.json` with a
+note.
 
 Vale linting (style). Requires Vale 3.20+ (CI already runs 3.20.0; upgrade a local install with
 `brew upgrade vale`) — `vale/styles/Std` needs it for its nested rule directories.

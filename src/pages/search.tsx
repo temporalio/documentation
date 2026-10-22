@@ -11,6 +11,7 @@ import {
   getInitialLanguageFilter,
   SDK_LANGUAGE_STORAGE_KEY,
 } from '../theme/SearchBar/SDKLanguageFilter';
+import { getLanguageLabel, getSectionLabel } from '../theme/SearchBar/sectionLabel';
 import { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } from '../constants/algolia';
 import '../theme/SearchBar/styles.css';
 
@@ -64,6 +65,8 @@ function SearchResultItem({
   const history = useHistory();
   const hierarchyAttr = getHierarchyAttribute(hit);
   const breadcrumbs = getBreadcrumbPath(hit);
+  const resultTitle = hit.hierarchy?.[hierarchyAttr.replace('hierarchy.', '')] || '';
+  const sectionLabel = getSectionLabel(resultTitle, hit, getLanguageLabel(hit));
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -86,6 +89,7 @@ function SearchResultItem({
     <a href={hit.url || hit.objectID} onClick={handleClick} className="search-page-result">
       <div className="search-page-result-title">
         <Highlight attribute={hierarchyAttr} hit={hit} />
+        {sectionLabel && <span className="search-page-result-section"> - {sectionLabel}</span>}
       </div>
       {breadcrumbs.length > 0 && (
         <div className="search-page-result-breadcrumb">
@@ -304,7 +308,16 @@ function SearchPageContent() {
         <Configure
           hitsPerPage={50}
           facetFilters={facetFilters}
-          attributesToRetrieve={['hierarchy', 'content', 'anchor', 'url', 'url_without_anchor', 'type', 'sdk_language']}
+          attributesToRetrieve={[
+            'hierarchy',
+            'content',
+            'anchor',
+            'url',
+            'url_without_anchor',
+            'type',
+            'sdk_language',
+            'section_title',
+          ]}
         />
         <SearchInput />
         <LanguageFilter selectedLanguages={selectedLanguages} onLanguageChange={handleLanguageChange} />

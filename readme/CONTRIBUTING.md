@@ -111,18 +111,6 @@ Run `yarn build` to see if there are any build warnings or errors.
 
 Use `yarn format` to format changes automatically.
 
-# Broken links
-
-[hyperlink](https://www.npmjs.com/package/hyperlink) is a command-line tool to find broken links.
-
-In a terminal, run:
-
-```bash
-yarn check-links
-```
-
-This command will start the hyperlink checker.
-
 # Snipsync
 
 This repository is configured for [Snipsync](https://github.com/temporalio/snipsync), which checks in the snippets included throughout our documentation.
@@ -161,6 +149,61 @@ If you are considering using a custom slug, answer these questions first:
 - Are you replacing an existing page?
 - Did you already check the redirects in `vercel.json`?
 - Is it in the page in a folder under the topic that makes the most sense?
+
+# Folder-level frontmatter defaults
+
+A folder under `docs/` can contain a `_frontmatter.yml` file that sets default front matter for every page below it, including pages in subfolders. Use it when every page in a section shares a value, such as `docs/develop/java/`:
+
+```yaml
+tags:
+  - Java SDK
+  - Temporal SDKs
+section_title: Java SDK
+```
+
+Only these keys can be set. Any other key fails the build with the file and key named in the error.
+
+| Key             | How it combines with the page                                                                                                                                                                      |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tags`          | Additive. A page's tags are the tags from each `_frontmatter.yml` above it, outermost folder first, then the page's own. Duplicates are dropped. A page can add tags but can't remove inherited ones. |
+| `section_title` | Replaces. The page's own value wins, then the nearest folder's, then ancestors'. It's a single string.                                                                                              |
+
+If a page shouldn't get a folder's tags, move the page or narrow the folder's file. Before you add `tags` to a new page, check the folders above it for a `_frontmatter.yml` so you don't repeat tags the file already supplies.
+
+## Section title
+
+`section_title` adds a label after the page title in the browser tab and social-share title: `Workflow basics - Java SDK | Temporal Documentation`. The page heading, sidebar, and search results use the plain `title`, so don't put the section in `title`. If the page title already contains the section title, as in "Set up your local with the Java SDK", nothing is added. The section title is also appended to page titles in `llms.txt`.
+
+## Search results
+
+Algolia indexes the page heading, so it doesn't see `section_title` unless the page tells the crawler. Every page with a section title emits `<meta name="docsearch:section_title" content="Java SDK">`. Two changes in Algolia, which this repo doesn't manage, make search use it.
+
+1. **Crawler `recordExtractor`.** Read the meta tag and add `section_title` next to `sdk_language` on every record of the page:
+
+   ```js
+   const sectionTitle = $('meta[name="docsearch:section_title"]').attr('content')?.trim();
+   const extraAttributes = {
+     ...(sdkLanguage ? { sdk_language: sdkLanguage } : {}),
+     ...(sectionTitle ? { section_title: sectionTitle } : {}),
+   };
+   return Object.keys(extraAttributes).length
+     ? records.map((record) => ({ ...record, ...extraAttributes }))
+     : records;
+   ```
+
+   The crawler editor type-checks plain JavaScript, so building the object in one literal avoids a "property does not exist on type" error. Don't add a TypeScript annotation such as `: any`.
+
+2. **Index settings.** Make `section_title` searchable, so a query like "java workflow basics" still matches pages whose heading no longer says "Java SDK". Add `unordered(section_title)` to `searchableAttributes` as its own entry directly after `unordered(hierarchy.lvl1)`, and add `section_title` to `attributesToRetrieve`. The crawler's `initialIndexSettings` only seeds a new index, so change the live index in the Algolia dashboard and mirror the change in `initialIndexSettings`.
+
+The search modal and the `/search` page request `section_title` and show it after the result title (`src/theme/SearchBar/sectionLabel.ts`), skipping it when the title already contains it. Until a page is recrawled with the attribute, they fall back to the SDK label from `sdk_language`.
+
+The crawler caches pages it has already processed. If you change the `recordExtractor` after the site change has deployed and crawled, clear the crawler cache so unchanged pages are extracted again.
+
+## Editing and previewing
+
+The dev server doesn't watch `_frontmatter.yml`. After you edit one, restart `yarn start` or save one of the pages under it. The page `<title>` is only set reliably in a production build, so check it with `yarn build` and `yarn serve`.
+
+The logic lives in `plugins/shared/frontmatterDefaults.js` and `src/utils/sectionTitle.js`.
 
 # Social share images (og:image)
 

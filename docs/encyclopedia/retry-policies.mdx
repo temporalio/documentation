@@ -368,7 +368,7 @@ attempt.
 
 If responsibility for your application is distributed across multiple maintainers, or if you are developing a library to
 integrate into somebody else's application, you can think of the decision to hardcode non-retryable errors as following
-a "caller vs. implementer" dichotomy. Anyone who is calling your Activity would be able to make decisions about their
+a "caller versus implementer" dichotomy. Anyone who is calling your Activity would be able to make decisions about their
 Retry Policy, but only the implementer can decide whether an error should never be retryable out of the box.
 
 ## Retry interval

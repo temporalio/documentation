@@ -1,6 +1,6 @@
 ---
 id: continue-as-new
-title: Continue-As-New - .NET SDK
+title: Continue-As-New
 sidebar_label: Continue-As-New
 description: Use Temporal's Continue-As-New in .NET to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
 toc_max_heading_level: 2
@@ -60,7 +60,7 @@ throw Workflow.CreateContinueAsNewException((ClusterManagerWorkflow wf) => wf.Ru
 }));
 ````
 
-### Considerations for Workflows with Message Handlers {/* #with-message-handlers */}
+### Considerations for Workflows with message handlers {/* #with-message-handlers */}
 
 If you use Updates or Signals, don't call Continue-as-New from the handlers.
 Instead, wait for your handlers to finish in your main Workflow before you throw `CreateContinueAsNewException`.

@@ -1,6 +1,6 @@
 ---
 id: feature-guide
-title: Temporal Nexus - TypeScript SDK feature guide
+title: Temporal Nexus
 sidebar_label: Feature Guide
 description: Use Temporal Nexus within the TypeScript SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
@@ -38,7 +38,7 @@ This page shows how to do the following:
 
 :::note
 
-This documentation uses source code derived from the [TypeScript Nexus sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-hello).
+This documentation uses source code derived from the [TypeScript Nexus sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-hello) and the [nexus-messaging-temporal-operation sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging-temporal-operation).
 
 :::
 
@@ -384,16 +384,16 @@ If you already have these Namespaces, you don't need to do this.
 temporal cloud login
 
 temporal cloud namespace create \
-	--name <your-caller-namespace> \
-	--region aws-us-west-2 \
-	--ca-certificate-file 'path/to/your/ca.pem' \
-	--retention-days 1
+  --name <your-caller-namespace> \
+  --region aws-us-west-2 \
+  --ca-certificate-file 'path/to/your/ca.pem' \
+  --retention-days 1
 
 temporal cloud namespace create \
-	--name <your-target-namespace> \
-	--region aws-us-west-2 \
-	--ca-certificate-file 'path/to/your/ca.pem' \
-	--retention-days 1
+  --name <your-target-namespace> \
+  --region aws-us-west-2 \
+  --ca-certificate-file 'path/to/your/ca.pem' \
+  --retention-days 1
 ```
 </TabItem>
 <TabItem value="tcld" label="tcld">

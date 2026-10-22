@@ -2,6 +2,7 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const {
   compileRedirects,
@@ -306,6 +307,20 @@ describe('route index', () => {
     assert.ok(routes.maybe('/ai/cookbook/anything'));
     assert.ok(routes.maybe('/ai/cookbook.md'));
     assert.ok(!routes.maybe('/ai/cookbookx.md'));
+  });
+
+  it('accepts the generated cookbook Markdown landing page before cookbook sync', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'redirect-routes-'));
+    fs.mkdirSync(path.join(root, 'docs'));
+    try {
+      const routes = buildRouteIndex(root);
+      assert.strictEqual(routes.cookbookPresent, false);
+      assert.strictEqual(routes.has('/ai/cookbook.md'), false);
+      assert.ok(routes.maybe('/ai/cookbook.md'));
+      assert.strictEqual(routes.maybe('/ai/cookbook-unknown.md'), false);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
   });
 });
 

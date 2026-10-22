@@ -1,6 +1,7 @@
 ---
 id: index
 title: Overview
+slug: /evaluate/cloud
 description: Managed Durable Execution on AWS and GCP, with cell-based isolation, three-zone replication, consumption-based pricing, and migration from self-hosted.
 toc_max_heading_level: 4
 tags:
@@ -63,7 +64,7 @@ Temporal Cloud runs on both AWS and GCP:
 - <strong><CloudRegionCount provider="aws" /> AWS regions</strong> spanning North America, Europe, Asia Pacific, and South America
 - <strong><CloudRegionCount provider="gcp" /> GCP regions</strong> in North America, Europe, and Asia Pacific
 
-You can create Namespaces in any supported region.
+You can create Namespaces in any supported AWS region. New Namespaces in GCP regions are temporarily restricted; see [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction).
 For disaster recovery, replicate across regions within a cloud provider or across the two providers.
 
 See [Service regions](/evaluate/cloud/regions) for the complete list.
@@ -74,7 +75,7 @@ Every Temporal Cloud Namespace includes baseline high availability:
 
 - **Three-zone replication**: Workflow state replicates synchronously across three availability zones before a write is acknowledged
 - **Automatic failover**: If one zone becomes unavailable, operations continue on the remaining zones
-- **99.9% SLA**: Contractual uptime guarantee for standard Namespaces
+- **Contractual SLA**: Uptime commitment for standard Namespaces, defined in the [Temporal Cloud SLA](https://temporal.io/sla)
 
 ### High Availability features
 
@@ -88,7 +89,7 @@ For workloads that need stronger guarantees, Temporal Cloud offers three replica
 
 High Availability Namespaces include:
 
-- **99.99% SLA**: Contractual uptime guarantee
+- **Higher contractual SLA**: Uptime commitment defined in the [Temporal Cloud SLA](https://temporal.io/sla)
 - **Sub-1-minute RPO**: Recovery Point Objective for data loss
 - **20-minute RTO**: Recovery Time Objective for failover completion
 - **Automatic or manual failover**: Choose the failover strategy per Namespace
@@ -193,14 +194,14 @@ To move existing self-hosted workloads, see [Migration](/cloud/migrate).
     description: "Rate, resource, and configuration limits by scope, which ones you can raise, and what happens when you exceed them.",
   },
   {
-    href: "/evaluate/cloud/service-availability",
-    title: "Availability",
-    description: "Throughput modes, the p99 latency SLO, measured latency for common operations, and the custom persistence layer behind them.",
+    href: "/cloud/slo",
+    title: "Uptime, latency, and SLOs",
+    description: "Published objectives for uptime, latency, and Visibility availability, and measured latency for common operations.",
   },
   {
-    href: "/evaluate/cloud/sla",
+    href: "https://temporal.io/sla",
     title: "SLA",
-    description: "The contractual uptime guarantee for each deployment mode, and how the service-error rate is calculated.",
+    description: "The contractual uptime commitment: covered APIs, how availability is calculated, exclusions, and service credits.",
   },
   {
     href: "/evaluate/cloud/security",
