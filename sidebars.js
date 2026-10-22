@@ -251,7 +251,7 @@ const developGoCategory = {
       },
       {
         type: 'category',
-        label: 'Temporal Nexus',
+        label: 'Nexus',
         collapsed: true,
         link: {
           type: 'doc',
