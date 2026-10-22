@@ -245,6 +245,11 @@
       "permanent": true
     },
     {
+      "source": "/ai/featured",
+      "destination": "/ai",
+      "permanent": false
+    },
+    {
       "source": "/cookbook/:path*",
       "destination": "/ai/cookbook/:path*",
       "permanent": true
@@ -1469,6 +1474,11 @@
       "permanent": true
     },
     {
+      "source": "/cloud/migrate/migrate-within-cloud",
+      "destination": "/cloud/migrate/between-regions-or-cloud-providers",
+      "permanent": true
+    },
+    {
       "source": "/cloud/security/aws-privatelink",
       "destination": "/cloud/connectivity/aws-connectivity",
       "permanent": true
@@ -2566,6 +2576,21 @@
     {
       "source": "/schedules",
       "destination": "/schedule",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosting-guide/:path*",
+      "destination": "/self-hosted-guide/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/checklist",
+      "destination": "/self-hosted-guide/production-checklist",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/nexus",
+      "destination": "/production-deployment/self-hosted-guide/nexus",
       "permanent": true
     },
     {

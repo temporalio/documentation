@@ -1,6 +1,6 @@
 ---
 id: data-conversion
-title: Payload conversion - Go SDK
+title: Payload conversion
 sidebar_label: Payload conversion
 slug: /develop/go/data-handling/data-conversion
 toc_max_heading_level: 2
@@ -48,19 +48,30 @@ To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://
 
 - To replace the default Data Converter with a custom `NewCompositeDataConverter`, use the following.
 
+  <!--SNIPSTART go-data-conversion-replace-default-->
+  [go-sandbox/bestpractices/dataconversion/data_converter.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/dataconversion/data_converter.go)
   ```go
   dataConverter := converter.NewCompositeDataConverter(YourCustomPayloadConverter())
   ```
+  <!--SNIPEND-->
 
 - To add your custom type conversion to the default Data Converter, use the following to keep the defaults but set yours just before the default JSON fall through.
 
+  <!--SNIPSTART go-data-conversion-extend-default-->
+  [go-sandbox/bestpractices/dataconversion/data_converter.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/dataconversion/data_converter.go)
   ```go
   dataConverter := converter.NewCompositeDataConverter(
-    converter.NewNilPayloadConverter(),
-    converter.NewByteSlicePayloadConverter(),
-    converter.NewProtoJSONPayloadConverter(),
-    converter.NewProtoPayloadConverter(),
-    YourCustomPayloadConverter(),
-    converter.NewJSONPayloadConverter(),
+  	converter.NewNilPayloadConverter(),
+  	converter.NewByteSlicePayloadConverter(),
+  	converter.NewProtoJSONPayloadConverter(),
+  	converter.NewProtoPayloadConverter(),
+  	YourCustomPayloadConverter(),
+  	converter.NewJSONPayloadConverter(),
   )
   ```
+  <!--SNIPEND-->
+
+`YourCustomPayloadConverter()` returns your implementation of the
+[`PayloadConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadConverter) interface.
+For a complete example that encodes a custom `Money` type, see
+[money_converter.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/dataconversion/money_converter.go).

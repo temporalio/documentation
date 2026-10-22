@@ -1,6 +1,6 @@
 ---
 id: temporal-client
-title: Temporal Client - TypeScript SDK
+title: Temporal Client
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description:
@@ -718,7 +718,7 @@ async function run() {
   // Customize the Worker by passing more options to create():
   // https://typescript.temporal.io/api/classes/worker.Worker
   // If you need to configure server connection parameters, see docs:
-  // /typescript/security#encryption-in-transit-with-mtls
+  // /develop/typescript/client/temporal-client#connect-to-temporal-service-from-a-worker
 
   // Step 2: Start accepting tasks on the `hello-world` queue
   await worker.run();

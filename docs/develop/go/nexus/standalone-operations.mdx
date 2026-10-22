@@ -1,6 +1,6 @@
 ---
 id: standalone-operations
-title: Standalone Nexus Operations - Go SDK
+title: Standalone Nexus Operations
 sidebar_label: Standalone Operations
 toc_max_heading_level: 4
 tags:
@@ -38,7 +38,8 @@ This page focuses on the client-side APIs that are unique to Standalone Nexus Op
 
 :::note
 This documentation uses source code from the
-[Go Nexus Standalone sample](https://github.com/temporalio/samples-go/tree/main/nexus-standalone-operations).
+[Go Nexus Standalone sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/go-sandbox/nexus/standalone).
+It reuses the Nexus Service and Operation handlers from the [Nexus feature guide](/develop/go/nexus/feature-guide).
 
 :::
 
@@ -72,7 +73,7 @@ temporal server start-dev \
 The starter and Worker connect to two different Namespaces (a caller Namespace and a handler
 Namespace), mirroring how Nexus crosses Namespace boundaries.
 
-To run the examples on this page against the [Go sample](https://github.com/temporalio/samples-go/tree/main/nexus-standalone-operations),
+To run the examples on this page against the [Go sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/go-sandbox/nexus/standalone),
 create a Nexus Endpoint that routes to the handler Namespace and the Worker's Task Queue:
 
 ```bash
@@ -82,10 +83,10 @@ temporal operator nexus endpoint create \
   --target-task-queue nexus-handler-queue
 ```
 
-Then start the sample Worker in the handler Namespace:
+Then start the sample Worker in the handler Namespace from the `go-sandbox` directory:
 
 ```bash
-TEMPORAL_NAMESPACE=my-handler-namespace go run nexus-standalone-operations/worker/main.go
+TEMPORAL_NAMESPACE=my-handler-namespace go run ./nexus/standalone/worker
 ```
 
 ## Execute a Standalone Nexus Operation {/* #execute-operation */}
@@ -100,27 +101,33 @@ that you can use to get the result of the Operation.
 [`StartNexusOperationOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartNexusOperationOptions) requires `ID`.
 `ScheduleToCloseTimeout` is optional and defaults to the maximum allowed by the Temporal server.
 
+<!--SNIPSTART go-nexus-standalone-execute-->
+[go-sandbox/nexus/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/standalone/starter/main.go)
 ```go
 nexusClient, err := c.NewNexusClient(client.NexusClientOptions{
-    Endpoint: "my-nexus-endpoint",
-    Service:  "my-hello-service",
+	Endpoint: "my-nexus-endpoint",
+	Service:  "my-hello-service",
 })
+if err != nil {
+	return nil, err
+}
 
 handle, err := nexusClient.ExecuteOperation(ctx, operationName, input, client.StartNexusOperationOptions{
-    ID:                     "unique-operation-id",
-    ScheduleToCloseTimeout: 10 * time.Second,
+	ID:                     operationID, // A unique Operation ID, such as "my-echo-op"
+	ScheduleToCloseTimeout: 10 * time.Second,
 })
 ```
+<!--SNIPEND-->
 
 See the full
-[starter sample](https://github.com/temporalio/samples-go/blob/main/nexus-standalone-operations/starter/main.go)
+[starter sample](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/standalone/starter/main.go)
 for a complete example that executes both synchronous and asynchronous Operations, gets their results, and lists and
 counts Operations.
 
 To run the starter in the caller Namespace (in a separate terminal from the Worker):
 
 ```
-TEMPORAL_NAMESPACE=my-caller-namespace go run nexus-standalone-operations/starter/main.go
+TEMPORAL_NAMESPACE=my-caller-namespace go run ./nexus/standalone/starter
 ```
 
 Or use the Temporal CLI to execute a Standalone Nexus Operation:
@@ -140,14 +147,17 @@ temporal nexus operation execute \
 Use `NexusOperationHandle.Get()` to block until the Operation completes and retrieve its result. This works for both
 synchronous and asynchronous (Workflow-backed) Operations.
 
+<!--SNIPSTART go-nexus-standalone-get-result-->
+[go-sandbox/nexus/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/standalone/starter/main.go)
 ```go
 var result service.EchoOutput
-err = handle.Get(context.Background(), &result)
+err := handle.Get(context.Background(), &result)
 if err != nil {
-    log.Fatalln("Operation failed", err)
+	log.Fatalln("Operation failed", err)
 }
 log.Println("Operation result:", result.Message)
 ```
+<!--SNIPEND-->
 
 If the Operation completed successfully, the result is deserialized into the provided pointer. If the Operation failed,
 the failure is returned as an error.
@@ -166,22 +176,25 @@ operation metadata entries.
 
 Note that `ListNexusOperations` is called on the base `client.Client`, not on the `NexusClient`.
 
+<!--SNIPSTART go-nexus-standalone-list-->
+[go-sandbox/nexus/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/standalone/starter/main.go)
 ```go
 resp, err := c.ListNexusOperations(context.Background(), client.ListNexusOperationsOptions{
-    Query: "Endpoint = 'my-nexus-endpoint'",
+	Query: "Endpoint = 'my-nexus-endpoint'",
 })
 if err != nil {
-    log.Fatalln("Unable to list Nexus operations", err)
+	log.Fatalln("Unable to list Nexus operations", err)
 }
 
 for metadata, err := range resp.Results {
-    if err != nil {
-        log.Fatalln("Error iterating operations", err)
-    }
-    log.Printf("OperationID: %s, Operation: %s, Status: %v\n",
-        metadata.OperationID, metadata.Operation, metadata.Status)
+	if err != nil {
+		log.Fatalln("Error iterating operations", err)
+	}
+	log.Printf("OperationID: %s, Operation: %s, Status: %v\n",
+		metadata.OperationID, metadata.Operation, metadata.Status)
 }
 ```
+<!--SNIPEND-->
 
 The `Query` field accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND ExecutionStatus = 'Running'"`.
@@ -199,16 +212,19 @@ Operation Executions that match a [List Filter](/list-filter) query.
 
 Note that `CountNexusOperations` is called on the base `client.Client`, not on the `NexusClient`.
 
+<!--SNIPSTART go-nexus-standalone-count-->
+[go-sandbox/nexus/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/standalone/starter/main.go)
 ```go
 resp, err := c.CountNexusOperations(context.Background(), client.CountNexusOperationsOptions{
-    Query: "Endpoint = 'my-nexus-endpoint'",
+	Query: "Endpoint = 'my-nexus-endpoint'",
 })
 if err != nil {
-    log.Fatalln("Unable to count Nexus operations", err)
+	log.Fatalln("Unable to count Nexus operations", err)
 }
 
 log.Println("Total Nexus operations:", resp.Count)
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI:
 

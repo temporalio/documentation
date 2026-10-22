@@ -111,3 +111,8 @@
     background: rgba(0, 0, 0, 0.5);
   }
 }
+
+.sourceLink {
+  color: inherit;
+  text-decoration: underline;
+}
