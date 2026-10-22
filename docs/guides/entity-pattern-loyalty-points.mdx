@@ -364,7 +364,7 @@ with workflow.unsafe.imports_passed_through():
     )
 ```
 
-With the imports in place, you'll define two [Retry Policies](/encyclopedia/retry-policies). Temporal Workflows retry by default, and often you don't need a specific Retry Policy. But you can specify the policy if you want, and you'll do that here so you can create different behaviors for database writes and notifications. Start with the policy for database writes:
+With the imports in place, you'll define two [Retry Policies](/encyclopedia/retry-policies). Temporal Activities retry by default, and often you don't need a specific Retry Policy. But you can specify the policy if you want, and you'll do that here so you can create different behaviors for database writes and notifications. Start with the policy for database writes:
 
 ```python
 DB_RETRY_POLICY = RetryPolicy(
@@ -491,7 +491,7 @@ Now that you have the code for the primary loop, you'll need additional code to 
         self._shutdown_requested = True
 ```
 
-The first Signal adds a point event to the queue for processing in the main loop. Signal handlers must be synchronous, so they only append to the queue. All processing happens in the main loop to ensure sequential execution.
+The first Signal adds a point event to the queue for processing in the main loop. You want the signal handlers to be synchronous, so they only append to the queue. All processing happens in the main loop to ensure sequential execution.
 
 The second Signal, for a requested shutdown, sets `_shutdown_requested` to true, after which the loop will terminate.
 
