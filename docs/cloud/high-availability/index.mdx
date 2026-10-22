@@ -150,7 +150,11 @@ A few other Temporal features interact with High Availability in ways worth unde
 
 ### Serverless Workers
 
-You can use [Serverless Workers](/serverless-workers) with a Namespace that has Multi-region or Multi-cloud Replication,
+[Serverless Workers](/serverless-workers) do not support Multi-cloud Replication. Serverless Workers must be invoked
+from the same cloud provider where the Namespace is currently active. After a failover to a different cloud provider,
+Serverless Workers can no longer be invoked. This is a temporary restriction during Public Preview.
+
+You can use Serverless Workers with a Namespace that has Multi-region Replication within the same cloud provider,
 but without manual intervention, the workloads that failed over to the new region will keep invoking Workers in the old
 region. If the compute provider's region is experiencing degraded performance, this may impact your workloads even
 though your Temporal Cloud Namespace has failed over successfully.
