@@ -3,6 +3,7 @@ import { Highlight, Snippet } from 'react-instantsearch';
 import { useHistory } from '@docusaurus/router';
 import { PageIcon, AnchorIcon, TreeBranch } from './Icons';
 import { trackSearchClick } from './trackSearchEvent';
+import { getSectionLabel } from './sectionLabel';
 
 interface HitProps {
   hit: any;
@@ -70,7 +71,7 @@ export function Hit({
   const hierarchyAttribute = getHierarchyAttribute(hit);
   const hierarchyPath = getHierarchyPath(hit, hierarchyAttribute, parentTitle, showSinglePath);
   const resultTitle = hit.hierarchy?.[hierarchyAttribute.replace('hierarchy.', '')] || '';
-  const showLanguageLabel = languageLabel && !resultTitle.toLowerCase().includes(languageLabel.toLowerCase());
+  const sectionLabel = getSectionLabel(resultTitle, hit, languageLabel);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -131,7 +132,7 @@ export function Hit({
       <div className="custom-search-hit-content">
         <div className="custom-search-hit-title">
           <Highlight attribute={hierarchyAttribute} hit={hit} />
-          {showLanguageLabel && <span className="custom-search-hit-language"> - {languageLabel} SDK</span>}
+          {sectionLabel && <span className="custom-search-hit-language"> - {sectionLabel}</span>}
         </div>
         {hierarchyPath.length > 0 && <div className="custom-search-hit-path">{hierarchyPath.join(' > ')}</div>}
         {hit.content && (

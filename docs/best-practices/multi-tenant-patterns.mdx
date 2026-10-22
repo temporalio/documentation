@@ -12,7 +12,7 @@ tags:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
-Many SaaS providers and large enterprise platform teams use a single Temporal [Namespace](/namespaces) with [per-tenant Task Queues](#1-task-queues-per-tenant-recommended) or [Task Queue Fairness](#2-single-task-queue-with-fairness) to power their multi-tenant applications. These approaches maximize resource efficiency while maintaining logical separation between tenants.
+Many SaaS providers and large enterprise platform teams use a single Temporal [Namespace](/namespaces) with [Task Queue Fairness](#1-single-task-queue-with-fairness-recommended) or [per-tenant Task Queues](#2-task-queues-per-tenant) to power their multi-tenant applications. These approaches maximize resource efficiency while maintaining logical separation between tenants.
 
 This guide covers architectural patterns, design considerations, and practical examples for building multi-tenant applications with Temporal.
 
@@ -32,35 +32,13 @@ When designing a multi-tenant Temporal application, follow these principles:
 
 ## Architectural patterns
 
-There are four main patterns for multi-tenant applications in Temporal, listed from most to least recommended:
+There are four main patterns for multi-tenant applications in Temporal. Start with a single Task Queue with Fairness, and choose a pattern with stronger isolation only when your tenants need it.
 
-### 1. Task queues per tenant (Recommended)
-
-**Use different [Task Queues](/task-queue) for each tenant's [Workflows](/workflows) and [Activities](/activities).**
-
-This is the recommended pattern for most use cases. Each tenant gets dedicated Task Queue(s), with [Workers](/workers) polling multiple tenant Task Queues in a single process.
-
-**Pros:**
-- Strong isolation between tenants
-- Efficient resource utilization
-- Flexible worker scaling
-- Easy to add new tenants
-- Can handle thousands of tenants per [Namespace](/namespaces)
-
-**Cons:**
-- Requires worker configuration management
-- Potential for uneven resource distribution
-- Need to prevent "noisy neighbor" issues at the worker level
-
-<RelatedReadContainer>
-  <RelatedReadItem path="#task-queue-isolation-pattern" text="Task Queue Isolation Pattern Details" archetype="feature-guide" />
-</RelatedReadContainer>
-
-### 2. Single Task Queue with Fairness
+### 1. Single Task Queue with Fairness (Recommended)
 
 **Use a single [Task Queue](/task-queue) with [Fairness keys](/develop/task-queue-priority-fairness#task-queue-fairness) to distribute work across tenants.**
 
-This pattern uses [Task Queue Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) to manage multi-tenant workloads within a single Task Queue. Each tenant is assigned a fairness key, and fairness weights control the share of Task dispatches each tenant receives.
+Start with this pattern unless your tenants need the hard isolation of dedicated Task Queues. This pattern uses [Task Queue Fairness](/develop/task-queue-priority-fairness#task-queue-fairness) to manage multi-tenant workloads within a single Task Queue. Each tenant is assigned a fairness key, and fairness weights control the share of Task dispatches each tenant receives.
 
 You can also set per-fairness-key rate limits (requests per second) to cap individual tenant throughput, preventing any single tenant from consuming too much of the queue's throughput.
 
@@ -84,6 +62,28 @@ This pattern works well when you have many tenants with different service tiers 
   <RelatedReadItem path="/design-patterns/priority-task-queues" text="Priority pattern" />
 </RelatedReadContainer>
 
+### 2. Task queues per tenant
+
+**Use different [Task Queues](/task-queue) for each tenant's [Workflows](/workflows) and [Activities](/activities).**
+
+Use this pattern when tenants need compute isolation or dedicated Worker capacity, which Fairness doesn't provide. Each tenant gets dedicated Task Queue(s), with [Workers](/workers) polling multiple tenant Task Queues in a single process.
+
+**Pros:**
+- Strong isolation between tenants
+- Efficient resource utilization
+- Flexible worker scaling
+- Easy to add new tenants
+- Can handle thousands of tenants per [Namespace](/namespaces)
+
+**Cons:**
+- Requires worker configuration management
+- Potential for uneven resource distribution
+- Need to prevent "noisy neighbor" issues at the worker level
+
+<RelatedReadContainer>
+  <RelatedReadItem path="#per-tenant-task-queue-pattern" text="Per-tenant Task Queue pattern details" archetype="feature-guide" />
+</RelatedReadContainer>
+
 ### 3. Shared Workflow Task Queues, separate Activity Task Queues
 
 **Share [Workflow Task Queues](/task-queue) but use different [Activity Task Queues](/task-queue) per tenant.**
@@ -96,7 +96,7 @@ Use this pattern when [Workflows](/workflows) are lightweight but [Activities](/
 - Good for compute-intensive Activities
 
 **Cons:**
-- Less isolation than pattern #1
+- Less isolation than per-tenant Task Queues
 - Workflow visibility is shared
 - More complex to reason about
 
@@ -130,20 +130,20 @@ need its own service accounts, API keys, dashboards, or rate limits. If that is 
 
 ### Pattern comparison
 
-| | Task Queues per tenant | Fairness-based | Shared Workflow / Separate Activity TQs | Namespace per tenant |
+| | Fairness-based | Task Queues per tenant | Shared Workflow / Separate Activity TQs | Namespace per tenant |
 |---|---|---|---|---|
-| **Isolation** | Task Queue level | Probabilistic (weighted) | Activity-level only | Complete |
-| **Noisy neighbor protection** | Strong | Weight-based throttling | Activity-level | Full — separate rate limits |
-| **Worker management** | Moderate — config per tenant | Simple — single Task Queue | Moderate | High — Worker pool per tenant |
-| **Onboarding new tenants** | Config update and restart | Set fairness and priority values (no new Workers) | Config update and Worker restart | New Namespace and Worker pool |
+| **Isolation** | Probabilistic (weighted) | Task Queue level | Activity-level only | Complete |
+| **Noisy neighbor protection** | Weight-based throttling | Strong | Activity-level | Full — separate rate limits |
+| **Worker management** | Simple — single Task Queue | Moderate — config per tenant | Moderate | High — Worker pool per tenant |
+| **Onboarding new tenants** | Set fairness and priority values (no new Workers) | Config update and restart | Config update and Worker restart | New Namespace and Worker pool |
 | **Observability** | Per-Task Queue metrics | Per-Task Queue metrics | Mixed | Per-Namespace |
-| **Rate limiting** | Shared across Task Queue | Per-key rate limits | Shared across Namespace | Independent per Namespace |
+| **Rate limiting** | Per-key rate limits | Shared across Task Queue | Shared across Namespace | Independent per Namespace |
 | **Scale ceiling** | Thousands of tenants | Thousands of tenants | Thousands of tenants | 10,000 (Namespace limit) |
-| **Best for** | Most multi-tenant apps | Tiered SaaS with many tenants | Heavy Activity workloads | High-value, compliance-sensitive tenants |
+| **Best for** | Most multi-tenant apps, including tiered SaaS with many tenants | Tenants that need dedicated Worker capacity | Heavy Activity workloads | High-value, compliance-sensitive tenants |
 
-## Task Queue isolation pattern
+## Per-tenant Task Queue pattern
 
-This section details the recommended pattern for most multi-tenant applications.
+This section details the per-tenant Task Queue pattern.
 
 ### Worker design
 
@@ -165,7 +165,7 @@ for _, tenant := range assignedTenants {
 }
 ```
 
-### Routing requests to Task Queues
+### Route requests to Task Queues {/* #routing-requests-to-task-queues */}
 
 Your application needs to route [Workflow](/workflows) starts and other operations to the correct tenant [Task Queue](/task-queue):
 
@@ -207,7 +207,7 @@ Key questions to answer through performance testing:
 - `MaxConcurrentActivityTaskPollers`
 - Worker replicas (in Kubernetes deployments)
 
-### Provisioning new tenants
+### Provision new tenants {/* #provisioning-new-tenants */}
 
 Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
@@ -228,16 +228,16 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
 ### Assumptions
 
-| Item | Value |
-|------|-------|
-| Current customers | 1,000 |
-| Workflow Task Queues per customer | 1 |
-| Activity Task Queues per customer | 1 |
-| Max Task Queue pollers per Namespace | 20,000 (per [Cloud limits](/evaluate/cloud/limits)) |
-| SDK concurrent Workflow task pollers | 5 |
-| SDK concurrent Activity task pollers | 5 |
-| Max concurrent Workflow executions | 200 |
-| Max concurrent Activity executions | 200 |
+| Item || Value 
+|------||-------
+| Current customers || 1,000 
+| Workflow Task Queues per customer || 1 
+| Activity Task Queues per customer || 1 
+| Max Task Queue pollers per Namespace || 20,000 (per [Cloud limits](/evaluate/cloud/limits)) 
+| SDK concurrent Workflow task pollers || 5 
+| SDK concurrent Activity task pollers || 5 
+| Max concurrent Workflow executions || 200 
+| Max concurrent Activity executions || 200 
 
 ### Capacity calculations
 
@@ -280,7 +280,7 @@ While testing, also pay attention to your [metrics capacity and cardinality](/cl
 
 Your multi-tenant architecture also determines how much isolation you get from Namespaces and access controls:
 
-- **Shared Namespace with per-tenant Task Queues**: Best for scale and operational simplicity, but tenant isolation is
+- **Shared Namespace with Fairness or per-tenant Task Queues**: Best for scale and operational simplicity, but tenant isolation is
   mostly enforced by your application and worker routing logic rather than by Temporal credentials.
 - **Separate Namespaces for domains or services**: Useful when teams need separate credentials, dashboards, APS
   envelopes, or on-call boundaries.
@@ -299,7 +299,7 @@ Track these [metrics](/references/sdk-metrics) per tenant:
 - [Worker resource utilization](/references/sdk-metrics#worker_task_slots_used)
 - [Workflow failure rates](/encyclopedia/detecting-workflow-failures)
 
-### Handling noisy neighbors
+### Handle noisy neighbors {/* #handling-noisy-neighbors */}
 
 Even with [Task Queue](/task-queue) isolation, monitor for tenants that:
 - Generate excessive load

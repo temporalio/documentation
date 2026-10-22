@@ -24,6 +24,8 @@ Embed `ClientInterceptorBase` on a type that implements `InterceptClient`, and e
 `ClientOutboundInterceptorBase` on a type that overrides the calls you want to intercept. Forward every call you don't
 override to `Next` so the rest of the chain still runs.
 
+<!--SNIPSTART go-interceptor-client-->
+[go-sandbox/workers/interceptors/interceptor.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/interceptors/interceptor.go)
 ```go
 type loggingClientInterceptor struct {
 	interceptor.ClientInterceptorBase
@@ -49,14 +51,18 @@ func (l *loggingClientOutboundInterceptor) ExecuteWorkflow(
 	return l.Next.ExecuteWorkflow(ctx, in)
 }
 ```
+<!--SNIPEND-->
 
 Register the interceptor when you create the Client:
 
+<!--SNIPSTART go-interceptor-client-register-->
+[go-sandbox/workers/interceptors/interceptor.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/interceptors/interceptor.go)
 ```go
 c, err := client.Dial(client.Options{
 	Interceptors: []interceptor.ClientInterceptor{&loggingClientInterceptor{}},
 })
 ```
+<!--SNIPEND-->
 
 Worker interceptors follow the same pattern for `WorkerInterceptorBase`, `WorkflowInboundInterceptorBase` /
 `WorkflowOutboundInterceptorBase`, and `ActivityInboundInterceptorBase` / `ActivityOutboundInterceptorBase`. See the

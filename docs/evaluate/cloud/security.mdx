@@ -35,6 +35,11 @@ Data stored in Temporal Cloud stays encrypted even if the service itself is comp
 
 Deploy a [Codec Server](/production-deployment/data-encryption) to decrypt data in the [Temporal Web UI](/web-ui) without sharing encryption keys with Temporal.
 
+Alternatively, [Temporal Proxy](/production-deployment/temporal-proxy) encrypts payloads in your environment before
+forwarding them to Temporal Cloud, without changing Worker or Client code. The proxy has access to plaintext payloads
+and your KMS; Temporal Cloud receives encrypted payloads. See the proxy's
+[encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for configuration and coverage limits.
+
 ## The platform {/* #the-platform */}
 
 ### Namespace isolation
@@ -105,7 +110,7 @@ See [Nexus Security](/nexus/security) for more information.
 
 :::
 
-**In transit**: All connections to Temporal Cloud use TLS 1.3 encryption, regardless of your authentication method ([API keys](/cloud/api-keys) or [mTLS certificates](/cloud/certificates)).
+**In transit**: All connections to Temporal Cloud use TLS 1.2 or higher (TLS 1.3 preferred), regardless of your authentication method ([API keys](/cloud/api-keys) or [mTLS certificates](/cloud/certificates)).
 
 **At rest**: Data is stored in two locations: an Elasticsearch instance (used when filtering Workflows in SDK clients, the [CLI](/cloud/tcld), or the Web UI) and the core Temporal Cloud persistence layer.
 Both are encrypted at rest with AES-256-GCM.

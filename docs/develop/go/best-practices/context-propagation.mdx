@@ -1,6 +1,6 @@
 ---
 id: context-propagation
-title: Context Propagation - Go SDK
+title: Context Propagation
 sidebar_label: Context Propagation
 toc_max_heading_level: 4
 tags:
@@ -46,11 +46,11 @@ type ContextPropagator interface {
 
 There are two pairs of methods because Go uses `context.Context` in non-Workflow code (Client, Activities) and `workflow.Context` inside Workflows. You must implement all four methods for values to propagate across every boundary (Client → Workflow → Activity/Child Workflow).
 
-Here is a propagator that carries a custom key-value pair from the Client to Workflows and Activities (from the [context propagation sample](https://github.com/temporalio/samples-go/tree/main/ctxpropagation)):
+Here is a propagator that carries a custom key-value pair from the Client to Workflows and Activities (from the [context propagation sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/go-sandbox/bestpractices/ctxpropagation)):
 
 
-<!--SNIPSTART samples-go-ctx-propagation-propagator-->
-[ctxpropagation/propagator.go](https://github.com/temporalio/samples-go/blob/main/ctxpropagation/propagator.go)
+<!--SNIPSTART go-ctx-propagation-propagator-->
+[go-sandbox/bestpractices/ctxpropagation/propagator.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/ctxpropagation/propagator.go)
 ```go
 type (
 	// contextKey is an unexported type used as key for items stored in the
@@ -114,6 +114,19 @@ func (s *propagator) Extract(ctx context.Context, reader workflow.HeaderReader) 
 
 	return ctx, nil
 }
+
+// ExtractToWorkflow extracts values from headers and puts them into context
+func (s *propagator) ExtractToWorkflow(ctx workflow.Context, reader workflow.HeaderReader) (workflow.Context, error) {
+	if value, ok := reader.Get(HeaderKey); ok {
+		var values Values
+		if err := converter.GetDefaultDataConverter().FromPayload(value, &values); err != nil {
+			return ctx, nil
+		}
+		ctx = workflow.WithValue(ctx, PropagateKey, values)
+	}
+
+	return ctx, nil
+}
 ```
 <!--SNIPEND-->
 
@@ -121,13 +134,12 @@ func (s *propagator) Extract(ctx context.Context, reader workflow.HeaderReader) 
 
 Register the propagator on the Client. Then set context values before starting a Workflow:
 
-<!--SNIPSTART samples-go-ctx-propagation-starter-->
-[ctxpropagation/starter/main.go](https://github.com/temporalio/samples-go/blob/main/ctxpropagation/starter/main.go)
+<!--SNIPSTART go-ctx-propagation-starter-->
+[go-sandbox/bestpractices/ctxpropagation/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/ctxpropagation/starter/main.go)
 ```go
 // The client is a heavyweight object that should be created once per process.
 c, err := client.Dial(client.Options{
 	HostPort:           client.DefaultHostPort,
-	Interceptors:       []interceptor.ClientInterceptor{tracingInterceptor},
 	ContextPropagators: []workflow.ContextPropagator{ctxpropagation.NewContextPropagator()},
 })
 if err != nil {
@@ -135,7 +147,7 @@ if err != nil {
 }
 defer c.Close()
 
-workflowID := "ctx-propagation_" + uuid.New()
+workflowID := "ctx-propagation_" + uuid.NewString()
 workflowOptions := client.StartWorkflowOptions{
 	ID:        workflowID,
 	TaskQueue: "ctx-propagation",
@@ -154,8 +166,8 @@ You can also register context propagators through a [Plugin](/develop/plugins-gu
 
 In your Workflow, the propagated values are available on the `workflow.Context`. When the Workflow starts an Activity, the SDK automatically propagates the same values:
 
-<!--SNIPSTART samples-go-ctx-propagation-workflow-->
-[ctxpropagation/workflow.go](https://github.com/temporalio/samples-go/blob/main/ctxpropagation/workflow.go)
+<!--SNIPSTART go-ctx-propagation-workflow-->
+[go-sandbox/bestpractices/ctxpropagation/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/ctxpropagation/workflow.go)
 ```go
 // CtxPropWorkflow workflow definition
 func CtxPropWorkflow(ctx workflow.Context) (err error) {
@@ -181,8 +193,8 @@ func CtxPropWorkflow(ctx workflow.Context) (err error) {
 ```
 <!--SNIPEND-->
 
-<!--SNIPSTART samples-go-ctx-propagation-activity-->
-[ctxpropagation/activities.go](https://github.com/temporalio/samples-go/blob/main/ctxpropagation/activities.go)
+<!--SNIPSTART go-ctx-propagation-activity-->
+[go-sandbox/bestpractices/ctxpropagation/activities.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/ctxpropagation/activities.go)
 ```go
 func SampleActivity(ctx context.Context) (*Values, error) {
 	if val := ctx.Value(PropagateKey); val != nil {
