@@ -26,7 +26,7 @@ With this guide, you'll build a loyalty system where:
 * **Each customer account is independent and durable:** state is held per-customer, survives infrastructure failures, and picks up exactly where it left off
 * **Tier upgrades happen in real time:** business rules run in the Workflow itself, triggered by point accruals — no scheduler, no batch job
 * **Redemptions are consistent:** synchronous Updates validate and apply changes atomically, with the response going back to the caller
-* **In-memory Balance reads:** Queries read in-memory state without generating Events or hitting a database
+* **Balance reads come from memory:** Queries read in-memory state without generating Events or hitting a database
 * **The Workflow runs for the life of the customer:** Continue-As-New keeps history size in check so nothing needs to be migrated or restarted
 * **Failures are isolated:** a notification failing doesn't roll back a point accrual; each concern fails independently
 
@@ -287,7 +287,7 @@ async def record_points_transaction(transaction: dict) -> bool:
 
 `record_points_transaction` records a points transaction in the loyalty database. The activity takes a `dict` as a single input, as recommended, containing the fields to be recorded. The activity must be idempotent, so to prevent duplicate records in the database, you use the `event_id` as a key. Calling the Activity twice with the same `event_id` produces the same result, which is essential because Temporal may retry Activities on failure.
 
-The Activity to sent a tier change notification is next:
+The Activity to send a tier change notification is next:
 
 ```python
 @activity.defn
@@ -319,7 +319,7 @@ async def record_redemption(redemption: dict) -> bool:
     return True
 ```
 
-The `record_redemption activity` follows the same pattern as `record_points_transaction`. A redemption removes points from the user’s balance rather than adding them, but that makes no difference to the Activity; you’re recording the transaction.
+The `record_redemption` Activity follows the same pattern as `record_points_transaction`. A redemption removes points from the user’s balance rather than adding them, but that makes no difference to the Activity; you’re recording the transaction.
 
 With the Activities in place, you'll next connect them with the Workflow.
 
@@ -375,7 +375,7 @@ DB_RETRY_POLICY = RetryPolicy(
 )
 ```
 
-This Retry Policy sets the initial retry at one second. The backoff coefficient is the factor by which the interval is increased each time. In this case, that means it doubles every interval. The interval never grows longer than 30 seconds, and the Workfow stops retrying after 10 attempts. This is a reasonable policy for database writes, because a connection failure may resolve quickly, but if the database is down for a while, you don't want to keep retrying. 
+This Retry Policy sets the initial retry at one second. The backoff coefficient is the factor by which the interval is increased each time. In this case, that means it doubles every interval. The interval never grows longer than 30 seconds, and the Workflow stops retrying after 10 attempts. This is a reasonable policy for database writes, because a connection failure may resolve quickly, but if the database is down for a while, you don't want to keep retrying. 
 
 Next, define the Retry Policy for notifications: 
 
@@ -585,7 +585,7 @@ The next block is the idempotency check: If the `event_id` has already been proc
 
 After that is the subtraction that deducts the redeemed points. The Update then records the event, adds the event ID to the list of processed events, logs the event as processed, and returns the result.
 
-The `redeem_points` Update calls the `record_redemption` Acitivity directly via `await` rather than enqueuing it for the main loop. The Python and TypeScript SDKs support `async` Update handlers, making this safe. The trade-off keeps redemption logic self-contained and returns the confirmed result to the caller in a single round trip. It is safe here because `record_redemption` is idempotent — a replay detects the duplicate `event_id` and returns without creating a second record. If you are using the Java SDK, Update handlers cannot be `async`; enqueue the work for the main loop instead.
+The `redeem_points` Update calls the `record_redemption` Activity directly via `await` rather than enqueuing it for the main loop. The Python and TypeScript SDKs support `async` Update handlers, making this safe. The trade-off keeps redemption logic self-contained and returns the confirmed result to the caller in a single round trip. It is safe here because `record_redemption` is idempotent — a replay detects the duplicate `event_id` and returns without creating a second record. If you are using the Java SDK, Update handlers cannot be `async`; enqueue the work for the main loop instead.
 
 Next, add an [Update Validator](/handling-messages#update-validators) to handle errors:
 
@@ -648,7 +648,7 @@ Now add the function to process the events:
         await self._evaluate_tier()
 ```
 
-This function processes a single points event. First it checks for duplicate event IDs and skips the transaction if one is found. Next it records the transaction via an Activity. Recording the transaction before updating the state means that it won't be double-counted if the Activity retries. Once the Activity has confirms, it updates in-memory state, appends the list of processed events, and logs the event. Finally, it evaluates whether the user is at a new tier.
+This function processes a single points event. First it checks for duplicate event IDs and skips the transaction if one is found. Next it records the transaction via an Activity. Recording the transaction before updating the state means that it won't be double-counted if the Activity retries. Once the Activity confirms, it updates in-memory state, appends the list of processed events, and logs the event. Finally, it evaluates whether the user is at a new tier.
 
 Add the functions to evaluate the tier next:
 
@@ -696,7 +696,7 @@ Add the functions to evaluate the tier next:
         return LoyaltyTier.BRONZE.value
 ```
 
-The `_evaluate_tier` function uses `_calculate_tier` to determine whether the user's tier has changed. If it has, it uses the `send_tier_change_notification` Activity to send the notification. The Activity remains idempotent no matter how many times it repeats -- the same input produces the same output. In addition, this Activity is non-essential, so it's wrapped in a `try` block. If the notification fails repeatedly, the Workflow logs the error and continues, rather than failing.
+The `_evaluate_tier` function uses `_calculate_tier` to determine whether the user's tier has changed. If it has, it uses the `send_tier_change_notification` Activity to send the notification. The Activity remains idempotent no matter how many times it repeats: the same input produces the same output. In addition, this Activity is non-essential, so it's wrapped in a `try` block. If the notification fails repeatedly, the Workflow logs the error and continues, rather than failing.
 
 The `_calculate_tier` function is a pure logic function: it takes the number of points, and returns a tier value. There are no side effects associated with the function. Again, that means the function is idempotent. The point thresholds for each tier are hard-coded here; depending on your needs, you may want to set those values elsewhere. As long as the function only calculates the tier based on set values, it remains idempotent.
 
@@ -973,7 +973,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-This code uses a loop to send a bunch of Signals at once, which is followed by a pause so the Workflow can processes them. Then there's another Query to check the final balance. 
+This code uses a loop to send a bunch of Signals at once, which is followed by a pause so the Workflow can process them. Then there's another Query to check the final balance. 
 
 You've got all the pieces working now, and the client code will show the correct results from the tests.
 
@@ -1011,7 +1011,7 @@ The Python SDK sandbox blocks most non-deterministic operations, but in a few ca
 | `print()` | `workflow.logger.info()` | Replay-safe; only logs on initial execution |
 | Direct I/O (HTTP, file reads) | Activities | All I/O must happen in Activities |
 
-If you update your code, and you're not sure whether it's safe for determinism, Use the `Replayer` to verify code changes against a saved Event History:
+If you update your code, and you're not sure whether it's safe for determinism, use the `Replayer` to verify code changes against a saved Event History:
 
 ```python
 # test_determinism.py
