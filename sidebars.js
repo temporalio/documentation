@@ -1448,7 +1448,8 @@ module.exports = {
           },
           items: [
             'cloud/aws-export-s3',
-            'cloud/gcp-export-gcs'
+            'cloud/gcp-export-gcs',
+            'cloud/azure-export-blob-storage'
           ],
         },
         {

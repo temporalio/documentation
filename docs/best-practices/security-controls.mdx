@@ -156,7 +156,7 @@ If your failure messages and stack traces contain sensitive information, it is r
 
 ### Use Namespace data retention policies
 
-Temporal Cloud Namespace has a [Retention Period](/temporal-service/temporal-server#retention-period) setting for workflow histories (1 to 90 days). Set an appropriate retention period to balance operational needs with security. Shorter retention means completed workflow data (history, payloads) is purged sooner, reducing the amount of sensitive data stored in the cloud at any time. Document your retention choices to align with your company’s data retention policies and regulatory requirements. For retention periods over 90 days, these can be exported to your own GCS or S3 buckets.
+Temporal Cloud Namespace has a [Retention Period](/temporal-service/temporal-server#retention-period) setting for workflow histories (1 to 90 days). Set an appropriate retention period to balance operational needs with security. Shorter retention means completed workflow data (history, payloads) is purged sooner, reducing the amount of sensitive data stored in the cloud at any time. Document your retention choices to align with your company’s data retention policies and regulatory requirements. For retention periods over 90 days, use [Workflow History Export](/cloud/export) to export closed Workflow Histories to your own S3 bucket, GCS bucket, or Azure Blob Storage container.
 
 ## Availability and disaster recovery
 
