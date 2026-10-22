@@ -27,8 +27,8 @@ use one of the advanced Visibility backends described in this guide.
 Advanced Visibility is not supported with Cassandra.
 
 To enable current Visibility features, use MySQL, PostgreSQL, SQLite, Elasticsearch, or OpenSearch as your Visibility
-store. We recommend Elasticsearch or OpenSearch for any Temporal Service setup that handles more than a few Workflow
-Executions because these backends support the Visibility request load and help optimize performance.
+store. For high-volume Visibility workloads, we recommend Elasticsearch or OpenSearch because these backends support
+the Visibility request load and help optimize performance.
 
 To migrate from Cassandra to a supported SQL database, see
 [Migrating Visibility database](/self-hosted-guide/visibility/migrate).
