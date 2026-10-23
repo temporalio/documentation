@@ -3,7 +3,7 @@ const { put } = require('@vercel/blob');
 const { waitUntil } = require('@vercel/functions');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
-const { USAGE, isAllowed, parseAllowlist, parseList, parseParams, shapeResults } = require('./_retrieve-lib');
+const { USAGE, isAllowed, parseAllowlist, parseList, parseParams, shapeResults, validResults } = require('./_retrieve-lib');
 
 // Public, no-auth search over Temporal's docs for agents, proxying Kapa's
 // Retrieval API with a server-side key. Part of the agent-discoverable search
@@ -15,7 +15,8 @@ const compiledRedirects = compileRedirects(redirects);
 // Results whose URL isn't covered by RETRIEVE_URL_ALLOWLIST are dropped. Kapa's
 // Retrieval endpoint ignores source_ids_include, so this is what keeps results
 // from sources the public can't open, such as private GitHub repos, out of the
-// response. Unset means no filtering.
+// response. The handler refuses to run without it, so a missing variable can't
+// expose them.
 const allowlist = parseAllowlist(parseList(process.env.RETRIEVE_URL_ALLOWLIST));
 
 const UPSTREAM_TIMEOUT_MS = 10_000;
@@ -107,8 +108,9 @@ module.exports = async (request, response) => {
     country: header(request, 'x-vercel-ip-country'),
     ip_hash: ipHash(request),
     deployment: process.env.VERCEL_ENV || 'development',
-    // How many Kapa sources the search was limited to. 0 means all of them.
-    source_filter: parseList(process.env.KAPA_SOURCE_IDS).length,
+    // How many KAPA_SOURCE_IDS were sent. Kapa ignores them today, so this
+    // doesn't mean the search was limited to those sources.
+    source_ids_sent: parseList(process.env.KAPA_SOURCE_IDS).length,
     dropped_count: null,
     status: null,
     upstream_status: null,
@@ -120,7 +122,6 @@ module.exports = async (request, response) => {
   const finish = (status, body) => {
     record.status = status;
     record.latency_ms = Date.now() - started;
-    response.setHeader('X-Retrieve-Source-Filter', String(record.source_filter));
     send(response, status, body);
     log(record);
   };
@@ -131,7 +132,7 @@ module.exports = async (request, response) => {
   }
 
   const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID } = process.env;
-  if (!KAPA_API_KEY || !KAPA_PROJECT_ID || !KAPA_INTEGRATION_ID) {
+  if (!KAPA_API_KEY || !KAPA_PROJECT_ID || !KAPA_INTEGRATION_ID || allowlist.length === 0 || !process.env.RETRIEVE_LOG_SALT) {
     finish(500, { error: 'Search is not configured.' });
     return;
   }
@@ -155,10 +156,16 @@ module.exports = async (request, response) => {
     return;
   }
 
-  const kept = allowlist.length > 0 ? results.filter((result) => isAllowed(result.source_url, allowlist)) : results;
-  record.dropped_count = results.length - kept.length;
-  const shaped = shapeResults(kept, compiledRedirects);
-  record.result_count = shaped.length;
-  record.top_pages = shaped.slice(0, 3).map((result) => result.page_url);
-  finish(200, shaped);
+  try {
+    const valid = validResults(results);
+    const kept = valid.filter((result) => isAllowed(result.source_url, allowlist));
+    record.dropped_count = results.length - kept.length;
+    const shaped = shapeResults(kept, compiledRedirects);
+    record.result_count = shaped.length;
+    record.top_pages = shaped.slice(0, 3).map((result) => result.page_url);
+    finish(200, shaped);
+  } catch (error) {
+    console.error(`retrieve: could not shape Kapa results: ${error.message}`);
+    finish(502, { error: 'Search is unavailable. Try again later.' });
+  }
 };
