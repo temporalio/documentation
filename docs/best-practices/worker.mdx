@@ -26,8 +26,8 @@ following. Follow the links to the relevant sections for more details.
 - **[Configure each Worker appropriately](#actively-tune-worker-options-instead-of-relying-on-defaults)**: Actively tune
   Worker options based on your code, language runtime limits, and system resource constraints. Don't rely on defaults,
   which are designed for ease in development and testing, but not optimal for production environments.
-- **[Run at least two Workers per Task Queue](#run-at-least-two-workers-per-task-queue)**: Put them on separate hosts so
-  that one Worker crashing or restarting doesn't stop Task processing.
+- **[Run at least two Workers per Task Queue](#run-at-least-two-workers-per-task-queue)**: For shared, always-on queues,
+  put them on separate hosts so that one Worker crashing or restarting doesn't stop Task processing.
 - **[Deploy enough Workers](#interpret-metrics-as-a-whole)**: Monitor performance metrics and scale Workers to meet your
   workload requirements, or [autoscale them](#scale-workers-automatically) on Kubernetes or with Serverless Workers.
 - **[Separate Task Queues logically](#separate-task-queues-logically)**: Size and split work across Task types
@@ -119,7 +119,7 @@ uses environment variables to configure the Worker:
 
 ### Run at least two Workers per Task Queue
 
-Run at least two Worker Processes for each Task Queue in production, each on a separate host.
+For each shared, always-on Task Queue in production, run at least two Worker Processes, each on a separate host.
 
 A single Worker is a single point of failure. If it crashes, is redeployed, or loses its host, Tasks wait in the Task
 Queue until it comes back. With a second Worker polling the same Task Queue, that Worker
@@ -130,14 +130,26 @@ This is a minimum for availability, separate from the capacity you size using th
 [metrics below](#interpret-metrics-as-a-whole). Scale beyond two based on Schedule-to-Start latency and slot usage. When
 you scale down, don't go below two.
 
+The minimum has three qualifications:
+
+- **Count Workers per Worker Deployment Version.** A [pinned](/worker-versioning#pinned) Workflow completes on a single
+  Worker Deployment Version, so another version's Workers can't take over its Tasks. Keep at least two Workers on
+  every version that still serves Workflow Executions, including older versions with pinned Workflows.
+- **Host-specific Task Queues are an exception.** Don't add a second host to a queue that routes Activities to the host
+  holding their local files or state, because the Tasks could land on a host without them. See
+  [Worker-specific Task Queues](/design-patterns/worker-specific-taskqueue).
+- **Serverless Workers and scale-to-zero are exceptions.** Temporal starts
+  [Serverless Workers](/serverless-workers) when Tasks arrive, and a KEDA-scaled fleet can drop to zero when idle. In
+  both cases, Tasks can wait while Workers start. See [Scale Workers automatically](#scale-workers-automatically).
+
+Two more practices help the minimum hold up:
+
 - **Spread Workers across failure domains.** Place Workers on different hosts and, in the cloud, across multiple
   Availability Zones. Temporal Cloud Namespaces already span three Availability Zones, so Workers in a single zone are
   the weak point. See [Availability Zone outage](/cloud/rpo-rto#availability-zone-outage).
 - **Roll out one Worker at a time.** Restarting every Worker at once empties their
   [Sticky Execution](/sticky-execution) caches, so each Workflow Execution replays from its Event History when the new
   Workers start.
-- **Serverless Workers are the exception.** Temporal starts [Serverless Workers](/serverless-workers) when Tasks arrive,
-  so they don't keep a Worker running. See [Scale Workers automatically](#scale-workers-automatically).
 
 ### Separate Task Queues logically
 
@@ -302,8 +314,10 @@ Instead of adjusting the Worker count by hand, scale it from Task Queue backlog 
   provision or scale a fleet. AWS Lambda and GCP Cloud Run support is in Public Preview. See
   [Deploy Serverless Workers](/production-deployment/worker-deployments/serverless-workers).
 
-If you autoscale, set the minimum replica count to at least two so the
-[two-Worker minimum](#run-at-least-two-workers-per-task-queue) still holds when the Task Queue is idle.
+For an always-on fleet, set the autoscaler's minimum replica count to at least two so the
+[two-Worker minimum](#run-at-least-two-workers-per-task-queue) still holds when the Task Queue is idle. If you
+deliberately scale to zero, for example with KEDA or Serverless Workers, Tasks can wait while Workers start, so only do
+that for queues that tolerate the delay.
 
 ### Optimize Worker cache
 
