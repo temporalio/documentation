@@ -163,7 +163,7 @@ class LoyaltyTier(str, Enum):
     PLATINUM = "Platinum"
 ```
 
-Nothing fancy here; you’re defining the levels of the tiers.
+Here you’re defining the levels of the tiers.
 
 Next you’ll need a class that defines an event, called `PointsEvent`. You want to keep all the available information you’ll need about the event in a single object for easier serialization.
 
@@ -468,9 +468,8 @@ Next is the core loop. This loop continues until a shutdown is requested. Within
 * A shutdown is requested
 * A Signal arrives
 * Continue-As-New is suggested
-* 24 hours have passed since the last Continue-As-New
 
-The shutdown request breaks out of the loop. The Workflow waits until all handlers have completed, then logs the Workflow as ending and ends.
+The shutdown request breaks out of the loop. The Workflow waits until all handlers have completed, then logs the Workflow as ending and ends. The `workflow.wait_condition` has a timeout of 24 hours, after which it raises an `asyncio.TimeoutError`.
 
 When a Signal arrives, it appears in the `_pending_signals` queue, and the event data is processed. 
 
@@ -711,7 +710,7 @@ Add one more helper function to limit the number of event IDs stored:
 
 This function trims the list of processed IDs to the most recent 1,000 IDs. You don't want the list to grow unbounded, because it's passed during Continue-As-New, as you'll see next.
 
-The last function specifies what happens on a Continue-As-New. Remember that a Continue-As-New occurs at least once every 24 hours, and you want the entities (which represent user accounts) to persist indefinitely. You want to deal with any pending Signals, either by processing them or serializing them to the current state. You want to wait for all handlers to finish, and then call `continue_as_new`:
+The last function specifies what happens on a Continue-As-New. Remember you want the entities (which represent user accounts) to persist indefinitely. You want to deal with any pending Signals, either by processing them or serializing them to the current state. You want to wait for all handlers to finish, and then call `continue_as_new`:
 
 ```python
     async def _do_continue_as_new(self) -> None:
@@ -1047,7 +1046,7 @@ Run this test as part of your continuous integration pipeline before deploying W
 
 Entity Workflows are the hardest case for code evolution: a loyalty account can span years and dozens of deployments. Any change that alters the sequence of Commands the Workflow generates causes a `NondeterminismError` during replay for in-progress Executions.
 
-[Worker Versioning](https://docs.temporal.io/production-deployment/worker-deployments/worker-versioning) is the recommended solution: run multiple builds simultaneously, route each Execution to the build it started on, and drain old builds without any code-level branching.
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is the recommended solution: run multiple builds simultaneously, route each Execution to the build it started on, and drain old builds without any code-level branching.
 
 > Worker Versioning requires Python SDK v1.11.0 or later, Temporal Server v1.29.1 or later, and Temporal CLI v1.4.1 or later.
 
