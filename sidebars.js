@@ -1512,6 +1512,7 @@ module.exports = {
           },
           items: [
             'production-deployment/self-hosted-guide/deployment',
+            'production-deployment/self-hosted-guide/small-deployment',
             'production-deployment/self-hosted-guide/embedded-server',
             'production-deployment/self-hosted-guide/checklist',
             'production-deployment/self-hosted-guide/defaults',
