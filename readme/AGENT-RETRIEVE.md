@@ -41,7 +41,7 @@ For docs results, `source_url` is the page's raw Markdown and `page_url` is the 
 kept on `page_url` only, because the `.md` has no anchor targets. Results from other allowed sources
 (SDK references, release notes, the blog) come back with both fields set to Kapa's original URL.
 
-Errors are JSON `{ error }`. A 400 or 405 also includes a `usage` string.
+Errors are JSON `{ error }`. A 400 or 405 also includes a `usage` string. A result that Kapa returns without a string `content` or `source_url` is dropped and counted in `dropped_count`.
 
 ## Code
 
@@ -64,15 +64,39 @@ These are Vercel project environment variables, set for Production and Preview:
 | `KAPA_PROJECT_ID` | The production Kapa project |
 | `KAPA_INTEGRATION_ID` | The `docs-agent-retrieve-experiment` HTTP API integration, which keeps this traffic separate in Kapa analytics |
 | `KAPA_SOURCE_IDS` | Comma-separated Kapa source IDs, sent as `source_ids_include`. Set to the 20 web crawl sources. **As of 2026-10-23, Kapa's Retrieval endpoint accepts this field but ignores it**, so `RETRIEVE_URL_ALLOWLIST` does the filtering. It's kept so it takes effect if Kapa starts honoring it. A source group filter can't replace it, because Kapa adds every Global source to any group filter |
-| `RETRIEVE_URL_ALLOWLIST` | Comma-separated `host` or `host/path-prefix` entries. Results whose URL isn't covered are dropped before the response is built. A prefix matches whole path segments, so `github.com/temporalio/sdk-go/releases` covers `/releases/tag/v1.30.0` but not the private `github.com/temporalio/edu-*` course repos. Unset means no filtering |
-| `RETRIEVE_LOG_SALT` | A random string used to hash caller IPs in the log |
+| `RETRIEVE_URL_ALLOWLIST` | **Required.** Comma-separated `host` or `host/path-prefix` entries. Results whose URL isn't covered are dropped before the response is built. A prefix matches whole path segments, so `github.com/temporalio/sdk-go/releases` covers `/releases/tag/v1.30.0` but not the private `github.com/temporalio/edu-*` course repos. When it's unset the endpoint returns 500 instead of searching, so a missing variable can't expose results from private sources |
+| `RETRIEVE_LOG_SALT` | **Required.** A random string used to hash caller IPs in the log. When it's unset the endpoint returns 500, so no request is logged without a hash |
 | `BLOB_READ_WRITE_TOKEN` | Added by Vercel when the private Blob store is connected to the project |
-
-A Vercel Firewall rate-limit rule on `/api/retrieve` caps calls per IP. Every call counts against the Kapa team limits
-for the one key.
 
 To revoke access, rotate or delete the key in Kapa and update `KAPA_API_KEY`. The endpoint then returns 502 until a
 valid key is set.
+
+## Limits and cost
+
+Every call that reaches Kapa counts against the Kapa team limits for the one key, and there's no per-caller identity to
+limit on. Three things bound the cost:
+
+- **Vercel Firewall rate limit.** A rule on `/api/retrieve` caps calls per IP. It's set in the Vercel dashboard, not in
+  this repository, so record the current threshold and action here when you change it. The function has no rate limit
+  of its own.
+- **CDN cache.** A 200 response carries `Cache-Control: public, s-maxage=300, stale-while-revalidate=60`, so the same
+  URL isn't sent to Kapa again for five minutes. Errors are `no-store`. A cache hit never reaches the function, so it
+  isn't logged: the log counts distinct questions per window, not every call.
+- **No CORS headers.** Browsers on other sites can't read the response, so a web page can't spend the quota through its
+  visitors. Agents call from a server or a tool and don't need them.
+
+The function's `maxDuration` is 15 seconds in `vercel.json`, longer than the 10-second Kapa timeout. A timeout while
+connecting or while reading Kapa's response returns 504.
+
+Each logged request writes one small Blob, so a burst of distinct questions creates that many objects. The names start
+with the date, so a day's records can be listed or deleted with `--prefix retrieve-log/YYYY-MM-DD/`.
+
+## Retention and privacy
+
+The log holds free-text questions, user agents, countries, and hashed IPs from the public, in the Blob store and in the
+runtime logs. Delete `retrieve-log/` within 30 days of the experiment ending, and don't copy records out of the store
+except as aggregate counts. Duncan Mackenzie owns the store and the deletion. Whoever owns the docs privacy policy must
+confirm that it covers this log before a follow-up change advertises the endpoint.
 
 ## Request log
 
@@ -88,10 +112,11 @@ sent, and a failed write never fails the request.
 | `country` | `x-vercel-ip-country` |
 | `ip_hash` | First 16 hex characters of SHA-256 of the salt and IP. Raw IPs aren't stored |
 | `deployment` | `production`, `preview`, or `development` |
-| `source_filter` | Number of IDs in `KAPA_SOURCE_IDS` when the request ran. `0` means every source was searched. Also returned as the `X-Retrieve-Source-Filter` response header |
-| `dropped_count` | Results Kapa returned that `RETRIEVE_URL_ALLOWLIST` dropped. `result_count` is what's left |
+| `source_ids_sent` | Number of IDs in `KAPA_SOURCE_IDS` sent to Kapa. Kapa ignores them today, so this doesn't mean the search was limited to those sources |
+| `fetched_count` | Results Kapa returned |
+| `dropped_count` | Results Kapa returned that were malformed or that `RETRIEVE_URL_ALLOWLIST` dropped |
 | `status`, `upstream_status` | Status returned to the caller, and Kapa's status |
-| `result_count` | Number of results. `0` points at a content gap |
+| `result_count` | Number of results returned. Kapa returns at most 15 and the endpoint doesn't ask for more, because Kapa's Retrieval endpoint rejects a `top_k` above 15, so the allowlist can shrink an answer. `0` with `dropped_count` at `0` points at a content gap. `0` with `fetched_count` above `0` means every hit was outside the allowlist |
 | `latency_ms` | Time spent in the function |
 | `top_pages` | `page_url` of the first three results |
 
