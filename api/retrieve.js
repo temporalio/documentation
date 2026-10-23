@@ -3,7 +3,7 @@ const { put } = require('@vercel/blob');
 const { waitUntil } = require('@vercel/functions');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
-const { USAGE, isAllowed, parseAllowlist, parseList, parseParams, shapeResults, validResults } = require('./_retrieve-lib');
+const { LIMITS, USAGE, isAllowed, parseAllowlist, parseList, parseParams, shapeResults, validResults } = require('./_retrieve-lib');
 
 // Public, no-auth search over Temporal's docs for agents, proxying Kapa's
 // Retrieval API with a server-side key. Part of the agent-discoverable search
@@ -98,12 +98,14 @@ module.exports = async (request, response) => {
   const started = Date.now();
   const { searchParams } = new URL(request.url, 'https://docs.temporal.io');
   const parsed = parseParams(searchParams);
+  // A rejected request still records who sent it and from where.
+  const raw = (name) => searchParams.get(name)?.trim().slice(0, LIMITS[name]) || null;
   const record = {
     ts: new Date(started).toISOString(),
     q: parsed.params?.q ?? searchParams.get('q')?.slice(0, 200) ?? null,
-    jtb: parsed.params?.jtb ?? null,
-    src: parsed.params?.src ?? null,
-    agent: parsed.params?.agent ?? null,
+    jtb: parsed.params ? parsed.params.jtb : raw('jtb'),
+    src: parsed.params ? parsed.params.src : raw('src'),
+    agent: parsed.params ? parsed.params.agent : raw('agent'),
     ua: header(request, 'user-agent'),
     country: header(request, 'x-vercel-ip-country'),
     ip_hash: ipHash(request),
