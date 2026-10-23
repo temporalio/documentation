@@ -21,17 +21,22 @@ const allowlist = parseAllowlist(parseList(process.env.RETRIEVE_URL_ALLOWLIST));
 
 const UPSTREAM_TIMEOUT_MS = 10_000;
 
+// No CORS headers: agents call this from a server or a tool, and a wildcard
+// would let any web page spend the Kapa quota through its visitors' browsers.
 const HEADERS = {
   'Content-Type': 'application/json; charset=utf-8',
-  // Every call reaches the function, so every call is logged.
-  'Cache-Control': 'no-store',
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'X-Robots-Tag': 'noindex, nofollow',
 };
 
+// The CDN caches a successful answer, so a repeated question doesn't call Kapa
+// again. A cache hit never reaches the function, so it isn't logged. Errors are
+// never cached.
+const CACHE_OK = 'public, s-maxage=300, stale-while-revalidate=60';
+const CACHE_NONE = 'no-store';
+
 function send(response, status, body) {
   for (const [key, value] of Object.entries(HEADERS)) response.setHeader(key, value);
+  response.setHeader('Cache-Control', status === 200 ? CACHE_OK : CACHE_NONE);
   response.status(status).send(body === undefined ? undefined : JSON.stringify(body));
 }
 
@@ -150,7 +155,19 @@ module.exports = async (request, response) => {
   }
 
   record.upstream_status = upstream.status;
-  const results = upstream.ok ? await upstream.json().catch(() => null) : null;
+  // The timeout also covers reading the body, so a slow body is a 504 too.
+  let bodyTimedOut = false;
+  const results = upstream.ok
+    ? await upstream.json().catch((error) => {
+        bodyTimedOut = error.name === 'TimeoutError';
+        return null;
+      })
+    : null;
+  if (bodyTimedOut) {
+    console.error('retrieve: Kapa response timed out');
+    finish(504, { error: 'Search timed out. Try again.' });
+    return;
+  }
   if (!Array.isArray(results)) {
     if (upstream.ok) console.error('retrieve: Kapa response was not a JSON array');
     else console.error(`retrieve: Kapa returned ${upstream.status}: ${(await upstream.text().catch(() => '')).slice(0, 500)}`);

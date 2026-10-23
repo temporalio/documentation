@@ -211,6 +211,20 @@ describe('upstream failures', () => {
     assert.strictEqual(res.statusCode, 502);
   });
 
+  it('returns 504 when reading the body times out', async () => {
+    kapaReply = () => ({
+      ok: true,
+      status: 200,
+      json: async () => {
+        const error = new Error('timed out');
+        error.name = 'TimeoutError';
+        throw error;
+      },
+    });
+    const res = await call('?q=x');
+    assert.strictEqual(res.statusCode, 504);
+  });
+
   it('returns 504 when the request times out', async () => {
     kapaReply = () => {
       const error = new Error('timed out');
@@ -219,6 +233,23 @@ describe('upstream failures', () => {
     };
     const res = await call('?q=x');
     assert.strictEqual(res.statusCode, 504);
+  });
+});
+
+describe('response headers', () => {
+  it('caches a successful answer and sends no CORS headers', async () => {
+    const res = await call('?q=x');
+    assert.strictEqual(res.statusCode, 200);
+    assert.strictEqual(res.headers['cache-control'], 'public, s-maxage=300, stale-while-revalidate=60');
+    assert.strictEqual(res.headers['access-control-allow-origin'], undefined);
+    assert.strictEqual(res.headers['x-robots-tag'], 'noindex, nofollow');
+  });
+
+  it('never caches errors', async () => {
+    assert.strictEqual((await call('?src=x')).headers['cache-control'], 'no-store');
+    assert.strictEqual((await call('?q=x', { method: 'POST' })).headers['cache-control'], 'no-store');
+    kapaResults({ detail: 'nope' });
+    assert.strictEqual((await call('?q=x')).headers['cache-control'], 'no-store');
   });
 });
 

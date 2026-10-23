@@ -68,11 +68,28 @@ These are Vercel project environment variables, set for Production and Preview:
 | `RETRIEVE_LOG_SALT` | **Required.** A random string used to hash caller IPs in the log. When it's unset the endpoint returns 500, so no request is logged without a hash |
 | `BLOB_READ_WRITE_TOKEN` | Added by Vercel when the private Blob store is connected to the project |
 
-A Vercel Firewall rate-limit rule on `/api/retrieve` caps calls per IP. Every call counts against the Kapa team limits
-for the one key.
-
 To revoke access, rotate or delete the key in Kapa and update `KAPA_API_KEY`. The endpoint then returns 502 until a
 valid key is set.
+
+## Limits and cost
+
+Every call that reaches Kapa counts against the Kapa team limits for the one key, and there's no per-caller identity to
+limit on. Three things bound the cost:
+
+- **Vercel Firewall rate limit.** A rule on `/api/retrieve` caps calls per IP. It's set in the Vercel dashboard, not in
+  this repository, so record the current threshold and action here when you change it. The function has no rate limit
+  of its own.
+- **CDN cache.** A 200 response carries `Cache-Control: public, s-maxage=300, stale-while-revalidate=60`, so the same
+  URL isn't sent to Kapa again for five minutes. Errors are `no-store`. A cache hit never reaches the function, so it
+  isn't logged: the log counts distinct questions per window, not every call.
+- **No CORS headers.** Browsers on other sites can't read the response, so a web page can't spend the quota through its
+  visitors. Agents call from a server or a tool and don't need them.
+
+The function's `maxDuration` is 15 seconds in `vercel.json`, longer than the 10-second Kapa timeout. A timeout while
+connecting or while reading Kapa's response returns 504.
+
+Each logged request writes one small Blob, so a burst of distinct questions creates that many objects. The names start
+with the date, so a day's records can be listed or deleted with `--prefix retrieve-log/YYYY-MM-DD/`.
 
 ## Request log
 
