@@ -26,8 +26,10 @@ following. Follow the links to the relevant sections for more details.
 - **[Configure each Worker appropriately](#actively-tune-worker-options-instead-of-relying-on-defaults)**: Actively tune
   Worker options based on your code, language runtime limits, and system resource constraints. Don't rely on defaults,
   which are designed for ease in development and testing, but not optimal for production environments.
+- **[Run at least two Workers per Task Queue](#run-at-least-two-workers-per-task-queue)**: Put them on separate hosts so
+  that one Worker crashing or restarting doesn't stop Task processing.
 - **[Deploy enough Workers](#interpret-metrics-as-a-whole)**: Monitor performance metrics and scale Workers to meet your
-  workload requirements.
+  workload requirements, or [autoscale them](#scale-workers-automatically) on Kubernetes or with Serverless Workers.
 - **[Separate Task Queues logically](#separate-task-queues-logically)**: Size and split work across Task types
   (Activities and Workflows) and Task Queues based on workload characteristics.
 - **[Version Workers for safe deployments](#use-worker-versioning-to-safely-deploy-new-workflow-code)**: Ensure you can
@@ -115,11 +117,33 @@ uses environment variables to configure the Worker:
 ```
 {/* SNIPEND */}
 
+### Run at least two Workers per Task Queue
+
+Run at least two Worker Processes for each Task Queue in production, each on a separate host.
+
+A single Worker is a single point of failure. If it crashes, is redeployed, or loses its host, Tasks wait in the Task
+Queue until it comes back. With a second Worker polling the same Task Queue, that Worker
+[picks up the Tasks and replays the Event History](/develop/worker-tuning-reference#how-worker-failure-recovery-works),
+and the Workflow Executions keep making progress.
+
+This is a minimum for availability, separate from the capacity you size using the
+[metrics below](#interpret-metrics-as-a-whole). Scale beyond two based on Schedule-to-Start latency and slot usage. When
+you scale down, don't go below two.
+
+- **Spread Workers across failure domains.** Place Workers on different hosts and, in the cloud, across multiple
+  Availability Zones. Temporal Cloud Namespaces already span three Availability Zones, so Workers in a single zone are
+  the weak point. See [Availability Zone outage](/cloud/rpo-rto#availability-zone-outage).
+- **Roll out one Worker at a time.** Restarting every Worker at once empties their
+  [Sticky Execution](/sticky-execution) caches, so each Workflow Execution replays from its Event History when the new
+  Workers start.
+- **Serverless Workers are the exception.** Temporal starts [Serverless Workers](/serverless-workers) when Tasks arrive,
+  so they don't keep a Worker running. See [Scale Workers automatically](#scale-workers-automatically).
+
 ### Separate Task Queues logically
 
 Use separate Task Queues for distinct workloads. This isolation allows you to control rate limiting, prioritize certain
-workloads, and prevent one workload from starving another. For each Task Queue, ensure you configure at least two
-Workers to poll the Task Queue.
+workloads, and prevent one workload from starving another. Each Task Queue needs its own
+[two or more Workers](#run-at-least-two-workers-per-task-queue).
 
 In the order management reference app, each microservice has its own Task Queue. For example, the Billing Worker polls
 the `billing` Task Queue, while the Order Worker polls the `order` Task Queue. This separation allows each service to
@@ -266,6 +290,20 @@ metrics:
 
 Refer to [Intro to Worker Tuning](https://temporal.io/blog/an-introduction-to-worker-tuning) for more details and
 examples on how to interpret Worker metrics.
+
+### Scale Workers automatically
+
+Instead of adjusting the Worker count by hand, scale it from Task Queue backlog and slot utilization:
+
+- **On Kubernetes**, the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller#autoscaling-versioned-workers)
+  attaches a Kubernetes HPA or KEDA `ScaledObject` to each Worker Deployment Version, so each version scales
+  separately.
+- **With Serverless Workers**, Temporal starts and stops Workers in response to Tasks on the Task Queue, so you don't
+  provision or scale a fleet. AWS Lambda and GCP Cloud Run support is in Public Preview. See
+  [Deploy Serverless Workers](/production-deployment/worker-deployments/serverless-workers).
+
+If you autoscale, set the minimum replica count to at least two so the
+[two-Worker minimum](#run-at-least-two-workers-per-task-queue) still holds when the Task Queue is idle.
 
 ### Optimize Worker cache
 
