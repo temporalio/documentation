@@ -251,7 +251,7 @@ const developGoCategory = {
       },
       {
         type: 'category',
-        label: 'Temporal Nexus',
+        label: 'Nexus',
         collapsed: true,
         link: {
           type: 'doc',
@@ -1470,7 +1470,8 @@ module.exports = {
           },
           items: [
             'cloud/aws-export-s3',
-            'cloud/gcp-export-gcs'
+            'cloud/gcp-export-gcs',
+            'cloud/azure-export-blob-storage'
           ],
         },
         {
