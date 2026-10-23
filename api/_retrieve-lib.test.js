@@ -10,6 +10,7 @@ const {
   parseParams,
   toMarkdownUrl,
   shapeResults,
+  validResults,
 } = require('./_retrieve-lib');
 
 const compiled = compileRedirects([
@@ -156,5 +157,24 @@ describe('isAllowed', () => {
   ];
   for (const url of blocked) {
     it(`blocks ${url}`, () => assert.strictEqual(isAllowed(url, allowlist), false));
+  }
+});
+
+describe('validResults', () => {
+  const good = { content: 'a', source_url: 'https://docs.temporal.io/workflows' };
+
+  it('keeps well-formed results in order', () => {
+    assert.deepStrictEqual(validResults([good, { ...good, content: 'b' }]), [good, { ...good, content: 'b' }]);
+  });
+
+  const malformed = [
+    ['null', null],
+    ['a string', 'text'],
+    ['no source_url', { content: 'a' }],
+    ['non-string source_url', { content: 'a', source_url: 7 }],
+    ['non-string content', { content: null, source_url: good.source_url }],
+  ];
+  for (const [name, item] of malformed) {
+    it(`drops ${name}`, () => assert.deepStrictEqual(validResults([good, item]), [good]));
   }
 });
