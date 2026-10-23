@@ -197,7 +197,7 @@ function that returns a `bool` indicating whether to use Continue-As-New.
 
 In addition to the number of Events, monitor the size of the Event History. Input parameters and output values of both
 Workflows and Activities are stored in the Event History. Storing large amounts of data can lead to performance
-problems, so the Temporal Cluster limits both the size of individual payloads and the total Event History size. A
+problems, so the Temporal Service limits both the size of individual payloads and the total Event History size. A
 Workflow Execution may be terminated if any single payload exceeds 2 MB or if the entire Event History exceeds 50 MB.
 
 To avoid hitting these limits, avoid passing large amounts of data into and out of Workflows and Activities. A common
@@ -253,12 +253,12 @@ metrics:
 
 - High Schedule-to-Start latency and high CPU/memory: Workers are saturated. Scale up your Workers or add more Workers.
   It's also possible your Workers are blocked on Activities. Refer to
-  [Troubleshooting - Depletion of Activity Task Slots](../troubleshooting/performance-bottlenecks.mdx#depletion-of-temporal_worker_task_slots_available-for-activityworker)
+  [Troubleshooting - Depletion of Activity Task Slots](/troubleshooting/performance-bottlenecks#depletion-of-temporal_worker_task_slots_available-for-activityworker)
   for guidance.
 - High Schedule-to-Start latency and low CPU/memory: Workers are underutilized. Increase the number of pollers, executor
   slots, or both. If this is accompanied by high `temporal_long_request_latency` or `temporal_long_request_failure`,
   your Workers are struggling to reach the Temporal Service. Refer to
-  [Troubleshooting - Long Request Latency](../troubleshooting/performance-bottlenecks.mdx#high-temporal_long_request_failure)
+  [Troubleshooting - Long Request Latency](/troubleshooting/performance-bottlenecks#high-temporal_long_request_failure)
   for guidance.
 - Low Schedule-to-Start latency and low CPU/memory: Depending on your workload, this could be normal. If you are
   consistently seeing low memory usage and low CPU usage, you may be over-provisioning your Workers and can consider
@@ -277,7 +277,7 @@ pressure.
 Having a high `temporal_sticky_cache_size` by itself isn't necessarily an issue, but if your Workers are memory-bound,
 consider reducing the cache size to allow more concurrent executions. We recommend you experiment with different cache
 sizes in a staging environment to find the optimal setting for your Workflows. Refer to
-[Troubleshooting - Caching](../troubleshooting/performance-bottlenecks.mdx#caching) for more details on how to interpret
+[Troubleshooting - Caching](/troubleshooting/performance-bottlenecks#caching) for more details on how to interpret
 the different cache-related metrics.
 
 ### Manage scale-down safely

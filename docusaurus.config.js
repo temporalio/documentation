@@ -234,7 +234,16 @@ module.exports = async function createConfigAsync() {
         searchPagePath: false, // Disable default search page - using custom implementation at src/pages/search.tsx
         insights: true,
         searchParameters: {
-          attributesToRetrieve: ['hierarchy', 'content', 'anchor', 'url', 'url_without_anchor', 'type', 'sdk_language'],
+          attributesToRetrieve: [
+            'hierarchy',
+            'content',
+            'anchor',
+            'url',
+            'url_without_anchor',
+            'type',
+            'sdk_language',
+            'section_title',
+          ],
         },
       },
       mermaid: {
@@ -499,6 +508,13 @@ module.exports = async function createConfigAsync() {
         admonitions: true,
       },
       mermaid: true,
+      // Adds default frontmatter (currently `tags`) from `_frontmatter.yml` files in
+      // each page's folder and its ancestors. See plugins/shared/frontmatterDefaults.js.
+      parseFrontMatter: async (params) => {
+        const result = await params.defaultParseFrontMatter(params);
+        const { applyDefaults } = require('./plugins/shared/frontmatterDefaults');
+        return { ...result, frontMatter: applyDefaults(params.filePath, result.frontMatter, { rootDir: __dirname }) };
+      },
     },
     themes: ['@docusaurus/theme-mermaid'],
     future: {

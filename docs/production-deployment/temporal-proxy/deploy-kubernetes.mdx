@@ -12,7 +12,7 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader type="prerelease">
+<ReleaseNoteHeader type="publicPreview">
   Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
   releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
   the definitive configuration schema.
@@ -146,8 +146,8 @@ set, probe the proxy some other way, such as an exec probe running a client that
 
 ## Shut down cleanly
 
-On `SIGTERM` the proxy stops accepting connections and drains in-flight RPCs. Each serving tier, meaning the gateway and
-each upstream proxy, drains within five seconds, and the whole stop sequence is bounded at 30 seconds. Long-poll methods
+On `SIGTERM` the proxy stops accepting connections and drains in-flight RPCs. The gateway drains within five seconds,
+and the whole stop sequence is bounded at 30 seconds. Long-poll methods
 block for much longer than that, so a rollout normally cuts some of them short: the proxy logs a warning naming the
 deadline that ended the drain and still exits zero, because the callers re-poll. Treat that warning as ordinary on a
 restart rather than a failed shutdown.

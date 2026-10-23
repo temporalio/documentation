@@ -46,13 +46,23 @@ The following limits apply at the Temporal Cloud Account level (per account).
   - Automatically increased as you start creating Namespaces
   - [Contact support](/evaluate/cloud/support#support-ticket) for large-scale needs
 
+### Connectivity Rules {/* #connectivity-rules */}
+
+Without [Projects](/cloud/projects), the Account allows 50 private Connectivity Rules and 1 public Connectivity Rule, for a total of 51.
+
+- Scope: Account
+- Default limit: 50 private Connectivity Rules and 1 public Connectivity Rule (51 total)
+- How to increase: [Contact support](/evaluate/cloud/support#support-ticket)
+
+With [Projects](/cloud/projects) enabled, each Project has its own Connectivity Rule limits. Connectivity Rules across all Projects still count toward this Account total of 51. See [Project Connectivity Rules](#project-connectivity-rules).
+
 ## Project level {/* #project-level */}
 
 <ReleaseNoteHeader
   featureName="projects"
 />
 
-The following limits apply at the Project level for any new Project created. The Default Project uses the Account-level resource limits rather than the per-Project defaults shown above. For example, the Default Project inherits the Account's Namespace quota and Account-level limits for Service Accounts, Nexus Endpoints, and Connectivity Rules.
+The following limits apply at the Project level for any new Project created when [Projects](/cloud/projects) are enabled. The Default Project uses the Account-level resource limits rather than these per-Project defaults for Namespaces, Service Accounts, and Nexus Endpoints. Connectivity Rule limits are listed below.
 
 ### Namespaces and Project-scoped Service accounts
 
@@ -66,10 +76,13 @@ The following limits apply at the Project level for any new Project created. The
 - Default: 5
 - How to increase: [Contact support](/evaluate/cloud/support#support-ticket)
 
-### Connectivity rules
+### Connectivity rules {/* #project-connectivity-rules */}
 
-- Scope: Project. Each non-default Project supports up to one Public Connectivity Rule.
-- Default: 6
+These limits apply when [Projects](/cloud/projects) are enabled.
+
+- Each Project allows 1 public Connectivity Rule.
+- Each Project allows up to 5 private Connectivity Rules.
+- The total number of Connectivity Rules, public and private, across all Projects is subject to the Account limit of 51.
 - How to increase: [Contact support](/evaluate/cloud/support#support-ticket)
 
 ## Namespace level

@@ -282,7 +282,8 @@ See [gRPC message size limit](/troubleshooting/blob-size-limit-error).
 - Cause: `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`
 
 A Payload in the Workflow Task completion exceeds the Payload size limit.
-SDKs that report this cause, such as Python SDK 1.23.0 and later and Go SDK 1.43.0 and later, leave the Workflow Execution open.
+SDKs that report this cause leave the Workflow Execution open.
+For the SDK versions that report it, see [Payload size limit error behavior](/troubleshooting/blob-size-limit-error#payload-error-behavior).
 
 Store large data in external storage, pass a reference through the Workflow, and deploy the fix to your Workers.
 See [Payload size limit](/troubleshooting/blob-size-limit-error).
