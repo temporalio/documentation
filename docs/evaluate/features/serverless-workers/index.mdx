@@ -108,6 +108,14 @@ Serverless Workers may not be ideal when:
   Lambda each invocation connects fresh, so those features do not apply. AgentCore Runtime Workers and Cloud Run
   instances hold a connection for the lifetime of their compute.
 
+:::caution Multi-cloud Replication is not supported
+
+Serverless Workers do not support [Multi-cloud Replication](/cloud/high-availability#multi-cloud-replication).
+They must be invoked from the same cloud provider where the Namespace is currently active. After a failover to a
+different cloud provider, Serverless Workers can no longer be invoked. This is a temporary restriction during Public Preview.
+
+:::
+
 ## How Serverless Workers compare to long-lived Workers
 
 |                | Long-lived Worker                                          | Serverless Worker                                                                                  |

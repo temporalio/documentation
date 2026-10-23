@@ -1,8 +1,9 @@
 ---
-id: migrate-within-cloud
-title: Migrate between regions
-slug: /cloud/migrate/migrate-within-cloud
-description: Add a Namespace replica in a new region, wait for it to activate, then fail over for a zero-downtime Temporal Cloud migration.
+id: between-regions-or-cloud-providers
+title: Migrate between regions or cloud providers
+sidebar_label: Between regions or cloud providers
+slug: /cloud/migrate/between-regions-or-cloud-providers
+description: Move a Temporal Cloud Namespace to another region or cloud provider with zero downtime by adding a replica, waiting for it to activate, and failing over.
 tags:
   - Temporal Cloud
   - Production
@@ -31,7 +32,7 @@ If the Namespace uses Private Connectivity, the steps below need additional DNS 
 
 :::caution GCP capacity restriction
 
-Adding a replica in a GCP region requires an approved exception for your account. See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction).
+Before creating a GCP Namespace or adding a GCP replica, check [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for regional availability and exception requirements.
 
 :::
 

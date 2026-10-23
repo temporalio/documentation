@@ -1,6 +1,6 @@
 ---
 id: temporal-client
-title: Temporal Client - Java SDK
+title: Temporal Client
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description:
@@ -8,8 +8,6 @@ description:
   Execution results.
 tags:
   - Temporal Client
-  - Java SDK
-  - Temporal SDKs
   - Certificates
 ---
 
@@ -940,7 +938,7 @@ YourWorkflowInterface workflow1 =
   - `enums.AllowDuplicateFailedOnly`: The Workflow can start if the earlier Workflow Execution failed, Canceled, or
     Terminated.
   - `AllowDuplicate`: The Workflow can start regardless of the earlier Execution's closure status.
-  - `RejectDuplicate`: The Workflow can not start if there is a earlier Run.
+  - `RejectDuplicate`: The Workflow can not start if there is an earlier Run.
 
 ```java
 //create Workflow stub for GreetWorkflowInterface

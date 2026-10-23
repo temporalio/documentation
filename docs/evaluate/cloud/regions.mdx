@@ -24,21 +24,25 @@ Subscribe there to get an email whenever Temporal creates, updates, or resolves 
 
 :::caution
 
-Starting in October 2026, new Temporal Cloud Namespace provisioning is temporarily restricted in all GCP regions due to limited GCP compute capacity.
+New Temporal Cloud Namespace provisioning is temporarily restricted in Iowa (`us-central1`), Northern Virginia (`us-east4`), and Frankfurt (`europe-west3`) due to limited GCP compute capacity.
+Provisioning is available to all accounts in Mumbai (`asia-south1`), Jakarta (`asia-southeast2`), and Oregon (`us-west1`).
 
 :::
 
 Existing GCP Namespaces continue to operate as normal.
 For Namespaces using [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity), additional Temporal Resource Units (TRUs) are limited and may be unavailable, depending on the region.
 
-If your new Namespace must be in GCP, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
+If your new Namespace must be in a restricted GCP region, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
 Include the required GCP regions, expected Action volume, and business requirements for your workload.
 
-Adding a new GCP replica to an existing Namespace requires an approved exception for your account, whether you intend to use Multi-Region Replication or Multi-Cloud Replication.
+Multi-Cloud Replication to Mumbai (`asia-south1`) and Oregon (`us-west1`) is available for the [supported region pairs](#gcp-service-regions) without an account exception.
+Jakarta (`asia-southeast2`) does not support High Availability features.
+To add a replica in a restricted GCP region using Multi-Region Replication or Multi-Cloud Replication, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
+In restricted regions, an approved exception enables self-service creation of single-region GCP Namespaces only; adding a GCP replica still requires assistance from Temporal Dev Success.
 You can still add an AWS replica to an existing GCP Namespace without an exception, where that replication option is [supported](#gcp-service-regions).
 See [Enable and manage High Availability](/cloud/high-availability/enable) for instructions.
 
-In the interim, you can deploy new workloads in an [AWS region](#aws-service-regions).
+You can also deploy new workloads in an [AWS region](#aws-service-regions).
 
 ## AWS service regions
 
@@ -54,7 +58,10 @@ Temporal Cloud operates in the following Google Cloud (GCP) regions:
 
 :::caution GCP capacity restriction
 
-New Namespaces and new replicas in all of these regions require an approved exception for your account. See [GCP capacity restriction](#gcp-capacity-restriction).
+Provisioning is available in Mumbai (`asia-south1`), Jakarta (`asia-southeast2`), and Oregon (`us-west1`).
+New Namespaces in Iowa (`us-central1`), Northern Virginia (`us-east4`), and Frankfurt (`europe-west3`) require an approved account exception.
+Adding a replica in a restricted region also requires assistance from Temporal Dev Success, even with an approved exception.
+See [GCP capacity restriction](#gcp-capacity-restriction).
 
 :::
 

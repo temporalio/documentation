@@ -1,0 +1,126 @@
+---
+id: azure-export-blob-storage
+title: Export Workflow Event History to Azure Blob Storage
+sidebar_label: Azure export to Blob Storage
+description: Configure Azure Blob Storage access for Temporal Cloud Workflow History Export using admin consent, Azure CLI, or Terraform, then verify your sink.
+slug: /cloud/export/azure-export-blob-storage
+toc_max_heading_level: 4
+tags:
+  - Export Workflow History
+  - Temporal Cloud
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview" />
+
+Export closed Workflow Event Histories from an Azure-hosted Temporal Cloud Namespace to an Azure Blob Storage container.
+Export is available wherever Temporal Cloud supports Azure Namespaces.
+For export timing and file format, see [Workflow History Export](/cloud/export).
+
+## Prerequisites
+
+Before configuring the export sink, prepare the following:
+
+- An Azure storage account and Blob container. The storage account **must be in the same region as your Namespace**.
+- The Azure tenant identifier, subscription identifier, resource group, storage account name, and container name.
+- The ability to add an enterprise application to your Microsoft Entra tenant, such as through the **Cloud Application Administrator** or **Application Administrator** role. See [Microsoft's enterprise application prerequisites](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/create-service-principal-cross-tenant#prerequisites).
+- Permission to assign Azure roles on the storage account: `Microsoft.Authorization/roleAssignments/write`, such as through **Role Based Access Control Administrator**. See [Azure role assignment prerequisites](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-cli#prerequisites).
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) for the commands below, including the storage role assignments in the admin consent path.
+
+## Enter the export sink details
+
+1. Open the Temporal Cloud UI and navigate to your Namespace.
+2. Select **Configure** from the **Export** card.
+3. Enter the following fields:
+
+   | Field | Value |
+   | --- | --- |
+   | **Name** | A name for the export sink. |
+   | **Azure Tenant ID** | The identifier of the Azure tenant that owns your storage account. |
+   | **Azure Subscription ID** | The identifier of the subscription that contains your storage account. |
+   | **Storage Account Name** | The name of your storage account. |
+   | **Container Name** | The name of the Blob container that will receive exported Event Histories. |
+   | **Resource Group** | The resource group that contains your storage account. |
+
+## Register the Temporal enterprise application
+
+Temporal provides a customer-specific application client identifier in the export configuration UI.
+Use that value wherever the commands below show `<application-client-id>`.
+Adding the enterprise application creates a service principal in your Azure tenant.
+
+Choose either **Admin Consent** or **Azure CLI** under **Deploy Method** to register the application.
+After completing either path, [assign storage roles](#assign-storage-roles).
+
+### Register with admin consent
+
+1. Select **Admin Consent**.
+2. Select **Grant admin consent**. You must enter **Azure Tenant ID** before this button is enabled.
+3. Sign in to the target Azure tenant and complete the consent flow.
+4. Return to the export configuration page.
+
+For details, see [Create an enterprise application from a multitenant application](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/create-service-principal-cross-tenant?pivots=admin-consent-url).
+
+### Register with Azure CLI
+
+1. Select **Azure CLI** in the export configuration UI.
+2. Sign in to the tenant that owns your storage account:
+
+   ```bash
+   az login --tenant "<tenant-id>"
+   az account set --subscription "<subscription-id>"
+   ```
+
+3. Register the enterprise application using the client identifier shown in the UI:
+
+   ```bash
+   az ad sp create --id "<application-client-id>"
+   ```
+
+## Assign storage roles
+
+After registering the enterprise application through either path, assign both of the following roles at the storage account scope:
+
+| Role | Required permission it provides |
+| --- | --- |
+| **Reader and Data Access** | `Microsoft.Storage/storageAccounts/read` |
+| **Storage Blob Data Contributor** | `Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write` |
+
+If you used admin consent, sign in to Azure CLI and select the subscription before running the role assignment commands:
+
+```bash
+az login --tenant "<tenant-id>"
+az account set --subscription "<subscription-id>"
+```
+
+Replace the placeholders with your application client identifier and storage account details:
+
+```bash
+az role assignment create \
+  --assignee "<application-client-id>" \
+  --role "Reader and Data Access" \
+  --scope "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Storage/storageAccounts/<storage-account>"
+
+az role assignment create \
+  --assignee "<application-client-id>" \
+  --role "Storage Blob Data Contributor" \
+  --scope "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Storage/storageAccounts/<storage-account>"
+```
+
+### Configure access with Terraform
+
+As an alternative to registering the service principal and assigning the built-in roles manually, use the [Azure export service principal Terraform module](https://github.com/temporalio/terraform-modules/tree/main/modules/azure-export-sp).
+The module creates or reuses the service principal and assigns a custom role with the required storage account read and blob write permissions.
+After applying the module, return to the Temporal Cloud UI to verify and save the export sink.
+
+## Verify and save the export sink
+
+1. In the export configuration page, select **Verify** to check that Temporal can write a test file to the container.
+2. Confirm that verification succeeds. If it fails, check the tenant, storage account details, and role assignments before trying again.
+3. Select **Create** to save the export sink.
+4. The page refreshes automatically. Confirm that the Export screen shows **Enabled**.
+
+## Next steps
+
+- [Monitor export progress](/cloud/export#monitor)
+- [Work with exported files](/cloud/export#working-with-exported-files)
