@@ -2,7 +2,7 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 
 const { compileRedirects } = require('../bin/redirect-utils');
-const { LIMITS, parseParams, toMarkdownUrl, shapeResults } = require('./_retrieve-lib');
+const { LIMITS, parseIdList, parseParams, toMarkdownUrl, shapeResults } = require('./_retrieve-lib');
 
 const compiled = compileRedirects([
   { source: '/old-page', destination: '/develop/python/workflows/versioning' },
@@ -101,5 +101,16 @@ describe('parseParams', () => {
     const { params } = parse(`q=x&jtb=${'j'.repeat(400)}&agent=${'a'.repeat(100)}`);
     assert.strictEqual(params.jtb.length, LIMITS.jtb);
     assert.strictEqual(params.agent.length, LIMITS.agent);
+  });
+});
+
+describe('parseIdList', () => {
+  it('splits, trims, and drops empty entries', () => {
+    assert.deepStrictEqual(parseIdList(' a, b ,,c '), ['a', 'b', 'c']);
+  });
+
+  it('returns an empty list when unset', () => {
+    assert.deepStrictEqual(parseIdList(undefined), []);
+    assert.deepStrictEqual(parseIdList(''), []);
   });
 });

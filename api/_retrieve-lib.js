@@ -78,4 +78,12 @@ function shapeResults(results, compiledRedirects) {
   }));
 }
 
-module.exports = { DOCS_HOST, ENDPOINT, LIMITS, USAGE, parseParams, toMarkdownUrl, shapeResults };
+// A comma-separated env var as a list, ignoring spaces and empty entries.
+function parseIdList(value) {
+  return (value || '')
+    .split(',')
+    .map((id) => id.trim())
+    .filter(Boolean);
+}
+
+module.exports = { DOCS_HOST, ENDPOINT, LIMITS, USAGE, parseIdList, parseParams, toMarkdownUrl, shapeResults };

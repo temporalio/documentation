@@ -38,8 +38,8 @@ The response is a JSON array, most relevant first:
 
 For docs results, `source_url` is the page's raw Markdown and `page_url` is the HTML page to cite. The function follows
 `vercel.json` redirects first, so a page Kapa indexed under an old URL points at its current location. The anchor is
-kept on `page_url` only, because the `.md` has no anchor targets. Results from other sources (SDK references, GitHub,
-the forum) come back with both fields set to Kapa's original URL.
+kept on `page_url` only, because the `.md` has no anchor targets. If `KAPA_SOURCE_IDS` is unset, results from other sources
+(SDK references, GitHub, the forum) come back with both fields set to Kapa's original URL.
 
 Errors are JSON `{ error }`. A 400 or 405 also includes a `usage` string.
 
@@ -63,7 +63,7 @@ These are Vercel project environment variables, set for Production and Preview:
 | `KAPA_API_KEY` | The `docs-agent-retrieve-experiment` key. It's separate from the widget and MCP keys, so it can be rotated alone |
 | `KAPA_PROJECT_ID` | The production Kapa project |
 | `KAPA_INTEGRATION_ID` | The `docs-agent-retrieve-experiment` HTTP API integration, which keeps this traffic separate in Kapa analytics |
-| `KAPA_SOURCE_GROUP_ID` | Optional. Limits search to one Kapa source group. Unset means every source, the same as the MCP server |
+| `KAPA_SOURCE_IDS` | Comma-separated Kapa source IDs to search, sent as `source_ids_include`. Set to the `docs.temporal.io` web crawl (`20c78fbc-b2ea-4c57-b953-3c5036f6c4b4`). Unset means every source, the same as the MCP server. A source group filter can't do this, because Kapa adds every Global source to any group filter |
 | `RETRIEVE_LOG_SALT` | A random string used to hash caller IPs in the log |
 | `BLOB_READ_WRITE_TOKEN` | Added by Vercel when the private Blob store is connected to the project |
 

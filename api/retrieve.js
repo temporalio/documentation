@@ -3,7 +3,7 @@ const { put } = require('@vercel/blob');
 const { waitUntil } = require('@vercel/functions');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
-const { USAGE, parseParams, shapeResults } = require('./_retrieve-lib');
+const { USAGE, parseIdList, parseParams, shapeResults } = require('./_retrieve-lib');
 
 // Public, no-auth search over Temporal's docs for agents, proxying Kapa's
 // Retrieval API with a server-side key. Part of the agent-discoverable search
@@ -60,9 +60,12 @@ function log(record) {
 }
 
 async function queryKapa(query) {
-  const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID, KAPA_SOURCE_GROUP_ID } = process.env;
+  const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID, KAPA_SOURCE_IDS } = process.env;
   const body = { query, integration_id: KAPA_INTEGRATION_ID };
-  if (KAPA_SOURCE_GROUP_ID) body.source_group_ids_include = [KAPA_SOURCE_GROUP_ID];
+  // Source IDs rather than source groups: a group filter always adds every
+  // source in Kapa's Global group, which here is all of them.
+  const sourceIds = parseIdList(KAPA_SOURCE_IDS);
+  if (sourceIds.length > 0) body.source_ids_include = sourceIds;
 
   return fetch(`https://api.kapa.ai/query/v1/projects/${KAPA_PROJECT_ID}/retrieval/`, {
     method: 'POST',
