@@ -92,6 +92,13 @@ connecting or while reading Kapa's response returns 504.
 Each logged request writes one small Blob, so a burst of distinct questions creates that many objects. The names start
 with the date, so a day's records can be listed or deleted with `--prefix retrieve-log/YYYY-MM-DD/`.
 
+## Retention and privacy
+
+The log holds free-text questions, user agents, countries, and hashed IPs from the public, in the Blob store and in the
+runtime logs. Delete `retrieve-log/` within 30 days of the experiment ending, and don't copy records out of the store
+except as aggregate counts. Duncan Mackenzie owns the store and the deletion. Whoever owns the docs privacy policy must
+confirm that it covers this log before a follow-up change advertises the endpoint.
+
 ## Request log
 
 Each request writes one record to the private Blob store at `retrieve-log/YYYY-MM-DD/<timestamp>-<random>.json`, and the
