@@ -3,7 +3,18 @@ const { put } = require('@vercel/blob');
 const { waitUntil } = require('@vercel/functions');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
-const { LIMITS, USAGE, isAllowed, parseAllowlist, parseList, parseParams, shapeResults, validResults } = require('./_retrieve-lib');
+const {
+  LIMITS,
+  RETURN_LIMIT,
+  USAGE,
+  isAllowed,
+  parseAllowlist,
+  parseList,
+  parseParams,
+  parseTopK,
+  shapeResults,
+  validResults,
+} = require('./_retrieve-lib');
 
 // Public, no-auth search over Temporal's docs for agents, proxying Kapa's
 // Retrieval API with a server-side key. Part of the agent-discoverable search
@@ -73,7 +84,8 @@ function log(record) {
 
 async function queryKapa(query) {
   const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID, KAPA_SOURCE_IDS } = process.env;
-  const body = { query, integration_id: KAPA_INTEGRATION_ID };
+  // Ask for more than RETURN_LIMIT, because the allowlist drops results after.
+  const body = { query, integration_id: KAPA_INTEGRATION_ID, top_k: parseTopK(process.env.KAPA_TOP_K) };
   // Source IDs rather than source groups: a group filter always adds every
   // source in Kapa's Global group, which here is all of them. As of
   // 2026-10-23 the Retrieval endpoint accepts source_ids_include but ignores
@@ -118,6 +130,7 @@ module.exports = async (request, response) => {
     // How many KAPA_SOURCE_IDS were sent. Kapa ignores them today, so this
     // doesn't mean the search was limited to those sources.
     source_ids_sent: parseList(process.env.KAPA_SOURCE_IDS).length,
+    fetched_count: null,
     dropped_count: null,
     status: null,
     upstream_status: null,
@@ -178,8 +191,9 @@ module.exports = async (request, response) => {
   try {
     const valid = validResults(results);
     const kept = valid.filter((result) => isAllowed(result.source_url, allowlist));
+    record.fetched_count = results.length;
     record.dropped_count = results.length - kept.length;
-    const shaped = shapeResults(kept, compiledRedirects);
+    const shaped = shapeResults(kept.slice(0, RETURN_LIMIT), compiledRedirects);
     record.result_count = shaped.length;
     record.top_pages = shaped.slice(0, 3).map((result) => result.page_url);
     finish(200, shaped);

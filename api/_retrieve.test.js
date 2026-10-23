@@ -181,6 +181,35 @@ describe('results', () => {
     assert.strictEqual(kapaCalls[0].headers['X-API-KEY'], 'key');
   });
 
+  it('asks Kapa for more results than it returns and caps the output', async () => {
+    const many = Array.from({ length: 30 }, (_, i) => ({ content: `c${i}`, source_url: `${DOCS}/page-${i}` }));
+    kapaResults(many);
+    const res = await call('?q=x');
+    assert.strictEqual(kapaCalls[0].body.top_k, 30);
+    assert.strictEqual(res.body.length, 15);
+    assert.strictEqual(res.body[0].content, 'c0');
+    assert.strictEqual(record().fetched_count, 30);
+    assert.strictEqual(record().dropped_count, 0);
+    assert.strictEqual(record().result_count, 15);
+  });
+
+  it('sends the KAPA_TOP_K value, clamped', async () => {
+    await call('?q=x', { env: { KAPA_TOP_K: '999' } });
+    assert.strictEqual(kapaCalls[0].body.top_k, 50);
+  });
+
+  it('keeps allowed results when the first hits are all dropped', async () => {
+    const dropped = Array.from({ length: 20 }, (_, i) => ({
+      content: `s${i}`,
+      source_url: `https://temporalio.slack.com/archives/C1/p${i}`,
+    }));
+    kapaResults([...dropped, { content: 'page', source_url: `${DOCS}/workflows` }]);
+    const res = await call('?q=x');
+    assert.strictEqual(res.body.length, 1);
+    assert.strictEqual(record().fetched_count, 21);
+    assert.strictEqual(record().dropped_count, 20);
+  });
+
   it('does not expose how many source IDs were sent', async () => {
     const res = await call('?q=x', { env: { KAPA_SOURCE_IDS: 'a,b,c' } });
     assert.strictEqual(res.headers['x-retrieve-source-filter'], undefined);

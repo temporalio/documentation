@@ -4,10 +4,12 @@ const assert = require('node:assert');
 const { compileRedirects } = require('../bin/redirect-utils');
 const {
   LIMITS,
+  RETURN_LIMIT,
   isAllowed,
   parseAllowlist,
   parseList,
   parseParams,
+  parseTopK,
   toMarkdownUrl,
   shapeResults,
   validResults,
@@ -177,4 +179,23 @@ describe('validResults', () => {
   for (const [name, item] of malformed) {
     it(`drops ${name}`, () => assert.deepStrictEqual(validResults([good, item]), [good]));
   }
+});
+
+describe('parseTopK', () => {
+  const cases = [
+    ['unset', undefined, 30],
+    ['empty', '', 30],
+    ['not a number', 'many', 30],
+    ['in range', '20', 20],
+    ['below the minimum', '0', 1],
+    ['negative', '-5', 1],
+    ['above the maximum', '500', 50],
+  ];
+  for (const [name, input, expected] of cases) {
+    it(name, () => assert.strictEqual(parseTopK(input), expected));
+  }
+
+  it('asks for more than it returns', () => {
+    assert.ok(parseTopK(undefined) > RETURN_LIMIT);
+  });
 });

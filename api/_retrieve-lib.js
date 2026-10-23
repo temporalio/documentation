@@ -115,6 +115,19 @@ function validResults(results) {
   );
 }
 
+const TOP_K = { default: 30, min: 1, max: 50 };
+// How many results a caller gets back, after filtering.
+const RETURN_LIMIT = 15;
+
+// How many results to ask Kapa for. More than RETURN_LIMIT, because results
+// outside the allowlist are dropped afterward. A missing or invalid value gives
+// the default, and a value out of range is clamped.
+function parseTopK(value) {
+  const n = Number.parseInt(value, 10);
+  if (!Number.isFinite(n)) return TOP_K.default;
+  return Math.min(TOP_K.max, Math.max(TOP_K.min, n));
+}
+
 // A comma-separated env var as a list, ignoring spaces and empty entries.
 function parseList(value) {
   return (value || '')
@@ -127,11 +140,13 @@ module.exports = {
   DOCS_HOST,
   ENDPOINT,
   LIMITS,
+  RETURN_LIMIT,
   USAGE,
   isAllowed,
   parseAllowlist,
   parseList,
   parseParams,
+  parseTopK,
   toMarkdownUrl,
   shapeResults,
   validResults,
