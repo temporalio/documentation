@@ -26,9 +26,11 @@ For an in-depth guide covering everything from why you need High Availability to
 
 :::caution GCP capacity restriction
 
-Creating a new single-region GCP Namespace requires an approved exception for your account.
-To add a GCP replica using Multi-Region Replication or Multi-Cloud Replication, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
-You can add an AWS replica to an existing GCP Namespace without one.
+Multi-Cloud Replication to Mumbai (`asia-south1`) and Oregon (`us-west1`) is available for supported region pairs without an account exception.
+Jakarta (`asia-southeast2`) does not support High Availability features.
+Creating a new single-region Namespace in Iowa (`us-central1`), Northern Virginia (`us-east4`), or Frankfurt (`europe-west3`) requires an approved account exception.
+To add a replica in one of those restricted regions, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
+You can add an AWS replica to an existing GCP Namespace without an exception.
 See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction).
 
 :::
