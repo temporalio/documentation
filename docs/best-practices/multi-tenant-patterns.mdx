@@ -252,7 +252,7 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 - For 5,000 customers: **20 Workers minimum** (plus replicas for HA)
 
 **Namespace capacity:**
-- At 250 tenants per Worker, need 2 Workers per group of tenants (for HA)
+- At 250 tenants per Worker, need 2 Workers per group of tenants (for [HA](/best-practices/worker#run-at-least-two-workers-per-task-queue))
 - Maximum tenants in Namespace: (2,000 Workers ÷ 2) × 250 = **250,000 tenants**
 
 :::note
