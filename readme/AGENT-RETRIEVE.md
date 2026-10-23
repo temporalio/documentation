@@ -87,6 +87,7 @@ sent, and a failed write never fails the request.
 | `country` | `x-vercel-ip-country` |
 | `ip_hash` | First 16 hex characters of SHA-256 of the salt and IP. Raw IPs aren't stored |
 | `deployment` | `production`, `preview`, or `development` |
+| `source_filter` | Number of IDs in `KAPA_SOURCE_IDS` when the request ran. `0` means every source was searched. Also returned as the `X-Retrieve-Source-Filter` response header |
 | `status`, `upstream_status` | Status returned to the caller, and Kapa's status |
 | `result_count` | Number of results. `0` points at a content gap |
 | `latency_ms` | Time spent in the function |

@@ -99,6 +99,8 @@ module.exports = async (request, response) => {
     country: header(request, 'x-vercel-ip-country'),
     ip_hash: ipHash(request),
     deployment: process.env.VERCEL_ENV || 'development',
+    // How many Kapa sources the search was limited to. 0 means all of them.
+    source_filter: parseIdList(process.env.KAPA_SOURCE_IDS).length,
     status: null,
     upstream_status: null,
     result_count: null,
@@ -109,6 +111,7 @@ module.exports = async (request, response) => {
   const finish = (status, body) => {
     record.status = status;
     record.latency_ms = Date.now() - started;
+    response.setHeader('X-Retrieve-Source-Filter', String(record.source_filter));
     send(response, status, body);
     log(record);
   };
