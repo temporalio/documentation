@@ -17,7 +17,7 @@ const BASE_ENV = {
   RETRIEVE_LOG_SALT: 'salt',
   BLOB_READ_WRITE_TOKEN: 'token',
 };
-const ENV_KEYS = [...Object.keys(BASE_ENV), 'KAPA_SOURCE_IDS', 'KAPA_TOP_K'];
+const ENV_KEYS = [...Object.keys(BASE_ENV), 'KAPA_SOURCE_IDS'];
 
 const originalLoad = Module._load;
 const originalFetch = global.fetch;
@@ -181,21 +181,9 @@ describe('results', () => {
     assert.strictEqual(kapaCalls[0].headers['X-API-KEY'], 'key');
   });
 
-  it('asks Kapa for more results than it returns and caps the output', async () => {
-    const many = Array.from({ length: 30 }, (_, i) => ({ content: `c${i}`, source_url: `${DOCS}/page-${i}` }));
-    kapaResults(many);
-    const res = await call('?q=x');
-    assert.strictEqual(kapaCalls[0].body.top_k, 30);
-    assert.strictEqual(res.body.length, 15);
-    assert.strictEqual(res.body[0].content, 'c0');
-    assert.strictEqual(record().fetched_count, 30);
-    assert.strictEqual(record().dropped_count, 0);
-    assert.strictEqual(record().result_count, 15);
-  });
-
-  it('sends the KAPA_TOP_K value, clamped', async () => {
-    await call('?q=x', { env: { KAPA_TOP_K: '999' } });
-    assert.strictEqual(kapaCalls[0].body.top_k, 50);
+  it('does not send top_k, which Kapa rejects above 15', async () => {
+    await call('?q=x');
+    assert.ok(!('top_k' in kapaCalls[0].body));
   });
 
   it('keeps allowed results when the first hits are all dropped', async () => {

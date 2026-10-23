@@ -5,13 +5,11 @@ const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
 const {
   LIMITS,
-  RETURN_LIMIT,
   USAGE,
   isAllowed,
   parseAllowlist,
   parseList,
   parseParams,
-  parseTopK,
   shapeResults,
   validResults,
 } = require('./_retrieve-lib');
@@ -84,8 +82,10 @@ function log(record) {
 
 async function queryKapa(query) {
   const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID, KAPA_SOURCE_IDS } = process.env;
-  // Ask for more than RETURN_LIMIT, because the allowlist drops results after.
-  const body = { query, integration_id: KAPA_INTEGRATION_ID, top_k: parseTopK(process.env.KAPA_TOP_K) };
+  // No top_k: Kapa's Retrieval endpoint rejects values above its maximum of 15,
+  // which is also what it returns by default, so there's no room to ask for
+  // extra results to cover the ones the allowlist drops.
+  const body = { query, integration_id: KAPA_INTEGRATION_ID };
   // Source IDs rather than source groups: a group filter always adds every
   // source in Kapa's Global group, which here is all of them. As of
   // 2026-10-23 the Retrieval endpoint accepts source_ids_include but ignores
@@ -193,7 +193,7 @@ module.exports = async (request, response) => {
     const kept = valid.filter((result) => isAllowed(result.source_url, allowlist));
     record.fetched_count = results.length;
     record.dropped_count = results.length - kept.length;
-    const shaped = shapeResults(kept.slice(0, RETURN_LIMIT), compiledRedirects);
+    const shaped = shapeResults(kept, compiledRedirects);
     record.result_count = shaped.length;
     record.top_pages = shaped.slice(0, 3).map((result) => result.page_url);
     finish(200, shaped);
