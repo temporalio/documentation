@@ -107,6 +107,14 @@ function isAllowed(sourceUrl, allowlist) {
   );
 }
 
+// Kapa results that can be filtered and shaped: objects with a string `content`
+// and `source_url`. Anything else is dropped rather than passed to the caller.
+function validResults(results) {
+  return results.filter(
+    (result) => result && typeof result.content === 'string' && typeof result.source_url === 'string'
+  );
+}
+
 // A comma-separated env var as a list, ignoring spaces and empty entries.
 function parseList(value) {
   return (value || '')
@@ -126,4 +134,5 @@ module.exports = {
   parseParams,
   toMarkdownUrl,
   shapeResults,
+  validResults,
 };

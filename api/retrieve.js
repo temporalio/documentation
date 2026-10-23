@@ -3,7 +3,16 @@ const { put } = require('@vercel/blob');
 const { waitUntil } = require('@vercel/functions');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
-const { USAGE, isAllowed, parseAllowlist, parseList, parseParams, shapeResults } = require('./_retrieve-lib');
+const {
+  LIMITS,
+  USAGE,
+  isAllowed,
+  parseAllowlist,
+  parseList,
+  parseParams,
+  shapeResults,
+  validResults,
+} = require('./_retrieve-lib');
 
 // Public, no-auth search over Temporal's docs for agents, proxying Kapa's
 // Retrieval API with a server-side key. Part of the agent-discoverable search
@@ -15,22 +24,28 @@ const compiledRedirects = compileRedirects(redirects);
 // Results whose URL isn't covered by RETRIEVE_URL_ALLOWLIST are dropped. Kapa's
 // Retrieval endpoint ignores source_ids_include, so this is what keeps results
 // from sources the public can't open, such as private GitHub repos, out of the
-// response. Unset means no filtering.
+// response. The handler refuses to run without it, so a missing variable can't
+// expose them.
 const allowlist = parseAllowlist(parseList(process.env.RETRIEVE_URL_ALLOWLIST));
 
 const UPSTREAM_TIMEOUT_MS = 10_000;
 
+// No CORS headers: agents call this from a server or a tool, and a wildcard
+// would let any web page spend the Kapa quota through its visitors' browsers.
 const HEADERS = {
   'Content-Type': 'application/json; charset=utf-8',
-  // Every call reaches the function, so every call is logged.
-  'Cache-Control': 'no-store',
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'X-Robots-Tag': 'noindex, nofollow',
 };
 
+// The CDN caches a successful answer, so a repeated question doesn't call Kapa
+// again. A cache hit never reaches the function, so it isn't logged. Errors are
+// never cached.
+const CACHE_OK = 'public, s-maxage=300, stale-while-revalidate=60';
+const CACHE_NONE = 'no-store';
+
 function send(response, status, body) {
   for (const [key, value] of Object.entries(HEADERS)) response.setHeader(key, value);
+  response.setHeader('Cache-Control', status === 200 ? CACHE_OK : CACHE_NONE);
   response.status(status).send(body === undefined ? undefined : JSON.stringify(body));
 }
 
@@ -67,6 +82,9 @@ function log(record) {
 
 async function queryKapa(query) {
   const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID, KAPA_SOURCE_IDS } = process.env;
+  // No top_k: Kapa's Retrieval endpoint rejects values above its maximum of 15,
+  // which is also what it returns by default, so there's no room to ask for
+  // extra results to cover the ones the allowlist drops.
   const body = { query, integration_id: KAPA_INTEGRATION_ID };
   // Source IDs rather than source groups: a group filter always adds every
   // source in Kapa's Global group, which here is all of them. As of
@@ -97,18 +115,22 @@ module.exports = async (request, response) => {
   const started = Date.now();
   const { searchParams } = new URL(request.url, 'https://docs.temporal.io');
   const parsed = parseParams(searchParams);
+  // A rejected request still records who sent it and from where.
+  const raw = (name) => searchParams.get(name)?.trim().slice(0, LIMITS[name]) || null;
   const record = {
     ts: new Date(started).toISOString(),
     q: parsed.params?.q ?? searchParams.get('q')?.slice(0, 200) ?? null,
-    jtb: parsed.params?.jtb ?? null,
-    src: parsed.params?.src ?? null,
-    agent: parsed.params?.agent ?? null,
+    jtb: parsed.params ? parsed.params.jtb : raw('jtb'),
+    src: parsed.params ? parsed.params.src : raw('src'),
+    agent: parsed.params ? parsed.params.agent : raw('agent'),
     ua: header(request, 'user-agent'),
     country: header(request, 'x-vercel-ip-country'),
     ip_hash: ipHash(request),
     deployment: process.env.VERCEL_ENV || 'development',
-    // How many Kapa sources the search was limited to. 0 means all of them.
-    source_filter: parseList(process.env.KAPA_SOURCE_IDS).length,
+    // How many KAPA_SOURCE_IDS were sent. Kapa ignores them today, so this
+    // doesn't mean the search was limited to those sources.
+    source_ids_sent: parseList(process.env.KAPA_SOURCE_IDS).length,
+    fetched_count: null,
     dropped_count: null,
     status: null,
     upstream_status: null,
@@ -120,7 +142,6 @@ module.exports = async (request, response) => {
   const finish = (status, body) => {
     record.status = status;
     record.latency_ms = Date.now() - started;
-    response.setHeader('X-Retrieve-Source-Filter', String(record.source_filter));
     send(response, status, body);
     log(record);
   };
@@ -131,7 +152,7 @@ module.exports = async (request, response) => {
   }
 
   const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID } = process.env;
-  if (!KAPA_API_KEY || !KAPA_PROJECT_ID || !KAPA_INTEGRATION_ID) {
+  if (!KAPA_API_KEY || !KAPA_PROJECT_ID || !KAPA_INTEGRATION_ID || allowlist.length === 0 || !process.env.RETRIEVE_LOG_SALT) {
     finish(500, { error: 'Search is not configured.' });
     return;
   }
@@ -147,7 +168,19 @@ module.exports = async (request, response) => {
   }
 
   record.upstream_status = upstream.status;
-  const results = upstream.ok ? await upstream.json().catch(() => null) : null;
+  // The timeout also covers reading the body, so a slow body is a 504 too.
+  let bodyTimedOut = false;
+  const results = upstream.ok
+    ? await upstream.json().catch((error) => {
+        bodyTimedOut = error.name === 'TimeoutError';
+        return null;
+      })
+    : null;
+  if (bodyTimedOut) {
+    console.error('retrieve: Kapa response timed out');
+    finish(504, { error: 'Search timed out. Try again.' });
+    return;
+  }
   if (!Array.isArray(results)) {
     if (upstream.ok) console.error('retrieve: Kapa response was not a JSON array');
     else console.error(`retrieve: Kapa returned ${upstream.status}: ${(await upstream.text().catch(() => '')).slice(0, 500)}`);
@@ -155,10 +188,17 @@ module.exports = async (request, response) => {
     return;
   }
 
-  const kept = allowlist.length > 0 ? results.filter((result) => isAllowed(result.source_url, allowlist)) : results;
-  record.dropped_count = results.length - kept.length;
-  const shaped = shapeResults(kept, compiledRedirects);
-  record.result_count = shaped.length;
-  record.top_pages = shaped.slice(0, 3).map((result) => result.page_url);
-  finish(200, shaped);
+  try {
+    const valid = validResults(results);
+    const kept = valid.filter((result) => isAllowed(result.source_url, allowlist));
+    record.fetched_count = results.length;
+    record.dropped_count = results.length - kept.length;
+    const shaped = shapeResults(kept, compiledRedirects);
+    record.result_count = shaped.length;
+    record.top_pages = shaped.slice(0, 3).map((result) => result.page_url);
+    finish(200, shaped);
+  } catch (error) {
+    console.error(`retrieve: could not shape Kapa results: ${error.message}`);
+    finish(502, { error: 'Search is unavailable. Try again later.' });
+  }
 };
