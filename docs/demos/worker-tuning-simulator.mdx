@@ -11,7 +11,7 @@ tags:
 ---
 
 This simulator shows how Worker settings affect Task throughput and Task Queue backlog.
-It models Pollers, Slots, the Workflow cache, and CPU, memory, and I/O capacity on a Worker, and runs entirely in your browser.
+It models [Pollers](/develop/worker-performance#task-pollers), [Slots](/develop/worker-performance#slots), the [Workflow cache](/develop/worker-performance/workflow-cache), and CPU, memory, and I/O capacity on a Worker, and runs entirely in your browser.
 
 The simulator is a teaching tool.
 It doesn't connect to Temporal, read metrics from your Workers, or recommend production settings.
@@ -29,13 +29,22 @@ import { WorkerTuningSimulator } from '@site/src/components';
 Use the **Preset** menu to load a scenario that is limited by one resource, run it until a backlog builds, then open **Custom settings** and raise the limit the preset names.
 Each preset causes Task Queue backlog for a different reason:
 
-- **Poller constrained**: Too few Activity Pollers for the generated Activity Task rate. Add Activity Pollers and watch the backlog.
-- **Slot constrained**: Few Slots, so Tasks wait even when Pollers are available. Compare adding Slots with adding Pollers.
+- **Poller constrained**: Too few Activity Pollers for the generated Activity Task rate. Add Activity Pollers and watch the backlog. On a real Worker, [Poller Autoscaling](/develop/worker-tuning-reference#poller-autoscaling) adjusts the Poller count for you.
+- **Slot constrained**: Few [Slots](/develop/worker-performance#slots), so Tasks wait even when Pollers are available. Compare adding Slots with adding Pollers.
 - **CPU constrained** and **I/O constrained**: Tasks that demand more CPU or I/O than the Worker has. The resource charts show when the Worker is throttled.
-- **Memory constrained**: A small Workflow cache on a Worker with little memory. Watch cache hits, evictions, and replays.
+- **Memory constrained**: A small Workflow cache on a Worker with little memory. Watch cache hits, evictions, and replays. See [Sticky Execution](/sticky-execution) for why the cache matters.
 
 Expand **Monitoring** to explore common Temporal metrics for Worker capacity, including Poller busy ratio, Slot utilization, Sync Match rate, and Task Queue backlog.
 Compare these signals with Worker resource utilization, Task throughput, and schedule-to-completion latency.
 
-For the settings and metrics behind each of these on a real Worker, see [Worker performance](/develop/worker-performance) and the [Worker tuning quick reference](/develop/worker-tuning-reference).
-To diagnose a backlog on a running system, see [Troubleshoot Worker capacity](/troubleshooting/worker-capacity).
+## Learn more
+
+The simulator models behavior you can configure and measure on a real Worker:
+
+- **Pollers and Slots**: [Worker performance concepts](/develop/worker-performance#worker-performance-concepts), [Worker performance options](/develop/worker-performance/configuration#configuring-poller-options), and [Poller Autoscaling](/develop/worker-tuning-reference#poller-autoscaling).
+- **Slot suppliers**: [Worker runtime performance tuning](/develop/worker-performance/runtime-tuning).
+- **Workflow cache**: [Workflow cache tuning](/develop/worker-performance/workflow-cache) and [Sticky Execution](/sticky-execution).
+- **CPU, memory, and I/O**: the [compute](/develop/worker-tuning-reference#compute-settings), [memory](/develop/worker-tuning-reference#memory-settings), and [I/O](/develop/worker-tuning-reference#io-settings) settings in the Worker tuning quick reference.
+- **Task Queues and Tasks**: [Task Queues](/task-queue), [Tasks](/tasks), and [Task Queue performance](/develop/worker-performance/task-queues).
+- **Metrics**: the monitoring charts are the simulator's own versions of Worker signals, so they don't match SDK metric names one to one. For the real metrics, see [Metrics reference by resource type](/develop/worker-tuning-reference#metrics-reference-by-resource-type), [Performance metrics for tuning](/develop/worker-performance/metrics), and the [SDK metrics reference](/references/sdk-metrics).
+- **Diagnosing a running system**: [Troubleshoot Worker capacity](/troubleshooting/worker-capacity), [Alerting on Worker metrics](/best-practices/worker-alerting), and [Worker deployment and performance](/best-practices/worker).

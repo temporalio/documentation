@@ -257,3 +257,10 @@
   .worker-tuning-sim .workflow-generation-controls { grid-template-columns: 1fr 1fr; }
   .worker-tuning-sim .generation-actions { grid-column: 1 / -1; }
 }
+
+/* Docs-site addition: links from the simulator to the documentation */
+.worker-tuning-sim .docs-links { margin: 0.4rem 0 0.6rem; padding: 0 0.9rem; color: var(--color-text-muted); font-size: 0.78rem; font-weight: 300; }
+.worker-tuning-sim .simulation-panel > .docs-links, .worker-tuning-sim .worker-tuning-main > .docs-links { padding: 0; margin: 0.5rem 0 0.8rem; }
+.worker-tuning-sim .config-section-content > .docs-links { padding: 0; }
+.worker-tuning-sim .docs-link { color: var(--color-workflow); text-decoration: underline; text-underline-offset: 2px; }
+.worker-tuning-sim .docs-link:hover, .worker-tuning-sim .docs-link:focus-visible { color: var(--color-text); }

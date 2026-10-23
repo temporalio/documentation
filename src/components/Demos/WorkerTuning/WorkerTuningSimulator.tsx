@@ -11,6 +11,7 @@ import { ResourceUsageChart } from './visualization/ResourceUsageChart'
 import { TaskLatencyChart } from './visualization/TaskLatencyChart'
 import { TaskDistributionTable } from './visualization/TaskDistributionTable'
 import { useVisualTimeline } from './visualization/useVisualTimeline'
+import { DocsLink, DocsLinks } from './DocsLink'
 import './worker-tuning.css'
 
 function diagnostics(snapshot: SimulationSnapshot) {
@@ -212,6 +213,9 @@ export default function WorkerTuningSimulator() {
 
       <section className="simulation-panel" aria-labelledby="simulation-panel-title">
         <h2 id="simulation-panel-title">Temporal Task Flow</h2>
+        <DocsLinks>
+          <DocsLink to="/develop/worker-performance#worker-performance-concepts">How Workers poll and execute Tasks</DocsLink>, <DocsLink to="/task-queue">Task Queues</DocsLink>, <DocsLink to="/sticky-execution">Sticky Execution and the Workflow cache</DocsLink>
+        </DocsLinks>
         <SimulationScene
           snapshot={snapshot}
           nowMs={visualTimeMs}
@@ -224,6 +228,9 @@ export default function WorkerTuningSimulator() {
         <div className="monitoring-sections">
           <details className="monitoring-section" open>
             <summary>Temporal metrics</summary>
+            <DocsLinks label="Related docs">
+              <DocsLink to="/develop/worker-tuning-reference#metrics-reference-by-resource-type">SDK metrics for Worker tuning</DocsLink>, <DocsLink to="/develop/worker-performance/metrics#slot-availability-metrics">Slot metrics</DocsLink>, <DocsLink to="/develop/worker-performance/task-queues#ApproximateBacklogCountAndAge">Task Queue backlog</DocsLink>
+            </DocsLinks>
             <div className="monitoring-charts">
               <TemporalMetricChart title="Poller busy ratio" subtitle="Share of configured Pollers holding a received Task" metricId="poller-busy-ratio" simulatedTime={snapshot.simulatedTime} samples={snapshot.pollerBusyRatioHistory} autoPauseTimes={autoPauseTimes} format="percent" />
               <TemporalMetricChart title="Slot utilization" subtitle="Share of execution Slots reserved or occupied" metricId="slot-utilization" simulatedTime={snapshot.simulatedTime} samples={snapshot.slotUtilizationHistory} autoPauseTimes={autoPauseTimes} format="percent" />
@@ -233,6 +240,9 @@ export default function WorkerTuningSimulator() {
           </details>
           <details className="monitoring-section" open>
             <summary>Worker resources</summary>
+            <DocsLinks label="Related docs">
+              <DocsLink to="/develop/worker-tuning-reference#compute-settings">Compute</DocsLink>, <DocsLink to="/develop/worker-tuning-reference#memory-settings">memory</DocsLink>, and <DocsLink to="/develop/worker-tuning-reference#io-settings">I/O</DocsLink> settings
+            </DocsLinks>
             <div className="monitoring-charts">
               <ResourceUsageChart title="CPU utilization" subtitle="Used CPU as a share of allocated Worker CPU" resource="cpu" simulatedTime={snapshot.simulatedTime} currentValue={snapshot.cpuUtilization} samples={snapshot.cpuUtilizationHistory} autoPauseTimes={autoPauseTimes} />
               <ResourceUsageChart title="Memory utilization" subtitle="Used memory as a share of allocated Worker memory" resource="memory" simulatedTime={snapshot.simulatedTime} currentValue={snapshot.memoryUtilization} samples={snapshot.memoryUtilizationHistory} autoPauseTimes={autoPauseTimes} />
@@ -241,6 +251,9 @@ export default function WorkerTuningSimulator() {
           </details>
           <details className="monitoring-section" open>
             <summary>Load testing</summary>
+            <DocsLinks label="Related docs">
+              <DocsLink to="/develop/worker-performance/metrics#latency-metrics">Latency metrics</DocsLink>
+            </DocsLinks>
             <div className="monitoring-charts">
               <TaskThroughputChart
                 simulatedTime={snapshot.simulatedTime}
@@ -254,6 +267,9 @@ export default function WorkerTuningSimulator() {
           </details>
         </div>
       </details>
+      <DocsLinks label="Diagnose this on a real Worker">
+        <DocsLink to="/troubleshooting/worker-capacity">Troubleshoot Worker capacity</DocsLink>, <DocsLink to="/best-practices/worker-alerting">Alerting on Worker metrics</DocsLink>
+      </DocsLinks>
       <details className="diagnostics">
         <summary>Diagnostics</summary>
         <pre>{JSON.stringify(diagnostics(snapshot), null, 2)}</pre>

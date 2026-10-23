@@ -9,6 +9,7 @@ import {
   defaultConfig,
   type SimulationConfig,
 } from '../simulation'
+import { DocsLink, DocsLinks } from '../DocsLink'
 import { SIMULATOR_PRESETS, type SimulatorPresetId } from './presets'
 
 export type WorkflowRateUnit = 'second' | 'minute' | 'hour'
@@ -429,12 +430,18 @@ export function WorkflowGenerationControls({
               <details className="config-section worker-capacity-section">
                 <summary>Worker capacity</summary>
                 <div className="config-section-content">
+                  <DocsLinks label="Related docs">
+                    <DocsLink to="/develop/worker-performance#task-pollers">Task Pollers</DocsLink>, <DocsLink to="/develop/worker-performance#slots">Task Slots</DocsLink>, <DocsLink to="/develop/worker-performance/configuration">Worker performance options</DocsLink>
+                  </DocsLinks>
                   <WorkerCapacityControls config={config} onConfigChange={onConfigChange} />
                 </div>
               </details>
               <details className="config-section worker-resources-section">
                 <summary>Worker resources</summary>
                 <div className="config-section-content">
+                  <DocsLinks label="Related docs">
+                    <DocsLink to="/develop/worker-tuning-reference">Worker tuning quick reference</DocsLink>, <DocsLink to="/develop/worker-performance/workflow-cache">Workflow cache tuning</DocsLink>
+                  </DocsLinks>
                   <WorkerResourceControls config={config} onConfigChange={onConfigChange} />
                 </div>
               </details>
