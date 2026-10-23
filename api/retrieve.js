@@ -3,7 +3,7 @@ const { put } = require('@vercel/blob');
 const { waitUntil } = require('@vercel/functions');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
-const { USAGE, parseIdList, parseParams, shapeResults } = require('./_retrieve-lib');
+const { USAGE, isAllowed, parseAllowlist, parseList, parseParams, shapeResults } = require('./_retrieve-lib');
 
 // Public, no-auth search over Temporal's docs for agents, proxying Kapa's
 // Retrieval API with a server-side key. Part of the agent-discoverable search
@@ -11,6 +11,12 @@ const { USAGE, parseIdList, parseParams, shapeResults } = require('./_retrieve-l
 
 // Compiled once per function instance.
 const compiledRedirects = compileRedirects(redirects);
+
+// Results whose URL isn't covered by RETRIEVE_URL_ALLOWLIST are dropped. Kapa's
+// Retrieval endpoint ignores source_ids_include, so this is what keeps results
+// from sources the public can't open, such as private GitHub repos, out of the
+// response. Unset means no filtering.
+const allowlist = parseAllowlist(parseList(process.env.RETRIEVE_URL_ALLOWLIST));
 
 const UPSTREAM_TIMEOUT_MS = 10_000;
 
@@ -63,8 +69,10 @@ async function queryKapa(query) {
   const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID, KAPA_SOURCE_IDS } = process.env;
   const body = { query, integration_id: KAPA_INTEGRATION_ID };
   // Source IDs rather than source groups: a group filter always adds every
-  // source in Kapa's Global group, which here is all of them.
-  const sourceIds = parseIdList(KAPA_SOURCE_IDS);
+  // source in Kapa's Global group, which here is all of them. As of
+  // 2026-10-23 the Retrieval endpoint accepts source_ids_include but ignores
+  // it; RETRIEVE_URL_ALLOWLIST does the filtering until Kapa honors it.
+  const sourceIds = parseList(KAPA_SOURCE_IDS);
   if (sourceIds.length > 0) body.source_ids_include = sourceIds;
 
   return fetch(`https://api.kapa.ai/query/v1/projects/${KAPA_PROJECT_ID}/retrieval/`, {
@@ -100,7 +108,8 @@ module.exports = async (request, response) => {
     ip_hash: ipHash(request),
     deployment: process.env.VERCEL_ENV || 'development',
     // How many Kapa sources the search was limited to. 0 means all of them.
-    source_filter: parseIdList(process.env.KAPA_SOURCE_IDS).length,
+    source_filter: parseList(process.env.KAPA_SOURCE_IDS).length,
+    dropped_count: null,
     status: null,
     upstream_status: null,
     result_count: null,
@@ -146,7 +155,9 @@ module.exports = async (request, response) => {
     return;
   }
 
-  const shaped = shapeResults(results, compiledRedirects);
+  const kept = allowlist.length > 0 ? results.filter((result) => isAllowed(result.source_url, allowlist)) : results;
+  record.dropped_count = results.length - kept.length;
+  const shaped = shapeResults(kept, compiledRedirects);
   record.result_count = shaped.length;
   record.top_pages = shaped.slice(0, 3).map((result) => result.page_url);
   finish(200, shaped);

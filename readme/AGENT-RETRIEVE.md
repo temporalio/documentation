@@ -38,8 +38,8 @@ The response is a JSON array, most relevant first:
 
 For docs results, `source_url` is the page's raw Markdown and `page_url` is the HTML page to cite. The function follows
 `vercel.json` redirects first, so a page Kapa indexed under an old URL points at its current location. The anchor is
-kept on `page_url` only, because the `.md` has no anchor targets. If `KAPA_SOURCE_IDS` is unset, results from other sources
-(SDK references, GitHub, the forum) come back with both fields set to Kapa's original URL.
+kept on `page_url` only, because the `.md` has no anchor targets. Results from other allowed sources
+(SDK references, release notes, the blog) come back with both fields set to Kapa's original URL.
 
 Errors are JSON `{ error }`. A 400 or 405 also includes a `usage` string.
 
@@ -63,7 +63,8 @@ These are Vercel project environment variables, set for Production and Preview:
 | `KAPA_API_KEY` | The `docs-agent-retrieve-experiment` key. It's separate from the widget and MCP keys, so it can be rotated alone |
 | `KAPA_PROJECT_ID` | The production Kapa project |
 | `KAPA_INTEGRATION_ID` | The `docs-agent-retrieve-experiment` HTTP API integration, which keeps this traffic separate in Kapa analytics |
-| `KAPA_SOURCE_IDS` | Comma-separated Kapa source IDs to search, sent as `source_ids_include`. Set to the `docs.temporal.io` web crawl (`20c78fbc-b2ea-4c57-b953-3c5036f6c4b4`). Unset means every source, the same as the MCP server. A source group filter can't do this, because Kapa adds every Global source to any group filter |
+| `KAPA_SOURCE_IDS` | Comma-separated Kapa source IDs, sent as `source_ids_include`. Set to the 20 web crawl sources. **As of 2026-10-23, Kapa's Retrieval endpoint accepts this field but ignores it**, so `RETRIEVE_URL_ALLOWLIST` does the filtering. It's kept so it takes effect if Kapa starts honoring it. A source group filter can't replace it, because Kapa adds every Global source to any group filter |
+| `RETRIEVE_URL_ALLOWLIST` | Comma-separated `host` or `host/path-prefix` entries. Results whose URL isn't covered are dropped before the response is built. A prefix matches whole path segments, so `github.com/temporalio/sdk-go/releases` covers `/releases/tag/v1.30.0` but not the private `github.com/temporalio/edu-*` course repos. Unset means no filtering |
 | `RETRIEVE_LOG_SALT` | A random string used to hash caller IPs in the log |
 | `BLOB_READ_WRITE_TOKEN` | Added by Vercel when the private Blob store is connected to the project |
 
@@ -88,6 +89,7 @@ sent, and a failed write never fails the request.
 | `ip_hash` | First 16 hex characters of SHA-256 of the salt and IP. Raw IPs aren't stored |
 | `deployment` | `production`, `preview`, or `development` |
 | `source_filter` | Number of IDs in `KAPA_SOURCE_IDS` when the request ran. `0` means every source was searched. Also returned as the `X-Retrieve-Source-Filter` response header |
+| `dropped_count` | Results Kapa returned that `RETRIEVE_URL_ALLOWLIST` dropped. `result_count` is what's left |
 | `status`, `upstream_status` | Status returned to the caller, and Kapa's status |
 | `result_count` | Number of results. `0` points at a content gap |
 | `latency_ms` | Time spent in the function |

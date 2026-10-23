@@ -78,12 +78,52 @@ function shapeResults(results, compiledRedirects) {
   }));
 }
 
+// Parses allowlist entries of the form `host` or `host/path/prefix`. Hosts are
+// compared case-insensitively. A trailing slash on the prefix is ignored.
+function parseAllowlist(entries) {
+  return entries.map((entry) => {
+    const slash = entry.indexOf('/');
+    const host = (slash === -1 ? entry : entry.slice(0, slash)).toLowerCase();
+    const path = slash === -1 ? '' : entry.slice(slash).replace(/\/+$/, '');
+    return { host, path };
+  });
+}
+
+// Whether a URL is covered by the allowlist: same host, and the path is the
+// prefix itself or below it. `github.com/temporalio/sdk-go/releases` matches
+// `.../releases/tag/v1.0.0` but not `.../releases-old` or another repo.
+function isAllowed(sourceUrl, allowlist) {
+  let url;
+  try {
+    url = new URL(sourceUrl);
+  } catch {
+    return false;
+  }
+  const host = url.hostname.toLowerCase();
+  return allowlist.some(
+    (entry) =>
+      entry.host === host &&
+      (entry.path === '' || url.pathname === entry.path || url.pathname.startsWith(`${entry.path}/`))
+  );
+}
+
 // A comma-separated env var as a list, ignoring spaces and empty entries.
-function parseIdList(value) {
+function parseList(value) {
   return (value || '')
     .split(',')
     .map((id) => id.trim())
     .filter(Boolean);
 }
 
-module.exports = { DOCS_HOST, ENDPOINT, LIMITS, USAGE, parseIdList, parseParams, toMarkdownUrl, shapeResults };
+module.exports = {
+  DOCS_HOST,
+  ENDPOINT,
+  LIMITS,
+  USAGE,
+  isAllowed,
+  parseAllowlist,
+  parseList,
+  parseParams,
+  toMarkdownUrl,
+  shapeResults,
+};

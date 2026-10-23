@@ -2,7 +2,15 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 
 const { compileRedirects } = require('../bin/redirect-utils');
-const { LIMITS, parseIdList, parseParams, toMarkdownUrl, shapeResults } = require('./_retrieve-lib');
+const {
+  LIMITS,
+  isAllowed,
+  parseAllowlist,
+  parseList,
+  parseParams,
+  toMarkdownUrl,
+  shapeResults,
+} = require('./_retrieve-lib');
 
 const compiled = compileRedirects([
   { source: '/old-page', destination: '/develop/python/workflows/versioning' },
@@ -104,13 +112,49 @@ describe('parseParams', () => {
   });
 });
 
-describe('parseIdList', () => {
+describe('parseList', () => {
   it('splits, trims, and drops empty entries', () => {
-    assert.deepStrictEqual(parseIdList(' a, b ,,c '), ['a', 'b', 'c']);
+    assert.deepStrictEqual(parseList(' a, b ,,c '), ['a', 'b', 'c']);
   });
 
   it('returns an empty list when unset', () => {
-    assert.deepStrictEqual(parseIdList(undefined), []);
-    assert.deepStrictEqual(parseIdList(''), []);
+    assert.deepStrictEqual(parseList(undefined), []);
+    assert.deepStrictEqual(parseList(''), []);
   });
+});
+
+describe('isAllowed', () => {
+  const allowlist = parseAllowlist([
+    'docs.temporal.io',
+    'temporal.io/blog',
+    'github.com/temporalio/sdk-go/releases/',
+    'PKG.go.dev/go.temporal.io',
+  ]);
+
+  const allowed = [
+    'https://docs.temporal.io/workflows',
+    'https://docs.temporal.io/',
+    'https://temporal.io/blog',
+    'https://temporal.io/blog/workers-in-production#upgrading',
+    'https://github.com/temporalio/sdk-go/releases',
+    'https://github.com/temporalio/sdk-go/releases/tag/v1.30.0',
+    'https://pkg.go.dev/go.temporal.io/sdk/workflow',
+  ];
+  for (const url of allowed) {
+    it(`allows ${url}`, () => assert.strictEqual(isAllowed(url, allowlist), true));
+  }
+
+  const blocked = [
+    'https://temporal.io/pricing',
+    'https://temporal.io/blogs',
+    'https://github.com/temporalio/edu-101-python-content/blob/main/x.md',
+    'https://github.com/temporalio/sdk-go/releases-old',
+    'https://github.com/temporalio/sdk-go',
+    'https://temporalio.slack.com/archives/CTT84RS0P/p1727763207532399',
+    'https://evil.docs.temporal.io/workflows',
+    'not a url',
+  ];
+  for (const url of blocked) {
+    it(`blocks ${url}`, () => assert.strictEqual(isAllowed(url, allowlist), false));
+  }
 });
