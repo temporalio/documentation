@@ -11,7 +11,7 @@ description: Run Google ADK agents with durable execution using the Temporal Go 
 ---
 
 Temporal's integration with [Google ADK](https://google.github.io/adk-docs/) (`adk-go`) gives your agents
-[Durable Execution](/temporal#durable-execution): the agent's orchestration loop runs inside a Temporal Workflow, each
+[Durable Execution](/durable-execution): the agent's orchestration loop runs inside a Temporal Workflow, each
 LLM call becomes a durable Temporal Activity, and any tool that does I/O runs as an Activity too — so every step is
 retried, timed out, recorded in Workflow history, and replayable after crashes or restarts.
 
