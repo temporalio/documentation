@@ -2,7 +2,7 @@
 id: reset
 title: Reset an Activity
 sidebar_label: Reset
-description: Clear an Activity's retry state and schedule a fresh attempt, including what happens when an attempt is already running.
+description: Reset returns an Activity to attempt 1, keeps Heartbeat details, discards retry backoff, and Unpauses it unless you pass --keep-paused.
 slug: /activity-operations/reset
 toc_max_heading_level: 4
 tags:

@@ -3,7 +3,7 @@ id: setup-cli
 title: Install and configure the CLI
 sidebar_label: Install and configure
 slug: /cli/setup-cli
-description: Install the Temporal CLI, run a local development server, and configure your environment.
+description: Install on macOS, Linux, Windows, or Docker, add the Cloud extension, and set options with environment variables or configuration files.
 ---
 
 The Temporal CLI is a command-line tool for interacting with the Temporal Service. It helps you manage, monitor, and
