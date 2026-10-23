@@ -616,6 +616,49 @@ test("CodeSnippet on a single line is handled", () => {
   assertContains(markdown, "brew install temporal");
 });
 
+test("CodeSnippet with a Snipsync body keeps the synced fence", () => {
+  const input = [
+    '<CodeSnippet title="service.go">',
+    "",
+    "<!--SNIPSTART go-nexus-service-->",
+    "[nexus/service.go](https://github.com/temporalio/samples-go/blob/main/nexus/service.go)",
+    "```go",
+    "package greeting",
+    "```",
+    "<!--SNIPEND-->",
+    "",
+    "</CodeSnippet>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "```go\npackage greeting\n```");
+  assertNotContains(markdown, "```\n<!--SNIPSTART");
+  assertNotContains(markdown, "<CodeSnippet");
+});
+
+test("SetupStep with a CodeSnippet child and no code={} prop", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep>",
+    '<CodeSnippet title="service.go">',
+    "",
+    "```go",
+    "package greeting",
+    "```",
+    "",
+    "</CodeSnippet>",
+    "",
+    "## Define the Nexus Service",
+    "",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "## Define the Nexus Service");
+  assertContains(markdown, "```go\npackage greeting\n```");
+  assertNotContains(markdown, "SetupStep");
+  assertNotContains(markdown, "CodeSnippet");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — image components
 // ---------------------------------------------------------------------------
