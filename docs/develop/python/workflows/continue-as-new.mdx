@@ -32,7 +32,7 @@ First, design your Workflow parameters so that you can pass in the "current stat
 This state is typically set to `None` for the original caller of the Workflow.
 
 <!--SNIPSTART python-continue-as-new-input-->
-[python-sandbox/continue_as_new/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/continue_as_new/workflow.py)
+[python-sandbox/workflows/continue_as_new/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/continue_as_new/workflow.py)
 ```py
 @dataclass
 class ClusterManagerInput:
@@ -62,7 +62,7 @@ Inside your Workflow, call the [`continue_as_new()`](https://python.temporal.io/
 This stops the Workflow right away and starts a new one.
 
 <!--SNIPSTART python-continue-as-new-call-->
-[python-sandbox/continue_as_new/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/continue_as_new/workflow.py)
+[python-sandbox/workflows/continue_as_new/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/continue_as_new/workflow.py)
 ```py
 workflow.continue_as_new(
     ClusterManagerInput(
@@ -95,7 +95,7 @@ For example, when `test_continue_as_new == True`, this sample creates a test-onl
 A helper method in the Workflow checks it each time it considers using Continue-as-New:
 
 <!--SNIPSTART python-continue-as-new-should-continue-->
-[python-sandbox/continue_as_new/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/continue_as_new/workflow.py)
+[python-sandbox/workflows/continue_as_new/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/continue_as_new/workflow.py)
 ```py
 def should_continue_as_new(self) -> bool:
     if workflow.info().is_continue_as_new_suggested():

@@ -47,7 +47,7 @@ Optionally, you can set the `spec` parameter to `ScheduleSpec` to specify the sc
 Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
 
 <!--SNIPSTART python-schedules-create {"highlightedLines": "18-32"}-->
-[python-sandbox/schedules/create_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/create_schedule.py)
+[python-sandbox/workflows/schedules/create_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/create_schedule.py)
 ```py {18-32}
 import asyncio
 from datetime import timedelta
@@ -103,7 +103,7 @@ To Backfill a Scheduled Workflow Execution in Python, use the [backfill()](https
 method on the Schedule Handle.
 
 <!--SNIPSTART python-schedules-backfill {"highlightedLines": "12-18"}-->
-[python-sandbox/schedules/backfill_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/backfill_schedule.py)
+[python-sandbox/workflows/schedules/backfill_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/backfill_schedule.py)
 ```py {12-18}
 import asyncio
 from datetime import datetime, timedelta, timezone
@@ -139,7 +139,7 @@ The delete action enables you to delete a Schedule. When you delete a Schedule, 
 To delete a Scheduled Workflow Execution in Python, use the [delete()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
 
 <!--SNIPSTART python-schedules-delete {"highlightedLines": "12"}-->
-[python-sandbox/schedules/delete_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/delete_schedule.py)
+[python-sandbox/workflows/schedules/delete_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/delete_schedule.py)
 ```py {12}
 import asyncio
 
@@ -168,7 +168,7 @@ To describe a Scheduled Workflow Execution in Python, use the [describe()](https
 You can get a complete list of the attributes of the Scheduled Workflow Execution from the [ScheduleDescription](https://python.temporal.io/temporalio.client.ScheduleDescription.html) class.
 
 <!--SNIPSTART python-schedules-describe {"highlightedLines": "12-14"}-->
-[python-sandbox/schedules/describe_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/describe_schedule.py)
+[python-sandbox/workflows/schedules/describe_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/describe_schedule.py)
 ```py {12-14}
 import asyncio
 
@@ -199,7 +199,7 @@ To list all schedules, use the [list_schedules()](https://python.temporal.io/tem
 If a schedule is added or deleted, it may not be available in the list immediately.
 
 <!--SNIPSTART python-schedules-list {"highlightedLines": "9"}-->
-[python-sandbox/schedules/list_schedules.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/list_schedules.py)
+[python-sandbox/workflows/schedules/list_schedules.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/list_schedules.py)
 ```py {9}
 import asyncio
 
@@ -226,7 +226,7 @@ To pause a Scheduled Workflow Execution in Python, use the [pause()](https://pyt
 You can pass a `note` to the `pause()` method to provide a reason for pausing the schedule.
 
 <!--SNIPSTART python-schedules-pause {"highlightedLines": "12"}-->
-[python-sandbox/schedules/pause_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/pause_schedule.py)
+[python-sandbox/workflows/schedules/pause_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/pause_schedule.py)
 ```py {12}
 import asyncio
 
@@ -254,7 +254,7 @@ The trigger action triggers an immediate action with a given Schedule. By defaul
 To trigger a Scheduled Workflow Execution in Python, use the [trigger()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#trigger) asynchronous method on the Schedule Handle.
 
 <!--SNIPSTART python-schedules-trigger {"highlightedLines": "12"}-->
-[python-sandbox/schedules/trigger_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/trigger_schedule.py)
+[python-sandbox/workflows/schedules/trigger_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/trigger_schedule.py)
 ```py {12}
 import asyncio
 
@@ -284,7 +284,7 @@ To update a Schedule, use a callback to build the update from the description.
 The following example updates the Schedule to use a new argument.
 
 <!--SNIPSTART python-schedules-update {"highlightedLines": "17-24"}-->
-[python-sandbox/schedules/update_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/update_schedule.py)
+[python-sandbox/workflows/schedules/update_schedule.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/update_schedule.py)
 ```py {17-24}
 import asyncio
 
@@ -333,7 +333,7 @@ A Cron Schedule is provided as an option when the call to spawn a Workflow Execu
 You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 <!--SNIPSTART python-schedules-cron {"highlightedLines": "11-17"}-->
-[python-sandbox/schedules/cron_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/cron_workflow.py)
+[python-sandbox/workflows/schedules/cron_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/cron_workflow.py)
 ```py {11-17}
 import asyncio
 
@@ -378,7 +378,7 @@ Use the `start_delay` to schedule a Workflow Execution at a specific one-time fu
 Use the `start_delay` option in either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
 
 <!--SNIPSTART python-schedules-start-delay-->
-[python-sandbox/schedules/start_delay.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/schedules/start_delay.py)
+[python-sandbox/workflows/schedules/start_delay.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/schedules/start_delay.py)
 ```py
 import asyncio
 from datetime import timedelta

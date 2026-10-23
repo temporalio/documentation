@@ -37,7 +37,7 @@ Follow these guidelines when writing your message handlers:
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
 <!--SNIPSTART python-message-passing-greeting-workflow {"selectedLines": ["1-13", "21-30", "38-44"]}-->
-[python-sandbox/message_passing/greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/greeting_workflow.py)
+[python-sandbox/workflows/message_passing/greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/greeting_workflow.py)
 ```py
 class Language(IntEnum):
     ARABIC = 1
@@ -85,7 +85,7 @@ class GreetingWorkflow:
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
 <!--SNIPSTART python-message-passing-greeting-workflow {"selectedLines": ["16-18", "21-22", "46-50"]}-->
-[python-sandbox/message_passing/greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/greeting_workflow.py)
+[python-sandbox/workflows/message_passing/greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/greeting_workflow.py)
 ```py
 # ...
 @dataclass
@@ -121,7 +121,7 @@ The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
 
 <!--SNIPSTART python-message-passing-greeting-workflow {"selectedLines": ["1-8", "21-22", "52-62"]}-->
-[python-sandbox/message_passing/greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/greeting_workflow.py)
+[python-sandbox/workflows/message_passing/greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/greeting_workflow.py)
 ```py
 class Language(IntEnum):
     ARABIC = 1
@@ -182,7 +182,7 @@ To send Queries, Signals, or Updates, you call methods on a [WorkflowHandle](htt
 For example:
 
 <!--SNIPSTART python-message-passing-start-workflow-->
-[python-sandbox/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/client.py)
+[python-sandbox/workflows/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/client.py)
 ```py
 client = await Client.connect("localhost:7233")
 workflow_handle = await client.start_workflow(
@@ -206,7 +206,7 @@ To check the argument types required when sending messages -- and the return typ
 Use [`WorkflowHandle.query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) to send a Query to a Workflow Execution:
 
 <!--SNIPSTART python-message-passing-send-query-->
-[python-sandbox/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/client.py)
+[python-sandbox/workflows/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/client.py)
 ```py
 supported_languages = await workflow_handle.query(
     GreetingWorkflow.get_languages, GetLanguagesInput(include_unsupported=False)
@@ -232,7 +232,7 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 Use [`WorkflowHandle.signal`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) to send a Signal:
 
 <!--SNIPSTART python-message-passing-send-signal-->
-[python-sandbox/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/client.py)
+[python-sandbox/workflows/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/client.py)
 ```py
 await workflow_handle.signal(GreetingWorkflow.approve, ApproveInput(name="me"))
 ```
@@ -249,7 +249,7 @@ You'll need a Workflow handle for the external Workflow.
 Use [`get_external_workflow_handle_for`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle_for):
 
 <!--SNIPSTART python-message-passing-external-signal {"highlightedLines": "20-25"}-->
-[python-sandbox/message_passing/external_signal.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/external_signal.py)
+[python-sandbox/workflows/message_passing/external_signal.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/external_signal.py)
 ```py {20-25}
 from typing import Optional
 
@@ -290,7 +290,7 @@ Signal-With-Start allows a Client to send a Signal to a Workflow Execution, star
 To use Signal-With-Start, call the [`start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal:
 
 <!--SNIPSTART python-message-passing-signal-with-start {"highlightedLines": "6-14"}-->
-[python-sandbox/message_passing/signal_with_start.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/signal_with_start.py)
+[python-sandbox/workflows/message_passing/signal_with_start.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/signal_with_start.py)
 ```py {6-14}
 import asyncio
 
@@ -333,7 +333,7 @@ To send an Update to a Workflow Execution, you can:
   This code fetches an Update result:
 
   <!--SNIPSTART python-message-passing-execute-update-->
-  [python-sandbox/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/client.py)
+  [python-sandbox/workflows/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/client.py)
   ```py
   previous_language = await workflow_handle.execute_update(
       GreetingWorkflow.set_language, Language.CHINESE
@@ -350,7 +350,7 @@ To send an Update to a Workflow Execution, you can:
   For example:
 
   <!--SNIPSTART python-message-passing-start-update-->
-  [python-sandbox/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/client.py)
+  [python-sandbox/workflows/message_passing/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/client.py)
   ```py
   # Wait until the update is accepted
   update_handle = await workflow_handle.start_update(
@@ -397,7 +397,7 @@ Note that a `WithStartWorkflowOperation` can only be used once.
 For example:
 
 <!--SNIPSTART python-message-passing-update-with-start-->
-[python-sandbox/message_passing/shopping_cart_starter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/shopping_cart_starter.py)
+[python-sandbox/workflows/message_passing/shopping_cart_starter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/shopping_cart_starter.py)
 ```py
 start_op = WithStartWorkflowOperation(
     ShoppingCartWorkflow.run,
@@ -464,7 +464,7 @@ The following code executes an Activity that makes a network call to a remote se
 It modifies the Update handler from earlier on this page, turning it into an `async def`:
 
 <!--SNIPSTART python-message-passing-async-handler {"selectedLines": ["12-23", "26-29", "47-67"]}-->
-[python-sandbox/message_passing/async_greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/async_greeting_workflow.py)
+[python-sandbox/workflows/message_passing/async_greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/async_greeting_workflow.py)
 ```py
 # ...
 @activity.defn
@@ -531,7 +531,7 @@ Here are three important use cases for `workflow.wait_condition`:
 It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
 
 <!--SNIPSTART python-message-passing-greeting-workflow {"selectedLines": ["21-36", "46-50"]}-->
-[python-sandbox/message_passing/greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/greeting_workflow.py)
+[python-sandbox/workflows/message_passing/greeting_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/greeting_workflow.py)
 ```py
 # ...
 @workflow.defn
@@ -569,7 +569,7 @@ Consider a `ready_for_update_to_execute` method that runs before your Update han
 The `workflow.wait_condition` method waits until your condition is met:
 
 <!--SNIPSTART python-message-passing-wait-in-handler-->
-[python-sandbox/message_passing/wait_conditions.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/wait_conditions.py)
+[python-sandbox/workflows/message_passing/wait_conditions.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/wait_conditions.py)
 ```py
 @workflow.update
 async def my_update(self, update_input: UpdateInput) -> str:
@@ -590,7 +590,7 @@ The Workflow completing may interrupt the handler before it finishes crucial wor
 Use [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) and [`all_handlers_finished`](https://python.temporal.io/temporalio.workflow.html#all_handlers_finished) to address this problem and allow your Workflow to end smoothly:
 
 <!--SNIPSTART python-message-passing-wait-all-handlers-->
-[python-sandbox/message_passing/wait_conditions.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/wait_conditions.py)
+[python-sandbox/workflows/message_passing/wait_conditions.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/wait_conditions.py)
 ```py
 @workflow.defn
 class MyWorkflow:
@@ -606,7 +606,7 @@ By default, your Worker will log a warning when you allow a Workflow Execution t
 You can silence these warnings on a per-handler basis by passing the `unfinished_policy` argument to the [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) / [`workflow.update`](https://python.temporal.io/temporalio.workflow.html#update) decorator:
 
 <!--SNIPSTART python-message-passing-unfinished-policy-->
-[python-sandbox/message_passing/wait_conditions.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/wait_conditions.py)
+[python-sandbox/workflows/message_passing/wait_conditions.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/wait_conditions.py)
 ```py
 @workflow.update(unfinished_policy=workflow.HandlerUnfinishedPolicy.ABANDON)
 async def my_update(self) -> None:
@@ -628,7 +628,7 @@ Here's an example.
 Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
 
 <!--SNIPSTART python-message-passing-workflow-init-->
-[python-sandbox/message_passing/workflow_init.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/workflow_init.py)
+[python-sandbox/workflows/message_passing/workflow_init.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/workflow_init.py)
 ```py
 @dataclass
 class MyWorkflowInput:
@@ -668,7 +668,7 @@ Incorrectly written [concurrent message-passing](/handling-messages#message-hand
 Here's an example of a pathological case:
 
 <!--SNIPSTART python-message-passing-handler-concurrency {"selectedLines": ["20-21", "33-42"]}-->
-[python-sandbox/message_passing/handler_concurrency.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/handler_concurrency.py)
+[python-sandbox/workflows/message_passing/handler_concurrency.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/handler_concurrency.py)
 ```py
 # ...
 @workflow.defn
@@ -691,7 +691,7 @@ Coordinating access using `asyncio.Lock` corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
 <!--SNIPSTART python-message-passing-handler-concurrency {"selectedLines": ["20-25", "44-54"]}-->
-[python-sandbox/message_passing/handler_concurrency.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/handler_concurrency.py)
+[python-sandbox/workflows/message_passing/handler_concurrency.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/handler_concurrency.py)
 ```py
 # ...
 @workflow.defn
@@ -829,7 +829,7 @@ Use a [payload_converter](https://python.temporal.io/temporalio.workflow.html#pa
 For example:
 
 <!--SNIPSTART python-message-passing-dynamic-signal {"selectedLines": ["1-3", "17-20"]}-->
-[python-sandbox/message_passing/dynamic_handlers.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/dynamic_handlers.py)
+[python-sandbox/workflows/message_passing/dynamic_handlers.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/dynamic_handlers.py)
 ```py
 from collections.abc import Sequence
 
@@ -865,7 +865,7 @@ Use a [payload_converter](https://python.temporal.io/temporalio.workflow.html#pa
 For example:
 
 <!--SNIPSTART python-message-passing-dynamic-workflow {"highlightedLines": "19-28"}-->
-[python-sandbox/message_passing/dynamic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/dynamic_workflow.py)
+[python-sandbox/workflows/message_passing/dynamic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/dynamic_workflow.py)
 ```py {19-28}
 from dataclasses import dataclass
 from datetime import timedelta
@@ -914,7 +914,7 @@ Use a [payload_converter](https://python.temporal.io/temporalio.activity.html#pa
 For example:
 
 <!--SNIPSTART python-message-passing-dynamic-activity {"highlightedLines": "14-19,27-35"}-->
-[python-sandbox/message_passing/dynamic_activity.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/message_passing/dynamic_activity.py)
+[python-sandbox/workflows/message_passing/dynamic_activity.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/message_passing/dynamic_activity.py)
 ```py {14-19,27-35}
 from dataclasses import dataclass
 from datetime import timedelta

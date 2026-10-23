@@ -25,7 +25,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 You can import Workflow Streams from `temporalio.contrib.workflow_streams`. Enable streaming by constructing a `WorkflowStream` from your Workflow's `@workflow.init` method because the stream's handlers have to be registered before the first publish Signal arrives. Doing it from `@workflow.run` raises a `RuntimeError` and would miss any publishes that arrived before the run body started executing.
 
 <!--SNIPSTART python-workflow-streams-order-workflow {"selectedLines": ["1-5", "15-17", "27-31"]}-->
-[python-sandbox/workflow_streams/order_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/order_workflow.py)
+[python-sandbox/workflows/workflow_streams/order_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/order_workflow.py)
 ```py
 from dataclasses import dataclass
 from datetime import timedelta
@@ -54,7 +54,7 @@ If your Workflow is long-running, see [Stream from long-running Workflows](#cont
 You can [publish](/workflow-streams#publishing) when you bind a [topic name](/workflow-streams#topics) to its event type once via `self.stream.topic("name", type=Type)`, then call `publish()` on the returned handle to append events. The handle records the per-stream binding from topic name to value type so call sites don't have to repeat the type on every publish and so subscribers reading the same handle decode to the matching type.
 
 <!--SNIPSTART python-workflow-streams-order-workflow {"selectedLines": ["20-47"]}-->
-[python-sandbox/workflow_streams/order_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/order_workflow.py)
+[python-sandbox/workflows/workflow_streams/order_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/order_workflow.py)
 ```py
 # ...
 @dataclass
@@ -107,7 +107,7 @@ Then use it the same way you would the Workflow-side handle: bind a topic, publi
 When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [How events are delivered](/workflow-streams#how-events-are-delivered).
 
 <!--SNIPSTART python-workflow-streams-publish-client-->
-[python-sandbox/workflow_streams/publish_client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/publish_client.py)
+[python-sandbox/workflows/workflow_streams/publish_client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/publish_client.py)
 ```py
 from datetime import timedelta
 
@@ -135,7 +135,7 @@ async def publish_status(workflow_id: str) -> None:
 Inside an Activity scheduled by a Workflow, `WorkflowStreamClient.from_within_activity()` is used to infer the Temporal Client and the parent Workflow Id from the Activity context, so you don't have to thread them through the Activity's input:
 
 <!--SNIPSTART python-workflow-streams-activity-publish-->
-[python-sandbox/workflow_streams/delta_activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/delta_activities.py)
+[python-sandbox/workflows/workflow_streams/delta_activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/delta_activities.py)
 ```py
 from temporalio import activity
 from temporalio.contrib.workflow_streams import WorkflowStreamClient
@@ -162,7 +162,7 @@ Two operations give the application explicit control over when batches ship: `fo
 Pass `force_flush=True` on a publish to wake the background flusher so the current buffer ships without waiting for the next interval. The flusher only runs while the Workflow Stream client is entered (`async with client`). Otherwise, `force_flush=True` queues the wake event, but nothing ships until you enter the context or call `await client.flush()`. The call returns immediately after appending to the buffer and signaling the flusher. It doesn't wait for delivery to the Workflow or to subscribers:
 
 <!--SNIPSTART python-workflow-streams-force-flush-->
-[python-sandbox/workflow_streams/delta_phases.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/delta_phases.py)
+[python-sandbox/workflows/workflow_streams/delta_phases.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/delta_phases.py)
 ```py
 deltas.publish(delta, force_flush=True)
 ```
@@ -173,7 +173,7 @@ Use it for latency-sensitive events like, the first delta of a response so the u
 Use `await client.flush()` when you need a mid-stream barrier. Successful completion of the flush is proof that the Temporal server has received all prior publications, so subsequent work that depends on those events being durable can proceed. The client stays open for further publishing afterward. Exiting `async with client` already flushes on its way out, so the explicit call is only for barriers in the middle:
 
 <!--SNIPSTART python-workflow-streams-flush-barrier-->
-[python-sandbox/workflow_streams/delta_phases.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/delta_phases.py)
+[python-sandbox/workflows/workflow_streams/delta_phases.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/delta_phases.py)
 ```py
 async with client:
     deltas = client.topic("delta", type=Delta)
@@ -199,7 +199,7 @@ If your application needs to bound this (to cap memory, to keep the stream close
 Once you have a client, iterate a topic handle's `subscribe()`, the counterpart to `publish()`. The handle's bound type drives decoding, so each `item.data` arrives as `T` via the client's payload converter. The codec chain is applied once at the Update envelope, not per item.
 
 <!--SNIPSTART python-workflow-streams-subscribe-->
-[python-sandbox/workflow_streams/subscriber.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/subscriber.py)
+[python-sandbox/workflows/workflow_streams/subscriber.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/subscriber.py)
 ```py
 async def watch_order(order_id: str) -> None:
     temporal_client = await Client.connect("localhost:7233")
@@ -226,7 +226,7 @@ Two edge cases are worth knowing:
 A topic handle binds one name to one type, so it only fits a single-type subscription. To consume multiple topics whose payload types differ, call `client.subscribe()` directly with a list of names (or `subscribe([])` for every topic) and pass `result_type=temporalio.common.RawValue` so each item arrives as the underlying `Payload` wrapped in a `RawValue`. Dispatch on `item.topic` and decode the wrapped payload with the client's payload converter:
 
 <!--SNIPSTART python-workflow-streams-heterogeneous-->
-[python-sandbox/workflow_streams/subscriber.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/subscriber.py)
+[python-sandbox/workflows/workflow_streams/subscriber.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/subscriber.py)
 ```py
 from temporalio.common import RawValue
 
@@ -258,7 +258,7 @@ There are two ways to provide that overlap.
 - [Fixed sleep](/workflow-streams#fixed-sleep). Sleep between the terminator and the return so any in-flight poll has time to fetch the terminator before the Workflow exits:
 
     <!--SNIPSTART python-workflow-streams-order-workflow {"selectedLines": ["34-35", "45-47"]}-->
-    [python-sandbox/workflow_streams/order_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/order_workflow.py)
+    [python-sandbox/workflows/workflow_streams/order_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/order_workflow.py)
     ```py
     # ...
         @workflow.run
@@ -272,7 +272,7 @@ There are two ways to provide that overlap.
 - [Acknowledgment handshake](/workflow-streams#acknowledgment-handshake). The subscriber sends a Signal once it has the terminator; the Workflow waits up to a timeout, returning as soon as the ack arrives:
 
     <!--SNIPSTART python-workflow-streams-chat-workflow {"selectedLines": ["23-28", "37-44"]}-->
-    [python-sandbox/workflow_streams/chat/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/chat/workflow.py)
+    [python-sandbox/workflows/workflow_streams/chat/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/chat/workflow.py)
     ```py
     # ...
         @workflow.signal
@@ -302,7 +302,7 @@ You can [inspect the terminal status](/workflow-streams#inspecting-terminal-stat
 Workflows that run for hours or accumulate thousands of events need to periodically roll over via [Continue-As-New](/workflow-streams#stream-from-long-running-workflows) to keep history bounded. Subscribers automatically follow these rollovers, but the client retained from `WorkflowStreamClient.create()` or `from_within_activity()` is required (clients constructed directly with a single handle cannot re-target the new run). To keep a stream running across rollovers without subscribers seeing a gap, carry both your application state and the stream state across the boundary. Add a `WorkflowStreamState | None` field to your Workflow input, pass it to the constructor, and call `WorkflowStream.continue_as_new(build_args)` to invoke the rollover. The helper drains waiting subscribers, waits for in-flight handlers to finish, then calls `workflow.continue_as_new` with the args produced by `build_args(post_drain_state)`:
 
 <!--SNIPSTART python-workflow-streams-continue-as-new-->
-[python-sandbox/workflow_streams/long_running.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/long_running.py)
+[python-sandbox/workflows/workflow_streams/long_running.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/long_running.py)
 ```py
 from dataclasses import dataclass, field
 
@@ -354,7 +354,7 @@ Always use the concrete type, not `Any`. With `Any`, the data converter rebuilds
 To pass other Continue-As-New parameters such as `task_queue`, `retry_policy`, `run_timeout`, use the explicit recipe instead:
 
 <!--SNIPSTART python-workflow-streams-explicit-continue-as-new-->
-[python-sandbox/workflow_streams/long_running.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/long_running.py)
+[python-sandbox/workflows/workflow_streams/long_running.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/long_running.py)
 ```py
 self.stream.detach_pollers()
 await workflow.wait_condition(workflow.all_handlers_finished)
@@ -402,7 +402,7 @@ If your Activity can retry, the consumer side has to account for it. A retried a
 <TabItem value="activity" label="activity.py">
 
 <!--SNIPSTART python-workflow-streams-chat-activity-->
-[python-sandbox/workflow_streams/chat/activity.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/chat/activity.py)
+[python-sandbox/workflows/workflow_streams/chat/activity.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/chat/activity.py)
 ```py
 from dataclasses import dataclass
 from datetime import timedelta
@@ -461,7 +461,7 @@ async def stream_completion(prompt: str) -> str:
 <TabItem value="workflow" label="workflow.py">
 
 <!--SNIPSTART python-workflow-streams-chat-workflow-->
-[python-sandbox/workflow_streams/chat/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/chat/workflow.py)
+[python-sandbox/workflows/workflow_streams/chat/workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/chat/workflow.py)
 ```py
 from dataclasses import dataclass
 from datetime import timedelta
@@ -514,7 +514,7 @@ class ChatWorkflow:
 <TabItem value="consumer" label="consumer.py">
 
 <!--SNIPSTART python-workflow-streams-chat-consumer-->
-[python-sandbox/workflow_streams/chat/consumer.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_streams/chat/consumer.py)
+[python-sandbox/workflows/workflow_streams/chat/consumer.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_streams/chat/consumer.py)
 ```py
 from temporalio.client import Client
 from temporalio.common import RawValue

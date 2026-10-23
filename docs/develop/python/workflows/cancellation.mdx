@@ -40,7 +40,7 @@ To cancel a Workflow Execution in Python, use the
 [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow handle.
 
 <!--SNIPSTART python-cancellation-cancel-workflow-->
-[python-sandbox/cancellation/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/cancellation/client.py)
+[python-sandbox/workflows/cancellation/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/cancellation/client.py)
 ```py
 await client.get_workflow_handle(workflow_id).cancel()
 ```
@@ -71,7 +71,7 @@ To cancel an Activity from a Workflow Execution, call the
 is returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
 
 <!--SNIPSTART python-cancellation-activity-->
-[python-sandbox/cancellation/activity_cancellation.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/cancellation/activity_cancellation.py)
+[python-sandbox/workflows/cancellation/activity_cancellation.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/cancellation/activity_cancellation.py)
 ```py
 @activity.defn
 async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
@@ -126,7 +126,7 @@ To terminate a Workflow Execution in Python, use the
 handle.
 
 <!--SNIPSTART python-cancellation-terminate-workflow-->
-[python-sandbox/cancellation/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/cancellation/client.py)
+[python-sandbox/workflows/cancellation/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/cancellation/client.py)
 ```py
 await client.get_workflow_handle(workflow_id).terminate()
 ```

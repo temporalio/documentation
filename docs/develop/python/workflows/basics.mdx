@@ -23,7 +23,7 @@ Use the `@workflow.run` to mark the entry point method to be invoked. This must 
 defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
 <!--SNIPSTART python-workflow-basics-workflow {"highlightedLines": "9,11"}-->
-[python-sandbox/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/your_workflow.py)
+[python-sandbox/workflows/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/your_workflow.py)
 ```py {9,11}
 from datetime import timedelta
 
@@ -57,7 +57,7 @@ properly type-annotated. Technically this can be multiple parameters, but Tempor
 `dataclass` parameter containing all input fields.
 
 <!--SNIPSTART python-workflow-basics-params {"highlightedLines": "3"}-->
-[python-sandbox/workflow_basics/your_dataobject.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/your_dataobject.py)
+[python-sandbox/workflows/workflow_basics/your_dataobject.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/your_dataobject.py)
 ```py {3}
 from dataclasses import dataclass
 
@@ -86,7 +86,7 @@ Worker creation time by customizing the runner's restrictions with
 [`with_passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#with_passthrough_modules).
 
 <!--SNIPSTART python-workflow-basics-workflow {"highlightedLines": "5-7"}-->
-[python-sandbox/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/your_workflow.py)
+[python-sandbox/workflows/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/your_workflow.py)
 ```py {5-7}
 from datetime import timedelta
 
@@ -119,7 +119,7 @@ You can customize the Workflow name with a custom name in the decorator argument
 unqualified class name.
 
 <!--SNIPSTART python-workflow-basics-workflow-->
-[python-sandbox/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/your_workflow.py)
+[python-sandbox/workflows/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/your_workflow.py)
 ```py
 from datetime import timedelta
 
@@ -150,7 +150,7 @@ The SDK will then ensure that your `__init__` method receives the Workflow input
 Here's an example. Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
 
 <!--SNIPSTART python-workflow-basics-init-->
-[python-sandbox/workflow_basics/workflow_init.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/workflow_init.py)
+[python-sandbox/workflows/workflow_basics/workflow_init.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/workflow_init.py)
 ```py
 @dataclass
 class MyWorkflowInput:
@@ -198,7 +198,7 @@ Use [`workflow.logger`](https://python.temporal.io/temporalio.workflow.html#logg
 The SDK logger automatically suppresses log messages during replay to avoid duplicates:
 
 <!--SNIPSTART python-workflow-basics-logger-->
-[python-sandbox/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/deterministic_workflow.py)
+[python-sandbox/workflows/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/deterministic_workflow.py)
 ```py
 @workflow.defn
 class DeterministicApisWorkflow:
@@ -216,7 +216,7 @@ Use [`workflow.random()`](https://python.temporal.io/temporalio.workflow.html#ra
 For UUIDs, use [`workflow.uuid4()`](https://python.temporal.io/temporalio.workflow.html#uuid4) instead of `uuid.uuid4()`:
 
 <!--SNIPSTART python-workflow-basics-random-->
-[python-sandbox/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/deterministic_workflow.py)
+[python-sandbox/workflows/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/deterministic_workflow.py)
 ```py
 value = workflow.random().randint(1, 100)
 unique_id = workflow.uuid4()
@@ -228,7 +228,7 @@ unique_id = workflow.uuid4()
 Use [`workflow.now()`](https://python.temporal.io/temporalio.workflow.html#now) instead of `datetime.now()` or `time.time()`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
 
 <!--SNIPSTART python-workflow-basics-now-->
-[python-sandbox/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/deterministic_workflow.py)
+[python-sandbox/workflows/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/deterministic_workflow.py)
 ```py
 current_time = workflow.now()
 ```
@@ -244,7 +244,7 @@ Never use this to affect Workflow business logic — branching on replay status 
 :::
 
 <!--SNIPSTART python-workflow-basics-is-replaying-->
-[python-sandbox/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflow_basics/deterministic_workflow.py)
+[python-sandbox/workflows/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/deterministic_workflow.py)
 ```py
 if not workflow.unsafe.is_replaying():
     emit_metric("workflow_started", 1)
