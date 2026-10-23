@@ -1,69 +1,66 @@
 ---
 id: openai-agents
 title: OpenAI Agents SDK integration
-toc_max_heading_level: 3
+toc_max_heading_level: 2
 tags:
   - OpenAI Agents SDK
   - TypeScript SDK
   - Temporal SDKs
-description: Run OpenAI Agents SDK agents as durable Temporal Workflows in TypeScript, with model calls executed as Activities.
+description: Run OpenAI Agents SDK agents as durable TypeScript Workflows, with model calls, MCP operations, and sandbox operations running as retryable Activities.
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-Temporal's integration with the [OpenAI Agents SDK for JavaScript/TypeScript](https://openai.github.io/openai-agents-js/)
-lets you run agents as Temporal Workflows. Agent orchestration—the agent loop, tool selection, and handoffs—runs inside
-the Workflow, while model calls run as [Activities](/glossary#activity).
+The Temporal integration for the [OpenAI Agents SDK](https://openai.github.io/openai-agents-js/) runs its agents as
+durable Temporal Workflows in TypeScript. An agent's loop belongs in the Workflow, but Workflow code must be
+deterministic, so it can't call a model, an MCP server, or a sandbox itself. The integration keeps the agent loop, tool
+selection, and handoffs in the Workflow and runs each model call, MCP operation, and sandbox operation as an
+[Activity](/glossary#activity). Those calls retry on failure, and completed ones are recorded in Event History and
+aren't repeated when the Workflow replays, so an agent survives Worker restarts and can run for as long as it needs.
 
-Like with other types of API calls, in a [Temporal Application](/glossary#temporal-application), you make LLM calls in your Activities. This
-integration handles that for you: model calls are executed as Activities, so they retry durably and are not repeated
-during Workflow replay. Your agents survive Worker restarts and can run for extended periods without losing state.
+Code snippets on this page come from the
+[OpenAI Agents samples directory](https://github.com/temporalio/samples-typescript/tree/main/openai-agents).
 
 <ReleaseNoteHeader
   type="prerelease"
 />
 
-## Prerequisites
+## Install the integration
 
-- This guide assumes you are already familiar with the OpenAI Agents SDK. If you aren't, refer to the
-  [OpenAI Agents SDK documentation](https://openai.github.io/openai-agents-js/) for more details.
-- If you are new to Temporal, we recommend you read the [Understanding Temporal](/evaluate/understanding-temporal)
-  document or take the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course to understand the basics
-  of Temporal.
-- Ensure you have set up your local development environment by following the
-  [Set up a local development environment with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript) guide. When you are
-  done, leave the Temporal Development Server running if you want to test your code locally.
+Before you start:
 
-## Install
+- This guide assumes you're familiar with the OpenAI Agents SDK. If you aren't, start with the
+  [OpenAI Agents SDK documentation](https://openai.github.io/openai-agents-js/).
+- If you're new to Temporal, read [Understanding Temporal](/evaluate/understanding-temporal) or take the
+  [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Set up your local environment by following
+  [Set up a local development environment with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript),
+  and leave the Temporal development server running to try your code locally.
+
+Install the [`@temporalio/openai-agents`](https://www.npmjs.com/package/@temporalio/openai-agents) package along with
+the OpenAI Agents SDK packages it uses as peer dependencies,
+[`@openai/agents-core`](https://www.npmjs.com/package/@openai/agents-core),
+[`@openai/agents-openai`](https://www.npmjs.com/package/@openai/agents-openai), and
+[`openai`](https://www.npmjs.com/package/openai):
 
 ```bash
-# Or `pnpm add`/`yarn add`
 npm install @temporalio/openai-agents @openai/agents-core @openai/agents-openai openai
 ```
 
-`@openai/agents-core`, `@openai/agents-openai`, and `openai` are peer dependencies.
+The integration supports a single minor version of the OpenAI Agents SDK packages, so install them in the same command
+and npm picks versions that match. Keep every `@temporalio/*` package in your application on the same version, since the
+integration depends on exact versions of them.
 
-### Import paths
+Import Worker and Client APIs from `@temporalio/openai-agents`, and Workflow APIs from
+`@temporalio/openai-agents/workflow`, which is safe to load in the Workflow sandbox. [Configuration](#configuration)
+lists every entry point.
 
-Most applications use two import paths: `@temporalio/openai-agents` in Worker and Client code, and
-`@temporalio/openai-agents/workflow` in Workflow code. The other subpaths are for tracing setup or manual Worker wiring.
+## Run an agent in a Workflow
 
-| Import path                                      | Import from      | Use for                                                     |
-| :----------------------------------------------- | :--------------- | :---------------------------------------------------------- |
-| `@temporalio/openai-agents`                      | Worker or Client | Plugin setup, MCP providers, model option types             |
-| `@temporalio/openai-agents/workflow`             | Workflow         | Runner, Workflow-safe tools, sessions, MCP handles          |
-| `@temporalio/openai-agents/otel`                 | Worker or Client | Replay-safe OpenTelemetry setup                             |
-| `@temporalio/openai-agents/workflow-interceptor` | Worker bundling  | Manual `workflowInterceptorModules` wiring without a plugin |
+A Temporal-backed agent has three parts: a Workflow that runs the agent, a Worker with the integration's plugin, and a
+Client that starts the Workflow.
 
-## Create a Hello World Workflow
-
-A Temporal-backed agent needs three pieces: a Workflow that runs the agent, a Worker configured with the integration
-plugin, and a Client configured with the same plugin.
-
-### Write the Workflow
-
-Use `TemporalOpenAIRunner` instead of the upstream `Runner`. The runner runs the agent loop inside the Workflow and
-dispatches each model call to an Activity.
+In the Workflow, run the agent with `TemporalOpenAIRunner` instead of the OpenAI Agents SDK `Runner`:
 
 <!--SNIPSTART typescript-openai-agents-hello-world-workflow-->
 [openai-agents/src/basic/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/basic/workflows.ts)
@@ -76,17 +73,7 @@ export async function helloWorld(prompt: string): Promise<string> {
 ```
 <!--SNIPEND-->
 
-`TemporalOpenAIRunner` mirrors the OpenAI Agents SDK `Runner`, with familiar options such as `maxTurns`, `context`,
-and `session`. A few differences apply for Workflow-safe execution:
-
-- `runConfig.model` must be a model name string. The Worker's `modelProvider` resolves it inside the model Activity.
-- `signal` is not supported. Use Temporal cancellation APIs, such as `CancellationScope`, to cancel Workflow work.
-
-### Configure the Worker
-
-Register `OpenAIAgentsPlugin` on the Worker. The plugin registers the model Activity, adds the trace-propagation
-interceptors, installs the Workflow-bundle polyfills the OpenAI Agents SDK needs, and registers any configured MCP
-server providers.
+Register `OpenAIAgentsPlugin` on the Worker with a model provider:
 
 <!--SNIPSTART typescript-openai-agents-hello-world-worker-->
 [openai-agents/src/basic/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/basic/worker.ts)
@@ -116,17 +103,11 @@ await worker.run();
 ```
 <!--SNIPEND-->
 
-`modelParams` controls scheduling for the model Activity—including `startToCloseTimeout`, `retry`, and
-`useLocalActivity`. See `ModelActivityOptions` for the public field list. The Worker above sets
-`useLocalActivity: true`, which runs model calls as Local Activities to keep the event history smaller.
+The plugin registers the Activity that calls the model, along with the interceptors and Workflow bundle polyfills the
+OpenAI Agents SDK needs. The model provider runs inside that Activity, so only Workers need your model provider's
+credentials.
 
-You must ensure the Worker process has access to your model-provider credentials. Most provider SDKs read credentials
-from environment variables.
-
-### Configure the Client
-
-Register the same plugin type on the Client so model parameters and tracing options propagate to new Workflows. Attach
-one `OpenAIAgentsPlugin` instance per Client or Connection configuration.
+Register the plugin on the Client too:
 
 <!--SNIPSTART typescript-openai-agents-hello-world-client-->
 [openai-agents/src/basic/client.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/basic/client.ts)
@@ -142,18 +123,54 @@ const workflowId = 'openai-agents-' + nanoid();
 ```
 <!--SNIPEND-->
 
-From there, start or execute Workflows as you normally would. The plugin does not change the Client API.
+The Client's plugin requires a `modelProvider` but never calls it, so that provider doesn't need credentials. The
+plugin sends its `modelParams` and `interceptorOptions` to each Workflow the Client starts. `modelParams` holds the
+model Activity options, such as timeouts, a retry policy, or `useLocalActivity: true`, and `interceptorOptions` holds
+the tracing options.
 
-## Tools
+:::note
 
-Inline function tools, hosted tools, Activity-backed tools, Nexus operation tools, and nested agent tools can all be
-used from a Temporal-backed agent. Any tool that performs I/O must run outside the Workflow sandbox, usually through an
-Activity or a Nexus Operation.
+A Worker plugin's `modelParams` doesn't reach model calls, even on the Worker that runs them. Set model Activity options
+on the Client's plugin or in the runner's `defaultModelParams`.
 
-### Activity-backed tools
+:::
 
-Use `activityAsTool` for HTTP calls, database access, file system work, or other I/O. The tool name must match a
-registered Activity.
+Agents name their model with a string, or leave it out to use the provider's default, and the Worker's model provider
+resolves it inside the Activity. A model object can't cross into an Activity, so an agent that has one fails the run. To
+run every agent in one run on the same model, set `runConfig.model` to that model's name. Structured output through an
+agent's `outputType` works as in the OpenAI Agents SDK, and the
+[basic sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/basic) shows it along with
+run context and a per-run model override.
+
+Any OpenAI Agents SDK `ModelProvider` works on the Worker. The
+[model providers sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/model-providers)
+points `OpenAIProvider` at an OpenAI-compatible endpoint by setting its `baseURL`.
+
+To get a reasoning model's summary, set `modelSettings.reasoning.summary` on the agent and read the `reasoning_item`
+entries in `result.newItems`. The
+[reasoning content sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/reasoning-content)
+takes a different route and calls the `openai` package directly from its own Activity, outside the agent loop.
+
+The rest of the agent loop runs in the Workflow, including handoffs, guardrails, and `instructions` functions, so that
+code must be deterministic. The `context` you pass to `run()` reaches that code and `tool()` functions, but not
+`activityAsTool` Activities or `agentAsTool` nested runs.
+
+Each model call is its own Activity, so agents you run together with `Promise.all` make their model calls in parallel.
+The [handoffs](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/handoffs),
+[agent patterns](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/agent-patterns), and
+[multi-agent](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/multi-agent) samples show
+triage handoffs, chained and parallel agents, an LLM judge, and guardrails.
+
+An error the OpenAI Agents SDK throws during a run, such as a tripped guardrail or `MaxTurnsExceededError`, reaches the
+Workflow as a non-retryable `ApplicationFailure` of type `AgentsWorkflowError`, with the SDK's error as its `cause`.
+Check `cause` when you catch it, as the agent patterns sample does for guardrails.
+
+## Add tools and MCP servers
+
+An OpenAI Agents SDK `tool()` runs its `execute` function in the Workflow, so a tool that calls an API, reads a file,
+queries a database, or does other I/O has to run in an Activity or a Nexus Operation instead.
+
+Wrap an Activity as a tool with `activityAsTool`:
 
 <!--SNIPSTART typescript-openai-agents-activity-tool-workflow-->
 [openai-agents/src/basic/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/basic/workflows.ts)
@@ -184,500 +201,468 @@ export async function tools(prompt: string): Promise<string> {
 ```
 <!--SNIPEND-->
 
-That type parameter is only used at compile time. At runtime, the Activity is invoked by name through `proxyActivities`.
-
-### Inline and hosted tools
-
-For deterministic computation, use `tool()` from `@openai/agents-core` directly. Inline tools run in the Workflow
-sandbox and must not perform non-deterministic activities like, I/O or reading wall-clock time beyond Temporal's replacements. Hosted tools from `@openai/agents-openai`, such as `webSearchTool()`, run server-side
-through the model provider during the model Activity.
-
-<!--SNIPSTART typescript-openai-agents-inline-tool-workflow-->
-[openai-agents/src/basic/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/basic/workflows.ts)
-```ts
-export async function inlineTool(prompt: string): Promise<string> {
-  const addTool = tool({
-    name: 'add',
-    description: 'Add two numbers together.',
-    parameters: z.object({ a: z.number().describe('First number'), b: z.number().describe('Second number') }),
-    execute: async ({ a, b }) => String(a + b),
-  });
-
-  const agent = new Agent({
-    name: 'MathAgent',
-    instructions: 'You are a math assistant. Use the add tool to compute sums.',
-    tools: [addTool],
-  });
-  const result = await new TemporalOpenAIRunner().run(agent, prompt);
-  return result.finalOutput ?? '';
-}
-```
-<!--SNIPEND-->
-
-A hosted tool is declared the same way, and the model provider runs it during the model Activity:
-
-<!--SNIPSTART typescript-openai-agents-hosted-tool-workflow-->
-[openai-agents/src/tools/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/tools/workflows.ts)
-```ts
-export async function webSearch(prompt: string): Promise<string> {
-  const agent = new Agent({
-    name: 'WebSearchAgent',
-    instructions: 'Use the web search tool to find current information, then answer concisely.',
-    tools: [webSearchTool()],
-  });
-  const result = await new TemporalOpenAIRunner().run(agent, prompt);
-  return result.finalOutput ?? '';
-}
-```
-<!--SNIPEND-->
-
-### Nexus operation tools
-
-Use `nexusOperationAsTool` to expose a [Nexus](/nexus) Operation as an agent tool. The Workflow
-starts the Operation through a Nexus client and feeds the stringified result back to the agent.
-
-Define the service and its Operations:
-
-<!--SNIPSTART typescript-openai-agents-nexus-tools-api-->
-[openai-agents/src/nexus-tools/api.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/nexus-tools/api.ts)
-```ts
-export interface GetWeatherInput {
-  city: string;
-}
-
-export interface GetWeatherOutput {
-  city: string;
-  temperatureC: number;
-  conditions: string;
-}
-
-export const weatherService = nexus.service('weather', {
-  getWeather: nexus.operation<GetWeatherInput, GetWeatherOutput>(),
-});
-```
-<!--SNIPEND-->
-
-Then turn the Operation into a tool:
-
-<!--SNIPSTART typescript-openai-agents-nexus-tool-workflow-->
-[openai-agents/src/nexus-tools/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/nexus-tools/workflows.ts)
-```ts
-export async function nexusToolWorkflow(prompt: string): Promise<string> {
-  const weatherTool = nexusOperationAsTool(
-    weatherService.operations.getWeather,
-    {
-      name: 'getWeather',
-      description: 'Get the current weather for a city.',
-      parameters: {
-        type: 'object',
-        properties: { city: { type: 'string', description: 'The city name' } },
-        required: ['city'],
-        additionalProperties: false,
-      },
-    },
-    { service: weatherService, endpoint: WEATHER_ENDPOINT, scheduleToCloseTimeout: '1 minute' },
-  );
-
-  const agent = new Agent({
-    name: 'WeatherAgent',
-    instructions: 'You are a weather assistant. Always use the getWeather tool to answer weather questions.',
-    tools: [weatherTool],
-  });
-
-  const result = await new TemporalOpenAIRunner().run(agent, prompt);
-  return result.finalOutput ?? '';
-}
-```
-<!--SNIPEND-->
-
-### Nested agent tools
-
-Use `agentAsTool` to expose another `Agent` as a tool while keeping nested model calls durable:
-
-<!--SNIPSTART typescript-openai-agents-agent-as-tool-workflow-->
-[openai-agents/src/agent-patterns/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/agent-patterns/workflows.ts)
-```ts
-export async function agentsAsTools(prompt: string): Promise<string> {
-  const specialistAgent = new Agent({
-    name: 'SpecialistAgent',
-    instructions: 'You are a specialist. Answer questions concisely.',
-  });
-
-  const specialistTool = agentAsTool(specialistAgent, {
-    toolName: 'ask_specialist',
-    toolDescription: 'Ask the specialist agent a question and get a concise answer.',
-  });
-
-  const orchestratorAgent = new Agent({
-    name: 'OrchestratorAgent',
-    instructions:
-      'You orchestrate tasks. Use the ask_specialist tool to get answers, then synthesize a final response.',
-    tools: [specialistTool],
-  });
-
-  const runner = new TemporalOpenAIRunner();
-  const result = await runner.run(orchestratorAgent, prompt);
-  return result.finalOutput ?? '';
-}
-```
-<!--SNIPEND-->
-
-Nested approval interruptions are not supported. If a nested run pauses for approval, the tool invocation fails with an
-`ApplicationFailure` of type `NestedAgentInterruption`.
-
-## MCP servers
-
-The integration supports stateless and stateful [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
-servers.
-
-Register a provider for each server on the Worker. Both kinds go in the same `mcpServerProviders` list; a stateful
-provider additionally takes the `NativeConnection` it should run its dedicated Worker on.
-
-<!--SNIPSTART typescript-openai-agents-mcp-worker-->
-[openai-agents/src/mcp/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/mcp/worker.ts)
-```ts
-// A stateless provider reconnects per operation, so each tool call stands alone.
-const statelessProviders = [
-  new StatelessMCPServerProvider(
-    'filesystem',
-    () =>
-      new MCPServerStdio({
-        command: 'npx',
-        args: ['ts-node', filesystemServerPath],
-        name: 'filesystem',
-      }),
-  ),
-  new StatelessMCPServerProvider(
-    'streamableHttp',
-    () => new MCPServerStreamableHttp({ url: toolsHttp.url, name: 'streamableHttp' }),
-  ),
-  new StatelessMCPServerProvider('sse', () => new MCPServerSSE({ url: toolsSse.url, name: 'sse' })),
-];
-
-// A stateful provider also takes the connection, which the plugin uses to run a
-// dedicated Worker holding the MCP session open for the life of the Workflow run.
-const statefulProviders = [new StatefulMCPServerProvider('memory', () => createNotesServer(), connection)];
-
-const worker = await Worker.create({
-  connection,
-  taskQueue: 'openai-agents-mcp',
-  workflowsPath: require.resolve('./workflows'),
-  activities,
-  plugins: [
-    new OpenAIAgentsPlugin({
-      modelProvider: new OpenAIProvider({ apiKey }),
-      modelParams: { useLocalActivity: true },
-      mcpServerProviders: [...statelessProviders, ...statefulProviders],
-    }),
-  ],
-  bundlerOptions: {
-    webpackConfigHook: (config) => ({
-      ...config,
-      resolve: {
-        ...config.resolve,
-        conditionNames: ['require', 'browser', 'default'],
-      },
-    }),
-  },
-});
-```
-<!--SNIPEND-->
-
-### Stateless MCP servers
-
-Use stateless servers when each tool call is independent. Reference the provider name from Workflow code with
-`statelessMcpServer`:
-
-<!--SNIPSTART typescript-openai-agents-stateless-mcp-workflow-->
-[openai-agents/src/mcp/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/mcp/workflows.ts)
-```ts
-export async function filesystem(prompt: string): Promise<string> {
-  const agent = new Agent({
-    name: 'FilesystemAgent',
-    instructions: 'You are a helpful assistant with access to a filesystem.',
-    mcpServers: [statelessMcpServer('filesystem')],
-  });
-  const result = await new TemporalOpenAIRunner().run(agent, prompt);
-  return result.finalOutput ?? '';
-}
-```
-<!--SNIPEND-->
-
-### Stateful MCP servers
-
-Use stateful servers when a persistent connection or session is required. The plugin starts a dedicated in-process
-Worker pinned to a per-run Task Queue and routes MCP operations to it.
-
-In the Workflow, call `connect()` before use and `cleanup()` in a `finally` block:
-
-<!--SNIPSTART typescript-openai-agents-stateful-mcp-workflow-->
-[openai-agents/src/mcp/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/mcp/workflows.ts)
-```ts
-export async function statefulMemory(prompt: string): Promise<string> {
-  const server = statefulMcpServer('memory');
-  await server.connect();
-  try {
-    const agent = new Agent({
-      name: 'MemoryAgent',
-      instructions: 'You are a helpful assistant with access to a persistent notes store.',
-      mcpServers: [server],
-    });
-    const result = await new TemporalOpenAIRunner().run(agent, prompt);
-    return result.finalOutput ?? '';
-  } finally {
-    await server.cleanup();
-  }
-}
-```
-<!--SNIPEND-->
-
-Dedicated Worker startup and heartbeat failures surface as an `ApplicationFailure` whose type is exported as
-`DEDICATED_WORKER_FAILURE_TYPE`.
-
-## Sessions and human-in-the-loop
-
-Because the agent loop runs inside a Workflow, conversation history and pending approvals must be replay safe.
-
-### Replay-safe sessions
-
-Use `WorkflowSafeMemorySession` for conversation history. It replaces the upstream `MemorySession`, which is not replay
-safe because it depends on host process state.
-
-<!--SNIPSTART typescript-openai-agents-session-workflow-->
-[openai-agents/src/sessions/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/sessions/workflows.ts)
-```ts
-export async function multiTurnChat(prompts: string[]): Promise<string[]> {
-  const agent = new Agent({ name: 'ChatAgent', instructions: 'You are a helpful assistant.' });
-  const session = new WorkflowSafeMemorySession();
-  const runner = new TemporalOpenAIRunner();
-  const replies: string[] = [];
-  for (const prompt of prompts) {
-    const result = await runner.run(agent, prompt, { session });
-    replies.push(result.finalOutput ?? '');
-  }
-  return replies;
-}
-```
-<!--SNIPEND-->
-
-Session history lives on the Workflow heap and is rebuilt by replay within a single run. It does **not** automatically
-survive `continueAsNew`—a continued run starts with an empty session. To carry history across a Continue-As-New
-boundary, capture the items and re-seed the new run's session through the constructor's `initialItems`:
-
-<!--SNIPSTART typescript-openai-agents-session-carryover-workflow-->
-[openai-agents/src/sessions/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/sessions/workflows.ts)
-```ts
-export async function carryoverChat(input: CarryoverChatInput): Promise<string[] | void> {
-  const agent = new Agent({ name: 'ChatAgent', instructions: 'You are a helpful assistant.' });
-  const session = new WorkflowSafeMemorySession({ initialItems: input.initialItems });
-  const runner = new TemporalOpenAIRunner();
-  const accumulated = input.accumulated ?? [];
-
-  const [prompt, ...remaining] = input.prompts;
-  if (prompt === undefined) {
-    return accumulated;
-  }
-
-  const result = await runner.run(agent, prompt, { session });
-  accumulated.push(result.finalOutput ?? '');
-
-  if (remaining.length === 0) {
-    return accumulated;
-  }
-
-  const items = await session.getItems();
-  await continueAsNew<typeof carryoverChat>({
-    prompts: remaining,
-    initialItems: items,
-    accumulated,
-  });
-}
-```
-<!--SNIPEND-->
-
-### Run state and approvals
-
-`TemporalOpenAIRunner.run` accepts a `RunState` as its second argument, matching the upstream runner. This supports
-human-approval flows that pause, wait for a Signal or Update, then Continue-As-New for as long as the approval
-takes.
-
-<!--SNIPSTART typescript-openai-agents-approval-workflow-->
-[openai-agents/src/human-approval/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/human-approval/workflows.ts)
-```ts
-export async function approvalWorkflow(input: ApprovalInput = {}): Promise<string> {
-  const action = tool({
-    name: 'dangerousAction',
-    description: 'Performs a dangerous action that requires human approval before execution.',
-    parameters: {
-      type: 'object',
-      properties: {
-        reason: { type: 'string', description: 'The reason for performing the dangerous action.' },
-      },
-      required: ['reason'],
-      additionalProperties: false,
-    } as const,
-    needsApproval: true,
-    execute: async (args) => `did: ${(args as { reason: string }).reason}`,
-  });
-
-  const agent = new Agent({
-    name: 'Approver',
-    instructions: "You carry out the user's request using the dangerousAction tool.",
-    tools: [action],
-    modelSettings: { toolChoice: 'required' },
-  });
-
-  const runner = new TemporalOpenAIRunner();
-
-  if (input.resumeFromRunState !== undefined) {
-    const state = await RunState.fromString(agent, input.resumeFromRunState);
-    for (const interruption of state.getInterruptions()) {
-      state.approve(interruption);
-    }
-    const resumed = await runner.run(agent, state);
-    return resumed.finalOutput ?? '';
-  }
-
-  let approved = false;
-  setHandler(approveSignal, () => {
-    approved = true;
-  });
-
-  const result = await runner.run(agent, 'Delete the old backup files.');
-
-  if (result.interruptions.length === 0) {
-    return result.finalOutput ?? '';
-  }
-
-  await condition(() => approved);
-  await continueAsNew<typeof approvalWorkflow>({ resumeFromRunState: result.state.toString() });
-  throw new Error('unreachable');
-}
-```
-<!--SNIPEND-->
-
-The agent passed to `RunState.fromString` must define the same tool names, handoff graph, and MCP servers as the run
-that produced the serialized state.
-
-## Streaming
-
-`run` supports streaming with `{ stream: true }`. The streaming model Activity publishes each model event to a [Workflow Stream](/workflow-streams) topic as the model produces it, so an external client can observe a run live while it stays durable. Streaming is experimental.
-
-Set the topic name in `modelParams.streamingTopic` on the Client's `OpenAIAgentsPlugin`, not the Worker's; `run` fails with a `StreamingTopicNotConfigured` error if no topic is configured.
-
-Streaming requires the `@temporalio/workflow-streams` package:
-
-
-<!--SNIPSTART typescript-openai-agents-streaming-workflow -->
-[openai-agents/src/streaming/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/streaming/workflows.ts)
-```ts
-import { Agent } from '@openai/agents-core';
-import { TemporalOpenAIRunner } from '@temporalio/openai-agents/workflow';
-import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
-import { condition, defineSignal, setHandler } from '@temporalio/workflow';
-
-export const streamingTopic = 'model-stream';
-
-export const consumerDoneSignal = defineSignal('consumer-done');
-
-export async function streamingChat(prompt: string): Promise<string> {
-  new WorkflowStream();
-
-  let consumerDone = false;
-  setHandler(consumerDoneSignal, () => {
-    consumerDone = true;
-  });
-
-  const agent = new Agent({ name: 'StreamingAgent', instructions: 'You are a helpful assistant.' });
-  const result = await new TemporalOpenAIRunner().run(agent, prompt, { stream: true });
-  // The external client is the event consumer; the Workflow only drives the run to completion.
-  for await (const _event of result);
-  await result.completed;
-  // Completing discards the stream log, racing a subscriber's final poll; the timeout covers no subscriber.
-  await condition(() => consumerDone, '10 seconds');
-  return result.finalOutput ?? '';
-}
-```
-<!--SNIPEND-->
-
-Streaming from within the Workflow is replay-safe. Subscribe from an external client with `WorkflowStreamClient` from `@temporalio/workflow-streams/client`; see the [`@temporalio/workflow-streams`](https://github.com/temporalio/sdk-typescript/tree/main/contrib/workflow-streams) docs for the subscriber API.
-
-## Tracing
-
-OpenAI Agents SDK tracing works across Client, Workflow, Activity, Nexus, and MCP boundaries.
-
-### OpenAI hosted traces
-
-Enable the upstream hosted exporter before constructing the plugin, in the Worker process (not inside Workflow code):
-
-```typescript
-import { OpenAITracingExporter } from '@openai/agents-openai';
-import { addTraceProcessor, BatchTraceProcessor } from '@openai/agents-core';
-
-addTraceProcessor(new BatchTraceProcessor(new OpenAITracingExporter()));
-```
-
-:::warning
-
-We don't recommend calling `setDefaultOpenAITracingExporter()`. If you do need to call it, be aware that it overwrites
-internal state on any `OpenAIAgentsPlugin` instances you've already constructed. Set up hosted tracing with
-`addTraceProcessor` instead, as shown above.
-
-:::
-
-### OpenTelemetry
-
-If you already collect traces with OpenTelemetry, the integration can emit the agent's spans through your OpenTelemetry
-pipeline. Model calls, tools, and orchestration then land in the same backend as the rest of your application's traces,
-instead of living only in the OpenAI dashboard.
-
-To turn this on, install the optional `@opentelemetry/sdk-trace-base` peer dependency:
-
-```bash
-# Or `pnpm add`/`yarn add`
-npm install @opentelemetry/sdk-trace-base
-```
-
-Then register the tracer provider and enable OpenTelemetry instrumentation in the plugin options:
-
-```typescript
-import { trace } from '@opentelemetry/api';
-import { createTracerProvider } from '@temporalio/openai-agents/otel';
-
-// NOTE: TracerProvider must be declared before plugin creation
-trace.setGlobalTracerProvider(createTracerProvider());
-```
-
-Then set `useOtelInstrumentation` to `true` in the plugin's `interceptorOptions`:
-
+The tool's `name` must match an Activity registered on the Worker. The model's arguments become the Activity's single
+argument, and the Activity's result goes back to the model as a string, or as JSON if it isn't one. `activityAsTool`'s
+second argument sets the Activity's timeouts, retry policy, and Task Queue.
+
+Use `tool()` for deterministic work. It can also call an Activity, as the basic sample's local Activity tool does
+through `proxyLocalActivities`.
+
+`nexusOperationAsTool` exposes a [Nexus](/nexus) Operation as a tool. Pass it the Operation from your service
+definition, a tool definition shaped like `activityAsTool`'s, and options with the `service` and `endpoint`. The
+Workflow runs the Operation and returns its result to the agent, as in the
+[Nexus tools sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/nexus-tools).
+
+To call another agent as a tool, use the integration's `agentAsTool` rather than the SDK's `agent.asTool()`, so the
+nested agent's model calls run as Activities too. The nested run gets only the parent run's `runConfig.sandbox`, so the
+parent's other run settings, such as `traceIncludeSensitiveData` and its `runConfig` guardrails, don't apply inside it,
+and `agentAsTool` has no option to set them. The agent patterns sample uses `agentAsTool` for an orchestrator that asks
+a specialist.
+
+MCP servers run on the Worker, and Workflow code refers to them by name. Register a provider for each server in the
+plugin's `mcpServerProviders`, then add a handle with the same name to the agent's `mcpServers`:
+
+- **Stateless servers:** `StatelessMCPServerProvider` takes a name and a factory that returns an OpenAI Agents SDK MCP
+  server, such as `MCPServerStdio` or `MCPServerStreamableHttp`. In the Workflow, use `statelessMcpServer(name)`. Each
+  tool listing and tool call is an Activity that connects to the server, does that one operation, and disconnects, so no
+  state carries between calls.
+- **Stateful servers:** `StatefulMCPServerProvider` also takes a `NativeConnection`, usually the Worker's. In the Workflow, call
+  `connect()` on the `statefulMcpServer(name)` handle before the run and `cleanup()` in a `finally` block. `connect()`
+  starts a long-running Activity that opens the server and runs a dedicated Worker for that Workflow run, so the server
+  keeps its state until `cleanup()`.
+
+The handles expose a server's tools, not its prompts, so fetch an MCP prompt in your own Activity. The
+[MCP sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/mcp) does this and shows
+stdio, Streamable HTTP, SSE, and stateful servers.
+
+Hosted tools from `@openai/agents-openai`, such as `webSearchTool()`, `imageGenerationTool()`, and
+`codeInterpreterTool()`, run inside the model provider during the model Activity, as the
+[hosted tools sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/tools) shows. A
+`hostedMcpTool()` works the same way, so the model provider calls the remote MCP server itself. Its `onApproval`
+callback runs in the Workflow and can wait for a Signal, as in the
+[hosted MCP sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/hosted-mcp).
+
+Tool declarations are part of the model Activity's input, so a credential written into one, such as a hosted MCP tool's
+`authorization`, is recorded in Event History. Supply it from the Worker with the plugin's `hostedToolCredentials`
+instead, which keeps it out of that input, as described in [Configuration](#configuration).
+
+## Keep conversation history and pause for approval
+
+Agent state lives in the Workflow, so a conversation or a pending approval survives Worker restarts for as long as the
+Workflow runs.
+
+To keep conversation history across `run()` calls, pass a `WorkflowSafeMemorySession` as the `session` option, since
+the runner rejects the SDK's `MemorySession`. The history is held in the Workflow and rebuilt by replay, but a
+Continue-As-New starts with an empty session. To carry it over, pass `await session.getItems()` to `continueAsNew()`
+and construct the new run's session with `initialItems`. The
+[sessions sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/sessions) shows a
+multi-turn chat and the carry-over.
+
+Instead of a session, a long-running Workflow can keep the conversation itself and pass the accumulated
+`result.history` to each `run()` call, as the
+[stateful conversation sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/stateful-conversation)
+does.
+
+A tool with `needsApproval` pauses the run, and `run()` returns with `result.interruptions` set. Wait for a Signal or
+Update, call `result.state.approve(interruption)` or `result.state.reject(interruption)` for each entry in
+`result.interruptions`, then resume by passing `result.state` back to `run()`.
+
+To resume in a fresh Event History instead, serialize the state with `result.state.toString()` and pass it to
+`continueAsNew()` once the approval arrives. In the new run, rehydrate it with `RunState.fromString()`, passing an
+agent with the same tools, handoffs, and MCP servers as the run that paused, then approve or reject each entry in its
+`getInterruptions()` and pass the state to `run()`. The
+[human approval sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/human-approval)
+takes this route and includes the Client that sends the approval Signal. For how the SDK serializes `RunState`, see
+[Dealing with longer approval times](https://openai.github.io/openai-agents-js/guides/human-in-the-loop/#dealing-with-longer-approval-times)
+in OpenAI's human-in-the-loop guide.
+
+## Run sandbox agents
+
+A `SandboxAgent` works in a sandbox, a workspace where it runs shell commands and reads and edits files. The
+integration runs each sandbox operation as an Activity, including creating the session, every command and file
+operation, and the teardown. Sandbox support is experimental. For manifests, capabilities, and backends, see OpenAI's
+[sandbox agents concepts guide](https://openai.github.io/openai-agents-js/guides/sandbox-agents/concepts/).
+
+On the Worker, wrap a sandbox backend's client in a `SandboxClientProvider` under a name, and pass it to the plugin's
+`sandboxClientProviders`:
+
+<!--SNIPSTART typescript-openai-agents-sandboxes-worker-configuration-->
+[openai-agents/src/sandboxes/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/sandboxes/worker.ts)
 ```ts
 plugins: [
   new OpenAIAgentsPlugin({
     modelProvider: new OpenAIProvider({ apiKey }),
-    modelParams: { useLocalActivity: true },
-    interceptorOptions: { useOtelInstrumentation: true, addTemporalSpans: true },
+    sandboxClientProviders: [new SandboxClientProvider('local', new UnixLocalSandboxClient())],
+    resolvableWorkerEnvVars: ['SANDBOX_SERVICE_TOKEN'],
   }),
 ],
 ```
+<!--SNIPEND-->
 
-If you need a different provider class, configure it with `TemporalIdGenerator` and mark it with
-`markReplaySafeTracerProvider` before registering it.
+:::warning
 
-### Temporal orchestration spans
+`UnixLocalSandboxClient`, from `@openai/agents-core/sandbox/local`, runs the agent's commands directly on the Worker
+host as the Worker's OS user, with no container or chroot around them. Use it only for local development. To isolate
+the agent, register `DockerSandboxClient`, from the same entry point, or a hosted backend from OpenAI's
+[sandbox clients guide](https://openai.github.io/openai-agents-js/guides/sandbox-agents/clients/) under the same name.
+Only the Worker changes.
 
-Set `addTemporalSpans: true` to emit `temporal:*` agent-SDK spans for orchestration operations such as Workflow starts,
-Signals, Queries, Updates, Activities, child Workflows, Nexus Operations, and Continue-As-New. It sits alongside
-`useOtelInstrumentation` in `interceptorOptions`, as shown in the Worker above.
+:::
 
-These are agent-SDK spans, so they reach the hosted OpenAI dashboard, custom `TracingProcessor`s, and OpenTelemetry when
-enabled.
+In the Workflow, set `runConfig.sandbox.client` to `temporalSandboxClient()` with the provider's name:
+
+<!--SNIPSTART typescript-openai-agents-sandboxes-workflow-->
+[openai-agents/src/sandboxes/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/sandboxes/workflows.ts)
+```ts
+import { Manifest, SandboxAgent } from '@openai/agents-core/sandbox';
+import { TemporalOpenAIRunner, temporalSandboxClient, workerEnvValue } from '@temporalio/openai-agents/workflow';
+import { ApplicationFailure } from '@temporalio/workflow';
+
+export async function sandboxWorkflow(prompt: string): Promise<string> {
+  const agent = new SandboxAgent({
+    name: 'SandboxAgent',
+    instructions:
+      'Use the sandbox to do the work rather than answering from memory, then report what the commands returned. ' +
+      'Run each command to completion in a single exec_command call instead of leaving a process running to check ' +
+      'on later. SERVICE_TOKEN holds a credential: you may use it, but never print its value.',
+    defaultManifest: new Manifest({
+      environment: { SERVICE_TOKEN: workerEnvValue('SANDBOX_SERVICE_TOKEN') },
+    }),
+  });
+  const result = await new TemporalOpenAIRunner().run(agent, prompt, {
+    runConfig: { sandbox: { client: temporalSandboxClient('local') } },
+  });
+  if (typeof result.finalOutput !== 'string') {
+    throw ApplicationFailure.nonRetryable('SandboxAgent returned no final output');
+  }
+  return result.finalOutput;
+}
+```
+<!--SNIPEND-->
+
+Event History records every sandbox Activity's input and result, including the session's manifest and each command's
+output, so a literal manifest value is recorded even when it's marked `ephemeral: true`. To keep a secret's value out
+of the manifest, set the manifest value to `workerEnvValue()` with the name of a Worker environment variable, as the
+Workflow above does, and list that name in the plugin's `resolvableWorkerEnvVars`. The manifest then records only the
+variable's name. Unix-local and Docker also leave the resolved value out of the session state they report, so with
+those backends the value doesn't enter Event History. With other backends, keeping it out of that state is the
+backend's responsibility. Set the variable on every Worker that runs sandbox Activities, because a listed variable that
+isn't set reads as an empty string.
+
+`workerEnvValue()` doesn't stop a secret from reaching history another way. A command that prints the secret still
+records it in Event History, so tell the agent not to print it, and encrypt what reaches history with a
+[Payload Codec](/develop/typescript/best-practices/data-handling/data-encryption).
+
+The runner tears down the session when the run completes or fails. A run that pauses for approval keeps its session,
+so resume it as described in
+[Keep conversation history and pause for approval](#keep-conversation-history-and-pause-for-approval) and pass the
+same `runConfig.sandbox` to that `run()` call. Canceling, terminating, or timing out the Workflow skips the teardown,
+as does never resuming a paused run. Remove those sessions through your backend, for example by deleting the Docker
+container or the hosted sandbox.
+
+Unix-local and Docker sessions stay on the machine that created them, so a Worker on another machine can't reach them.
+With those backends, send sandbox Activities to a Task Queue that only one host's Workers poll, by passing Activity
+options with that `taskQueue` as the second argument to `temporalSandboxClient()`. The options replace the default
+five-minute Start-To-Close Timeout instead of merging with it, so include a `startToCloseTimeout`.
+
+With Unix-local, let a single Worker process handle sandbox Activities and don't restart it during a run. A Unix-local
+session that another Worker process reconnects to, including the same Worker after a restart, goes back to the snapshot
+taken when the session was created or last paused and loses later changes. Neither Unix-local nor Docker can reconnect
+a process that's still running, which is why the Workflow above tells the agent to finish each command in one call.
+[Failure behavior](#failure-behavior) covers reconnects in detail, and the
+[sandboxes sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/sandboxes) shows this
+Worker and Workflow with the Client that starts them.
+
+## Stream model output
+
+Pass `{ stream: true }` to `run()` to stream model events to a client while the run stays durable. Streaming is
+experimental. It publishes over [Workflow Streams](/develop/typescript/workflows/workflow-streams), so install
+[`@temporalio/workflow-streams`](https://www.npmjs.com/package/@temporalio/workflow-streams) and construct a
+`WorkflowStream` at the top of the Workflow. Set the topic in `modelParams.streamingTopic` on the Client's plugin, or in
+the runner's `defaultModelParams`, and leave `useLocalActivity` off, since a streaming run fails with it.
+
+Each model call runs as a streaming Activity that publishes the model's events to the topic as they arrive. In the
+Workflow, iterate the result to drive the run to completion. That iteration yields each call's events only after the
+call finishes, so subscribe from outside the Workflow to see them live. A retried model call publishes its events again
+from the start, so a subscriber can see a call's events more than once.
+
+Subscribe with `WorkflowStreamClient`, as described in
+[Subscribe](/develop/typescript/workflows/workflow-streams#subscribe), and keep the Workflow open until the subscriber
+has the last event, as described in
+[Closing the stream](/develop/typescript/workflows/workflow-streams#closing-the-stream). The
+[streaming sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/streaming) shows the
+Workflow, the Client's topic setting, and a subscriber that signals the Workflow when it's done.
+
+## Trace agent runs
+
+OpenAI Agents SDK traces follow an agent run across the Client, the Workflow, Activities, Nexus Operations, and MCP
+calls. Spans from Workflow code go to the trace processors in the Worker process, so register exporters and processors
+there, not in Workflow code. Those spans aren't emitted again when the Worker replays history.
+
+To send traces to OpenAI's dashboard, register OpenAI's exporter with
+`addTraceProcessor(new BatchTraceProcessor(new OpenAITracingExporter()))`. Register your own `TracingProcessor` with
+`addTraceProcessor` too. Don't call `setDefaultOpenAITracingExporter()` after constructing the plugin, because it
+replaces every trace processor, including the one the plugin uses for OpenTelemetry.
+
+By default, OpenAI Agents SDK spans include model and tool inputs and outputs, and
+`runConfig.traceIncludeSensitiveData: false` leaves them out, as described in
+[Sensitive data](https://openai.github.io/openai-agents-js/guides/tracing/#sensitive-data) in OpenAI's tracing guide.
+The SDK's `sandbox.exec` span records each sandbox command's text even then, so a command that contains a secret
+reaches every trace processor.
+
+To export OpenAI Agents SDK spans through OpenTelemetry, install the optional peer dependency
+[`@opentelemetry/sdk-trace-base`](https://www.npmjs.com/package/@opentelemetry/sdk-trace-base), then do the following
+in both the Worker and the Client process:
+
+1. Create a tracer provider with `createTracerProvider()` from `@temporalio/openai-agents/otel`, and add your
+   exporter's span processor to it with `addSpanProcessor()`. The provider starts with no span processor, so it exports
+   nothing until you add one.
+2. Before constructing the plugin, register the provider with `trace.setGlobalTracerProvider()`.
+3. Set `useOtelInstrumentation: true` in the plugin's `interceptorOptions`.
+
+If your application already has its own tracer provider, see
+[Composing with other plugins](#composing-with-other-plugins).
+
+Set `addTemporalSpans: true` in `interceptorOptions` to add `temporal:*` spans for Temporal operations, such as Workflow
+starts, Signals, and Activities, and `sandbox:*` spans for sandbox operations. They're OpenAI Agents SDK spans, so they
+reach every trace processor, and OpenTelemetry when it's on. A span for a Client call, and for the Workflow start,
+Signal, Query, or Update it makes, appears only when that call runs inside an agent trace, such as one started with
+`withTrace()`.
+
+Workflow code reads `interceptorOptions` from the Client that started the Workflow, the same way it reads `modelParams`,
+so set them on the Client's plugin for spans from Workflow code. On the Worker's plugin, `addTemporalSpans` adds spans
+for Activities. The
+[tracing sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/tracing) shows a custom
+processor, OpenAI's exporter, and OpenTelemetry.
+
+## Reference and troubleshooting
+
+### Feature support
+
+| Feature | Support | Notes |
+| --- | --- | --- |
+| Multi-turn agent runs | Supported | The agent loop runs in the Workflow. |
+| Handoffs | Supported | `Agent[]` and `handoff()` forms, including input filters. |
+| Function tools | Supported | `tool()` runs in the Workflow and must be deterministic. |
+| Activities as tools | Supported | `activityAsTool()`. The Activity doesn't receive the run's `context`. |
+| Nexus Operations as tools | Supported | `nexusOperationAsTool()`. |
+| Agents as tools | Supported | `agentAsTool()`. |
+| Hosted tools | Supported | The model provider runs them during the model Activity. |
+| Hosted MCP tools | Supported | `onApproval` runs in the Workflow. |
+| Stateless MCP servers | Supported | One connection per tool listing or tool call. |
+| Stateful MCP servers | Supported | A dedicated Worker holds the server for each Workflow run. |
+| MCP prompts | Not supported through MCP handles | Fetch prompts in your own Activity. |
+| Sandbox agents | Supported (experimental) | Unix-local and Docker sessions are tied to one host. |
+| Reconnecting to a sandbox process that's still running | Not supported on Unix-local or Docker | Have the agent finish each command in one `exec_command` call. See [Failure behavior](#failure-behavior). |
+| Sandbox runs paused for approval | Supported on backends with `resume()` | Every paused-run resume calls the backend's `resume()`. See [Failure behavior](#failure-behavior). |
+| Sessions | Supported | `WorkflowSafeMemorySession`. The SDK's `MemorySession` is rejected. |
+| Run state and approvals | Supported | Serialize `RunState` to resume across Continue-As-New. |
+| Guardrails | Supported | Run in the Workflow. A tripwire arrives as the `cause` of an `AgentsWorkflowError`. |
+| Structured output | Supported | `outputType` on the agent. |
+| Run context | Supported | Visible to code in the Workflow, not to Activity tools or `agentAsTool` nested runs. |
+| Per-run model override | Supported | `runConfig.model` takes a model name. |
+| Model objects on agents | Not supported | Name the model with a string. |
+| Custom model providers | Supported | Any `ModelProvider`, called in the model Activity. |
+| Local Activities for model calls | Supported | `useLocalActivity: true` in the Client's `modelParams` or the runner's `defaultModelParams`. |
+| Streaming | Supported (experimental) | Requires a `streamingTopic` and a `WorkflowStream` constructed in the Workflow. Not with Local Activities. |
+| Tracing | Supported | OpenAI's exporter, custom processors, OpenTelemetry, and `temporal:*` spans. |
+| Cancellation through `signal` | Not supported | Cancel the Workflow or use a [cancellation scope](/develop/typescript/workflows/cancellation-scopes). Both skip a sandbox run's teardown. See [Failure behavior](#failure-behavior). |
+| Child Workflows and Continue-As-New | Supported | Plugin settings from the Client carry over. |
+| Voice and realtime agents | Not supported | |
+
+### Composing with other plugins
+
+`OpenAIAgentsPlugin` adds its Activities and interceptors to the ones already on the Worker and Client, so it works
+alongside other plugins. Register one instance per Client. When several are registered, the last one's `modelParams` and
+`interceptorOptions` reach the Workflow.
+
+The plugin's bundler hook puts its polyfills first in the Workflow bundle, ahead of every other module, so plugin order
+doesn't affect them. When you prebuild the bundle with `bundleWorkflowCode`, pass the plugin to `bundleWorkflowCode` as
+well as to the Worker, so the bundle includes the polyfills and the Workflow interceptor. To replay histories, as in
+[How to Replay a Workflow Execution](/develop/typescript/best-practices/testing-suite#replay), pass the plugin to
+`Worker.runReplayHistory` too.
+
+The plugin registers Activities named `invokeModelActivity` and `invokeModelStreamActivity`, plus Activities whose names
+start with each MCP and sandbox provider's name. Don't register your own Activities under those names.
+
+OpenTelemetry export needs a replay-safe global tracer provider. If your application already registers its own global
+tracer provider, configure it with `TemporalIdGenerator` and mark it with `markReplaySafeTracerProvider()`. Mark only
+providers that use `TemporalIdGenerator`.
+
+### Replay safety
+
+These run in the Workflow and must be deterministic: the agent loop, agent `instructions` functions, `tool()` `execute`
+functions, guardrails, handoff input filters, `callModelInputFilter`, hosted MCP `onApproval` callbacks,
+`WorkflowSafeMemorySession`, a `ModelSummaryProvider`, and `agentAsTool`'s `customOutputExtractor`. They can use
+Workflow APIs such as Signals, `condition()`, and `proxyActivities`.
+
+These run in Activities on the Worker: model calls through the model provider, `hostedToolCredentials`, Activities
+wrapped with `activityAsTool`, MCP server operations, and sandbox operations. `nexusOperationAsTool` runs a Nexus
+Operation.
+
+Model requests and responses, tool arguments and results, MCP results, and sandbox inputs and results, including
+manifests, command output, and the session state a backend reports, are all Activity or Nexus inputs and results. Event
+History stores them, and replay reads them back instead of calling again. Encrypt sensitive data with a
+[Payload Codec](/develop/typescript/best-practices/data-handling/data-encryption), and account for the payload size
+limit listed under [Programming model level](/evaluate/cloud/limits#programming-model-level) in the Temporal Cloud
+limits. For long conversations, use
+[Continue-As-New](/develop/typescript/workflows/continue-as-new) before Event History approaches its limits.
+
+Replay reproduces what the original run saw. It rebuilds `WorkflowSafeMemorySession` history, a streaming run iterates
+the same events its streaming Activity returned, and trace and span identifiers come out the same because they come
+from a replay-seeded random source. A Continue-As-New starts the session empty, but the plugin settings from the Client
+carry over to the new run and to child Workflows.
+
+### Configuration
+
+| Entry point | Use from | APIs |
+| --- | --- | --- |
+| `@temporalio/openai-agents` | Worker and Client code | `OpenAIAgentsPlugin`, `StatelessMCPServerProvider`, `StatefulMCPServerProvider`, `SandboxClientProvider`, `OpenAIAgentsTraceClientInterceptor` for wiring a Client by hand, `DEDICATED_WORKER_FAILURE_TYPE`, and option types |
+| `@temporalio/openai-agents/workflow` | Workflow code | `TemporalOpenAIRunner`, `activityAsTool`, `nexusOperationAsTool`, `agentAsTool`, `statelessMcpServer`, `statefulMcpServer`, `WorkflowSafeMemorySession`, `temporalSandboxClient`, `workerEnvValue`, `ToolSerializationError`, and `DEDICATED_WORKER_FAILURE_TYPE` |
+| `@temporalio/openai-agents/otel` | Worker and Client code | `createTracerProvider`, `TemporalIdGenerator`, `markReplaySafeTracerProvider`, and `isReplaySafeTracerProvider`. Requires `@opentelemetry/sdk-trace-base`. |
+| `@temporalio/openai-agents/workflow-interceptor` | Worker bundling | The Workflow interceptor module, for listing by hand in `interceptors.workflowModules` on `Worker.create`, or in `workflowInterceptorModules` for `bundleWorkflowCode` |
+
+`OpenAIAgentsPlugin` options:
+
+| Option | Set on | Default | Behavior |
+| --- | --- | --- | --- |
+| `modelProvider` | Worker, and required on the Client | None | Resolves model names in the model Activity. The Client's plugin requires one but never calls it. |
+| `modelParams` | Client | None | Model Activity options sent to each Workflow the Client starts. See the next table. |
+| `interceptorOptions.addTemporalSpans` | Client and Worker | `false` | On the Client, adds `temporal:*` spans for Client calls and, in Workflow code, for Workflow starts, Signals, Queries, Updates, Activities, Local Activities, child Workflows, Nexus Operations, and Continue-As-New, plus `sandbox:*` spans for sandbox operations. On the Worker, adds `temporal:executeActivity:*` spans and `sandbox:*:result` spans. Spans for a Client call and for the Workflow start, Signal, Query, or Update it makes need that call to run inside an agent trace. The `sandbox:*` spans carry only the session identifier and, depending on the operation, an exit code, a port, or a result size. Session creation gets no `sandbox:*` span and no `:result` span, and shows up only as the generic `temporal:startActivity:*` and `temporal:executeActivity:*` spans for the provider's `-sandbox-client-create` Activity. The SDK's own `sandbox.exec` span is separate, isn't controlled by this option, and records the command text even with `traceIncludeSensitiveData: false`. |
+| `interceptorOptions.useOtelInstrumentation` | Client and Worker | `false` | On the Client, forwards spans from Workflow code to OpenTelemetry. On the Worker, it only makes the constructor check for a replay-safe tracer provider, since OpenAI Agents SDK spans from Activities reach the global tracer provider either way. Requires a replay-safe global tracer provider in that process before the plugin is constructed. |
+| `mcpServerProviders` | Worker | `[]` | Registers each MCP provider's Activities. |
+| `sandboxClientProviders` | Worker | `[]` | Registers each sandbox provider's Activities. Experimental. |
+| `resolvableWorkerEnvVars` | Worker | `[]` | Worker environment variable names that a `workerEnvValue()` may read. `'*'` allows every name. A listed variable that isn't set reads as an empty string. Experimental. |
+| `hostedToolCredentials` | Worker | None | A function that takes a hosted tool's identity and returns, or resolves to, its credentials. The identity is `{ tool: 'hostedMcp', name, serverLabel, serverUrl?, connectorId? }`, `{ tool: 'shell', name, allowedDomains }`, or `{ tool: 'codeInterpreter', name, allowedDomains }`. The credentials are `{ authorization?, headers?, domainSecrets? }`, with each domain secret as `{ domain, name, value }`, and returning `undefined` leaves the tool as the Workflow declared it. The model Activity calls it on every model call for each hosted MCP tool with a server label, shell tool with a `container_auto` domain allowlist, and code interpreter with an inline container allowlist, so cache secrets it fetches. It fills only fields the Workflow left out: `authorization` and `headers` for hosted MCP, and `domainSecrets` for shell and code interpreter. The model Activity's result records the model provider's full response, so a credential the provider echoes back is recorded in Event History. The plugin doesn't strip it, since redacting the response is the model provider's responsibility. A throw fails the model Activity, and its message is recorded in Event History, so keep credentials out of it. Experimental. |
+
+Model Activity options, in the Client's `modelParams` or the runner's `defaultModelParams`:
+
+| Option | Default | Behavior |
+| --- | --- | --- |
+| `ActivityOptions` fields, such as `startToCloseTimeout`, `scheduleToCloseTimeout`, `retry`, `taskQueue`, and `heartbeatTimeout` | `startToCloseTimeout: '60s'` | Apply to every model Activity. With a `heartbeatTimeout`, the model Activity heartbeats on a timer at half that interval, which detects a lost Worker but not a stalled call. |
+| `useLocalActivity` | `false` | Runs model calls as [Local Activities](/local-activity). Only `startToCloseTimeout`, `scheduleToCloseTimeout`, `retry`, `cancellationType`, and `summary` apply then. |
+| `summary` | None | The Activity summary shown in the Temporal UI. A string works anywhere. A `ModelSummaryProvider`, whose `provide(agent, instructions, input)` runs in the Workflow and must be deterministic, works only in `defaultModelParams`. |
+| `streamingTopic` | None | The Workflow Stream topic for streaming runs. Required with `{ stream: true }`. Experimental. |
+| `streamingBatchInterval` | The Workflow Streams default | How often the streaming Activity flushes published events. Experimental. |
+
+`TemporalOpenAIRunner` options:
+
+| API | Option | Default | Behavior |
+| --- | --- | --- | --- |
+| Constructor | `defaultModelParams` | None | Model Activity options set in Workflow code, which also reach Workflows started without the plugin, such as by a Schedule or the Temporal CLI. The Client's `modelParams` take precedence for each field they set. They don't reach `agentAsTool` nested runs, which use only the Client's `modelParams` and the plugin's defaults. |
+| `run()` | `context`, `maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, `tracing` | SDK defaults | As in the SDK's run options. `session` can't be the SDK's `MemorySession`. Other SDK run options, such as `signal`, `errorHandlers`, `toolErrorFormatter`, and `toolExecution`, aren't accepted. |
+| `run()` | `stream` | `false` | Streams model events over a Workflow Stream. Experimental. |
+| `run()` | `runConfig.model` | Each agent's model | A model name used by every agent in the run. |
+| `run()` | `runConfig.modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`, `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, `traceMetadata` | SDK defaults | As in the SDK's run config. Guardrails and filters run in the Workflow. |
+| `run()` | `runConfig.sandbox` | None | Required when a `SandboxAgent` is reachable from the agent through handoffs or through an `agentAsTool` tool, and passed on to `agentAsTool` nested runs. With a `SandboxAgent` reached only through an `agentAsTool` tool, a missing `runConfig.sandbox` on the parent run isn't caught up front. The nested run raises `SandboxConfigurationError` when the tool is called, which ends the parent run with an `AgentsWorkflowError` that carries it on `cause.error`. `client` must come from `temporalSandboxClient()` and is required even with `session`. The other fields, `options`, `manifest`, `snapshot`, `session`, `sessionState`, `concurrencyLimits`, and `archiveLimits`, go to the OpenAI Agents SDK unchanged, as described in [sandbox run options](https://openai.github.io/openai-agents-js/guides/sandbox-agents/concepts/#sandbox-run-options) in OpenAI's sandbox agents concepts guide. `options`, `manifest`, and `snapshot` go into the create Activity's input, so Event History records them. Experimental. |
+
+Tool, MCP, session, and sandbox APIs:
+
+| API | Option | Default | Behavior |
+| --- | --- | --- | --- |
+| `activityAsTool(definition, options)` | `name`, `description`, `parameters` | Required | `name` must match a registered Activity. `parameters` is a JSON schema object, and the type parameter doesn't check it against the Activity's input. |
+| `activityAsTool` | `startToCloseTimeout`, `heartbeatTimeout`, `taskQueue`, `retryPolicy` | `startToCloseTimeout: '1 minute'` | Activity options for the tool call. |
+| `activityAsTool`, `nexusOperationAsTool` | `strict` | `true` | Strict schema mode for the tool's arguments. The schema is sent as written, so with `strict: true`, list every property in `required` and set `additionalProperties: false`, or OpenAI's API rejects the request and the model Activity fails with `ModelInvocationError.BadRequest`. |
+| `nexusOperationAsTool(operation, definition, options)` | `service`, `endpoint` | Required | The Nexus service definition and the Nexus Endpoint name. `definition` takes the same fields as `activityAsTool`'s. |
+| `nexusOperationAsTool` | `scheduleToCloseTimeout` | None | The Operation's Schedule-To-Close Timeout. |
+| `agentAsTool(agent, options)` | `toolName` | Required | The tool's name. The tool takes one string argument, `input`. The nested run is started with the parent's `runConfig.sandbox` and nothing else from the parent's `run()` call. It doesn't get the parent's `context`, the parent's other run options (`maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, and `tracing`), or any other `runConfig` field (`model`, `modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`, `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, and `traceMetadata`). These all take their SDK defaults in the nested run. Its model Activities use the Client's `modelParams` but not the parent runner's `defaultModelParams`, so a field the Client didn't set takes the plugin's default, a 60-second Start-To-Close Timeout on a regular Activity. `agentAsTool` has no option to pass them. |
+| `agentAsTool` | `toolDescription` | `''` | The tool's description. |
+| `agentAsTool` | `customOutputExtractor` | The final output, as JSON if it isn't a string | Turns the nested run's result into the tool's output. |
+| `statelessMcpServer(name, options)` | `startToCloseTimeout`, `heartbeatTimeout`, `taskQueue`, `retryPolicy` | `startToCloseTimeout: '1 minute'` | Activity options for listing and calling tools. |
+| `statelessMcpServer`, `statefulMcpServer` | `cacheToolsList` | `true` | Reuses the server's tool list after the first listing. Set it to `false` if the tools can change during a run. |
+| `statelessMcpServer`, `statefulMcpServer` | `factoryArgument` | None | Passed to the provider's factory on the Worker. |
+| `statefulMcpServer` | `config` | `startToCloseTimeout: '1 minute'`, `scheduleToStartTimeout: '30 seconds'` | Activity options for tool operations, which also take `heartbeatTimeout` and `retryPolicy`. Operations always go to the run's dedicated Task Queue. |
+| `statefulMcpServer` | `serverSessionConfig` | `startToCloseTimeout: '1 hour'` | Start-To-Close and Heartbeat Timeouts for the Activity that holds the server open. Raise the timeout for runs that keep the server longer. |
+| `StatelessMCPServerProvider(name, factory)` | Arguments | Required | `factory` returns a new SDK MCP server for each operation. |
+| `StatefulMCPServerProvider(name, factory, connection)` | Arguments | Required | `factory` returns a new server for each Workflow run. The dedicated Worker connects through `connection`, runs in the Worker process that ran the server session Activity, and handles one tool operation at a time, so parallel tool calls to one stateful server run one after another. |
+| `WorkflowSafeMemorySession(options)` | `sessionId` | The Workflow ID | The session identifier. |
+| `WorkflowSafeMemorySession` | `initialItems` | `[]` | History to start from, such as the previous run's items. |
+| `SandboxClientProvider(name, client)` | Arguments | Required | Wraps an SDK sandbox client. Its Activities are named after `name`. |
+| `temporalSandboxClient(name, options)` | `options` | `{ startToCloseTimeout: '5 minutes' }` | Activity options for every sandbox operation. They replace the default instead of merging with it. |
+| `workerEnvValue(name)` | Arguments | Required | A manifest environment value that the Worker reads from its environment variable `name`. |
+
+Providers are matched to Workflow handles by name, and each provider on a plugin needs a unique name. The plugin adds a
+`-stateful` suffix to a stateful MCP provider's name, so a stateless and a stateful MCP provider can share a name.
+
+### Failure behavior
+
+Model, MCP, and sandbox failures start in Activities. A failed model call, MCP tool listing, or sandbox session
+operation, such as creating or resuming the session, reaches the Workflow once its Activity stops retrying, as an
+`ActivityFailure` with the Activity's error as its cause. The failures in the table below that are raised in Workflow
+code reach the Workflow as they are when they're raised outside a tool call.
+
+A failed `activityAsTool` or `agentAsTool` call ends the run, and so does a failed `nexusOperationAsTool` call, which
+builds its tool the same way. The failure reaches the Workflow as a non-retryable `AgentsWorkflowError` whose `cause` is
+the OpenAI Agents SDK's `ToolCallError`. The original failure is on that `ToolCallError`'s `error` property, not on the
+cause chain, so read it from `cause.error`. It's the `ActivityFailure` once an `activityAsTool` Activity stops retrying,
+the `NexusOperationFailure` from `nexusOperationAsTool`, or, from `agentAsTool`, the nested run's own failure, such as a
+`NestedAgentInterruption`, `SandboxConfigurationError`, or `AgentsWorkflowError`. The Workflow failure recorded in Event
+History keeps only the message text, so an `activityAsTool` Activity's own error appears only in that Activity's failure
+event.
+
+A failure inside an MCP tool call or a sandbox tool, such as `exec_command`, `write_stdin`, `view_image`, or
+`apply_patch`, doesn't reach the Workflow. The OpenAI Agents SDK returns it to the model as the tool's output, such as
+`An error occurred while running the tool. Please try again. Error: ActivityFailure: Activity task failed`, without the
+underlying error, and the run continues. That includes the `DedicatedWorkerFailure`, `StatefulMCPServerNotFound`, and
+`SandboxOperationUnsupported` errors below when an MCP or sandbox tool call raises them.
+
+| Failure type | Raised in | Meaning |
+| --- | --- | --- |
+| `ModelInvocationError`, and `ModelInvocationError.RateLimit`, `.Authentication`, `.BadRequest`, `.Timeout`, `.Conflict`, or `.ServerError` | Model Activity | The model call failed. HTTP 408, 409, 429, and 5xx responses are retryable, and other statuses aren't. An `x-should-retry` header overrides that, and `retry-after-ms` or `retry-after` sets the next retry delay. An `openai` `APIError` without an HTTP status, such as `APIConnectionError`, is non-retryable. Other errors are retryable. |
+| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, or the OpenAI Agents SDK threw during the run, with its error as the `cause`. A failed `activityAsTool`, `nexusOperationAsTool`, or `agentAsTool` call also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. |
+| `UnsafeSessionError` | Workflow | Non-retryable. `run()` received the SDK's `MemorySession`. |
+| `StreamingTopicNotConfigured` | Workflow | Non-retryable. A streaming run has no `streamingTopic`. |
+| `StreamingLocalActivityUnsupported` | Workflow | Non-retryable. A streaming run has `useLocalActivity: true`. |
+| `NestedAgentInterruption` | Workflow | Non-retryable. An `agentAsTool` nested run paused for approval. It ends the parent run and reaches the Workflow on `cause.error` of an `AgentsWorkflowError`. |
+| `DedicatedWorkerFailure`, exported as `DEDICATED_WORKER_FAILURE_TYPE` | Workflow | Retryable. A stateful MCP operation wasn't picked up within its Schedule-To-Start Timeout or missed a heartbeat, so the run's dedicated Worker isn't polling. |
+| `StatefulMCPServerAlreadyRunning` | Server session Activity | Non-retryable. Two stateful handles with the same name connected in one Workflow run. |
+| `StatefulMCPServerNotFound` | Dedicated Worker | Non-retryable. A tool operation reached a Worker that doesn't hold the server. |
+| `SandboxConfigurationError` | Workflow | Non-retryable. A `SandboxAgent` is reachable but `runConfig.sandbox` is missing, or its `client` didn't come from `temporalSandboxClient()`. It's also raised when a manifest environment value uses a resolver function, directly or through `resolve`, or is an `EnvValueReference` that can't be serialized, since neither can travel in a sandbox Activity's input. Use `workerEnvValue()` for a value the Worker supplies. |
+| `SandboxOperationUnsupported` | Sandbox Activity | Non-retryable. The backend lacks the operation. A Worker that doesn't hold the session calls `resume()` before handling one of its operations, and every paused-run resume calls it too, so on a backend without `resume()`, the `run()` call that resumes a paused sandbox run fails. |
+| `WorkerEnvValueError` | Sandbox Activity | Non-retryable. A `workerEnvValue()` names a variable that isn't in `resolvableWorkerEnvVars`. |
+| `SandboxSessionStateInvalid` | Workflow | Non-retryable. Sandbox session state being resumed wasn't produced by a Temporal sandbox client. |
+| The sandbox error's `code` | Sandbox Activity | Non-retryable. The OpenAI Agents SDK marked the sandbox error as not retryable. Other sandbox errors are retried. |
+
+The OpenAI Agents SDK parses a tool call's arguments before the tool runs, so `ToolSerializationError` isn't thrown
+during a run. When the arguments for an `activityAsTool`, `nexusOperationAsTool`, or `agentAsTool` tool aren't valid
+JSON, the run pauses as if the tool needed approval: `run()` returns with that call in `result.interruptions` and no
+`finalOutput`. Approving it sends the model a parse error instead of running the tool.
+
+Calling a stateful MCP handle's tools before `connect()` throws an `ApplicationFailure` that fails the Workflow. The
+plugin constructor throws if two of its providers share a name, if `useOtelInstrumentation` is set without a
+replay-safe global tracer provider, or if one `SandboxClientProvider` is passed to plugins with different
+`resolvableWorkerEnvVars`.
+
+**Sandbox session lifecycle.** Creating a session isn't idempotent, so a create Activity retried after the backend made
+the session leaves that session behind. A session is also left running when a
+[cancellation scope](/develop/typescript/workflows/cancellation-scopes) stops `run()`, since the runner skips the
+teardown even if the Workflow then completes normally. Remove those sessions through your backend.
+
+**Sandbox reconnects.** Any Worker polling the Task Queue can receive a sandbox operation. A Worker that doesn't hold
+the session, such as a restarted Worker, reconnects to it with the backend's `resume()`, and resuming a paused run
+reconnects the same way, even on the Worker that ran it before the pause. What `resume()` restores depends on the
+backend, as described in
+[Resume and snapshots](https://openai.github.io/openai-agents-js/guides/sandbox-agents/clients/#resume-and-snapshots) in
+OpenAI's sandbox clients guide.
+
+With Unix-local and Docker, an operation that reaches a Worker on another machine fails, and Temporal retries it. A
+Docker session keeps its workspace across a reconnect while its container is running. On both backends, resuming a
+paused run keeps the workspace as it was at the pause.
+
+**Sandbox processes.** If a command is still running when `exec_command` returns, the agent gets a process identifier
+to pass to `write_stdin` later. On Unix-local and Docker, process identifiers start over after a reconnect, including
+when a paused run resumes. A `write_stdin` with an earlier identifier either reports `session not found` or reaches a
+different process that the agent started after the reconnect. A process started before a pause keeps running, on
+Unix-local even after the session is torn down. `exec_command` returns when the command finishes or when
+`yield_time_ms` passes, so tell the agent to raise it for slower commands, up to a limit below the sandbox Activity's
+Start-To-Close Timeout.
 
 ## Resources
 
-- [OpenAI Agents SDK samples](https://github.com/temporalio/samples-typescript/tree/main/openai-agents) — runnable
-  examples for the patterns in this guide.
-- [`@temporalio/openai-agents` README](https://github.com/temporalio/sdk-typescript/blob/main/contrib/openai-agents/README.md)
-  — the full plugin reference, including pre-built Workflow bundles and the complete feature-support matrix.
-- [OpenAI Agents SDK for JavaScript/TypeScript](https://openai.github.io/openai-agents-js/)
-- [Temporal Plugins guide](/develop/plugins-guide) — the Plugin system this integration is built on, which you can also
-  use to build your own integrations.
+- [`@temporalio/openai-agents` package](https://www.npmjs.com/package/@temporalio/openai-agents)
+- [OpenAI Agents integration source](https://github.com/temporalio/ai-integrations/tree/main/typescript/openai-agents)
+- [OpenAI Agents samples directory](https://github.com/temporalio/samples-typescript/tree/main/openai-agents)
+- [OpenAI Agents SDK documentation](https://openai.github.io/openai-agents-js/)
+- [OpenAI Agents SDK source](https://github.com/openai/openai-agents-js)
+- [Workflow Streams in the TypeScript SDK](/develop/typescript/workflows/workflow-streams)
+- [Temporal Plugins guide](/develop/plugins-guide)
