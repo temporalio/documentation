@@ -24,6 +24,7 @@ The following timeouts are available in Activity options:
 - [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout): the maximum amount of time allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task. This timeout is non-retryable by design.
 
 An Activity Execution must have either the Start-To-Close Timeout or the Schedule-To-Close Timeout set. Temporal strongly recommends setting a Start-To-Close Timeout because the service relies on it to detect lost Activity Tasks and trigger retries when appropriate.
+The Temporal Service fills in whichever of these you leave unset, so the stored timeouts can differ from the ones you passed. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
 
 In Rust, these values are configured as part of the Activity options when scheduling an Activity from a Workflow.
 

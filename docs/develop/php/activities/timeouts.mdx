@@ -24,6 +24,7 @@ The following timeouts are available in the Activity Options.
 - **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.  This timeout is non-retryable by design.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
+The Temporal Service fills in whichever of these you leave unset, so the stored timeouts can differ from the ones you passed. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
 
@@ -73,7 +74,7 @@ For an executable code sample, see [ActivityRetry sample](https://github.com/tem
 ### Set the required Activity Timeouts {/* #required-timeout */}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 ### Activity next retry delay {/* #activity-next-retry-delay */}

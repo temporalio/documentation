@@ -22,6 +22,7 @@ The following timeouts are available in the Activity Options.
 - **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task. This timeout is non-retryable by design.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
+The Temporal Service fills in whichever of these you leave unset, so the stored timeouts can differ from the ones you passed. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
 
 Set your Activity Timeout from the [`ActivityOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) class.
 
