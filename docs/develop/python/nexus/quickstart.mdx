@@ -35,11 +35,14 @@ By the end of this guide:
 
 <SetupSteps>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="python">
-{`from dataclasses import dataclass
+<CodeSnippet title="service.py">
+
+<!--SNIPSTART python-nexus-quickstart-service-->
+[python-sandbox/service.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/service.py)
+```py
+from dataclasses import dataclass
 
 import nexusrpc
 
@@ -51,11 +54,12 @@ class MyInput:
 
 @nexusrpc.service
 class SayHelloNexusService:
-    say_hello: nexusrpc.Operation[MyInput, str]`}
+    say_hello: nexusrpc.Operation[MyInput, str]
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
 
-</>
-}>
 
 ## 1. Define the Nexus Service
 
@@ -69,11 +73,14 @@ The `@nexusrpc.service` decorator declares a service with typed operations.
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="python">
-{`import uuid
+<CodeSnippet title="handler.py">
+
+<!--SNIPSTART python-nexus-quickstart-handler-->
+[python-sandbox/handler.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/handler.py)
+```py
+import uuid
 
 import nexusrpc.handler
 from temporalio import nexus
@@ -94,11 +101,12 @@ class SayHelloNexusServiceHandler:
             id=f"say-hello-nexus-{uuid.uuid4()}",
 
             # Task queue defaults to the task queue this Operation is handled on.
-        )`}
+        )
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
 
-</>
-}>
 
 ## 2. Define the Nexus Operation handlers
 
@@ -111,11 +119,14 @@ The handler bridges the Nexus `MyInput` dataclass to `SayHelloWorkflow`'s `str` 
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="python">
-{`import asyncio
+<CodeSnippet title="worker.py">
+
+<!--SNIPSTART python-nexus-quickstart-worker-->
+[python-sandbox/nexus_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/nexus_worker.py)
+```py
+import asyncio
 
 from temporalio.client import Client
 from temporalio.worker import Worker
@@ -139,11 +150,12 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())`}
+    asyncio.run(main())
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
 
-</>
-}>
 
 ## 3. Register the Nexus Service handler in a Worker
 
@@ -156,11 +168,14 @@ The `nexus_service_handlers` parameter registers the handler so it can receive N
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="python">
-{`from datetime import timedelta
+<CodeSnippet title="caller.py">
+
+<!--SNIPSTART python-nexus-quickstart-caller-->
+[python-sandbox/caller.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/caller.py)
+```py
+from datetime import timedelta
 from temporalio import workflow
 from service import MyInput, SayHelloNexusService
 
@@ -179,11 +194,12 @@ class CallerWorkflow:
             SayHelloNexusService.say_hello,
             MyInput(name=name),
             schedule_to_close_timeout=timedelta(seconds=10),
-        )`}
+        )
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
 
-</>
-}>
 
 ## 4. Develop the caller Workflow
 
@@ -228,11 +244,14 @@ Make sure your local Temporal dev server is running (`temporal server start-dev`
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="python">
-{`import asyncio
+<CodeSnippet title="caller_starter.py">
+
+<!--SNIPSTART python-nexus-quickstart-caller-starter-->
+[python-sandbox/caller_starter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/caller_starter.py)
+```py
+import asyncio
 import uuid
 
 from temporalio.client import Client
@@ -262,11 +281,12 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())`}
+    asyncio.run(main())
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
 
-</>
-}>
 
 ## 6. Run and verify
 
