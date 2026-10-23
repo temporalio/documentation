@@ -27,7 +27,7 @@ With this guide, you'll build a notification system that calls SendGrid, OpenAI,
 
 ## Background
 
-Downstream rate limiting is a Task Queue routing pattern. Instead of letting every Worker call an external API as fast as it can, you route that API's Activities to a dedicated Task Queue, and the Temporal Server limits how quickly Activity Tasks from that queue are dispatched to Workers. For more about the pattern, including how the queue-wide limit compares with per-Worker and concurrency-slot alternatives, see [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting).
+The solution to rate limiting downstream APIs is to use a Task Queue routing pattern. Instead of letting every Worker call an external API as fast as it can, you route that API's Activities to a dedicated Task Queue, and the Temporal Server limits how quickly Activity Tasks from that queue are dispatched to Workers. For more about the pattern, including how the queue-wide limit compares with per-Worker and concurrency-slot alternatives, see [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting).
 
 In this guide, a notification Workflow sends email through SendGrid and generates text with OpenAI, and a third pool of Workers handles Stripe payments. Each API gets its own Task Queue and its own Workers, configured with a rate limit set just under what the API allows. The Workflow runs on a separate Task Queue of its own and sends each Activity to the queue for its API.
 
@@ -319,7 +319,7 @@ When you deploy these Workers, keep the following in mind:
 
 Your Workers are now configured to take Activity Tasks no faster than each API allows. They can't start yet, though, because the Activities they register don't exist. You'll write those next.
 
-## Step 4: Implement Activities with proper error handling
+## Step 4: Implement Activities and error handling
 
 Each Activity makes one call to an external API. The Task Queue limits from Step 3 keep those calls within bounds, so the Activities don't need any rate-limiting logic of their own. They do need to handle the occasional 429 that gets through anyway.
 
@@ -685,7 +685,7 @@ TODO: Link to the complete, commented source for this guide.
 
 You now have the full pipeline: a queue per API, Workers that enforce each API's limit, Activities that honor `Retry-After`, and a Workflow that routes work to the right place. Next, you'll prepare for the times when a downstream API throttles you anyway.
 
-## (Optional) Step 6: Drain backlogs and adjust limits in production
+## Step 6: Drain backlogs and adjust limits
 
 Rate limits protect the APIs, but they also mean that work waits its turn. During throttling events, Task Queues can grow significantly, and operators need to switch to draining mitigation mode when backlogs occur.
 
