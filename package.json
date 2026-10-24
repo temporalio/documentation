@@ -26,6 +26,7 @@
     "check:py-samples": "node ./bin/check-python-samples.js",
     "check:retrieve-links": "node ./bin/check-retrieve-links.js",
     "check:ts-samples": "node ./bin/check-typescript-samples.js",
+    "report:retrieve-log": "node ./bin/report-retrieve-log.js",
     "report:snipsync-coverage": "node ./bin/report-snipsync-coverage.js",
     "test": "node --test",
     "lint": "vale --output=JSON docs/**/**/*.mdx > vale-output.json; vale --output=JSON docs/**/**/*.md > vale-md-output.json",
