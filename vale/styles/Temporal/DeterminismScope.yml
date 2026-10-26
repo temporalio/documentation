@@ -11,3 +11,5 @@ tokens:
   - '\bWorkflows?\s+(?:is|are|was|were|must be|needs? to be|should be|remains?)\s+(?:non-)?deterministic\b'
   - '\b(?:non-)?deterministic Workflows?[,.;:]'
   - '\bWorkflow determinism\b'
+  - '\bWorkflow code\s+(?:is|are|was|were|must be|needs? to be|should be|remains?)\s+(?:non-)?deterministic\b'
+  - '\b(?:non-)?deterministic Workflow code\b'
