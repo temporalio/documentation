@@ -1,7 +1,7 @@
 ---
 id: openai-agents
 title: OpenAI Agents SDK integration
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 tags:
   - OpenAI Agents SDK
   - TypeScript SDK
@@ -12,11 +12,13 @@ description: Run OpenAI Agents SDK agents as durable TypeScript Workflows, with 
 import { ReleaseNoteHeader } from '@site/src/components';
 
 The Temporal integration for the [OpenAI Agents SDK](https://openai.github.io/openai-agents-js/) runs its agents as
-durable Temporal Workflows in TypeScript. An agent's loop belongs in the Workflow, but Workflow code must be
-deterministic, so it can't call a model, an MCP server, or a sandbox itself. The integration keeps the agent loop, tool
-selection, and handoffs in the Workflow and runs each model call, MCP operation, and sandbox operation as an
-[Activity](/glossary#activity). Those calls retry on failure, and completed ones are recorded in Event History and
-aren't repeated when the Workflow replays, so an agent survives Worker restarts and can run for as long as it needs.
+durable Temporal Workflows in TypeScript. The integration keeps the agent loop, tool selection, and handoffs in the
+Workflow and runs each model call, MCP operation, and sandbox operation as an [Activity](/glossary#activity), because a
+[Workflow Definition](/workflow-definition) must be deterministic and can't call a model, an MCP server, or a sandbox
+itself.
+
+Activities retry on failure. Completed ones are recorded in Event History and aren't repeated when the Workflow replays,
+so an agent survives Worker restarts and can run for as long as it needs.
 
 Code snippets on this page come from the
 [OpenAI Agents samples directory](https://github.com/temporalio/samples-typescript/tree/main/openai-agents).
@@ -534,12 +536,40 @@ carry over to the new run and to child Workflows.
 | --- | --- | --- | --- |
 | `modelProvider` | Worker, and required on the Client | None | Resolves model names in the model Activity. The Client's plugin requires one but never calls it. |
 | `modelParams` | Client | None | Model Activity options sent to each Workflow the Client starts. See the next table. |
-| `interceptorOptions.addTemporalSpans` | Client and Worker | `false` | On the Client, adds `temporal:*` spans for Client calls and, in Workflow code, for Workflow starts, Signals, Queries, Updates, Activities, Local Activities, child Workflows, Nexus Operations, and Continue-As-New, plus `sandbox:*` spans for sandbox operations. On the Worker, adds `temporal:executeActivity:*` spans and `sandbox:*:result` spans. Spans for a Client call and for the Workflow start, Signal, Query, or Update it makes need that call to run inside an agent trace. The `sandbox:*` spans carry only the session identifier and, depending on the operation, an exit code, a port, or a result size. Session creation gets no `sandbox:*` span and no `:result` span, and shows up only as the generic `temporal:startActivity:*` and `temporal:executeActivity:*` spans for the provider's `-sandbox-client-create` Activity. The SDK's own `sandbox.exec` span is separate, isn't controlled by this option, and records the command text even with `traceIncludeSensitiveData: false`. |
+| `interceptorOptions.addTemporalSpans` | Client and Worker | `false` | Adds `temporal:*` spans and `sandbox:*` spans. The Client covers Client calls and Workflow code, and the Worker covers Activities. See the notes below this table. |
 | `interceptorOptions.useOtelInstrumentation` | Client and Worker | `false` | On the Client, forwards spans from Workflow code to OpenTelemetry. On the Worker, it only makes the constructor check for a replay-safe tracer provider, since OpenAI Agents SDK spans from Activities reach the global tracer provider either way. Requires a replay-safe global tracer provider in that process before the plugin is constructed. |
 | `mcpServerProviders` | Worker | `[]` | Registers each MCP provider's Activities. |
 | `sandboxClientProviders` | Worker | `[]` | Registers each sandbox provider's Activities. Experimental. |
 | `resolvableWorkerEnvVars` | Worker | `[]` | Worker environment variable names that a `workerEnvValue()` may read. `'*'` allows every name. A listed variable that isn't set reads as an empty string. Experimental. |
-| `hostedToolCredentials` | Worker | None | A function that takes a hosted tool's identity and returns, or resolves to, its credentials. The identity is `{ tool: 'hostedMcp', name, serverLabel, serverUrl?, connectorId? }`, `{ tool: 'shell', name, allowedDomains }`, or `{ tool: 'codeInterpreter', name, allowedDomains }`. The credentials are `{ authorization?, headers?, domainSecrets? }`, with each domain secret as `{ domain, name, value }`, and returning `undefined` leaves the tool as the Workflow declared it. The model Activity calls it on every model call for each hosted MCP tool with a server label, shell tool with a `container_auto` domain allowlist, and code interpreter with an inline container allowlist, so cache secrets it fetches. It fills only fields the Workflow left out: `authorization` and `headers` for hosted MCP, and `domainSecrets` for shell and code interpreter. The model Activity's result records the model provider's full response, so a credential the provider echoes back is recorded in Event History. The plugin doesn't strip it, since redacting the response is the model provider's responsibility. A throw fails the model Activity, and its message is recorded in Event History, so keep credentials out of it. Experimental. |
+| `hostedToolCredentials` | Worker | None | A function that takes a hosted tool's identity and returns, or resolves to, its credentials. Returning `undefined` leaves the tool as the Workflow declared it. Experimental. See the notes below this table. |
+
+Notes on `addTemporalSpans`:
+
+- On the Client, it adds `temporal:*` spans for Client calls and, in Workflow code, for Workflow starts, Signals, Queries,
+  Updates, Activities, Local Activities, child Workflows, Nexus Operations, and Continue-As-New, plus `sandbox:*` spans
+  for sandbox operations. On the Worker, it adds `temporal:executeActivity:*` spans and `sandbox:*:result` spans.
+- A span for a Client call, and for the Workflow start, Signal, Query, or Update it makes, appears only when that call
+  runs inside an agent trace.
+- The `sandbox:*` spans carry only the session identifier and, depending on the operation, an exit code, a port, or a
+  result size. Session creation gets no `sandbox:*` span and no `:result` span, and shows up only as the generic
+  `temporal:startActivity:*` and `temporal:executeActivity:*` spans for the provider's `-sandbox-client-create` Activity.
+- The SDK's own `sandbox.exec` span is separate, isn't controlled by this option, and records the command text even with
+  `traceIncludeSensitiveData: false`.
+
+Notes on `hostedToolCredentials`:
+
+- The identity is `{ tool: 'hostedMcp', name, serverLabel, serverUrl?, connectorId? }`,
+  `{ tool: 'shell', name, allowedDomains }`, or `{ tool: 'codeInterpreter', name, allowedDomains }`. The credentials are
+  `{ authorization?, headers?, domainSecrets? }`, with each domain secret as `{ domain, name, value }`.
+- The model Activity calls the function on every model call for each hosted MCP tool with a server label, shell tool
+  with a `container_auto` domain allowlist, and code interpreter with an inline container allowlist, so cache secrets it
+  fetches.
+- It fills only fields the Workflow left out: `authorization` and `headers` for hosted MCP, and `domainSecrets` for shell
+  and code interpreter.
+- The model Activity's result records the model provider's full response, so a credential the provider echoes back is
+  recorded in Event History. The plugin doesn't strip it, since redacting the response is the model provider's
+  responsibility.
+- A throw fails the model Activity, and its message is recorded in Event History, so keep credentials out of it.
 
 Model Activity options, in the Client's `modelParams` or the runner's `defaultModelParams`:
 
@@ -560,7 +590,20 @@ Model Activity options, in the Client's `modelParams` or the runner's `defaultMo
 | `run()` | `stream` | `false` | Streams model events over a Workflow Stream. Experimental. |
 | `run()` | `runConfig.model` | Each agent's model | A model name used by every agent in the run. |
 | `run()` | `runConfig.modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`, `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, `traceMetadata` | SDK defaults | As in the SDK's run config. Guardrails and filters run in the Workflow. |
-| `run()` | `runConfig.sandbox` | None | Required when a `SandboxAgent` is reachable from the agent through handoffs or through an `agentAsTool` tool, and passed on to `agentAsTool` nested runs. With a `SandboxAgent` reached only through an `agentAsTool` tool, a missing `runConfig.sandbox` on the parent run isn't caught up front. The nested run raises `SandboxConfigurationError` when the tool is called, which ends the parent run with an `AgentsWorkflowError` that carries it on `cause.error`. `client` must come from `temporalSandboxClient()` and is required even with `session`. The other fields, `options`, `manifest`, `snapshot`, `session`, `sessionState`, `concurrencyLimits`, and `archiveLimits`, go to the OpenAI Agents SDK unchanged, as described in [sandbox run options](https://openai.github.io/openai-agents-js/guides/sandbox-agents/concepts/#sandbox-run-options) in OpenAI's sandbox agents concepts guide. `options`, `manifest`, and `snapshot` go into the create Activity's input, so Event History records them. Experimental. |
+| `run()` | `runConfig.sandbox` | None | Required when a `SandboxAgent` is reachable from the agent through handoffs or an `agentAsTool` tool. `client` must come from `temporalSandboxClient()`. Experimental. See the notes below this table. |
+
+Notes on `runConfig.sandbox`:
+
+- It's passed on to `agentAsTool` nested runs.
+- With a `SandboxAgent` reached only through an `agentAsTool` tool, a missing `runConfig.sandbox` on the parent run isn't
+  caught up front. The nested run raises `SandboxConfigurationError` when the tool is called, which ends the parent run
+  with an `AgentsWorkflowError` that carries it on `cause.error`.
+- `client` is required even with `session`.
+- The other fields, `options`, `manifest`, `snapshot`, `session`, `sessionState`, `concurrencyLimits`, and
+  `archiveLimits`, go to the OpenAI Agents SDK unchanged, as described in
+  [sandbox run options](https://openai.github.io/openai-agents-js/guides/sandbox-agents/concepts/#sandbox-run-options)
+  in OpenAI's sandbox agents concepts guide.
+- `options`, `manifest`, and `snapshot` go into the create Activity's input, so Event History records them.
 
 Tool, MCP, session, and sandbox APIs:
 
@@ -571,7 +614,7 @@ Tool, MCP, session, and sandbox APIs:
 | `activityAsTool`, `nexusOperationAsTool` | `strict` | `true` | Strict schema mode for the tool's arguments. The schema is sent as written, so with `strict: true`, list every property in `required` and set `additionalProperties: false`, or OpenAI's API rejects the request and the model Activity fails with `ModelInvocationError.BadRequest`. |
 | `nexusOperationAsTool(operation, definition, options)` | `service`, `endpoint` | Required | The Nexus service definition and the Nexus Endpoint name. `definition` takes the same fields as `activityAsTool`'s. |
 | `nexusOperationAsTool` | `scheduleToCloseTimeout` | None | The Operation's Schedule-To-Close Timeout. |
-| `agentAsTool(agent, options)` | `toolName` | Required | The tool's name. The tool takes one string argument, `input`. The nested run is started with the parent's `runConfig.sandbox` and nothing else from the parent's `run()` call. It doesn't get the parent's `context`, the parent's other run options (`maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, and `tracing`), or any other `runConfig` field (`model`, `modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`, `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, and `traceMetadata`). These all take their SDK defaults in the nested run. Its model Activities use the Client's `modelParams` but not the parent runner's `defaultModelParams`, so a field the Client didn't set takes the plugin's default, a 60-second Start-To-Close Timeout on a regular Activity. `agentAsTool` has no option to pass them. |
+| `agentAsTool(agent, options)` | `toolName` | Required | The tool's name. The tool takes one string argument, `input`. The nested run gets only the parent's `runConfig.sandbox`. See the notes below this table. |
 | `agentAsTool` | `toolDescription` | `''` | The tool's description. |
 | `agentAsTool` | `customOutputExtractor` | The final output, as JSON if it isn't a string | Turns the nested run's result into the tool's output. |
 | `statelessMcpServer(name, options)` | `startToCloseTimeout`, `heartbeatTimeout`, `taskQueue`, `retryPolicy` | `startToCloseTimeout: '1 minute'` | Activity options for listing and calling tools. |
@@ -587,15 +630,27 @@ Tool, MCP, session, and sandbox APIs:
 | `temporalSandboxClient(name, options)` | `options` | `{ startToCloseTimeout: '5 minutes' }` | Activity options for every sandbox operation. They replace the default instead of merging with it. |
 | `workerEnvValue(name)` | Arguments | Required | A manifest environment value that the Worker reads from its environment variable `name`. |
 
+Notes on `agentAsTool` nested runs:
+
+- The nested run is started with the parent's `runConfig.sandbox` and nothing else from the parent's `run()` call.
+- It doesn't get the parent's `context`, the parent's other run options (`maxTurns`, `previousResponseId`,
+  `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, and `tracing`), or any other `runConfig`
+  field (`model`, `modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`,
+  `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, and `traceMetadata`). These all take their SDK
+  defaults, and `agentAsTool` has no option to pass them.
+- Its model Activities use the Client's `modelParams` but not the parent runner's `defaultModelParams`, so a field the
+  Client didn't set takes the plugin's default, a 60-second Start-To-Close Timeout on a regular Activity.
+
 Providers are matched to Workflow handles by name, and each provider on a plugin needs a unique name. The plugin adds a
 `-stateful` suffix to a stateful MCP provider's name, so a stateless and a stateful MCP provider can share a name.
 
 ### Failure behavior
 
-Model, MCP, and sandbox failures start in Activities. A failed model call, MCP tool listing, or sandbox session
-operation, such as creating or resuming the session, reaches the Workflow once its Activity stops retrying, as an
-`ActivityFailure` with the Activity's error as its cause. The failures in the table below that are raised in Workflow
-code reach the Workflow as they are when they're raised outside a tool call.
+Which error reaches your Workflow depends on where the failure starts. A failed model call, MCP tool listing, or sandbox
+session operation, such as creating or resuming the session, reaches the Workflow as an `ActivityFailure` with the
+Activity's error as its cause, once its Activity stops retrying. A failed `activityAsTool`, `nexusOperationAsTool`, or
+`agentAsTool` call ends the run with an `AgentsWorkflowError`, as described next. Failures that the table below lists as
+raised in the Workflow reach it as they are when they occur outside a tool call.
 
 A failed `activityAsTool` or `agentAsTool` call ends the run, and so does a failed `nexusOperationAsTool` call, which
 builds its tool the same way. In a run without `stream: true`, the failure reaches the Workflow as a non-retryable
