@@ -1,3 +1,4 @@
+const { checkBotId } = require('botid/server');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
 const { header, ipHash, putRecord } = require('./_log');
@@ -53,6 +54,22 @@ function readInput(request, searchParams) {
     }
   }
   return { input: body };
+}
+
+// Classifies a widget rating with Vercel BotID, using the header that
+// src/client/botid.ts adds to the widget's POST. Returns 'human', 'bot', or
+// 'bypassed' (outside production, where BotID doesn't run). A failed check
+// returns 'error' and the rating is kept, since losing a reader's answer costs
+// more than storing one bot's.
+async function botVerdict() {
+  try {
+    const result = await checkBotId();
+    if (result.bypassed) return 'bypassed';
+    return result.isBot ? 'bot' : 'human';
+  } catch (error) {
+    console.error(`feedback: BotID check failed: ${error.message}`);
+    return 'error';
+  }
 }
 
 module.exports = async (request, response) => {
@@ -124,13 +141,23 @@ module.exports = async (request, response) => {
     const { amend_token: _token, ...rest } = fields;
     record = { kind, channel: 'widget', amended_at: line.ts, ...rest, ...meta };
   } else {
+    const channel = kind === 'rating' ? 'widget' : 'agent';
+    line.channel = channel;
+    // Only widget ratings are bot-checked: agents can't run the BotID client.
+    // An amendment needs the token returned for a checked rating.
+    let bot = {};
+    if (kind === 'rating') {
+      const verdict = await botVerdict();
+      line.bot_verdict = verdict;
+      if (verdict === 'bot') {
+        finish(403, { error: 'This request looks automated.' });
+        return;
+      }
+      bot = { bot_verdict: verdict };
+    }
     id = newId(started);
     pathname = entryPath(id);
-    const channel = kind === 'rating' ? 'widget' : 'agent';
-    // Vercel BotID isn't wired up yet, so widget entries aren't bot-checked.
-    const bot = channel === 'widget' ? { bot_verdict: 'unchecked' } : {};
     record = { id, ts: line.ts, kind, channel, ...fields, ...meta, ...bot };
-    line.channel = channel;
     if (kind === 'report')
       Object.assign(line, {
         category: fields.category,

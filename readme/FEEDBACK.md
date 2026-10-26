@@ -10,8 +10,8 @@
 Each accepted submission is stored as one Blob in a private Vercel Blob store used only for feedback. A daily digest posts a summary to Slack, where the
 docs team fixes docs problems and forwards product problems to the team that owns them.
 
-Status: the endpoint is live but not advertised. The widget, the digest, and the agent-facing copy in `llms.txt` and
-the `.md` pages ship in later pull requests.
+Status: the endpoint takes agent reports but isn't advertised to agents yet. The widget sits at the bottom of every docs
+page. The digest and the agent-facing copy in `llms.txt` and the `.md` pages ship in later pull requests.
 
 ## Agent reports
 
@@ -72,6 +72,19 @@ The amendment is stored as its own Blob next to the entry, not as an overwrite. 
 entry back first, and Blob's cache can return a stale copy for up to 60 seconds. Readers merge an entry with its
 amendments by `id`, and the latest amendment wins, so a reader can change their rating after a misclick.
 
+The widget appears above the footer of every docs page. After a reader rates a page, a `localStorage` flag shows them
+a thank-you line instead of the question on that page. Amplitude gets a `Docs Page Feedback` event with `rating` and
+`url` on the click, and `Docs Page Feedback Reason` with `rating`, `reason`, and `url` on submit, both only with
+analytics consent. Comments go only to `/api/feedback`.
+
+### Bot check
+
+Vercel BotID classifies each rating. `src/client/botid.ts` runs `initBotId()` on every page, which adds a
+classification header to `POST /api/feedback`, and the function calls `checkBotId()` for ratings only. A rating
+classified as a bot returns 403 and isn't stored. If the check itself fails, the rating is stored with
+`bot_verdict: 'error'`, so a BotID outage doesn't lose readers' answers. Amendments aren't checked again, since they
+need the `amend_token` returned for a checked rating. Agent reports aren't checked: agents don't run the BotID client.
+
 `amend_token` is an HMAC of the entry `id`, keyed with `FEEDBACK_LOG_SALT`. An amendment needs it and has to arrive
 within 30 minutes of the rating, so no one else can change an entry. A wrong token or a late amendment returns 403.
 
@@ -92,7 +105,7 @@ Errors are JSON `{ error }`. A 400, 405, or 413 also includes a `usage` string.
 | Status | Meaning |
 | --- | --- |
 | 400 | A missing or invalid field, or a body that isn't JSON |
-| 403 | A widget amendment with the wrong `amend_token`, or after its 30-minute window |
+| 403 | A widget rating that BotID classifies as a bot, or an amendment with the wrong `amend_token` or after its 30-minute window |
 | 405 | A method other than `GET`, `POST`, or `OPTIONS` |
 | 413 | A body over 8 KB |
 | 500 | `FEEDBACK_LOG_SALT` or `FEEDBACK_BLOB_READ_WRITE_TOKEN` is unset. Nothing is stored |
@@ -108,7 +121,10 @@ lost, so the sender is told when that happens.
 | `api/feedback.js` | The Vercel Function: reading the request, the amendment check, the Blob write |
 | `api/_feedback-lib.js` | Parsing, `page_url` normalization, entry IDs, and amend tokens, with no I/O. Tested in `api/_feedback-lib.test.js` |
 | `api/_log.js` | `header()`, `ipHash()`, and `putRecord()`, shared with `api/retrieve.js` |
-| `api/_feedback.test.js` | Handler tests with Blob stubbed |
+| `api/_feedback.test.js` | Handler tests with Blob and BotID stubbed |
+| `src/components/PageFeedback/` | The "Was this page helpful?" widget |
+| `src/theme/DocItem/Footer/index.tsx` | Wraps the doc footer to put the widget above it |
+| `src/client/botid.ts` | Starts the BotID client for the widget's `POST` |
 
 The `Test API Functions` workflow (`.github/workflows/test-api.yml`) runs `node --test 'api/*.test.js'` on pull
 requests that change `api/`, `vercel.json`, or `bin/redirect-utils.js`.
@@ -121,6 +137,10 @@ These are Vercel project environment variables, set for Production and Preview:
 | --- | --- |
 | `FEEDBACK_LOG_SALT` | **Required.** A random string used to hash caller IPs and to sign amend tokens. Use a different value from `RETRIEVE_LOG_SALT`. Rotating it invalidates amend tokens issued in the last 30 minutes |
 | `FEEDBACK_BLOB_READ_WRITE_TOKEN` | **Required.** Added by Vercel when the feedback Blob store is connected to the project with the `FEEDBACK` environment variable prefix. The function never falls back to `BLOB_READ_WRITE_TOKEN`, which belongs to the `/api/retrieve` log's store |
+
+BotID also needs the project's Secure backend access with OIDC federation setting, because `checkBotId()`
+authenticates with the request's OIDC token. Without it, every rating is stored
+with `bot_verdict: 'error'`.
 
 ## Limits
 
@@ -151,10 +171,10 @@ in time order.
 | `ua`, `country` | All | `User-Agent` and `x-vercel-ip-country` |
 | `ip_hash` | All | First 16 hex characters of SHA-256 of the salt and IP. Raw IPs aren't stored |
 | `deployment` | All | `production`, `preview`, or `development` |
-| `bot_verdict` | Widget entries | `unchecked` until Vercel BotID is added |
+| `bot_verdict` | Widget ratings | `human`, `error` (the check failed), or `bypassed` (outside production, where BotID doesn't run). Ratings classified as bots aren't stored |
 
 Each request also writes one JSON line (`"event":"feedback"`) to the runtime logs, with the status, kind, channel,
-`id`, category, severity, agent, and `src`. Free text from the public goes only to the Blob store, never to the
+`id`, category, severity, agent, `src`, and, for ratings, `bot_verdict`. Free text from the public goes only to the Blob store, never to the
 runtime logs.
 
 To download the records, use the feedback store's Storage tab in the Vercel dashboard, or run
