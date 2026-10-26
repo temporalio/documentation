@@ -1,0 +1,103 @@
+.feedback {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+/* The question row and the thank-you line share a minimum height, a little
+   over that of a small Infima button, so swapping one for the other doesn't
+   move the page. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  min-height: 1.8rem;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.question,
+.recorded,
+.thanks {
+  margin: 0;
+  font-weight: 600;
+}
+
+.thanks:focus,
+.reasons:focus {
+  outline: none;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.reasons {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+.option input {
+  margin-top: 0.3rem;
+}
+
+.optionLabel {
+  display: block;
+}
+
+.optionDescription {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.commentBlock {
+  margin-top: 0.75rem;
+}
+
+.commentLabel {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.comment {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  resize: vertical;
+}
+
+.hint {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.error {
+  margin: 0.75rem 0 0;
+  color: var(--ifm-color-danger-dark);
+}
