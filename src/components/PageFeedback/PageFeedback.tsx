@@ -11,6 +11,7 @@ import styles from './PageFeedback.module.css';
 type Rating = 'up' | 'down';
 
 type Stage =
+  | { name: 'checking' }
   | { name: 'ask' }
   | { name: 'sending' }
   | { name: 'reason'; rating: Rating; id: string; amendToken: string }
@@ -91,7 +92,9 @@ async function send(body: Record<string, unknown>): Promise<Record<string, unkno
 }
 
 export default function PageFeedback({ pathname }: { pathname: string }): JSX.Element {
-  const [stage, setStage] = useState<Stage>({ name: 'ask' });
+  // Starts as 'checking' so the server render and first paint show neither
+  // the buttons nor the thank-you line until localStorage has been read.
+  const [stage, setStage] = useState<Stage>({ name: 'checking' });
   const [reason, setReason] = useState('');
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -102,11 +105,13 @@ export default function PageFeedback({ pathname }: { pathname: string }): JSX.El
   // A reader who already rated this page sees the thank-you line instead of
   // the question. localStorage can be blocked, so every access is guarded.
   useEffect(() => {
+    let rated = false;
     try {
-      if (window.localStorage.getItem(storageKey(pathname))) setStage({ name: 'done' });
+      rated = Boolean(window.localStorage.getItem(storageKey(pathname)));
     } catch {
       // Ask again.
     }
+    setStage({ name: rated ? 'done' : 'ask' });
   }, [pathname]);
 
   useEffect(() => {
@@ -155,9 +160,11 @@ export default function PageFeedback({ pathname }: { pathname: string }): JSX.El
   if (stage.name === 'done' || stage.name === 'thanks') {
     return (
       <section className={styles.feedback} aria-label="Page feedback">
-        <p className={styles.thanks} ref={thanksRef} tabIndex={-1} role="status">
-          Thanks for your feedback.
-        </p>
+        <div className={styles.row}>
+          <p className={styles.thanks} ref={thanksRef} tabIndex={-1} role="status">
+            Thanks for your feedback.
+          </p>
+        </div>
       </section>
     );
   }
@@ -220,9 +227,13 @@ export default function PageFeedback({ pathname }: { pathname: string }): JSX.El
     );
   }
 
+  // While checking, the question row is laid out but hidden, so the space it
+  // takes is reserved and the page doesn't shift when it or the thank-you
+  // line appears.
+  const checking = stage.name === 'checking';
   return (
     <section className={styles.feedback} aria-label="Page feedback">
-      <div className={styles.ask}>
+      <div className={checking ? `${styles.row} ${styles.hidden}` : styles.row} aria-hidden={checking || undefined}>
         <p className={styles.question} id="page-feedback-question">
           Was this page helpful?
         </p>
