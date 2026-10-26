@@ -12,7 +12,7 @@
  *   - <Tabs> / <TabItem>          → flatten all tabs with bold label headers
  *   - <SdkTabs> / <SdkTabs.Lang>  → flatten SDK tabs with bold language headers
  *   - :::note/tip/caution/danger  → blockquote with bold type prefix
- *   - <CodeSnippet language="x">  → fenced code block
+ *   - <CodeSnippet language="x">  → fenced code block (Snipsync bodies pass through)
  *   - <CallToAction href>         → markdown link (h3 title + p description)
  *   - <ReleaseNoteHeader>         → availability blockquote + body
  *   - <RelatedReadContainer>      → markdown link list from <RelatedReadItem>s
@@ -63,6 +63,9 @@ export const COMPONENT_REGISTRY = {
 
   // Temporal custom components — content-bearing
   ZoomPanPinch: "transparent",
+  // Wraps code blocks the reader is meant to run. The terminal-window styling is
+  // the whole component; the fenced blocks inside carry all the content.
+  RunThis: "transparent",
   RelatedReadList: "related-read",
   RelatedReadContainer: "related-read-container",
   RelatedReadItem: "related-read-item",
@@ -689,7 +692,12 @@ export function transformMdx(mdxContent, options = {}) {
     // ------------------------------------------------------------------
     if (!inCodeBlock) {
       const fenceMatch = trimmed.match(/^(`{3,}|~{3,})/);
-      if (fenceMatch && state !== State.SETUP_STEP && state !== State.WALKTHROUGH_STEP) {
+      if (
+        fenceMatch &&
+        state !== State.SETUP_STEP &&
+        state !== State.WALKTHROUGH_STEP &&
+        state !== State.CODE_SNIPPET
+      ) {
         inCodeBlock = true;
         codeBlockFence = fenceMatch[1];
         pushLine(line);
@@ -729,12 +737,23 @@ export function transformMdx(mdxContent, options = {}) {
     // --- CodeSnippet block ---
     if (state === State.CODE_SNIPPET) {
       if (/<\/CodeSnippet>/.test(line)) {
-        const code = unwrapJsxString(
-          dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "")
-        );
-        outputLines.push("```" + codeSnippetLang);
-        outputLines.push(code);
-        outputLines.push("```");
+        const body = dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "");
+        const code = unwrapJsxString(body);
+        if (code === body && /^\s*(`{3,}|~{3,})/m.test(body)) {
+          // Snipsync body: a source link and a fenced code block in Markdown.
+          const inner = transformMdx(body, {
+            sourceFile: sourceFile + "#code-snippet",
+            projectRoot,
+            mdxDir: options.mdxDir,
+            _depth: depth + 1,
+          });
+          warnings.push(...inner.warnings);
+          outputLines.push(inner.markdown.trim());
+        } else {
+          outputLines.push("```" + codeSnippetLang);
+          outputLines.push(code);
+          outputLines.push("```");
+        }
         outputLines.push("");
         state = State.NORMAL;
         codeSnippetLines = [];

@@ -1,7 +1,7 @@
 ---
 id: feature-guide
-title: Temporal Nexus - Go SDK feature guide
-sidebar_label: Feature Guide
+title: Nexus feature guide
+sidebar_label: Feature guide
 description: Use Temporal Nexus within the Go SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
 tags:
@@ -16,14 +16,14 @@ import TabItem from '@theme/TabItem';
 import { CaptionedImage } from '@site/src/components';
 
 :::caution[Currently in: Pre-release]
-This Feature Guide includes the new Nexus developer experience: pre-release APIs for the [Temporal Operation Handler](/nexus/temporal-operation-handler) and [Nexus Standalone Activity](/nexus/standalone-activity). These APIs are experimental and subject to change.
+This feature guide includes the new Nexus developer experience: pre-release APIs for the [Temporal Operation Handler](/nexus/temporal-operation-handler) and [Nexus Standalone Activity](/nexus/standalone-activity). These APIs are experimental and subject to change.
 :::
 
 Use [Temporal Nexus](/evaluate/features/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
 :::tip
 
-New to Nexus? Start with the [Nexus Go Quickstart](/develop/go/nexus/quickstart).
+New to Nexus? Start with the [Nexus Go quickstart](/develop/go/nexus/quickstart).
 
 :::
 
@@ -40,7 +40,8 @@ This page shows how to do the following:
 
 :::note
 
-This documentation uses source code derived from the [Go Nexus sample](https://github.com/temporalio/samples-go/tree/main/nexus) and the [nexus-messaging-temporal-operation sample](https://github.com/temporalio/samples-go/tree/main/nexus-messaging-temporal-operation).
+This documentation uses source code from this [Go Nexus sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/go-sandbox/nexus).
+Run the `go run` commands on this page from that `nexus` directory.
 
 :::
 
@@ -142,6 +143,8 @@ and the Operation completes during the call.
 Handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking), and the whole
 call has to finish inside the [Nexus request timeout](/evaluate/cloud/limits#nexus-operation-request-timeout).
 
+<!--SNIPSTART go-nexus-sync-operation-->
+[go-sandbox/nexus/handler/app.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/handler/app.go)
 ```go
 var EchoOperation = temporalnexus.MustNewTemporalOperation(
 	temporalnexus.TemporalOperationOptions[service.EchoInput, service.EchoOutput]{
@@ -156,6 +159,7 @@ var EchoOperation = temporalnexus.MustNewTemporalOperation(
 		},
 	})
 ```
+<!--SNIPEND-->
 
 ### Use the Temporal Client for Signals, Queries, and Updates
 
@@ -182,6 +186,8 @@ through `nc.GetWorkflowClient()` rather than constructing your own.
 In this example the Workflow ID is derived from an identifier carried in the Operation input, so the caller only needs
 the identifier it cares about:
 
+<!--SNIPSTART go-nexus-signal-operation-->
+[go-sandbox/nexus/handler/app.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/handler/app.go)
 ```go
 var ApproveOperation = temporalnexus.MustNewTemporalOperation(
 	temporalnexus.TemporalOperationOptions[service.ApproveInput, service.ApproveOutput]{
@@ -201,6 +207,7 @@ var ApproveOperation = temporalnexus.MustNewTemporalOperation(
 		},
 	})
 ```
+<!--SNIPEND-->
 
 There are two examples of messaging through Nexus in the sample code, [caller pattern](https://github.com/temporalio/samples-go/tree/main/nexus-messaging/callerpattern/) and [on-demand pattern](https://github.com/temporalio/samples-go/tree/main/nexus-messaging/ondemandpattern/).
 The caller pattern shows how to send messages to an existing Workflow, while the on-demand pattern shows how to start a Workflow through Nexus and then send Signals to it.
@@ -210,6 +217,8 @@ The caller pattern shows how to send messages to an existing Workflow, while the
 Call `temporalnexus.StartWorkflow` with the Client. The Operation completes when the Workflow returns, and the
 Workflow's return value is delivered to the caller as the Operation's result.
 
+<!--SNIPSTART go-nexus-async-operation-->
+[go-sandbox/nexus/handler/app.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/handler/app.go)
 ```go
 var HelloOperation = temporalnexus.MustNewTemporalOperation(
 	temporalnexus.TemporalOperationOptions[service.HelloInput, service.HelloOutput]{
@@ -227,6 +236,7 @@ var HelloOperation = temporalnexus.MustNewTemporalOperation(
 		},
 	})
 ```
+<!--SNIPEND-->
 
 Workflow IDs should typically be business-meaningful identifiers and are used to dedupe Workflow starts.
 In general, the Workflow ID should be passed in the Operation input as part of the Nexus Service contract.
@@ -243,18 +253,21 @@ A Nexus Operation can only take one input parameter. `temporalnexus.StartWorkflo
 single argument, so to start a Workflow that takes several, use `temporalnexus.StartUntypedWorkflow` and pass the
 arguments after the Workflow function:
 
+<!--SNIPSTART go-nexus-untyped-workflow-->
+[go-sandbox/nexus/handler/app.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/handler/app.go)
 ```go
 return temporalnexus.StartUntypedWorkflow[service.HelloOutput](ctx, nc, client.StartWorkflowOptions{
 	ID: service.HelloWorkflowID(input),
-}, HelloHandlerWorkflow, input.Name, input.Language)
+}, HelloHandlerWorkflowWithArgs, input.Name, input.Language)
 ```
+<!--SNIPEND-->
 
 ### Register a Nexus Service in a Worker
 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.
 
-<!--SNIPSTART samples-go-nexus-handler-worker-->
-[nexus/handler/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/worker/main.go)
+<!--SNIPSTART go-nexus-handler-worker-->
+[go-sandbox/nexus/handler/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/handler/worker/main.go)
 ```go
 package main
 
@@ -266,9 +279,10 @@ import (
 	"go.temporal.io/sdk/worker"
 
 	"github.com/nexus-rpc/sdk-go/nexus"
-	"github.com/temporalio/samples-go/nexus/handler"
-	"github.com/temporalio/samples-go/nexus/options"
-	"github.com/temporalio/samples-go/nexus/service"
+
+	"my-org/quickstart/nexus/handler"
+	"my-org/quickstart/nexus/options"
+	"my-org/quickstart/nexus/service"
 )
 
 const (
@@ -289,12 +303,14 @@ func main() {
 
 	w := worker.New(c, taskQueue, worker.Options{})
 	service := nexus.NewService(service.HelloServiceName)
-	err = service.Register(handler.EchoOperation, handler.HelloOperation)
+	err = service.Register(handler.EchoOperation, handler.HelloOperation, handler.HelloWithArgsOperation, handler.ApproveOperation)
 	if err != nil {
 		log.Fatalln("Unable to register operations", err)
 	}
 	w.RegisterNexusService(service)
 	w.RegisterWorkflow(handler.HelloHandlerWorkflow)
+	w.RegisterWorkflow(handler.HelloHandlerWorkflowWithArgs)
+	w.RegisterWorkflow(handler.ApprovalWorkflow)
 
 	err = w.Run(worker.InterruptCh())
 	if err != nil {
@@ -308,14 +324,15 @@ func main() {
 
 Import the Service API package that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
 
-<!--SNIPSTART samples-go-nexus-caller-workflow-->
-[nexus/caller/workflows.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/workflows.go)
+<!--SNIPSTART go-nexus-caller-workflow-->
+[go-sandbox/nexus/caller/workflows.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/caller/workflows.go)
 ```go
 package caller
 
 import (
-	"github.com/temporalio/samples-go/nexus/service"
 	"go.temporal.io/sdk/workflow"
+
+	"my-org/quickstart/nexus/service"
 )
 
 const (
@@ -355,7 +372,6 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 
 	return res.Message, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -363,8 +379,8 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 
 After developing the caller Workflow, the next step is to register it with a Worker.
 
-<!--SNIPSTART samples-go-nexus-caller-worker-->
-[nexus/caller/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/worker/main.go)
+<!--SNIPSTART go-nexus-caller-worker-->
+[go-sandbox/nexus/caller/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/caller/worker/main.go)
 ```go
 package main
 
@@ -372,8 +388,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/temporalio/samples-go/nexus/caller"
-	"github.com/temporalio/samples-go/nexus/options"
+	"my-org/quickstart/nexus/caller"
+	"my-org/quickstart/nexus/options"
 
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
@@ -408,8 +424,8 @@ func main() {
 
 To initiate the caller Workflow, a starter program is used.
 
-<!--SNIPSTART samples-go-nexus-caller-starter-->
-[nexus/caller/starter/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/starter/main.go)
+<!--SNIPSTART go-nexus-caller-starter-->
+[go-sandbox/nexus/caller/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus/caller/starter/main.go)
 ```go
 package main
 
@@ -421,9 +437,9 @@ import (
 
 	"go.temporal.io/sdk/client"
 
-	"github.com/temporalio/samples-go/nexus/caller"
-	"github.com/temporalio/samples-go/nexus/options"
-	"github.com/temporalio/samples-go/nexus/service"
+	"my-org/quickstart/nexus/caller"
+	"my-org/quickstart/nexus/options"
+	"my-org/quickstart/nexus/service"
 )
 
 func main() {
@@ -530,7 +546,7 @@ See the [Nexus cancelation sample](https://github.com/temporalio/samples-go/tree
 ## Make Nexus calls across Namespaces in Temporal Cloud {/* #nexus-calls-across-namespaces-temporal-cloud */}
 
 This section assumes you are already familiar with [how to connect a Worker to Temporal Cloud](/develop/go/client/temporal-client#connect-to-temporal-cloud).
-The same [source code](https://github.com/temporalio/samples-go/tree/main/nexus) is used in this section, but the Temporal Cloud CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.
+The same [source code](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/go-sandbox/nexus) is used in this section, but the Temporal Cloud CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler Workers to their respective Temporal Cloud Namespaces.
 
 ### Install `tcld` and generate certificates
 

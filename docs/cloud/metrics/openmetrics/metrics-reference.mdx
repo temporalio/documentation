@@ -985,6 +985,10 @@ Does not include the `region` label. Actions are scoped to the Namespace level.
 
 The number of billable actions per second, broken down by action type and Workflow Type. Not all billable actions are included in this metric; see [Actions](/evaluate/cloud/actions) for details on exceptions.
 
+This metric is an estimate and can differ by up to 5% from the absolute Action counts recorded by metering. See
+[Compare Action metrics with metering](/evaluate/cloud/actions#compare-action-metrics-with-metering) for guidance on
+metered totals.
+
 | Label | Description |
 | ----- | ----- |
 | `action_type` | The [action](/evaluate/cloud/actions) type |

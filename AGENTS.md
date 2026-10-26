@@ -15,6 +15,7 @@ repository.
 | CI jobs and scheduled jobs   | [AUTOMATIONS.md](./readme/AUTOMATIONS.md)                                  |
 | AI research sources for content review | [AI-KNOWLEDGE-SOURCES.md](./readme/AI-KNOWLEDGE-SOURCES.md)       |
 | Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
+| Agent search endpoint (`/api/retrieve`) | [AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md)           |
 
 ## Repository overview
 
@@ -114,9 +115,10 @@ tags:
 - Write `description` as a single clear sentence. See [Meta descriptions](#meta-descriptions) below.
 - Do not change `id` or `slug` without a redirect plan.
 - Match `tags` to sibling pages in the same section. Use existing tags; don't add new ones unless it's a new feature.
-- A folder's `_frontmatter.yml` adds its `tags` to every page below it. Check the folders above a page before listing
-  tags by hand, and don't repeat tags the file supplies. See
-  [Folder-level default tags](./readme/CONTRIBUTING.md#folder-level-default-tags).
+- A folder's `_frontmatter.yml` adds its `tags` to every page below it and can set a `section_title` that's appended to
+  the page title in the browser tab. Check the folders above a page before listing tags by hand, and don't repeat tags
+  or a section name the file supplies. See
+  [Folder-level frontmatter defaults](./readme/CONTRIBUTING.md#folder-level-frontmatter-defaults).
 - Do not add a `keywords` field. It isn't used by the site.
 
 ### Meta descriptions
@@ -193,6 +195,7 @@ yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs we
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
 yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
+yarn check:retrieve-links # /api/retrieve results whose docs links don't return 200; advisory, see AGENT-RETRIEVE.md
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
@@ -217,6 +220,11 @@ uses `{/* */}`.
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
 serve. Fix the rule. A known, accepted exception belongs in `bin/redirect-baseline.json` with a note.
+
+`yarn check:retrieve-links [baseUrl]` asks the `/api/retrieve` endpoint 20 sample questions and reports docs links in the
+results that don't return 200. Pass a preview deployment URL to check a branch. It sends one request every few seconds to
+stay under the endpoint's rate limit, so a run takes about two minutes. See
+[AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md).
 
 `yarn check:ts-samples` and `yarn check:py-samples` type-check the TypeScript and Python code blocks that aren't
 synced by Snipsync against the latest SDK release, and report classes, methods, exports, and arguments the SDK doesn't
