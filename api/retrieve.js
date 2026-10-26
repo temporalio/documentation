@@ -6,7 +6,7 @@ const { redirects } = require('../vercel.json');
 const {
   LIMITS,
   USAGE,
-  isAllowed,
+  isAllowedResult,
   parseAllowlist,
   parseList,
   parseParams,
@@ -190,7 +190,7 @@ module.exports = async (request, response) => {
 
   try {
     const valid = validResults(results);
-    const kept = valid.filter((result) => isAllowed(result.source_url, allowlist));
+    const kept = valid.filter((result) => isAllowedResult(result, allowlist));
     record.fetched_count = results.length;
     record.dropped_count = results.length - kept.length;
     const shaped = shapeResults(kept, compiledRedirects);
