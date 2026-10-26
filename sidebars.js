@@ -1322,7 +1322,7 @@ module.exports = {
         {
           type: 'category',
           label: 'Account access',
-          collapsed: false,
+          collapsed: true,
           link: {
             type: 'doc',
             id: 'cloud/manage-access/index',
@@ -1336,6 +1336,19 @@ module.exports = {
             'cloud/manage-access/saml',
             'cloud/manage-access/scim',
             'cloud/manage-access/permissions-reference',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Audit Logging',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/audit-logs',
+          },
+          items: [
+            'cloud/audit-logs-aws',
+            'cloud/audit-logs-gcp', // pre-release
           ],
         },
         {
@@ -1354,6 +1367,32 @@ module.exports = {
         },
         {
           type: 'category',
+          label: 'CLI (tcld)',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/tcld/index',
+          },
+          items: [
+            'cloud/tcld/account',
+            'cloud/tcld/apikey',
+            'cloud/tcld/connectivity-rule',
+            'cloud/tcld/feature',
+            'cloud/tcld/generate-certificates',
+            'cloud/tcld/login',
+            'cloud/tcld/logout',
+            'cloud/tcld/migration',
+            'cloud/tcld/namespace',
+            'cloud/tcld/nexus',
+            'cloud/tcld/request',
+            'cloud/tcld/service-account',
+            'cloud/tcld/user',
+            'cloud/tcld/user-group',
+            'cloud/tcld/version',
+          ],
+        },
+        {
+          type: 'category',
           label: 'Connectivity',
           collapsed: true,
           link: {
@@ -1364,6 +1403,20 @@ module.exports = {
             'cloud/connectivity/aws-connectivity',
             'cloud/connectivity/gcp-connectivity',
             'cloud/connectivity/ip-addresses',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Export',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/export',
+          },
+          items: [
+            'cloud/aws-export-s3',
+            'cloud/gcp-export-gcs',
+            'cloud/azure-export-blob-storage'
           ],
         },
         {
@@ -1393,24 +1446,6 @@ module.exports = {
             'cloud/high-availability/ha-connectivity',
           ],
         },
-        'cloud/slo',
-        'cloud/rpo-rto',
-        {
-          type: 'category',
-          label: 'Temporal Nexus',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/nexus/index',
-          },
-          items: [
-            'cloud/nexus/security',
-            'cloud/nexus/observability',
-            'cloud/nexus/latency-availability',
-            'cloud/nexus/limits',
-            'cloud/nexus/pricing',
-          ],
-        },
         {
           type: 'category',
           label: 'Migrate',
@@ -1426,8 +1461,6 @@ module.exports = {
             'cloud/migrate/estimate-actions',
           ],
         },
-        'cloud/projects',
-        'cloud/capacity-modes',
         {
           type: 'category',
           label: 'Monitor',
@@ -1458,61 +1491,28 @@ module.exports = {
             'cloud/notifications',
           ],
         },
+        {
+          type: 'category',
+          label: 'Temporal Nexus',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/nexus/index',
+          },
+          items: [
+            'cloud/nexus/security',
+            'cloud/nexus/observability',
+            'cloud/nexus/latency-availability',
+            'cloud/nexus/limits',
+            'cloud/nexus/pricing',
+          ],
+        },
+        'cloud/capacity-modes',
         'cloud/operation-api',
+        'cloud/rpo-rto',
+        'cloud/projects',
         'cloud/terraform-provider',
-        {
-          type: 'category',
-          label: 'Export',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/export',
-          },
-          items: [
-            'cloud/aws-export-s3',
-            'cloud/gcp-export-gcs',
-            'cloud/azure-export-blob-storage'
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Audit Logging',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/audit-logs',
-          },
-          items: [
-            'cloud/audit-logs-aws',
-            'cloud/audit-logs-gcp', // pre-release
-          ],
-        },
-        {
-          type: 'category',
-          label: 'CLI (tcld)',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/tcld/index',
-          },
-          items: [
-            'cloud/tcld/account',
-            'cloud/tcld/apikey',
-            'cloud/tcld/connectivity-rule',
-            'cloud/tcld/feature',
-            'cloud/tcld/generate-certificates',
-            'cloud/tcld/login',
-            'cloud/tcld/logout',
-            'cloud/tcld/migration',
-            'cloud/tcld/namespace',
-            'cloud/tcld/nexus',
-            'cloud/tcld/request',
-            'cloud/tcld/service-account',
-            'cloud/tcld/user',
-            'cloud/tcld/user-group',
-            'cloud/tcld/version',
-          ],
-        },
+        'cloud/slo',
       ],
     },
     {
