@@ -10,8 +10,10 @@ const HANDLER_PATH = require.resolve('./feedback');
 const LOG_PATH = require.resolve('./_log');
 const DOCS = 'https://docs.temporal.io';
 
-const BASE_ENV = { FEEDBACK_LOG_SALT: 'salt', BLOB_READ_WRITE_TOKEN: 'token' };
-const ENV_KEYS = Object.keys(BASE_ENV);
+const BASE_ENV = { FEEDBACK_LOG_SALT: 'salt', FEEDBACK_BLOB_READ_WRITE_TOKEN: 'feedback-token' };
+const REQUIRED_KEYS = Object.keys(BASE_ENV);
+// The retrieve log's token is cleared too, so a test can show it isn't used.
+const ENV_KEYS = [...REQUIRED_KEYS, 'BLOB_READ_WRITE_TOKEN'];
 
 const originalLoad = Module._load;
 const originalLog = console.log;
@@ -104,6 +106,7 @@ describe('agent reports', () => {
     const { pathname, body, options } = blobPuts[0];
     assert.match(pathname, new RegExp(`^feedback/\\d{4}-\\d{2}-\\d{2}/${res.body.id}\\.json$`));
     assert.strictEqual(options.access, 'private');
+    assert.strictEqual(options.token, 'feedback-token');
     assert.strictEqual(body.kind, 'report');
     assert.strictEqual(body.channel, 'agent');
     assert.strictEqual(body.page_url, `${DOCS}/cli`);
@@ -238,13 +241,22 @@ describe('methods and configuration', () => {
     assert.strictEqual((await call({ method: 'OPTIONS' })).statusCode, 204);
   });
 
-  for (const name of ENV_KEYS) {
+  for (const name of REQUIRED_KEYS) {
     it(`returns 500 without storing anything when ${name} is unset`, async () => {
       const res = await call({ body: report, env: { [name]: undefined } });
       assert.strictEqual(res.statusCode, 500);
       assert.strictEqual(blobPuts.length, 0);
     });
   }
+
+  it("doesn't fall back to the retrieve log's store", async () => {
+    const res = await call({
+      body: report,
+      env: { FEEDBACK_BLOB_READ_WRITE_TOKEN: undefined, BLOB_READ_WRITE_TOKEN: 'retrieve-token' },
+    });
+    assert.strictEqual(res.statusCode, 500);
+    assert.strictEqual(blobPuts.length, 0);
+  });
 
   it('returns 503 when the Blob write fails', async () => {
     blobFails = true;

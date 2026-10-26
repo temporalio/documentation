@@ -7,7 +7,7 @@
 - **The page feedback widget** records a reader's Yes or No answer to "Was this page helpful?", plus an optional
   reason and comment.
 
-Each accepted submission is stored as one private Vercel Blob. A daily digest posts a summary to Slack, where the
+Each accepted submission is stored as one Blob in a private Vercel Blob store used only for feedback. A daily digest posts a summary to Slack, where the
 docs team fixes docs problems and forwards product problems to the team that owns them.
 
 Status: the endpoint is live but not advertised. The widget, the digest, and the agent-facing copy in `llms.txt` and
@@ -95,7 +95,7 @@ Errors are JSON `{ error }`. A 400, 405, or 413 also includes a `usage` string.
 | 403 | A widget amendment with the wrong `amend_token`, or after its 30-minute window |
 | 405 | A method other than `GET`, `POST`, or `OPTIONS` |
 | 413 | A body over 8 KB |
-| 500 | `FEEDBACK_LOG_SALT` or `BLOB_READ_WRITE_TOKEN` is unset. Nothing is stored |
+| 500 | `FEEDBACK_LOG_SALT` or `FEEDBACK_BLOB_READ_WRITE_TOKEN` is unset. Nothing is stored |
 | 503 | The Blob write failed. The sender can try again |
 
 The Blob write finishes before the response is sent, unlike `/api/retrieve`'s log. Feedback that isn't stored is
@@ -120,7 +120,7 @@ These are Vercel project environment variables, set for Production and Preview:
 | Variable | Value |
 | --- | --- |
 | `FEEDBACK_LOG_SALT` | **Required.** A random string used to hash caller IPs and to sign amend tokens. Use a different value from `RETRIEVE_LOG_SALT`. Rotating it invalidates amend tokens issued in the last 30 minutes |
-| `BLOB_READ_WRITE_TOKEN` | **Required.** Added by Vercel when the private Blob store is connected to the project. The same store as `/api/retrieve`, under a different prefix |
+| `FEEDBACK_BLOB_READ_WRITE_TOKEN` | **Required.** Added by Vercel when the feedback Blob store is connected to the project with the `FEEDBACK` environment variable prefix. The function never falls back to `BLOB_READ_WRITE_TOKEN`, which belongs to the `/api/retrieve` log's store |
 
 ## Limits
 
@@ -132,6 +132,9 @@ These are Vercel project environment variables, set for Production and Preview:
 - **Nothing is cached.** Every response is `Cache-Control: no-store`, because a `GET` writes a record too.
 
 ## Storage
+
+Feedback has its own private Blob store, separate from the `/api/retrieve` log's store, because the two have
+different retention: the retrieve log is deleted after its experiment ends, and feedback is kept for 180 days.
 
 Each entry is one Blob at `feedback/YYYY-MM-DD/<id>.json`. A widget amendment is at
 `feedback/YYYY-MM-DD/<id>.amend-<amendment-id>.json`, in the entry's day folder even when it arrives after midnight
@@ -154,8 +157,9 @@ Each request also writes one JSON line (`"event":"feedback"`) to the runtime log
 `id`, category, severity, agent, and `src`. Free text from the public goes only to the Blob store, never to the
 runtime logs.
 
-To download the records, run `vercel blob list --prefix feedback/` from a linked checkout, or use the Storage tab in
-the Vercel dashboard.
+To download the records, use the feedback store's Storage tab in the Vercel dashboard, or run
+`vercel blob list --prefix feedback/ --rw-token "$FEEDBACK_BLOB_READ_WRITE_TOKEN"` from a linked checkout. Without
+`--rw-token`, the CLI uses `BLOB_READ_WRITE_TOKEN` and lists the retrieve log's store instead.
 
 ## Retention and privacy
 

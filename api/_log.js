@@ -18,12 +18,14 @@ function ipHash(request, salt) {
 }
 
 // Writes one record as a private JSON Blob. Returns the put() promise, so the
-// caller decides whether to wait for it.
-function putRecord(pathname, record) {
+// caller decides whether to wait for it. Without a token, @vercel/blob uses
+// BLOB_READ_WRITE_TOKEN, the store connected without a prefix.
+function putRecord(pathname, record, { token } = {}) {
   return put(pathname, JSON.stringify(record), {
     access: 'private',
     addRandomSuffix: false,
     contentType: 'application/json',
+    ...(token ? { token } : {}),
   });
 }
 

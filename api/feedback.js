@@ -78,8 +78,12 @@ module.exports = async (request, response) => {
     return;
   }
 
+  // Feedback has its own Blob store, connected to the project with the
+  // FEEDBACK prefix, so it never falls back to the retrieve log's
+  // BLOB_READ_WRITE_TOKEN.
   const salt = process.env.FEEDBACK_LOG_SALT;
-  if (!salt || !process.env.BLOB_READ_WRITE_TOKEN) {
+  const blobToken = process.env.FEEDBACK_BLOB_READ_WRITE_TOKEN;
+  if (!salt || !blobToken) {
     finish(500, { error: 'Feedback is not configured.' });
     return;
   }
@@ -140,7 +144,7 @@ module.exports = async (request, response) => {
   // Feedback that isn't stored is lost, so the write finishes before the
   // response, and a failure is reported to the sender.
   try {
-    await putRecord(pathname, record);
+    await putRecord(pathname, record, { token: blobToken });
   } catch (error) {
     console.error(`feedback: Blob write failed: ${error.message}`);
     finish(503, { error: "Feedback couldn't be saved. Try again later." });
