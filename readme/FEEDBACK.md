@@ -124,9 +124,9 @@ These are Vercel project environment variables, set for Production and Preview:
 
 ## Limits
 
-- **Vercel Firewall rate limit.** Add a rule on `/api/feedback` that caps calls per IP, for example 10 per minute. It's
-  set in the Vercel dashboard, not in this repository, so record the current threshold and action here when you change
-  it. Not set yet.
+- **Vercel Firewall rate limit.** A rule on `/api/feedback` allows 10 requests per minute per IP. A caller over the limit
+  gets a 429 with `x-vercel-mitigated: deny`, and the request never reaches the function, so it isn't logged. The rule
+  is set in the Vercel dashboard, not in this repository, so update this line when you change it.
 - **Field and body limits.** Text fields over their limit return 400, and a body over 8 KB returns 413.
 - **No CORS headers.** Agents call from a server or a tool, and the widget posts from the same origin.
 - **Nothing is cached.** Every response is `Cache-Control: no-store`, because a `GET` writes a record too.
