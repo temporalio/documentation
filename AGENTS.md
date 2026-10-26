@@ -16,6 +16,7 @@ repository.
 | AI research sources for content review | [AI-KNOWLEDGE-SOURCES.md](./readme/AI-KNOWLEDGE-SOURCES.md)       |
 | Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
 | Agent search endpoint (`/api/retrieve`) | [AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md)           |
+| Feedback endpoint (`/api/feedback`) | [FEEDBACK.md](./readme/FEEDBACK.md)                           |
 
 ## Repository overview
 

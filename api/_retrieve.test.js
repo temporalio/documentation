@@ -7,6 +7,8 @@ const Module = require('node:module');
 // so each case sets the environment and then loads a fresh copy.
 
 const HANDLER_PATH = require.resolve('./retrieve');
+// The shared log module loads @vercel/blob, so it's reloaded with the handler.
+const LOG_PATH = require.resolve('./_log');
 const DOCS = 'https://docs.temporal.io';
 
 const BASE_ENV = {
@@ -72,10 +74,12 @@ afterEach(() => {
     else process.env[key] = originalEnv[key];
   }
   delete require.cache[HANDLER_PATH];
+  delete require.cache[LOG_PATH];
 });
 
 function load() {
   delete require.cache[HANDLER_PATH];
+  delete require.cache[LOG_PATH];
   return require('./retrieve');
 }
 
