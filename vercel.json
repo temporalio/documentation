@@ -3,6 +3,11 @@
   "github": {
     "silent": true
   },
+  "functions": {
+    "api/retrieve.js": {
+      "maxDuration": 15
+    }
+  },
   "rewrites": [
     {
       "source": "/img/og/:path*",
