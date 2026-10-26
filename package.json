@@ -103,7 +103,7 @@
     "uuid": "^14.0.2",
     "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0",
     "wait-on": "^9.5.1",
-    "yaml": "^2.9.0"
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
