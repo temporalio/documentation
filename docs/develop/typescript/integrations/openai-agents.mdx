@@ -161,9 +161,9 @@ The [handoffs](https://github.com/temporalio/samples-typescript/tree/main/openai
 [multi-agent](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/multi-agent) samples show
 triage handoffs, chained and parallel agents, an LLM judge, and guardrails.
 
-An error the OpenAI Agents SDK throws during a run, such as a tripped guardrail or `MaxTurnsExceededError`, reaches the
-Workflow as a non-retryable `ApplicationFailure` of type `AgentsWorkflowError`, with the SDK's error as its `cause`.
-Check `cause` when you catch it, as the agent patterns sample does for guardrails.
+In a run without `stream: true`, an error the OpenAI Agents SDK throws during the run, such as a tripped guardrail or
+`MaxTurnsExceededError`, reaches the Workflow as a non-retryable `ApplicationFailure` of type `AgentsWorkflowError`, with
+the SDK's error as its `cause`. Check `cause` when you catch it, as the agent patterns sample does for guardrails.
 
 ## Add tools and MCP servers
 
@@ -353,12 +353,14 @@ isn't set reads as an empty string.
 records it in Event History, so tell the agent not to print it, and encrypt what reaches history with a
 [Payload Codec](/develop/typescript/best-practices/data-handling/data-encryption).
 
-The runner tears down the session when the run completes or fails. A run that pauses for approval keeps its session,
-so resume it as described in
+The runner tears down the session when the run completes or fails, unless you passed it in `runConfig.sandbox.session`.
+Close a session you pass that way yourself when you're done with it, by calling its `stop()`, `shutdown()`, and
+`delete()` methods in the Workflow. A run that pauses for approval keeps its session, so resume it as described in
 [Keep conversation history and pause for approval](#keep-conversation-history-and-pause-for-approval) and pass the
-same `runConfig.sandbox` to that `run()` call. Canceling, terminating, or timing out the Workflow skips the teardown,
-as does never resuming a paused run. Remove those sessions through your backend, for example by deleting the Docker
-container or the hosted sandbox.
+same `runConfig.sandbox` to that `run()` call.
+
+Canceling, terminating, or timing out the Workflow skips the teardown, as does never resuming a paused run. Remove
+those sessions through your backend, for example by deleting the Docker container or the hosted sandbox.
 
 Unix-local and Docker sessions stay on the machine that created them, so a Worker on another machine can't reach them.
 With those backends, send sandbox Activities to a Task Queue that only one host's Workers poll, by passing Activity
@@ -385,6 +387,10 @@ Each model call runs as a streaming Activity that publishes the model's events t
 Workflow, iterate the result to drive the run to completion. That iteration yields each call's events only after the
 call finishes, so subscribe from outside the Workflow to see them live. A retried model call publishes its events again
 from the start, so a subscriber can see a call's events more than once.
+
+Catch errors from iterating the result and from awaiting `result.completed`, since the OpenAI Agents SDK's errors
+arrive there as its own errors rather than as `AgentsWorkflowError`. An uncaught one doesn't fail the Workflow but fails
+the Workflow Task, which retries.
 
 Subscribe with `WorkflowStreamClient`, as described in
 [Subscribe](/develop/typescript/workflows/workflow-streams#subscribe), and keep the Workflow open until the subscriber
@@ -457,7 +463,7 @@ processor, OpenAI's exporter, and OpenTelemetry.
 | Sandbox runs paused for approval | Supported on backends with `resume()` | Every paused-run resume calls the backend's `resume()`. See [Failure behavior](#failure-behavior). |
 | Sessions | Supported | `WorkflowSafeMemorySession`. The SDK's `MemorySession` is rejected. |
 | Run state and approvals | Supported | Serialize `RunState` to resume across Continue-As-New. |
-| Guardrails | Supported | Run in the Workflow. A tripwire arrives as the `cause` of an `AgentsWorkflowError`. |
+| Guardrails | Supported | Run in the Workflow. Without `stream: true`, a tripwire arrives as the `cause` of an `AgentsWorkflowError`. |
 | Structured output | Supported | `outputType` on the agent. |
 | Run context | Supported | Visible to code in the Workflow, not to Activity tools or `agentAsTool` nested runs. |
 | Per-run model override | Supported | `runConfig.model` takes a model name. |
@@ -592,13 +598,13 @@ operation, such as creating or resuming the session, reaches the Workflow once i
 code reach the Workflow as they are when they're raised outside a tool call.
 
 A failed `activityAsTool` or `agentAsTool` call ends the run, and so does a failed `nexusOperationAsTool` call, which
-builds its tool the same way. The failure reaches the Workflow as a non-retryable `AgentsWorkflowError` whose `cause` is
-the OpenAI Agents SDK's `ToolCallError`. The original failure is on that `ToolCallError`'s `error` property, not on the
-cause chain, so read it from `cause.error`. It's the `ActivityFailure` once an `activityAsTool` Activity stops retrying,
-the `NexusOperationFailure` from `nexusOperationAsTool`, or, from `agentAsTool`, the nested run's own failure, such as a
-`NestedAgentInterruption`, `SandboxConfigurationError`, or `AgentsWorkflowError`. The Workflow failure recorded in Event
-History keeps only the message text, so an `activityAsTool` Activity's own error appears only in that Activity's failure
-event.
+builds its tool the same way. In a run without `stream: true`, the failure reaches the Workflow as a non-retryable
+`AgentsWorkflowError` whose `cause` is the OpenAI Agents SDK's `ToolCallError`. The original failure is on that
+`ToolCallError`'s `error` property, not on the cause chain, so read it from `cause.error`. It's the `ActivityFailure`
+once an `activityAsTool` Activity stops retrying, the `NexusOperationFailure` from `nexusOperationAsTool`, or, from
+`agentAsTool`, the nested run's own failure, such as a `NestedAgentInterruption`, `SandboxConfigurationError`, or
+`AgentsWorkflowError`. The Workflow failure recorded in Event History keeps only the message text, so an
+`activityAsTool` Activity's own error appears only in that Activity's failure event.
 
 A failure inside an MCP tool call or a sandbox tool, such as `exec_command`, `write_stdin`, `view_image`, or
 `apply_patch`, doesn't reach the Workflow. The OpenAI Agents SDK returns it to the model as the tool's output, such as
@@ -609,7 +615,7 @@ underlying error, and the run continues. That includes the `DedicatedWorkerFailu
 | Failure type | Raised in | Meaning |
 | --- | --- | --- |
 | `ModelInvocationError`, and `ModelInvocationError.RateLimit`, `.Authentication`, `.BadRequest`, `.Timeout`, `.Conflict`, or `.ServerError` | Model Activity | The model call failed. HTTP 408, 409, 429, and 5xx responses are retryable, and other statuses aren't. An `x-should-retry` header overrides that, and `retry-after-ms` or `retry-after` sets the next retry delay. An `openai` `APIError` without an HTTP status, such as `APIConnectionError`, is non-retryable. Other errors are retryable. |
-| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, or the OpenAI Agents SDK threw during the run, with its error as the `cause`. A failed `activityAsTool`, `nexusOperationAsTool`, or `agentAsTool` call also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. |
+| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool`, `nexusOperationAsTool`, or `agentAsTool` call in such a run also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. In a streaming run, an error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
 | `UnsafeSessionError` | Workflow | Non-retryable. `run()` received the SDK's `MemorySession`. |
 | `StreamingTopicNotConfigured` | Workflow | Non-retryable. A streaming run has no `streamingTopic`. |
 | `StreamingLocalActivityUnsupported` | Workflow | Non-retryable. A streaming run has `useLocalActivity: true`. |
@@ -636,7 +642,9 @@ replay-safe global tracer provider, or if one `SandboxClientProvider` is passed 
 **Sandbox session lifecycle.** Creating a session isn't idempotent, so a create Activity retried after the backend made
 the session leaves that session behind. A session is also left running when a
 [cancellation scope](/develop/typescript/workflows/cancellation-scopes) stops `run()`, since the runner skips the
-teardown even if the Workflow then completes normally. Remove those sessions through your backend.
+teardown even if the Workflow then completes normally. Remove those sessions through your backend. The runner's teardown
+calls the session's `stop()`, `shutdown()`, and `delete()`, each as an Activity, but only for a session it created or
+resumed, so a session passed in `runConfig.sandbox.session` stays open after the run completes or fails.
 
 **Sandbox reconnects.** Any Worker polling the Task Queue can receive a sandbox operation. A Worker that doesn't hold
 the session, such as a restarted Worker, reconnects to it with the backend's `resume()`, and resuming a paused run
