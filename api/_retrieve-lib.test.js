@@ -5,6 +5,7 @@ const { compileRedirects } = require('../bin/redirect-utils');
 const {
   LIMITS,
   isAllowed,
+  isAllowedResult,
   parseAllowlist,
   parseList,
   parseParams,
@@ -177,4 +178,18 @@ describe('validResults', () => {
   for (const [name, item] of malformed) {
     it(`drops ${name}`, () => assert.deepStrictEqual(validResults([good, item]), [good]));
   }
+});
+
+describe('isAllowedResult', () => {
+  const allowlist = parseAllowlist(['docs.temporal.io']);
+
+  it('allows custom Q&A answers, which Kapa returns with an empty source_url', () => {
+    assert.strictEqual(isAllowedResult({ content: 'Q: ... A: ...', source_url: '' }, allowlist), true);
+  });
+
+  it('checks every other result against the allowlist', () => {
+    assert.strictEqual(isAllowedResult({ content: 'x', source_url: 'https://docs.temporal.io/workflows' }, allowlist), true);
+    assert.strictEqual(isAllowedResult({ content: 'x', source_url: 'https://temporalio.slack.com/archives/C1/p1' }, allowlist), false);
+    assert.strictEqual(isAllowedResult({ content: 'x', source_url: '  ' }, allowlist), false);
+  });
 });
