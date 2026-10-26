@@ -39,17 +39,24 @@ Install the plugin, then run a minimal Strands agent inside a Temporal Workflow.
 
 ### Install the plugin
 
-Install the Temporal Python SDK with Strands Agents support (requires `temporalio` 1.28.0 or later):
+Install the standalone `temporalio-strands-agents` package:
 
 ```bash
-uv add "temporalio[strands-agents]"
+uv add temporalio-strands-agents
 ```
 
 or with pip:
 
 ```bash
-pip install "temporalio[strands-agents]"
+pip install temporalio-strands-agents
 ```
+
+The package installs the Temporal Python SDK and Strands Agents dependencies. Refer to the
+[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/strands_agents/pyproject.toml)
+for supported Python and dependency versions.
+
+Import `StrandsPlugin`, `TemporalAgent`, and `TemporalMCPClient` from `temporalio.strands_agents`. Import Workflow helpers
+such as `activity_as_tool` and `activity_as_hook` from `temporalio.strands_agents.workflow`.
 
 ### Run a Strands agent with Durable Execution
 
@@ -875,7 +882,7 @@ To get distributed traces across model, tool, and MCP Activities, combine `Stran
 import opentelemetry.trace
 from temporalio.client import Client
 from temporalio.contrib.opentelemetry import OpenTelemetryPlugin, create_tracer_provider
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 
 

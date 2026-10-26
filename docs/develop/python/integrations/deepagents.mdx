@@ -31,7 +31,6 @@ samples for the complete code.
 
 ## Prerequisites
 
-- Python 3.11 or newer.
 - This guide assumes you are already familiar with Deep Agents. If you aren't, refer to the
   [Deep Agents documentation](https://github.com/langchain-ai/deepagents) for more details.
 - If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
@@ -42,19 +41,23 @@ samples for the complete code.
 
 ## Install the plugin
 
-Install the Temporal Python SDK with Deep Agents support:
+Install the standalone `temporalio-deepagents` package:
 
 ```bash
-uv add "temporalio[deepagents]>=1.32.0"
+uv add temporalio-deepagents
 ```
 
 or with pip:
 
 ```bash
-pip install "temporalio[deepagents]>=1.32.0"
+pip install temporalio-deepagents
 ```
 
-Requires Python 3.11 or newer, the same floor that `deepagents` sets.
+The package installs the Temporal Python SDK and Deep Agents dependencies. Refer to the
+[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/deepagents/pyproject.toml)
+for supported Python and dependency versions.
+
+Import `DeepAgentsPlugin`, `TemporalBackend`, and other integration helpers from `temporalio.deepagents`.
 
 ## Hello world
 
@@ -525,7 +528,7 @@ class StreamingWorkflow:
 ## Compose with an observability plugin
 
 This plugin carries no tracing context of its own. For observability, compose it with an observability plugin such as
-[`temporalio.contrib.langsmith`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith) or
+[`temporalio.langsmith`](/develop/python/integrations/langsmith) or
 `temporalio.contrib.opentelemetry`. Registration order of the two plugins does not matter; the observability plugin
 captures the LLM calls that `DeepAgentsPlugin` runs as Activities. The Workflow itself is an ordinary Deep Agent — the tracing
 comes entirely from composing the plugins on the Client.
