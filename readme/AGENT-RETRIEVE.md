@@ -147,6 +147,7 @@ Don't commit the report: it contains question text from the public.
 | `--until YYYY-MM-DD` | Today | Last day to include, in UTC |
 | `--include-preview` | Off | Also count preview and development deployments |
 | `--include-tests` | Off | Also count `src=manual-test` and `src=link-check` |
+| `--automation REGEX` | None | Also treat callers whose `agent` or user agent matches `REGEX` as automated tools. Repeatable |
 | `--hide-text` | Off | Leave out question text and `jtb` values, for a report that's only counts |
 | `--top N` | 15 | Rows per table |
 
@@ -158,12 +159,18 @@ The report has a section for each experiment question:
 - **Discovery:** calls per day and per `src`.
 - **Who:** calls per `agent`, after merging case, spacing, and version suffixes (`Claude Code`, `claude_code`, and
   `cursor/0.42` become `claude-code` and `cursor`), and per user agent family. A copied `<your-name>` shows as
-  `(placeholder)`.
-- **What:** questions per topic and the most common questions, after merging case, spacing, and trailing punctuation.
-- **Gaps:** questions that came back empty, split into "Kapa found nothing", which points at missing docs, and "every
-  hit was outside the allowlist", which points at the allowlist or the Kapa sources.
+  `(placeholder)`. Calls from tools that audit how agent-ready the site is, such as an `agent` or user agent containing
+  `audit`, `argus`, `inspector`, or `quality-review`, are listed separately, so the agent tables reflect agents doing
+  work for a person. Add patterns with `--automation`.
+- **What:** how many calls asked a question and how many sent search keywords, how often the `/llms.txt` example
+  question was sent word for word, questions per topic, and the most common questions.
+- **Gaps:** Kapa returns results for almost any question, so a gap shows up as an answer left thin after the
+  allowlist. The section shows how many results each answered call got, the share of Kapa's results the allowlist
+  dropped, and the low-yield questions (two or fewer results) with their dropped share. A high dropped share means
+  other sources outranked the docs for that question.
 - **Intent:** how often `jtb` is filled in, and a sample of values.
-- **Health:** status codes, and p50 and p95 latency for 200s.
+- **Health:** status codes, why requests got a 400 (missing `q` or `q` over the length limit), how many sent a
+  placeholder such as `<question>` as the question, and p50 and p95 latency for 200s.
 - **Noise:** distinct callers by IP hash, the busiest callers as counts only, and calls with neither `src` nor `agent`.
 
 The log can't show CDN cache hits, so a question repeated within five minutes counts once. It also can't show whether

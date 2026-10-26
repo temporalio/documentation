@@ -2,19 +2,24 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 
 const {
+  EXAMPLE_QUESTION,
   daysBetween,
-  gapKind,
+  isAutomated,
   isExcluded,
   normalizeAgent,
   normalizeSrc,
   parseArgs,
   percentile,
+  queryStyle,
   questionKey,
   readRecords,
+  rejectReason,
   renderMarkdown,
   summarize,
   topicsFor,
   uaFamily,
+  yieldBucket,
+  yieldOf,
 } = require('./report-retrieve-log');
 
 // A production record with the fields api/retrieve.js writes.
@@ -127,6 +132,13 @@ describe('topicsFor', () => {
     assert.deepStrictEqual(topicsFor('Does Temporal support Oracle as a database?'), ['Self-hosted']);
   });
 
+  it('matches the newer topics', () => {
+    assert.deepStrictEqual(topicsFor('workflow determinism'), ['Determinism']);
+    assert.deepStrictEqual(topicsFor('activity heartbeat timeout'), ['Timeouts and retries', 'Activities']);
+    assert.deepStrictEqual(topicsFor('Upgrade self-hosted Temporal on PostgreSQL 16'), ['Self-hosted', 'Upgrades and migration']);
+    assert.deepStrictEqual(topicsFor('mock an activity in a unit test'), ['Testing', 'Activities']);
+  });
+
   it("doesn't read the English word go as the Go SDK", () => {
     assert.ok(!topicsFor('How do I go about scaling?').includes('Go SDK'));
   });
@@ -136,20 +148,62 @@ describe('topicsFor', () => {
   });
 });
 
-describe('gapKind', () => {
-  it('ignores requests with results or errors', () => {
-    assert.strictEqual(gapKind(record()), null);
-    assert.strictEqual(gapKind(record({ status: 502, result_count: null })), null);
+describe('isAutomated', () => {
+  it('matches audit tools by agent or user agent', () => {
+    assert.strictEqual(isAutomated(record({ agent: 'auditor' })), true);
+    assert.strictEqual(isAutomated(record({ agent: 'argus' })), true);
+    assert.strictEqual(isAutomated(record({ agent: null, ua: 'argus-inspector/1.0' })), true);
+    assert.strictEqual(isAutomated(record({ agent: null, ua: 'IF-source-quality-review/2' })), true);
   });
 
-  it('tells "Kapa found nothing" from "all filtered"', () => {
-    assert.strictEqual(gapKind(record({ result_count: 0, fetched_count: 0, dropped_count: 0 })), 'empty');
-    assert.strictEqual(gapKind(record({ result_count: 0, fetched_count: 8, dropped_count: 8 })), 'filtered');
+  it('leaves agents that help a person alone', () => {
+    for (const agent of ['claude-code', 'cursor', 'copilot-review', 'research-bot']) {
+      assert.strictEqual(isAutomated(record({ agent })), false, agent);
+    }
   });
 
-  it('falls back to dropped_count for records written before fetched_count', () => {
-    assert.strictEqual(gapKind(record({ result_count: 0, fetched_count: undefined, dropped_count: 0 })), 'empty');
-    assert.strictEqual(gapKind(record({ result_count: 0, fetched_count: undefined, dropped_count: 4 })), 'filtered');
+  it('takes extra patterns', () => {
+    assert.strictEqual(isAutomated(record({ agent: 'peer-0' }), [/^peer-\d+$/i]), true);
+  });
+});
+
+describe('queryStyle', () => {
+  it('tells questions from keyword searches', () => {
+    assert.strictEqual(queryStyle('What is the sticky execution cache on a Worker?'), 'Question');
+    assert.strictEqual(queryStyle('how do i patch a workflow'), 'Question');
+    assert.strictEqual(queryStyle('workflow determinism'), 'Keywords');
+    assert.strictEqual(queryStyle('"WorkflowStub.fromTyped" "start" signal Java'), 'Keywords');
+  });
+});
+
+describe('rejectReason', () => {
+  it('explains a 400 from what was logged', () => {
+    assert.strictEqual(rejectReason(record({ status: 400, q: null })), 'Missing q');
+    assert.strictEqual(rejectReason(record({ status: 400, q: '  ' })), 'Missing q');
+    assert.strictEqual(rejectReason(record({ status: 400, q: 'a'.repeat(200) })), 'q over the length limit');
+    assert.strictEqual(rejectReason(record()), null);
+  });
+});
+
+describe('yieldOf', () => {
+  it('reads results, dropped, and fetched', () => {
+    assert.deepStrictEqual(yieldOf(record({ result_count: 2, dropped_count: 13, fetched_count: 15 })), {
+      results: 2,
+      dropped: 13,
+      fetched: 15,
+    });
+  });
+
+  it('adds up fetched for records written before fetched_count', () => {
+    assert.deepStrictEqual(yieldOf(record({ result_count: 6, dropped_count: 9, fetched_count: undefined })), {
+      results: 6,
+      dropped: 9,
+      fetched: 15,
+    });
+  });
+
+  it('buckets result counts', () => {
+    assert.deepStrictEqual([0, 1, 2, 3, 5, 6, 10, 11, 15].map(yieldBucket), ['0', '1', '2', '3-5', '3-5', '6-10', '6-10', '11-15', '11-15']);
   });
 });
 
@@ -167,51 +221,74 @@ describe('summarize', () => {
     record({ src: 'llms', agent: 'Claude Code', jtb: 'Fix a retry bug', ip_hash: 'a' }),
     record({ src: 'llms', agent: 'claude-code', q: 'how do i set a retry policy', ip_hash: 'a' }),
     record({ src: 'docs-page', agent: 'cursor', ts: '2026-10-25T01:00:00.000Z', ip_hash: 'b' }),
-    record({ src: 'md-page', agent: null, q: 'Unknown thing', result_count: 0, fetched_count: 0, dropped_count: 0 }),
-    record({ src: null, agent: null, q: 'Edu course?', result_count: 0, fetched_count: 5, dropped_count: 5, ip_hash: 'c' }),
+    record({ src: 'md-page', agent: null, q: 'workflow determinism', result_count: 0, fetched_count: 15, dropped_count: 15 }),
+    record({ src: null, agent: null, q: EXAMPLE_QUESTION, result_count: 1, fetched_count: 15, dropped_count: 14, ip_hash: 'c' }),
+    record({ src: 'llms', agent: 'auditor', ua: 'audit-bot/1', q: 'What is a Worker?' }),
     record({ status: 400, q: null, src: 'llms', latency_ms: 1 }),
+    record({ status: 400, q: '<question', src: 'llms', latency_ms: 1 }),
     record({ src: 'manual-test' }),
     record({ deployment: 'preview' }),
   ];
   const s = summarize(records);
 
   it('counts what it left out', () => {
-    assert.strictEqual(s.total, 8);
+    assert.strictEqual(s.total, 10);
     assert.strictEqual(s.excluded, 2);
-    assert.strictEqual(s.calls, 6);
+    assert.strictEqual(s.calls, 8);
   });
 
-  it('counts calls per surface, agent, and day', () => {
-    assert.strictEqual(s.bySrc.get('llms'), 3);
+  it('counts calls per surface and day, including automated tools', () => {
+    assert.strictEqual(s.bySrc.get('llms'), 5);
     assert.strictEqual(s.bySrc.get('(missing)'), 1);
-    assert.strictEqual(s.byAgent.get('claude-code'), 3);
-    assert.strictEqual(s.byAgent.get('(missing)'), 2);
     assert.strictEqual(s.byDay.get('2026-10-25'), 1);
+  });
+
+  it('reports automated tools apart from agents', () => {
+    assert.strictEqual(s.automatedCalls, 1);
+    assert.strictEqual(s.byTool.get('auditor'), 1);
+    assert.strictEqual(s.byAgent.get('auditor'), undefined);
+    assert.strictEqual(s.byAgent.get('claude-code'), 4);
+    assert.strictEqual(s.byAgent.get('(missing)'), 2);
   });
 
   it('merges question variants and leaves out rejected requests', () => {
     assert.strictEqual(s.questions.get('how do i set a retry policy').count, 3);
-    assert.strictEqual(s.questions.size, 3);
+    assert.strictEqual(s.questions.size, 4);
   });
 
-  it('splits gaps by cause', () => {
-    assert.deepStrictEqual([...s.gaps.empty.keys()], ['unknown thing']);
-    assert.deepStrictEqual([...s.gaps.filtered.keys()], ['edu course']);
+  it('counts query style and the verbatim example', () => {
+    assert.strictEqual(s.byStyle.get('Question'), 5);
+    assert.strictEqual(s.byStyle.get('Keywords'), 1);
+    assert.strictEqual(s.exampleVerbatim, 1);
+  });
+
+  it('tracks yield and low-yield questions', () => {
+    assert.strictEqual(s.byYield.get('0'), 1);
+    assert.strictEqual(s.byYield.get('1'), 1);
+    assert.strictEqual(s.byYield.get('11-15'), 4);
+    assert.deepStrictEqual([...s.lowYield.keys()].sort(), [questionKey(EXAMPLE_QUESTION), 'workflow determinism']);
+    assert.strictEqual(s.droppedTotal, 3 * 4 + 15 + 14);
+  });
+
+  it('explains rejections and counts placeholders', () => {
+    assert.strictEqual(s.rejects.get('Missing q'), 1);
+    assert.strictEqual(s.rejects.get('q over the length limit'), 1);
+    assert.strictEqual(s.placeholderQuestions, 1);
   });
 
   it('counts jtb, missing src and agent, callers, and latency', () => {
     assert.strictEqual(s.jtbFilled, 1);
     assert.strictEqual(s.missingBoth, 1);
     assert.strictEqual(s.callers.get('a'), 2);
-    assert.strictEqual(s.latencies.length, 5);
-    assert.strictEqual(s.byStatus.get(400), 1);
+    assert.strictEqual(s.latencies.length, 6);
+    assert.strictEqual(s.byStatus.get(400), 2);
   });
 });
 
 describe('renderMarkdown', () => {
   const s = summarize([
     record({ q: 'Secret | question', jtb: 'Private goal' }),
-    record({ q: 'Gap question', result_count: 0, fetched_count: 0, dropped_count: 0 }),
+    record({ q: 'Gap question', result_count: 0, fetched_count: 15, dropped_count: 15 }),
   ]);
   const opts = { since: '2026-10-24', until: '2026-10-24' };
 
@@ -220,7 +297,7 @@ describe('renderMarkdown', () => {
     for (const heading of ['## Discovery', '## Who', '## What', '## Gaps', '## Intent', '## Health', '## Noise']) {
       assert.ok(md.includes(heading), heading);
     }
-    assert.ok(md.includes('| Gap question | 1 |'));
+    assert.ok(md.includes('| Gap question | 1 | 0.0 | 100% |'));
   });
 
   it('never leaves more than one blank line in a row', () => {
@@ -253,7 +330,14 @@ describe('parseArgs', () => {
     assert.strictEqual(opts.top, 15);
   });
 
+  it('collects --automation patterns', () => {
+    const opts = parseArgs(['--automation', '^peer-\\d+$', '--automation', 'harness']);
+    assert.strictEqual(opts.automation.length, 2);
+    assert.ok(opts.automation[0].test('PEER-3'));
+  });
+
   it('rejects bad input', () => {
+    assert.throws(() => parseArgs(['--automation', '(']));
     assert.throws(() => parseArgs(['--since', '10/24/2026']));
     assert.throws(() => parseArgs(['--since', '2026-11-02', '--until', '2026-11-01']));
     assert.throws(() => parseArgs(['--bogus']));

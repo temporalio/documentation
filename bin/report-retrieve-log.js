@@ -9,7 +9,8 @@
 // --hide-text leaves them out.
 //
 // By default the report counts production traffic only, and leaves out the
-// requests we send ourselves (src=manual-test and src=link-check).
+// requests we send ourselves (src=manual-test and src=link-check). Calls from
+// automated audit tools are counted, but reported apart from agents.
 //
 // Usage:
 //   BLOB_READ_WRITE_TOKEN=... node bin/report-retrieve-log.js [options]
@@ -19,12 +20,26 @@
 //   --until YYYY-MM-DD   Last day to include (UTC). Default: today.
 //   --include-preview    Also count preview and development deployments.
 //   --include-tests      Also count src=manual-test and src=link-check.
+//   --automation REGEX   Also treat callers whose agent or user agent matches
+//                        REGEX (case-insensitive) as automated tools. Repeatable.
 //   --hide-text          Leave out question text and jtb values.
 //   --top N              Rows per table. Default: 15.
 
 const KNOWN_SRC = ['llms', 'docs-page', 'md-page'];
 const TEST_SRC = ['manual-test', 'link-check'];
 const PLACEHOLDER = /^<?\s*(your[-_ ]?name|question|job[-_ ]to[-_ ]be[-_ ]done|agent|name)\s*>?$/i;
+const PLACEHOLDER_QUESTION = /<\s*question\s*>?|^\s*question\s*$/i;
+
+// The example question in /llms.txt. Agents that send it word for word ran the
+// example rather than asking their own question.
+const EXAMPLE_QUESTION = 'How do I safely change Workflow code while executions are still running in the Python SDK?';
+
+// A successful call that returned this many results or fewer is low-yield.
+const LOW_YIELD = 2;
+
+// Callers that audit how agent-ready a docs site is, rather than helping a
+// person with a task. Matched against both the agent value and the user agent.
+const AUTOMATION = [/audit/i, /\bargus\b/i, /inspector/i, /quality-review/i, /readiness/i, /scanner/i, /crawler/i];
 
 // Crawler and agent names that appear anywhere in a user agent string, checked
 // before falling back to the first product token.
@@ -57,19 +72,34 @@ const TOPICS = [
   ['Temporal Cloud', /\bcloud\b/i],
   ['CLI', /\bcli\b|\btemporal (workflow|server|operator|activity) /i],
   ['Self-hosted', /self[- ]host|\bhelm\b|\bkubernetes\b|\bk8s\b|\bdatabases?\b|\bpersistence\b|\bcassandra\b|\bpostgres|\bmysql\b|\belasticsearch\b/i],
+  ['Upgrades and migration', /\bupgrad|\bmigrat/i],
   ['Task Queues', /\btask queues?\b/i],
   ['Workers', /\bworkers?\b/i],
-  ['Versioning', /\bversion|\bpatch(ing|ed)?\b|\bdeterminis/i],
+  ['Determinism', /\bdeterminis|\bnon-?deterministic\b|\breplay/i],
+  ['Versioning', /\bversion|\bpatch(ing|ed)?\b/i],
+  ['Timeouts and retries', /\btimeouts?\b|\bretr(y|ies|ying)\b|\bheartbeat/i],
+  ['Failures and errors', /\bfail(ure|ures|ed|s)?\b|\berrors?\b|\bexceptions?\b|\bcompensat|\bsaga\b/i],
+  ['Testing', /\btest(s|ing)?\b|\bmock/i],
+  ['Schedules', /\bschedules?\b|\bcron\b/i],
+  ['Child Workflows', /\bchild workflows?\b/i],
   ['Signals, Queries, Updates', /\bsignals?\b|\bquer(y|ies)\b|\bupdates?\b/i],
   ['Activities', /\bactivit(y|ies)\b/i],
   ['Nexus', /\bnexus\b/i],
   ['AI and agents', /\bllm\b|\bai\b|\bagents?\b|\bopenai\b|\bmcp\b/i],
 ];
 
+// Openers that make a query a question even without a question mark.
+const QUESTION_START = /^(how|what|why|when|where|which|who|whose|can|could|does|do|did|is|are|was|were|should|would|will|has|have|explain|describe|compare|list|show|tell)\b/i;
+
 function isExcluded(record, { includePreview = false, includeTests = false } = {}) {
   if (!includePreview && record.deployment !== 'production') return true;
   if (!includeTests && TEST_SRC.includes(record.src)) return true;
   return false;
+}
+
+function isAutomated(record, extraPatterns = []) {
+  const patterns = [...AUTOMATION, ...extraPatterns];
+  return patterns.some((re) => re.test(record.agent || '') || re.test(record.ua || ''));
 }
 
 // Groups the ways an agent might write its name: case, spaces, underscores,
@@ -102,6 +132,12 @@ function questionKey(q) {
     .trim();
 }
 
+// Whether the caller asked a question or sent search keywords.
+function queryStyle(q) {
+  const text = String(q || '').trim();
+  return /\?$/.test(text) || QUESTION_START.test(text) ? 'Question' : 'Keywords';
+}
+
 function uaFamily(ua) {
   if (!ua) return '(missing)';
   const token = UA_TOKENS.find((t) => ua.toLowerCase().includes(t.toLowerCase()));
@@ -115,20 +151,34 @@ function topicsFor(q) {
   return found.length ? found : ['(no topic matched)'];
 }
 
+// Why a request was rejected. The function only returns 400 for a missing q
+// or a q over the length limit, and logs at most 200 characters of it.
+function rejectReason(record) {
+  if (record.status !== 400) return null;
+  return record.q && String(record.q).trim() ? 'q over the length limit' : 'Missing q';
+}
+
+// How many results Kapa returned and the allowlist dropped. Records written
+// before fetched_count existed didn't cap results, so fetched is the sum.
+function yieldOf(record) {
+  const results = record.result_count ?? 0;
+  const dropped = record.dropped_count ?? 0;
+  const fetched = record.fetched_count ?? results + dropped;
+  return { results, dropped, fetched };
+}
+
+function yieldBucket(results) {
+  if (results <= 2) return String(results);
+  if (results <= 5) return '3-5';
+  if (results <= 10) return '6-10';
+  return '11-15';
+}
+
 // Nearest-rank percentile of a list of numbers.
 function percentile(values, p) {
   if (values.length === 0) return null;
   const sorted = [...values].sort((a, b) => a - b);
   return sorted[Math.min(sorted.length - 1, Math.ceil((p / 100) * sorted.length) - 1)];
-}
-
-// Why a successful request returned no results. Records written before
-// fetched_count existed only have dropped_count to go on.
-function gapKind(record) {
-  if (record.status !== 200 || record.result_count !== 0) return null;
-  if (record.fetched_count == null) return record.dropped_count > 0 ? 'filtered' : 'empty';
-  if (record.fetched_count === 0) return 'empty';
-  return 'filtered';
 }
 
 function count(map, key, by = 1) {
@@ -140,32 +190,51 @@ function sortedEntries(map) {
 }
 
 function summarize(records, options = {}) {
+  const automation = options.automation || [];
   const included = records.filter((r) => !isExcluded(r, options));
   const s = {
     total: records.length,
     excluded: records.length - included.length,
     calls: included.length,
+    automatedCalls: 0,
     byDay: new Map(),
     bySrc: new Map(),
     byAgent: new Map(),
     byUa: new Map(),
+    byTool: new Map(),
     byStatus: new Map(),
+    rejects: new Map(),
+    placeholderQuestions: 0,
     byTopic: new Map(),
+    byStyle: new Map(),
+    exampleVerbatim: 0,
     questions: new Map(),
-    gaps: { empty: new Map(), filtered: new Map() },
+    byYield: new Map(),
+    lowYield: new Map(),
+    fetchedTotal: 0,
+    droppedTotal: 0,
     jtbFilled: 0,
     jtbSamples: [],
     missingBoth: 0,
     callers: new Map(),
     latencies: [],
   };
+  const exampleKey = questionKey(EXAMPLE_QUESTION);
 
   for (const r of included) {
     count(s.byDay, String(r.ts || '').slice(0, 10) || '(no date)');
     count(s.bySrc, normalizeSrc(r.src));
-    count(s.byAgent, normalizeAgent(r.agent));
-    count(s.byUa, uaFamily(r.ua));
     count(s.byStatus, r.status ?? '(none)');
+    if (isAutomated(r, automation)) {
+      s.automatedCalls++;
+      count(s.byTool, r.agent ? normalizeAgent(r.agent) : uaFamily(r.ua));
+    } else {
+      count(s.byAgent, normalizeAgent(r.agent));
+      count(s.byUa, uaFamily(r.ua));
+    }
+    const reason = rejectReason(r);
+    if (reason) count(s.rejects, reason);
+    if (r.q && PLACEHOLDER_QUESTION.test(r.q)) s.placeholderQuestions++;
     if (r.ip_hash) count(s.callers, r.ip_hash);
     if (r.src == null && r.agent == null) s.missingBoth++;
     if (r.jtb) {
@@ -174,15 +243,28 @@ function summarize(records, options = {}) {
     }
     if (r.status === 200 && typeof r.latency_ms === 'number') s.latencies.push(r.latency_ms);
 
-    // Only requests that reached Kapa have a question worth counting.
+    // Only requests that reached Kapa have a question and results to count.
     if (r.status !== 200 || !r.q) continue;
     const key = questionKey(r.q);
     const entry = s.questions.get(key) || { text: r.q, count: 0 };
     entry.count++;
     s.questions.set(key, entry);
+    if (key === exampleKey) s.exampleVerbatim++;
+    count(s.byStyle, queryStyle(r.q));
     for (const topic of topicsFor(r.q)) count(s.byTopic, topic);
-    const gap = gapKind(r);
-    if (gap) count(s.gaps[gap], key);
+
+    const y = yieldOf(r);
+    s.fetchedTotal += y.fetched;
+    s.droppedTotal += y.dropped;
+    count(s.byYield, yieldBucket(y.results));
+    if (y.results <= LOW_YIELD) {
+      const low = s.lowYield.get(key) || { count: 0, results: 0, dropped: 0, fetched: 0 };
+      low.count++;
+      low.results += y.results;
+      low.dropped += y.dropped;
+      low.fetched += y.fetched;
+      s.lowYield.set(key, low);
+    }
   }
   return s;
 }
@@ -199,67 +281,105 @@ function pct(n, total) {
 
 function renderMarkdown(s, { since, until, top = 15, hideText = false } = {}) {
   const out = [];
-  const share = (entries) => entries.map(([k, v]) => [k, v, pct(v, s.calls)]);
+  const shareOf = (total) => (entries) => entries.map(([k, v]) => [k, v, pct(v, total)]);
+  const share = shareOf(s.calls);
+  const agentCalls = s.calls - s.automatedCalls;
   const repeatCallers = sortedEntries(s.callers).filter(([, n]) => n > 1);
+  const answered = [...s.byYield.values()].reduce((a, b) => a + b, 0);
 
   out.push(`# /api/retrieve log: ${since} to ${until}\n`);
   out.push(
-    `${s.calls} calls counted. ${s.excluded} of ${s.total} records were left out as preview or test traffic. ` +
+    `${s.calls} calls counted, ${s.automatedCalls} of them from automated audit tools. ` +
+      `${s.excluded} of ${s.total} records were left out as preview or test traffic. ` +
       'CDN cache hits never reach the function, so a question repeated within five minutes counts once.\n'
   );
 
   out.push('## Discovery\n');
   out.push('Calls per day:\n');
   out.push(table(['Day', 'Calls'], [...s.byDay.entries()].sort((a, b) => a[0].localeCompare(b[0]))));
-  out.push('\nCalls per surface (`src`):\n');
+  out.push('Calls per surface (`src`):\n');
   out.push(table(['src', 'Calls', 'Share'], share(sortedEntries(s.bySrc))));
 
-  out.push('\n## Who\n');
-  out.push('Calls per `agent`, after merging case, spacing, and version suffixes:\n');
-  out.push(table(['agent', 'Calls', 'Share'], share(sortedEntries(s.byAgent).slice(0, top))));
-  out.push('\nCalls per user agent family:\n');
-  out.push(table(['User agent', 'Calls', 'Share'], share(sortedEntries(s.byUa).slice(0, top))));
+  out.push('## Who\n');
+  out.push(
+    `Calls per \`agent\` from the ${agentCalls} calls by agents, after merging case, spacing, and version suffixes. ` +
+      'Automated audit tools are listed separately below.\n'
+  );
+  out.push(table(['agent', 'Calls', 'Share'], shareOf(agentCalls)(sortedEntries(s.byAgent).slice(0, top))));
+  out.push('Calls per user agent family, same calls:\n');
+  out.push(table(['User agent', 'Calls', 'Share'], shareOf(agentCalls)(sortedEntries(s.byUa).slice(0, top))));
+  out.push(`Automated audit tools (${s.automatedCalls} calls, ${pct(s.automatedCalls, s.calls)} of all calls):\n`);
+  out.push(table(['Tool', 'Calls'], sortedEntries(s.byTool).slice(0, top)));
 
-  out.push('\n## What\n');
+  out.push('## What\n');
+  out.push('Query style:\n');
+  out.push(table(['Style', 'Calls', 'Share'], shareOf(answered)(sortedEntries(s.byStyle))));
+  out.push(`The \`/llms.txt\` example question was sent word for word ${s.exampleVerbatim} times.\n`);
   out.push('Questions per topic (a question can match more than one):\n');
   out.push(table(['Topic', 'Questions'], sortedEntries(s.byTopic)));
   if (!hideText) {
-    out.push(`\nTop questions (${s.questions.size} distinct):\n`);
+    out.push(`Top questions (${s.questions.size} distinct):\n`);
     const rows = [...s.questions.values()].sort((a, b) => b.count - a.count || a.text.localeCompare(b.text));
     out.push(table(['Question', 'Calls'], rows.slice(0, top).map((q) => [q.text, q.count])));
   }
 
-  out.push('\n## Gaps\n');
-  const gapRows = (map) => sortedEntries(map).map(([key, n]) => [hideText ? '(hidden)' : s.questions.get(key).text, n]);
-  const emptyTotal = [...s.gaps.empty.values()].reduce((a, b) => a + b, 0);
-  const filteredTotal = [...s.gaps.filtered.values()].reduce((a, b) => a + b, 0);
-  out.push(`Kapa found nothing (${emptyTotal} calls). These point at missing docs:\n`);
-  out.push(hideText ? `${s.gaps.empty.size} distinct questions.\n` : table(['Question', 'Calls'], gapRows(s.gaps.empty).slice(0, top)));
-  out.push(`\nEvery hit was outside the allowlist (${filteredTotal} calls):\n`);
+  out.push('## Gaps\n');
   out.push(
-    hideText ? `${s.gaps.filtered.size} distinct questions.\n` : table(['Question', 'Calls'], gapRows(s.gaps.filtered).slice(0, top))
+    `Kapa returns results for almost any question, so gaps show up as answers left thin after the allowlist. ` +
+      `Across ${answered} answered calls, the allowlist dropped ${s.droppedTotal} of ${s.fetchedTotal} results ` +
+      `(${pct(s.droppedTotal, s.fetchedTotal)}).\n`
   );
+  out.push('Results returned per answered call:\n');
+  const bucketOrder = ['0', '1', '2', '3-5', '6-10', '11-15'];
+  out.push(
+    table(
+      ['Results', 'Calls', 'Share'],
+      shareOf(answered)(bucketOrder.filter((b) => s.byYield.has(b)).map((b) => [b, s.byYield.get(b)]))
+    )
+  );
+  const lowCalls = [...s.lowYield.values()].reduce((a, b) => a + b.count, 0);
+  out.push(
+    `Low-yield questions, with ${LOW_YIELD} or fewer results (${lowCalls} calls, ${s.lowYield.size} distinct). ` +
+      'A high dropped share means the allowlist removed most of what Kapa found, usually because other sources outranked the docs:\n'
+  );
+  if (hideText) {
+    out.push(`${s.lowYield.size} distinct questions.\n`);
+  } else {
+    const rows = [...s.lowYield.entries()]
+      .sort((a, b) => b[1].count - a[1].count || b[1].dropped / (b[1].fetched || 1) - a[1].dropped / (a[1].fetched || 1))
+      .slice(0, top)
+      .map(([key, low]) => [
+        s.questions.get(key).text,
+        low.count,
+        (low.results / low.count).toFixed(1),
+        pct(low.dropped, low.fetched),
+      ]);
+    out.push(table(['Question', 'Calls', 'Avg results', 'Dropped'], rows));
+  }
 
-  out.push('\n## Intent\n');
+  out.push('## Intent\n');
   out.push(`\`jtb\` was filled in on ${s.jtbFilled} of ${s.calls} calls (${pct(s.jtbFilled, s.calls)}).\n`);
   if (!hideText && s.jtbSamples.length) {
-    out.push('\nSample values:\n');
+    out.push('Sample values:\n');
     out.push(s.jtbSamples.slice(0, top).map((j) => `- ${String(j).replace(/\n/g, ' ')}`).join('\n') + '\n');
   }
 
-  out.push('\n## Health\n');
+  out.push('## Health\n');
   out.push(table(['Status', 'Calls'], sortedEntries(s.byStatus)));
+  out.push('Why requests were rejected (400):\n');
+  out.push(table(['Reason', 'Calls'], sortedEntries(s.rejects)));
+  out.push(`${s.placeholderQuestions} calls sent a placeholder such as \`<question>\` as the question.\n`);
   const p50 = percentile(s.latencies, 50);
   const p95 = percentile(s.latencies, 95);
-  out.push(`\nLatency for 200s: p50 ${p50 ?? 'n/a'} ms, p95 ${p95 ?? 'n/a'} ms.\n`);
+  out.push(`Latency for 200s: p50 ${p50 ?? 'n/a'} ms, p95 ${p95 ?? 'n/a'} ms.\n`);
 
-  out.push('\n## Noise\n');
+  out.push('## Noise\n');
   out.push(
     `${s.callers.size} distinct callers by IP hash. ${repeatCallers.length} sent more than one call. ` +
       `${s.missingBoth} calls had neither \`src\` nor \`agent\`, so they found the URL some other way.\n`
   );
   if (repeatCallers.length) {
-    out.push('\nBusiest callers:\n');
+    out.push('Busiest callers:\n');
     out.push(table(['Caller', 'Calls', 'Share'], share(repeatCallers.slice(0, 5)).map(([, n, p], i) => [`Caller ${i + 1}`, n, p])));
   }
   return out.join('\n').replace(/\n{3,}/g, '\n\n');
@@ -275,13 +395,20 @@ function daysBetween(since, until) {
 }
 
 function parseArgs(argv) {
-  const opts = { top: 15 };
+  const opts = { top: 15, automation: [] };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--since') opts.since = argv[++i];
     else if (arg === '--until') opts.until = argv[++i];
     else if (arg === '--top') opts.top = Number.parseInt(argv[++i], 10);
-    else if (arg === '--include-preview') opts.includePreview = true;
+    else if (arg === '--automation') {
+      const pattern = argv[++i];
+      try {
+        opts.automation.push(new RegExp(pattern, 'i'));
+      } catch {
+        throw new Error(`--automation takes a regular expression: ${pattern}`);
+      }
+    } else if (arg === '--include-preview') opts.includePreview = true;
     else if (arg === '--include-tests') opts.includeTests = true;
     else if (arg === '--hide-text') opts.hideText = true;
     else throw new Error(`Unknown option: ${arg}`);
@@ -350,17 +477,22 @@ if (require.main === module) {
 }
 
 module.exports = {
+  EXAMPLE_QUESTION,
   daysBetween,
-  gapKind,
+  isAutomated,
   isExcluded,
   normalizeAgent,
   normalizeSrc,
   parseArgs,
   percentile,
+  queryStyle,
   questionKey,
   readRecords,
+  rejectReason,
   renderMarkdown,
   summarize,
   topicsFor,
   uaFamily,
+  yieldBucket,
+  yieldOf,
 };
