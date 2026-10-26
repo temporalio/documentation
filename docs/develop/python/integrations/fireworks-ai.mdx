@@ -1,0 +1,269 @@
+---
+id: fireworks-ai
+title: Fireworks AI integration
+sidebar_label: Fireworks AI
+toc_max_heading_level: 2
+tags:
+  - Fireworks AI
+  - Python SDK
+  - Temporal SDKs
+description:
+  Run OpenAI Agents SDK agents on open-weight models served by Fireworks AI, with every model call retried and recorded
+  as a Temporal Activity.
+---
+[Fireworks AI](https://fireworks.ai/) serves open-weight models such as gpt-oss, Kimi K2, Qwen, and GLM on serverless
+endpoints and on-demand deployments through an API compatible with the OpenAI Chat Completions API.
+
+Temporal's [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents) runs each model call as an
+Activity. A call to Fireworks AI gets retries with backoff, a timeout, and a durable record in Event History, and the
+agent loop around it survives Worker restarts. Because Fireworks AI speaks the OpenAI Chat Completions API, the
+integration's model provider hook is all you need: the Worker points an OpenAI client at Fireworks AI's base URL and
+names a model, and the Workflow code does not change.
+
+This integration is a sample pattern rather than a plugin. Code snippets in this guide are taken from the
+[OpenAI Agents SDK model provider samples](https://github.com/temporalio/samples-python/tree/main/openai_agents/model_providers),
+which run the same agent on Baseten, Fireworks AI, or Together AI.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with the
+  [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents) and with Fireworks AI's
+  [OpenAI-compatible API](https://docs.fireworks.ai/tools-sdks/openai-compatibility).
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Set up your local development environment by following
+  [Set up your local development environment](/develop/python/set-up-your-local-python) and leave the Temporal
+  development server running.
+- Create a [Fireworks AI API key](https://app.fireworks.ai/settings/users/api-keys) and export it as `FIREWORKS_API_KEY`
+  in the Worker's environment. The key stays in the Worker process; it is never part of Workflow input or Event History.
+
+## Install
+
+```bash
+uv add temporalio-openai-agents
+```
+
+The package installs the Temporal Python SDK, the OpenAI Agents SDK, and the `openai` client. Fireworks AI's own
+[`fireworks-ai` package](https://docs.fireworks.ai/tools-sdks/python-sdk) is not needed: Fireworks AI documents the
+`openai` client as a supported way to call its API.
+
+## Configure the model provider
+
+The sample describes each provider as a base URL, the environment variable that holds its API key, and a default model:
+
+<!--SNIPSTART python-openai-agents-fireworks-provider-->
+[openai_agents/model_providers/openai_compatible_providers.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/model_providers/openai_compatible_providers.py)
+```py
+FIREWORKS = OpenAICompatibleProvider(
+    name="fireworks",
+    base_url="https://api.fireworks.ai/inference/v1",
+    api_key_env="FIREWORKS_API_KEY",
+    model="accounts/fireworks/models/gpt-oss-120b",
+)
+```
+<!--SNIPEND-->
+
+Serverless models on Fireworks AI are named `accounts/fireworks/models/<model>`, and the
+[Model Library](https://fireworks.ai/models) shows each model's ID and whether it supports tool calling. The default
+here is [gpt-oss-120b](https://fireworks.ai/models/fireworks/gpt-oss-120b), an open-weight reasoning model with tool
+calling that Fireworks AI serves serverless. An
+[on-demand deployment](https://docs.fireworks.ai/guides/ondemand-deployments) uses the same base URL; pass the
+deployment's resource name, `accounts/<account>/deployments/<deployment-id>`, as the model instead.
+
+A `ModelProvider` turns that description into the Chat Completions model that the Agents SDK calls:
+
+<!--SNIPSTART python-openai-agents-openai-compatible-model-provider-->
+[openai_agents/model_providers/openai_compatible_providers.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/model_providers/openai_compatible_providers.py)
+```py
+class OpenAICompatibleModelProvider(ModelProvider):
+    """OpenAI Agents SDK model provider for an OpenAI-compatible endpoint.
+
+    Client retries are off: the Temporal plugin runs each model call as an
+    Activity, and the Activity's Retry Policy owns the retries. An agent that
+    names no model gets the provider's default; an agent can name any other
+    model the provider serves.
+    """
+
+    def __init__(self, provider: OpenAICompatibleProvider) -> None:
+        self._provider = provider
+        self._client = AsyncOpenAI(
+            base_url=provider.base_url,
+            api_key=os.environ[provider.api_key_env],
+            max_retries=0,
+        )
+
+    def get_model(self, model_name: str | None) -> Model:
+        # Chat Completions is the API all of these providers serve. The Agents
+        # SDK defaults to the Responses API, which not every provider offers.
+        return OpenAIChatCompletionsModel(
+            model=model_name or self._provider.model,
+            openai_client=self._client,
+        )
+```
+<!--SNIPEND-->
+
+Two details matter here. Client retries are off (`max_retries=0`), so every attempt is a visible Activity attempt
+governed by the Activity's Retry Policy rather than a hidden retry inside the HTTP client. And the provider builds an
+`OpenAIChatCompletionsModel` rather than the Agents SDK's default Responses API model, which Fireworks AI also offers,
+because Chat Completions is the one API every provider in the sample serves.
+
+## Configure the Worker
+
+Pass the provider to the plugin. A custom model provider must set a model Activity timeout; the sample uses 60 seconds.
+Fireworks AI answers a scaled-to-zero on-demand deployment with an immediate 503 rather than a slow first response, so
+the Retry Policy covers scale-up and the timeout only has to cover your longest generation. The Heartbeat Timeout lets
+Temporal notice a Worker that died mid-call within seconds instead of after the full Start-To-Close Timeout; the plugin
+heartbeats on its own.
+
+<!--SNIPSTART python-openai-agents-openai-compatible-worker-->
+[openai_agents/model_providers/run_openai_compatible_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/model_providers/run_openai_compatible_worker.py)
+```py
+client = await Client.connect(
+    "localhost:7233",
+    plugins=[
+        OpenAIAgentsPlugin(
+            model_params=ModelActivityParameters(
+                # A custom model provider must set a timeout. Raise it for
+                # slow models or deployments that scale up from zero.
+                start_to_close_timeout=timedelta(seconds=60),
+                # The plugin heartbeats, so a Worker that dies mid-call is
+                # noticed in seconds rather than after the full timeout.
+                heartbeat_timeout=timedelta(seconds=10),
+            ),
+            model_provider=OpenAICompatibleModelProvider(PROVIDERS[provider_name]),
+        ),
+    ],
+)
+
+worker = Worker(
+    client,
+    task_queue="openai-agents-model-providers-task-queue",
+    workflows=[OpenAICompatibleAgentWorkflow],
+)
+await worker.run()
+```
+<!--SNIPEND-->
+
+The Client that starts the Workflow also needs `OpenAIAgentsPlugin()`, for its Data Converter, but no model provider:
+only the Worker talks to Fireworks AI.
+
+## Write the Workflow
+
+The Workflow is ordinary Agents SDK code. It names no model, so the Worker's provider supplies its default; set `model=`
+on the `Agent` to any model Fireworks AI serves to override it.
+
+<!--SNIPSTART python-openai-agents-openai-compatible-workflow-->
+[openai_agents/model_providers/workflows/openai_compatible_workflow.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/model_providers/workflows/openai_compatible_workflow.py)
+```py
+@workflow.defn
+class OpenAICompatibleAgentWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        # Tools that run inside the Workflow must be async: the Agents SDK runs
+        # sync tools in a thread, which the Workflow sandbox does not allow.
+        @function_tool
+        async def get_weather(city: str) -> str:
+            workflow.logger.debug(f"Getting weather for {city}")
+            return f"The weather in {city} is sunny."
+
+        # No model is named here, so the Worker's model provider supplies its
+        # default. Set model= to any model the provider serves to override it.
+        # Start from empty model settings: an agent that names no model gets
+        # the Agents SDK's defaults for OpenAI's default model (a reasoning
+        # effort and `verbosity`), which other providers reject.
+        agent = Agent(
+            name="Assistant",
+            instructions="You only respond in haikus. When asked about the weather always use the tool to get the current weather.",
+            model_settings=ModelSettings(),
+            tools=[get_weather],
+        )
+
+        result = await Runner.run(agent, prompt)
+        return result.final_output
+```
+<!--SNIPEND-->
+
+The empty `ModelSettings()` matters. An `Agent` that names no model gets the Agents SDK's default settings for OpenAI's
+current default model, which include `verbosity` and a reasoning effort, and the plugin forwards them to the provider.
+Fireworks AI, for example, rejects `verbosity` with a 400. An agent that names its model explicitly does not get those
+defaults.
+
+Tools that run inside the Workflow must be `async`: the Agents SDK runs sync tools in a thread, which the Workflow
+sandbox does not allow. Tools that do I/O belong in Activities; see
+[Activity-backed tools](/develop/python/integrations/openai-agents#activity-backed-tools).
+
+## Run the sample
+
+Start the Worker with Fireworks AI selected:
+
+```bash
+export FIREWORKS_API_KEY="your_api_key"
+uv run openai_agents/model_providers/run_openai_compatible_worker.py --provider fireworks
+```
+
+Then start the Workflow in a second terminal:
+
+```bash
+uv run openai_agents/model_providers/run_openai_compatible_workflow.py
+```
+
+## Retries, rate limits, and timeouts
+
+The plugin classifies Fireworks AI's HTTP errors. Status 408, 409, 429, and any 5xx retry under the Activity's Retry
+Policy, and a `Retry-After` header becomes the next retry delay. Connection errors and client-side timeouts retry as
+well. Other 4xx responses, such as an invalid API key or an unknown model name, fail the Activity without retrying. Each
+attempt, its failure, and the final result are in Event History.
+
+On serverless, Fireworks AI enforces
+[adaptive token-per-minute limits](https://docs.fireworks.ai/serverless/rate-limits) per model that grow with steady
+traffic and shrink when it stops. A burst beyond them returns 429, and Fireworks AI asks clients to honor `Retry-After`
+when it is present. Under high load Fireworks AI can also shed traffic with `503 Service Overloaded`, which the plugin
+retries like any 5xx; the `priority` service tier lowers that chance.
+[On-demand deployments](https://docs.fireworks.ai/guides/inference-error-codes) have no token-per-minute limit, so a 429
+there means the deployment is saturated: add replicas or lower concurrency rather than wait. Both paths count against
+the account-wide requests-per-minute cap described on the
+[account quotas page](https://docs.fireworks.ai/guides/quotas_usage/account-quotas), which also sets the spending tiers
+that raise the serverless ceilings.
+
+## What works through Fireworks AI
+
+Function tools, Activity-backed tools, handoffs, agents as tools, and MCP servers all work unchanged: they run in the
+Workflow or in Activities, not at the provider. OpenAI-hosted tools such as web search, file search, code interpreter,
+and hosted MCP are Responses API features of OpenAI's own service, so they are not available through the Chat
+Completions API that the sample uses. The sample disables the Agents SDK's hosted tracing, which exports to OpenAI; the
+[OpenTelemetry tracing](/develop/python/integrations/openai-agents#opentelemetry) path works as usual.
+
+## Fireworks AI notes
+
+- Create an on-demand deployment with `firectl deployment create accounts/fireworks/models/gpt-oss-120b ...` and pass
+  the deployment name it returns as the model. By default a deployment scales to zero after an hour without traffic and
+  answers the next request with an immediate 503 while it scales back up, which the Activity's Retry Policy absorbs; a
+  deployment with zero minimum replicas is deleted after seven days without traffic. See the
+  [deployments quickstart](https://docs.fireworks.ai/getting-started/ondemand-quickstart).
+- Fireworks AI updates and retires serverless models over time and gives
+  [at least two weeks' notice](https://docs.fireworks.ai/faq-new/deployment-infrastructure/do-you-provide-notice-before-removing-model-availability)
+  before removing one. For a version that must not change under a long-running Workflow, pin it on an on-demand
+  deployment.
+- An agent's `output_type` is sent as a JSON schema in `response_format`, which Fireworks AI
+  [supports](https://docs.fireworks.ai/structured-responses/structured-response-formatting). Fireworks AI turns off
+  reasoning output while it enforces a schema, and turns JSON mode on by itself for tool calls.
+- Reasoning models return their thinking in a `reasoning_content` field, and for models that interleave thinking with
+  tool calls Fireworks AI
+  [expects each earlier assistant turn's `reasoning_content` back](https://docs.fireworks.ai/guides/reasoning) in the
+  next request. The Agents SDK replays it only for DeepSeek models by default; pass `should_replay_reasoning_content` to
+  `OpenAIChatCompletionsModel` to replay it for the model you use.
+- [Prompt caching](https://docs.fireworks.ai/guides/prompt-caching) is on by default, so a retried attempt that re-sends
+  the same prompt pays the discounted cached rate for the prefix. On serverless the cache lives in one replica, so hits
+  need a session identifier, which you can send as an `x-session-affinity` header through
+  `ModelSettings(extra_headers=...)`; dedicated deployments share their cache across requests.
+- Fireworks AI also serves the [Responses API](https://docs.fireworks.ai/guides/response-api) at the same base URL, with
+  stored conversation state and server-executed tools of its own: remote MCP servers, web search, and a Python tool.
+  Build an `OpenAIResponsesModel` instead of `OpenAIChatCompletionsModel` to use it. The sample does not, and those
+  tools were not exercised with the Agents SDK's hosted tool types.
+
+## Samples
+
+- [openai_agents/model_providers](https://github.com/temporalio/samples-python/tree/main/openai_agents/model_providers):
+  the same agent on Baseten, Fireworks AI, or Together AI, selected with `--provider`.
+- [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents): tools, MCP servers, conversation history,
+  and tracing with the plugin.
