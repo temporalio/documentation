@@ -1,8 +1,7 @@
 .feedback {
   margin-top: 2rem;
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 8px;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
 }
 
 .ask {

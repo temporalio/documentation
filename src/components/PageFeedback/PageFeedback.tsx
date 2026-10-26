@@ -64,14 +64,30 @@ function track(eventName: string, properties: Record<string, unknown>) {
   if (hasConsent() && window.amplitude) window.amplitude.track(eventName, properties);
 }
 
+// BotID's fetch wrapper waits for its challenge script before sending, and
+// never settles if that script is blocked or fails, so the widget gives up
+// after this long and shows an error instead of staying disabled.
+const SEND_TIMEOUT_MS = 10_000;
+
 async function send(body: Record<string, unknown>): Promise<Record<string, unknown>> {
-  const response = await fetch('/api/feedback', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ channel: 'widget', ...body }),
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error('Feedback timed out')), SEND_TIMEOUT_MS);
   });
-  if (!response.ok) throw new Error(`Feedback returned ${response.status}`);
-  return response.json();
+  try {
+    const response = await Promise.race([
+      fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ channel: 'widget', ...body }),
+      }),
+      timeout,
+    ]);
+    if (!response.ok) throw new Error(`Feedback returned ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export default function PageFeedback({ pathname }: { pathname: string }): JSX.Element {

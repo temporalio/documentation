@@ -5,6 +5,12 @@ import { initBotId } from 'botid/client/core';
 // POST to /api/feedback, which checkBotId() reads there. Agents send GET or
 // POST without it, and the endpoint only checks widget submissions. See
 // readme/FEEDBACK.md.
-if (ExecutionEnvironment.canUseDOM) {
+//
+// Vercel serves BotID's challenge script, so a local `yarn start` or
+// `yarn serve` would get an HTML page back and the widget's POST would wait on
+// it. checkBotId() skips the check outside production anyway.
+const LOCAL_HOSTS = ['localhost', '127.0.0.1', '[::1]'];
+
+if (ExecutionEnvironment.canUseDOM && !LOCAL_HOSTS.includes(window.location.hostname)) {
   initBotId({ protect: [{ path: '/api/feedback', method: 'POST' }] });
 }
