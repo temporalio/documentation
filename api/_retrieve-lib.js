@@ -107,6 +107,16 @@ function isAllowed(sourceUrl, allowlist) {
   );
 }
 
+// Whether a Kapa result may be returned. Kapa gives custom Q&A answers, which
+// the team writes in the Kapa dashboard, an empty source_url, so they have no
+// URL to check against the allowlist. They're returned without a link. Every
+// other source Kapa indexes has a URL, so an empty one can't stand in for a
+// private page; a future source without URLs would need the same review.
+function isAllowedResult(result, allowlist) {
+  if (result.source_url === '') return true;
+  return isAllowed(result.source_url, allowlist);
+}
+
 // Kapa results that can be filtered and shaped: objects with a string `content`
 // and `source_url`. Anything else is dropped rather than passed to the caller.
 function validResults(results) {
@@ -129,6 +139,7 @@ module.exports = {
   LIMITS,
   USAGE,
   isAllowed,
+  isAllowedResult,
   parseAllowlist,
   parseList,
   parseParams,
