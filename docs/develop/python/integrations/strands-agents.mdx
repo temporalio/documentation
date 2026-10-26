@@ -68,7 +68,7 @@ maximum time each model call Activity can run:
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent
+from temporalio.strands_agents import TemporalAgent
 
 
 @workflow.defn
@@ -104,7 +104,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 
 from strands_plugin.hello_world.workflow import HelloWorldWorkflow
@@ -272,7 +272,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 
 from strands_plugin.tools.workflow import (
@@ -386,7 +386,7 @@ Define the Workflow with a `TemporalMCPClient`:
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent, TemporalMCPClient
+from temporalio.strands_agents import TemporalAgent, TemporalMCPClient
 
 
 @workflow.defn
@@ -419,7 +419,7 @@ Register the MCP client factory on the Worker:
 from mcp import StdioServerParameters, stdio_client
 from strands.tools.mcp.mcp_client import MCPClient
 from temporalio.client import Client
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 # ...
 def _make_echo_client() -> MCPClient:
@@ -604,7 +604,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 
 from strands_plugin.activity_interrupt.workflow import (
@@ -649,7 +649,7 @@ from datetime import timedelta
 
 from pydantic import BaseModel, Field
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent
+from temporalio.strands_agents import TemporalAgent
 
 
 class PersonInfo(BaseModel):
@@ -693,8 +693,8 @@ Define the Workflow with a `WorkflowStream` and a streaming topic:
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent
 from temporalio.contrib.workflow_streams import WorkflowStream
+from temporalio.strands_agents import TemporalAgent
 
 
 @workflow.defn
@@ -814,7 +814,7 @@ from datetime import timedelta
 
 from strands.types.content import Messages
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent
+from temporalio.strands_agents import TemporalAgent
 
 
 @dataclass
