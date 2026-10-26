@@ -3,6 +3,7 @@ const assert = require('node:assert');
 
 const {
   EXAMPLE_QUESTION,
+  automationLabel,
   daysBetween,
   isAutomated,
   isExcluded,
@@ -72,6 +73,9 @@ describe('normalizeAgent', () => {
     ['  Cursor/0.42.3 ', 'cursor'],
     ['codex@1.2', 'codex'],
     ['ChatGPT v4', 'chatgpt'],
+    ["claude-code'", 'claude-code'],
+    ['"cursor"', 'cursor'],
+    ["''", '(missing)'],
     ['gpt-4o', 'gpt-4o'],
     [null, '(missing)'],
     ['', '(missing)'],
@@ -160,6 +164,15 @@ describe('isAutomated', () => {
     for (const agent of ['claude-code', 'cursor', 'copilot-review', 'research-bot']) {
       assert.strictEqual(isAutomated(record({ agent })), false, agent);
     }
+  });
+
+  it('labels a user agent match by the matching text, not the agent it claims to be', () => {
+    assert.strictEqual(automationLabel(record({ agent: 'auditor' })), 'auditor');
+    assert.strictEqual(
+      automationLabel(record({ agent: 'cursor', ua: 'Mozilla/5.0 (compatible; argus-inspector/1.0)' })),
+      'user agent containing "argus"'
+    );
+    assert.strictEqual(automationLabel(record()), null);
   });
 
   it('takes extra patterns', () => {

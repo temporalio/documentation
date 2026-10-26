@@ -97,16 +97,32 @@ function isExcluded(record, { includePreview = false, includeTests = false } = {
   return false;
 }
 
-function isAutomated(record, extraPatterns = []) {
+// The label for an automated caller, or null when the call came from an agent.
+// Audit tools often send a real agent's name in `agent` (to see how the site
+// answers Cursor or Claude Code) while their user agent gives them away, so a
+// match on the user agent is labeled by the matching text, not by `agent`.
+function automationLabel(record, extraPatterns = []) {
   const patterns = [...AUTOMATION, ...extraPatterns];
-  return patterns.some((re) => re.test(record.agent || '') || re.test(record.ua || ''));
+  if (patterns.some((re) => re.test(record.agent || ''))) return normalizeAgent(record.agent);
+  for (const re of patterns) {
+    const match = (record.ua || '').match(re);
+    if (match) return `user agent containing "${match[0]}"`;
+  }
+  return null;
+}
+
+function isAutomated(record, extraPatterns = []) {
+  return automationLabel(record, extraPatterns) !== null;
 }
 
 // Groups the ways an agent might write its name: case, spaces, underscores,
-// and a trailing version ("Cursor/0.42", "codex@1.2").
+// surrounding quotes, and a trailing version ("Cursor/0.42", "codex@1.2").
 function normalizeAgent(agent) {
-  if (agent == null || String(agent).trim() === '') return '(missing)';
-  const value = String(agent).trim();
+  const value = String(agent ?? '')
+    .trim()
+    .replace(/^["'`]+|["'`]+$/g, '')
+    .trim();
+  if (value === '') return '(missing)';
   if (PLACEHOLDER.test(value)) return '(placeholder)';
   return value
     .toLowerCase()
@@ -225,9 +241,10 @@ function summarize(records, options = {}) {
     count(s.byDay, String(r.ts || '').slice(0, 10) || '(no date)');
     count(s.bySrc, normalizeSrc(r.src));
     count(s.byStatus, r.status ?? '(none)');
-    if (isAutomated(r, automation)) {
+    const tool = automationLabel(r, automation);
+    if (tool) {
       s.automatedCalls++;
-      count(s.byTool, r.agent ? normalizeAgent(r.agent) : uaFamily(r.ua));
+      count(s.byTool, tool);
     } else {
       count(s.byAgent, normalizeAgent(r.agent));
       count(s.byUa, uaFamily(r.ua));
@@ -478,6 +495,7 @@ if (require.main === module) {
 
 module.exports = {
   EXAMPLE_QUESTION,
+  automationLabel,
   daysBetween,
   isAutomated,
   isExcluded,
