@@ -164,6 +164,22 @@ describe('results', () => {
     assert.deepStrictEqual(record().top_pages, [`${DOCS}/workflows#x`]);
   });
 
+  it('returns custom Q&A answers without a link', async () => {
+    kapaResults([
+      { content: '# Support QA\n\nQ: Free credits?\n\nA: $150.', source_url: '' },
+      { content: 'old', source_url: 'https://temporalio.slack.com/archives/C1/p1' },
+      { content: 'page', source_url: `${DOCS}/cloud/pricing` },
+    ]);
+    const res = await call('?q=x');
+    assert.strictEqual(res.statusCode, 200);
+    assert.deepStrictEqual(res.body, [
+      { content: '# Support QA\n\nQ: Free credits?\n\nA: $150.', source_url: '', page_url: '' },
+      { content: 'page', source_url: `${DOCS}/cloud/pricing.md`, page_url: `${DOCS}/cloud/pricing` },
+    ]);
+    assert.strictEqual(record().dropped_count, 1);
+    assert.strictEqual(record().result_count, 2);
+  });
+
   it('survives malformed results', async () => {
     kapaResults([null, 'text', { content: 'no url' }, { content: 'ok', source_url: `${DOCS}/workflows` }]);
     const res = await call('?q=x');
