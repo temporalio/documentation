@@ -495,7 +495,11 @@ const developJavaCategory = {
           type: 'doc',
           id: 'develop/java/integrations/index',
         },
-        items: ['develop/java/integrations/spring-boot', 'develop/java/integrations/spring-ai'],
+        items: [
+          'develop/java/integrations/google-adk',
+          'develop/java/integrations/spring-boot',
+          'develop/java/integrations/spring-ai',
+        ],
       },
     ],
 };
