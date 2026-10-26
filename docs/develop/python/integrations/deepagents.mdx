@@ -102,7 +102,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.deepagents import DeepAgentsPlugin
+from temporalio.deepagents import DeepAgentsPlugin
 from temporalio.worker import Worker
 
 from deepagents_plugin.hello_world.workflow import HelloWorldAgent
@@ -257,7 +257,7 @@ from datetime import timedelta
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 from temporalio import workflow
-from temporalio.contrib.deepagents import TemporalBackend
+from temporalio.deepagents import TemporalBackend
 
 
 @workflow.defn
@@ -355,7 +355,7 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
 from temporalio import workflow
-from temporalio.contrib.deepagents import tool_as_activity
+from temporalio.deepagents import tool_as_activity
 
 
 @workflow.defn
@@ -447,7 +447,7 @@ from typing import Any
 
 from deepagents import create_deep_agent
 from temporalio import workflow
-from temporalio.contrib.deepagents import run_deep_agent
+from temporalio.deepagents import run_deep_agent
 
 
 @workflow.defn
@@ -497,8 +497,8 @@ so external subscribers can attach by Workflow ID.
 ```py
 from langchain_core.messages import HumanMessage
 from temporalio import workflow
-from temporalio.contrib.deepagents import TemporalModel
 from temporalio.contrib.workflow_streams import WorkflowStream
+from temporalio.deepagents import TemporalModel
 
 STREAMING_TOPIC = "model-chunks"
 
