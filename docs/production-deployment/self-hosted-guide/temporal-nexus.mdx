@@ -152,11 +152,11 @@ sequenceDiagram
     box Cluster B
     participant haB as Handler Namespace
     end
-    Note over caA,haA: Caller and Handler Namespaces active on Cluster A
+    Note over caA,haA: Caller and Handler Namespaces<br/>active on Cluster A
     caA->>haA: start Nexus Operation
     haA-->>caA: Operation started, token returned
     Note over haA: Handler Workflow running, completion callback pending
-    Note over haA,haB: 💥 Handler Namespace fails over to Cluster B (Caller stays on Cluster A)
+    Note over haA,haB: 💥 Handler Namespace fails over to Cluster B<br/>(Caller stays on Cluster A)
     Note over haB: Handler Workflow resumes on B, pending callback re-driven from B
     haB->>caA: deliver completion callback to Caller's active Cluster (A)
     Note over caA: Operation completes on the Caller
