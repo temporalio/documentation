@@ -106,7 +106,7 @@ public async Task MyActivityAsync()
 ```
 
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
-If an Activity calls `Heartbeat(123, 456)` and then fails and is retried, `HeartbeatDetails` on the `ActivityInfo` returns an collection containing `123` and `456` on the next Run.
+If an Activity calls `Heartbeat(123, 456)` and then fails and is retried, `HeartbeatDetails` on the `ActivityInfo` returns a collection containing `123` and `456` on the next Run.
 
 ### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
