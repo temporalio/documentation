@@ -100,7 +100,7 @@
   },
   {
     "name": "Google ADK",
-    "description": "Run Google ADK Java agents as durable Temporal Workflows with retryable model and MCP calls. Public Preview.",
+    "description": "Run Google ADK Java agents with durable conversations, tools, and structured output. Public Preview.",
     "tags": [
       "Agent framework"
     ],

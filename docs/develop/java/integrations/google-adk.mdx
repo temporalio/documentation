@@ -8,7 +8,7 @@ tags:
   - Google ADK
   - Integrations
   - AI Frameworks
-description: Run Google ADK Java agents in Temporal Workflows with retryable model and MCP calls, durable tool approvals, and replayable conversations.
+description: Run Google ADK Java agents in Temporal Workflows with durable conversations, Activity tools, structured output, and resumable tool calls.
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
@@ -26,7 +26,23 @@ Workflow time, deterministic identifiers, and Workflow threads for ADK's paralle
 `GoogleAdkPlugin` on the Temporal Client so its Workers inherit the integration's Activities and payload converter.
 
 The examples come from the [Java ADK samples](https://github.com/temporalio/samples-java/tree/main/googleadk).
-Each scenario can run with a live Gemini model; its tests use a scripted model without provider credentials.
+Run each scenario with live Gemini or a credential-free offline model. Both modes use the same plugin, Worker
+registration, Workflows, Activities, and message paths. The MCP scenario starts the same local Java subprocess in
+both modes.
+
+| Category | Sample | What it demonstrates |
+| --- | --- | --- |
+| Agent Chat | [chat](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/chat) | Conversation state and queued messages survive Continue-As-New. |
+| Tools | [tools](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/tools) | A deterministic function runs in the Workflow; a weather observation runs in an Activity. |
+| MCP | [mcp](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/mcp) | List and call a bundled stateless stdio server through Activities. |
+| Human in the Loop | [humanintheloop](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/humanintheloop) | A Signal approves or rejects a pending tool call; cancellation ends the wait. |
+| Structured Output | [structuredoutput](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/structuredoutput) | Supply an ADK output schema, validate the response, and return a typed result. |
+| Multi-Agent | [multiagent](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/multiagent) | ADK schedules two specialist agents' model Activities concurrently. |
+
+The suite also includes a [single-turn agent](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/basic)
+and a [long-running tool](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/longrunning)
+that resumes after a callback. Version 0.1.0 does not provide live Workflow Streams, managed agent sandboxes, or
+replay-safe ADK tracing. See [the limitations](#understand-the-limitations).
 
 ## Install the integration
 
@@ -62,9 +78,9 @@ implementation 'io.temporal:temporal-sdk:1.40.0'
 The samples use a Gradle version constraint that requires SDK 1.40.0 or later within the 1.x series, preferring
 1.40.0. Check your dependency resolution if another dependency supplies an older SDK.
 
-Before running the samples, [set up your local Java development environment](/develop/java/set-up-your-local-java)
-and start a Temporal development server with `temporal server start-dev`. Set `GOOGLE_API_KEY` in the Worker's
-environment, or configure the Google GenAI client for Vertex AI. The starter needs no model credentials.
+Before running the samples, [set up your local Java development environment](/develop/java/set-up-your-local-java).
+Offline mode needs no provider credentials. For live Gemini, set `GOOGLE_API_KEY` in the Worker's environment or
+configure the Google GenAI client for Vertex AI. Model credentials stay on the Worker.
 
 ## Run an agent
 
@@ -97,53 +113,91 @@ public String ask(String question) {
 `AgentSupport.MODEL` is `gemini-2.5-flash`; `USER` and `SESSION` identify the ADK user and session within this
 Workflow. `lastText` returns the last text response among the turn's events.
 
-On the Worker, register the real model factory and the plugin on the Temporal Client. The plugin automatically
-registers model and MCP Activities on Workers created from that Client. Credentials and model clients stay on the
-Worker and do not enter Workflow History. Disable the model SDK's native retries so Temporal owns retries:
+On the Worker, register a model factory and a named MCP toolset through `GoogleAdkPlugin`. The sample's `plugin`
+helper accepts either a Gemini factory or the offline provider:
+
+<!--SNIPSTART java-google-adk-worker-plugin-->
+[googleadk/src/main/java/io/temporal/samples/googleadk/SampleWorker.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/SampleWorker.java)
+```java
+public static GoogleAdkPlugin plugin(Supplier<BaseLlm> models) {
+  return GoogleAdkPlugin.newBuilder()
+      .model(AgentSupport.MODEL, models)
+      .mcpToolset("echo", EchoMcpServer::toolset)
+      .build();
+}
+
+```
+<!--SNIPEND-->
+
+Register the plugin on the Temporal Client so its Workers inherit the model and MCP Activities and payload converter.
+The sample reads `ADK_MODEL_MODE` before the following block, defaulting to `live`. It constructs a Gemini client only
+in live mode and disables the client's native retries so Temporal owns retries:
 
 <!--SNIPSTART java-google-adk-worker-->
 [googleadk/src/main/java/io/temporal/samples/googleadk/SampleWorker.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/SampleWorker.java)
 ```java
-// Client reads GOOGLE_API_KEY or the Vertex AI environment variables on the worker.
-// One HTTP attempt disables native retries so Temporal Activities own retries.
 Client modelClient =
-    Client.builder()
-        .httpOptions(
-            HttpOptions.builder()
-                .retryOptions(HttpRetryOptions.builder().attempts(1).build())
-                .build())
-        .build();
+    mode.equals("live")
+        ? Client.builder()
+            .httpOptions(
+                HttpOptions.builder()
+                    .retryOptions(HttpRetryOptions.builder().attempts(1).build())
+                    .build())
+            .build()
+        : null;
 GoogleAdkPlugin plugin =
-    GoogleAdkPlugin.newBuilder()
-        .model(
-            AgentSupport.MODEL,
-            () -> Gemini.builder().modelName(AgentSupport.MODEL).apiClient(modelClient).build())
-        .mcpToolset("echo", EchoMcpServer::toolset)
-        .build();
+    plugin(
+        modelClient == null
+            ? OfflineModel::new
+            : () ->
+                Gemini.builder().modelName(AgentSupport.MODEL).apiClient(modelClient).build());
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 WorkflowClient client =
     WorkflowClient.newInstance(
         service, WorkflowClientOptions.newBuilder().setPlugins(plugin).build());
 WorkerFactory factory = WorkerFactory.newInstance(client);
 Worker worker = factory.newWorker(AgentSupport.TASK_QUEUE);
-worker.registerWorkflowImplementationTypes(
-    BasicWorkflowImpl.class,
-    ToolsWorkflowImpl.class,
-    MultiAgentWorkflowImpl.class,
-    McpWorkflowImpl.class,
-    ApprovalWorkflowImpl.class,
-    ChatWorkflowImpl.class);
-worker.registerActivitiesImplementations(
-    new WeatherActivitiesImpl(), new OrderActivitiesImpl());
+register(worker);
 factory.start();
 ```
 <!--SNIPEND-->
 
-This Worker hosts all six samples. Its MCP toolset is created on first use; the other scenarios don't start an MCP
-server. Register any Activities exposed as tools, such as `WeatherActivitiesImpl`, alongside the Workflows.
+`register(worker)` hosts all eight scenarios and their Activity implementations. The same registration is used in the
+offline tests. The MCP toolset is created on first use; the other scenarios don't start an MCP server.
 
-The starter also registers `GoogleAdkPlugin` on its Client so Signals, Queries, and Workflow payloads use the same
-converter. Start a Workflow on the Worker's Task Queue:
+Run the following commands from the samples repository root. Start the Temporal development server in one terminal:
+
+```bash
+temporal server start-dev
+```
+
+Start an offline Worker in a second terminal:
+
+```bash
+ADK_MODEL_MODE=offline ./gradlew :googleadk:worker
+```
+
+In a third terminal, execute a Workflow on its Task Queue:
+
+```bash
+temporal workflow execute --type BasicWorkflow --task-queue google-adk-samples --input '"Hello"'
+```
+
+The offline result is `turns=1; latest: Hello`. The scripted provider is limited to these scenarios; weather and
+travel examples use fixed Chicago data. It makes no provider requests, but still runs real Temporal Activities.
+Offline runs require a running Temporal Service, and the first Gradle build can download dependencies.
+
+To use Gemini, stop the offline Worker and restart it with live mode:
+
+```bash
+GOOGLE_API_KEY=your_key ADK_MODEL_MODE=live ./gradlew :googleadk:worker
+```
+
+The Workflow commands and Task Queue remain the same. Inspect model and tool Activities in the Temporal UI at
+`http://localhost:8233`.
+
+To start the same Workflow from Java, register `GoogleAdkPlugin` on the caller's Client too. The existing starter
+does this so ADK payload types use the same converter:
 
 <!--SNIPSTART java-google-adk-starter-->
 [googleadk/src/main/java/io/temporal/samples/googleadk/SampleStarter.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/SampleStarter.java)
@@ -153,11 +207,92 @@ System.out.println(workflow.ask("What does Durable Execution mean?"));
 ```
 <!--SNIPEND-->
 
-From the sample repository root, start `./gradlew :googleadk:worker` and then run
-`./gradlew :googleadk:starter --args='basic'` in another terminal.
+The starter remains available through `./gradlew :googleadk:starter --args='basic'`. Each scenario's README provides
+Temporal CLI commands for its inputs, Signals, Queries, and results.
 
 `TemporalModel.newBuilder(name).activityOptions(...)` customizes model Activity timeouts and retries. The default
 start-to-close timeout is two minutes. A heartbeat timeout enables heartbeats while the model call runs.
+
+### Validate structured output
+
+Set an agent's `outputSchema` to constrain the model response. The structured-output sample describes a travel plan
+with a city, one to seven days, and a list of activities:
+
+<!--SNIPSTART java-google-adk-structuredoutput-schema-->
+[googleadk/src/main/java/io/temporal/samples/googleadk/structuredoutput/StructuredOutputWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/structuredoutput/StructuredOutputWorkflowImpl.java)
+```java
+private static final Schema PLAN_SCHEMA =
+    Schema.builder()
+        .type("OBJECT")
+        .properties(
+            Map.of(
+                "city", Schema.builder().type("STRING").build(),
+                "days", Schema.builder().type("INTEGER").minimum(1.0).maximum(7.0).build(),
+                "activities",
+                    Schema.builder()
+                        .type("ARRAY")
+                        .items(Schema.builder().type("STRING").build())
+                        .minItems(1L)
+                        .build()))
+        .required(List.of("city", "days", "activities"))
+        .build();
+
+```
+<!--SNIPEND-->
+
+Validate the response at the Workflow boundary before returning a typed `TravelPlan`. The sample rejects malformed
+JSON and trailing values, checks field types against ADK's schema, and validates the record's values:
+
+<!--SNIPSTART java-google-adk-structuredoutput-workflow-->
+[googleadk/src/main/java/io/temporal/samples/googleadk/structuredoutput/StructuredOutputWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/structuredoutput/StructuredOutputWorkflowImpl.java)
+```java
+@Override
+public TravelPlan plan(String request) {
+  LlmAgent agent =
+      LlmAgent.builder()
+          .name("structured_planner")
+          .model(TemporalModel.create(AgentSupport.MODEL))
+          .instruction(
+              "Return a travel plan as JSON with city, days (1 through 7), and activities.")
+          .outputSchema(PLAN_SCHEMA)
+          .build();
+  Runner runner = TemporalAdk.runnerBuilder().appName("structured_plan").agent(agent).build();
+  String json =
+      AgentSupport.lastText(
+          TemporalAdk.run(
+              runner,
+              AgentSupport.USER,
+              AgentSupport.SESSION,
+              Content.fromParts(Part.fromText(request))));
+  try {
+    ObjectMapper mapper =
+        new ObjectMapper().enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
+    Map<String, Object> output = mapper.readValue(json, new TypeReference<>() {});
+    if (output == null) {
+      throw new IllegalArgumentException("A plan must be a JSON object.");
+    }
+    SchemaUtils.validateMapOnSchema(output, PLAN_SCHEMA, false);
+    return mapper.convertValue(output, TravelPlan.class);
+  } catch (JsonProcessingException | IllegalArgumentException e) {
+    throw ApplicationFailure.newNonRetryableFailure(
+        "The model did not return a valid travel plan.", "InvalidTravelPlan");
+  }
+}
+```
+<!--SNIPEND-->
+
+`TravelPlan` requires a nonblank city, one to seven days, and at least one nonblank activity. Invalid model output
+fails the Workflow with a non-retryable `InvalidTravelPlan` failure. This prevents invalid output from repeatedly
+failing a Workflow Task.
+
+With either Worker mode running, execute the sample:
+
+```bash
+temporal workflow execute --type StructuredOutputWorkflow --task-queue google-adk-samples --input '"Plan two days in Chicago."'
+```
+
+Offline mode returns a two-day Chicago plan with a lakefront walk and a museum visit. Live Gemini supplies its own
+plan with the same schema. The model call is an Activity; validation and the typed return value stay in the Workflow.
 
 ## Expose tools as Activities
 
@@ -178,7 +313,19 @@ public interface WeatherActivities {
 ```
 <!--SNIPEND-->
 
-Then supply a stub method as an ADK tool:
+Define a deterministic function tool for calculations that need no I/O:
+
+<!--SNIPSTART java-google-adk-tools-function-->
+[googleadk/src/main/java/io/temporal/samples/googleadk/tools/TemperatureTools.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/tools/TemperatureTools.java)
+```java
+public static Map<String, Object> toFahrenheit(
+    @Schema(name = "celsius", description = "Temperature in degrees Celsius") double celsius) {
+  return Map.of("fahrenheit", celsius * 9 / 5 + 32);
+}
+```
+<!--SNIPEND-->
+
+Supply both the Activity stub and the function as ADK tools:
 
 <!--SNIPSTART java-google-adk-tools-workflow-->
 [googleadk/src/main/java/io/temporal/samples/googleadk/tools/ToolsWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/tools/ToolsWorkflowImpl.java)
@@ -196,8 +343,12 @@ public String ask(String question) {
       LlmAgent.builder()
           .name("weather_assistant")
           .model(TemporalModel.create(AgentSupport.MODEL))
-          .instruction("Use getWeather to answer questions about the weather.")
-          .tools(ActivityTools.create(weather, "getWeather"))
+          .instruction(
+              "Use getWeather for conditions and Celsius temperature, then toFahrenheit to"
+                  + " convert the temperature. Report the conditions and both temperatures.")
+          .tools(
+              ActivityTools.create(weather, "getWeather"),
+              FunctionTool.create(TemperatureTools.class, "toFahrenheit"))
           .build();
   Runner runner = TemporalAdk.runnerBuilder().appName("tools").agent(agent).build();
   return AgentSupport.lastText(
@@ -210,12 +361,101 @@ public String ask(String question) {
 ```
 <!--SNIPEND-->
 
-The tool runs as the `GetWeather` Activity with the stub's timeout and retry policy. Its result returns to the agent
-as a function response. If the Activity exhausts its retries, `ActivityFailure` propagates to the Workflow.
+`getWeather` runs as the `GetWeather` Activity with the stub's timeout and retry policy. Its result returns to the
+agent as a function response. `toFahrenheit` runs directly on the Workflow thread and schedules no Activity.
+If the weather Activity exhausts its retries or returns a non-retryable failure, `ActivityFailure` propagates to the
+Workflow.
 
 Every parameter needs `@Schema(name = ...)` unless the Activity interface is compiled with `-parameters`. The
 [tools sample](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/tools)
-returns sample weather data; replace the Activity implementation with your provider's HTTP call.
+returns illustrative weather data and reads `Instant.now()` inside the Activity. The host timestamp demonstrates
+why the observation needs an Activity. Replace that implementation with your provider's HTTP call for real weather.
+
+### Resume a long-running tool
+
+Use `ActivityTools.createLongRunning` when a tool starts an operation whose result will arrive later. The report
+sample submits a job as an Activity and returns a pending status:
+
+<!--SNIPSTART java-google-adk-longrunning-activity-->
+[googleadk/src/main/java/io/temporal/samples/googleadk/longrunning/ReportActivities.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/longrunning/ReportActivities.java)
+```java
+@ActivityInterface
+public interface ReportActivities {
+  @ActivityMethod(name = "StartReport")
+  Map<String, Object> startReport(
+      @Schema(name = "name", description = "The report to prepare") String name);
+}
+```
+<!--SNIPEND-->
+
+After the ADK turn, use `Hitl.longRunningCalls` to find the pending function call. Wait for its result through a
+Signal, then resume the original call with `Hitl.functionResponse`:
+
+<!--SNIPSTART java-google-adk-longrunning-workflow-->
+[googleadk/src/main/java/io/temporal/samples/googleadk/longrunning/LongRunningWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/longrunning/LongRunningWorkflowImpl.java)
+```java
+@Override
+public String prepare(String request) {
+  ReportActivities reports =
+      Workflow.newActivityStub(
+          ReportActivities.class,
+          ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(30)).build());
+  LlmAgent agent =
+      LlmAgent.builder()
+          .name("report_assistant")
+          .model(TemporalModel.create(AgentSupport.MODEL))
+          .instruction("Start exactly one report with startReport. Wait for its final result.")
+          .tools(ActivityTools.createLongRunning(reports, "startReport"))
+          .build();
+  Runner runner = TemporalAdk.runnerBuilder().appName("reports").agent(agent).build();
+  List<Event> events =
+      TemporalAdk.run(
+          runner,
+          AgentSupport.USER,
+          AgentSupport.SESSION,
+          Content.fromParts(Part.fromText(request)));
+  List<FunctionCall> pending = Hitl.longRunningCalls(events);
+  if (pending.size() != 1) {
+    throw ApplicationFailure.newNonRetryableFailure(
+        "Expected exactly one pending report.", "InvalidReportRequest");
+  }
+  FunctionCall call = pending.get(0);
+  callId = call.id().orElseThrow();
+  Workflow.await(() -> result != null);
+  events =
+      TemporalAdk.run(
+          runner,
+          AgentSupport.USER,
+          AgentSupport.SESSION,
+          Hitl.functionResponse(call, Map.of("status", "done", "result", result)));
+  callId = "";
+  return AgentSupport.lastText(events);
+}
+
+```
+<!--SNIPEND-->
+
+The sample's `pendingCall` Query returns the function-call identifier. Its `complete` Signal accepts that identifier
+and a result. Start a report and query the pending call:
+
+```bash
+temporal workflow start --workflow-id adk-report --type LongRunningWorkflow --task-queue google-adk-samples --input '"Prepare a sales report."'
+temporal workflow query --workflow-id adk-report --name pendingCall
+```
+
+Repeat the Query until the identifier is nonempty. Replace `CALL_ID` with that value before sending the callback:
+
+```bash
+temporal workflow signal --workflow-id adk-report --name complete --input '"CALL_ID"' --input '"Revenue grew 10%."'
+temporal workflow result --workflow-id adk-report
+```
+
+While waiting, the Signal handler ignores premature callbacks and wrong identifiers; the first matching result wins.
+Offline mode returns `Report complete: Revenue grew 10%.`.
+
+The Activity simulates report submission. The Workflow's wait needs no polling Activity or open model connection,
+and replay does not submit the report again. Use a new Workflow ID for another run. A real report service must store
+the callback correlation and send the Signal when its work finishes.
 
 ## Run multiple agents
 
@@ -354,9 +594,24 @@ exposes pending tool names and arguments through a Query. A Signal handler sets 
 that decision to all pending calls from the turn. A confirmed call schedules the shipping Activity; a rejected call
 does not. The sample Activity returns mock shipment data and makes no fulfillment request.
 
-Run `./gradlew :googleadk:starter --args='approval'`, query with `pending WORKFLOW_ID`, and send `decide WORKFLOW_ID true`
-or `decide WORKFLOW_ID false` through the same starter task. The [sample README](https://github.com/temporalio/samples-java/blob/main/googleadk/README.md)
-has the full commands.
+Use the Temporal CLI to start and query an approval Workflow:
+
+```bash
+temporal workflow start --workflow-id adk-approval --type ApprovalWorkflow --task-queue google-adk-samples --input '"Ship order demo-order, after confirmation."'
+temporal workflow query --workflow-id adk-approval --name pendingConfirmations
+```
+
+Repeat the Query until a pending request appears. Then send a decision and wait for the result:
+
+```bash
+temporal workflow signal --workflow-id adk-approval --name decide --input true
+temporal workflow result --workflow-id adk-approval
+```
+
+Use `--input false` to reject a pending request on a fresh execution. Premature Signals are ignored, and the first
+decision for the pending batch wins. Offline results are `Order shipped.` and `Order rejected.`. To cancel the wait
+instead, run `temporal workflow cancel --workflow-id adk-approval`. A cancellation before approval schedules no
+shipping Activity.
 
 ## Preserve conversations through Continue-As-New
 
@@ -412,6 +667,10 @@ uses Signals to queue messages and a Query for the latest reply. Its `@WorkflowI
 completion flag, and last reply before Signal handlers can run. Every three turns, it carries those fields and the
 session snapshot into the next Run. A finish Signal drains the queue and completes the Workflow.
 
+Use the [chat README](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/chat)
+for the Signal and Query commands. Offline replies show the conversation's turn count, including turns restored
+after Continue-As-New. Live Gemini receives the imported conversation as context.
+
 The snapshot preserves session-scoped state and events, including pending confirmations. It does not carry app-,
 user-, or temporary-scoped state. Continue-As-New limits each Run's Event History; the conversation snapshot still
 grows and must remain within Temporal's [payload limits](/evaluate/cloud/limits#transaction-payload-size-limit).
@@ -443,19 +702,30 @@ The [test helper](https://github.com/temporalio/samples-java/blob/main/googleadk
 registers the plugin through `TestEnvironmentOptions.setWorkflowClientOptions`. Its replay check creates another
 Worker with the plugin, replays the history, and verifies the model received no additional requests.
 
-Run `./gradlew :googleadk:test` without provider credentials or an external Temporal Service. The sample tests cover
-Activity retries and results, parallel model scheduling, a real local MCP server, approved and rejected tools, and
-session snapshots and queued messages through Continue-As-New.
+Run the suite without provider credentials or an external Temporal Service:
+
+```bash
+./gradlew :googleadk:test :googleadk:spotlessCheck :googleadk:build
+```
+
+The tests verify Activity retries and non-retryable failures, deterministic function results, parallel model
+scheduling, a real local MCP server, approval/rejection and cancellation, invalid structured output, correlated
+callbacks, and session/queue recovery through Continue-As-New. `OfflineSamplesTest` also runs every scenario with
+the same `OfflineModel` and `SampleWorker.register` used by the runnable Worker. Each scenario's README includes a
+targeted test command.
 
 ## Understand the limitations
 
-- Streamed model chunks reach the Workflow after the model Activity completes. The integration does not stream
-  tokens out of a Workflow and does not support live bidirectional connections.
+- In version 0.1.0, streamed model chunks reach the Workflow after the model Activity completes. The integration has
+  no live Workflow Streams publisher and does not support live bidirectional connections.
 - ADK services that perform I/O, including code execution, memory, and artifact services, cannot run directly inside
-  a Workflow. Use Activities for I/O.
+  a Workflow. Use Activities for I/O. The plugin does not durably manage an agent-facing code execution environment.
 - Avoid RxJava blocking methods inside a Workflow. Use `TemporalAdk.run` or `TemporalAdk.await` so the Workflow
   thread yields while Activities or timers are pending.
-- ADK's OpenTelemetry spans are emitted again during replay when a tracing SDK is installed.
+- ADK uses global OpenTelemetry providers. The plugin has no replay suppression for ADK tracing, so an installed
+  tracing SDK emits duplicate spans during replay. Temporal Activity history and UI inspection remain available.
+- Canceling an approval or callback wait does not undo a shipment or cancel an external job that already started.
+  A real backend needs an explicit cancellation Activity.
 - ADK's experimental App resumability and event compaction are not covered by the integration's tests.
 - Gemini context caching is inactive because its cache configuration does not cross the Activity boundary.
 
