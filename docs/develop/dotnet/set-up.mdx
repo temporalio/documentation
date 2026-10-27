@@ -170,7 +170,9 @@ TemporalioHelloWorld/
 
 #### Create an Activity file (MyActivities.cs) in the Workflow project:
 
-```csharp
+<!--SNIPSTART dotnet-quickstart-activity-->
+[dotnet-sandbox/Workflow/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Workflow/MyActivities.cs)
+```cs
 namespace MyNamespace;
 
 using Temporalio.Activities;
@@ -183,13 +185,16 @@ public class MyActivities
     public string SayHello(string name) => $"Hello, {name}!";
 }
 ```
+<!--SNIPEND-->
 
 An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
 If an Activity fails, Temporal automatically retries it based on your configuration.
 
 #### Create a Workflow file (SayHelloWorkflow.cs) in the Workflow project: 
 
-```csharp
+<!--SNIPSTART dotnet-quickstart-workflow-->
+[dotnet-sandbox/Workflow/SayHelloWorkflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Workflow/SayHelloWorkflow.cs)
+```cs
 namespace MyNamespace;
 
 using Temporalio.Workflows;
@@ -212,6 +217,7 @@ public class SayHelloWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 Workflows orchestrate Activities and contain the application logic.
 Temporal Workflows are resilient.
@@ -224,7 +230,9 @@ With your Activity and Workflow defined, you need a Worker to execute them.
 
 #### Create a Worker file (Program.cs) in the Worker project:
 
-```csharp
+<!--SNIPSTART dotnet-quickstart-worker-->
+[dotnet-sandbox/Worker/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Worker/Program.cs)
+```cs
 using MyNamespace;
 using Temporalio.Client;
 using Temporalio.Worker;
@@ -263,6 +271,7 @@ catch (OperationCanceledException)
     Console.WriteLine("Worker cancelled");
 }
 ```
+<!--SNIPEND-->
 
 Run the Worker:
 
@@ -284,7 +293,9 @@ This final step will validate that everything is working correctly.
 
 #### Create a Client file (Program.cs) in the Client project: 
 
-```csharp
+<!--SNIPSTART dotnet-quickstart-client-->
+[dotnet-sandbox/Client/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Client/Program.cs)
+```cs
 using MyNamespace;
 using Temporalio.Client;
 
@@ -299,6 +310,7 @@ var result = await client.ExecuteWorkflowAsync(
 
 Console.WriteLine("Workflow result: {0}", result);
 ```
+<!--SNIPEND-->
 
 While the Worker is still running, run the Workflow:
 
@@ -311,7 +323,7 @@ dotnet run --project Client/Client.csproj
 If everything is working correctly, you should see:
 
 - Worker processing the workflow and activity
-- Output: `Workflow result: Hello Temporal`
+- Output: `Workflow result: Hello, Temporal!`
 - Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
 
