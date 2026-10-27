@@ -72,8 +72,9 @@ each model's ID and whether it supports function calling and structured outputs.
 `openai/gpt-oss-120b`, is an open-weight reasoning model that supports both; a Workflow names it
 `together/openai/gpt-oss-120b`. A [dedicated endpoint](https://docs.together.ai/docs/dedicated-endpoints/overview) is
 addressed the same way: its endpoint string, `<project-slug>/<endpoint-name>`, goes in the `model` field, and requests
-go to `https://api-inference.together.ai/v1` instead of the serverless base URL, so in the sample it is a second entry
-in `PROVIDERS`.
+go to `https://api-inference.together.ai/v1` instead of the serverless base URL. The sample's `together/` prefix only
+reaches the serverless API: to call a dedicated endpoint, add a `PROVIDERS` entry with a distinct name and that base
+URL, such as `together-dedicated`, and use its prefix in the model name.
 
 A `ModelProvider` routes a `<provider>/<model>` name to the matching endpoint and returns the Chat Completions model
 that the Agents SDK calls:
@@ -254,8 +255,9 @@ the same Worker.
 The plugin classifies Together AI's HTTP errors. Status 408, 409, 429, and any 5xx retry under the Activity's Retry
 Policy, and a `Retry-After` header becomes the next retry delay. Connection errors and client-side timeouts retry as
 well. Other 4xx responses, such as an invalid API key or an unknown model name, fail the Activity without retrying, as
-does a model name whose provider has no key on the Worker. Each attempt, its failure, and the final result are in Event
-History.
+does a model name whose provider has no key on the Worker. Event History records the Activity's result, its attempt
+count, and its last failure, not every attempt. Individual failed attempts appear in the Worker's logs and, while the
+Activity is still retrying, as the pending Activity's last failure when you describe the Workflow Execution.
 
 Under high demand, Together AI's serverless API answers `429 Too Many Requests` or `503 Service Unavailable` and asks
 clients to retry with exponential backoff, which is what the default Activity Retry Policy does; Together AI's
