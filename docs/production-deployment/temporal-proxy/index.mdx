@@ -25,6 +25,10 @@ side and one or more upstream Temporal Services on the other. It handles Namespa
 optional payload encryption so your applications can target a single local endpoint while the proxy routes each request
 to the right upstream, whether that is a local development Service, a self-hosted Service, or Temporal Cloud.
 
+Temporal Proxy's encryption code and security model have been vetted by security teams at global banks and independent
+penetration testing firms. See [Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the
+encryption design, configuration, and coverage limits.
+
 ## Why use it
 
 Without the proxy, connection details leak into your application code. Every Worker and Client has to know the
