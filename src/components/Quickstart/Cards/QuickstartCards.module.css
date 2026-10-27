@@ -17,9 +17,29 @@
   transition: transform 120ms ease, box-shadow 180ms ease, border-color 120ms ease;
 }
 
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.4rem;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+
+.iconWrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
 .cardTitle {
-  margin: 0 0 0.4rem;
+  margin: 0;
   font-size: 1.05rem;
+  flex: 1;
 }
 
 .cardDesc {
@@ -68,4 +88,4 @@
 
 :global([data-theme='dark']) .cardDesc {
   color: var(--ifm-color-emphasis-600);
-} 
+}

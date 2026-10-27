@@ -7,3 +7,7 @@
 ## Building And Testing The Code
 
 ## Configure And Deploy Your Application
+
+## Related Resources
+
+## Best Practices

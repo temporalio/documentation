@@ -1,0 +1,28 @@
+---
+id: index
+title: Serverless Workers
+sidebar_label: Serverless Workers
+description: Write Temporal Workers that run on serverless compute using the Java SDK.
+slug: /develop/java/workers/serverless-workers
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Serverless
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda and GCP Cloud Run support are in Public Preview.
+</ReleaseNoteHeader>
+
+Serverless Workers run on ephemeral, on-demand compute rather than long-lived processes.
+Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
+
+For a general overview of how Serverless Workers work, see [Serverless Workers](/serverless-workers).
+For the end-to-end deployment guide, see [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
+
+## Supported providers
+
+- [**AWS Lambda**](/develop/java/workers/serverless-workers/aws-lambda) - Use the `temporal-aws-lambda` contrib module to run a Worker as a Lambda function. Covers setup, configuration, Lambda-tuned defaults, observability, and the invocation lifecycle.
+- [**GCP Cloud Run**](/develop/java/workers/serverless-workers/cloud-run) - Run a standard Worker on a Cloud Run worker pool. Covers the versioned Worker setup, connection configuration, container packaging, and handling scale-in.

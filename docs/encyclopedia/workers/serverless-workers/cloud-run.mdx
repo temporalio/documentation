@@ -1,0 +1,122 @@
+---
+id: serverless-workers-cloud-run
+title: Serverless Workers on GCP Cloud Run
+sidebar_label: GCP Cloud Run
+description:
+  How Serverless Workers work on GCP Cloud Run, including autoscaling, Worker Pool versioning, and the instance
+  lifecycle.
+slug: /serverless-workers/cloud-run
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Concepts
+  - Serverless
+  - GCP Cloud Run
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
+  Cloud Run support is in Public Preview. APIs and configuration may change before the stable release.
+</ReleaseNoteHeader>
+
+This page covers how Serverless Workers work on GCP Cloud Run, including the instance lifecycle, autoscaling behavior, and how Worker Versioning maps to Cloud Run Worker Pools.
+
+On Cloud Run, a Serverless Worker runs in a Worker Pool: a set of long-lived instances that poll the Task Queue continuously for as long as they remain in the pool.
+Each instance runs standard Worker code and processes Tasks for its whole lifetime.
+The [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) controls how many instances run; each instance manages its own polling and Task processing.
+
+Serverless Workers on Cloud Run use standard long-lived Worker processes, with scaling managed by the WCI.
+Some SDKs add GCP-specific conveniences, such as helpers for configuring OpenTelemetry.
+These are optional.
+Where an SDK provides them, they're documented in the corresponding developer guide for that SDK.
+
+## Autoscaling {/* #autoscaling */}
+
+The WCI keeps the Worker Pool sized to the amount of work arriving on the Task Queue. It combines two mechanisms:
+
+- Immediately bring up new instances when a Task arrives and no Worker is free to take it (a sync match failure).
+- Resize the Worker Pool periodically based on incoming work.
+
+The immediate reaction absorbs bursts without waiting on the evaluation cycle. The periodic re-sizing is where the WCI does its rate-based planning.
+
+For that planning, the WCI measures two rates over time:
+
+- How fast Tasks arrive.
+- How fast a single Worker processes them.
+
+From these, it calculates how many Workers it takes to handle the incoming work, sets the pool's target instance count accordingly, and adjusts it as the arrival rate changes.
+
+The WCI holds back some spare capacity rather than loading every Worker to 100%.
+It sizes the pool to a target utilization (80% by default), so there is room to pick up newly arriving Tasks right away instead of queuing them.
+When Tasks are already waiting in the backlog, the WCI adds more instances on top to work through them faster.
+
+It applies the resulting count to the pool through the Cloud Run admin API, and keeps the count within a minimum and maximum bound.
+Temporal calls that API from outside your network, so no inbound connection to the pool is needed.
+
+### Scale-out {/* #scale-out */}
+
+When arrivals rise or backlog builds, the WCI raises the pool's target instance count and Cloud Run starts more instances.
+Because the WCI keeps a utilization buffer, the pool adds capacity ahead of demand rather than waiting until Tasks pile up.
+Since a new instance takes time to start and connect before it can poll for Tasks, provisioning ahead of demand keeps the backlog from growing during that startup window.
+
+### Scale-in {/* #scale-in */}
+
+When arrivals and backlog fall, the WCI lowers the target instance count and Cloud Run stops surplus instances.
+Scale-in is more conservative than scale-out.
+The WCI holds capacity while sync match failures are still occurring, and it applies a cooldown before reducing the pool, so it does not remove instances that are about to be needed again.
+The cooldown starts at the most recent sync match failure and defaults to 90 seconds.
+Set it with `--gcp-cloud-run-scale-down-stabilization-duration` on `temporal worker deployment create-version` or `update-version`, alongside the other four scaling flags, which requires Temporal CLI v1.8.3 or later.
+Raise it to keep the pool from shrinking while long-running Activities are still executing, or set `0s` to scale in as soon as demand drops.
+When there is no work, the WCI can scale the pool to zero; the next sync match failure or backlog scales it back up.
+
+### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
+
+Do not share a Task Queue between a Worker Pool and long-lived Workers. The pool scales up to cover the Task Queue's
+full workload even when the long-lived Workers are already handling all of it, so you run and pay for pool instances
+that duplicate capacity you already have.
+
+The WCI sizes the pool from the rate of Tasks arriving on the Worker Deployment Version's Task Queues, and nothing in
+that measurement accounts for the long-lived Workers. Tasks they process raise the pool's target instance count exactly
+as unhandled Tasks would. Sync matching to a long-lived Worker suppresses the immediate scale-up when a Task arrives,
+but the periodic re-sizing scales the pool up regardless.
+
+## Worker Versioning {/* #worker-versioning */}
+
+Serverless Workers require [Worker Versioning](/worker-versioning). Create one Worker Pool for each Worker Deployment
+Version, and carry the Build ID in the pool name.
+
+The compute configuration names a project, region, and Worker Pool. It does not name a
+[revision](https://cloud.google.com/run/docs/managing/revisions), so Temporal runs whichever revision the pool serves at
+the time. That ties a pool to one build, and a new build needs a new pool.
+
+Keep an older version's pool in place while Pinned Workflows are still running on it. The pool can sit at zero
+instances, and its WCI scales it back up when a Task arrives for that version.
+
+:::caution
+
+Deploying a new image into a pool that a live Worker Deployment Version points at creates a new revision, and Cloud Run
+promotes it to every instance by default. The version does not change, but the code behind it does. Deploying
+replay-unsafe code this way causes non-determinism errors for in-flight Workflows, including Pinned ones.
+
+:::
+
+For step-by-step instructions, see
+[Create the Worker Pool](/production-deployment/worker-deployments/serverless-workers/cloud-run#create-worker-pool).
+
+## Lifecycle {/* #lifecycle */}
+
+A Cloud Run Serverless Worker is an ordinary long-lived Temporal Worker. Each instance runs the same Worker code you
+would run anywhere else: it connects to Temporal, registers its Workflows and Activities, and polls the Task Queue for
+its whole lifetime. You do not start or stop instances yourself. Cloud Run runs the containers, and the WCI sets how many
+run through its [scaling operations](#autoscaling).
+
+An instance's lifetime is bounded by scale-in. The WCI decides when to remove an instance from Task Queue activity, not
+from what any individual instance is doing. It waits a set amount of time after the most recent sync match failure, and
+applies a cooldown between successive reductions, before lowering the target instance count. That wait is the
+[scale-down stabilization duration](#scale-in). It does not track how long a
+given instance has been running or whether that instance is mid-Activity, so the instance Cloud Run stops may be one that
+is still executing work.
+
+Use [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) so that if an Activity is
+interrupted, a retry resumes from the last recorded progress instead of restarting from the beginning.

@@ -1,13 +1,8 @@
 ---
 id: quickstart
-title: Nexus TypeScript Quickstart
+title: Nexus TypeScript quickstart
 sidebar_label: Quickstart
 description: Build a Nexus Service that wraps an existing Temporal Workflow using the TypeScript SDK
-keywords:
-  - nexus
-  - typescript
-  - quickstart
-  - getting started
 tags:
   - Nexus
   - TypeScript SDK
@@ -16,17 +11,12 @@ tags:
 hide_table_of_contents: true
 ---
 
-import { SetupSteps, SetupStep, CodeSnippet, ReleaseNoteHeader } from '@site/src/components';
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components';
 
-<ReleaseNoteHeader
-  featureName="nexus"
-/>
+[Temporal Nexus](/evaluate/features/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations. Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
 
-[Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations. Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
-
-:::info NEW TO NEXUS?
-This page will help you get a working sample running in TypeScript.
-To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus) and to learn more about Nexus features, click [here](/nexus).
+:::info
+To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/features/nexus). To learn how Nexus works, see [Temporal Nexus](/nexus).
 :::
 
 **Prerequisites:** Complete the [TypeScript SDK Quickstart](/develop/typescript/set-up-your-local-typescript) first.
@@ -288,7 +278,7 @@ main().catch((err) => {
 </>
 }>
 
-## 6. Run and Verify
+## 6. Run and verify
 
 Create a file called `caller-starter.ts` to start the caller Worker and execute the Workflow.
 
@@ -321,11 +311,11 @@ You should see `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOpe
 </SetupStep>
 </SetupSteps>
 
-## Next Steps
+## Next steps
 
 Now that you have a working Nexus Service, here are some resources to deepen your understanding:
 
-- **[TypeScript Nexus Feature Guide](/develop/typescript/nexus)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
+- **[TypeScript Nexus feature guide](/develop/typescript/nexus)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
 - **[Nexus Operations](/nexus/operations)**: The full Operation lifecycle, including retries, timeouts, and execution semantics.
 - **[Nexus Services](/nexus/services)**: Designing Service contracts and registering multiple Services per Worker.
 - **[Nexus Patterns](/nexus/patterns)**: Comparing the collocated and router-queue deployment patterns.

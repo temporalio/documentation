@@ -1,7 +1,7 @@
 ---
 id: durable-gaming-sessions
-title: Player Sessions That Survive Anything
-description: Protect player sessions from backend failures by using the Actor pattern.
+title: Build durable multiplayer game sessions with the actor model
+description: Model each player as an Actor Workflow that holds session state, runs game actions, and survives server crashes, with a complete Python implementation.
 sidebar_label: Durable gaming sessions
 toc_max_heading_level: 3
 author: Cecil Phillip
@@ -41,10 +41,10 @@ After working through this guide, you'll have a session system where:
 
 ### What is an Actor Workflow?
 
-The Actor Workflow pattern extends the Workflow Entity pattern. An Workflow Entity is a long-running Workflow that represents a *thing*: it holds state, responds to messages, and exposes that state through Queries. An Actor Workflow is an Entity Workflow that *does things*. The distinction is behavioral:
+The Actor Workflow pattern extends the [Entity Workflow pattern](/design-patterns/entity-workflow). An Entity Workflow is a long-running Workflow that represents a *thing*: it holds state, responds to messages, and exposes that state through Queries. An Actor Workflow is an Entity Workflow that *does things*. The distinction is behavioral:
 
 - **An entity is a thing. An actor is a thing that does things.**
-- An Workflow Entity is analogous to a distributed data cache: it stores and retrieves state.
+- An Entity Workflow is analogous to a distributed data cache: it stores and retrieves state.
 - An Actor Workflow is analogous to a distributed object with operations: it stores state *and* executes side effects on behalf of the entity it represents.
 
 An Entity Workflow that takes action is an Actor Workflow. Concrete examples of actors include a Workflow that scales up a database when load increases, starts a car engine when a driver authenticates, submits an order when a customer confirms checkout, or manages a player session in a multiplayer game by joining rooms and executing combat moves.
@@ -83,7 +83,7 @@ Modeling each player as an Actor Workflow gives you a single authoritative repre
 
 ### Event History and Continue-As-New
 
-Every Workflow Execution in Temporal produces an append-only Event History. This history has a limit of 50,000 Events or 50 MB. For actor Workflows that run indefinitely, Event History growth must be managed proactively.
+Every Workflow Execution in Temporal produces an append-only Event History. This history has a limit of 51,200 Events or 50 MB. For actor Workflows that run indefinitely, Event History growth must be managed proactively.
 
 Continue-As-New atomically completes the current Workflow Execution and starts a new one with the same Workflow Id, carrying forward any state you provide as arguments. From the perspective of external callers, the Workflow Id remains the same. Signals sent during the transition are not lost; the Temporal Service buffers them for the new execution.
 
@@ -112,9 +112,9 @@ Long-running Activities, such as maintaining a WebSocket connection to a game ro
 
 Configure a short Heartbeat Timeout (for example, 30 seconds) and emit heartbeats frequently (for example, every 5 to 10 seconds). The SDK throttles Heartbeat calls to avoid overwhelming the Temporal Service, so you can call `activity.heartbeat()` as often as needed without performance concern.
 
-### Workflow determinism
+### Workflow Definition determinism
 
-In Temporal, your Activities can include non-deterministic code, but the Workflow itself must remain deterministic. This is because Temporal restores Workflow state through *replay*. When a Worker restarts, it re-executes the Workflow code from the beginning, matching Commands against Events stored in the history. If the code produces different Commands than what the history contains, the Worker raises a `NondeterminismError`.
+In Temporal, your Activities can include non-deterministic code, but the Workflow Definition must remain deterministic. This is because Temporal restores Workflow state through *replay*. When a Worker restarts, it re-executes the Workflow code from the beginning, matching Commands against Events stored in the history. If the code produces different Commands than what the history contains, the Worker raises a `NondeterminismError`.
 
 In practice, this means:
 
@@ -489,7 +489,7 @@ import asyncio
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.common import RetryPolicy, SearchAttributes, SearchAttributeKey
+from temporalio.common import RetryPolicy, SearchAttributeKey
 
 with workflow.unsafe.imports_passed_through():
     from activities import (
@@ -518,7 +518,7 @@ PLAYER_LEVEL_KEY = SearchAttributeKey.for_int("PlayerLevel")
 # Threshold for triggering Continue-As-New.
 # Each Signal/Update handler execution and each Activity execution
 # generates Events in the history. A conservative threshold of
-# 10,000 events provides ample headroom below the 50,000 limit.
+# 10,000 events provides ample headroom below the 51,200 limit.
 CONTINUE_AS_NEW_THRESHOLD = 10_000
 
 # Default Retry Policy for Activities in this Workflow.
@@ -916,15 +916,15 @@ class PlayerSessionWorkflow:
         players above a certain level, or find all players with a
         particular status.
         """
-        pairs = [
-            (PLAYER_STATUS_KEY, self._state.status.value),
-            (PLAYER_LEVEL_KEY, self._state.level),
+        updates = [
+            PLAYER_STATUS_KEY.value_set(self._state.status.value),
+            PLAYER_LEVEL_KEY.value_set(self._state.level),
         ]
         if self._state.current_room:
-            pairs.append(
-                (CURRENT_ROOM_KEY, self._state.current_room.room_id)
+            updates.append(
+                CURRENT_ROOM_KEY.value_set(self._state.current_room.room_id)
             )
-        workflow.upsert_search_attributes(pairs)
+        workflow.upsert_search_attributes(updates)
 ```
 
 The `PlayerSessionWorkflow` is the central piece of this system. Several design decisions are worth examining in detail:
@@ -1037,7 +1037,11 @@ from __future__ import annotations
 import asyncio
 
 from temporalio.client import Client
-from temporalio.common import SearchAttributes, SearchAttributeKey
+from temporalio.common import (
+    SearchAttributeKey,
+    SearchAttributePair,
+    TypedSearchAttributes,
+)
 
 from models import (
     CombatMoveRequest,
@@ -1084,9 +1088,9 @@ async def start_player_session(
         initial_state,
         id=f"player-session-{player_id}",
         task_queue="player-session-queue",
-        search_attributes=SearchAttributes.from_pairs([
-            (PLAYER_STATUS_KEY, "online"),
-            (PLAYER_LEVEL_KEY, 1),
+        search_attributes=TypedSearchAttributes([
+            SearchAttributePair(PLAYER_STATUS_KEY, "online"),
+            SearchAttributePair(PLAYER_LEVEL_KEY, 1),
         ]),
     )
     print(f"Started session for {display_name} ({player_id})")
@@ -1291,12 +1295,14 @@ The approach isn't limited to games. Any long-lived entity that has to take acti
 
 ## Related resources
 
-- [Temporal Python SDK documentation](https://docs.temporal.io/develop/python)
-- [Message Passing — Signals, Queries, Updates](https://docs.temporal.io/develop/python/message-passing)
-- [Continue-As-New](https://docs.temporal.io/develop/python/continue-as-new)
-- [Child Workflows](https://docs.temporal.io/develop/python/child-workflows)
-- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](https://docs.temporal.io/develop/python/failure-detection)
-- [Search Attributes](https://docs.temporal.io/visibility/search-attributes)
+- [Entity Workflow Pattern](/design-patterns/entity-workflow) — pattern catalog reference for the underlying Entity Workflow pattern this Actor Workflow extends
+- [Continue-As-New Pattern](/design-patterns/continue-as-new) — pattern catalog reference covering common pitfalls and history-size triggers
+- [Temporal Python SDK documentation](/develop/python)
+- [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
+- [Continue-As-New](/develop/python/workflows/continue-as-new)
+- [Child Workflows](/develop/python/workflows/child-workflows)
+- [Failure Detection — Timeouts, Activity Heartbeating, and Retry Policies](/develop/python/best-practices/error-handling)
+- [Search Attributes](/search-attribute)
 - [Temporal Python SDK API Reference](https://python.temporal.io)
 - [Temporal Python SDK samples](https://github.com/temporalio/samples-python)
 - Companion article: [Entity Workflow Pattern](/guides/entity-pattern-loyalty-points)

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { applyDefaults } = require('../shared/frontmatterDefaults');
 
 module.exports = function cookbookIndexPlugin(context, options = {}) {
 console.log('[cookbook-index] init with docsDir:', options.docsDir);
@@ -36,7 +37,8 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
   const items = files
     .map((file) => {
       const src = fs.readFileSync(file, 'utf8');
-      const { data } = matter(src);
+      const { data: pageData } = matter(src);
+      const data = applyDefaults(file, pageData, { rootDir: docsDir });
 
       const rel = path.relative(docsDir, file).replace(/\\/g, '/');
       const base = rel.replace(/\.(md|mdx)$/i, '');
@@ -92,6 +94,4 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
       setGlobalData({ items: content.items });
     },
   };
-
-  
 };

@@ -1,7 +1,7 @@
 ---
 id: temporary-rate-limit-increases
-title: Orchestrate temporary rate limit increases on your Namespaces
-description: Handle temporary spikes in usage by dynamically provisioning extra capacity when you need it, and deprovision it when you don't.
+title: Temporarily increase Namespace capacity on Temporal Cloud
+description: Add provisioned capacity to a Namespace for a load spike and remove it after a set time, using a Go Workflow and a Child Workflow with a durable Timer.
 sidebar_label: Temporary rate limit increases
 toc_max_heading_level: 3
 author: Taylor Khan
@@ -35,7 +35,7 @@ The primary architectural challenge is ensuring that temporary capacity increase
 
 By separating the provisioning and deprovisioning steps into distinct Workflows, you adhere to the best practice of returning control to the caller as soon as the provisioning command succeeds. The `ParentClosePolicyAbandon` setting instructs the Temporal Service to allow the Child Workflow to continue running even after the parent completes. This decouples the client's synchronous request from the long-running *Time-To-Live (TTL)* wait state. When the Child Workflow enters a sleep state, it consumes no Worker memory, allowing you to scale this pattern across thousands of concurrent requests efficiently.
 
-**Note:** Latency to the caller can be further reduced via [the Early Return pattern paired with an SDK call to update-with-start](https://docs.temporal.io/sending-messages#update-with-start).
+**Note:** Latency to the caller can be further reduced via [the Early Return pattern paired with an SDK call to update-with-start](/sending-messages#update-with-start).
 
 ## Target audience
 
@@ -721,9 +721,9 @@ By following this guide, you have implemented a time-bound capacity provisioning
 - Using an asynchronous Child Workflow to decouple application responses from long-term cleanup tasks.
 - Using durable Timers to guarantee that capacity limits are strictly reverted after 60 minutes, ensuring you do not overpay for unused compute.
 
-## Related Resources
+## Related resources
 
-- [Temporal Capacity Modes](https://docs.temporal.io/cloud/capacity-modes)
-- [Temporal Best Practices](https://docs.temporal.io/best-practices)
+- [Temporal Capacity Modes](/cloud/capacity-modes)
+- [Temporal Best Practices](/best-practices)
 - [Python Capacity Mode Sample](https://github.com/lainecsmith/temporal-cloud-ops-capacity-modes)
 - [Go Capacity Mode Sample](https://github.com/temporal-sa/temporary-rate-limit-increases)

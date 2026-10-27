@@ -16,7 +16,7 @@ module.exports = {
   // like the sequenceNumber marker) — verified those still need Mermaid's
   // own light/dark split to stay correct, not just the CSS layer.
   theme: { light: 'default', dark: 'dark' },
-  fontFamily: '"Aeonik", "Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
+  fontFamily: '"Aeonik", -apple-system, BlinkMacSystemFont, sans-serif',
   flowchart: {
     padding: 14,
     nodeSpacing: 45,

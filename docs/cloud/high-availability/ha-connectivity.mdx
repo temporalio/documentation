@@ -1,7 +1,6 @@
 ---
 id: ha-connectivity
 title: Connectivity for High Availability
-sidebar_label: Connectivity for High Availability
 slug: /cloud/high-availability/ha-connectivity
 description: How to choose endpoints and configure private network connectivity for Namespaces with Temporal Cloud High Availability features.
 ---
@@ -33,7 +32,7 @@ Use the Namespace Endpoint unless you have a specific reason to pin traffic to a
 ### Regional Endpoint
 
 Format: `<cloud>-<region>.region.tmprl.cloud:7233` (for example, `aws-us-west-2.region.tmprl.cloud` or `gcp-us-central1.region.tmprl.cloud`).
-See [regions](/cloud/regions) for the full list.
+See [regions](/evaluate/cloud/regions) for the full list.
 
 A Regional Endpoint is shared across every Namespace that is active or replicated in that region.
 Unlike the Namespace Endpoint, a Regional Endpoint stays pinned to the region in its name — if that region holds the passive replica of your Namespace, the Regional Endpoint connects to the passive replica.
@@ -49,7 +48,7 @@ When authenticating with mTLS, set the Client's `server_name` / `serverNameOverr
 This overrides the SNI that the Client will expect during the TLS Handshake with Temporal Cloud.
 The Regional Endpoint forwards the request to your Namespace, so the Client must expect the Namespace's certificate during the TLS handshake.
 
-For example, in Typescript, the Client's config would be set like this:
+For example, in TypeScript, the Client's config would be set like this:
 
 ```typescript
 await Connection.connect({
@@ -88,6 +87,7 @@ A request can reach the passive replica in three ways:
   If #1 completes before #2, a Worker that was connected to the former active before the failover will stay connected to it even after it becomes the replica. The Worker will change to point at the new active when the DNS changes propagate and the Client re-resolves DNS (typically 30 seconds, though up to 5 minutes, bounded by Temporal Cloud's maximum connection lifetime).
 
 By default, Temporal Cloud transparently forwards any request that reaches the passive replica to the active region, and the response back.
+You can turn forwarding off for Worker polls, but Client requests such as Start Workflow, Signal, and Query are always forwarded.
 
 To learn what forwarding does, see [Request forwarding](/cloud/high-availability/#request-forwarding).
 
@@ -169,7 +169,7 @@ Follow these steps in order to update your private DNS overrides without interru
 
 5. **Remove the Namespace-endpoint PHZ record.** Delete the `<ns>.<account>.tmprl.cloud` record from the PHZ. With it gone, Workers resolve the name through public DNS → regional CNAME → PHZ regional override → VPC Endpoint, which is the correct HA chain. **Do not skip this step.** If the Namespace-endpoint override remains, failover does not work.
 
-6. **Test failover end-to-end.** Use [forced failover](/cloud/high-availability/failovers) in a staging environment to confirm Workers converge to the new active region within the expected window (about 30 seconds after the public CNAME update, given the 15-second TTL).
+6. **Test failover end-to-end.** Trigger a [manual failover](/cloud/high-availability/failovers#manual-failover) in a staging environment to confirm Workers converge to the new active region within the expected window (about 30 seconds after the public CNAME update, given the 15-second TTL).
 
 :::caution Order matters
 
@@ -177,11 +177,19 @@ Adding the regional records first (step 2) and removing the Namespace-endpoint r
 
 :::
 
+To reverse this change when you disable HA, [change private DNS back to the single-region setup](/cloud/high-availability/enable#prepare-connectivity-before-removing-a-replica) before removing the replica.
+
 ## How to migrate to another Temporal Cloud Region when using Private Connectivity {/* #how-to-migrate-regions-with-private-connectivity */}
 
 To move a Namespace to a new Temporal Cloud Region while keeping Private Connectivity in place, the recommended pattern is to use a **separate private hosted zone in each region**, each overriding the Namespace Endpoint to point at that region's own VPC Endpoint. Because a PHZ is scoped only to the VPCs it is associated with, Workers in each region resolve the Namespace Endpoint to their local VPC Endpoint and traffic stays in-region throughout the move.
 
 This is not the only way to handle a region change with Private Connectivity, but it is the most commonly used.
+
+:::caution GCP capacity restriction
+
+Before creating a GCP Namespace or adding a GCP replica, check [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for regional availability and exception requirements.
+
+:::
 
 Steps:
 
@@ -195,13 +203,13 @@ Steps:
 
 5. **Start Workers in the new region.** They begin processing tasks immediately, even though they are connecting to the passive replica, because Temporal Cloud forwards Workflow and Activity tasks across regions transparently. This is what keeps the region change zero-downtime.
 
-6. **Failover to the new region.** Trigger a [forced failover](/cloud/high-availability/failovers) to make the new region active. Workers in the old region keep running and keep using the old VPC Endpoint — they now connect to the passive replica that lives in the old region, and Temporal Cloud forwards their tasks to the new active region.
+6. **Failover to the new region.** Trigger a [manual failover](/cloud/high-availability/failovers#manual-failover) to make the new region active. Workers in the old region keep running and keep using the old VPC Endpoint — they now connect to the passive replica that lives in the old region, and Temporal Cloud forwards their tasks to the new active region.
 
-7. **Drain and remove Workers and the VPC Endpoint in the old region.** Once you are confident the new region is handling all new work and you no longer need old-region Workers, stop them and tear down the old region's VPC Endpoint and PHZ.
+7. **Drain and remove Workers and the VPC Endpoint in the old region.** Once you are confident the new region is handling all new work and you no longer need old-region Workers, stop them. Complete the [replica-removal connectivity checklist](/cloud/high-availability/enable#prepare-connectivity-before-removing-a-replica) to confirm no other Workers or Clients still depend on the old region's Regional Endpoint or private connection, then tear down the old region's VPC Endpoint and PHZ.
 
-8. **Remove the replica in the old region.** See [Migrate between regions](/cloud/migrate/migrate-within-cloud) for the replica-removal step. The Namespace is now single-region in the new location, and the HA pricing surcharge no longer applies.
+8. **Remove the replica in the old region.** See [Migrate between regions or cloud providers](/cloud/migrate/between-regions-or-cloud-providers) for the replica-removal step. The Namespace is now single-region in the new location, and the HA pricing surcharge no longer applies.
 
-:::note Per-region PHZ vs. shared regional-record PHZ
+:::note Per-region PHZ versus shared regional-record PHZ
 
 This pattern is **different** from the long-term HA setup described in [Single-cloud HA on AWS PrivateLink](#single-cloud-ha-on-aws-privatelink), which uses one shared PHZ holding regional records (`aws-<region>.region.tmprl.cloud`) and relies on DNS-based failover to switch Workers between regions. The region-change pattern instead uses one PHZ per region, each overriding the Namespace Endpoint itself, and relies on Temporal Cloud's cross-region task forwarding rather than DNS to keep Workers productive across the cutover.
 
@@ -273,7 +281,7 @@ Plan for these three things:
 1. **DNS overrides for both clouds.** Your private DNS for `region.tmprl.cloud` needs entries for both the AWS region (CNAME → AWS VPCE) and the GCP region (A → PSC IP). This typically means a Route 53 private hosted zone in your AWS Worker VPCs *and* a Cloud DNS private zone in your GCP Worker network — both for the same `region.tmprl.cloud` parent — each with the records relevant to the cloud the Workers run in.
 2. **Worker reachability across clouds.** Your AWS-resident Workers must be able to reach the GCP PSC endpoint when GCP is active, and vice versa. Options include:
    - Run Workers in both clouds (preferred — simplest, lowest latency, matches the failover model).
-   - Establish cross-cloud connectivity (e.g., AWS Transit Gateway + GCP Cloud Interconnect, or a third-party transit) so Workers in one cloud can resolve and reach the other cloud's private endpoint.
+   - Establish cross-cloud connectivity (for example, AWS Transit Gateway + GCP Cloud Interconnect, or a third-party transit) so Workers in one cloud can resolve and reach the other cloud's private endpoint.
 3. **Connectivity Rules in both regions.** GCP PSC requires a Connectivity Rule. AWS PrivateLink does not, but if you want to enforce private-only access, add one for the AWS side as well so the Namespace is private-only in both regions.
 
 :::caution Alpine/musl + GCP PSC: missing AAAA records can break Workers
@@ -283,7 +291,7 @@ GCP Private Service Connect endpoints return only A (IPv4) records — there is 
 If you run Workers on Alpine and use multi-cloud HA, either:
 
 - Switch the Worker base image to a glibc-based distribution (Debian, Ubuntu, distroless), or
-- Configure your application/runtime to disable AAAA lookups (e.g., set `GODEBUG=netdns=go+v4` for Go, or prefer IPv4 in the Java/Node/Python runtimes you use).
+- Configure your application/runtime to disable AAAA lookups (for example, set `GODEBUG=netdns=go+v4` for Go, or prefer IPv4 in the Java/Node/Python runtimes you use).
 
 :::
 

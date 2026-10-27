@@ -3,6 +3,9 @@ id: approval
 title: "Approval Pattern"
 sidebar_label: "Approval"
 description: "Human-in-the-loop Workflows that block until external approval decisions are made. Uses Signals to capture approval data with metadata."
+tags:
+  - Design Patterns
+  - Signals
 ---
 
 import Tabs from '@theme/Tabs';
@@ -812,7 +815,7 @@ The Approval pattern captures rich context — approver identity, reasons, and t
 All approval data is recorded in the Workflow history as Signal events, giving you a built-in audit trail.
 Timeout handling is automatic: you define the maximum wait time and the Workflow handles the fallback.
 The pattern supports multi-level, conditional, and escalating approval chains, and you can check approval status at any time through Query methods without modifying Workflow state.
-Because all decisions are recorded in the event history, the Workflow is deterministic and replay-safe.
+Because all decisions are recorded in the event history, the Workflow Definition is replay-safe.
 
 The trade-offs to consider are that the pattern requires an external system to send approval Signals, which means you need a separate approval interface.
 The Workflow blocks until the approval arrives or the timeout expires, so you must define a maximum wait time.
@@ -857,13 +860,19 @@ If the approver's interface needs immediate confirmation that the approval was a
 - **No duplicate handling.** Receiving multiple approval Signals without deduplication can overwrite earlier decisions.
 - **No escalation path.** Without a fallback when the initial approval times out, requests stall or are silently rejected.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Signal-Based Event Handling](/design-patterns/signal-with-start): Receiving external events through Signals.
 - [Updatable Timer](/design-patterns/updatable-timer): Extending approval deadlines dynamically.
 - [Saga Pattern](/design-patterns/saga-pattern): Executing compensating actions on rejection.
 
-## Sample code
+### Guides
+
+- [Reliable document approvals](/guides/reliable-document-approvals): A complete Python implementation with SLA timers, automatic escalation, resubmission loops, and audit logging.
+
+### Sample code
 
 **Java**
 - [Hello Signal](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloSignal.java) — Basic Signal handling in a Workflow.

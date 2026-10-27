@@ -1,23 +1,12 @@
 ---
 id: cancellation
-title: Interrupt a Workflow Execution - Java SDK
-sidebar_label: Interrupt a Workflow
+title: Interrupt a Workflow Execution
+sidebar_label: Cancellation
 description:
   Interrupt a Workflow Execution using the Temporal Java SDK. Choose between canceling for a graceful stop or
   terminating for a forceful stop.
-keywords:
-  - cancel workflow execution
-  - activity cancellation
-  - terminate workflow execution
-  - interrupt workflow execution
-  - graceful workflow cancelation
-  - forceful workflow termination
-  - workflow cancelation logic
-  - activity heartbeats
 tags:
   - Workflows
-  - Java SDK
-  - Temporal SDKs
 ---
 
 You can interrupt a Workflow Execution in one of the following ways:
@@ -87,6 +76,8 @@ created within it, such as the following:
 ### Cancel with Workflow error
 
 When you want to interrupt a Workflow Execution using an error, throw the [`DestroyWorkflowThreadError`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/DestroyWorkflowThreadError.html). Make sure there isn't any code on that thread to catch this error or it could cause issues with the Temporal service.
+
+More generally, Workflow code should only ever catch `Exception`, never `Throwable` or `Error` — see [Catch Exception, never Throwable or Error](/develop/java/best-practices/error-handling#catch-exception-not-throwable).
 
 ### Cancel an Activity from a Workflow {/* #cancel-activity */}
 

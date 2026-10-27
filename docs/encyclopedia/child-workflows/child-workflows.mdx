@@ -1,26 +1,9 @@
 ---
 id: child-workflows
 title: Child Workflows
-sidebar_label: Child Workflows
 description: A Child Workflow Execution in the Temporal platform is initiated from another Workflow within the same Namespace. 
 slug: /child-workflows
 toc_max_heading_level: 4
-keywords:
-  - child workflow execution
-  - temporal workflow management
-  - parent close policy
-  - workflow execution scalability
-  - temporal SDK child workflow
-  - manage workflows with temporal
-  - workflow partitioning
-  - asynchronous child workflows
-  - child workflow serialization
-  - temporal namespace workflows
-  - child vs activity execution
-  - workflow periodic execution
-  - temporal SDK guides
-  - parent workflow termination
-  - child workflow best practices
 tags:
   - Concepts
   - Child Workflows
@@ -68,7 +51,7 @@ If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Exe
 
 ## When to use Child Workflows
 
-There is no reason to use Child Workflows just for code organization.
+There is no reason to use Child Workflows only for code organization.
 You can use object oriented structure and other code organization techniques to deal with complexities.
 It is typically recommended to start from a single Workflow Definition if your problem has bounded size in terms of the number of Activity Executions and processed Signals.
 It is simpler than multiple asynchronously communicating Workflows.

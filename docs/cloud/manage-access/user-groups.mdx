@@ -1,15 +1,8 @@
 ---
 id: user-groups
 title: Manage user groups
-sidebar_label: Manage user groups
-description: Learn how to manage user groups, members, and roles
+description: Assign account-level roles and Namespace permissions to a group of users at once, and see how SCIM groups interact with them.
 toc_max_heading_level: 4
-keywords:
-  - explanation
-  - how-to
-  - temporal cloud
-  - temporal cloud account
-  - user groups
 tags:
   - Users
   - User groups
@@ -60,12 +53,20 @@ User group names must be 3-64 characters long and can only contain lowercase let
 
 <TabItem value="create-group-webui" label="Web UI">
 
-1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
 1. Click the Create Group button
 1. Name the group
 1. Assign an account-level role to the group (you can assign namespace-level permissions after the group is created)
 1. Click Save
 
+</TabItem>
+
+<TabItem value="create-group-cli" label="Temporal CLI">
+Use the command that matches how the group is backed:
+
+- [`temporal cloud user-group create-cloud-group`](/cli/command-reference/cloud/user-group#create-cloud-group) for a group managed in Temporal Cloud
+- [`temporal cloud user-group create-google-group`](/cli/command-reference/cloud/user-group#create-google-group) for a group backed by a Google group
+- [`temporal cloud user-group create-scim-group`](/cli/command-reference/cloud/user-group#create-scim-group) for a group backed by SCIM
 </TabItem>
 
 <TabItem value="create-group-tcld" label="tcld">
@@ -84,7 +85,7 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 <TabItem value="assign-roles-webui" label="Web UI">
 
 To edit the account role of a group:
-  1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+  1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
   1. Click Edit Group
   1. Click the Account Role dropdown
@@ -92,7 +93,7 @@ To edit the account role of a group:
   1. Click Save
 
 To add namespace permissions to a group:
-  1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+  1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
   1. Click Edit Group
   1. Click Add Namespaces
@@ -106,6 +107,13 @@ To edit or remove namespace permissions from a group:
   1. Click the pencil on a permission to edit it, or the trash can to delete it
   1. Click Save
 
+</TabItem>
+
+<TabItem value="assign-roles-cli" label="Temporal CLI">
+Account-level roles and Namespace-level permissions are set separately:
+
+- [`temporal cloud user-group set-account-role`](/cli/command-reference/cloud/user-group#set-account-role)
+- [`temporal cloud user-group set-namespace-permissions`](/cli/command-reference/cloud/user-group#set-namespace-permissions)
 </TabItem>
 
 <TabItem value="assign-roles-tcld" label="tcld">
@@ -124,7 +132,7 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 <TabItem value="assign-group-members-webui" label="Web UI">
 
 To add users to the group:
-  1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+  1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
   1. Click Edit Group
   1. Under Members, search for the user you’d like to add 
@@ -135,6 +143,12 @@ To remove a user from the group:
   1. Under Members, click the X next to the user you’d like to remove
   1. Click Save
 
+</TabItem>
+
+<TabItem value="assign-group-members-cli" label="Temporal CLI">
+See the [`temporal cloud user-group members add`](/cli/command-reference/cloud/user-group#members-add),
+[`temporal cloud user-group members remove`](/cli/command-reference/cloud/user-group#members-remove), and
+[`temporal cloud user-group members list`](/cli/command-reference/cloud/user-group#members-list) command reference for details.
 </TabItem>
 
 <TabItem value="assign-group-members-tcld" label="tcld">
@@ -152,12 +166,16 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 <Tabs>
 <TabItem value="delete-group-webui" label="Web UI">
 
-  1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
+  1. Navigate to the [identities page](https://cloud.temporal.io/identities?tab=groups&type=group)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
   1. Click the dropdown next to the edit button
   1. Click Delete
   1. Confirm by clicking Delete
 
+</TabItem>
+
+<TabItem value="delete-group-cli" label="Temporal CLI">
+See the [`temporal cloud user-group delete`](/cli/command-reference/cloud/user-group#delete) command reference for details.
 </TabItem>
 
 <TabItem value="delete-group-tcld" label="tcld">
@@ -169,6 +187,5 @@ See the [Terraform provider documentation](https://registry.terraform.io/provide
 </TabItem>
 
 </Tabs>
-
 
 

@@ -2,7 +2,10 @@
 id: pick-first
 title: "Pick First Pattern"
 sidebar_label: "Pick First (Race)"
-description: "Starts multiple Activities in parallel and uses the first result, cancelling the rest."
+description: "Races multiple Activities in parallel, returns the first completed result, and cancels the remaining Activities using SDK cancellation scopes."
+tags:
+  - Design Patterns
+  - Activities
 ---
 
 import Tabs from '@theme/Tabs';
@@ -542,15 +545,21 @@ Only the first result is used; others are discarded.
 ## Common pitfalls
 
 - **Missing heartbeats in Activities.** Activities must heartbeat to detect cancellation. Without heartbeats, cancelled Activities continue running until their StartToCloseTimeout expires, wasting resources.
-- **Not waiting for cancellation cleanup.** Without configuring the cancellation type to wait for completion (e.g., `WaitForCancellation: true` in Go, `WAIT_CANCELLATION_COMPLETED` in other SDKs), fetching a cancelled Activity's result returns a cancellation error immediately, before the Activity has finished cleanup. Configure this setting if you need to wait for cleanup to complete.
+- **Not waiting for cancellation cleanup.** Without configuring the cancellation type to wait for completion (for example, `WaitForCancellation: true` in Go, `WAIT_CANCELLATION_COMPLETED` in other SDKs), fetching a cancelled Activity's result returns a cancellation error immediately, before the Activity has finished cleanup. Configure this setting if you need to wait for cleanup to complete.
 - **Ignoring errors from the winning Activity.** The first Activity to complete might return an error. Always check the result for errors rather than assuming success.
 - **Forgetting to cancel remaining Activities.** If you forget to cancel the shared context or scope after receiving the first result, the remaining Activities continue running indefinitely.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Parallel Execution](/design-patterns/parallel-execution)**: Execute in parallel and combine all results.
 
-## Sample code
+### References
+
+- [Selectors (Go)](/develop/go/workflows/selectors): The Go SDK's `Selector` construct for racing multiple Futures and Channels, with the same "cancel the losers" technique.
+
+### Sample code
 
 - [Go Sample](https://github.com/temporalio/samples-go/tree/main/pickfirst) — Complete implementation with Worker and starter.
 - [TypeScript Sample](https://github.com/temporalio/samples-typescript/tree/main/activities-cancellation-heartbeating) — Activities with cancellation and heartbeating.

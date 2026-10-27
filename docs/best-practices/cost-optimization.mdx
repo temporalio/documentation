@@ -3,12 +3,6 @@ title: Workflow cost optimization
 sidebar_label: Cost Optimization
 description: Strategies for optimizing costs associated with workloads running on Temporal Cloud while maintaining workflow reliability and observability.
 toc_max_heading_level: 4
-keywords:
-  - cost optimization
-  - actions
-  - storage
-  - pricing
-  - best practices
 tags:
   - Best Practices
   - Temporal Cloud
@@ -29,7 +23,7 @@ Premature optimization can compromise observability and create operational chall
 Every optimization involves tradeoffs.
 This guide helps you make informed decisions about where and how to optimize based on your specific requirements.
 
-Should you need additional guidance on Workflow design considerations, please reach out to a Temporal Solutions Architect.
+If you need more guidance on Workflow design, contact a Temporal Solutions Architect.
 
 ## Common anti-patterns
 
@@ -54,9 +48,9 @@ Workflows running days or weeks or processing thousands of events require [Conti
 
 ### High volume of Activity retries
 
-Generally, the default values for [Activity retries](/encyclopedia/retry-policies) are quite good.
+Generally, the default values for [Activity retries](/encyclopedia/retry-policies) work well in most cases.
 However, excessive Activity retries often indicate underlying issues like timeouts that are too short or Activities that frequently fail.
-Detect Activity retry frequency and if high, consider increasing retry intervals or Activity timeouts before failures occur.
+Monitor Activity retry frequency. If it is high, consider increasing retry intervals or Activity timeouts before failures occur.
 See [Spooky Stories: Chilling Temporal Anti-Patterns](https://temporal.io/blog/spooky-stories-chilling-temporal-anti-patterns-part-2#2-hiding-behind-the-chainsaws) for guidance on retry defaults and patterns.
 
 ### Large payloads in Event History
@@ -84,7 +78,7 @@ See [Activity Heartbeat documentation](/encyclopedia/detecting-activity-failures
 ## Understanding cost drivers
 
 Temporal Cloud pricing consists of Actions, Storage, and Support.
-If you are new to Temporal Cloud, see the [pricing documentation](/cloud/pricing#action) to learn more and familiarize yourself with [what results in a billable Action](/cloud/actions) in Temporal Cloud.
+If you are new to Temporal Cloud, see the [pricing documentation](/cloud/pricing#action) to learn more and familiarize yourself with [what results in a billable Action](/evaluate/cloud/actions) in Temporal Cloud.
 
 ### Cost distribution
 
@@ -96,7 +90,7 @@ Focus optimization efforts on what's driving costs with a specific workload:
 - [Many Activities per Workflow](https://temporal.io/blog/how-many-activities-should-i-use-in-my-temporal-workflow)
 - Frequent [Signals, Queries, or Updates](/encyclopedia/workflow-message-passing#choosing-messages)
 - Long-running Activities with [Heartbeats](/cloud/worker-health#manage-worker-heartbeating)
-- High [Activity retry rates](/develop/activity-retry-simulator)
+- High [Activity retry rates](/demos/activity-retry-simulator)
 - Extensive Query usage
 
 **High Storage costs generally indicate**:
@@ -114,7 +108,7 @@ Focus optimization efforts on what's driving costs with a specific workload:
 
 ## Measuring
 
-Establish [baseline metrics](/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
+Establish [baseline metrics](/cloud/metrics/openmetrics/metrics-reference) before optimizing and be sure to validate impact after implementation.
 Specifically:
 
 - Actions consumption (per Workflow, per day/month, by Namespace)
@@ -124,7 +118,7 @@ Specifically:
 
 ## Actions optimization
 
-[Actions](/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
+[Actions](/evaluate/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
 Each represents a unit of consumption.
 
 ### Activity granularity
@@ -137,8 +131,17 @@ For detailed discussion of this tradeoff, see [How many Activities should I use 
 
 ### Child Workflows vs Activities
 
-[Child Workflows cost 2 Actions](/cloud/actions#workflow) compared to an Activity's 1 Action.
+[Child Workflows cost 2 Actions](/evaluate/cloud/actions#workflow) compared to an Activity's 1 Action.
 See [Child Workflows documentation](/child-workflows) for detailed comparison of capabilities and use cases.
+
+### Standalone Activities vs a Workflow that runs a single Activity
+
+Starting a [Standalone Activity](/standalone-activity) costs 1 Action.
+Running the same single Activity in a wrapper Workflow costs 1 Action for the Activity and 1 Action for the Workflow, not including Activity heartbeats, retries, or other billable [Actions](/evaluate/cloud/actions#activity).
+
+Use a Workflow when you need multi-step orchestration, human in the loop, signals, timers, updates, queries, or enhanced step-by-step visibility with event history and [replay](/workflow-execution#replay).
+
+Use a Standalone Activity when you need to execute a single Activity function reliably.
 
 ### Retry Policies
 
@@ -158,14 +161,14 @@ For expensive external operations like this, consider:
 - Using [next retry delay](/encyclopedia/retry-policies#per-error-next-retry-delay) to dynamically control retry timing based on failure types (for example, respecting rate-limit headers)
 - Implementing an [Activity pause pattern](/cli/command-reference/activity#pause) to wait for manual intervention rather than automatic retries
 
-Use the [Activity Retry Simulator](/develop/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
+Use the [Activity Retry Simulator](/demos/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
 
 Refer to this blog post on [Mastering Workflow retry logic for resilient applications](https://temporal.io/blog/failure-handling-in-practice) for additional guidance.
 
 ### Local Activities
 
 A [Local Activity](/local-activity#local-activity) is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.
-Therefore, multiple Local Activities that run back-to-back only [count as a single billable action](/cloud/actions#activity), whereas each regular Activity counts as a billable action.
+Therefore, multiple Local Activities that run back-to-back only [count as a single billable action](/evaluate/cloud/actions#activity), whereas each regular Activity counts as a billable action.
 However, there are tradeoffs to converting regular Activities to Local Activities.
 For example, if a specific Local Activity fails, *all* of them will be retried together.
 Review [the docs](/local-activity) or reach out to your account team to learn more.
@@ -189,7 +192,7 @@ Use Regular Activities instead of Local Activities if you require any of the fol
 2. For Search Attributes that must be updated during Workflow Execution, each `UpsertSearchAttributes` call counts as 1 Action regardless of how many attributes are updated.
    Batch multiple related attribute updates into single operations to reduce Actions consumed.
 
-See the [Temporal Cloud Action Documentation](/cloud/actions#workflow) for details.
+See the [Temporal Cloud Action Documentation](/evaluate/cloud/actions#workflow) for details.
 
 #### Signal handling
 
@@ -266,7 +269,7 @@ Alternatively, if you are looking to do analysis on closed Workflow Executions, 
 
 - Temporal Cloud Usage dashboard for Actions and Storage metrics
 - Event History for per-Workflow billable Actions estimates
-- Export metrics to observability platforms (Datadog, Grafana, etc.) for custom monitoring
+- Export metrics to observability platforms such as Datadog or Grafana for custom monitoring
 
 ## When to get help
 

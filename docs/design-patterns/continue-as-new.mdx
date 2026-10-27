@@ -3,6 +3,9 @@ id: continue-as-new
 title: "Continue-As-New Pattern"
 sidebar_label: "Continue-As-New"
 description: "Prevents unbounded history growth by completing the current execution and starting a new one with fresh history."
+tags:
+  - Design Patterns
+  - Workflows
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,9 +19,9 @@ By archiving old event history and starting fresh, Continue-As-New also reduces 
 
 ## Problem
 
-In long-running Workflows, you often need to execute periodic tasks indefinitely, process unbounded streams of data without accumulating history, implement infinite loops that run for months or years, avoid hitting the 50,000 event history limit, and maintain Workflow state across logical restarts.
+Long-running Workflows — periodic tasks that run indefinitely, infinite loops spanning months or years, or Workflows processing an unbounded stream of data — accumulate Event History with every iteration. Left unchecked, that history eventually hits the 51,200-event limit, and the Workflow still needs to keep its state across whatever comes next.
 
-Without Continue-As-New, you must manually stop and restart Workflows (losing continuity), risk hitting history limits and Workflow failures, implement external orchestration to manage Workflow lifecycle, and accept degraded performance as history grows large.
+Without Continue-As-New, the alternatives are all worse: manually stop and restart Workflows and lose continuity, build external orchestration to manage the Workflow's lifecycle, or accept degraded performance as history grows — and risk failure once it hits the limit.
 
 ## Solution
 
@@ -359,7 +362,7 @@ This approach is more reliable than a fixed iteration count because it accounts 
 
 The Continue-As-New pattern is a good fit for periodic Workflows running indefinitely (cron-like behavior), processing unbounded data streams, long-running Workflows with repetitive patterns, Workflows that accumulate state over many iterations, and preventing event history from growing too large.
 
-It is not a good fit for short-lived Workflows (under 1000 events), Workflows that naturally complete, one-time batch processing, or Workflows that require full history for audit purposes.
+It is not a good fit for short-lived Workflows (under 1,000 events), Workflows that naturally complete, one-time batch processing, or Workflows that require full history for audit purposes.
 
 ## Benefits and trade-offs
 
@@ -394,7 +397,7 @@ You cannot undo Continue-As-New once triggered.
 - **Version carefully.** Ensure new code can handle state from old executions.
 - **Monitor history size.** Track event count and continue before hitting limits.
 - **Use typed APIs.** In Java, prefer `newContinueAsNewStub()` over untyped `continueAsNew()`. In TypeScript, use the generic `continueAsNew<typeof myWorkflow>()` for type safety.
-- **Consider cron.** For fixed Schedules, use Temporal Schedules instead.
+- **Consider cron.** For fixed Schedules, use [Temporal Schedules](/schedule) instead.
 - **Test state transfer.** Verify state correctly passes between executions.
 
 ## Common pitfalls
@@ -408,13 +411,20 @@ You cannot undo Continue-As-New once triggered.
 - **Caching Run IDs for external interaction.** Continue-As-New creates a new Run ID. If external callers cache the old Run ID for Signals or Queries, they will get a "workflow execution already completed" error. Always use Workflow ID without a Run ID (or an empty Run ID) so the request routes to the currently running execution.
 - **Catching the Continue-As-New exception.** In TypeScript and Python, Continue-As-New is implemented by throwing a special exception. Wrapping it in a try-catch or try-except can suppress the transition and cause unexpected behavior. Let the exception propagate unhandled. In Go, return the `ContinueAsNewError` from the Workflow function without wrapping it.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Entity Workflow](/design-patterns/entity-workflow)**: Long-lived Workflows that model business entities, relying on Continue-As-New to prevent unbounded history.
 - **[Child Workflows](/design-patterns/child-workflows)**: Decomposing work into sub-Workflows. Consider Parent Close Policy when combining with Continue-As-New.
 - **[Signal with Start](/design-patterns/signal-with-start)**: Idempotent Workflow start with an initial Signal — use Workflow ID without Run ID to interact with continued executions.
 
-## Sample code
+### Guides
+
+- [Track customer loyalty points with durable Workflows](/guides/entity-pattern-loyalty-points): Uses Continue-As-New to keep a long-lived customer loyalty account within Event History limits, including an upgrade path at the Continue-As-New boundary for Worker Versioning.
+- [Player Sessions That Survive Anything](/guides/durable-gaming-sessions): Uses Continue-As-New so a multiplayer game session can run for weeks without unbounded history growth.
+
+### Sample code
 
 **Java:**
 - [Cron Workflow](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloCron.java) — Periodic Workflow using Continue-As-New.
@@ -430,7 +440,7 @@ You cannot undo Continue-As-New once triggered.
 **Go:**
 - [Safe Message Handlers](https://github.com/temporalio/samples-go/tree/main/safe_message_handler) — Entity Workflow with Continue-As-New and `GetContinueAsNewSuggested()`.
 
-## References
+### References
 
 - [Continue-As-New](/workflow-execution/continue-as-new) — Concept reference for the Continue-As-New mechanism.
 - [Temporal Blog: How to Keep a Workflow Running Indefinitely Long](https://temporal.io/blog/very-long-running-workflows) — Detailed guidance on managing Workflows that run forever.

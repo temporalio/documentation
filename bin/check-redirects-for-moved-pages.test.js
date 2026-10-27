@@ -4,7 +4,9 @@ const fs = require('fs');
 const {
   filePathToUrlPath,
   extractFrontMatter,
+  resolveUrlFromContent,
   resolveOldUrl,
+  getLiveUrls,
   vercelPatternToRegex,
   findMatchingRedirect,
   loadRedirects,
@@ -87,6 +89,43 @@ describe('resolveOldUrl against real repo pages', () => {
   });
 });
 
+describe('resolveUrlFromContent', () => {
+  it('resolves from raw content without touching git', () => {
+    const content = '---\nid: my-page\n---\nBody';
+    assert.strictEqual(
+      resolveUrlFromContent('docs/cloud/foo.mdx', content),
+      '/cloud/my-page',
+    );
+  });
+
+  it('falls back to the file path when content is null', () => {
+    assert.strictEqual(
+      resolveUrlFromContent('docs/cloud/foo.mdx', null),
+      '/cloud/foo',
+    );
+  });
+});
+
+describe('getLiveUrls', () => {
+  const liveUrls = getLiveUrls('HEAD');
+
+  it('includes URLs served by real pages at HEAD', () => {
+    assert.ok(liveUrls.has('/cloud/terraform-provider'));
+    assert.ok(liveUrls.has('/cloud'));
+  });
+
+  it('resolves frontmatter id/slug overrides into live URLs', () => {
+    // docs/develop/go/set-up.mdx has id: set-up-your-local-go
+    assert.ok(liveUrls.has('/develop/go/set-up-your-local-go'));
+    // The bare file path is NOT the served URL.
+    assert.ok(!liveUrls.has('/develop/go/set-up'));
+  });
+
+  it('does not contain paths for pages that do not exist', () => {
+    assert.ok(!liveUrls.has('/this/page/never/existed'));
+  });
+});
+
 describe('vercelPatternToRegex', () => {
   it('matches wildcard patterns', () => {
     const regex = vercelPatternToRegex('/production-deployment/cloud/:path*');
@@ -125,5 +164,35 @@ describe('findMatchingRedirect', () => {
       redirects,
     );
     assert.strictEqual(match, undefined);
+  });
+
+  it('redirects the old AI Cookbook markdown landing page', () => {
+    const redirects = loadRedirects();
+    const match = findMatchingRedirect('/ai-cookbook.md', redirects);
+    assert.ok(match, 'expected /ai-cookbook.md to have a redirect');
+    assert.strictEqual(match.source, '/ai-cookbook.md');
+    assert.strictEqual(match.destination, '/ai/cookbook.md');
+  });
+
+  it('redirects renamed AI Cookbook recipe markdown URLs to the new slug', () => {
+    const redirects = loadRedirects();
+    const match = findMatchingRedirect(
+      '/ai-cookbook/basic-python.md',
+      redirects,
+    );
+    assert.ok(match, 'expected /ai-cookbook/basic-python.md to have a redirect');
+    assert.strictEqual(match.source, '/ai-cookbook/basic-python.md');
+    assert.strictEqual(
+      match.destination,
+      '/ai/cookbook/hello-world-openai-responses-python.md',
+    );
+  });
+
+  it('redirects the even older /cookbook.md landing page', () => {
+    const redirects = loadRedirects();
+    const match = findMatchingRedirect('/cookbook.md', redirects);
+    assert.ok(match, 'expected /cookbook.md to have a redirect');
+    assert.strictEqual(match.source, '/cookbook.md');
+    assert.strictEqual(match.destination, '/ai/cookbook.md');
   });
 });

@@ -3,6 +3,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { compileRule, compileRedirects } = require('./redirect-utils');
 
 const VERCEL_JSON = path.join(process.cwd(), 'vercel.json');
 
@@ -36,8 +37,7 @@ function getFileContentAtRef(filePath, ref) {
   }
 }
 
-function resolveOldUrl(filePath, ref) {
-  const content = getFileContentAtRef(filePath, ref);
+function resolveUrlFromContent(filePath, content) {
   if (content) {
     const fm = extractFrontMatter(content);
 
@@ -55,6 +55,29 @@ function resolveOldUrl(filePath, ref) {
     }
   }
   return filePathToUrlPath(filePath);
+}
+
+function resolveOldUrl(filePath, ref) {
+  return resolveUrlFromContent(filePath, getFileContentAtRef(filePath, ref));
+}
+
+// Build the set of URLs still served by docs pages at a given ref. A deleted
+// file whose URL is covered here does not need a redirect, because some other
+// current page still serves that URL (e.g. a page.mdx whose content was split
+// into page/index.mdx plus siblings — git reports the old file as a plain
+// delete rather than a rename, but the URL stays live).
+function getLiveUrls(ref) {
+  const output = execSync(`git ls-tree -r --name-only ${ref} -- docs/`, {
+    encoding: 'utf8',
+    maxBuffer: 1024 * 1024 * 64,
+  });
+
+  const urls = new Set();
+  for (const filePath of output.split('\n').filter((l) => l.trim())) {
+    if (!/\.(mdx|md)$/.test(filePath)) continue;
+    urls.add(resolveOldUrl(filePath, ref));
+  }
+  return urls;
 }
 
 function getMovedOrDeletedDocFiles(baseSha) {
@@ -84,38 +107,21 @@ function getMovedOrDeletedDocFiles(baseSha) {
   return { files, mergeBase };
 }
 
+// Compile a vercel.json redirect source with the same path-to-regexp version
+// Vercel uses, so a rule matches here exactly when it matches in production.
 function vercelPatternToRegex(pattern) {
-  // Convert Vercel redirect patterns like /foo/:path* to a regex.
-  // Replace named params before escaping so the colons and wildcards are
-  // consumed first, then escape whatever literal characters remain.
-  const tokens = [];
-  const tokenized = pattern
-    .replace(/:([a-zA-Z]+)\*/g, () => {
-      tokens.push('.+');
-      return `__TOKEN_${tokens.length - 1}__`;
-    })
-    .replace(/:([a-zA-Z]+)/g, () => {
-      tokens.push('[^/]+');
-      return `__TOKEN_${tokens.length - 1}__`;
-    });
-
-  let regexStr = tokenized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  for (let i = 0; i < tokens.length; i++) {
-    regexStr = regexStr.replace(`__TOKEN_${i}__`, tokens[i]);
-  }
-  return new RegExp(`^${regexStr}$`);
+  return compileRule({ source: pattern, destination: '/' }, 0).regex;
 }
 
 function loadRedirects() {
   const config = JSON.parse(fs.readFileSync(VERCEL_JSON, 'utf8'));
-  return (config.redirects || []).map((r) => ({
-    source: r.source,
-    regex: vercelPatternToRegex(r.source),
-  }));
+  return compileRedirects(config.redirects || []);
 }
 
+// Redirects whose source doesn't compile have no regex; bin/validate-redirects.js
+// reports those.
 function findMatchingRedirect(urlPath, redirects) {
-  return redirects.find((r) => r.regex.test(urlPath));
+  return redirects.find((r) => !r.conditional && r.regex && r.regex.test(urlPath));
 }
 
 function main() {
@@ -133,17 +139,16 @@ function main() {
   }
 
   const redirects = loadRedirects();
+  const liveUrls = getLiveUrls('HEAD');
   const missing = [];
 
   for (const file of movedFiles) {
     const oldUrl = resolveOldUrl(file.oldPath, mergeBase);
 
-    // A rename that preserves the URL (e.g. page.mdx -> page/index.mdx)
-    // does not need a redirect.
-    if (file.type === 'renamed') {
-      const newUrl = resolveOldUrl(file.newPath, 'HEAD');
-      if (oldUrl === newUrl) continue;
-    }
+    // If any current page still serves this URL, no redirect is needed. This
+    // covers both a rename that preserves the URL (page.mdx -> page/index.mdx)
+    // and a content split where git reports the old file as a plain delete.
+    if (liveUrls.has(oldUrl)) continue;
 
     const match = findMatchingRedirect(oldUrl, redirects);
 
@@ -181,7 +186,9 @@ function main() {
 module.exports = {
   filePathToUrlPath,
   extractFrontMatter,
+  resolveUrlFromContent,
   resolveOldUrl,
+  getLiveUrls,
   vercelPatternToRegex,
   findMatchingRedirect,
   loadRedirects,

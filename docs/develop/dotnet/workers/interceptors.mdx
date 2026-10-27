@@ -1,13 +1,11 @@
 ---
 id: interceptors
-title: Interceptors - .NET SDK
+title: Interceptors
 sidebar_label: Interceptors
 description:
   Implement Interceptors in the Temporal .NET SDK to manage inbound and outbound SDK calls, enhance tracing, and add
   authorization to your Workflows and Activities.
 toc_max_heading_level: 3
-keywords:
-  - interceptors
 tags:
   - Interceptors
   - .NET SDK
@@ -27,7 +25,7 @@ Concretely, there are five categories of inbound and outbound calls that you can
 
 | | [Outbound Client](https://dotnet.temporal.io/api/Temporalio.Client.Interceptors.ClientOutboundInterceptor.html) | [Inbound Workflow](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.WorkflowInboundInterceptor.html) | [Outbound Workflow](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.WorkflowOutboundInterceptor.html) | [Inbound Activity](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.ActivityInboundInterceptor.html) | [Outbound Activity](https://dotnet.temporal.io/api/Temporalio.Worker.Interceptors.ActivityOutboundInterceptor.html) |
 | --- | --- | --- | --- | --- | --- |
-| **Description** | Wraps calls from your application to the Temporal Client to start a Workflow or send [Messages](/encyclopedia/workflow-message-passing/) to it | Wraps calls arriving into a [Workflow Execution](/workflow-execution), such as executing the Workflow, handling [Messages](/encyclopedia/workflow-message-passing/) | Wraps calls a [Workflow](/workflow-definition) makes to the SDK, such as scheduling [Activities](/activities), starting [Child Workflows](/child-workflows), and invoking [Nexus Operations](/nexus) | Wraps calls arriving into an [Activity Execution](/activity-execution) | Wraps calls an [Activity](/activities) makes to the SDK, such as sending [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) and reading Activity info |
+| **Description** | Wraps calls from your application to the Temporal Client to start a Workflow or send [Messages](/encyclopedia/workflow-message-passing) to it | Wraps calls arriving into a [Workflow Execution](/workflow-execution), such as executing the Workflow, handling [Messages](/encyclopedia/workflow-message-passing) | Wraps calls a [Workflow](/workflow-definition) makes to the SDK, such as scheduling [Activities](/activities), starting [Child Workflows](/child-workflows), and invoking [Nexus Operations](/nexus) | Wraps calls arriving into an [Activity Execution](/activity-execution) | Wraps calls an [Activity](/activities) makes to the SDK, such as sending [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) and reading Activity info |
 | **Runs on** | Client | Worker (Workflow sandbox) | Worker (Workflow sandbox) | Worker (Activity context) | Worker (Activity context) |
 | **Example methods** | `StartWorkflowAsync()`, `WorkflowHandle.SignalAsync()`, `ListWorkflowsAsync()` | `ExecuteWorkflowAsync()`, `WorkflowHandle.QueryAsync()`, `WorkflowHandle.SignalAsync ()`, `WorkflowHandle.ExecuteUpdateAsync()` | `StartActivityAsync()`, `StartChildWorkflowAsync()`, `ChildWorkflowHandle.SignalAsync()`, `StartNexusOperationAsync()` | `ExecuteActivityAsync()` | `Info()`, `Heartbeat()` |
 

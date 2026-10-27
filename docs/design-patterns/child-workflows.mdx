@@ -3,15 +3,19 @@ id: child-workflows
 title: "Child Workflows Pattern"
 sidebar_label: "Child Workflows"
 description: "Decomposes complex Workflows into smaller, reusable units. Each child has an independent Workflow ID, history, and lifecycle."
+tags:
+  - Design Patterns
+  - Child Workflows
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { AnnotatedCode } from '@site/src/components';
 
 ## Overview
 
 Child Workflows enable decomposition of complex business logic into smaller, reusable Workflow units.
-Each child executes as an independent Workflow with its own Workflow ID, event history (50K event limit), and lifecycle.
+Each child executes as an independent Workflow with its own Workflow ID, event history (51,200 event limit), and lifecycle.
 Unlike Activities which execute code, Child Workflows orchestrate processes and provide Workflow-level semantics: independent tracking, querying, timeouts, and the ability to outlive the parent.
 
 Key capabilities:
@@ -167,13 +171,33 @@ In Go, `workflow.ExecuteChildWorkflow()` returns a `ChildWorkflowFuture`, and ca
 ### Asynchronous Child Workflow
 
 The following example starts a Child Workflow asynchronously with an ABANDON policy.
-The parent receives the child's execution info without waiting for completion:
+The parent receives the child's execution info without waiting for completion. Select a concept to highlight the matching lines:
 
 <Tabs groupId="language" queryString>
 <TabItem value="python" label="Python">
-
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Parent Close Policy',
+      description:
+        'Controls what happens to the Child Workflow when the parent closes. ABANDON lets the child keep running after the parent completes.',
+      lines: [14],
+    },
+    {
+      label: 'Workflow Id',
+      description:
+        'Gives the Child Workflow a stable identity for tracking, querying, and deduplication in the UI.',
+      lines: [13],
+    },
+    {
+      label: 'Async start',
+      description:
+        'Starts the Child Workflow without waiting for it to finish. The parent continues after the child has started.',
+      lines: [10, 11, 12, 13, 14, 15],
+    },
+  ]}
+>
 ```python
-# workflows.py
 from temporalio import workflow
 from temporalio.workflow import ParentClosePolicy
 
@@ -183,7 +207,6 @@ from child_workflows import ChildWorkflow
 class ParentWorkflow:
     @workflow.run
     async def run(self, input: str) -> str:
-        # Async call - returns handle once child starts
         handle = await workflow.start_child_workflow(
             ChildWorkflow.run,
             input,
@@ -191,20 +214,34 @@ class ParentWorkflow:
             parent_close_policy=ParentClosePolicy.ABANDON,
         )
 
-        # Parent continues without waiting for child completion
         return handle.id
 ```
-
+</AnnotatedCode>
 </TabItem>
 <TabItem value="go" label="Go">
-
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Parent Close Policy',
+      description:
+        'Controls what happens to the Child Workflow when the parent closes. ABANDON lets the child keep running after the parent completes.',
+      lines: [3],
+    },
+    {
+      label: 'Workflow Id',
+      description:
+        'Gives the Child Workflow a stable identity for tracking, querying, and deduplication in the UI.',
+      lines: [14],
+    },
+    {
+      label: 'Async start',
+      description:
+        'Starts the Child Workflow without waiting for it to finish. The parent continues after the child has started.',
+      lines: [7],
+    },
+  ]}
+>
 ```go
-// parent_workflow.go
-import (
-    enumspb "go.temporal.io/api/enums/v1"
-    "go.temporal.io/sdk/workflow"
-)
-
 func ParentWorkflow(ctx workflow.Context, input string) (string, error) {
     cwo := workflow.ChildWorkflowOptions{
         ParentClosePolicy: enumspb.PARENT_CLOSE_POLICY_ABANDON,
@@ -213,22 +250,40 @@ func ParentWorkflow(ctx workflow.Context, input string) (string, error) {
 
     childFuture := workflow.ExecuteChildWorkflow(ctx, ChildWorkflow, input)
 
-    // Wait for child to start, not complete
     var childWE workflow.Execution
     if err := childFuture.GetChildWorkflowExecution().Get(ctx, &childWE); err != nil {
         return "", err
     }
 
-    // Parent continues without waiting for child completion
     return childWE.ID, nil
 }
 ```
-
+</AnnotatedCode>
 </TabItem>
 <TabItem value="java" label="Java">
-
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Parent Close Policy',
+      description:
+        'Controls what happens to the Child Workflow when the parent closes. ABANDON lets the child keep running after the parent completes.',
+      lines: [6],
+    },
+    {
+      label: 'Workflow Id',
+      description:
+        'Gives the Child Workflow a stable identity for tracking, querying, and deduplication in the UI.',
+      lines: [5],
+    },
+    {
+      label: 'Async start',
+      description:
+        'Starts the Child Workflow without waiting for it to finish. The parent continues after the child has started.',
+      lines: [11],
+    },
+  ]}
+>
 ```java
-// ParentWorkflowImpl.java
 public class ParentWorkflowImpl implements ParentWorkflow {
   @Override
   public WorkflowExecution execute(String input) {
@@ -239,21 +294,39 @@ public class ParentWorkflowImpl implements ParentWorkflow {
 
     ChildWorkflow child = Workflow.newChildWorkflowStub(ChildWorkflow.class, options);
 
-    // Async call - returns immediately
     Async.function(child::processData, input);
 
-    // Get child execution info without waiting for completion
     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-    return childExecution.get(); // Blocks only until child starts
+    return childExecution.get();
   }
 }
 ```
-
+</AnnotatedCode>
 </TabItem>
 <TabItem value="typescript" label="TypeScript">
-
+<AnnotatedCode
+  annotations={[
+    {
+      label: 'Parent Close Policy',
+      description:
+        'Controls what happens to the Child Workflow when the parent closes. ABANDON lets the child keep running after the parent completes.',
+      lines: [7],
+    },
+    {
+      label: 'Workflow Id',
+      description:
+        'Gives the Child Workflow a stable identity for tracking, querying, and deduplication in the UI.',
+      lines: [10],
+    },
+    {
+      label: 'Async start',
+      description:
+        'Starts the Child Workflow without waiting for it to finish. The parent continues after the child has started.',
+      lines: [5, 6, 7, 8],
+    },
+  ]}
+>
 ```typescript
-// workflows.ts
 import { startChild, ParentClosePolicy } from '@temporalio/workflow';
 import { childWorkflow } from './child-workflows';
 
@@ -263,12 +336,10 @@ export async function parentWorkflow(input: string): Promise<string> {
     parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON,
   });
 
-  // Parent continues without waiting for child completion
-  // childHandle.workflowId and childHandle.firstExecutionRunId are available
   return childHandle.workflowId;
 }
 ```
-
+</AnnotatedCode>
 </TabItem>
 </Tabs>
 
@@ -662,7 +733,7 @@ The key distinction is that Activities are for executing code (especially extern
 ## Benefits and trade-offs
 
 Child Workflows provide modularity by breaking complex logic into reusable units.
-Each child is a first-class Workflow with its own ID for tracking, its own 50K event history limit, and its own execution timeout configuration.
+Each child is a first-class Workflow with its own ID for tracking, its own 51,200-event history limit, and its own execution timeout configuration.
 Children can outlive parents with the ABANDON policy, and you can start multiple children concurrently.
 Child failures do not automatically fail the parent, and the same Child Workflow can be reused by multiple parents.
 
@@ -696,19 +767,26 @@ Starting a Child Workflow has more overhead than starting an Activity.
 ## Common pitfalls
 
 - **Treating Child Workflows like Activities.** Child Workflows are for orchestration, not for executing external code. If you only need to call an API or run a function, use an Activity instead.
-- **Spawning unbounded children in a loop.** Starting thousands of Child Workflows without batching can overwhelm the Temporal Service and bloat the parent's event history. Use fixed-size batches or a sliding window.
+- **Spawning unbounded children in a loop.** Starting thousands of Child Workflows without batching can overwhelm the Temporal Service and bloat the parent's event history. Temporal enforces a hard limit of 2,000 pending (in-flight) children per parent, but the [recommended cap](/child-workflows#when-to-use-child-workflows) is lower: a single parent should not spawn more than 1,000 Child Workflow Executions in total, since each one adds more history to the parent than an Activity would. Use fixed-size batches or a sliding window.
 - **Ignoring the Parent Close Policy.** The default policy is TERMINATE, which kills children when the parent closes. If children must outlive the parent, set the policy to ABANDON explicitly.
 - **Using synchronous calls when async is needed.** Calling a Child Workflow synchronously blocks the parent until the child completes. For long-running children, use the async API (`Async.function()` in Java, `startChild()` in TypeScript, `start_child_workflow()` in Python, or collect Futures without calling `.Get()` in Go) to avoid stalling the parent.
 - **Omitting Workflow IDs.** Without explicit Workflow IDs, you lose the ability to deduplicate or look up Child Workflows by a meaningful identifier. Generate deterministic IDs based on business keys.
 - **Not handling child failures.** Child Workflow failures propagate to the parent as a Child Workflow Failure (`ChildWorkflowFailure` in TypeScript and Java, `ChildWorkflowError` in Python, `ChildWorkflowExecutionError` in Go), with the underlying cause in its `cause` field. If you do not catch and handle them, the parent Workflow fails as well.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Parallel Execution](/design-patterns/parallel-execution)**: Running multiple children concurrently.
 - **[Continue-As-New](/design-patterns/continue-as-new)**: Child Workflows can use Continue-As-New independently.
 - **[Saga Pattern](/design-patterns/saga-pattern)**: Children as compensatable transactions.
 
-## Sample code
+### References
+
+- [Parent Close Policy](/parent-close-policy): Canonical reference for `TERMINATE`, `ABANDON`, and `REQUEST_CANCEL`, including the default and how each behaves during a Continue-As-New.
+- [Child Workflows (Go)](/develop/go/workflows/child-workflows) · [Child Workflows (Java)](/develop/java/workflows/child-workflows) · [Child Workflows (Python)](/develop/python/workflows/child-workflows) · [Child Workflows (TypeScript)](/develop/typescript/workflows/child-workflows): Official per-SDK how-to guides.
+
+### Sample code
 
 **Java:**
 - [HelloChild](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/hello/HelloChild.java) — Basic synchronous Child Workflow.

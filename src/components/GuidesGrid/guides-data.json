@@ -1,5 +1,14 @@
 [
   {
+    "name": "Durable agent on AgentCore",
+    "description":
+      "Run a long-lived Strands agent with Temporal and serverless Worker compute on Amazon Bedrock AgentCore.",
+    "tags": ["AI agents"],
+    "sdk": "Python",
+    "href": "/guides/durable-agent-on-agentcore"
+  },
+
+  {
    "name": "Customer loyalty program",
    "description":
       "How to run a customer loyalty program with the entity pattern and durable workflows.",
@@ -14,7 +23,7 @@
       "Build business processes that pause on errors and recover without restarting.",
     "tags": ["Saga Pattern"],
     "sdk": "TypeScript",
-    "href": "/guides/saga-pattern"
+    "href": "/guides/recover-without-restart"
   },
 
   {
@@ -78,6 +87,15 @@
     "tags": ["Workflow Management"],
     "sdk": "Python",
     "href": "/guides/lock-shared-resources"
+  },
+
+  {
+    "name": "Migrate from Celery",
+    "description":
+      "Convert a Celery task queue to Temporal Standalone Activities, with retries and monitoring.",
+    "tags": ["Migration"],
+    "sdk": "Python",
+    "href": "/guides/celery-to-standalone-activity"
   }
 
 

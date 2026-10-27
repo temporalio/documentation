@@ -1,22 +1,14 @@
 ---
 id: versioning
-title: Versioning - Java SDK
+title: Versioning
 sidebar_label: Versioning
 slug: /develop/java/workflows/versioning
 toc_max_heading_level: 2
 description: The Temporal Platform ensures deterministic Workflow code, offering versioning features in the Java SDK with Workflow Patching APIs and Worker Build Ids for efficient updates.
-keywords:
-  - determinism
-  - java sdk
-  - patching
-  - versioning
-  - workflows
 tags:
   - Workflows
   - Versioning
   - Patching
-  - Java SDK
-  - Temporal SDKs
 ---
 
 Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
@@ -30,7 +22,7 @@ There are two primary Versioning methods that you can use:
 - [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 
 :::danger
-Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/java/worker-versioning-legacy) docs if needed. 
+Support for the experimental Worker Versioning method before 2025 was scheduled for removal from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/java/worker-versioning-legacy) docs if needed.
 :::
 
 ## Worker Versioning
@@ -39,7 +31,7 @@ Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-
 
 ## Versioning with Patching {/* #patching */}
 
-### Patching with GetVersion
+### Patching with `getVersion`
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
@@ -70,7 +62,7 @@ Imagine you want to revise this Workflow by adding another Activity to calculate
 If an existing Workflow Execution was started by the original version of the Workflow code, where there was no `calculateChecksum()` Activity, and then resumed running on a new Worker where this Activity had been added, the server side Event History would be out of sync.
 This would cause the Workflow to fail with a nondeterminism error.
 
-To resolve this, you can use `workflow.GetVersion()` to patch to your Workflow:
+To resolve this, you can use `Workflow.getVersion()` to patch your Workflow:
 
 ```java
 public void processFile(Arguments args) {
@@ -98,7 +90,7 @@ public void processFile(Arguments args) {
 }
 ```
 
-When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `GetVersion` for this change id — `checksumAdded` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
+When `Workflow.getVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `getVersion` for this change ID — `checksumAdded` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
 
 After all the Workflow Executions prior to version 1 have left retention, you can remove the code for that version.
 
@@ -191,7 +183,7 @@ Workflow.upsertTypedSearchAttributes(TEMPORAL_CHANGE_VERSION.valueSet(list));
 ```
 
 Patching allows you to make changes to currently running Workflows.
-It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+It introduces compatible changes without causing non-determinism errors.
 
 ### Workflow cutovers
 

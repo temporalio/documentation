@@ -3,17 +3,6 @@ id: metrics-reference
 title: OpenMetrics metrics reference
 sidebar_label: Metrics reference
 description: Detailed API documentation for the Temporal Cloud OpenMetrics endpoint.
-keywords:
-  - temporal cloud metrics configuration
-  - configure metrics endpoint
-  - temporal cloud observability
-  - tcld CLI guide
-  - temporal cloud UI setup
-  - grafana temporal integration
-  - prometheus metrics endpoint
-  - openmetrics endpoint
-  - observability tools integration
-  - openmetrics api
 tags:
   - Metrics
   - OpenMetrics
@@ -31,7 +20,7 @@ This document describes all metrics available from the Temporal Cloud OpenMetric
 All metrics are exposed as OpenMetrics gauges, but represent different measurement types:
 
 * *Rate Metrics*: per-second rate of the aggregated values  
-* *Value Metrics*: The most recent aggregate value within a look-back window (e.g. backlogs, limits)  
+* *Value Metrics*: The most recent aggregate value within a look-back window (for example, backlogs, limits)  
 * *Percentile Metrics*: Pre-calculated aggregated latency percentiles in seconds
 
 :::note
@@ -68,8 +57,10 @@ When an opt-in label is enabled, it is populated on **all metrics** that support
 | Label | Available on | Description |
 | ----- | ----- | ----- |
 | `temporal_activity_type` | Activity metrics | The activity type name |
-| `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment name |
-| `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment Version Build ID |
+| `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count`, `temporal_cloud_v1_approximate_backlog_age` | The Worker Deployment name |
+| `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count`, `temporal_cloud_v1_approximate_backlog_age` | The Worker Deployment Version Build ID |
+| `nexus_service` | Nexus metrics | The Nexus Service name |
+| `nexus_operation` | Nexus metrics | The Nexus Operation name |
 
 For example, to include `temporal_activity_type` in your scrape results:
 
@@ -321,7 +312,7 @@ These metrics could have high cardinality depending on number of activity types,
 
 :::note Standalone Activities
 
-Standalone Activities are Activity Executions that are started independently, without an associated Workflow. For Activity metrics that include the `temporal_workflow_type` label, Standalone Activities use the placeholder value `"__standalone_activity"`.
+[Standalone Activities](/standalone-activity) are Activity Executions that are started independently, without an associated Workflow. For Activity metrics that include the `temporal_workflow_type` label, Standalone Activities use the placeholder value `"__standalone_activity"`.
 
 :::
 
@@ -515,6 +506,362 @@ The 99th percentile activity schedule-to-close latency in seconds.
 
 **Type**: Latency
 
+### Nexus metrics
+
+:::note Public Preview
+
+The Temporal Cloud Nexus metrics in this section are in
+[Public Preview](/evaluate/product-release-stages#public-preview).
+
+:::
+
+Nexus operation metrics measure calls from the caller side. For these metrics, `temporal_namespace` identifies the caller Namespace.
+Nexus request metrics measure requests on the handler side. For these metrics, `temporal_namespace` identifies the handler Namespace.
+
+:::note Standalone Nexus Operations
+
+Standalone Nexus Operations are Nexus Operation Executions that are started independently, without a caller Workflow. For Nexus Operation metrics that include the `temporal_workflow_type` label, Standalone Nexus Operations use the placeholder value `__temporal_standalone_nexus_operation__`.
+
+:::
+
+:::note Nexus latency intervals
+
+- Request latency measures how long the handler takes to process one Nexus request. For a synchronous start request, it ends when the handler returns the result. For an asynchronous start request, it ends when the handler finishes the start request and doesn't continue until the Operation completes.
+- Schedule-to-close latency measures from when the caller schedules an Operation until it reaches a terminal state. It includes Operations that complete synchronously and asynchronously.
+- Schedule-to-start latency measures from when the caller schedules an Operation until it starts asynchronously. For an Operation that completes synchronously or closes without starting, Temporal records this latency when the Operation closes, and it equals schedule-to-close latency.
+- Start-to-close latency measures from when an asynchronous Operation starts until it reaches a terminal state. Temporal doesn't record this latency for an Operation that completes synchronously or closes without starting.
+
+The Operation metric labels don't distinguish synchronous from asynchronous Operations. Schedule-to-close and schedule-to-start series can contain both, so you can't filter their samples by completion type.
+
+:::
+
+:::caution High Cardinality
+
+Nexus metrics could have high cardinality depending on the number of Nexus Endpoints, Services, Operations, and callers.
+The `nexus_service` and `nexus_operation` labels are [opt-in](#opt-in-labels) to help manage cardinality.
+
+:::
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile time from when a Nexus Operation is scheduled until it reaches a terminal state, in seconds. This metric includes Operations that complete synchronously and asynchronously.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_start\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_start\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_schedule\_to\_start\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile time from when a Nexus Operation is scheduled until it starts asynchronously, in seconds. For an Operation that completes synchronously or closes without starting, this duration equals its schedule-to-close latency.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_start\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_start\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_start\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile time from when an asynchronous Nexus Operation starts until it reaches a terminal state, in seconds. This metric isn't recorded for an Operation that completes synchronously or closes without starting.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_operation\_success\_count
+
+Successfully completed Nexus Operations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_operation\_cancel\_count
+
+Canceled Nexus Operations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_operation\_terminate\_count
+
+Nexus Operations terminated before successful completion per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_operation\_fail\_count
+
+Failed Nexus Operations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_operation\_timeout\_count
+
+Nexus Operations that timed out before completing execution per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `temporal_workflow_type` | The Workflow Type |
+| `timeout_type` | The timeout type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_request\_count
+
+Nexus requests received by the Nexus Endpoint per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_request\_error\_count
+
+Failed Nexus requests per second.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_nexus\_request\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_request\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_nexus\_request\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile time the handler takes to process one Nexus request, in seconds. For an asynchronous start request, the measurement ends when the handler finishes the request and doesn't continue until the Operation completes.
+
+| Label | Description |
+| ----- | ----- |
+| `nexus_endpoint` | The Nexus Endpoint name |
+| `nexus_caller_type` | The Nexus caller type |
+| `nexus_service` | The Nexus Service name (opt-in) |
+| `nexus_operation` | The Nexus Operation name (opt-in) |
+
+**Type**: Latency
+
 ### Task Queue Metrics
 
 :::caution High Cardinality
@@ -533,7 +880,7 @@ It can overcount because invalid or expired Tasks, like from cancelled, terminat
 
 It can also reset to zero on an idle Task Queue. If no Worker polls, no new Tasks are added, and no other Task Queue calls occur (such as `DescribeTaskQueue` or `UpdateTaskQueueConfig`) for approximately 5 minutes. The Task Queue is unloaded from memory.
 Infrequent metadata updates and database time-to-live settings can also cause this metric to drift at a smaller magnitude.
-See [backlog accuracy limitations](/develop/worker-performance#backlog-accuracy-limitations) for details.
+See [backlog accuracy limitations](/develop/worker-performance/task-queues#backlog-accuracy-limitations) for details.
 :::
 
 | Label | Description |
@@ -541,6 +888,24 @@ See [backlog accuracy limitations](/develop/worker-performance#backlog-accuracy-
 | `temporal_task_queue` | The task queue name |
 | `task_type` | Type of task: `workflow` or `activity` |
 | `task_priority` | The task priority |
+| `temporal_worker_deployment_name` | The Worker Deployment name (opt-in) |
+| `temporal_worker_build_id` | The Worker Deployment Version Build ID (opt-in) |
+
+**Type**: Value
+
+#### temporal\_cloud\_v1\_approximate\_backlog\_age
+
+The approximate age, in seconds, of the oldest task in a task queue backlog.
+
+:::note Known accuracy limitations
+This metric is approximate and is subject to the same limitations as `temporal_cloud_v1_approximate_backlog_count`.
+See [backlog accuracy limitations](/develop/worker-performance/task-queues#backlog-accuracy-limitations) for details.
+:::
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `task_type` | Type of task: `workflow` or `activity` |
 | `temporal_worker_deployment_name` | The Worker Deployment name (opt-in) |
 | `temporal_worker_build_id` | The Worker Deployment Version Build ID (opt-in) |
 
@@ -607,7 +972,7 @@ The total number of actions performed per second. Actions with `is_background=fa
 
 | Label | Description |
 | ----- | ----- |
-| `is_background` | Whether the action was background: `true` or `false`. Background actions (e.g. History export) do not count toward the action rate limit |
+| `is_background` | Whether the action was background: `true` or `false`. Background actions do not count toward the action rate limit |
 | `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
 :::note
@@ -618,11 +983,15 @@ Does not include the `region` label. Actions are scoped to the Namespace level.
 
 #### temporal\_cloud\_v1\_billable\_action\_count
 
-The number of billable actions per second, broken down by action type and Workflow Type. Not all billable actions are included in this metric; see [Actions](/cloud/actions) for details on exceptions.
+The number of billable actions per second, broken down by action type and Workflow Type. Not all billable actions are included in this metric; see [Actions](/evaluate/cloud/actions) for details on exceptions.
+
+This metric is an estimate and can differ by up to 5% from the absolute Action counts recorded by metering. See
+[Compare Action metrics with metering](/evaluate/cloud/actions#compare-action-metrics-with-metering) for guidance on
+metered totals.
 
 | Label | Description |
 | ----- | ----- |
-| `action_type` | The [action](/cloud/actions) type |
+| `action_type` | The [action](/evaluate/cloud/actions) type |
 | `temporal_workflow_type` | The workflow type |
 
 :::caution High Cardinality
@@ -667,27 +1036,55 @@ Operations throttled due to rate limits per second. See [Monitoring Trends Again
 
 #### temporal\_cloud\_v1\_schedule\_action\_success\_count
 
-Successfully executed scheduled workflows per second.
+Successful scheduled executions per second.
 
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_schedule\_buffer\_overruns\_count
 
-The rate of schedule buffer overruns when using `BUFFER_ALL` overlap policy.
+Scheduled executions dropped per second because the Schedule's internal Action buffer is full.
 
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_schedule\_missed\_catchup\_window\_count
 
-The rate of missed schedule executions outside the catchup window.
+Scheduled executions permanently dropped per second because they fell outside the Catchup Window. This metric is not emitted for backfills.
 
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_schedule\_rate\_limited\_count
 
-The rate of scheduled workflows delayed due to rate limiting.
+[DEPRECATED] Scheduled executions delayed per second due to rate limiting. This metric is in the process of being replaced by standard request per second rate limit monitoring with dynamic scaling. This metric will be removed when this change is rolled out to all of Temporal Cloud.
 
 **Type**: Rate
+
+#### temporal\_cloud\_v1\_schedule\_overlap\_skipped\_count
+
+Schedule executions dropped per second due to the overlap policy. This metric is emitted for `SKIP` when another execution is running or already selected, and for `BUFFER_ONE` when its single buffered slot is occupied. It can also be emitted during backfills that use `SKIP` or `BUFFER_ONE`. A sustained rate can indicate that executions are generated faster than they complete.
+
+| Label | Description |
+| ----- | ----- |
+| `schedule_overlap_policy` | The overlap policy that caused the execution to be dropped |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_schedule\_action\_e2e\_delay\_p50
+
+The 50th percentile total delay from an execution's scheduled time to actual start, in seconds. Includes overlap-policy wait. Not emitted for backfills.
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_schedule\_action\_e2e\_delay\_p95
+
+The 95th percentile total delay from an execution's scheduled time to actual start, in seconds. Includes overlap-policy wait. Not emitted for backfills.
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_schedule\_action\_e2e\_delay\_p99
+
+The 99th percentile total delay from an execution's scheduled time to actual start, in seconds. Includes overlap-policy wait. Not emitted for backfills.
+
+**Type**: Latency
 
 ### Replication Metrics
 
@@ -782,4 +1179,3 @@ Does not include the `region` label. Provisioned capacity is scoped to the Names
 :::
 
 **Type**: Value
-

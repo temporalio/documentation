@@ -1,11 +1,9 @@
 ---
 id: testing-suite
-title: Testing - TypeScript SDK
+title: Testing
 sidebar_label: Testing
 description: The Testing section of the Temporal Application development guide covers frameworks for Workflow and integration testing, including end-to-end, integration, unit testing, and time-skipping functionalities.
 toc_max_heading_level: 4
-keywords:
-  - testing
 tags:
   - Testing
   - TypeScript SDK
@@ -109,7 +107,7 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method that cancels the Activity Context.
 
 ```ts
-import { CancelledFailure, heatbeat, sleep } from '@temporalio/activity';
+import { CancelledFailure, heartbeat, sleep } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
 

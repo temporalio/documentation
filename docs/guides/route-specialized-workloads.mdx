@@ -1,7 +1,7 @@
 ---
 id: route-specialized-workloads
-title: Route specialized workloads
-description: Direct resource-intensive workloads to appropriate Task Queues to optimize resources
+title: Route GPU and high-memory Activities to dedicated Workers
+description: Give GPU, high-memory, and CPU Activities their own Task Queues so each runs only on Workers with the right hardware, shown with a Python ML pipeline.
 sidebar_label: Route specialized workloads
 toc_max_heading_level: 3
 author: Cecil Phillip
@@ -107,7 +107,7 @@ This implementation requires code changes, Worker configuration, and deployment 
 
 ## Architecture diagram(s)
 
-### Resource-Based routing architecture
+### Resource-based routing architecture
 
 ```mermaid
 flowchart TB
@@ -668,11 +668,12 @@ Your application now intelligently routes work based on resource requirements, e
 ## Related resources
 
 ### Official documentation
-- [Temporal Documentation - Task Routing](https://docs.temporal.io/task-routing)
-- [Temporal Best Practices - Separate Task Queues](https://docs.temporal.io/best-practices/worker#separate-task-queues-logically)
+- [Temporal Documentation - Task Routing](/task-routing)
+- [Temporal Best Practices - Separate Task Queues](/best-practices/worker#separate-task-queues-logically)
 - [Python SDK Worker Configuration](https://python.temporal.io/temporalio.worker.Worker.html)
 
 ### Related patterns
+- [Worker-Specific Task Queues](/design-patterns/worker-specific-taskqueue) - Pattern catalog reference for routing Activities to a specific Worker via a dedicated Task Queue
 - [Separate Task Queues - Worker Affinity](worker-execution-affinity) - For Activities that must run on the same Worker instance
 - [Separate Task Queues - Rate Limiting](rate-limit-downstream-apis) - For protecting downstream APIs with rate limits
 

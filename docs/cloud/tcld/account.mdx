@@ -5,9 +5,6 @@ sidebar_label: account
 description: Account operations
 slug: /cloud/tcld/account
 toc_max_heading_level: 4
-keywords:
-  - cli reference
-  - tcld
 tags:
   - Temporal Cloud
   - tcld
@@ -15,161 +12,29 @@ tags:
 
 {/* This is an auto-generated file. Do not edit directly. */}
 
-The `tcld account` command account operations.
+`tcld account`: Account operations.
 
 Alias: `a`
 
 - [tcld account get](#get)
 - [tcld account list-regions](#list-regions)
-- [tcld account metrics](#metrics)
 - [tcld account audit-log](#audit-log)
 
 ### get
 
-The `tcld account get` command get account information.
+`tcld account get`: Get account information.
 
 Alias: `g`
 
 ### list-regions
 
-The `tcld account list-regions` command lists all regions where the account can provision namespaces.
-
-Alias: `l`
-
-### metrics
-
-The `tcld account metrics` command configures the metrics endpoint for the Temporal Cloud Account.
-
-Alias: `m`
-
-- [tcld account metrics enable](#enable)
-- [tcld account metrics disable](#disable)
-- [tcld account metrics accepted-client-ca](#accepted-client-ca)
-
-#### enable
-
-The `tcld account metrics enable` command enables the metrics endpoint. CA Certificates *must* be configured prior to enabling the endpoint.
-
-#### disable
-
-The `tcld account metrics disable` command disables the metrics endpoint.
-
-#### accepted-client-ca
-
-The `tcld account metrics accepted-client-ca` command manages configuration of ca certificates for the external metrics endpoint.
-
-Alias: `ca`
-
-- [tcld account metrics accepted-client-ca add](#add)
-- [tcld account metrics accepted-client-ca remove](#remove)
-- [tcld account metrics accepted-client-ca set](#set)
-- [tcld account metrics accepted-client-ca list](#list)
-
-##### add
-
-The `tcld account metrics accepted-client-ca add` command add a new ca accepted client ca certificate.
-
-Alias: `a`
-
-###### --request-id
-
-The request-id to use for the asynchronous operation, if not set the server will assign one (optional)
-
-Alias: `r`
-
-###### --resource-version
-
-The resource-version (etag) to update from, if not set the cli will use the latest (optional)
-
-Alias: `v`
-
-###### --ca-certificate
-
-The base64 encoded ca certificate
-
-Alias: `c`
-
-###### --ca-certificate-file
-
-The path to the ca pem file
-
-Alias: `f`
-
-##### remove
-
-The `tcld account metrics accepted-client-ca remove` command remove existing certificates.
-
-Alias: `r`
-
-###### --request-id
-
-The request-id to use for the asynchronous operation, if not set the server will assign one (optional)
-
-Alias: `r`
-
-###### --resource-version
-
-The resource-version (etag) to update from, if not set the cli will use the latest (optional)
-
-Alias: `v`
-
-###### --ca-certificate
-
-The base64 encoded ca certificate
-
-Alias: `c`
-
-###### --ca-certificate-file
-
-The path to the ca pem file
-
-Alias: `f`
-
-###### --ca-certificate-fingerprint
-
-The fingerprint of to the ca certificate
-
-Alias: `fp`
-
-##### set
-
-The `tcld account metrics accepted-client-ca set` command set the accepted client ca certificate.
-
-Alias: `s`
-
-###### --request-id
-
-The request-id to use for the asynchronous operation, if not set the server will assign one (optional)
-
-Alias: `r`
-
-###### --resource-version
-
-The resource-version (etag) to update from, if not set the cli will use the latest (optional)
-
-Alias: `v`
-
-###### --ca-certificate
-
-The base64 encoded ca certificate
-
-Alias: `c`
-
-###### --ca-certificate-file
-
-The path to the ca pem file
-
-Alias: `f`
-
-##### list
-
-The `tcld account metrics accepted-client-ca list` command list the accepted client ca certificates currently configured for the account metrics endpoint.
+`tcld account list-regions`: Lists all regions where the account can provision namespaces.
 
 Alias: `l`
 
 ### audit-log
 
-The `tcld account audit-log` command audit log commands.
+`tcld account audit-log`: audit log commands.
 
 Alias: `al`
 
@@ -178,7 +43,7 @@ Alias: `al`
 
 #### kinesis
 
-The `tcld account audit-log kinesis` command manage Kinesis audit log sink.
+`tcld account audit-log kinesis`: Manage Kinesis audit log sink.
 
 Alias: `k`
 
@@ -191,7 +56,7 @@ Alias: `k`
 
 ##### create
 
-The `tcld account audit-log kinesis create` command create a kinesis audit log sink.
+`tcld account audit-log kinesis create`: Create a kinesis audit log sink.
 
 Alias: `c`
 
@@ -219,7 +84,7 @@ Alias: `re`
 
 ##### validate
 
-The `tcld account audit-log kinesis validate` command validate kinesis audit log sink.
+`tcld account audit-log kinesis validate`: Validate kinesis audit log sink.
 
 Alias: `v`
 
@@ -247,7 +112,7 @@ Alias: `re`
 
 ##### update
 
-The `tcld account audit-log kinesis update` command update a kinesis audit log sink.
+`tcld account audit-log kinesis update`: Update a kinesis audit log sink.
 
 Alias: `u`
 
@@ -285,7 +150,7 @@ Alias: `re`
 
 ##### get
 
-The `tcld account audit-log kinesis get` command get audit log sink.
+`tcld account audit-log kinesis get`: Get audit log sink.
 
 Alias: `g`
 
@@ -295,7 +160,7 @@ Provide a name for the sink
 
 ##### delete
 
-The `tcld account audit-log kinesis delete` command delete audit log sink.
+`tcld account audit-log kinesis delete`: Delete audit log sink.
 
 Alias: `d`
 
@@ -311,7 +176,7 @@ Alias: `v`
 
 ##### list
 
-The `tcld account audit-log kinesis list` command list audit log sinks.
+`tcld account audit-log kinesis list`: List audit log sinks.
 
 Alias: `l`
 
@@ -325,7 +190,7 @@ The page token for list operations
 
 #### pubsub
 
-The `tcld account audit-log pubsub` command manage PubSub audit log sink.
+`tcld account audit-log pubsub`: Manage PubSub audit log sink.
 
 Alias: `ps`
 
@@ -338,7 +203,7 @@ Alias: `ps`
 
 ##### create
 
-The `tcld account audit-log pubsub create` command create a pubsub audit log sink.
+`tcld account audit-log pubsub create`: Create a pubsub audit log sink.
 
 Alias: `c`
 
@@ -360,7 +225,7 @@ Alias: `tn`
 
 ##### validate
 
-The `tcld account audit-log pubsub validate` command validate pubsub audit log sink.
+`tcld account audit-log pubsub validate`: Validate pubsub audit log sink.
 
 Alias: `v`
 
@@ -382,7 +247,7 @@ Alias: `tn`
 
 ##### update
 
-The `tcld account audit-log pubsub update` command update a pubsub audit log sink.
+`tcld account audit-log pubsub update`: Update a pubsub audit log sink.
 
 Alias: `u`
 
@@ -414,7 +279,7 @@ Alias: `tn`
 
 ##### get
 
-The `tcld account audit-log pubsub get` command get audit log sink.
+`tcld account audit-log pubsub get`: Get audit log sink.
 
 Alias: `g`
 
@@ -424,7 +289,7 @@ Provide a name for the sink
 
 ##### delete
 
-The `tcld account audit-log pubsub delete` command delete audit log sink.
+`tcld account audit-log pubsub delete`: Delete audit log sink.
 
 Alias: `d`
 
@@ -440,7 +305,7 @@ Alias: `v`
 
 ##### list
 
-The `tcld account audit-log pubsub list` command list audit log sinks.
+`tcld account audit-log pubsub list`: List audit log sinks.
 
 Alias: `l`
 
@@ -451,4 +316,3 @@ The page size for list operations
 ###### --page-token
 
 The page token for list operations
-

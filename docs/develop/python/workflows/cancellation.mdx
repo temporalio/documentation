@@ -1,19 +1,10 @@
 ---
 id: cancellation
-title: Cancellation - Python SDK
+title: Cancellation
 sidebar_label: Cancellation
 description:
   Interrupt a Workflow Execution using the Temporal Python SDK. Choose between canceling for a graceful stop or
   terminating for a forceful stop.
-keywords:
-  - cancel workflow execution
-  - activity cancellation
-  - terminate workflow execution
-  - interrupt workflow execution
-  - graceful workflow cancelation
-  - forceful workflow termination
-  - workflow cancelation logic
-  - activity heartbeats
 tags:
   - Workflows
   - Python SDK
@@ -95,9 +86,9 @@ async def run_activity(input: ComposeArgsInput):
     return input.arg1 + input.arg2
 
 @workflow.defn
- class GreetingWorkflow:
-     @workflow.run
-     async def run(self, input: ComposeArgsInput) -> None:
+class GreetingWorkflow:
+    @workflow.run
+    async def run(self, input: ComposeArgsInput) -> None:
         activity_handle = workflow.start_activity(
             cancellable_activity,
             ComposeArgsInput(input.arg1, input.arg2),

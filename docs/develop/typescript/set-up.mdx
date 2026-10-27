@@ -1,12 +1,8 @@
 ---
 id: set-up-your-local-typescript
-title: Set up your local with the Typescript SDK
+title: Set up a local development environment with the TypeScript SDK
 sidebar_label: Quickstart
 description: Configure your local development environment to get started developing with Temporal
-keywords:
-  - set up
-  - getting started
-  - typescript sdk
 tags:
   - developer guide
   - TypeScript SDK
@@ -134,7 +130,7 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation
+## Run Hello World: Test your installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
 Activity.
@@ -150,11 +146,14 @@ This test will confirm that:
 
 Create an Activity file (activities.ts):
 
+<!--SNIPSTART typescript-hello-activity-->
+[hello-world/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/activities.ts)
 ```ts
 export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
 ```
+<!--SNIPEND-->
 
 An Activity is a normal function or method that executes a single, well-defined action (either short or long running),
 which often involve interacting with the outside world, such as sending emails, making network requests, writing to a
@@ -165,6 +164,8 @@ on your configuration.
 
 Create a Workflow file (workflows.ts):
 
+<!--SNIPSTART typescript-hello-workflow-->
+[hello-world/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/workflows.ts)
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
@@ -179,6 +180,7 @@ export async function example(name: string): Promise<string> {
   return await greet(name);
 }
 ```
+<!--SNIPEND-->
 
 Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run and
 keep running for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will
@@ -249,7 +251,7 @@ Workflows and Activities. For more information on Workers, see
 
 ### 4. Execute the Workflow
 
-Now that your Worker is running, it's time to start a Workflow Execution.
+Now that your Worker is running, it's time to start a Workflow Execution from a [Temporal Client](/develop/typescript/client/temporal-client).
 
 This final step will validate that everything is working correctly with your file labeled `client.ts`.
 
@@ -299,7 +301,7 @@ Then run:
 npm run workflow
 ```
 
-### Verify Success
+### Verify success
 
 If everything is working correctly, you should see:
 

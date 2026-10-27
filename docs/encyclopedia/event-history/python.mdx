@@ -11,69 +11,185 @@ tags:
   - Workers
   - Temporal SDKs
   - Event History
-keywords:
-  - temporal application
-  - event history
-  - workflow design
-  - business logic activities
-  - temporal workers
-  - temporal SDK tutorial
-  - go sdk temporal guide
-  - java sdk temporal guide
-  - php sdk temporal guide
-  - python sdk temporal guide
-  - typescript sdk temporal guide
-  - learning temporal workflows
-  - developing with temporal
-  - temporal workflow execution
-  - temporal activity management
-  - worker process execution
 ---
 
-import PhotoCarousel from '@site/src/components/elements/PhotoCarousel';
+import {
+  WalkthroughDemo,
+  WalkthroughStep,
+  WalkthroughCommand,
+  WalkthroughEvent,
+} from '@site/src/components';
 
 In order to understand how Workflow Replay works, this page will go through the following walkthroughs:
 
-1. [How Workflow Code Maps to Commands](#How-Workflow-Code-Maps-To-Commands)
-2. [How Workflow Commands Map to Events](#How-Workflow-Commands-Map-To-Events)
-3. [How History Replay Provides Durable Execution](#How-History-Replay-Provides-Durable-Execution)
-4. [Example of a Non-Deterministic Workflow](#Example-of-Non-Deterministic-Workflow)
+1. [How Workflow code maps to Commands](#How-Workflow-Code-Maps-To-Commands)
+2. [How Workflow Commands map to Events](#How-Workflow-Commands-Map-To-Events)
+3. [How History Replay provides Durable Execution](#How-History-Replay-Provides-Durable-Execution)
+4. [Example of a non-deterministic Workflow Definition](#Example-of-Non-Deterministic-Workflow)
 
-## How Workflow Code Maps to Commands {/* #How-Workflow-Code-Maps-To-Commands */}
+## How Workflow code maps to Commands {/* #How-Workflow-Code-Maps-To-Commands */}
 
 This walkthrough will cover how the Workflow code maps to Commands that get sent to the Temporal Service, letting the
 Temporal Service know what to do.
 
-<PhotoCarousel
-  images={[
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.001.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.003.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.004.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.005.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.006.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.007.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.008.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.009.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.010.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.011.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/code-commands/code-commands.012.jpeg',
-  ]}
-  captions={[
-    'NA',
-    'Here is code for a basic Temporal Workflow Definition, which does the items described on the right side of the screen.',
-    'Some steps are internal to the Workflow and do not involve interaction with the Service.',
-    'On the other hand, some steps do involve interaction with the Temporal Service. For example, when the code requests execution of an Activity, it generates a Command to schedule the Activity Task. Another example is when the code returns a value from the Workflow, the Worker notifies the Temporal Service that the Workflow Execution is complete.',
-    "The code walkthrough will now begin. In this Workflow Definition, setting a variable is an internal step. That is, this step doesn't require any interaction with the Temporal Service.",
-    "The Worker then reaches a statement that does require interaction with the Temporal Service. In this case, it's a request to execute an Activity. This causes the Worker to issue a Command to the Temporal Service and provides the details needed. For example, the `ScheduleActivityTask` Command contains details such as the Task Queue name, the Activity Type, and the input parameter values. Even though an Activity can take hours or days to complete, the Worker does not use resources.",
-    'After the `get_distance` Activity has successfully completed, the Worker continues executing the Workflow code. The next line, highlighted here, evaluates a variable. Depending on the outcome, it may throw an exception, which would send a Command to the Server to request it to fail the Workflow Execution. However, this example assumes that this is a delivery for a nearby customer. The execution will continue.',
-    'The Worker now reaches the call to start a Timer, which is another statement that involves interaction with the Temporal Service. This causes the Worker to issue another Command, one which requests the Temporal Service to start a Timer. The duration is one of the details specified in this Command. Further execution of this Workflow will now pause for 30 minutes until the Timer fires.',
-    "The Timer then fires. The next few lines, highlighted here, create and populate a data structure that represents the input for the next Activity. While it is related to the Activity, it doesn't involve any interaction with the Service.",
-    'The next statement involves interaction with the Temporal Service. It requests execution of an Activity, so the Worker issues another Command to the Temporal Service: `ScheduleActivityTask`.',
-    'Finally, returning from the Workflow function also results in a Command. It issues a `CompleteWorkflowExecution` Command to the Temporal Service, which includes the value that was returned from the function.',
-  ]}
+Step through the Workflow Definition below. Each step highlights the statements the Worker is running and shows the
+Commands it has issued so far.
+
+<WalkthroughDemo ariaLabel="How Workflow code maps to Commands" commandsLabel="Commands issued">
+
+```python
+@workflow.defn
+class PizzaOrderWorkflow:
+    @workflow.run
+    async def order_pizza(self, order: PizzaOrder) -> OrderConfirmation:
+        total_price = sum(pizza.price for pizza in order.items)
+
+        distance = await workflow.execute_activity_method(
+            PizzaOrderActivities.get_distance,
+            order.address,
+            start_to_close_timeout=timedelta(seconds=5),
+        )
+
+        if order.is_delivery and distance.kilometers > 25:
+            error_message = "customer lives outside the service area"
+            raise ApplicationError(error_message)
+
+        # Wait 30 minutes before billing the customer
+        await asyncio.sleep(timedelta(minutes=30).total_seconds())
+
+        bill = Bill(
+            customer_id=order.customer.customer_id,
+            order_number=order.order_number,
+            description="Pizza order",
+            amount=total_price,
+        )
+
+        confirmation = await workflow.execute_activity_method(
+            PizzaOrderActivities.send_bill,
+            bill,
+            start_to_close_timeout=timedelta(seconds=5),
+        )
+
+        return confirmation
+```
+
+<WalkthroughStep title="A basic Workflow Definition">
+
+This Workflow Definition takes a pizza order and does the work listed here. Step through it to see which
+statements the Worker handles on its own and which ones send a Command to the Temporal Service.
+
+- Calculates the total price of the pizzas
+- Determines the distance to the customer
+- Fails if the customer is too far away for delivery
+- Sleeps for 30 minutes
+- Populates a data structure with billing information
+- Sends a bill to the customer
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Internal steps" kind="internal" lines="5,13-15,20-25">
+
+These steps are internal to the Workflow. The Worker runs them in your process and never contacts the Temporal
+Service.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Steps that reach the Temporal Service" kind="command" lines="7,18,27,33">
+
+These steps do involve the Temporal Service. Requesting an Activity Execution generates a Command to schedule
+the Activity Task, and returning from the Workflow tells the Temporal Service that the Workflow Execution is
+complete.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Total the price of the order" kind="internal" lines="5">
+
+The walkthrough starts here. Calculating the total price of the pizzas is an internal step, so it doesn't
+require any interaction with the Temporal Service.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Request the GetDistance Activity" kind="command" lines="7-11">
+
+The Worker reaches a statement that requires the Temporal Service: a request to execute an Activity. It issues
+a ScheduleActivityTask Command with the details the Temporal Service needs, such as the Task Queue name, the
+Activity Type, and the input values. An Activity can take hours or days to complete, and the Worker holds no
+resources while it waits.
+
+<WalkthroughCommand
+  label="ScheduleActivityTask"
+  details='("pizza-tasks", GetDistance, { Line1: "123 Oak St.", Line2: "", ... })'
+  tone="command"
 />
 
-## How Workflow Commands Map to Events {/* #How-Workflow-Commands-Map-To-Events */}
+</WalkthroughStep>
+
+<WalkthroughStep title="Evaluate the distance" kind="internal" lines="13-15">
+
+The Worker evaluates the distance returned by the Activity. If the customer lived too far away, the Workflow
+would raise an exception, which sends a Command asking the Temporal Service to fail the Workflow Execution.
+This order is going to a nearby customer, so execution continues.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Start a Timer" kind="command" lines="17-18">
+
+The call to sleep is another statement that involves the Temporal Service. The Worker issues a StartTimer
+Command that includes the duration, and this Workflow Execution pauses for 30 minutes until the Timer fires.
+
+<WalkthroughCommand label="StartTimer" details="(30 minutes)" tone="command" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Populate the bill" kind="internal" lines="20-25">
+
+The Timer fires and execution resumes. These lines create and populate the data structure that holds the input
+for the next Activity. The structure relates to an Activity, but building it doesn't involve the Temporal
+Service.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Request the SendBill Activity" kind="command" lines="27-31">
+
+The next statement requests execution of an Activity, so the Worker issues another ScheduleActivityTask
+Command to the Temporal Service.
+
+<WalkthroughCommand
+  label="ScheduleActivityTask"
+  details='("pizza-tasks", SendBill, { Amount: 2750, Description: "Pizzas", ... })'
+  tone="command"
+/>
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Return from the Workflow" kind="command" lines="33">
+
+Returning from the Workflow method also results in a Command. The Worker issues CompleteWorkflowExecution to
+the Temporal Service, which includes the value returned from the method.
+
+<WalkthroughCommand
+  label="CompleteWorkflowExecution"
+  details='({ ConfirmationNumber: "TPD-26074139" })'
+  tone="command"
+/>
+
+</WalkthroughStep>
+
+</WalkthroughDemo>
+
+Four statements in this Workflow Definition produce a Command:
+
+| Statement                                             | Command                     |
+| ----------------------------------------------------- | --------------------------- |
+| `workflow.execute_activity_method(get_distance, ...)` | `ScheduleActivityTask`      |
+| `asyncio.sleep(timedelta(minutes=30)...)`             | `StartTimer`                |
+| `workflow.execute_activity_method(send_bill, ...)`    | `ScheduleActivityTask`      |
+| `return confirmation`                                 | `CompleteWorkflowExecution` |
+
+Everything else is an internal step. Totaling the order price, evaluating the distance, and populating the bill all run
+in the Worker without contacting the Temporal Service.
+
+## How Workflow Commands map to Events {/* #How-Workflow-Commands-Map-To-Events */}
 
 The Commands that are sent to the Temporal Service are then turned into Events, which build up the Event History. The
 Event History is a detailed log of Events that occur during the lifecycle of a Workflow Execution, such as the execution
@@ -82,42 +198,137 @@ they're durable, and will even survive a crash of the Temporal Service itself.
 
 These Events are what are used to recreate a Workflow Execution's state in the case of failure.
 
-<PhotoCarousel
-  images={[
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.001.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.002.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.003.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.004.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.005.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.006.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.007.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.008.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.009.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.010.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.011.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.012.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.013.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/commands-events/commands-events.014.jpeg',
-  ]}
-  captions={[
-    'NA',
-    'In this walkthrough, there will be a running list of the Commands issued with the corresponding Event to the right.',
-    "The call to the Activity is the first line of code in the Workflow that causes a Command to be issued. In response to this Command, the Temporal Service creates an Activity Task, adds it to the Task Queue, and appends the `ActivityTaskScheduled` Event to the Event History. This Event is colored blue to indicate that it's the direct result of a Command.",
-    'The Service will then dispatch this Activity to an available Worker.',
-    'The Service will respond to the poll request with a Task, and the Worker will begin executing the code needed to complete the Task.',
-    "The `ActivityTaskStarted` Event is not written to the Event History until a Task closes, because the number of retry attempts is an attribute of the `ActivityTaskStarted` Event. Once the Activity completes, the Temporal Service records another Event in response to the Worker accepting the Task: `ActivityTaskStarted`. This Event is colored pink to indicate that it's an indirect result of the Command. By the way, the `Start-to-Close` Timeout indicates the amount of time that the Activity has to complete.",
-    "The Worker executes the code within the Activity Definition, and when that function returns a result, the Worker sends a message to the Temporal Service, notifying it that the Task is complete. To reiterate, this is just a notification, not a Command, because it's not requesting that the Temporal Service do something that will allow the Workflow Execution to progress. In response to this notification, the Temporal Service records another Event: `ActivityTaskCompleted`.",
-    'The next statement that results in a Command is the call to start a Timer. It issues a `StartTimer` Command.',
-    'The Temporal Service responds after starting a Timer for 30 minutes in the Service, logging a `TimerStarted` Event to the history. It is a direct result of the `StartTimer` Command.',
-    'After 30 minutes has elapsed, the Timer is fired on the Temporal Service, which it then records the Event `TimerFired` to the history. The Workflow Execution continues with the next statement, but this is an internal step, meaning that it does not interact with the Temporal Service.',
-    'The Worker then reaches the call to the `send_bill` Activity and issues another `ScheduleActivityTask` Command. The Temporal Service adds an Activity Task to the Task Queue and records an `ActivityTaskScheduled` Event to the Event History.',
-    'The Service will then dispatch this Activity to the Worker.',
-    'The Worker then removes the Task from the Task Queue, and begins working on it. The Temporal Service records an `ActivityTaskStarted` Event to the Event History, signifying that the Task has been dequeued.',
-    'When the Activity returns, the Task is complete and the Worker notifies the Temporal Service. In response, the Temporal Service records the `ActivityTaskCompleted` Event to the Event History. Execution will then continue until the Workflow has completed. There will be a complete walkthrough in the next section.',
-  ]}
-/>
+Step through the same Workflow Definition to see each Command the Worker issues and the Events the Temporal Service
+records in response.
 
-## How History Replay Provides Durable Execution {/* #How-History-Replay-Provides-Durable-Execution */}
+<WalkthroughDemo ariaLabel="How Workflow Commands map to Events" commandsLabel="Commands" eventsLabel="Events">
+
+```python
+@workflow.defn
+class PizzaOrderWorkflow:
+    @workflow.run
+    async def order_pizza(self, order: PizzaOrder) -> OrderConfirmation:
+        total_price = sum(pizza.price for pizza in order.items)
+
+        distance = await workflow.execute_activity_method(
+            PizzaOrderActivities.get_distance,
+            order.address,
+            start_to_close_timeout=timedelta(seconds=5),
+        )
+
+        if order.is_delivery and distance.kilometers > 25:
+            error_message = "customer lives outside the service area"
+            raise ApplicationError(error_message)
+
+        # Wait 30 minutes before billing the customer
+        await asyncio.sleep(timedelta(minutes=30).total_seconds())
+
+        bill = Bill(
+            customer_id=order.customer.customer_id,
+            order_number=order.order_number,
+            description="Pizza order",
+            amount=total_price,
+        )
+
+        confirmation = await workflow.execute_activity_method(
+            PizzaOrderActivities.send_bill,
+            bill,
+            start_to_close_timeout=timedelta(seconds=5),
+        )
+
+        return confirmation
+```
+
+<WalkthroughStep title="Commands and the Events they produce">
+
+This walkthrough keeps a running list of the Commands the Worker issues and the Events the Temporal Service records in response. Blue Events are the direct result of a Command. Pink Events are an indirect result.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The GetDistance Activity is scheduled" kind="command" lines="7-11">
+
+The call to the Activity is the first line of code in the Workflow that causes a Command to be issued. In response, the Temporal Service creates an Activity Task, adds it to the Task Queue, and appends the ActivityTaskScheduled Event to the Event History.
+
+<WalkthroughCommand label="ScheduleActivityTask" details="(GetDistance)" tone="command" />
+<WalkthroughEvent label="ActivityTaskScheduled" details="(GetDistance)" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="A Worker polls for the Activity Task" kind="service" lines="7-11">
+
+The Temporal Service dispatches this Activity Task to an available Worker. It responds to the poll request with the Task, and the Worker begins executing the code needed to complete it. Nothing is recorded in the Event History yet.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Activity Task closes" kind="service" lines="7-11">
+
+The ActivityTaskStarted Event is not written to the Event History until the Task closes, because the number of retry attempts is an attribute of that Event. It is an indirect result of the Command. The Start-to-Close Timeout sets how long the Activity has to complete.
+
+<WalkthroughEvent label="ActivityTaskStarted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Activity reports its result" kind="service" lines="7-11">
+
+When the Activity Definition returns a result, the Worker sends a message to the Temporal Service to say the Task is complete. This is a notification, not a Command, because it does not ask the Temporal Service to do anything that lets the Workflow Execution progress. The Temporal Service records ActivityTaskCompleted.
+
+<WalkthroughEvent label="ActivityTaskCompleted" details="(distance = 15)" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Worker starts a Timer" kind="command" lines="17-18">
+
+The next statement that results in a Command is the call to start a Timer. The Temporal Service starts a 30-minute Timer and records a TimerStarted Event, a direct result of the StartTimer Command.
+
+<WalkthroughCommand label="StartTimer" details="(30 minutes)" tone="command" />
+<WalkthroughEvent label="TimerStarted" details="(30 minutes)" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Timer fires" kind="service" lines="20-25">
+
+After 30 minutes elapse, the Timer fires on the Temporal Service, which records a TimerFired Event. The Workflow Execution continues with the next statement, but populating the bill is an internal step that does not interact with the Temporal Service.
+
+<WalkthroughEvent label="TimerFired" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The SendBill Activity is scheduled" kind="command" lines="27-31">
+
+The Worker reaches the call to the SendBill Activity and issues another ScheduleActivityTask Command. The Temporal Service adds an Activity Task to the Task Queue and records an ActivityTaskScheduled Event.
+
+<WalkthroughCommand label="ScheduleActivityTask" details="(SendBill)" tone="command" />
+<WalkthroughEvent label="ActivityTaskScheduled" details="(SendBill)" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="A Worker dequeues the Activity Task" kind="service" lines="27-31">
+
+The Temporal Service dispatches this Activity Task to the Worker. The Worker removes the Task from the Task Queue and begins working on it, and the Temporal Service records an ActivityTaskStarted Event to signify that the Task was dequeued.
+
+<WalkthroughEvent label="ActivityTaskStarted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The bill is sent" kind="service" lines="27-31">
+
+When the Activity returns, the Task is complete and the Worker notifies the Temporal Service, which records the ActivityTaskCompleted Event. Execution continues until the Workflow completes. The next walkthrough covers the full Event History, including the Workflow Task Events.
+
+<WalkthroughEvent label="ActivityTaskCompleted" tone="indirect" />
+
+</WalkthroughStep>
+
+</WalkthroughDemo>
+
+Blue Events are the direct result of a Command. Pink Events are an indirect result, such as the Events the Temporal
+Service records when a Worker starts or finishes a Task:
+
+| Command                | Direct Event            | Indirect Events                                |
+| ---------------------- | ----------------------- | ---------------------------------------------- |
+| `ScheduleActivityTask` | `ActivityTaskScheduled` | `ActivityTaskStarted`, `ActivityTaskCompleted` |
+| `StartTimer`           | `TimerStarted`          | `TimerFired`                                   |
+
+## How History Replay provides Durable Execution {/* #How-History-Replay-Provides-Durable-Execution */}
 
 Now that you have seen how code maps to Commands, and how Commands map to Events, this next walkthrough will take a look
 at how Temporal uses Replay with the Events to provide Durable Execution and restore a Workflow Execution in the case of
@@ -127,141 +338,260 @@ This code walkthrough will begin by walking through a Workflow Execution, descri
 Events. There will then be a Worker crash halfway through, explaining how Temporal uses Replay to recover the state of
 the Workflow Execution, ultimately resulting in a completed execution that's identical to one that had not crashed.
 
-<PhotoCarousel
-  images={[
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.001.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.009.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.010.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.011.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.012.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.013.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.014.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.015.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.016.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.018.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.019.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.020.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.022.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.023.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.026.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.027.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.028.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.029.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.030.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.031.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.032.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.033.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.034.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.035.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.037.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.038.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.039.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.043.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.045.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.046.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.048.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.049.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.050.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.051.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.054.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.055.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.056.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.057.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.058.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.059.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.061.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.062.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.063.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.064.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.066.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.068.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.069.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.071.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.072.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.074.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.075.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.076.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.078.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.079.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.080.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.081.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.082.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.084.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.085.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.086.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/history-replay/history-replay.087.jpeg',
-  ]}
-  captions={[
-    'NA',
-    'This walkthrough begins with a request to execute this Workflow Definition, passing in some input data. In this case, the input data contains information about the customer and the pizzas ordered.',
-    "This request to execute the Workflow Definition results in the Temporal Service recording a `WorkflowExecutionStarted` Event into the Event History. It's not indicated in the image, but the `WorkflowExecutionStarted` Event contains the input data provided to this Workflow Execution.",
-    'The Worker then adds a Workflow Task to the Task Queue, and records a `WorkflowTaskScheduled` Event.',
-    'The Service will then dispatch this Activity to the Worker.',
-    'The Worker accepts the Task.',
-    'The Temporal Service records a `WorkflowTaskStarted` Event.',
-    'The Worker then invokes the Workflow code and runs the code within it, one statement at a time.',
-    'The first few lines of code do not result in any interaction with the Temporal Service.',
-    'However, the Worker encounters a request to execute an Activity, so the Worker will complete the current Workflow Task. The Service adds `WorkflowTaskCompleted` to the Event History.',
-    'The Worker then makes a single gRPC call - `RespondWorkflowTaskCompleted` - to the Temporal Service, which signals completion of the Workflow Task, and includes any commands such as `ScheduleActivityTask`, containing all details about the Activity Execution within this call. So to clarify, `WorkflowTaskCompleted` and `ActivityTaskScheduled` are technically one call.',
-    'In response, the Temporal Service queues an Activity Task and records an `ActivityTaskScheduled` Event to the Event History. This is shown in blue to indicate that it is the direct result of the Command.',
-    'The Service will then dispatch this Activity to an available Worker.',
-    "The Worker accepts the Task and starts working on the code within this `get_distance` Activity. The Temporal Service records an `ActivityTaskStarted` Event to the Event History to signify that the Worker has started the Activity Task. This Event is in a pink box to indicate that it's the indirect result of the Command. The `ActivityTaskStarted` Event is not written to the Event History until a Task closes, because the number of retry attempts is an attribute of the `ActivityTaskStarted` Event.",
-    'When the Activity function returns - with a result of 15 - the Worker notifies the Service that the Activity Execution is complete.',
-    'The Temporal Service records an `ActivityTaskCompleted` Event, which contains the result of the Activity.',
-    'In order to deliver the Activity Task result, 15, back to the Workflow, the Temporal Service creates another Workflow Task which includes the result of this Activity. `WorkflowTaskScheduled` is appended to the Event History.',
-    'The Service will then dispatch this Activity to an available Worker.',
-    'The Worker dequeues the Task and resumes execution of the Workflow. The `WorkflowTaskStarted` Event gets appended to the Event History.',
-    'The Worker then executes the next few lines of code, evaluating the distance.',
-    'The Worker reaches the request to start the Timer. Therefore, it notifies the Service to complete the current Workflow Task.',
-    'The Worker will complete the current Workflow Task, adding `WorkflowTaskCompleted` to the Event History. This Event includes the `StartTimer` Command.',
-    'The Worker issues a `StartTimer` Command to the Service, requesting it to set the Timer for 30 minutes. The Service records a `TimerStarted` Event in response.',
-    'The Workflow does not progress until the Timer fires.',
-    'After 30 minutes has elapsed, the Timer fires, and the Service records a `TimerFired` Event.',
-    'The Service now adds a new Workflow Task to the Queue in order to deliver the `TimerFired` Event to the Workflow, so `WorkflowTaskScheduled` is added to the Event History to drive the Workflow progress forward.',
-    'The Worker polls for the Task, dequeues it, and continues execution of the Workflow code.',
-    'However, the Worker happens to crash right here. How does Temporal recover the state of the Workflow? But first, how do you know when a Worker has crashed?',
-    'Once a Worker has accepted a Task, it is expected to complete that task within a predefined duration, known as a Timeout. This timeout is available to recognize whether a Worker has gone down. This results in a Workflow Task Timeout, which has a default value of 10 seconds.',
-    'Therefore, if the Worker failed to complete this Workflow Task within that time, the Service will schedule a new Workflow Task.',
-    "The Worker polling might be done by another Worker that's running in the Worker fleet or by a new Worker process created by restarting the one that crashed.",
-    'In either case, the Worker will need the current Event History for this execution, so it requests it from the Service.',
-    'The Service provides the Event History. Notice the black horizontal line in the column on the right to indicate the final Event in the History at the time of the Worker Crash.',
-    'The Worker then begins a re-execution of the code, using the same input, which was stored in the `WorkflowExecutionStarted` Event. Remember, because the Workflow code is deterministic, the state of all variables encountered so far is identical to what it was before the crash.',
-    'When the Replay reaches the call to schedule to `get_distance` Activity, it creates a `ScheduleActivityTask` Command but does not issue it to the Temporal Service. Instead, the Worker inspects the Event History and finds three Events related to this Activity.',
-    'The `ActivityTaskScheduled` Event, with the details including this specific Activity Type, indicates that the Task was previously scheduled by the Temporal Service.',
-    'The `ActivityTaskStarted` Event indicates that a Worker dequeued the Task.',
-    'The `ActivityTaskCompleted` Event indicates that the Worker successfully completed the Task for the `get_distance` Activity, having returned a value of 15. The Worker now knows that the Activity has completed and does not need to issue the Command.',
-    "The Worker uses the value stored in the `ActivityTaskCompleted` Event, 15, and assigns it to the `distance` variable. To emphasize, the Worker is not re-executing the Activity, it's using the result stored in the Event History, so there is no way that the Activity behaves differently during History Replay than the original execution.",
-    'Replay continues replaying the code.',
-    'NA',
-    'The Worker then reaches the request to start a Timer. It creates a Command, `StartTimer`. Again, the Worker does not issue the Command to the Service.',
-    'Instead, the Worker checks the Event History to see whether the Timer was started and fired during the previous execution. The Event History indicates that the Timer was started, because there is a `TimerStarted` Event.',
-    'The Event History also indicates that the Timer was fired, because there is a `TimerFired` Event.',
-    'At this point, the Worker has reached the point where the crash occurred, and replaying the code has completely restored the state of the Workflow Execution prior to the crash.',
-    'For example, the `distance` variable was set using the value that was stored in the Event History from the previous Execution.',
-    'Since Replay uses the same input data as before, this also means that the conditional statement evaluates to `false`, like it did before.',
-    'The Worker has now reached a statement beyond where the crash occurred, which is evident because the Event History does not contain any Events related to this `send_bill` Activity. Further execution of this Workflow continues on as if the crash never happened.',
-    'Because the Worker encounters a request to execute an Activity, the Worker completes the current Workflow Task.',
-    'The Worker issues a Command to the Service, requesting execution of the Activity.',
-    'The Worker adds the Activity Task to the Task queue, adding `ActivityTaskScheduled` to the Event History. The Worker polls for the Task.',
-    'The Worker dequeues the Task, adding `ActivityTaskStarted` to the Event History.',
-    'When the Activity returns a result, the Worker notifies the Service.',
-    'The Worker records an `ActivityTaskCompleted` Event, which includes the result from the `send_bill` Activity.',
-    "But since the Service hasn't yet received a Command that says the Workflow Execution has completed or failed, the Service schedules another Workflow Task to continue progress of the execution.",
-    'The Service will then dispatch this Activity to an available Worker.',
-    'The Worker accepts the Task.',
-    'When the Workflow completes, the Worker notifies the Service that the current Workflow Task is complete.',
-    'The Service records a `WorkflowTaskCompleted` Event to reflect this.',
-    'Since the Worker has now successfully completed the execution of the Workflow, it issues a `CompleteWorkflowExecution` Command to the Service, which contains the result returned by the Workflow Execution.',
-    'The Service then records `WorkflowExecutionCompleted` as the final Event in the Event History. The Workflow Execution is now complete.',
-  ]}
-/>
+<WalkthroughDemo ariaLabel="How History Replay provides Durable Execution" commandsLabel="Commands" eventsLabel="Event History">
 
-## Example of a Non-Deterministic Workflow {/* #Example-of-Non-Deterministic-Workflow */}
+```python
+@workflow.defn
+class PizzaOrderWorkflow:
+    @workflow.run
+    async def order_pizza(self, order: PizzaOrder) -> OrderConfirmation:
+        total_price = sum(pizza.price for pizza in order.items)
 
-Now that Replay has been covered, this section will explain why Workflows need to be
+        distance = await workflow.execute_activity_method(
+            PizzaOrderActivities.get_distance,
+            order.address,
+            start_to_close_timeout=timedelta(seconds=5),
+        )
+
+        if order.is_delivery and distance.kilometers > 25:
+            error_message = "customer lives outside the service area"
+            raise ApplicationError(error_message)
+
+        # Wait 30 minutes before billing the customer
+        await asyncio.sleep(timedelta(minutes=30).total_seconds())
+
+        bill = Bill(
+            customer_id=order.customer.customer_id,
+            order_number=order.order_number,
+            description="Pizza order",
+            amount=total_price,
+        )
+
+        confirmation = await workflow.execute_activity_method(
+            PizzaOrderActivities.send_bill,
+            bill,
+            start_to_close_timeout=timedelta(seconds=5),
+        )
+
+        return confirmation
+```
+
+<WalkthroughStep title="A Client requests the Workflow Execution" kind="service" phase="Original execution" lines="1-4">
+
+The walkthrough begins with a request to execute this Workflow Definition with input data about the customer and the pizzas ordered. The Temporal Service records WorkflowExecutionStarted, always the first Event of a Workflow Execution, and that Event holds the input data.
+
+<WalkthroughEvent label="WorkflowExecutionStarted" details="(customer, pizzas ordered)" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="A Workflow Task is queued" kind="service" phase="Original execution">
+
+The Temporal Service adds a Workflow Task to the Task Queue and records a WorkflowTaskScheduled Event.
+
+<WalkthroughEvent label="WorkflowTaskScheduled" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="A Worker accepts the Workflow Task" kind="service" phase="Original execution">
+
+The Temporal Service dispatches the Task to a Worker that is polling the Task Queue. The Worker accepts it, and the Temporal Service records a WorkflowTaskStarted Event.
+
+<WalkthroughEvent label="WorkflowTaskStarted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Worker runs the Workflow code" kind="internal" phase="Original execution" lines="5">
+
+The Worker invokes the Workflow code and runs it one statement at a time. The first few lines are internal steps that do not interact with the Temporal Service.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Worker completes the Workflow Task" kind="command" phase="Original execution" lines="7-11">
+
+The Worker encounters a request to execute an Activity, so it completes the current Workflow Task. It makes a single gRPC call, RespondWorkflowTaskCompleted, that signals completion of the Workflow Task and carries any Commands with it, so WorkflowTaskCompleted and the Command that follows are technically one call.
+
+<WalkthroughEvent label="WorkflowTaskCompleted" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The GetDistance Activity Task is scheduled" kind="command" phase="Original execution" lines="7-11">
+
+In response to the ScheduleActivityTask Command, the Temporal Service queues an Activity Task and records an ActivityTaskScheduled Event, a direct result of the Command.
+
+<WalkthroughCommand label="ScheduleActivityTask" details="(GetDistance)" tone="command" />
+<WalkthroughEvent label="ActivityTaskScheduled" details="(GetDistance)" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="A Worker starts the Activity Task" kind="service" phase="Original execution" lines="7-11">
+
+The Temporal Service dispatches the Activity Task to an available Worker, which starts running the code in the GetDistance Activity. ActivityTaskStarted is an indirect result of the Command, and it is not written to the Event History until the Task closes, because the number of retry attempts is an attribute of that Event.
+
+<WalkthroughEvent label="ActivityTaskStarted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Activity returns a distance of 15" kind="service" phase="Original execution" lines="7-11">
+
+When the Activity returns, the Worker notifies the Temporal Service that the Activity Execution is complete. The Temporal Service records an ActivityTaskCompleted Event, which contains the result of the Activity.
+
+<WalkthroughEvent label="ActivityTaskCompleted" details="(distance = 15)" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The result goes back to the Workflow" kind="service" phase="Original execution" lines="13-15">
+
+To deliver the result to the Workflow, the Temporal Service creates another Workflow Task that includes it. A Worker dequeues that Task, resumes execution, and evaluates the distance. This order is going to a nearby customer, so execution continues.
+
+<WalkthroughEvent label="WorkflowTaskScheduled" tone="direct" />
+<WalkthroughEvent label="WorkflowTaskStarted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Worker starts a Timer" kind="command" phase="Original execution" lines="17-18">
+
+The Worker reaches the request to start a Timer, so it completes the current Workflow Task and sends the StartTimer Command with it. The Temporal Service starts the Timer and records TimerStarted. The Workflow does not progress until the Timer fires.
+
+<WalkthroughCommand label="StartTimer" details="(30 minutes)" tone="command" />
+<WalkthroughEvent label="WorkflowTaskCompleted" tone="direct" />
+<WalkthroughEvent label="TimerStarted" details="(30 minutes)" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Timer fires" kind="service" phase="Original execution" lines="17-18">
+
+After 30 minutes elapse, the Timer fires and the Temporal Service records TimerFired. It then queues a new Workflow Task to deliver that Event to the Workflow and drive progress forward.
+
+<WalkthroughEvent label="TimerFired" tone="indirect" />
+<WalkthroughEvent label="WorkflowTaskScheduled" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Worker crashes" kind="crash" phase="Worker crash" lines="20-25">
+
+The Worker polls for the Task, dequeues it, and continues executing the Workflow code — and then crashes right here. How does Temporal recover the state of this Workflow Execution? First, how does the Temporal Service know the Worker crashed?
+
+<WalkthroughEvent label="WorkflowTaskStarted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Workflow Task times out" kind="crash" phase="Worker crash">
+
+Once a Worker accepts a Task, it is expected to complete it within a predefined duration. That Workflow Task Timeout, 10 seconds by default, is how a crashed Worker is recognized. The Worker failed to complete the Task in time, so the Temporal Service records WorkflowTaskTimedOut.
+
+<WalkthroughEvent label="WorkflowTaskTimedOut" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="A new Workflow Task is scheduled" kind="service" phase="Worker crash">
+
+The Temporal Service schedules a new Workflow Task. The Worker that polls for it might be another Worker in the fleet or a new Worker process created by restarting the one that crashed. Everything above the line is the Event History as it stood when the Worker crashed.
+
+<WalkthroughEvent label="WorkflowTaskScheduled" tone="direct" />
+<WalkthroughEvent divider="Event History at the time of the crash" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Worker requests the Event History" kind="replay" phase="History Replay">
+
+Either way, the Worker needs the current Event History for this Workflow Execution, so it requests it from the Temporal Service. The Temporal Service provides the History.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Replay re-executes the code" kind="replay" phase="History Replay" lines="5">
+
+The Worker begins re-executing the code with the same input, which was stored in the WorkflowExecutionStarted Event. Because the Workflow code is deterministic, the state of every variable encountered so far is identical to what it was before the crash. For example, totalPrice holds the same value.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Activity result comes from the History" kind="replay" phase="History Replay" lines="7-11">
+
+When Replay reaches the call to schedule GetDistance, it creates a ScheduleActivityTask Command but does not issue it. Instead, the Worker inspects the Event History and finds ActivityTaskScheduled for this Activity Type, ActivityTaskStarted showing a Worker dequeued the Task, and ActivityTaskCompleted with a result of 15. The Activity already ran, so the Command is not issued.
+
+<WalkthroughCommand label="ScheduleActivityTask" details="(GetDistance) — created during Replay, not issued" tone="command" status="matched" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Replay assigns the stored result" kind="replay" phase="History Replay" lines="13-15">
+
+The Worker assigns the value stored in the ActivityTaskCompleted Event, 15, to the distance variable. The Activity is not re-executed, so there is no way for it to behave differently during Replay than it did during the original execution. The conditional evaluates to false, just as it did before.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Timer is already done" kind="replay" phase="History Replay" lines="17-18">
+
+The Worker reaches the request to start a Timer and creates a StartTimer Command, which again it does not issue. The Event History contains TimerStarted and TimerFired, so the Worker knows the Timer already started and fired during the previous execution.
+
+<WalkthroughCommand label="StartTimer" details="(30 minutes) — created during Replay, not issued" tone="command" status="matched" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="State is restored to the point of the crash" kind="replay" phase="History Replay" lines="20-25">
+
+The Worker has reached the point where the crash occurred, and replaying the code has completely restored the state of the Workflow Execution. Every variable, including totalPrice, holds the value it held before the crash.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Execution moves past the crash" kind="command" phase="Execution resumes" lines="27-31">
+
+The Worker reaches a statement beyond where the crash occurred, which is evident because the Event History contains no Events for the SendBill Activity. Execution continues as if the crash never happened: the Worker completes the current Workflow Task and includes the Command with it.
+
+<WalkthroughEvent label="WorkflowTaskCompleted" tone="direct" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The SendBill Activity runs" kind="command" phase="Execution resumes" lines="27-31">
+
+The Worker issues the Command, the Temporal Service queues the Activity Task, and a Worker dequeues and runs it. When the Activity returns, the Worker notifies the Temporal Service, which records ActivityTaskCompleted with the result from SendBill.
+
+<WalkthroughCommand label="ScheduleActivityTask" details="(SendBill)" tone="command" />
+<WalkthroughEvent label="ActivityTaskScheduled" details="(SendBill)" tone="direct" />
+<WalkthroughEvent label="ActivityTaskStarted" tone="indirect" />
+<WalkthroughEvent label="ActivityTaskCompleted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="One more Workflow Task delivers the result" kind="service" phase="Execution resumes" lines="33">
+
+The Temporal Service has not received a Command saying the Workflow Execution completed or failed, so it schedules another Workflow Task to continue progress. A Worker accepts it and resumes the Workflow code.
+
+<WalkthroughEvent label="WorkflowTaskScheduled" tone="direct" />
+<WalkthroughEvent label="WorkflowTaskStarted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Workflow Execution completes" kind="command" phase="Execution resumes" lines="33">
+
+The Workflow returns, so the Worker completes the current Workflow Task and issues a CompleteWorkflowExecution Command that contains the result. The Temporal Service records WorkflowExecutionCompleted as the final Event. The result is identical to an execution that never crashed.
+
+<WalkthroughCommand label="CompleteWorkflowExecution" details='({ ConfirmationNumber: "TPD-26074139" })' tone="command" />
+<WalkthroughEvent label="WorkflowTaskCompleted" tone="direct" />
+<WalkthroughEvent label="WorkflowExecutionCompleted" tone="direct" />
+
+</WalkthroughStep>
+
+</WalkthroughDemo>
+
+The walkthrough covers four phases:
+
+1. **Original execution**: the Client starts the Workflow Execution, and the Commands the Worker issues become Events in
+   the Event History.
+2. **Worker crash**: the Worker dies partway through a Workflow Task. When the Workflow Task Timeout elapses, 10 seconds
+   by default, the Temporal Service records `WorkflowTaskTimedOut` and schedules a new Workflow Task.
+3. **History Replay**: a Worker requests the Event History and re-executes the Workflow code with the original input,
+   which the `WorkflowExecutionStarted` Event stores. Commands the Worker creates during Replay are matched against the
+   Event History instead of being issued, so Activities don't run again. The Worker uses the results stored in the
+   `ActivityTaskCompleted` Events.
+4. **Execution resumes**: past the point of the crash, the Event History holds no matching Events, so the Worker issues
+   Commands for real again until the Workflow Execution completes. The result is identical to an execution that never
+   crashed.
+
+## Example of a non-deterministic Workflow Definition {/* #Example-of-Non-Deterministic-Workflow */}
+
+Now that Replay has been covered, this section will explain why a Workflow Definition needs to be
 [deterministic](/workflow-definition#deterministic-constraints) in order for Replay to work.
 
-A Workflow is deterministic if every execution of its Workflow Definition produces the same Commands in the same
+A Workflow Definition is deterministic if every execution of it produces the same Commands in the same
 sequence given the same input.
 
 As mentioned in the [`How History Replay Provides Durable Execution`](#How-History-Replay-Provides-Durable-Execution)
@@ -270,57 +600,122 @@ the Workflow code again to produce a set of Commands which is compared against t
 History. When there’s a mismatch between the expected sequence of Commands the Worker expects based on the Event History
 and the actual sequence produced during Replay (due to non-determinism), Replay will be unable to continue.
 
-To better understand why Workflows need to be deterministic, it's helpful to look at a Workflow Definition that violates
+To better understand why a Workflow Definition needs to be deterministic, it's helpful to look at one that violates
 it. In this case, this code will walk through a Workflow Definition that breaks the determinism constraint with a random
 number generator.
 
-<PhotoCarousel
-  images={[
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.001.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.002.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.004.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.006.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.008.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.009.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.010.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.011.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.013.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.015.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.016.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.017.jpeg',
-    'https://learn.temporal.io/courses/temporal-102/python/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.018.jpeg',
-  ]}
-  captions={[
-    'NA',
-    'Imagine the following Workflow Definition is being executed.',
-    'As the Workflow executes step by step, the first line that results in a Command is the call to the `import_sales_data` Activity. The Worker issues the `ScheduleActivityTask` Command to the Service. In this case, the execution of the Activity is successful, so the Service logs three Events to the Event History: `ActivityTaskScheduled`, `ActivityTaskStarted`, `ActivityTaskCompleted`.',
-    'Now, the Worker reaches a conditional statement which evaluates the value of a random-generated number. The random number generator happens to return the value of 84 during this execution. Since the expression evaluates to `true`, execution continues with the next line.',
-    'The next line is a request to start a Timer, so the Worker issues a Command to the Service - `StartTimer` - requesting that it starts a Timer.',
-    'The Service starts the Timer, records an Event - `TimerStarted` - and then records another Event when the Timer fires - `TimerFired`.',
-    'Now imagine that the Worker happens to crash once it reaches to next line, so another Worker takes over, using Replay to restore the current state before continuing execution of the lines that follow.',
-    'The Worker then requests the Event History to replay it. Once the Worker has the Event History, the Worker determines the expected sequence of Commands needed to restore the current state. The Worker is expecting to encounter the `ScheduleActivityTask` and `StartTimer` Commands.',
-    "As the Worker executes the code during Replay, it reaches the first call to execute an Activity and creates a `ScheduleActivityTask` Command. This Command matches the one expected based on the Event History. It's not only the right type of Command, with the same details, but it also occurs at the right position in the sequence of expected Commands. Therefore, Replay proceeds.",
-    'The Worker now reaches the conditional statement with the random number generator. This time, the random number generator happens to return 14, so the conditional expression evaluates to `false`, and execution skips over the next line.',
-    'The Worker now reaches the next Command which is to request execution of the `run_daily_report` Activity, so the Worker creates another `ScheduleActivityTask` Command.',
-    'However, this is a different Command than it expected to find at this position in the Event History. Since the Workflow produced a different sequence of Commands during Replay than it was expecting due to the Event History that was produced prior to the crash, the Worker is unable to restore the previous state.',
-    'The Workflow Execution was unable to be replayed due to a non-deterministic error.',
-  ]}
-/>
+<WalkthroughDemo ariaLabel="Example of a non-deterministic Workflow" commandsLabel="Commands created" eventsLabel="Relevant History Events">
+
+```python
+@workflow.defn
+class GenerateDailyReport:
+    @workflow.run
+    async def run(self) -> str:
+        sales_data = await workflow.execute_activity_method(
+            ReportActivities.import_sales_data,
+            start_to_close_timeout=timedelta(minutes=45),
+        )
+
+        if non_deterministic_number_generator(100) >= 50:
+            # sleep for 4 hours
+            await asyncio.sleep(timedelta(hours=4).total_seconds())
+
+        workflow.logger.info("Preparing to run daily report")
+
+        return await workflow.execute_activity_method(
+            ReportActivities.run_daily_report,
+            sales_data,
+            start_to_close_timeout=timedelta(minutes=45),
+        )
+```
+
+<WalkthroughStep title="The import_sales_data Activity runs" kind="command" phase="First execution" lines="5-8">
+
+As this Workflow executes step by step, the first line that results in a Command is the call to the import_sales_data Activity. The Activity Execution succeeds, so the Temporal Service logs three Events to the Event History.
+
+<WalkthroughCommand label="ScheduleActivityTask" details="(import_sales_data)" tone="command" />
+<WalkthroughEvent label="ActivityTaskScheduled" details="(import_sales_data)" tone="direct" />
+<WalkthroughEvent label="ActivityTaskStarted" tone="indirect" />
+<WalkthroughEvent label="ActivityTaskCompleted" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="A random number decides the next branch" kind="internal" phase="First execution" lines="10">
+
+The Worker reaches a conditional statement that evaluates a randomly generated number. The random number generator returns 84 during this execution, so the expression evaluates to true and execution continues with the next line.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Workflow starts a 4-hour Timer" kind="command" phase="First execution" lines="12">
+
+The next line requests a Timer, so the Worker issues a StartTimer Command. The Temporal Service starts the Timer and records TimerStarted, then records TimerFired when the Timer fires.
+
+<WalkthroughCommand label="StartTimer" details="(4 hours)" tone="command" />
+<WalkthroughEvent label="TimerStarted" details="(4 hours)" tone="direct" />
+<WalkthroughEvent label="TimerFired" tone="indirect" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The Worker crashes" kind="crash" phase="First execution" lines="14">
+
+The Worker crashes once it reaches the next line, so another Worker takes over. That Worker uses Replay to restore the current state before continuing execution of the lines that follow.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Replay establishes the expected Commands" kind="replay" phase="History Replay">
+
+The Worker requests the Event History and determines the sequence of Commands needed to restore the current state. Based on the History, it expects to encounter ScheduleActivityTask (import_sales_data) and then StartTimer (4 hours).
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The first Command matches" kind="replay" phase="History Replay" lines="5-8">
+
+As the Worker executes the code during Replay, it reaches the first call to execute an Activity and creates a ScheduleActivityTask Command. It is the right type of Command and it occurs at the right position in the expected sequence, so Replay proceeds.
+
+<WalkthroughCommand label="ScheduleActivityTask" details="(import_sales_data) — created during Replay" tone="command" status="matched" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The random number returns something different" kind="replay" phase="History Replay" lines="10-12">
+
+The Worker reaches the conditional statement again. This time the random number generator returns 14, so the expression evaluates to false and execution skips the call that starts the Timer.
+
+</WalkthroughStep>
+
+<WalkthroughStep title="The next Command does not match" kind="crash" phase="History Replay" lines="16-20">
+
+The Worker reaches the request to execute the run_daily_report Activity and creates another ScheduleActivityTask Command. That is not the Command it expected at this position in the sequence, so the Worker cannot restore the previous state.
+
+<WalkthroughCommand label="ScheduleActivityTask" details="(run_daily_report) — created during Replay" tone="command" status="mismatch" expected="StartTimer (4 hours)" />
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Replay fails with a non-determinism error" kind="crash" phase="History Replay" lines="10-12">
+
+The Workflow produced a different sequence of Commands during Replay than the Event History recorded before the crash, so the Workflow Execution cannot be replayed. The random number generator is the source of the non-determinism.
+
+</WalkthroughStep>
+
+</WalkthroughDemo>
+
+During the first execution, the random number is 84, so the Workflow starts a Timer and the Event History records
+`TimerStarted` and `TimerFired`. During Replay, the random number is 14, so the Workflow skips the Timer and produces a
+`ScheduleActivityTask` Command where the Event History expects `StartTimer`. That mismatch is what makes Replay fail.
 
 Note that non-deterministic failures do not fail the Workflow Execution by default. A non-deterministic failure is
-considered a [Workflow Task Failure](/references/failures#workflow-task-failures) which is
-considered a transient failure, meaning it retries over and over. Users can also fix the source of non-determinism,
-perhaps by removing the Activity, and then restart the Workers. This means that this type of failure can recover by
-itself. You can also use a strategy called versioning to address this non-determinism error. See
-[versioning](/develop/python/workflows/versioning) to learn more.
+considered a [Workflow Task Failure](/references/failures#workflow-task-failures) which is considered a transient
+failure, meaning it retries over and over. Users can also fix the source of non-determinism, perhaps by removing the
+Activity, and then restart the Workers. This means that this type of failure can recover by itself. You can also use a
+strategy called versioning to address this non-determinism error. See [versioning](/develop/python/workflows/versioning)
+to learn more.
 
-For more information on how Temporal handles Durable Execution or to see these slides in a video format with more
+For more information on how Temporal handles Durable Execution or to see these walkthroughs in video format with more
 explanation, check out our free, self-paced courses: [Temporal 102](https://learn.temporal.io/courses/temporal_102/) and
 [Versioning Workflows](https://learn.temporal.io/courses/versioning/).
 
-## Temporal Applications Support Non-Deterministic Operations
+## Temporal Applications support non-deterministic operations
 
-We want to emphasize that although your Workflows themselves need to be deterministic, your application itself does not!
+We want to emphasize that although your Workflow Definition needs to be deterministic, your application itself does not!
 
 Remember that pretty much anything that interacts with the external world is inherently non-deterministic:
 
@@ -329,7 +724,7 @@ Remember that pretty much anything that interacts with the external world is inh
 - Reading or writing files
 - Making HTTP requests to external services
 
-**Good news**: Your Temporal application can absolutely handle all of these operations. While your Workflow must be
+**Good news**: Your Temporal application can absolutely handle all of these operations. While your Workflow Definition must be
 deterministic, your application absolutely can handle any type of non-deterministic operation, including those listed
 above. This gives you the best of both worlds—the crash-proof reliability of a Workflow and the resiliency of Activities
 which have built-in support for retries.

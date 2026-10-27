@@ -1,26 +1,9 @@
 ---
 id: parent-close-policy
 title: Parent Close Policy
-sidebar_label: Parent Close Policy
 description: Understand the Parent-Child Workflow relationship, including when to use Child Workflows and Parent Close Policies. 
 slug: /parent-close-policy
 toc_max_heading_level: 4
-keywords:
-  - child workflow execution
-  - temporal workflow management
-  - parent close policy
-  - workflow execution scalability
-  - temporal SDK child workflow
-  - manage workflows with temporal
-  - workflow partitioning
-  - asynchronous child workflows
-  - child workflow serialization
-  - temporal namespace workflows
-  - child vs activity execution
-  - workflow periodic execution
-  - temporal SDK guides
-  - parent workflow termination
-  - child workflow best practices
 tags:
   - Concepts
   - Child Workflows
@@ -49,7 +32,7 @@ There are three possible values:
 - **Request Cancel:** a Cancellation request is sent to the Child Workflow Execution.
 - **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
 
-[`ParentClosePolicy`](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44) proto definition.
+[`ParentClosePolicy`](https://github.com/temporalio/api/blob/70cec27214ec2173974fb045667df324b45e705c/temporal/api/enums/v1/workflow.proto#L50) proto definition.
 
 Each Child Workflow Execution may have its own Parent Close Policy.
 This policy applies only to Child Workflow Executions and has no effect otherwise.

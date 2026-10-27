@@ -1,19 +1,10 @@
 ---
 id: error-handling
 title: Error handling
-sidebar_label: Error handling
 description:
   Learn how to categorize failures, decide when to use non-retryable errors, and implement compensation patterns in
   Temporal applications.
 toc_max_heading_level: 4
-keywords:
-  - error handling
-  - non-retryable errors
-  - saga pattern
-  - compensation
-  - rollback
-  - idempotence
-  - failure types
 tags:
   - Best Practices
   - Failures
@@ -123,7 +114,7 @@ consistent across retries but unique across Workflow Executions.
 ## Implement compensation with the Saga pattern {/* #saga-pattern */}
 
 When a multi-step process fails partway through, previous steps may need to be undone. The
-[Saga pattern](/evaluate/use-cases-design-patterns#saga) coordinates a sequence of operations where each step has a
+[Saga pattern](/design-patterns/saga-pattern) coordinates a sequence of operations where each step has a
 compensating action that reverses its effects. If any step fails, the compensating actions for previously completed
 steps execute in reverse order.
 

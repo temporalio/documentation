@@ -1,17 +1,14 @@
 ---
 id: basics
-title: Workflow Basics - Python SDK
+title: Workflow basics
 sidebar_label: Workflow basics
-description: This section explains Workflow Basics with the Python SDK
+description: This section explains Workflow basics with the Python SDK
 toc_max_heading_level: 4
-keywords:
-  - Python SDK
 tags:
+  - Workflows
   - Python SDK
   - Temporal SDKs
 ---
-
-import { ViewSourceCodeNotice } from '@site/src/components';
 
 ## Develop a basic Workflow {/* #develop-workflows */}
 
@@ -25,12 +22,15 @@ Specify the `@workflow.defn` decorator on the Workflow class to identify a Workf
 Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method
 defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py" />
+```python {9,11}
+from datetime import timedelta
 
-```python
 from temporalio import workflow
-# ...
-# ...
+
+with workflow.unsafe.imports_passed_through():
+    from your_activities_dacx import your_activity
+    from your_dataobject_dacx import YourParams
+
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -46,19 +46,16 @@ class YourWorkflow:
 
 Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as
 parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All
-Workflow Definition parameters must be serializable.
+Workflow Definition parameters must be serializable. For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
 
 Workflow parameters are the method parameters of the singular method decorated with `@workflow.run`. These can be any
 data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when
 properly type-annotated. Technically this can be multiple parameters, but Temporal strongly encourages a single
 `dataclass` parameter containing all input fields.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_dataobject_dacx.py" />
-
-```python
+```python {3}
 from dataclasses import dataclass
-# ...
-# ...
+
 @dataclass
 class YourParams:
     greeting: str
@@ -82,15 +79,15 @@ third-party plugins, whose calls will be deterministic using
 Worker creation time by customizing the runner's restrictions with
 [`with_passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#with_passthrough_modules).
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py" />
+```python {5-7}
+from datetime import timedelta
 
-```python
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
     from your_activities_dacx import your_activity
     from your_dataobject_dacx import YourParams
-# ...
+
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -112,15 +109,13 @@ You can customize the Workflow name with a custom name in the decorator argument
 `@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the
 unqualified class name.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py" />
-
 ```python
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
     from your_activities_dacx import your_activity
     from your_dataobject_dacx import YourParams
-# ...
+
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -204,13 +199,8 @@ Use [`workflow.random()`](https://python.temporal.io/temporalio.workflow.html#ra
 For UUIDs, use [`workflow.uuid4()`](https://python.temporal.io/temporalio.workflow.html#uuid4) instead of `uuid.uuid4()`:
 
 ```python
-# Good - deterministic across replays
 value = workflow.random().randint(1, 100)
 unique_id = workflow.uuid4()
-
-# Bad - different result on every replay
-import random
-value = random.randint(1, 100)
 ```
 
 #### Current time

@@ -1,12 +1,9 @@
 ---
 id: billing-api
 title: Cloud Billing API
-sidebar_label: Cloud Billing API
-description: The Temporal Cloud Billing API provides namespace-level cost attribution through on-demand billing reports.
+description: Generate Namespace-level cost reports in FOCUS-friendly CSV, with hourly, daily, and monthly granularity for FinOps tools.
 slug: /cloud/billing-api
 toc_max_heading_level: 4
-keywords:
-  - explanation
 tags:
   - API
   - Billing
@@ -39,10 +36,12 @@ Billing report generation is **asynchronous**. You initiate report creation, the
 
 ## Report data limitations
 
-For public preview, reports can be generated with hourly, daily and monthly granularities, each of which have their own data ranges.
+Reports can be generated with hourly, daily and monthly granularities, each of which have their own data ranges.
 - Hourly: Current billing month and previous billing month
 - Daily: Current billing month and previous two billing months
 - Monthly: Current billing month and previous eleven billing months
+
+Data from the current billing month is subject to change and only finalized once the billing month is closed.
 
 ## Allowed date ranges
 
@@ -61,7 +60,7 @@ Within a single account:
 - Only one billing report per account is generated at a time  
 - Additional requests are accepted but queued  
 
-### Report Generation Latency
+### Report generation latency
 
 Report generation time varies and is not guaranteed. Factors that affect it include the size of the requested date range and overall platform load.
 
@@ -108,7 +107,7 @@ Each row represents a charge record.
 | ServiceCategory | The highest level classification of a service based on the core function of the service | Temporal Cloud |
 | ServiceName | An offering that can be purchased from a provider | Temporal Cloud |
 | ServiceSubcategory | A secondary classification of the service category for a service based on its core function | Actions |
-| SKUID | A unique identifier that represents a specific SKU | essentials-actions |
+| SKUID | A unique identifier that represents a specific SKU | business-actions |
 | SKUMeter | The functionality being metered or measured by a particular SKU in a charge | Actions |
 | Tags | Provider and customer defined tags associated with resources | `{"$tmprl_project":["project-id"],"namespace-tag-key":["namespace-tag-value"]}` |
 

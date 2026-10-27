@@ -1,0 +1,229 @@
+---
+id: roll-out-and-pin
+title: Roll out and pin Workflows
+sidebar_label: Roll out and pin
+description: Roll out Worker Deployment Versions with the CLI, mark Workflow Types as Pinned, move pinned Workflows, and migrate to Auto-Upgrade.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Durable Execution
+---
+
+import { SdkTabs, AnnotatedCode } from '@site/src/components';
+
+This page covers Rolling out changes with the CLI, Marking a Workflow Type as Pinned, Moving a pinned Workflow, and Migrating a Workflow from Pinned to Auto-Upgrade.
+
+## Rolling out changes with the CLI {/* #rolling-out-changes-with-the-cli */}
+
+Next, deploy your Worker with the additional configuration parameters. Before making any Workflow revisions, you can use
+the `temporal` CLI to check which of your Worker versions are currently polling:
+
+You can view the Versions that are part of a Deployment with `temporal worker deployment describe`:
+
+```bash
+temporal worker deployment describe --name="$MY_DEPLOYMENT"
+```
+
+To activate a Deployment Version, use `temporal worker deployment set-current-version`, specifying the deployment name
+and a Build ID:
+
+```bash
+temporal worker deployment set-current-version \
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBuildID"
+```
+
+To ramp a Deployment Version up to some percentage of your overall Worker fleet, use `set-ramping version`, with the
+same parameters and a ramping percentage:
+
+```bash
+temporal worker deployment set-ramping-version \
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBuildID" \
+    --percentage=5
+```
+
+You can verify that Workflows are cutting over to that version with `describe -w YourWorkflowID`:
+
+```bash
+temporal workflow describe -w YourWorkflowID
+```
+
+That returns the new Version that the workflow is running on:
+
+```
+Versioning Info:
+
+  Behavior               AutoUpgrade
+  Version                llm_srv.2.0
+  OverrideBehavior       Unspecified
+```
+
+## Marking a Workflow Type as Pinned
+
+You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. This will cause it
+to remain on its original deployed version:
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+// w is the Worker configured as in the previous example
+w.RegisterWorkflowWithOptions(HelloWorld, workflow.RegisterOptions{
+	// or workflow.VersioningBehaviorAutoUpgrade
+    VersioningBehavior: workflow.VersioningBehaviorPinned,
+})
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+@WorkflowInterface
+public interface HelloWorld {
+    @WorkflowMethod
+    String hello();
+}
+
+public static class HelloWorldImpl implements HelloWorld {
+    @Override
+    @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
+    public String hello() {
+        return "Hello, World!";
+    }
+}
+
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class HelloWorld:
+    @workflow.run
+    async def run(self):
+        return "hello world!"
+
+```
+
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+
+```ts
+setWorkflowOptions({ versioningBehavior: 'PINNED' }, helloWorld);
+export async function helloWorld(): Promise<string> {
+  return 'hello world!';
+}
+```
+
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+
+```csharp
+[Workflow(VersioningBehavior = VersioningBehavior.Pinned)]
+public class HelloWorld
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync()
+    {
+        return "hello world!";
+    }
+}
+```
+
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+
+```ruby
+class HelloWorld < Temporalio::Workflow::Definition
+  workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED
+
+  def execute
+    'hello world!'
+  end
+end
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+## Moving a pinned Workflow {/* #moving-a-pinned-workflow */}
+
+Sometimes you'll need to manually move a set of pinned Workflows off of a version that has a bug to a version with the
+fix.
+
+If you need to move a pinned Workflow to a new version, use `temporal workflow update-options`:
+
+```bash
+temporal workflow update-options \
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior pinned \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+    --versioning-override-build-id "$TARGET_BUILD_ID"
+```
+
+You can move several Workflows at once matching a `--query` parameter:
+
+```bash
+temporal workflow update-options \
+  --query="TemporalWorkerDeploymentVersion=$TARGET_DEPLOYMENT:$BAD_BUILD_ID" \
+  --versioning-override-behavior pinned \
+  --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+  --versioning-override-build-id "$FIXED_BUILD_ID"
+```
+
+In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to
+patch your Workflow in the "fixed" build, so that your target Worker can handle the moved Workflows correctly. If you
+made a [version-incompatible change](/workflow-definition#deterministic-constraints) to your Workflow, and you want to
+roll back to an earlier version, it's not possible to patch it. Considering using
+[Workflow Reset](/workflow-execution/event#reset) along with your move.
+
+"Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset
+Workflow, so when it resumes execution, all new Workflow Tasks will be executed on your new Worker.
+
+```bash
+temporal workflow reset with-workflow-update-options \
+    --workflow-id "$WORKFLOW_ID" \
+    --event-id "$EVENT_ID" \
+    --reason "$REASON" \
+    --versioning-override-behavior pinned \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+    --versioning-override-build-id "$TARGET_BUILD_ID"
+```
+
+For a complete runbook covering batch recovery, drainage handling, and how to choose between Versioning Override and Reset-with-Move based on each Workflow's state, see [Recover pinned Workflows after a bad rollout](/production-deployment/worker-deployments/recover-pinned-workflows).
+
+## Migrating a Workflow from Pinned to Auto-Upgrade
+
+There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you configured your
+Workflow Type with the wrong behavior or you've pinned a really long-running Workflow by mistake.
+
+Pinned Workflows can block version drainage, especially when they run for a long time. You could move the Workflow to a
+new build, but that would just push the problem to the next build.
+
+In order to make this change, you need to change the versioning behavior for your Workflow from Pinned to Auto-Upgrade.
+You can use `temporal workflow update-options` for this:
+
+```bash
+temporal workflow update-options \
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior auto_upgrade
+```
+
+If you want to move all your Workflows of a certain type to this new configuration, you can do it with this command:
+
+```bash
+temporal workflow update-options \
+    --query="WorkflowType='$WORKFLOW_TYPE'" \
+    --versioning-override-behavior auto_upgrade
+```
+
+You can also filter on a certain build ID to limit the number of Workflows you apply it to:
+
+```bash
+temporal workflow update-options \
+    --query="WorkflowType='$WORKFLOW_TYPE' AND TemporalWorkerDeploymentVersion='$TARGET_DEPLOYMENT:$OLD_VERSION'" \
+    --versioning-override-behavior auto_upgrade
+```
+
+:::note
+
+When you change the behavior to Auto-Upgrade, the Workflow will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the earlier Pinned Version, you should make sure you [patch](/patching#patching) the Workflow code.
+
+:::
