@@ -2,7 +2,7 @@
 id: implement-the-service
 title: Implement the Service
 sidebar_label: 4. Implement the Service
-description: TemporalOperationHandler backs requestApproval with a Workflow that blocks for a human decision, hosted on one Worker with the Activities it runs.
+description: A @TemporalOperation method backs requestApproval with a Workflow that blocks for a human decision, hosted on one Worker with the Activities it runs.
 tags:
   - Nexus
 ---
@@ -113,11 +113,11 @@ public class ApprovalWorkflowImpl implements ApprovalWorkflow {
 ```
 <!--SNIPEND-->
 
-## Implement the Operation with TemporalOperationHandler
+## Implement the Operation
 
-Use `TemporalOperationHandler` for every Temporal-backed Operation. It is the entry point to the [Temporal Operation Handler](/nexus/temporal-operation-handler), and it lets an Operation later gain a Signal or change its backing without changing shape.
+Mark every Temporal-backed Operation with `@TemporalOperation`. The annotated method is the Operation's start handler, and the SDK wraps it in the [Temporal Operation Handler](/nexus/temporal-operation-handler) when the Worker registers the Service. Using it for every Operation lets an Operation later gain a Signal or change its backing without changing shape.
 
-`TemporalOperationHandler.create(...)` gives your start handler a context, a Nexus-aware Client, and the Operation input. Call `startWorkflow` on that Client and return its result. The Operation completes when the Workflow returns, delivering the Workflow's return value to the caller.
+The method takes a context, a Nexus-aware Client, and the Operation input, and returns a `TemporalOperationResult`. Call `startWorkflow` on that Client and return its result. The Operation completes when the Workflow returns, delivering the Workflow's return value to the caller.
 
 Use the injected Client for anything that starts or messages an Execution. It propagates bidirectional links and request Ids, so the caller's Execution and the approval Workflow are connected in the UI with no extra code. A Client you create yourself works, but loses that linking.
 
@@ -144,6 +144,8 @@ public TemporalOperationResult<RequestApprovalOutput> requestApproval(
 Set the Workflow Id from the item id, as decided in [step 3](/develop/java/nexus/development-walkthrough/choose-backing-implementation#give-the-approval-workflow-a-stable-id).
 
 By default, starting a Workflow whose Id is already running **fails the Operation**. The Operation has only started once its completion callback is attached to a Workflow, so failing loudly beats reporting success to a caller that would then wait forever. The code above already sets `USE_EXISTING` instead, because once another Operation can create the approval first, this one must attach to it. [Step 8](/develop/java/nexus/development-walkthrough/send-messages#when-the-approval-already-exists) explains why.
+
+`@TemporalOperation` gives the Operation the default cancel behavior. To change how a cancellation reaches the backing Execution, use `@OperationImpl` with a `TemporalOperationHandler` subclass instead.
 
 ## Start the development server
 

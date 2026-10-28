@@ -2,7 +2,7 @@
 id: define-the-data-contract
 title: Define the data contract
 sidebar_label: 1. Define the data contract
-description: A contract in JSON Schema 2020-12 declares the five approval Operations, the types they carry, and the rules that keep both sides deployable independently.
+description: A contract in JSON Schema 2020-12 declares the six approval Operations, the types they carry, and the rules that keep both sides deployable independently.
 tags:
   - Nexus
 ---
@@ -30,12 +30,13 @@ Writing the contract first is what makes the Service polyglot.
 
 Work backwards from what callers need, not from what your Workflow happens to do.
 
-Callers of the approval Service need to start an approval and learn its outcome, nudge a pending approval, attach supporting information to a purchase, submit a decision, and be notified when the decision is final. That produces five Operations:
+Callers of the approval Service need to start an approval and learn its outcome, nudge a pending approval, check its progress, attach supporting information to a purchase, submit a decision, and be notified when the decision is final. That produces six Operations:
 
 | Operation | Input | Output | Added in |
 | --- | --- | --- | --- |
 | `requestApproval` | Item id, requester, amount | `APPROVED` or `DENIED` | Step 4 |
 | `remindApprover` | Item id | Nothing | Step 7 |
+| `getApprovalStatus` | Item id | Whether a decision is pending, and how many reminders and notes it has so far | Step 7 |
 | `submitDecision` | Item id, decision | The decision recorded, and how many reminders preceded it | Step 7 |
 | `attachApprovalContext` | Item id, requester, amount, note | Nothing | Step 8 |
 | `notifyRequester` | Requester, decision | Where the notification was delivered | Step 9 |

@@ -21,14 +21,15 @@ This step uses the processes started earlier. Leave them running:
 
 To the caller, the messaging Operations are ordinary Operations, called through the same generated stub as `requestApproval` with the same type checking. Whether each one is a Signal or an Update is the handler's private detail.
 
-## Nudge and decide
+## Nudge, check, and decide
 
-The caller Workflow in [step 6](/develop/java/nexus/development-walkthrough/call-the-service#call-the-operations-from-a-caller-workflow) calls both. They differ in what comes back:
+The caller Workflow in [step 6](/develop/java/nexus/development-walkthrough/call-the-service#call-the-operations-from-a-caller-workflow) calls all three. They differ in what comes back:
 
 - `remindApprover` returns nothing and completes as soon as the Signal is accepted. Accepted means durably recorded, not yet handled; a caller that needs confirmation that the nudge took effect needs an Update.
+- `getApprovalStatus` returns the approval's progress once, without changing it. The caller checks it once and doesn't loop on it, because the decision arrives as the result of `requestApproval`.
 - `submitDecision` returns confirmation that the decision was recorded. The approval Workflow then completes, which resolves the `requestApproval` Operation the original caller is awaiting.
 
-Both fail if no approval is running for the purchase.
+`remindApprover` and `submitDecision` fail if no approval is running for the purchase. `getApprovalStatus` also answers after the approval completes, until the Retention Period expires.
 
 ## Attach information before the approval exists
 
