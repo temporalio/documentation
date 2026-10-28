@@ -39,7 +39,7 @@ This page focuses on the client-side APIs that are unique to Standalone Nexus Op
 
 :::note
 This documentation uses source code from the
-[.NET Nexus Standalone sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusStandaloneOperations).
+[StandaloneOperations sample project](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/nexus/StandaloneOperations).
 
 :::
 
@@ -61,8 +61,7 @@ Which should output v1.9.0 or higher.
 
 ### 2. Start a local dev server {/* #enable-dev-server */}
 
-The dev server enables Standalone Nexus Operations by default — no dynamic config is
-required. Start it with the caller and handler Namespaces pre-created:
+Start the dev server with Standalone Nexus Operations enabled and the caller and handler Namespaces pre-created:
 
 ```bash
 temporal server start-dev \
@@ -70,10 +69,16 @@ temporal server start-dev \
   --namespace my-handler-namespace
 ```
 
+:::note
+
+If you see `Standalone Nexus operation is disabled` when running commands against a local dev server, start the dev server with `--dynamic-config-value nexusoperation.enableStandalone=true`.
+
+:::
+
 The starter and Worker connect to two different Namespaces (a caller Namespace and a handler
 Namespace), mirroring how Nexus crosses Namespace boundaries.
 
-To run the examples on this page against the [.NET sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusStandaloneOperations),
+To run the examples on this page against the [.NET sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/nexus/StandaloneOperations),
 create a Nexus Endpoint that routes to the handler Namespace and the Worker's Task Queue:
 
 ```bash
@@ -110,7 +115,9 @@ get the result, describe, cancel, or terminate the Operation. `Id` is required o
 [`NexusOperationOptions`](https://dotnet.temporal.io/api/Temporalio.Client.NexusOperationOptions.html);
 `ScheduleToCloseTimeout` is optional and defaults to the maximum allowed by the Temporal server.
 
-```csharp
+<!--SNIPSTART dotnet-nexus-standalone-execute {"enable_code_dedenting": true}-->
+[dotnet-sandbox/nexus/StandaloneOperations/Starter.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/StandaloneOperations/Starter.cs)
+```cs
 var nexusClient = client.CreateNexusClient<IHelloService>("my-nexus-endpoint");
 
 var result = await nexusClient.ExecuteNexusOperationAsync(
@@ -120,10 +127,13 @@ var result = await nexusClient.ExecuteNexusOperationAsync(
         ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
     });
 ```
+<!--SNIPEND-->
 
 You can also use the untyped overload that takes the Operation name as a string:
 
-```csharp
+<!--SNIPSTART dotnet-nexus-standalone-start-untyped {"enable_code_dedenting": true}-->
+[dotnet-sandbox/nexus/StandaloneOperations/Starter.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/StandaloneOperations/Starter.cs)
+```cs
 var nexusClient = client.CreateNexusClient("my-nexus-endpoint", "HelloService");
 
 var handle = await nexusClient.StartNexusOperationAsync<IHelloService.EchoOutput>(
@@ -134,6 +144,7 @@ var handle = await nexusClient.StartNexusOperationAsync<IHelloService.EchoOutput
         ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
     });
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI to execute a Standalone Nexus Operation:
 
@@ -152,10 +163,13 @@ temporal nexus operation execute \
 Use `NexusOperationHandle<TResult>.GetResultAsync()` to await the Operation's completion and retrieve its result. This
 works for both synchronous and asynchronous (Workflow-backed) Operations.
 
-```csharp
+<!--SNIPSTART dotnet-nexus-standalone-get-result {"enable_code_dedenting": true}-->
+[dotnet-sandbox/nexus/StandaloneOperations/Starter.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/StandaloneOperations/Starter.cs)
+```cs
 var output = await handle.GetResultAsync();
 logger.LogInformation("Operation result: {Message}", output.Message);
 ```
+<!--SNIPEND-->
 
 If the Operation completed successfully, the result is deserialized into the handle's result type. If the Operation
 failed, a `NexusOperationFailedException` is thrown.
@@ -163,10 +177,13 @@ failed, a `NexusOperationFailedException` is thrown.
 You can also recover a handle for an already-started Operation using `GetNexusOperationHandle<TResult>()` on the
 Temporal Client:
 
-```csharp
+<!--SNIPSTART dotnet-nexus-standalone-get-handle {"enable_code_dedenting": true}-->
+[dotnet-sandbox/nexus/StandaloneOperations/Starter.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/StandaloneOperations/Starter.cs)
+```cs
 var handle = client.GetNexusOperationHandle<IHelloService.EchoOutput>("unique-operation-id");
 var output = await handle.GetResultAsync();
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI to wait for a result by Operation ID:
 
@@ -182,7 +199,9 @@ to list Standalone Nexus Operation Executions that match a [List Filter](/list-f
 
 Note that `ListNexusOperationsAsync` is called on the base `ITemporalClient`, not on the `NexusClient`.
 
-```csharp
+<!--SNIPSTART dotnet-nexus-standalone-list {"enable_code_dedenting": true}-->
+[dotnet-sandbox/nexus/StandaloneOperations/Starter.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/StandaloneOperations/Starter.cs)
+```cs
 await foreach (var execution in client.ListNexusOperationsAsync(
     "Endpoint = 'my-nexus-endpoint'"))
 {
@@ -191,6 +210,7 @@ await foreach (var execution in client.ListNexusOperationsAsync(
         execution.OperationId, execution.Operation, execution.Status);
 }
 ```
+<!--SNIPEND-->
 
 The query string accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND ExecutionStatus = 'Running'"`.
@@ -208,11 +228,14 @@ to count Standalone Nexus Operation Executions that match a [List Filter](/list-
 
 Note that `CountNexusOperationsAsync` is called on the base `ITemporalClient`, not on the `NexusClient`.
 
-```csharp
+<!--SNIPSTART dotnet-nexus-standalone-count {"enable_code_dedenting": true}-->
+[dotnet-sandbox/nexus/StandaloneOperations/Starter.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/StandaloneOperations/Starter.cs)
+```cs
 var count = await client.CountNexusOperationsAsync(
     "Endpoint = 'my-nexus-endpoint'");
 logger.LogInformation("Total Nexus operations: {Count}", count.Count);
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI:
 
