@@ -32,10 +32,13 @@ Build the Worker as you would any long-running .NET Worker, then set `Deployment
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
-```csharp
+<!--SNIPSTART dotnet-cloud-run-worker-versioned-->
+[dotnet-sandbox/workers/CloudRunWorker/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/CloudRunWorker/Program.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Common;
 using Temporalio.Worker;
+using TemporalioDocs.Workers.CloudRunWorker;
 
 var client = await TemporalClient.ConnectAsync(
     new(Environment.GetEnvironmentVariable("TEMPORAL_ADDRESS")!)
@@ -59,6 +62,7 @@ options.AddAllActivities(typeof(GreetingActivities), null);
 using var worker = new TemporalWorker(client, options);
 await worker.ExecuteAsync(CancellationToken.None);
 ```
+<!--SNIPEND-->
 
 The two arguments to `WorkerDeploymentVersion` are the deployment name and the build ID, and together they identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -66,7 +70,11 @@ Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behav
 Setting `DefaultVersioningBehavior` as shown above covers every Workflow on the Worker.
 To set the behavior per Workflow instead, set `VersioningBehavior` on the `Workflow` attribute:
 
-```csharp
+<!--SNIPSTART dotnet-cloud-run-worker-workflow-->
+[dotnet-sandbox/workers/CloudRunWorker/GreetingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/CloudRunWorker/GreetingWorkflow.workflow.cs)
+```cs
+namespace TemporalioDocs.Workers.CloudRunWorker;
+
 using Temporalio.Common;
 using Temporalio.Workflows;
 
@@ -74,9 +82,13 @@ using Temporalio.Workflows;
 public class GreetingWorkflow
 {
     [WorkflowRun]
-    public async Task<string> RunAsync(string name) => // ...
+    public async Task<string> RunAsync(string name) =>
+        await Workflow.ExecuteActivityAsync(
+            () => GreetingActivities.ComposeGreeting(name),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(1) });
 }
 ```
+<!--SNIPEND-->
 
 For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/dotnet/workers/run-worker-process).
 
@@ -92,6 +104,8 @@ For the full list of supported variables, the config file format, and profiles, 
 
 Publish the Worker and run it on a .NET runtime image:
 
+<!--SNIPSTART dotnet-cloud-run-worker-dockerfile-->
+[dotnet-sandbox/workers/CloudRunWorker/Dockerfile](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/CloudRunWorker/Dockerfile)
 ```dockerfile
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
@@ -105,8 +119,9 @@ FROM mcr.microsoft.com/dotnet/runtime:10.0
 
 WORKDIR /app
 COPY --from=build /out ./
-CMD ["dotnet", "MyWorker.dll"]
+CMD ["dotnet", "CloudRunWorker.dll"]
 ```
+<!--SNIPEND-->
 
 The Worker runs on a Rust core that reads TLS roots from the operating system's certificate store, so the runtime image must include one.
 The Debian-based `mcr.microsoft.com/dotnet/runtime` images do.
@@ -118,7 +133,9 @@ An instance running a long Activity can be stopped mid-execution.
 
 Use [Activity Heartbeats](/develop/dotnet/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
 
-```csharp
+<!--SNIPSTART dotnet-cloud-run-worker-heartbeat-->
+[dotnet-sandbox/workers/CloudRunWorker/GreetingActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/CloudRunWorker/GreetingActivities.cs)
+```cs
 [Activity]
 public static string Process(IReadOnlyList<string> items)
 {
@@ -130,6 +147,7 @@ public static string Process(IReadOnlyList<string> items)
     return "done";
 }
 ```
+<!--SNIPEND-->
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
@@ -139,8 +157,8 @@ Run an OpenTelemetry Collector as a sidecar in the Worker Pool. Call `ApplyGoogl
 to configure tracing and Temporal Core metrics for OTLP export to the Collector at `localhost:4317`. Load the Client
 connection settings with `ClientEnvConfig.LoadClientConnectOptions()`, then configure both plugins before connecting:
 
-<!--SNIPSTART dotnet-cloud-run-->
-[src/Gcp/CloudRun/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/Gcp/CloudRun/Program.cs)
+<!--SNIPSTART dotnet-cloud-run-worker-otel-->
+[dotnet-sandbox/workers/CloudRunWorker/OpenTelemetryWorker.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/CloudRunWorker/OpenTelemetryWorker.cs)
 ```cs
 // The Cloud Run Id plugin sets the client identity to "{instanceId}@{revision}" from Cloud Run
 // metadata at connect time; every Worker created from the client inherits it.
@@ -157,7 +175,7 @@ var client = await TemporalClient.ConnectAsync(connectOptions);
 
 After the Worker stops, call `telemetry.FlushAsync(TimeSpan.FromSeconds(2))` to flush traces within the Cloud Run
 termination window. For the Collector sidecar configuration and deployment steps, see the
-[.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Gcp/CloudRun).
+[.NET Cloud Run sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/workers/CloudRunWorker).
 
 ## Set a Worker identity {/* #worker-identity */}
 
@@ -165,18 +183,26 @@ Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revis
 
 Register the plugin on the Client options before connecting:
 
-```csharp
+<!--SNIPSTART dotnet-cloud-run-worker-identity-->
+[dotnet-sandbox/workers/CloudRunWorker/IdentityWorker.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/CloudRunWorker/IdentityWorker.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Common.EnvConfig;
 using Temporalio.Extensions.Gcp.CloudRun.Id;
 
-// ...
-    var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
-    connectOptions.Plugins = new ITemporalClientPlugin[] { new CloudRunIdPlugin() };
-    var client = await TemporalClient.ConnectAsync(connectOptions);
-    // ...
+public static class IdentityWorker
+{
+    public static async Task<TemporalClient> ConnectAsync()
+    {
+        var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+        connectOptions.Plugins = new ITemporalClientPlugin[] { new CloudRunIdPlugin() };
+        var client = await TemporalClient.ConnectAsync(connectOptions);
+        return client;
+    }
+}
 ```
+<!--SNIPEND-->
 
 The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry defaults.
 
-The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Gcp/CloudRun).
+The plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete example, see the [.NET Cloud Run sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/workers/CloudRunWorker).
