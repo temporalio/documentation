@@ -35,17 +35,16 @@ both modes.
 | Agent Chat | [chat](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/chat) | Conversation state and queued messages survive Continue-As-New. |
 | Tools | [tools](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/tools) | A deterministic function runs in the Workflow; a weather observation runs in an Activity. |
 | MCP | [mcp](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/mcp) | List and call a bundled stateless stdio server through Activities. |
-| Streaming | [streaming](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/streaming) | Deliver buffered ADK partial/final events through Workflow Streams and finish with or without a subscriber. |
+| Streaming | Unsupported | Plugin 0.1.0 buffers SSE responses until the model Activity completes; it cannot deliver output while the Activity is running. |
 | Human in the Loop | [humanintheloop](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/humanintheloop) | A Signal approves or rejects a pending tool call; cancellation ends the wait. |
 | Structured Output | [structuredoutput](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/structuredoutput) | Supply an ADK output schema, validate the response, and return a typed result. |
 | Multi-Agent | [multiagent](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/multiagent) | ADK schedules two specialist agents' model Activities concurrently. |
-| Observability | [observability](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/observability) | Export linked model and tool Activity spans with OpenTelemetry and suppress replayed Workflow spans. |
+| Observability | Unsupported | Native ADK tracing has no replay suppression and can export duplicate spans during replay. |
 | Sandboxes | [Limitations](#understand-the-limitations) | Plugin 0.1.0 does not manage agent-facing code execution environments. |
 
 The suite also includes a [long-running tool](https://github.com/temporalio/samples-java/tree/main/googleadk/src/main/java/io/temporal/samples/googleadk/longrunning)
-that resumes after a callback. Agent Chat is the introductory example. The streaming example publishes buffered SSE
-output after the model Activity completes; it does not forward live tokens. The observability example traces
-Temporal operations without enabling native ADK's global tracing provider.
+that resumes after a callback. Agent Chat is the introductory example. See [the limitations](#understand-the-limitations)
+for streaming, native ADK tracing, and agent sandbox support.
 
 ## Install the integration
 
@@ -183,21 +182,14 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 WorkflowClient client =
     WorkflowClient.newInstance(
         service, WorkflowClientOptions.newBuilder().setPlugins(plugin).build());
-SampleTelemetry telemetry =
-    "console".equals(System.getenv("ADK_TRACING")) ? SampleTelemetry.console() : null;
-WorkerFactory factory =
-    WorkerFactory.newInstance(
-        client,
-        telemetry == null
-            ? WorkerFactoryOptions.newBuilder().build()
-            : telemetry.workerOptions());
+WorkerFactory factory = WorkerFactory.newInstance(client);
 Worker worker = factory.newWorker(AgentSupport.TASK_QUEUE);
 register(worker);
 factory.start();
 ```
 <!--SNIPEND-->
 
-`register(worker)` hosts all nine scenarios and their Activity implementations. The same registration is used in the
+`register(worker)` hosts all seven scenarios and their Activity implementations. The same registration is used in the
 offline tests. The MCP toolset is created on first use; the other scenarios don't start an MCP server.
 
 Run the following commands from the samples repository root. Start the Temporal development server in one terminal:
@@ -583,167 +575,6 @@ Do not override a `ParallelAgent` scheduler or an `LlmAgent` executor: agent-lev
 scheduler and move execution off Workflow threads. For sequential execution, pass `WorkflowScheduler.sequential()`
 to `TemporalAdk.runnerBuilder(...)`.
 
-## Stream and observe model calls
-
-### Publish buffered model output
-
-ADK Java supports SSE responses. In plugin 0.1.0, one model Activity collects all chunks before returning them to
-the Workflow. Select `RunConfig.StreamingMode.SSE`, then publish the recorded partial and final events through
-Workflow Streams:
-
-<!--SNIPSTART java-google-adk-streaming-workflow-->
-[googleadk/src/main/java/io/temporal/samples/googleadk/streaming/StreamingWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/streaming/StreamingWorkflowImpl.java)
-```java
-@Override
-public List<ModelChunk> stream(String prompt) {
-  LlmAgent agent =
-      LlmAgent.builder()
-          .name("streaming_assistant")
-          .model(TemporalModel.create(AgentSupport.MODEL))
-          .instruction("Answer concisely.")
-          .build();
-  Runner runner = TemporalAdk.runnerBuilder().appName("streaming").agent(agent).build();
-  List<Event> events =
-      TemporalAdk.run(
-          runner,
-          AgentSupport.USER,
-          AgentSupport.SESSION,
-          Content.fromParts(Part.fromText(prompt)),
-          RunConfig.builder()
-              .streamingMode(RunConfig.StreamingMode.SSE)
-              .autoCreateSession(true)
-              .build());
-  List<ModelChunk> chunks =
-      events.stream()
-          .filter(event -> event.content().isPresent())
-          .map(
-              event ->
-                  new ModelChunk(
-                      event.partial().orElse(false) ? "partial" : "final",
-                      event.content().map(Content::text).orElse("")))
-          .toList();
-  for (ModelChunk chunk : chunks) output.topic("model").publish(chunk);
-  output.topic("model").publish(new ModelChunk("complete", AgentSupport.lastText(events)));
-  Workflow.await(Duration.ofSeconds(10), () -> acknowledged);
-  return chunks;
-}
-
-```
-<!--SNIPEND-->
-
-Workflow Streams is an experimental SDK module. This example publishes model chunks after the model Activity
-completes. Live token forwarding while that Activity is running requires an integration change. Start a subscriber
-with the sample's client:
-
-```bash
-./gradlew :googleadk:starter --args='streaming'
-```
-
-Offline mode emits two partial chunks, a final `Hello from ADK`, and a `complete` event. The subscriber acknowledges
-completion. Without a subscriber, the Workflow returns after a ten-second acknowledgement deadline. To exercise
-that path, use `temporal workflow execute --type StreamingWorkflow --task-queue google-adk-samples --input '"Say hello."'`.
-Subscribe when starting the Workflow; the sample serves stream items while the Workflow is open.
-
-### Export OpenTelemetry spans
-
-The observability sample traces the Temporal Workflow and its model/tool Activities through the SDK's tracing
-interceptor and OpenTracing-to-OpenTelemetry bridge. It uses an instance-scoped OpenTelemetry SDK with W3C trace
-propagation:
-
-<!--SNIPSTART java-google-adk-observability-setup-->
-[googleadk/src/main/java/io/temporal/samples/googleadk/observability/SampleTelemetry.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/observability/SampleTelemetry.java)
-```java
-public SampleTelemetry(SpanExporter exporter) {
-  telemetry =
-      OpenTelemetrySdk.builder()
-          .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
-          .setTracerProvider(
-              SdkTracerProvider.builder()
-                  .addSpanProcessor(
-                      SimpleSpanProcessor.create(new ReplayAwareSpanExporter(exporter)))
-                  .build())
-          .build();
-  options =
-      OpenTracingOptions.newBuilder()
-          .setTracer(OpenTracingShim.createTracerShim(telemetry))
-          .setSpanContextCodec(OpenTracingSpanContextCodec.TEXT_MAP_CODEC)
-          .build();
-}
-
-public WorkerFactoryOptions workerOptions() {
-  return WorkerFactoryOptions.newBuilder()
-      .setWorkerInterceptors(new OpenTracingWorkerInterceptor(options))
-      .build();
-}
-
-```
-<!--SNIPEND-->
-
-The synchronous processor checks replay before forwarding spans to the chosen exporter. This suppresses duplicate
-Workflow spans from history replay while retaining Query spans:
-
-<!--SNIPSTART java-google-adk-observability-exporter-->
-[googleadk/src/main/java/io/temporal/samples/googleadk/observability/ReplayAwareSpanExporter.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/observability/ReplayAwareSpanExporter.java)
-```java
-@Override
-public CompletableResultCode export(Collection<SpanData> spans) {
-  if (WorkflowUnsafe.isWorkflowThread() && WorkflowUnsafe.isReplaying()) {
-    spans = spans.stream().filter(span -> span.getName().startsWith("HandleQuery:")).toList();
-  }
-  return spans.isEmpty() ? CompletableResultCode.ofSuccess() : delegate.export(spans);
-}
-
-```
-<!--SNIPEND-->
-
-Keep the replay filter on the Workflow thread, before asynchronous export. Enable console export when starting
-the Worker:
-
-```bash
-ADK_MODEL_MODE=offline ADK_TRACING=console ./gradlew :googleadk:worker
-```
-
-Then run the observed model/tool interaction:
-
-<!--SNIPSTART java-google-adk-observability-workflow-->
-[googleadk/src/main/java/io/temporal/samples/googleadk/observability/ObservabilityWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/googleadk/src/main/java/io/temporal/samples/googleadk/observability/ObservabilityWorkflowImpl.java)
-```java
-@Override
-public String observe(String prompt) {
-  WeatherActivities weather =
-      Workflow.newActivityStub(
-          WeatherActivities.class,
-          ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(30)).build());
-  LlmAgent agent =
-      LlmAgent.builder()
-          .name("observed_assistant")
-          .model(TemporalModel.create(AgentSupport.MODEL))
-          .instruction("Use getWeather and summarize its result.")
-          .tools(ActivityTools.create(weather, "getWeather"))
-          .build();
-  Runner runner = TemporalAdk.runnerBuilder().appName("observability").agent(agent).build();
-  return AgentSupport.lastText(
-      TemporalAdk.run(
-          runner,
-          AgentSupport.USER,
-          AgentSupport.SESSION,
-          Content.fromParts(Part.fromText(prompt))));
-}
-```
-<!--SNIPEND-->
-
-```bash
-temporal workflow execute --type ObservabilityWorkflow --task-queue google-adk-samples --input '"What is the weather in Chicago?"'
-```
-
-Offline mode returns `Chicago is sunny.`. Console spans include the Workflow, two model Activity executions, and
-the weather Activity, linked into one trace. Real Activity retries produce another attempt span. Replace the console
-exporter with another `SpanExporter` to send these spans to an OpenTelemetry backend. The tests use an in-memory
-exporter and verify failures, retries, trace linkage, and replay without extra exported spans.
-
-This sample exports Temporal operation spans. It does not install a global ADK telemetry provider; native ADK
-agent-internal tracing in plugin 0.1.0 still lacks replay suppression.
-
 ## Wait for human approval
 
 Pass `true` as the confirmation argument to `ActivityTools.create` to pause before the tool executes. Read pending
@@ -876,23 +707,22 @@ Run the suite without provider credentials or an external Temporal Service:
 
 The tests verify Activity retries and non-retryable failures, deterministic function results, parallel model
 scheduling, a real local MCP server, approval/rejection and cancellation, invalid structured output, correlated
-callbacks, session/queue recovery through Continue-As-New, buffered streaming with and without a subscriber, and
-OpenTelemetry trace linkage without duplicate replay exports. `OfflineSamplesTest` also runs every scenario with
+callbacks, and session/queue recovery through Continue-As-New. `OfflineSamplesTest` also runs every scenario with
 the same `OfflineModel` and `SampleWorker.register` used by the runnable Worker. Each scenario's README includes a
 targeted test command.
 
 ## Understand the limitations
 
-- In version 0.1.0, streamed model chunks reach the Workflow after the model Activity completes. The streaming sample
-  publishes those recorded chunks through Workflow Streams. Live token forwarding and live bidirectional
-  connections remain unsupported by the plugin.
+- In version 0.1.0, streamed model chunks reach the Workflow after the model Activity completes. Delivery through
+  Workflow Streams while the Activity is running is tracked in [#257](https://github.com/temporalio/ai-integrations/issues/257).
+  Live bidirectional connections are also unsupported.
 - ADK services that perform I/O, including code execution, memory, and artifact services, cannot run directly inside
   a Workflow. Use Activities for I/O. The plugin does not durably manage an agent-facing code execution environment.
 - Avoid RxJava blocking methods inside a Workflow. Use `TemporalAdk.run` or `TemporalAdk.await` so the Workflow
   thread yields while Activities or timers are pending.
 - ADK uses global OpenTelemetry providers. The plugin has no replay suppression for ADK tracing, so an installed
-  tracing SDK emits duplicate spans during replay. The observability sample instruments Temporal operations through
-  the SDK instead of enabling global native ADK telemetry.
+  tracing SDK emits duplicate spans during replay. Replay-safe native ADK tracing is tracked in
+  [#258](https://github.com/temporalio/ai-integrations/issues/258).
 - Canceling an approval or callback wait does not undo a shipment or cancel an external job that already started.
   A real backend needs an explicit cancellation Activity.
 - ADK's experimental App resumability and event compaction are not covered by the integration's tests.
