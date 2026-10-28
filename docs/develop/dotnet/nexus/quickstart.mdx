@@ -34,11 +34,14 @@ By the end of this guide:
 
 <SetupSteps>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="csharp">
-{`namespace MyNamespace;
+<CodeSnippet title="ISayHelloNexusService.cs">
+
+<!--SNIPSTART dotnet-nexus-quickstart-service-->
+[dotnet-sandbox/nexus/NexusQuickstart/ISayHelloNexusService.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/NexusQuickstart/ISayHelloNexusService.cs)
+```cs
+namespace MyNamespace;
 
 using NexusRpc;
 
@@ -51,11 +54,11 @@ public interface ISayHelloNexusService
     string SayHello(MyInput input);
 
     public record MyInput(string Name);
-}`}
-</CodeSnippet>
+}
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 1. Define the Nexus Service
 
@@ -67,11 +70,14 @@ The `[NexusService]` attribute on an interface defines the Nexus Service contrac
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="csharp">
-{`namespace MyNamespace;
+<CodeSnippet title="SayHelloNexusServiceHandler.cs">
+
+<!--SNIPSTART dotnet-nexus-quickstart-handler-->
+[dotnet-sandbox/nexus/NexusQuickstart/SayHelloNexusServiceHandler.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/NexusQuickstart/SayHelloNexusServiceHandler.cs)
+```cs
+namespace MyNamespace;
 
 using NexusRpc.Handlers;
 using Temporalio.Nexus;
@@ -86,11 +92,11 @@ public class SayHelloNexusServiceHandler
                 context.StartWorkflowAsync(
                     (SayHelloWorkflow wf) => wf.RunAsync(input.Name),
                     new() { Id = context.HandlerContext.RequestId }));
-}`}
-</CodeSnippet>
+}
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 2. Define the Nexus Operation handler
 
@@ -104,22 +110,24 @@ Using `context.HandlerContext.RequestId` as the Workflow ID ensures that retried
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="csharp">
-{`// Worker/Program.cs
+<CodeSnippet title="Worker/Program.cs">
+
+<!--SNIPSTART dotnet-nexus-quickstart-worker-->
+[dotnet-sandbox/nexus/QuickstartWorker/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/QuickstartWorker/Program.cs)
+```cs
 var activities = new MyActivities();
 using var worker = new TemporalWorker(
     client,
     new TemporalWorkerOptions("my-task-queue")
         .AddActivity(activities.SayHello)
         .AddWorkflow<SayHelloWorkflow>()
-        .AddNexusService(new SayHelloNexusServiceHandler()));`}
-</CodeSnippet>
+        .AddNexusService(new SayHelloNexusServiceHandler()));
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 3. Register the Nexus Service handler in a Worker
 
@@ -129,11 +137,14 @@ A Worker will only handle incoming Nexus requests if the Nexus Service handlers 
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="csharp">
-{`namespace MyNamespace;
+<CodeSnippet title="CallerWorkflow.cs">
+
+<!--SNIPSTART dotnet-nexus-quickstart-caller-workflow-->
+[dotnet-sandbox/nexus/NexusQuickstart/CallerWorkflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/NexusQuickstart/CallerWorkflow.cs)
+```cs
+namespace MyNamespace;
 
 using Temporalio.Workflows;
 
@@ -150,11 +161,11 @@ public class CallerWorkflow
                 ISayHelloNexusService.EndpointName)
             .ExecuteNexusOperationAsync(svc => svc.SayHello(new(name)));
     }
-}`}
-</CodeSnippet>
+}
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 4. Develop the caller Workflow
 
@@ -216,11 +227,14 @@ The commands on the right create a new console project, add it to the solution, 
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="csharp" title="CallerStarter/Program.cs">
-{`using MyNamespace;
+<CodeSnippet title="CallerStarter/Program.cs">
+
+<!--SNIPSTART dotnet-nexus-quickstart-caller-starter-->
+[dotnet-sandbox/nexus/CallerStarter/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/CallerStarter/Program.cs)
+```cs
+using MyNamespace;
 using Temporalio.Client;
 using Temporalio.Worker;
 
@@ -249,11 +263,11 @@ var result = await client.ExecuteWorkflowAsync(
 Console.WriteLine("Workflow result: {0}", result);
 
 tokenSource.Cancel();
-try { await workerTask; } catch (OperationCanceledException) { }`}
-</CodeSnippet>
+try { await workerTask; } catch (OperationCanceledException) { }
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 7. Create the caller starter
 
