@@ -256,8 +256,9 @@ the same Worker.
 The plugin classifies Fireworks AI's HTTP errors. Status 408, 409, 429, and any 5xx retry under the Activity's Retry
 Policy, and a `Retry-After` header becomes the next retry delay. Connection errors and client-side timeouts retry as
 well. Other 4xx responses, such as an invalid API key or an unknown model name, fail the Activity without retrying, as
-does a model name whose provider has no key on the Worker. Each attempt, its failure, and the final result are in Event
-History.
+does a model name whose provider has no key on the Worker. Event History records the Activity's result, its attempt
+count, and its last failure, not every attempt. Individual failed attempts appear in the Worker's logs and, while the
+Activity is still retrying, as the pending Activity's last failure when you describe the Workflow Execution.
 
 On serverless, Fireworks AI enforces
 [adaptive token-per-minute limits](https://docs.fireworks.ai/serverless/rate-limits) per model that grow with steady
