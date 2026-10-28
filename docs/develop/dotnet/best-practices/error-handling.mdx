@@ -25,7 +25,9 @@ This way, an error's type, severity, and any additional details can be sent to t
 
 In other words, these two code samples do the same thing:
 
-```csharp
+<!--SNIPSTART dotnet-error-handling-custom-exception {"enable_code_dedenting": true}-->
+[dotnet-sandbox/bestpractices/ErrorHandling/CustomExceptionActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ErrorHandling/CustomExceptionActivities.cs)
+```cs
 [Serializable]
 public class InvalidDepartmentException : Exception
 {
@@ -40,27 +42,34 @@ public Task<OrderConfirmation> SendBillAsync(Bill bill)
     throw new InvalidDepartmentException("Invalid department");
 }
 ```
+<!--SNIPEND-->
 
-```csharp
+<!--SNIPSTART dotnet-error-handling-application-failure {"enable_code_dedenting": true}-->
+[dotnet-sandbox/bestpractices/ErrorHandling/ApplicationFailureActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ErrorHandling/ApplicationFailureActivities.cs)
+```cs
 [Activity]
 public Task<OrderConfirmation> SendBillAsync(Bill bill)
 {
     throw new ApplicationFailureException("Invalid department", errorType: "InvalidDepartmentException");
 }
 ```
+<!--SNIPEND-->
 
 Depending on your implementation, you may decide to use either method.
 One reason to use the Temporal `ApplicationFailureException` class is because it allows you to set an additional `non_retryable` parameter.
 This way, you can decide whether an error should not be retried automatically by Temporal.
 This can be useful for deliberately failing a Workflow due to bad input data, rather than waiting for a timeout to elapse:
 
-```csharp
+<!--SNIPSTART dotnet-error-handling-non-retryable {"enable_code_dedenting": true}-->
+[dotnet-sandbox/bestpractices/ErrorHandling/NonRetryableActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ErrorHandling/NonRetryableActivities.cs)
+```cs
 [Activity]
 public Task<OrderConfirmation> SendBillAsync(Bill bill)
 {
     throw new ApplicationFailureException("Invalid department", nonRetryable: true);
 }
 ```
+<!--SNIPEND-->
 
 You can alternately specify a list of errors that are non-retryable in your Activity [Retry Policy](/develop/dotnet/activities/timeouts#activity-retries).
 
@@ -75,7 +84,9 @@ For example, you could implement a [Saga Pattern](/design-patterns/saga-pattern)
 **You will only fail a Workflow by manually raising an `ApplicationFailureException` from the Workflow code.**
 You could do this in response to an Activity Failure, if the failure of that Activity means that your Workflow should not continue:
 
-```csharp
+<!--SNIPSTART dotnet-error-handling-fail-workflow {"enable_code_dedenting": true}-->
+[dotnet-sandbox/bestpractices/ErrorHandling/OrderWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ErrorHandling/OrderWorkflow.workflow.cs)
+```cs
 try
 {
     await Workflow.ExecuteActivityAsync(
@@ -88,6 +99,7 @@ catch (ActivityFailureException err)
     throw new ApplicationFailureException(message: "Invalid credit card number error");
 }
 ```
+<!--SNIPEND-->
 
 This works differently in a Workflow than raising exceptions from Activities.
 In an Activity, any C# exceptions or custom exceptions are converted to a Temporal `ApplicationError`.
