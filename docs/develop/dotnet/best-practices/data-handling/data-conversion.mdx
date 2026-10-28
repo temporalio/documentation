@@ -48,10 +48,19 @@ The default data converter uses a default payload converter, which supports the 
 Custom converters can be created for all uses. For example, to create client with a data converter that converts all C#
 property names to camel case, you would:
 
-```csharp
+<!--SNIPSTART dotnet-data-conversion-camel-case-->
+[dotnet-sandbox/bestpractices/DataConversion/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/DataConversion/Program.cs)
+```cs
 using System.Text.Json;
 using Temporalio.Client;
 using Temporalio.Converters;
+
+var client = await TemporalClient.ConnectAsync(new()
+{
+    TargetHost = "localhost:7233",
+    Namespace = "my-namespace",
+    DataConverter = DataConverter.Default with { PayloadConverter = new CamelCasePayloadConverter() },
+});
 
 public class CamelCasePayloadConverter : DefaultPayloadConverter
 {
@@ -60,11 +69,5 @@ public class CamelCasePayloadConverter : DefaultPayloadConverter
     {
     }
 }
-
-var client = await TemporalClient.ConnectAsync(new()
-{
-    TargetHost = "localhost:7233",
-    Namespace = "my-namespace",
-    DataConverter = DataConverter.Default with { PayloadConverter = new CamelCasePayloadConverter() },
-});
 ```
+<!--SNIPEND-->
