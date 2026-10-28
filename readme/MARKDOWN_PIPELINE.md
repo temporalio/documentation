@@ -253,6 +253,21 @@ reader output and `data-nosnippet` to stay out of search result snippets.
 this repo. If directive text ever shows up in search results, add `.agentDirective` to the
 crawler's `excludeSelectors` (or narrow the `recordExtractor` content selectors) and recrawl.
 
+### Search endpoint
+
+Three of these channels also advertise the `/api/retrieve` search endpoint, as part of an
+experiment in whether agents find and use it. Each carries a different `src` value, so the
+endpoint's request log shows which channel a caller found the URL on:
+
+| Channel | `src` | Where it lives |
+| --- | --- | --- |
+| `## Agent instructions for querying Temporal documentation` in `/llms.txt` | `llms` | `llmsTxt.rootContent` in `docusaurus.config.js` |
+| Visually hidden body text | `docs-page` | `AgentDirective.tsx` |
+| Blockquote under the H1 | `md-page` | `withAgentDirective()` in the `markdown-pages` plugin |
+
+Don't change this copy mid-experiment unless it's broken, so results from before and after a
+change stay comparable. See [AGENT-RETRIEVE.md](./AGENT-RETRIEVE.md) for the endpoint and its log.
+
 ## Page actions (the buttons)
 
 `src/components/LLMActions/LLMActions.tsx` renders the on-page action group — a **Copy**

@@ -39,9 +39,12 @@ process.
 To cancel a Workflow Execution in Python, use the
 [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow handle.
 
-```python
-await client.get_workflow_handle("your_workflow_id").cancel()
+<!--SNIPSTART python-cancellation-cancel-workflow-->
+[python-sandbox/workflows/cancellation/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/cancellation/client.py)
+```py
+await client.get_workflow_handle(workflow_id).cancel()
 ```
+<!--SNIPEND-->
 
 ### Cancel an Activity from a Workflow {/* #cancel-activity */}
 
@@ -67,7 +70,9 @@ To cancel an Activity from a Workflow Execution, call the
 [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that
 is returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
 
-```python
+<!--SNIPSTART python-cancellation-activity-->
+[python-sandbox/workflows/cancellation/activity_cancellation.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/cancellation/activity_cancellation.py)
+```py
 @activity.defn
 async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
     try:
@@ -99,6 +104,7 @@ class GreetingWorkflow:
         await asyncio.sleep(3)
         activity_handle.cancel()
 ```
+<!--SNIPEND-->
 
 :::note
 
@@ -119,9 +125,12 @@ To terminate a Workflow Execution in Python, use the
 [terminate()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#terminate) function on the Workflow
 handle.
 
-```python
-await client.get_workflow_handle("your_workflow_id").terminate()
+<!--SNIPSTART python-cancellation-terminate-workflow-->
+[python-sandbox/workflows/cancellation/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/cancellation/client.py)
+```py
+await client.get_workflow_handle(workflow_id).terminate()
 ```
+<!--SNIPEND-->
 
 ## Reset a Workflow Execution {/* #reset */}
 
