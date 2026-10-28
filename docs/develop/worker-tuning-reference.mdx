@@ -44,6 +44,10 @@ When a Worker crashes or experiences a host outage:
 3. The new Worker replays the Event History to reconstruct state
 4. Execution continues from where it left off
 
+Step 2 needs another Worker polling the same Task Queue. With only one Worker, the Task waits until that Worker restarts.
+Run at least two Workers per Task Queue, as described in
+[Run at least two Workers per Task Queue](/best-practices/worker#run-at-least-two-workers-per-task-queue).
+
 For more details on Worker architecture, see [What is a Temporal Worker?](/workers)
 
 ## Compute settings

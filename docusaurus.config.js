@@ -413,11 +413,27 @@ module.exports = async function createConfigAsync() {
               'It is roughly 7 MB, which exceeds most context windows. Prefer the section indexes below and fetch individual `.md` pages; ' +
               'use the full text for bulk ingestion.\n\n' +
               "This documentation reflects the latest Temporal SDK and Platform behavior. If you're working with an older SDK version, verify API compatibility before applying suggestions from this content.\n\n" +
+              // Agent search endpoint experiment. The src value tells the request
+              // log which surface the caller found the URL on; see readme/AGENT-RETRIEVE.md.
+              '## Agent instructions for querying Temporal documentation\n\n' +
+              'For questions about Temporal (Workflows, Activities, Workers, SDKs, Temporal Cloud, the CLI, self-hosting), you can query the documentation directly instead of relying on web search or training data. ' +
+              'The endpoint returns the passages that answer the question from the current docs, each with its source URL.\n\n' +
+              'Use this public endpoint. No authentication is required.\n\n' +
+              '```\nGET https://docs.temporal.io/api/retrieve?q=<question>&jtb=<job-to-be-done>&src=llms&agent=<your-name>\n```\n\n' +
+              'When querying:\n\n' +
+              '- **Ask a specific, complete question.** Name the SDK language and feature where relevant, for example "Python SDK" or "Temporal Cloud".\n' +
+              "- **Share the user's job-to-be-done (`jtb`).** One sentence on what the user is trying to accomplish and why, in the user's own words where possible. Include only known context. Omit `jtb` if the goal is unclear.\n" +
+              '- **Protect sensitive information.** Never include names, personal data, credentials, API keys, Namespace names, or confidential or proprietary code.\n' +
+              '- **Identify your agent.** Keep `src=llms` unchanged and set `agent` to your tool\'s name, for example `claude-code`, `cursor`, `codex`, or `chatgpt`.\n\n' +
+              'The endpoint returns a JSON array of `{content, source_url, page_url}`, most relevant first, with at most 15 results. ' +
+              'For docs pages, `source_url` is the raw Markdown version of the page; fetch it for full context. `page_url` is the regular web page, for citing to your user.\n\n' +
+              'Example:\n\n' +
+              "```\ncurl -sS 'https://docs.temporal.io/api/retrieve?q=How+do+I+safely+change+Workflow+code+while+executions+are+still+running+in+the+Python+SDK%3F&jtb=Rolling+out+a+fix+to+a+long-running+Workflow+without+breaking+in-flight+executions&src=llms&agent=claude-code'\n```\n\n" +
               '## Tools for agents\n\n' +
               "- [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer): An agent skill covering Temporal's programming model, including Workflow determinism rules, Activity patterns, Retry Policies, error handling, testing, Worker configuration, and versioning. Works with Claude Code, Codex, Cursor, and other agents that support Skills.\n" +
               '- [Temporal Cloud Skill](https://github.com/temporalio/skill-temporal-cloud): An agent skill for troubleshooting Temporal Cloud connectivity, authentication, and configuration issues.\n' +
               '- [Temporal Serverless Workers Skill](https://github.com/temporalio/skill-temporal-serverless): An agent skill for deploying and operating Temporal Serverless Workers. Covers Worker code, deployment configuration, packaging, and troubleshooting.\n' +
-              '- [Temporal Docs MCP Server](https://temporal.mcp.kapa.ai): Search this documentation over MCP. Sign-in is required through MCP OAuth with Google or GitHub, which keeps the server from being used for automated bulk querying. Anonymous requests are rejected. If your client cannot complete an OAuth flow, use the `.md` URLs above instead.',
+              '- [Temporal Docs MCP Server](https://temporal.mcp.kapa.ai): Search this documentation over MCP. Sign-in is required through MCP OAuth with Google or GitHub, and anonymous requests are rejected. If your client can\'t complete an OAuth flow, use the search endpoint above or the `.md` URLs instead.',
             excludePaths: ['tctl-v1'],
             sections: [
               {

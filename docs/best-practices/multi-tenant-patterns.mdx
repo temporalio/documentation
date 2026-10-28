@@ -228,16 +228,16 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
 ### Assumptions
 
-| Item || Value 
-|------||-------
-| Current customers || 1,000 
-| Workflow Task Queues per customer || 1 
-| Activity Task Queues per customer || 1 
-| Max Task Queue pollers per Namespace || 20,000 (per [Cloud limits](/evaluate/cloud/limits)) 
-| SDK concurrent Workflow task pollers || 5 
-| SDK concurrent Activity task pollers || 5 
-| Max concurrent Workflow executions || 200 
-| Max concurrent Activity executions || 200 
+| Item | Value |
+|---|---|
+| Current customers | 1,000 |
+| Workflow Task Queues per customer | 1 |
+| Activity Task Queues per customer | 1 |
+| Max Task Queue pollers per Namespace | 20,000 (per [Cloud limits](/evaluate/cloud/limits)) |
+| SDK concurrent Workflow task pollers | 5 |
+| SDK concurrent Activity task pollers | 5 |
+| Max concurrent Workflow executions | 200 |
+| Max concurrent Activity executions | 200 |
 
 ### Capacity calculations
 
@@ -252,7 +252,7 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 - For 5,000 customers: **20 Workers minimum** (plus replicas for HA)
 
 **Namespace capacity:**
-- At 250 tenants per Worker, need 2 Workers per group of tenants (for HA)
+- At 250 tenants per Worker, need 2 Workers per group of tenants (for [HA](/best-practices/worker#run-at-least-two-workers-per-task-queue))
 - Maximum tenants in Namespace: (2,000 Workers ÷ 2) × 250 = **250,000 tenants**
 
 :::note

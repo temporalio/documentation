@@ -6,6 +6,14 @@ updates:
       interval: weekly
     cooldown:
       default-days: 14
+    groups:
+      # react and react-dom must have the exact same version, or the build fails.
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
 
   - package-ecosystem: github-actions
     directory: "/"
