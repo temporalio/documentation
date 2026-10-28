@@ -1,6 +1,6 @@
 ---
 id: choosing-a-nexus-approach
-title: Choosing a Nexus approach
+title: When to use Workflows vs Nexus vs SANO vs SAA
 sidebar_label: Choosing an approach
 description: Pick between starting a Workflow directly, exposing a Nexus Service, calling one without a caller Workflow, and backing an Operation with an Activity.
 toc_max_heading_level: 4
@@ -16,8 +16,8 @@ An Activity that runs without a Workflow is a [Standalone Activity](/standalone-
 [Nexus](/nexus) exposes capabilities through a service contract, with durable communication and controlled access across [Namespace](/namespaces) boundaries.
 
 Two options remove a Workflow from either end of a Nexus call.
-[Standalone Nexus Operations](/standalone-nexus-operation) let applications call a service without a caller Workflow.
-[Nexus Standalone Activities](/nexus/standalone-activity) let a service execute a single durable action without a handler Workflow.
+[Standalone Nexus Operations](/standalone-nexus-operation) (SANO) let applications call a service without a caller Workflow.
+[Nexus Standalone Activities](/nexus/standalone-activity) (SAA) let a service execute a single durable action without a handler Workflow.
 
 :::info
 
@@ -31,8 +31,8 @@ Standalone Nexus Operations and Nexus Standalone Activities are at [Pre-release]
 | **Start a Workflow directly** | The application owns the process and can depend on its Workflow API. The same team invokes and owns the Workflow. | An order application starts its own fulfillment Workflow. |
 | **Expose a Nexus Service Interface** | Other teams want to call your application using clean contracts. | A billing team exposes `ChargeCustomer` for other teams to consume. |
 | **Call Nexus from a Workflow** | The Operation is part of a multi-step orchestrated process. | An order Workflow reserves inventory, calls billing, and arranges shipping. |
-| **Use a Standalone Nexus Operation** (Pre-release) | An application, script, or gateway needs to invoke a Nexus Service with minimal overhead and no multi-step orchestration requirements. | An admin application, which is not implemented on Temporal, calls `ProvisionAccount` through Nexus. |
-| **Use a Nexus Standalone Activity** (Pre-release) | A Service Operation performs one durable action and needs Activity retries and timeouts. | The `ChargeCustomer` Nexus Operation uses a Nexus Standalone Activity so that the Stripe API call can be made durably. |
+| **Use a Standalone Nexus Operation (SANO)** (Pre-release) | An application, script, or gateway needs to invoke a Nexus Service with minimal overhead and no multi-step orchestration requirements. | An admin application, which is not implemented on Temporal, calls `ProvisionAccount` through Nexus. |
+| **Use a Nexus Standalone Activity (SAA)** (Pre-release) | A Service Operation performs one durable action and needs Activity retries and timeouts. | The `ChargeCustomer` Nexus Operation uses a Nexus Standalone Activity so that the Stripe API call can be made durably. |
 
 ## Decide whether you need a service boundary
 
