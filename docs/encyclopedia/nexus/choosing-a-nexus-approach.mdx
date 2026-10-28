@@ -13,7 +13,13 @@ tags:
 [Workflows](/workflows) and [Activities](/activities) provide durable execution; an Activity that runs without a Workflow is a [Standalone Activity](/standalone-activity).
 [Nexus](/nexus) exposes capabilities through a service contract, with durable communication and controlled access across [Namespace](/namespaces) boundaries.
 [Standalone Nexus Operations](/standalone-nexus-operation) let applications call those services without a caller Workflow; [Nexus Standalone Activities](/nexus/standalone-activity) let services execute a single durable action without a handler Workflow.
-Nexus is Generally Available. Standalone Nexus Operations and Nexus Standalone Activities are at [Pre-release](/evaluate/product-release-stages#pre-release), so their APIs are experimental and may change in backwards-incompatible ways.
+
+:::info
+
+Nexus is Generally Available.
+Standalone Nexus Operations and Nexus Standalone Activities are at [Pre-release](/evaluate/product-release-stages#pre-release), so their APIs are experimental and may change in backwards-incompatible ways.
+
+:::
 
 | Capability | When to use it | Example |
 | :---- | :---- | :---- |
@@ -23,20 +29,20 @@ Nexus is Generally Available. Standalone Nexus Operations and Nexus Standalone A
 | **Use a Standalone Nexus Operation** (Pre-release) | An application, script, or gateway needs to invoke a Nexus Service with minimal overhead and no multi-step orchestration requirements. | An admin application, which is not implemented on Temporal, calls `ProvisionAccount` through Nexus. |
 | **Use a Nexus Standalone Activity** (Pre-release) | A Service Operation performs one durable action and needs Activity retries and timeouts. | The `ChargeCustomer` Nexus Operation uses a Nexus Standalone Activity so that the Stripe API call can be made durably. |
 
-## First, decide whether you need a service boundary
+## Decide whether you need a service boundary
 
 Starting a Workflow or Standalone Activity directly already provides durability.
 Use Nexus when callers should depend on a business capability, such as `ProvisionAccount`, while the service owner controls its implementation.
 Callers use the service contract without needing to know its Workflow IDs, Task Queues, or backing implementation.
 This is particularly useful across teams and isolated Namespaces.
 
-## Then, decide how to call the Nexus Service
+## Choose how to call the Nexus Service
 
 - **Call from a Workflow** when the caller needs durable business logic, coordination, or state. An existing Workflow can also call a single [Nexus Operation](/nexus/operations).
 - **Use a Standalone Nexus Operation** when code outside a Workflow needs to invoke the service. The called Operation can still run a complex Workflow; a Standalone Nexus Operation removes only the need for a *caller* Workflow. That is, when the Nexus Operation is the only work you need to do, and there is no other processing required.
 - An HTTP endpoint or webhook receiver can use a Standalone Nexus Operation through an adapter that makes the SDK Client call. A Standalone Nexus Operation does not itself provide a public HTTP endpoint.
 
-## Finally, decide how to implement the Nexus Operation
+## Choose how to implement the Nexus Operation
 
 - **Use a Workflow** when the Operation needs multiple steps, durable intermediate state, timers, or coordination.
 - **Use a Nexus Standalone Activity** when the Operation performs one durable action, such as calling a third-party API, writing to another system, or running a computation.
