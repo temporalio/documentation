@@ -26,29 +26,26 @@ With every step in place, the caller runs the whole approval:
 5. The caller calls `notifyRequester` with the decision.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-caller-starter-->
-
 [core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java)
-
 ```java
-  public static void main(String[] args) {
-    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+public static void main(String[] args) {
+  WorkflowClient client = ClientOptions.getWorkflowClient(args);
 
-    WorkflowOptions options =
-        WorkflowOptions.newBuilder().setTaskQueue(CallerWorker.DEFAULT_TASK_QUEUE_NAME).build();
+  WorkflowOptions options =
+      WorkflowOptions.newBuilder().setTaskQueue(CallerWorker.DEFAULT_TASK_QUEUE_NAME).build();
 
-    // Runs the whole flow: context attached first, approval requested, approver reminded, decision
-    // submitted, decision awaited, requester notified.
-    ApprovalCallerWorkflow workflow = client.newWorkflowStub(ApprovalCallerWorkflow.class, options);
-    String result =
-        workflow.runApprovalFlow(
-            "standing-desk-" + UUID.randomUUID(),
-            "dana@example.com",
-            1250.00,
-            "Approved in the Q3 ergonomics budget");
-    logger.info("Purchase result: {}", result);
-  }
+  // Runs the whole flow: context attached first, approval requested, approver reminded, progress
+  // checked, decision submitted, decision awaited, requester notified.
+  ApprovalCallerWorkflow workflow = client.newWorkflowStub(ApprovalCallerWorkflow.class, options);
+  String result =
+      workflow.runApprovalFlow(
+          "standing-desk-" + UUID.randomUUID(),
+          "dana@example.com",
+          1250.00,
+          "Approved in the Q3 ergonomics budget");
+  logger.info("Purchase result: {}", result);
+}
 ```
-
 <!--SNIPEND-->
 
 ## Run the whole flow
