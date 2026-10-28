@@ -32,7 +32,7 @@ APIs are experimental and may be subject to backwards-incompatible changes.
 | :---- | :---- | :---- |
 | **Start a Workflow directly** | The application owns the process and can depend on its Workflow API. The same team invokes and owns the Workflow. | An order application starts its own fulfillment Workflow. |
 | **Expose a Nexus Service Interface** | Other teams want to call your application using clean contracts. | A billing team exposes `ChargeCustomer` for other teams to consume. |
-| **Call Nexus from a Workflow** | The Operation is part of a multi-step orchestrated process. | An order Workflow reserves inventory, calls billing, and arranges shipping. |
+| **Call Nexus from a Workflow** | The process orchestrates multiple Nexus Operations across Namespace boundaries. | An order Workflow reserves inventory, calls billing, and arranges shipping. |
 | **Use a Standalone Nexus Operation (SANO)** (Pre-release) | An application, script, or gateway needs to invoke a Nexus Service with minimal overhead and no multi-step orchestration requirements. | An admin application, which is not implemented on Temporal, calls `ProvisionAccount` through Nexus. |
 | **Use a Nexus Standalone Activity (SAA)** (Pre-release) | A Service Operation performs one durable action and needs Activity retries and timeouts. | The `ChargeCustomer` Nexus Operation uses a Nexus Standalone Activity so that the Stripe API call can be made durably. |
 
