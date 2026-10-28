@@ -60,6 +60,21 @@
   ],
   "redirects": [
     {
+      "source": "/json/privatelink_aws.json",
+      "destination": "/cloud/references/regions/awsregions",
+      "permanent": true
+    },
+    {
+      "source": "/json/privatelink_services_aws.json",
+      "destination": "/cloud/references/regions/awsregions",
+      "permanent": true
+    },
+    {
+      "source": "/json/privatelink_gcp.json",
+      "destination": "/cloud/references/regions/gcpregions",
+      "permanent": true
+    },
+    {
       "source": "/:path*/null",
       "destination": "/:path*",
       "permanent": true
