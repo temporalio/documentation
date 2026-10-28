@@ -22,12 +22,14 @@ Benign errors:
 - Do not emit Activity failure metrics
 - Do not set the OpenTelemetry failure status to ERROR
 
-```csharp
+<!--SNIPSTART dotnet-benign-exceptions-activity-->
+[dotnet-sandbox/activities/BenignExceptions/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/BenignExceptions/MyActivities.cs)
+```cs
 using Temporalio.Activities;
 using Temporalio.Api.Enums.V1;
 using Temporalio.Exceptions;
 
-public class MyActivities
+public partial class MyActivities
 {
     [Activity]
     public async Task<string> MyActivityAsync()
@@ -47,5 +49,6 @@ public class MyActivities
     }
 }
 ```
+<!--SNIPEND-->
 
 Use benign exceptions for Activity errors that occur regularly as part of normal operations, such as polling an external service that isn't ready yet, or handling expected transient failures that will be retried.
