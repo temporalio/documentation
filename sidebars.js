@@ -2250,6 +2250,7 @@ module.exports = {
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/worker-tuning-simulator',
         'demos/priority-fairness-walkthrough',
       ],
     },
