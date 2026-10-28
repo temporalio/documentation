@@ -10,9 +10,14 @@ tags:
   - Concepts
 ---
 
-[Workflows](/workflows) and [Activities](/activities) provide durable execution; an Activity that runs without a Workflow is a [Standalone Activity](/standalone-activity).
+[Workflows](/workflows) and [Activities](/activities) provide durable execution.
+An Activity that runs without a Workflow is a [Standalone Activity](/standalone-activity).
+
 [Nexus](/nexus) exposes capabilities through a service contract, with durable communication and controlled access across [Namespace](/namespaces) boundaries.
-[Standalone Nexus Operations](/standalone-nexus-operation) let applications call those services without a caller Workflow; [Nexus Standalone Activities](/nexus/standalone-activity) let services execute a single durable action without a handler Workflow.
+
+Two options remove a Workflow from either end of a Nexus call.
+[Standalone Nexus Operations](/standalone-nexus-operation) let applications call a service without a caller Workflow.
+[Nexus Standalone Activities](/nexus/standalone-activity) let a service execute a single durable action without a handler Workflow.
 
 :::info
 
