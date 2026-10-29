@@ -21,9 +21,10 @@ With every step in place, the caller runs the whole approval:
 
 1. Call `requestApproval` and await it. The Operation starts the approval Workflow in the handler Namespace, or attaches to one that another Operation already started.
 2. While it is pending, other systems call `remindApprover` to nudge the approver and `attachApprovalContext` to add supporting information.
-3. Someone calls `submitDecision` with `APPROVED` or `DENIED`. The Update records it, confirms to that caller, and unblocks the approval Workflow.
-4. The approval Workflow returns the decision, which resolves the `requestApproval` Operation for every attached caller.
-5. The caller calls `notifyRequester` with the decision.
+3. A caller checks progress once with `getApprovalStatus`. The Query reports that a decision is still pending, with the reminder and note counts so far.
+4. Someone calls `submitDecision` with `APPROVED` or `DENIED`. The Update records it, confirms to that caller, and unblocks the approval Workflow.
+5. The approval Workflow returns the decision, which resolves the `requestApproval` Operation for every attached caller.
+6. The caller calls `notifyRequester` with the decision.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-caller-starter-->
 [core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerStarter.java)
@@ -85,7 +86,7 @@ The context is attached *before* the approval is requested, the Signal-with-Star
 [step 8](/develop/java/nexus/development-walkthrough/send-messages#run-it-in-the-harder-order).
 `requestApproval` then attached to the approval the note created.
 
-Every call crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or what backed any Operation. One Operation started a Workflow, two sent messages to it, one started it if it was not already running, and one started an Activity. To the caller, they were all Operations.
+Every call crossed a Namespace boundary, and the caller never learned a Workflow Id, a Task Queue, or what backed any Operation. One Operation started a Workflow, three sent messages to it, one started it if it was not already running, and one started an Activity. To the caller, they were all Operations.
 
 ## Trace it end to end
 

@@ -51,7 +51,7 @@ public interface ApprovalActivities {
 
 ## Back the Operation with it
 
-Use `TemporalOperationHandler`, but start an Activity on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) instead of a Workflow. The Operation starts an Activity Execution with no parent Workflow and completes when the Activity returns.
+Write it as a `@TemporalOperation` method, but start an Activity on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) instead of a Workflow. The Operation starts an Activity Execution with no parent Workflow and completes when the Activity returns.
 
 The Activity provides retries, timeouts, and a record of every attempt. The Operation provides the contract, so other teams can trigger the notification without sharing your code or your Namespace.
 
