@@ -24,7 +24,9 @@ If you use a private environment that does not allow external connectivity, you 
 :::warning Namespaces with High Availability features and GCP Private Service Connect
 
 Automatic failover via Temporal Cloud DNS is not currently supported with GCP Private Service Connect.
-If you use GCP Private Service Connect, you must manually update your workers to point to the active region's Private Service Connect endpoint when a failover occurs.
+GCP Cloud DNS cannot combine the public Namespace CNAME with private regional DNS overrides in the way the AWS PrivateLink HA pattern requires.
+When a failover occurs, manually update your private DNS override or Worker and Client endpoint configuration to point to the active region's Private Service Connect endpoint.
+See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect) for GCP-only and multi-cloud connectivity options.
 
 :::
 
@@ -128,12 +130,12 @@ Both mTLS and API key authentication support both Namespace Endpoints and Region
 | ------- | -------------------- | -------------------------------- |
 | Single region | Namespace Endpoint | An A record for each Namespace Endpoint, such as `payments.abcde.tmprl.cloud`, or a wildcard record for `*.abcde.tmprl.cloud`. |
 | Single region | Regional Endpoint | A single A record for the Regional Endpoint in the Namespace's region. |
-| Multiple regions with High Availability | Namespace Endpoint (recommended) | An A record for each regional FQDN, such as `gcp-us-central1.region.tmprl.cloud`, that the Namespace Endpoint can CNAME to. Keep the Temporal-managed Namespace CNAME so it follows the active region on failover. |
+| Multiple regions with High Availability | Namespace Endpoint | An A record for the Namespace Endpoint pointing to a replica region's PSC endpoint IP address. Manually update the override to the active region's PSC endpoint IP address after failover; automatic DNS failover is not supported. |
 | Multiple regions with High Availability | Regional Endpoint (not recommended) | A single A record for the Regional Endpoint in the client's active region. To withstand a regional outage, run a Worker pool in each region and configure each pool to use its region's Regional Endpoint. |
 
 Point each A record at the corresponding region's PSC endpoint IP address.
-For High Availability Namespaces, follow [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) to configure regional DNS overrides and network routing.
-Do not override the Namespace Endpoint when relying on its CNAME to follow the active region on failover.
+For High Availability Namespaces, see [GCP PSC failover options](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect).
+Regional DNS overrides do not enable automatic failover with GCP PSC.
 
 The steps below use a single-region Namespace Endpoint as the example.
 
