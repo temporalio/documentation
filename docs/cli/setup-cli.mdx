@@ -92,13 +92,13 @@ extension using the following command:
 
 :::tip Support, stability, and dependency info
 
-The Temporal Cloud extension is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+The Temporal Cloud extension is in [Public Preview](/evaluate/product-release-stages#public-preview).
 APIs and configuration may change before the stable release.
 
 :::
 
 ```bash
-brew install temporalio/prerelease/temporal-cloud
+brew install temporalio/brew/temporal-cloud
 ```
 
 ## Run a local development server
@@ -114,7 +114,7 @@ temporal server start-dev
 This command automatically starts the Web UI, creates the `default` [Namespace](/namespaces), and uses an in-memory
 SQLite database.
 
-The Temporal Server will be available on `localhost:7233` and the Temporal Web UI will be available at
+The Temporal Service will be available on `localhost:7233` and the Temporal Web UI will be available at
 [`http://localhost:8233`](http://localhost:8233/).
 
 Persist state locally by specifying a database file:
@@ -183,8 +183,7 @@ information.
 
 ### Configure proxy support
 
-The Temporal CLI provides support for users who are operating behind a proxy. This feature ensures seamless
-communication even in network-restricted environments.
+The Temporal CLI supports running behind a proxy, so it can reach the Temporal Service in network-restricted environments.
 
 #### Setting up proxy support
 
@@ -217,7 +216,7 @@ documentation.
 
 Enable auto-completion using the following commands.
 
-### zsh auto-completion
+### Zsh auto-completion
 
 1. Add the following line to your `~/.zshrc` startup script:
 
@@ -277,7 +276,7 @@ shell for `temporal` auto-completion to work.
    source ~/.config/fish/completions/temporal.fish
    ```
 
-## Getting CLI help
+## Get CLI help {/* #getting-cli-help */}
 
 From the command line:
 

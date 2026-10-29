@@ -1,7 +1,6 @@
 ---
 id: index
 title: Connectivity
-sidebar_label: Connectivity
 slug: /cloud/connectivity
 description: Network connectivity details for using Temporal Cloud
 tags:
@@ -10,6 +9,8 @@ tags:
   - Connectivity
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { CaptionedImage, SdkTabs } from '@site/src/components';
 
 ## Private network connectivity for namespaces
@@ -74,26 +75,26 @@ Each Connectivity Rule specifies either generic public (internet) access or a sp
 
 A public Connectivity Rule can optionally enable [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses), so Namespaces attached to it resolve their Namespace endpoint to a published, fixed set of IP addresses you can allowlist in your firewall.
 
-Only one public Connectivity Rule is allowed per account (see [Permissions and limits](#permissions-and-limits) below). 
+Each Project allows 1 public Connectivity Rule and up to 5 private Connectivity Rules. To learn more about limits, see [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules).
 
 :::caution
 
-Connectivity Rules cannot be updated in place. If you already have a public Connectivity Rule and want to turn on Stable IPs, you must delete the existing public rule, create a new one with Stable IPs enabled, and re-attach it to every Namespace that needs it. Attempting to create a second public rule alongside the existing one returns an error.
+Connectivity Rules cannot be updated in place. If this Project already has a public Connectivity Rule and you want to turn on Stable IPs, delete that Project's public rule, create a new one with Stable IPs enabled, and re-attach it to every Namespace in that Project that needs it. A public rule in another Project can stay. Creating a second public rule in the same Project returns an error. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules).
 
 :::
 
 An AWS PrivateLink (PL) private Connectivity Rule requires:
 
 - `connection-id`: The **VPC endpoint identifier** of the PL connection — the `vpce-…` value from your AWS account, *not* the endpoint service or DNS name (ex: `vpce-00939a7ed9EXAMPLE`).
-- `region`: The region of the PL connection, prefixed with `aws-` (ex: `aws-us-east-1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
+- `region`: The region of the PL connection, prefixed with `aws-` (ex: `aws-us-east-1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/evaluate/cloud/regions) for supported regions.
 
 A GCP Private Service Connect (PSC) private Connectivity Rule requires:
 
 - `connection-id`: The **PSC connection identifier** of the endpoint (ex: `1234567890123456789`). Find it on the endpoint's detail page in the Google Cloud console.
-- `region`: The region of the PSC connection, prefixed with `gcp-` (ex: `gcp-us-east1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
+- `region`: The region of the PSC connection, prefixed with `gcp-` (ex: `gcp-us-east1`). Must be the same region as the Namespace. Refer to the [Temporal Cloud region list](/evaluate/cloud/regions) for supported regions.
 - `gcp-project-id`: The identifier of the GCP project where you created the PSC connection (ex: `my-example-project-123`).
 
-Connectivity Rules can be created and managed with [tcld](/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), or the [Cloud Ops API](/ops). There is no Temporal Cloud Web UI option for creating or managing Connectivity Rules at this time.
+Connectivity Rules can be created and managed with the [Temporal Cloud CLI extension](/cli/cloud), [tcld](/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), or the [Cloud Ops API](/ops). There is no Temporal Cloud Web UI option for creating or managing Connectivity Rules at this time.
 
 :::tip Connectivity Rules give Temporal visibility into your private connections
 
@@ -105,37 +106,57 @@ Without a Connectivity Rule, Temporal Cloud has no record that your PrivateLink 
 
 Only [Account Admins and Account Owners](/cloud/manage-access/roles-and-permissions#account-level-roles) can create and manage connectivity rules. Connectivity rules are visible to Account Developers, Account Admins, and Account Owners.
 
-By default each namespace is limited to 5 private connectivity rules, and each account is limited to 50 private connectivity rules. You can [contact support](/cloud/support#support-ticket) to request a higher limit.
+By default each Namespace is limited to 5 private Connectivity Rules. Without [Projects](/cloud/projects), the Account allows 50 private Connectivity Rules and 1 public Connectivity Rule, for a total of 51. With Projects enabled, each Project allows 1 public Connectivity Rule and up to 5 private Connectivity Rules. Connectivity Rules across all Projects count toward the Account total of 51. You can [contact support](/evaluate/cloud/support#support-ticket) to request a higher limit. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules).
 
-There is only one public rule allowed per account, because it's generic and can be reused for all namespaces that you want to be available on the internet. Trying to create more than one public rule will throw an error.
+A public Connectivity Rule can be reused for every Namespace in that Project that should be available on the internet. Creating a second public rule in the same Project returns an error.
 
 ## Creating a connectivity rule
 
-### Temporal Cloud CLI (tcld)
+### Temporal Cloud CLI
 
-Create private connectivity rule (AWS):
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+Create a private connectivity rule (AWS):
+
+```bash
+temporal cloud connectivity private create --connection-id "vpce-abcde" --region "aws-us-east-1"
+```
+
+Create a private connectivity rule (GCP):
+
+```bash
+temporal cloud connectivity private create --connection-id "1234567890" --region "gcp-us-central1" --gcp-project-id "my-project-123"
+```
+
+Create a public Connectivity Rule once for the Project. Each Project allows 1 public Connectivity Rule. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules):
+
+```bash
+temporal cloud connectivity public create
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
+Create a private connectivity rule (AWS):
 
 ```bash
 tcld connectivity-rule create --connectivity-type private --connection-id "vpce-abcde" --region "aws-us-east-1"
 ```
 
-Create private connectivity rule (GCP):
+Create a private connectivity rule (GCP):
 
 ```bash
 tcld connectivity-rule create --connectivity-type private --connection-id "1234567890" --region "gcp-us-central1" --gcp-project-id "my-project-123"
 ```
 
-Create public connectivity rule (you only need to do this once ever in your account):
+Create a public Connectivity Rule once for the Project. Each Project allows 1 public Connectivity Rule. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules):
 
 ```bash
 tcld connectivity-rule create --connectivity-type public
 ```
 
-To enable [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) on the public rule, use the Cloud Ops API or Terraform. See [How to enable Stable IPs](/cloud/connectivity/ip-addresses#how-to-enable-stable-ips).
-
 The `cr` alias works the same way:
-
-Private connectivity rule:
 
 ```bash
 tcld cr create --connectivity-type private --connection-id "vpce-abcde" --region "aws-us-east-1"
@@ -144,6 +165,11 @@ tcld cr create --connectivity-type private --connection-id "vpce-abcde" --region
 ```bash
 tcld cr create --connectivity-type public
 ```
+
+</TabItem>
+</Tabs>
+
+To enable [Stable IPs](/cloud/connectivity/ip-addresses#stable-ip-addresses) on the public rule, use the Cloud Ops API or Terraform. See [How to enable Stable IPs](/cloud/connectivity/ip-addresses#how-to-enable-stable-ips).
 
 ### Terraform
 
@@ -155,9 +181,35 @@ Be careful! When any connectivity rules are set on a namespace, that namespace i
 
 If you already have workers using a namespace, adding both a public rule and any private rules simultaneously can help you avoid unintended loss of access. You can then ensure all workers are using private connections, and then remove the public rule.
 
-### Temporal Cloud CLI (tcld)
+### Temporal Cloud CLI
 
-Setting the connectivity rules on a namespace:
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+Attach connectivity rules to a namespace:
+
+```bash
+temporal cloud namespace connectivity attach --namespace "my-namespace.abc123" \
+  --connectivity-rule-id "rule-id-1" --connectivity-rule-id "rule-id-2"
+```
+
+Rules attach and detach individually. To detach `rule-c` while leaving `rule-a` and `rule-b` in place, detach only `rule-c`:
+
+```bash
+temporal cloud namespace connectivity detach --namespace "my-namespace.abc123" \
+  --connectivity-rule-id "rule-c"
+```
+
+Detaching every rule makes the namespace public. List the attached rules first, then detach them:
+
+```bash
+temporal cloud namespace connectivity list --namespace "my-namespace.abc123"
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
+Set the connectivity rules on a namespace:
 
 ```bash
 tcld namespace set-connectivity-rules --namespace "my-namespace.abc123" --connectivity-rule-ids "rule-id-1" --connectivity-rule-ids "rule-id-2"
@@ -172,7 +224,7 @@ tcld n scrs -n "my-namespace.abc123" --ids "rule-id-1" --ids "rule-id-2"
 Connectivity rules are attached as a set, so if rules `rule-a`, `rule-b`, and `rule-c` were attached to a namespace and you wanted to detach `rule-c` only, you'd make one call attaching both `rule-a` and `rule-b`:
 
 ```bash
-tcld namespace set-connectivity-rules --namespace "my-namespace.abc123 --ids rule-a --ids rule-b
+tcld namespace set-connectivity-rules --namespace "my-namespace.abc123" --ids rule-a --ids rule-b
 ```
 
 Remove all connectivity rules (this will make the namespace public):
@@ -180,6 +232,9 @@ Remove all connectivity rules (this will make the namespace public):
 ```bash
 tcld namespace set-connectivity-rules --namespace "my-namespace.abc123" --remove-all
 ```
+
+</TabItem>
+</Tabs>
 
 ### Terraform
 
@@ -194,17 +249,43 @@ You have two ways to view the connectivity rules attached to a particular namesp
 
 Connectivity rules are included in the namespace details returned by the `namespace get` command. 
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```bash
+temporal cloud namespace get -n "my-namespace.abc123"
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
 ```bash
 tcld namespace get -n "my-namespace.abc123"
 ```
 
+</TabItem>
+</Tabs>
+
 ### List connectivity rules by namespace
 
-To see only the connectivity rules for a specific namespace (without other namespace details), use the `connectivity-rule list` command with a namespace argument.
+To see only the connectivity rules for a specific namespace, without other namespace details, list the rules for that namespace.
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```bash
+temporal cloud namespace connectivity list -n "my-namespace.abc123"
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```bash
 tcld connectivity-rule list -n "my-namespace.abc123"
 ```
+
+</TabItem>
+</Tabs>
 
 ## Update DNS or clients to use private connectivity
 
@@ -213,24 +294,29 @@ We strongly recommend using private DNS instead of updating client server and TL
 - [How to set up private DNS in AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink)
 - [How to set up private DNS in GCP](/cloud/connectivity/gcp-connectivity#configuring-private-dns-for-gcp-private-service-connect)
 
+Choose the private DNS records based on the number of regions your Namespace uses and the endpoint your Clients and Workers use.
+Both mTLS and API key authentication support both Namespace Endpoints and Regional Endpoints; the authentication method does not determine which endpoint or TLS server name to use.
+
+| Regions | Endpoint clients use | Private DNS records to configure |
+| ------- | -------------------- | -------------------------------- |
+| Single region | Namespace Endpoint | An A record for each Namespace Endpoint, such as `my-namespace.my-account.tmprl.cloud`, or a wildcard record for `*.my-account.tmprl.cloud`. |
+| Single region | Regional Endpoint | A single record for the Regional Endpoint in the Namespace's region. |
+| Multiple regions with High Availability | Namespace Endpoint (recommended) | A record for each regional FQDN, such as `aws-us-east-1.region.tmprl.cloud`, that the Namespace Endpoint can CNAME to. Keep the Temporal-managed Namespace CNAME so it follows the active region on failover. |
+| Multiple regions with High Availability | Regional Endpoint (not recommended) | A single record for the Regional Endpoint in the client's active region. To withstand a regional outage, run a Worker pool in each region and configure each pool to use its region's Regional Endpoint. |
+
+Configure these records to resolve to the corresponding region's PrivateLink or Private Service Connect endpoint.
+For the multi-region setup, follow [Connectivity for High Availability](/cloud/high-availability/ha-connectivity).
+
 If you are unable to configure private DNS, you must update two settings in your Temporal clients:
 
 1. Set the endpoint server address to the PrivateLink or Private Service Connect endpoint (for example, `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233` or `<GCP PSC IP address>:7233`).
-2. Set TLS configuration to override the TLS server name (the Namespace Endpoint, for example, `my-namespace.my-account.tmprl.cloud`).
+2. Set TLS configuration to override the TLS server name with the Temporal Cloud hostname, for example, the Namespace Endpoint `my-namespace.my-account.tmprl.cloud`.
 
-The TLS server name override depends on your authentication method:
-
-| Authentication | TLS server name to use |
-| -------------- | ---------------------- |
-| mTLS (single-region Namespace) | The Namespace Endpoint, for example `my-namespace.my-account.tmprl.cloud` |
-| API key (single-region Namespace) | The regional API endpoint, for example `us-east-1.aws.api.temporal.io` or `us-central1.gcp.api.temporal.io` |
-| Multi-region Namespace (mTLS or API key) | The active region endpoint, for example `us-east-1.aws.api.temporal.io` |
-
-If you authenticate with an API key over PrivateLink/PSC and use the wrong server name, the TLS handshake will fail with errors such as `connection reset by peer` even though `nc` reports the port as open.
+Using the wrong TLS server name over PrivateLink or Private Service Connect can cause the TLS handshake to fail even when the port is reachable, regardless of the authentication method.
 
 Updating these settings depends on the client you're using.
 
-#### temporal CLI
+#### Temporal CLI
 ```bash
 TEMPORAL_ADDRESS=vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233
 TEMPORAL_NAMESPACE=my-namespace.my-account
@@ -241,7 +327,7 @@ TEMPORAL_TLS_SERVER_NAME=my-namespace.my-account.tmprl.cloud
 temporal workflow count -n $TEMPORAL_NAMESPACE
 ```
 
-#### grpcurl
+#### `grpcurl`
 ```bash
 grpcurl \
     -servername my-namespace.my-account.tmprl.cloud \
@@ -348,7 +434,7 @@ Different hostnames are used for different parts of the service.
 - `web.onboarding.tmprl.cloud` (required for Web UI)
 - `web.saas-api.tmprl.cloud` (required for Web UI)
 
-### AWS PrivateLink connectivity to Temporal Cloud Control Plane
+### AWS PrivateLink connectivity to Temporal Cloud control plane
 
 Temporal Cloud supports [AWS PrivateLink](https://aws.amazon.com/privatelink/) connections to the Control Plane, which allows access from applications running in VPCs that cannot egress to the public internet. Temporal Cloud does **not** support restricting an account so that private connectivity is the sole connectivity method to the Control Plane; the Control Plane is always accessible via public internet.
 
@@ -369,7 +455,7 @@ For Temporal clients to access the Control Plane over AWS PrivateLink, you must 
 Without this step, your clients may connect to the Temporal Cloud Control Plane over the internet, or they may not connect at all.
 :::
 
-#### Extend the Control Plane PrivateLink endpoint to other AWS regions with VPC Peering
+#### Extend the control plane PrivateLink endpoint to other AWS regions with VPC peering
 
 The Temporal Cloud Control Plane PrivateLink Service is only exposed in `us-west-2`. To reach the Control Plane privately from another AWS region, set up a us-west-2 VPC with a VPC Endpoint to the Control Plane, then [VPC-Peer](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html) that VPC to your other-region VPCs.
 

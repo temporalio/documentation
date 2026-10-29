@@ -14,6 +14,14 @@ tags:
 
 The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interact with Temporal Cloud.
 
+:::tip
+
+The Temporal CLI also manages Temporal Cloud through its
+[Temporal Cloud extension](/cli/cloud), which adds `temporal cloud` commands for Namespaces, users, API keys, and Nexus
+Endpoints. See the [`temporal cloud` command reference](/cli/command-reference/cloud) for the equivalent commands.
+
+:::
+
 - [How to install tcld](#install-tcld)
 
 ### tcld commands
@@ -55,13 +63,14 @@ brew install temporalio/brew/tcld
 
 ### Build tcld from source
 
-1. Verify that you have Go 1.18 or later installed.
+1. Verify that you have the minimum Go version listed in the tcld
+   [`go.mod`](https://github.com/temporalio/tcld/blob/main/go.mod) file.
 
    ```bash
    go version
    ```
 
-   If Go 1.18 or later is not installed, follow the [Download and install](https://go.dev/doc/install) instructions on the Go website.
+   If that version of Go is not installed, follow the [Download and install](https://go.dev/doc/install) instructions on the Go website.
 
 1. Clone the tcld repository and run make.
 

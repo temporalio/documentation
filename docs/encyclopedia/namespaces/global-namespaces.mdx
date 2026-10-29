@@ -1,7 +1,6 @@
 ---
 id: global-namespaces
 title: Global Namespace
-sidebar_label: Global Namespace
 description: This guide covers everything about Global Namespaces within the Temporal Platform.
 slug: /global-namespace
 toc_max_heading_level: 4
@@ -17,11 +16,12 @@ This page provides an overview of Global Namespace.
 A Global Namespace is a [Namespace](/namespaces) that exists across Clusters when [Multi-Cluster Replication](/temporal-service/multi-cluster-replication) is set up.
 
 - [How to register a Global Namespace](/cli/command-reference/operator#create)
-- [How to change the active Cluster for a Global Namespace](/cli/command-reference/operator#update)
+- [How to fail over a Global Namespace](/self-hosted-guide/multi-cluster-replication#how-to-fail-over-a-global-namespace)
 
 The Global Namespace feature enables Workflow Executions to progress through another Cluster in the event of a failover.
 
-A Global Namespace may be replicated to any number of Clusters, but is active in only one Cluster at any given time.
+A Global Namespace may be replicated to any number of Clusters, but only one Cluster is active at a time during normal operation.
+During a failover, the source and destination Clusters can briefly disagree about which one is active until the failover replicates; see [How to fail over a Global Namespace](/self-hosted-guide/multi-cluster-replication#how-to-fail-over-a-global-namespace) for planned and forced failover procedures.
 
 For a failover to be successful, Worker Processes must be polling for Tasks for the Global Namespace on all Clusters.
 

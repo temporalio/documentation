@@ -6,6 +6,7 @@ const path = require('path');
 const os = require('os');
 const { spawnSync } = require('child_process');
 const yaml = require('js-yaml');
+const { writeAiCookbookIndex } = require('./write-ai-cookbook-index');
 
 const REPO_URL = process.env.AI_COOKBOOK_REPO ?? 'https://github.com/temporalio/ai-cookbook.git';
 const REPO_BRANCH = process.env.AI_COOKBOOK_BRANCH ?? 'main';
@@ -108,7 +109,7 @@ function extractFrontMatterComment(source) {
   const commentPattern = /^\s*<!--([\s\S]*?)-->/;
   const match = commentPattern.exec(source);
   if (!match) {
-    return { error: 'missing front matter comment' };
+    return { error: 'missing front matter (expected a --- YAML block or a leading <!-- --> comment)' };
   }
   const commentBody = match[1].replace(/\r/g, '').trim();
   let data;
@@ -136,6 +137,32 @@ function extractFrontMatterComment(source) {
   const rest = source.slice(match.index + match[0].length);
   const body = rest.replace(/^\s+/, '');
   return { data, body };
+}
+
+function extractYamlFrontMatter(source) {
+  const match = /^\uFEFF?---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/.exec(source);
+  if (!match) {
+    return null;
+  }
+  let data;
+  try {
+    data = yaml.load(match[1]) ?? {};
+  } catch (error) {
+    return { error: `invalid front matter: ${error.message}` };
+  }
+  if (data === null || typeof data !== 'object' || Array.isArray(data)) {
+    return { error: 'front matter must resolve to an object' };
+  }
+  const body = source.slice(match.index + match[0].length).replace(/^\s+/, '');
+  return { data, body };
+}
+
+// Recipes use standard YAML front matter (--- delimited). The legacy format
+// wrapped the same YAML in an HTML comment; it is still accepted so the
+// ai-cookbook repo can migrate recipe by recipe. Remove the fallback once all
+// recipes have moved.
+function extractFrontMatter(source) {
+  return extractYamlFrontMatter(source) ?? extractFrontMatterComment(source);
 }
 
 function normalizePathKey(filePath) {
@@ -562,7 +589,7 @@ async function transformReadme(readmePath, slugLookup) {
   const sourceUrl = `${repoHttpBase}/blob/${REPO_BRANCH}/${sourceTarget}`;
   const rawContent = await readFile(readmePath);
 
-  const commentParse = extractFrontMatterComment(rawContent);
+  const commentParse = extractFrontMatter(rawContent);
   if ('error' in commentParse) {
     throw new Error(commentParse.error);
   }
@@ -677,6 +704,12 @@ async function main() {
     console.error('[sync-ai-cookbook] failed:', error);
     process.exitCode = 1;
   }
+  // Every syncReadmes() branch above (success, offline placeholder, or no
+  // READMEs found) can leave OUTPUT_DIR without an index doc — this always
+  // runs last so /ai/cookbook has a landing page regardless of which branch
+  // ran. See write-ai-cookbook-index.js for why this can't just live as a
+  // committed file inside ai-cookbook/ itself.
+  writeAiCookbookIndex(OUTPUT_DIR);
 }
 
 void main();

@@ -24,8 +24,12 @@ supports the following account-level roles:
 - Developer
 - Finance Admin
 - Read-Only
+- Metrics Read-Only
 
 ### Cloud Ops API permissions
+
+The Metrics Read-Only role grants no Cloud Ops API permissions, so it is not included in the following table. For its
+permissions and API key requirements, see [Metrics Read-Only role](/cloud/metrics/openmetrics#metrics-read-only-role).
 
 This table provides API-level details for permissions granted through account-level roles. These permissions are
 configured per user.
@@ -70,11 +74,12 @@ configured per user.
 | [GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/manage-access/service-accounts/%7BserviceAccountId%7D)           |    ✅†     |    ✅†     |      ✅†       |      ✅†      |      ✅†       |
 | [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/manage-access/service-accounts)          |    ✅†     |    ✅†     |      ✅†       |      ✅†      |      ✅†       |
 | [GetUsage](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/usage)                    |           |           |       ✅       |      ✅       |       ✅       |
-| [GetUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users/%7BuserId%7D)                     |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
+| [GetUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users/%7BuserId%7D)                     |    ✅‡     |    ✅‡     |      ✅‡       |     ✅‡       |      ✅‡       |
 | [GetUserGroup](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D)                |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetUserGroupMembers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D/members)         |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetUserGroups](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups)               |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
-| [GetUsers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users)                    |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
+| [GetUsers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users)                    |    ✅‡     |    ✅‡     |      ✅‡       |     ✅‡       |      ✅‡       |
+| [MoveNamespaceToProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/namespaces/%7Bnamespace%7D/move-to-project) |           |           |               |     ✅§      |      ✅§      |
 | [RemoveUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/remove-member)       |           |           |               |      ✅       |       ✅       |
 | [UpdateAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/account)               |           |           |               |      ✅       |       ✅       |
 | [UpdateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks/%7Bspec.name%7D)   |           |           |               |      ✅       |       ✅       |
@@ -88,6 +93,8 @@ configured per user.
 
 - \* See [API Key Authorization Behavior](#api-key-authorization-behavior)
 - † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
+- ‡ See [User authorization behavior](#user-authorization-behavior)
+- § Requires Project Admin on both the source Project and the destination Project. Account Owner and Global Admin meet this requirement because they are Project Admin on every Project. Project Admin on only one of the two Projects is not sufficient. See [Move a Namespace to another Project](/cloud/projects#move-a-namespace).
 
 {/* ### Additional account-level capabilities
 
@@ -147,6 +154,7 @@ configured per Namespace per user.
 | [GetNamespaceCapacityInfo](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D/capacity-info)         |  ✅   |   ✅   |        ✅        |
 | [GetNamespaceExportSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks/%7Bname%7D)           |  ✅   |   ✅   |        ✅        |
 | [GetNamespaceExportSinks](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/export/GET/cloud/namespaces/%7Bnamespace%7D/export-sinks)          |  ✅   |   ✅   |        ✅        |
+| [GetUserNamespaceAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/namespaces/%7Bnamespace%7D/user-assignments) |      |       |        ✅        |
 | [RenameCustomSearchAttribute](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D/rename-custom-search-attribute)      |      |       |        ✅        |
 | [SetServiceAccountNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/POST/cloud/namespaces/%7Bnamespace%7D/service-accounts/%7BserviceAccountId%7D/access) |      |       |        ✅        |
 | [SetUserGroupNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/namespaces/%7Bnamespace%7D/user-groups/%7BgroupId%7D/access)      |      |       |        ✅        |
@@ -294,6 +302,10 @@ Cloud Ops API endpoints they can call.
 This table provides API-level details for permissions granted through Project-level roles. These permissions are
 configured per Project per user.
 
+These permissions control who can manage Nexus Endpoints in the Project.
+They do not restrict which Namespaces can call an Endpoint at runtime, which continues to be controlled by the Endpoint [allowlist](/nexus/security#runtime-access-controls).
+See [Use Nexus across Projects](/cloud/projects#use-nexus-across-projects).
+
 | Permission                          | Member | List | Read | Contribute | Write | Project Admin |
 | ----------------------------------- | :----: | :--: | :--: | :--------: | :---: | :-----------: |
 | [CreateConnectivityRule](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/connectivity-rules/POST/cloud/connectivity-rules) |        |      |      |     ✅      |   ✅   |       ✅       |
@@ -315,6 +327,7 @@ configured per Project per user.
 | [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts) |        |  ✅†  |  ✅†  |     ✅†     |  ✅†   |      ✅†       |
 | [GetUserGroupProjectAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/user-group-assignments) |        |      |      |            |       |       ✅       |
 | [GetUserProjectAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/user-assignments) |        |      |      |            |       |       ✅       |
+| [MoveNamespaceToProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/namespaces/%7Bnamespace%7D/move-to-project) |        |      |      |            |       |      ✅§       |
 | [SetServiceAccountProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/service-accounts/%7BserviceAccountId%7D/access) |        |      |      |            |       |       ✅       |
 | [SetUserGroupProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/user-groups/%7BgroupId%7D/access) |        |      |      |            |       |       ✅       |
 | [SetUserProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/users/%7BuserId%7D/access) |        |      |      |            |       |       ✅       |
@@ -322,6 +335,7 @@ configured per Project per user.
 | [UpdateProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D) |        |      |      |            |       |       ✅       |
 
 - † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
+- § Requires Project Admin on both the source Project and the destination Project. Account Owner and Global Admin meet this requirement because they are Project Admin on every Project. Project Admin on only one of the two Projects is not sufficient. See [Move a Namespace to another Project](/cloud/projects#move-a-namespace).
 
 Project Developer is a compatibility role that users with the Account Developer role inherit automatically. It cannot be
 assigned directly. It grants everything Project Contribute grants except CreateConnectivityRule and
@@ -376,3 +390,16 @@ they hold Project Admin on that Project.
 
 **Affected APIs:** CreateServiceAccount, GetServiceAccount, GetServiceAccounts, UpdateServiceAccount,
 DeleteServiceAccount
+
+### User authorization behavior
+
+Every account-level role can call GetUser and GetUsers. The response includes the user's ID, email, and state.
+
+Another user's access (account role, Namespace permissions, Project access, and Custom Roles) and invitation are
+returned only to Account Owner and Global Admin. Namespace Admin does not change this.
+
+GetUser of the caller always includes that caller's own access.
+
+To list who has access to a Namespace, use GetUserNamespaceAssignments.
+
+**Affected APIs:** GetUser, GetUsers

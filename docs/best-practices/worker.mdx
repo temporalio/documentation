@@ -1,6 +1,5 @@
 ---
 title: Worker deployment and performance
-sidebar_label: Worker deployment and performance
 description: Best practices for deploying and optimizing Temporal Workers for performance and reliability.
 toc_max_heading_level: 4
 tags:
@@ -20,15 +19,17 @@ practices in action. You can find the OMS codebase on
 
 ## Quick checklist
 
-Designing a comprehensive Worker deployment strategy to optimize production performance involves many considerations. We
+A good Worker deployment strategy involves several considerations. We
 provide a quick checklist to help you get started. Before deploying Workers to production, ensure you address the
 following. Follow the links to the relevant sections for more details.
 
 - **[Configure each Worker appropriately](#actively-tune-worker-options-instead-of-relying-on-defaults)**: Actively tune
   Worker options based on your code, language runtime limits, and system resource constraints. Don't rely on defaults,
   which are designed for ease in development and testing, but not optimal for production environments.
+- **[Run at least two Workers per Task Queue](#run-at-least-two-workers-per-task-queue)**: For shared, always-on queues,
+  put them on separate hosts so that one Worker crashing or restarting doesn't stop Task processing.
 - **[Deploy enough Workers](#interpret-metrics-as-a-whole)**: Monitor performance metrics and scale Workers to meet your
-  workload requirements.
+  workload requirements, or [autoscale them](#scale-workers-automatically) on Kubernetes or with Serverless Workers.
 - **[Separate Task Queues logically](#separate-task-queues-logically)**: Size and split work across Task types
   (Activities and Workflows) and Task Queues based on workload characteristics.
 - **[Version Workers for safe deployments](#use-worker-versioning-to-safely-deploy-new-workflow-code)**: Ensure you can
@@ -116,11 +117,45 @@ uses environment variables to configure the Worker:
 ```
 {/* SNIPEND */}
 
+### Run at least two Workers per Task Queue
+
+For each shared, always-on Task Queue in production, run at least two Worker Processes, each on a separate host.
+
+A single Worker is a single point of failure. If it crashes, is redeployed, or loses its host, Tasks wait in the Task
+Queue until it comes back. With a second Worker polling the same Task Queue, that Worker
+[picks up the Tasks and replays the Event History](/develop/worker-tuning-reference#how-worker-failure-recovery-works),
+and the Workflow Executions keep making progress.
+
+This is a minimum for availability, separate from the capacity you size using the
+[metrics below](#interpret-metrics-as-a-whole). Scale beyond two based on Schedule-to-Start latency and slot usage. When
+you scale down, don't go below two.
+
+The minimum has three qualifications:
+
+- **Count Workers per Worker Deployment Version.** A [pinned](/worker-versioning#pinned) Workflow completes on a single
+  Worker Deployment Version, so another version's Workers can't take over its Tasks. Keep at least two Workers on
+  every version that still serves Workflow Executions, including older versions with pinned Workflows.
+- **Host-specific Task Queues are an exception.** Don't add a second host to a queue that routes Activities to the host
+  holding their local files or state, because the Tasks could land on a host without them. See
+  [Worker-specific Task Queues](/design-patterns/worker-specific-taskqueue).
+- **Serverless Workers and scale-to-zero are exceptions.** Temporal starts
+  [Serverless Workers](/serverless-workers) when Tasks arrive, and a KEDA-scaled fleet can drop to zero when idle. In
+  both cases, Tasks can wait while Workers start. See [Scale Workers automatically](#scale-workers-automatically).
+
+Two more practices help the minimum hold up:
+
+- **Spread Workers across failure domains.** Place Workers on different hosts and, in the cloud, across multiple
+  Availability Zones. Temporal Cloud Namespaces already span three Availability Zones, so Workers in a single zone are
+  the weak point. See [Availability Zone outage](/cloud/rpo-rto#availability-zone-outage).
+- **Roll out one Worker at a time.** Restarting every Worker at once empties their
+  [Sticky Execution](/sticky-execution) caches, so each Workflow Execution replays from its Event History when the new
+  Workers start.
+
 ### Separate Task Queues logically
 
 Use separate Task Queues for distinct workloads. This isolation allows you to control rate limiting, prioritize certain
-workloads, and prevent one workload from starving another. For each Task Queue, ensure you configure at least two
-Workers to poll the Task Queue.
+workloads, and prevent one workload from starving another. Each Task Queue needs its own
+[two or more Workers](#run-at-least-two-workers-per-task-queue).
 
 In the order management reference app, each microservice has its own Task Queue. For example, the Billing Worker polls
 the `billing` Task Queue, while the Order Worker polls the `order` Task Queue. This separation allows each service to
@@ -193,12 +228,12 @@ Execution with a new Event History, repeating this process as you approach the l
 
 All Temporal SDKs provide functions to suggest when to use [Continue-As-New](/workflow-execution/continue-as-new). For
 example, the Python SDK has the
-[`is_continue_as_new_suggested()`](https://python.temporal.io/temporalio.workflow.Info.html#is_continue_as_new_suggested)
+[`is_continue_as_new_suggested()`](https://python.temporal.io/temporalio.workflow.html#is_continue_as_new_suggested)
 function that returns a `bool` indicating whether to use Continue-As-New.
 
 In addition to the number of Events, monitor the size of the Event History. Input parameters and output values of both
 Workflows and Activities are stored in the Event History. Storing large amounts of data can lead to performance
-problems, so the Temporal Cluster limits both the size of individual payloads and the total Event History size. A
+problems, so the Temporal Service limits both the size of individual payloads and the total Event History size. A
 Workflow Execution may be terminated if any single payload exceeds 2 MB or if the entire Event History exceeds 50 MB.
 
 To avoid hitting these limits, avoid passing large amounts of data into and out of Workflows and Activities. A common
@@ -254,12 +289,12 @@ metrics:
 
 - High Schedule-to-Start latency and high CPU/memory: Workers are saturated. Scale up your Workers or add more Workers.
   It's also possible your Workers are blocked on Activities. Refer to
-  [Troubleshooting - Depletion of Activity Task Slots](../troubleshooting/performance-bottlenecks.mdx#depletion-of-temporal_worker_task_slots_available-for-activityworker)
+  [Troubleshooting - Depletion of Activity Task Slots](/troubleshooting/performance-bottlenecks#depletion-of-temporal_worker_task_slots_available-for-activityworker)
   for guidance.
 - High Schedule-to-Start latency and low CPU/memory: Workers are underutilized. Increase the number of pollers, executor
   slots, or both. If this is accompanied by high `temporal_long_request_latency` or `temporal_long_request_failure`,
   your Workers are struggling to reach the Temporal Service. Refer to
-  [Troubleshooting - Long Request Latency](../troubleshooting/performance-bottlenecks.mdx#high-temporal_long_request_failure)
+  [Troubleshooting - Long Request Latency](/troubleshooting/performance-bottlenecks#high-temporal_long_request_failure)
   for guidance.
 - Low Schedule-to-Start latency and low CPU/memory: Depending on your workload, this could be normal. If you are
   consistently seeing low memory usage and low CPU usage, you may be over-provisioning your Workers and can consider
@@ -267,6 +302,22 @@ metrics:
 
 Refer to [Intro to Worker Tuning](https://temporal.io/blog/an-introduction-to-worker-tuning) for more details and
 examples on how to interpret Worker metrics.
+
+### Scale Workers automatically
+
+Instead of adjusting the Worker count by hand, scale it from Task Queue backlog and slot utilization:
+
+- **On Kubernetes**, the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller#autoscaling-versioned-workers)
+  attaches a Kubernetes HPA or KEDA `ScaledObject` to each Worker Deployment Version, so each version scales
+  separately.
+- **With Serverless Workers**, Temporal starts and stops Workers in response to Tasks on the Task Queue, so you don't
+  provision or scale a fleet. AWS Lambda and GCP Cloud Run support is in Public Preview. See
+  [Deploy Serverless Workers](/production-deployment/worker-deployments/serverless-workers).
+
+For an always-on fleet, set the autoscaler's minimum replica count to at least two so the
+[two-Worker minimum](#run-at-least-two-workers-per-task-queue) still holds when the Task Queue is idle. If you
+deliberately scale to zero, for example with KEDA or Serverless Workers, Tasks can wait while Workers start, so only do
+that for queues that tolerate the delay.
 
 ### Optimize Worker cache
 
@@ -278,7 +329,7 @@ pressure.
 Having a high `temporal_sticky_cache_size` by itself isn't necessarily an issue, but if your Workers are memory-bound,
 consider reducing the cache size to allow more concurrent executions. We recommend you experiment with different cache
 sizes in a staging environment to find the optimal setting for your Workflows. Refer to
-[Troubleshooting - Caching](../troubleshooting/performance-bottlenecks.mdx#caching) for more details on how to interpret
+[Troubleshooting - Caching](/troubleshooting/performance-bottlenecks#caching) for more details on how to interpret
 the different cache-related metrics.
 
 ### Manage scale-down safely

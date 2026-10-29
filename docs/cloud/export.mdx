@@ -1,8 +1,7 @@
 ---
 id: export
 title: Workflow History Export
-sidebar_label: Workflow History Export
-description: Export closed Workflow Histories from Temporal Cloud to S3 or GCS hourly, in protobuf format, for compliance and analytics.
+description: Export closed Workflow Histories from Temporal Cloud to S3, GCS, or Azure Blob Storage hourly in protobuf format for compliance and analytics.
 slug: /cloud/export
 toc_max_heading_level: 4
 tags:
@@ -10,7 +9,7 @@ tags:
   - Export Workflow History
 ---
 
-Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage (AWS S3 or GCP GCS), enabling:
+Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage (AWS S3, GCP GCS, or Azure Blob Storage), enabling:
 
 - Compliance and audit trails of complete Event History data in [proto format](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto)
 - Analytics on Event History when ingested to the data platform of your choice
@@ -136,6 +135,10 @@ To use Workflow History Export, you must have:
 
 [GCP GCS Export Configuration](/cloud/export/gcp-export-gcs)
 
+### Azure
+
+[Azure Blob Storage export configuration](/cloud/export/azure-export-blob-storage)
+
 ## Verify export setup {/* #verify */}
 
 From the Export configuration page, select **Verify**.
@@ -192,7 +195,7 @@ It can be useful to convert protos to another format to perform analytics on the
 
 ## Export and High Availability Namespaces {/* #export-ha */}
 
-### Export Region Persistence
+### Export region persistence
 
 When Export is configured for a [High Availability](/cloud/high-availability) Namespace, the export is tied to the specific region where it was initially set up. The export configuration does not automatically failover with the Namespace.
 
@@ -201,8 +204,8 @@ When Export is configured for a [High Availability](/cloud/high-availability) Na
 - The export process is independent of Namespace failover events
 - Export does not fail over automatically because we prioritize data completeness and consistency over real-time availability for exports. HA data replication has inherent latency, which could result in incomplete or inconsistent exports during a failover.
 
-### Failover Scenarios
+### Failover scenarios
 
 **Namespace Failover with Healthy Primary Region**: When a Namespace fails over to a secondary region but the primary region remains healthy (including its blob storage), the export job continues to operate from the primary region. It does not automatically switch to export data from the secondary region.
 
-**Primary Region Outage**: If the primary region (where Export was configured) experiences a complete outage including S3/GCS storage: Exports will be unavailable until the primary region recovers. Once the primary region recovers, export will resume and include any Workflow histories that occurred during the outage. There may be delays in export processing, but the complete dataset will eventually be available. It does not automatically switch to export data from the secondary region.
+**Primary Region Outage**: If the primary region (where Export was configured) experiences a complete outage including object storage: Exports will be unavailable until the primary region recovers. Once the primary region recovers, export will resume and include any Workflow histories that occurred during the outage. There may be delays in export processing, but the complete dataset will eventually be available. It does not automatically switch to export data from the secondary region.

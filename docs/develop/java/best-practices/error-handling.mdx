@@ -1,6 +1,6 @@
 ---
 id: error-handling
-title: Error handling - Java SDK
+title: Error handling
 sidebar_label: Error handling
 description: Catch the right exception types, wrap checked exceptions, and inspect failures correctly in Temporal Java Workflows and Activities.
 toc_max_heading_level: 4
@@ -9,8 +9,6 @@ tags:
   - Workflows
   - Errors
   - Failures
-  - Java SDK
-  - Temporal SDKs
 ---
 
 Temporal represents failures with a small set of typed exceptions that all extend
@@ -257,7 +255,7 @@ Because the interceptor sees the original exception before the SDK's default con
 attach `details` and a non-retryable classification consistently, rather than depending on every Activity
 implementation to do it the same way. `WorkerInterceptor` and `ActivityInboundCallsInterceptor` are marked
 `@Experimental`. For the general interceptor model — inbound versus outbound, and the other call categories you can
-intercept — see [Interceptors](/develop/plugins-guide#interceptors).
+intercept — see [Interceptors](/develop/java/workers/interceptors).
 
 ## Fail a Workflow deliberately {/* #fail-a-workflow */}
 

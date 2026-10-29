@@ -1,10 +1,10 @@
 ---
 id: error-handling
-title: Error handling - Python SDK
+title: Error handling
 sidebar_label: Error handling
 description: Learn how to handle errors in Temporal Python applications with retry policies, idempotent Activities, and recovery patterns.
 slug: /develop/python/best-practices/error-handling
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 tags:
   - Activities
   - Workflows
@@ -40,8 +40,6 @@ This page shows how to:
 
 ## Make Activities idempotent {/* #make-activities-idempotent */}
 
-**How to make Activities idempotent using the Temporal Python SDK**
-
 Because Activities may be retried due to failures, it's strongly recommended to make them idempotent.
 An idempotent operation produces the same result whether executed once or multiple times.
 
@@ -56,7 +54,9 @@ When the service receives a request with a key it has already processed, it retu
 
 Create an idempotency key by combining the Workflow Run ID and Activity ID:
 
-```python
+<!--SNIPSTART python-error-handling-idempotency-key-->
+[python-sandbox/best_practices/error_handling/idempotency.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/idempotency.py)
+```py
 from temporalio import activity
 
 @activity.defn
@@ -72,6 +72,7 @@ async def process_payment(amount: float, account: str):
     )
     return result
 ```
+<!--SNIPEND-->
 
 This value remains constant across Activity retries but is unique among all Workflow Executions.
 
@@ -90,8 +91,6 @@ You might split this into three separate Activities so only the failed step retr
 
 ## Raise exceptions from Activities {/* #raise-exceptions-from-activities */}
 
-**How to raise exceptions from Activities using the Temporal Python SDK**
-
 Use `ApplicationError` to communicate application-specific failures from Activities. Raising it explicitly gives you more control.
 
 :::note
@@ -100,7 +99,9 @@ Use `ApplicationError` to communicate application-specific failures from Activit
 
 :::
 
-```python
+<!--SNIPSTART python-error-handling-raise-from-activity-->
+[python-sandbox/best_practices/error_handling/activity_errors.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/activity_errors.py)
+```py
 from temporalio import activity
 from temporalio.exceptions import ApplicationError
 
@@ -120,6 +121,7 @@ async def validate_charge(credit_card_number: str, amount: float):
 
     return True
 ```
+<!--SNIPEND-->
 
 When raising an `ApplicationError`:
 - Provide a descriptive `message`
@@ -134,22 +136,24 @@ The `ActivityError` provides context including:
 
 ## Raise exceptions from Workflows {/* #raise-exceptions-from-workflows */}
 
-**How to raise exceptions from Workflows using the Temporal Python SDK**
-
 The behavior depends on what exception you raise:
 
 ### Fail a Workflow Execution
 
 To deliberately fail a Workflow Execution, raise an `ApplicationError`:
 
-```python
+<!--SNIPSTART python-error-handling-fail-workflow-->
+[python-sandbox/best_practices/error_handling/pizza_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/pizza_workflow.py)
+```py
+from datetime import timedelta
+
 from temporalio import workflow
 from temporalio.exceptions import ApplicationError
 
 @workflow.defn
 class PizzaDeliveryWorkflow:
     @workflow.run
-    async def run(self, order):
+    async def run(self, order: PizzaOrder):
         distance = await workflow.execute_activity(
             calculate_distance,
             order.address,
@@ -165,6 +169,7 @@ class PizzaDeliveryWorkflow:
 
         # Continue with order...
 ```
+<!--SNIPEND-->
 
 One reason to use the Temporal `ApplicationError` class is because it allows you to set an additional `non_retryable` parameter.
 This way, you can decide whether an error should not be retried automatically by Temporal.
@@ -177,10 +182,13 @@ Use this for permanent failures where retrying won't help—like the customer be
 
 Raising any other Python exception (like `ValueError` or `TypeError`) causes a Workflow Task failure, which retries automatically:
 
-```python
+<!--SNIPSTART python-error-handling-workflow-task-failure-->
+[python-sandbox/best_practices/error_handling/pizza_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/pizza_workflow.py)
+```py
 # This causes a Workflow Task failure (retries automatically)
 raise ValueError("Unexpected condition")
 ```
+<!--SNIPEND-->
 
 This is intentional.
 Regular Python exceptions are treated as bugs that can be fixed with a code deployment, not business logic failures.
@@ -188,19 +196,20 @@ The Workflow Task retries indefinitely, letting you fix the bug and redeploy wit
 
 ## Handle exceptions in Workflows {/* #handle-exceptions-in-workflows */}
 
-**How to handle exceptions in Workflows using the Temporal Python SDK**
-
 Use Python's `try/except` blocks to handle Activity failures in your Workflow:
 
-```python
+<!--SNIPSTART python-error-handling-handle-activity-errors-->
+[python-sandbox/best_practices/error_handling/money_transfer.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/money_transfer.py)
+```py
 from temporalio import workflow
+from temporalio.common import RetryPolicy
 from temporalio.exceptions import ActivityError, ApplicationError
 from datetime import timedelta
 
 @workflow.defn
 class MoneyTransferWorkflow:
     @workflow.run
-    async def run(self, details):
+    async def run(self, details: TransferDetails):
         # Withdraw money
         try:
             withdraw_result = await workflow.execute_activity(
@@ -219,7 +228,12 @@ class MoneyTransferWorkflow:
             deposit_result = await workflow.execute_activity(
                 deposit,
                 details,
-                start_to_close_timeout=timedelta(seconds=10)
+                start_to_close_timeout=timedelta(seconds=10),
+                # Limit retries so a deposit that keeps failing reaches the refund below
+                retry_policy=RetryPolicy(
+                    initial_interval=timedelta(seconds=1),
+                    maximum_attempts=3,
+                ),
             )
         except ActivityError as e:
             # Deposit failed - attempt refund
@@ -241,6 +255,7 @@ class MoneyTransferWorkflow:
 
         return f"Transfer complete: {withdraw_result}, {deposit_result}"
 ```
+<!--SNIPEND-->
 
 Common Temporal exceptions you can catch in Workflows:
 - `ActivityError` - Activity failed after exhausting retries
@@ -252,12 +267,12 @@ If these exceptions propagate unhandled, the Workflow Execution fails (or enters
 
 ## Configure custom Retry Policies {/* #configure-custom-retry-policies */}
 
-**How to configure custom Retry Policies using the Temporal Python SDK**
-
 Activities have a default Retry Policy with unlimited attempts and exponential backoff.
 Customize this to match your expected failure patterns.
 
-```python
+<!--SNIPSTART python-error-handling-custom-retry-policy-->
+[python-sandbox/best_practices/error_handling/retry_policies.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/retry_policies.py)
+```py
 from temporalio import workflow
 from temporalio.common import RetryPolicy
 from datetime import timedelta
@@ -265,7 +280,7 @@ from datetime import timedelta
 @workflow.defn
 class OrderWorkflow:
     @workflow.run
-    async def run(self, order):
+    async def run(self, order: Order):
         # Custom retry for rate-limited service
         retry_policy = RetryPolicy(
             initial_interval=timedelta(seconds=10),
@@ -282,6 +297,7 @@ class OrderWorkflow:
         )
         return result
 ```
+<!--SNIPEND-->
 
 Retry Policy attributes:
 - **`initial_interval`**: Delay before first retry (default: 1 second)
@@ -302,7 +318,9 @@ Retry Policy attributes:
 
 You can use different Retry Policies for different Activities, or even multiple policies for the same Activity:
 
-```python
+<!--SNIPSTART python-error-handling-different-policies-->
+[python-sandbox/best_practices/error_handling/retry_policies.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/retry_policies.py)
+```py
 fast_retry = RetryPolicy(
     initial_interval=timedelta(seconds=1),
     backoff_coefficient=1.5,
@@ -329,25 +347,26 @@ await workflow.execute_activity(
     retry_policy=slow_retry,
 )
 ```
+<!--SNIPEND-->
 
 ### Don't use Workflow Retry Policies
 
 Unlike Activities, Workflows don't retry by default, and you usually shouldn't add a Retry Policy.
-Workflows are deterministic and not designed for failure-prone operations.
+A Workflow Definition produces the same result every time, so it isn't designed for failure-prone operations.
 A Workflow failure typically indicates a code bug or bad input data—retrying the entire Workflow repeats the same logic without fixing the underlying issue.
 
 If you need retry logic for specific Workflow operations, implement it in your Workflow code rather than using a Workflow Retry Policy.
 
 ## Mark specific errors as non-retryable {/* #mark-errors-as-non-retryable */}
 
-**How to mark specific errors as non-retryable using the Temporal Python SDK**
-
 Some failures are permanent and won't resolve through retries.
 Mark these as non-retryable to fail fast instead of waiting for timeouts.
 
 Set the `non_retryable` flag when raising an `ApplicationError`:
 
-```python
+<!--SNIPSTART python-error-handling-non-retryable-->
+[python-sandbox/best_practices/error_handling/non_retryable.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/non_retryable.py)
+```py
 from temporalio import activity
 from temporalio.exceptions import ApplicationError
 
@@ -371,6 +390,7 @@ async def process_payment(card_number: str, amount: float):
 
     # Process payment...
 ```
+<!--SNIPEND-->
 
 An `ApplicationError` with `non_retryable=True` will never retry, regardless of the Retry Policy.
 
@@ -384,21 +404,22 @@ In most cases, it's better to let the Retry Policy handle when to stop retrying 
 
 ## Specify non-retryable error types {/* #specify-non-retryable-error-types */}
 
-**How to specify non-retryable error types in Retry Policies using the Temporal Python SDK**
-
 Sometimes you want the Workflow (caller) to decide which error types shouldn't retry, rather than the Activity (implementer).
 
 List error types that shouldn't retry in your Retry Policy:
 
-```python
+<!--SNIPSTART python-error-handling-non-retryable-error-types-->
+[python-sandbox/best_practices/error_handling/checkout_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/checkout_workflow.py)
+```py
 from temporalio import workflow
 from temporalio.common import RetryPolicy
+from temporalio.exceptions import ActivityError
 from datetime import timedelta
 
 @workflow.defn
 class CheckoutWorkflow:
     @workflow.run
-    async def run(self, payment_details):
+    async def run(self, payment_details: PaymentDetails):
         retry_policy = RetryPolicy(
             non_retryable_error_types=[
                 "InvalidCardFormat",
@@ -419,6 +440,7 @@ class CheckoutWorkflow:
             workflow.logger.error(f"Payment failed: {e.cause}")
             # Handle the non-retryable error...
 ```
+<!--SNIPEND-->
 
 When an Activity raises an `ApplicationError`, Temporal checks if its `type` is in `non_retryable_error_types`.
 If it matches, the Activity fails immediately without retries.
@@ -433,8 +455,6 @@ This lets different Workflows make different decisions about the same Activity.
 
 ## Implement rollback logic with the Saga pattern {/* #implement-saga-pattern */}
 
-**How to implement the Saga pattern using the Temporal Python SDK**
-
 The [Saga pattern](/design-patterns/saga-pattern) coordinates a sequence of operations where each operation has a compensating action to undo its effects.
 If any operation fails, execute compensating actions in reverse order to roll back previous operations.
 
@@ -443,15 +463,17 @@ Use this for multi-step processes like:
 - Distributed transactions across services
 - Multi-stage data updates
 
-```python
+<!--SNIPSTART python-error-handling-saga-->
+[python-sandbox/best_practices/error_handling/saga_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/saga_workflow.py)
+```py
 from temporalio import workflow
-from temporalio.exceptions import ActivityError
+from temporalio.exceptions import ActivityError, ApplicationError
 from datetime import timedelta
 
 @workflow.defn
 class OrderWorkflow:
     @workflow.run
-    async def run(self, order):
+    async def run(self, order: Order):
         compensations = []
 
         try:
@@ -511,6 +533,7 @@ class OrderWorkflow:
                 type="OrderFailed"
             )
 ```
+<!--SNIPEND-->
 
 Key points:
 - Add compensating actions to a list **before** executing each Activity
@@ -562,7 +585,9 @@ These put the Workflow in "Failed" state with no automatic retries.
 
 Example of a permanent failure that should fail the Workflow:
 
-```python
+<!--SNIPSTART python-error-handling-permanent-failure-->
+[python-sandbox/best_practices/error_handling/pizza_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/error_handling/pizza_workflow.py)
+```py
 if distance.kilometers > MAX_DELIVERY_DISTANCE:
     # Retrying won't change the distance - this is permanent
     raise ApplicationError(
@@ -570,6 +595,7 @@ if distance.kilometers > MAX_DELIVERY_DISTANCE:
         type="OutsideServiceArea"
     )
 ```
+<!--SNIPEND-->
 
 ### Protecting sensitive information
 

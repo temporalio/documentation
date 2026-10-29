@@ -9,13 +9,13 @@ tags:
   - Workers
   - Deploy
   - Serverless
-  - Self-hosted
+  - Self-hosting
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
-  APIs are experimental and may be subject to backwards-incompatible changes.
+  Cloud Run support is in Public Preview. APIs and configuration may change before the stable release.
 </ReleaseNoteHeader>
 
 Serverless Workers require Temporal Service v1.31.0 or later.
@@ -122,6 +122,8 @@ module "serverless-worker-cloud-run" {
 
   project_id         = "<YOUR_GCP_PROJECT>"
   invoker_account_id = "temporal-serverless-worker"
+
+  runner_service_account_email = "<REPLACE-WITH-WORKER-POOL-RUNNER-SERVICE-ACCOUNT-EMAIL>"
 
   impersonator_service_account_emails = [
     "<TEMPORAL_SERVICE_GCP_IDENTITY>",

@@ -1,7 +1,6 @@
 ---
 id: audit-logs
 title: Audit Logs
-sidebar_label: Audit Logs
 description: Audit Logs in Temporal Cloud provide forensic information, integrating with a data streaming service for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
 slug: /cloud/audit-logs
 toc_max_heading_level: 4
@@ -11,7 +10,7 @@ tags:
   - Temporal Cloud
 ---
 
-Audit Logs is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information for a variety of operations in the Temporal Cloud Control Plane.
+Audit Logs is a feature of [Temporal Cloud](/evaluate/cloud) that provides forensic access information for a variety of operations in the Temporal Cloud Control Plane.
 
 Audit Logs answers "who, when, and what" questions about Temporal Cloud resources.
 These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
@@ -20,7 +19,7 @@ You need the Account Owner or Global Administrator role to view Audit Logs via U
 
 :::info
 
-Audit Logs do NOT capture data plane events, like Workflow Start, Workflow Terminate, Schedule Create, etc.
+Audit Logs do not capture data plane events, such as Workflow Start, Workflow Terminate, and Schedule Create.
 Instead, explore the [Export](/cloud/export) feature, which does let you send closed Workflow Histories to external storage.
 
 :::

@@ -1,6 +1,6 @@
 ---
 id: aws-lambda
-title: Serverless Workers on AWS Lambda - Python SDK
+title: Serverless Workers on AWS Lambda
 sidebar_label: AWS Lambda
 description: Write a Temporal Worker that runs on AWS Lambda using the Python SDK lambda_worker package.
 slug: /develop/python/workers/serverless-workers/aws-lambda
@@ -28,14 +28,15 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Use the `run_worker` function to create a Lambda handler that runs a Temporal Worker.
 Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
 
-<!--SNIPSTART python-lambda-worker {"selectedLines": ["1-3", "5-11", "13-18"], "highlightedLines": "15-18"}-->
-[lambda_worker/lambda_function.py](https://github.com/temporalio/samples-python/blob/lambda-worker/lambda_worker/lambda_function.py)
-```py {15-18}
-from activities import hello_activity
+<!--SNIPSTART python-lambda-worker-sandbox {"selectedLines": ["1-2", "4-12", "14-19"], "highlightedLines": "16-19"}-->
+[python-sandbox/workers/aws_lambda_worker/lambda_function.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/aws_lambda_worker/lambda_function.py)
+```py {16-19}
 from temporalio.common import WorkerDeploymentVersion
 from temporalio.contrib.aws.lambda_worker import LambdaWorkerConfig, run_worker
 # ...
-from workflows import TASK_QUEUE, SampleWorkflow
+
+from aws_lambda_worker.activities import hello_activity
+from aws_lambda_worker.workflows import TASK_QUEUE, SampleWorkflow
 
 
 def configure(config: LambdaWorkerConfig) -> None:
@@ -63,17 +64,31 @@ Set the Task Queue, Workflows, and Activities through `worker_config`, which acc
 Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or `AUTO_UPGRADE`.
 Set it per-Workflow in the `@workflow.defn` decorator, or set a worker-level default with `default_versioning_behavior` in the worker config.
 
-```python {5}
+<!--SNIPSTART python-lambda-worker-sandbox-workflow {"highlightedLines": "12"}-->
+[python-sandbox/workers/aws_lambda_worker/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/aws_lambda_worker/workflows.py)
+```py {12}
+from datetime import timedelta
+
 from temporalio import workflow
 from temporalio.common import VersioningBehavior
 
+with workflow.unsafe.imports_passed_through():
+    from aws_lambda_worker.activities import hello_activity
+
+TASK_QUEUE = "serverless-task-queue-python"
+
 
 @workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
-class MyWorkflow:
+class SampleWorkflow:
     @workflow.run
-    async def run(self, input: str) -> str:
-        ...
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            hello_activity,
+            name,
+            start_to_close_timeout=timedelta(seconds=10),
+        )
 ```
+<!--SNIPEND-->
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
@@ -127,14 +142,15 @@ The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ra
 The underlying metrics and traces are the same ones the Python SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
-<!--SNIPSTART python-lambda-worker {"highlightedLines": "4, 12"}-->
-[lambda_worker/lambda_function.py](https://github.com/temporalio/samples-python/blob/lambda-worker/lambda_worker/lambda_function.py)
-```py
-from activities import hello_activity
+<!--SNIPSTART python-lambda-worker-sandbox {"highlightedLines": "3,13"}-->
+[python-sandbox/workers/aws_lambda_worker/lambda_function.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/aws_lambda_worker/lambda_function.py)
+```py {3,13}
 from temporalio.common import WorkerDeploymentVersion
 from temporalio.contrib.aws.lambda_worker import LambdaWorkerConfig, run_worker
 from temporalio.contrib.aws.lambda_worker.otel import apply_defaults
-from workflows import TASK_QUEUE, SampleWorkflow
+
+from aws_lambda_worker.activities import hello_activity
+from aws_lambda_worker.workflows import TASK_QUEUE, SampleWorkflow
 
 
 def configure(config: LambdaWorkerConfig) -> None:
@@ -161,8 +177,8 @@ The default Collector configuration does not route OpenTelemetry Protocol (OTLP)
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
-<!--SNIPSTART python-lambda-worker-otel-collector-config-->
-[lambda_worker/otel-collector-config.yaml](https://github.com/temporalio/samples-python/blob/lambda-worker/lambda_worker/otel-collector-config.yaml)
+<!--SNIPSTART python-lambda-worker-sandbox-otel-collector-config-->
+[python-sandbox/workers/aws_lambda_worker/otel-collector-config.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/aws_lambda_worker/otel-collector-config.yaml)
 ```yaml
 receivers:
     otlp:

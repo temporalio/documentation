@@ -1,7 +1,6 @@
 ---
 id: task-queues
 title: Task Queue performance
-sidebar_label: Task Queue performance
 description: Use Task Queue backlog metrics and CLI or SDK queries to evaluate Worker load and tune Task Queue processing.
 toc_max_heading_level: 3
 tags:
@@ -97,7 +96,7 @@ Evaluate your Worker loads and assess whether you need to scale up or reduce you
 
 :::note RATE LIMITS
 
-[Visibility API rate limits](/cloud/limits#visibility-api-rate-limit) apply to Task Queue performance data requests.
+[Visibility API rate limits](/evaluate/cloud/limits#visibility-api-rate-limit) apply to Task Queue performance data requests.
 
 :::
 
@@ -161,6 +160,7 @@ You can adjust the number of Workers to enhance Workflow Execution performance a
 For instance, a large backlog of Tasks with too few Workers will slow down Workflow Execution completions and decrease processing efficiency.
 Adding more Workers boosts speeds up completion rates and improves throughput.
 An empty backlog indicates low Worker utilization, allowing you to reduce your fleet and associated costs.
+Keep at least two Workers polling each Task Queue when you reduce your fleet. See [Run at least two Workers per Task Queue](/best-practices/worker#run-at-least-two-workers-per-task-queue).
 
 The values provided by `temporal task-queue describe` can help you manage your Worker fleet deployment:
 
@@ -201,12 +201,12 @@ If you see
 
 then you might have too many workers, consider sizing down.
 
-### Worker Executor Slots sizing
+### Worker executor slots sizing
 
 The main area to focus on when tuning is the number of Worker Executor Slots.
 Increase the maximum number of working slots by adjusting `maxConcurrentWorkflowTaskExecutionSize` or `maxConcurrentActivityExecutionSize` if both of the following conditions are met:
 
-1. The Worker hosts are underutilized (no bottlenecks on CPU, load average, etc.).
+1. The Worker hosts are underutilized (for example, no bottlenecks on CPU or load average).
 2. The `worker_task_slots_available` metric from the corresponding Worker type frequently shows a depleted number of available Worker slots.
 
 Alternatively, consider using a resource-based slot supplier as described [here](/develop/worker-performance#slot-suppliers).
@@ -215,11 +215,11 @@ Alternatively, consider using a resource-based slot supplier as described [here]
 
 Sometimes, it can be appropriate to increase the number of task pollers.
 This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
-You can simply use automated poller tuning to handle this automatically.
+You can use automated poller tuning to handle this.
 
 Consider manual adjustment if:
 
-1. The Worker hosts are underutilized, for example, there are no bottlenecks on CPU, load average, etc.
+1. The Worker hosts are underutilized, for example, there are no bottlenecks on CPU or load average.
 2. `worker_task_slots_available` metric from the corresponding Worker type shows that a significant percentage of Worker slots are available on a regular basis.
 3. The `schedule_to_start` metric is abnormally long.
 

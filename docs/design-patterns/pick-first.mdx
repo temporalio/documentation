@@ -2,7 +2,10 @@
 id: pick-first
 title: "Pick First Pattern"
 sidebar_label: "Pick First (Race)"
-description: "Starts multiple Activities in parallel and uses the first result, cancelling the rest."
+description: "Races multiple Activities in parallel, returns the first completed result, and cancels the remaining Activities using SDK cancellation scopes."
+tags:
+  - Design Patterns
+  - Activities
 ---
 
 import Tabs from '@theme/Tabs';
@@ -551,6 +554,10 @@ Only the first result is used; others are discarded.
 ### Patterns
 
 - **[Parallel Execution](/design-patterns/parallel-execution)**: Execute in parallel and combine all results.
+
+### References
+
+- [Selectors (Go)](/develop/go/workflows/selectors): The Go SDK's `Selector` construct for racing multiple Futures and Channels, with the same "cancel the losers" technique.
 
 ### Sample code
 

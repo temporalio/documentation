@@ -3,10 +3,19 @@
   "github": {
     "silent": true
   },
+  "functions": {
+    "api/retrieve.js": {
+      "maxDuration": 15
+    }
+  },
   "rewrites": [
     {
       "source": "/img/og/:path*",
       "destination": "/img/assets/open-graph-shiny.jpg"
+    },
+    {
+      "source": "/(.*)\\.md",
+      "destination": "/api/markdown-not-found"
     },
     {
       "source": "/:path((?!api/).*)",
@@ -50,6 +59,61 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/:path*/null",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)\\)\\.",
+      "destination": "/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)\\)",
+      "destination": "/:path",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics",
+      "destination": "/cloud/monitor",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/promql",
+      "destination": "/cloud/metrics/openmetrics",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/general-setup",
+      "destination": "/cloud/metrics/openmetrics",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/reference",
+      "destination": "/cloud/metrics/openmetrics/metrics-reference",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/prometheus-grafana",
+      "destination": "/cloud/metrics/openmetrics/metrics-integrations",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/metrics/openmetrics/migration-guide",
+      "destination": "/cloud/metrics/openmetrics/faq",
+      "permanent": true
+    },
+    {
+      "source": "/references/errors",
+      "destination": "/references/workflow-task-errors",
+      "permanent": true
+    },
+    {
+      "source": "/references/configuration",
+      "destination": "/references/service-configuration",
+      "permanent": true
+    },
     {
       "source": "/llms-quickstart.txt",
       "destination": "/llms.txt",
@@ -107,7 +171,7 @@
     },
     {
       "source": "/cli/cmd-options",
-      "destination": "/cli/command-reference/cmd-options",
+      "destination": "/cli/command-reference",
       "permanent": true
     },
     {
@@ -186,13 +250,13 @@
       "permanent": true
     },
     {
-      "source": "/cookbook/:path*",
-      "destination": "/ai-cookbook/:path*",
-      "permanent": true
+      "source": "/ai/featured",
+      "destination": "/ai",
+      "permanent": false
     },
     {
-      "source": "/cookbook",
-      "destination": "/ai/cookbook",
+      "source": "/cookbook/:path*",
+      "destination": "/ai/cookbook/:path*",
       "permanent": true
     },
     {
@@ -320,23 +384,28 @@
       "permanent": true
     },
     {
-      "source": "/cluster-deployment-guide:path*",
+      "source": "/references/cluster-metrics",
+      "destination": "/references/service-metrics",
+      "permanent": true
+    },
+    {
+      "source": "/cluster-deployment-guide/:path*",
       "destination": "/self-hosted-guide",
       "permanent": true
     },
     {
-      "source": "/application-development-guide:path*",
+      "source": "/application-development-guide/:path*",
       "destination": "/develop",
       "permanent": true
     },
     {
-      "source": "/application-development:path*",
+      "source": "/application-development/:path*",
       "destination": "/develop",
       "permanent": true
     },
     {
-      "source": "/dev-guide/golang/versioning:path*",
-      "destination": "/develop/go/workflows/versioning:path*",
+      "source": "/dev-guide/golang/versioning/:path*",
+      "destination": "/develop/go/workflows/versioning/:path*",
       "permanent": true
     },
     {
@@ -357,16 +426,6 @@
     {
       "source": "/temporal-explained",
       "destination": "/temporal",
-      "permanent": true
-    },
-    {
-      "source": "/workflows#retry-policy",
-      "destination": "/encyclopedia/retry-policies",
-      "permanent": true
-    },
-    {
-      "source": "/workflows#deterministic-constraints",
-      "destination": "/workflow-definition#deterministic-constraints",
       "permanent": true
     },
     {
@@ -551,7 +610,7 @@
     },
     {
       "source": "/go-search-apis",
-      "destination": "/develop/go/visibility",
+      "destination": "/develop/go/platform/observability",
       "permanent": true
     },
     {
@@ -588,25 +647,21 @@
       "destination": "/go/activities#asynchronous-activity-completion"
     },
     {
-      "source": "/go-sessions/#use-cases",
-      "destination": "/develop/go/workers/sessions"
-    },
-    {
       "source": "/go/:path*",
       "destination": "/develop/go"
     },
     {
-      "source": "/dev-guide/go/foundations:path*",
+      "source": "/dev-guide/go/foundations/:path*",
       "destination": "/develop/go",
       "permanent": true
     },
     {
-      "source": "/dev-guide/go/features:path*",
+      "source": "/dev-guide/go/features/:path*",
       "destination": "/develop/go",
       "permanent": true
     },
     {
-      "source": "/dev-guide/go/testing:path*",
+      "source": "/dev-guide/go/testing/:path*",
       "destination": "/develop/go/best-practices/testing-suite",
       "permanent": true
     },
@@ -651,12 +706,12 @@
       "destination": "/java/task-queues"
     },
     {
-      "source": "/java-testing-and-debugging:path*",
-      "destination": "/java/testing:path*"
+      "source": "/java-testing-and-debugging/:path*",
+      "destination": "/java/testing/:path*"
     },
     {
-      "source": "/java/testing-and-debugging:path*",
-      "destination": "/java/testing:path*"
+      "source": "/java/testing-and-debugging/:path*",
+      "destination": "/java/testing/:path*"
     },
     {
       "source": "/java-sdk-tutorial-prerequisites",
@@ -683,17 +738,17 @@
       "destination": "/java/how-to-develop-a-worker-program-in-java"
     },
     {
-      "source": "/dev-guide/java/foundations:path*",
+      "source": "/dev-guide/java/foundations/:path*",
       "destination": "/develop/java",
       "permanent": true
     },
     {
-      "source": "/dev-guide/java/features:path*",
+      "source": "/dev-guide/java/features/:path*",
       "destination": "/develop/java",
       "permanent": true
     },
     {
-      "source": "/dev-guide/java/testing:path*",
+      "source": "/dev-guide/java/testing/:path*",
       "destination": "/develop/java/best-practices/testing-suite",
       "permanent": true
     },
@@ -782,14 +837,6 @@
       "destination": "/dev-guide/php/foundations#run-a-dev-worker"
     },
     {
-      "source": "/php/versioning#workflowgetversion",
-      "destination": "/dev-guide/php"
-    },
-    {
-      "source": "/php/activities#local-activity",
-      "destination": "/dev-guide/php/foundations#develop-activities"
-    },
-    {
       "source": "/php/introduction",
       "destination": "/develop/php"
     },
@@ -798,17 +845,22 @@
       "destination": "/develop/php"
     },
     {
-      "source": "/dev-guide/php/foundations:path*",
+      "source": "/php/:path*",
       "destination": "/develop/php",
       "permanent": true
     },
     {
-      "source": "/dev-guide/php/features:path*",
+      "source": "/dev-guide/php/foundations/:path*",
       "destination": "/develop/php",
       "permanent": true
     },
     {
-      "source": "dev-guide/php/testing:path*",
+      "source": "/dev-guide/php/features/:path*",
+      "destination": "/develop/php",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/php/testing/:path*",
       "destination": "/develop/php/best-practices/testing-suite",
       "permanent": true
     },
@@ -882,7 +934,7 @@
     },
     {
       "source": "/server-production-deployment",
-      "destination": "production-deployment"
+      "destination": "/production-deployment"
     },
     {
       "source": "/server/production-deploy",
@@ -974,7 +1026,7 @@
       "destination": "/cloud/tcld/account#get"
     },
     {
-      "source": "/cloud/tcld/account/metrics/",
+      "source": "/cloud/tcld/account/metrics",
       "destination": "/cloud/tcld/account#metrics"
     },
     {
@@ -986,7 +1038,7 @@
       "destination": "/cloud/tcld/account#disable"
     },
     {
-      "source": "/cloud/tcld/account/metrics/accepted-client-ca/",
+      "source": "/cloud/tcld/account/metrics/accepted-client-ca",
       "destination": "/cloud/tcld/account#accepted-client-ca"
     },
     {
@@ -1014,7 +1066,7 @@
       "destination": "/cloud/tcld/namespace#get"
     },
     {
-      "source": "/cloud/tcld/namespace/accepted-client-ca/",
+      "source": "/cloud/tcld/namespace/accepted-client-ca",
       "destination": "/cloud/tcld/namespace#accepted-client-ca"
     },
     {
@@ -1034,7 +1086,7 @@
       "destination": "/cloud/tcld/namespace#remove"
     },
     {
-      "source": "/cloud/tcld/namespace/certificate-filters/",
+      "source": "/cloud/tcld/namespace/certificate-filters",
       "destination": "/cloud/tcld/namespace#certificate-filters"
     },
     {
@@ -1050,7 +1102,7 @@
       "destination": "/cloud/tcld/namespace#clear"
     },
     {
-      "source": "/cloud/tcld/namespace/search-attributes/",
+      "source": "/cloud/tcld/namespace/search-attributes",
       "destination": "/cloud/tcld/namespace#search-attributes"
     },
     {
@@ -1067,7 +1119,7 @@
     },
     {
       "source": "/cloud/operating-envelope",
-      "destination": "/cloud/service-availability"
+      "destination": "/cloud/slo"
     },
     {
       "source": "/external-resources",
@@ -1078,16 +1130,8 @@
       "destination": "/child-workflows"
     },
     {
-      "source": "/encyclopedia/child-workflows#parent-close-policy",
-      "destination": "/parent-close-policy"
-    },
-    {
       "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
       "destination": "/self-hosted-guide/visibility"
-    },
-    {
-      "source": "archive-data",
-      "destination": "/cluster-deployment-guide#archival"
     },
     {
       "source": "/clusters/how-to-upgrade-the-temporal-server-version",
@@ -1102,18 +1146,6 @@
       "destination": "/references/configuration"
     },
     {
-      "source": "/archive-data#providers",
-      "destination": "/cluster-deployment-guide#provider"
-    },
-    {
-      "source": "/configure-temporal-server#membership---required",
-      "destination": "/blog/workflow-engine-principles#membership-and-routing-1350"
-    },
-    {
-      "source": "/configuring-temporal-server#clustermetadata",
-      "destination": "/references/configuration#clustermetadata"
-    },
-    {
       "source": "/filter-workflows",
       "destination": "/list-filter"
     },
@@ -1123,11 +1155,7 @@
     },
     {
       "source": "/go-sessions",
-      "destination": "/dev-guide/go"
-    },
-    {
-      "source": "/go-sessions#use-cases",
-      "destination": "/dev-guide/go"
+      "destination": "/develop/go/workers/sessions"
     },
     {
       "source": "/go-workers",
@@ -1144,10 +1172,6 @@
     {
       "source": "/learn-cli",
       "destination": "/cli"
-    },
-    {
-      "source": "/learn-server-configuration#tls",
-      "destination": "/references/configuration#tls"
     },
     {
       "source": "/learn-workflow-filtering",
@@ -1182,10 +1206,6 @@
       "destination": "/dev-guide/java/foundations#develop-activities"
     },
     {
-      "source": "/next/java/how-to-develop-an-activity-in-java/#return-values",
-      "destination": "/dev-guide/java/foundations#workflow-return-values"
-    },
-    {
       "source": "/server-architecture",
       "destination": "/security#authorizer-plugin"
     },
@@ -1194,29 +1214,31 @@
       "destination": "/cli"
     },
     {
-      "source": "/tctl-next/modifiers#--event-id",
-      "destination": "/cli"
+      "source": "/tctl-next/workflow",
+      "destination": "/cli/workflow",
+      "permanent": true
     },
     {
-      "source": "/tctl-next/workflow#reset",
-      "destination": "/cli/workflow#reset"
+      "source": "/tctl-next/:path*",
+      "destination": "/cli",
+      "permanent": true
     },
     {
       "source": "/typescript/:path*",
       "destination": "/develop/typescript"
     },
     {
-      "source": "/dev-guide/typescript/foundations:path*",
+      "source": "/dev-guide/typescript/foundations/:path*",
       "destination": "/develop/typescript",
       "permanent": true
     },
     {
-      "source": "/dev-guide/typescript/features:path*",
+      "source": "/dev-guide/typescript/features/:path*",
       "destination": "/develop/typescript",
       "permanent": true
     },
     {
-      "source": "/dev-guide/typescript/testing:path*",
+      "source": "/dev-guide/typescript/testing/:path*",
       "destination": "/develop/typescript/testing-suite",
       "permanent": true
     },
@@ -1235,31 +1257,27 @@
       "destination": "/develop/python"
     },
     {
-      "source": "/dev-guide/python/foundations:path*",
+      "source": "/dev-guide/python/foundations/:path*",
       "destination": "/develop/python",
       "permanent": true
     },
     {
-      "source": "/dev-guide/python/features:path*",
+      "source": "/dev-guide/python/features/:path*",
       "destination": "/develop/python",
       "permanent": true
     },
     {
-      "source": "/dev-guide/python/testing:path*",
+      "source": "/dev-guide/python/testing/:path*",
       "destination": "/develop/python/best-practices/testing-suite",
       "permanent": true
     },
     {
-      "source": "/dev-guide/python:path*",
+      "source": "/dev-guide/python/:path*",
       "destination": "/develop/python"
     },
     {
       "source": "/retry-policies",
       "destination": "/encyclopedia/retry-policies"
-    },
-    {
-      "source": "/external-resources/#how-temporal-works",
-      "destination": "/kb/how-to-explain-temporal#how-temporal-works"
     },
     {
       "source": "/cli/index",
@@ -1270,27 +1288,27 @@
       "destination": "/cloud"
     },
     {
-      "source": "/cloud/account-setup/certificates:path*",
-      "destination": "/cloud/certificates:path*"
+      "source": "/cloud/account-setup/certificates/:path*",
+      "destination": "/cloud/certificates/:path*"
     },
     {
-      "source": "/cloud/account-setup/namespaces:path*",
-      "destination": "/cloud/namespaces:path*"
+      "source": "/cloud/account-setup/namespaces/:path*",
+      "destination": "/cloud/namespaces/:path*"
     },
     {
-      "source": "/cloud/account-setup/users:path*",
-      "destination": "/cloud/users:path*"
+      "source": "/cloud/account-setup/users/:path*",
+      "destination": "/cloud/users/:path*"
     },
     {
-      "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
-      "destination": "/cloud/certificates:path*"
+      "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud/:path*",
+      "destination": "/cloud/certificates/:path*"
     },
     {
       "source": "/server/production-deployment/:path*",
       "destination": "/production-deployment"
     },
     {
-      "source": "/kb/legacy-oss-prod-deploy:path*",
+      "source": "/kb/legacy-oss-prod-deploy/:path*",
       "destination": "/production-deployment"
     },
     {
@@ -1302,52 +1320,52 @@
       "destination": "https://temporal.io/change-log/product-area/cloud"
     },
     {
-      "source": "/cloud/how-to-manage-namespaces-in-temporal-cloud:path*",
-      "destination": "/cloud/namespaces:path*"
+      "source": "/cloud/how-to-manage-namespaces-in-temporal-cloud/:path*",
+      "destination": "/cloud/namespaces/:path*"
     },
     {
-      "source": "/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
-      "destination": "/cloud/certificates:path*"
+      "source": "/cloud/how-to-manage-certificates-in-temporal-cloud/:path*",
+      "destination": "/cloud/certificates/:path*"
     },
     {
       "source": "/cloud/how-to-monitor-temporal-cloud-metrics",
-      "destination": "/cloud/metrics"
+      "destination": "/cloud/monitor"
     },
     {
-      "source": "/cloud/introduction/security-cloud:path*",
-      "destination": "cloud/security:path*"
+      "source": "/cloud/introduction/security-cloud/:path*",
+      "destination": "/cloud/security/:path*"
     },
     {
-      "source": "/cloud/introduction/operating-envelope:path*",
-      "destination": "cloud/operating-envelope:path*"
+      "source": "/cloud/introduction/operating-envelope/:path*",
+      "destination": "/cloud/operating-envelope/:path*"
     },
     {
-      "source": "/cloud/introduction/pricing:path*",
-      "destination": "/cloud/pricing:path*"
+      "source": "/cloud/introduction/pricing/:path*",
+      "destination": "/cloud/pricing/:path*"
     },
     {
-      "source": "/cloud/introduction/support:path*",
-      "destination": "/cloud/support:path*"
+      "source": "/cloud/introduction/support/:path*",
+      "destination": "/cloud/support/:path*"
     },
     {
       "source": "/cloud/how-to-create-a-ticket-for-temporal-support",
       "destination": "/cloud/support#support-ticket"
     },
     {
-      "source": "/cloud/how-to-get-started-with-temporal-cloud:path*",
-      "destination": "/cloud/get-started:path*"
+      "source": "/cloud/how-to-get-started-with-temporal-cloud/:path*",
+      "destination": "/cloud/get-started/:path*"
     },
     {
-      "source": "/cloud/how-to-manage-saml-with-temporal-cloud:path*",
-      "destination": "/cloud/saml:path*"
+      "source": "/cloud/how-to-manage-saml-with-temporal-cloud/:path*",
+      "destination": "/cloud/saml/:path*"
     },
     {
-      "source": "/cloud/how-to-manage-audit-logging:path*",
-      "destination": "/cloud/audit-logs:path*"
+      "source": "/cloud/how-to-manage-audit-logging/:path*",
+      "destination": "/cloud/audit-logs/:path*"
     },
     {
       "source": "/kb/prometheus-grafana-setup-cloud",
-      "destination": "/cloud/metrics#prometheus-and-grafana-setup"
+      "destination": "/cloud/metrics/openmetrics/metrics-integrations#prometheus-grafana"
     },
     {
       "source": "/kb/cloud-namespace-naming-considerations",
@@ -1359,7 +1377,7 @@
     },
     {
       "source": "/kb/additional-resources",
-      "destination": "/kb/how-to-explain-temporal"
+      "destination": "/evaluate/understanding-temporal"
     },
     {
       "source": "/archive-data",
@@ -1407,14 +1425,19 @@
     },
     {
       "source": "/temporal/release-stages",
-      "destination": "/evaluate/development-production-features/release-stages"
+      "destination": "/evaluate/product-release-stages"
     },
     {
       "source": "/evaluate/release-stages",
-      "destination": "/evaluate/development-production-features/release-stages"
+      "destination": "/evaluate/product-release-stages"
     },
     {
-      "source": "/concepts:path*",
+      "source": "/evaluate/development-production-features/release-stages",
+      "destination": "/evaluate/product-release-stages",
+      "permanent": true
+    },
+    {
+      "source": "/concepts/:path*",
       "destination": "/encyclopedia"
     },
     {
@@ -1423,7 +1446,7 @@
     },
     {
       "source": "/kb/python-sandbox-environment",
-      "destination": "/encyclopedia/python-sdk-sandbox"
+      "destination": "/develop/python/best-practices/python-sdk-sandbox"
     },
     {
       "source": "/dev-guide/:path*",
@@ -1433,11 +1456,6 @@
     {
       "source": "/references/web-ui-server-env-vars",
       "destination": "/references/web-ui-environment-variables",
-      "permanent": true
-    },
-    {
-      "source": "/cloud/pricing#multi-region",
-      "destination": "/cloud/pricing#high-availability-features",
       "permanent": true
     },
     {
@@ -1458,6 +1476,11 @@
     {
       "source": "/cloud/high-availability/regions",
       "destination": "/cloud/regions",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/migrate/migrate-within-cloud",
+      "destination": "/cloud/migrate/between-regions-or-cloud-providers",
       "permanent": true
     },
     {
@@ -1596,11 +1619,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/dotnet/core-application#run-worker-process",
-      "destination": "/develop/dotnet/workers/run-worker-process",
-      "permanent": true
-    },
-    {
       "source": "/develop/dotnet/cancellation",
       "destination": "/develop/dotnet/workflows/cancellation",
       "permanent": true
@@ -1657,7 +1675,7 @@
     },
     {
       "source": "/develop/go/converters-and-encryption",
-      "destination": "/develop/go/best-practices/converters-and-encryption",
+      "destination": "/develop/go/data-handling",
       "permanent": true
     },
     {
@@ -1698,16 +1716,6 @@
     {
       "source": "/develop/go/enriching-ui",
       "destination": "/develop/go/platform/enriching-ui",
-      "permanent": true
-    },
-    {
-      "source": "/develop/go/core-application#run-a-temporal-cloud-worker",
-      "destination": "/develop/go/workers/cloud-worker",
-      "permanent": true
-    },
-    {
-      "source": "/develop/go/core-application#run-worker-process",
-      "destination": "/develop/go/workers/run-worker-process",
       "permanent": true
     },
     {
@@ -1816,11 +1824,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/java/core-application#run-worker-process",
-      "destination": "/develop/java/workers/run-worker-process",
-      "permanent": true
-    },
-    {
       "source": "/develop/java/cancellation",
       "destination": "/develop/java/workflows/cancellation",
       "permanent": true
@@ -1893,11 +1896,6 @@
     {
       "source": "/develop/php/enriching-ui",
       "destination": "/develop/php/platform/enriching-ui",
-      "permanent": true
-    },
-    {
-      "source": "/develop/php/core-application#run-a-dev-worker",
-      "destination": "/develop/php/workers/run-worker-process",
       "permanent": true
     },
     {
@@ -2006,11 +2004,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/python/core-application#run-worker-process",
-      "destination": "/develop/python/workers/run-worker-process",
-      "permanent": true
-    },
-    {
       "source": "/develop/python/interceptors",
       "destination": "/develop/python/workers/interceptors",
       "permanent": true
@@ -2098,11 +2091,6 @@
     {
       "source": "/develop/ruby/enriching-ui",
       "destination": "/develop/ruby/platform/enriching-ui",
-      "permanent": true
-    },
-    {
-      "source": "/develop/ruby/core-application#run-worker-process",
-      "destination": "/develop/ruby/workers/run-worker-process",
       "permanent": true
     },
     {
@@ -2196,11 +2184,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/typescript/core-application#run-a-dev-worker",
-      "destination": "/develop/typescript/workers/run-worker-process",
-      "permanent": true
-    },
-    {
       "source": "/develop/typescript/cancellation",
       "destination": "/develop/typescript/workflows/cancellation",
       "permanent": true
@@ -2281,11 +2264,6 @@
       "permanent": true
     },
     {
-      "source": "/develop/ruby/workflows/versioning#ruby-sdk-patching-api",
-      "destination": "/develop/ruby/workflows/versioning#patching",
-      "permanent": true
-    },
-    {
       "source": "/develop/dotnet/best-practices/converters-and-encryption",
       "destination": "/develop/dotnet/best-practices/data-handling",
       "permanent": true
@@ -2308,6 +2286,456 @@
     {
       "source": "/production-deployment/multi-tenant-patterns",
       "destination": "/best-practices/multi-tenant-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/integrations/braintrust",
+      "destination": "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#python",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features",
+      "destination": "/evaluate/features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/core-application",
+      "destination": "/evaluate/features/core-primitives",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/failure-detection",
+      "destination": "/evaluate/features/timeouts-and-retries",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/throughput-composability",
+      "destination": "/evaluate/features/child-workflows",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/nexus",
+      "destination": "/evaluate/features/nexus",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/workflow-message-passing",
+      "destination": "/evaluate/features/workflow-message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/interrupt-workflow",
+      "destination": "/evaluate/features/cancellation-and-termination",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/observability",
+      "destination": "/evaluate/features/observability",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/data-encryption",
+      "destination": "/evaluate/features/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/schedules",
+      "destination": "/evaluate/features/schedules",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/cloud-automation",
+      "destination": "/evaluate/features/cloud-automation",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/low-latency",
+      "destination": "/cloud/slo#latency",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/multi-tenancy",
+      "destination": "/namespaces",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/job-queue",
+      "destination": "/evaluate/features/job-queue",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/serverless-workers",
+      "destination": "/evaluate/features/serverless-workers",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/nexus",
+      "destination": "/evaluate/features/nexus",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/cloud-vs-self-hosted-features",
+      "destination": "/evaluate/features/cloud-vs-self-hosted-features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/debugging",
+      "destination": "/evaluate/features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/testing-suite",
+      "destination": "/evaluate/features",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/features/cloud-automation",
+      "destination": "/cloud",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/features/low-latency",
+      "destination": "/cloud/slo#latency",
+      "permanent": true
+    },
+    {
+      "source": "/tags/temporal-sd-ks",
+      "destination": "/tags/temporal-sdks",
+      "permanent": true
+    },
+    {
+      "source": "/tags/type-script-sdk",
+      "destination": "/tags/typescript-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/tags/tr-us",
+      "destination": "/tags/trus",
+      "permanent": true
+    },
+    {
+      "source": "/tags/google-gen-ai",
+      "destination": "/tags/google-genai",
+      "permanent": true
+    },
+    {
+      "source": "/tags/lang-graph",
+      "destination": "/tags/langgraph",
+      "permanent": true
+    },
+    {
+      "source": "/tags/lang-smith",
+      "destination": "/tags/langsmith",
+      "permanent": true
+    },
+    {
+      "source": "/tags/open-ai-agents-sdk",
+      "destination": "/tags/openai-agents-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/tags/open-metrics",
+      "destination": "/tags/openmetrics",
+      "permanent": true
+    },
+    {
+      "source": "/tags/self-hosted",
+      "destination": "/tags/self-hosting",
+      "permanent": true
+    },
+    {
+      "source": "/tags/activity",
+      "destination": "/tags/activities",
+      "permanent": true
+    },
+    {
+      "source": "/tags/worker",
+      "destination": "/tags/workers",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/overview",
+      "destination": "/evaluate/cloud",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/security",
+      "destination": "/evaluate/cloud/security",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/service-availability",
+      "destination": "/cloud/slo",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/cloud/service-availability",
+      "destination": "/cloud/slo",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/regions",
+      "destination": "/evaluate/cloud/regions",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/limits",
+      "destination": "/evaluate/cloud/limits",
+      "permanent": true
+    },
+    {
+      "source": "/nexus/code-generator",
+      "destination": "/nexus/nexgen",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/sla",
+      "destination": "/cloud/slo#uptime",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/cloud/sla",
+      "destination": "/cloud/slo#uptime",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/actions",
+      "destination": "/evaluate/cloud/actions",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/support",
+      "destination": "/evaluate/cloud/support",
+      "permanent": true
+    },
+    {
+      "source": "/img/favicon.ico",
+      "destination": "/favicon.ico",
+      "permanent": true
+    },
+    {
+      "source": "/img/favicon.svg",
+      "destination": "/img/favicon.png",
+      "permanent": true
+    },
+    {
+      "source": "/apple-touch-icon.png",
+      "destination": "/img/favicon.png",
+      "permanent": true
+    },
+    {
+      "source": "/apple-touch-icon-precomposed.png",
+      "destination": "/img/favicon.png",
+      "permanent": true
+    },
+    {
+      "source": "/img/open-graph-shiny.png",
+      "destination": "/img/assets/open-graph-shiny.jpg",
+      "permanent": true
+    },
+    {
+      "source": "/img/temporal-logo-dark.svg",
+      "destination": "/img/assets/temporal-logo-dark.svg",
+      "permanent": true
+    },
+    {
+      "source": "/assets/images/banner-python-temporal-0d345d125b6892840c54f7e1460c8a5a.png",
+      "destination": "/img/assets/banner-python-temporal.png",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/durable-execution",
+      "destination": "/temporal#durable-execution",
+      "permanent": true
+    },
+    {
+      "source": "/durable-execution",
+      "destination": "/temporal#durable-execution",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/activities",
+      "destination": "/activities",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/workflows",
+      "destination": "/workflows",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/workflow-execution",
+      "destination": "/workflow-execution",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/application-message-passing",
+      "destination": "/encyclopedia/workflow-message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/workflow-execution/event-history",
+      "destination": "/encyclopedia/event-history",
+      "permanent": true
+    },
+    {
+      "source": "/schedules",
+      "destination": "/schedule",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosting-guide/:path*",
+      "destination": "/self-hosted-guide/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/checklist",
+      "destination": "/self-hosted-guide/production-checklist",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/nexus",
+      "destination": "/production-deployment/self-hosted-guide/nexus",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/setup",
+      "destination": "/self-hosted-guide/deployment",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/persistence",
+      "destination": "/temporal-service/persistence",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/get-started/how-to-guides",
+      "destination": "/cloud/get-started",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/durable-execution",
+      "destination": "/develop/python",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/openai-agents",
+      "destination": "/develop/python/integrations/openai-agents",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/integrations/openai-agents-sdk",
+      "destination": "/develop/python/integrations/openai-agents",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/use-cases-design-patterns\\*\\*",
+      "destination": "/evaluate/use-cases-design-patterns",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/limits.md",
+      "destination": "/evaluate/cloud/limits.md",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/actions.md",
+      "destination": "/evaluate/cloud/actions.md",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/message-passing.md",
+      "destination": "/develop/python/workflows/message-passing.md",
+      "permanent": true
+    },
+    {
+      "source": "/develop/typescript/message-passing.md",
+      "destination": "/develop/typescript/workflows/message-passing.md",
+      "permanent": true
+    },
+    {
+      "source": "/workflow-execution/message-passing",
+      "destination": "/encyclopedia/workflow-message-passing",
+      "permanent": true
+    },
+    {
+      "source": "/develop/go/temporal-clients",
+      "destination": "/develop/go/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/develop/python/temporal-clients",
+      "destination": "/develop/python/client/temporal-client",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/workflow-determinism",
+      "destination": "/workflow-definition#deterministic-constraints",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/production-deployment",
+      "destination": "/self-hosted-guide/production-checklist",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/self-hosted",
+      "destination": "/self-hosted-guide",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/worker-versioning",
+      "destination": "/production-deployment/worker-deployments/worker-versioning",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/workers",
+      "destination": "/workers",
+      "permanent": true
+    },
+    {
+      "source": "/encyclopedia/activities/activity-definition",
+      "destination": "/activity-definition",
+      "permanent": true
+    },
+    {
+      "source": "/workflow-execution/timers",
+      "destination": "/workflow-execution/timers-delays",
+      "permanent": true
+    },
+    {
+      "source": "/develop/dev-server",
+      "destination": "/develop/run-a-development-server",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/api",
+      "destination": "/ops",
+      "permanent": true
+    },
+    {
+      "source": "/pdf/temporal-tos-2021-07-24.pdf",
+      "destination": "https://temporal.io/terms-of-service",
+      "permanent": true
+    },
+    {
+      "source": "/mcp",
+      "destination": "/with-ai#temporal-knowledge-base-mcp-server",
+      "permanent": true
+    },
+    {
+      "source": "/status",
+      "destination": "https://status.temporal.io",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap_index.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap-index.xml",
+      "destination": "/sitemap.xml",
       "permanent": true
     }
   ]

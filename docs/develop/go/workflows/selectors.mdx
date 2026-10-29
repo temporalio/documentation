@@ -1,6 +1,6 @@
 ---
 id: selectors
-title: Selectors - Go SDK
+title: Selectors
 sidebar_label: Selectors
 toc_max_heading_level: 4
 tags:
@@ -24,15 +24,20 @@ It chooses one at random if multiple are ready.
 However, a normal Go select statement can not be used inside of Workflows directly because of the random nature.
 Temporal's Go SDK `Selector`s are similar and act as a replacement.
 They can block on sending and receiving from Channels but as a bonus can listen on Future deferred work.
-Usage of Selectors to defer and process work (in place of Go's `select`) are necessary in order to ensure deterministic Workflow code execution (though using `select` in Activity code is fine).
+Use Selectors to defer and process work in place of Go's `select`, which keeps Workflow code execution deterministic. Using `select` in Activity code is fine.
 
 ## Full API example {/* #api-example */}
 
 The API is sufficiently different from `select` that it bears documenting:
 
+<!--SNIPSTART go-selector-api-example-->
+[go-sandbox/workflows/selectors/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/selectors/workflow.go)
 ```go
 func SampleWorkflow(ctx workflow.Context) error {
-	// standard Workflow setup code omitted...
+	// standard Workflow setup code
+	ctx = workflow.WithActivityOptions(ctx, workflow.ActivityOptions{
+		StartToCloseTimeout: 10 * time.Second,
+	})
 
 	// API Example: declare a new selector
 	selector := workflow.NewSelector(ctx)
@@ -50,7 +55,7 @@ func SampleWorkflow(ctx workflow.Context) error {
 	channel := workflow.GetSignalChannel(ctx, channelName)
 	selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {
 		// matching on the channel doesn't consume the message.
-	 	// So it has to be explicitly consumed here
+		// So it has to be explicitly consumed here
 		c.Receive(ctx, &signalVal)
 		// do something with received information
 	})
@@ -59,38 +64,49 @@ func SampleWorkflow(ctx workflow.Context) error {
 	// important! none of the deferred code runs until you call selector.Select
 	selector.Select(ctx)
 
-	// Todo: document selector.HasPending
+	return nil
 }
 ```
+<!--SNIPEND-->
 
 ## Use Selectors with Futures
 
 You usually add `Futures` after `Activities`:
 
+<!--SNIPSTART go-selector-api-example {"selectedLines": ["10-14"]}-->
+[go-sandbox/workflows/selectors/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/selectors/workflow.go)
 ```go
-// API Example: defer code execution until after an activity is done
-work := workflow.ExecuteActivity(ctx, ExampleActivity)
-selector.AddFuture(work, func(f workflow.Future) {
-	// deferred code omitted...
-})
+// ...
+	// API Example: defer code execution until the Future that represents Activity result is ready
+	work := workflow.ExecuteActivity(ctx, ExampleActivity)
+	selector.AddFuture(work, func(f workflow.Future) {
+		// deferred code omitted...
+	})
 ```
+<!--SNIPEND-->
 
 Calling `ExecuteActivity` by itself doesn't result in actual Activity execution. It results in a command that gets batched with others when there's a yield point in the Workflow definition. Your `Futures` won't run until you call `selector.Select(ctx)`. So no calls to `ExecuteActivity` should result in commands being sent to the server until `selector.Select` is called.
 
 A call to `selector.Select(ctx)` doesn't actually execute a `Future`, but it _requests_ execution for a `Future`. So this is a point where the SDK will communicate the command to execute the Activity to the server.
 
+<!--SNIPSTART go-selector-select-loop-->
+[go-sandbox/workflows/selectors/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/selectors/workflow.go)
 ```go
-  // API Example: blocking conditionally
-  if somecondition != nil {
-    selector.Select(ctx)
-  }
+// API Example: blocking conditionally
+if len(items) > 0 {
+	selector.Select(ctx) // wait for the first Future
+}
 
-  // API Example: popping off all remaining Futures
-  for i := 0; i < len(someArray); i++ {
-    selector.Select(ctx) // this will wait for one branch
-    // you can interrupt execution here
-  }
+// API Example: popping off all remaining Futures
+for i := 1; i < len(items); i++ {
+	selector.Select(ctx) // this will wait for one branch
+	// you can interrupt execution here
+	if processErr != nil {
+		return nil, processErr
+	}
+}
 ```
+<!--SNIPEND-->
 
 A Future matches only once per Selector instance even if Select is called multiple times.
 If multiple items are available, the order of matching is not defined.
@@ -104,9 +120,14 @@ For example, [the Timer sample](https://github.com/temporalio/samples-go/tree/ma
 - if processing takes too long, we send out a notification email to user about the delay, but we won't cancel the operation
 - if the operation finishes before the timer fires, then we want to cancel the timer.
 
+<!--SNIPSTART go-selector-timer-race-->
+[go-sandbox/workflows/selectors/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/selectors/workflow.go)
 ```go
+// Create a cancelable Context for the Timer.
+childCtx, cancelHandler := workflow.WithCancel(ctx)
+
 var processingDone bool
-f := workflow.ExecuteActivity(ctx, OrderProcessingActivity)
+f := workflow.ExecuteActivity(ctx, OrderProcessingActivity, processingTime)
 selector.AddFuture(f, func(f workflow.Future) {
 	processingDone = true
 	// cancel timerFuture
@@ -119,12 +140,14 @@ selector.AddFuture(timerFuture, func(f workflow.Future) {
 	if !processingDone {
 		// processing is not done yet when timer fires, send notification email
 		_ = workflow.ExecuteActivity(ctx, SendEmailActivity).Get(ctx, nil)
+		emailSent = true
 	}
 })
 
 // wait the timer or the order processing to finish
 selector.Select(ctx)
 ```
+<!--SNIPEND-->
 
 We create timers with the `workflow.NewTimer` API.
 
@@ -132,15 +155,21 @@ We create timers with the `workflow.NewTimer` API.
 
 `selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {})` is the primary mechanism which receives messages from `Channels`.
 
+<!--SNIPSTART go-selector-api-example {"selectedLines": ["18-26"]}-->
+[go-sandbox/workflows/selectors/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/selectors/workflow.go)
 ```go
-// API Example: receive information from a Channel
-var signalVal string
-channel := workflow.GetSignalChannel(ctx, channelName)
-selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {
-	c.Receive(ctx, &signalVal)
-	// do something with received information
-})
+// ...
+	// API Example: receive information from a Channel
+	var signalVal string
+	channel := workflow.GetSignalChannel(ctx, channelName)
+	selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {
+		// matching on the channel doesn't consume the message.
+		// So it has to be explicitly consumed here
+		c.Receive(ctx, &signalVal)
+		// do something with received information
+	})
 ```
+<!--SNIPEND-->
 
 Merely matching on the channel doesn't consume the message; it has to be explicitly consumed with a `c.Receive(ctx, &signalVal)` call.
 

@@ -1,7 +1,7 @@
 ---
 id: recover-without-restart
-title: Recover business processes without restarting
-description: Build a multi-step business process that pauses when it hits a permanent failure, then resumes from where it stopped without restarting.
+title: Pause a Workflow on failure and resume it after a fix
+description: A TypeScript loan pipeline that pauses on permanent failures, takes a corrective Signal, resumes in place, and unwinds side effects with saga compensation.
 sidebar_label: Recovery without restart
 toc_max_heading_level: 3
 author: Tao Guo
@@ -805,7 +805,7 @@ npm start
 
 ### Launch the demo dashboard
 
-The project includes a single-page operations dashboard at [`public/index.html`](https://github.com/temporal-sa/validated-pattern-blob/main/public/index.html) that exercises the web service endpoints you built above. Start it alongside the Worker:
+The project includes a single-page operations dashboard at [`public/index.html`](https://github.com/temporal-sa/validated-pattern-keep-business-moving/blob/main/public/index.html) that exercises the web service endpoints you built above. Start it alongside the Worker:
 
 ```bash
 npm run web

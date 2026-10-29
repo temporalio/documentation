@@ -1,0 +1,18 @@
+# Vague intensifiers named in this repo's own style guide (AGENTS.md's
+# Writing style section) that aren't in jdkato/voices' Banned list -- see
+# Banned.yml for the ported set. Each of these needs the sentence rewritten
+# around it, not swapped for another word.
+#
+# Kept in its own file so it can be enabled independently of Banned.yml.
+# Reviewed against every real hit in docs/ and the prose fixed accordingly
+# (2026-09-11); still disabled in .vale-ci.ini pending a CI-gating decision.
+# "unlock(?:s|ed|ing)?" also matches the unrelated "locked/unlocked" lock-state
+# term -- narrow the pattern if that shows up again.
+extends: existence
+message: "Vague intensifier: '%s'. Say what it actually does."
+level: warning
+ignorecase: true
+tokens:
+  - powerful
+  - 'seamless(?:ly)?'
+  - 'unlock(?:s|ed|ing)?'

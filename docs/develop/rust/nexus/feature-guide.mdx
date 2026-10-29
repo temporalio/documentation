@@ -1,6 +1,6 @@
 ---
 id: feature-guide
-title: Nexus feature guide - Rust SDK
+title: Nexus feature guide
 sidebar_label: Feature guide
 description: Use Temporal Nexus within the Rust SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 3
@@ -15,6 +15,7 @@ tags:
 ## Call a Nexus Operation from a Workflow {/* #call-nexus-operation */}
 
 You can start a Nexus operation from a Workflow using `ctx.start_nexus_operation()`:
+Enable the `experimental` feature for the `temporalio-sdk` dependency to use this API.
 
 ```rust
 use std::time::Duration;

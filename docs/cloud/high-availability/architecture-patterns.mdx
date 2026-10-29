@@ -166,7 +166,7 @@ However, since **Workers don't need to run in the same region as the active Name
 These patterns work across two cloud regions, which could be in the same cloud provider ("multi-region") or different cloud providers ("multi-cloud"):
 
 - **Primary region** — the region where the Namespace is active during normal operation, also called the "preferred region."
-- **Secondary region** — the region the Namespace fails over to. It can be any [Temporal Cloud region](/cloud/regions) that supports replication from the primary region. Multi-region and multi-cloud architectures use the same Worker deployment patterns.
+- **Secondary region** — the region the Namespace fails over to. It can be any [Temporal Cloud region](/evaluate/cloud/regions) that supports replication from the primary region. Multi-region and multi-cloud architectures use the same Worker deployment patterns.
 
 ### Compare patterns at a glance {/* #compare-at-a-glance */}
 
@@ -647,7 +647,7 @@ Yes, as a Worker deployment pattern — not as a database-level active/active. A
 
 ### What special patterns are needed for multi-cloud HA/DR? {/* #faq-multi-cloud */}
 
-None specific to multi-cloud. Multi-region and multi-cloud HA/DR use the same [Worker deployment patterns](#ha-worker-patterns) — the secondary region can be any [Temporal Cloud region](/cloud/regions) that supports replication from the primary, whether in the same cloud provider or a different one. The same considerations apply: route Workers through the right [endpoints and private connectivity](/cloud/high-availability/ha-connectivity), and give any databases and queues a cross-region — here, cross-cloud — consistency story.
+None specific to multi-cloud. Multi-region and multi-cloud HA/DR use the same [Worker deployment patterns](#ha-worker-patterns) — the secondary region can be any [Temporal Cloud region](/evaluate/cloud/regions) that supports replication from the primary, whether in the same cloud provider or a different one. The same considerations apply: route Workers through the right [endpoints and private connectivity](/cloud/high-availability/ha-connectivity), and give any databases and queues a cross-region — here, cross-cloud — consistency story.
 
 If you use the Active/Passive pattern, it is highly recommended that you ensure Workers in the active cloud can reach the Namespace if it fails over to the passive cloud due to a Temporal-specific outage, so they can keep processing Tasks across the cross-cloud path.
 

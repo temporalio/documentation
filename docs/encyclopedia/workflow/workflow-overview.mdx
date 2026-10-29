@@ -64,7 +64,7 @@ When it's time to continue the Workflow, Temporal doesn't restore memory from a 
 
 Because the Workflow is re-executed to rebuild its state:
 
-- It has to make the same decisions when given the same history, which makes a Workflow deterministic.
+- It has to make the same decisions when given the same history.
 - It shouldn't depend on any values _not_ recorded in the history which would be different between runs.
 
 For example:
