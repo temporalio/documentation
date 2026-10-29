@@ -56,15 +56,12 @@ This also makes the start idempotent: a retried Nexus start request targets the 
 Derive it in one place so the two Operations that need it cannot drift apart:
 
 <!--SNIPSTART samples-java-nexus-walkthrough-workflow-id-->
-
 [core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java)
-
 ```java
-  public static String forItem(String itemId) {
-    return "approval-" + itemId;
-  }
+public static String forItem(String itemId) {
+  return "approval-" + itemId;
+}
 ```
-
 <!--SNIPEND-->
 
 In [step 8](/develop/java/nexus/development-walkthrough/send-messages), `attachApprovalContext` may start the approval before `requestApproval` is called. Both Operations derive the same Workflow Id from the same item id, so they agree on which Execution they mean.

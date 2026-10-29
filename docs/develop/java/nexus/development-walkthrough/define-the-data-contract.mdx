@@ -74,9 +74,7 @@ the complete rules the generator enforces.
 Here is the approval contract in full. In [step 2](/develop/java/nexus/development-walkthrough/generate-code) you pass this file to `nexgen` to generate the Java code:
 
 <!--SNIPSTART samples-java-nexus-walkthrough-contract-->
-
 [core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml)
-
 ```yaml
 nexusrpc: "1.0.0"
 $schema: https://json-schema.org/draft/2020-12/schema
@@ -98,6 +96,13 @@ services:
       remindApprover:
         description: Ask the approver again. Returns nothing.
         input: { $ref: "#/$defs/RemindApproverInput" }
+
+      # A Query. Reads in-flight progress without changing it. It does not return the decision;
+      # requestApproval does - see step 7.
+      getApprovalStatus:
+        description: Report the progress of an approval without changing it.
+        input: { $ref: "#/$defs/GetApprovalStatusInput" }
+        output: { $ref: "#/$defs/GetApprovalStatusOutput" }
 
       # An Update. The caller needs confirmation back, which is what makes this an Update rather
       # than a Signal - see step 7.
@@ -149,6 +154,22 @@ $defs:
       itemId: { type: string }
     required: [itemId]
 
+  GetApprovalStatusInput:
+    type: object
+    additionalProperties: false
+    properties:
+      itemId: { type: string }
+    required: [itemId]
+
+  GetApprovalStatusOutput:
+    type: object
+    additionalProperties: false
+    properties:
+      pending: { description: True until a decision is recorded., type: boolean }
+      remindersSent: { description: How many reminders have been sent so far., type: integer }
+      notesAttached: { description: How many notes have been attached so far., type: integer }
+    required: [pending, remindersSent, notesAttached]
+
   SubmitDecisionInput:
     type: object
     additionalProperties: false
@@ -199,7 +220,6 @@ $defs:
       deliveredTo: { description: Where the notification was sent., type: string }
     required: [deliveredTo]
 ```
-
 <!--SNIPEND-->
 
 

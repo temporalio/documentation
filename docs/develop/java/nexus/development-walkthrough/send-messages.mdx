@@ -39,37 +39,35 @@ Supporting information, such as a justification or a manager's note, comes from 
 `attachApprovalContext` uses **Signal-with-Start** instead. If the approval is running, the note is delivered to it. If not, the approval is started and the note is delivered. The caller doesn't need to know which happened.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-attach-context-->
-
 [core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
-
 ```java
-  @OperationImpl
-  public OperationHandler<AttachApprovalContextInput, Void> attachApprovalContext() {
-    return TemporalOperationHandler.create(
-        (ctx, client, input) -> {
-          WorkflowClient workflowClient = client.getWorkflowClient();
-          ApprovalWorkflow stub =
-              workflowClient.newWorkflowStub(
-                  ApprovalWorkflow.class,
-                  WorkflowOptions.newBuilder()
-                      .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
-                      .setTaskQueue(HandlerWorker.DEFAULT_TASK_QUEUE_NAME)
-                      .build());
+@TemporalOperation
+public TemporalOperationResult<Void> attachApprovalContext(
+    TemporalOperationStartContext ctx,
+    TemporalNexusClient client,
+    AttachApprovalContextInput input) {
+  WorkflowClient workflowClient = client.getWorkflowClient();
+  ApprovalWorkflow stub =
+      workflowClient.newWorkflowStub(
+          ApprovalWorkflow.class,
+          WorkflowOptions.newBuilder()
+              .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
+              .setTaskQueue(HandlerWorker.DEFAULT_TASK_QUEUE_NAME)
+              .build());
 
-          // signalWithStart delivers the Signal, starting the Workflow first if it is not already
-          // running. When the approval already exists, only the Signal is delivered.
-          BatchRequest request = workflowClient.newSignalWithStartRequest();
-          request.add(stub::attachContext, input.getNote());
-          request.add(
-              stub::runApproval,
-              new RequestApprovalInput(input.getItemId(), input.getRequester(), input.getAmount()));
-          workflowClient.signalWithStart(request);
+  // signalWithStart delivers the Signal, starting the Workflow first if it is not already
+  // running. When the approval already exists, only the Signal is delivered.
+  BatchRequest request = workflowClient.newSignalWithStartRequest();
+  request.add(stub::attachContext, input.getNote());
+  request.add(
+      stub::runApproval,
+      new RequestApprovalInput(input.getItemId(), input.getRequester(), input.getAmount()));
+  workflowClient.signalWithStart(request);
 
-          return TemporalOperationResult.sync(null);
-        });
-  }
+  return TemporalOperationResult.sync(null);
+}
+
 ```
-
 <!--SNIPEND-->
 
 Signal-with-Start is sync messaging on the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client), so the Operation completes during the handler call and returns nothing. The caller learns only that the note was durably attached.
@@ -89,26 +87,23 @@ Because `attachApprovalContext` can create the approval, a Workflow with that Id
 That is why `requestApproval` sets the Workflow Id conflict policy to **use-existing**. A start against a running approval then attaches the Operation's completion callback to that Execution, and the caller receives its decision when it completes.
 
 <!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
-
 [core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
-
 ```java
-  @OperationImpl
-  public OperationHandler<RequestApprovalInput, RequestApprovalOutput> requestApproval() {
-    return TemporalOperationHandler.create(
-        (ctx, client, input) ->
-            client.startWorkflow(
-                ApprovalWorkflow.class,
-                ApprovalWorkflow::runApproval,
-                input,
-                WorkflowOptions.newBuilder()
-                    .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
-                    .setWorkflowIdConflictPolicy(
-                        WorkflowIdConflictPolicy.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING)
-                    .build()));
-  }
-```
+@TemporalOperation
+public TemporalOperationResult<RequestApprovalOutput> requestApproval(
+    TemporalOperationStartContext ctx, TemporalNexusClient client, RequestApprovalInput input) {
+  return client.startWorkflow(
+      ApprovalWorkflow.class,
+      ApprovalWorkflow::runApproval,
+      input,
+      WorkflowOptions.newBuilder()
+          .setWorkflowId(ApprovalWorkflowId.forItem(input.getItemId()))
+          .setWorkflowIdConflictPolicy(
+              WorkflowIdConflictPolicy.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING)
+          .build());
+}
 
+```
 <!--SNIPEND-->
 
 This has two effects:
