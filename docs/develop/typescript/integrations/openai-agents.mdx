@@ -139,10 +139,10 @@ on the Client's plugin or in the runner's `defaultModelParams`.
 
 Agents name their model with a string, or leave it out to use the provider's default, and the Worker's model provider
 resolves it inside the Activity. A model object can't cross into an Activity, so an agent that has one fails the run. To
-run every agent in one run on the same model, set `runConfig.model` to that model's name. Structured output through an
-agent's `outputType` works as in the OpenAI Agents SDK, and the
-[basic sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/basic) shows it along with
-run context and a per-run model override.
+pick the model for one run, set `runConfig.model` to that model's name: as in the OpenAI Agents SDK, it applies to the
+agents that set no model of their own. Structured output through an agent's `outputType` works as in the OpenAI Agents
+SDK, and the [basic sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/basic) shows it
+along with run context and a per-run model override.
 
 Any OpenAI Agents SDK `ModelProvider` works on the Worker. The
 [model providers sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/model-providers)
@@ -464,9 +464,10 @@ processor, OpenAI's exporter, and OpenTelemetry.
 | Sessions | Supported | `WorkflowSafeMemorySession`. The SDK's `MemorySession` is rejected. |
 | Run state and approvals | Supported | Serialize `RunState` to resume across Continue-As-New. |
 | Guardrails | Supported | Run in the Workflow. Without `stream: true`, a tripwire arrives as the `cause` of an `AgentsWorkflowError`. |
+| Agent lifecycle hooks | Supported | `agent.on(...)` listeners run in the Workflow and must be deterministic. |
 | Structured output | Supported | `outputType` on the agent. |
 | Run context | Supported | Visible to code in the Workflow, including `agent.asTool()` nested runs, but not to Activity tools. |
-| Per-run model override | Supported | `runConfig.model` takes a model name. |
+| Per-run model override | Supported | `runConfig.model` takes a model name, for agents that set none. |
 | Model objects on agents | Not supported | Name the model with a string. |
 | Custom model providers | Supported | Any `ModelProvider`, called in the model Activity. |
 | Local Activities for model calls | Supported | `useLocalActivity: true` in the Client's `modelParams` or the runner's `defaultModelParams`. |
@@ -586,7 +587,7 @@ Model Activity options, in the Client's `modelParams` or the runner's `defaultMo
 | Constructor | `defaultModelParams` | None | Model Activity options set in Workflow code, which also reach Workflows started without the plugin, such as by a Schedule or the Temporal CLI. The Client's `modelParams` take precedence for each field they set. `agent.asTool()` nested runs use the same options. |
 | `run()` | `context`, `maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, `tracing` | SDK defaults | As in the SDK's run options. `session` can't be the SDK's `MemorySession`. Other SDK run options, such as `signal`, `errorHandlers`, `toolErrorFormatter`, and `toolExecution`, aren't accepted. |
 | `run()` | `stream` | `false` | Streams model events over a Workflow Stream. Experimental. |
-| `run()` | `runConfig.model` | Each agent's model | A model name used by every agent in the run. In `agent.asTool()` nested runs, only agents that set no model use it. |
+| `run()` | `runConfig.model` | Each agent's model | A model name for the agents in the run that set none, nested `agent.asTool()` runs included. An agent's own model wins, as in the SDK. |
 | `run()` | `runConfig.modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`, `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, `traceMetadata` | SDK defaults | As in the SDK's run config. Guardrails and filters run in the Workflow. |
 | `run()` | `runConfig.sandbox` | None | Required when a `SandboxAgent` is reachable from the agent through handoffs or an `agent.asTool()` tool. `client` must come from `temporalSandboxClient()`. Experimental. See the notes below this table. |
 
@@ -631,8 +632,12 @@ Notes on `agent.asTool()` nested runs:
   `defaultModelParams`.
 - A nested tool that needs approval pauses the parent run, and the approval appears in the parent's
   `result.interruptions`.
-- The plugin doesn't check agents that are reached only through `agent.asTool()`, so name their models with strings. A
-  model object would be called in the Workflow, not in an Activity.
+- Create `agent.asTool()` tools in Workflow code and pass them as they are. The plugin records each tool's agent when
+  the tool is made, and checks the nested agents and the tool's options before the run. It rejects a nested agent with a
+  model object, a tool whose `runConfig` sets `modelProvider` or a model object as `model`, a `runConfig.sandbox` or
+  `runOptions.sandbox` client not from `temporalSandboxClient()`, a `MemorySession` as `runOptions.session`, and a tool
+  it can't trace to its agent, such as a copy.
+- A `ModelSummaryProvider` gets `undefined` as the agent for nested model calls.
 
 Providers are matched to Workflow handles by name, and each provider on a plugin needs a unique name. The plugin adds a
 `-stateful` suffix to a stateful MCP provider's name, so a stateless and a stateful MCP provider can share a name.
@@ -663,14 +668,14 @@ underlying error, and the run continues. That includes the `DedicatedWorkerFailu
 | Failure type | Raised in | Meaning |
 | --- | --- | --- |
 | `ModelInvocationError`, and `ModelInvocationError.RateLimit`, `.Authentication`, `.BadRequest`, `.Timeout`, `.Conflict`, or `.ServerError` | Model Activity | The model call failed. HTTP 408, 409, 429, and 5xx responses are retryable, and other statuses aren't. An `x-should-retry` header overrides that, and `retry-after-ms` or `retry-after` sets the next retry delay. An `openai` `APIError` without an HTTP status, such as `APIConnectionError`, is non-retryable. Other errors are retryable. |
-| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call in such a run also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. In a streaming run, an error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
-| `UnsafeSessionError` | Workflow | Non-retryable. `run()` received the SDK's `MemorySession`. |
+| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, an `agent.asTool()` tool sets `runConfig.modelProvider` or a model object as `runConfig.model` or can't be traced to its agent, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call in such a run also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. In a streaming run, an error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
+| `UnsafeSessionError` | Workflow | Non-retryable. `run()`, or an `agent.asTool()` tool's `runOptions.session`, received the SDK's `MemorySession`. |
 | `StreamingTopicNotConfigured` | Workflow | Non-retryable. A streaming run has no `streamingTopic`. |
 | `StreamingLocalActivityUnsupported` | Workflow | Non-retryable. A streaming run has `useLocalActivity: true`. |
 | `DedicatedWorkerFailure`, exported as `DEDICATED_WORKER_FAILURE_TYPE` | Workflow | Retryable. A stateful MCP operation wasn't picked up within its Schedule-To-Start Timeout or missed a heartbeat, so the run's dedicated Worker isn't polling. |
 | `StatefulMCPServerAlreadyRunning` | Server session Activity | Non-retryable. Two stateful handles with the same name connected in one Workflow run. |
 | `StatefulMCPServerNotFound` | Dedicated Worker | Non-retryable. A tool operation reached a Worker that doesn't hold the server. |
-| `SandboxConfigurationError` | Workflow | Non-retryable. A `SandboxAgent` is reachable but `runConfig.sandbox` is missing, or its `client` didn't come from `temporalSandboxClient()`. It's also raised when a manifest environment value uses a resolver function, directly or through `resolve`, or is an `EnvValueReference` that can't be serialized, since neither can travel in a sandbox Activity's input. Use `workerEnvValue()` for a value the Worker supplies. |
+| `SandboxConfigurationError` | Workflow | Non-retryable. A `SandboxAgent` is reachable but `runConfig.sandbox` is missing, or its `client`, or the `client` of an `agent.asTool()` tool's `runConfig.sandbox` or `runOptions.sandbox`, didn't come from `temporalSandboxClient()`. It's also raised when a manifest environment value uses a resolver function, directly or through `resolve`, or is an `EnvValueReference` that can't be serialized, since neither can travel in a sandbox Activity's input. Use `workerEnvValue()` for a value the Worker supplies. |
 | `SandboxOperationUnsupported` | Sandbox Activity | Non-retryable. The backend lacks the operation. A Worker that doesn't hold the session calls `resume()` before handling one of its operations, and every paused-run resume calls it too, so on a backend without `resume()`, the `run()` call that resumes a paused sandbox run fails. |
 | `WorkerEnvValueError` | Sandbox Activity | Non-retryable. A `workerEnvValue()` names a variable that isn't in `resolvableWorkerEnvVars`. |
 | `SandboxSessionStateInvalid` | Workflow | Non-retryable. Sandbox session state being resumed wasn't produced by a Temporal sandbox client. |
