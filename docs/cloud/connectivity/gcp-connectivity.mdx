@@ -11,8 +11,6 @@ tags:
   - Temporal Cloud
 ---
 
-import { JsonTable } from '@site/src/components';
-
 [Google Cloud Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Google Virtual Private Cloud (VPC) and Temporal Cloud.
 This one-way connection means Temporal cannot establish a connection back to your service.
@@ -24,7 +22,9 @@ If you use a private environment that does not allow external connectivity, you 
 :::warning Namespaces with High Availability features and GCP Private Service Connect
 
 Automatic failover via Temporal Cloud DNS is not currently supported with GCP Private Service Connect.
-If you use GCP Private Service Connect, you must manually update your workers to point to the active region's Private Service Connect endpoint when a failover occurs.
+GCP Cloud DNS cannot combine the public Namespace CNAME with private regional DNS overrides in the way the AWS PrivateLink HA pattern requires.
+When a failover occurs, manually update your private DNS override or Worker and Client endpoint configuration to point to the active region's Private Service Connect endpoint.
+See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect) for GCP-only and multi-cloud connectivity options.
 
 :::
 
@@ -51,7 +51,7 @@ Set up Private Service Connect with Temporal Cloud with these steps:
 
    ![GCP console showing the endpoints, and the Connect endpoint button](/img/cloud/gcp/connect-endpoint.png)
 
-- For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you’re trying to connect to:
+- For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you're trying to connect to. See [Available GCP regions, PSC endpoints, and DNS record overrides](#available-gcp-regions-psc-endpoints-and-dns-record-overrides) for the list of available services.
 
 :::tip
 
@@ -59,8 +59,6 @@ GCP Private Service Connect services are regional.
 Individual Namespaces do not use separate services.
 
 :::
-
-<JsonTable filename="/json/privatelink_gcp.json" />
 
 - For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
 - For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
@@ -128,12 +126,12 @@ Both mTLS and API key authentication support both Namespace Endpoints and Region
 | ------- | -------------------- | -------------------------------- |
 | Single region | Namespace Endpoint | An A record for each Namespace Endpoint, such as `payments.abcde.tmprl.cloud`, or a wildcard record for `*.abcde.tmprl.cloud`. |
 | Single region | Regional Endpoint | A single A record for the Regional Endpoint in the Namespace's region. |
-| Multiple regions with High Availability | Namespace Endpoint (recommended) | An A record for each regional FQDN, such as `gcp-us-central1.region.tmprl.cloud`, that the Namespace Endpoint can CNAME to. Keep the Temporal-managed Namespace CNAME so it follows the active region on failover. |
+| Multiple regions with High Availability | Namespace Endpoint | An A record for the Namespace Endpoint pointing to a replica region's PSC endpoint IP address. Manually update the override to the active region's PSC endpoint IP address after failover; automatic DNS failover is not supported. |
 | Multiple regions with High Availability | Regional Endpoint (not recommended) | A single A record for the Regional Endpoint in the client's active region. To withstand a regional outage, run a Worker pool in each region and configure each pool to use its region's Regional Endpoint. |
 
 Point each A record at the corresponding region's PSC endpoint IP address.
-For High Availability Namespaces, follow [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) to configure regional DNS overrides and network routing.
-Do not override the Namespace Endpoint when relying on its CNAME to follow the active region on failover.
+For High Availability Namespaces, see [GCP PSC failover options](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect).
+Regional DNS overrides do not enable automatic failover with GCP PSC.
 
 The steps below use a single-region Namespace Endpoint as the example.
 

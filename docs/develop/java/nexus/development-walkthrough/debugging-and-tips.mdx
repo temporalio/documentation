@@ -20,7 +20,7 @@ Two errors mean the development server is missing a setting that is off by defau
 this only shows up on the command line.
 
 **`completion callbacks are not enabled for this namespace`** fails only `notifyRequester`, when the
-server was started without `activity.enableCallbacks=true`. The other four Operations are unaffected.
+server was started without `activity.enableCallbacks=true`. The other five Operations are unaffected.
 
 If `temporal nexus --help` doesn't list `operation`, your CLI is too old for this walkthrough.
 Upgrade to 1.9.1 or later.
@@ -39,7 +39,7 @@ Add the caller Namespace to the Endpoint's allowed caller list. Creating an Endp
 
 ## The caller and handler are not linked in the UI
 
-Use the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) that `TemporalOperationHandler` provides for anything that starts or messages an Execution. A Client you construct yourself works, but loses the [bidirectional links](/nexus/execution-debugging#bi-directional-linking) that connect the two Executions.
+Use the [Client](/nexus/temporal-operation-handler#the-nexus-aware-client) that a `@TemporalOperation` method receives for anything that starts or messages an Execution. A Client you construct yourself works, but loses the [bidirectional links](/nexus/execution-debugging#bi-directional-linking) that connect the two Executions.
 
 ## The Operation fails because the Workflow already exists
 
@@ -91,7 +91,7 @@ Callers and handlers deploy independently, so different contract versions run at
 
 **Let contract violations be `BAD_REQUEST`.** The generated validators report every violation in one error, so the caller can fix them all at once. See [Nexus error handling](/nexus/error-handling).
 
-**Use `TemporalOperationHandler` for every Operation.** An Operation that starts synchronous can later gain an async backing without changing shape.
+**Use `@TemporalOperation` for every Operation.** An Operation that starts synchronous can later gain an async backing without changing shape.
 
 Back to the [Microservice Development Walkthrough overview](/develop/java/nexus/development-walkthrough).
 

@@ -744,7 +744,9 @@ const developPythonCategory = {
           id: 'develop/python/integrations/index',
         },
         items: [
+          'develop/python/integrations/baseten',
           'develop/python/integrations/deepagents',
+          'develop/python/integrations/fireworks-ai',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
@@ -753,6 +755,7 @@ const developPythonCategory = {
           'develop/python/integrations/openai-agents',
           'develop/python/integrations/openrouter',
           'develop/python/integrations/strands-agents',
+          'develop/python/integrations/together-ai',
         ],
       },
     ],
@@ -2187,6 +2190,7 @@ module.exports = {
             id: 'encyclopedia/nexus/nexus',
           },
           items: [
+            'encyclopedia/nexus/choosing-a-nexus-approach',
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/nexus-endpoints',
@@ -2247,6 +2251,7 @@ module.exports = {
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/worker-tuning-simulator',
         'demos/priority-fairness-walkthrough',
       ],
     },

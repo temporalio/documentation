@@ -208,6 +208,7 @@ yarn check:redirects     # vercel.json redirect rules that can't work as written
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
 yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
 yarn check:retrieve-links # /api/retrieve results whose docs links don't return 200; advisory, see AGENT-RETRIEVE.md
+yarn report:retrieve-log  # summarize the /api/retrieve request log; needs BLOB_READ_WRITE_TOKEN, see AGENT-RETRIEVE.md
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
