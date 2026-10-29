@@ -1,19 +1,19 @@
 ---
 id: error-handling
-title: Error handling - .NET SDK
+title: Error handling
 sidebar_label: Error handling
-description: Handle errors with Temporal .Net SDK
+description: Handle errors with Temporal .NET SDK
 toc_max_heading_level: 4
 tags:
   - Activities
   - Workflows
-  - .Net SDK
+  - .NET SDK
   - Temporal SDKs
   - Failures
   - Errors
 ---
 
-## Raise and Handle Exceptions {/* #exception-handling */}
+## Raise and handle exceptions {/* #exception-handling */}
 
 In each Temporal SDK, error handling is implemented idiomatically, following the conventions of the language.
 Temporal uses several different error classes internally — for example, [`CancelledFailureException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.CanceledFailureException.html) in the .NET SDK, to handle a Workflow cancellation. 
@@ -91,6 +91,8 @@ catch (ActivityFailureException err)
 
 This works differently in a Workflow than raising exceptions from Activities.
 In an Activity, any C# exceptions or custom exceptions are converted to a Temporal `ApplicationError`.
-In a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](/tasks#workflow-task-execution) and be retried.
+By default, in a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](/tasks#workflow-task-execution) and be retried.
 This includes any typical C# `RuntimeError`s that are raised automatically.
 These errors are treated as bugs that can be corrected with a fixed deployment, rather than a reason for a Temporal Workflow Execution to return unexpectedly.
+To have other exception types fail the Workflow Execution, list them in `FailureExceptionTypes` on the `[Workflow]` attribute, or in `TemporalWorkerOptions.WorkflowFailureExceptionTypes`.
+Both options are experimental.

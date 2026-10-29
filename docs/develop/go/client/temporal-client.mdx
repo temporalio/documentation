@@ -1,10 +1,10 @@
 ---
 id: temporal-client
-title: Temporal Client - Go SDK
+title: Temporal Client
 sidebar_label: Temporal Client
 description:
-  Connect to Temporal Service or Cloud, start Workflow Executions, manage Workflow options, and retrieve Workflow
-  results using the Go SDK. Follow detailed steps and code examples to effectively use Temporal’s capabilities.
+  Connect to a development Temporal Service or Temporal Cloud from Go, set StartWorkflowOptions, and get Workflow
+  Execution results.
 toc_max_heading_level: 4
 tags:
   - Temporal Client
@@ -111,6 +111,8 @@ service-version = "v1.2.3"
 
 You can create a Temporal Client using a specific profile from the configuration file as follows:
 
+<!--SNIPSTART go-client-connect-profile-->
+[go-sandbox/client/devprofile/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/devprofile/main.go)
 ```go
 package main
 
@@ -138,9 +140,10 @@ func main() {
 	}
 	defer c.Close()
 
-	fmt.Printf("✅ Connected to Temporal namespace %q on %s using 'prod' profile\n", c.Options().Namespace, c.Options().HostPort)
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s using 'prod' profile\n", opts.Namespace, opts.HostPort)
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -156,6 +159,8 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
+<!--SNIPSTART go-client-connect-env-->
+[go-sandbox/client/devenv/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/devenv/main.go)
 ```go
 package main
 
@@ -175,10 +180,10 @@ func main() {
 	}
 	defer c.Close()
 
-	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
+	fmt.Println("✅ Connected to Temporal Service")
 }
-
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -188,42 +193,40 @@ If you don't want to use environment variables or a configuration file, you can 
 code. This is convenient for local development and testing. You can also load a base configuration from environment
 variables or a configuration file, and then override specific options in code.
 
+<!--SNIPSTART go-client-connect-code-->
+[go-sandbox/client/httpserver/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/httpserver/main.go)
 ```go
 package main
 
 import (
-  "context"
-  "encoding/json"
-  "log"
-  "net/http"
+	"log"
+	"net/http"
 
-  "documentation-samples-go/yourapp"
-
-  "go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/client"
 )
 
 func main() {
-  // Create a Temporal Client to communicate with the Temporal Cluster.
-  // A Temporal Client should be created once per process.
-  temporalClient, err := client.Dial(client.Options{
-    HostPort: client.DefaultHostPort,
-  })
-  if err != nil {
-    log.Fatalln("Unable to create Temporal Client", err)
-  }
-  defer temporalClient.Close()
+	// Create a Temporal Client to communicate with the Temporal Service.
+	// A Temporal Client should be created once per process.
+	temporalClient, err := client.Dial(client.Options{
+		HostPort: client.DefaultHostPort,
+	})
+	if err != nil {
+		log.Fatalln("Unable to create Temporal Client", err)
+	}
+	defer temporalClient.Close()
 
-  // Start an HTTP server and listen on /start
-  http.HandleFunc("/start", func(w http.ResponseWriter, r *http.Request) {
-    startWorkflowHandler(w, r, temporalClient)
-  })
-  err = http.ListenAndServe(":8091", nil)
-  if err != nil {
-    log.Fatalln("Unable to run http server", err)
-  }
+	// Start an HTTP server and listen on /start
+	http.HandleFunc("/start", func(w http.ResponseWriter, r *http.Request) {
+		startWorkflowHandler(w, r, temporalClient)
+	})
+	err = http.ListenAndServe(":8091", nil)
+	if err != nil {
+		log.Fatalln("Unable to run http server", err)
+	}
 }
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -297,6 +300,8 @@ tls_client_key_path = "your-tls-client-key-path"
 With the connections options defined in the configuration file, use the `LoadClientOptions` function in the `envconfig`
 package to create a Temporal Client using the `cloud` profile as follows:
 
+<!--SNIPSTART go-client-cloud-profile {"highlightedLines": "13-17"}-->
+[go-sandbox/client/cloudprofile/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/cloudprofile/main.go)
 ```go {13-17}
 package main
 
@@ -313,8 +318,8 @@ func main() {
 	configFilePath := "/Users/yourname/.config/my-app/temporal.toml"
 
 	opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
-    ConfigFilePath: configFilePath,
-    ConfigFileProfile: "cloud",
+		ConfigFilePath:    configFilePath,
+		ConfigFileProfile: "cloud",
 	})
 	if err != nil {
 		log.Fatalf("Failed to load client config from custom file: %v", err)
@@ -329,6 +334,7 @@ func main() {
 	fmt.Printf("✅ Connected using custom config at: %s\n", configFilePath)
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -355,6 +361,8 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
+<!--SNIPSTART go-client-connect-env {"highlightedLines": "13"}-->
+[go-sandbox/client/devenv/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/devenv/main.go)
 ```go {13}
 package main
 
@@ -374,9 +382,10 @@ func main() {
 	}
 	defer c.Close()
 
-	fmt.Printf("✅ Connected to Temporal Service")
+	fmt.Println("✅ Connected to Temporal Service")
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -385,52 +394,58 @@ func main() {
 You can also provide connections options in your Go code directly. When instantiating a Temporal `client` in your
 Temporal Go SDK code, provide the following `clientOptions`:
 
+<!--SNIPSTART go-client-cloud-api-key-->
+[go-sandbox/client/cloud/cloud.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/cloud/cloud.go)
 ```go
 clientOptions := client.Options{
-    HostPort: <endpoint>,
-    Namespace: <namespace_id>.<account_id>,
-    ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{}},
-    Credentials: client.NewAPIKeyStaticCredentials(apiKey),
+	HostPort:          endpoint,  // <namespace>.<account>.tmprl.cloud:7233
+	Namespace:         namespace, // <namespace_id>.<account_id>
+	ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{}},
+	Credentials:       client.NewAPIKeyStaticCredentials(apiKey),
 }
 c, err := client.Dial(clientOptions)
 ```
+<!--SNIPEND-->
 
 To update an API key, use the Go `context` object:
 
+<!--SNIPSTART go-client-cloud-api-key-dynamic-->
+[go-sandbox/client/cloud/cloud.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/cloud/cloud.go)
 ```go
 // Assuming client Credentials created with
-var myKey string
+myKey := initialKey
 creds := client.NewAPIKeyDynamicCredentials(
-    func(context.Context) (string, error) { return myKey, nil })
+	func(context.Context) (string, error) { return myKey, nil })
 // Update by replacing
 myKey = myKeyUpdated
 ```
+<!--SNIPEND-->
 
 To rotate an mTLS client certificate without restarting your Worker, set `GetClientCertificate` on the `tls.Config`
 instead of setting `Certificates` directly. Go's standard library `crypto/tls` package calls this function on every new
 connection, so it always picks up the current certificate:
 
+<!--SNIPSTART go-client-cloud-mtls-rotation-->
+[go-sandbox/client/cloud/cloud.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/cloud/cloud.go)
 ```go
-clientCertPath := "/path/to/client.crt"
-clientKeyPath := "/path/to/client.key"
-
 clientOptions := client.Options{
-    HostPort:  <endpoint>,
-    Namespace: <namespace_id>.<account_id>,
-    ConnectionOptions: client.ConnectionOptions{
-        TLS: &tls.Config{
-            GetClientCertificate: func(*tls.CertificateRequestInfo) (*tls.Certificate, error) {
-                cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-                if err != nil {
-                    return nil, err
-                }
-                return &cert, nil
-            },
-        },
-    },
+	HostPort:  endpoint,  // <namespace>.<account>.tmprl.cloud:7233
+	Namespace: namespace, // <namespace_id>.<account_id>
+	ConnectionOptions: client.ConnectionOptions{
+		TLS: &tls.Config{
+			GetClientCertificate: func(*tls.CertificateRequestInfo) (*tls.Certificate, error) {
+				cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+				if err != nil {
+					return nil, err
+				}
+				return &cert, nil
+			},
+		},
+	},
 }
 c, err := client.Dial(clientOptions)
 ```
+<!--SNIPEND-->
 
 Rotate the certificate by overwriting the files at `clientCertPath` and `clientKeyPath`; the next time the connection
 re-establishes (for example, after Temporal Cloud's periodic connection recycling), `GetClientCertificate` reads the new
@@ -448,79 +463,88 @@ programmatically. Refer to
 [Client Options type in the Go SDK](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) for a list of all
 available connection options you can override.
 
+<!--SNIPSTART go-client-override-->
+[go-sandbox/client/override/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/override/main.go)
 ```go
 package main
 
 import (
-  "fmt"
-  "log"
+	"fmt"
+	"log"
 
-  "go.temporal.io/sdk/client"
-  "go.temporal.io/sdk/contrib/envconfig"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
 )
 
 func main() {
-  // Load the base configuration (e.g., from the default profile).
-  opts := envconfig.MustLoadDefaultClientOptions()
+	// Load the base configuration (e.g., from the default profile).
+	opts := envconfig.MustLoadDefaultClientOptions()
 
-  // Apply overrides programmatically.
-  opts.HostPort = "localhost:7233"
-  opts.Namespace = "test-namespace"
+	// Apply overrides programmatically.
+	opts.HostPort = "localhost:7233"
+	opts.Namespace = "test-namespace"
 
-  c, err := client.Dial(opts)
-  if err != nil {
-    log.Fatalf("Failed to connect with overridden options: %v", err)
-  }
-  defer c.Close()
+	c, err := client.Dial(opts)
+	if err != nil {
+		log.Fatalf("Failed to connect with overridden options: %v", err)
+	}
+	defer c.Close()
 
-  fmt.Printf("✅ Connected with overridden config to: %s in namespace: %s\n", opts.HostPort, opts.Namespace)
+	fmt.Printf("✅ Connected with overridden config to: %s in namespace: %s\n", opts.HostPort, opts.Namespace)
 }
 ```
+<!--SNIPEND-->
 
 <details>
 <summary><strong>v1.26.0 to v1.32.x </strong></summary>
 
 Create an initial connection:
 
+<!--SNIPSTART go-client-cloud-api-key-v126-->
+[go-sandbox/client/cloud/legacy.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/cloud/legacy.go)
 ```go
 clientOptions := client.Options{
-    HostPort: <endpoint>,
-    Namespace: <namespace_id>.<account_id>,
-    ConnectionOptions: client.ConnectionOptions{
-        TLS: &tls.Config{},
-        DialOptions: []grpc.DialOption{
-            grpc.WithUnaryInterceptor(
-                func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-                    return invoker(
-                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace_id>.<account_id>),
-                        method,
-                        req,
-                        reply,
-                        cc,
-                        opts...,
-                    )
-                },
-            ),
-        },
-    },
-    Credentials: client.NewAPIKeyStaticCredentials(apiKey),
+	HostPort:  endpoint,  // <namespace>.<account>.tmprl.cloud:7233
+	Namespace: namespace, // <namespace_id>.<account_id>
+	ConnectionOptions: client.ConnectionOptions{
+		TLS: &tls.Config{},
+		DialOptions: []grpc.DialOption{
+			grpc.WithUnaryInterceptor(
+				func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+					return invoker(
+						metadata.AppendToOutgoingContext(ctx, "temporal-namespace", namespace),
+						method,
+						req,
+						reply,
+						cc,
+						opts...,
+					)
+				},
+			),
+		},
+	},
+	Credentials: client.NewAPIKeyStaticCredentials(apiKey),
 }
 c, err := client.Dial(clientOptions)
 if err != nil {
-  log.Fatalf("error creating temporal client: %v", err)
+	log.Fatalf("error creating temporal client: %v", err)
 }
 ```
+<!--SNIPEND-->
 
 Update an API key:
 
+<!--SNIPSTART go-client-cloud-api-key-dynamic-->
+[go-sandbox/client/cloud/cloud.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/cloud/cloud.go)
 ```go
 // Assuming client Credentials created with
-var myKey string
+myKey := initialKey
 creds := client.NewAPIKeyDynamicCredentials(
-    func(context.Context) (string, error) { return myKey, nil })
-// Just update by replacing
+	func(context.Context) (string, error) { return myKey, nil })
+// Update by replacing
 myKey = myKeyUpdated
 ```
+<!--SNIPEND-->
 
 </details>
 
@@ -529,33 +553,42 @@ myKey = myKeyUpdated
 
 Create an initial connection:
 
+<!--SNIPSTART go-client-cloud-api-key-headers-provider-->
+[go-sandbox/client/cloud/legacy.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/cloud/legacy.go)
 ```go
 // Create headers provider
 type APIKeyProvider struct {
-    APIKey string
-    Namespace string
+	APIKey    string
+	Namespace string
 }
 
 func (a *APIKeyProvider) GetHeaders(context.Context) (map[string]string, error) {
-    return map[string]string{"Authorization": "Bearer " + a.APIKey, "temporal-namespace": a.Namespace}, nil
+	return map[string]string{"Authorization": "Bearer " + a.APIKey, "temporal-namespace": a.Namespace}, nil
 }
 
-// Use headers provider
-apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace_id>.<account_id>}
-c, err := client.Dial(client.Options{
-    HostPort: <endpoint>,
-    Namespace: <namespace_id>.<account_id>,
-    HeadersProvider: apiKeyProvider,
-    ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{
-    }},
-})
+// DialWithHeadersProvider is the API key connection for Go SDK versions before v1.26.0.
+func DialWithHeadersProvider(endpoint, namespace, apiKey string) (client.Client, *APIKeyProvider, error) {
+	// Use headers provider
+	apiKeyProvider := &APIKeyProvider{APIKey: apiKey, Namespace: namespace}
+	c, err := client.Dial(client.Options{
+		HostPort:          endpoint,  // <namespace>.<account>.tmprl.cloud:7233
+		Namespace:         namespace, // <namespace_id>.<account_id>
+		HeadersProvider:   apiKeyProvider,
+		ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{}},
+	})
+	return c, apiKeyProvider, err
+}
 ```
+<!--SNIPEND-->
 
 Update an API key:
 
+<!--SNIPSTART go-client-cloud-api-key-headers-provider-update-->
+[go-sandbox/client/cloud/legacy.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/cloud/legacy.go)
 ```go
 apiKeyProvider.APIKey = myKeyUpdated
 ```
+<!--SNIPEND-->
 
 </details>
 
@@ -563,11 +596,11 @@ apiKeyProvider.APIKey = myKeyUpdated
 
 </Tabs>
 
-## Start Workflow Execution {/* #start-workflow-execution */}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
-you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
-language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters. To start a Workflow Execution, you must
+supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific
+contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
 within another Workflow Execution, use either the [Child Workflow](/develop/go/workflows/child-workflows) or External Workflow
@@ -589,55 +622,70 @@ instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/clien
 name, and all variables to be passed to the Workflow Execution. The `ExecuteWorkflow()` call returns a Future, which can
 be used to get the result of the Workflow Execution.
 
+<!--SNIPSTART go-client-start-workflow-->
+[go-sandbox/client/start/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/start/main.go)
 ```go
 package main
 
 import (
-  // ...
+	"context"
+	"log"
 
-  "go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/workflow"
 )
 
 func main() {
-  temporalClient, err := client.Dial(client.Options{})
-  if err != nil {
-    // ...
-  }
-  defer temporalClient.Close()
-  // ...
-  workflowOptions := client.StartWorkflowOptions{
-    // ...
-  }
-  workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
-  if err != nil {
-    // ...
-  }
-  // ...
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+	// ...
+	workflowOptions := client.StartWorkflowOptions{
+		TaskQueue: "your-task-queue",
+		// ...
+	}
+	param := YourWorkflowParam{Name: "Temporal"}
+	workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
+	log.Println("Started workflow", "WorkflowID", workflowRun.GetID(), "RunID", workflowRun.GetRunID())
+	// ...
 }
 
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
+	// ...
+	return YourWorkflowResponse{Greeting: "Hello " + param.Name}, nil
 }
 ```
+<!--SNIPEND-->
 
 If the invocation process has access to the function directly, then the Workflow Type name parameter can be passed as if
 the function name were a variable, without quotations.
 
+<!--SNIPSTART go-client-start-by-function-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 ```
+<!--SNIPEND-->
 
 If the invocation process does not have direct access to the statically defined Workflow Definition, for example, if the
 Workflow Definition is in an un-importable package, or it is written in a completely different language, then the
 Workflow Type can be provided as a `string`.
 
+<!--SNIPSTART go-client-start-by-name-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
 ```
+<!--SNIPEND-->
 
-### Set Workflow Task Queue {/* #set-task-queue */}
+### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
 Queue name.
@@ -649,27 +697,30 @@ Create an instance of
 - Type: `string`
 - Default: None, this is a required field to be set by the developer
 
+<!--SNIPSTART go-client-option-task-queue-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  // ...
-  TaskQueue: "your-task-queue",
-  // ...
+	// ...
+	TaskQueue: "your-task-queue",
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your
 application load. For more information, refer to
 [Task Queues Processing Tuning](/develop/worker-performance/task-queues#task-queues-processing-tuning) and
 [Worker Versioning](/worker-versioning).
 
-### Set custom Workflow Id {/* #workflow-id */}
+### Set a Workflow ID {/* #workflow-id */}
 
 Although it is not required, we recommend providing your own
-[Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
+[Workflow ID](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
 identifier, such as an order identifier or customer identifier.
 
 Create an instance of
@@ -679,17 +730,21 @@ Create an instance of
 - Type: `string`
 - Default: System generated UUID
 
+<!--SNIPSTART go-client-option-id-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  // ...
-  ID: "Your-Custom-Workflow-Id",
-  // ...
+	// ...
+	ID:        "Your-Custom-Workflow-Id",
+	TaskQueue: taskQueue,
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 ### Go StartWorkflowOptions reference {/* #workflow-options-reference */}
 
@@ -716,7 +771,7 @@ The following fields are available:
 #### ID
 
 Although it is not required, we recommend providing your own
-[Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
+[Workflow ID](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
 identifier, such as an order identifier or customer identifier.
 
 Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions)
@@ -725,17 +780,21 @@ from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the i
 - Type: `string`
 - Default: System generated UUID
 
+<!--SNIPSTART go-client-option-id-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  // ...
-  ID: "Your-Custom-Workflow-Id",
-  // ...
+	// ...
+	ID:        "Your-Custom-Workflow-Id",
+	TaskQueue: taskQueue,
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### TaskQueue
 
@@ -746,17 +805,20 @@ call.
 - Type: `string`
 - Default: None; this is a required field to be set by the developer
 
+<!--SNIPSTART go-client-option-task-queue-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  // ...
-  TaskQueue: "your-task-queue",
-  // ...
+	// ...
+	TaskQueue: "your-task-queue",
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### WorkflowExecutionTimeout
 
@@ -767,17 +829,23 @@ Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/s
 - Type: `time.Duration`
 - Default: Unlimited
 
+<!--SNIPSTART go-workflow-timeouts-set-->
+[go-sandbox/workflows/timeouts/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/timeouts/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  // ...
-  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
-  // ...
+	ID:        "your-workflow-id",
+	TaskQueue: TaskQueueName,
+	// Set Workflow Timeout duration
+	WorkflowExecutionTimeout: 24 * 365 * 10 * time.Hour,
+	// WorkflowRunTimeout: 24 * 365 * 10 * time.Hour,
+	// WorkflowTaskTimeout: 10 * time.Second,
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### WorkflowRunTimeout
 
@@ -788,16 +856,20 @@ call.
 - Type: `time.Duration`
 - Default: Same as [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)
 
+<!--SNIPSTART go-client-option-run-timeout-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
-  // ...
+	WorkflowRunTimeout: 24 * 365 * 10 * time.Hour,
+	TaskQueue:          taskQueue,
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### WorkflowTaskTimeout
 
@@ -806,18 +878,22 @@ Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/s
 call.
 
 - Type: `time.Duration`
-- Default: `time.Seconds * 10`
+- Default: 10 seconds
 
+<!--SNIPSTART go-client-option-task-timeout-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  WorkflowTaskTimeout: time.Second * 10,
-  //...
+	WorkflowTaskTimeout: 10 * time.Second,
+	TaskQueue:           taskQueue,
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### WorkflowIDReusePolicy
 
@@ -826,32 +902,40 @@ if err != nil {
 
 Set a value from the `go.temporal.io/api/enums/v1` package.
 
+<!--SNIPSTART go-client-option-id-reuse-policy-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  WorkflowIdReusePolicy: enums.WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE,
-  // ...
+	WorkflowIDReusePolicy: enums.WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE,
+	TaskQueue:             taskQueue,
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### WorkflowExecutionErrorWhenAlreadyStarted
 
 - Type: `bool`
 - Default: `false`
 
+<!--SNIPSTART go-client-option-error-when-already-started-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  WorkflowExecutionErrorWhenAlreadyStarted: false,
-  // ...
+	WorkflowExecutionErrorWhenAlreadyStarted: false,
+	TaskQueue:                                taskQueue,
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### RetryPolicy
 
@@ -862,37 +946,45 @@ Create an instance of a [RetryPolicy](https://pkg.go.dev/go.temporal.io/sdk/temp
 - Type: [RetryPolicy](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default: None
 
+<!--SNIPSTART go-workflow-retry-policy-->
+[go-sandbox/workflows/timeouts/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/timeouts/start.go)
 ```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100,
+retryPolicy := &temporal.RetryPolicy{
+	InitialInterval:    time.Second,
+	BackoffCoefficient: 2.0,
+	MaximumInterval:    time.Second * 100,
 }
 workflowOptions := client.StartWorkflowOptions{
-  RetryPolicy: retrypolicy,
-  // ...
+	ID:          "your-workflow-id",
+	TaskQueue:   TaskQueueName,
+	RetryPolicy: retryPolicy,
 }
 workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### CronSchedule
 
 - Type: `string`
 - Default: None
 
+<!--SNIPSTART go-schedule-cron-->
+[go-sandbox/workflows/schedules/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  CronSchedule: "15 8 * * *",
-  // ...
+	ID:           "your-cron-workflow-id",
+	TaskQueue:    TaskQueue,
+	CronSchedule: "15 8 * * *",
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 [Sample](https://github.com/temporalio/samples-go/tree/main/cron)
 
@@ -901,18 +993,22 @@ if err != nil {
 - Type: `map[string]interface{}`
 - Default: Empty
 
+<!--SNIPSTART go-client-option-memo-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  Memo: map[string]interface{}{
-    "description": "Test search attributes workflow",
-  },
-  // ...
+	Memo: map[string]interface{}{
+		"description": "Test search attributes workflow",
+	},
+	TaskQueue: taskQueue,
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 #### SearchAttributes
 
@@ -928,26 +1024,30 @@ These are the corresponding [Search Attribute value types](/search-attribute#sup
 - Datetime = time.Time
 - Text = string
 
+<!--SNIPSTART go-client-option-search-attributes-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
 searchAttributes := map[string]interface{}{
-  "CustomIntField": 1,
-  "MiscData": "yellow",
+	"CustomIntField": 1,
+	"MiscData":       "yellow",
 }
 workflowOptions := client.StartWorkflowOptions{
-  SearchAttributes: searchAttributes,
-  // ...
+	SearchAttributes: searchAttributes,
+	TaskQueue:        taskQueue,
+	// ...
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
-### Get Workflow results {/* #get-workflow-results */}
+## Get Workflow results {/* #get-workflow-results */}
 
-If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run ID.
 
-The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its
+The Workflow ID, Run ID, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its
 result.
 
 It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time
@@ -960,64 +1060,65 @@ The `ExecuteWorkflow` call returns an instance of
 [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the
 following line.
 
+<!--SNIPSTART go-client-start-by-function-->
+[go-sandbox/client/options/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/start.go)
 ```go
- workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
- if err != nil {
-   // ...
- }
- // ...
-}
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 ```
+<!--SNIPEND-->
 
 The instance of `WorkflowRun` has the following three methods:
 
-- `GetWorkflowID()`: Returns the Workflow Id of the invoked Workflow Execution.
-- `GetRunID()`: Always returns the Run Id of the initial Run (See [Continue As New](#)) in the series of Runs that make
-  up the full Workflow Execution.
+- `GetID()`: Returns the Workflow ID of the invoked Workflow Execution.
+- `GetRunID()`: Always returns the Run ID of the initial Run (see
+  [Continue-As-New](/workflow-execution/continue-as-new)) in the series of Runs that make up the full Workflow
+  Execution.
 - `Get`: Takes a pointer as a parameter and populates the associated variable with the Workflow Execution result.
 
 To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of
 `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
 
+<!--SNIPSTART go-client-get-result-->
+[go-sandbox/client/options/results.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/results.go)
 ```go
- workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
- if err != nil {
-   // ...
- }
- var result YourWorkflowResponse
- err = workflowRun.Get(context.Background(), &result)
- if err != nil {
-     // ...
- }
- // ...
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
+if err != nil {
+	return YourWorkflowResponse{}, err
+}
+var result YourWorkflowResponse
+err = workflowRun.Get(context.Background(), &result)
+if err != nil {
+	return YourWorkflowResponse{}, err
 }
 ```
+<!--SNIPEND-->
 
 However, the result of a Workflow Execution can be obtained from a completely different process. All that is needed is
-the [Workflow Id](#). (A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
-The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the
-system.
+the [Workflow ID](/workflow-execution/workflowid-runid#workflow-id).
+(A [Run ID](/workflow-execution/workflowid-runid#run-id) is optional if more than one closed Workflow Execution has
+the same Workflow ID.) The result of the Workflow Execution is available for as long as the Workflow Execution Event
+History remains in the system.
 
-{/* TODO (See [How long do Workflow Execution Histories persist](#)). */}
-
-Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the
+Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow ID used to spawn the
 Workflow Execution. Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer
 to populate the result.
 
+<!--SNIPSTART go-client-get-workflow-->
+[go-sandbox/client/options/results.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/results.go)
 ```go
- // ...
- workflowID := "Your-Custom-Workflow-Id"
- workflowRun := c.GetWorkflow(context.Background, workflowID)
+workflowID := "Your-Custom-Workflow-Id"
+// An empty Run ID gets the latest Run of the Workflow Execution.
+workflowRun := temporalClient.GetWorkflow(context.Background(), workflowID, "")
 
- var result YourWorkflowResponse
- err = workflowRun.Get(context.Background(), &result)
- if err != nil {
-     // ...
- }
- // ...
+var result YourWorkflowResponse
+err := workflowRun.Get(context.Background(), &result)
+if err != nil {
+	return YourWorkflowResponse{}, err
+}
 ```
+<!--SNIPEND-->
 
-**Get last completion result**
+### Get last completion result
 
 In the case of a [Temporal Cron Job](/cron-job), you might need to get the result of the previous Workflow Run and use
 it in the current Workflow Run.
@@ -1027,27 +1128,30 @@ and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#G
 from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your
 Workflow code.
 
+<!--SNIPSTART go-client-last-completion-result-->
+[go-sandbox/client/options/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/options/workflow.go)
 ```go
 type CronResult struct {
- Count int
+	Count int
 }
 
 func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
- count := 1
+	count := 1
 
- if workflow.HasLastCompletionResult(ctx) {
-   var lastResult CronResult
-   if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
-     count = count + lastResult.Count
-   }
- }
+	if workflow.HasLastCompletionResult(ctx) {
+		var lastResult CronResult
+		if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
+			count = count + lastResult.Count
+		}
+	}
 
- newResult := CronResult {
-   Count: count,
- }
- return newResult, nil
+	newResult := CronResult{
+		Count: count,
+	}
+	return newResult, nil
 }
 ```
+<!--SNIPEND-->
 
 This will work even if one of the cron Workflow Runs fails. The next Workflow Run gets the result of the last
 successfully Completed Workflow Run.

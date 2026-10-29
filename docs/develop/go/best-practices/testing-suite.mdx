@@ -1,6 +1,6 @@
 ---
 id: testing-suite
-title: Testing - Go SDK
+title: Testing
 sidebar_label: Testing
 toc_max_heading_level: 4
 tags:
@@ -38,40 +38,58 @@ add a property to our struct to hold an instance of the test environment. This a
 
 For testing Workflows, we use a `testsuite.TestWorkflowEnvironment`.
 
+<!--SNIPSTART go-debugging-unit-test-suite {"selectedLines": ["15-20"]}-->
+[go-sandbox/bestpractices/debugging/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow_test.go)
 ```go
+// ...
 type UnitTestSuite struct {
-    suite.Suite
-    testsuite.WorkflowTestSuite
+	suite.Suite
+	testsuite.WorkflowTestSuite
 
-    env *testsuite.TestWorkflowEnvironment
+	env *testsuite.TestWorkflowEnvironment
 }
 ```
+<!--SNIPEND-->
 
 Next, we implement a `SetupTest` method to set up a new test environment before each test.
 Doing so ensures that each test runs in its own isolated sandbox.
 
+<!--SNIPSTART go-debugging-unit-test-suite {"selectedLines": ["22-26"]}-->
+[go-sandbox/bestpractices/debugging/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow_test.go)
 ```go
+// ...
 func (s *UnitTestSuite) SetupTest() {
-    s.env = s.NewTestWorkflowEnvironment()
+	s.env = s.NewTestWorkflowEnvironment()
+	// Register the real Activity for tests that don't mock it.
+	s.env.RegisterActivity(SimpleActivity)
 }
 ```
+<!--SNIPEND-->
 
 We also implement an `AfterTest` function where we assert that all the mocks we set up were indeed called by invoking `s.env.AssertExpectations(s.T())`.
 Timeout for the entire test can be set using `SetTestTimeout` in the Workflow or Activity environment.
 
+<!--SNIPSTART go-debugging-unit-test-suite {"selectedLines": ["28-30"]}-->
+[go-sandbox/bestpractices/debugging/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow_test.go)
 ```go
+// ...
 func (s *UnitTestSuite) AfterTest(suiteName, testName string) {
-    s.env.AssertExpectations(s.T())
+	s.env.AssertExpectations(s.T())
 }
 ```
+<!--SNIPEND-->
 
 Finally, we create a regular test function recognized by the `go test` command, and pass the struct to `suite.Run`.
 
+<!--SNIPSTART go-debugging-unit-test-suite {"selectedLines": ["65-67"]}-->
+[go-sandbox/bestpractices/debugging/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow_test.go)
 ```go
+// ...
 func TestUnitTestSuite(t *testing.T) {
-    suite.Run(t, new(UnitTestSuite))
+	suite.Run(t, new(UnitTestSuite))
 }
 ```
+<!--SNIPEND-->
 
 ## Testing Activities {/* #test-activities */}
 
@@ -80,129 +98,147 @@ This behavior allows you to test the Activity in isolation by calling it directl
 
 Here's an example of a simple Activity that will be referenced in the sections below:
 
+<!--SNIPSTART go-quickstart-activity-->
+[go-sandbox/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activity.go)
 ```go
-package greeting
+package quickstart
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 )
 
 func Greet(ctx context.Context, name string) (string, error) {
-    return fmt.Sprintf("Hello %s", name), nil
+	return fmt.Sprintf("Hello %s", name), nil
 }
 ```
+<!--SNIPEND-->
 
 ### Run an Activity {/* #run-an-activity */}
 
 If an Activity references its context, you need to mock that context when testing in isolation. You can do that by using [`NewTestActivityEnvironment`](https://pkg.go.dev/go.temporal.io/sdk/testsuite#TestActivityEnvironment) from the [`WorkflowTestSuite`](https://pkg.go.dev/go.temporal.io/sdk/testsuite#WorkflowTestSuite).
 
+<!--SNIPSTART go-testing-activity-suite-->
+[go-sandbox/activity_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activity_test.go)
 ```go
-package greeting
+package quickstart_test
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/stretchr/testify/suite"
-    "go.temporal.io/sdk/testsuite"
+	"github.com/stretchr/testify/suite"
+	"go.temporal.io/sdk/testsuite"
+
+	"my-org/quickstart"
 )
 
 type ActivityTestSuite struct {
-    suite.Suite
-    testsuite.WorkflowTestSuite
+	suite.Suite
+	testsuite.WorkflowTestSuite
 }
 
 func TestActivityTestSuite(t *testing.T) {
-    suite.Run(t, new(ActivityTestSuite))
+	suite.Run(t, new(ActivityTestSuite))
 }
 
 func (s *ActivityTestSuite) TestGreet() {
-    env := s.NewTestActivityEnvironment()
-    env.RegisterActivity(Greet)
+	env := s.NewTestActivityEnvironment()
+	env.RegisterActivity(quickstart.Greet)
 
-    result, err := env.ExecuteActivity(Greet, "Temporal")
+	result, err := env.ExecuteActivity(quickstart.Greet, "Temporal")
 
-    s.NoError(err)
+	s.NoError(err)
 
-    var greeting string
-    s.NoError(result.Get(&greeting))
-    s.Equal("Hello Temporal!", greeting)
+	var greeting string
+	s.NoError(result.Get(&greeting))
+	s.Equal("Hello Temporal", greeting)
 }
 ```
+<!--SNIPEND-->
 
 ### Listen to Heartbeats {/* #listen-to-heartbeats */}
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
+<!--SNIPSTART go-testing-activity-heartbeat-->
+[go-sandbox/activity_heartbeat_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activity_heartbeat_test.go)
 ```go
-func (s *ActivityTestSuite) Test_HeatbeatActivity() {
-    testSuite := &testsuite.WorkflowTestSuite{}
-    env := testSuite.NewTestActivityEnvironment()
+func (s *ActivityTestSuite) Test_HeartbeatActivity() {
+	testSuite := &testsuite.WorkflowTestSuite{}
+	env := testSuite.NewTestActivityEnvironment()
 
-    env.RegisterActivity(Greet)
+	env.RegisterActivity(quickstart.GreetWithHeartbeat)
 
-    var heartBeatCount int
-    env.SetOnActivityHeartbeatListener(func(activityInfo *activity.Info, details converter.EncodedValues) {
-        var val string
-        err := details.Get(&val)
-        s.NoError(err)
-        s.Equal("status-report-to-workflow", val)
-        heartBeatCount++
-    })
+	var heartBeatCount int
+	env.SetOnActivityHeartbeatListener(func(activityInfo *activity.Info, details converter.EncodedValues) {
+		var val string
+		err := details.Get(&val)
+		s.NoError(err)
+		s.Equal("status-report-to-workflow", val)
+		heartBeatCount++
+	})
 
-    _, err := env.ExecuteActivity(Greet, "Temporal")
-    s.NoError(err)
-    s.Equal(1, heartBeatCount)
+	_, err := env.ExecuteActivity(quickstart.GreetWithHeartbeat, "Temporal")
+	s.NoError(err)
+	s.Equal(1, heartBeatCount)
 }
 ```
+<!--SNIPEND-->
 
 ### Cancel an Activity {/* #cancel-an-activity */}
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
+<!--SNIPSTART go-testing-activity-cancel-->
+[go-sandbox/activity_heartbeat_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activity_heartbeat_test.go)
 ```go
-func (s *UnitTestSuite) Test_CancelActivity() {
-    testSuite := &testsuite.WorkflowTestSuite{}
-    env := testSuite.NewTestActivityEnvironment()
+func (s *ActivityTestSuite) Test_CancelActivity() {
+	testSuite := &testsuite.WorkflowTestSuite{}
+	env := testSuite.NewTestActivityEnvironment()
 
-    ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(context.Background())
 
-    env.SetWorkerOptions(worker.Options{
-        BackgroundActivityContext: ctx,
-    })
-    env.RegisterActivity(Greet)
+	env.SetWorkerOptions(worker.Options{
+		BackgroundActivityContext: ctx,
+	})
+	env.RegisterActivity(quickstart.LongRunningGreet)
 
-    done := make(chan struct{})
+	done := make(chan struct{})
 
-    go func() {
-        defer close(done)
-        // Cancel the activity after 5s
-        time.Sleep(5 * time.Second)
-        cancel()
-    }()
+	go func() {
+		defer close(done)
+		// Cancel the activity after 2s
+		time.Sleep(2 * time.Second)
+		cancel()
+	}()
 
-    _, err := env.ExecuteActivity(Greet, "Temporal")
+	_, err := env.ExecuteActivity(quickstart.LongRunningGreet, "Temporal")
 
-    <-done
-    
-    // Expect the activity to return a cancled error
-    s.Error(err)
+	<-done
+
+	// Expect the activity to return a canceled error
+	s.Error(err)
 }
 ```
+<!--SNIPEND-->
 
 ## Testing Workflows {/* #test-workflows */}
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation.
 The simplest test case we can write is to have the test environment execute the Workflow and then evaluate the results.
 
+<!--SNIPSTART go-debugging-unit-test-suite {"selectedLines": ["32-37"]}-->
+[go-sandbox/bestpractices/debugging/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow_test.go)
 ```go
+// ...
 func (s *UnitTestSuite) Test_SimpleWorkflow_Success() {
-    s.env.ExecuteWorkflow(SimpleWorkflow, "test_success")
+	s.env.ExecuteWorkflow(SimpleWorkflow, "test_success")
 
-    s.True(s.env.IsWorkflowCompleted())
-    s.NoError(s.env.GetWorkflowError())
+	s.True(s.env.IsWorkflowCompleted())
+	s.NoError(s.env.GetWorkflowError())
 }
 ```
+<!--SNIPEND-->
 
 Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the test process. The first parameter of `s.env.ExecuteWorkflow(...)` contains the Workflow functions, and any subsequent parameters contain values for custom input parameters declared by the Workflow.
 
@@ -216,62 +252,67 @@ If our Workflow returned a value, we could have retrieved that value via a call 
 `TestWorkflowEnvironment` instances have a [`QueryWorkflow()` method](https://pkg.go.dev/go.temporal.io/temporal/internal#TestWorkflowEnvironment.QueryWorkflow) that lets you query the state of the currently running Workflow.
 For example, suppose you have a Workflow that lets you query the progress of a long running task as shown below.
 
+<!--SNIPSTART go-debugging-progress-workflow-->
+[go-sandbox/bestpractices/debugging/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow.go)
 ```go
 func ProgressWorkflow(ctx workflow.Context, percent int) error {
-    logger := workflow.GetLogger(ctx)
+	logger := workflow.GetLogger(ctx)
 
-    err := workflow.SetQueryHandler(ctx, "getProgress", func(input []byte) (int, error) {
-        return percent, nil
-    })
-    if err != nil {
-        logger.Info("SetQueryHandler failed.", "Error", err)
-        return err
-    }
+	err := workflow.SetQueryHandler(ctx, "getProgress", func(input []byte) (int, error) {
+		return percent, nil
+	})
+	if err != nil {
+		logger.Info("SetQueryHandler failed.", "Error", err)
+		return err
+	}
 
-    for percent = 0; percent<100; percent++ {
-        // Important! Use `workflow.Sleep()`, not `time.Sleep()`, because Temporal's
-        // test environment doesn't stub out `time.Sleep()`.
-        workflow.Sleep(ctx, time.Second*1)
-    }
+	for percent = 0; percent < 100; percent++ {
+		// Important! Use `workflow.Sleep()`, not `time.Sleep()`, because Temporal's
+		// test environment doesn't stub out `time.Sleep()`.
+		if err := workflow.Sleep(ctx, time.Second*1); err != nil {
+			return err
+		}
+	}
 
-    return nil
+	return nil
 }
 ```
+<!--SNIPEND-->
 
 This Workflow tracks the current progress of a task in percentage terms, and increments the percentage by 1 every second.
 Below is how you would write a test case that queries this Workflow.
 Note that you should always query the Workflow either after `ExecuteWorkflow()` is done or in a `RegisterDelayedCallback()` callback, otherwise you'll get a `runtime error` panic.
 
+<!--SNIPSTART go-debugging-query-test-->
+[go-sandbox/bestpractices/debugging/progress_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/progress_test.go)
 ```go
 func (s *UnitTestSuite) Test_ProgressWorkflow() {
-    value := 0
+	value := 0
 
-    // After 10 seconds plus padding, progress should be 10.
-    // Note that `RegisterDelayedCallback()` doesn't actually make your test wait for 10 seconds!
-    // Temporal's test framework advances time internally, so this test should take < 1 second.
-    s.env.RegisterDelayedCallback(func() {
-        res, err := s.env.QueryWorkflow("getProgress")
-        s.NoError(err)
-        err = res.Get(&value)
-        s.NoError(err)
-        s.Equal(10, value)
-    }, time.Second*10+time.Millisecond*1)
+	// After 10 seconds plus padding, progress should be 10.
+	// Note that `RegisterDelayedCallback()` doesn't actually make your test wait for 10 seconds!
+	// Temporal's test framework advances time internally, so this test should take < 1 second.
+	s.env.RegisterDelayedCallback(func() {
+		res, err := s.env.QueryWorkflow("getProgress")
+		s.NoError(err)
+		err = res.Get(&value)
+		s.NoError(err)
+		s.Equal(10, value)
+	}, time.Second*10+time.Millisecond*1)
 
-    s.env.ExecuteWorkflow(ProgressWorkflow, 0)
+	s.env.ExecuteWorkflow(ProgressWorkflow, 0)
 
-    s.True(s.env.IsWorkflowCompleted())
+	s.True(s.env.IsWorkflowCompleted())
 
-    // Once the workflow is completed, progress should always be 100
-    res, err := s.env.QueryWorkflow("getProgress")
-    
-    s.NoError(err)
-
-    err = res.Get(&value)
-    
-    s.NoError(err)
-    s.Equal(value, 100)
+	// Once the workflow is completed, progress should always be 100
+	res, err := s.env.QueryWorkflow("getProgress")
+	s.NoError(err)
+	err = res.Get(&value)
+	s.NoError(err)
+	s.Equal(value, 100)
 }
 ```
+<!--SNIPEND-->
 
 :::note
 
@@ -287,49 +328,60 @@ Additionally, you can inject Activity errors during your test runs. The test fra
 
 Let's take a look at a test that simulates a test that fails via the Activity mocking.
 
+<!--SNIPSTART go-debugging-unit-test-suite {"selectedLines": ["51-63"]}-->
+[go-sandbox/bestpractices/debugging/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow_test.go)
 ```go
+// ...
 func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityFails() {
-    s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
-      "", errors.New("SimpleActivityFailure"))
-    s.env.ExecuteWorkflow(SimpleWorkflow, "test_failure")
+	s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
+		"", errors.New("SimpleActivityFailure"))
+	s.env.ExecuteWorkflow(SimpleWorkflow, "test_failure")
 
-    s.True(s.env.IsWorkflowCompleted())
+	s.True(s.env.IsWorkflowCompleted())
 
-    err := s.env.GetWorkflowError()
-    s.Error(err)
-    
-    var applicationErr *temporal.ApplicationError
-    s.True(errors.As(err, &applicationErr))
-    s.Equal("SimpleActivityFailure", applicationErr.Error())
+	err := s.env.GetWorkflowError()
+	s.Error(err)
+	var applicationErr *temporal.ApplicationError
+	s.True(errors.As(err, &applicationErr))
+	s.Equal("SimpleActivityFailure", applicationErr.Error())
 }
 ```
+<!--SNIPEND-->
 
 This test simulates the execution of the Activity `SimpleActivity` that is invoked by our Workflow `SimpleWorkflow` returning an error. We accomplish this by setting up a mock on the test environment for the `SimpleActivity` that returns an error.
 
+<!--SNIPSTART go-debugging-unit-test-suite {"selectedLines": ["52-53"]}-->
+[go-sandbox/bestpractices/debugging/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow_test.go)
 ```go
-s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
-  "", errors.New("SimpleActivityFailure"))
+// ...
+	s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
+		"", errors.New("SimpleActivityFailure"))
 ```
+<!--SNIPEND-->
 
 With the mock set up we can now execute the Workflow via the `s.env.ExecuteWorkflow(...)` method and assert that the Workflow completed successfully and returned the expected error.
 
-Simply mocking the execution to return a desired value or error is a pretty powerful mechanism to isolate Workflow logic.
+Mocking the execution to return a desired value or error isolates Workflow logic for testing.
 However, sometimes we want to replace the Activity with an alternate implementation to support a more complex test scenario.
 Let's assume we want to validate that the Activity gets called with the correct parameters.
 
+<!--SNIPSTART go-debugging-unit-test-suite {"selectedLines": ["39-49"]}-->
+[go-sandbox/bestpractices/debugging/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/debugging/workflow_test.go)
 ```go
+// ...
 func (s *UnitTestSuite) Test_SimpleWorkflow_ActivityParamCorrect() {
-    s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
-      func(ctx context.Context, value string) (string, error) {
-          s.Equal("test_success", value)
-          return value, nil
-    })
-    s.env.ExecuteWorkflow(SimpleWorkflow, "test_success")
+	s.env.OnActivity(SimpleActivity, mock.Anything, mock.Anything).Return(
+		func(ctx context.Context, value string) (string, error) {
+			s.Equal("test_success", value)
+			return value, nil
+		})
+	s.env.ExecuteWorkflow(SimpleWorkflow, "test_success")
 
-    s.True(s.env.IsWorkflowCompleted())
-    s.NoError(s.env.GetWorkflowError())
+	s.True(s.env.IsWorkflowCompleted())
+	s.NoError(s.env.GetWorkflowError())
 }
 ```
+<!--SNIPEND-->
 
 In this example, we provide a function implementation as the parameter to `Return`.
 This allows us to provide an alternate implementation for the Activity `SimpleActivity`.
@@ -357,28 +409,31 @@ that represents the operation without its implementation (basically, it represen
 the Nexus operation). You may also use the operation itself instead of creating the operation
 reference if you have it available.
 
+<!--SNIPSTART go-testing-nexus-mock-sync-->
+[go-sandbox/bestpractices/testing/nexusmock/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/testing/nexusmock/workflow_test.go)
 ```go
 func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
-    s.env.OnNexusOperation(
-        "sample-service",
-        nexus.NewOperationReference[SampleInput, SampleOutput]("sample-operation"),
-        SampleInput{},
-        workflow.NexusOperationOptions{},
-    ).Return(
-        &nexus.HandlerStartOperationResultSync[SampleOutput]{
-            Value: SampleOutput{},
-        },
-        nil, // error if you want to simulate an error in the ExecuteOperation call
-    )
-    // You can also add a delay to return the mock values by calling After().
-    // Eg: s.env.OnNexusOperation(...).Return(...).After(1*time.Second)
+	s.env.OnNexusOperation(
+		"sample-service",
+		nexus.NewOperationReference[SampleInput, SampleOutput]("sample-operation"),
+		SampleInput{},
+		mock.Anything, // NexusOperationOptions
+	).Return(
+		&nexus.HandlerStartOperationResultSync[SampleOutput]{
+			Value: SampleOutput{},
+		},
+		nil, // error if you want to simulate an error in the ExecuteOperation call
+	)
+	// You can also add a delay to return the mock values by calling After().
+	// Eg: s.env.OnNexusOperation(...).Return(...).After(1*time.Second)
 
-    s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
+	s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
 
-    s.True(s.env.IsWorkflowCompleted())
-    s.NoError(s.env.GetWorkflowError())
+	s.True(s.env.IsWorkflowCompleted())
+	s.NoError(s.env.GetWorkflowError())
 }
 ```
+<!--SNIPEND-->
 
 Besides the synchronous operations, you can also mock asynchronous operations. The following example
 demonstrates how to test a Workflow executing a Nexus asynchronous operation. The returned value
@@ -387,34 +442,37 @@ be any string of your choice. Furthermore, you must call `RegisterNexusAsyncOper
 register the result of the asynchronous operation identified by the tuple service name, operation
 name, and operation token.
 
+<!--SNIPSTART go-testing-nexus-mock-async-->
+[go-sandbox/bestpractices/testing/nexusmock/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/testing/nexusmock/workflow_test.go)
 ```go
 func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperation() {
-    s.env.OnNexusOperation(
-        "sample-service",
-        nexus.NewOperationReference[SampleInput, SampleOutput]("sample-operation"),
-        SampleInput{},
-        workflow.NexusOperationOptions{},
-    ).Return(
-        &nexus.HandlerStartOperationResultAsync{
-                OperationToken: "sample-operation-token",
-        },
-        nil, // error if you want to simulate an error in the ExecuteOperation call
-    )
-    err := env.RegisterNexusAsyncOperationCompletion(
-        "sample-service",
-        "sample-operation",
-        "sample-operation-token", // must match the OperationToken above
-        SampleOutput{},
-        nil,            // error if you want to simulate an error in the operation
-        2*time.Second,  // delay to simulate how long the operation takes after it starts
-    )
-    s.NoError(err)
-    s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
+	s.env.OnNexusOperation(
+		"sample-service",
+		nexus.NewOperationReference[SampleInput, SampleOutput]("sample-operation"),
+		SampleInput{},
+		mock.Anything, // NexusOperationOptions
+	).Return(
+		&nexus.HandlerStartOperationResultAsync{
+			OperationToken: "sample-operation-token",
+		},
+		nil, // error if you want to simulate an error in the ExecuteOperation call
+	)
+	err := s.env.RegisterNexusAsyncOperationCompletion(
+		"sample-service",
+		"sample-operation",
+		"sample-operation-token", // must match the OperationToken above
+		SampleOutput{},
+		nil,           // error if you want to simulate an error in the operation
+		2*time.Second, // delay to simulate how long the operation takes after it starts
+	)
+	s.NoError(err)
+	s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
 
-    s.True(s.env.IsWorkflowCompleted())
-    s.NoError(s.env.GetWorkflowError())
+	s.True(s.env.IsWorkflowCompleted())
+	s.NoError(s.env.GetWorkflowError())
 }
 ```
+<!--SNIPEND-->
 
 If your Workflow executes multiple Nexus asynchronous operations, you can mock each of them with
 different operation tokens, and register the completion results using the corresponding operation token.
@@ -422,52 +480,56 @@ different operation tokens, and register the completion results using the corres
 If mocking Nexus operations is not enough, and you need to run some custom logic when the Nexus
 operation is executed, you can override it as follows.
 
+<!--SNIPSTART go-testing-nexus-override-sync-->
+[go-sandbox/bestpractices/testing/nexusmock/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/testing/nexusmock/workflow_test.go)
 ```go
-func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
-    var SampleOperation = nexus.NewSyncOperation(
-        "sample-operation",
-        func(ctx context.Context, input SampleInput, options nexus.StartOperationOptions) (SampleOutput, error) {
-            // Custom logic here.
-            return SampleOutput{}, nil
-        },
-    )
+func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperationOverride() {
+	var SampleOperation = nexus.NewSyncOperation(
+		"sample-operation",
+		func(ctx context.Context, input SampleInput, options nexus.StartOperationOptions) (SampleOutput, error) {
+			// Custom logic here.
+			return SampleOutput{}, nil
+		},
+	)
 
-    service := nexus.NewService("sample-service")
-    s.NoError(service.Register(SampleOperation))
-    env.RegisterNexusService(service)
-    s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
+	service := nexus.NewService("sample-service")
+	s.NoError(service.Register(SampleOperation))
+	s.env.RegisterNexusService(service)
+	s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
 
-    s.True(s.env.IsWorkflowCompleted())
-    s.NoError(s.env.GetWorkflowError())
+	s.True(s.env.IsWorkflowCompleted())
+	s.NoError(s.env.GetWorkflowError())
 }
 ```
+<!--SNIPEND-->
 
 The following example shows how to override a Nexus asynchronous operation.
 
+<!--SNIPSTART go-testing-nexus-override-async-->
+[go-sandbox/bestpractices/testing/nexusmock/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/testing/nexusmock/workflow_test.go)
 ```go
-func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
-    SampleHandlerWorkflow := func(_ workflow.Context, input SampleInput) (SampleOutput, error) {
-        // Custom logic here.
-        return SampleOutput{}, nil
-    }
-    SampleOperation := nexus.NewWorkflowRunOperation(
-        "sample-operation",
-        SampleHandlerWorkflow,
-        func(ctx context.Context, input SampleInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
-            // Custom logic to build client.StartWorkflowOptions.
-            return client.StartWorkflowOptions{}, nil
-        },
-    )
+func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperationOverride() {
+	// The handler Workflow must be a named function that is registered with the test environment.
+	s.env.RegisterWorkflow(SampleHandlerWorkflow)
+	SampleOperation := temporalnexus.NewWorkflowRunOperation(
+		"sample-operation",
+		SampleHandlerWorkflow,
+		func(ctx context.Context, input SampleInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+			// Custom logic to build client.StartWorkflowOptions.
+			return client.StartWorkflowOptions{ID: "sample-handler-workflow"}, nil
+		},
+	)
 
-    service := nexus.NewService("sample-service")
-    s.NoError(service.Register(SampleOperation))
-    env.RegisterNexusService(service)
-    s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
+	service := nexus.NewService("sample-service")
+	s.NoError(service.Register(SampleOperation))
+	s.env.RegisterNexusService(service)
+	s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
 
-    s.True(s.env.IsWorkflowCompleted())
-    s.NoError(s.env.GetWorkflowError())
+	s.True(s.env.IsWorkflowCompleted())
+	s.NoError(s.env.GetWorkflowError())
 }
 ```
+<!--SNIPEND-->
 
 ### How to skip time {/* #skip-time */}
 
@@ -491,28 +553,31 @@ The Go SDK test environment automatically skips time when possible. When using t
 
 Example:
 
+<!--SNIPSTART go-testing-auto-time-skipping-->
+[go-sandbox/bestpractices/testing/timeskip/workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/testing/timeskip/workflow_test.go)
 ```go
 import (
-  "testing"
+	"testing"
 
-  "go.temporal.io/sdk/testsuite"
+	"go.temporal.io/sdk/testsuite"
 )
 
 func TestWorkflow_AutoTimeSkipping(t *testing.T) {
-  var ts testsuite.WorkflowTestSuite
-  env := ts.NewTestWorkflowEnvironment()
+	var ts testsuite.WorkflowTestSuite
+	env := ts.NewTestWorkflowEnvironment()
 
-  env.ExecuteWorkflow(MyWorkflow)
+	env.ExecuteWorkflow(MyWorkflow)
 
-  if !env.IsWorkflowCompleted() {
-    t.Fatal("workflow did not complete")
-  }
+	if !env.IsWorkflowCompleted() {
+		t.Fatal("workflow did not complete")
+	}
 
-  if err := env.GetWorkflowError(); err != nil {
-    t.Fatal(err)
-  }
+	if err := env.GetWorkflowError(); err != nil {
+		t.Fatal(err)
+	}
 }
 ```
+<!--SNIPEND-->
 
 #### Skip time manually {/* #manual-method */}
 
@@ -522,47 +587,50 @@ Use `env.RegisterDelayedCallback()` to create a new Timer with a specified `dela
 
 Example:
 
+<!--SNIPSTART go-testing-sleep-for-days-->
+[go-sandbox/sleep_for_days_workflow_test.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/sleep_for_days_workflow_test.go)
 ```go
-package sleepfordays
+package quickstart
 
 import (
-    "testing"
-    "time"
+	"testing"
+	"time"
 
-    "github.com/stretchr/testify/mock"
-    "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 
-    "go.temporal.io/sdk/testsuite"
+	"go.temporal.io/sdk/testsuite"
 )
 
 func TestSleepForDaysWorkflow(t *testing.T) {
-    testSuite := &testsuite.WorkflowTestSuite{}
-    env := testSuite.NewTestWorkflowEnvironment()
+	testSuite := &testsuite.WorkflowTestSuite{}
+	env := testSuite.NewTestWorkflowEnvironment()
 
-    numActivityCalls := 0
-    env.RegisterActivity(SendEmailActivity)
-    env.OnActivity(SendEmailActivity, mock.Anything, mock.Anything).Run(
-        func(args mock.Arguments) { numActivityCalls++ },
-    ).Return(nil)
+	numActivityCalls := 0
+	env.RegisterActivity(SendEmailActivity)
+	env.OnActivity(SendEmailActivity, mock.Anything, mock.Anything).Run(
+		func(args mock.Arguments) { numActivityCalls++ },
+	).Return(nil)
 
-    startTime := env.Now()
+	startTime := env.Now()
 
-    // Time-skip 90 days.
-    env.RegisterDelayedCallback(func() {
-        // Check that the activity has been called 3 times.
-        require.Equal(t, 3, numActivityCalls)
-        // Send the signal to complete the workflow.
-        env.SignalWorkflow("complete", nil)
-        // Expect no more activity calls to have been made - workflow is complete.
-        require.Equal(t, 3, numActivityCalls)
-        // Expect more than 90 days to have passed.
-        require.Equal(t, env.Now().Sub(startTime), time.Hour*24*90)
-    }, time.Hour*24*90)
+	// Time-skip 90 days.
+	env.RegisterDelayedCallback(func() {
+		// Check that the activity has been called 3 times.
+		require.Equal(t, 3, numActivityCalls)
+		// Send the signal to complete the workflow.
+		env.SignalWorkflow("complete", nil)
+		// Expect no more activity calls to have been made - workflow is complete.
+		require.Equal(t, 3, numActivityCalls)
+		// Expect more than 90 days to have passed.
+		require.Equal(t, env.Now().Sub(startTime), time.Hour*24*90)
+	}, time.Hour*24*90)
 
-    // Execute workflow.
-    env.ExecuteWorkflow(SleepForDaysWorkflow)
+	// Execute workflow.
+	env.ExecuteWorkflow(SleepForDaysWorkflow)
 }
 ```
+<!--SNIPEND-->
 
 ## How to Replay a Workflow Execution {/* #replay */}
 
@@ -584,51 +652,42 @@ Use the [worker.WorkflowReplayer](https://pkg.go.dev/go.temporal.io/sdk/worker#W
 
 For example, the following code retrieves the Event History of a Workflow:
 
+<!--SNIPSTART go-testing-get-workflow-history-->
+[go-sandbox/bestpractices/testing/replay/replay.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/testing/replay/replay.go)
 ```go
-import (
-    "context"
-
-    "go.temporal.io/api/enums/v1"
-    "go.temporal.io/api/history/v1"
-    "go.temporal.io/sdk/client"
-)
-
 func GetWorkflowHistory(ctx context.Context, client client.Client, id, runID string) (*history.History, error) {
-    var hist history.History
-    iter := client.GetWorkflowHistory(ctx, id, runID, false, enums.HISTORY_EVENT_FILTER_TYPE_ALL_EVENT)
-    for iter.HasNext() {
-        event, err := iter.Next()
-        if err != nil {
-            return nil, err
-        }
-        hist.Events = append(hist.Events, event)
-    }
-    return &hist, nil
+	var hist history.History
+	iter := client.GetWorkflowHistory(ctx, id, runID, false, enums.HISTORY_EVENT_FILTER_TYPE_ALL_EVENT)
+	for iter.HasNext() {
+		event, err := iter.Next()
+		if err != nil {
+			return nil, err
+		}
+		hist.Events = append(hist.Events, event)
+	}
+	return &hist, nil
 }
 ```
+<!--SNIPEND-->
 
 This history can then be used to _replay_.
 For example, the following code creates a `WorkflowReplayer` and register the `YourWorkflow` Workflow function.
 Then it calls the `ReplayWorkflowHistory` to _replay_ the Event History and return an error code.
 
+<!--SNIPSTART go-testing-replay-workflow-->
+[go-sandbox/bestpractices/testing/replay/replay.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/testing/replay/replay.go)
 ```go
-import (
-    "context"
-
-    "go.temporal.io/sdk/client"
-    "go.temporal.io/sdk/worker"
-)
-
 func ReplayWorkflow(ctx context.Context, client client.Client, id, runID string) error {
-    hist, err := GetWorkflowHistory(ctx, client, id, runID)
-    if err != nil {
-        return err
-    }
-    replayer := worker.NewWorkflowReplayer()
-    replayer.RegisterWorkflow(YourWorkflow)
-    return replayer.ReplayWorkflowHistory(nil, hist)
+	hist, err := GetWorkflowHistory(ctx, client, id, runID)
+	if err != nil {
+		return err
+	}
+	replayer := worker.NewWorkflowReplayer()
+	replayer.RegisterWorkflow(YourWorkflow)
+	return replayer.ReplayWorkflowHistory(nil, hist)
 }
 ```
+<!--SNIPEND-->
 
 The code above will cause the Worker to re-execute the Workflow's Workflow Function using the original Event History.
 If a noticeably different code path was followed or some code caused a deadlock, it will be returned in the error code.

@@ -44,6 +44,10 @@ When a Worker crashes or experiences a host outage:
 3. The new Worker replays the Event History to reconstruct state
 4. Execution continues from where it left off
 
+Step 2 needs another Worker polling the same Task Queue. With only one Worker, the Task waits until that Worker restarts.
+Run at least two Workers per Task Queue, as described in
+[Run at least two Workers per Task Queue](/best-practices/worker#run-at-least-two-workers-per-task-queue).
+
 For more details on Worker architecture, see [What is a Temporal Worker?](/workers)
 
 ## Compute settings
@@ -55,13 +59,13 @@ Compute settings control how many Tasks a Worker can execute concurrently.
 | Setting | Description |
 |---------|-------------|
 | `MaxConcurrentWorkflowTaskExecutionSize` | Maximum concurrent Workflow Tasks |
-| `MaxConcurrentActivityTaskExecutionSize` | Maximum concurrent Activity Tasks |
-| `MaxConcurrentLocalActivityTaskExecutionSize` | Maximum concurrent Local Activities |
+| `MaxConcurrentActivityExecutionSize` | Maximum concurrent Activity Tasks |
+| `MaxConcurrentLocalActivityExecutionSize` | Maximum concurrent Local Activities |
 | `MaxWorkflowThreadCount` / `workflowThreadPoolSize` | Thread pool for Workflow execution |
 
 ### Compute defaults by SDK
 
-| SDK | MaxConcurrentWorkflowTaskExecutionSize | MaxConcurrentActivityTaskExecutionSize | MaxConcurrentLocalActivityTaskExecutionSize | MaxWorkflowThreadCount |
+| SDK | MaxConcurrentWorkflowTaskExecutionSize | MaxConcurrentActivityExecutionSize | MaxConcurrentLocalActivityExecutionSize | MaxWorkflowThreadCount |
 |-----|----------------------------------------|----------------------------------------|---------------------------------------------|------------------------|
 | **Go** | 1,000 | 1,000 | 1,000 | - |
 | **Java** | 200 | 200 | 200 | 600 |
@@ -136,7 +140,7 @@ For the complete metrics reference, see [SDK metrics](/references/sdk-metrics).
 | Worker configuration option | SDK metric |
 |-----------------------------|------------|
 | `MaxConcurrentWorkflowTaskExecutionSize` | [`worker_task_slots_available {worker_type = WorkflowWorker}`](/references/sdk-metrics#worker_task_slots_available) |
-| `MaxConcurrentActivityTaskExecutionSize` | [`worker_task_slots_available {worker_type = ActivityWorker}`](/references/sdk-metrics#worker_task_slots_available) |
+| `MaxConcurrentActivityExecutionSize` | [`worker_task_slots_available {worker_type = ActivityWorker}`](/references/sdk-metrics#worker_task_slots_available) |
 | `MaxWorkflowThreadCount` | [`workflow_active_thread_count`](/references/sdk-metrics#workflow_active_thread_count) (Java only) |
 | CPU-intensive logic | [`workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency) |
 
@@ -164,6 +168,7 @@ Also monitor your machine's memory consumption (for example, `container_memory_u
 |--------|-------------|
 | [`poll_success_sync_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_success_sync_count) | Sync match rate (Tasks immediately assigned to Workers) |
 | [`approximate_backlog_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_approximate_backlog_count) | Approximate number of Tasks in a Task Queue |
+| [`approximate_backlog_age`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_approximate_backlog_age) | Approximate age, in seconds, of the oldest Task in a Task Queue backlog |
 
 Task Queue statistics are also available via the `DescribeTaskQueue` API:
 - `ApproximateBacklogCount`
@@ -202,6 +207,7 @@ For detailed tuning guidance, see:
 
 - [What is a Temporal Worker?](/workers) - Conceptual overview
 - [Worker performance](/develop/worker-performance) - Comprehensive tuning guide
+- [Worker tuning simulator](/demos/worker-tuning-simulator) - Interactive demo of Pollers, Slots, and cache limits
 - [Worker deployment and performance](/best-practices/worker) - Best practices
 - [SDK metrics reference](/references/sdk-metrics) - Complete metrics documentation
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) - Safe deployments

@@ -19,6 +19,7 @@ Remove a property within a profile.
 
 ```
 temporal config delete \
+    --profile YourProfile \
     --prop tls.client_cert_path
 ```
 
@@ -34,7 +35,7 @@ Remove a full profile entirely. The `--profile` must be set explicitly.
 
 ```
 temporal config delete-profile \
-    --profile my-profile
+    --profile YourProfile
 ```
 
 Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
@@ -45,6 +46,7 @@ Display specific properties or the entire profile.
 
 ```
 temporal config get \
+    --profile YourProfile \
     --prop address
 ```
 
@@ -76,6 +78,7 @@ Assign a value to a property and store it in the config file:
 
 ```
 temporal config set \
+    --profile YourProfile \
     --prop address \
     --value us-west-2.aws.api.temporal.io:7233
 ```
@@ -114,7 +117,7 @@ The following options can be used with any command.
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
-| `--profile` | No | **string** Profile to use for config file. |  |
+| `--profile` | No | **string** Configuration profile to use. Overrides the TEMPORAL_PROFILE environment variable and defaults to "default". |  |
 | `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
 | `--tls` | No | **bool** Enable base TLS encryption. Auto-enabled when api-key or TLS options are set. |  |
 | `--tls-ca-data` | No | **string** Inline server CA certificate data. |  |

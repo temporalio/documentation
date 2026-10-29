@@ -12,7 +12,7 @@ tags:
 
 Temporal Cloud supports two secure authentication methods for Workers:
 - **mTLS Certificates**
-- **API Keys** (configured via the UI when creating a namespace)
+- **API Keys** (configured via the UI when creating a Namespace)
 
 Both options help secure communication between workers and Temporal Cloud. Choosing the right method and managing it properly is key to maintaining security and minimizing downtime. 
 
@@ -38,13 +38,13 @@ This approach ensures near-zero-downtime rotation and prevents authentication fa
 
 For mutual TLS (mTLS) implementations, using Let's Encrypt is not recommended, as it is designed primarily for public-facing services and lacks support for internal certificate requirements. 
 
-While we are not making a specific product recommendation, there are several valid options for managing certificates. Many organizations choose vendor solutions such as AWS Private CA, Sectigo, Microsoft Certification Authority, or DigiCert for their robust integration and lifecycle features. Alternatively, self-signed certificates are a valid and commonly used approach, even in production environments. If you choose to self-sign, tools like [OpenSSL](https://openssl-library.org/), [CFSSL](https://github.com/cloudflare/cfssl), or [step CLI](https://github.com/smallstep/cli) can help generate and manage certificates effectively. 
+While we are not making a specific product recommendation, there are several valid options for managing certificates. Many organizations choose vendor solutions such as AWS Private CA, Sectigo, Microsoft Certification Authority, or DigiCert for their integration and lifecycle features. Alternatively, self-signed certificates are a valid and commonly used approach, even in production environments. If you choose to self-sign, tools like [OpenSSL](https://openssl-library.org/), [CFSSL](https://github.com/cloudflare/cfssl), or [step CLI](https://github.com/smallstep/cli) can help generate and manage certificates effectively. 
 
 Select the option that aligns best with your infrastructure, security requirements, and operational needs.
 
 In the case that you are using multiple certificates signed by the same CA, and some of these certificates are for production environments, there are some workarounds you can employ. 
 
-One convention is to give certificates a common name that matches the namespace. If you do this when using the same CA for dev and prod, then you can leverage Certificate Filters to prevent access to production environments. This is described in detail under the [authorization section](/cloud/certificates#control-authorization) of the documentation. 
+One convention is to give certificates a common name that matches the namespace. If you do this when using the same CA for dev and prod, then you can use Certificate Filters to prevent access to production environments. This is described in detail under the [authorization section](/cloud/certificates#control-authorization) of the documentation. 
 
 ## Recommendations
 
@@ -106,4 +106,4 @@ Use the following sequence when rotating credentials:
 
 Certificate Filters are an additional way of validating using the client certificate presented during client authentication. Give certificates a common name that matches the namespace. This is not a requirement.   
 
-If you do this when using the same CA for dev and prod environments, then you can leverage Certificate Filters to prevent access to production. 
+If you do this when using the same CA for dev and prod environments, then you can use Certificate Filters to prevent access to production. 

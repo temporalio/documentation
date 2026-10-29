@@ -1,11 +1,11 @@
 ---
 id: temporal-client
-title: Temporal Client - Python SDK
+title: Temporal Client
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description:
-  Discover how to connect and use Temporal Clients with Python. Link your Client to Temporal Service, Temporal Cloud,
-  start Workflow Executions, set Task Queues, Workflow Ids, and get Workflow results.
+  Connect to a development Temporal Service or Temporal Cloud from Python, set a Task Queue and Workflow Id, and get
+  Workflow Execution results.
 tags:
   - Temporal Client
   - Python SDK
@@ -37,7 +37,7 @@ options directly in code, load them from **environment variables**, or a **TOML 
 [`envconfig`](https://python.temporal.io/temporalio.envconfig.html) helpers. We recommend environment variables or a
 configuration file for secure, repeatable configuration.
 
-When you’re running a Temporal Service locally (such as with the
+When you're running a Temporal Service locally (such as with the
 [Temporal CLI dev server](/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
@@ -64,7 +64,9 @@ overrides the option set in the configuration file.
 For example, the following TOML configuration file defines two profiles: `default` and `prod`. Each profile has its own
 set of connection options.
 
-```toml title="config.toml"
+<!--SNIPSTART python-client-config-toml-->
+[python-sandbox/client/temporal_client/config.toml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/config.toml)
+```toml
 # Default profile for local development
 [profile.default]
 address = "localhost:7233"
@@ -93,12 +95,15 @@ client_key_path  = "/etc/temporal/certs/client.key"
 environment     = "production"
 service-version = "v1.2.3"
 ```
+<!--SNIPEND-->
 
 You can create a Temporal Client using a profile from the configuration file using the
 `ClientConfig.load_client_connect_config` function as follows. In this example, you load the `default` profile for local
 development:
 
-```python {23-25}
+<!--SNIPSTART python-client-load-default-profile {"highlightedLines": "23-25"}-->
+[python-sandbox/client/temporal_client/load_default.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/load_default.py)
+```py {23-25}
 import asyncio
 from pathlib import Path
 
@@ -141,6 +146,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -167,9 +173,10 @@ export TEMPORAL_ADDRESS="localhost:7233"
 
 After setting the environment variables, you can create a Temporal Client as follows:
 
-```python {11,19}
+<!--SNIPSTART python-client-load-from-env {"highlightedLines": "10,18"}-->
+[python-sandbox/client/temporal_client/load_from_env.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/load_from_env.py)
+```py {10,18}
 import asyncio
-from pathlib import Path
 
 from temporalio.client import Client
 from temporalio.envconfig import ClientConfig
@@ -195,6 +202,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -206,10 +214,12 @@ variables or a configuration file, and then override specific options in code.
 
 Use the `connect()` method on the `Client` class to create and connect to a Temporal Client to the Temporal Service.
 
-```python
+<!--SNIPSTART python-client-start-workflow-->
+[python-sandbox/client/temporal_client/start_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/start_workflow.py)
+```py
 import asyncio
 from temporalio.client import Client
-from your_workflows import YourWorkflow
+from temporal_client.your_workflows import YourWorkflow
 
 
 async def main():
@@ -228,6 +238,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -278,6 +289,8 @@ overrides the option set in the configuration file.
 For example, the following TOML configuration file defines a `staging` profile with the necessary connection options to
 connect to Temporal Cloud via an API key:
 
+<!--SNIPSTART python-client-cloud-api-key-toml-->
+[python-sandbox/client/temporal_client/cloud_api_key.toml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/cloud_api_key.toml)
 ```toml
 # Cloud profile for Temporal Cloud
 [profile.staging]
@@ -285,25 +298,33 @@ address = "your-namespace.a1b2c.tmprl.cloud:7233"
 namespace = "your-namespace"
 api_key = "your-api-key-here"
 ```
+<!--SNIPEND-->
 
-If you want to use mTLS authentication instead of an API key, replace the `api_key` field with your mTLS certificate and
-private key:
+If you want to use mTLS authentication instead of an API key, replace the `api_key` field with a `tls` table that holds
+your mTLS certificate and private key:
 
+<!--SNIPSTART python-client-cloud-mtls-toml-->
+[python-sandbox/client/temporal_client/cloud_mtls.toml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/cloud_mtls.toml)
 ```toml
 # Cloud profile for Temporal Cloud
 [profile.staging]
 address = "your-namespace.a1b2c.tmprl.cloud:7233"
 namespace = "your-namespace"
-tls_client_cert_data = "your-tls-client-cert-data"
-tls_client_key_path = "your-tls-client-key-path"
+
+[profile.staging.tls]
+client_cert_data = "your-tls-client-cert-data"
+client_key_path = "your-tls-client-key-path"
 ```
+<!--SNIPEND-->
 
 With the connections options defined in the configuration file, use the
 [`connect` method](https://python.temporal.io/temporalio.client.Client.html#connect) on the `Client` class to create a
 Temporal Client using the `staging` profile as follows. After loading the profile, you can also programmatically
 override specific connection options before creating the client.
 
-```python {14,23-25}
+<!--SNIPSTART python-client-load-profile-with-overrides {"highlightedLines": "14,23-25"}-->
+[python-sandbox/client/temporal_client/load_profile_with_overrides.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/load_profile_with_overrides.py)
+```py {14,23-25}
 import asyncio
 from pathlib import Path
 
@@ -352,6 +373,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -381,9 +403,10 @@ variables will take precedence.
 
 After setting the environment variables, use the following code to create the Temporal Client:
 
-```python {11, 19}
+<!--SNIPSTART python-client-load-from-env {"highlightedLines": "10,18"}-->
+[python-sandbox/client/temporal_client/load_from_env.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/load_from_env.py)
+```py {10,18}
 import asyncio
-from pathlib import Path
 
 from temporalio.client import Client
 from temporalio.envconfig import ClientConfig
@@ -409,6 +432,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -417,20 +441,25 @@ if __name__ == "__main__":
 You can also specify connection options directly in code to connect to Temporal Cloud. To create an initial connection,
 provide the endpoint, Namespace and Account ID combination, and API key values to the `Client.connect` method.
 
-```python
+<!--SNIPSTART python-client-cloud-api-key-->
+[python-sandbox/client/temporal_client/cloud_connect.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/cloud_connect.py)
+```py
 client = await Client.connect(
-    <endpoint>,
-    namespace=<namespace_id>.<account_id>,
-    api_key=<APIKey>,
+    endpoint,
+    namespace=namespace,
+    api_key=api_key,
     tls=True,
 )
 ```
+<!--SNIPEND-->
 
 To connect using mTLS instead of an API key, provide the mTLS certificate and private key as follows:
 
-```python
+<!--SNIPSTART python-client-cloud-mtls-->
+[python-sandbox/client/temporal_client/mtls_connect.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/mtls_connect.py)
+```py
 from temporalio.client import Client, TLSConfig
-# ...
+
 
 async def main():
     with open("client-cert.pem", "rb") as f:
@@ -448,6 +477,7 @@ async def main():
         ),
     )
 ```
+<!--SNIPEND-->
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
@@ -456,7 +486,9 @@ Unlike an API key, `TLSConfig` is static: the certificate bytes you pass to `Cli
 of that `Client`. To rotate an mTLS client certificate without restarting your Worker, connect a new `Client` with the
 new certificate, then assign it to the running `Worker`'s `client` property:
 
-```python
+<!--SNIPSTART python-client-rotate-mtls-cert-->
+[python-sandbox/client/temporal_client/cloud_connect.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/cloud_connect.py)
+```py
 with open("client-cert-new.pem", "rb") as f:
     client_cert = f.read()
 with open("client-private-key-new.pem", "rb") as f:
@@ -474,6 +506,7 @@ new_client = await Client.connect(
 # worker is the Worker instance already running against the old client
 worker.client = new_client
 ```
+<!--SNIPEND-->
 
 The Worker starts using `new_client` for subsequent calls to the Temporal Service (Workflow Task completion, Activity
 Heartbeats, and so on); calls already in flight on the old client finish normally. The new client must use the same
@@ -485,9 +518,9 @@ Heartbeats, and so on); calls already in flight on the old client finish normall
 
 ## Start a Workflow Execution {/* #start-workflow-execution */}
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
-you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
-language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters. To start a Workflow Execution, you must
+supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific
+contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
 within another Workflow Execution, use either the [Child Workflow](/develop/python/workflows/child-workflows) or External Workflow
@@ -506,7 +539,9 @@ To start a Workflow Execution in Python, use either the
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods
 in the Client.
 
-```python
+<!--SNIPSTART python-client-start-workflow {"selectedLines": ["6-20"]}-->
+[python-sandbox/client/temporal_client/start_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/start_workflow.py)
+```py
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -524,10 +559,11 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
 Queue name.
@@ -536,7 +572,9 @@ To set a Task Queue in Python, specify the `task_queue` argument when executing 
 [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or
 [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
-```python
+<!--SNIPSTART python-client-start-workflow {"selectedLines": ["6-20"]}-->
+[python-sandbox/client/temporal_client/start_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/start_workflow.py)
+```py
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -554,12 +592,13 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
 ### Set a Workflow Id {/* #workflow-id */}
 
 You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
-When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an
+When setting a Workflow Id, we recommend mapping it to a business process or business entity identifier, such as an
 order identifier or customer identifier.
 
 To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either
@@ -568,7 +607,9 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
-```python
+<!--SNIPSTART python-client-start-workflow {"selectedLines": ["6-20"]}-->
+[python-sandbox/client/temporal_client/start_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/start_workflow.py)
+```py
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -586,8 +627,9 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
-### Get the results of a Workflow Execution {/* #get-workflow-results */}
+## Get Workflow results {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -613,7 +655,9 @@ safety.
 Then use [`describe()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe) to get the current
 status of the Workflow. If the Workflow does not exist, this call fails.
 
-```python {8-11}
+<!--SNIPSTART python-client-get-workflow-result {"highlightedLines": "8-11"}-->
+[python-sandbox/client/temporal_client/get_workflow_result.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/get_workflow_result.py)
+```py {8-11}
 import asyncio
 from temporalio.client import Client
 
@@ -631,3 +675,4 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->

@@ -1,7 +1,7 @@
 ---
 id: message-passing
-title: Workflow message passing - Rust SDK
-sidebar_label: Messages
+title: Workflow message passing
+sidebar_label: Message passing
 description: Develop with Queries, Signals, and Updates with the Temporal Rust SDK.
 toc_max_heading_level: 3
 tags:
@@ -273,22 +273,14 @@ ctx.external_workflow("workflow-id-1", Some("run-id-1".into()))
 ### Signal-With-Start {/* #signal-with-start */}
 
 ```rust
-let signal_input = vec![ApproveInput {
-    name: "Ziggy".to_string(),
-}
-.as_json_payload()?]
-.into_payloads();
-
-let wf_handle = client.start_workflow(
+let wf_handle = client.signal_with_start_workflow(
     GreetingsWorkflow::run,
     (),
-    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10")
-        .start_signal(
-            WorkflowStartSignal::new("approve")
-                .maybe_input(signal_input)
-                .build(),
-        )
-        .build(),
+    GreetingsWorkflow::approve,
+    ApproveInput {
+        name: "Ziggy".to_string(),
+    },
+    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
 ).await?;
 ```
 
@@ -338,9 +330,9 @@ let update_handle = main_wf_handle.start_update(
 
 ### Async handlers {/* #async-handlers */}
 
-Signal and Update handlers can be `async fn` as well as `fn`. Using `async fn` allows you to use await with Activities, Child Workflows, Timers, etc. This expands the possibilities for what can be done by a handler, but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
+Signal and Update handlers can be `async fn` as well as `fn`. Using `async fn` allows you to use await with Activities, Child Workflows, Timers, and so on. This expands the possibilities for what can be done by a handler, but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
-It's essential to understand the things that could go wrong in order to use `async fn` handlers safely. See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the Safe message handlers sample and the sections below.
+To use `async fn` handlers safely, understand what can go wrong. See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the Safe message handlers sample and the sections below.
 
 The following code executes an Activity that makes a network call to a remote service:
 
@@ -380,7 +372,7 @@ impl GreetingActivities {
 
 After updating the code to use an `async fn`, your Update handler can schedule an Activity and await the result. Although an `async fn` Signal handler can also execute an Activity, using an Update handler allows the client to receive a result or error once the Activity completes.
 
-This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc. Here's how you could start that Activity from within your Workflow:
+This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, and so on. Here's how you could start that Activity from within your Workflow:
 
 ```rust
 #[update]

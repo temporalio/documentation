@@ -1,13 +1,16 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { isExternalHref } from '@site/src/utils/links';
+import SdkSvg from '@site/src/components/elements/SdkSvgs/SdkSvg';
 
 type PatternCardItem = {
   href: string;
   title: string;
   description: string;
-  external?: boolean;
   icon?: string;
+  /** SDK logo block name from `SdkSvg.js` (for example, `pythonBlock`). Renders the same logo as the /develop page. */
+  sdkIcon?: string;
 };
 
 type PatternCardsProps = {
@@ -31,12 +34,19 @@ export default function PatternCards({ items, className }: PatternCardsProps) {
           key={item.href}
           to={item.href}
           className="pattern-card"
-          {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          target={isExternalHref(item.href) ? '_blank' : undefined}
+          rel={isExternalHref(item.href) ? 'noopener noreferrer' : undefined}
         >
           <div className="pattern-content">
-            {item.icon ? (
+            {item.sdkIcon || item.icon ? (
               <div className="pattern-card-header">
-                <CardIcon icon={item.icon} title={item.title} />
+                {item.sdkIcon ? (
+                  <span className="pattern-card-sdk-icon">
+                    <SdkSvg name={item.sdkIcon} title={item.title} />
+                  </span>
+                ) : (
+                  <CardIcon icon={item.icon} title={item.title} />
+                )}
                 <h3>{item.title}</h3>
               </div>
             ) : (

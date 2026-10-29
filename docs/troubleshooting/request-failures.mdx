@@ -124,7 +124,7 @@ Seeing RESOURCE_EXHAUSTED here means throttling is already severe and widespread
 **Triage.**
 
 1. **Find out which limit you hit.** A Namespace rate limit, a concurrency limit, system-wide overload, and an open circuit breaker are four different problems with four different fixes. On the Go SDK, group [`temporal_request_resource_exhausted`](/references/sdk-metrics#request_resource_exhausted) by its `cause` tag and it will tell you directly. On other SDKs, work through the steps below.
-1. **Check your traffic against your Namespace limits.** For a rate limit cause (`RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT` or `RESOURCE_EXHAUSTED_CAUSE_APS_LIMIT`), compare current throughput against your Namespace's [service limits](/cloud/limits) on Temporal Cloud, and open a support request if you need them raised.
+1. **Check your traffic against your Namespace limits.** For a rate limit cause (`RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT` or `RESOURCE_EXHAUSTED_CAUSE_APS_LIMIT`), compare current throughput against your Namespace's [service limits](/evaluate/cloud/limits) on Temporal Cloud, and open a support request if you need them raised.
 1. **Treat overload and circuit-breaker causes as capacity problems.** `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED` and `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN` mean the Temporal Service is shedding load to protect itself. A higher limit will not help; the Service needs capacity, or your workload needs to slow down.
 1. **Add backoff in your application.** If throttling is expected during traffic peaks, ensure calling code retries with backoff rather than tight-looping, which amplifies the pressure.
 
@@ -184,7 +184,7 @@ The Temporal Service throttles poll operations before it throttles respond or us
 1. **Identify the throttle cause.** As with the other throttling sections, a Namespace rate limit, a concurrency limit, and system-wide overload need different responses. On the Go SDK, [`temporal_long_request_resource_exhausted`](/references/sdk-metrics#long_request_resource_exhausted) carries the `cause` tag for poll operations.
 1. **Check whether you are over-polling.** A large number of Workers each configured with many concurrent pollers can exceed the Namespace poller limit without processing any more work. Check your configured poller counts against [Worker performance](/develop/worker-performance) guidance before assuming the limit is too low.
 1. **Check downstream effects.** See [Workflow Task schedule-to-start latency elevated](/troubleshooting/worker-capacity#workflow-task-schedule-to-start-latency-elevated) and [Activity schedule-to-start latency elevated](/troubleshooting/worker-capacity#activity-schedule-to-start-latency-elevated) to gauge whether throttling is affecting Task dispatch yet.
-1. **Check your traffic against your Namespace limits.** On Temporal Cloud, compare against your Namespace's [service limits](/cloud/limits).
+1. **Check your traffic against your Namespace limits.** On Temporal Cloud, compare against your Namespace's [service limits](/evaluate/cloud/limits).
 
 :::note Self-hosted Temporal Service
 

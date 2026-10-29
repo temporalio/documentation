@@ -1,5 +1,14 @@
 [
   {
+    "name": "Durable agent on AgentCore",
+    "description":
+      "Run a long-lived Strands agent with Temporal and serverless Worker compute on Amazon Bedrock AgentCore.",
+    "tags": ["AI agents"],
+    "sdk": "Python",
+    "href": "/guides/durable-agent-on-agentcore"
+  },
+
+  {
    "name": "Customer loyalty program",
    "description":
       "How to run a customer loyalty program with the entity pattern and durable workflows.",

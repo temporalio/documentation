@@ -3,6 +3,7 @@ import { Highlight, Snippet } from 'react-instantsearch';
 import { useHistory } from '@docusaurus/router';
 import { PageIcon, AnchorIcon, TreeBranch } from './Icons';
 import { trackSearchClick } from './trackSearchEvent';
+import { getSectionLabel } from './sectionLabel';
 
 interface HitProps {
   hit: any;
@@ -11,6 +12,8 @@ interface HitProps {
   isAnchor?: boolean;
   isLastAnchor?: boolean;
   parentTitle?: string;
+  languageLabel?: string;
+  showSinglePath?: boolean;
   sendEvent: (eventType: string, hit: any, eventName: string) => void;
 }
 
@@ -30,11 +33,45 @@ function getHierarchyAttribute(hit: any): string {
   return 'hierarchy.lvl1';
 }
 
-export function Hit({ hit, isSelected, onNavigate, isAnchor, isLastAnchor, parentTitle, sendEvent }: HitProps) {
+function getHierarchyPath(
+  hit: any,
+  hierarchyAttribute: string,
+  parentTitle?: string,
+  showSinglePath = false
+): string[] {
+  const currentLevel = hierarchyAttribute.replace('hierarchy.', '');
+  const resultTitle = hit.hierarchy?.[currentLevel];
+  const levels = ['lvl0', 'lvl1', 'lvl2', 'lvl3', 'lvl4', 'lvl5', 'lvl6'];
+  const path = levels
+    .slice(0, levels.indexOf(currentLevel))
+    .map((level) => hit.hierarchy?.[level])
+    .filter((value) => value && value !== resultTitle);
+
+  if (path.length > 1 || showSinglePath) {
+    return path;
+  }
+
+  return parentTitle && parentTitle !== resultTitle ? [parentTitle] : [];
+}
+
+export function Hit({
+  hit,
+  isSelected,
+  onNavigate,
+  isAnchor,
+  isLastAnchor,
+  parentTitle,
+  languageLabel,
+  showSinglePath,
+  sendEvent,
+}: HitProps) {
   const history = useHistory();
   const hitRef = useRef<HTMLAnchorElement>(null);
 
   const hierarchyAttribute = getHierarchyAttribute(hit);
+  const hierarchyPath = getHierarchyPath(hit, hierarchyAttribute, parentTitle, showSinglePath);
+  const resultTitle = hit.hierarchy?.[hierarchyAttribute.replace('hierarchy.', '')] || '';
+  const sectionLabel = getSectionLabel(resultTitle, hit, languageLabel);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -68,7 +105,9 @@ export function Hit({ hit, isSelected, onNavigate, isAnchor, isLastAnchor, paren
     'custom-search-hit',
     isSelected ? 'custom-search-hit--selected' : '',
     isAnchor ? 'custom-search-hit--anchor' : 'custom-search-hit--page',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <a
@@ -93,13 +132,10 @@ export function Hit({ hit, isSelected, onNavigate, isAnchor, isLastAnchor, paren
       <div className="custom-search-hit-content">
         <div className="custom-search-hit-title">
           <Highlight attribute={hierarchyAttribute} hit={hit} />
+          {sectionLabel && <span className="custom-search-hit-language"> - {sectionLabel}</span>}
         </div>
-        {isAnchor && parentTitle && (
-          <div className="custom-search-hit-path">
-            {parentTitle}
-          </div>
-        )}
-        {!isAnchor && hit.content && (
+        {hierarchyPath.length > 0 && <div className="custom-search-hit-path">{hierarchyPath.join(' > ')}</div>}
+        {hit.content && (
           <div className="custom-search-hit-text">
             <Snippet attribute="content" hit={hit} />
           </div>

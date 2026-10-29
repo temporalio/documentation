@@ -11,8 +11,6 @@ tags:
   - Temporal Cloud
 ---
 
-import { JsonTable } from '@site/src/components';
-
 [Google Cloud Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Google Virtual Private Cloud (VPC) and Temporal Cloud.
 This one-way connection means Temporal cannot establish a connection back to your service.
@@ -24,7 +22,9 @@ If you use a private environment that does not allow external connectivity, you 
 :::warning Namespaces with High Availability features and GCP Private Service Connect
 
 Automatic failover via Temporal Cloud DNS is not currently supported with GCP Private Service Connect.
-If you use GCP Private Service Connect, you must manually update your workers to point to the active region's Private Service Connect endpoint when a failover occurs.
+GCP Cloud DNS cannot combine the public Namespace CNAME with private regional DNS overrides in the way the AWS PrivateLink HA pattern requires.
+When a failover occurs, manually update your private DNS override or Worker and Client endpoint configuration to point to the active region's Private Service Connect endpoint.
+See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect) for GCP-only and multi-cloud connectivity options.
 
 :::
 
@@ -51,7 +51,7 @@ Set up Private Service Connect with Temporal Cloud with these steps:
 
    ![GCP console showing the endpoints, and the Connect endpoint button](/img/cloud/gcp/connect-endpoint.png)
 
-- For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you’re trying to connect to:
+- For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you're trying to connect to. See [Available GCP regions, PSC endpoints, and DNS record overrides](#available-gcp-regions-psc-endpoints-and-dns-record-overrides) for the list of available services.
 
 :::tip
 
@@ -59,8 +59,6 @@ GCP Private Service Connect services are regional.
 Individual Namespaces do not use separate services.
 
 :::
-
-<JsonTable filename="/json/privatelink_gcp.json" />
 
 - For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
 - For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
@@ -81,7 +79,7 @@ If your endpoint is stuck Pending, the most common causes are:
 
 - No Connectivity Rule exists for the connection ID. (Most common.)
 - The Connectivity Rule was created with the wrong `connection-id`, `region`, or `gcp-project-id`.
-- The endpoint is in a region that is not a [supported Temporal Cloud region](/cloud/regions).
+- The endpoint is in a region that is not a [supported Temporal Cloud region](/evaluate/cloud/regions).
 
 :::
 
@@ -121,11 +119,21 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 ### Choose the override domain and endpoint
 
-| Temporal Cloud setup                       | Use this PHZ domain                | Example                                        |
-| ------------------------------------------ | ---------------------------------- | ---------------------------------------------- |
-| Single-region namespace with mTLS auth     | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔️ `X.X.X.X`       |
-| Single-region namespace with API-key auth  | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X`  |
-| Multi-region namespace | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔️ `X.X.X.X` |
+Choose the private DNS records based on the number of regions your Namespace uses and the endpoint your Clients and Workers use.
+Both mTLS and API key authentication support both Namespace Endpoints and Regional Endpoints.
+
+| Regions | Endpoint clients use | Private DNS records to configure |
+| ------- | -------------------- | -------------------------------- |
+| Single region | Namespace Endpoint | An A record for each Namespace Endpoint, such as `payments.abcde.tmprl.cloud`, or a wildcard record for `*.abcde.tmprl.cloud`. |
+| Single region | Regional Endpoint | A single A record for the Regional Endpoint in the Namespace's region. |
+| Multiple regions with High Availability | Namespace Endpoint | An A record for the Namespace Endpoint pointing to a replica region's PSC endpoint IP address. Manually update the override to the active region's PSC endpoint IP address after failover; automatic DNS failover is not supported. |
+| Multiple regions with High Availability | Regional Endpoint (not recommended) | A single A record for the Regional Endpoint in the client's active region. To withstand a regional outage, run a Worker pool in each region and configure each pool to use its region's Regional Endpoint. |
+
+Point each A record at the corresponding region's PSC endpoint IP address.
+For High Availability Namespaces, see [GCP PSC failover options](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect).
+Regional DNS overrides do not enable automatic failover with GCP PSC.
+
+The steps below use a single-region Namespace Endpoint as the example.
 
 ### Step-by-step instructions
 
@@ -146,7 +154,7 @@ Save the internal IP -- you will point the A record at it.
 1. Open _Network Services → Cloud DNS → Create zone_.
 2. Select zone type **Private**.
 3. Enter a **Zone name** (for example, `temporal-cloud`).
-4. Enter a **DNS name** based on the table above (for example, `payments.abcde.tmprl.cloud` or `us-east-1.aws.api.temporal.io`).
+4. Enter a **DNS name** that covers the records from the table above (for example, `abcde.tmprl.cloud` for Namespace or wildcard records, or `gcp-us-central1.region.tmprl.cloud` for a regional record).
 5. Select **Add networks** and choose the Project and Network that contains your PSC endpoint.
 6. Click **Create**.
 
@@ -156,7 +164,7 @@ Inside the new zone, add a _standard A record_:
 
 | Field                | Value                                                          |
 | -------------------- | -------------------------------------------------------------- |
-| DNS name             | the namespace endpoint (for example, `payments.abcde.tmprl.cloud`)     |
+| DNS name             | The hostname or wildcard from the table above (for example, `payments.abcde.tmprl.cloud` or `*.abcde.tmprl.cloud`). |
 | Resource record type | A                                                              |
 | TTL                  | 60s is typical, but you can adjust as needed.                  |
 | IPv4 Address         | the internal IP address of your PSC endpoint (for example, `10.1.2.3`) |
@@ -186,6 +194,12 @@ The DNS resolver inside your network returns the private endpoint IP address, wh
 ## Available GCP regions, PSC endpoints, and DNS record overrides
 
 The following table lists the available Temporal regions, PrivateLink endpoints, and regional endpoints used for DNS record overrides:
+
+:::caution GCP capacity restriction
+
+Before creating a GCP Namespace or adding a GCP replica, check [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for regional availability and exception requirements.
+
+:::
 
 import GCPRegions from '@site/docs/cloud/references/regions/gcpregions.md';
 

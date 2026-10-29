@@ -1,6 +1,6 @@
 ---
 id: standalone-operations
-title: Standalone Nexus Operations - Python SDK
+title: Standalone Nexus Operations
 sidebar_label: Standalone Operations
 toc_max_heading_level: 4
 tags:
@@ -38,35 +38,33 @@ This page focuses on the client-side APIs that are unique to Standalone Nexus Op
 
 :::note
 This documentation uses source code from the
-[Python Nexus Standalone sample](https://github.com/temporalio/samples-python/tree/main/nexus_standalone_operations).
+[nexus_standalone_operations](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/python-sandbox/nexus/nexus_standalone_operations) sample.
 
 :::
 
 ## Prerequisites {/* #prerequisites */}
 
-Standalone Nexus Operations are at Pre-release and require a special Temporal CLI build.
+Standalone Nexus Operations are a Pre-release feature and require Temporal CLI v1.9.0 or higher.
 
-### 1. Install and verify the Pre-release Temporal CLI {/* #install-cli */}
+### 1. Install and verify the Temporal CLI {/* #install-cli */}
 
-The `temporal nexus operation` commands require a Pre-release build of the Temporal CLI. See
-[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for the platform downloads,
+The `temporal nexus operation` commands require Temporal CLI v1.9.0 or higher. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for install options,
 then verify:
 
 ```bash
-./temporal --version
-# temporal version 1.7.4-standalone-nexus-operations
+temporal --version
 ```
 
-Run it as `./temporal` from the directory where you extracted it. The standard `brew install temporal`
-build does not include Standalone Nexus Operation support during Pre-release.
+Which should output v1.9.0 or higher.
 
 ### 2. Start a local dev server {/* #enable-dev-server */}
 
-The Pre-release dev server enables Standalone Nexus Operations by default — no dynamic config is
+The dev server enables Standalone Nexus Operations by default — no dynamic config is
 required. Start it with the caller and handler Namespaces pre-created:
 
 ```bash
-./temporal server start-dev \
+temporal server start-dev \
   --namespace my-caller-namespace \
   --namespace my-handler-namespace
 ```
@@ -74,26 +72,27 @@ required. Start it with the caller and handler Namespaces pre-created:
 The starter and Worker connect to two different Namespaces (a caller Namespace and a handler
 Namespace), mirroring how Nexus crosses Namespace boundaries.
 
-To run the examples on this page against the [Python sample](https://github.com/temporalio/samples-python/tree/main/nexus_standalone_operations),
+To run the examples on this page against the [Python sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/python-sandbox/nexus/nexus_standalone_operations),
 create a Nexus Endpoint that routes to the handler Namespace and the Worker's Task Queue:
 
 ```bash
-./temporal operator nexus endpoint create \
+temporal operator nexus endpoint create \
   --name my-nexus-endpoint \
   --target-namespace my-handler-namespace \
   --target-task-queue nexus-handler-queue
 ```
 
+Run the remaining commands from the `python-sandbox/nexus` directory of the sample repository.
 Start the sample Worker in the handler Namespace:
 
 ```bash
-TEMPORAL_NAMESPACE=my-handler-namespace uv run nexus_standalone_operations/worker.py
+TEMPORAL_NAMESPACE=my-handler-namespace uv run --no-project --with "temporalio>=1.34.0" python -m nexus_standalone_operations.worker
 ```
 
 Run the starter in the caller Namespace (from a separate terminal):
 
 ```bash
-TEMPORAL_NAMESPACE=my-caller-namespace uv run nexus_standalone_operations/starter.py
+TEMPORAL_NAMESPACE=my-caller-namespace uv run --no-project --with "temporalio>=1.34.0" python -m nexus_standalone_operations.starter
 ```
 
 ## Execute a Standalone Nexus Operation {/* #execute-operation */}
@@ -105,7 +104,9 @@ specific Nexus Endpoint and Service. The endpoint must be pre-created on the ser
 `execute_operation` waits for the Operation to complete and returns the result.
 Both methods require `id`. `schedule_to_close_timeout` is optional and defaults to the maximum allowed by the Temporal server.
 
-```python
+<!--SNIPSTART python-nexus-standalone-execute-operation-->
+[python-sandbox/nexus/nexus_standalone_operations/starter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/nexus/nexus_standalone_operations/starter.py)
+```py
 nexus_client = client.create_nexus_client(
     service=MyNexusService, endpoint=ENDPOINT_NAME
 )
@@ -118,16 +119,17 @@ echo_result = await nexus_client.execute_operation(
     schedule_to_close_timeout=timedelta(seconds=10),
 )
 ```
+<!--SNIPEND-->
 
 See the full
-[starter sample](https://github.com/temporalio/samples-python/blob/main/nexus_standalone_operations/starter.py)
+[starter sample](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/nexus/nexus_standalone_operations/starter.py)
 for a complete example that executes both synchronous and asynchronous Operations, gets their results, and lists and
 counts Operations.
 
 Or use the Temporal CLI to execute a Standalone Nexus Operation:
 
 ```bash
-./temporal nexus operation execute \
+temporal nexus operation execute \
   --namespace my-caller-namespace \
   --endpoint my-nexus-endpoint \
   --service MyNexusService \
@@ -142,7 +144,9 @@ Or use the Temporal CLI to execute a Standalone Nexus Operation:
 Use `NexusOperationHandle.result()` to wait until the Operation completes and retrieve its result. This works for both
 synchronous and asynchronous Operations.
 
-```python
+<!--SNIPSTART python-nexus-standalone-start-operation-->
+[python-sandbox/nexus/nexus_standalone_operations/starter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/nexus/nexus_standalone_operations/starter.py)
+```py
 # Start an operation and get a NexusOperationHandle
 handle = await nexus_client.start_operation(
     MyNexusService.hello,
@@ -154,17 +158,18 @@ handle = await nexus_client.start_operation(
 try:
     hello_result = await handle.result()
     print(hello_result)
-except err:
+except Exception as err:
     print(err)
     raise
 ```
+<!--SNIPEND-->
 
 If the Operation completed successfully, the result is returned. If the Operation failed, the failure is raised as an error.
 
 Or use the Temporal CLI to wait for a result by Operation ID:
 
 ```bash
-./temporal nexus operation result --namespace my-caller-namespace --operation-id my-echo-op
+temporal nexus operation result --namespace my-caller-namespace --operation-id my-echo-op
 ```
 
 ## List Standalone Nexus Operations {/* #list-operations */}
@@ -175,7 +180,9 @@ operation metadata entries.
 
 Note that `list_nexus_operations` is called on the base `client.Client`, not on the `NexusClient`.
 
-```python
+<!--SNIPSTART python-nexus-standalone-list-operations-->
+[python-sandbox/nexus/nexus_standalone_operations/starter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/nexus/nexus_standalone_operations/starter.py)
+```py
 query = f'Endpoint = "{ENDPOINT_NAME}"'
 async for op in client.list_nexus_operations(query):
     print(
@@ -184,14 +191,15 @@ async for op in client.list_nexus_operations(query):
         f" Status: {op.status.name}",
     )
 ```
+<!--SNIPEND-->
 
 The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
-`"Endpoint = 'my-endpoint' AND Status = 'Running'"`.
+`"Endpoint = 'my-endpoint' AND ExecutionStatus = 'Running'"`.
 
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Count Standalone Nexus Operations {/* #count-operations */}
@@ -201,16 +209,19 @@ Operation Executions that match a [List Filter](/list-filter) query.
 
 Note that `count_nexus_operations` is called on the base `client.Client`, not on the `NexusClient`.
 
-```python
+<!--SNIPSTART python-nexus-standalone-count-operations-->
+[python-sandbox/nexus/nexus_standalone_operations/starter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/nexus/nexus_standalone_operations/starter.py)
+```py
 query = f'Endpoint = "{ENDPOINT_NAME}"'
 count = await client.count_nexus_operations(query)
 print(f"Total Nexus operations: {count.count}")
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}

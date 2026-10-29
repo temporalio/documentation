@@ -1,7 +1,7 @@
 ---
 id: worker-execution-affinity
-title: Ensure Activity execution on the same Worker
-description: Execute multiple Activities on thee same Worker to guarantee data locality.
+title: Run all of a Workflow's Activities on the same Worker
+description: Keep downloaded files, loaded ML models, and open connections on one machine by routing each Activity to a Worker-specific Task Queue, with Python code.
 sidebar_label: Worker execution affinity
 toc_max_heading_level: 3
 author: Cecil Phillip
@@ -15,7 +15,7 @@ tags:
 
 **by Cecil Phillip**
 
-### Problem statement
+## Problem statement
 
 Many Workflows require multiple Activities to execute on the same Worker to maintain data locality. Common scenarios include:
 
@@ -29,7 +29,7 @@ Without Worker affinity, Temporal distributes Activities across available Worker
 - Duplicate resource initialization: ML models loaded multiple times across Workers
 - Increased latency: Each Activity pays setup costs instead of reusing resources
 
-### Solution
+## Solution
 
 Use Worker-specific Task Queues to ensure all Activities in a Workflow execute on the same Worker. To achieve this:
 
@@ -38,7 +38,7 @@ Use Worker-specific Task Queues to ensure all Activities in a Workflow execute o
 3. The Workflow routes all subsequent Activities to that Worker's unique queue
 4. All Activities execute on the same Worker, maintaining data locality
 
-### Outcomes
+## Outcomes
 
 - **Data locality:** Files downloaded in one Activity are immediately available to subsequent Activities on the same Worker
 - **Performance:** Eliminate repeated re-downloads from remote storage (multi-GB transfers)
@@ -74,6 +74,12 @@ If a Worker crashes while processing Activities on its unique queue:
 > Activity Executions in most Workflows are constrained by the Start-to-Close Timeout, which limits the maximum duration of a single attempt. Its value is set to slightly longer than the Activity should take to complete. The pattern described here also relies on the Schedule-to-Start Timeout, which limits the maximum amount of time that a Task may remain enqueued. Although otherwise seldom used, this Timeout is valuable here because it enables the system to detect a Worker crash. That is, when a Worker crashes, it will no longer dequeue Tasks and the Schedule-to-Start Timeout will be reached.
 
 ### Operational considerations
+
+:::caution Worker Versioning
+
+Do not enable [Worker Versioning](/production-deployment/worker-deployments/worker-versioning#definition) for worker-specific Task Queues — it will unnecessarily exhaust the [per-version Task Queue limit](/evaluate/cloud/limits#max-task-queues-in-deployment-version-limits). A per-worker Task Queue's lifetime is tied to the Worker itself. When the Worker is updated to a new version, it gets a new Task Queue and the old one is gone. So versioning this queue does not add any value.
+
+:::
 
 - **Queue proliferation:** Each Worker creates a unique queue. Monitor total queue count.
 - **Queue lifecycle:** Consider setting a reasonable `schedule_to_close_timeout` on Activities to bound how long work tied to a unique queue can remain active, or implement explicit cleanup job to remove stale unique queues when Workers terminate.

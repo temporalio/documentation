@@ -1,0 +1,21 @@
+# Extracted from errata-ai/Google (MIT). See NOTICE.
+#
+extends: existence
+message: "'%s' is not a gender-neutral pronoun."
+level: suggestion
+ignorecase: true
+tokens:
+  - he/she
+  - s/he
+  - \(s\)he
+tests:
+  - name: fires
+    input: >
+      Each user should check his/her settings, or s/he can ask an admin.
+    want: |
+      1:45:Std.Usage.GenderedPronouns:'s/he' is not a gender-neutral pronoun.
+
+  - name: clean
+    input: >
+      Users should check their settings.
+    want: ""

@@ -13,6 +13,21 @@ This file is generated from the CLI command definitions via cmd/gen-docs. */}
 
 This page provides a reference for the `temporal` CLI `worker` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
 
+## count
+
+Show a count of workers in a namespace. Use `--query` to count a subset:
+
+```
+temporal worker count --namespace YourNamespace --query 'TaskQueue="YourTaskQueue"'
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--include-system-workers` | No | **bool** Include system workers created by the server. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
+
 ## deployment
 
 Deployment commands perform operations on Worker Deployments:
@@ -646,6 +661,7 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
+| `--include-system-workers` | No | **bool** Include system workers that are created implicitly by the server. By default, system workers are excluded. |
 | `--limit` | No | **int** Maximum number of workers to display. |
 | `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
@@ -676,7 +692,7 @@ The following options can be used with any command.
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
-| `--profile` | No | **string** Profile to use for config file. |  |
+| `--profile` | No | **string** Configuration profile to use. Overrides the TEMPORAL_PROFILE environment variable and defaults to "default". |  |
 | `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
 | `--tls` | No | **bool** Enable base TLS encryption. Auto-enabled when api-key or TLS options are set. |  |
 | `--tls-ca-data` | No | **string** Inline server CA certificate data. |  |

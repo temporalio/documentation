@@ -1,6 +1,6 @@
 ---
 id: namespaces
-title: Namespaces - Go SDK
+title: Namespaces
 sidebar_label: Namespaces
 toc_max_heading_level: 4
 tags:
@@ -12,7 +12,7 @@ description: Register and manage Namespaces in Temporal using CLI or SDK APIs. I
 
 This page shows how to do the following:
 
-- [Register Namespaces](#register-namespace)
+- [Register a Namespace](#register-namespace)
 - [Manage Namespaces](#manage-namespaces)
 
 You can create, update, deprecate, or delete your [Namespaces](/namespaces) using either the Temporal CLI or SDK APIs.
@@ -30,7 +30,7 @@ Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your
 
 You must register a Namespace with the Temporal Service before setting it in the Temporal Client.
 
-### How to register Namespaces {/* #register-namespace */}
+## Register a Namespace {/* #register-namespace */}
 
 Registering a Namespace creates a Namespace on the Temporal Service or Temporal Cloud.
 
@@ -45,14 +45,22 @@ Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClien
 
 You can also [register Namespaces using the Temporal CLI command-line tool](/cli/command-reference/operator#create).
 
+<!--SNIPSTART go-namespace-register-->
+[go-sandbox/client/namespaces/namespaces.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/namespaces/namespaces.go)
 ```go
-client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
-        //...
-    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-        Namespace: your-namespace-name,
-        WorkflowExecutionRetentionPeriod: &retention,
-    })
+namespaceClient, err := client.NewNamespaceClient(client.Options{HostPort: client.DefaultHostPort})
+if err != nil {
+	return err
+}
+defer namespaceClient.Close()
+
+retention := 3 * 24 * time.Hour
+err = namespaceClient.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+	Namespace:                        namespaceName,
+	WorkflowExecutionRetentionPeriod: durationpb.New(retention),
+})
 ```
+<!--SNIPEND-->
 
 The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
 The minimum value you can set for this period is 1 day.
@@ -67,7 +75,7 @@ To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.
 
 To update your Namespace using the Temporal CLI, use the [temporal operator namespace update](/cli/command-reference/operator#update) command.
 
-### How to manage Namespaces {/* #manage-namespaces */}
+## Manage Namespaces {/* #manage-namespaces */}
 
 You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
 
@@ -92,36 +100,38 @@ Note that these APIs and `temporal operator namespace` commands will not work wi
   - Use the [`UpdateNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to update configuration on a Namespace.
     Example
 
+    <!--SNIPSTART go-namespace-update-->
+    [go-sandbox/client/namespaces/namespaces.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/namespaces/namespaces.go)
     ```go
-    //...
-      err = client.Update(context.Background(), &workflowservice.UpdateNamespaceRequest{
-      Namespace:         "your-namespace-name",
-      UpdateInfo:        &namespace.UpdateNamespaceInfo{ //updates info for the namespace "your-namespace-name"
-          Description:   "updated namespace description",
-          OwnerEmail:    "newowner@mail.com",
-          //Data:        nil,
-          //State:       0,
-      },
-      /*other details that you can update:
-      Config:            &namespace.NamespaceConfig{ //updates the configuration of the namespace with the following options
-          //WorkflowExecutionRetentionTtl: nil,
-          //BadBinaries:                   nil,
-          //HistoryArchivalState:          0,
-          //HistoryArchivalUri:            "",
-          //VisibilityArchivalState:       0,
-          //VisibilityArchivalUri:         "",
-      },
-      ReplicationConfig: &replication.NamespaceReplicationConfig{ //updates the replication configuration for the namespace
-          //ActiveClusterName: "",
-          //Clusters:          nil,
-          //State:             0,
-      },
-      SecurityToken:     "",
-      DeleteBadBinary:   "",
-      PromoteNamespace:  false,
-      })*/
-    //...
+    err := namespaceClient.Update(ctx, &workflowservice.UpdateNamespaceRequest{
+    	Namespace: "your-namespace-name",
+    	UpdateInfo: &namespacepb.UpdateNamespaceInfo{ // updates info for the namespace "your-namespace-name"
+    		Description: "updated namespace description",
+    		OwnerEmail:  "newowner@mail.com",
+    		// Data:  nil,
+    		// State: 0,
+    	},
+    	/* other details that you can update:
+    	Config: &namespacepb.NamespaceConfig{ // updates the configuration of the namespace with the following options
+    		// WorkflowExecutionRetentionTtl: nil,
+    		// BadBinaries:                   nil,
+    		// HistoryArchivalState:          0,
+    		// HistoryArchivalUri:            "",
+    		// VisibilityArchivalState:       0,
+    		// VisibilityArchivalUri:         "",
+    	},
+    	ReplicationConfig: &replication.NamespaceReplicationConfig{ // updates the replication configuration for the namespace
+    		// ActiveClusterName: "",
+    		// Clusters:          nil,
+    		// State:             0,
+    	},
+    	SecurityToken:    "",
+    	DeleteBadBinary:  "",
+    	PromoteNamespace: false,
+    	*/
+    })
     ```
+    <!--SNIPEND-->
 
 - Get details for a registered Namespace on your Temporal Service:
 
@@ -129,35 +139,58 @@ Note that these APIs and `temporal operator namespace` commands will not work wi
   - Use the [`DescribeNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to return information and configuration details for a registered Namespace.
     Example
 
+    <!--SNIPSTART go-namespace-describe-->
+    [go-sandbox/client/namespaces/namespaces.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/namespaces/namespaces.go)
     ```go
-    //...
-      client, err := client.NewNamespaceClient(client.Options{})
-      //...
-      client.Describe(context.Background(), "default")
-    //...
+    namespaceClient, err := client.NewNamespaceClient(client.Options{})
+    if err != nil {
+    	return nil, err
+    }
+    defer namespaceClient.Close()
+
+    description, err := namespaceClient.Describe(ctx, "default")
     ```
+    <!--SNIPEND-->
 
 - Get details for all registered Namespaces on your Temporal Service:
 
   - With the Temporal CLI: [`temporal operator namespace list`](/cli/command-reference/operator#list)
-  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/main/temporal/api/operatorservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Service.
+  - Use the [`ListNamespaces` API](https://github.com/temporalio/api/blob/main/temporal/api/workflowservice/v1/service.proto) on the Workflow Service to return information and configuration details for all registered Namespaces on your Temporal Service.
     Example
 
+  <!--SNIPSTART go-namespace-list-->
+  [go-sandbox/client/namespaces/namespaces.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/namespaces/namespaces.go)
   ```go
-  //...
-      namespace.Handler.ListNamespaces(context.Context(), &workflowservice.ListNamespacesRequest{ //lists 1 page (1-100) of namespaces on the active Temporal Service. You can set a large PageSize or loop until NextPageToken is nil
-          //PageSize:        0,
-          //NextPageToken:   nil,
-          //NamespaceFilter: nil,
-          })
-  //...
+  var names []string
+  var nextPageToken []byte
+  for {
+  	// Each call returns one page of Namespaces. Loop until NextPageToken is empty.
+  	resp, err := temporalClient.WorkflowService().ListNamespaces(ctx, &workflowservice.ListNamespacesRequest{
+  		PageSize:      100,
+  		NextPageToken: nextPageToken,
+  	})
+  	if err != nil {
+  		return nil, err
+  	}
+  	for _, ns := range resp.GetNamespaces() {
+  		names = append(names, ns.GetNamespaceInfo().GetName())
+  	}
+  	nextPageToken = resp.GetNextPageToken()
+  	if len(nextPageToken) == 0 {
+  		break
+  	}
+  }
   ```
+  <!--SNIPEND-->
 
 - Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/main/temporal/api/operatorservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
   Example:
 
+  <!--SNIPSTART go-namespace-delete-->
+  [go-sandbox/client/namespaces/namespaces.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/client/namespaces/namespaces.go)
   ```go
-  //...
-  client.OperatorService().DeleteNamespace(ctx, &operatorservice.DeleteNamespaceRequest{...
-  //...
+  _, err := temporalClient.OperatorService().DeleteNamespace(ctx, &operatorservice.DeleteNamespaceRequest{
+  	Namespace: namespaceName,
+  })
   ```
+  <!--SNIPEND-->

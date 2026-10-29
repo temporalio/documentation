@@ -36,7 +36,7 @@ cases programmatically:
 
 ### Actions
 
-Temporal Cloud bills primarily on [Actions](/cloud/actions), which are billable operations such as starting a
+Temporal Cloud bills primarily on [Actions](/evaluate/cloud/actions), which are billable operations such as starting a
 Workflow, scheduling an Activity, recording a Heartbeat, sending a Signal, or receiving a Query or Update. Actions are
 grouped into categories (Workflow, Activity, Timer, Signal, Query, Update, Schedule, Nexus) plus a few billed features
 (Export, Fairness, Capacity). For background on how usage-based pricing works on Temporal Cloud, see
@@ -158,7 +158,7 @@ For example queries, see
 For a real-world example of using this metric to validate metering, see
 [Dogfooding the Billable Actions metric](https://temporal.io/blog/dogfooding-the-billable-actions-metric-how-granular-observability-improved-our-metering-validation).
 
-### Defining and finding anomalies
+### Define and find anomalies {/* #defining-and-finding-anomalies */}
 
 Establish a baseline of Actions consumption. Your workload may have seasonality across hours, days, and weeks, which
 makes setting alerts harder. Some starting points:

@@ -1,0 +1,21 @@
+# Extracted from errata-ai/IBM (MIT). See NOTICE.
+#
+# The message carries the count, not the threshold, so a child overriding
+# `max` doesn't inherit a number that no longer matches its own condition.
+extends: occurrence
+message: "Long sentence: %d words."
+level: suggestion
+scope: sentence
+max: 25
+token: \b(\w+)\b
+tests:
+  - name: fires
+    input: >
+      This sentence keeps going and going with clause after clause after clause so that it sails far past the twenty-five word threshold the rule enforces by default here.
+    want: |
+      1:1:Std.Readability.SentenceLength:Long sentence: 29 words.
+
+  - name: clean
+    input: >
+      This sentence stays short.
+    want: ""
