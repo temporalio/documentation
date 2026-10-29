@@ -5,7 +5,7 @@ slug: /cloud/high-availability/ha-connectivity
 description: How to choose endpoints and configure private network connectivity for Namespaces with Temporal Cloud High Availability features.
 ---
 
-import { CaptionedImage, JsonTable } from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 A Namespace with High Availability features spans two regions, and the endpoint your Workers and Clients connect through determines how they behave before, during, and after a failover.
 This page covers:
@@ -303,15 +303,15 @@ The `sa-east-1` region is not yet available for use with Multi-region Namespaces
 
 :::
 
-The following tables list the available Temporal regions and the DNS record overrides used for HA + private connectivity:
+The cloud-specific connectivity pages list the available Temporal regions and the DNS record overrides used for High Availability and private connectivity.
 
 ### AWS regions and PrivateLink endpoints
 
-<JsonTable filename="/json/privatelink_aws.json" />
+See [Available AWS regions, PrivateLink endpoints, and DNS record overrides](/cloud/connectivity/aws-connectivity#available-aws-regions-privatelink-endpoints-and-dns-record-overrides).
 
 ### GCP regions and Private Service Connect endpoints
 
-<JsonTable filename="/json/privatelink_gcp.json" />
+See [Available GCP regions, PSC endpoints, and DNS record overrides](/cloud/connectivity/gcp-connectivity#available-gcp-regions-psc-endpoints-and-dns-record-overrides).
 
 When using a Namespace with High Availability features, the Namespace's DNS record `<ns>.<account>.tmprl.cloud` points to a regional DNS record in the format `<provider>-<region>.region.tmprl.cloud`, where `<provider>-<region>` is the currently active region for your Namespace.
 
