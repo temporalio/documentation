@@ -298,8 +298,11 @@ them:
 
 ![The refund agent's loop, with context, memory, and state labeled. In the loop: Reason / Observe (agent_decide_next_step, one model call given everything it has seen so far, or a fixed policy offline) decides what to do next; Act takes one action per turn: ask the customer on turns 1 and 2 ("Was the package opened?" Yes; "What was damaged?" Split seam), lookup_order on turn 3 (order 1234: python plushy, $80.00, delivered), lookup_customer_history on turn 4 (824 days as a customer, 1 prior refund), check_refund_policy if chosen (eligible, no return needed), and Decide on the last turn (approve, escalate, or deny, which leaves the loop). Results go back into context, and on approve the loop exits to issue_refund, the one side effect. Context, inside the loop, is what the model sees this turn: the customer's message "Please refund order 1234", the two answers, the order it just looked up, the customer's history, and its own last step. Outside the loop, long-term memory is what carries across runs in a store, such as the refund policy, which cases need escalation, and how this customer was handled before; none is saved in this demo, and lookups tagged (memory) stand in for retrieval. State is the facts the model doesn't own: execution state in Temporal's Event History (steps already run, 2 answers and 2 lookups; next action issue refund; attempts on the refund call) and effect state in Stripe, the system of record (payment PAID; refund none yet, then one refund, SUCCEEDED). After the crash, Demo 1's execution state lived only in the process, so it's gone and the customer starts over; in Demo 2 it is read back from Event History, and a new Worker resumes at issue refund.](/img/ai/featured/memory-state-stripe/agent-loop.png)
 
-The diagram places each kind of information around the demo's agent loop. The
-table shows what each one is in this demo and where to find it.
+The diagram places each kind of information around the demo's agent loop. It
+was drawn before the demo added its case note, so it shows no long-term memory
+saved. `remember_case` now saves a short note after the refund, as the table
+shows. The table lists what each kind of information is in this demo and where to
+find it.
 
 | | What it helps with | In this demo | Where to find it |
 | --- | --- | --- | --- |
@@ -459,15 +462,16 @@ Workflow, sends it Signals, and starts and kills its Worker.
   not a hidden retry inside one SDK call. Event History records each step and
   its result.
 - **Every `issue_refund` attempt in a run sends the same idempotency key,** to
-  the offline ledger ([`fake_stripe.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/fake_stripe.py)) by
-  default or to Stripe test mode with `--real`. A refund call that was in
+  Stripe test mode in a live run, or to the offline ledger
+  ([`fake_stripe.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/fake_stripe.py))
+  with `--offline`. A refund call that was in
   flight when a Worker died can run again, and the key keeps that retry from
   creating a second refund.
 
-### The agent loop and its five Activities
+### The agent loop and its Activities
 
 The loop itself is part of the Workflow Definition. On each turn it calls one Activity to decide
-what to do next, and then does it. The agent has five Activities it can run:
+what to do next, and then does it. The agent can run five Activities in the loop, and the Workflow runs a sixth, `remember_case`, after the refund:
 
 | Activity | What it does |
 | --- | --- |
@@ -475,7 +479,8 @@ what to do next, and then does it. The agent has five Activities it can run:
 | `lookup_order` | Reads the order the customer wants refunded. |
 | `lookup_customer_history` | Reads the customer's past refunds. |
 | `check_refund_policy` | Checks whether the order qualifies for a refund. It runs only when the model or the fixed policy asks for it, and the default run doesn't. |
-| `issue_refund` | Sends the refund with the run's idempotency key. It's the loop's only side effect, and it runs only after the decision is to refund. |
+| `issue_refund` | Sends the refund with the run's idempotency key. It's the payment side effect, and it runs only after the decision is to refund. |
+| `remember_case` | Saves a short case note for the customer to the demo's SQLite store after the refund. The Workflow ID identifies the note, so a retried write saves it once. |
 
 The customer's answers aren't Activities. They arrive as Signals, and the
 Workflow waits for each one. Because Event History records each Activity's
