@@ -34,7 +34,7 @@ The Activity function name can be provided as a variable object (no quotations) 
 The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
 The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["20", "28", "31", "37-48", "57-59", "66"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["20", "28", "31", "37-48", "57-59", "66"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -63,7 +63,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 // ...
 }
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 ### Set the required Activity Timeouts {/* #required-timeout */}
 
@@ -76,10 +76,10 @@ To set an Activity Timeout in Go, create an instance of `ActivityOptions` from t
 Available timeouts are:
 
 - `StartToCloseTimeout`
-- `ScheduleToClose`
+- `ScheduleToCloseTimeout`
 - `ScheduleToStartTimeout`
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "31", "35-38", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "31", "35-38", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -94,7 +94,7 @@ Available timeouts are:
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 ### Go ActivityOptions reference {/* #activity-options-reference */}
 
@@ -118,7 +118,7 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 - Type: `string`
 - Default: None
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["28-29", "37", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28-29", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -129,16 +129,16 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
-- [What is an Activity Id](/activity-execution#activity-id)
+- [What is an Activity ID](/activity-execution#activity-id)
 
 #### TaskQueue
 
 - Type: `string`
 - Default: Inherits the TaskQueue name from the Workflow.
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "30", "37", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "30", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -150,7 +150,7 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 - [What is a Task Queue](/task-queue)
 
@@ -163,7 +163,7 @@ This or `StartToCloseTimeout` must be set.
 - Type: `time.Duration`
 - Default: ∞ (infinity - no limit)
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "35", "37", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "35", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -175,7 +175,7 @@ This or `StartToCloseTimeout` must be set.
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 #### ScheduleToStartTimeout
 
@@ -184,7 +184,7 @@ To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#s
 - Type: `time.Duration`
 - Default: ∞ (infinity - no limit)
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "36", "37", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "36", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -196,7 +196,7 @@ To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#s
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 #### StartToCloseTimeout
 
@@ -207,7 +207,7 @@ This or `ScheduleToCloseTimeout` must be set.
 - Type: `time.Duration`
 - Default: Same as the `ScheduleToCloseTimeout`
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "31", "37", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "31", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -219,13 +219,13 @@ This or `ScheduleToCloseTimeout` must be set.
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 #### HeartbeatTimeout
 
 To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `HeartbeatTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "32", "37", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "32", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -237,7 +237,7 @@ To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 #### WaitForCancellation
 
@@ -246,7 +246,7 @@ If `true` the Activity Execution will finish executing should there be a Cancell
 - Type: `bool`
 - Default: `false`
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "33", "37", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "33", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -258,7 +258,7 @@ If `true` the Activity Execution will finish executing should there be a Cancell
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 #### RetryPolicy
 
@@ -267,7 +267,7 @@ To set a [RetryPolicy](/encyclopedia/retry-policies), create an instance of `Act
 - Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default:
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["21-27"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["21-27"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -279,11 +279,11 @@ To set a [RetryPolicy](/encyclopedia/retry-policies), create an instance of `Act
 		NonRetryableErrorTypes: []string{},        // empty
 	}
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 Providing a Retry Policy here is a customization that overwrites individual Field defaults.
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["21-28", "34", "37", "45"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["21-28", "34", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
@@ -302,7 +302,7 @@ Providing a Retry Policy here is a customization that overwrites individual Fiel
 // ...
 
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 ### Get the results of an Activity Execution {/* #get-activity-results */}
 
@@ -319,11 +319,11 @@ The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https:
 Call the `Get()` method on the instance of `workflow.Future` to get the result of the Activity Execution.
 The type of the result parameter must match the type of the return value declared by the Activity function.
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["21" ,"44-48", "57-59"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["20", "44-48", "57-59", "66"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
-	retryPolicy := &temporal.RetryPolicy{
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
 	var a *YourActivityObject
 
@@ -334,16 +334,18 @@ The type of the result parameter must match the type of the return value declare
 	if err := future.Get(ctx, &activityResult); err != nil {
 		return nil, err
 	}
+// ...
+}
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 Use the `IsReady()` method first to make sure the `Get()` call doesn't cause the Workflow Execution to wait on the result.
 
-{/* SNIPSTART go-activities-execution-workflow {"selectedLines": ["21" ,"44-54"]} */}
+<!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["20", "44-54", "66"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
 // ...
-	retryPolicy := &temporal.RetryPolicy{
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
 	var a *YourActivityObject
 
@@ -356,8 +358,10 @@ Use the `IsReady()` method first to make sure the `Get()` call doesn't cause the
 			return nil, err
 		}
 	}
+// ...
+}
 ```
-{/* SNIPEND */}
+<!--SNIPEND-->
 
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
 Therefore, it is also idiomatic to either block on the results of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.

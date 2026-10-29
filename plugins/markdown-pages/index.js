@@ -3,6 +3,8 @@ const path = require('path');
 const matter = require('gray-matter');
 const { absolutizeImageUrls } = require('./image-urls');
 const { walkDir, resolveUrlPath: resolveUrlPathShared } = require('../shared/docsRouting');
+const { applyDefaults } = require('../shared/frontmatterDefaults');
+const { titleWithSection } = require('../../src/utils/sectionTitle');
 
 // Accepts either a single {docsDir, routeBasePath} (back-compat) or a
 // `targets` array, so one plugin instance can walk multiple docs plugin
@@ -97,9 +99,9 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
   }
 
   // Agents that fetch a .md page directly have no way to discover the rest of
-  // the docs from it. A blockquote directive under the H1 gives them the index
-  // and the .md convention. Mirrors the visually hidden AgentDirective rendered
-  // into the HTML. See MARKDOWN_PIPELINE.md.
+  // the docs from it. A blockquote directive under the H1 gives them the index,
+  // the .md convention, and the search endpoint. Mirrors the visually hidden
+  // AgentDirective rendered into the HTML. See MARKDOWN_PIPELINE.md.
   //
   // Applied only when writing the per-page .md files. llms-full.txt keeps the
   // undecorated markdown and carries the same pointer once in its own header,
@@ -107,7 +109,12 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
   function withAgentDirective(markdown, siteUrl) {
     const directive =
       `> For the complete documentation index, see [llms.txt](${siteUrl}/llms.txt).\n` +
-      '> Any documentation page is available as raw Markdown by appending `.md` to its URL.';
+      '> Any documentation page is available as raw Markdown by appending `.md` to its URL.\n' +
+      // Agent search endpoint experiment. src=md-page tells the request log
+      // which surface the caller found the URL on; see readme/AGENT-RETRIEVE.md.
+      `> For related questions, query ${siteUrl}/api/retrieve?q=<question>&jtb=<job-to-be-done>&src=md-page&agent=<your-name> ` +
+      '(no auth; returns JSON `{content, source_url, page_url}`, with `source_url` pointing to Markdown for docs pages). ' +
+      "Don't include personal data or credentials.";
 
     // Keep the H1 as the first line so title extraction keeps working; the
     // directive slots in just below it. Pages without an H1 get it up top.
@@ -347,7 +354,8 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
 
         for (const filePath of files) {
           const raw = fs.readFileSync(filePath, 'utf8');
-          const { data: frontmatter } = matter(raw);
+          const { data: pageFrontmatter } = matter(raw);
+          const frontmatter = applyDefaults(filePath, pageFrontmatter, { rootDir: context.siteDir });
 
           const urlPath = resolveUrlPathShared(docsDir, filePath, frontmatter, routeBasePath);
           const outputPath = path.join(outDir, urlPath + '.md');
@@ -382,7 +390,7 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
             if (llmsTxt && frontmatter.title) {
               pages.push({
                 urlPath,
-                title: frontmatter.title,
+                title: titleWithSection(frontmatter.title, frontmatter.section_title),
                 sidebarLabel: frontmatter.sidebar_label || '',
                 description: frontmatter.description || '',
                 relPath: path.relative(docsDir, filePath).replace(/\\/g, '/'),

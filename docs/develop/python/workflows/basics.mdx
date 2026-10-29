@@ -1,8 +1,8 @@
 ---
 id: basics
-title: Workflow Basics - Python SDK
+title: Workflow basics
 sidebar_label: Workflow basics
-description: This section explains Workflow Basics with the Python SDK
+description: This section explains Workflow basics with the Python SDK
 toc_max_heading_level: 4
 tags:
   - Workflows
@@ -22,14 +22,16 @@ Specify the `@workflow.defn` decorator on the Workflow class to identify a Workf
 Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method
 defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
-```python {9,11}
+<!--SNIPSTART python-workflow-basics-workflow {"highlightedLines": "9,11"}-->
+[python-sandbox/workflows/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/your_workflow.py)
+```py {9,11}
 from datetime import timedelta
 
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
-    from your_activities_dacx import your_activity
-    from your_dataobject_dacx import YourParams
+    from workflow_basics.your_activities import your_activity
+    from workflow_basics.your_dataobject import YourParams
 
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
@@ -41,6 +43,7 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+<!--SNIPEND-->
 
 ### Define Workflow parameters {/* #workflow-parameters */}
 
@@ -53,7 +56,9 @@ data type Temporal can convert, including [`dataclasses`](https://docs.python.or
 properly type-annotated. Technically this can be multiple parameters, but Temporal strongly encourages a single
 `dataclass` parameter containing all input fields.
 
-```python {3}
+<!--SNIPSTART python-workflow-basics-params {"highlightedLines": "3"}-->
+[python-sandbox/workflows/workflow_basics/your_dataobject.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/your_dataobject.py)
+```py {3}
 from dataclasses import dataclass
 
 @dataclass
@@ -61,6 +66,7 @@ class YourParams:
     greeting: str
     name: str
 ```
+<!--SNIPEND-->
 
 ### Define Workflow return parameters {/* #workflow-return-values */}
 
@@ -79,14 +85,16 @@ third-party plugins, whose calls will be deterministic using
 Worker creation time by customizing the runner's restrictions with
 [`with_passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#with_passthrough_modules).
 
-```python {5-7}
+<!--SNIPSTART python-workflow-basics-workflow {"highlightedLines": "5-7"}-->
+[python-sandbox/workflows/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/your_workflow.py)
+```py {5-7}
 from datetime import timedelta
 
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
-    from your_activities_dacx import your_activity
-    from your_dataobject_dacx import YourParams
+    from workflow_basics.your_activities import your_activity
+    from workflow_basics.your_dataobject import YourParams
 
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
@@ -98,6 +106,7 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+<!--SNIPEND-->
 
 ### Customize your Workflow Type {/* #workflow-type */}
 
@@ -109,12 +118,16 @@ You can customize the Workflow name with a custom name in the decorator argument
 `@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the
 unqualified class name.
 
-```python
+<!--SNIPSTART python-workflow-basics-workflow-->
+[python-sandbox/workflows/workflow_basics/your_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/your_workflow.py)
+```py
+from datetime import timedelta
+
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
-    from your_activities_dacx import your_activity
-    from your_dataobject_dacx import YourParams
+    from workflow_basics.your_activities import your_activity
+    from workflow_basics.your_dataobject import YourParams
 
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
@@ -126,6 +139,7 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+<!--SNIPEND-->
 
 ### Use Workflow constructors
 
@@ -135,7 +149,9 @@ The SDK will then ensure that your `__init__` method receives the Workflow input
 
 Here's an example. Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
 
-```python
+<!--SNIPSTART python-workflow-basics-init-->
+[python-sandbox/workflows/workflow_basics/workflow_init.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/workflow_init.py)
+```py
 @dataclass
 class MyWorkflowInput:
     name: str
@@ -152,9 +168,8 @@ class WorkflowRunSeesWorkflowInitWorkflow:
     async def get_greeting(self, workflow_input: MyWorkflowInput) -> str:
         await workflow.wait_condition(lambda: self.title_has_been_checked)
         return f"Hello, {self.name_with_title}"
-
-    # other Workflow code
 ```
+<!--SNIPEND-->
 
 ### Develop Workflow logic {/* #workflow-logic-requirements */}
 
@@ -182,14 +197,16 @@ The SDK provides replay-safe alternatives for common needs:
 Use [`workflow.logger`](https://python.temporal.io/temporalio.workflow.html#logger) instead of `print()` or the standard `logging` module.
 The SDK logger automatically suppresses log messages during replay to avoid duplicates:
 
-```python
+<!--SNIPSTART python-workflow-basics-logger-->
+[python-sandbox/workflows/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/deterministic_workflow.py)
+```py
 @workflow.defn
-class MyWorkflow:
+class DeterministicApisWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
-        workflow.logger.info("Starting workflow", name)
-        # ...
+        workflow.logger.info("Starting workflow for %s", name)
 ```
+<!--SNIPEND-->
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/python/platform/observability#logging).
 
@@ -198,18 +215,24 @@ For logger configuration, see [Observability: Log from a Workflow](/develop/pyth
 Use [`workflow.random()`](https://python.temporal.io/temporalio.workflow.html#random) to get a deterministic `random.Random` instance seeded per Workflow Execution. Never use `random.random()` or other `random` module functions directly.
 For UUIDs, use [`workflow.uuid4()`](https://python.temporal.io/temporalio.workflow.html#uuid4) instead of `uuid.uuid4()`:
 
-```python
+<!--SNIPSTART python-workflow-basics-random-->
+[python-sandbox/workflows/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/deterministic_workflow.py)
+```py
 value = workflow.random().randint(1, 100)
 unique_id = workflow.uuid4()
 ```
+<!--SNIPEND-->
 
 #### Current time
 
 Use [`workflow.now()`](https://python.temporal.io/temporalio.workflow.html#now) instead of `datetime.now()` or `time.time()`. The SDK returns the time of the last Workflow Task, which is consistent across replays:
 
-```python
+<!--SNIPSTART python-workflow-basics-now-->
+[python-sandbox/workflows/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/deterministic_workflow.py)
+```py
 current_time = workflow.now()
 ```
+<!--SNIPEND-->
 
 #### Detecting replay (advanced)
 
@@ -220,9 +243,12 @@ Never use this to affect Workflow business logic — branching on replay status 
 
 :::
 
-```python
+<!--SNIPSTART python-workflow-basics-is-replaying-->
+[python-sandbox/workflows/workflow_basics/deterministic_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/workflow_basics/deterministic_workflow.py)
+```py
 if not workflow.unsafe.is_replaying():
     emit_metric("workflow_started", 1)
 ```
+<!--SNIPEND-->
 
 If your goal is to always take action when something new is happening, check that `workflow.unsafe.is_replaying_history_events()` is false instead. This will be false during read-only operations like queries and update validators.  This is what the SDK's built-in logger and tracing interceptors use internally.

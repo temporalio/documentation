@@ -44,6 +44,10 @@ When a Worker crashes or experiences a host outage:
 3. The new Worker replays the Event History to reconstruct state
 4. Execution continues from where it left off
 
+Step 2 needs another Worker polling the same Task Queue. With only one Worker, the Task waits until that Worker restarts.
+Run at least two Workers per Task Queue, as described in
+[Run at least two Workers per Task Queue](/best-practices/worker#run-at-least-two-workers-per-task-queue).
+
 For more details on Worker architecture, see [What is a Temporal Worker?](/workers)
 
 ## Compute settings
@@ -203,6 +207,7 @@ For detailed tuning guidance, see:
 
 - [What is a Temporal Worker?](/workers) - Conceptual overview
 - [Worker performance](/develop/worker-performance) - Comprehensive tuning guide
+- [Worker tuning simulator](/demos/worker-tuning-simulator) - Interactive demo of Pollers, Slots, and cache limits
 - [Worker deployment and performance](/best-practices/worker) - Best practices
 - [SDK metrics reference](/references/sdk-metrics) - Complete metrics documentation
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) - Safe deployments

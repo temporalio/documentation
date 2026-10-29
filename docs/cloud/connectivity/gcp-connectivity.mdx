@@ -11,8 +11,6 @@ tags:
   - Temporal Cloud
 ---
 
-import { JsonTable } from '@site/src/components';
-
 [Google Cloud Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Google Virtual Private Cloud (VPC) and Temporal Cloud.
 This one-way connection means Temporal cannot establish a connection back to your service.
@@ -51,7 +49,7 @@ Set up Private Service Connect with Temporal Cloud with these steps:
 
    ![GCP console showing the endpoints, and the Connect endpoint button](/img/cloud/gcp/connect-endpoint.png)
 
-- For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you’re trying to connect to:
+- For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you're trying to connect to. See [Available GCP regions, PSC endpoints, and DNS record overrides](#available-gcp-regions-psc-endpoints-and-dns-record-overrides) for the list of available services.
 
 :::tip
 
@@ -59,8 +57,6 @@ GCP Private Service Connect services are regional.
 Individual Namespaces do not use separate services.
 
 :::
-
-<JsonTable filename="/json/privatelink_gcp.json" />
 
 - For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
 - For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
@@ -199,9 +195,7 @@ The following table lists the available Temporal regions, PrivateLink endpoints,
 
 :::caution GCP capacity restriction
 
-New single-region Namespaces in all GCP regions require an approved exception for your account.
-To add a GCP replica, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
-See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction).
+Before creating a GCP Namespace or adding a GCP replica, check [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for regional availability and exception requirements.
 
 :::
 
