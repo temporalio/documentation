@@ -94,7 +94,7 @@ Namespace as your Worker Deployment.
 A Namespace runs at most 100 WCI Workflows by default, which caps how many Worker Deployment Versions in the Namespace
 can have a compute provider at once. A version's WCI runs until the version is deleted, so drained versions count
 against the limit. See
-[Max Worker Controller Instances limits](/cloud/limits#max-worker-controller-instances-limits).
+[Max Worker Controller Instances limits](/evaluate/cloud/limits#max-worker-controller-instances-limits).
 
 The WCI adjusts the Worker count based on Task Queue conditions. Sync match failures and Task Queue backlog signal that
 more capacity is needed, and the WCI adds Workers by triggering the configured compute provider. It also removes

@@ -415,7 +415,7 @@ The maximum number of Task Queues that the server allows to be registered in a s
 
 ### Max Worker Controller Instances limits {/* #max-worker-controller-instances-limits */}
 
-The maximum number of [Worker Controller Instances](/serverless-workers#worker-controller-instance) that the server allows to run in a single Namespace. Defaults to 100. [Contact support](/cloud/support#support-ticket) to increase it.
+The maximum number of [Worker Controller Instances](/serverless-workers#worker-controller-instance) that the server allows to run in a single Namespace. Defaults to 100. [Contact support](/evaluate/cloud/support#support-ticket) to increase it.
 
 This limit applies only to [Serverless Workers](/serverless-workers). Temporal runs one Worker Controller Instance for each Worker Deployment Version that has a compute configuration, and the count covers every Worker Deployment in the Namespace. Drained versions still count, because the Worker Controller Instance runs until the version itself is deleted.
 
