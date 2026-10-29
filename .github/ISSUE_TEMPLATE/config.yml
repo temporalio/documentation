@@ -1,6 +1,6 @@
 blank_issues_enabled: false
 contact_links:
-  - "https://github.com/temporalio/documentation/blob/main/CONTACT.md"
+  - "https://github.com/temporalio/documentation/blob/main/readme/CONTACT.md"
 templates:
   - name: "Typos and Grammar"
     description: "Report typos, spelling mistakes, or grammar problems."

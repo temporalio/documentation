@@ -1,15 +1,14 @@
 ---
 id: timeouts
-title: Activity Timeouts - Java SDK
+title: Activity Timeouts
 sidebar_label: Timeouts
-description:
-  This section explains how to implement Workers with the Java SDK
+description: Set the Schedule-To-Close, Start-To-Close, and Heartbeat Timeouts on a Java Activity, tune its Retry Policy, and override the next retry delay.
 toc_max_heading_level: 4
-keywords:
-  - java
 tags:
-  - Java SDK
-  - Temporal SDKs
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
 ---
 
 ## Activity timeouts
@@ -115,7 +114,7 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
             .build();
   ```
 
-## Activity next retry delay {/* #activity-next-retry-delay */}
+### Activity next retry delay {/* #activity-next-retry-delay */}
 
 You may throw an [`ApplicationFailure`](/references/failures#application-failure) with the `NextRetryDelay` field set. This value will replace and override whatever the retry interval would be on the retry policy.
 
@@ -167,6 +166,9 @@ If the Activity Execution times out, the last Heartbeat `details` are included i
 The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
 
 In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
+
+After a Worker starts a graceful shutdown, `heartbeat()` throws `ActivityWorkerShutdownException` by default.
+To keep Heartbeating while the Worker drains, see [Heartbeat during shutdown](/develop/java/workers/run-worker-process#heartbeat-during-shutdown).
 
 ### Heartbeat Timeout {/* #heartbeat-timeout */}
 

@@ -91,14 +91,13 @@ These already offered some form of "enlarge". Their interaction is now the unifi
 |---|---|
 | [/develop/task-queue-priority-fairness](https://docs.temporal.io/develop/task-queue-priority-fairness) | EnlargeImage — click opened the raw image in a new browser tab |
 | [/cloud/namespaces](https://docs.temporal.io/cloud/namespaces) | ZoomingImage (thumbnail→inline) + CaptionedImage |
-| [/cloud/metrics/prometheus-grafana](https://docs.temporal.io/cloud/metrics/prometheus-grafana) | ZoomingImage (thumbnail→inline) |
 | [/cloud/high-availability/ha-connectivity](https://docs.temporal.io/cloud/high-availability/ha-connectivity) | CaptionedImage zoom="true" (inline toggle) |
-| [/cloud/migrate/migrate-within-cloud](https://docs.temporal.io/cloud/migrate/migrate-within-cloud) | CaptionedImage zoom="true" (inline toggle) |
+| [/cloud/migrate/between-regions-or-cloud-providers](https://docs.temporal.io/cloud/migrate/between-regions-or-cloud-providers) | CaptionedImage zoom="true" (inline toggle) |
 | [/nexus](https://docs.temporal.io/nexus) | CaptionedImage zoom="true" (inline toggle) |
 | [/nexus/execution-debugging](https://docs.temporal.io/nexus/execution-debugging) | CaptionedImage zoom="true" (inline toggle) |
 
 > **Heads-up / follow-ups:** the new logic only zooms images that genuinely overflow the column, so a few *small* images that were manually marked zoomable no longer zoom:
-> - `migrate-within-cloud.mdx` — its four `zoom="true"` images are only 310–751px wide (they fit the column), so they no longer zoom. They'd need higher-resolution sources to be worth expanding.
+> - `between-regions-or-cloud-providers.mdx` — its four `zoom="true"` images are only 310–751px wide (they fit the column), so they no longer zoom. They'd need higher-resolution sources to be worth expanding.
 > - `namespaces.mdx` — the `ZoomingImage` there (`cloud-account-id.png`, 218px) was a tiny thumbnail; expanding it is no longer meaningful. The large `CaptionedImage`s on the same page do zoom.
 > - `sdk-metrics-setup.mdx` — imports `ZoomingImage` but never renders it; the unused import can be removed.
 
@@ -120,7 +119,6 @@ Pages that did **not** previously have any zoom but contain raster images ≥ 80
 - [/cloud/audit-logs-gcp](https://docs.temporal.io/cloud/audit-logs-gcp) — _max 2548px_
 - [/cloud/high-availability/failovers](https://docs.temporal.io/cloud/high-availability/failovers) — _max 2407px_
 - [/cloud/export/gcp-export-gcs](https://docs.temporal.io/cloud/export/gcp-export-gcs) — _max 2351px_
-- [/cloud/metrics/openmetrics/migration-guide](https://docs.temporal.io/cloud/metrics/openmetrics/migration-guide) — _max 2200px_
 - [/cloud/connectivity/gcp-connectivity](https://docs.temporal.io/cloud/connectivity/gcp-connectivity) — _max 2198px_
 - [/cloud/connectivity/aws-connectivity](https://docs.temporal.io/cloud/connectivity/aws-connectivity) — _max 1999px_
 - [/cloud/export/aws-export-s3](https://docs.temporal.io/cloud/export/aws-export-s3) — _max 1981px_

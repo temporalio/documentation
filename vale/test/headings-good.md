@@ -57,3 +57,9 @@
 ## Create a Saved View
 
 ## Run Hello World: Test your installation
+
+## Run against Vertex AI
+
+## Call a Gemini model from a Workflow
+
+## Authenticate to Google Cloud

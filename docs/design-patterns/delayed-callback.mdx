@@ -2,7 +2,10 @@
 id: delayed-callback
 title: "Delayed Callback (Webhooks)"
 sidebar_label: "Delayed Callback"
-description: "Integrates webhooks durably: receive inbound webhooks via Signals, fire delayed outbound callbacks with durable timers, and complete Activities asynchronously via task tokens."
+description: "Webhooks become durable: inbound calls arrive as Signals, outbound calls fire after a durable sleep, and Activities complete later via task tokens."
+tags:
+  - Design Patterns
+  - Signals
 ---
 
 import Tabs from '@theme/Tabs';
@@ -23,7 +26,7 @@ Temporal lets you build durable, observable webhook-based integrations without a
 ## Problem
 
 Waiting for another system without Durable Execution is hard. You must implement your own:
-- durable timers (e.g. with a cron per timer)
+- durable timers (for example, with a cron per timer)
 - retry queues
 - state stores
 - reconciliation jobs
@@ -715,7 +718,7 @@ func CompleteJob(ctx context.Context, c client.Client, jobID string, result stri
 **Trade-offs**
 
 - Your inbound webhook handler requires a Temporal client; you need the client library in the service receiving webhooks.
-- Task tokens for async completion must be persisted outside Temporal (e.g., in a database); if that store is unavailable the callback cannot complete.
+- Task tokens for async completion must be persisted outside Temporal (for example, in a database); if that store is unavailable the callback cannot complete.
 - Workflow IDs must be deterministic and stable across webhook deliveries (order ID, user ID, etc.) so that Signal-with-Start routes to the correct instance.
 
 ## Comparison with alternatives
@@ -744,11 +747,16 @@ func CompleteJob(ctx context.Context, c client.Client, jobID string, result stri
 - **Losing the task token** in Pattern 3. If the service storing task tokens is unavailable when the callback arrives, the activity can never complete. Store the token durably (database, not in-process cache).
 - **Forgetting to signal async completion** in Pattern 3 (`raise_complete_async()` in Python, `ErrResultPending` in Go, `doNotCompleteOnReturn()` in Java). Without this, Temporal marks the activity as completed immediately when the function returns, before the external callback arrives.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Signal with Start](/design-patterns/signal-with-start) — deeper coverage of the Signal-with-Start API for entity Workflows
 - [Approval](/design-patterns/approval) — blocking wait for an external human decision using Signals
 - [Polling External Services](/design-patterns/polling) — alternative to callbacks when the external system does not support webhooks
 - [Delayed Start](/design-patterns/delayed-start) — defer Workflow execution to a future time without `workflow.sleep()`
 - [Long-Running Activity](/design-patterns/long-running-activity) — heartbeating pattern for activities that run for extended periods
-- **In the future** - Org-to-Org Nexus, stay tuned.
+
+### References
+
+- [Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion) — canonical reference for Pattern 3's task-token mechanism, including when to prefer it over Signals

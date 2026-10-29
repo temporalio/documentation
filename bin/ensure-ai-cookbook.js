@@ -2,6 +2,7 @@
 
 const { existsSync, mkdirSync, writeFileSync } = require('fs');
 const path = require('path');
+const { writeAiCookbookIndex } = require('./write-ai-cookbook-index');
 
 const WORKSPACE_ROOT = path.resolve(__dirname, '..');
 const OUTPUT_DIR = path.join(WORKSPACE_ROOT, process.env.AI_COOKBOOK_OUTPUT_DIR ?? 'ai-cookbook');
@@ -26,6 +27,9 @@ Content has not been synced yet. Run \`yarn sync:ai-cookbook\` to fetch the reci
 `,
     'utf8'
   );
+  // The landing page (/ai/cookbook, ai-cookbook/index.mdx) isn't recipe
+  // content — write it too so the route works before the first real sync.
+  writeAiCookbookIndex(OUTPUT_DIR);
   console.log('[ensure-ai-cookbook] Created placeholder directory');
 }
 

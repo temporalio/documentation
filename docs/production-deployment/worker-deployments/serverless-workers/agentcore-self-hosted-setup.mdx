@@ -1,0 +1,245 @@
+---
+id: agentcore-self-hosted-setup
+title: Self-hosted setup for Serverless Workers on Amazon Bedrock AgentCore Runtime
+sidebar_label: Self-hosted setup
+description: Configure AWS access and a self-hosted Temporal Service to run Serverless Workers on Amazon Bedrock AgentCore Runtime.
+slug: /production-deployment/worker-deployments/serverless-workers/agentcore/self-hosted-setup
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+  - Self-hosting
+  - Amazon Bedrock AgentCore
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Amazon Bedrock AgentCore Runtime support is in Pre-release, and its APIs may change in backwards-incompatible ways.
+</ReleaseNoteHeader>
+
+Serverless Workers on AgentCore Runtime require Temporal Service v1.32.0 or later.
+
+This page covers the prerequisites for running [Serverless Workers](/serverless-workers) on a self-hosted Temporal
+Service with AgentCore Runtime:
+
+1. Ensure that AgentCore Runtime and the Temporal Service can reach each other.
+2. Enable the Worker Controller Instance (WCI) and AgentCore compute provider through dynamic configuration.
+3. Provide the Temporal Service with AWS credentials.
+4. Create an IAM role that grants Temporal permission to get and invoke AgentCore Runtime endpoints.
+
+Once setup is complete, follow the
+[AgentCore Runtime deployment guide](/production-deployment/worker-deployments/serverless-workers/agentcore) to deploy
+your Worker.
+
+## Configure network access {/* #configure-network-access */}
+
+The [Temporal Service frontend](/temporal-service/temporal-server#frontend-service) must be reachable from the
+AgentCore Runtime. If the Temporal Service has a public endpoint, configure the Runtime to use a public network. If the
+Temporal Service is available only through a private network, configure the Runtime for
+[VPC access](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-vpc.html) and connect that VPC to
+the network that hosts the Temporal Service.
+
+The Temporal Service must also reach the AgentCore control-plane and data-plane APIs. If the Service runs in an AWS VPC
+without internet access, configure
+[AgentCore interface VPC endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/vpc-interface-endpoints.html)
+for both APIs.
+
+## Enable the Worker Controller Instance {/* #enable-worker-controller */}
+
+[WCI](/serverless-workers#how-invocation-works) is the server component that monitors Task Queues and invokes compute
+providers. It is disabled by default and must be enabled through
+[dynamic configuration](/references/dynamic-configuration).
+
+Add the following keys to your dynamic config file:
+
+```yaml
+workercontroller.enabled:
+  - value: true
+
+workercontroller.compute_providers.enabled:
+  - value:
+      - aws-agentcore
+
+workercontroller.scaling_algorithms.enabled:
+  - value:
+      - no-sync
+```
+
+`workercontroller.compute_providers.enabled` is an allowlist that defaults to no providers. The `aws-agentcore` value
+enables the AgentCore compute provider. AgentCore uses the `no-sync` event-driven scaling algorithm, which invokes a
+Runtime session when the Task Queue needs more Worker capacity.
+
+If either allowlist already contains values for other compute providers or scaling algorithms, keep those values and
+add `aws-agentcore` or `no-sync` to the existing list.
+
+To enable WCI for specific Namespaces instead of globally, add a `constraints` section with the Namespace name under
+`workercontroller.enabled`. For example, to enable WCI only for `your-namespace`:
+
+```yaml
+workercontroller.enabled:
+  - value: true
+    constraints:
+      namespace: 'your-namespace'
+```
+
+The Temporal Service watches the dynamic config file for changes and applies updates without a restart.
+
+By default, the AWS compute providers require an invocation role and External ID in each Worker Deployment Version.
+Keep the default value of `workercontroller.compute_providers.aws.require_role_and_external_id` enabled and create the
+role in the following sections.
+
+## Configure AWS credentials {/* #configure-aws-credentials */}
+
+The Temporal Service needs AWS credentials to assume the AgentCore invocation role. How you provide credentials depends
+on where the Temporal Service runs.
+
+**On AWS infrastructure such as EC2, ECS, or EKS:** The server uses the attached instance role, task role, or pod role
+automatically. The attached role must have `sts:AssumeRole` permission for the invocation role created in the next
+step.
+
+**Outside AWS:** Use [IAM Roles Anywhere](https://aws.amazon.com/iam/roles-anywhere/), or configure static AWS
+credentials in the server environment. Static credentials are not recommended:
+
+```text
+AWS_ACCESS_KEY_ID=<ACCESS_KEY>
+AWS_SECRET_ACCESS_KEY=<SECRET_KEY>
+AWS_REGION=<REGION>
+```
+
+These credentials must belong to an IAM user or role that has `sts:AssumeRole` permission for the AgentCore invocation
+role.
+
+## Create the AgentCore invocation role {/* #create-invocation-role */}
+
+Temporal gets and invokes AgentCore Runtime endpoints by assuming an IAM role in your AWS account. The role trust policy
+must allow the AWS identity used by the Temporal Service to assume it.
+
+[Download the CloudFormation template](/files/temporal-self-hosted-serverless-worker-agentcore-role.yaml), then deploy
+it. Pass each Runtime ARN with a trailing wildcard so the policy covers the Runtime and its endpoints:
+
+:::caution
+
+An [IAM role name can contain at most 64
+characters](https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-iam-role.html). If you
+set `RoleName`, keep the complete name within this limit.
+
+:::
+
+```bash
+aws cloudformation create-stack \
+  --stack-name temporal-agentcore-worker \
+  --template-body file://temporal-self-hosted-serverless-worker-agentcore-role.yaml \
+  --parameters \
+    ParameterKey=TemporalIamRoleArn,ParameterValue=<TEMPORAL_SERVER_ROLE_ARN> \
+    ParameterKey=AssumeRoleExternalId,ParameterValue=<EXTERNAL_ID> \
+    ParameterKey=AgentRuntimeARNs,ParameterValue='<AGENT_RUNTIME_ARN>*' \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region <AWS_REGION>
+```
+
+| Parameter | Description |
+| --- | --- |
+| `TemporalIamRoleArn` | ARN of the IAM role or user that the Temporal Service runs as. Run `aws sts get-caller-identity` in the server environment to identify it. |
+| `AssumeRoleExternalId` | Unique string that prevents [confused deputy](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html) attacks. Use the same value when creating the Worker Deployment Version. |
+| `AgentRuntimeARNs` | Comma-separated Runtime ARNs that Temporal can access. Append a wildcard to each Runtime ARN to include its endpoints. |
+| `RoleName` | Name of the IAM role to create. Defaults to `Temporal-AgentCore-Worker`. Use a different name when deploying more than one copy of the stack. |
+
+<details>
+<summary>CloudFormation template</summary>
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Description:
+  Creates an IAM role that a self-hosted Temporal Service can assume to invoke Amazon Bedrock AgentCore runtimes.
+
+Parameters:
+  TemporalIamRoleArn:
+    Type: String
+    Description: The ARN of the IAM role or user that the Temporal Service runs as.
+
+  AssumeRoleExternalId:
+    Type: String
+    Description: A unique identifier to prevent confused deputy attacks.
+    AllowedPattern: '[a-zA-Z0-9_+=,.@-]*'
+    MinLength: 5
+    MaxLength: 45
+
+  AgentRuntimeARNs:
+    Type: CommaDelimitedList
+    Description: >-
+      Comma-separated list of AgentCore Runtime ARNs that Temporal may access. Append a wildcard to each Runtime ARN
+      to include its endpoints.
+
+  RoleName:
+    Type: String
+    Default: 'Temporal-AgentCore-Worker'
+
+Resources:
+  TemporalAgentCoreWorker:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: [!Ref TemporalIamRoleArn]
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                'sts:ExternalId': [!Ref AssumeRoleExternalId]
+      Description: The role the Temporal Service uses to invoke AgentCore runtimes for Serverless Workers
+      MaxSessionDuration: 3600
+
+  TemporalAgentCoreInvokePermissions:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: 'Temporal-AgentCore-Invoke-Permissions'
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - bedrock-agentcore:InvokeAgentRuntime
+              - bedrock-agentcore:GetAgentRuntimeEndpoint
+            Resource: !Ref AgentRuntimeARNs
+      Roles:
+        - !Ref TemporalAgentCoreWorker
+
+Outputs:
+  RoleARN:
+    Description: The ARN of the IAM role created for the Temporal Service
+    Value: !GetAtt TemporalAgentCoreWorker.Arn
+
+  AgentRuntimeARNs:
+    Description: The AgentCore Runtime ARNs that Temporal may access
+    Value: !Join [', ', !Ref AgentRuntimeARNs]
+```
+
+</details>
+
+Wait for the stack to finish, then retrieve the invocation role ARN:
+
+```bash
+aws cloudformation wait stack-create-complete \
+  --stack-name temporal-agentcore-worker \
+  --region <AWS_REGION>
+
+aws cloudformation describe-stacks \
+  --stack-name temporal-agentcore-worker \
+  --query 'Stacks[0].Outputs[?OutputKey==`RoleARN`].OutputValue' \
+  --output text \
+  --region <AWS_REGION>
+```
+
+Use this role ARN and the External ID when creating the Worker Deployment Version.
+
+## Next steps {/* #next-steps */}
+
+Follow the [AgentCore Runtime deployment
+guide](/production-deployment/worker-deployments/serverless-workers/agentcore). Configure the Runtime Worker with your
+self-hosted Temporal Service address and authentication settings. Skip the Temporal Cloud IAM step and use the
+invocation role and External ID from this page when you create the Worker Deployment Version with the Temporal CLI.

@@ -1,0 +1,60 @@
+{
+  "comment": "Metrics the SDKs define but docs/references/sdk-metrics.mdx does not document. bin/check-metrics-against-sdks.js reports anything not listed here, so this file is the record of what we have decided not to document. An empty note means the entry has not been reviewed yet; fill it in or document the metric and remove the entry. Regenerate with: yarn check:metrics:sdks --update-baseline",
+  "undocumented": [
+    {
+      "name": "activity_canceled",
+      "sdks": "Java",
+      "note": "Deprecated in the SDK. Superseded by activity_execution_cancelled."
+    },
+    {
+      "name": "activity_task_received",
+      "sdks": "Core",
+      "note": ""
+    },
+    {
+      "name": "local_activity_canceled",
+      "sdks": "Go, Java",
+      "note": "Deprecated in both SDKs. Superseded by local_activity_execution_cancelled."
+    },
+    {
+      "name": "local_activity_error",
+      "sdks": "Go",
+      "note": ""
+    },
+    {
+      "name": "local_activity_failed",
+      "sdks": "Go, Java",
+      "note": "Deprecated in both SDKs. Superseded by local_activity_execution_failed."
+    },
+    {
+      "name": "resource_slots_cpu_pid_output",
+      "sdks": "Core, Java",
+      "note": ""
+    },
+    {
+      "name": "resource_slots_mem_pid_output",
+      "sdks": "Core, Java",
+      "note": ""
+    },
+    {
+      "name": "sticky_cache_thread_forced_eviction",
+      "sdks": "Java",
+      "note": ""
+    },
+    {
+      "name": "workflow_task_execution_total_latency",
+      "sdks": "Java",
+      "note": ""
+    },
+    {
+      "name": "workflow_task_heartbeat",
+      "sdks": "Java",
+      "note": ""
+    },
+    {
+      "name": "workflow_task_no_completion",
+      "sdks": "Java",
+      "note": "Go declares WorkflowTaskNoCompletionCounter but never references it, so it is Java only."
+    }
+  ]
+}

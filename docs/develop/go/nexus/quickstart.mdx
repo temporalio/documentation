@@ -1,13 +1,8 @@
 ---
 id: quickstart
-title: Nexus Go Quickstart
+title: Nexus Go quickstart
 sidebar_label: Quickstart
 description: Build a Nexus Service that wraps an existing Temporal Workflow using the Go SDK
-keywords:
-  - nexus
-  - go
-  - quickstart
-  - getting started
 tags:
   - Nexus
   - Go SDK
@@ -18,15 +13,12 @@ hide_table_of_contents: true
 
 import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components';
 
-# Nexus Go Quickstart
+# Nexus Go quickstart
 
-[Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations. Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
+[Temporal Nexus](/evaluate/features/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations. Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
 
-:::info NEW TO NEXUS?
-
-This page will help you get a working sample running in Go. 
-To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus) and to learn more about Nexus features, click [here](/nexus).
-
+:::info
+To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/features/nexus). To learn how Nexus works, see [Temporal Nexus](/nexus).
 :::
 
 **Prerequisites:** Complete the [Go SDK Quickstart](/develop/go/set-up-your-local-go) first.
@@ -43,24 +35,27 @@ By the end of this guide:
 
 <SetupSteps>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="go" title="service.go">
-{`package greeting
+<CodeSnippet title="service.go">
+
+<!--SNIPSTART go-nexus-quickstart-service-->
+[go-sandbox/service.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/service.go)
+```go
+package quickstart
 
 const (
-    HelloServiceName   = "my-hello-service"
-    HelloOperationName = "say-hello"
+	HelloServiceName   = "my-hello-service"
+	HelloOperationName = "say-hello"
 )
 
 type HelloInput struct {
-    Name string
-}`}
-</CodeSnippet>
+	Name string
+}
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 1. Define the Nexus Service
 
@@ -75,41 +70,44 @@ It provides type safety when invoking Nexus Operations and ensures that Operatio
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="go" title="nexus_handler.go">
-{`package greeting
+<CodeSnippet title="nexus_handler.go">
+
+<!--SNIPSTART go-nexus-quickstart-handler-->
+[go-sandbox/nexus_handler.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexus_handler.go)
+```go
+package quickstart
 
 import (
-    "context"
+	"context"
 
-    "github.com/nexus-rpc/sdk-go/nexus"
-    "go.temporal.io/sdk/client"
-    "go.temporal.io/sdk/temporalnexus"
-    "go.temporal.io/sdk/workflow"
+	"github.com/nexus-rpc/sdk-go/nexus"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/temporalnexus"
+	"go.temporal.io/sdk/workflow"
 )
 
 // HelloNexusWorkflow is the handler Workflow for the Nexus SayHello Operation.
 // It bridges the Nexus HelloInput to SayHelloWorkflow's string parameter.
 func HelloNexusWorkflow(ctx workflow.Context, input HelloInput) (string, error) {
-    return SayHelloWorkflow(ctx, input.Name)
+	return SayHelloWorkflow(ctx, input.Name)
 }
 
 var HelloOperation = temporalnexus.NewWorkflowRunOperation(
-    HelloOperationName,
-    HelloNexusWorkflow,
-    func(ctx context.Context, input HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
-        return client.StartWorkflowOptions{
-            // RequestID is stable across retries, making it safe to use as a Workflow ID.
-            ID: options.RequestID,
-        }, nil
-    },
-)`}
-</CodeSnippet>
+	HelloOperationName,
+	HelloNexusWorkflow,
+	func(ctx context.Context, input HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+		return client.StartWorkflowOptions{
+			// RequestID is stable across retries, making it safe to use as a Workflow ID.
+			ID: options.RequestID,
+		}, nil
+	},
+)
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 2. Define the Nexus Operation handlers
 
@@ -125,51 +123,54 @@ The Options function returns `client.StartWorkflowOptions`, including a stable W
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="go" title="worker/main.go">
-{`package main
+<CodeSnippet title="worker/main.go">
+
+<!--SNIPSTART go-nexus-quickstart-worker-->
+[go-sandbox/nexusquickstart/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexusquickstart/worker/main.go)
+```go
+package main
 
 import (
-    "log"
+	"log"
 
-    "my-org/greeting"
+	"my-org/quickstart"
 
-    "github.com/nexus-rpc/sdk-go/nexus"
-    "go.temporal.io/sdk/client"
-    "go.temporal.io/sdk/worker"
+	"github.com/nexus-rpc/sdk-go/nexus"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
 )
 
 func main() {
-    // Empty Options defaults to the "default" Namespace.
-    c, err := client.Dial(client.Options{})
-    if err != nil {
-        log.Fatalln("Unable to create client", err)
-    }
-    defer c.Close()
+	// Empty Options defaults to the "default" Namespace.
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
 
-    w := worker.New(c, "my-task-queue", worker.Options{})
-    w.RegisterWorkflow(greeting.SayHelloWorkflow)
-    w.RegisterWorkflow(greeting.HelloNexusWorkflow)
-    w.RegisterActivity(greeting.Greet)
+	w := worker.New(c, "my-task-queue", worker.Options{})
+	w.RegisterWorkflow(quickstart.SayHelloWorkflow)
+	w.RegisterWorkflow(quickstart.HelloNexusWorkflow)
+	w.RegisterActivity(quickstart.Greet)
 
-    service := nexus.NewService(greeting.HelloServiceName)
-    err = service.Register(greeting.HelloOperation)
-    if err != nil {
-        log.Fatalln("Unable to register operations", err)
-    }
-    w.RegisterNexusService(service)
+	service := nexus.NewService(quickstart.HelloServiceName)
+	err = service.Register(quickstart.HelloOperation)
+	if err != nil {
+		log.Fatalln("Unable to register operations", err)
+	}
+	w.RegisterNexusService(service)
 
-    err = w.Run(worker.InterruptCh())
-    if err != nil {
-        log.Fatalln("Unable to start worker", err)
-    }
-}`}
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-
-</>
-}>
 
 ## 3. Register the Nexus Service handler in a Worker
 
@@ -187,40 +188,43 @@ This is the same Worker concept used for Workflows and Activities.
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="go" title="caller_workflow.go">
-{`package greeting
+<CodeSnippet title="caller_workflow.go">
+
+<!--SNIPSTART go-nexus-quickstart-caller-workflow-->
+[go-sandbox/caller_workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/caller_workflow.go)
+```go
+package quickstart
 
 import (
-    "time"
+	"time"
 
-    "go.temporal.io/sdk/workflow"
+	"go.temporal.io/sdk/workflow"
 )
 
 const (
-    CallerTaskQueue = "my-caller-task-queue"
-    NexusEndpoint   = "my-nexus-endpoint-name"
+	CallerTaskQueue = "my-caller-task-queue"
+	NexusEndpoint   = "my-nexus-endpoint-name"
 )
 
 func CallerWorkflow(ctx workflow.Context, name string) (string, error) {
-    c := workflow.NewNexusClient(NexusEndpoint, HelloServiceName)
+	c := workflow.NewNexusClient(NexusEndpoint, HelloServiceName)
 
-    fut := c.ExecuteOperation(ctx, HelloOperationName, HelloInput{Name: name}, workflow.NexusOperationOptions{
-        ScheduleToCloseTimeout: 10 * time.Second,
-    })
+	fut := c.ExecuteOperation(ctx, HelloOperationName, HelloInput{Name: name}, workflow.NexusOperationOptions{
+		ScheduleToCloseTimeout: 10 * time.Second,
+	})
 
-    var result string
-    if err := fut.Get(ctx, &result); err != nil {
-        return "", err
-    }
-    return result, nil
-}`}
+	var result string
+	if err := fut.Get(ctx, &result); err != nil {
+		return "", err
+	}
+	return result, nil
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-
-</>
-}>
 
 ## 4. Develop the caller Workflow
 
@@ -266,57 +270,60 @@ Make sure your local Temporal dev server is running (`temporal server start-dev`
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="go" title="caller/main.go">
-{`package main
+<CodeSnippet title="caller/main.go">
+
+<!--SNIPSTART go-nexus-quickstart-caller-main-->
+[go-sandbox/nexusquickstart/caller/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/nexusquickstart/caller/main.go)
+```go
+package main
 
 import (
-    "context"
-    "log"
+	"context"
+	"log"
 
-    "my-org/greeting"
+	"my-org/quickstart"
 
-    "go.temporal.io/sdk/client"
-    "go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
 )
 
 func main() {
-    c, err := client.Dial(client.Options{
-        Namespace: "my-caller-namespace",
-    })
-    if err != nil {
-        log.Fatalln("Unable to create client", err)
-    }
-    defer c.Close()
+	c, err := client.Dial(client.Options{
+		Namespace: "my-caller-namespace",
+	})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
 
-    w := worker.New(c, greeting.CallerTaskQueue, worker.Options{})
-    w.RegisterWorkflow(greeting.CallerWorkflow)
+	w := worker.New(c, quickstart.CallerTaskQueue, worker.Options{})
+	w.RegisterWorkflow(quickstart.CallerWorkflow)
 
-    if err := w.Start(); err != nil {
-        log.Fatalln("Unable to start worker", err)
-    }
-    defer w.Stop()
+	if err := w.Start(); err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+	defer w.Stop()
 
-    wr, err := c.ExecuteWorkflow(context.Background(), client.StartWorkflowOptions{
-        ID:        "nexus-caller-workflow",
-        TaskQueue: greeting.CallerTaskQueue,
-    }, greeting.CallerWorkflow, "Temporal")
-    if err != nil {
-        log.Fatalln("Unable to execute workflow", err)
-    }
+	wr, err := c.ExecuteWorkflow(context.Background(), client.StartWorkflowOptions{
+		ID:        "nexus-caller-workflow",
+		TaskQueue: quickstart.CallerTaskQueue,
+	}, quickstart.CallerWorkflow, "Temporal")
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
 
-    var result string
-    if err := wr.Get(context.Background(), &result); err != nil {
-        log.Fatalln("Unable to get workflow result", err)
-    }
-    log.Println("Workflow result:", result)
-}`}
+	var result string
+	if err := wr.Get(context.Background(), &result); err != nil {
+		log.Fatalln("Unable to get workflow result", err)
+	}
+	log.Println("Workflow result:", result)
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-
-</>
-}>
 
 ## 6. Run and verify
 
@@ -364,7 +371,7 @@ In `default`, find the `HelloNexusWorkflow` execution that was started by the Ne
 
 Now that you have a working Nexus Service, here are some resources to deepen your understanding:
 
-- **[Go Nexus Feature Guide](/develop/go/nexus/feature-guide)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
+- **[Go Nexus feature guide](/develop/go/nexus/feature-guide)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
 - **[Nexus Operations](/nexus/operations)**: The full Operation lifecycle, including retries, timeouts, and execution semantics.
 - **[Nexus Services](/nexus/services)**: Designing Service contracts and registering multiple Services per Worker.
 - **[Nexus Patterns](/nexus/patterns)**: Comparing the collocated and router-queue deployment patterns.

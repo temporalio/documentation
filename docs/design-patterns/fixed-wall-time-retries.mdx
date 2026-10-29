@@ -1,8 +1,10 @@
 ---
 id: fixed-wall-time-retries
 title: "Fixed Wall-Time Retries"
-sidebar_label: "Fixed Wall-Time Retries"
 description: "Bound the total elapsed time across all retry attempts to enforce a business SLA, regardless of how many individual attempts occur."
+tags:
+  - Design Patterns
+  - Errors
 ---
 
 import Tabs from '@theme/Tabs';
@@ -198,6 +200,7 @@ public class PaymentAuthWorkflowImpl implements PaymentAuthWorkflow {
 
 ```typescript
 // workflows.ts
+import { TimeoutType } from '@temporalio/common';
 import * as wf from '@temporalio/workflow';
 import type * as activities from './activities';
 
@@ -217,7 +220,7 @@ export async function paymentAuthWorkflow(transactionId: string): Promise<string
     } catch (err) {
         if (err instanceof wf.ActivityFailure) {
             const cause = err.cause;
-            if (cause instanceof wf.TimeoutFailure && cause.type === wf.TimeoutType.SCHEDULE_TO_CLOSE) {
+            if (cause instanceof wf.TimeoutFailure && cause.timeoutType === TimeoutType.SCHEDULE_TO_CLOSE) {
                 wf.log.error('Authorization failed — 2-minute SLA breached', { transactionId });
             }
         }
@@ -310,13 +313,16 @@ const { authorizeTransaction } = wf.proxyActivities<typeof activities>({
 - **Ignoring the breach in the Workflow.** Letting the `ActivityError` propagate without handling it means SLA breaches go unlogged and uncompensated.
 - **Not accounting for backoff delays in the budget.** The total time includes both attempt durations and the backoff delays between them. A 1-hour budget with a 30-minute initial interval and coefficient 2.0 leaves room for only one or two attempts.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Fixed Count of Retries](/design-patterns/fixed-count-retries): Bound by attempt count rather than elapsed time.
 - [Delayed Retry](/design-patterns/delayed-retry): Fixed-interval retry when the downstream unavailability window is known.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
 
-## References
+### References
 
+- [Detecting Activity Failures](/encyclopedia/detecting-activity-failures): Canonical reference for `ScheduleToCloseTimeout` and `StartToCloseTimeout`, the mechanism this pattern is built on.
 - [Activity Timeouts](https://temporal.io/blog/activity-timeouts)
 - [Temporal Retry Policies](/encyclopedia/retry-policies)

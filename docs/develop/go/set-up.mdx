@@ -1,12 +1,8 @@
 ---
 id: set-up-your-local-go
-title: Set up your local with the Go SDK
+title: Set up a local development environment with the Go SDK
 sidebar_label: Quickstart
 description: Configure your local development environment to get started developing with Temporal
-keywords:
-  - set up
-  - getting started
-  - Go sdk
 tags:
   - Go SDK
   - setup
@@ -50,16 +46,13 @@ mkdir goproject
 cd goproject
 </CodeSnippet>
 <CodeSnippet language="bash">
-go mod init my-org/greeting
+go mod init my-org/quickstart
 </CodeSnippet>
 <CodeSnippet language="bash">
 go get go.temporal.io/sdk
 </CodeSnippet>
 <CodeSnippet language="bash">
 go get go.temporal.io/sdk/client
-</CodeSnippet>
-<CodeSnippet language="bash">
-go mod tidy
 </CodeSnippet>
 </>
 }>
@@ -176,18 +169,21 @@ retries it based on your configuration.
 
 Create an Activity file (activity.go):
 
+<!--SNIPSTART go-quickstart-activity-->
+[go-sandbox/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activity.go)
 ```go
-package greeting
+package quickstart
 
 import (
-  "context"
-  "fmt"
+	"context"
+	"fmt"
 )
 
 func Greet(ctx context.Context, name string) (string, error) {
-  return fmt.Sprintf("Hello %s", name), nil
+	return fmt.Sprintf("Hello %s", name), nil
 }
 ```
+<!--SNIPEND-->
 
 ### 2. Create the Workflow
 
@@ -197,31 +193,33 @@ automatically recreate its pre-failure state so it can continue right where it l
 
 Create a Workflow file (workflow.go):
 
+<!--SNIPSTART go-quickstart-workflow-->
+[go-sandbox/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflow.go)
 ```go
-package greeting
+package quickstart
 
 import (
-  "time"
+	"time"
 
-  "go.temporal.io/sdk/workflow"
+	"go.temporal.io/sdk/workflow"
 )
 
 func SayHelloWorkflow(ctx workflow.Context, name string) (string, error) {
-  ao := workflow.ActivityOptions{
-    StartToCloseTimeout: time.Second * 10,
-  }
-  ctx = workflow.WithActivityOptions(ctx, ao)
+	ao := workflow.ActivityOptions{
+		StartToCloseTimeout: time.Second * 10,
+	}
+	ctx = workflow.WithActivityOptions(ctx, ao)
 
-  var result string
-  err := workflow.ExecuteActivity(ctx, Greet, name).Get(ctx, &result)
-  if err != nil {
-    return "", err
-  }
+	var result string
+	err := workflow.ExecuteActivity(ctx, Greet, name).Get(ctx, &result)
+	if err != nil {
+		return "", err
+	}
 
-  return result, nil
+	return result, nil
 }
-
 ```
+<!--SNIPEND-->
 
 ### 3. Create and Run the Worker
 
@@ -235,36 +233,39 @@ Workflows and Activities. For more information on Workers, see
 
 Create a Worker file (worker/main.go):
 
+<!--SNIPSTART go-worker-main-->
+[go-sandbox/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/worker/main.go)
 ```go
 package main
 
 import (
-  "log"
+	"log"
 
-  "my-org/greeting"
+	"my-org/quickstart"
 
-  "go.temporal.io/sdk/client"
-  "go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
 )
 
 func main() {
-  c, err := client.Dial(client.Options{})
-  if err != nil {
-    log.Fatalln("Unable to create client", err)
-  }
-  defer c.Close()
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
 
-  w := worker.New(c, "my-task-queue", worker.Options{})
+	w := worker.New(c, "my-task-queue", worker.Options{})
 
-  w.RegisterWorkflow(greeting.SayHelloWorkflow)
-  w.RegisterActivity(greeting.Greet)
+	w.RegisterWorkflow(quickstart.SayHelloWorkflow)
+	w.RegisterActivity(quickstart.Greet)
 
-  err = w.Run(worker.InterruptCh())
-  if err != nil {
-    log.Fatalln("Unable to start worker", err)
-  }
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
 }
 ```
+<!--SNIPEND-->
 
 Run the Worker:
 
@@ -278,45 +279,48 @@ Now that your Worker is running, it's time to start a Workflow Execution.
 
 Create a separate file called start/main.go:
 
+<!--SNIPSTART go-quickstart-start-workflow-->
+[go-sandbox/start/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/start/main.go)
 ```go
 package main
 
 import (
-  "context"
-  "log"
-  "os"
+	"context"
+	"log"
+	"os"
 
-  greeting "my-org/greeting"
+	"my-org/quickstart"
 
-  "go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/client"
 )
 
 func main() {
-  c, err := client.Dial(client.Options{})
-  if err != nil {
-    log.Fatalln("Unable to create client", err)
-  }
-  defer c.Close()
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
 
-  options := client.StartWorkflowOptions{
-    ID:        "greeting-workflow",
-    TaskQueue: "my-task-queue",
-  }
+	options := client.StartWorkflowOptions{
+		ID:        "greeting-workflow",
+		TaskQueue: "my-task-queue",
+	}
 
-  we, err := c.ExecuteWorkflow(context.Background(), options, greeting.SayHelloWorkflow, os.Args[1])
-  if err != nil {
-    log.Fatalln("Unable to execute workflow", err)
-  }
-  log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
+	we, err := c.ExecuteWorkflow(context.Background(), options, quickstart.SayHelloWorkflow, os.Args[1])
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
+	log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 
-  var result string
-  err = we.Get(context.Background(), &result)
-  if err != nil {
-    log.Fatalln("Unable get workflow result", err)
-  }
-  log.Println("Workflow result:", result)
+	var result string
+	err = we.Get(context.Background(), &result)
+	if err != nil {
+		log.Fatalln("Unable get workflow result", err)
+	}
+	log.Println("Workflow result:", result)
 }
 ```
+<!--SNIPEND-->
 
 Then run:
 

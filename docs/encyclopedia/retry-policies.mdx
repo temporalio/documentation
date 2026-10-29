@@ -5,9 +5,6 @@ sidebar_label: Retry Policies
 description:
   Optimize your Workflow and Activity Task Executions with a custom Retry Policy on Temporal. Understand default retries, intervals, backoff, and maximum attempts for error handling.
 toc_max_heading_level: 4
-keywords:
-  - activities
-  - retry policy
 tags:
   - Activities
   - Concepts
@@ -25,9 +22,9 @@ Temporal's default behavior is to automatically retry an Activity that fails, so
 
 A Retry Policy is declarative. You do not need to implement your own logic for handling the retries; you only need to specify the desired behavior and Temporal will provide it.
 
-In contrast to the Activities it contains, a Workflow Execution itself is not associated with a Retry Policy by default. This may seem counterintuitive, but Workflows and Activities perform different roles. Activities are intended for operations that may fail, so having a default Retry Policy increases the likelihood that they will ultimately complete successfully, even if the initial attempt failed.
+In contrast to Activities, a Workflow Execution itself is not associated with a Retry Policy by default. This may seem counterintuitive, but Workflows and Activities perform different roles. Activities are intended for operations that may fail, so having a default Retry Policy increases the likelihood that they will ultimately complete successfully, even if the initial attempt failed.
 
-On the other hand, Workflow code must be deterministic to support replay, and failure-prone or non-deterministic operations (API calls, LLM invocations, etc.) should be placed in Activities, which have built-in retry support. While it is possible to assign a Retry Policy to a Workflow Execution,
+On the other hand, a Workflow Definition must be deterministic to support replay, and failure-prone or non-deterministic operations (API calls, LLM invocations, etc.) should be placed in Activities, which have built-in retry support. While it is possible to assign a Retry Policy to a Workflow Execution,
 this is not the default and it is uncommon to do so.
 
 Retry Policies do not apply to Workflow Task Executions, which retry until the Workflow Execution Timeout (which is
@@ -129,8 +126,9 @@ customization.
 ### Activity Execution
 
 Temporal's default behavior is to automatically retry an Activity, with a short delay between each attempt that
-increases exponentially, until it either succeeds or is canceled. When a subsequent request succeeds, your Workflow code
-will resume as if the failure never occurred.
+increases exponentially, until it either succeeds or is canceled. When a subsequent attempt succeeds, execution
+continues normally: a Workflow that called the Activity resumes as if the failure never occurred, and for a
+[Standalone Activity](/standalone-activity), the Activity Execution completes and returns its result to the Client.
 
 When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/tasks#activity-task) into
 its respective [Activity Task Queue](/task-queue), which results in a new Activity Task Execution.
@@ -139,6 +137,9 @@ The default Retry Policy uses exponential backoff with a 2.0 backoff coefficient
 interval and capping at a maximum interval of 100 seconds. By default, the maximum attempt of retries are set to zero
 which is evaluated as unlimited and non-retryable errors default to none. For detailed information about all Retry
 Policy attributes and their default values, see the [Properties](#properties) section.
+
+These defaults are the same whether the Activity is a Workflow Activity or a [Standalone Activity](/standalone-activity)
+— a Retry Policy is a property of the Activity Task Execution itself, not of what started it.
 
 ### Workflow Execution
 
@@ -367,7 +368,7 @@ attempt.
 
 If responsibility for your application is distributed across multiple maintainers, or if you are developing a library to
 integrate into somebody else's application, you can think of the decision to hardcode non-retryable errors as following
-a "caller vs. implementer" dichotomy. Anyone who is calling your Activity would be able to make decisions about their
+a "caller versus implementer" dichotomy. Anyone who is calling your Activity would be able to make decisions about their
 Retry Policy, but only the implementer can decide whether an error should never be retryable out of the box.
 
 ## Retry interval

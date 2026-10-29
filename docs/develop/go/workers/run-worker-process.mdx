@@ -1,6 +1,6 @@
 ---
 id: run-worker-process
-title: Run a Worker - Go SDK
+title: Run a Worker
 description: Create and run a Temporal Worker using the Go SDK.
 sidebar_label: Run a Worker
 slug: /develop/go/workers/run-worker-process
@@ -8,7 +8,7 @@ toc_max_heading_level: 3
 tags:
   - Go SDK
   - Temporal SDKs
-  - Worker
+  - Workers
 ---
 
 This page covers long-lived Workers that you host and run as persistent processes.
@@ -18,40 +18,38 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 
 Create a [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) and passing:
 
-1. A Temporal Client.
+1. A [Temporal Client](/develop/go/client/temporal-client).
 2. The name of the Task Queue to poll.
 3. A [`worker.Options`](https://pkg.go.dev/go.temporal.io/sdk/internal#WorkerOptions) struct (can be empty for defaults).
 
 Register your Workflow and Activity types, then call `Run()` to start polling.
 The Worker blocks while it polls, so run it in a separate terminal from your starter code.
 
-<!--SNIPSTART go-create-worker-->
-[helloworld/worker/main.go](https://github.com/temporalio/samples-go/blob/main/helloworld/worker/main.go)
+<!--SNIPSTART go-worker-main-->
+[go-sandbox/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/worker/main.go)
 ```go
 package main
 
 import (
 	"log"
 
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/envconfig"
-	"go.temporal.io/sdk/worker"
+	"my-org/quickstart"
 
-	"github.com/temporalio/samples-go/helloworld"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
 )
 
 func main() {
-	// The client and worker are heavyweight objects that should be created once per process.
-	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	c, err := client.Dial(client.Options{})
 	if err != nil {
 		log.Fatalln("Unable to create client", err)
 	}
 	defer c.Close()
 
-	w := worker.New(c, "hello-world", worker.Options{})
+	w := worker.New(c, "my-task-queue", worker.Options{})
 
-	w.RegisterWorkflow(helloworld.Workflow)
-	w.RegisterActivity(helloworld.Activity)
+	w.RegisterWorkflow(quickstart.SayHelloWorkflow)
+	w.RegisterActivity(quickstart.Greet)
 
 	err = w.Run(worker.InterruptCh())
 	if err != nil {
@@ -77,17 +75,21 @@ gow run worker/main.go
 
 ## Register Workflows and Activities {/* #register-types */}
 
-All Workers listening to the same Task Queue must be registered to handle the same Workflow Types and Activity Types.
-If a Worker polls a Task for a type it does not know about, the Task fails. The Workflow Execution itself does not fail.
+All Workers polling the same Task Queue must register the same Workflow Types and Activity Types.
+A Task Queue does not route by type, so any Worker polling it can receive any Task on that queue.
+A Worker that receives a Task for a type it did not register fails that Task.
 
 Use `RegisterWorkflow()` and `RegisterActivity()` to register types.
 To register an Activity struct with multiple methods, pass the struct. The Worker gets access to all exported methods.
 
+<!--SNIPSTART go-worker-register-types-->
+[go-sandbox/workers/registration/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/registration/main.go)
 ```go
 w.RegisterWorkflow(WorkflowA)
 w.RegisterWorkflow(WorkflowB)
 w.RegisterActivity(&MyActivities{})
 ```
+<!--SNIPEND-->
 
 To customize the registered name or other options, use `RegisterWorkflowWithOptions()` or `RegisterActivityWithOptions()`.
 See [`workflow.RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) and [`activity.RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions).
@@ -108,8 +110,8 @@ To tune these values against real load, see [Worker performance](/develop/worker
 
 Set a Worker Deployment Version and enable versioning in `worker.Options`, then set a versioning behavior on each Workflow.
 
-<!--SNIPSTART go-versioned-worker-->
-[features/snippets/worker/worker.go](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.go)
+<!--SNIPSTART go-worker-versioned-->
+[go-sandbox/workers/versioned/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/versioned/main.go)
 ```go
 w := worker.New(c, "my-task-queue", worker.Options{
 	DeploymentOptions: worker.DeploymentOptions{
@@ -127,11 +129,16 @@ w.RegisterWorkflowWithOptions(HelloWorkflow, workflow.RegisterOptions{
 ```
 <!--SNIPEND-->
 
+Set the behavior per Workflow with `RegisterWorkflowWithOptions()`, or set a default for every Workflow on the Worker with `DefaultVersioningBehavior` in `worker.DeploymentOptions`.
+
+A versioning behavior applies only to a Worker that has versioning enabled, and setting `DefaultVersioningBehavior` without `UseVersioning` is an error.
+With versioning enabled and no default set, a Workflow that does not set its own behavior fails at registration time.
+
 See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
 
 ## Shut down a Worker {/* #shut-down-a-worker */}
 
 A Worker started with `Run(worker.InterruptCh())` shuts down when the process receives `SIGINT` or `SIGTERM`.
-It stops polling for new Tasks and waits for in-flight Tasks to finish, up to the `WorkerStopTimeout` set in `worker.Options`.
+The Worker stops polling for new Tasks and waits for in-flight Tasks to finish, up to the `WorkerStopTimeout` set in `worker.Options`.
 
 See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.

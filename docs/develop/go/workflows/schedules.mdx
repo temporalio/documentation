@@ -1,10 +1,8 @@
 ---
 id: schedules
-title: Schedules - Go SDK
+title: Schedules
 sidebar_label: Schedules
 toc_max_heading_level: 4
-keywords:
-  - schedules
 tags:
   - Workflows
   - Schedules
@@ -12,8 +10,6 @@ tags:
   - Temporal SDKs
 description: Schedule Workflows, start them with delays or as Temporal Cron Jobs using the Go SDK. Master scheduling, backfilling, pausing, deleting, and updating Workflows.
 ---
-
-import { ViewSourceCodeNotice } from '@site/src/components';
 
 This page shows how to do the following:
 
@@ -46,27 +42,30 @@ The user generates a unique Schedule ID for each new Schedule.
 To create a Schedule in Go, use `Create()` on the [Client](/encyclopedia/temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/schedule), and [Action](/schedule) in `client.ScheduleOptions{}`.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go" />
-
-```go
-func main() {
-// ...
+<!--SNIPSTART go-schedule-create {"highlightedLines": "2-3,5-13"}-->
+[go-sandbox/workflows/schedules/schedules.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/schedules.go)
+```go {2-3,5-13}
+func CreateSchedule(ctx context.Context, temporalClient client.Client) (client.ScheduleHandle, error) {
 	scheduleID := "schedule_id"
 	workflowID := "schedule_workflow_id"
-	// Create the schedule.
+
 	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
 		ID:   scheduleID,
 		Spec: client.ScheduleSpec{},
 		Action: &client.ScheduleWorkflowAction{
 			ID:        workflowID,
-			Workflow:  schedule.ScheduleWorkflow,
-			TaskQueue: "schedule",
+			Workflow:  ScheduleWorkflow,
+			TaskQueue: TaskQueue,
 		},
 	})
-// ...
+	if err != nil {
+		return nil, fmt.Errorf("unable to create schedule: %w", err)
+	}
+	log.Println("Schedule created", "ScheduleID", scheduleID)
+	return scheduleHandle, nil
 }
-// ...
 ```
+<!--SNIPEND-->
 
 :::tip Schedule Auto-Deletion
 
@@ -83,11 +82,33 @@ This is useful for executing a missed or delayed Action, or for testing the Work
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
 Specify the start and end times to execute the Workflow, along with the overlap policy.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/backfill/main.go" />
+<!--SNIPSTART go-schedule-backfill {"highlightedLines": "25-38"}-->
+[go-sandbox/workflows/schedules/schedules.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/schedules.go)
+```go {25-38}
+func BackfillSchedule(ctx context.Context, temporalClient client.Client) error {
+	workflowID := "schedule_workflow_"
+	// Create a paused Schedule to backfill
+	now := time.Now()
+	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+		ID: "backfill-schedule",
+		Spec: client.ScheduleSpec{
+			Intervals: []client.ScheduleIntervalSpec{
+				{
+					Every: time.Minute,
+				},
+			},
+		},
+		Action: &client.ScheduleWorkflowAction{
+			ID:        workflowID,
+			Workflow:  ScheduleWorkflow,
+			TaskQueue: TaskQueue,
+		},
+		Paused: true,
+	})
+	if err != nil {
+		return fmt.Errorf("unable to create schedule: %w", err)
+	}
 
-```go
-func main() {
-// ...
 	err = scheduleHandle.Backfill(ctx, client.ScheduleBackfillOptions{
 		Backfill: []client.ScheduleBackfill{
 			{
@@ -103,12 +124,12 @@ func main() {
 		},
 	})
 	if err != nil {
-		log.Fatalln("Unable to Backfill Schedule", err)
+		return fmt.Errorf("unable to backfill schedule: %w", err)
 	}
-// ...
+	return nil
 }
-// ...
 ```
+<!--SNIPEND-->
 
 ### Delete a Schedule {/* #delete-schedule */}
 
@@ -117,20 +138,23 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/delete/main.go" />
+<!--SNIPSTART go-schedule-delete {"highlightedLines": "6-10"}-->
+[go-sandbox/workflows/schedules/schedules.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/schedules.go)
+```go {6-10}
+func DeleteSchedule(ctx context.Context, temporalClient client.Client) error {
+	scheduleID := "schedule_id"
+	// Retrieve the schedule handle by its ID
+	scheduleHandle := temporalClient.ScheduleClient().GetHandle(ctx, scheduleID)
 
-```go
-func main() {
-// ...
-	defer func() {
-		log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
-		err = scheduleHandle.Delete(ctx)
-		if err != nil {
-			log.Fatalln("Unable to delete schedule", err)
-		}
-	}()
-// ...
+	log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
+	err := scheduleHandle.Delete(ctx)
+	if err != nil {
+		return fmt.Errorf("unable to delete schedule: %w", err)
+	}
+	return nil
+}
 ```
+<!--SNIPEND-->
 
 ### Describe a Schedule {/* #describe-schedule */}
 
@@ -139,14 +163,37 @@ This can include details about the Schedule Spec (such as Intervals), CronExpres
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go" />
-
-```go
-func main() {
-// ...
-	scheduleHandle.Describe(ctx)
-// ...
+<!--SNIPSTART go-schedule-describe {"highlightedLines": "20"}-->
+[go-sandbox/workflows/schedules/schedules.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/schedules.go)
+```go {20}
+func DescribeSchedule(ctx context.Context, temporalClient client.Client) (*client.ScheduleDescription, error) {
+	// create Schedule
+	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+		ID: "test-schedule-describe-spec-cron-schedule",
+		Spec: client.ScheduleSpec{
+			CronExpressions: []string{
+				"0 12 * * MON",
+			},
+		},
+		Action: &client.ScheduleWorkflowAction{
+			ID:        "schedule_workflow_describe",
+			Workflow:  ScheduleWorkflow,
+			TaskQueue: TaskQueue,
+		},
+	})
+	if err != nil {
+		return nil, fmt.Errorf("unable to create schedule: %w", err)
+	}
+	// describe schedule
+	description, err := scheduleHandle.Describe(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("unable to describe schedule: %w", err)
+	}
+	log.Println("Schedule next action times", description.Info.NextActionTimes)
+	return description, nil
+}
 ```
+<!--SNIPEND-->
 
 ### List Schedules {/* #list-schedules */}
 
@@ -154,20 +201,46 @@ The `List` action returns all available Schedules and their respective Schedule 
 
 To return information on all Schedules, use `ScheduleClient.List()`.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/list/main.go" />
-
-```go
-func main() {
-// ...
-	listView, _ := temporalClient.ScheduleClient().List(ctx, client.ScheduleListOptions{
+<!--SNIPSTART go-schedule-list {"highlightedLines": "20-22,27-33"}-->
+[go-sandbox/workflows/schedules/schedules.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/schedules.go)
+```go {20-22,27-33}
+func ListSchedules(ctx context.Context, temporalClient client.Client) error {
+	// Create Schedule and Workflow IDs
+	scheduleID := "schedule_" + uuid.NewString()
+	workflowID := "schedule_workflow_" + uuid.NewString()
+	// Create the schedule.
+	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+		ID:   scheduleID,
+		Spec: client.ScheduleSpec{},
+		Action: &client.ScheduleWorkflowAction{
+			ID:        workflowID,
+			Workflow:  ScheduleWorkflow,
+			TaskQueue: TaskQueue,
+		},
+	})
+	if err != nil {
+		return fmt.Errorf("unable to create schedule: %w", err)
+	}
+	log.Println("Schedule created", "ScheduleID", scheduleHandle.GetID())
+	// list schedules
+	listView, err := temporalClient.ScheduleClient().List(ctx, client.ScheduleListOptions{
 		PageSize: 1,
 	})
+	if err != nil {
+		return fmt.Errorf("unable to list schedules: %w", err)
+	}
 
 	for listView.HasNext() {
-		log.Println(listView.Next())
+		entry, err := listView.Next()
+		if err != nil {
+			return fmt.Errorf("unable to get next schedule: %w", err)
+		}
+		log.Println("Schedule", "ScheduleID", entry.ID)
 	}
-// ...
+	return nil
+}
 ```
+<!--SNIPEND-->
 
 ### Pause a Schedule {/* #pause-schedule */}
 
@@ -179,40 +252,78 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/pause/main.go" />
+<!--SNIPSTART go-schedule-pause {"highlightedLines": "6-8,18-20"}-->
+[go-sandbox/workflows/schedules/schedules.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/schedules.go)
+```go {6-8,18-20}
+func PauseSchedule(ctx context.Context, temporalClient client.Client) error {
+	scheduleID := "schedule_id"
+	scheduleHandle := temporalClient.ScheduleClient().GetHandle(ctx, scheduleID)
 
-```go
-func main() {
-// ...
-	err = scheduleHandle.Pause(ctx, client.SchedulePauseOptions{
+	// Pause the schedule and print the status
+	err := scheduleHandle.Pause(ctx, client.SchedulePauseOptions{
 		Note: "The Schedule has been paused.",
 	})
-// ...
+	if err != nil {
+		return fmt.Errorf("unable to pause schedule: %w", err)
+	}
+	log.Println("The Schedule has been paused.")
+
+	// Wait for 5 seconds
+	time.Sleep(5 * time.Second)
+
+	// Unpause the schedule
 	err = scheduleHandle.Unpause(ctx, client.ScheduleUnpauseOptions{
 		Note: "The Schedule has been unpaused.",
 	})
+	if err != nil {
+		return fmt.Errorf("unable to unpause schedule: %w", err)
+	}
+	log.Println("The Schedule has been unpaused.")
+	return nil
+}
 ```
+<!--SNIPEND-->
 
 ### Trigger a Schedule {/* #trigger-schedule */}
 
 Triggering a Schedule immediately executes an Action defined in that Schedule.
 By default, `trigger` is subject to the Overlap Policy.
 
-To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
+To trigger a Scheduled Workflow Execution, use `Trigger()` on `ScheduleHandle`.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go" />
+<!--SNIPSTART go-schedule-trigger {"highlightedLines": "18-26"}-->
+[go-sandbox/workflows/schedules/schedules.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/schedules.go)
+```go {18-26}
+func TriggerSchedule(ctx context.Context, temporalClient client.Client) error {
+	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+		ID:   "trigger-schedule",
+		Spec: client.ScheduleSpec{},
+		Action: &client.ScheduleWorkflowAction{
+			ID:        "trigger-schedule-workflow",
+			Workflow:  ScheduleWorkflow,
+			TaskQueue: TaskQueue,
+		},
+		Paused:  true,
+		Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
+	})
+	if err != nil {
+		return fmt.Errorf("unable to create schedule: %w", err)
+	}
 
-```go
-func main() {
-// ...
+	// Trigger Schedule
 	for i := 0; i < 5; i++ {
-		scheduleHandle.Trigger(ctx, client.ScheduleTriggerOptions{
+		err = scheduleHandle.Trigger(ctx, client.ScheduleTriggerOptions{
 			Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
 		})
+		if err != nil {
+			return fmt.Errorf("unable to trigger schedule: %w", err)
+		}
 		time.Sleep(2 * time.Second)
 	}
-// ...
+	return nil
+}
 ```
+<!--SNIPEND-->
 
 ### Update a Schedule {/* #update-schedule */}
 
@@ -220,24 +331,46 @@ Updating a Schedule changes the configuration of an existing Schedule.
 These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
 
 Use `Update()` on the ScheduleHandle to modify a Schedule.
+The `DoUpdate` function receives the current Schedule description and returns the Schedule to save.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/update/main.go" />
+<!--SNIPSTART go-schedule-update {"highlightedLines": "16-28"}-->
+[go-sandbox/workflows/schedules/schedules.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/schedules.go)
+```go {16-28}
+func UpdateSchedule(ctx context.Context, temporalClient client.Client) error {
+	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+		ID:   "update-schedule",
+		Spec: client.ScheduleSpec{},
+		Action: &client.ScheduleWorkflowAction{
+			ID:        "update-schedule-workflow",
+			Workflow:  ScheduleWorkflow,
+			TaskQueue: TaskQueue,
+		},
+		Paused: true,
+	})
+	if err != nil {
+		return fmt.Errorf("unable to create schedule: %w", err)
+	}
 
-```go
-func main() {
-// ...
 	updateSchedule := func(input client.ScheduleUpdateInput) (*client.ScheduleUpdate, error) {
+		// Change the Schedule to run every hour.
+		input.Description.Schedule.Spec = &client.ScheduleSpec{
+			Intervals: []client.ScheduleIntervalSpec{{Every: time.Hour}},
+		}
 		return &client.ScheduleUpdate{
 			Schedule: &input.Description.Schedule,
 		}, nil
 	}
 
-	_ = scheduleHandle.Update(ctx, client.ScheduleUpdateOptions{
+	err = scheduleHandle.Update(ctx, client.ScheduleUpdateOptions{
 		DoUpdate: updateSchedule,
 	})
+	if err != nil {
+		return fmt.Errorf("unable to update schedule: %w", err)
+	}
+	return nil
 }
-// ...
 ```
+<!--SNIPEND-->
 
 ## Start Delay {/* #start-delay */}
 
@@ -245,18 +378,21 @@ Use `StartDelay` to schedule a Workflow Execution at a specific one-time future 
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `StartDelay` field, and pass the instance to the `ExecuteWorkflow` call.
 
+<!--SNIPSTART go-schedule-start-delay-->
+[go-sandbox/workflows/schedules/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  // ...
-  // Start the workflow in 12 hours
-  StartDelay: time.Hours * 12,
-  // ...
+	ID:        "your-workflow-id",
+	TaskQueue: TaskQueue,
+	// Start the workflow in 12 hours
+	StartDelay: 12 * time.Hour,
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 ## Temporal Cron Jobs {/* #temporal-cron-jobs */}
 
@@ -276,16 +412,20 @@ Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io
 - Type: `string`
 - Default: None
 
+<!--SNIPSTART go-schedule-cron-->
+[go-sandbox/workflows/schedules/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/schedules/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  CronSchedule: "15 8 * * *",
-  // ...
+	ID:           "your-cron-workflow-id",
+	TaskQueue:    TaskQueue,
+	CronSchedule: "15 8 * * *",
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 Temporal Workflow Schedule Cron strings follow this format:
 

@@ -1,13 +1,8 @@
 ---
 id: workflowid-runid
 title: Workflow Id and Run Id
-sidebar_label: Workflow Id and Run Id
 description: A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.
 slug: /workflow-execution/workflowid-runid
-keywords:
-  - workflow id
-  - run id
-  - identifiers
 tags:
   - Concepts
   - Workflows
@@ -27,6 +22,13 @@ In some cases, such as when running the same Workflow at recurring intervals usi
 In this case, all runs will have the same Workflow ID.
 However, each run will have a unique system-generated [Run ID](#run-id).
 
+:::note Workflow Id uniqueness and High Availability
+
+This uniqueness constraint is enforced within the active [Namespace](/namespaces).
+On a [High Availability](/cloud/high-availability) Namespace, replication is asynchronous, and a failover preserves the constraint through Temporal Cloud's [conflict resolution](/cloud/high-availability/failovers#conflict-resolution) process.
+
+:::
+
 ## What is a Run Id? {/* #run-id */}
 
 A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](/workflow-execution).
@@ -44,13 +46,13 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](/workflow-execution#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/main/temporal/api/history/v1/message.proto).
 
-Each operation creates a new Workflow Execution inside a chain run and saves its information as `first_execution_run_id`.
-Thus, the Run Id is updated during each operation on a Workflow Execution.
+Each operation creates a new Workflow Execution inside a chain run; the chain remains identified by `first_execution_run_id`.
+Thus, the current Run Id is updated during each operation on a Workflow Execution.
 
 - The `first_execution_run_id` is the Run Id of the first Workflow Execution in a Chain run.
 - The `original_execution_run_id` is the Run Id when the `WorkflowExecutionStarted` Event occurs.
 
-A Workflow `Reset` changes the first execution Run Id, but preserves the original execution Run Id.
+A Workflow `Reset` changes the current execution Run Id, but preserves both the first execution Run Id and the original execution Run Id.
 For example, when a new Workflow Execution in the chain starts, it stores its Run Id in `original_execution_run_id`.
 A reset doesn't change that field, but the current Run Id is updated.
 
@@ -143,4 +145,3 @@ The Workflow Id Conflict Policy can have one of the following values:
   **This is the default policy, if one isn't specified.**
 - **Use Existing:** Prevents the Workflow Execution from spawning and returns a successful response with the Open Workflow Execution's Run Id.
 - **Terminate Existing:** Terminates the Open Workflow Execution then spawns the new Workflow Execution with the same Workflow Id.
-

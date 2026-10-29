@@ -2,7 +2,10 @@
 id: event-accumulator
 title: "Event Accumulator Pattern"
 sidebar_label: "Event Accumulator"
-description: "Event Accumulator Pattern"
+description: "Durably collect and deduplicate signals from multiple senders, then process the batch after a sliding inactivity timeout."
+tags:
+  - Design Patterns
+  - Signals
 ---
 
 import Tabs from '@theme/Tabs';
@@ -360,7 +363,7 @@ Producers in all SDKs call Signal-With-Start to atomically start the workflow if
 
 The Accumulator pattern is well suited when events related to the same entity or group arrive from multiple producers — including a single consumer (for example, a Kafka consumer) polling a topic that carries events for multiple groups simultaneously — and can be processed together as batches, when downstream systems prefer batched calls rather than one call per event, and when at-least-once event delivery makes deduplication necessary at the collection layer.
 
-It is not a good fit for use cases that require processing every event individually in _strict order_, for cases where the batch size is known in advance and all events arrive within a short deterministic window (a standard workflow is sufficient), or when events for different keys must be correlated at processing time (consider fan-in with e.g. Child Workflows or multiple levels of Accumulator).
+It is not a good fit for use cases that require processing every event individually in _strict order_, for cases where the batch size is known in advance and all events arrive within a short deterministic window (a standard workflow is sufficient), or when events for different keys must be correlated at processing time (consider fan-in with for example Child Workflows or multiple levels of Accumulator).
 
 ## Benefits and trade-offs
 
@@ -396,13 +399,15 @@ If producers stop sending signals but never send a flush, the workflow holds ope
 - **Signal rate too high to allow Continue-As-New to complete.** Continue-As-New requires a brief window (~100 ms) with no unhandled signals. If producers send signals continuously without pause, the workflow can never enter that window, history grows without bound, and Temporal will eventually terminate the workflow. Partition by a finer-grained key, throttle producers, or batch multiple events into a single signal payload to keep the per-instance signal rate low enough for CAN to succeed.
 - **Not draining the signal queue before calling Continue-As-New.** Any signal that arrives between the CAN decision and the actual CAN execution can be lost if the signal buffer is not empty when CAN fires. All SDK implementations in this pattern guard against this by re-checking the unprocessed queue before continuing; do not remove that guard or call CAN unconditionally on the history-size trigger.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - **[Signal with Start](/design-patterns/signal-with-start)** — the atomic start-and-signal primitive this pattern uses to create or locate the accumulator workflow.
 - **[Continue-As-New](/design-patterns/continue-as-new)** — used to reset workflow history when the accumulation period is long.
 - **[Updatable Timer](/design-patterns/updatable-timer)** — an alternative approach for a resettable timer that does not require signals.
 - **[Entity Workflow](/design-patterns/entity-workflow)** — a broader pattern for long-lived, keyed workflow instances.
 
-## Sample code
+### Sample code
 
 - [Java Sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloAccumulator.java) — the canonical accumulator example from the Temporal Java samples repository.

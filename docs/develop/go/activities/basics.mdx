@@ -1,25 +1,22 @@
 ---
 id: basics
-title: Activity basics - Go SDK
+title: Activity basics
 sidebar_label: Activity basics
-description: This section explains Activity basics with the Go SDK
+description: An Activity Definition in Go is an exportable function or struct method. Set its parameters, return values, and a custom Activity Type name.
 toc_max_heading_level: 4
-keywords:
-  - Go SDK
 tags:
+  - Activities
   - Go SDK
   - Temporal SDKs
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components';
-
-## How to develop an Activity Definition in Go {/* #activity-definition */}
+## Develop an Activity Definition {/* #activity-definition */}
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 
 Standalone Activities are Activity Executions that run independently, without being orchestrated by a Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone Activity directly from a Temporal Client.
 
-The Activity definition and Worker registration are identical to regular Activities, and only the execution path differs. See [Standalone Activities](/develop/go/activities/standalone-activities).
+The Activity definition and Worker registration are identical to regular Activities, and only the execution path differs. See [Standalone Activities](/develop/go/activities/standalone-activities-quickstart).
 
 Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
 An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
@@ -40,38 +37,45 @@ only using struct methods for Activities.
 
 :::
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go" />
-
+<!--SNIPSTART go-activities-basics {"selectedLines": ["1-11" ,"18-21", "28-42"]}-->
+[go-sandbox/activities/basics/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/activity.go)
 ```go
-package yourapp
+package basics
 
 import (
-    "context"
+	"context"
 
-    "go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/activity"
 )
-// ...
 
-// YourSimpleActivityDefinition is a basic Activity Definition.
 func YourSimpleActivityDefinition(ctx context.Context) error {
-    return nil
+	return nil
 }
-
-// YourActivityObject is the struct that maintains shared state across Activities.
-// If the Worker crashes this Activity object loses its state.
-type YourActivityObject struct {
-    Message *string
-    Number  *int
-}
-
-// YourActivityDefinition is your custom Activity Definition.
-// An Activity Definition is an exportable function.
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
+type YourActivityObject struct {
+	Message *string
+	Number  *int
+}
+// ...
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
+	// Use Activities for calling external APIs.
+	// This is just an example of using the logger to print "Hello World!"
+	logger := activity.GetLogger(ctx)
+	logger.Info("The message is:", param.ActivityParamX)
+	logger.Info("The number is:", param.ActivityParamY)
+	// Return data using a Struct so that the function signature is backward compatible.
+	result := &YourActivityResultObject{
+		ResultFieldX: "Success",
+		ResultFieldY: 1,
+	}
+	// Return the results back to the Workflow Execution.
+	// The results persist within the Event History of the Workflow Execution.
+	return result, nil
 }
 ```
+<!--SNIPEND-->
 
-### How to develop Activity Parameters {/* #activity-parameters */}
+### Define Activity parameters {/* #activity-parameters */}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -94,72 +98,114 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can't be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go" />
-
-```go
-// YourActivityParam is the struct passed to your Activity.
-// Use a struct so that your function signature remains compatible if fields change.
+<!--SNIPSTART go-activities-basics {"highlightedLines": "7-10,13", "selectedLines": ["13-22", "28-42"]}-->
+[go-sandbox/activities/basics/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/activity.go)
+```go {7-10,13}
+// ...
 type YourActivityParam struct {
-    ActivityParamX string
-    ActivityParamY int
+	ActivityParamX string
+	ActivityParamY int
 }
+
+type YourActivityObject struct {
+	Message *string
+	Number  *int
+}
+
 // ...
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
-// ...
+	// Use Activities for calling external APIs.
+	// This is just an example of using the logger to print "Hello World!"
+	logger := activity.GetLogger(ctx)
+	logger.Info("The message is:", param.ActivityParamX)
+	logger.Info("The number is:", param.ActivityParamY)
+	// Return data using a Struct so that the function signature is backward compatible.
+	result := &YourActivityResultObject{
+		ResultFieldX: "Success",
+		ResultFieldY: 1,
+	}
+	// Return the results back to the Workflow Execution.
+	// The results persist within the Event History of the Workflow Execution.
+	return result, nil
 }
 ```
+<!--SNIPEND-->
 
-### How to define Activity return values {/* #activity-return-values */}
+### Define Activity return values {/* #activity-return-values */}
 
 All data returned from an Activity must be serializable.
 
-Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction ([see Cloud limits here](/cloud/limits#per-message-grpc-limit)). Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
+Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction ([see Cloud limits here](/evaluate/cloud/limits#per-message-grpc-limit)). Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go" />
-
-```go
-// YourActivityResultObject is the struct returned from your Activity.
-// Use a struct so that you can return multiple values of different types.
-// Additionally, your function signature remains compatible if the fields change.
+<!--SNIPSTART go-activities-basics {"highlightedLines": "2-5,14-17", "selectedLines": ["23-42"]}-->
+[go-sandbox/activities/basics/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/activity.go)
+```go {2-5,14-17}
+// ...
 type YourActivityResultObject struct {
-    ResultFieldX string
-    ResultFieldY int
+	ResultFieldX string
+	ResultFieldY int
 }
-// ...
+
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
-// ...
-    result := &YourActivityResultObject{
-        ResultFieldX: "Success",
-        ResultFieldY: 1,
-    }
-    // Return the results back to the Workflow Execution.
-    // The results persist within the Event History of the Workflow Execution.
-    return result, nil
+	// Use Activities for calling external APIs.
+	// This is just an example of using the logger to print "Hello World!"
+	logger := activity.GetLogger(ctx)
+	logger.Info("The message is:", param.ActivityParamX)
+	logger.Info("The number is:", param.ActivityParamY)
+	// Return data using a Struct so that the function signature is backward compatible.
+	result := &YourActivityResultObject{
+		ResultFieldX: "Success",
+		ResultFieldY: 1,
+	}
+	// Return the results back to the Workflow Execution.
+	// The results persist within the Event History of the Workflow Execution.
+	return result, nil
 }
 ```
+<!--SNIPEND-->
 
-### How to customize Activity Type in Go {/* #customize-activity-type */}
+### Customize Activity Type {/* #customize-activity-type */}
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go" />
-
-```go
+<!--SNIPSTART go-activities-worker {"highlightedLines": "9,24-27", "selectedLines": ["14-45"]}-->
+[go-sandbox/activities/workers/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/workers/main.go)
+```go {9,24-27}
+// ...
 func main() {
-// ...
-    yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
-// ...
-    // Use RegisterOptions to change the name of the Activity Type for example.
-    registerAOptions := activity.RegisterOptions{
-        Name: "JustAnotherActivity",
-    }
-    yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
-    // Run the Worker
-    err = yourWorker.Run(worker.InterruptCh())
-// ...
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+	yourWorker.RegisterWorkflow(basics.YourWorkflowDefinition)
+	registerWFOptions := workflow.RegisterOptions{
+		Name: "JustAnotherWorkflow",
+	}
+	yourWorker.RegisterWorkflowWithOptions(basics.YourSimpleWorkflowDefinition, registerWFOptions)
+
+	message := "This could be a connection string or endpoint details"
+	number := 100
+	activities := &basics.YourActivityObject{
+		Message: &message,
+		Number:  &number,
+	}
+	yourWorker.RegisterActivity(activities)
+
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(basics.YourSimpleActivityDefinition, registerAOptions)
+
+	err = yourWorker.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start Worker", err)
+	}
 }
-// ...
 ```
+<!--SNIPEND-->

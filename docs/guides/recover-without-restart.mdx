@@ -1,7 +1,7 @@
 ---
 id: recover-without-restart
-title: Recover business processes without restarting
-description: Build a multi-step business procss that pauses when it hits a permanent failure, then resumes from where it stopped without restarting.
+title: Pause a Workflow on failure and resume it after a fix
+description: A TypeScript loan pipeline that pauses on permanent failures, takes a corrective Signal, resumes in place, and unwinds side effects with saga compensation.
 sidebar_label: Recovery without restart
 toc_max_heading_level: 3
 author: Tao Guo
@@ -50,7 +50,7 @@ While you can use traditional architectures to implement a similar solution, the
 By completing this pattern, you will:
 
 - Pause a business process on a non-retryable failure and resume after correction without restarting from the beginning.
-- Unwind side-effecting steps through a LIFO **saga** compensation stack when forward progress is not possible — for example, a compliance block or an explicit cancellation from the applicant.
+- Unwind side-effecting steps through a LIFO **[saga](/design-patterns/saga-pattern)** compensation stack when forward progress is not possible — for example, a compliance block or an explicit cancellation from the applicant.
 - Recover from compensation failures using the same pause-and-fix loop so a stuck rollback does not leave the process in a partially unwound state.
 - Route blocked processes to the right human or automated agent using queryable Search Attributes.
 - Inspect the current state of any individual process or filter across all processes through a single API.
@@ -102,7 +102,7 @@ temporal server start-dev
 
 This starts a Temporal Server on `localhost:7233` with the Web UI at `http://localhost:8233`.
 
-**Note:** This guide uses the TypeScript SDK but the pattern apply to any Temporal SDK.
+**Note:** This guide uses the TypeScript SDK but the pattern applies to any Temporal SDK.
 
 ## Architecture diagram
 
@@ -536,7 +536,7 @@ This enables an operations dashboard to display aggregate statistics and filter 
 
 Not every failure can be resolved by correcting input data.
 An OFAC match, a withdrawn offer, or a regulatory hold demands that the pipeline roll back rather than pause for a fix.
-This is where the [saga pattern](https://temporal-design-patterns.fly.dev/saga-pattern.html) comes in: each forward Activity that produces an external side effect — a credit bureau inquiry, an appraiser booking, a title company fee, a reserved lending slot, a funded loan — registers a compensating Activity **before** it executes.
+This is where the [saga pattern](/design-patterns/saga-pattern) comes in: each forward Activity that produces an external side effect — a credit bureau inquiry, an appraiser booking, a title company fee, a reserved lending slot, a funded loan — registers a compensating Activity **before** it executes.
 If the forward pipeline aborts, the Workflow unwinds the registered compensations in reverse order.
 
 The pattern has three key discipline points that the implementation must honor:
@@ -805,7 +805,7 @@ npm start
 
 ### Launch the demo dashboard
 
-The project includes a single-page operations dashboard at [`public/index.html`](https://github.com/temporal-sa/validated-pattern-blob/main/public/index.html) that exercises the web service endpoints you built above. Start it alongside the Worker:
+The project includes a single-page operations dashboard at [`public/index.html`](https://github.com/temporal-sa/validated-pattern-keep-business-moving/blob/main/public/index.html) that exercises the web service endpoints you built above. Start it alongside the Worker:
 
 ```bash
 npm run web
@@ -1055,6 +1055,9 @@ By following this guide, you have implemented a recoverable and compensatable pi
 
 ## Related resources
 - [Source code](https://github.com/temporal-sa/validated-pattern-keep-business-moving)
+- [Saga Pattern](/design-patterns/saga-pattern) — pattern catalog reference for the LIFO compensation technique used to roll back the loan pipeline
+- [Resumable Activity](/design-patterns/resumable-activity) — pattern catalog reference for the pause-on-failure, resume-via-Signal technique behind `recoverableStep`
+- [Non-Retryable Errors](/design-patterns/non-retryable-errors) — pattern catalog reference for marking permanent failures so Temporal fails fast instead of retrying
 - [Temporal TypeScript SDK Documentation](/develop/typescript) — Complete reference for building Workflows, Activities, and Workers with the TypeScript SDK.
 - [Temporal Signals](/develop/typescript/workflows/message-passing#signals) — Guide to defining and sending Signals to running Workflow Executions.
 - [Temporal Queries](/develop/typescript/workflows/message-passing#queries) — Guide to defining and handling synchronous read-only Queries on Workflows.

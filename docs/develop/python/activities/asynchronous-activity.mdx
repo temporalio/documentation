@@ -1,25 +1,14 @@
 ---
 id: asynchronous-activity
-title: Asynchronous Activity completion - Python SDK
-sidebar_label: Asynchronous Activity completion
+title: Asynchronous Activity Completion
+sidebar_label: Asynchronous Activity Completion
 description: Asynchronously complete an Activity using the Temporal Python SDK. Follow three steps for Activity completion and use the Temporal Client for Heartbeat and updates.
 toc_max_heading_level: 2
-keywords:
-  - asynchronous activity completion
-  - temporal python activities
-  - async activity execution
-  - temporal task token
-  - temporal activity heartbeat
-  - async activity updates
-  - temporal client for activities
-  - activity function async completion
 tags:
   - Activities
   - Python SDK
   - Temporal SDKs
 ---
-
-**How to Asynchronously complete an Activity using the Temporal Python SDK.**
 
 [Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
 
@@ -32,20 +21,30 @@ There are three steps to follow:
 
 To mark an Activity as completing asynchronously, do the following inside the Activity.
 
-```python
+<!--SNIPSTART python-async-activity-completion-raise-->
+[python-sandbox/activities/async_activity_completion/activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/async_activity_completion/activities.py)
+```py
 # Capture token for later completion
 captured_token = activity.info().task_token
+pending_completions.put_nowait(captured_token)  # Give the external system the token
 activity.raise_complete_async()
 ```
+<!--SNIPEND-->
 
 To update an Activity outside the Activity, use the [get_async_activity_handle()](https://python.temporal.io/temporalio.client.Client.html#get_async_activity_handle) method to get the handle of the Activity.
 
-```python
+<!--SNIPSTART python-async-activity-completion-get-handle-->
+[python-sandbox/activities/async_activity_completion/external_system.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/async_activity_completion/external_system.py)
+```py
 handle = my_client.get_async_activity_handle(task_token=captured_token)
 ```
+<!--SNIPEND-->
 
 Then, on that handle, you can call the results of the Activity, `heartbeat`, `complete`, `fail`, or `report_cancellation` method to update the Activity.
 
-```python
+<!--SNIPSTART python-async-activity-completion-complete-->
+[python-sandbox/activities/async_activity_completion/external_system.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/async_activity_completion/external_system.py)
+```py
 await handle.complete("Completion value.")
 ```
+<!--SNIPEND-->

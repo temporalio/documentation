@@ -4,11 +4,6 @@ title: Install and configure the CLI
 sidebar_label: Install and configure
 slug: /cli/setup-cli
 description: Install the Temporal CLI, run a local development server, and configure your environment.
-keywords:
-  - Temporal CLI
-  - Install CLI
-  - Development server
-  - Run dev server
 ---
 
 The Temporal CLI is a command-line tool for interacting with the Temporal Service. It helps you manage, monitor, and
@@ -97,13 +92,13 @@ extension using the following command:
 
 :::tip Support, stability, and dependency info
 
-The Temporal Cloud extension is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+The Temporal Cloud extension is in [Public Preview](/evaluate/product-release-stages#public-preview).
 APIs and configuration may change before the stable release.
 
 :::
 
 ```bash
-brew install temporalio/prerelease/temporal-cloud
+brew install temporalio/brew/temporal-cloud
 ```
 
 ## Run a local development server
@@ -119,7 +114,7 @@ temporal server start-dev
 This command automatically starts the Web UI, creates the `default` [Namespace](/namespaces), and uses an in-memory
 SQLite database.
 
-The Temporal Server will be available on `localhost:7233` and the Temporal Web UI will be available at
+The Temporal Service will be available on `localhost:7233` and the Temporal Web UI will be available at
 [`http://localhost:8233`](http://localhost:8233/).
 
 Persist state locally by specifying a database file:
@@ -171,25 +166,12 @@ This setting makes created Search Attributes immediately available.
 
 ### Environment variables
 
-The following table describes the environment variables you can set for the Temporal CLI.
+You can configure the CLI with environment variables instead of passing flags on every command. Setting an environment
+variable is not the same as storing a preset with [`temporal env`](/cli/command-reference/env): an environment variable
+configures the CLI process, while `temporal env` writes named key-value presets to a file.
 
-{/* This is an automatically generated file and the TEMPORAL_API_KEY correction will disappear on the next push. */}
-
-| Variable                                 | Definition                                                                | Client Option                   |
-| ---------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
-| `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
-| `TEMPORAL_CODEC_AUTH`                    | Authorization header for requests to Codec Server.                        | --codec-auth                    |
-| `TEMPORAL_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
-| `TEMPORAL_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
-| `TEMPORAL_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
-| `TEMPORAL_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
-| `TEMPORAL_TLS_DISABLE_HOST_VERIFICATION` | Turns off TLS host name verification. Default: false.                     | --tls-disable-host-verification |
-| `TEMPORAL_TLS_KEY`                       | Path to private certificate key.                                          | --tls-key-path                  |
-| `TEMPORAL_TLS_SERVER_NAME`               | Override for target TLS server name.                                      | --tls-server-name               |
-| `TEMPORAL_API_KEY`                       | API key used for authentication.                                          | --api-key                       |
-
-{/* This is an automatically generated file and this caution will disappear on the next push. */}
-{/* issue: https://github.com/temporalio/cli/issues/776 */}
+For every variable the CLI reads, its equivalent flag, and its TOML configuration key, refer to
+[Environment configuration](/references/client-environment-configuration).
 
 ### Create and modify configuration files
 
@@ -201,8 +183,7 @@ information.
 
 ### Configure proxy support
 
-The Temporal CLI provides support for users who are operating behind a proxy. This feature ensures seamless
-communication even in network-restricted environments.
+The Temporal CLI supports running behind a proxy, so it can reach the Temporal Service in network-restricted environments.
 
 #### Setting up proxy support
 
@@ -235,7 +216,7 @@ documentation.
 
 Enable auto-completion using the following commands.
 
-### zsh auto-completion
+### Zsh auto-completion
 
 1. Add the following line to your `~/.zshrc` startup script:
 
@@ -295,7 +276,7 @@ shell for `temporal` auto-completion to work.
    source ~/.config/fish/completions/temporal.fish
    ```
 
-## Getting CLI help
+## Get CLI help {/* #getting-cli-help */}
 
 From the command line:
 

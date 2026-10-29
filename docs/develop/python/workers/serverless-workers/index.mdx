@@ -1,19 +1,24 @@
 ---
 id: index
-title: Serverless Workers - Python SDK
+title: Serverless Workers
 sidebar_label: Serverless Workers
 description: Write Temporal Workers that run on serverless compute using the Python SDK.
 slug: /develop/python/workers/serverless-workers
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - python sdk
-  - worker
 tags:
   - Workers
   - Python SDK
   - Serverless
 ---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  AWS Lambda and GCP Cloud Run support are in Public Preview. Amazon Bedrock AgentCore Runtime support is in
+  Pre-release. To request AgentCore Runtime access on Temporal Cloud, create a
+  [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team. You can also
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) or try them through self-hosting.
+</ReleaseNoteHeader>
 
 Serverless Workers run on ephemeral, on-demand compute rather than long-lived processes.
 Temporal invokes the Worker when Tasks arrive, and the Worker shuts down when the work is done.
@@ -24,3 +29,5 @@ For the end-to-end deployment guide, see [Deploy a Serverless Worker](/productio
 ## Supported providers
 
 - [**AWS Lambda**](/develop/python/workers/serverless-workers/aws-lambda) - Use the `lambda_worker` contrib package to run a Worker as a Lambda function. Covers setup, configuration, Lambda-tuned defaults, and observability.
+- [**Amazon Bedrock AgentCore Runtime**](/develop/python/workers/serverless-workers/agentcore) - Run a standard Worker from an AgentCore Runtime handler. Covers the handler, Worker Versioning, connection configuration, and Worker shutdown.
+- [**GCP Cloud Run**](/develop/python/workers/serverless-workers/cloud-run) - Run a standard Worker on a Cloud Run worker pool. Covers the versioned Worker setup, connection configuration, and handling scale-in.

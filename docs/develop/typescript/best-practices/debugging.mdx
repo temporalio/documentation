@@ -1,12 +1,10 @@
 ---
 id: debugging
-title: Debugging - TypeScript SDK
+title: Debugging
 sidebar_label: Debugging
 slug: /develop/typescript/best-practices/debugging
 description: The Temporal TypeScript SDK Debugging guide provides tools and tips for debugging Workflows and Workers in development and production environments. Troubleshoot common issues using the Web UI, Temporal CLI, and more.
 toc_max_heading_level: 4
-keywords:
-  - debugging
 tags:
   - Debugging
   - TypeScript SDK
@@ -34,7 +32,7 @@ You can debug production Workflows using:
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/develop/worker-performance).
 For information on setting up SDK metrics, see [Metrics](/develop/typescript/platform/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
 
-Debug Server performance with [Cloud metrics](/cloud/metrics/) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics/openmetrics) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
 
 ## How to troubleshoot common issues in the TypeScript SDK {/* #troubleshoot-common-issues */}
 
@@ -87,7 +85,7 @@ When you pass a `workflowsPath`, our Webpack config expects to find `node_module
 }
 ```
 
-Temporal Workflow Bundles need to [export a set of methods that fit the compiled `worker-interface.ts` from `@temporalio/workflow`](https://github.com/temporalio/sdk-typescript/blob/eaa2d205c9bc5ff4a3b17c0b34f2dcf6b1e0264a/packages/worker/src/workflow/bundler.ts#L81) as an entry point.
+Temporal Workflow Bundles need to [export a set of methods that fit the compiled `worker-interface.ts` from `@temporalio/workflow`](https://github.com/temporalio/sdk-typescript/blob/803d95ada755736c17c5af719fa6c447e4cd75ac/packages/worker/src/workflow/bundler.ts#L180) as an entry point.
 We do offer a `bundleWorkflowCode` method to assist you with this, though it uses our Webpack settings.
 For more information, see the [Register types](/develop/typescript/workers/run-worker-process#register-types) section.
 
@@ -184,7 +182,7 @@ export async function yourWorkflow(): Promise<string> {
 
 </details>
 
-### Works in Dev but not in Prod
+### Works in dev but not in prod
 
 The two main sources of dev-prod discrepancies are in bundling and connecting.
 

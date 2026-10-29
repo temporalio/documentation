@@ -5,14 +5,6 @@ sidebar_label: Production checklist
 description: Prepare a self-hosted Temporal Service for production with guidance on scaling, metrics, load testing, and Workflow versioning.
 slug: /self-hosted-guide/production-checklist
 toc_max_heading_level: 4
-keywords:
-  - checklist
-  - how-to
-  - metrics
-  - production
-  - production-readiness
-  - scaling
-  - versioning
 tags:
   - Temporal Service
   - Self-hosting
@@ -23,7 +15,7 @@ This page covers common challenges you'll face when self-hosting Temporal for pr
 
 :::note
 
-This guide covers self-hosted deployments. If you're weighing self-hosting against a managed offering, see [Temporal Cloud vs. self-hosted Temporal](/evaluate/development-production-features/cloud-vs-self-hosted-features).
+This guide covers self-hosted deployments. If you're weighing self-hosting against a managed offering, see [Temporal Cloud versus self-hosted Temporal](/evaluate/features/cloud-vs-self-hosted-features).
 
 :::
 
@@ -60,7 +52,7 @@ You will want to run your own proof of concept tests and watch for key metrics t
 
 **Load testing.** You can use [the Omes benchmarking tool](https://github.com/temporalio/omes/), see how we [stress test Temporal](https://temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
 
-Temporal's source [lists](https://github.com/temporalio/temporal/blob/main/common/metrics/defs.go) all metrics the server emits.
+Temporal's source [lists](https://github.com/temporalio/temporal/blob/main/common/metrics/metric_defs.go) all metrics the server emits.
 There are also equivalent metrics that you can configure from the client side.
 At a high level, you will want to track these 3 categories of metrics:
 

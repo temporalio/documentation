@@ -4,22 +4,6 @@ title: Temporal Python SDK sandbox environment
 sidebar_label: Python SDK sandbox
 description: The Temporal Python SDK offers a sandbox environment to run Workflow code, aiming to prevent non-determinism errors in applications by isolating global state and applying restrictions.
 toc_max_heading_level: 4
-keywords:
-  - temporal python sdk
-  - workflow sandbox
-  - non-determinism errors
-  - python sandbox environment
-  - global state isolation
-  - python workflow restrictions
-  - passthrough modules
-  - invalid module members
-  - sandbox_unrestricted
-  - unsandboxed workflow runner
-  - sandboxed workflow runner
-  - workflow determinism
-  - skip workflow sandboxing
-  - temporal workflow exceptions
-  - deterministic workflow execution
 tags:
   - Temporal SDKs
   - Python SDK
@@ -67,7 +51,7 @@ Restrictions apply at both the Workflow import level and the Workflow run time.
 
 A default set of restrictions that prevents most dangerous standard library calls.
 
-## Skip Workflow Sandboxing
+## Skip Workflow sandboxing
 
 The following techniques aren't recommended, but they allow you to avoid, skip, or break through the sandbox environment.
 
@@ -77,19 +61,26 @@ Skipping Workflow Sandboxing results in a lack of determinism checks. Using the 
 
 To skip a sandbox environment for a specific block of code in a Workflow, use [`sandbox_unrestricted()`](https://python.temporal.io/temporalio.workflow.unsafe.html#sandbox_unrestricted). The Workflow will run without sandbox restrictions.
 
-```python
+<!--SNIPSTART python-sdk-sandbox-unrestricted-block-->
+[python-sandbox/best_practices/sdk_sandbox/unrestricted_block.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/sdk_sandbox/unrestricted_block.py)
+```py
 with temporalio.workflow.unsafe.sandbox_unrestricted():
     # Your code
+    today = datetime.date.today()
 ```
+<!--SNIPEND-->
 
 ### Skip Sandboxing for an entire Workflow
 
 To skip a sandbox environment for a Workflow, set the `sandboxed` argument in the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator to false.
 The entire Workflow will run without sandbox restrictions.
 
-```python
+<!--SNIPSTART python-sdk-sandbox-unsandboxed-workflow-->
+[python-sandbox/best_practices/sdk_sandbox/unsandboxed_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/sdk_sandbox/unsandboxed_workflow.py)
+```py
 @workflow.defn(sandboxed=False)
 ```
+<!--SNIPEND-->
 
 ### Skip Sandboxing for a Worker
 
@@ -116,9 +107,9 @@ It is important to note that you should only import _known-side-effect-free_ thi
 
 One way to pass through a module is at import time in the Workflow file using the [`imports_passed_through`](https://python.temporal.io/temporalio.workflow.unsafe.html#imports_passed_through) context manager.
 
-```python
-# my_workflow_file.py
-
+<!--SNIPSTART python-sdk-sandbox-passthrough-workflow-->
+[python-sandbox/best_practices/sdk_sandbox/passthrough_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/sdk_sandbox/passthrough_workflow.py)
+```py
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
@@ -126,24 +117,31 @@ with workflow.unsafe.imports_passed_through():
 
 @workflow.defn
 class MyWorkflow:
-     # ...
+    @workflow.run
+    async def run(self, name: str) -> str:
+        greeting = pydantic.TypeAdapter(str).validate_python(f"Hello, {name}!")
+        return greeting
 ```
+<!--SNIPEND-->
 
 Alternatively, this can be done at Worker creation time by customizing the runner's restrictions.
 
-```python
-# my_worker_file.py
-
+<!--SNIPSTART python-sdk-sandbox-passthrough-worker-->
+[python-sandbox/best_practices/sdk_sandbox/workers.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/sdk_sandbox/workers.py)
+```py
 from temporalio.worker import Worker
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner, SandboxRestrictions
 
 my_worker = Worker(
-  ...,
+  client,
+  task_queue=task_queue,
+  workflows=[MyWorkflow],
   workflow_runner=SandboxedWorkflowRunner(
     restrictions=SandboxRestrictions.default.with_passthrough_modules("pydantic")
   )
 )
 ```
+<!--SNIPEND-->
 
 In both of these cases, now the `pydantic` module will be passed through from outside the sandbox instead of being reloaded for every Workflow run.
 
@@ -155,9 +153,9 @@ Checks are compared against the fully qualified path to the item.
 
 For example, to remove a restriction on `datetime.date.today()`, see the following example.
 
-```python
-# my_worker_file.py
-
+<!--SNIPSTART python-sdk-sandbox-unrestrict-member-->
+[python-sandbox/best_practices/sdk_sandbox/workers.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/sdk_sandbox/workers.py)
+```py
 import dataclasses
 from temporalio.worker import Worker
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner, SandboxRestrictions
@@ -168,16 +166,22 @@ my_restrictions = dataclasses.replace(
       "datetime", "date", "today",
     ),
 )
-my_worker = Worker(..., workflow_runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
+my_worker = Worker(
+    client,
+    task_queue=task_queue,
+    workflows=[TodayWorkflow],
+    workflow_runner=SandboxedWorkflowRunner(restrictions=my_restrictions),
+)
 ```
+<!--SNIPEND-->
 
 Restrictions can also be added by piping (`|`) together [`SandboxMatcher`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxMatcher.html) instances.
 
 The following example restricts the `datetime.date` class from being used.
 
-```python
-# my_worker_file.py
-
+<!--SNIPSTART python-sdk-sandbox-restrict-member-->
+[python-sandbox/best_practices/sdk_sandbox/workers.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/sdk_sandbox/workers.py)
+```py
 import dataclasses
 from temporalio.worker import Worker
 from temporalio.worker.workflow_sandbox import (
@@ -192,10 +196,16 @@ my_restrictions = dataclasses.replace(
       children={"datetime": SandboxMatcher(use={"date"})},
     ),
 )
-my_worker = Worker(..., workflow_runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
+my_worker = Worker(
+    client,
+    task_queue=task_queue,
+    workflows=[TodayWorkflow],
+    workflow_runner=SandboxedWorkflowRunner(restrictions=my_restrictions),
+)
 ```
+<!--SNIPEND-->
 
-### Import Notification Policy
+### Import notification policy
 
 The sandbox's import notification policy specifies how the sandbox behaves when it imports modules in a way that may be unintentional. It covers two common scenarios: dynamic imports and enforcing module passthrough. Each can be controlled independently.
 
@@ -208,9 +218,9 @@ Similarly, the [`RAISE_ON_UNINTENTIONAL_PASSTHROUGH`](https://python.temporal.io
 
 The import notification policy can be set for specific imports by using [`sandbox_import_notification_policy`](https://python.temporal.io/temporalio.workflow.unsafe.html#sandbox_import_notification_policy) context manager.
 
-```python
-# my_workflow_file.py
-
+<!--SNIPSTART python-sdk-sandbox-notification-workflow-->
+[python-sandbox/best_practices/sdk_sandbox/notification_workflow.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/sdk_sandbox/notification_workflow.py)
+```py
 from temporalio import workflow
 
 with workflow.unsafe.sandbox_import_notification_policy(
@@ -220,26 +230,34 @@ with workflow.unsafe.sandbox_import_notification_policy(
 
 @workflow.defn
 class MyWorkflow:
-     # ...
+    @workflow.run
+    async def run(self, name: str) -> str:
+        greeting = pydantic.TypeAdapter(str).validate_python(f"Hello, {name}!")
+        return greeting
 ```
+<!--SNIPEND-->
 
 This can also be done at worker creation time by customizing the runner's restrictions.
 
-```python
-# my_worker_file.py
-
+<!--SNIPSTART python-sdk-sandbox-notification-worker-->
+[python-sandbox/best_practices/sdk_sandbox/workers.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/sdk_sandbox/workers.py)
+```py
+from temporalio import workflow
 from temporalio.worker import Worker
 from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner, SandboxRestrictions
 
 my_worker = Worker(
-  ...,
+  client,
+  task_queue=task_queue,
+  workflows=[MyWorkflow],
   workflow_runner=SandboxedWorkflowRunner(
-    restrictions=SandboxRestrictions.default.with_import_notification_policy( 
+    restrictions=SandboxRestrictions.default.with_import_notification_policy(
       workflow.SandboxImportNotificationPolicy.WARN_ON_DYNAMIC_IMPORT | workflow.SandboxImportNotificationPolicy.WARN_ON_UNINTENTIONAL_PASSTHROUGH
     )
   )
 )
 ```
+<!--SNIPEND-->
 
 The [`sandbox_import_notification_policy`](https://python.temporal.io/temporalio.workflow.unsafe.html#sandbox_import_notification_policy) context manager will always be respected if used in combination with the restrictions customization. 
 

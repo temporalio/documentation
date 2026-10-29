@@ -9,19 +9,7 @@ tags:
   - Connectivity
   - Production
   - Temporal Cloud
-keywords:
-  - availability
-  - explanation
-  - failover
-  - high-availability
-  - multi-region
-  - multi-region namespace
-  - namespaces
-  - temporal-cloud
-  - term
 ---
-
-import { CaptionedImage, JsonTable } from '@site/src/components';
 
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud.
@@ -57,7 +45,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
 4. Click the _Create endpoint_ button to the right of the _Actions_ pulldown menu.
 5. Under _Type_ category, select _Endpoint services that use NLBs and GWLBs_.
    This option lets you find services shared with you by service name.
-6. Under _Service settings_, fill in the _Service name_ with the PrivateLink Service Name for the region you’re trying to connect from:
+6. Under _Service settings_, fill in the _Service name_ with the PrivateLink Service Name for the region you're trying to connect from. See [Available AWS regions, PrivateLink endpoints, and DNS record overrides](#available-aws-regions-privatelink-endpoints-and-dns-record-overrides) for the list of available services.
 
 :::tip
 
@@ -65,8 +53,6 @@ PrivateLink endpoint services are regional.
 Individual Namespaces do not use separate services.
 
 :::
-
-<JsonTable filename="/json/privatelink_services_aws.json" />
 
 7. Confirm your service by clicking on the _Verify service_ button. AWS should respond "Service name verified."
 
@@ -94,8 +80,8 @@ The next step is to [configure private DNS](#configuring-private-dns-for-aws-pri
 
 When you connect to Temporal Cloud through AWS PrivateLink you normally must:
 
-1. **Point your SDKs/Workers at the PrivateLink DNS name** for the VPC Endpoint (e.g., `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`), **and**
-2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (e.g., `my-namespace.my-account.tmprl.cloud`).
+1. **Point your SDKs/Workers at the PrivateLink DNS name** for the VPC Endpoint (for example, `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`), **and**
+2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (for example, `my-namespace.my-account.tmprl.cloud`).
 
 By creating a Route 53 **private hosted zone (PHZ)** that maps the public Temporal Cloud hostname (or region hostname) to your VPC Endpoint, you can:
 
@@ -151,10 +137,10 @@ aws ec2 describe-vpc-endpoints \
 
 Save the **`vpce-*.amazonaws.com`** value — you will target it in the CNAME record.
 
-#### 2. Create a Route 53 Private Hosted Zone (do not yet attach Worker VPCs)
+#### 2. Create a Route 53 private hosted zone (do not yet attach Worker VPCs)
 
 a. Open _Route 53 → Hosted zones → Create hosted zone_.
-b. Enter the domain chosen from the table above, e.g., `payments.abcde.tmprl.cloud`.
+b. Enter the domain chosen from the table above, for example, `payments.abcde.tmprl.cloud`.
 c. Type: _Private hosted zone for Temporal Cloud_.
 d. Leave VPC associations empty for now (you'll add them in step 4).
 e. Create the hosted zone.
@@ -165,7 +151,7 @@ Inside the new PHZ:
 
 | Field           | Value                                                                                 |
 | --------------- | ------------------------------------------------------------------------------------- |
-| **Record name** | the Namespace Endpoint (e.g., `payments.abcde.tmprl.cloud`).                          |
+| **Record name** | the Namespace Endpoint (for example, `payments.abcde.tmprl.cloud`).                          |
 | **Record type** | `CNAME`                                                                               |
 | **Value**       | Your VPC Endpoint DNS name (`vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`) |
 | **TTL**         | 60s is typical; 15s for Namespaces with High Availability (to minimize recovery time after failover). |
@@ -214,8 +200,8 @@ You can avoid creating DNS records for each Namespace by pointing Workers direct
 
 1. Create the PrivateLink VPC Endpoint (one per region — all Namespaces in that region share it).
 2. Configure each Worker with:
-   - **Endpoint**: the DNS name of the VPC Endpoint in the region where the Worker runs (e.g., `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233`)
-   - **Server name** (SNI override): the Namespace Endpoint value (e.g., `my-namespace.my-account.tmprl.cloud`)
+   - **Endpoint**: the DNS name of the VPC Endpoint in the region where the Worker runs (for example, `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233`)
+   - **Server name** (SNI override): the Namespace Endpoint value (for example, `my-namespace.my-account.tmprl.cloud`)
 
 With this approach, new Namespaces do not require new DNS records. Workers set their **Endpoint** to the VPC Endpoint DNS name and their **Server name** to the Namespace Endpoint, so the client SDK accepts the TLS handshake from Temporal Cloud.
 
@@ -300,7 +286,7 @@ For each additional AWS account or VPC:
    - Or, use [direct VPCE targeting](#direct-vpce). For High Availability Namespaces, follow the [additional setup](#direct-vpce) so each region's Workers target their local VPC Endpoint.
 3. **Optional:** if you want to enforce private-only access for a Namespace, add a Connectivity Rule for each VPC endpoint and attach all of them (plus a public rule, if needed) to the Namespace. See [Connectivity Rules](/cloud/connectivity#connectivity-rules).
 
-There is no upper limit on the number of VPC endpoints you can connect from your side to a regional PrivateLink service. The default per-account limit on private Connectivity Rules is 50 — [contact support](/cloud/support#support-ticket) if you need to raise it.
+There is no upper limit on the number of VPC endpoints you can connect from your side to a regional PrivateLink service. The default per-account limit on private Connectivity Rules is 50 — [contact support](/evaluate/cloud/support#support-ticket) if you need to raise it.
 
 ## Available AWS regions, PrivateLink endpoints, and DNS record overrides
 

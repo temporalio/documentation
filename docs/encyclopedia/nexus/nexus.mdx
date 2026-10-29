@@ -1,24 +1,19 @@
 ---
 id: nexus
 title: Temporal Nexus
-sidebar_label: Temporal Nexus
 description: Temporal Nexus connects Temporal Applications across isolated Namespaces with clean service contracts, built-in durability, observability, and security.
 toc_max_heading_level: 4
 slug: /nexus
-keywords:
-  - nexus
-  - nexus overview
-  - temporal nexus
 tags:
   - Nexus
   - Concepts
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, SdkGuideLinks } from '@site/src/components';
 
 :::info NEW TO NEXUS?
 
-This page explains what Nexus is and how it works. To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus).
+This page explains what Nexus is and how it works. To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/features/nexus).
 
 :::
 
@@ -50,21 +45,33 @@ Caller and handler Workflows are siblings that communicate across Namespace boun
 A [Nexus Service](/nexus/services) is a named collection of [Nexus Operations](/nexus/operations) that a team exposes.
 Operations abstract the underlying implementation - callers don't need to know whether an Operation starts a Workflow, sends a Signal, runs a Query, or executes other reliable code.
 If you need to orchestrate multiple Nexus Operations, call them from a Workflow. But if you just need to execute a single Nexus Operation across Namespace boundaries, use a [Standalone Nexus Operation](/standalone-nexus-operation).
+For a side-by-side comparison of these options, including when to skip Nexus and start a Workflow directly, see [Choosing a Nexus approach](/nexus/choosing-an-approach).
 
 The [Operation lifecycle](/nexus/operations#operation-lifecycle) supports two modes:
 
-- **Asynchronous** - Starts a Workflow (same or different Task Queue, with optional [Eager Start](/develop/worker-performance#eager-workflow-start)). Can run up to [60 days](/cloud/limits#nexus-operation-duration-limits).
-- **Synchronous** - Completes within the [10-second handler deadline](/cloud/limits#nexus-operation-request-timeout). Use for Signals, Queries, Updates, or other reliable low-latency calls using the [Temporal SDK Client](/nexus/operations#executing-arbitrary-code-from-a-sync-handler).
+- **Asynchronous** - Starts a Workflow (on the same or a different Task Queue, with optional [Eager Start](/develop/worker-performance#eager-workflow-start)) or a Standalone Activity, or sends an Update to an existing Workflow (pre-release). The handler returns an Operation token, and the backing Execution delivers its result when it completes. The maximum Schedule-to-Close timeout is [60 days](/evaluate/cloud/limits#nexus-operation-duration-limits).
+- **Synchronous** - Completes within the [10-second handler deadline](/evaluate/cloud/limits#nexus-operation-request-timeout). Use for Signals, Queries, Updates, or other reliable low-latency calls using the [Temporal SDK Client](/nexus/operations#executing-arbitrary-code-from-a-sync-handler).
+
+Use a Synchronous Operation only when its complete execution path is highly reliable, has predictably low latency, and finishes well within the 10-second handler deadline; otherwise, use an Asynchronous Operation.
 
 Services and Operations are built with the Temporal SDK and typically [collocated](/nexus/patterns#collocated-pattern) in the same Worker as the Temporal primitives they abstract, or in a dedicated router Worker using the [router-queue pattern](/nexus/patterns#router-queue-pattern).
 
-:::tip SDK GUIDES
+See the SDK feature guides for your language:
 
-- [Go](/develop/go/nexus/feature-guide) |
-  [Java](/develop/java/nexus) |
-  [Python](/develop/python/nexus) |
-  [TypeScript](/develop/typescript/nexus) |
-  [.NET](/develop/dotnet/nexus)
+<SdkGuideLinks
+  path="nexus/feature-guide"
+  filter={['go', 'java', 'python', 'typescript', 'dotnet']}
+  title="Nexus"
+/>
+
+:::tip QUICKSTART
+
+To get started with Nexus, follow a Quickstart:
+[Go](/develop/go/nexus/quickstart) |
+[Java](/develop/java/nexus/quickstart) |
+[Python](/develop/python/nexus/quickstart) |
+[TypeScript](/develop/typescript/nexus/quickstart) |
+[.NET](/develop/dotnet/nexus/quickstart)
 
 :::
 
@@ -75,6 +82,10 @@ Callers reference an Endpoint by name. The Endpoint routes requests to a target 
 Callers never need to know the handler's Namespace, Task Queue, or internal implementation.
 
 Endpoints are managed in the [Nexus Registry](/nexus/registry) using the UI, CLI, or Cloud Ops API.
+
+In Temporal Cloud, each Endpoint also belongs to a [Project](/cloud/projects#use-nexus-across-projects).
+The Project controls who can manage the Endpoint in the Cloud Ops API and UI.
+It does not restrict cross-Namespace Nexus calls. Runtime access remains the Endpoint allowlist of caller Namespaces.
 
 ### Queue-based Worker architecture
 
@@ -118,4 +129,3 @@ Each step is a separate, durable Operation with its own retries and failure hand
 - [Nexus execution debugging](/nexus/execution-debugging) - Bi-directional linking, pending Operations, and tracing.
 - [Nexus error handling](/nexus/error-handling) - Error types and how they surface in caller Workflows.
 - [Nexus metrics](/nexus/metrics) - SDK, Cloud, and OSS cluster metrics.
-

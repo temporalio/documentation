@@ -1,15 +1,9 @@
 ---
 id: data-encryption
 title: Codecs and Encryption
-sidebar_label: Codecs and Encryption
 description: Encrypt data in Temporal Server to secure Workflow, Activity, and Worker information. Use custom Payload Codecs for encryption/decryption, set up Codec Servers for remote decoding, and ensure secure access.
 slug: /production-deployment/data-encryption
 toc_max_heading_level: 4
-keywords:
-  - guide-context
-  - how-to
-  - production-readiness
-  - security
 tags:
   - Temporal Service
   - Self-hosting
@@ -21,6 +15,11 @@ import { CaptionedImage } from '@site/src/components';
 The Temporal Service persists data from your Workflow Executions, including inputs, outputs, and results. To protect
 sensitive data, use a [Payload Codec](/payload-codec) to encrypt payloads before they reach the Temporal Service. With
 encryption enabled, data exists unencrypted only on the Client and the Worker process, on hosts that you control.
+
+Alternatively, use [Temporal Proxy](/production-deployment/temporal-proxy) to encrypt payloads before they reach the
+Temporal Service without changing Worker or Client code. You run the proxy in your environment, where it has access to
+plaintext payloads and your KMS. See the proxy's
+[encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for configuration and coverage limits.
 
 The following data is persisted in the Event History and can be encrypted:
 
@@ -82,7 +81,7 @@ The Web UI and CLI send POST requests to the following endpoints on your Codec S
 For examples on how to create your Codec Server, see the following Codec Server implementation samples:
 
 - [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
-- [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
+- [Java](https://github.com/temporalio/sdk-java/tree/main/temporal-remote-data-encoder)
 - [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
 - [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
 - [.NET](https://github.com/temporalio/samples-dotnet/blob/main/src/Encryption/CodecServer/Program.cs)

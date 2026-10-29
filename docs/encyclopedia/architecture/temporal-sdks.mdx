@@ -4,16 +4,6 @@ title: About Temporal SDKs
 sidebar_label: About the SDKs
 description: Temporal SDKs are open-source tools enabling scalable and reliable application development. They feature APIs for Workflow and Activity execution, automatic retries, and resilience mechanisms, making it easier to build fault-tolerant applications.
 toc_max_heading_level: 4
-keywords:
-  - components
-  - developers guide
-  - event-loop
-  - explanation
-  - replay
-  - temporal application
-  - temporal sdk
-  - temporal-service
-  - temporal-sdk
 tags:
   - Concepts
   - Temporal SDKs
@@ -144,7 +134,7 @@ Developers use the Client as the main entry point for interacting with the appli
 
 <SdkGuideLinks path="client/temporal-client" title="Temporal Client" />
 
-### APIs to Develop Workflows
+### APIs to develop Workflows
 
 Workflows are defined as code: either a function or an object method, depending on the language.
 
@@ -204,7 +194,7 @@ Take for instance the call to execute an Activity. When a Workflow invokes it, t
 
 The Temporal Service persists Workflow Execution Event History, so that if there is a failure, the SDK Worker is able to Replay the execution and resume where it left off.
 
-This is where the deterministic constraints of the Workflow code comes into play, requiring the use of Activities to create side effects and interact with the outside world.
+This is where the deterministic constraints of the Workflow Definition come into play, requiring the use of Activities to create side effects and interact with the outside world.
 
 Activities perform work outside the Workflow, for example, calling an external API. Since the call can fail due to transient issues, you define it as an Activity and configure retry options in your SDK.
 
@@ -226,7 +216,7 @@ Starting a Workflow Execution creates a new Event, WorkflowExecutionStarted, and
 The Temporal Service then schedules a Workflow Task by adding it to the Task Queue.
 When the Worker has capacity, it picks up this Task, and begin executing code.
 
-Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded into the Event History.
+Each step of the Task (for example, Scheduled, Started, and Completed), gets recorded into the Event History.
 
 - Scheduled means that the Temporal Service has added a Task to the Task Queue.
 - Started means that the Worker has dequeued the Task.
@@ -256,7 +246,7 @@ The Temporal Service creates a new Workflow Task which the Worker picks up.
     src="/diagrams/how-sdk-works-1.svg"
     title="The Worker picks up the new Task" />
 
-This is when the SDK Worker Replays the Workflow code, using the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
+This is when the SDK Worker Replays the Workflow code, using the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/workflow-task-errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 

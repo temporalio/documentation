@@ -1,18 +1,15 @@
 ---
 id: temporal-client
-title: Temporal Client - Ruby SDK
+title: Temporal Client
 sidebar_label: Temporal Client
 description:
-  Create a Temporal Client, connect to Temporal Cloud, start a Workflow, and get Workflow results using the Temporal
-  Ruby SDK.
-keywords:
-  - sdk
-  - ruby
-  - temporal client
+  Connect to a development Temporal Service or Temporal Cloud from Ruby, set a Task Queue and Workflow Id, and get
+  Workflow Execution results.
+toc_max_heading_level: 4
 tags:
+  - Temporal Client
   - Ruby SDK
   - Temporal SDKs
-  - Temporal Client
   - Certificates
 ---
 
@@ -40,7 +37,7 @@ these options directly in code, load them from **environment variables**, or a *
 [`EnvConfig`](https://ruby.temporal.io/Temporalio/EnvConfig.html) helpers. We recommend environment variables or a
 configuration file for secure, repeatable configuration.
 
-When you’re running a Temporal Service locally (such as with the
+When you're running a Temporal Service locally (such as with the
 [Temporal CLI dev server](/cli/command-reference/server#start-dev)), the required options are minimal. If you
 don't specify a host/port, most connections default to `127.0.0.1:7233` and the `default` Namespace.
 
@@ -227,9 +224,7 @@ local development instance:
   This endpoint works for all Namespaces and automatically directs traffic to the active region for Namespaces with [High Availability](/cloud/high-availability).
   See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
 
-You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
-
-![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab.
 
 For more information about managing and generating client certificates for Temporal Cloud, see
 [How to manage certificates in Temporal Cloud](/cloud/certificates).
@@ -416,11 +411,32 @@ client = Temporalio::Client.connect(
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
+`TLSOptions` is static: the certificate you pass to `Client.connect` is fixed for the lifetime of that client. To rotate
+an mTLS client certificate without restarting your Worker, connect a new client with the new certificate, then assign
+it to the running `Worker`'s `client`:
+
+```ruby
+new_client = Temporalio::Client.connect(
+  '<endpoint>', # Endpoint
+  '<namespace_id>.<account_id>', # Namespace
+  tls: Temporalio::Client::Connection::TLSOptions.new(
+    client_cert: File.read('my-client-cert-new.pem'),
+    client_private_key: File.read('my-client-key-new.pem')
+  )
+)
+
+# my_worker is the Worker instance already running against the old client
+my_worker.client = new_client
+```
+
+The Worker starts using `new_client` for subsequent calls to the Temporal Service; calls already in flight on the old
+client finish normally.
+
 </TabItem>
 
 </Tabs>
 
-## Start a Workflow {/* #start-workflow */}
+## Start a Workflow Execution {/* #start-workflow */}
 
 To start a Workflow Execution, supply:
 
@@ -439,6 +455,38 @@ result = my_client.execute_workflow(
   id: 'my-workflow-id', task_queue: 'my-task-queue'
 )
 puts "Result: #{result}"
+```
+
+### Set a Workflow's Task Queue {/* #set-task-queue */}
+
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
+
+For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
+Queue name.
+
+To set a Task Queue in Ruby, specify the `task_queue` keyword argument on `start_workflow` or `execute_workflow`.
+
+```ruby
+result = my_client.execute_workflow(
+  MyWorkflow, 'some-input',
+  id: 'my-workflow-id', task_queue: 'my-task-queue'
+)
+```
+
+### Set a Workflow Id {/* #workflow-id */}
+
+You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
+
+When setting a Workflow Id, we recommend mapping it to a business process or business entity identifier, such as an
+order identifier or customer identifier.
+
+To set a Workflow Id in Ruby, specify the `id` keyword argument on `start_workflow` or `execute_workflow`.
+
+```ruby
+result = my_client.execute_workflow(
+  MyWorkflow, 'some-input',
+  id: 'my-workflow-id', task_queue: 'my-task-queue'
+)
 ```
 
 ## Get Workflow results {/* #get-workflow-results */}

@@ -1,16 +1,11 @@
 ---
 id: automated
 title: Automated migration
-sidebar_label: Automated migration
 description:
   Automated migration is designed to provide a zero-downtime, secure means of migrating to Temporal Cloud. This guide
   outlines the current process for transitioning workflows from a self-hosted setup to one hosted within Temporal Cloud.
 slug: /cloud/migrate/automated
 toc_max_heading_level: 4
-keywords:
-  - migration
-  - multi-cluster replication
-  - temporal cloud
 tags:
   - Temporal Service
   - Temporal Cloud
@@ -24,7 +19,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
   Please contact your Temporal account executive prior to planning your migration project.
 </ReleaseNoteHeader>
 
-## Process Overview
+## Process overview
 
 Automated migration is designed to provide a zero-downtime, secure means of migrating to Temporal Cloud. This guide
 outlines the current process for transitioning Workflows from self-hosted Temporal Server to a namespace hosted within
@@ -63,16 +58,15 @@ support ticket.
 
 
 ### Capture cluster configurations
+Depending on your server version, use one of the following methods to capture the configuration of each cluster.
 
-Use one of the following methods to capture the configuration of each cluster.
-
-For server versions above 1.28.1, run the following command against each of your clusters:
+For server versions **above 1.28.1**, run the following command against each of your clusters:
 
 ```
 temporal operator cluster describe --address <frontend:7233> --output json
 ```
 
-For server versions 1.28.1 and prior, use one of the following alternate methods:
+For server versions **1.28.1 and prior**, use one of the following alternate methods:
 
 ```
 tctl --address <frontend:7233> admin cluster describe
@@ -106,7 +100,7 @@ Metrics are used for cloud-side resource planning. For each Namespace, collect t
 - Total number of open/closed Workflows
 - Total storage used
 - Current retention policy. Note that this may differ from the
-  [default retention policy](/cloud/limits#default-retention-period) in Temporal Cloud.
+  [default retention policy](/evaluate/cloud/limits#default-retention-period) in Temporal Cloud.
 - Peak [action per second](/glossary#actions-per-second-aps) (APS). For instructions on collecting these metrics, see
   [Estimate Actions for migration](/cloud/migrate/estimate-actions).
 
@@ -120,9 +114,16 @@ When planning an automated migration, share the following estimates with your Te
 
 These estimates help Temporal plan capacity, Namespace limits, and migration timing.
 
+### Capture schedules
+Capture a list of schedules on the system. This helps to ensure backwards compatibility.
+
+```
+temporal schedule list
+```
+
 ### Prepare mTLS certificates
 
-mTLS is used to secure the [S2S Proxy](#s2s-proxy-configuration) communications channel. Provide a single certificate using the process outlined
+mTLS is used to secure the [S2S Proxy](#configure-the-proxy) communications channel. Provide a single certificate using the process outlined
 [here](/cloud/certificates#issue-certificates).
 
 Verify your end-entity certificate with the following command.
@@ -135,9 +136,8 @@ In the example above, the ca.pem file will be provided to Temporal where the cli
 
 ### Create Cloud Namespaces
 
-Create your cloud-side Namespaces noting current [naming requirements](/cloud/namespaces#temporal-cloud-namespace-name).
-
-Apply any required custom Search Attributes and adjust the [rate limits](/cloud/capacity-modes) as needed.
+1. Create your cloud-side Namespaces noting current [naming requirements](/cloud/namespaces#temporal-cloud-namespace-name).
+2. Apply any required custom Search Attributes and adjust the [rate limits](/cloud/capacity-modes) as needed.
 
 Migration cannot proceed into a Namespace that is already in use. Please ensure that these Namespaces remain empty (no Workflows).
 
@@ -146,12 +146,13 @@ public internet or via [private connectivity](/cloud/connectivity).
 
 
 ### Report collected data
-Provide all collected data to Temporal via a [support ticket](/cloud/support#ticketing). 
+Provide all collected data to Temporal via a [support ticket](/evaluate/cloud/support#ticketing). 
 
 In your ticket, please provide:
 * mTLS certificate - base64 encoded pem file works well for easy submission in the ticket
 * cluster configurations -  json output for each cluster
 * custom search attributes - CLI output for each cluster/Namespace
+* list of schedules used
 * Namespace metrics
 * cluster/Namespace mappings - use CSV format (see below)
 
@@ -175,8 +176,29 @@ Proceed only when your request has been approved by Temporal.
 
 :::
 
+### Plan migration endpoints
 
-### S2S Proxy configuration
+A migration endpoint is a cloud-side resource that connects one of your self-hosted servers to Temporal Cloud. Temporal
+creates the endpoints and provides the `endpoint-id` values used with the `tcld migration` commands in later phases.
+
+Each self-hosted server you migrate from needs its own S2S Proxy deployment and its own migration endpoint. You can
+migrate from more than one self-hosted server at the same time, such as separate development and production servers,
+provided each self-hosted server has a unique cluster name and Initial Failover Version. Temporal uses `active` as the
+default cluster name, so servers that still use the default will collide. See
+[Modify cluster configuration](#modify-cluster-configuration) for setting these values.
+
+If your self-hosted servers cannot use unique cluster names, migrate one server at a time, or contact Temporal to
+discuss the available options.
+
+Namespaces migrating from the same self-hosted server share that server's proxy and endpoint. You can migrate more than
+one Namespace from a server at the same time, provided each source Namespace and its cloud-side target are listed in
+the `namespaceTranslation` mappings of that server's proxy configuration. See
+[Configure the proxy](#configure-the-proxy).
+
+Tell Temporal how many self-hosted servers you plan to migrate from, and whether you intend to migrate from them in
+parallel, so that the required cloud-side resources are in place.
+
+### Configure the proxy
 
 The [S2S Proxy](https://github.com/temporalio/s2s-proxy) requires a cloud-side inbound endpoint. Proceed with deployment
 only after receiving the endpoint from Temporal.
@@ -192,7 +214,7 @@ Use the following procedure to deploy the proxy:
 1. Obtain the latest Docker image from the
    [temporalio/s2s-proxy repository](https://hub.docker.com/r/temporalio/s2s-proxy/tags).
 2. Gather the mTLS certs generated in the previous step.
-3. Deploy 3 replicas of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
+3. Deploy **3 replicas** of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this
    [helm chart example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/README.md) as a reference.
    See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file
    as a reference. Note that the number of replicas must match on both sides of the connection. If your replica count differs
@@ -201,7 +223,7 @@ Use the following procedure to deploy the proxy:
 ```yaml
 aclPolicy:
   allowedNamespaces:
-   - temporal-system
+   - temporal-system  # required - do not remove
    - namespace1
    - namespace2
    - etc...
@@ -213,13 +235,14 @@ namespaceTranslation:
     remote: "cloud-namespace2.wxyz"
   - etc...
 ```
-5. Test access using the command below. It should display the information of the migration server.
+5. Test access using the command below. It should display the information of the cloud-side migration server.
+
+   The address is your own proxy's external address, not a cloud-side address. It's the same value you set as
+   `replicationEndpoint` under `clusterConnections` in your proxy configuration file.
 
 ```
 temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
 ```
-
-Once connectivity has been verified, notify Temporal so that connectivity may be validated from the cloud-side proxy.
 
 There are multiple metrics available on the S2S proxy (prometheus endpoint: _proxy-pod-ip_:9090/metrics). These are
 helpful for monitoring the overall health of the proxy. In particular, the metric
@@ -231,31 +254,35 @@ will monitor connectivity to the cloud-side proxy.
 
 ### Modify cluster configuration
 
-The [dynamic configuration](/references/dynamic-configuration) of your self-hosted cluster must be modified to
-facilitate the migration.
-
 :::warning
 
-Coordinate closely with Temporal for this step of the process.
+Coordinate closely with Temporal before completing this process.
 
 :::
 
-Adjust the maximum connection keepalive time to match the setting in cloud.
+The [dynamic configuration](/references/dynamic-configuration) of your self-hosted cluster must be modified to
+facilitate the migration.
+
+Complete the following process.
+
+1. Adjust the maximum connection keepalive time to match the setting in cloud.
 
 ```yaml
 frontend.keepAliveMaxConnectionAge:
   - value: '2h'
 ```
 
-If you have previously enabled [Global Namespace](/global-namespace), the Failover Version Increment must be approved by
-Temporal. This is **critical**, since the value may only be set once and cannot change.
+2. For server versions 1.22.6 - 1.23.x, apply this [extra required setting](#special-dynamic-configuration-for-version-122---123).
+```yaml
+history.enableReplicationStream:
+  - value: true
+```
 
-If you've never enabled Global Namespace, then you may enable it and set the Initial Failover Version to a unique value
-in the range of 2-99. Enable by updating the _clusterMetadata_ and the _dcRedirectionPolicy_. 
+3. If [Global Namespace](/global-namespace) **is already enabled**, then skip to step 5.
 
-For server versions 1.22 - 1.23, note this [extra required setting](#special-dynamic-configuration-for-version-122x-123x).
-
-When complete, restart all Temporal services (frontend, history, matching, worker), starting with the frontend.
+4. If [Global Namespace](/global-namespace) **is not enabled**, then enable it and set _failoverVersionIncrement_ and _initialFailoverVersion_
+   to the values provided by Temporal. Pay close attention when setting these values. They **cannot be changed** once Global Namespace has 
+   been enabled. See the sample configuration below for a reference.
 
 ```yaml
 dcRedirectionPolicy:
@@ -263,13 +290,13 @@ dcRedirectionPolicy:
 
 clusterMetadata:
 enableGlobalNamespace: true # add this
-failoverVersionIncrement: CHANGEME # usually 1000000, but coordinate with Temporal. must match cloud-side migration server
+failoverVersionIncrement: CHANGEME # use value provided by Temporal
 masterClusterName: _NO_CHANGE_
 currentClusterName: _NO_CHANGE_
 clusterInformation:
   _NO_CHANGE_:
     enabled: true
-    initialFailoverVersion: CHANGEME # set in the range 2-99. use a unique number per cluster
+    initialFailoverVersion: CHANGEME # use value provided by Temporal
     rpcName: _NO_CHANGE_
     rpcAddress: _NO_CHANGE_
 
@@ -278,7 +305,9 @@ clusterInformation:
 #  - value: true
 ```
 
-After all services have restarted, verify the configuration using:
+5. Verify your configuration and restart all Temporal services (frontend, history, matching, worker), starting with the frontend.
+
+6. After all services have restarted, verify the configuration using:
 
 ```
 temporal operator cluster describe
@@ -287,8 +316,8 @@ temporal operator cluster describe
 The following sample output is expected:
 
 ```yaml
-"failoverVersionIncrement": "1000000",
-"initialFailoverVersion": "the number you picked"
+"failoverVersionIncrement": "nnn",
+"initialFailoverVersion": "nnn"
 "isGlobalNamespaceEnabled": true
 ```
 
@@ -298,10 +327,22 @@ it is important to verify that your persistence/database layer has plenty of CPU
 
 
 ## Phase 3: Testing
+Once the proxy is deployed and the cluster configuration changes have been applied, then final testing may begin.
 
-Testing should proceed using either a newly created Namespace or else one that is considered to be non-production. In
-either case, test Workflows should be utilized. It is ideal to have a mix of completed, active, and new Workflows to use
-during testing.
+### Verifying the proxy
+
+Temporal will validate the proxy from the cloud side of the connection.  Temporal will validate
+1. the stability of the proxy connection
+2. that all required permissions are allowed on the self-hosted proxy
+3. that all cluster configuration changes have been applied
+4. that all to-be-migrated Namespaces are visible
+5. the presence of Custom Search Attributes
+
+Once the self-hosted setup has been verified, the next step will be to perform test migrations.
+
+### Complete test migrations
+Migration testing should use either a newly created Namespace or else one that is considered to be non-production. 
+It is ideal to have a mix of completed and running Workflows to use during testing.
 
 Testing uses the following process:
 
@@ -309,6 +350,7 @@ Testing uses the following process:
 2. Create target cloud-side Namespace and add the Namespace definition to the S2S Proxy configuration.
 3. Run test Workflows against the Namespace.
 4. Perform a complete end-to-end migration for the Namespace (see remaining phases for full process).
+5. Optionally, test [transferring clients](#transfer-clients-to-cloud) to the cloud.
 
 Testing is considered successful if all data from the self-hosted deployment is migrated to cloud.
 
@@ -442,9 +484,9 @@ ensure that all workers maintain connectivity to cloud to avoid this scenario. T
 
 The following are known limitations.
 
-- OSS server versions 1.22 or newer are required. Refer to the
+- OSS server versions 1.22.6 or newer are required. Refer to the
   [upgrade](/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
-- History shard counts must be a power of two (eg. 512, 1024, etc...).
+- History shard counts must be a power of two (for example, 512 or 1024).
 - If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal
   uses 'active' as cluster name), they cannot be connected to a single migration server simultaneously due to cluster
   name collision. There are 2 available options:
@@ -455,15 +497,15 @@ The following are known limitations.
   this may impact your eligibility for automated migration. Specifically, whenever Global Namespace has been previously
   enabled the following restrictions apply:
   1. Initial Failover Version must be less than or equal to 1,000,000
-  2. Failover Version Increment must be a divisor of 1,000,000 (eg. 10)
-- OSS supports cross-Namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the
+  2. Failover Version Increment must be a divisor of 1,000,000 (for example, 10)
+- OSS supports cross-Namespace commands (for example, parent-child, SignalExternal, CancelExternal) through the
   `system.enableCrossNamespaceCommands` configuration. This configuration is disabled on Temporal Cloud. The
   `system.enableCrossNamespaceCommands` configuration must be disabled, and code using cross-Namespace calls must be
   updated or removed prior to migration.
 
-### Special dynamic configuration for Version 1.22.x-1.23.x
+### Special dynamic configuration for Version 1.22 - 1.23
 
-Temporal versions 1.22.x and 1.23.x include support for stream-based replication, but it is disabled by default. Since
+Temporal versions 1.22 and 1.23 include support for stream-based replication, but it is disabled by default. Since
 those releases, stream-based replication has been validated as more reliable than the poll-based replication that
 remained the default in 1.22 and 1.23.
 
@@ -495,6 +537,17 @@ The answer depends on your specific situation. However, automated migration is m
 
 In contrast, automated migration may not be the best solution if your self-hosted clusters do not meet the [minimum requirements](#limitations).
 
+### Can I migrate from multiple self-hosted servers at the same time?
+
+Yes. Each self-hosted server needs its own S2S Proxy deployment and its own migration endpoint, and each must have a
+unique cluster name and Initial Failover Version. See [Plan migration endpoints](#plan-migration-endpoints).
+
+### Can I migrate multiple Namespaces from the same self-hosted server at the same time?
+
+Yes. Those Namespaces share the server's proxy and endpoint, so no additional cloud-side resources are needed. Include
+each source Namespace and its cloud-side target in the `namespaceTranslation` mappings of that server's proxy
+configuration. See [Configure the proxy](#configure-the-proxy).
+
 ### Can I split Workflows from a single source Namespace into multiple cloud-side Namespaces?
 No. All Workflows will be migrated.
 
@@ -520,7 +573,7 @@ Yes. Under the hood, Schedules are essentially Workflows.
 
 ### I have a long retention period for my Workflows. Is this compatible with Temporal Cloud?
 Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#retention-period) are in excess of what
-is [supported](/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
+is [supported](/evaluate/cloud/limits#default-retention-period) in Temporal Cloud. In these cases it is recommended to utilize
 [archival](/temporal-service/archival) to store closed Workflows that cannot be migrated. In general, archival is
 recommended over large retention periods since the extra data can stress the persistence layer of the system.
 

@@ -3,7 +3,7 @@
 // components carry only layout/styling — no hardcoded copy. The Markdown mirror
 // is produced by the transformer's hero handlers (scripts/mdx-to-md.mjs +
 // scripts/component-handlers/hero.mjs), which read the props/children straight
-// out of docs/index.mdx. See MARKDOWN_PIPELINE.md.
+// out of docs/index.mdx. See readme/MARKDOWN_PIPELINE.md.
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { SdkLogosAsBlocks } from './Sdk';

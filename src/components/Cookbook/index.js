@@ -1,3 +1,3 @@
 export { default as CookbookHome } from './Home/CookbookHome'
-export * from './DocItem/CookbookCategoryIndex'
+export { default as CookbookPreview } from './Preview/CookbookPreview'
 export * from './DocItem/CookbookDocItem'

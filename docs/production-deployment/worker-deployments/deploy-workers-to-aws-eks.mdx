@@ -4,13 +4,6 @@ title: Quick launch - Deploying your Workers on Amazon EKS
 sidebar_label: Deploy Workers to Amazon EKS
 slug: /production-deployment/worker-deployments/deploy-workers-to-aws-eks
 description: Deploy a Temporal Worker on Amazon Elastic Kubernetes Service (EKS) using the Python SDK.
-keywords:
-  - Temporal Cloud
-  - Kubernetes
-  - EKS
-  - AWS
-  - Python SDK
-  - Worker
 tags:
   - Deploy
   - Python SDK
@@ -163,7 +156,7 @@ docker buildx build \
     -t your-app .
 ```
 
-## Publish the Worker Image to Amazon ECR
+## Publish the Worker image to Amazon ECR
 
 After building the Docker image, you’re ready to publish it to Amazon ECR.
 Make sure that you’re authenticated with AWS, and that you’ve set your `AWS_REGION` and `AWS_ACCOUNT_ID` environment variables:
@@ -247,7 +240,7 @@ spec:
    selector:
       matchLabels:
          app: your-app
-   replicas: 1
+   replicas: 2
    template:
       metadata:
          labels:

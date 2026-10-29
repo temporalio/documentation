@@ -2,14 +2,9 @@
 id: monitoring
 title: Monitor Temporal Platform metrics
 sidebar_label: Monitoring
-description: Monitor and health check a self-hosted Temporal Platform using Prometheus, StatsD, and M3 to track Temporal Service, Client, and Worker metrics for performance and issue troubleshooting.
+description: Monitor and health check a self-hosted Temporal Platform using Prometheus and StatsD to track Temporal Service, Client, and Worker metrics for performance and issue troubleshooting.
 slug: /self-hosted-guide/monitoring
 toc_max_heading_level: 4
-keywords:
-  - cluster
-  - grafana
-  - how-to
-  - prometheus
 tags:
   - Temporal Service
   - Self-hosting
@@ -81,7 +76,7 @@ temporal server start-dev --metrics-port 8000
 
 :::info
 
-Refer to the [Temporal Cluster configuration reference](/references/configuration#global) to expose metrics from a production service.
+Refer to the [Temporal Service configuration reference](/references/service-configuration#global) to expose metrics from a production service.
 
 :::
 
@@ -180,11 +175,11 @@ For more details on configuring Grafana dashboards, see the [Grafana Dashboards 
 :::
 
 From here, you can configure Grafana [Alerts](https://grafana.com/docs/grafana/latest/alerting/) for any monitored parameters, add custom metrics to your Temporal SDK code, and use these observability features to help scale your Temporal deployment.
-Refer to the [Cluster metrics](/references/cluster-metrics) and [SDK metrics](/references/sdk-metrics) reference for more.
+Refer to the [Temporal Service metrics](/references/service-metrics) and [SDK metrics](/references/sdk-metrics) reference for more.
 
 ## Configuring Temporal Service health checks {/* #health-checks */}
 
-The [Frontend Service](/temporal-service/temporal-server#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/875066b61e3b57af4bb1d6e36aabe95a4f6ba4f7/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
+The [Frontend Service](/temporal-service/temporal-server#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/ee389ed222de898ae419c8c5ef8c213573ce5c55/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
 
 If you use [Nomad](https://www.nomadproject.io/) to manage your containers, the [check stanza](https://developer.hashicorp.com/nomad/docs/job-specification/check) would look like this for TCP:
 
@@ -210,7 +205,7 @@ service {
   }
 ```
 
-## Installing via Helm Chart
+## Installing via Helm chart
 
 If you are installing and running Temporal via [Helm chart](https://github.com/temporalio/helm-charts), you can also [provide additional parameters](https://github.com/temporalio/helm-charts?tab=readme-ov-file#exploring-metrics-via-grafana) to populate and explore a Grafana dashboard out of the box.
 
@@ -219,4 +214,4 @@ If you are installing and running Temporal via [Helm chart](https://github.com/t
 Datadog has a Temporal integration for collecting Temporal Service metrics.
 Once you've [configured Prometheus](#prometheus), you can configure the [Datadog Agent](https://docs.datadoghq.com/integrations/temporal/).
 
-If you are using [Temporal Cloud](/cloud/overview), you can also [integrate Datadog directly](https://docs.datadoghq.com/integrations/temporal-cloud/), without needing to use Prometheus.
+If you are using [Temporal Cloud](/evaluate/cloud), you can also [integrate Datadog directly](https://docs.datadoghq.com/integrations/temporal-cloud/), without needing to use Prometheus.

@@ -1,0 +1,75 @@
+/* ---------------------------------------------------------------------------
+   RunThis - commands the reader is meant to run, as opposed to sample code.
+   Styled as a terminal window so the difference is obvious at a glance: window
+   chrome with traffic lights, and a darker ground than the #292d3e Palenight
+   base the sample-code blocks keep.
+
+   #0f1e1d is darker than that base, so every syntax colour gains contrast
+   rather than losing it. prismThemes.js raised the comment colour to #8a93c8
+   to clear 4.5:1 on #292d3e (4.61); on #0f1e1d it reaches 5.79.
+
+   Colour and chrome are never the only signal: every RunThis block also carries
+   a title, which is what survives into the Markdown output.
+   --------------------------------------------------------------------------- */
+.runThis {
+  --nmw-run-bg: #0f1e1d;
+  --nmw-run-chrome: #2d5c55;
+  --nmw-run-border: rgba(45, 212, 191, 0.38);
+  margin-bottom: var(--ifm-leading);
+}
+
+/* Window frame. overflow:hidden clips the <pre> to the rounded corners. */
+.runThis :global(div[class*='codeBlockContainer']) {
+  background-color: var(--nmw-run-bg);
+  border: 1px solid var(--nmw-run-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+.runThis :global(div[class*='codeBlockContent']) {
+  background-color: var(--nmw-run-bg);
+}
+
+/* Docusaurus puts background-color in an inline style on the <pre> itself, and
+   the <pre> paints over the container. An inline declaration can only be beaten
+   by !important, so this one rule needs it. */
+.runThis :global(pre[class*='codeBlock']) {
+  background-color: var(--nmw-run-bg) !important;
+}
+
+/* Title bar becomes the window chrome. */
+.runThis :global(div[class*='codeBlockTitle']) {
+  display: flex;
+  align-items: center;
+  background-color: var(--nmw-run-chrome);
+  border-bottom: 1px solid var(--nmw-run-border);
+  color: #eafaf6;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+}
+
+/* Three traffic lights, drawn from one pseudo-element. */
+.runThis :global(div[class*='codeBlockTitle'])::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 0.62rem;
+  height: 0.62rem;
+  margin-right: 2.95rem;
+  border-radius: 50%;
+  background: #ff5f56;
+  box-shadow:
+    0.95rem 0 0 #ffbd2e,
+    1.9rem 0 0 #27c93f;
+}
+
+/* The dots carry no meaning, so keep them out of forced-colours mode. */
+@media (forced-colors: active) {
+  .runThis :global(div[class*='codeBlockTitle'])::before {
+    display: none;
+  }
+}

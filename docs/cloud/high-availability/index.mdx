@@ -1,21 +1,12 @@
 ---
 id: index
 title: High Availability
-sidebar_label: High Availability
 slug: /cloud/high-availability
-description: Temporal Cloud's Namespace with High Availability features offers automatic failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+description: Temporal Cloud's Namespace with High Availability features offers automatic failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and a higher uptime SLA.
 tags:
   - Temporal Cloud
   - Production
   - High Availability
-keywords:
-  - availability
-  - explanation
-  - failover
-  - high-availability
-  - replication
-  - namespaces
-  - temporal-cloud
 ---
 
 import { ToolTipTerm, CaptionedImage } from '@site/src/components';
@@ -25,7 +16,7 @@ Temporal keeps your Workflows running even when a Worker crashes. But what happe
 In the cloud, outages are commonplace. An outage can bring down a whole data center, cluster, region, or cloud provider. To be durable in the cloud, Workflows and applications must handle these outages smoothly, just like Temporal handles a Worker crash.
 
 Temporal Cloud's High Availability features add extra reliability to Temporal Cloud Namespaces by handling cloud outages. Using asynchronous <ToolTipTerm term="replication"/> between multiple regions or cloud providers, combined with automatic outage detection and failover, High Availability keeps your Workflows running even during a cloud region outage.
-This extra availability comes with an enhanced [SLA](/cloud/sla) of 99.99%, _including_ cloud provider outages.
+This extra availability comes with an enhanced [SLA](https://temporal.io/sla).
 
 :::tip White paper
 
@@ -33,16 +24,22 @@ For an in-depth guide covering everything from why you need High Availability to
 
 :::
 
+:::caution GCP capacity restriction
+
+Before creating a GCP Namespace or adding a GCP replica, check [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for regional availability and exception requirements.
+
+:::
+
 ## Built-in reliability
 
-Even without High Availability features, Temporal Cloud provides robust reliability and a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)) guarantee against service errors.
+Even without High Availability features, Temporal Cloud provides robust reliability and a contractual [Service Level Agreement (SLA)](https://temporal.io/sla) against service errors.
 
 Each standard Temporal Namespace uses replication across three [Availability Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (AZs) to ensure high availability.
 An Availability Zone is akin to an isolated data center managed by a cloud hyperscaler, with independent power, networking, and cooling infrastructure.
 
 Replication across AZs makes sure that any changes to Workflow state or History are saved in all three AZs _before_ the Temporal Service acknowledges a change back to the Client.
 As a result, your standard Temporal Namespace stays operational even if one of its three AZs becomes unavailable.
-This provides the basis of the 99.9% service level agreement for Temporal Cloud Namespaces.
+This provides the basis of the SLA for standard Temporal Cloud Namespaces.
 
 However some critical use cases--such as customer-facing applications--require even better availability. That is where Temporal Cloud's High Availability features come in.
 
@@ -68,7 +65,7 @@ High Availability features extend Temporal Cloud's replication across regions an
 
 You can usually choose your replica region, but the replica must be on the same continent as the primary region.
 This means that a few Temporal Cloud regions do not yet support Multi-region Replication or Multi-cloud Replication.
-See [Regions](/cloud/regions) for a full list of supported replica regions.
+See [Regions](/evaluate/cloud/regions) for a full list of supported replica regions.
 
 You can't enable both Multi-region Replication and Multi-cloud Replication on the same Namespace at the same time.
 
@@ -101,9 +98,13 @@ When a request reaches the passive replica — for example, through the passive 
 
 Forwarding adds a cross-region hop, so requests that travel through the passive replica complete with higher average latency than requests that reach the active replica directly.
 
+You can turn off forwarding for Worker poll requests, which keeps the passive region's Workers from processing tasks. Client requests such as Start Workflow, Signal, Query, Cancel, and Terminate are always forwarded, so a Client that reaches the passive replica keeps working either way.
+
 To route Workers to the passive region's replica, see [How requests reach the replica](/cloud/high-availability/ha-connectivity#how-requests-reach-the-replica).
 
-To disable passive region replica forwarding, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
+To stop forwarding Worker polls that reach the passive replica, see [Change the forwarding behavior](/cloud/high-availability/enable#change-forwarding-behavior).
+
+To see which Client requests keep forwarding either way, see [Client requests are forwarded regardless of this setting](/cloud/high-availability/enable#client-requests-still-forwarded).
 
 To run Worker fleets in both regions that rely on this forwarding, see [Active/Active](/cloud/high-availability/architecture-patterns#active-active).
 
@@ -111,9 +112,10 @@ To keep passive-region Workers on standby until failover by disabling this forwa
 
 ## Service levels and recovery objectives
 
-Namespaces using High Availability have a 99.99% [uptime SLA](/cloud/sla) with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
+Namespaces using High Availability have a higher [uptime SLA](https://temporal.io/sla), with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
 
-- [Service Level Agreement (SLA)](/cloud/sla)
+- [Temporal Cloud Service Level Agreement (SLA)](https://temporal.io/sla)
+- [Uptime, latency, and SLOs](/cloud/slo)
 - [Recovery Point Objective (RPO) and Recovery Time Objective (RTO)](/cloud/rpo-rto)
 
 ## Failover
@@ -135,11 +137,30 @@ These are often major concerns for financial services, e-commerce, gaming, globa
 
 In selected regions, you can add a replica to a Namespace in the same region.
 Temporal operates a "cell architecture" and will replicate the Namespace across multiple cells in that region.
-This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages) in selected regions.
+This feature is currently in [Public Preview](/evaluate/product-release-stages) in selected regions.
 
 Failovers between cells are always managed automatically by Temporal. Unlike Multi-region and Multi-cloud Replication, you cannot disable automatic failovers and you cannot trigger a manual failover for a Same-region Replication Namespace. See [Failovers](/cloud/high-availability/failovers) for details.
 
 ## Related considerations
+
+A few other Temporal features interact with High Availability in ways worth understanding before you enable it.
+
+### Serverless Workers
+
+[Serverless Workers](/serverless-workers) do not support Multi-cloud Replication. Serverless Workers must be invoked
+from the same cloud provider where the Namespace is currently active. After a failover to a different cloud provider,
+Serverless Workers can no longer be invoked. This is a temporary restriction during Public Preview.
+
+You can use Serverless Workers with a Namespace that has Multi-region Replication within the same cloud provider,
+but without manual intervention, the workloads that failed over to the new region will keep invoking Workers in the old
+region. If the compute provider's region is experiencing degraded performance, this may impact your workloads even
+though your Temporal Cloud Namespace has failed over successfully.
+
+This is because each compute provider configuration (for example, a Lambda ARN) is scoped to a single region. The
+[Worker Controller Instance](/serverless-workers#worker-controller-instance) has no mechanism to detect a failover or
+redirect invocations to a Worker in the new active region. To keep processing Workflows after a failover, you must
+manually reconfigure the Worker Deployment Version's compute provider to point at a Worker in the new region. See
+[Constraints - Serverless Workers](/serverless-workers#constraints).
 
 ### External Storage
 

@@ -5,18 +5,13 @@ sidebar_label: Temporal
 description: Temporal is a scalable platform that ensures the Durable Execution of application code, allowing reliable and resilient Workflow Executions even in the face of failures like network outages or server crashes.
 slug: /temporal
 toc_max_heading_level: 4
-keywords:
-  - durable execution
-  - explanation
-  - temporal
-  - term
 tags:
   - Durable Execution
   - Temporal
   - Concepts
 ---
 
-import { CaptionedImage, QuickstartCards } from '@site/src/components';
+import { CaptionedImage, QuickstartCards, Video } from '@site/src/components';
 
 Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/workflow-execution).
 
@@ -38,6 +33,14 @@ This is achieved through Temporal's use of an [Event History](/workflow-executio
 If a failure occurs, the Workflow Execution can resume from the last recorded event, ensuring that progress isn't lost.
 
 ## What is the Temporal Platform? {/* #temporal-platform */}
+
+:::tip
+
+Watch a short overview of the Temporal Platform:
+
+<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />
+
+:::
 
 The Temporal Platform consists of supervising software called the [Temporal Service](/temporal-service) and application code bundled as [Worker Processes](/workers#worker-process).
 Together these components create a runtime for your [Temporal Application](/temporal#temporal-application).

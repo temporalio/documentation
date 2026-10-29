@@ -1,0 +1,24 @@
+# Extracted from errata-ai/Google and errata-ai/IBM (MIT). See NOTICE.
+#
+# The union: IBM adds the Unicode ellipsis, which everyone should catch.
+extends: existence
+message: "Ellipsis."
+level: suggestion
+nonword: true
+action:
+  name: remove
+tokens:
+  - '\.\.\.'
+  - '…'
+tests:
+  - name: fires
+    input: >
+      Wait for the build to finish... it can take a while… really.
+    want: |
+      1:29:Std.Punctuation.Ellipses:Ellipsis.
+      1:52:Std.Punctuation.Ellipses:Ellipsis.
+
+  - name: clean
+    input: >
+      Wait for the build to finish. It can take a while.
+    want: ""

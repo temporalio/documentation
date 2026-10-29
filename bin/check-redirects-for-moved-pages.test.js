@@ -165,4 +165,34 @@ describe('findMatchingRedirect', () => {
     );
     assert.strictEqual(match, undefined);
   });
+
+  it('redirects the old AI Cookbook markdown landing page', () => {
+    const redirects = loadRedirects();
+    const match = findMatchingRedirect('/ai-cookbook.md', redirects);
+    assert.ok(match, 'expected /ai-cookbook.md to have a redirect');
+    assert.strictEqual(match.source, '/ai-cookbook.md');
+    assert.strictEqual(match.destination, '/ai/cookbook.md');
+  });
+
+  it('redirects renamed AI Cookbook recipe markdown URLs to the new slug', () => {
+    const redirects = loadRedirects();
+    const match = findMatchingRedirect(
+      '/ai-cookbook/basic-python.md',
+      redirects,
+    );
+    assert.ok(match, 'expected /ai-cookbook/basic-python.md to have a redirect');
+    assert.strictEqual(match.source, '/ai-cookbook/basic-python.md');
+    assert.strictEqual(
+      match.destination,
+      '/ai/cookbook/hello-world-openai-responses-python.md',
+    );
+  });
+
+  it('redirects the even older /cookbook.md landing page', () => {
+    const redirects = loadRedirects();
+    const match = findMatchingRedirect('/cookbook.md', redirects);
+    assert.ok(match, 'expected /cookbook.md to have a redirect');
+    assert.strictEqual(match.source, '/cookbook.md');
+    assert.strictEqual(match.destination, '/ai/cookbook.md');
+  });
 });

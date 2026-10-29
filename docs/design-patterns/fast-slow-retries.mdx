@@ -1,8 +1,10 @@
 ---
 id: fast-slow-retries
 title: "Fast/Slow Retries"
-sidebar_label: "Fast/Slow Retries"
-description: "Try aggressively with a short interval first, then shift to a long interval when fast retries are exhausted, keeping the Workflow alive until the downstream system recovers."
+description: "Retry fast with a short interval first, then shift to a slow, unlimited interval so the Workflow outlasts an extended downstream outage."
+tags:
+  - Design Patterns
+  - Errors
 ---
 
 import Tabs from '@theme/Tabs';
@@ -35,7 +37,7 @@ Use the Workflow itself as a retry orchestrator across two phases:
 
 **Phase 2 — Slow retries**: When the fast retry policy is exhausted, catch the `ActivityError` in the Workflow and execute the Activity again with a long `InitialInterval` and unlimited `MaximumAttempts`. The Temporal Service owns the slow retry management; the Workflow blocks until the Activity eventually succeeds.
 
-This design is invisible in conventional retry libraries because it requires the retry orchestrator to be a durable, resumable process — exactly what a Temporal Workflow is.
+Conventional retry libraries can't implement this two-phase design, because the retry orchestrator needs to survive across the entire fast-then-slow window — hours or days — without staying resident in a process. A Temporal Workflow persists its state between retries, so it can hold that phase transition durably.
 
 ```mermaid
 flowchart TD
@@ -297,13 +299,16 @@ If the business process has a maximum wait time, add a `ScheduleToCloseTimeout` 
 - **Setting `MaximumAttempts` in Phase 2.** If you set a finite `MaximumAttempts` in the slow phase, it will eventually exhaust and propagate a failure to the Workflow. Only add a limit if the business process has a defined maximum wait time; in that case, pair it with a `ScheduleToCloseTimeout` to make the budget explicit.
 - **Using exponential backoff in Phase 2.** The default `BackoffCoefficient` is 2.0, which doubles the interval with each attempt. Set `BackoffCoefficient=1.0` in the slow phase to keep the interval fixed and predictable.
 
-## Related patterns
+## Related
+
+### Patterns
 
 - [Retry Alerting via Metrics](/design-patterns/retry-metrics): Emit a metric in the slow-phase Activity to surface sustained failures to on-call teams.
 - [Delayed Retry](/design-patterns/delayed-retry): Override the retry interval per error type using `nextRetryDelay` on `ApplicationFailure`.
 - [Error Handling & Retry Patterns](/design-patterns/error-handling-patterns): Overview and decision tree for all retry patterns.
 
-## References
+### References
 
+- [Temporal Retry Policies](/encyclopedia/retry-policies)
 - [Understanding Workflow Retries and Failures](https://community.temporal.io/t/understanding-workflow-retries-and-failures/122)
 - [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice)

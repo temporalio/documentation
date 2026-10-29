@@ -1,1 +1,9 @@
 # yarn run lint && yarn run fix-vale
+
+# Optional per-developer hook. Runs .husky/pre-commit.local if it exists.
+# The local file is untracked (see .git/info/exclude), so this is a no-op
+# for anyone who hasn't created one. Uses `if` (not `&&`) so an absent file
+# still exits 0 and never blocks commits.
+if [ -f .husky/pre-commit.local ]; then
+  . ./.husky/pre-commit.local
+fi
