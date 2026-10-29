@@ -254,6 +254,22 @@ Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 }
 ```
 
+##### System permissions
+
+The Namespace name `temporal-system` is reserved for system permissions.
+The default JWT `ClaimMapper` maps `temporal-system:<permission>` to the caller's system role instead of a Namespace role.
+
+The default `Authorizer` checks only the system role for cluster-scoped APIs, such as `ListNamespaces` and `GetClusterInfo`.
+A Namespace role does not grant access to these APIs, even `admin`.
+To call a cluster-scoped read-only API, a token needs at least `temporal-system:read`.
+
+The Temporal Web UI calls `ListNamespaces` and `GetClusterInfo` when it loads.
+A user whose token holds only Namespace permissions, such as `my-namespace:admin`, gets permission-denied errors for these calls.
+Add `temporal-system:read` to that user's permissions to let the Web UI load.
+
+A system role also applies to every Namespace, so `temporal-system:read` lets the caller read all Namespaces.
+If that is broader than you want, use a custom `Authorizer` that allows the cluster-scoped read-only APIs the Web UI needs for callers with any Namespace role.
+
 ### What is an Authorizer Plugin? {/* #authorizer-plugin */}
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.

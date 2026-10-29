@@ -50,6 +50,18 @@ In body prose, use **Temporal Service**, not **Cluster** or **Temporal Cluster**
 
 Exceptions: **Multi-Cluster Replication**, code/config identifiers, and CLI command names.
 
+### Determinism applies to the Workflow Definition
+
+A [Workflow Definition](/workflow-definition) must be deterministic. Don't say "the Workflow" or "Workflow code" must be
+deterministic: "Workflow code" is ambiguous with Activity code, which can be non-deterministic.
+
+- Correct: "A Workflow Definition must be deterministic."
+- Incorrect: "Workflow code must be deterministic."
+
+"Workflow code" is fine when the sentence isn't about determinism, for example "Don't do I/O in Workflow code."
+The advisory Vale rule `Temporal.DeterminismScope` flags the incorrect phrasings. See
+`vale/styles/Temporal/DeterminismScope.yml`.
+
 ### Identifier abbreviation
 
 Outside Temporal core terms, spell out "identifier." For core terms, use `ID` (not `Id` or `id`).

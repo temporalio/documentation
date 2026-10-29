@@ -518,7 +518,7 @@ Either way, the Worker needs the current Event History for this Workflow Executi
 
 <WalkthroughStep title="Replay re-executes the code" kind="replay" phase="History Replay" lines="3-5,13-17">
 
-The Worker begins re-executing the code with the same input, which was stored in the WorkflowExecutionStarted Event. Because the Workflow code is deterministic, the state of every variable encountered so far is identical to what it was before the crash. For example, totalPrice holds the same value.
+The Worker begins re-executing the code with the same input, which was stored in the WorkflowExecutionStarted Event. Because the Workflow Definition is deterministic, the state of every variable encountered so far is identical to what it was before the crash. For example, totalPrice holds the same value.
 
 </WalkthroughStep>
 

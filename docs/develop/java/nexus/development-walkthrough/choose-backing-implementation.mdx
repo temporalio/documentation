@@ -35,11 +35,12 @@ An Activity cannot receive messages or hold state, and cancellation only works i
 | --- | --- | --- |
 | `requestApproval` | Workflow | Blocks for a human decision, holds the reminder count, and accepts messages while pending |
 | `remindApprover` | Sync messaging (Signal) | A Signal to the approval started by `requestApproval` |
+| `getApprovalStatus` | Sync messaging (Query) | A Query to that same approval, which reads its progress without changing it |
 | `submitDecision` | Update | An Update to that same approval, because the caller needs a result back |
 | `attachApprovalContext` | Sync messaging (Signal-with-Start) | A Signal that also starts the approval if it does not exist yet |
 | `notifyRequester` | Standalone Activity | One outbound notification, no state, nothing to wait for |
 
-An Update is its own backing: the Operation completes when the Update completes, not when the Workflow returns. Signals are not a backing. They are [sync messaging](/nexus/temporal-operation-handler#the-nexus-aware-client), which takes effect and completes the Operation during the handler call.
+An Update is its own backing: the Operation completes when the Update completes, not when the Workflow returns. Signals and Queries are not a backing. They are [sync messaging](/nexus/temporal-operation-handler#the-nexus-aware-client), which takes effect and completes the Operation during the handler call.
 
 The caller can observe the difference. A Signal-backed Operation completes synchronously, so a Temporal caller's Event History goes straight from `NexusOperationScheduled` to `NexusOperationCompleted`. An Update-backed Operation completes through the Nexus completion callback, which adds a `NexusOperationStarted` event carrying the Operation token used to cancel it.
 
