@@ -15,9 +15,9 @@ source_path: README.md
 # README sections deliberately left in the repo: Make targets, Detailed wiring,
 # Where things live, Tests, Cost to run (tables, prices), How other approaches
 # compare, What not to change, Troubleshooting, As presented, Acknowledgments,
-# License, and the video Chapters.
-source_commit: cee60828128b66a8e259583cdb94ca5b3f528291
-source_synced: 2026-10-13
+# License, and the video Chapters. UTM parameters on links are not ported.
+source_commit: a7279c8927f1bd05476965288c5b6ec60b49e8e1
+source_synced: 2026-10-29
 ---
 
 import { Video, ViewSourceCodeNotice } from '@site/src/components';
@@ -33,16 +33,18 @@ that well starts with knowing the difference between an agent's memory and its
 state.
 
 This page and the demo repo step you through that difference. An agent works with different kinds of information, and
-the demo explains three of them:
+the demo explains several of them:
 
-- **Context:** what the agent has in front of it for the current decision: the
-  request, the conversation so far, and the results of its last steps. The
-  model reasons only on what's in context, so what goes in, and what's left
-  out, shapes every choice it makes. It's sometimes called working memory.
-- **Long-term memory:** what the agent carries from one run to the next.
-  Memory comes in many types, such as past cases (episodic), facts (semantic),
-  and how-to instructions (procedural). It lives in a store you own, and the
-  agent pulls from it into context when it needs it.
+- **Memory:** what the agent knows as part of its own system. Memory comes in
+  two flavors, depending on the longevity of the data:
+  - **Context:** what the agent has in front of it for the current decision: the
+    request, the conversation so far, and the results of its last steps. The
+    model reasons only on what's in context, so what goes in, and what's left
+    out, shapes every choice it makes. It's sometimes called working memory.
+  - **Long-term memory:** what the agent carries from one run to the next.
+    Memory comes in many types, such as past cases (episodic), facts (semantic),
+    and how-to instructions (procedural). It lives in a store you own, and the
+    agent pulls from it into context when it needs it.
 - **State:** the facts the agent relies on but doesn't own, each kept by the
   system that owns it. State comes in many types, such as execution,
   authorization, effect, and domain state, and this demo shows two of them:
@@ -53,8 +55,8 @@ the demo explains three of them:
     refund, actually happened. The system that performed it, Stripe in this
     demo, is the source of truth.
 
-The goal is to make clear what context, long-term memory, and state are for an
-agent, so you can build agents that run longer and take on more complex work.
+When you know what context, long-term memory, and state are for an
+agent, you can build agents that run longer and take on more complex work.
 The demo stops the same agent mid-task twice, once without Temporal and once
 with it, so you can see where each kind of information lives and which ones
 survive a crash. A memory store can bring back what an agent knew, but it can't
@@ -79,10 +81,11 @@ process. A new process can then pick up the work.
 
 [![The demo in eight frames. Demo 1, without Temporal: the agent process collects two answers and two lookups and chooses issue refund, then shows PROCESS GONE. The new agent process has no answers and no next step, checks the offline ledger (paid, no refund), and tells the customer to start the return again. Demo 2, with Temporal: after WORKER GONE, the What Survives pane reads from Temporal 2 customer answers, 2 completed lookups, and next action issue refund. The new Temporal Worker shows NO REPEATED QUESTIONS and NO LOOP RESTART, says "Your refund is complete," and the ledger shows the refund SUCCEEDED.](/img/ai/featured/memory-state-stripe/demo-reel.gif)](/img/ai/featured/memory-state-stripe/demo-reel.mp4)
 
-- **Deck:** [*Agentic Memory and State*, August 2026 (PDF)](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/agentic-memory-and-state.pdf)
+- **Slides from the video:** [*Agentic Memory and State*, October 2026 (PDF)](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/temporal-ai-agentic-memory-and-state-deck.pdf)
+- **Slides from the TAI meetup:** [*Agentic Memory and State*, in English and Japanese (PDF)](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/agentic-memory-and-state-tai-meetup.pdf)
 
-**Last verified:** 2026-10-06 (offline demo, failure path, tests). Live model
-and Stripe test mode: 2026-10-02.
+**Last verified:** 2026-10-26 (live model and Stripe test mode, offline demo,
+tests). Failure path: 2026-10-06.
 
 ## Run it
 
@@ -92,7 +95,10 @@ and Stripe test mode: 2026-10-02.
 - [uv](https://docs.astral.sh/uv/), tested on 0.11.8
 - the [Temporal CLI](/cli), tested on 1.6.2
 
-**Keys:** none for the default run.
+**Keys:** the default run is live, so it uses a model key (OpenAI or
+Anthropic) and a Stripe test key from `.env`. If one is missing, the demo asks
+for it for that run only, or you press Enter to run offline. Add `--offline` to
+skip the keys entirely.
 
 ```bash
 git clone https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe.git
@@ -104,8 +110,8 @@ uv run refund-demo stage               # fullscreen; press Enter at each prompt
 
 The [key lines below](#same-crash-two-outcomes) show what you should see. To
 follow each step side by side, see
-[what the runner does](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/GUIDE.md#what-the-runner-does). Every flag and
-frame is in [GUIDE.md](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/GUIDE.md#run-the-stage).
+[what the runner does](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/GUIDE.md#what-the-runner-does). Every flag and
+frame is in [GUIDE.md](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/GUIDE.md#run-the-stage).
 
 **Watch it in the Temporal Web UI** at [http://localhost:8233](http://localhost:8233). The demo uses
 the dev server at `localhost:7233` and starts its own if none is running. When
@@ -119,14 +125,16 @@ kill, the Workflow shows `Running` even though no Worker is alive. That is
 expected: the Workflow's progress is recorded in Event History, which lives in
 the Temporal Service, and the Workflow waits there for a new Worker to pick it
 up. The guide shows
-[how to find it and what to check at each frame](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/GUIDE.md#what-to-check-at-each-frame).
+[how to find it and what to check at each frame](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/GUIDE.md#what-to-check-at-each-frame).
 
-**Optional live paths.** The default run needs no keys. Add `--real` to swap the
-offline ledger for Stripe test mode, which needs a `sk_test_` or `rk_test_` key;
-the demo rejects live keys. Add `--real-model` to let a live model choose the
-lookups and the decision, with `--model-provider openai` or `anthropic` and the
-matching API key. The video ran
-`uv run refund-demo stage --real --real-model --model-provider openai`. Make
+**Live and offline paths.** The default run uses a live model and Stripe test
+mode when the keys are set, and asks for any that are missing. When no one is at
+the terminal to answer, it runs offline. `--offline` always runs offline, with a
+fixed policy in place of the model and an offline ledger in place of Stripe. To
+pick one live service, pass `--real` for Stripe test mode, which needs a
+`sk_test_` or `rk_test_` key (the demo rejects live keys), or `--real-model` for
+a live model, with `--model-provider openai` or `anthropic` and the matching API
+key. The video ran the default run with OpenAI and a Stripe test key. Make
 targets, model settings, unattended runs, and cleanup are in the
 [README](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/main/README.md#run-it). If the demo won't start, see
 [Troubleshooting](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/main/README.md#troubleshooting).
@@ -144,7 +152,7 @@ next step it was supposed to take in that loop, which is to issue the refund,"
 as the video puts it.
 
 **What you'll see in a default run**
-([full transcript](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/GUIDE.md#stage-transcript)):
+([full transcript](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/GUIDE.md#stage-transcript)):
 
 | Moment | Demo 1: without Temporal | Demo 2: with Temporal |
 | --- | --- | --- |
@@ -174,17 +182,24 @@ hooks so you can watch recovery happen at a predictable moment.
   the demo sends `release` and the refund goes through. A real app has no
   pause: its Worker can stop at any step, and Temporal recovers the same way.
   The flag is `hold_before_effect` in `RefundRequest`
-  ([models.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/models.py)).
+  ([models.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/models.py)).
 - **A real crash.** Each stop is a real SIGKILL, with no clean shutdown.
 - **Answers carried over.** Demo 1's answers go into Demo 2 as Signals, so you
   don't type them twice. Demo 1's new agent process never gets them.
-- **Stand-ins.** By default, a fixed policy stands in for the model, so the run
-  makes no model calls (0 tokens, $0), and an offline ledger stands in for
-  Stripe. Pass `--real-model` for a live model or `--real` for Stripe test
+- **Two scripted questions.** The agent always asks the same two questions
+  first (was the package opened, and what was damaged), even with a live
+  model, so every run reaches the crash at the same point. After that, the
+  model chooses its own lookups and decision.
+- **Sample data.** The lookups read a small SQLite store
+  ([store.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/store.py)) seeded with one
+  order and one customer. A real app reads its own systems.
+- **Offline stand-ins.** With `--offline`, a fixed policy stands in for the
+  model, so the run makes no model calls (0 tokens, $0), and an offline ledger
+  stands in for Stripe. The default run uses a live model and Stripe test
   mode.
 - **Failure drills.** Two optional runs stop the Worker in the middle of the
   refund Activity:
-  - `uv run refund-demo stage --simulate-stripe-timeout` has no pause. Attempt 1 of
+  - `uv run refund-demo stage --offline --simulate-stripe-timeout` has no pause. Attempt 1 of
     `issue_refund` hangs before it reaches Stripe, and the demo stops the
     Worker. A new Worker runs attempt 2 with the same idempotency key.
   - `--simulate-stripe-retry` keeps the pause. After `release`, it stops the
@@ -198,11 +213,11 @@ hooks so you can watch recovery happen at a predictable moment.
 
 The loop, the Activities, the retries, and the idempotency key are written as
 you would write them for a real app. Comments in
-[models.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/models.py),
-[workflow.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/workflow.py),
-[activities/model.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/activities/model.py),
-[activities/refund.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/activities/refund.py), and
-[stage.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/stage.py) mark each demo-only hook.
+[models.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/models.py),
+[workflow.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/workflow.py),
+[activities/model.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/activities/model.py),
+[activities/refund.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/activities/refund.py), and
+[stage.py](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/stage.py) mark each demo-only hook.
 
 <details>
 <summary>The Workflow ID, which Stripe lines read Stripe, and what Demo 1 gets right</summary>
@@ -212,7 +227,7 @@ you would write them for a real app. Comments in
   application needs it to find the run and read its result.
 - **Which Stripe lines read Stripe.** Not every Stripe line on screen comes
   from Stripe. The guide lists
-  [which do](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/GUIDE.md#which-lines-read-stripe).
+  [which do](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/GUIDE.md#which-lines-read-stripe).
 - **What Demo 1 gets right.** Memory and Stripe are both useful, and Demo 1
   isn't wrong to rely on them. After the crash, Stripe's record is correct: the
   payment is paid and has no refund. What Demo 1 lacks is any record of where
@@ -276,7 +291,10 @@ them:
 - **Execution state** is where the work stands, and Temporal records it. After
   the crash, a new Worker replays Event History and runs only the refund.
 - **Effect state** is whether the refund actually happened, and Stripe owns it.
-  Every retry sends the same idempotency key, so Stripe makes one refund.
+  Every retry sends the same idempotency key, so Stripe makes one refund. In
+  Temporal's terms, Stripe is the source of truth for the effect, the
+  `issue_refund` Activity result is the Workflow's record of it, and the
+  idempotency key reconciles the two when a crash lands in between.
 
 ![The refund agent's loop, with context, memory, and state labeled. In the loop: Reason / Observe (agent_decide_next_step, one model call given everything it has seen so far, or a fixed policy offline) decides what to do next; Act takes one action per turn: ask the customer on turns 1 and 2 ("Was the package opened?" Yes; "What was damaged?" Split seam), lookup_order on turn 3 (order 1234: python plushy, $80.00, delivered), lookup_customer_history on turn 4 (824 days as a customer, 1 prior refund), check_refund_policy if chosen (eligible, no return needed), and Decide on the last turn (approve, escalate, or deny, which leaves the loop). Results go back into context, and on approve the loop exits to issue_refund, the one side effect. Context, inside the loop, is what the model sees this turn: the customer's message "Please refund order 1234", the two answers, the order it just looked up, the customer's history, and its own last step. Outside the loop, long-term memory is what carries across runs in a store, such as the refund policy, which cases need escalation, and how this customer was handled before; none is saved in this demo, and lookups tagged (memory) stand in for retrieval. State is the facts the model doesn't own: execution state in Temporal's Event History (steps already run, 2 answers and 2 lookups; next action issue refund; attempts on the refund call) and effect state in Stripe, the system of record (payment PAID; refund none yet, then one refund, SUCCEEDED). After the crash, Demo 1's execution state lived only in the process, so it's gone and the customer starts over; in Demo 2 it is read back from Event History, and a new Worker resumes at issue refund.](/img/ai/featured/memory-state-stripe/agent-loop.png)
 
@@ -286,7 +304,7 @@ table shows what each one is in this demo and where to find it.
 | | What it helps with | In this demo | Where to find it |
 | --- | --- | --- | --- |
 | **Context** (working memory) | What the model sees for this one decision.<br />The loop sends it again on every turn | The customer's refund request, their two answers, and what the agent has looked up so far: order 1234 and the refund history of the demo customer, Nyghtowl | `working_memory`.<br />Demo 1: a list in the agent process (`naive_refund.py`).<br />Demo 2: a Workflow field (`workflow.py`) that replay rebuilds.<br />In Event History: the input of each `agent_decide_next_step` Activity |
-| **Long-term memory** (a memory store) | What the agent carries across runs:<br />Episodic: past cases.<br />Semantic: facts it looks up.<br />Procedural: how-to, such as skill files and tool definitions | None, on purpose. The demo saves nothing between runs.<br />Lookups are labeled `(memory)` on screen because they stand in for a memory store, but they read sample data, and each result becomes part of context once the agent looks it up | Your store: a vector store, a knowledge base, or memory files |
+| **Long-term memory** (a memory store) | What the agent carries across runs:<br />Episodic: past cases.<br />Semantic: facts it looks up.<br />Procedural: how-to, such as skill files and tool definitions | A light version. After the refund, `remember_case` saves a short case note to the demo's SQLite store, and `lookup_customer_history` reads notes back as `past_cases` on later runs.<br />Each guided run starts from fresh data, so the demo plays the same way every time. Each lookup result becomes part of context once the agent reads it | Your store: a vector store, a knowledge base, or memory files.<br />Here: `store.sqlite` in the run's state folder |
 | **Execution state** | Where the work stands: which steps finished and what runs next, so the work can continue after a crash without redoing it | The progress Temporal recorded before the crash: the customer answered two questions, the agent finished two lookups (three when a live model also checks the refund policy), and its next step is to issue the refund | Temporal: the Workflow's Event History in the Temporal Web UI, or `uv run refund-demo inspect <workflow-id>` |
 | **Effect state** | Whether the side effect really happened | Whether Stripe actually refunded the payment | Stripe: the Dashboard in test mode. The refund's metadata carries `temporal_workflow_id` and `temporal_idempotency_key`.<br />Offline: the ledger |
 
@@ -317,17 +335,26 @@ For any fact, ask whether another system already owns it. Asked of every fact,
 that question finds more kinds of state than the four in this table, such as
 token budgets, locks, and quotas.
 
-**Temporal is not a memory store.** It records execution state, such as one
-run's Signals and its Activity inputs and results, in Event History, which
-lives in the Temporal Service rather than in the Worker. That's enough to
-rebuild this run's working memory by replay, but it isn't a place to keep what
-the agent knows from one run to the next.
+**What Temporal keeps, and what needs a memory store.** Temporal records
+every Activity's inputs and results, and every Signal, in Event History, which
+lives in the Temporal Service rather than in the Worker. For this agent, that
+includes each model call's input (the request and working memory) and its
+output (the next step, and the written rationale when it decides), plus the
+customer's answers. So replay rebuilds this run's working memory after a crash,
+with no code to save it. The model's internal reasoning isn't returned by the
+provider, so it isn't recorded anywhere.
 
-- Long-term memory belongs in a store you own.
-- Event History has size limits, described under [Gotchas](#gotchas).
-- Temporal can run the store's reads and writes as Activities, so each one is
+What Temporal doesn't do is carry knowledge from one run to the next:
+
+- Long-term memory belongs in a store you own. In this demo, `remember_case`
+  writes a case note to the SQLite store, and `lookup_customer_history` reads
+  it back.
+- Temporal runs the store's reads and writes as Activities, so each one is
   recorded and retried like any other step.
-- How best to combine the two is still an open design question.
+- Memory products such as mem0 and Amazon Bedrock AgentCore Memory decide what
+  to keep, when to write it, and what to bring back into context. They plug in
+  the same way, through Activities.
+- Event History has size limits, described under [Gotchas](#gotchas).
 
 <details>
 <summary>More on memory, state, and authority</summary>
@@ -347,12 +374,12 @@ the agent knows from one run to the next.
   out. The retry reconciles with Stripe by sending the same idempotency key,
   instead of trusting memory. This demo crashes before the refund, because
   that is where the customer's cost is visible. The
-  [later-loss walkthrough](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/GUIDE.md#later-loss-after-stripe-accepts-the-refund)
+  [later-loss walkthrough](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/GUIDE.md#later-loss-after-stripe-accepts-the-refund)
   covers the crash after it.
 - **Authorization is state too.** Remembering "you may push" doesn't mean the
   grant is still active, so read it live from the authorization system, never
   from memory. See the
-  [companion demo](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/GUIDE.md#authorization-companion-demo).
+  [companion demo](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/GUIDE.md#authorization-companion-demo).
 - **Why the table says context.** Working memory is what the model works with
   on this turn. The context window holds it, and context management selects and
   refreshes it. Here the model sees all of it on every turn, so the table calls
@@ -400,7 +427,7 @@ again; only a call that was in flight at the crash can run twice.
 
 In the measured live-model run, each demo's pass before the kill made 4 model
 calls. After the kill, Demo 1's customer had to start over, which cost 4 more
-calls. Demo 2's replay made 0. Without `--real-model`, the demo uses a fixed
+calls. Demo 2's replay made 0. With `--offline`, the demo uses a fixed
 policy and makes no model calls. Token counts, prices, and how they were
 measured are in the [README](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/main/README.md#cost-to-run).
 
@@ -409,20 +436,20 @@ measured are in the [README](https://github.com/temporal-community/temporal-ai-a
 ![Architecture diagram. A customer asks to refund order 1234, and the request takes two paths. Demo 1, the loop without Temporal: an agent process keeps the answers in memory, then dies; the process is gone and the customer starts over. Demo 2, the same loop on Temporal: a Worker runs the loop and records every step to Event History. The Worker dies, and a new Worker replays Event History, resumes, and sends one refund to Stripe with the same idempotency key.](/img/ai/featured/memory-state-stripe/architecture.png)
 
 You run one command, `uv run refund-demo stage`
-([`stage.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/stage.py)). It runs Demo 1, then starts Demo 2's
+([`stage.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/stage.py)). It runs Demo 1, then starts Demo 2's
 Workflow, sends it Signals, and starts and kills its Worker.
 
 - **Demo 1** runs the loop in an ordinary Python agent process
-  ([`naive_refund.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/naive_refund.py)). The customer's
+  ([`naive_refund.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/naive_refund.py)). The customer's
   answers, what the agent observed, and its next step live only in that
   process's memory, so they die with it.
 - **Demo 2** runs the same loop as the `RefundApprovalAgent` Workflow
-  ([`workflow.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/workflow.py)). A Worker process
-  ([`worker.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/worker.py)) runs the Workflow and its
-  Activities ([`activities/`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/tree/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/activities)), which make the
-  model call ([`model.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/activities/model.py)), the lookups
-  ([`tools.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/activities/tools.py)), and the `issue_refund`
-  call ([`refund.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/activities/refund.py)).
+  ([`workflow.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/workflow.py)). A Worker process
+  ([`worker.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/worker.py)) runs the Workflow and its
+  Activities ([`activities/`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/tree/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/activities)), which make the
+  model call ([`model.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/activities/model.py)), the lookups
+  ([`tools.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/activities/tools.py)), and the `issue_refund`
+  call ([`refund.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/activities/refund.py)).
 - **After the kill,** a new Worker replays Event History. It runs the Workflow
   Definition again from the top, and each Activity that already finished returns its
   recorded result instead of running again. That rebuilds `working_memory`, and
@@ -432,7 +459,7 @@ Workflow, sends it Signals, and starts and kills its Worker.
   not a hidden retry inside one SDK call. Event History records each step and
   its result.
 - **Every `issue_refund` attempt in a run sends the same idempotency key,** to
-  the offline ledger ([`fake_stripe.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/src/refund_agent/fake_stripe.py)) by
+  the offline ledger ([`fake_stripe.py`](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/src/refund_agent/fake_stripe.py)) by
   default or to Stripe test mode with `--real`. A refund call that was in
   flight when a Worker died can run again, and the key keeps that retry from
   creating a second refund.
@@ -489,9 +516,9 @@ History records that input every time. The input gets longer with each turn,
 so the history grows with the square of the turn count. The server's defaults
 allow 2 MB per payload and 50 MB per run. This demo stops at
 `MAX_TURNS = 10`, which keeps it under 7 KB of payloads.
-[HISTORY_GROWTH.md](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/HISTORY_GROWTH.md) has the limits, a
-[measured example](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/HISTORY_GROWTH.md#measured-in-the-fleet-demo), and a
-[Continue-As-New sketch](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/cee60828128b66a8e259583cdb94ca5b3f528291/docs/HISTORY_GROWTH.md#what-continue-as-new-looks-like-sketch).
+[HISTORY_GROWTH.md](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/HISTORY_GROWTH.md) has the limits, a
+[measured example](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/HISTORY_GROWTH.md#measured-in-the-fleet-demo), and a
+[Continue-As-New sketch](https://github.com/temporal-community/temporal-ai-agent-memory-state-stripe/blob/a7279c8927f1bd05476965288c5b6ec60b49e8e1/docs/HISTORY_GROWTH.md#what-continue-as-new-looks-like-sketch).
 
 <details>
 <summary>Two fixes: claim check and Continue-As-New</summary>
@@ -507,6 +534,8 @@ allow 2 MB per payload and 50 MB per run. This demo stops at
   refund attempted in a new run would carry a different key, and Stripe
   couldn't tell it was a retry.
 
+This demo describes both patterns but doesn't implement them.
+
 </details>
 
 **A step can run more than once.** Replay doesn't redo finished steps, but a
@@ -515,7 +544,7 @@ runs it again. Give every side effect an idempotency key that the receiving
 system checks. `issue_refund` does this: every attempt in a run sends the same
 key, so Stripe makes one refund.
 
-## What it is not
+## What this demo is not
 
 - **Not a production refund service.** It leaves out authentication, a
   production database, a web application, multi-agent orchestration, and
