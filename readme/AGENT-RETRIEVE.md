@@ -41,6 +41,10 @@ For docs results, `source_url` is the page's raw Markdown and `page_url` is the 
 kept on `page_url` only, because the `.md` has no anchor targets. Results from other allowed sources
 (SDK references, release notes, the blog) come back with both fields set to Kapa's original URL.
 
+Custom Q&A answers, which are written in the Kapa dashboard, have no page. Kapa returns them with an empty
+`source_url`, and the endpoint passes them through with `source_url` and `page_url` both set to `""`. To give an
+agent something to cite, end each custom answer with a link to the docs page it summarizes.
+
 Errors are JSON `{ error }`. A 400 or 405 also includes a `usage` string. A result that Kapa returns without a string `content` or `source_url` is dropped and counted in `dropped_count`.
 
 ## Code
@@ -50,6 +54,7 @@ Errors are JSON `{ error }`. A 400 or 405 also includes a `usage` string. A resu
 | `api/retrieve.js` | The Vercel Function: validation, the Kapa call, logging |
 | `api/_retrieve-lib.js` | Parameter parsing and URL rewriting, with no I/O. Tested in `api/_retrieve-lib.test.js` |
 | `bin/check-retrieve-links.js` | `yarn check:retrieve-links [baseUrl]`: asks 20 sample questions and checks that every docs `source_url` returns 200 |
+| `bin/report-retrieve-log.js` | `yarn report:retrieve-log`: summarizes the request log as Markdown. See [Summarize the log](#summarize-the-log) |
 
 `middleware.js` excludes `api/` from Markdown content negotiation. Without that, an agent that sends
 `Accept: text/markdown` would be rewritten to `/api/retrieve.md` and get a 404.
@@ -64,7 +69,7 @@ These are Vercel project environment variables, set for Production and Preview:
 | `KAPA_PROJECT_ID` | The production Kapa project |
 | `KAPA_INTEGRATION_ID` | The `docs-agent-retrieve-experiment` HTTP API integration, which keeps this traffic separate in Kapa analytics |
 | `KAPA_SOURCE_IDS` | Comma-separated Kapa source IDs, sent as `source_ids_include`. Set to the 20 web crawl sources. **As of 2026-10-23, Kapa's Retrieval endpoint accepts this field but ignores it**, so `RETRIEVE_URL_ALLOWLIST` does the filtering. It's kept so it takes effect if Kapa starts honoring it. A source group filter can't replace it, because Kapa adds every Global source to any group filter |
-| `RETRIEVE_URL_ALLOWLIST` | **Required.** Comma-separated `host` or `host/path-prefix` entries. Results whose URL isn't covered are dropped before the response is built. A prefix matches whole path segments, so `github.com/temporalio/sdk-go/releases` covers `/releases/tag/v1.30.0` but not the private `github.com/temporalio/edu-*` course repos. When it's unset the endpoint returns 500 instead of searching, so a missing variable can't expose results from private sources |
+| `RETRIEVE_URL_ALLOWLIST` | **Required.** Comma-separated `host` or `host/path-prefix` entries. Results whose URL isn't covered are dropped before the response is built, except custom Q&A answers, which have no URL. A prefix matches whole path segments, so `github.com/temporalio/sdk-go/releases` covers `/releases/tag/v1.30.0` but not the private `github.com/temporalio/edu-*` course repos. When it's unset the endpoint returns 500 instead of searching, so a missing variable can't expose results from private sources |
 | `RETRIEVE_LOG_SALT` | **Required.** A random string used to hash caller IPs in the log. When it's unset the endpoint returns 500, so no request is logged without a hash |
 | `BLOB_READ_WRITE_TOKEN` | Added by Vercel when the private Blob store is connected to the project |
 
@@ -123,5 +128,55 @@ sent, and a failed write never fails the request.
 The log holds free-text questions from the public. The advertised copy asks agents not to send personal data, but
 treat the store as sensitive anyway, and delete it when the experiment is over.
 
-To download the log, run `vercel blob list --prefix retrieve-log/` from a linked checkout, or use the Storage tab in
-the Vercel dashboard.
+To look at individual records, use the Storage tab in the Vercel dashboard, or run
+`vercel blob list --prefix retrieve-log/` from a linked checkout.
+
+## Summarize the log
+
+`yarn report:retrieve-log` reads the records for a date range straight from the Blob store, aggregates them in memory,
+and prints a Markdown report. It writes no records to disk, in line with [Retention and privacy](#retention-and-privacy).
+
+1. Copy the store's read-write token from the `docs-agent-retrieve-log` store in the Vercel Storage tab.
+1. Run the report with the token in the environment:
+
+   ```bash
+   BLOB_READ_WRITE_TOKEN=<token> yarn -s report:retrieve-log --since 2026-10-24 > retrieve-report.md
+   ```
+
+Don't commit the report: it contains question text from the public.
+
+| Option | Default | Effect |
+| --- | --- | --- |
+| `--since YYYY-MM-DD` | 14 days before `--until` | First day to include, in UTC |
+| `--until YYYY-MM-DD` | Today | Last day to include, in UTC |
+| `--include-preview` | Off | Also count preview and development deployments |
+| `--include-tests` | Off | Also count `src=manual-test` and `src=link-check` |
+| `--automation REGEX` | None | Also treat callers whose `agent` or user agent matches `REGEX` as automated tools. Repeatable |
+| `--hide-text` | Off | Leave out question text and `jtb` values, for a report that's only counts |
+| `--top N` | 15 | Rows per table |
+
+The surfaces went live on 2026-10-23, and that day's records include our own launch checks, so start readouts at
+2026-10-24.
+
+The report has a section for each experiment question:
+
+- **Discovery:** calls per day and per `src`.
+- **Who:** calls per `agent`, after merging case, spacing, and version suffixes (`Claude Code`, `claude_code`, and
+  `cursor/0.42` become `claude-code` and `cursor`), and per user agent family. A copied `<your-name>` shows as
+  `(placeholder)`. Calls from tools that audit how agent-ready the site is, such as an `agent` or user agent containing
+  `audit`, `argus`, `inspector`, or `quality-review`, are listed separately, so the agent tables reflect agents doing
+  work for a person. Add patterns with `--automation`.
+- **What:** how many calls asked a question and how many sent search keywords, how often the `/llms.txt` example
+  question was sent word for word, questions per topic, and the most common questions.
+- **Gaps:** Kapa returns results for almost any question, so a gap shows up as an answer left thin after the
+  allowlist. The section shows how many results each answered call got, the share of Kapa's results the allowlist
+  dropped, and the low-yield questions (two or fewer results) with their dropped share. A high dropped share means
+  other sources outranked the docs for that question.
+- **Intent:** how often `jtb` is filled in, and a sample of values.
+- **Health:** status codes, why requests got a 400 (missing `q` or `q` over the length limit), how many sent a
+  placeholder such as `<question>` as the question, and p50 and p95 latency for 200s.
+- **Noise:** distinct callers by IP hash, the busiest callers as counts only, and calls with neither `src` nor `agent`.
+
+The log can't show CDN cache hits, so a question repeated within five minutes counts once. It also can't show whether
+an agent went on to fetch the returned links. Cross-check the totals against Kapa analytics for the
+`docs-agent-retrieve-experiment` integration, which should be slightly lower because a 400 never reaches Kapa.

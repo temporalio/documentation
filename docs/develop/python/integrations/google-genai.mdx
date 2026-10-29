@@ -46,19 +46,24 @@ samples for the complete code.
 
 ## Install the plugin
 
-Install the Temporal Python SDK with Google GenAI support (requires `temporalio` 1.31.0 or later):
+Install the standalone `temporalio-google-genai` package:
 
 ```bash
-uv add "temporalio[google-genai]>=1.31.0"
+uv add temporalio-google-genai
 ```
 
 If you use pip:
 
 ```bash
-pip install "temporalio[google-genai]>=1.31.0"
+pip install temporalio-google-genai
 ```
 
-The [MCP](#use-mcp-tool-servers) path also needs the `mcp` package, which the extra does not install.
+The package installs the Temporal Python SDK and Google GenAI dependencies. Refer to the
+[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/google_genai/pyproject.toml)
+for supported Python and dependency versions.
+
+Import `GoogleGenAIPlugin`, `TemporalAsyncClient`, and `TemporalMcpClientSession` from `temporalio.google_genai`.
+For [MCP tool servers](#use-mcp-tool-servers), install the package's `mcp` extra.
 
 ## Call a model from a Workflow
 
@@ -95,7 +100,7 @@ import os
 
 from google import genai
 from temporalio.client import Client
-from temporalio.contrib.google_genai import GoogleGenAIPlugin
+from temporalio.google_genai import GoogleGenAIPlugin
 from temporalio.worker import Worker
 
 from google_genai.hello_world.workflow import HelloWorldWorkflow
@@ -301,6 +306,12 @@ class StructuredOutputWorkflow:
 {/* SNIPEND */}
 
 ## Use MCP tool servers
+
+Install the package's `mcp` extra:
+
+```bash
+uv add "temporalio-google-genai[mcp]"
+```
 
 To give a model tools from an [MCP](https://modelcontextprotocol.io/) server, register the server on the Worker and
 reference it by name in the Workflow. Connecting to an MCP server is external I/O, so the plugin holds the connection on
@@ -570,7 +581,7 @@ all of a client's calls with `activity_config`:
 from datetime import timedelta
 
 from temporalio.common import RetryPolicy
-from temporalio.contrib.google_genai import TemporalAsyncClient
+from temporalio.google_genai import TemporalAsyncClient
 from temporalio.workflow import ActivityConfig
 
 client = TemporalAsyncClient(
