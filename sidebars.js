@@ -2190,6 +2190,7 @@ module.exports = {
             id: 'encyclopedia/nexus/nexus',
           },
           items: [
+            'encyclopedia/nexus/choosing-a-nexus-approach',
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/nexus-endpoints',
@@ -2250,6 +2251,7 @@ module.exports = {
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/worker-tuning-simulator',
         'demos/priority-fairness-walkthrough',
       ],
     },
