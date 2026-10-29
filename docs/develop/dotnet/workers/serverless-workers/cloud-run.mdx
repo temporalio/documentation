@@ -175,7 +175,7 @@ var client = await TemporalClient.ConnectAsync(connectOptions);
 
 After the Worker stops, call `telemetry.FlushAsync(TimeSpan.FromSeconds(2))` to flush traces within the Cloud Run
 termination window. For the Collector sidecar configuration and deployment steps, see the
-[.NET Cloud Run sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/workers/CloudRunWorker).
+[.NET Cloud Run sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Gcp/CloudRun).
 
 ## Set a Worker identity {/* #worker-identity */}
 
