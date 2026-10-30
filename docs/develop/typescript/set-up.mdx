@@ -146,8 +146,8 @@ This test will confirm that:
 
 Create an Activity file (activities.ts):
 
-<!--SNIPSTART typescript-hello-activity-->
-[hello-world/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/activities.ts)
+<!--SNIPSTART typescript-quickstart-activity-->
+[typescript-sandbox/src/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities.ts)
 ```ts
 export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
@@ -164,8 +164,8 @@ on your configuration.
 
 Create a Workflow file (workflows.ts):
 
-<!--SNIPSTART typescript-hello-workflow-->
-[hello-world/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/workflows.ts)
+<!--SNIPSTART typescript-quickstart-workflow-->
+[typescript-sandbox/src/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows.ts)
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
@@ -190,6 +190,8 @@ automatically recreate its pre-failure state so it can continue right where it l
 
 Create a Worker file (worker.ts):
 
+<!--SNIPSTART typescript-quickstart-worker-->
+[typescript-sandbox/src/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/worker.ts)
 ```ts
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
@@ -234,6 +236,7 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+<!--SNIPEND-->
 
 Run the Worker and keep this terminal running:
 
@@ -257,24 +260,22 @@ This final step will validate that everything is working correctly with your fil
 
 Create a separate file called `client.ts`.
 
+The Client loads its connection settings with `loadClientConnectConfig()`. With no configuration file or environment
+variables set, it connects to the local Temporal Service at `localhost:7233` in the `default` Namespace. See
+[Environment configuration](/develop/environment-configuration) to connect elsewhere.
+
+<!--SNIPSTART typescript-quickstart-client-->
+[typescript-sandbox/src/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client.ts)
 ```ts
-import { Client, Connection } from '@temporalio/client';
-import { nanoid } from 'nanoid';
+import { Connection, Client } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { example } from './workflows';
+import { nanoid } from 'nanoid';
 
 async function run() {
-  // Connect to the default Server location
-  const connection = await Connection.connect({ address: 'localhost:7233' });
-  // In production, pass options to configure TLS and other settings:
-  // {
-  //   address: 'foo.bar.tmprl.cloud',
-  //   tls: {}
-  // }
-
-  const client = new Client({
-    connection,
-    // namespace: 'foo.bar', // connects to 'default' namespace if not specified
-  });
+  const config = loadClientConnectConfig();
+  const connection = await Connection.connect(config.connectionOptions);
+  const client = new Client({ connection });
 
   const handle = await client.workflow.start(example, {
     taskQueue: 'hello-world',
@@ -294,6 +295,7 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+<!--SNIPEND-->
 
 Then run:
 
@@ -306,7 +308,7 @@ npm run workflow
 If everything is working correctly, you should see:
 
 - Worker processing the workflow and activity
-- Output: `Workflow result: Hello, Temporal!`
+- Output: `Hello, Temporal!`
 - Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
 <details>
