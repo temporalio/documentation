@@ -1,7 +1,7 @@
 ---
 id: child-workflows
 title: Child Workflows
-description: A Child Workflow Execution in the Temporal platform is initiated from another Workflow within the same Namespace. 
+description: Spawn a Workflow from another Workflow in the same Namespace to split work, model a resource, or run periodic logic, and compare it with an Activity.
 slug: /child-workflows
 toc_max_heading_level: 4
 tags:

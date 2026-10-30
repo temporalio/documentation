@@ -1,9 +1,7 @@
 ---
 id: knowledge-hub
 title: Knowledge Hub
-description:
-  Best practices for building and maintaining an internal Temporal knowledge hub that accelerates developer onboarding,
-  reduces platform team support load, and establishes consistent standards across your organization.
+description: What to put in an internal Temporal hub for each stage (Evaluate, Build, Ship, Operate), what to leave out, and how to keep it current.
 toc_max_heading_level: 3
 tags:
   - Best Practices

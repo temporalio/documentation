@@ -1,7 +1,7 @@
 ---
 title: Workflow cost optimization
 sidebar_label: Cost Optimization
-description: Strategies for optimizing costs associated with workloads running on Temporal Cloud while maintaining workflow reliability and observability.
+description: Reduce Temporal Cloud Action and Storage costs by fixing anti-patterns such as excess Activity retries, large payloads, and missing Continue-As-New.
 toc_max_heading_level: 4
 tags:
   - Best Practices
