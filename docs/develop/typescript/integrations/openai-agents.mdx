@@ -9,8 +9,6 @@ tags:
 description: Run OpenAI Agents SDK agents as durable TypeScript Workflows, with model calls, MCP operations, and sandbox operations running as retryable Activities.
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
 The Temporal integration for the [OpenAI Agents SDK](https://openai.github.io/openai-agents-js/) runs its agents as
 durable Temporal Workflows in TypeScript. The integration keeps the agent loop, tool selection, and handoffs in the
 Workflow and runs each model call, MCP operation, and sandbox operation as an [Activity](/glossary#activity), because a
@@ -22,10 +20,6 @@ so an agent survives Worker restarts and can run for as long as it needs.
 
 Code snippets on this page come from the
 [OpenAI Agents samples directory](https://github.com/temporalio/samples-typescript/tree/main/openai-agents).
-
-<ReleaseNoteHeader
-  type="prerelease"
-/>
 
 ## Install the integration
 
