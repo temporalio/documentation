@@ -19,8 +19,8 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 Create a `TemporalWorker` with a [Temporal Client](/develop/dotnet/client/temporal-client) and a `TemporalWorkerOptions` that names the Task Queue to poll.
 Add the Workflows and Activities the Worker can execute, then call `ExecuteAsync()` to start polling.
 
-<!--SNIPSTART dotnet-create-worker-->
-[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.cs)
+<!--SNIPSTART dotnet-run-worker-create-->
+[dotnet-sandbox/workers/RunWorker/CreateWorker.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/RunWorker/CreateWorker.cs)
 ```cs
 var options = new TemporalWorkerOptions("my-task-queue");
 options.AddWorkflow<GreetingWorkflow>();
@@ -45,12 +45,15 @@ A Worker that receives a Task for a type it did not register fails that Task.
 
 Add Workflows with `AddWorkflow<T>()` and Activities with `AddActivity()` or `AddAllActivities()`:
 
-```csharp
+<!--SNIPSTART dotnet-run-worker-register-types-->
+[dotnet-sandbox/workers/RunWorker/RegisterTypes.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/RunWorker/RegisterTypes.cs)
+```cs
 var options = new TemporalWorkerOptions("my-task-queue");
 options.AddWorkflow<GreetingWorkflow>();
 options.AddWorkflow<OrderWorkflow>();
 options.AddAllActivities(new MyActivities(databaseClient));
 ```
+<!--SNIPEND-->
 
 `AddAllActivities()` registers every method marked with `[Activity]`. Pass an instance to register instance methods, which lets Activities share state such as a database client. For a class of static Activity methods, pass the type and `null` instead.
 
@@ -70,8 +73,8 @@ To tune these values against real load, see [Worker performance](/develop/worker
 
 Set a Worker Deployment Version and enable versioning in `DeploymentOptions`, then set a versioning behavior on each Workflow.
 
-<!--SNIPSTART dotnet-versioned-worker-->
-[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.cs)
+<!--SNIPSTART dotnet-run-worker-versioned-->
+[dotnet-sandbox/workers/RunWorker/VersionedWorker.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/RunWorker/VersionedWorker.cs)
 ```cs
 var options = new TemporalWorkerOptions("my-task-queue")
 {
@@ -100,8 +103,8 @@ To stop a Worker on demand, start it with a token you can cancel yourself instea
 Create a `CancellationTokenSource`, pass its `Token` to `ExecuteAsync()`, then cancel the source when the Worker should stop, such as from a `Console.CancelKeyPress` handler.
 The Worker stops polling for new Tasks and waits for in-flight Tasks to finish, up to `GracefulShutdownTimeout`.
 
-<!--SNIPSTART dotnet-worker-graceful-shutdown-->
-[features/snippets/worker/worker.cs](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.cs)
+<!--SNIPSTART dotnet-run-worker-graceful-shutdown-->
+[dotnet-sandbox/workers/RunWorker/GracefulShutdown.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/RunWorker/GracefulShutdown.cs)
 ```cs
 using var tokenSource = new CancellationTokenSource();
 Console.CancelKeyPress += (_, eventArgs) =>
@@ -115,6 +118,7 @@ var options = new TemporalWorkerOptions("my-task-queue")
     GracefulShutdownTimeout = TimeSpan.FromSeconds(30),
 };
 options.AddWorkflow<GreetingWorkflow>();
+options.AddAllActivities(typeof(GreetingActivities), null);
 
 using var worker = new TemporalWorker(client, options);
 await worker.ExecuteAsync(tokenSource.Token);

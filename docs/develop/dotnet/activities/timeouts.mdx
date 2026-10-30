@@ -33,11 +33,14 @@ Available timeouts are:
 - StartToCloseTimeout
 - ScheduleToStartTimeout
 
-```csharp
+<!--SNIPSTART dotnet-activity-timeouts-start-to-close-->
+[dotnet-sandbox/activities/ActivityTimeouts/TimeoutWorkflows.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/ActivityTimeouts/TimeoutWorkflows.workflow.cs)
+```cs
 return await Workflow.ExecuteActivityAsync(
     (MyActivities a) => a.MyActivity(param),
     new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
 ```
+<!--SNIPEND-->
 
 ### Set an Activity Retry Policy {/* #activity-retries */}
 
@@ -47,7 +50,9 @@ Activity Executions are automatically associated with a default [Retry Policy](/
 
 To create an Activity Retry Policy in .NET, set the `RetryPolicy` on the `ActivityOptions` when calling `ExecuteActivityAsync`.
 
-```csharp
+<!--SNIPSTART dotnet-activity-timeouts-retry-policy-->
+[dotnet-sandbox/activities/ActivityTimeouts/TimeoutWorkflows.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/ActivityTimeouts/TimeoutWorkflows.workflow.cs)
+```cs
 return await Workflow.ExecuteActivityAsync(
     (MyActivities a) => a.MyActivity(param),
     new()
@@ -56,6 +61,7 @@ return await Workflow.ExecuteActivityAsync(
         RetryPolicy = new() { MaximumInterval = TimeSpan.FromSeconds(10) },
     });
 ```
+<!--SNIPEND-->
 
 ### Override the Retry interval with `nextRetryDelay` {/* #next-retry-delay */}
 
@@ -65,7 +71,9 @@ For example, you might scale the next Retry delay interval based on the current 
 Here's how you'd do that in an Activity.
 In the following sample, the `attempt` count is retrieved from the Activity Execution context and used to set the number of seconds for the next Retry delay:
 
-```csharp
+<!--SNIPSTART dotnet-activity-timeouts-next-retry-delay-->
+[dotnet-sandbox/activities/ActivityTimeouts/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/ActivityTimeouts/MyActivities.cs)
+```cs
 var attempt = ActivityExecutionContext.Current.Info.Attempt;
 
 throw new ApplicationFailureException(
@@ -73,6 +81,7 @@ throw new ApplicationFailureException(
     errorType: "my_failure_type",
     nextRetryDelay: TimeSpan.FromSeconds(3 * attempt));
 ```
+<!--SNIPEND-->
 
 ## Heartbeat an Activity {/* #activity-heartbeats */}
 
@@ -90,10 +99,14 @@ If an Activity gets retried, the Activity can access the `Details` from the last
 
 To Heartbeat an Activity Execution in .NET, use the [`Heartbeat()`](https://dotnet.temporal.io/api/Temporalio.Activities.ActivityExecutionContext.html#Temporalio_Activities_ActivityExecutionContext_Heartbeat_System_Object___) method on the `ActivityExecutionContext`.
 
-```csharp
+<!--SNIPSTART dotnet-cancellation-activity-heartbeat-->
+[dotnet-sandbox/workflows/Cancellation/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/Cancellation/MyActivities.cs)
+```cs
 [Activity]
 public async Task MyActivityAsync()
 {
+    // This is a naive loop simulating work, but similar heartbeat/cancellation logic applies to
+    // other scenarios as well
     while (true)
     {
         // Send heartbeat
@@ -104,6 +117,7 @@ public async Task MyActivityAsync()
     }
 }
 ```
+<!--SNIPEND-->
 
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
 If an Activity calls `Heartbeat(123, 456)` and then fails and is retried, `HeartbeatDetails` on the `ActivityInfo` returns a collection containing `123` and `456` on the next Run.
@@ -114,7 +128,9 @@ A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeou
 
 `HeartbeatTimeout` is a property on `ActivityOptions` for `ExecuteActivityAsync` used to set the maximum time between Activity Heartbeats.
 
-```csharp
+<!--SNIPSTART dotnet-activity-timeouts-heartbeat-timeout-->
+[dotnet-sandbox/activities/ActivityTimeouts/TimeoutWorkflows.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/ActivityTimeouts/TimeoutWorkflows.workflow.cs)
+```cs
 await Workflow.ExecuteActivityAsync(
     (MyActivities a) => a.MyActivity(param),
     new()
@@ -123,3 +139,4 @@ await Workflow.ExecuteActivityAsync(
         HeartbeatTimeout = TimeSpan.FromSeconds(30),
     });
 ```
+<!--SNIPEND-->

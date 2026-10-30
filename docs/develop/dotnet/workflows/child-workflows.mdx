@@ -35,9 +35,12 @@ This is useful if you want to do something after it has only started, or to get 
 
 :::
 
-```csharp
+<!--SNIPSTART dotnet-child-workflows-execute-->
+[dotnet-sandbox/workflows/ChildWorkflows/ParentWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/ChildWorkflows/ParentWorkflow.workflow.cs)
+```cs
 await Workflow.ExecuteChildWorkflowAsync((MyChildWorkflow wf) => wf.RunAsync());
 ```
+<!--SNIPEND-->
 
 ## Set a Parent Close Policy {/* #parent-close-policy */}
 
@@ -47,8 +50,11 @@ The default Parent Close Policy option is set to terminate the Child Workflow Ex
 
 Set the `ParentClosePolicy` property inside the [`ChildWorkflowOptions`](https://dotnet.temporal.io/api/Temporalio.Workflows.ChildWorkflowOptions.html) for `ExecuteChildWorkflowAsync` or `StartChildWorkflowAsync` to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
-```csharp
+<!--SNIPSTART dotnet-child-workflows-parent-close-policy-->
+[dotnet-sandbox/workflows/ChildWorkflows/ParentWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/ChildWorkflows/ParentWorkflow.workflow.cs)
+```cs
 await Workflow.ExecuteChildWorkflowAsync(
   (MyChildWorkflow wf) => wf.RunAsync(),
   new() { ParentClosePolicy = ParentClosePolicy.Abandon });
 ```
+<!--SNIPEND-->

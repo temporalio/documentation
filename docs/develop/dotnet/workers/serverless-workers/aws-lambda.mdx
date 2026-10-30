@@ -35,8 +35,10 @@ Use `TemporalLambdaWorker.CreateHandler` to create a Lambda handler that runs a 
 Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
 Assign the result to a static field so the handler is created once during Lambda cold start and reused across invocations.
 
-```csharp {10-17}
-namespace MyApp;
+<!--SNIPSTART dotnet-lambda-worker-handler {"highlightedLines": "10-17"}-->
+[dotnet-sandbox/workers/LambdaWorker/LambdaFunction.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/LambdaFunction.cs)
+```cs {10-17}
+namespace TemporalioDocs.Workers.LambdaWorker;
 
 using Amazon.Lambda.Core;
 using Temporalio.Common;
@@ -58,8 +60,9 @@ public class LambdaFunction
         WorkerHandler(input, context);
 }
 ```
+<!--SNIPEND-->
 
-For a complete project, see the [Lambda Worker sample](https://github.com/temporalio/samples-dotnet/tree/main/src/LambdaWorker).
+For a complete project, see the [Lambda Worker sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/workers/LambdaWorker).
 
 The `WorkerDeploymentVersion` is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
@@ -67,9 +70,10 @@ Each Workflow must have a [versioning behavior](/worker-versioning#versioning-be
 Set it per-Workflow with the `[Workflow]` attribute, or set a worker-level default with `DefaultVersioningBehavior` in `DeploymentOptions`.
 The default versioning behavior is `AutoUpgrade`.
 
-[src/LambdaWorker/Worker/SampleWorkflow.workflow.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/LambdaWorker/Worker/SampleWorkflow.workflow.cs)
-```csharp {7}
-namespace TemporalioSamples.LambdaWorker.Worker;
+<!--SNIPSTART dotnet-lambda-worker-workflow {"highlightedLines": "7"}-->
+[dotnet-sandbox/workers/LambdaWorker/SampleWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/SampleWorkflow.workflow.cs)
+```cs {7}
+namespace TemporalioDocs.Workers.LambdaWorker;
 
 using Microsoft.Extensions.Logging;
 using Temporalio.Common;
@@ -90,6 +94,7 @@ public class SampleWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 ## Configure the Temporal connection {/* #configure-connection */}
 
@@ -156,9 +161,10 @@ dotnet add package Temporalio.Extensions.Aws.Lambda.OpenTelemetry
 
 Call `ApplyOpenTelemetryDefaults` on the options in the configure callback:
 
-[src/LambdaWorker/Worker/Function.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/LambdaWorker/Worker/Function.cs)
-```csharp {17}
-namespace TemporalioSamples.LambdaWorker.Worker;
+<!--SNIPSTART dotnet-lambda-worker-otel-handler {"highlightedLines": "17"}-->
+[dotnet-sandbox/workers/LambdaWorker/Observability/LambdaFunction.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/Observability/LambdaFunction.cs)
+```cs {17}
+namespace TemporalioDocs.Workers.LambdaWorker.Observability;
 
 using Amazon.Lambda.Core;
 using Temporalio.Common;
@@ -182,6 +188,7 @@ public class LambdaFunction
         WorkerHandler(input, context);
 }
 ```
+<!--SNIPEND-->
 
 `ApplyOpenTelemetryDefaults` configures Temporal tracing with `TracingInterceptor`, creates an OTLP trace exporter and tracer provider, configures Core SDK OTLP metrics, uses AWS X-Ray-compatible trace IDs, and registers a per-invocation shutdown hook that force-flushes traces.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
@@ -189,7 +196,9 @@ The endpoint can be overridden with the `OTEL_EXPORTER_OTLP_ENDPOINT` environmen
 
 You can customize the defaults by passing a `LambdaWorkerOpenTelemetryOptions` object:
 
-```csharp
+<!--SNIPSTART dotnet-lambda-worker-otel-custom-options-->
+[dotnet-sandbox/workers/LambdaWorker/Observability/TelemetryConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/Observability/TelemetryConfiguration.cs)
+```cs
 config.ApplyOpenTelemetryDefaults(
     new LambdaWorkerOpenTelemetryOptions
     {
@@ -198,6 +207,7 @@ config.ApplyOpenTelemetryDefaults(
         MetricsExportInterval = TimeSpan.FromSeconds(5),
     });
 ```
+<!--SNIPEND-->
 
 Core SDK metrics export every 10 seconds by default. Set `MetricsExportInterval` shorter than your Lambda timeout to increase the chance that at least one metrics export happens during each invocation.
 
@@ -208,7 +218,8 @@ The default Collector configuration does not route OpenTelemetry Protocol (OTLP)
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
-[src/LambdaWorker/otel-collector-config.template.yaml](https://github.com/temporalio/samples-dotnet/blob/main/src/LambdaWorker/otel-collector-config.template.yaml)
+<!--SNIPSTART dotnet-lambda-worker-otel-collector-config-->
+[dotnet-sandbox/workers/LambdaWorker/otel-collector-config.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/otel-collector-config.yaml)
 ```yaml
 receivers:
     otlp:
@@ -243,6 +254,7 @@ service:
         metrics:
             address: localhost:8888
 ```
+<!--SNIPEND-->
 
 Set the following environment variable on the Lambda function to point the Collector at the bundled config:
 
@@ -260,11 +272,11 @@ The Lambda execution role must have permissions to write to X-Ray and CloudWatch
 Add `xray:PutTraceSegments`, `xray:PutTelemetryRecords`, and `cloudwatch:PutMetricData` permissions to the execution role.
 Without these permissions, the Collector fails silently and no telemetry appears.
 
-You can also configure tracing and metrics manually using `TracingInterceptor` and `TemporalRuntime`:
+You can also configure tracing and metrics manually using `TracingInterceptor` from the `Temporalio.Extensions.OpenTelemetry` package and `TemporalRuntime` from `Temporalio.Runtime`:
 
-```csharp
-using Temporalio.Extensions.OpenTelemetry;
-
+<!--SNIPSTART dotnet-lambda-worker-manual-telemetry-->
+[dotnet-sandbox/workers/LambdaWorker/Observability/TelemetryConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/Observability/TelemetryConfiguration.cs)
+```cs
 config.ClientOptions.Interceptors = new[] { new TracingInterceptor() };
 config.ClientOptions.Runtime = new TemporalRuntime(new TemporalRuntimeOptions
 {
@@ -274,3 +286,4 @@ config.ClientOptions.Runtime = new TemporalRuntime(new TemporalRuntimeOptions
     },
 });
 ```
+<!--SNIPEND-->

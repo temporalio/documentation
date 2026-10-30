@@ -37,7 +37,7 @@ This page covers the following:
 
 :::note
 
-This documentation uses source code from the [StandaloneActivity](https://github.com/temporalio/samples-dotnet/tree/main/src/StandaloneActivity) sample project.
+This documentation uses source code from the [StandaloneActivities](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/activities/StandaloneActivities) sample project.
 
 :::
 
@@ -58,34 +58,40 @@ Use
 [`client.StartActivityAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html)
 to start a Standalone Activity and get a handle without waiting for the result:
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
-
-```csharp
+<!--SNIPSTART dotnet-standalone-activities-start-->
+[dotnet-sandbox/activities/StandaloneActivities/StartActivityClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/StartActivityClient.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Common.EnvConfig;
-using TemporalioSamples.StandaloneActivity;
 
-var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
-connectOptions.TargetHost ??= "localhost:7233";
-var client = await TemporalClient.ConnectAsync(connectOptions);
-
-var handle = await client.StartActivityAsync(
-    () => MyActivities.ComposeGreetingAsync(new ComposeGreetingInput("Hello", "World")),
-    new("standalone-activity-id", "standalone-activity-sample")
+public static class StartActivityClient
+{
+    public static async Task RunAsync()
     {
-        ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
-    });
-Console.WriteLine($"Started activity: {handle.Id}");
+        var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+        connectOptions.TargetHost ??= "localhost:7233";
+        var client = await TemporalClient.ConnectAsync(connectOptions);
 
-// Wait for the result later
-var result = await handle.GetResultAsync();
-Console.WriteLine($"Activity result: {result}");
+        var handle = await client.StartActivityAsync(
+            () => MyActivities.ComposeGreetingAsync(new ComposeGreetingInput("Hello", "World")),
+            new("standalone-activity-id", "standalone-activity-sample")
+            {
+                ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
+            });
+        Console.WriteLine($"Started activity: {handle.Id}");
+
+        // Wait for the result later
+        var result = await handle.GetResultAsync();
+        Console.WriteLine($"Activity result: {result}");
+    }
+}
 ```
+<!--SNIPEND-->
 
-With the Temporal Server and Worker running, open a new terminal in the `samples-dotnet` directory and run:
+With the Temporal Server and Worker running, open a new terminal in the `dotnet-sandbox` directory and run:
 
 ```
-dotnet run --project src/StandaloneActivity start-activity
+dotnet run --project activities/StandaloneActivities start-activity
 ```
 
 Or use the Temporal CLI:
@@ -103,13 +109,16 @@ temporal activity start \
 
 Use `client.GetActivityHandle()` to create a handle to a previously started Standalone Activity:
 
-```csharp
+<!--SNIPSTART dotnet-standalone-activities-get-handle-->
+[dotnet-sandbox/activities/StandaloneActivities/ActivityHandleExamples.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/ActivityHandleExamples.cs)
+```cs
 // Without a known result type
 var handle = client.GetActivityHandle("my-activity-id", runId: "the-run-id");
 
 // With a known result type
 var typedHandle = client.GetActivityHandle<string>("my-activity-id", runId: "the-run-id");
 ```
+<!--SNIPEND-->
 
 You can use the handle to wait for the result, describe, cancel, or terminate the Activity.
 
@@ -119,9 +128,12 @@ Under the hood, calling `client.ExecuteActivityAsync()` is the same as calling
 `client.StartActivityAsync()` to durably enqueue the Standalone Activity, and then calling
 `await handle.GetResultAsync()` to wait for the Activity to be executed and return the result:
 
-```csharp
-var result = await handle.GetResultAsync();
+<!--SNIPSTART dotnet-standalone-activities-get-result-->
+[dotnet-sandbox/activities/StandaloneActivities/ActivityHandleExamples.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/ActivityHandleExamples.cs)
+```cs
+var result = await started.GetResultAsync();
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI to wait for a result by Activity ID:
 
@@ -138,28 +150,35 @@ an `IAsyncEnumerable` that yields `ActivityExecution` entries.
 
 These APIs return only Standalone Activity Executions. Activities running inside Workflows are not included.
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
-
-```csharp
+<!--SNIPSTART dotnet-standalone-activities-list-->
+[dotnet-sandbox/activities/StandaloneActivities/ListActivitiesClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/ListActivitiesClient.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Common.EnvConfig;
 
-var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
-connectOptions.TargetHost ??= "localhost:7233";
-var client = await TemporalClient.ConnectAsync(connectOptions);
-
-await foreach (var info in client.ListActivitiesAsync(
-    "TaskQueue = 'standalone-activity-sample'"))
+public static class ListActivitiesClient
 {
-    Console.WriteLine(
-        $"ActivityID: {info.ActivityId}, Type: {info.ActivityType}, Status: {info.Status}");
+    public static async Task RunAsync()
+    {
+        var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+        connectOptions.TargetHost ??= "localhost:7233";
+        var client = await TemporalClient.ConnectAsync(connectOptions);
+
+        await foreach (var info in client.ListActivitiesAsync(
+            "TaskQueue = 'standalone-activity-sample'"))
+        {
+            Console.WriteLine(
+                $"ActivityID: {info.ActivityId}, Type: {info.ActivityType}, Status: {info.Status}");
+        }
+    }
 }
 ```
+<!--SNIPEND-->
 
 Run it:
 
 ```
-dotnet run --project src/StandaloneActivity list-activities
+dotnet run --project activities/StandaloneActivities list-activities
 ```
 
 Or use the Temporal CLI:
@@ -179,25 +198,32 @@ to count Standalone Activity Executions that match a [List Filter](/list-filter)
 the total count of executions (running, completed, failed, etc.) - not the number of queued tasks.
 It works the same way as counting Workflow Executions.
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
-
-```csharp
+<!--SNIPSTART dotnet-standalone-activities-count-->
+[dotnet-sandbox/activities/StandaloneActivities/CountActivitiesClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/CountActivitiesClient.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Common.EnvConfig;
 
-var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
-connectOptions.TargetHost ??= "localhost:7233";
-var client = await TemporalClient.ConnectAsync(connectOptions);
+public static class CountActivitiesClient
+{
+    public static async Task RunAsync()
+    {
+        var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+        connectOptions.TargetHost ??= "localhost:7233";
+        var client = await TemporalClient.ConnectAsync(connectOptions);
 
-var resp = await client.CountActivitiesAsync(
-    "TaskQueue = 'standalone-activity-sample'");
-Console.WriteLine($"Total activities: {resp.Count}");
+        var resp = await client.CountActivitiesAsync(
+            "TaskQueue = 'standalone-activity-sample'");
+        Console.WriteLine($"Total activities: {resp.Count}");
+    }
+}
 ```
+<!--SNIPEND-->
 
 Run it:
 
 ```
-dotnet run --project src/StandaloneActivity count-activities
+dotnet run --project activities/StandaloneActivities count-activities
 ```
 
 Or use the Temporal CLI:

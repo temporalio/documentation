@@ -45,7 +45,9 @@ Cancellation Requests on Workflows cancel the `Workflow.CancellationToken`. This
 for all calls within the workflow as well (for example, Timers, Activities, etc) and therefore cancellation is propagated to
 them to be handled and bubble out.
 
-```csharp
+<!--SNIPSTART dotnet-cancellation-handle-in-workflow-->
+[dotnet-sandbox/workflows/Cancellation/CleanupOnCancelWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/Cancellation/CleanupOnCancelWorkflow.workflow.cs)
+```cs
 [WorkflowRun]
 public async Task RunAsync()
 {
@@ -66,7 +68,7 @@ public async Task RunAsync()
 
         // Call cleanup activity. If this throws, it will swallow the original exception which we
         // are ok with here. This could be changed to just log a failure and let the original
-        // cancellation continue. 
+        // cancellation continue.
         // The default token on Workflow.CancellationToken is now marked
         // cancelled, so we pass a different one. We use CancellationToken.None here because the
         // cleanup activity itself doesn't need to be cancellable; if it did (e.g. you want to
@@ -85,6 +87,7 @@ public async Task RunAsync()
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Handle Cancellation in an Activity {/* #handle-cancellation-in-an-activity */}
 
@@ -93,7 +96,9 @@ Cancellation request and stop execution. Also make sure that the
 [Heartbeat Timeout](/develop/dotnet/activities/timeouts#heartbeat-timeout) is set on the Activity Options when calling
 from the Workflow. An Activity Cancellation Request cancels the `CancellationToken` on the `ActivityExecutionContext`.
 
-```csharp
+<!--SNIPSTART dotnet-cancellation-activity-heartbeat-->
+[dotnet-sandbox/workflows/Cancellation/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/Cancellation/MyActivities.cs)
+```cs
 [Activity]
 public async Task MyActivityAsync()
 {
@@ -109,12 +114,15 @@ public async Task MyActivityAsync()
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Request Cancellation {/* #request-cancellation */}
 
 Use `CancelAsync` on the `WorkflowHandle` to cancel a Workflow Execution.
 
-```csharp
+<!--SNIPSTART dotnet-cancellation-request-->
+[dotnet-sandbox/workflows/Cancellation/CancellationClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/Cancellation/CancellationClient.cs)
+```cs
 // Get a workflow handle by its workflow ID. This could be made specific to a run by passing run ID.
 // This could also just be a handle that is returned from StartWorkflowAsync instead.
 var handle = myClient.GetWorkflowHandle("my-workflow-id");
@@ -123,13 +131,16 @@ var handle = myClient.GetWorkflowHandle("my-workflow-id");
 // result to wait for cancellation to be applied.
 await handle.CancelAsync();
 ```
+<!--SNIPEND-->
 
 #### Request Cancellation of an Activity {/* #request-cancellation-of-an-activity */}
 
 By default, Activities are automatically cancelled when the Workflow is cancelled since the workflow cancellation token
 is used by activities by default. To issue a cancellation explicitly, a new cancellation token can be created.
 
-```csharp
+<!--SNIPSTART dotnet-cancellation-cancel-activity-->
+[dotnet-sandbox/workflows/Cancellation/CancelActivityWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/Cancellation/CancelActivityWorkflow.workflow.cs)
+```cs
 [WorkflowRun]
 public async Task RunAsync()
 {
@@ -146,9 +157,8 @@ public async Task RunAsync()
         new()
         {
             ScheduleToCloseTimeout = TimeSpan.FromMinutes(5),
-            CancellationToken = cancelActivitySource.Token;
+            CancellationToken = cancelActivitySource.Token,
         });
-    activityTask.Start();
 
     // Wait 5 minutes, then cancel it
     await Workflow.DelayAsync(TimeSpan.FromMinutes(5));
@@ -158,6 +168,7 @@ public async Task RunAsync()
     await activityTask;
 }
 ```
+<!--SNIPEND-->
 
 ## Termination {/* #termination */}
 
@@ -165,7 +176,9 @@ To Terminate a Workflow Execution in .NET, use the
 [TerminateAsync()](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_TerminateAsync_System_String_Temporalio_Client_WorkflowTerminateOptions_)
 method on the Workflow handle.
 
-```csharp
+<!--SNIPSTART dotnet-cancellation-terminate-->
+[dotnet-sandbox/workflows/Cancellation/CancellationClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/Cancellation/CancellationClient.cs)
+```cs
 // Get a workflow handle by its workflow ID. This could be made specific to a run by passing run ID.
 // This could also just be a handle that is returned from StartWorkflowAsync instead.
 var handle = myClient.GetWorkflowHandle("my-workflow-id");
@@ -173,6 +186,7 @@ var handle = myClient.GetWorkflowHandle("my-workflow-id");
 // Terminate
 await handle.TerminateAsync();
 ```
+<!--SNIPEND-->
 
 Workflow Executions can also be Terminated directly from the WebUI. In this case, a custom note can be logged from the
 UI when that happens.

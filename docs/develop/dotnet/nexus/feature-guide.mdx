@@ -39,7 +39,7 @@ This page shows how to do the following:
 
 :::note
 
-This documentation uses source code derived from the [.NET Nexus sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusSimple) and the [NexusMessagingTemporalOperation sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessagingTemporalOperation).
+This documentation uses source code from the [FeatureGuide](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/nexus/FeatureGuide) sample project.
 
 :::
 
@@ -145,7 +145,11 @@ and the Operation completes during the call.
 Handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking), and the whole
 call has to finish inside the [Nexus request timeout](/evaluate/cloud/limits#nexus-operation-request-timeout).
 
-```csharp
+<!--SNIPSTART dotnet-nexus-feature-guide-hello-service {"selectedLines": ["1-15", "27"]}-->
+[dotnet-sandbox/nexus/FeatureGuide/Handler/HelloService.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/Handler/HelloService.cs)
+```cs
+namespace TemporalioDocs.Nexus.FeatureGuide.Handler;
+
 using NexusRpc.Handlers;
 using Temporalio.Nexus;
 
@@ -159,8 +163,10 @@ public class HelloService
         IHelloService.EchoInput input) =>
         Task.FromResult(TemporalOperationResult<IHelloService.EchoOutput>.SyncResult(
             new(input.Message)));
+// ...
 }
 ```
+<!--SNIPEND-->
 
 ### Use the Temporal Client for Signals, Queries, and Updates
 
@@ -185,7 +191,9 @@ through `client.TemporalClient` rather than constructing your own.
 In this example the Workflow ID is derived from an identifier carried in the Operation input, so the caller only needs
 the identifier it cares about:
 
-```csharp
+<!--SNIPSTART dotnet-nexus-feature-guide-signal {"enable_code_dedenting": true}-->
+[dotnet-sandbox/nexus/FeatureGuide/Messaging/NexusGreetingService.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/Messaging/NexusGreetingService.cs)
+```cs
 private static string WorkflowIdForUser(string userId) => $"GreetingWorkflow_for_{userId}";
 
 [TemporalOperation]
@@ -200,6 +208,7 @@ public async Task<TemporalOperationResult<INexusGreetingService.ApproveOutput>> 
     return TemporalOperationResult<INexusGreetingService.ApproveOutput>.SyncResult(new());
 }
 ```
+<!--SNIPEND-->
 
 There are two examples of messaging through Nexus in the sample code: the [caller pattern](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging/CallerPattern) and the [on-demand pattern](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusMessaging/OnDemandPattern).
 The caller pattern shows how to send messages to an existing Workflow, while the on-demand pattern shows how to start a Workflow through Nexus and then send Signals to it.
@@ -209,10 +218,14 @@ The caller pattern shows how to send messages to an existing Workflow, while the
 Call `StartWorkflowAsync` on the Client. The Operation completes when the Workflow returns, and the Workflow's return
 value is delivered to the caller as the Operation's result.
 
-```csharp
+<!--SNIPSTART dotnet-nexus-feature-guide-hello-service {"selectedLines": ["6-8", "17-27"]}-->
+[dotnet-sandbox/nexus/FeatureGuide/Handler/HelloService.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/Handler/HelloService.cs)
+```cs
+// ...
 [NexusServiceHandler(typeof(IHelloService))]
 public class HelloService
 {
+// ...
     [TemporalOperation]
     public Task<TemporalOperationResult<IHelloService.HelloOutput>> SayHello(
         TemporalOperationStartContext ctx,
@@ -225,6 +238,7 @@ public class HelloService
             new() { Id = $"hello-{input.Name}-{input.Language}" });
 }
 ```
+<!--SNIPEND-->
 
 Workflow IDs should typically be business-meaningful identifiers and are used to dedupe Workflow starts. In general, the Workflow ID should be passed in the Operation input as part of the Nexus Service contract.
 
@@ -239,19 +253,22 @@ Workflow IDs should typically be business-meaningful identifiers and are used to
 A Nexus Operation can only take one input parameter. To start a Workflow that takes several, pass them as separate
 arguments in the `RunAsync` lambda:
 
-```csharp
+<!--SNIPSTART dotnet-nexus-feature-guide-multiple-arguments {"enable_code_dedenting": true}-->
+[dotnet-sandbox/nexus/FeatureGuide/MultipleArguments/HelloService.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/MultipleArguments/HelloService.cs)
+```cs
 client.StartWorkflowAsync(
     (HelloHandlerWorkflow wf) => wf.RunAsync(input.Language, input.Name),
     new() { Id = $"hello-{input.Name}-{input.Language}" });
 ```
+<!--SNIPEND-->
 
 ### Register a Nexus Service in a Worker
 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.
 
-[NexusSimple/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusSimple/Program.cs)
-
-```csharp
+<!--SNIPSTART dotnet-nexus-feature-guide-handler-worker-->
+[dotnet-sandbox/nexus/FeatureGuide/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/Program.cs)
+```cs
 async Task RunHandlerWorkerAsync()
 {
     // Run worker until cancelled
@@ -271,6 +288,7 @@ async Task RunHandlerWorkerAsync()
     }
 }
 ```
+<!--SNIPEND-->
 
 Nexus Service handlers also support dependency injection through the generic-host Worker. See [NexusDependencyInjection sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusDependencyInjection).
 
@@ -279,9 +297,11 @@ Nexus Service handlers also support dependency injection through the generic-hos
 Import the Service interface that has the necessary Operation names and input/output types to execute a Nexus Operation
 from the caller Workflow:
 
-[NexusSimple/Caller/EchoCallerWorkflow.workflow.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusSimple/Caller/EchoCallerWorkflow.workflow.cs)
+<!--SNIPSTART dotnet-nexus-feature-guide-echo-caller-->
+[dotnet-sandbox/nexus/FeatureGuide/Caller/EchoCallerWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/Caller/EchoCallerWorkflow.workflow.cs)
+```cs
+namespace TemporalioDocs.Nexus.FeatureGuide.Caller;
 
-```csharp
 using Temporalio.Workflows;
 
 [Workflow]
@@ -296,10 +316,13 @@ public class EchoCallerWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
-[NexusSimple/Caller/HelloCallerWorkflow.workflow.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusSimple/Caller/HelloCallerWorkflow.workflow.cs)
+<!--SNIPSTART dotnet-nexus-feature-guide-hello-caller-->
+[dotnet-sandbox/nexus/FeatureGuide/Caller/HelloCallerWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/Caller/HelloCallerWorkflow.workflow.cs)
+```cs
+namespace TemporalioDocs.Nexus.FeatureGuide.Caller;
 
-```csharp
 using Temporalio.Workflows;
 
 [Workflow]
@@ -314,14 +337,15 @@ public class HelloCallerWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Register the caller Workflow in a Worker
 
 After developing the caller Workflow, the next step is to register it with a Worker.
 
-[NexusSimple/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusSimple/Program.cs)
-
-```csharp
+<!--SNIPSTART dotnet-nexus-feature-guide-caller-worker-->
+[dotnet-sandbox/nexus/FeatureGuide/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/Program.cs)
+```cs
 async Task RunCallerWorkerAsync()
 {
     // Run worker until cancelled
@@ -341,14 +365,15 @@ async Task RunCallerWorkerAsync()
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Develop a starter to start the caller Workflow
 
 To initiate the caller Workflow, a starter program is used.
 
-[NexusSimple/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusSimple/Program.cs)
-
-```csharp
+<!--SNIPSTART dotnet-nexus-feature-guide-starter-->
+[dotnet-sandbox/nexus/FeatureGuide/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/nexus/FeatureGuide/Program.cs)
+```cs
 async Task ExecuteCallerWorkflowAsync()
 {
     logger.LogInformation("Executing caller echo workflow");
@@ -365,6 +390,7 @@ async Task ExecuteCallerWorkflowAsync()
     logger.LogInformation("Workflow result: {Result}", result2);
 }
 ```
+<!--SNIPEND-->
 
 ## Make Nexus calls across Namespaces with a development Server {/* #nexus-calls-across-namespaces-dev-server */}
 

@@ -18,10 +18,6 @@ This page introduces these features for the Temporal .NET SDK.
 
 ## Write message handlers {/* #writing-message-handlers */}
 
-:::info
-The code that follows is part of a [working solution](https://github.com/temporalio/samples-dotnet/tree/main/src/SafeMessageHandlers).
-:::
-
 Follow these guidelines when writing your message handlers:
 
 - Message handlers are defined as methods on the Workflow class, using one of the three attributes: [`WorkflowQueryAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowQueryAttribute.html), [`WorkflowSignalAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowSignalAttribute.html), and [`WorkflowUpdateAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowUpdateAttribute.html).
@@ -33,54 +29,28 @@ Follow these guidelines when writing your message handlers:
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution.
 Define as a method:
 
-```csharp
-[Workflow]
-public class GreetingWorkflow
-{
-    public enum Language
-    {
-        Chinese,
-        English,
-        French,
-        Spanish,
-        Portuguese,
-    }
+<!--SNIPSTART dotnet-message-passing-query-method-->
+[dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs)
+```cs
+public record GetLanguagesInput(bool IncludeUnsupported);
 
-    public record GetLanguagesInput(bool IncludeUnsupported);
-
-    // ...
-
-    [WorkflowQuery]
-    public IList<Language> GetLanguages(GetLanguagesInput input) =>
-        Enum.GetValues<Language>().
-            Where(language => input.IncludeUnsupported || Greetings.ContainsKey(language)).
-            ToList();
-
-    // ...
+[WorkflowQuery]
+public IList<Language> GetLanguages(GetLanguagesInput input) =>
+    Enum.GetValues<Language>().
+        Where(language => input.IncludeUnsupported || greetings.ContainsKey(language)).
+        ToList();
 ```
+<!--SNIPEND-->
 
 Or as a property getter:
 
-```csharp
-[Workflow]
-public class GreetingWorkflow
-{
-    public enum Language
-    {
-        Chinese,
-        English,
-        French,
-        Spanish,
-        Portuguese,
-    }
-
-    // ...
-
-    [WorkflowQuery]
-    public Language CurrentLanguage { get; private set; } = Language.English;
-
-    // ...
+<!--SNIPSTART dotnet-message-passing-query-property-->
+[dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs)
+```cs
+[WorkflowQuery]
+public Language CurrentLanguage { get; private set; } = Language.English;
 ```
+<!--SNIPEND-->
 
 - The Query attribute can accept arguments.
   See the API reference docs: [`WorkflowQueryAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowQueryAttribute.html).
@@ -91,23 +61,19 @@ public class GreetingWorkflow
 
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
-```csharp
-[Workflow]
-public class GreetingWorkflow
+<!--SNIPSTART dotnet-message-passing-signal-->
+[dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs)
+```cs
+public record ApproveInput(string Name);
+
+[WorkflowSignal]
+public async Task ApproveAsync(ApproveInput input)
 {
-    public record ApproveInput(string Name);
-
-    // ...
-
-    [WorkflowSignal]
-    public async Task ApproveAsync(ApproveInput input)
-    {
-        approvedForRelease = true;
-        approverName = input.Name;
-    }
-
-    // ...
+    approvedForRelease = true;
+    approverName = input.Name;
+}
 ```
+<!--SNIPEND-->
 
 - The Signal attribute can accept arguments.
   Refer to the API docs: [`WorkflowSignalAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowSignalAttribute.html).
@@ -126,40 +92,27 @@ It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
 
-```csharp
-[Workflow]
-public class GreetingWorkflow
+<!--SNIPSTART dotnet-message-passing-update-->
+[dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs)
+```cs
+[WorkflowUpdateValidator(nameof(SetCurrentLanguageAsync))]
+public void ValidateLanguage(Language language)
 {
-    public enum Language
+    if (!greetings.ContainsKey(language))
     {
-        Chinese,
-        English,
-        French,
-        Spanish,
-        Portuguese,
+        throw new ApplicationFailureException($"{language} is not supported");
     }
+}
 
-    // ...
-
-    [WorkflowUpdateValidator(nameof(SetCurrentLanguageAsync))]
-    public void ValidateLanguage(Language language)
-    {
-        if (!Greetings.ContainsKey(language))
-        {
-            throw new ApplicationFailureException($"{language} is not supported");
-        }
-    }
-
-    [WorkflowUpdate]
-    public async Task<Language> SetCurrentLanguageAsync(Language language)
-    {
-        var previousLanguage = CurrentLanguage;
-        CurrentLanguage = language;
-        return previousLanguage;
-    }
-
-    // ...
+[WorkflowUpdate]
+public async Task<Language> SetCurrentLanguageAsync(Language language)
+{
+    var previousLanguage = CurrentLanguage;
+    CurrentLanguage = language;
+    return previousLanguage;
+}
 ```
+<!--SNIPEND-->
 
 - The Update attribute can take arguments (like, `Name`, `Dynamic` and `UnfinishedPolicy`) as described in the API reference docs for [`WorkflowUpdateAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowUpdateAttribute.html).
 
@@ -195,12 +148,15 @@ To obtain the WorkflowStub, you can:
 
 For example:
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-start-workflow-->
+[dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs)
+```cs
 var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 var workflowHandle = await client.StartWorkflowAsync(
     (GreetingWorkflow wf) => wf.RunAsync(),
     new(id: "message-passing-workflow-id", taskQueue: "message-passing-sample"));
 ```
+<!--SNIPEND-->
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
 
@@ -216,9 +172,12 @@ To check the argument types required when sending messages -- and the return typ
 
 Call a Query method with [`WorkflowHandle.QueryAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_QueryAsync__1_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowQueryOptions_):
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-send-query-->
+[dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs)
+```cs
 var supportedLanguages = await workflowHandle.QueryAsync(wf => wf.GetLanguages(new(false)));
 ```
+<!--SNIPEND-->
 
 - Sending a Query doesn’t add events to a Workflow's Event History.
 
@@ -237,9 +196,12 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 Use [`WorkflowHandle.SignalAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_SignalAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowSignalOptions_) from Client code to send a Signal:
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-send-signal-->
+[dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs)
+```cs
 await workflowHandle.SignalAsync(wf => wf.ApproveAsync(new("MyUser")));
 ```
+<!--SNIPEND-->
 
 - The call returns when the server accepts the Signal; it does _not_ wait for the Signal to be delivered to the Workflow Execution.
 
@@ -251,9 +213,9 @@ A Workflow can send a Signal to another Workflow, known as an _External Signal_.
 In this case you need to obtain a Workflow handle for the external Workflow.
 Use `Workflow.GetExternalWorkflowHandle`, passing a running Workflow Id, to retrieve a typed Workflow handle:
 
-```csharp
-// ...
-
+<!--SNIPSTART dotnet-message-passing-external-signal-->
+[dotnet-sandbox/workflows/MessagePassing/ExternalSignalWorkflows.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/ExternalSignalWorkflows.workflow.cs)
+```cs
 [Workflow]
 public class WorkflowB
 {
@@ -263,9 +225,9 @@ public class WorkflowB
         var handle = Workflow.GetExternalWorkflowHandle<WorkflowA>("workflow-a");
         await handle.SignalAsync(wf => wf.YourSignalAsync("signal argument"));
     }
-
-    // ...
+}
 ```
+<!--SNIPEND-->
 
 When an External Signal is sent:
 
@@ -279,12 +241,15 @@ If there's a Workflow running with the given Workflow Id, it will be signaled.
 If there isn't, a new Workflow will be started and immediately signaled.
 To use Signal-With-Start, call `SignalWithStart` with a lambda expression invoking it:
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-signal-with-start-->
+[dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs)
+```cs
 var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 var options = new WorkflowOptions(id: "your-signal-with-start-workflow", taskQueue: "signal-tq");
 options.SignalWithStart((GreetingWorkflow wf) => wf.SubmitGreetingAsync("User Signal with Start"));
 await client.StartWorkflowAsync((GreetingWorkflow wf) => wf.RunAsync(), options);
 ```
+<!--SNIPEND-->
 
 ### Send an Update {/* #send-update-from-client */}
 
@@ -303,13 +268,16 @@ To send an Update to a Workflow Execution, you can:
 - Call the Update method with `ExecuteUpdateAsync` from the Client and wait for the Update to complete.
   This code fetches an Update result:
 
-  ```csharp
+  <!--SNIPSTART dotnet-message-passing-execute-update-->
+  [dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs)
+  ```cs
   var previousLanguage = await workflowHandle.ExecuteUpdateAsync(
-    wf => wf.SetCurrentLanguageAsync(GreetingWorkflow.Language.Chinese));
+      wf => wf.SetCurrentLanguageAsync(GreetingWorkflow.Language.Chinese));
   ```
+  <!--SNIPEND-->
 
-2. Use `StartUpdateAsync` to receive a handle as soon as the Update is accepted.
-     It returns an `UpdateHandle`
+- Use `StartUpdateAsync` to receive a handle as soon as the Update is accepted.
+  It returns an `UpdateHandle`.
 
   - Use this `UpdateHandle` later to fetch your results.
   - Asynchronous Update handlers normally perform long-running async Activities.
@@ -317,14 +285,17 @@ To send an Update to a Workflow Execution, you can:
 
   For example:
 
-  ```csharp
+  <!--SNIPSTART dotnet-message-passing-start-update-->
+  [dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/MessagePassingClient.cs)
+  ```cs
   // Wait until the update is accepted
   var updateHandle = await workflowHandle.StartUpdateAsync(
-      wf => wf.SetGreetingAsync(new HelloWorldInput("World")),
+      wf => wf.SetLanguageAsync(GreetingWorkflow.Language.Arabic),
       new(waitForStage: WorkflowUpdateStage.Accepted));
   // Wait until the update is completed
   var updateResult = await updateHandle.GetResultAsync();
   ```
+  <!--SNIPEND-->
 
   For more details, see the "Async handlers" section.
 
@@ -351,9 +322,11 @@ These calls return once the requested Update wait stage has been reached, or whe
 - You must specify an [IdConflictPolicy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
   Note that a `WithStartWorkflowOperation` can only be used once.
 
-Here's an example taken from the [UpdateWithStartLazyInit](https://github.com/temporalio/samples-dotnet/blob/main/src/UpdateWithStartLazyInit/Program.cs) sample:
+Here's an example based on the [UpdateWithStartLazyInit](https://github.com/temporalio/samples-dotnet/blob/main/src/UpdateWithStartLazyInit/Program.cs) sample:
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-update-with-start-->
+[dotnet-sandbox/workflows/MessagePassing/ShoppingCartClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/ShoppingCartClient.cs)
+```cs
 async Task<AddCartItemResult> AddCartItemAsync(string sessionId, ShoppingCartItem item)
 {
     // Issue an update-with-start that will create the workflow if it does not
@@ -385,6 +358,7 @@ async Task<AddCartItemResult> AddCartItemAsync(string sessionId, ShoppingCartIte
     return new(await startOperation.GetHandleAsync(), subtotal);
 }
 ```
+<!--SNIPEND-->
 
 :::info NON-TYPE SAFE API CALLS
 
@@ -427,7 +401,9 @@ See [Workflow message passing](/encyclopedia/workflow-message-passing) for guida
 
 The following code executes an Activity that simulates a network call to a remote service:
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-activity-->
+[dotnet-sandbox/workflows/MessagePassing/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/MyActivities.cs)
+```cs
 public class MyActivities
 {
     private static readonly Dictionary<Language, string> Greetings = new()
@@ -447,53 +423,50 @@ public class MyActivities
         await Task.Delay(200);
         return Greetings.TryGetValue(language, out var value) ? value : null;
     }
-}
 ```
+<!--SNIPEND-->
 
 The following code modifies a `WorkflowUpdate` for asynchronous use of the preceding Activity:
 
-```csharp
-[Workflow]
-public class GreetingWorkflow
+<!--SNIPSTART dotnet-message-passing-async-update-->
+[dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/GreetingWorkflow.workflow.cs)
+```cs
+private readonly Mutex mutex = new();
+
+[WorkflowUpdate]
+public async Task<Language> SetLanguageAsync(Language language)
 {
-    private readonly Mutex mutex = new();
-
-    // ...
-
-    [WorkflowUpdate]
-    public async Task<Language> SetLanguageAsync(Language language)
+    // 👉 Use a mutex here to ensure that multiple calls to SetLanguageAsync are processed in order.
+    await mutex.WaitOneAsync();
+    try
     {
-        // 👉 Use a mutex here to ensure that multiple calls to SetLanguageAsync are processed in order.
-        await mutex.WaitOneAsync();
-        try
+        if (!greetings.ContainsKey(language))
         {
-            if (!greetings.ContainsKey(language))
+            var greeting = await Workflow.ExecuteActivityAsync(
+                (MyActivities acts) => acts.CallGreetingServiceAsync(language),
+                new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
+            if (greeting == null)
             {
-                var greeting = Workflow.ExecuteActivityAsync(
-                    (MyActivities acts) => acts.CallGreetingServiceAsync(language),
-                    new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
-                if (greeting == null)
-                {
-                    // 👉 An update validator cannot be async, so cannot be used to check that the remote
-                    // CallGreetingServiceAsync supports the requested language. Throwing ApplicationFailureException
-                    // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
-                    // added to history.
-                    throw new ApplicationFailureException(
-                        $"Greeting service does not support {language}");
-                }
-                greetings[language] = greeting;
+                // 👉 An update validator cannot be async, so cannot be used to check that the remote
+                // CallGreetingServiceAsync supports the requested language. Throwing ApplicationFailureException
+                // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
+                // added to history.
+                throw new ApplicationFailureException(
+                    $"Greeting service does not support {language}");
             }
-            var previousLanguage = CurrentLanguage;
-            CurrentLanguage = language;
-            return previousLanguage;
+            greetings[language] = greeting;
         }
-        finally
-        {
-            mutex.ReleaseMutex();
-        }
+        var previousLanguage = CurrentLanguage;
+        CurrentLanguage = language;
+        return previousLanguage;
+    }
+    finally
+    {
+        mutex.ReleaseMutex();
     }
 }
 ```
+<!--SNIPEND-->
 
 After updating the code for asynchronous calls, your Update handler can schedule an Activity and await the result.
 Although an async Signal handler can initiate similar network tasks, using an Update handler allows the Client to receive a result or error once the Activity completes.
@@ -522,14 +495,17 @@ This is an important feature that helps you control your handler logic.
 Consider a `ReadyForUpdateToExecute` method that runs before your Update handler executes.
 The [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) call waits until your condition is met:
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-wait-in-handler-->
+[dotnet-sandbox/workflows/MessagePassing/HandlerPatternsWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/HandlerPatternsWorkflow.workflow.cs)
+```cs
 [WorkflowUpdate]
 public async Task<string> MyUpdateAsync(UpdateInput updateInput)
 {
     await Workflow.WaitConditionAsync(() => ReadyForUpdateToExecute(updateInput));
-    // ...
+    return $"Processed {updateInput.Name}";
 }
 ```
+<!--SNIPEND-->
 
 Remember: Handlers can execute before the main Workflow method starts.
 
@@ -540,30 +516,32 @@ When your Workflow uses async Signal or Update handlers, your main Workflow meth
 The Workflow completing may interrupt the handler before it finishes crucial work and cause Client errors when trying retrieve Update results.
 Use `Workflow.AllHandlersFinished` to address this problem and allow your Workflow to end smoothly:
 
-```csharp
-[Workflow]
-public class MyWorkflow
+<!--SNIPSTART dotnet-message-passing-wait-for-handlers-->
+[dotnet-sandbox/workflows/MessagePassing/HandlerPatternsWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/HandlerPatternsWorkflow.workflow.cs)
+```cs
+[WorkflowRun]
+public async Task<string> RunAsync()
 {
-    [WorkflowRun]
-    public async Task<string> RunAsync()
-    {
-        // ...
-        await Workflow.WaitConditionAsync(() => Workflow.AllHandlersFinished);
-        return "workflow-result";
-    }
-
-    // ...
+    started = true;
+    await Workflow.WaitConditionAsync(() => Workflow.AllHandlersFinished);
+    return "workflow-result";
+}
 ```
+<!--SNIPEND-->
 
 By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
 You can silence these warnings on a per-handler basis by passing the `UnfinishedPolicy` argument to the [`WorkflowSignalAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowSignalAttribute.html) / [`WorkflowUpdateAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowUpdateAttribute.html) decorator:
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-unfinished-policy-->
+[dotnet-sandbox/workflows/MessagePassing/HandlerPatternsWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/HandlerPatternsWorkflow.workflow.cs)
+```cs
 [WorkflowUpdate(UnfinishedPolicy = HandlerUnfinishedPolicy.Abandon)]
-public async Task MyUpdateAsync()
+public async Task MyAbandonableUpdateAsync()
 {
-    // ...
+    await Workflow.DelayAsync(TimeSpan.FromHours(1));
+}
 ```
+<!--SNIPEND-->
 
 See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
@@ -577,7 +555,9 @@ The Workflow input arguments are also passed to your `[WorkflowRun]` method -- t
 Here's an example.
 The constructor and `RunAsync` must have the same parameters with the same types:
 
-```csharp
+<!--SNIPSTART dotnet-workflow-basics-init-->
+[dotnet-sandbox/workflows/WorkflowBasics/WorkflowInitWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/WorkflowInitWorkflow.workflow.cs)
+```cs
 [Workflow]
 public class WorkflowInitWorkflow
 {
@@ -588,7 +568,7 @@ public class WorkflowInitWorkflow
 
     [WorkflowInit]
     public WorkflowInitWorkflow(Input input) =>
-        nameWithTitle = $"Sir {input.Name}";
+        nameWithTitle = $"Knight {input.Name}";
 
     [WorkflowRun]
     public async Task<string> RunAsync(Input ignored)
@@ -600,16 +580,13 @@ public class WorkflowInitWorkflow
     [WorkflowUpdate]
     public async Task<bool> CheckTitleValidityAsync()
     {
-        // The handler is now guaranteed to see the workflow input after it has
-        // been processed by the constructor.
-        var valid = await Workflow.ExecuteActivityAsync(
-            (MyActivities acts) -> acts.CheckTitleValidityAsync(nameWithTitle),
-            new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
+        // The handler can read nameWithTitle because the constructor set it.
         titleHasBeenChecked = true;
-        return valid;
+        return nameWithTitle.StartsWith("Knight ", StringComparison.Ordinal);
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Use locks to prevent concurrent handler execution {/* #control-handler-concurrency */}
 
@@ -617,60 +594,54 @@ Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
-```csharp
-[Workflow]
-public class MyWorkflow
+<!--SNIPSTART dotnet-message-passing-bad-handler-->
+[dotnet-sandbox/workflows/MessagePassing/LockingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/LockingWorkflow.workflow.cs)
+```cs
+[WorkflowSignal]
+public async Task BadHandlerAsync()
 {
-    // ...
+    var data = await Workflow.ExecuteActivityAsync(
+        (MyActivities acts) => acts.FetchDataAsync(),
+        new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
+    this.x = data.X;
+    // 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
+    // there may be times when the Workflow has this.x from one Activity execution and this.y from another.
+    await Workflow.DelayAsync(1000);
+    this.y = data.Y;
+}
+```
+<!--SNIPEND-->
 
-    [WorkflowSignal]
-    public async Task BadHandlerAsync()
+Coordinating access with [`Workflows.Mutex`](https://dotnet.temporal.io/api/Temporalio.Workflows.Mutex.html), a mutual exclusion lock, corrects this code.
+Locking makes sure that only one handler instance can execute a specific section of code at any given time:
+
+<!--SNIPSTART dotnet-message-passing-safe-handler-->
+[dotnet-sandbox/workflows/MessagePassing/LockingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/LockingWorkflow.workflow.cs)
+```cs
+private readonly Mutex mutex = new();
+
+[WorkflowSignal]
+public async Task SafeHandlerAsync()
+{
+    await mutex.WaitOneAsync();
+    try
     {
         var data = await Workflow.ExecuteActivityAsync(
             (MyActivities acts) => acts.FetchDataAsync(),
             new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
         this.x = data.X;
-        // 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
-        // there may be times when the Workflow has this.x from one Activity execution and this.y from another.
+        // ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
+        // method, but no other execution of this handler can run until this execution finishes.
         await Workflow.DelayAsync(1000);
         this.y = data.Y;
     }
-}
-```
-
-Coordinating access with [`Workflows.Mutex`](https://dotnet.temporal.io/api/Temporalio.Workflows.Mutex.html), a mutual exclusion lock, corrects this code.
-Locking makes sure that only one handler instance can execute a specific section of code at any given time:
-
-```csharp
-[Workflow]
-public class MyWorkflow
-{
-    private readonly Mutex mutex = new();
-
-    // ...
-
-    [WorkflowSignal]
-    public async Task SafeHandlerAsync()
+    finally
     {
-        await mutex.WaitOneAsync();
-        try
-        {
-            var data = await Workflow.ExecuteActivityAsync(
-                (MyActivities acts) => acts.FetchDataAsync(),
-                new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
-            this.x = data.X;
-            // ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
-            // method, but no other execution of this handler can run until this execution finishes.
-            await Workflow.DelayAsync(1000);
-            this.y = data.Y;
-        }
-        finally
-        {
-            mutex.ReleaseMutex();
-        }
+        mutex.ReleaseMutex();
     }
 }
 ```
+<!--SNIPEND-->
 
 For additional concurrency options, you can use [`Workflows.Semaphore`](https://dotnet.temporal.io/api/Temporalio.Workflows.Semaphore.html).
 Semaphores manage access to shared resources and coordinate the order in which threads or processes execute.
@@ -779,7 +750,9 @@ Only one Dynamic Query can be present on a Workflow.
 The Query Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
 The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` Namespace.
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-dynamic-query-->
+[dotnet-sandbox/workflows/MessagePassing/DynamicHandlersWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/DynamicHandlersWorkflow.workflow.cs)
+```cs
 [WorkflowQuery(Dynamic = true)]
 public string DynamicQueryAsync(string queryName, IRawValue[] args)
 {
@@ -787,6 +760,7 @@ public string DynamicQueryAsync(string queryName, IRawValue[] args)
     return statuses[input.Type];
 }
 ```
+<!--SNIPEND-->
 
 ### Set a Dynamic Signal {/* #set-a-dynamic-signal */}
 
@@ -797,7 +771,9 @@ Only one Dynamic Signal can be present on a Workflow.
 The Signal Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
 The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` Namespace.
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-dynamic-signal-->
+[dotnet-sandbox/workflows/MessagePassing/DynamicHandlersWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/DynamicHandlersWorkflow.workflow.cs)
+```cs
 [WorkflowSignal(Dynamic = true)]
 public async Task DynamicSignalAsync(string signalName, IRawValue[] args)
 {
@@ -805,6 +781,7 @@ public async Task DynamicSignalAsync(string signalName, IRawValue[] args)
     pendingThings.Add(input);
 }
 ```
+<!--SNIPEND-->
 
 ### Set a Dynamic Update {/* #set-a-dynamic-update */}
 
@@ -815,7 +792,9 @@ Only one Dynamic Update can be present on a Workflow.
 The Update Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
 The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` Namespace.
 
-```csharp
+<!--SNIPSTART dotnet-message-passing-dynamic-update-->
+[dotnet-sandbox/workflows/MessagePassing/DynamicHandlersWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/MessagePassing/DynamicHandlersWorkflow.workflow.cs)
+```cs
 [WorkflowUpdate(Dynamic = true)]
 public async Task<string> DynamicUpdateAsync(string updateName, IRawValue[] args)
 {
@@ -824,3 +803,4 @@ public async Task<string> DynamicUpdateAsync(string updateName, IRawValue[] args
     return statuses[input.Type];
 }
 ```
+<!--SNIPEND-->
