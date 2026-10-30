@@ -1,8 +1,15 @@
 //@ts-check
+const fs = require('fs');
+const path = require('path');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 const mermaidTheme = require('./src/constants/mermaidTheme');
 const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/constants/preloadFonts');
+
+// Google Consent Mode bootstrap. Injected as a synchronous inline <head> script
+// (below) so it registers the denied consent default before the GTM container
+// loads. See static/scripts/googletag.js for why the ordering matters.
+const googleTagBootstrap = fs.readFileSync(path.join(__dirname, 'static/scripts/googletag.js'), 'utf8');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
@@ -22,6 +29,11 @@ module.exports = async function createConfigAsync() {
     // come from src/constants/preloadFonts.js — see that file and
     // bin/check-font-preload-hash.js for why they're hardcoded.
     headTags: [
+      {
+        tagName: 'script',
+        attributes: {},
+        innerHTML: googleTagBootstrap,
+      },
       {
         tagName: 'link',
         attributes: {
@@ -318,11 +330,6 @@ module.exports = async function createConfigAsync() {
       ],
     ],
     scripts: [
-      {
-        src: '/scripts/googletag.js',
-        async: true,
-        defer: true,
-      },
       {
         src: 'https://widget.kapa.ai/kapa-widget.bundle.js',
         'data-button-hide': 'true',
