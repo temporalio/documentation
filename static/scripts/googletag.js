@@ -1,17 +1,17 @@
 // Google Consent Mode bootstrap + GTM container loader.
 //
 // This file is injected as a SYNCHRONOUS inline <head> script (see headTags in
-// docusaurus.config.js), not loaded async/deferred. That ordering is the whole
-// point: `gtag('consent', 'default', ...)` must register the denied baseline
-// BEFORE the GTM container initializes. When this ran async, GTM initialized
-// first and fired advertising/analytics tags before the denied default applied
+// docusaurus.config.js), not loaded async/deferred. That ordering is essential:
+// `gtag('consent', 'default', ...)` must register the denied baseline
+// BEFORE the GTM container initializes. This cannot run async, as GTM will initialize
+// first and fire advertising/analytics tags before the denied default applied
 // (google_tag_data.ics._wasSetLate === true), so vendor tags set cookies even
-// with consent undecided or rejected. Modeled on temporal.io's src/app.html,
-// which shares this same GTM container (GTM-TSXFPF2).
+// with consent undecided or rejected. This is now modeled on temporal.io's
+// src/app.html.
 
 (function () {
   window.dataLayer = window.dataLayer || [];
-  // Push `arguments` (not an array) so Consent Mode can detect gtag commands.
+  // Push `arguments` so Consent Mode can detect gtag commands.
   window.gtag =
     window.gtag ||
     function () {
@@ -33,8 +33,8 @@
 
   // The consent cookie is written on the shared `.temporal.io` apex domain, so a
   // decision made on temporal.io (or a prior docs.temporal.io visit) is already
-  // readable here. Synchronously upgrade the denied default before GTM loads —
-  // same script block, so there's no race with the container.
+  // readable here. Synchronously upgrade the denied default before GTM loads, and
+  // do it within the same script block, so there's no race with the container.
   (function () {
     var match = document.cookie.match(/(?:^|;\s*)consent=([^;]*)/);
     if (!match) return;
@@ -65,7 +65,7 @@
 
   window.gtag('js', new Date());
 
-  // Inject the GTM container exactly once. The id guard prevents a duplicate
+  // Inject the GTM container once. The ID guard prevents a duplicate
   // container init (and the resulting second `gtm.js` dataLayer event).
   (function (w, d, s, l, i) {
     if (d.getElementById('gtm-script')) return;
