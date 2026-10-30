@@ -22,6 +22,7 @@ Each Activity Timeout controls a different aspect of how long an Activity Execut
 - **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**
 
 At least one of `start_to_close_timeout` or `schedule_to_close_timeout` is required.
+The Temporal Service fills in whichever of these you leave unset, so the stored timeouts can differ from the ones you passed. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
 
 ```ruby
 Temporalio::Workflow.execute_activity(

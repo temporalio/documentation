@@ -17,7 +17,9 @@ Update Options changes an Activity's runtime configuration without restarting it
 ## When to Update Options
 
 - The [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) is about to
-  expire on a Paused Activity, and you need to extend it before Unpausing.
+  expire on a Paused Activity, and you need to extend it before Unpausing. Extend the
+  [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) in the same command if the
+  next attempt also needs more time.
 - An Activity's [Retry Policy](/encyclopedia/retry-policies) needs tuning based on observed failure patterns (for
   example, increasing the backoff interval or maximum attempts).
 - You want to move an Activity to a different [Task Queue](/task-queue) to route it to a specific set of
@@ -28,7 +30,12 @@ Update Options changes an Activity's runtime configuration without restarting it
 
 You can change [timeouts](/encyclopedia/detecting-activity-failures) (Schedule-To-Close, Start-To-Close,
 Schedule-To-Start, Heartbeat), Retry Policy (initial interval, maximum interval, backoff coefficient, maximum attempts),
-and Task Queue. Only the fields you specify are changed. All other options remain unchanged.
+and Task Queue.
+
+The request carries a field mask naming the fields to change. Fields the mask names are assigned the value in the
+request, and fields it doesn't name are left alone. A field the mask names but leaves empty is cleared, not skipped.
+`temporal activity update-options` builds the mask from the flags you actually pass, so a flag you omit can't clear
+anything. A client that builds the mask itself can.
 
 - **If the Activity is waiting for retry (scheduled),** the new options take effect immediately. Any pending retry timer
   is regenerated with the updated configuration.
@@ -41,6 +48,27 @@ and Task Queue. Only the fields you specify are changed. All other options remai
 
 Update Options is idempotent. Updating an Activity with the same values it already has produces no change. Updating
 options on an Activity that has already completed returns an error.
+
+### Timeouts are resolved again after every update
+
+Once the new values are merged in, the Service re-runs the
+[Activity timeout rules](/encyclopedia/detecting-activity-failures#timeout-resolution) over the whole set. Changing one
+timeout can therefore change another.
+
+The Activity's timeouts were already resolved when it was first scheduled, so none of them is unset by the time you
+update. Changing the Schedule-To-Close Timeout therefore works in one direction only:
+
+- **Lowering it pulls the others down with it.** Reduce the Schedule-To-Close Timeout to one hour and a two-hour
+  Start-To-Close Timeout is reduced to one hour as well.
+- **Raising it leaves the others where they are.** An Activity scheduled with a 24-hour Schedule-To-Close Timeout and no
+  Start-To-Close Timeout stores 24 hours for both. Raise the Schedule-To-Close Timeout to 48 hours and the
+  Start-To-Close Timeout stays at 24 hours, because it's no longer unset.
+
+To give a Paused Activity both more total time and more time per attempt, change the Schedule-To-Close and
+Start-To-Close Timeouts in the same command.
+
+Updates don't apply the Workflow Run Timeout cap that applies at schedule time. Clearing the Schedule-To-Close Timeout
+on a Workflow Activity leaves it unbounded rather than falling back to the Workflow Run Timeout.
 
 ## CLI usage
 
