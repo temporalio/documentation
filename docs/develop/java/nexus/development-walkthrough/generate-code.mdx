@@ -18,7 +18,7 @@ For each type in the contract, [NexGen](/nexus/nexgen) emits a typed model and a
 - The **handler** implements the Service definition, and the Worker registers that implementation.
 - The **caller** invokes Operations through it, so calls are type-checked against the contract.
 
-The validators run when a payload is parsed and again when it is serialized, so a request that violates the contract is rejected at the boundary instead of reaching your Workflow. Violations aggregate into one error naming every field that failed, which a handler maps to `BAD_REQUEST`.
+The validators run when a payload is parsed and again when it is serialized, so a request that violates the contract is rejected at the boundary instead of reaching your Workflow. Violations aggregate into one error naming every field that failed. When an Operation's input fails validation, the Worker rejects it with a non-retryable `BAD_REQUEST` [Nexus handler error](/nexus/error-handling) before the Operation handler runs.
 
 ## Generate the code
 
