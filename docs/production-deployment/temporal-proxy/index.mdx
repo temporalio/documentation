@@ -15,9 +15,10 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="publicPreview">
-  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
-  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
-  the definitive configuration schema.
+  Starting with version 1.0, Temporal Proxy is suitable for production use cases.
+  Breaking changes between minor releases are possible but will be kept to a minimum.
+  See [Supported versions](#supported-versions) for the release maintenance and support policy, and the
+  [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the definitive configuration schema.
 </ReleaseNoteHeader>
 
 The Temporal Proxy is a gRPC proxy that sits between your Temporal SDK Clients, Workers, and the Temporal Web UI on one
@@ -299,21 +300,16 @@ pre-rotation, and `on_demand` for a DEK replaced at request time because no fres
 rate means rotation is falling behind, so raise `renewBefore`. Compare the cache counters against `cacheSize` to see
 whether the cache is absorbing read traffic.
 
-## Versions and support
+## Supported versions
 
-The following support policy applies to Temporal Proxy v1.0 and later. Support for Temporal customers includes
-troubleshooting through Temporal Support and maintenance releases with critical fixes for security, data loss, and
-reliability issues.
+The [Temporal Proxy README](https://github.com/temporalio/temporal-proxy#temporal-proxy-public-preview) defines the
+release maintenance policy:
 
-Temporal supports the current minor release and at least the three preceding minor releases, when available. Versions
-earlier than v1.0 are excluded from this support window. For example, when v1.4 is current, the supported minor releases
-include v1.1, v1.2, v1.3, and v1.4; when v1.1 is current, they include v1.0 and v1.1.
+Minor bug fixes are generally applied only to the latest release. Critical fixes and patches will be applied to the
+latest minor release and the two before it (for example, `v1.0`, `v0.10`, and `v0.9`).
 
-Each major version receives support for at least 12 months after its general availability release. Temporal provides at
-least six months' notice before ending support for a major version.
-
-Temporal Support may require you to upgrade to the latest bugfix (patch) release within your supported minor version
-before proceeding with support if that patch introduces critical functionality related to your reported issue.
+Temporal customers with support contracts receive support for these supported versions. Receiving support may be
+contingent on upgrading to the latest bugfix (patch) version within a supported minor release.
 
 Temporal publishes CVE advisories when a fix is available. Report vulnerabilities privately to
 [security@temporal.io](mailto:security@temporal.io), following the
