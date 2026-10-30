@@ -2,7 +2,7 @@
 id: nexgen
 title: NexGen
 sidebar_label: NexGen
-description: NexGen turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
+description: NexGen generates typed models, runtime validators, and Nexus Service definitions in C#, Go, Java, Python, and TypeScript from one schema file.
 toc_max_heading_level: 4
 slug: /nexus/nexgen
 tags:
@@ -12,50 +12,42 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript"]} guidePath="nexus/feature-guide">
+<ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript", ".NET"]} guidePath="nexus/feature-guide">
   APIs are experimental and may be subject to backwards-incompatible changes.
 </ReleaseNoteHeader>
 
 :::note
 
-For setup instructions, see the [NexGen GitHub project](https://github.com/temporalio/nexgen#installation)
+For setup instructions, see the [NexGen GitHub project](https://github.com/temporalio/nexgen#installation).
 
 :::
 
-A [Nexus Service](/nexus/services) is called across a team boundary, often by a caller written in a different language than the handler implementation and deployed on its own schedule.
-When each side hand-writes its own request and response types, the two copies drift, and nothing catches it until a call fails.
+[NexGen](https://github.com/temporalio/nexgen) generates the request and response types, runtime validators, and [Nexus Service](/nexus/services) definition for a Nexus Service from one schema file.
+The handler and the caller each generate code from that file, in C#, Go, Java, Python, or TypeScript, so both sides use the same types even when they're written in different languages.
+Without a shared schema, each team hand-writes its own copy of the types, the copies drift apart, and the mismatch shows up as a failed call.
 
-[`nexgen`](https://github.com/temporalio/nexgen) generates client code for Go, Java, Python, and TypeScript from a schema file that defines the contract. The schema's types are modeled with [JSON Schema 2020-12](https://json-schema.org).
-Both sides can then use code generated from the same file, which gives data validation and type safety across the languages and helps prevent drift.
+## What NexGen generates
 
-For each type it emits:
+You write the contract as a JSON or YAML definition file.
+Types use [JSON Schema 2020-12](https://json-schema.org), and a file that declares Services also lists each Operation's input and output types.
+Run `nexgen` against the file for each language you need.
 
-- **Typed models** — an idiomatic struct, class, interface, or dataclass, with doc comments carried over from the schema.
-- **A runtime validator**, automatically applied when a value is parsed off the wire and again when it is serialized onto it.
-- **A [Nexus Service](/nexus/services) definition**, for a file that declares Services. The handler implements it; the caller uses it to invoke Operations.
+For each type, NexGen generates a typed model (a record, struct, class, interface, or dataclass, depending on the language) with doc comments copied from the schema, and a runtime validator.
+For each Service, it generates a Service definition: the handler implements it, and the caller uses it to start Operations.
 
-## How it works
-
-You write the contract once, as a JSON or YAML definition file, and run `nexgen` against it.
-The generator emits contract code in Go, Java, Python, or TypeScript as requested.
-
-Both sides use that generated code: the handler implements the Service, and the caller invokes its Operations.
-Because both were generated from the same file, they agree on the contract by construction, and the generated validators enforce it at runtime on every payload.
-
-This is what makes a Nexus Service polyglot.
-A Python handler and a Go caller never share code — they share a definition file.
-Generate from it in each language and they interoperate, with no coordination between the teams beyond the contract itself.
+For a complete contract, see the approval contract in the [Java Microservice Development Walkthrough](/develop/java/nexus/development-walkthrough/define-the-data-contract), or the [Definition files](https://github.com/temporalio/nexgen#definition-files) section of the `nexgen` README for the file format.
 
 ## Data validation
 
-The generated validators check every payload against the contract when a value is parsed off the wire and again when it is serialized onto it.
-Bad data is rejected at the boundary instead of reaching your Workflow or Activity.
+The generated code validates each value when it's deserialized from a payload and again when it's serialized into one, so invalid data is rejected before it reaches your Workflow or Activity.
+A failure produces one error that lists every violation, with the field and the constraint it broke.
 
-Failures aggregate into a single error listing every violation, each naming the offending field and the constraint it broke.
-A handler maps that to a `BAD_REQUEST` [Nexus handler error](/nexus/error-handling), so a malformed request tells the caller everything that was wrong in one response.
+When an Operation's input fails validation, the Worker rejects it with a non-retryable `BAD_REQUEST` [Nexus handler error](/nexus/error-handling) before your Operation code runs.
+This requires the minimum SDK versions listed in [SDK requirements](https://github.com/temporalio/nexgen#sdk-requirements) in the `nexgen` README.
 
-A value is validated identically in every language, which is what lets a caller and a handler written in different ones trust the same contract.
-Keeping that promise is why the supported schema subset is deliberately strict: anything ambiguous, or anything that cannot be expressed the same way everywhere, is rejected at generation time rather than becoming code that validates differently in one language than another.
+Validation behaves the same in every language.
+To keep it that way, `nexgen` refuses at generation time any schema feature it can't validate the same way in all five languages.
+See [Supported JSON Schema features](https://github.com/temporalio/nexgen#supported-json-schema-features) for the supported subset.
 
-Three numeric and timestamp edge cases do not yet behave the same way in every language, covering negative zero, very large fractional integers, and nanosecond precision in Python.
+Three edge cases still differ by language: negative zero, very large fractional integers, and nanosecond timestamp precision in C# and Python.
 See [Known cross-language divergences](https://github.com/temporalio/nexgen#known-cross-language-divergences) in the `nexgen` README for what each language does.

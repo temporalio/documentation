@@ -100,21 +100,17 @@ Defining a clear contract for the Nexus Service is crucial for smooth communicat
 In this example, there is a service package that describes the Service and Operation names along with input/output types
 for caller Workflows to use the Nexus Endpoint.
 
-You can hand-write that package, but the preferred way is to generate it with [NexGen](/nexus/nexgen).
-You write the contract once as a JSON or YAML definition file and run `nexgen` against it, and it emits the typed models,
-runtime validators, and the Service definition itself.
+You can hand-write that package, but the preferred way is to generate it with [NexGen](/nexus/nexgen). You write the
+contract once as a JSON or YAML definition file, and `nexgen` generates the typed models, runtime validators, and
+Service definition from it. The handler and the caller each generate code from the same file, so a Java handler and a Go
+caller use the same request and response types without sharing any code.
 
-This is what makes a Nexus Service polyglot. Both sides generate from the same definition file: the handler implements
-the Service, the caller invokes its Operations, and neither side hand-writes request or response types. A Java handler
-and a Go caller share no code, but they both run off that same service contract, so they interoperate with no
-coordination between the teams beyond the contract itself.
-
-The generated validators check every payload against the contract when a value is parsed off the wire and again when
-it is serialized onto it, so bad data is rejected at the boundary rather than reaching your Workflow or Activity. A value validates
-identically in every language, which is what lets a caller and a handler written in different languages trust the same
-contract. See the [`chat.nexusrpc.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/chat.nexusrpc.yaml)
-sample contract and the [Definition files](https://github.com/temporalio/nexgen#definition-files) section of the
-`nexgen` README for the file format.
+The generated validators check each value when it's deserialized and again when it's serialized, so invalid data is
+rejected before it reaches your Workflow or Activity. When an Operation's input fails validation, the Worker rejects it
+with a non-retryable `BAD_REQUEST` [Nexus handler error](/nexus/error-handling) before your handler code runs. See the
+[`chat.nexusrpc.yaml`](https://github.com/temporalio/nexgen/blob/main/samples/schemas/chat.nexusrpc.yaml) sample
+contract and the [Definition files](https://github.com/temporalio/nexgen#definition-files) section of the `nexgen`
+README for the file format.
 
 ## Develop a Nexus Service and Operation handlers {/* #develop-nexus-service-operation-handlers */}
 
