@@ -1,0 +1,489 @@
+---
+id: codec-to-temporal-proxy
+title: Move payload encryption from a custom codec to Temporal Proxy
+description: Replace a Go Payload Codec and self-hosted Codec Server with Temporal Proxy encryption and its built-in Codec Server, without a plaintext window.
+sidebar_label: Migrate from a custom codec
+toc_max_heading_level: 3
+author: David Muto
+tags:
+  - Migration
+  - Encryption
+  - Codec Server
+  - Temporal Cloud
+  - Go SDK
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="prerelease">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
+  the definitive configuration schema.
+</ReleaseNoteHeader>
+
+A custom [Payload Codec](/payload-codec) keeps your data encrypted before it reaches the Temporal Service, but every
+Worker and Client has to ship the same encryption code and key handling, and you run a separate
+[Codec Server](/codec-server) so people can read payloads in the Web UI. Each new service, language, or key rotation
+means another change to application code and another deployment of the Codec Server.
+
+[Temporal Proxy](/production-deployment/temporal-proxy) moves that work out of your application. Workers and Clients
+send cleartext to the proxy, which seals payloads with envelope encryption under a KMS key you own before they leave
+your network. The same proxy serves the Codec Server endpoints the Web UI and CLI call, using the same keys, so there's
+no second service to keep in sync.
+
+With this guide, you'll move a Go application from a custom encryption codec to Temporal Proxy encryption without ever
+sending plaintext to Temporal Cloud. You'll also retire your existing Codec Server at the same moment new payloads stop
+needing it, and remove the codec from your Workers once no running Workflow depends on it.
+
+## How codec concepts map to Temporal Proxy
+
+Each piece of your current setup has a counterpart in the proxy configuration. You'll set up each row of this table in
+the steps that follow.
+
+| Custom codec setup                           | Temporal Proxy                                                          |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| `PayloadCodec` in every Worker and Client    | `encryption` block in the proxy configuration                           |
+| Key loading and rotation in your code        | KMS key `uri`, with automatic data encryption key rotation              |
+| Per-Namespace keys                           | `encryption.overrides`, keyed by local Namespace                        |
+| Self-hosted Codec Server                     | `http.codecServer` on the proxy                                         |
+| Namespace Codec Server endpoint in Cloud     | The proxy's Codec Server URL                                            |
+| API key or mTLS certificates in every Worker | Upstream `credentials` and `tls` on the proxy                           |
+
+The migration has one constraint that shapes every step: the proxy decrypts only payloads it encrypted. Payloads your
+codec wrote stay in your codec's format for as long as they're retained, so your Workers keep the ability to decode them
+until no Workflow needs them.
+
+## Prerequisites
+
+This guide requires a Temporal Cloud Namespace that your Go application already uses with a custom encryption codec, and
+a KMS key the proxy can use.
+
+### Required software and infrastructure
+
+- Temporal Proxy v0.9.0 or later. Earlier releases don't have `http.codecServer` or `encryption.namespaceBinding`. See
+  [Install the proxy](/production-deployment/temporal-proxy#install-the-proxy).
+- The [Temporal Go SDK](/develop/go) and an existing `converter.PayloadCodec` that encrypts payloads.
+- The [Temporal CLI](/cli), to verify each step.
+- A host for the proxy that your Workers, Clients, and Web UI users can reach. The Codec Server endpoint must be
+  reachable over HTTPS from your users' browsers.
+
+### Resources and access privileges
+
+- A Temporal Cloud API key the proxy uses to connect to your Namespace.
+- The Namespace Admin role, to change the Namespace's Codec Server endpoint.
+- A key in AWS KMS, Azure Key Vault, or Google Cloud KMS, and a cloud identity for the proxy that can encrypt and decrypt
+  with it. See [Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the permissions each
+  provider needs.
+- A TLS certificate and key for the proxy's Codec Server listener.
+
+### Required concepts
+
+- [Payload Codec](/payload-codec): transforms payloads, for example to encrypt them, before they leave the SDK.
+- [Codec Server](/codec-server): an HTTP service that decodes payloads for the Web UI and CLI.
+- [Temporal Proxy](/production-deployment/temporal-proxy): a gRPC proxy between your applications and the Temporal
+  Service that handles TLS, Namespace translation, and payload encryption.
+- [Retention Period](/temporal-service/temporal-server#retention-period): how long the Temporal Service keeps a closed
+  Workflow Execution's Event History.
+- [Continue-As-New](/workflow-execution/continue-as-new): closes a Workflow Execution and starts a new one with fresh
+  Event History.
+
+### Operational considerations
+
+- **Old payloads stay in your codec's format.** After the cutover, the proxy's Codec Server can't decode payloads your
+  codec wrote, so the Web UI shows them encoded. Decide before Step 5 whether your team needs to read those payloads in
+  the UI. If it doesn't, you retire the old Codec Server at the cutover. If it does, [Step 7](#optional-step-7-shorten-the-legacy-window)
+  shortens how long that matters.
+- **KMS usage is billed by your cloud provider.** The proxy caches decrypted data encryption keys (`cacheSize`, 100 by
+  default) to avoid a KMS call per payload. See
+  [Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance).
+- **The proxy can't enforce encryption for clients that bypass it.** Any Worker, Client, or tool that connects to Temporal
+  Cloud directly sends whatever it encodes. Restrict API keys so application traffic has to pass through the proxy.
+
+## Step 1: Deploy the proxy in front of your Namespace
+
+Start with a proxy that forwards traffic without encrypting it. This lets you confirm routing and credentials before
+anything about your payloads changes.
+
+Create a configuration file for the proxy. This one is based on the proxy's
+[Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud):
+
+```yaml
+# config.yaml
+hostPort: 127.0.0.1:7233
+
+routing:
+  default: cloud
+  system: system
+
+upstreams:
+  - name: cloud
+    hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
+    namespaces:
+      rules:
+        suffix: .$TEMPORAL_ACCOUNT
+    credentials:
+      static:
+        apiKey: $TEMPORAL_API_KEY
+
+  - name: system
+    hostPort: ${TEMPORAL_NAMESPACE}.${TEMPORAL_ACCOUNT}.tmprl.cloud:7233
+    namespaces:
+      rules:
+        suffix: .$TEMPORAL_ACCOUNT
+    credentials:
+      static:
+        apiKey: ${TEMPORAL_API_KEY}
+```
+
+`hostPort` is the gateway your Workers and Clients connect to. The `suffix` rule turns a short local Namespace name, such
+as `orders`, into the Cloud name `orders.<account-id>`, and the proxy adds TLS and your API key on the way out. The
+`system` upstream handles the few calls that carry no Namespace, such as `GetSystemInfo` when an SDK connects.
+
+This gateway listens on loopback in plaintext, which suits a proxy running as a sidecar next to each Worker. If Workers
+on other hosts share one proxy, add a top-level `tls` block so the gateway serves TLS. See
+[Configure TLS](/production-deployment/temporal-proxy/configure#configure-tls).
+
+Start the proxy with your account details:
+
+```bash
+export TEMPORAL_NAMESPACE=orders
+export TEMPORAL_ACCOUNT=a1b2c
+export TEMPORAL_API_KEY=<your-api-key>
+proxy serve -c config.yaml
+```
+
+Confirm the proxy reaches your Namespace by listing Workflows through the gateway, using the local Namespace name:
+
+```bash
+temporal workflow list --address 127.0.0.1:7233 --namespace orders --limit 5
+```
+
+The command returns the same Workflows you see in the Cloud UI. Payloads are untouched at this point, so your codec and
+existing Codec Server work exactly as before.
+
+:::note Self-hosted Temporal Service
+
+Replace the two Cloud upstreams with one upstream that points at your frontend, and drop the `suffix` rule unless you
+want local names. See [Route requests](/production-deployment/temporal-proxy/configure#route-requests).
+
+:::
+
+With traffic flowing through the proxy, you can move your applications onto it.
+
+## Step 2: Connect Workers and Clients through the proxy
+
+Your Workers and Clients currently connect to Temporal Cloud themselves. In this step, you point them at the gateway and
+remove the Cloud connection details, while they keep encrypting with your codec.
+
+A Client that connects to Cloud directly looks something like this:
+
+```go
+c, err := client.Dial(client.Options{
+	HostPort:          "orders.a1b2c.tmprl.cloud:7233",
+	Namespace:         "orders.a1b2c",
+	ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{}},
+	Credentials:       client.NewAPIKeyStaticCredentials(apiKey),
+	DataConverter:     mycodecpackage.DataConverter,
+})
+```
+
+Change it to dial the gateway:
+
+```go
+c, err := client.Dial(client.Options{
+	HostPort:      "127.0.0.1:7233",
+	Namespace:     "orders",
+	DataConverter: mycodecpackage.DataConverter,
+})
+```
+
+The Client now uses the local Namespace name, and it no longer needs TLS settings or an API key, because the proxy owns
+both. `DataConverter` stays the same, so payloads still leave the SDK encrypted by your codec. If you added a `tls` block
+to the gateway in Step 1, keep a `ConnectionOptions.TLS` setting that trusts the gateway's certificate.
+
+Roll the change out to every Worker and Client. Then start a Workflow through the gateway and confirm it completes:
+
+```bash
+temporal workflow execute --address 127.0.0.1:7233 --namespace orders \
+  --type <YourWorkflow> --task-queue <your-task-queue> --input '<your-input>'
+```
+
+Every application now reaches Temporal Cloud through the proxy, which is where encryption will move next.
+
+## Step 3: Turn on proxy encryption alongside your codec
+
+The proxy has to encrypt before your codec stops, or new payloads would reach Temporal Cloud as plaintext. In this step,
+you turn on proxy encryption and tell it to pass your codec's payloads through as they are, so nothing gets encrypted
+twice.
+
+Find the encoding your codec sets on the payloads it produces. It's the `converter.MetadataEncoding` value in your
+codec's `Encode` method, for example `binary/encrypted`. You can also read it from any encrypted payload:
+
+```bash
+temporal workflow show --namespace orders.a1b2c --workflow-id <workflow-id> --detailed | grep metadata.encoding
+```
+
+This command connects to Temporal Cloud directly, so pass your usual `--address` and `--api-key`, or use a CLI profile.
+The value is base64. Decode it to get the encoding name.
+
+Add an `encryption` block to `config.yaml`, using your KMS key and your codec's encoding:
+
+```yaml
+encryption:
+  enabled: true
+  namespaceBinding: strict
+  skipEncodings:
+    - binary/encrypted
+  default:
+    uri: awskms:///arn:aws:kms:us-east-1:123456789012:key/abcd-1234?region=us-east-1
+    duration: 1h
+    renewBefore: 15m
+```
+
+`default` is the key policy for every Namespace without an override, and it makes encryption fail-closed: if the proxy
+can't encrypt a payload, it fails the request instead of sending plaintext. `skipEncodings` forwards payloads that
+already carry your codec's encoding without sealing them again. `namespaceBinding: strict` binds each payload the proxy
+seals to its Namespace, which is the right mode when the proxy has never encrypted anything before. See
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the `azurekeyvault` and `gcpkms` URI
+formats and the permissions each provider needs.
+
+Your codec's payloads don't collide with the proxy's on the way back. The proxy opens a payload only when it carries the
+`binary/encrypted` encoding and both of its own `encryption-key-id` and `encryption-dek` metadata entries. Anything
+else, including your codec's payloads, passes through to the Worker. If your codec happens to write an `encryption-dek`
+metadata entry, rename it in your codec before continuing.
+
+If you encode failure messages and stack traces with `EncodeCommonAttributes`, also set `failures: true` so the proxy
+keeps encrypting them after your codec stops.
+
+Restart the proxy so it reads the new configuration, then confirm the setting is active. The
+`tmprl_proxy_encryption_payloads_skipped_total` metric counts each payload the proxy forwards because of
+`skipEncodings`, so it climbs while your Workers run.
+
+The proxy is now ready to encrypt everything your codec stops encrypting. Before the cutover, you'll set up the proxy's
+Codec Server so the Web UI can read those payloads.
+
+## Step 4: Set up the proxy's Codec Server
+
+The Cloud UI never talks to your proxy. It reads Event History from Temporal Cloud and sends each payload from the
+user's browser to the Namespace's Codec Server endpoint. In this step, you expose the proxy's Codec Server so it can take
+over that role, without pointing the Namespace at it yet.
+
+Add an `http` block to `config.yaml`:
+
+```yaml
+http:
+  hostPort: 0.0.0.0:8443
+  tls:
+    cert: /etc/temporal-proxy/certs/codec.crt
+    key: /etc/temporal-proxy/certs/codec.key
+  codecServer:
+    enabled: true
+    cors:
+      origins:
+        - https://cloud.temporal.io
+    auth:
+      jwks:
+        url: https://login.tmprl.cloud/.well-known/jwks.json
+```
+
+The Codec Server runs on its own HTTP listener, separate from the gateway, and answers `POST /encode` and `POST /decode`.
+It can decrypt anything your keys protect, so the proxy refuses to start a listener outside loopback without both `tls`
+and `auth`. `cors.origins` lets the Cloud UI call it from the browser. The `jwks` authenticator verifies the access token
+the Cloud UI sends when you turn on **Pass access token** for the Namespace, against Temporal Cloud's signing keys.
+
+A token that passes `auth` can decode payloads from any Namespace your keys cover. If you need a per-Namespace decision,
+use an extension server authorizer. See
+[Authenticate and authorize inbound requests](/production-deployment/temporal-proxy/configure#authenticate-and-authorize-inbound-requests).
+
+Restart the proxy and test the Codec Server in your own browser before anyone else depends on it. Start a Workflow
+through the gateway without your codec, so the input is encrypted only by the proxy:
+
+```bash
+temporal workflow start --address 127.0.0.1:7233 --namespace orders \
+  --type <YourWorkflow> --task-queue codec-test --workflow-id codec-test --input '"Hello from the proxy"'
+```
+
+In the Cloud UI, go to **Workflows** in your Namespace, select **Configure Codec Server**, and choose
+**Use my browser setting and ignore Namespace-level setting**. Enter the proxy's Codec Server URL
+(`https://codec.example.com:8443`) and turn on **Pass access token**. This
+[browser override](/production-deployment/data-encryption#web-ui) applies only to you, so everyone else keeps using your
+old Codec Server.
+
+Open the `codec-test` Workflow. Its input renders as `Hello from the proxy`. The Cloud UI sends the Cloud Namespace name,
+`orders.a1b2c`, in the `X-Namespace` header, which is the name the proxy labeled the payload with, so `strict` binding
+accepts it. The task queue `codec-test` has no Workers, so terminate the test Workflow when you're done, and switch your
+browser back to the Namespace-level setting.
+
+If the UI shows a payload as `binary/encrypted` instead of decoding it, the Codec Server rejected the request. A missing
+origin in `cors.origins` and a rejected token are the most common causes, and the browser console shows which.
+
+The proxy's Codec Server can now decode everything the proxy encrypts, which sets up the cutover.
+
+## Step 5: Stop encoding in your codec and switch Codec Servers
+
+This is the cutover. You change your codec so it decodes old payloads but no longer encodes new ones, roll that out, and
+point the Namespace at the proxy's Codec Server. From here on, the proxy encrypts every new payload.
+
+Your Workers still need to decode payloads your codec wrote: running Workflows replay Event History that contains them.
+Wrap your existing codec so `Encode` returns payloads unchanged:
+
+```go
+// codec/decodeonly.go
+package codec
+
+import (
+	commonpb "go.temporal.io/api/common/v1"
+	"go.temporal.io/sdk/converter"
+)
+
+type DecodeOnly struct {
+	converter.PayloadCodec
+}
+
+func (DecodeOnly) Encode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
+	return payloads, nil
+}
+```
+
+`DecodeOnly` embeds your codec, so `Decode` is your existing implementation. `Encode` hands payloads back untouched, so
+they reach the proxy as cleartext and the proxy encrypts them. Your codec's `Decode` must pass through payloads that
+don't carry its encoding, as the
+[Go data encryption example](/develop/go/data-handling/data-encryption) does, because the proxy already
+decrypted its own payloads before the Worker sees them.
+
+Use `DecodeOnly` in the Data Converter your Workers and Clients already pass to `client.Dial`:
+
+```go
+var DataConverter = converter.NewCodecDataConverter(
+	converter.GetDefaultDataConverter(),
+	DecodeOnly{PayloadCodec: NewPayloadCodec()},
+)
+```
+
+`NewPayloadCodec` is the constructor for your existing codec. Nothing else in `client.Options` changes.
+
+Roll out the new Data Converter to every Worker and Client. During the rollout, some processes still encode with your
+codec and some don't. That's safe: the proxy forwards your codec's payloads because of `skipEncodings` and encrypts the
+rest, so every payload reaches Temporal Cloud encrypted one way or the other. On the way back, the proxy opens its own
+payloads and the Worker's codec opens the rest.
+
+As soon as the rollout finishes, switch the Namespace's Codec Server endpoint. In the Cloud UI, edit the Namespace, set
+**Codec Server** to the proxy's Codec Server URL (`https://codec.example.com:8443`), and turn on **Pass access token**.
+You can also use [`tcld namespace update-codec-server`](/cloud/tcld/namespace#update-codec-server). Then shut down your
+old Codec Server.
+
+Open a Workflow started after the rollout in the Cloud UI. Its inputs and results render in the clear, decoded by the
+proxy. Workflows from before the cutover show your codec's encoded payloads, which is the tradeoff described in
+[Operational considerations](#operational-considerations).
+
+:::note Self-hosted Temporal Service
+
+A self-hosted Web UI can connect to the gateway instead of the frontend by setting `TEMPORAL_ADDRESS` to the gateway's
+address. The proxy then decrypts history, inputs, results, and Memos before the UI receives them, so you don't need to
+configure a Codec Server endpoint for payloads the proxy encrypted. Keep `http.codecServer` only if people use the CLI
+against the frontend directly.
+
+:::
+
+Every new payload is now encrypted by the proxy, and your old Codec Server is gone. Next, you'll close the gap that
+`skipEncodings` left open.
+
+## Step 6: Restore fail-closed encryption
+
+`skipEncodings` trusts any payload that carries your codec's encoding, whether or not it's actually encrypted. Now that
+nothing encodes with your codec, remove that trust so the proxy encrypts every outbound payload.
+
+Delete the `skipEncodings` list from the `encryption` block:
+
+```yaml
+encryption:
+  enabled: true
+  namespaceBinding: strict
+  default:
+    uri: awskms:///arn:aws:kms:us-east-1:123456789012:key/abcd-1234?region=us-east-1
+    duration: 1h
+    renewBefore: 15m
+```
+
+Before you restart the proxy, confirm that `tmprl_proxy_encryption_payloads_skipped_total{operation="encrypt"}` has
+stopped increasing. If it's still climbing, a process is still encoding with your codec. Find and update it first.
+After the restart, the proxy seals that process's payloads on top of your codec's encryption, and the Web UI can't read
+them.
+
+Restart the proxy. Every payload that leaves it is now sealed under your KMS key. Your Workers still carry the decode-only
+codec for older Workflows, which the remaining steps take care of.
+
+## (Optional) Step 7: Shorten the legacy window
+
+Your codec's payloads remain in Temporal Cloud until each Workflow that holds them closes and its Retention Period ends.
+If your team needs that period to be short, you can bring it forward in two ways.
+
+Long-running Workflows keep their original Event History until they close. Have them [Continue-As-New](/workflow-execution/continue-as-new)
+so the new run starts with fresh history:
+
+```go
+return workflow.NewContinueAsNewError(ctx, OrderWorkflow, state)
+```
+
+The new run's input is encoded with `DecodeOnly`, so it reaches the proxy as cleartext and the proxy encrypts it. Workflows that already Continue-As-New on a schedule move
+over on their own.
+
+You can also lower the Namespace's Retention Period, which Temporal Cloud accepts from 1 to 90 days. Closed Workflows
+leave the Namespace sooner, and their payloads with them. Set it back once the window has passed. See
+[Manage Namespaces](/cloud/namespaces).
+
+With old payloads aging out on your schedule, the last step removes the codec from your Workers.
+
+## Step 8: Remove the codec and retire the old key
+
+Your Workers can drop the decode-only codec once no Workflow they process holds a payload your codec wrote. In this step,
+you remove it and retire the key behind it.
+
+Wait until every Workflow Execution that started before the cutover has closed. If you Query closed Workflows, also wait
+until their Retention Period ends, because a Query on a closed Workflow replays its Event History on a Worker.
+
+Then use the default Data Converter. Remove `DataConverter` from `client.Options`, or set it to the default explicitly:
+
+```go
+c, err := client.Dial(client.Options{
+	HostPort:      "127.0.0.1:7233",
+	Namespace:     "orders",
+	DataConverter: converter.GetDefaultDataConverter(),
+})
+```
+
+Delete `DecodeOnly` and your codec package once nothing imports them.
+
+Retire your codec's key the same way you would retire a proxy key: revoke access to it rather than deleting it. A
+revoked key can be re-granted if an old payload turns up, for example in an export or Archival storage, while a deleted
+key can't be recovered.
+
+:::note
+
+TODO: Link to the complete, commented source for this guide.
+
+:::
+
+Your Workers now hold no encryption code at all, and the proxy handles encryption and decoding for your Namespace.
+
+## Outcomes
+
+You moved a Go application from a custom encryption codec to Temporal Proxy without sending plaintext to Temporal
+Cloud. Your Workers and Clients connect to the proxy with no Cloud credentials and no encryption code, the proxy seals
+every payload under a KMS key you own, and its Codec Server replaced the one you used to run.
+
+Two things kept the migration safe. `skipEncodings` let the proxy start encrypting while your codec still was, and the
+decode-only codec let Workers keep replaying older Workflows after the cutover.
+
+The same sequence applies to other migrations between encryption setups. To rotate KMS keys or move between cloud
+providers with the proxy, promote the new key to `uri` and keep the old one in `decryptURIs`, as described in
+[Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads).
+
+## Related resources
+
+- [Temporal Proxy](/production-deployment/temporal-proxy)
+- [Configure Temporal Proxy](/production-deployment/temporal-proxy/configure)
+- [Encrypt payloads with Temporal Proxy](/production-deployment/temporal-proxy/encrypt-payloads)
+- [Codecs and Encryption](/production-deployment/data-encryption)
+- [Go SDK data encryption](/develop/go/data-handling/data-encryption)
+- [Codec Server example in the temporal-proxy repository](https://github.com/temporalio/temporal-proxy/tree/main/examples/codecserver)
