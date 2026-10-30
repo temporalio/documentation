@@ -964,6 +964,7 @@ a.tdlp:hover .tdlpc {
 
 code {
   vertical-align: baseline;
+  tab-size: 4;
 }
 
 @keyframes bounce {

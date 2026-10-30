@@ -15,6 +15,8 @@ repository.
 | CI jobs and scheduled jobs   | [AUTOMATIONS.md](./readme/AUTOMATIONS.md)                                  |
 | AI research sources for content review | [AI-KNOWLEDGE-SOURCES.md](./readme/AI-KNOWLEDGE-SOURCES.md)       |
 | Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
+| Agent search endpoint (`/api/retrieve`) | [AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md)           |
+| Feedback endpoint (`/api/feedback`) | [FEEDBACK.md](./readme/FEEDBACK.md)                           |
 
 ## Repository overview
 
@@ -48,6 +50,18 @@ In body prose, use **Temporal Service**, not **Cluster** or **Temporal Cluster**
 - Incorrect: "The Worker polls the Cluster for tasks."
 
 Exceptions: **Multi-Cluster Replication**, code/config identifiers, and CLI command names.
+
+### Determinism applies to the Workflow Definition
+
+A [Workflow Definition](/workflow-definition) must be deterministic. Don't say "the Workflow" or "Workflow code" must be
+deterministic: "Workflow code" is ambiguous with Activity code, which can be non-deterministic.
+
+- Correct: "A Workflow Definition must be deterministic."
+- Incorrect: "Workflow code must be deterministic."
+
+"Workflow code" is fine when the sentence isn't about determinism, for example "Don't do I/O in Workflow code."
+The advisory Vale rule `Temporal.DeterminismScope` flags the incorrect phrasings. See
+`vale/styles/Temporal/DeterminismScope.yml`.
 
 ### Identifier abbreviation
 
@@ -114,6 +128,10 @@ tags:
 - Write `description` as a single clear sentence. See [Meta descriptions](#meta-descriptions) below.
 - Do not change `id` or `slug` without a redirect plan.
 - Match `tags` to sibling pages in the same section. Use existing tags; don't add new ones unless it's a new feature.
+- A folder's `_frontmatter.yml` adds its `tags` to every page below it and can set a `section_title` that's appended to
+  the page title in the browser tab. Check the folders above a page before listing tags by hand, and don't repeat tags
+  or a section name the file supplies. See
+  [Folder-level frontmatter defaults](./readme/CONTRIBUTING.md#folder-level-frontmatter-defaults).
 - Do not add a `keywords` field. It isn't used by the site.
 
 ### Meta descriptions
@@ -185,10 +203,13 @@ yarn check:metrics       # SDK metrics reference against itself; runs in CI on P
 yarn check:metrics:sdks  # SDK metrics reference against the SDK sources; advisory, clones the SDK repos
 yarn check:orphans       # docs pages Docusaurus renders but no sidebar entry links to; not yet wired into CI
 yarn check:index-slugs   # docs pages whose URL ends in a slash; runs in CI on PRs
+yarn check:snipsync-markers  # SNIPSTART/SNIPEND markers Snipsync would skip; runs in CI on PRs
 yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs weekly and on checker PRs, not docs-only PRs
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
 yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
+yarn check:retrieve-links # /api/retrieve results whose docs links don't return 200; advisory, see AGENT-RETRIEVE.md
+yarn report:retrieve-log  # summarize the /api/retrieve request log; needs BLOB_READ_WRITE_TOKEN, see AGENT-RETRIEVE.md
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
@@ -205,9 +226,19 @@ its folder) that has no `slug`. Vercel redirects that URL to the same path witho
 URL and sidebar links point at a redirect. Add the `slug` the check prints. It doesn't change the URL the page is
 served at, so it needs no redirect.
 
+`yarn check:snipsync-markers` reports a `SNIPSTART` with no `SNIPEND`, or one that closes in the other marker style
+(`<!--SNIPSTART id-->` with `{/* SNIPEND */}`, or the reverse). Snipsync warns, skips the snippet, and exits 0, so the
+code block stops refreshing. Open and close each snippet in the same style. Use the `<!--` style unless the page already
+uses `{/* */}`.
+
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
 serve. Fix the rule. A known, accepted exception belongs in `bin/redirect-baseline.json` with a note.
+
+`yarn check:retrieve-links [baseUrl]` asks the `/api/retrieve` endpoint 20 sample questions and reports docs links in the
+results that don't return 200. Pass a preview deployment URL to check a branch. It sends one request every few seconds to
+stay under the endpoint's rate limit, so a run takes about two minutes. See
+[AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md).
 
 `yarn check:ts-samples` and `yarn check:py-samples` type-check the TypeScript and Python code blocks that aren't
 synced by Snipsync against the latest SDK release, and report classes, methods, exports, and arguments the SDK doesn't

@@ -1,6 +1,6 @@
 ---
 id: asynchronous-activity
-title: Asynchronous Activity completion - Go SDK
+title: Asynchronous Activity Completion
 sidebar_label: Asynchronous Activity Completion
 toc_max_heading_level: 4
 tags:
@@ -15,37 +15,53 @@ description: Asynchronous Activity Completion lets the Activity Function return 
 There are three steps to follow:
 
 1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
-   Identifying information can be a [Task Token](/activity-execution#task-token), or a combination of Namespace, Workflow Id, and Activity Id.
+   Identifying information can be a [Task Token](/activity-execution#task-token), or a combination of Namespace, Workflow ID, and Activity ID.
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
-3. The Temporal Client is used to Heartbeat and complete the Activity.
+3. The external system uses the Temporal Client to Heartbeat and complete the Activity.
 
 **Step 1: Provide the external system with a Task Token to complete the Activity Execution.**
    To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
 
+<!--SNIPSTART go-async-activity-get-task-token-->
+[go-sandbox/activities/asynccompletion/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/asynccompletion/activity.go)
 ```go
 // Retrieve the Activity information needed to asynchronously complete the Activity.
 activityInfo := activity.GetInfo(ctx)
 taskToken := activityInfo.TaskToken
 // Send the taskToken to the external service that will complete the Activity.
+if err := a.External.Submit(ctx, taskToken, request); err != nil {
+	return "", err
+}
 ```
+<!--SNIPEND-->
 
 **Step 2: Return an `activity.ErrResultPending` error to indicate that the Activity is completing asynchronously.**
 
+<!--SNIPSTART go-async-activity-return-pending-->
+[go-sandbox/activities/asynccompletion/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/asynccompletion/activity.go)
 ```go
 return "", activity.ErrResultPending
 ```
+<!--SNIPEND-->
 
 **Step 3: Use the Temporal Client to complete the Activity using the Task Token.**
 
+<!--SNIPSTART go-async-activity-complete-->
+[go-sandbox/activities/asynccompletion/completion.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/asynccompletion/completion.go)
 ```go
 // Instantiate a Temporal service client.
 // The same client can be used to complete or fail any number of Activities.
 // The client is a heavyweight object that should be created once per process.
 temporalClient, err := client.Dial(client.Options{})
+if err != nil {
+	return err
+}
+defer temporalClient.Close()
 
 // Complete the Activity.
-temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
+return temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
 ```
+<!--SNIPEND-->
 
 The following are the parameters of the `CompleteActivity` function:
 
@@ -53,13 +69,35 @@ The following are the parameters of the `CompleteActivity` function:
   the Activity.
 - `result`: The return value to record for the Activity. The type of this value must match the type
   of the return value declared by the Activity function.
-- `err`: The error code to return if the Activity terminates with an error.
+- `err`: The error to record if the Activity fails.
 
-If `err` is not null, the value of the `result` field is ignored.
+If `err` is not `nil`, the value of `result` is ignored.
 
-To fail the Activity, you would do the following:
+While the external system works, it can call `RecordActivityHeartbeat` with the same Task Token so the Activity doesn't exceed its Heartbeat Timeout.
 
+To fail the Activity, pass an error to `CompleteActivity`.
+A retryable error starts a new Activity attempt under the Activity's Retry Policy, which gives the external system a new Task Token.
+To fail the Activity without another attempt, use a non-retryable error:
+
+<!--SNIPSTART go-async-activity-fail-->
+[go-sandbox/activities/asynccompletion/completion.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/asynccompletion/completion.go)
 ```go
-// Fail the Activity.
-client.CompleteActivity(context.Background(), taskToken, nil, err)
+// Fail the Activity. A non-retryable error stops the Retry Policy from
+// starting another Activity attempt.
+reason := temporal.NewNonRetryableApplicationError("order rejected", "Rejected", nil)
+return temporalClient.CompleteActivity(context.Background(), taskToken, nil, reason)
 ```
+<!--SNIPEND-->
+
+To complete the Activity without a Task Token, use `CompleteActivityByID`.
+Set `ActivityID` in the Workflow's `ActivityOptions` so the external system knows which Activity ID to pass.
+
+<!--SNIPSTART go-async-activity-complete-by-id-->
+[go-sandbox/activities/asynccompletion/completion.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/asynccompletion/completion.go)
+```go
+// Identify the Activity by Namespace, Workflow ID, and Activity ID.
+// An empty Run ID targets the latest Run of the Workflow.
+runID := ""
+return temporalClient.CompleteActivityByID(context.Background(), namespace, workflowID, runID, ApprovalActivityID, result, nil)
+```
+<!--SNIPEND-->

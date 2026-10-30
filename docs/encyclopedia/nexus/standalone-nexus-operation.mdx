@@ -18,7 +18,7 @@ import { ReleaseNoteHeader, SdkGuideLinks } from '@site/src/components';
   languages={["Go", "Java", "Python", "TypeScript", ".NET"]}
   guidePath="nexus/standalone-operations"
 >
-  APIs are experimental and may be subject to backwards-incompatible changes.
+  Recommended for production use. API breaking changes are kept to a minimum before General Availability.
 </ReleaseNoteHeader>
 
 ## What is a Standalone Nexus Operation? {/* #standalone-nexus-operation */}
@@ -73,6 +73,7 @@ See the SDK guides below for details:
 Standalone Nexus Operations let you make Nexus calls from anywhere using the Temporal SDK Client.
 Any code that can construct a Temporal Client can durably hand off a Nexus Operation to Temporal, such as a UI backend or BFF, a non-Temporal microservice, an HTTP handler, or a script.
 You still get automatic retries, built-in rate limiting and circuit breaking, and full execution visibility: the reliability of Nexus without the overhead of a caller (proxy) Workflow.
+To weigh this against calling the same Operation from a Workflow, see [Choosing a Nexus approach](/nexus/choosing-an-approach).
 
 ## Key features
 
@@ -112,16 +113,18 @@ Service, Operation, status, and other attributes using the SDK.
 filter. This is the total count of executions (running, completed, failed, etc.) — not the number of
 queued tasks.
 
-## Pre-release limitations
+## Current limitations
 
-Standalone Nexus Operations are at Pre-release. APIs are experimental and may be subject to
-backwards-incompatible changes.
+Standalone Nexus Operations are at [Public Preview](/evaluate/product-release-stages#public-preview).
+API breaking changes are kept to a minimum before General Availability.
 
 The following features are not supported yet:
-  - Delete and reset
+  - Reset
   - Batch `--query` support for cancel, terminate, and delete
   - UI list-page operator actions
   - HA / multi-region (global) namespaces using selective API forwarding
+
+Delete is supported by the Temporal Service. Neither the Temporal CLI nor the SDKs expose it yet.
 
 ## Temporal CLI support
 
@@ -159,4 +162,4 @@ The Nexus Endpoint must already exist on the server — create it with
 
 ## Temporal Cloud support
 
-Standalone Nexus Operations in Temporal Cloud is available as a Pre-release feature.
+Standalone Nexus Operations in Temporal Cloud are available at [Public Preview](/evaluate/product-release-stages#public-preview), with [formal support](/evaluate/cloud/support#support-ticket).

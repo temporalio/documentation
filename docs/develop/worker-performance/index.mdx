@@ -40,7 +40,7 @@ Available slot suppliers include:
 
 - **Fixed Size Slot Suppliers**:
   Hands out slots up to a preset limit.
-  This is useful if you have a concrete idea of how many resources your tasks are going to consume, and can easily determine an upper bound on how many should run at once.
+  This is useful if you have a concrete idea of how many resources your tasks are going to consume, and can determine an upper bound on how many should run at once.
   When you need the absolute best performance, review your hardware and environment characteristics.
   This information lets you calculate an appropriate fixed-size limit.
   Evaluate the maximum number of slots you can support without oversubscribing or hitting out-of-memory conditions ("OOMing").
@@ -175,14 +175,14 @@ Worker Heartbeating is required; see [Manage Worker Heartbeating](/cloud/worker-
 ## In this guide
 
 - [Performance metrics for tuning](/develop/worker-performance/metrics)
-- [Worker performance options](/develop/worker-performance/configuration)
+- [Worker performance options](/develop/worker-performance/configuration) - executor slots, pollers, and the Workflow cache
 - [Worker runtime performance tuning](/develop/worker-performance/runtime-tuning)
-- [Workflow cache tuning](/develop/worker-performance/workflow-cache)
 - [Task Queue performance](/develop/worker-performance/task-queues)
 - [Worker tuning quick reference](/develop/worker-tuning-reference)
 
 ## Related reading
 
 - [Worker tuning quick reference](/develop/worker-tuning-reference) - SDK defaults and metrics by resource type
+- [Worker tuning simulator](/demos/worker-tuning-simulator) - Interactive demo of Pollers, Slots, and cache limits
 - [Workers in production operation guide](https://temporal.io/blog/workers-in-production)
 - [Full set of SDK Metrics reference](/references/sdk-metrics)

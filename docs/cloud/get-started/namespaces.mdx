@@ -184,6 +184,14 @@ different gRPC endpoint types and how to access them.
 
 ## How to create a Namespace in Temporal Cloud {/* #create-a-namespace */}
 
+:::caution GCP capacity restriction
+
+You can create GCP Namespaces in Mumbai (`asia-south1`), Jakarta (`asia-southeast2`), and Oregon (`us-west1`) without an account exception.
+New Namespaces in Iowa (`us-central1`), Northern Virginia (`us-east4`), and Frankfurt (`europe-west3`) require an approved account exception.
+See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for details and how to request an exception through Temporal Dev Success.
+
+:::
+
 :::info
 
 The user who creates a [Namespace](/namespaces) is automatically granted
@@ -331,7 +339,7 @@ In general, the IP addresses that Temporal Cloud endpoints resolve to are subjec
 Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
 
 1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the [Stable IPs](/cloud/connectivity/ip-addresses) for the Namespace's active region.
-2. **High Availability features with Private Connectivity.** The Namespace Endpoint resolves to a regional intermediary (`<provider>-<region>.region.tmprl.cloud`) that you can override in a Route 53 private hosted zone or GCP private DNS zone to point at your VPC Endpoint. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for setup details.
+2. **High Availability features with AWS PrivateLink.** The Namespace Endpoint resolves to a regional intermediary (`aws-<region>.region.tmprl.cloud`) that you can override in a Route 53 private hosted zone to point at your VPC Endpoint. This DNS override does not provide automatic failover with GCP Private Service Connect; see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect) for GCP PSC options.
 
 :::
 
@@ -352,7 +360,7 @@ For accessing the Temporal Web UI, use the HTTPS endpoint in the form:
 
 ### Access Namespaces with encryption and private connectivity
 
-To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.3. 
+To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.2 or higher (TLS 1.3 preferred).
 
 For enhanced protection:
 - Set up [private connectivity](/cloud/connectivity#private-network-connectivity-for-namespaces) to the Namespace.

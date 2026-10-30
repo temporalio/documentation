@@ -1,6 +1,6 @@
 ---
 id: data-conversion
-title: Payload conversion - Python SDK
+title: Payload conversion
 sidebar_label: Payload conversion
 slug: /develop/python/data-handling/data-conversion
 toc_max_heading_level: 2
@@ -44,11 +44,14 @@ Users should use concrete types.
 
 To use Pydantic model instances, install Pydantic and set the Pydantic Data Converter when creating Client instances:
 
-```python
+<!--SNIPSTART python-data-conversion-pydantic-->
+[python-sandbox/best_practices/data_conversion/pydantic_client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/data_conversion/pydantic_client.py)
+```py
 from temporalio.contrib.pydantic import pydantic_data_converter
 
-client = Client(data_converter=pydantic_data_converter, ...)
+client = await Client.connect("localhost:7233", data_converter=pydantic_data_converter)
 ```
+<!--SNIPEND-->
 
 This Data Converter supports conversion of all [types supported by Pydantic](https://docs.pydantic.dev/latest/api/standard_library_types/) to and from JSON.
 In addition to Pydantic models, supported types include:
@@ -81,7 +84,21 @@ Payload Converters can be customized independently of a Payload Codec.
 To handle custom data types, create a new `EncodingPayloadConverter`.
 For example, to support `IPv4Address` types:
 
-```python
+<!--SNIPSTART python-data-conversion-encoding-converter-->
+[python-sandbox/best_practices/data_conversion/ipv4_encoding_converter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/data_conversion/ipv4_encoding_converter.py)
+```py
+import dataclasses
+import ipaddress
+from typing import Any, Optional, Type
+
+from temporalio.api.common.v1 import Payload
+from temporalio.converter import (
+    CompositePayloadConverter,
+    DataConverter,
+    DefaultPayloadConverter,
+    EncodingPayloadConverter,
+)
+
 class IPv4AddressEncodingPayloadConverter(EncodingPayloadConverter):
     @property
     def encoding(self) -> str:
@@ -110,9 +127,10 @@ class IPv4AddressPayloadConverter(CompositePayloadConverter):
 
 my_data_converter = dataclasses.replace(
     DataConverter.default,
-    payload_converter_className=IPv4AddressPayloadConverter,
+    payload_converter_class=IPv4AddressPayloadConverter,
 )
 ```
+<!--SNIPEND-->
 
 ### Customize the JSON converter for custom types
 
@@ -121,7 +139,24 @@ The JSON converter is the last in the list, so it handles any otherwise unknown 
 
 Customize serialization with a custom `json.JSONEncoder` and deserialization with a custom `JSONTypeConverter`:
 
-```python
+<!--SNIPSTART python-data-conversion-json-converter-->
+[python-sandbox/best_practices/data_conversion/ipv4_json_converter.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/data_conversion/ipv4_json_converter.py)
+```py
+import dataclasses
+import inspect
+import ipaddress
+from typing import Any, Optional, Type, Union
+
+from temporalio.converter import (
+    AdvancedJSONEncoder,
+    CompositePayloadConverter,
+    DataConverter,
+    DefaultPayloadConverter,
+    JSONPlainPayloadConverter,
+    JSONTypeConverter,
+    JSONTypeConverterUnhandled,
+)
+
 class IPv4AddressJSONEncoder(AdvancedJSONEncoder):
     def default(self, o: Any) -> Any:
         if isinstance(o, ipaddress.IPv4Address):
@@ -131,8 +166,9 @@ class IPv4AddressJSONEncoder(AdvancedJSONEncoder):
 class IPv4AddressJSONTypeConverter(JSONTypeConverter):
     def to_typed_value(
         self, hint: Type, value: Any
-    ) -> Union[Optional[Any], _JSONTypeConverterUnhandled]:
-        if issubclass(hint, ipaddress.IPv4Address):
+    ) -> Union[Optional[Any], JSONTypeConverterUnhandled]:
+        # Collection hints such as list[IPv4Address] aren't classes, so check first
+        if inspect.isclass(hint) and issubclass(hint, ipaddress.IPv4Address):
             return ipaddress.IPv4Address(value)
         return JSONTypeConverter.Unhandled
 
@@ -153,8 +189,9 @@ class IPv4AddressPayloadConverter(CompositePayloadConverter):
 
 my_data_converter = dataclasses.replace(
     DataConverter.default,
-    payload_converter_className=IPv4AddressPayloadConverter,
+    payload_converter_class=IPv4AddressPayloadConverter,
 )
 ```
+<!--SNIPEND-->
 
 Now `IPv4Address` can be used in type hints, including collections and optionals.

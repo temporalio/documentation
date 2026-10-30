@@ -160,6 +160,7 @@ You can adjust the number of Workers to enhance Workflow Execution performance a
 For instance, a large backlog of Tasks with too few Workers will slow down Workflow Execution completions and decrease processing efficiency.
 Adding more Workers boosts speeds up completion rates and improves throughput.
 An empty backlog indicates low Worker utilization, allowing you to reduce your fleet and associated costs.
+Keep at least two Workers polling each Task Queue when you reduce your fleet. See [Run at least two Workers per Task Queue](/best-practices/worker#run-at-least-two-workers-per-task-queue).
 
 The values provided by `temporal task-queue describe` can help you manage your Worker fleet deployment:
 
@@ -214,7 +215,7 @@ Alternatively, consider using a resource-based slot supplier as described [here]
 
 Sometimes, it can be appropriate to increase the number of task pollers.
 This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
-You can simply use automated poller tuning to handle this automatically.
+You can use automated poller tuning to handle this.
 
 Consider manual adjustment if:
 

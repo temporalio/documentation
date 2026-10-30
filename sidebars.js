@@ -251,7 +251,7 @@ const developGoCategory = {
       },
       {
         type: 'category',
-        label: 'Temporal Nexus',
+        label: 'Nexus',
         collapsed: true,
         link: {
           type: 'doc',
@@ -424,6 +424,28 @@ const developJavaCategory = {
           'develop/java/nexus/quickstart',
           'develop/java/nexus/feature-guide',
           'develop/java/nexus/standalone-operations',
+          {
+            type: 'category',
+            label: 'Microservice Development Walkthrough',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/java/nexus/development-walkthrough/index',
+            },
+            items: [
+              'develop/java/nexus/development-walkthrough/define-the-data-contract',
+              'develop/java/nexus/development-walkthrough/generate-code',
+              'develop/java/nexus/development-walkthrough/choose-backing-implementation',
+              'develop/java/nexus/development-walkthrough/implement-the-service',
+              'develop/java/nexus/development-walkthrough/publish-in-nexus',
+              'develop/java/nexus/development-walkthrough/call-the-service',
+              'develop/java/nexus/development-walkthrough/add-messaging',
+              'develop/java/nexus/development-walkthrough/send-messages',
+              'develop/java/nexus/development-walkthrough/add-a-standalone-activity',
+              'develop/java/nexus/development-walkthrough/call-the-standalone-activity',
+              'develop/java/nexus/development-walkthrough/debugging-and-tips',
+            ],
+          },
         ],
       },
       {
@@ -722,14 +744,18 @@ const developPythonCategory = {
           id: 'develop/python/integrations/index',
         },
         items: [
+          'develop/python/integrations/baseten',
           'develop/python/integrations/deepagents',
+          'develop/python/integrations/fireworks-ai',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
+          'develop/python/integrations/mcp',
           'develop/python/integrations/openai-agents',
           'develop/python/integrations/openrouter',
           'develop/python/integrations/strands-agents',
+          'develop/python/integrations/together-ai',
         ],
       },
     ],
@@ -1299,7 +1325,7 @@ module.exports = {
         {
           type: 'category',
           label: 'Account access',
-          collapsed: false,
+          collapsed: true,
           link: {
             type: 'doc',
             id: 'cloud/manage-access/index',
@@ -1313,6 +1339,19 @@ module.exports = {
             'cloud/manage-access/saml',
             'cloud/manage-access/scim',
             'cloud/manage-access/permissions-reference',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Audit Logging',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/audit-logs',
+          },
+          items: [
+            'cloud/audit-logs-aws',
+            'cloud/audit-logs-gcp', // pre-release
           ],
         },
         {
@@ -1331,6 +1370,32 @@ module.exports = {
         },
         {
           type: 'category',
+          label: 'CLI (tcld)',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/tcld/index',
+          },
+          items: [
+            'cloud/tcld/account',
+            'cloud/tcld/apikey',
+            'cloud/tcld/connectivity-rule',
+            'cloud/tcld/feature',
+            'cloud/tcld/generate-certificates',
+            'cloud/tcld/login',
+            'cloud/tcld/logout',
+            'cloud/tcld/migration',
+            'cloud/tcld/namespace',
+            'cloud/tcld/nexus',
+            'cloud/tcld/request',
+            'cloud/tcld/service-account',
+            'cloud/tcld/user',
+            'cloud/tcld/user-group',
+            'cloud/tcld/version',
+          ],
+        },
+        {
+          type: 'category',
           label: 'Connectivity',
           collapsed: true,
           link: {
@@ -1341,6 +1406,20 @@ module.exports = {
             'cloud/connectivity/aws-connectivity',
             'cloud/connectivity/gcp-connectivity',
             'cloud/connectivity/ip-addresses',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Export',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/export',
+          },
+          items: [
+            'cloud/aws-export-s3',
+            'cloud/gcp-export-gcs',
+            'cloud/azure-export-blob-storage'
           ],
         },
         {
@@ -1370,24 +1449,6 @@ module.exports = {
             'cloud/high-availability/ha-connectivity',
           ],
         },
-        'cloud/slo',
-        'cloud/rpo-rto',
-        {
-          type: 'category',
-          label: 'Temporal Nexus',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/nexus/index',
-          },
-          items: [
-            'cloud/nexus/security',
-            'cloud/nexus/observability',
-            'cloud/nexus/latency-availability',
-            'cloud/nexus/limits',
-            'cloud/nexus/pricing',
-          ],
-        },
         {
           type: 'category',
           label: 'Migrate',
@@ -1399,12 +1460,10 @@ module.exports = {
           items: [
             'cloud/migrate/automated',
             'cloud/migrate/manual',
-            'cloud/migrate/migrate-within-cloud',
+            'cloud/migrate/between-regions-or-cloud-providers',
             'cloud/migrate/estimate-actions',
           ],
         },
-        'cloud/projects',
-        'cloud/capacity-modes',
         {
           type: 'category',
           label: 'Monitor',
@@ -1435,60 +1494,28 @@ module.exports = {
             'cloud/notifications',
           ],
         },
+        {
+          type: 'category',
+          label: 'Temporal Nexus',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/nexus/index',
+          },
+          items: [
+            'cloud/nexus/security',
+            'cloud/nexus/observability',
+            'cloud/nexus/latency-availability',
+            'cloud/nexus/limits',
+            'cloud/nexus/pricing',
+          ],
+        },
+        'cloud/capacity-modes',
         'cloud/operation-api',
+        'cloud/rpo-rto',
+        'cloud/projects',
         'cloud/terraform-provider',
-        {
-          type: 'category',
-          label: 'Export',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/export',
-          },
-          items: [
-            'cloud/aws-export-s3',
-            'cloud/gcp-export-gcs'
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Audit Logging',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/audit-logs',
-          },
-          items: [
-            'cloud/audit-logs-aws',
-            'cloud/audit-logs-gcp', // pre-release
-          ],
-        },
-        {
-          type: 'category',
-          label: 'CLI (tcld)',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/tcld/index',
-          },
-          items: [
-            'cloud/tcld/account',
-            'cloud/tcld/apikey',
-            'cloud/tcld/connectivity-rule',
-            'cloud/tcld/feature',
-            'cloud/tcld/generate-certificates',
-            'cloud/tcld/login',
-            'cloud/tcld/logout',
-            'cloud/tcld/migration',
-            'cloud/tcld/namespace',
-            'cloud/tcld/nexus',
-            'cloud/tcld/request',
-            'cloud/tcld/service-account',
-            'cloud/tcld/user',
-            'cloud/tcld/user-group',
-            'cloud/tcld/version',
-          ],
-        },
+        'cloud/slo',
       ],
     },
     {
@@ -1632,7 +1659,9 @@ module.exports = {
           items: [
             'production-deployment/temporal-proxy/configure',
             'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/codec-server',
             'production-deployment/temporal-proxy/deploy-kubernetes',
+            'production-deployment/temporal-proxy/sizing-and-performance',
           ],
         },
       ],
@@ -1845,6 +1874,8 @@ module.exports = {
       link: { type: 'doc', id: 'ai/index' },
       items: [
         { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+        'ai/featured/memory-state-stripe',
+        'ai/featured/agent-gateway-nexus',
       ],
     },
     {
@@ -2160,6 +2191,7 @@ module.exports = {
             id: 'encyclopedia/nexus/nexus',
           },
           items: [
+            'encyclopedia/nexus/choosing-a-nexus-approach',
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/nexus-endpoints',
@@ -2220,6 +2252,7 @@ module.exports = {
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/worker-tuning-simulator',
         'demos/priority-fairness-walkthrough',
       ],
     },

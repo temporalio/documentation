@@ -1,6 +1,6 @@
 ---
 id: basics
-title: Workflow basics - Rust SDK
+title: Workflow basics
 sidebar_label: Workflow basics
 description: This section explains how to implement Workflows with the Rust SDK
 toc_max_heading_level: 4
@@ -221,7 +221,7 @@ pub struct GreetingWorkflow {
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). For non-deterministic operations like API calls, and database queries, use [Activities](/develop/rust/activities/basics).
 
-Workflow code must be deterministic because the Temporal Server may replay your Workflow to reconstruct its state. This means:
+A Workflow Definition must be deterministic because the Temporal Server may replay your Workflow to reconstruct its state. This means:
 
 ### Don't use nondeterministic functions
 
