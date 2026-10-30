@@ -501,7 +501,7 @@ Use `execute_in: "workflow"` when a node:
 
 :::warning
 
-Workflow code must be [deterministic](/develop/python/workflows/basics#workflow-logic-requirements). A node running in
+A Workflow Definition must be [deterministic](/develop/python/workflows/basics#workflow-logic-requirements). A node running in
 the Workflow **must not** make network calls, use `random`, read the system clock, or do file I/O. Violating this causes
 non-determinism errors on replay.
 
