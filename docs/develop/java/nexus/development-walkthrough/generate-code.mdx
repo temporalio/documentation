@@ -70,7 +70,7 @@ stays easy to tell the two apart.
 
 Commit the generated code and regenerate whenever the contract changes. Don't edit the generated files, because the next run overwrites them. When a generated name is wrong for your language, fix it in the contract with a per-language naming override. See **[Naming & overrides](https://github.com/temporalio/nexgen#naming--overrides)** in the `nexgen` README.
 
-## One contract, four languages
+## One contract, five languages
 
 Run the generator once per language to get that language's typed models, validators, and Service definition. You still write the handler and the caller yourself, but the part both sides must agree on comes from one source. A handler doesn't need to know which languages its callers use, and a caller doesn't need to know which language implements the handler.
 
