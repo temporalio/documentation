@@ -162,7 +162,9 @@ The report has a section for each experiment question:
 
 - **Discovery:** calls per day and per `src`.
 - **Who:** calls per `agent`, after merging case, spacing, and version suffixes (`Claude Code`, `claude_code`, and
-  `cursor/0.42` become `claude-code` and `cursor`), and per user agent family. A copied `<your-name>` shows as
+  `cursor/0.42` become `claude-code` and `cursor`), and per user agent family. A user agent names the HTTP client, not
+  the agent, so a third table lists the `agent` values sent with each user agent family. It shows which agents call
+  through `curl`, a script, or a browser-style string. A copied `<your-name>` shows as
   `(placeholder)`. Calls from tools that audit how agent-ready the site is, such as an `agent` or user agent containing
   `audit`, `argus`, `inspector`, or `quality-review`, are listed separately, so the agent tables reflect agents doing
   work for a person. Add patterns with `--automation`.
