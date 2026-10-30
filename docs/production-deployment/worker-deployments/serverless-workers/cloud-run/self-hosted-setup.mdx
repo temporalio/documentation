@@ -52,9 +52,6 @@ Add the following keys to your dynamic config file:
 workercontroller.enabled:
   - value: true
 
-workercontroller.maxInstances:
-  - value: 100
-
 workercontroller.compute_providers.enabled:
   - value:
       - gcp-cloud-run
@@ -74,6 +71,17 @@ To enable WCI for specific Namespaces instead of globally, add a `constraints` s
 ```yaml
 workercontroller.enabled:
   - value: true
+    constraints:
+      namespace: 'your-namespace'
+```
+
+A Namespace runs at most 100 WCIs by default, one for each Worker Deployment Version that has a compute provider. To
+change the limit, set `workercontroller.maxInstances`. It accepts the same `constraints` section, so you can raise it
+for one Namespace:
+
+```yaml
+workercontroller.maxInstances:
+  - value: 200
     constraints:
       namespace: 'your-namespace'
 ```

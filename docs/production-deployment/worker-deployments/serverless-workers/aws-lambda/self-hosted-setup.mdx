@@ -49,9 +49,6 @@ Add the following keys to your dynamic config file:
 workercontroller.enabled:
   - value: true
 
-workercontroller.maxInstances:
-  - value: 100
-
 workercontroller.compute_providers.enabled:
   - value:
       - aws-lambda
@@ -67,6 +64,17 @@ Namespace name under `workercontroller.enabled`. For example, to enable WCI only
 ```yaml
 workercontroller.enabled:
   - value: true
+    constraints:
+      namespace: 'your-namespace'
+```
+
+A Namespace runs at most 100 WCIs by default, one for each Worker Deployment Version that has a compute provider. To
+change the limit, set `workercontroller.maxInstances`. It accepts the same `constraints` section, so you can raise it
+for one Namespace:
+
+```yaml
+workercontroller.maxInstances:
+  - value: 200
     constraints:
       namespace: 'your-namespace'
 ```
