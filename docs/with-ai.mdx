@@ -9,7 +9,8 @@ import TabItem from '@theme/TabItem';
 import { ReleaseNoteHeader } from '@site/src/components';
 
 Give your AI coding agent Temporal expertise with Skills, real-time documentation access with the Temporal Knowledge Base
-MCP Server, or direct access to the docs as Markdown.
+MCP Server, read-only access to your Workflow Executions with the Temporal MCP server, or direct access to the docs as
+Markdown.
 
 ## Skills
 
@@ -189,6 +190,21 @@ Not all MCP clients support this protocol.
 If your client supports MCP OAuth, it will open a browser window to verify with Google or GitHub on first connection.
 If your client does not support MCP OAuth, you may need to use a stdio proxy that handles the OAuth flow and passes credentials to the remote server.
 Check your client's documentation for details on connecting to OAuth-protected MCP servers.
+
+## Temporal MCP server
+
+<ReleaseNoteHeader type="prerelease">
+  The server is under active development and isn't ready for production use.
+</ReleaseNoteHeader>
+
+The [Temporal MCP server](https://github.com/temporalio/temporal-mcp) is a read-only MCP server that lets AI agents
+investigate Workflow Executions and operations in the Namespaces you configure. An agent can read a Workflow
+Execution's state and Event History, check a Task Queue's pollers and backlog, and search Workflow Executions with List
+Filters.
+
+You can run it locally over stdio for one developer, or as a centrally hosted HTTPS server for a team. For installation,
+configuration, and authentication, see the repository README and the
+[deployment guide](https://github.com/temporalio/temporal-mcp/blob/main/docs/deployment.md).
 
 ## Markdown pages and llms.txt
 
