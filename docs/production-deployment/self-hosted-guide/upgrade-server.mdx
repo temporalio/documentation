@@ -226,3 +226,19 @@ We recommend preparing a staging Temporal Service and then doing the following t
    simulation load logic.
 4. Upgrade the server.
 5. Now do the same to the live environment Temporal Service.
+
+### Upgrade a Multi-Cluster Replication deployment
+
+Upgrade each Temporal Service separately because each one has its own database schema and server deployment. Do not
+run a Namespace handover while either Temporal Service is being upgraded.
+
+Upgrade the passive Temporal Service before the active Temporal Service. This keeps the replication receiver at the
+same or a newer version than the sender:
+
+1. Upgrade the passive Temporal Service's schema and server deployment.
+2. Wait for `replication_tasks_lag` and `replication_latency` to return to their normal ranges.
+3. Confirm that `replication_stream_stuck` and `replication_dlq_enqueue_failed` are not increasing.
+4. Upgrade the active Temporal Service's schema and server deployment.
+
+For additional readiness checks, see [How to prepare for a Namespace
+failover](/self-hosted-guide/multi-cluster-replication#how-to-prepare-for-a-namespace-failover).
