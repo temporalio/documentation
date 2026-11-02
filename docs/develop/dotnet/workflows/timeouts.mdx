@@ -31,14 +31,17 @@ Available timeouts are:
 - RunTimeout
 - TaskTimeout
 
-```csharp
+<!--SNIPSTART dotnet-workflow-timeouts-execution-timeout-->
+[dotnet-sandbox/workflows/Timeouts/TimeoutsClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/Timeouts/TimeoutsClient.cs)
+```cs
 var result = await client.ExecuteWorkflowAsync(
     (MyWorkflow wf) => wf.RunAsync(),
     new(id: "my-workflow-id", taskQueue: "my-task-queue")
     {
-        WorkflowExecutionTimeout = TimeSpan.FromMinutes(5),
+        ExecutionTimeout = TimeSpan.FromMinutes(5),
     });
 ```
+<!--SNIPEND-->
 
 ## Workflow retries {/* #workflow-retries */}
 
@@ -50,7 +53,9 @@ Workflow Executions do not retry by default, and Retry Policies should be used w
 
 The `RetryPolicy` can be set in the `WorkflowOptions` when calling `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-timeouts-retry-policy-->
+[dotnet-sandbox/workflows/Timeouts/TimeoutsClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/Timeouts/TimeoutsClient.cs)
+```cs
 var result = await client.ExecuteWorkflowAsync(
     (MyWorkflow wf) => wf.RunAsync(),
     new(id: "my-workflow-id", taskQueue: "my-task-queue")
@@ -58,3 +63,4 @@ var result = await client.ExecuteWorkflowAsync(
         RetryPolicy = new() { MaximumInterval = TimeSpan.FromSeconds(10) },
     });
 ```
+<!--SNIPEND-->

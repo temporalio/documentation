@@ -59,14 +59,19 @@ Which should output v1.9.0 or higher.
 
 ### 2. Start a local dev server {/* #enable-dev-server */}
 
-The dev server enables Standalone Nexus Operations by default — no dynamic config is
-required. Start it with the caller and handler Namespaces pre-created:
+Start the dev server with Standalone Nexus Operations enabled and the caller and handler Namespaces pre-created:
 
 ```bash
 temporal server start-dev \
   --namespace my-caller-namespace \
   --namespace my-handler-namespace
 ```
+
+:::note
+
+If you see `Standalone Nexus operation is disabled` when running commands against a local dev server, start the dev server with `--dynamic-config-value nexusoperation.enableStandalone=true`.
+
+:::
 
 The starter and Worker connect to two different Namespaces (a caller Namespace and a handler
 Namespace), mirroring how Nexus crosses Namespace boundaries.
