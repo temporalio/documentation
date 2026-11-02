@@ -314,11 +314,11 @@ end
   <SdkTabs.DotNet>
 
 To load the `default` profile along with any environment variables in .NET C#, use the
-`ClientEnvConfig.LoadClientConnectOptions()` method from the `Temporalio.Client.EnvConfig` package.
+`ClientEnvConfig.LoadClientConnectOptions()` method from the `Temporalio.Common.EnvConfig` namespace.
 
 ```csharp {22,27-30}
 using Temporalio.Client;
-using Temporalio.Client.EnvConfig;
+using Temporalio.Common.EnvConfig;
 
 namespace TemporalioSamples.EnvConfig;
 
@@ -673,7 +673,7 @@ After loading the connection options, you can override specific settings program
 
 ```csharp {18-19,25-28}
 using Temporalio.Client;
-using Temporalio.Client.EnvConfig;
+using Temporalio.Common.EnvConfig;
 
 namespace TemporalioSamples.EnvConfig;
 
