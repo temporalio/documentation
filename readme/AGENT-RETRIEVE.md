@@ -69,13 +69,23 @@ These are Vercel project environment variables, set for Production and Preview:
 | `KAPA_API_KEY` | The `docs-agent-retrieve-experiment` key. It's separate from the widget and MCP keys, so it can be rotated alone |
 | `KAPA_PROJECT_ID` | The production Kapa project |
 | `KAPA_INTEGRATION_ID` | The `docs-agent-retrieve-experiment` HTTP API integration, which keeps this traffic separate in Kapa analytics |
-| `KAPA_SOURCE_IDS` | Comma-separated Kapa source IDs, sent as `source_ids_include`. Set to the 20 web crawl sources. **As of 2026-10-23, Kapa's Retrieval endpoint accepts this field but ignores it**, so `RETRIEVE_URL_ALLOWLIST` does the filtering. It's kept so it takes effect if Kapa starts honoring it. A source group filter can't replace it, because Kapa adds every Global source to any group filter |
 | `RETRIEVE_URL_ALLOWLIST` | **Required.** Comma-separated `host` or `host/path-prefix` entries. Results whose URL isn't covered are dropped before the response is built, except custom Q&A answers, which have no URL. A prefix matches whole path segments, so `github.com/temporalio/sdk-go/releases` covers `/releases/tag/v1.30.0` but not the private `github.com/temporalio/edu-*` course repos. When it's unset the endpoint returns 500 instead of searching, so a missing variable can't expose results from private sources |
 | `RETRIEVE_LOG_SALT` | **Required.** A random string used to hash caller IPs in the log. When it's unset the endpoint returns 500, so no request is logged without a hash |
 | `BLOB_READ_WRITE_TOKEN` | Added by Vercel when the private Blob store is connected to the project |
 
 To revoke access, rotate or delete the key in Kapa and update `KAPA_API_KEY`. The endpoint then returns 502 until a
 valid key is set.
+
+The endpoint sends Kapa no source filter, and `RETRIEVE_URL_ALLOWLIST` does all the filtering. Don't add one back:
+
+- A source group filter always includes every source in Kapa's Global group, which here is all of them.
+- `source_ids_include` rejects the whole request with a 400 when any ID in it no longer exists. From 2026-10-30
+  09:00 UTC, a deleted Java API reference source made every request return 502 until the ID was removed. Kapa ignored
+  the field for filtering until then and has applied it since, so the endpoint's results changed with no deploy on
+  our side, too.
+
+A 502 that starts when nothing was deployed most likely comes from a change on the Kapa side. The runtime log line
+`retrieve: Kapa returned <status>: <body>` gives Kapa's reason.
 
 ## Health check
 
@@ -137,13 +147,15 @@ sent, and a failed write never fails the request.
 | `country` | `x-vercel-ip-country` |
 | `ip_hash` | First 16 hex characters of SHA-256 of the salt and IP. Raw IPs aren't stored |
 | `deployment` | `production`, `preview`, or `development` |
-| `source_ids_sent` | Number of IDs in `KAPA_SOURCE_IDS` sent to Kapa. Kapa ignores them today, so this doesn't mean the search was limited to those sources |
 | `fetched_count` | Results Kapa returned |
 | `dropped_count` | Results Kapa returned that were malformed or that `RETRIEVE_URL_ALLOWLIST` dropped |
 | `status`, `upstream_status` | Status returned to the caller, and Kapa's status |
 | `result_count` | Number of results returned. Kapa returns at most 15 and the endpoint doesn't ask for more, because Kapa's Retrieval endpoint rejects a `top_k` above 15, so the allowlist can shrink an answer. `0` with `dropped_count` at `0` points at a content gap. `0` with `fetched_count` above `0` means every hit was outside the allowlist |
 | `latency_ms` | Time spent in the function |
 | `top_pages` | `page_url` of the first three results |
+
+Records written before 2026-11-02 also carry `source_ids_sent`, the number of source IDs sent to Kapa. New records
+don't have it.
 
 The log holds free-text questions from the public. The advertised copy asks agents not to send personal data, but
 treat the store as sensitive anyway, and delete it when the experiment is over.
