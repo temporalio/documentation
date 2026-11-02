@@ -6,6 +6,9 @@
   "functions": {
     "api/retrieve.js": {
       "maxDuration": 15
+    },
+    "api/feedback.js": {
+      "maxDuration": 10
     }
   },
   "rewrites": [

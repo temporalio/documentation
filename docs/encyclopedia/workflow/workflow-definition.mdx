@@ -203,7 +203,7 @@ Some changes to those API calls are safe to make.
 
 :::tip Note on determinism
 
-Workflow code must be deterministic to support replay. To handle non-deterministic operations like API calls, LLM/AI invocations, database queries, and other external interactions, put them in Activities. Activities execute outside the replay path and are automatically retried so they don't cause non-determinism errors.
+A Workflow Definition must be deterministic to support replay. To handle non-deterministic operations like API calls, LLM/AI invocations, database queries, and other external interactions, put them in Activities. Activities execute outside the replay path and are automatically retried so they don't cause non-determinism errors.
 
 :::
 
@@ -317,7 +317,7 @@ For SDK-specific replay-safe APIs and examples (logging, random numbers, time, r
 
 ### Versioning Workflows {/* #workflow-versioning */}
 
-The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
+The Temporal Platform requires that Workflow Definitions be deterministic.
 This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
 
 A versioning strategy is even more important if your Workflow Executions live long enough to run on multiple versions of your Worker. Temporal Platform provides Workflow Versioning APIs.
