@@ -35,7 +35,9 @@ Enable streaming by constructing one `WorkflowStream` in a [`[WorkflowInit]`](ht
 constructor. The constructor runs before message handlers can be dispatched, so the stream can register its publish
 Signal, poll Update, and offset Query handlers before the first request arrives.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-enable-->
+[dotnet-sandbox/workflows/WorkflowStreams/EnableStreamingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/EnableStreamingWorkflow.workflow.cs)
+```cs
 using Temporalio.Extensions.WorkflowStreams;
 using Temporalio.Workflows;
 
@@ -58,6 +60,7 @@ public class OrderWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 Pass `null` on the first run. After Continue-As-New, pass the `WorkflowStreamState` captured from the previous run. See
 [Stream from long-running Workflows](#continue-as-new) for the complete rollover sequence.
@@ -71,11 +74,13 @@ Bind a [topic name](/workflow-streams#topics) to an event type with `GetTopic<T>
 handle. The generic type gives publish call sites compile-time type checking and tells typed subscribers how to decode
 the topic.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-publish-workflow-->
+[dotnet-sandbox/workflows/WorkflowStreams/OrderWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/OrderWorkflow.workflow.cs)
+```cs
 public record StatusEvent(string State, int Progress = 0, string? Detail = null);
 
 [Workflow]
-public class OrderWorkflow
+public partial class OrderWorkflow
 {
     private readonly WorkflowStream stream;
     private readonly WorkflowStreamTopicHandle<StatusEvent> status;
@@ -90,20 +95,21 @@ public class OrderWorkflow
     [WorkflowRun]
     public async Task RunAsync(OrderInput input)
     {
-        status.Publish(new("validating", Detail: "checking inventory"));
+        status.Publish(new StatusEvent("validating", Detail: "checking inventory"));
         await ValidateOrderAsync(input.OrderId);
 
-        status.Publish(new("charging", 33, "authorizing payment"));
+        status.Publish(new StatusEvent("charging", 33, "authorizing payment"));
         await ChargePaymentAsync(input.OrderId);
 
-        status.Publish(new("shipping", 66, "dispatching to warehouse"));
+        status.Publish(new StatusEvent("shipping", 66, "dispatching to warehouse"));
         await DispatchOrderAsync(input.OrderId);
 
-        status.Publish(new("completed", 100));
+        status.Publish(new StatusEvent("completed", 100));
         await Workflow.DelayAsync(TimeSpan.FromSeconds(30));
     }
 }
 ```
+<!--SNIPEND-->
 
 `Publish()` runs the Workflow's payload converter and appends the resulting `Payload` directly to the in-memory log. A
 Workflow-side publication isn't buffered and doesn't need to be flushed.
@@ -120,29 +126,35 @@ This includes HTTP services, Workflow starters, scripts, Activities from other W
 
 Use `await using` so the client flushes buffered events and releases its publishing resources when the scope exits:
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-publish-client-->
+[dotnet-sandbox/workflows/WorkflowStreams/OrderStreamPublisher.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/OrderStreamPublisher.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Extensions.WorkflowStreams;
 
-public static async Task PublishStatusAsync(
-    ITemporalClient temporalClient,
-    string workflowId,
-    CancellationToken cancellationToken)
+public static class OrderStreamPublisher
 {
-    await using var streamClient = new WorkflowStreamClient(
-        temporalClient,
-        workflowId,
-        new()
-        {
-            BatchInterval = TimeSpan.FromMilliseconds(200),
-        });
+    public static async Task PublishStatusAsync(
+        ITemporalClient temporalClient,
+        string workflowId,
+        CancellationToken cancellationToken)
+    {
+        await using var streamClient = new WorkflowStreamClient(
+            temporalClient,
+            workflowId,
+            new()
+            {
+                BatchInterval = TimeSpan.FromMilliseconds(200),
+            });
 
-    var status = streamClient.GetTopic<StatusEvent>("status");
-    status.Publish(new("started"));
-    status.Publish(new("completed", 100), forceFlush: true);
-    await streamClient.FlushAsync(cancellationToken);
+        var status = streamClient.GetTopic<StatusEvent>("status");
+        status.Publish(new StatusEvent("started"));
+        status.Publish(new StatusEvent("completed", 100), forceFlush: true);
+        await streamClient.FlushAsync(cancellationToken);
+    }
 }
 ```
+<!--SNIPEND-->
 
 By default, the client sends buffered publications every two seconds. Set `MaxBatchSize` to flush after the buffer
 reaches a specific item count. A value of `0`, the default, disables size-based flushing.
@@ -155,7 +167,9 @@ When an event originates in an Activity, publish it from the Activity instead of
 forward. `FromActivity()` gets the Temporal Client, parent Workflow ID, and payload converter from the current Activity
 context:
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-publish-activity-->
+[dotnet-sandbox/workflows/WorkflowStreams/OrderActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/OrderActivities.cs)
+```cs
 using Temporalio.Activities;
 using Temporalio.Extensions.WorkflowStreams;
 
@@ -171,12 +185,13 @@ public static class OrderActivities
 
         foreach (var step in steps)
         {
-            progress.Publish(new(step));
+            progress.Publish(new ProgressEvent(step));
             ActivityExecutionContext.Current.Heartbeat(step);
         }
     }
 }
 ```
+<!--SNIPEND-->
 
 `FromActivity()` requires an Activity started by a Workflow. For a standalone Activity, pass the target Workflow ID in
 the Activity input and construct `WorkflowStreamClient` with `ActivityExecutionContext.Current.TemporalClient`.
@@ -196,29 +211,35 @@ events when the publisher outruns the network.
 Subscribe from any process that has a Temporal Client and the Workflow ID. A typed topic handle returns a reusable
 `IAsyncEnumerable<WorkflowStreamItem<T>>`. Each enumeration keeps its own offset and polling state.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-subscribe-->
+[dotnet-sandbox/workflows/WorkflowStreams/OrderStreamSubscriber.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/OrderStreamSubscriber.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Extensions.WorkflowStreams;
 
-public static async Task WatchOrderAsync(
-    ITemporalClient temporalClient,
-    string workflowId,
-    CancellationToken cancellationToken)
+public static class OrderStreamSubscriber
 {
-    await using var streamClient = new WorkflowStreamClient(temporalClient, workflowId);
-    var status = streamClient.GetTopic<StatusEvent>("status");
-
-    await foreach (var item in status.SubscribeAsync().WithCancellation(cancellationToken))
+    public static async Task WatchOrderAsync(
+        ITemporalClient temporalClient,
+        string workflowId,
+        CancellationToken cancellationToken)
     {
-        Console.WriteLine(
-            $"[{item.Value.Progress,3}%] {item.Value.State}: {item.Value.Detail}");
-        if (item.Value.State == "completed")
+        await using var streamClient = new WorkflowStreamClient(temporalClient, workflowId);
+        var status = streamClient.GetTopic<StatusEvent>("status");
+
+        await foreach (var item in status.SubscribeAsync().WithCancellation(cancellationToken))
         {
-            break;
+            Console.WriteLine(
+                $"[{item.Value.Progress,3}%] {item.Value.State}: {item.Value.Detail}");
+            if (item.Value.State == "completed")
+            {
+                break;
+            }
         }
     }
 }
 ```
+<!--SNIPEND-->
 
 Pass the next global offset to `SubscribeAsync(fromOffset)` when reconnecting. The iterator follows Continue-As-New
 chains, repolls immediately when a response reaches the approximate 1 MB page limit, and advances to the retained
@@ -232,11 +253,12 @@ Workflow reaches a terminal state.
 
 A typed subscription decodes every item as one type. To consume topics with different payload types, call the untyped
 `SubscribeAsync()` overload with a topic filter. It yields `WorkflowStreamItem` values containing raw Temporal
-`Payload`s. Dispatch on `Topic` and decode each payload with the matching type:
+`Payload`s. Dispatch on `Topic` and decode each payload with the matching type. `ISerializationContext` is in the
+`Temporalio.Converters` namespace:
 
-```csharp
-using Temporalio.Converters;
-
+<!--SNIPSTART dotnet-workflow-streams-subscribe-heterogeneous-->
+[dotnet-sandbox/workflows/WorkflowStreams/MultiTopicSubscriber.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/MultiTopicSubscriber.cs)
+```cs
 var options = new WorkflowStreamSubscribeOptions
 {
     Topics = new[] { "status", "progress" },
@@ -258,6 +280,7 @@ await foreach (var item in streamClient.SubscribeAsync(options))
     }
 }
 ```
+<!--SNIPEND-->
 
 An empty topic collection subscribes to every topic. The empty string represents the cross-SDK no-topic value.
 Use the target Workflow's Namespace and Workflow ID for the converter's serialization context, as typed subscriptions
@@ -274,16 +297,21 @@ poll might close before the subscriber receives the event. You can provide this 
 
 - **Fixed delay.** Call `Workflow.DelayAsync()` after publishing the terminal event and before returning.
 
-  ```csharp
-  status.Publish(new("completed", 100));
+  <!--SNIPSTART dotnet-workflow-streams-close-fixed-delay-->
+  [dotnet-sandbox/workflows/WorkflowStreams/ClosingWorkflows.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/ClosingWorkflows.workflow.cs)
+  ```cs
+  status.Publish(new StatusEvent("completed", 100));
   await Workflow.DelayAsync(TimeSpan.FromSeconds(30));
   return result;
   ```
+  <!--SNIPEND-->
 
 - **Acknowledgment handshake.** Have the subscriber Signal the Workflow after it receives the terminal event. Wait for
   that Signal with a timeout so the Workflow still completes when no subscriber is attached.
 
-  ```csharp
+  <!--SNIPSTART dotnet-workflow-streams-close-ack-handler-->
+  [dotnet-sandbox/workflows/WorkflowStreams/ClosingWorkflows.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/ClosingWorkflows.workflow.cs)
+  ```cs
   private bool subscriberAcknowledged;
 
   [WorkflowSignal]
@@ -292,13 +320,20 @@ poll might close before the subscriber receives the event. You can provide this 
       subscriberAcknowledged = true;
       return Task.CompletedTask;
   }
+  ```
+  <!--SNIPEND-->
 
-  // After publishing the terminal event:
+  After publishing the terminal event, wait for the Signal:
+
+  <!--SNIPSTART dotnet-workflow-streams-close-ack-wait-->
+  [dotnet-sandbox/workflows/WorkflowStreams/ClosingWorkflows.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/ClosingWorkflows.workflow.cs)
+  ```cs
   await Workflow.WaitConditionAsync(
       () => subscriberAcknowledged,
       TimeSpan.FromSeconds(30));
   return result;
   ```
+  <!--SNIPEND-->
 
 The subscription ends cleanly for every terminal Workflow status. If the application must distinguish completion from
 failure, cancellation, termination, or timeout, describe the Workflow after the enumeration ends and inspect its
@@ -310,7 +345,9 @@ Use [Continue-As-New](/workflow-execution/continue-as-new) to keep Event History
 hours or accumulates many events. Subscribers automatically follow the new run, but you must carry the stream state
 through the Workflow input so they don't see a gap.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-continue-as-new-->
+[dotnet-sandbox/workflows/WorkflowStreams/PipelineWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/PipelineWorkflow.workflow.cs)
+```cs
 using Temporalio.Extensions.WorkflowStreams;
 using Temporalio.Workflows;
 
@@ -319,7 +356,7 @@ public record PipelineInput(
     WorkflowStreamState? StreamState = null);
 
 [Workflow]
-public class PipelineWorkflow
+public partial class PipelineWorkflow
 {
     private readonly WorkflowStream stream;
 
@@ -336,7 +373,7 @@ public class PipelineWorkflow
         {
             await ProcessNextItemAsync();
             itemsProcessed++;
-            progress.Publish(new($"processed {itemsProcessed} items"));
+            progress.Publish(new ProgressEvent($"processed {itemsProcessed} items"));
 
             if (Workflow.ContinueAsNewSuggested)
             {
@@ -349,6 +386,7 @@ public class PipelineWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 `CaptureStateForContinueAsNewAsync()` detaches waiting pollers, waits for message handlers to finish, and captures the
 retained log and publisher deduplication state. It also disables Workflow-side publication. Create and throw the
@@ -368,18 +406,26 @@ settings bound the deduplication window:
 - `WorkflowStreamClientOptions.MaxRetryDuration` controls how long a client retries an ambiguously delivered batch. Its
   default is 10 minutes. Keep this value lower than the publisher TTL.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-dedup-workflow-->
+[dotnet-sandbox/workflows/WorkflowStreams/DeduplicationWindow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/DeduplicationWindow.cs)
+```cs
 // Workflow initialization
 stream = new(
     input.StreamState,
     new() { PublisherTtl = TimeSpan.FromMinutes(30) });
+```
+<!--SNIPEND-->
 
+<!--SNIPSTART dotnet-workflow-streams-dedup-client-->
+[dotnet-sandbox/workflows/WorkflowStreams/DeduplicationWindow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/DeduplicationWindow.cs)
+```cs
 // External client or Activity
 await using var streamClient = new WorkflowStreamClient(
     temporalClient,
     workflowId,
     new() { MaxRetryDuration = TimeSpan.FromMinutes(20) });
 ```
+<!--SNIPEND-->
 
 When the retry duration expires, the client drops the ambiguous batch and reports `FlushTimeoutException` from
 `FlushAsync()` or asynchronous disposal. The batch might already be in the Workflow log, or it might be lost. Later
@@ -416,7 +462,9 @@ dotnet add package OpenAI --version 2.13.0
 <Tabs>
 <TabItem value="activity" label="LlmActivities.cs">
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-llm-activity-->
+[dotnet-sandbox/workflows/WorkflowStreams/Llm/LlmActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/Llm/LlmActivities.cs)
+```cs
 using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text;
@@ -450,7 +498,7 @@ public static class LlmActivities
 
         if (context.Info.Attempt > 1)
         {
-            retries.Publish(new(context.Info.Attempt), forceFlush: true);
+            retries.Publish(new RetryEvent(context.Info.Attempt), forceFlush: true);
         }
 
         // Disable provider retries and let the Activity Retry Policy own retries.
@@ -471,23 +519,26 @@ public static class LlmActivities
                 {
                     continue;
                 }
-                deltas.Publish(new(contentPart.Text));
+                deltas.Publish(new TextDelta(contentPart.Text));
                 fullText.Append(contentPart.Text);
             }
         }
 
         var result = fullText.ToString();
-        complete.Publish(new(result), forceFlush: true);
+        complete.Publish(new TextComplete(result), forceFlush: true);
         await streamClient.FlushAsync();
         return result;
     }
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="workflow" label="LlmWorkflow.workflow.cs">
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-llm-workflow-->
+[dotnet-sandbox/workflows/WorkflowStreams/Llm/LlmWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/Llm/LlmWorkflow.workflow.cs)
+```cs
 using Temporalio.Extensions.WorkflowStreams;
 using Temporalio.Workflows;
 
@@ -515,53 +566,60 @@ public class LlmWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="subscriber" label="LlmSubscriber.cs">
 
-```csharp
+<!--SNIPSTART dotnet-workflow-streams-llm-subscriber-->
+[dotnet-sandbox/workflows/WorkflowStreams/Llm/LlmSubscriber.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowStreams/Llm/LlmSubscriber.cs)
+```cs
 using System.Text;
 using Temporalio.Client;
 using Temporalio.Converters;
 using Temporalio.Extensions.WorkflowStreams;
 
-public static async Task<string> StreamResponseAsync(
-    ITemporalClient temporalClient,
-    string workflowId,
-    CancellationToken cancellationToken)
+public static partial class LlmSubscriber
 {
-    await using var streamClient = new WorkflowStreamClient(temporalClient, workflowId);
-    var converter = temporalClient.Options.DataConverter.WithSerializationContext(
-        new ISerializationContext.Workflow(temporalClient.Options.Namespace, workflowId)).PayloadConverter;
-    var output = new StringBuilder();
-    var options = new WorkflowStreamSubscribeOptions
+    public static async Task<string> StreamResponseAsync(
+        ITemporalClient temporalClient,
+        string workflowId,
+        CancellationToken cancellationToken)
     {
-        Topics = new[] { "delta", "retry", "complete" },
-    };
+        await using var streamClient = new WorkflowStreamClient(temporalClient, workflowId);
+        var converter = temporalClient.Options.DataConverter.WithSerializationContext(
+            new ISerializationContext.Workflow(temporalClient.Options.Namespace, workflowId)).PayloadConverter;
+        var output = new StringBuilder();
+        var options = new WorkflowStreamSubscribeOptions
+        {
+            Topics = new[] { "delta", "retry", "complete" },
+        };
 
-    await foreach (var item in streamClient.SubscribeAsync(options).
-        WithCancellation(cancellationToken))
-    {
-        if (item.Topic == "retry")
+        await foreach (var item in streamClient.SubscribeAsync(options).
+            WithCancellation(cancellationToken))
         {
-            output.Clear();
-            Render(output.ToString());
+            if (item.Topic == "retry")
+            {
+                output.Clear();
+                Render(output.ToString());
+            }
+            else if (item.Topic == "delta")
+            {
+                output.Append(converter.ToValue<TextDelta>(item.Payload).Text);
+                Render(output.ToString());
+            }
+            else if (item.Topic == "complete")
+            {
+                _ = converter.ToValue<TextComplete>(item.Payload);
+                break;
+            }
         }
-        else if (item.Topic == "delta")
-        {
-            output.Append(converter.ToValue<TextDelta>(item.Payload).Text);
-            Render(output.ToString());
-        }
-        else if (item.Topic == "complete")
-        {
-            _ = converter.ToValue<TextComplete>(item.Payload);
-            break;
-        }
+
+        return output.ToString();
     }
-
-    return output.ToString();
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>

@@ -7,6 +7,8 @@ const Module = require('node:module');
 // so each case sets the environment and then loads a fresh copy.
 
 const HANDLER_PATH = require.resolve('./retrieve');
+// The shared log module loads @vercel/blob, so it's reloaded with the handler.
+const LOG_PATH = require.resolve('./_log');
 const DOCS = 'https://docs.temporal.io';
 
 const BASE_ENV = {
@@ -17,6 +19,7 @@ const BASE_ENV = {
   RETRIEVE_LOG_SALT: 'salt',
   BLOB_READ_WRITE_TOKEN: 'token',
 };
+// KAPA_SOURCE_IDS is no longer read, but one test sets it to prove that.
 const ENV_KEYS = [...Object.keys(BASE_ENV), 'KAPA_SOURCE_IDS'];
 
 const originalLoad = Module._load;
@@ -72,10 +75,12 @@ afterEach(() => {
     else process.env[key] = originalEnv[key];
   }
   delete require.cache[HANDLER_PATH];
+  delete require.cache[LOG_PATH];
 });
 
 function load() {
   delete require.cache[HANDLER_PATH];
+  delete require.cache[LOG_PATH];
   return require('./retrieve');
 }
 
@@ -214,11 +219,14 @@ describe('results', () => {
     assert.strictEqual(record().dropped_count, 20);
   });
 
-  it('does not expose how many source IDs were sent', async () => {
-    const res = await call('?q=x', { env: { KAPA_SOURCE_IDS: 'a,b,c' } });
-    assert.strictEqual(res.headers['x-retrieve-source-filter'], undefined);
-    assert.strictEqual(kapaCalls[0].body.source_ids_include.length, 3);
-    assert.strictEqual(record().source_ids_sent, 3);
+  // Kapa rejects every request whose source_ids_include names a deleted
+  // source, so a leftover KAPA_SOURCE_IDS must not reach it.
+  it('sends no source filter, even with KAPA_SOURCE_IDS set', async () => {
+    const res = await call('?q=x', { env: { KAPA_SOURCE_IDS: 'a,b' } });
+    assert.strictEqual(res.statusCode, 200);
+    assert.ok(!('source_ids_include' in kapaCalls[0].body));
+    assert.ok(!('source_group_ids_include' in kapaCalls[0].body));
+    assert.ok(!('source_ids_sent' in record()));
   });
 });
 
