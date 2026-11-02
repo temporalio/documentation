@@ -67,9 +67,10 @@ async function queryKapa(query) {
   // extra results to cover the ones the allowlist drops.
   //
   // No source filter either. A source group filter always adds every source in
-  // Kapa's Global group, which here is all of them. source_ids_include is
-  // ignored for filtering, but Kapa rejects the whole request when any ID in it
-  // no longer exists: from 2026-10-30, a deleted source failed every request.
+  // Kapa's Global group, which here is all of them. source_ids_include does
+  // filter as of 2026-10-30, but Kapa rejects the whole request when any ID in
+  // it no longer exists, so deleting a source in Kapa failed every request. The
+  // allowlist can't break that way.
   const body = { query, integration_id: KAPA_INTEGRATION_ID };
 
   return fetch(`https://api.kapa.ai/query/v1/projects/${KAPA_PROJECT_ID}/retrieval/`, {

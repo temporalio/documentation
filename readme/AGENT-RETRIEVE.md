@@ -78,9 +78,10 @@ valid key is set.
 The endpoint sends Kapa no source filter, and `RETRIEVE_URL_ALLOWLIST` does all the filtering. Don't add one back:
 
 - A source group filter always includes every source in Kapa's Global group, which here is all of them.
-- Kapa ignores `source_ids_include` for filtering, but it rejects the whole request with a 400 when any ID in it no
-  longer exists. From 2026-10-30 09:00 UTC until `KAPA_SOURCE_IDS` was removed, a deleted Java API reference source
-  made every request return 502.
+- `source_ids_include` rejects the whole request with a 400 when any ID in it no longer exists. From 2026-10-30
+  09:00 UTC, a deleted Java API reference source made every request return 502 until the ID was removed. Kapa ignored
+  the field for filtering until then and has applied it since, so the endpoint's results changed with no deploy on
+  our side, too.
 
 A 502 that starts when nothing was deployed most likely comes from a change on the Kapa side. The runtime log line
 `retrieve: Kapa returned <status>: <body>` gives Kapa's reason.
