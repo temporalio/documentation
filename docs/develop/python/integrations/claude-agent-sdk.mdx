@@ -1,0 +1,332 @@
+---
+id: claude-agent-sdk
+title: Claude Agent SDK integration
+sidebar_label: Claude Agent SDK
+toc_max_heading_level: 3
+tags:
+  - Claude Agent SDK
+  - Python SDK
+  - Temporal SDKs
+description: Drive Claude Code agents from Temporal Workflows with the Claude Agent SDK and the Temporal Python SDK plugin.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+Temporal's integration with the [Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview) gives you the same
+tools, agent loop, and context management that power Claude Code, programmable in a Temporal Workflow.
+
+The Claude Agent SDK allows you to drive the Claude Code agent from your own application, in a process you operate.
+Temporal provides the durable execution of the hooks, tools, and prompts to steer the agent.
+
+Code snippets on this page come from the
+[Claude Agent SDK samples directory](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin).
+
+<ReleaseNoteHeader type="prerelease" />
+
+## Get started
+
+**Prerequisites**
+
+- This guide assumes you are familiar with the Claude Agent SDK. If you are not, refer to the
+  [Claude Agent SDK documentation](https://code.claude.com/docs/en/agent-sdk/overview).
+- If you are new to Temporal, read [Understanding Temporal](/evaluate/understanding-temporal) or take the
+  [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Set up your local development environment by following
+  [Set up your local development environment](/develop/python/set-up-your-local-python). Leave the Temporal development
+  server running if you want to test your code locally.
+- Use Python, the Temporal Python SDK, and the Claude Agent SDK versions that satisfy the integration's
+  [package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/claude_agent_sdk/pyproject.toml).
+
+**Install the Claude Agent SDK integration**
+
+Install the [`temporalio-claude-agent-sdk`](https://pypi.org/project/temporalio-claude-agent-sdk/) package.
+
+```bash
+uv add temporalio-claude-agent-sdk
+```
+
+## Drive Claude Code from a Workflow
+
+The Claude Agent SDK communicates with Claude Code through a
+[`Transport`](https://code.claude.com/docs/en/agent-sdk/python#transport). Its default transport starts a subprocess and
+communicates with it over standard input and output (stdio). Those operations aren't safe to perform in a Workflow.
+
+To drive Claude Code from a Workflow, use `TemporalTransport`. It performs the process communication through Activities,
+so the Workflow can replay safely. Pass it as the `transport` argument to `query()` or the `ClaudeSDKClient` constructor,
+using the same options for both the transport and the SDK call.
+
+<!--SNIPSTART python-claude-agent-sdk-structured-output-transport-->
+[claude_agent_sdk_plugin/structured_output/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/structured_output/workflow.py)
+```python
+                transport = TemporalTransport(options)
+                async with ClaudeSDKClient(
+                    options=options, transport=transport
+                ) as client:
+                    await client.query(query_prompt)
+```
+<!--SNIPEND-->
+
+:::warning
+
+Don't pass secrets in `ClaudeAgentOptions.env`. Those values are recorded in Workflow Event History as Activity input.
+Set secrets in the environment where Claude Code runs, or use a credential proxy to keep them out of the sandbox.
+
+:::
+
+Register `ClaudeAgentSDKPlugin` on the Worker. The plugin registers the Activities that `TemporalTransport` uses.
+
+<!--SNIPSTART python-claude-agent-sdk-tools-worker-->
+[claude_agent_sdk_plugin/tools/run_worker.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/run_worker.py)
+```python
+        worker = Worker(
+            client,
+            task_queue="claude-agent-sdk-tools",
+            workflows=[ToolsWorkflow],
+            activities=[fetch_weather],
+            plugins=[ClaudeAgentSDKPlugin()],
+        )
+```
+<!--SNIPEND-->
+
+Import `ClaudeAgentSDKPlugin`, `TemporalTransport`, and the connector APIs from `temporalio.claude_agent_sdk`.
+
+## Provide custom tools
+
+In addition to Claude Code's built-in tools, the Claude Agent SDK lets you define
+[custom tools](https://code.claude.com/docs/en/agent-sdk/custom-tools) through an in-process MCP server. With the Temporal
+integration, custom tools you define in the Workflow execute in Workflow context and benefit from durable execution.
+Their functions must follow the [Workflow determinism rules](/workflow-definition#deterministic-constraints), so use an
+Activity or Child Workflow for non-deterministic work such as calling an external API.
+
+In the [tools sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/tools), `get_weather`
+calls the `fetch_weather` Activity, which returns a fixed response as a placeholder for an API call. Pass `get_weather`
+and any other tools to `create_sdk_mcp_server`, then add the server to `ClaudeAgentOptions.mcp_servers`.
+
+Claude Code needs permission to use the tools. In the sample, `allowed_tools` grants that permission using each tool's
+[fully qualified name](https://code.claude.com/docs/en/agent-sdk/mcp#tool-naming-convention).
+
+## Add guardrails to agent behavior
+
+**Intercept agent behavior with hooks**
+
+The Claude Agent SDK lets you intercept and customize agent behavior at key execution points with
+[hooks](https://code.claude.com/docs/en/agent-sdk/hooks#available-hooks). With the Temporal integration, hooks you define
+in the Workflow execute in Workflow context and benefit from durable execution. Their callbacks must follow the
+[Workflow determinism rules](/workflow-definition#deterministic-constraints), so use an Activity or Child Workflow for
+non-deterministic work such as writing to an external audit service. Temporal can retry Activities when those operations
+fail.
+
+In the [hooks sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/hooks), a `PreToolUse`
+hook denies Bash commands containing `rm` and logs the command through an Activity. The sample registers the hook in
+`ClaudeAgentOptions.hooks` with a `HookMatcher` that selects Bash tool calls.
+
+**Add human approval**
+
+The Claude Agent SDK lets you provide a [`can_use_tool`](https://code.claude.com/docs/en/agent-sdk/user-input#detect-when-claude-needs-input)
+callback to decide whether Claude Code can use a tool. With the Temporal integration, the callback runs in the Workflow
+and can wait durably for a person's approval through a Signal or Update. The callback must follow the
+[Workflow determinism rules](/workflow-definition#deterministic-constraints), so use an Activity or Child Workflow for
+non-deterministic work.
+
+In the [human-in-the-loop sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/human_in_the_loop),
+the `can_use_tool` callback waits for a person's decision and returns the corresponding permission result. The sample is
+designed for one pending approval at a time. A Query shows the pending tool call, and an Update approves or denies it.
+
+## Stream output from a Workflow
+
+The Claude Agent SDK can stream a reply as it's generated. The plugin reads each event from Claude Code in an Activity, and
+the Workflow publishes it to a topic of a [Workflow Stream](/develop/python/workflows/workflow-streams). Any client can
+subscribe to the topic by Workflow Id to show tokens as they arrive.
+
+Create a topic when the Workflow starts. Set `include_partial_messages=True` in the options, as in the Claude Agent SDK,
+and pass the topic to `TemporalTransport` as `stream`. The two go together. Setting one without the other raises
+`ValueError`.
+
+In the [streaming sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/streaming),
+a client subscribes to the topic and receives `stream_event` messages from Claude Code. For details on event delivery
+and stream completion, see [Workflow Streams](/develop/python/workflows/workflow-streams#subscribe).
+
+## Configure a custom connector
+
+By default, Claude Code runs in a separate subprocess started by the Worker, with the Worker's user, environment, and files. The Claude
+Agent SDK documents this as its
+[subprocess model](https://code.claude.com/docs/en/agent-sdk/hosting#the-subprocess-model). To run Claude Code somewhere
+else, such as a container, a VM, or a remote host, provide a custom connector to the plugin. Your connector provides access to the Claude Code process, and `TemporalTransport` uses Activities to manage communication
+between the Worker and the process.
+
+A custom connector implements the [`Connector`](https://github.com/temporalio/ai-integrations/blob/main/python/claude_agent_sdk/src/temporalio/claude_agent_sdk/_types.py#L133) protocol. Its `connect` method starts Claude Code and returns a
+[`ClaudeCodeProcess`](https://github.com/temporalio/ai-integrations/blob/main/python/claude_agent_sdk/src/temporalio/claude_agent_sdk/_types.py#L99), which provides the methods for communicating with the process. The default
+[`SubprocessConnector`](https://github.com/temporalio/ai-integrations/blob/main/python/claude_agent_sdk/src/temporalio/claude_agent_sdk/_subprocess.py)
+implements this protocol for a local subprocess.
+
+For example, the [custom connector sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/plugin_with_custom_transport)
+runs Claude Code in a [Docker Sandbox](https://docs.docker.com/ai/sandboxes/), providing an isolation boundary between
+the Worker and Claude Code. Its connector sets up the sandbox and uses `SubprocessConnector` to run `sbx` as the local
+process.
+
+The Workflow continues to use `TemporalTransport` as before, while you pass your custom connector to
+`ClaudeAgentSDKPlugin` on the Worker.
+
+<!--SNIPSTART python-claude-agent-sdk-custom-connector-worker-->
+[claude_agent_sdk_plugin/plugin_with_custom_transport/run_worker.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/plugin_with_custom_transport/run_worker.py)
+```python
+        plugin = ClaudeAgentSDKPlugin(
+            connector=SandboxConnector(uploads={PLUGIN_DIR: LOCAL_PLUGIN_DIR})
+        )
+```
+<!--SNIPEND-->
+
+**Copy files in.** A sandbox starts with a clean filesystem, and paths in `ClaudeAgentOptions`, such as `cwd` and plugin directories, are
+paths on Claude Code's host. Anything Claude Code needs must be copied there before it starts. The [sample connector](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/plugin_with_custom_transport/connector.py) copies the configured directories from the Worker host to their paths in the sandbox.
+
+**Keep secrets out of the sandbox.** Use the Docker Sandbox credential proxy to keep the real API key outside the
+sandbox. The [sample connector](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/plugin_with_custom_transport/connector.py)
+registers the key with the proxy, which adds it to requests to Anthropic API hosts. Claude Code only sees a placeholder.
+See [Manage credentials](https://docs.docker.com/ai/sandboxes/configuration/credentials) in the Docker Sandbox docs.
+
+
+
+
+## Manage the Worker connection to Claude Code
+
+A connection to the Claude Code process can be held by only one Worker. Any eligible Worker can establish the
+connection, but once established, that Worker handles all Activities that communicate with the process. If the connection
+is lost, the Workflow can create a new `ClaudeSDKClient` and resume the Claude Code session. When a Worker fails, Temporal
+replays the Workflow on another Worker, where it can establish a new connection.
+
+To resume the session, Claude Code needs access to its session files. With the default connector, these files are stored
+on the Worker host. Use shared storage or set `activity_options={"connect": {"task_queue": ...}}` on
+`TemporalTransport` to route connections to a Task Queue polled by a Worker that can access the session files.
+
+To resume the interrupted turn, configure these Claude Agent SDK options.
+
+- `resume` selects the Claude Code session.
+- `resume_session_at` resumes from the interrupted prompt.
+- `extra_args={"replay-user-messages": None}` makes the prompt identifier available in the response stream.
+
+The sample sets these options in `ClaudeAgentOptions`.
+
+<!--SNIPSTART python-claude-agent-sdk-session-options-->
+[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
+```python
+            extra_args={"replay-user-messages": None},
+            resume=session_id if prompt_id else None,
+            resume_session_at=prompt_id,
+```
+<!--SNIPEND-->
+
+The following loop uses those options to resume the session after a lost connection.
+
+<!--SNIPSTART python-claude-agent-sdk-tools-ask-->
+[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
+```python
+    async def ask(self, prompt: str) -> str:
+        """Answer the prompt, redoing the turn if the connection is lost."""
+        CONTINUE = "Continue from where you left off."
+        session_id = None  # Claude Code's, once it started
+        prompt_id = None  # The prompt's, once Claude Code saved it
+
+        while True:
+            try:
+                options = self.options(session_id, prompt_id)
+                transport = TemporalTransport(options)
+                async with ClaudeSDKClient(
+                    options=options, transport=transport
+                ) as client:
+                    await client.query(CONTINUE if prompt_id else prompt)
+
+                    async for message in client.receive_response():
+                        if (
+                            isinstance(message, SystemMessage)
+                            and message.subtype == "init"
+                        ):
+                            session_id = message.data["session_id"]
+                        elif (
+                            isinstance(message, UserMessage)
+                            and message.uuid
+                            and not prompt_id
+                        ):
+                            prompt_id = message.uuid
+                        elif isinstance(message, ResultMessage):
+                            return message.result or "\n".join(message.errors or [])
+
+                raise RuntimeError("Claude Code ended the turn without a result")
+
+            except CLIConnectionError:
+                # Redo the turn from the prompt if Claude Code saved it, or start again.
+                pass
+
+```
+<!--SNIPEND-->
+
+:::note
+
+Claude Code repeats the interrupted turn, so tools and hooks may run again and previously approved tool calls may require
+approval again. Make your tools and hooks safe to run more than once.
+
+:::
+
+The communication Activities use a 30-second schedule-to-start timeout by default. You can change it with
+`activity_options` as shown in [the configuration reference](#reference-and-troubleshooting).
+
+## Reference and troubleshooting
+
+**Feature support**
+
+Other Claude Agent SDK features that need no changes for Temporal can be used as usual, subject to the limitations below.
+
+| Feature | Support | Notes |
+| --- | --- | --- |
+| Custom tools | Supported | In-process MCP tool functions run in the Workflow and must be deterministic. |
+| Hooks | Supported | Hook callbacks run in the Workflow and must be deterministic. |
+| Tool approvals | Supported | The `can_use_tool` callback runs in the Workflow and must be deterministic. |
+| Streaming | Supported | Enable partial messages and pass a Workflow Stream topic to `TemporalTransport`. Retried turns can produce repeated output. |
+| Session recovery | Supported | A new connection needs access to the Claude Code session files. Resuming an interrupted turn can repeat tool calls and approvals. |
+| Custom connectors | Supported | `write`, `end_input`, and `close` must be safe to retry and call concurrently. |
+| Remote connections | Supported | Use a custom connector. For OpenTelemetry, pass `TRACEPARENT` and `TRACESTATE` in the Claude Code process environment when starting it. |
+| OpenTelemetry | Supported | Register `OpenTelemetryPlugin` before `ClaudeAgentSDKPlugin` and enable [Claude Code tracing](https://code.claude.com/docs/en/agent-sdk/observability) where it runs. See the [sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/open_telemetry). |
+| Default Claude Agent SDK transport | Not supported in Workflows | Use `TemporalTransport` for Workflow-safe process communication. |
+| `settings` as a file path | Not supported | Pass a JSON object string instead of a file path. |
+
+**Composing with other plugins**
+
+You can register `ClaudeAgentSDKPlugin` alongside other Temporal plugins. Plugins configure the Worker in registration
+order, so check each plugin's documentation for ordering requirements.
+
+**Replay safety**
+
+`TemporalTransport` runs communication with Claude Code through Activities. Temporal records their results in the
+Workflow's Event History and uses those results during replay. Custom tool functions, hooks, and `can_use_tool` callbacks
+run in the Workflow and must be deterministic.
+
+Each turn adds to the Workflow's Event History. For a long conversation, finish the turn, disconnect, and
+[Continue-As-New](/develop/python/workflows/continue-as-new) with the session identifier. In the new Workflow run, set `resume` to that session identifier. See the [agent chat sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/agent_chat).
+
+**Configuration**
+
+| API | Option | Default | Behavior |
+| --- | --- | --- | --- |
+| `ClaudeAgentSDKPlugin` | `connector` | `SubprocessConnector()` | Starts and connects to Claude Code. Provide a custom connector to run it in another environment. |
+| `TemporalTransport` | `options` | Required | Claude Agent SDK options. Pass the same options to the transport and the client. |
+| `TemporalTransport` | `activity_options` | None | Configures Activity options for `connect`, `write`, `read`, `end_input`, or `close`. Use `schedule_to_start_timeout` to detect a lost Worker sooner. |
+| `TemporalTransport` | `stream` | None | A Workflow Stream topic for partial messages. Set `include_partial_messages=True` in the Claude Agent SDK options when providing a topic. |
+
+**Failure behavior**
+
+The transport raises Claude Agent SDK errors in the Workflow. The plugin treats these errors as Workflow failures if
+left unhandled. Other Activity errors are retried according to the Activity retry policy.
+
+| Error | Meaning |
+| --- | --- |
+| `CLIConnectionError` | The connection to Claude Code is unavailable. After a Worker is lost, create a new client and resume the session as described in [Manage the Worker connection to Claude Code](#manage-the-worker-connection-to-claude-code). |
+| `CLINotFoundError` | The Claude Code executable could not be found where the connector runs it. |
+| `ProcessError` | Claude Code exited with an error. |
+| `CLIJSONDecodeError` | Output from Claude Code could not be decoded as JSON. |
+| `ValueError` | The transport configuration is invalid. Set both `include_partial_messages` and `stream`, or neither, and pass `settings` as a JSON object string instead of a file path. |
+
+## Resources
+
+- [Claude Agent SDK plugin source](https://github.com/temporalio/ai-integrations/tree/main/python/claude_agent_sdk)
+- [`temporalio-claude-agent-sdk` on PyPI](https://pypi.org/project/temporalio-claude-agent-sdk/)
+- [Claude Agent SDK documentation](https://code.claude.com/docs/en/agent-sdk/overview)
+- [Claude Agent SDK plugin samples](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin)

@@ -21,11 +21,10 @@ const {
 // Compiled once per function instance.
 const compiledRedirects = compileRedirects(redirects);
 
-// Results whose URL isn't covered by RETRIEVE_URL_ALLOWLIST are dropped. Kapa's
-// Retrieval endpoint ignores source_ids_include, so this is what keeps results
-// from sources the public can't open, such as private GitHub repos, out of the
-// response. The handler refuses to run without it, so a missing variable can't
-// expose them.
+// Results whose URL isn't covered by RETRIEVE_URL_ALLOWLIST are dropped. No
+// source filter is sent to Kapa, so this is what keeps results from sources the
+// public can't open, such as Slack channels, out of the response. The handler
+// refuses to run without it, so a missing variable can't expose them.
 const allowlist = parseAllowlist(parseList(process.env.RETRIEVE_URL_ALLOWLIST));
 
 const UPSTREAM_TIMEOUT_MS = 10_000;
@@ -62,17 +61,17 @@ function log(record) {
 }
 
 async function queryKapa(query) {
-  const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID, KAPA_SOURCE_IDS } = process.env;
+  const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID } = process.env;
   // No top_k: Kapa's Retrieval endpoint rejects values above its maximum of 15,
   // which is also what it returns by default, so there's no room to ask for
   // extra results to cover the ones the allowlist drops.
+  //
+  // No source filter either. A source group filter always adds every source in
+  // Kapa's Global group, which here is all of them. source_ids_include does
+  // filter as of 2026-10-30, but Kapa rejects the whole request when any ID in
+  // it no longer exists, so deleting a source in Kapa failed every request. The
+  // allowlist can't break that way.
   const body = { query, integration_id: KAPA_INTEGRATION_ID };
-  // Source IDs rather than source groups: a group filter always adds every
-  // source in Kapa's Global group, which here is all of them. As of
-  // 2026-10-23 the Retrieval endpoint accepts source_ids_include but ignores
-  // it; RETRIEVE_URL_ALLOWLIST does the filtering until Kapa honors it.
-  const sourceIds = parseList(KAPA_SOURCE_IDS);
-  if (sourceIds.length > 0) body.source_ids_include = sourceIds;
 
   return fetch(`https://api.kapa.ai/query/v1/projects/${KAPA_PROJECT_ID}/retrieval/`, {
     method: 'POST',
@@ -108,9 +107,6 @@ module.exports = async (request, response) => {
     country: header(request, 'x-vercel-ip-country'),
     ip_hash: ipHash(request, process.env.RETRIEVE_LOG_SALT),
     deployment: process.env.VERCEL_ENV || 'development',
-    // How many KAPA_SOURCE_IDS were sent. Kapa ignores them today, so this
-    // doesn't mean the search was limited to those sources.
-    source_ids_sent: parseList(process.env.KAPA_SOURCE_IDS).length,
     fetched_count: null,
     dropped_count: null,
     status: null,
