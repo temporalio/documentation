@@ -50,10 +50,11 @@ request and response data.
 
 Pass interceptors in the `Interceptors` property of [`TemporalClientConnectOptions`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClientConnectOptions.html). Client interceptors modify outbound calls such
 as starting and signaling Workflows. One example is [setting up tracing](/develop/dotnet/platform/observability) to see your call graph of a Workflow.
+`TracingInterceptor` comes from the `Temporalio.Extensions.OpenTelemetry` package.
 
-```csharp
-using Temporalio.Extensions.OpenTelemetry;
-
+<!--SNIPSTART dotnet-interceptors-register-client-->
+[dotnet-sandbox/Client/RegisterInterceptors.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Client/RegisterInterceptors.cs)
+```cs
 var interceptor = new TracingInterceptor();
 
 var client = await TemporalClient.ConnectAsync(new()
@@ -62,6 +63,7 @@ var client = await TemporalClient.ConnectAsync(new()
     Interceptors = [interceptor],
 });
 ```
+<!--SNIPEND-->
 
 The `Interceptors` list can contain multiple interceptors.
 The default behavior for interceptors is to form a chain. A method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
@@ -75,7 +77,9 @@ If you're building a reusable library or want to bundle interceptors with other 
 If your interceptor doesn't affect the Client, you can pass interceptors in the `Interceptors` argument of `TemporalWorkerOptions`.
 Worker interceptors modify inbound and outbound Workflow and Activity calls.
 
-```csharp
+<!--SNIPSTART dotnet-interceptors-register-worker-->
+[dotnet-sandbox/Client/RegisterInterceptors.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Client/RegisterInterceptors.cs)
+```cs
 using var worker = new TemporalWorker(
     client,
     new TemporalWorkerOptions("my-task-queue")
@@ -86,6 +90,7 @@ using var worker = new TemporalWorker(
     .AddWorkflow<SayHelloWorkflow>()
 );
 ```
+<!--SNIPEND-->
 
 ## How to implement Interceptors
 
@@ -98,7 +103,9 @@ To modify outbound Client calls, define a class implementing [`IClientIntercepto
 This example implements an Interceptor on outbound Client calls that sets a certain key in the outbound `headers` field.
 A User ID is context-propagated by being sent in a header field with outbound requests:
 
-```csharp
+<!--SNIPSTART dotnet-interceptors-client-context-propagation-->
+[dotnet-sandbox/Client/CounterInterceptor.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Client/CounterInterceptor.cs)
+```cs
 using Google.Protobuf;
 using Temporalio.Api.Common.V1;
 using Temporalio.Client;
@@ -140,6 +147,7 @@ public class ContextPropagationClientOutboundInterceptor(
     }
 }
 ```
+<!--SNIPEND-->
 
 You can then [register](#register) this interceptor in your client/starter code.
 
@@ -155,7 +163,9 @@ To modify inbound Workflow and Activity calls, define a class implementing [`IWo
 This example demonstrates using an interceptor to measure [Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) and Schedule-To-Close latency.
 Notice how the interceptor wraps the call. It records Schedule-To-Start before `ExecuteActivityAsync`, then records Schedule-To-Close after it completes:
 
-```csharp
+<!--SNIPSTART dotnet-interceptors-worker-activity-metrics-->
+[dotnet-sandbox/Client/SimpleWorkerInterceptor.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Client/SimpleWorkerInterceptor.cs)
+```cs
 using Temporalio.Activities;
 using Temporalio.Worker;
 using Temporalio.Worker.Interceptors;
@@ -205,10 +215,13 @@ public class ActivityMetricsInterceptor(ActivityInboundInterceptor next)
     }
 }
 ```
+<!--SNIPEND-->
 
 Register it on the Worker:
 
-```csharp
+<!--SNIPSTART dotnet-interceptors-register-worker-activity-metrics-->
+[dotnet-sandbox/Client/RegisterInterceptors.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Client/RegisterInterceptors.cs)
+```cs
 using var worker = new TemporalWorker(
     client,
     new TemporalWorkerOptions("my-task-queue")
@@ -221,5 +234,6 @@ using var worker = new TemporalWorker(
     .AddActivity(activities.SayHello)
     .AddWorkflow<SayHelloWorkflow>());
 
-await worker.ExecuteAsync();
+await worker.ExecuteAsync(cancellationToken);
 ```
+<!--SNIPEND-->

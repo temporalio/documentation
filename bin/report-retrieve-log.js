@@ -19,14 +19,14 @@
 //   --since YYYY-MM-DD   First day to include (UTC). Default: 14 days before --until.
 //   --until YYYY-MM-DD   Last day to include (UTC). Default: today.
 //   --include-preview    Also count preview and development deployments.
-//   --include-tests      Also count src=manual-test and src=link-check.
+//   --include-tests      Also count src=manual-test, src=link-check, and src=healthcheck.
 //   --automation REGEX   Also treat callers whose agent or user agent matches
 //                        REGEX (case-insensitive) as automated tools. Repeatable.
 //   --hide-text          Leave out question text and jtb values.
 //   --top N              Rows per table. Default: 15.
 
 const KNOWN_SRC = ['llms', 'docs-page', 'md-page'];
-const TEST_SRC = ['manual-test', 'link-check'];
+const TEST_SRC = ['manual-test', 'link-check', 'healthcheck'];
 const PLACEHOLDER = /^<?\s*(your[-_ ]?name|question|job[-_ ]to[-_ ]be[-_ ]done|agent|name)\s*>?$/i;
 const PLACEHOLDER_QUESTION = /<\s*question\s*>?|^\s*question\s*$/i;
 
