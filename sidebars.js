@@ -1875,6 +1875,7 @@ module.exports = {
       items: [
         { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
         'ai/featured/memory-state-stripe',
+        'ai/featured/agent-gateway-nexus',
       ],
     },
     {
@@ -2190,6 +2191,7 @@ module.exports = {
             id: 'encyclopedia/nexus/nexus',
           },
           items: [
+            'encyclopedia/nexus/choosing-a-nexus-approach',
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/nexus-endpoints',

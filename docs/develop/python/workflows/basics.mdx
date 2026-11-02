@@ -177,7 +177,7 @@ Workflow logic is constrained by [deterministic execution requirements](/workflo
 Each Temporal SDK provides a
 set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
-Workflow code must be deterministic because the Temporal Server may [replay](/develop/python/best-practices/testing-suite#replay) your Workflow to reconstruct its state. This means:
+A Workflow Definition must be deterministic because the Temporal Server may [replay](/develop/python/best-practices/testing-suite#replay) your Workflow to reconstruct its state. This means:
 
 - no threading
 - no randomness

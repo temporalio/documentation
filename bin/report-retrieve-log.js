@@ -42,11 +42,13 @@ const LOW_YIELD = 2;
 const AUTOMATION = [/audit/i, /\bargus\b/i, /inspector/i, /quality-review/i, /readiness/i, /scanner/i, /crawler/i];
 
 // Crawler and agent names that appear anywhere in a user agent string, checked
-// before falling back to the first product token.
+// in order before falling back to the first product token. Claude Code sends
+// "Claude-User (claude-code/...)", so claude-code comes before Claude-User.
 const UA_TOKENS = [
   'ChatGPT-User',
   'OAI-SearchBot',
   'GPTBot',
+  'claude-code',
   'Claude-User',
   'Claude-SearchBot',
   'ClaudeBot',
@@ -57,7 +59,17 @@ const UA_TOKENS = [
   'Bingbot',
   'Applebot',
   'cohere-ai',
+  'OpenCode',
+  'MistralAI-User',
+  'grok-agent',
+  'ExaUser',
+  'Amazonbot',
+  'HeadlessChrome',
 ];
+
+// Agents shown per user agent family in the cross-tab before the rest are
+// summed into one row.
+const AGENTS_PER_UA = 3;
 
 // Rough topic buckets for questions. A question can match more than one.
 const TOPICS = [
@@ -162,6 +174,24 @@ function uaFamily(ua) {
   return ua.split(/[\s/;(]/)[0] || '(missing)';
 }
 
+// Rows for the user agent by agent table: the top user agent families by
+// calls, each followed by its most common agent values and one row summing
+// the rest.
+function uaAgentRows(byUaAgent, { families = 15, perFamily = AGENTS_PER_UA } = {}) {
+  const totals = new Map([...byUaAgent].map(([ua, agents]) => [ua, [...agents.values()].reduce((a, b) => a + b, 0)]));
+  const rows = [];
+  for (const [ua, total] of sortedEntries(totals).slice(0, families)) {
+    const agents = sortedEntries(byUaAgent.get(ua));
+    for (const [agent, n] of agents.slice(0, perFamily)) rows.push([ua, agent, n, pct(n, total)]);
+    const rest = agents.slice(perFamily);
+    if (rest.length) {
+      const n = rest.reduce((a, [, v]) => a + v, 0);
+      rows.push([ua, `(${rest.length} other agents)`, n, pct(n, total)]);
+    }
+  }
+  return rows;
+}
+
 function topicsFor(q) {
   const found = TOPICS.filter(([, re]) => re.test(q || '')).map(([name]) => name);
   return found.length ? found : ['(no topic matched)'];
@@ -217,6 +247,7 @@ function summarize(records, options = {}) {
     bySrc: new Map(),
     byAgent: new Map(),
     byUa: new Map(),
+    byUaAgent: new Map(),
     byTool: new Map(),
     byStatus: new Map(),
     rejects: new Map(),
@@ -246,8 +277,12 @@ function summarize(records, options = {}) {
       s.automatedCalls++;
       count(s.byTool, tool);
     } else {
-      count(s.byAgent, normalizeAgent(r.agent));
-      count(s.byUa, uaFamily(r.ua));
+      const agent = normalizeAgent(r.agent);
+      const ua = uaFamily(r.ua);
+      count(s.byAgent, agent);
+      count(s.byUa, ua);
+      if (!s.byUaAgent.has(ua)) s.byUaAgent.set(ua, new Map());
+      count(s.byUaAgent.get(ua), agent);
     }
     const reason = rejectReason(r);
     if (reason) count(s.rejects, reason);
@@ -325,6 +360,11 @@ function renderMarkdown(s, { since, until, top = 15, hideText = false } = {}) {
   out.push(table(['agent', 'Calls', 'Share'], shareOf(agentCalls)(sortedEntries(s.byAgent).slice(0, top))));
   out.push('Calls per user agent family, same calls:\n');
   out.push(table(['User agent', 'Calls', 'Share'], shareOf(agentCalls)(sortedEntries(s.byUa).slice(0, top))));
+  out.push(
+    'The `agent` values sent with each user agent family, same calls. A user agent names the HTTP client, ' +
+      'so this shows which agents call through `curl`, a script, or a browser-style string:\n'
+  );
+  out.push(table(['User agent', 'agent', 'Calls', 'Share of user agent'], uaAgentRows(s.byUaAgent, { families: top })));
   out.push(`Automated audit tools (${s.automatedCalls} calls, ${pct(s.automatedCalls, s.calls)} of all calls):\n`);
   out.push(table(['Tool', 'Calls'], sortedEntries(s.byTool).slice(0, top)));
 
@@ -510,6 +550,7 @@ module.exports = {
   renderMarkdown,
   summarize,
   topicsFor,
+  uaAgentRows,
   uaFamily,
   yieldBucket,
   yieldOf,

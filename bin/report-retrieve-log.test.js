@@ -18,6 +18,7 @@ const {
   renderMarkdown,
   summarize,
   topicsFor,
+  uaAgentRows,
   uaFamily,
   yieldBucket,
   yieldOf,
@@ -111,6 +112,14 @@ describe('uaFamily', () => {
     assert.strictEqual(
       uaFamily('Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot'),
       'ChatGPT-User'
+    );
+  });
+
+  it('tells Claude Code from other Claude-User fetches', () => {
+    assert.strictEqual(uaFamily('Claude-User (claude-code/2.1.312; +https://support.anthropic.com/)'), 'claude-code');
+    assert.strictEqual(
+      uaFamily('Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Claude-User/1.0; +claude-user@anthropic.com)'),
+      'Claude-User'
     );
   });
 
@@ -289,12 +298,38 @@ describe('summarize', () => {
     assert.strictEqual(s.placeholderQuestions, 1);
   });
 
+  it('counts agents per user agent family, leaving out automated tools', () => {
+    assert.strictEqual(s.byUaAgent.get('claude-code').get('claude-code'), 4);
+    assert.strictEqual(s.byUaAgent.get('claude-code').get('(missing)'), 2);
+    assert.strictEqual(s.byUaAgent.get('audit-bot'), undefined);
+  });
+
   it('counts jtb, missing src and agent, callers, and latency', () => {
     assert.strictEqual(s.jtbFilled, 1);
     assert.strictEqual(s.missingBoth, 1);
     assert.strictEqual(s.callers.get('a'), 2);
     assert.strictEqual(s.latencies.length, 6);
     assert.strictEqual(s.byStatus.get(400), 2);
+  });
+});
+
+describe('uaAgentRows', () => {
+  const byUaAgent = summarize([
+    ...['codex', 'codex', 'codex', 'gemini-cli', 'cursor', 'aider', null].map((agent) => record({ ua: 'curl/8.7.1', agent })),
+    record({ ua: 'node', agent: 'my-agent' }),
+  ]).byUaAgent;
+
+  it('lists families by calls and sums agents past the limit', () => {
+    assert.deepStrictEqual(uaAgentRows(byUaAgent, { perFamily: 2 }), [
+      ['curl', 'codex', 3, '43%'],
+      ['curl', '(missing)', 1, '14%'],
+      ['curl', '(3 other agents)', 3, '43%'],
+      ['node', 'my-agent', 1, '100%'],
+    ]);
+  });
+
+  it('limits the number of families', () => {
+    assert.ok(uaAgentRows(byUaAgent, { families: 1 }).every(([ua]) => ua === 'curl'));
   });
 });
 
@@ -311,6 +346,7 @@ describe('renderMarkdown', () => {
       assert.ok(md.includes(heading), heading);
     }
     assert.ok(md.includes('| Gap question | 1 | 0.0 | 100% |'));
+    assert.ok(md.includes('| claude-code | claude-code | 2 | 100% |'));
   });
 
   it('never leaves more than one blank line in a row', () => {

@@ -1,8 +1,8 @@
 const crypto = require('crypto');
-const { put } = require('@vercel/blob');
 const { waitUntil } = require('@vercel/functions');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
+const { header, ipHash, putRecord } = require('./_log');
 const {
   LIMITS,
   USAGE,
@@ -49,19 +49,6 @@ function send(response, status, body) {
   response.status(status).send(body === undefined ? undefined : JSON.stringify(body));
 }
 
-function header(request, name) {
-  const value = request.headers[name];
-  return (Array.isArray(value) ? value[0] : value) || null;
-}
-
-// A salted hash, so repeat callers can be grouped without storing their IP.
-function ipHash(request) {
-  const ip = header(request, 'x-real-ip') || (header(request, 'x-forwarded-for') || '').split(',')[0].trim();
-  const salt = process.env.RETRIEVE_LOG_SALT;
-  if (!ip || !salt) return null;
-  return crypto.createHash('sha256').update(`${salt}:${ip}`).digest('hex').slice(0, 16);
-}
-
 // One JSON line in the runtime logs for live tailing, and one Blob per request
 // for the readout, since runtime logs expire before the experiment ends. Blob
 // writes happen after the response is sent, and a failed write is only logged.
@@ -71,13 +58,7 @@ function log(record) {
 
   const day = record.ts.slice(0, 10);
   const pathname = `retrieve-log/${day}/${record.ts}-${crypto.randomBytes(4).toString('hex')}.json`;
-  waitUntil(
-    put(pathname, JSON.stringify(record), {
-      access: 'private',
-      addRandomSuffix: false,
-      contentType: 'application/json',
-    }).catch((error) => console.error(`retrieve: Blob write failed: ${error.message}`))
-  );
+  waitUntil(putRecord(pathname, record).catch((error) => console.error(`retrieve: Blob write failed: ${error.message}`)));
 }
 
 async function queryKapa(query) {
@@ -125,7 +106,7 @@ module.exports = async (request, response) => {
     agent: parsed.params ? parsed.params.agent : raw('agent'),
     ua: header(request, 'user-agent'),
     country: header(request, 'x-vercel-ip-country'),
-    ip_hash: ipHash(request),
+    ip_hash: ipHash(request, process.env.RETRIEVE_LOG_SALT),
     deployment: process.env.VERCEL_ENV || 'development',
     // How many KAPA_SOURCE_IDS were sent. Kapa ignores them today, so this
     // doesn't mean the search was limited to those sources.
