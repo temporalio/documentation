@@ -19,6 +19,7 @@
  *   - <RelatedReadList>           → markdown link list from readList prop
  *   - <SdkGuideLinks>             → markdown link list, one per SDK (path/filter/title or links prop)
  *   - <ToolTipTerm term="x" />    → inline replacement with the term text
+ *   - <ForOs os="x">              → every OS variant kept, each with a bold OS label
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <WalkthroughDemo> + <WalkthroughStep>/<WalkthroughCommand>/
@@ -42,6 +43,7 @@ import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
 import { guidesGridToMarkdown } from "./component-handlers/guides-grid.mjs";
+import { forOsInlineToMarkdown, forOsBlockLineToMarkdown } from "./component-handlers/for-os.mjs";
 import {
   extractQuotedProp,
   renderWalkthroughStep,
@@ -76,6 +78,7 @@ export const COMPONENT_REGISTRY = {
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
+  ForOs: "for-os",
   ReleaseNoteHeader: "release-note-header",
   CallToAction: "call-to-action",
   SetupSteps: "setup-steps",
@@ -372,6 +375,9 @@ export function applyInlineTransforms(line) {
     /<ToolTipTerm\b[^>]*>([\s\S]*?)<\/ToolTipTerm>/g,
     (m, inner) => extractProp(m, "term") || inner
   );
+
+  // Inline <ForOs os="x">...</ForOs> → (**OS:** ...), keeping every variant
+  out = forOsInlineToMarkdown(out);
 
   // Collapse a line left whitespace-only (e.g. after a comment was stripped)
   // to a true blank line — an indented blank could otherwise read as code.
@@ -1081,7 +1087,8 @@ export function transformMdx(mdxContent, options = {}) {
         // since the title is what the rendered page shows.
         const icon = label.split(' ')[0];
         outputLines.push(admonitionTitle ? `> **${icon} ${admonitionTitle}:**` : `> **${label}:**`);
-        for (const al of admonitionLines) {
+        for (const raw of admonitionLines) {
+          const al = forOsBlockLineToMarkdown(raw) ?? raw;
           outputLines.push(al.trim() === "" ? ">" : `> ${applyInlineTransforms(al)}`);
         }
         outputLines.push("");
@@ -1342,6 +1349,16 @@ export function transformMdx(mdxContent, options = {}) {
       demoStepCounter = 0;
       demoRenderCtx.previousPhase = null;
       continue;
+    }
+
+    // --- ForOs block wrapper → bold OS label, children pass through ---
+    if (state === State.NORMAL) {
+      const forOsLine = forOsBlockLineToMarkdown(line);
+      if (forOsLine !== null) {
+        outputLines.push(forOsLine);
+        outputLines.push("");
+        continue;
+      }
     }
 
     // --- ZoomPanPinch / transparent wrappers — strip tags, keep content ---

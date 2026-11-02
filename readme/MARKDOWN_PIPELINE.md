@@ -152,6 +152,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `RelatedReadContainer` / `RelatedReadItem` | `related-read-container` / `related-read-item` | `**Related:**` Markdown link list |
 | `RelatedReadList` | `related-read` | Link list from the `readList` prop |
 | `ToolTipTerm` | `tooltip-term` | Inline: replaced with the bare `term` text |
+| `ForOs` | `for-os` | Every OS variant kept. Block: a `**Windows:**` label line before the children. Inline: adjacent variants grouped as `(**Windows:** PowerShell; **macOS and Linux:** terminal)` |
 | `SetupSteps` / `SetupStep` | `setup-steps` / `setup-step` | Prose children plus code extracted from the `code={…}` JSX prop or `<CodeSnippet>` children |
 | `JsonTable` | `json-table` | Markdown table resolved from the referenced `static/json/*.json` |
 | `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
