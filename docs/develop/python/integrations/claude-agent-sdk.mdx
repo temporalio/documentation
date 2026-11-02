@@ -236,9 +236,16 @@ The following loop uses those options to resume the session after a lost connect
                     await client.query(CONTINUE if prompt_id else prompt)
 
                     async for message in client.receive_response():
-                        if isinstance(message, SystemMessage) and message.subtype == "init":
+                        if (
+                            isinstance(message, SystemMessage)
+                            and message.subtype == "init"
+                        ):
                             session_id = message.data["session_id"]
-                        elif isinstance(message, UserMessage) and message.uuid and not prompt_id:
+                        elif (
+                            isinstance(message, UserMessage)
+                            and message.uuid
+                            and not prompt_id
+                        ):
                             prompt_id = message.uuid
                         elif isinstance(message, ResultMessage):
                             return message.result or "\n".join(message.errors or [])
