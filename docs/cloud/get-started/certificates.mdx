@@ -178,22 +178,25 @@ This command creates a self-signed CA certificate named `CertAuth.crt` and priva
 
 Set the Namespace Name as the common name for the end-entity certificate:
 
-<Tabs>
+<Tabs groupId="os" queryString>
   <TabItem value="macos" label="macOS" default>
-
-For Linux or macOS:
 
 ```command
 export NAMESPACE_NAME=your-namespace
 ```
 
 </TabItem>
-    <TabItem value="windows" label="Windows" default>
-
-For Windows:
+  <TabItem value="windows" label="Windows">
 
 ```command
 set NAMESPACE_NAME=your-namespace
+```
+
+</TabItem>
+  <TabItem value="linux" label="Linux">
+
+```command
+export NAMESPACE_NAME=your-namespace
 ```
 
 </TabItem>
@@ -205,9 +208,29 @@ Replace `your-namespace` with the name of your Temporal Cloud namespace.
 
 Create and sign an end-entity certificate with a common name equal to the Namespace Name:
 
+<Tabs groupId="os" queryString>
+  <TabItem value="macos" label="macOS" default>
+
 ```command
 step certificate create ${NAMESPACE_NAME} ${NAMESPACE_NAME}.crt ${NAMESPACE_NAME}.key --ca CertAuth.crt --ca-key CertAuth.key --no-password --insecure --not-after 8760h
 ```
+
+</TabItem>
+  <TabItem value="windows" label="Windows">
+
+```command
+step certificate create %NAMESPACE_NAME% %NAMESPACE_NAME%.crt %NAMESPACE_NAME%.key --ca CertAuth.crt --ca-key CertAuth.key --no-password --insecure --not-after 8760h
+```
+
+</TabItem>
+  <TabItem value="linux" label="Linux">
+
+```command
+step certificate create ${NAMESPACE_NAME} ${NAMESPACE_NAME}.crt ${NAMESPACE_NAME}.key --ca CertAuth.crt --ca-key CertAuth.key --no-password --insecure --not-after 8760h
+```
+
+</TabItem>
+</Tabs>
 
 This command creates an end-entity certificate (`your-namespace.crt`) and private key (`your-namespace.key`) that is signed by your CA (`CertAuth`).
 
@@ -216,9 +239,29 @@ This command creates an end-entity certificate (`your-namespace.crt`) and privat
 If you are using the Temporal Java SDK, you will need to convert the PKCS1 file format to PKCS8 file format. Export the
 end-entity's private key to a PKCS8 file:
 
+<Tabs groupId="os" queryString>
+  <TabItem value="macos" label="macOS" default>
+
 ```command
 openssl pkcs8 -topk8 -inform PEM -outform PEM -in ${NAMESPACE_NAME}.key -out ${NAMESPACE_NAME}.pkcs8.key -nocrypt
 ```
+
+</TabItem>
+  <TabItem value="windows" label="Windows">
+
+```command
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in %NAMESPACE_NAME%.key -out %NAMESPACE_NAME%.pkcs8.key -nocrypt
+```
+
+</TabItem>
+  <TabItem value="linux" label="Linux">
+
+```command
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in ${NAMESPACE_NAME}.key -out ${NAMESPACE_NAME}.pkcs8.key -nocrypt
+```
+
+</TabItem>
+</Tabs>
 
 ##### 5. Use the Certificates with Temporal Cloud
 

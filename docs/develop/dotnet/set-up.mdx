@@ -68,7 +68,7 @@ Build the solution:
 
   <SetupStep code={
     <>
-      <Tabs>
+      <Tabs groupId="os" queryString>
         <TabItem value="macos" label="macOS" default>
           <p>Install the Temporal CLI using Homebrew:</p>
           <CodeSnippet language="bash">{`brew install temporal`}</CodeSnippet>
