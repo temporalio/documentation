@@ -25,6 +25,7 @@
     "check:redirects": "node ./bin/validate-redirects.js",
     "check:py-samples": "node ./bin/check-python-samples.js",
     "check:retrieve-links": "node ./bin/check-retrieve-links.js",
+    "check:retrieve-health": "node ./bin/check-retrieve-health.js",
     "check:ts-samples": "node ./bin/check-typescript-samples.js",
     "report:retrieve-log": "node ./bin/report-retrieve-log.js",
     "report:snipsync-coverage": "node ./bin/report-snipsync-coverage.js",
