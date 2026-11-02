@@ -68,6 +68,17 @@ workercontroller.enabled:
       namespace: 'your-namespace'
 ```
 
+A Namespace runs at most 100 WCIs by default, one for each Worker Deployment Version that has a compute provider. To
+change the limit, set `workercontroller.maxInstances`. It accepts the same `constraints` section, so you can raise it
+for one Namespace:
+
+```yaml
+workercontroller.maxInstances:
+  - value: 200
+    constraints:
+      namespace: 'your-namespace'
+```
+
 The Temporal Service watches the dynamic config file for changes and applies updates without a restart.
 
 ## Configure AWS credentials {/* #configure-aws-credentials */}
