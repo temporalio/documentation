@@ -20,7 +20,9 @@ Only one Dynamic Activity can be present on a Worker.
 The Activity Definition must then accept a single argument of type `Temporalio.Converters.IRawValue[]`.
 The [PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Activities.ActivityExecutionContext.html#Temporalio_Activities_ActivityExecutionContext_PayloadConverter) property on the `ActivityExecutionContext` is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
 
-```csharp
+<!--SNIPSTART dotnet-dynamic-activity-->
+[dotnet-sandbox/activities/DynamicActivities/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/DynamicActivities/MyActivities.cs)
+```cs
 public class MyActivities
 {
     [Activity(Dynamic = true)]
@@ -31,3 +33,4 @@ public class MyActivities
     }
 }
 ```
+<!--SNIPEND-->
