@@ -74,7 +74,7 @@ For supported syntax, see [`net.ParseIP`](https://pkg.go.dev/net#ParseIP).
 ### metrics
 
 The `metrics` section configures the metrics the Temporal Service emits.
-Configure a provider by using its name as the key: [`statsd`](#statsd), [`prometheus`](#prometheus), or [`m3`](#m3).
+Configure a provider by using its name as the key: [`statsd`](#statsd) or [`prometheus`](#prometheus).
 
 For the metrics the Temporal Service emits, see the [Temporal Service metrics reference](/references/service-metrics).
 
@@ -114,15 +114,6 @@ Temporal does not support `statsd` natively.
 - `listenAddress`: The address the Temporal Service listens on for Prometheus scrape requests.
 - `handlerPath`: The HTTP path of the metrics handler.
   - Default: `/metrics`.
-
-#### m3
-
-- `hostPort`: The `host:port` of the M3 server.
-- `service`: The service tag that this client emits.
-- `queue`: The M3 reporter queue size.
-  - Default: 4k.
-- `packetSize`: The maximum M3 reporter packet size.
- - Default: 32k.
 
 ### pprof
 
@@ -440,15 +431,12 @@ clusterMetadata:
       enabled: true
       initialFailoverVersion: 0
       rpcAddress: '127.0.0.1:7233'
-  #replicationConsumer:
-  #type: kafka
 ```
 
 - `currentClusterName`: **Required.** The name of the local cluster.
   You can't change this value after the first run. The Temporal Service ignores any later changes.
 - `enableGlobalNamespace`: Boolean. Enables Global Namespaces.
   - Default: `false`.
-- `replicationConsumer`: How the cluster consumes replication tasks. Supported values for `type` are `kafka` and `rpc`.
 - `failoverVersionIncrement`: The amount each cluster's failover version increases by on failover.
 - `masterClusterName`: The name of the primary cluster.
   Only the primary cluster can register or update Namespaces. Any cluster can fail over a Namespace.
@@ -522,7 +510,7 @@ It has a `history` subsection and a `visibility` subsection, which each support 
   - `disabled`: Also set `enableRead` to `false`, and set `state` to `disabled` in `namespaceDefaults` with no `provider` or `URI`.
 - `enableRead`: Boolean. When `true`, clients can read archived data.
 - `provider`: Where to store archived data.
-  Supported providers are `filestore`, `gstorage`, `s3`, and custom providers.
+  Supported providers are `filestore`, `gstorage`, `s3store`, and custom providers.
   The default configuration uses `filestore`.
 
 The following example enables Archival:

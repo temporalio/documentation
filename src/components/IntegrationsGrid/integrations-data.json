@@ -45,6 +45,15 @@
     "href": "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#typescript"
   },
   {
+    "name": "Claude Agent SDK",
+    "description": "Drive Claude Code agents from durable Temporal Workflows with the Claude Agent SDK.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/claude-agent-sdk"
+  },
+  {
     "name": "Elastic",
     "description": "Export Temporal Cloud metrics to Elastic with the Elastic Managed Temporal integration and get OOTB dashboards, alerts and slo templates.",
     "tags": [
@@ -135,6 +144,24 @@
     "href": "https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-temporal/"
   },
   {
+    "name": "Laminar",
+    "description": "Trace Temporal Workflows, Activities, and the LLM calls inside them with Laminar.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "https://laminar.sh/docs/integrations/temporal"
+  },
+  {
+    "name": "Laminar",
+    "description": "Trace Temporal Workflows, Activities, and the LLM calls inside them with Laminar.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "TypeScript",
+    "href": "https://laminar.sh/docs/integrations/temporal"
+  },
+  {
     "name": "LangGraph",
     "description": "Run LangGraph agent graphs as durable, resumable Temporal Workflows.",
     "tags": [
@@ -177,7 +204,16 @@
       "Agent framework"
     ],
     "sdk": "TypeScript",
-    "href": "https://mastra.ai/guides/deployment/temporal"
+    "href": "https://mastra.ai/integrations/deploy/temporal"
+  },
+  {
+    "name": "Model Context Protocol (MCP)",
+    "description": "Call MCP tools, prompts, and resources from Python Workflows as durable Temporal Activities.",
+    "tags": [
+      "Framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/mcp"
   },
   {
     "name": "New Relic",
@@ -268,7 +304,7 @@
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "https://ai.pydantic.dev/durable_execution/temporal/"
+    "href": "https://pydantic.dev/docs/ai/capabilities/durable_execution/temporal/"
   },
   {
     "name": "Rails",
@@ -341,5 +377,68 @@
       "Temporal Cloud"
     ],
     "href": "https://docs.vantage.sh/connecting_temporal/"
+  },
+  {
+    "name": "xMemory",
+    "description": "Store and recall agent memory across Workflow Executions with xMemory.",
+    "tags": [
+      "Agent memory"
+    ],
+    "sdk": "Python",
+    "href": "https://xmemory.ai/temporal/#quickstart--python"
+  },
+  {
+    "name": "xMemory",
+    "description": "Store and recall agent memory across Workflow Executions with xMemory.",
+    "tags": [
+      "Agent memory"
+    ],
+    "sdk": "TypeScript",
+    "href": "https://xmemory.ai/temporal/#quickstart--typescript"
+  },
+  {
+    "name": "OpenRouter",
+    "description": "Call hundreds of models through OpenRouter from Temporal Activities, with durable retries, cost tracking, and budgets.",
+    "tags": [
+      "Model gateway"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/openrouter"
+  },
+  {
+    "name": "OpenRouter",
+    "description": "Call hundreds of models through OpenRouter from Temporal Activities, with durable retries and cost tracking.",
+    "tags": [
+      "Model gateway"
+    ],
+    "sdk": "TypeScript",
+    "href": "https://github.com/temporalio/samples-typescript/tree/main/openrouter"
+  },
+  {
+    "name": "Baseten",
+    "description": "Run OpenAI Agents SDK agents on open-weight models served by Baseten, with every model call as a durable Temporal Activity.",
+    "tags": [
+      "Model provider"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/baseten"
+  },
+  {
+    "name": "Fireworks AI",
+    "description": "Run OpenAI Agents SDK agents on open-weight models served by Fireworks AI, with every model call as a durable Temporal Activity.",
+    "tags": [
+      "Model provider"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/fireworks-ai"
+  },
+  {
+    "name": "Together AI",
+    "description": "Run OpenAI Agents SDK agents on open-weight models served by Together AI, with every model call as a durable Temporal Activity.",
+    "tags": [
+      "Model provider"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/together-ai"
   }
 ]

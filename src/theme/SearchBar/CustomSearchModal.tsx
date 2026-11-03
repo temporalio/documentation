@@ -203,6 +203,7 @@ export function CustomSearchModal({
               'url_without_anchor',
               'type',
               'sdk_language',
+              'section_title',
             ]}
           />
           <div className="custom-search-header">

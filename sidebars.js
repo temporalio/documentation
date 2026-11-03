@@ -29,6 +29,7 @@ const developDotnetCategory = {
           'develop/dotnet/workflows/timers',
           'develop/dotnet/workflows/dynamic-workflow',
           'develop/dotnet/workflows/versioning',
+          'develop/dotnet/workflows/workflow-streams',
         ],
       },
       {
@@ -250,7 +251,7 @@ const developGoCategory = {
       },
       {
         type: 'category',
-        label: 'Temporal Nexus',
+        label: 'Nexus',
         collapsed: true,
         link: {
           type: 'doc',
@@ -423,6 +424,28 @@ const developJavaCategory = {
           'develop/java/nexus/quickstart',
           'develop/java/nexus/feature-guide',
           'develop/java/nexus/standalone-operations',
+          {
+            type: 'category',
+            label: 'Microservice Development Walkthrough',
+            collapsed: true,
+            link: {
+              type: 'doc',
+              id: 'develop/java/nexus/development-walkthrough/index',
+            },
+            items: [
+              'develop/java/nexus/development-walkthrough/define-the-data-contract',
+              'develop/java/nexus/development-walkthrough/generate-code',
+              'develop/java/nexus/development-walkthrough/choose-backing-implementation',
+              'develop/java/nexus/development-walkthrough/implement-the-service',
+              'develop/java/nexus/development-walkthrough/publish-in-nexus',
+              'develop/java/nexus/development-walkthrough/call-the-service',
+              'develop/java/nexus/development-walkthrough/add-messaging',
+              'develop/java/nexus/development-walkthrough/send-messages',
+              'develop/java/nexus/development-walkthrough/add-a-standalone-activity',
+              'develop/java/nexus/development-walkthrough/call-the-standalone-activity',
+              'develop/java/nexus/development-walkthrough/debugging-and-tips',
+            ],
+          },
         ],
       },
       {
@@ -722,13 +745,19 @@ const developPythonCategory = {
         },
         items: [
           'develop/python/integrations/arize',
+          'develop/python/integrations/baseten',
+          'develop/python/integrations/claude-agent-sdk',
           'develop/python/integrations/deepagents',
+          'develop/python/integrations/fireworks-ai',
           'develop/python/integrations/google-adk',
           'develop/python/integrations/google-genai',
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
+          'develop/python/integrations/mcp',
           'develop/python/integrations/openai-agents',
+          'develop/python/integrations/openrouter',
           'develop/python/integrations/strands-agents',
+          'develop/python/integrations/together-ai',
         ],
       },
     ],
@@ -1212,10 +1241,8 @@ module.exports = {
           },
           items: [
             'evaluate/cloud/security',
-            'evaluate/cloud/service-availability',
             'evaluate/cloud/regions',
             'evaluate/cloud/limits',
-            'evaluate/cloud/sla',
             'evaluate/cloud/pricing',
             'evaluate/cloud/actions',
             'evaluate/cloud/support',
@@ -1300,7 +1327,7 @@ module.exports = {
         {
           type: 'category',
           label: 'Account access',
-          collapsed: false,
+          collapsed: true,
           link: {
             type: 'doc',
             id: 'cloud/manage-access/index',
@@ -1314,6 +1341,19 @@ module.exports = {
             'cloud/manage-access/saml',
             'cloud/manage-access/scim',
             'cloud/manage-access/permissions-reference',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Audit Logging',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/audit-logs',
+          },
+          items: [
+            'cloud/audit-logs-aws',
+            'cloud/audit-logs-gcp', // pre-release
           ],
         },
         {
@@ -1332,6 +1372,32 @@ module.exports = {
         },
         {
           type: 'category',
+          label: 'CLI (tcld)',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/tcld/index',
+          },
+          items: [
+            'cloud/tcld/account',
+            'cloud/tcld/apikey',
+            'cloud/tcld/connectivity-rule',
+            'cloud/tcld/feature',
+            'cloud/tcld/generate-certificates',
+            'cloud/tcld/login',
+            'cloud/tcld/logout',
+            'cloud/tcld/migration',
+            'cloud/tcld/namespace',
+            'cloud/tcld/nexus',
+            'cloud/tcld/request',
+            'cloud/tcld/service-account',
+            'cloud/tcld/user',
+            'cloud/tcld/user-group',
+            'cloud/tcld/version',
+          ],
+        },
+        {
+          type: 'category',
           label: 'Connectivity',
           collapsed: true,
           link: {
@@ -1342,6 +1408,20 @@ module.exports = {
             'cloud/connectivity/aws-connectivity',
             'cloud/connectivity/gcp-connectivity',
             'cloud/connectivity/ip-addresses',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Export',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/export',
+          },
+          items: [
+            'cloud/aws-export-s3',
+            'cloud/gcp-export-gcs',
+            'cloud/azure-export-blob-storage'
           ],
         },
         {
@@ -1371,7 +1451,51 @@ module.exports = {
             'cloud/high-availability/ha-connectivity',
           ],
         },
-        'cloud/rpo-rto',
+        {
+          type: 'category',
+          label: 'Migrate',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/migrate/index',
+          },
+          items: [
+            'cloud/migrate/automated',
+            'cloud/migrate/manual',
+            'cloud/migrate/between-regions-or-cloud-providers',
+            'cloud/migrate/estimate-actions',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Monitor',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/monitor/index',
+          },
+          items: [
+            {
+              type: 'category',
+              label: 'Set up Cloud metrics',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/metrics/openmetrics/index',
+              },
+              items: [
+                'cloud/metrics/openmetrics/metrics-integrations',
+                'cloud/metrics/openmetrics/api-reference',
+                'cloud/metrics/openmetrics/metrics-reference',
+                'cloud/metrics/openmetrics/faq',
+              ],
+            },
+            'cloud/metrics/sdk-metrics-setup',
+            'cloud/worker-health',
+            'cloud/service-health',
+            'cloud/notifications',
+          ],
+        },
         {
           type: 'category',
           label: 'Temporal Nexus',
@@ -1388,132 +1512,12 @@ module.exports = {
             'cloud/nexus/pricing',
           ],
         },
-        {
-          type: 'category',
-          label: 'Migrate',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/migrate/index',
-          },
-          items: [
-            'cloud/migrate/automated',
-            'cloud/migrate/manual',
-            'cloud/migrate/migrate-within-cloud',
-            'cloud/migrate/estimate-actions',
-          ],
-        },
-        'cloud/projects',
         'cloud/capacity-modes',
-        {
-          type: 'category',
-          label: 'Monitor',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/monitor/index',
-          },
-          items: [
-            {
-              type: 'category',
-              label: 'Set up metrics',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'cloud/metrics/index',
-              },
-              items: [
-                {
-                  type: 'category',
-                  label: 'Set up Cloud metrics',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'cloud/metrics/openmetrics/index',
-                  },
-                  items: [
-                    'cloud/metrics/openmetrics/metrics-integrations',
-                    'cloud/metrics/openmetrics/migration-guide',
-                    'cloud/metrics/openmetrics/api-reference',
-                    'cloud/metrics/openmetrics/metrics-reference',
-                  ],
-                },
-                'cloud/metrics/sdk-metrics-setup',
-                {
-                  type: 'category',
-                  label: 'Legacy PromQL endpoint (deprecated)',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'cloud/metrics/promql',
-                  },
-                  items: [
-                    'cloud/metrics/general-setup',
-                    'cloud/metrics/reference',
-                    'cloud/metrics/prometheus-grafana'
-                  ],
-                },
-              ],
-            },
-            'cloud/worker-health',
-            'cloud/service-health',
-            'cloud/notifications',
-          ],
-        },
         'cloud/operation-api',
+        'cloud/rpo-rto',
+        'cloud/projects',
         'cloud/terraform-provider',
-        {
-          type: 'category',
-          label: 'Export',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/export',
-          },
-          items: [
-            'cloud/aws-export-s3',
-            'cloud/gcp-export-gcs'
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Audit Logging',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/audit-logs',
-          },
-          items: [
-            'cloud/audit-logs-aws',
-            'cloud/audit-logs-gcp', // pre-release
-          ],
-        },
-        {
-          type: 'category',
-          label: 'CLI (tcld)',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'cloud/tcld/index',
-          },
-          items: [
-            'cloud/tcld/account',
-            'cloud/tcld/apikey',
-            'cloud/tcld/connectivity-rule',
-            'cloud/tcld/feature',
-            'cloud/tcld/generate-certificates',
-            'cloud/tcld/login',
-            'cloud/tcld/logout',
-            'cloud/tcld/migration',
-            'cloud/tcld/namespace',
-            'cloud/tcld/nexus',
-            'cloud/tcld/request',
-            'cloud/tcld/service-account',
-            'cloud/tcld/user',
-            'cloud/tcld/user-group',
-            'cloud/tcld/version',
-          ],
-        },
+        'cloud/slo',
       ],
     },
     {
@@ -1657,7 +1661,9 @@ module.exports = {
           items: [
             'production-deployment/temporal-proxy/configure',
             'production-deployment/temporal-proxy/encrypt-payloads',
+            'production-deployment/temporal-proxy/codec-server',
             'production-deployment/temporal-proxy/deploy-kubernetes',
+            'production-deployment/temporal-proxy/sizing-and-performance',
           ],
         },
       ],
@@ -1843,11 +1849,35 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Guides',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'guides/index',
+      },
+      items: [
+        'guides/durable-agent-on-agentcore',
+        'guides/entity-pattern-loyalty-points',
+        'guides/recover-without-restart',
+        'guides/route-specialized-workloads',
+        'guides/worker-execution-affinity',
+        'guides/temporary-rate-limit-increases',
+        'guides/reliable-document-approvals',
+        'guides/rate-limit-downstream-apis',
+        'guides/durable-gaming-sessions',
+        'guides/lock-shared-resources',
+        'guides/celery-to-standalone-activity',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Durable AI',
       collapsed: true,
       link: { type: 'doc', id: 'ai/index' },
       items: [
         { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
+        'ai/featured/memory-state-stripe',
+        'ai/featured/agent-gateway-nexus',
       ],
     },
     {
@@ -1861,18 +1891,18 @@ module.exports = {
       items: [
         'references/api-reference',
         'references/service-metrics',
-        'references/commands',
+        'references/sdk-metrics',
+        'references/client-environment-configuration',
         'references/service-configuration',
         'references/dynamic-configuration',
-        'references/errors',
-        'references/events',
-        'references/client-environment-configuration',
-        'references/failures',
-        'references/operation-list',
-        'references/sdk-metrics',
-        'references/server-options',
         'references/web-ui-configuration',
         'references/web-ui-environment-variables',
+        'references/server-options',
+        'references/commands',
+        'references/workflow-task-errors',
+        'references/events',
+        'references/failures',
+        'references/operation-list',
       ],
     },
     {
@@ -2163,6 +2193,7 @@ module.exports = {
             id: 'encyclopedia/nexus/nexus',
           },
           items: [
+            'encyclopedia/nexus/choosing-a-nexus-approach',
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/nexus-endpoints',
@@ -2223,28 +2254,8 @@ module.exports = {
         'demos/standalone-activities',
         'demos/serverless-workers',
         'demos/activity-retry-simulator',
+        'demos/worker-tuning-simulator',
         'demos/priority-fairness-walkthrough',
-      ],
-    },    {
-      type: 'category',
-      label: 'Guides',
-      collapsed: true,
-      link: {
-        type: 'doc',
-        id: 'guides/index',
-      },
-      items: [
-        'guides/durable-agent-on-agentcore',
-        'guides/entity-pattern-loyalty-points',
-        'guides/recover-without-restart',
-        'guides/route-specialized-workloads',
-        'guides/worker-execution-affinity',
-        'guides/temporary-rate-limit-increases',
-        'guides/reliable-document-approvals',
-        'guides/rate-limit-downstream-apis',
-        'guides/durable-gaming-sessions',
-        'guides/lock-shared-resources',
-        'guides/celery-to-standalone-activity',
       ],
     },
     'integrations',

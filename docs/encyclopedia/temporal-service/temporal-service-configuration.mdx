@@ -136,12 +136,12 @@ Currently, we test with the following Prometheus and Grafana versions:
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
 
-Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
+Temporal Cloud exports metrics through an [OpenMetrics endpoint](/cloud/metrics/openmetrics), which an observability platform can scrape and store.
 
 For details on Cloud metrics and setup, see the following:
 
-- [Temporal Cloud metrics reference](/cloud/metrics/)
-- [Set up Grafana with Temporal Cloud observability to view metrics](/cloud/metrics/prometheus-grafana#grafana-data-source-configuration)
+- [Temporal Cloud metrics reference](/cloud/metrics/openmetrics/metrics-reference)
+- [Connect an observability tool](/cloud/metrics/openmetrics/metrics-integrations)
 
 On the self-hosted Temporal Service, expose Prometheus endpoints in your Temporal Service configuration and configure Prometheus to scrape metrics from the endpoints.
 You can then set up your observability platform (such as Grafana) to use Prometheus as a data source.

@@ -2,11 +2,13 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const {
   compileRedirects,
   findRedirect,
   followRedirects,
+  markdownRedirect,
   normalizePath,
   sampleSource,
   substitute,
@@ -83,6 +85,78 @@ describe('redirect matching (Vercel path-to-regexp)', () => {
     const result = followRedirects('/a', rules);
     assert.strictEqual(result.final, '/c');
     assert.strictEqual(result.chain.length, 2);
+  });
+});
+
+describe('markdownRedirect', () => {
+  const rules = compileRedirects([
+    { source: '/old', destination: '/new', permanent: true },
+    { source: '/a', destination: '/b' },
+    { source: '/b', destination: '/c' },
+    { source: '/anchor', destination: '/new#section', permanent: true },
+    { source: '/home', destination: '/' },
+    { source: '/temporary', destination: '/b', permanent: false },
+    { source: '/blog/:path*', destination: 'https://temporal.io/blog/:path*' },
+    { source: '/loop', destination: '/loop' },
+    { source: '/sitemap_index.xml', destination: '/sitemap.xml' },
+    { source: '/tags/worker', destination: '/tags/workers' },
+  ]);
+
+  it("sends a redirected page's .md to the destination's .md", () => {
+    assert.deepStrictEqual(markdownRedirect('/old.md', rules), { status: 308, location: '/new.md' });
+  });
+
+  it('follows a chain of redirects to the end', () => {
+    assert.deepStrictEqual(markdownRedirect('/a.md', rules), { status: 308, location: '/c.md' });
+  });
+
+  it('drops the fragment from the destination', () => {
+    assert.strictEqual(markdownRedirect('/anchor.md', rules).location, '/new.md');
+  });
+
+  it('sends a redirect to the home page to /index.md', () => {
+    assert.strictEqual(markdownRedirect('/home.md', rules).location, '/index.md');
+  });
+
+  it('is temporary when any hop is temporary', () => {
+    assert.deepStrictEqual(markdownRedirect('/temporary.md', rules), { status: 307, location: '/c.md' });
+  });
+
+  it('ignores unredirected pages, paths without .md, loops, and destinations with no .md', () => {
+    assert.strictEqual(markdownRedirect('/other.md', rules), null);
+    assert.strictEqual(markdownRedirect('/old', rules), null);
+    assert.strictEqual(markdownRedirect('/blog/post.md', rules), null);
+    assert.strictEqual(markdownRedirect('/sitemap_index.xml.md', rules), null);
+    assert.strictEqual(markdownRedirect('/tags/worker.md', rules), null);
+    assert.strictEqual(markdownRedirect('/loop.md', rules), null);
+  });
+});
+
+describe('api/markdown-not-found', () => {
+  const handler = require('../api/markdown-not-found');
+
+  function request(url) {
+    const response = { headers: {} };
+    response.status = (code) => Object.assign(response, { statusCode: code });
+    response.setHeader = (key, value) => Object.assign(response, { headers: { ...response.headers, [key]: value } });
+    response.send = (body) => Object.assign(response, { body });
+    response.redirect = (code, location) => Object.assign(response, { statusCode: code, location });
+    handler({ url }, response);
+    return response;
+  }
+
+  it('redirects the .md URL of a page that vercel.json redirects', () => {
+    const response = request('/cloud/limits.md');
+    assert.strictEqual(response.statusCode, 308);
+    assert.strictEqual(response.location, '/evaluate/cloud/limits.md');
+  });
+
+  it('returns the Markdown 404 for anything else', () => {
+    for (const url of ['/no-such-page.md', '/no-such-page']) {
+      const response = request(url);
+      assert.strictEqual(response.statusCode, 404);
+      assert.match(response.headers['Content-Type'], /^text\/markdown/);
+    }
   });
 });
 
@@ -231,6 +305,22 @@ describe('route index', () => {
 
   it('treats the cookbook as unverifiable rather than missing', () => {
     assert.ok(routes.maybe('/ai/cookbook/anything'));
+    assert.ok(routes.maybe('/ai/cookbook.md'));
+    assert.ok(!routes.maybe('/ai/cookbookx.md'));
+  });
+
+  it('accepts the generated cookbook Markdown landing page before cookbook sync', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'redirect-routes-'));
+    fs.mkdirSync(path.join(root, 'docs'));
+    try {
+      const routes = buildRouteIndex(root);
+      assert.strictEqual(routes.cookbookPresent, false);
+      assert.strictEqual(routes.has('/ai/cookbook.md'), false);
+      assert.ok(routes.maybe('/ai/cookbook.md'));
+      assert.strictEqual(routes.maybe('/ai/cookbook-unknown.md'), false);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
   });
 });
 

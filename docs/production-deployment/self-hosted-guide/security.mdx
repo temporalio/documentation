@@ -32,7 +32,7 @@ Without these, your server could be accessed by unwanted entities.
 What is documented on this page are the built-in opt-in security measures that come with Temporal.
 However users may also choose to design their own security architecture with reverse proxies or run unsecured instances inside of a VPC environment.
 
-### Server Samples
+### Server samples
 
 The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
 
@@ -254,6 +254,22 @@ Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 }
 ```
 
+##### System permissions
+
+The Namespace name `temporal-system` is reserved for system permissions.
+The default JWT `ClaimMapper` maps `temporal-system:<permission>` to the caller's system role instead of a Namespace role.
+
+The default `Authorizer` checks only the system role for cluster-scoped APIs, such as `ListNamespaces` and `GetClusterInfo`.
+A Namespace role does not grant access to these APIs, even `admin`.
+To call a cluster-scoped read-only API, a token needs at least `temporal-system:read`.
+
+The Temporal Web UI calls `ListNamespaces` and `GetClusterInfo` when it loads.
+A user whose token holds only Namespace permissions, such as `my-namespace:admin`, gets permission-denied errors for these calls.
+Add `temporal-system:read` to that user's permissions to let the Web UI load.
+
+A system role also applies to every Namespace, so `temporal-system:read` lets the caller read all Namespaces.
+If that is broader than you want, use a custom `Authorizer` that allows the cluster-scoped read-only APIs the Web UI needs for callers with any Namespace role.
+
 ### What is an Authorizer Plugin? {/* #authorizer-plugin */}
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.
@@ -433,7 +449,7 @@ However, ensure that you consider all security implications of [remote data enco
 
 For details on how to set up a Codec Server, see [Codec Server setup](/production-deployment/data-encryption#codec-server-setup).
 
-## Configuration Options for Restricting and Securing Access  
+## Configuration options for restricting and securing access  
 
 Temporal provides extensive configuration options to limit and control which callers can access your services and how those services behave in different environments. These options help you enforce stricter security boundaries in self-hosted deployments and tune behavior for production use cases. For more details on available settings and how to configure them, see the following references:
 

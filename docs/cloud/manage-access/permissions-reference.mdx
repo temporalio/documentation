@@ -79,6 +79,7 @@ configured per user.
 | [GetUserGroupMembers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups/%7BgroupId%7D/members)         |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetUserGroups](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/GET/cloud/user-groups)               |     ✅     |     ✅     |       ✅       |      ✅       |       ✅       |
 | [GetUsers](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users/GET/cloud/users)                    |    ✅‡     |    ✅‡     |      ✅‡       |     ✅‡       |      ✅‡       |
+| [MoveNamespaceToProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/namespaces/%7Bnamespace%7D/move-to-project) |           |           |               |     ✅§      |      ✅§      |
 | [RemoveUserGroupMember](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/groups/POST/cloud/user-groups/%7BgroupId%7D/remove-member)       |           |           |               |      ✅       |       ✅       |
 | [UpdateAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/account)               |           |           |               |      ✅       |       ✅       |
 | [UpdateAccountAuditLogSink](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/POST/cloud/audit-log-sinks/%7Bspec.name%7D)   |           |           |               |      ✅       |       ✅       |
@@ -93,6 +94,7 @@ configured per user.
 - \* See [API Key Authorization Behavior](#api-key-authorization-behavior)
 - † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
 - ‡ See [User authorization behavior](#user-authorization-behavior)
+- § Requires Project Admin on both the source Project and the destination Project. Account Owner and Global Admin meet this requirement because they are Project Admin on every Project. Project Admin on only one of the two Projects is not sufficient. See [Move a Namespace to another Project](/cloud/projects#move-a-namespace).
 
 {/* ### Additional account-level capabilities
 
@@ -325,6 +327,7 @@ See [Use Nexus across Projects](/cloud/projects#use-nexus-across-projects).
 | [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts) |        |  ✅†  |  ✅†  |     ✅†     |  ✅†   |      ✅†       |
 | [GetUserGroupProjectAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/user-group-assignments) |        |      |      |            |       |       ✅       |
 | [GetUserProjectAssignments](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/user-assignments) |        |      |      |            |       |       ✅       |
+| [MoveNamespaceToProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/namespaces/%7Bnamespace%7D/move-to-project) |        |      |      |            |       |      ✅§       |
 | [SetServiceAccountProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/service-accounts/%7BserviceAccountId%7D/access) |        |      |      |            |       |       ✅       |
 | [SetUserGroupProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/user-groups/%7BgroupId%7D/access) |        |      |      |            |       |       ✅       |
 | [SetUserProjectAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D/users/%7BuserId%7D/access) |        |      |      |            |       |       ✅       |
@@ -332,6 +335,7 @@ See [Use Nexus across Projects](/cloud/projects#use-nexus-across-projects).
 | [UpdateProject](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/projects/%7BprojectId%7D) |        |      |      |            |       |       ✅       |
 
 - † See [Service Account Authorization Behavior](#service-account-authorization-behavior)
+- § Requires Project Admin on both the source Project and the destination Project. Account Owner and Global Admin meet this requirement because they are Project Admin on every Project. Project Admin on only one of the two Projects is not sufficient. See [Move a Namespace to another Project](/cloud/projects#move-a-namespace).
 
 Project Developer is a compatibility role that users with the Account Developer role inherit automatically. It cannot be
 assigned directly. It grants everything Project Contribute grants except CreateConnectivityRule and

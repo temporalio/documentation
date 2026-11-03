@@ -21,7 +21,9 @@ import {
   dedent,
   scanMarkdownImports,
   COMPONENT_REGISTRY,
+  RELEASE_NOTE_LABELS,
 } from "../scripts/mdx-to-md.mjs";
+import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { jsonToMarkdownTable } from "../scripts/component-handlers/data-tables.mjs";
 import {
   selectIntegrations,
@@ -548,6 +550,14 @@ test("multiline DocCardList with children is stripped", () => {
   assertNotContains(markdown, "Card");
 });
 
+test("WorkerTuningSimulator is stripped without a warning", () => {
+  const { markdown, warnings } = transformMdx(`Before\n<WorkerTuningSimulator />\nAfter`);
+  assertContains(markdown, "Before");
+  assertContains(markdown, "After");
+  assertNotContains(markdown, "WorkerTuningSimulator");
+  assert(!warnings.some((w) => w.includes("WorkerTuningSimulator")), "Unexpected warning");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — warnings for unknown components
 // ---------------------------------------------------------------------------
@@ -604,6 +614,49 @@ test("CodeSnippet on a single line is handled", () => {
   const { markdown } = transformMdx(input);
   assertContains(markdown, "```bash");
   assertContains(markdown, "brew install temporal");
+});
+
+test("CodeSnippet with a Snipsync body keeps the synced fence", () => {
+  const input = [
+    '<CodeSnippet title="service.go">',
+    "",
+    "<!--SNIPSTART go-nexus-service-->",
+    "[nexus/service.go](https://github.com/temporalio/samples-go/blob/main/nexus/service.go)",
+    "```go",
+    "package greeting",
+    "```",
+    "<!--SNIPEND-->",
+    "",
+    "</CodeSnippet>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "```go\npackage greeting\n```");
+  assertNotContains(markdown, "```\n<!--SNIPSTART");
+  assertNotContains(markdown, "<CodeSnippet");
+});
+
+test("SetupStep with a CodeSnippet child and no code={} prop", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep>",
+    '<CodeSnippet title="service.go">',
+    "",
+    "```go",
+    "package greeting",
+    "```",
+    "",
+    "</CodeSnippet>",
+    "",
+    "## Define the Nexus Service",
+    "",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "## Define the Nexus Service");
+  assertContains(markdown, "```go\npackage greeting\n```");
+  assertNotContains(markdown, "SetupStep");
+  assertNotContains(markdown, "CodeSnippet");
 });
 
 // ---------------------------------------------------------------------------
@@ -746,26 +799,40 @@ test("self-closing ReleaseNoteHeader does NOT swallow the page body", () => {
   assertNotContains(markdown, "ReleaseNoteHeader");
 });
 
+// Picks a feature from the feature map so the featureName tests survive
+// release-stage changes. Prefers a stage other than the publicPreview default,
+// so a broken lookup can't pass by falling through to the default.
+function pickMappedFeature() {
+  const entries = Object.entries(FEATURE_RELEASE_TYPES);
+  return entries.find(([, type]) => type !== "publicPreview") ?? entries[0];
+}
+
 test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
-  const input = `<ReleaseNoteHeader featureName="cloudCli" />\n\nCommand reference content.`;
+  const [featureName, mappedType] = pickMappedFeature();
+  const input = `<ReleaseNoteHeader featureName="${featureName}" />\n\nCommand reference content.`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Public Preview**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
   assertContains(markdown, "Command reference content.");
   assertNotContains(markdown, "ReleaseNoteHeader");
 });
 
 test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
-  const input = `<ReleaseNoteHeader featureName="standaloneActivity">\nAvailable in preview.\n</ReleaseNoteHeader>`;
+  const [featureName, mappedType] = pickMappedFeature();
+  const input = `<ReleaseNoteHeader featureName="${featureName}">\nAvailable in preview.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Public Preview**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
   assertContains(markdown, "Available in preview.");
   assertNotContains(markdown, "> ****");
 });
 
 test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
-  const input = `<ReleaseNoteHeader featureName="serverlessWorkersCloudRun" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  // Derived from the feature map so the test survives release-stage changes.
+  const [featureName, mappedType] = Object.entries(FEATURE_RELEASE_TYPES)[0];
+  const explicitType = mappedType === "prerelease" ? "publicPreview" : "prerelease";
+  const input = `<ReleaseNoteHeader featureName="${featureName}" type="${explicitType}">\nBody.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Pre-release**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
+  assertNotContains(markdown, `> **${RELEASE_NOTE_LABELS[explicitType]}**`);
 });
 
 // ---------------------------------------------------------------------------
@@ -1518,7 +1585,7 @@ test("all registry strategies are valid strings", () => {
     "related-read-container", "related-read-item",
     "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "guides-grid", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links", "event-history-demo", "walkthrough-step", "walkthrough-entry",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {

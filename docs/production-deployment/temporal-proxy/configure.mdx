@@ -12,7 +12,7 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader type="prerelease">
+<ReleaseNoteHeader type="publicPreview">
   Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
   releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
   the definitive configuration schema.
@@ -29,6 +29,8 @@ Everything else is optional.
 - `extensionServers` declares the servers `auth` and `encryption` delegate to
 - `health` tunes the liveness check
 - `metrics` configures the Prometheus endpoint
+- `http` serves the [codec server and profiling routes](/production-deployment/temporal-proxy/codec-server) on a
+  separate port
 - `apiTranslations` overrides how the proxy reaches Temporal Cloud's control plane
 
 Values support `${VAR}` and `$VAR` environment variable expansion, and an upstream's `hostPort` can be a template that
@@ -63,6 +65,11 @@ upstreams:
   # fixed endpoint. Any Namespace endpoint in the account answers them.
   - name: system
     hostPort: ${TEMPORAL_NAMESPACE}.${TEMPORAL_ACCOUNT}.tmprl.cloud:7233
+    namespaces:
+      rules:
+        # Same rule as cloud, so replies that name Namespaces, such as
+        # ListNamespaces, come back with local names.
+        suffix: .$TEMPORAL_ACCOUNT
     credentials:
       static:
         apiKey: ${TEMPORAL_API_KEY}
@@ -205,6 +212,9 @@ upstreams:
 - `overrides` lists explicit `local` and `remote` pairs for names that do not follow the prefix and suffix convention.
   An override takes precedence over the prefix and suffix rules. Each local name and each remote name may appear only
   once.
+- `bindingLabelsFrom` names another upstream whose rules label encrypted payloads in place of this upstream's own. Use
+  it while Namespaces move between upstreams. See
+  [Move Namespaces between upstreams](/production-deployment/temporal-proxy/encrypt-payloads#move-namespaces-between-upstreams).
 
 An upstream's `hostPort` and `tls.serverName` can be Go templates resolved per request, so one upstream can serve many
 Namespaces. Available variables:
@@ -246,20 +256,41 @@ warning when a translated name is not shaped like a Cloud Namespace and forwards
 
 ## Answer the methods Cloud does not serve
 
-Temporal Cloud does not serve every `WorkflowService` method on a Namespace endpoint. `ListNamespaces` is one this
-affects, for example: Cloud pins a request to the endpoint's Namespace, and a `ListNamespaces` request names none, so the call
-can never succeed on a Namespace frontend. Cloud exposes the same capability as `CloudService.GetNamespaces` on its
-control plane.
+A Temporal Cloud Namespace endpoint does not serve every method an SDK Client, the CLI, or the Temporal Web UI calls.
+Cloud pins each request to the endpoint's Namespace, so a `ListNamespaces` request, which names none, can never succeed
+there. Cloud also refuses every `OperatorService` call made with a customer credential, whatever its role.
 
-The proxy answers such a call from the control plane and converts the reply back into the response the caller expected.
+The proxy answers these calls from Cloud's control plane, or answers them itself, and converts the reply into the
+response the caller expected. That is what lets the open source Temporal Web UI run against Cloud through the proxy:
+
+| Method                                 | Answered with                                                 |
+| -------------------------------------- | ------------------------------------------------------------- |
+| `WorkflowService/ListNamespaces`       | `CloudService.GetNamespaces`                                  |
+| `WorkflowService/GetClusterInfo`       | An empty reply from the proxy, calling no upstream            |
+| `OperatorService/ListSearchAttributes` | `CloudService.GetNamespace`, with custom Search Attributes only |
+| `OperatorService/ListNexusEndpoints`   | `CloudService.GetNexusEndpoints`                              |
+| `OperatorService/GetNexusEndpoint`     | `CloudService.GetNexusEndpoint`                               |
+
+Cloud reports neither a server version nor system Search Attributes, so the proxy does not invent them. Web UI features
+gated on a server version stay off, and the UI's filters list only the Namespace's custom Search Attributes.
+
 This needs no configuration. It follows from an upstream already being Temporal Cloud, and the control plane is reached
 at `saas-api.tmprl.cloud:443` with that upstream's own credentials, since one Temporal Cloud API key authorizes both.
 The connection opens on first use rather than at startup, so a control plane you cannot reach does not stop the proxy
 serving everything else.
 
-Only Namespace-less calls are affected, which means only the upstream that serves them, named by `routing.system` or
-falling back to `routing.default`. To get the untranslated failure back, route those requests at a Temporal Service that
-serves them.
+Translation runs on every Cloud upstream, because a call lands on whichever upstream routing picks.
+`ListSearchAttributes` names a Namespace, so it follows that Namespace's route, while `ListNamespaces` and
+`ListNexusEndpoints` name none and go to `routing.system`, or `routing.default` when that is unset. Give the system
+upstream the same `namespaces.rules` as the upstreams it stands in for, so the Namespace names in those replies come
+back translated to local names. To get the untranslated failure back for a Namespace-less call, route those requests at
+a Temporal Service that serves them.
+
+:::note Version note
+
+Before v0.8.0, the proxy translated only `ListNamespaces`, and only on the upstream serving Namespace-less requests.
+
+:::
 
 Override the control plane under `apiTranslations.cloudApi`, which takes the same keys as an upstream:
 
@@ -349,17 +380,23 @@ The server implements `api.auth.v1.AuthService`, one RPC defined in
 [`api/auth/v1`](https://github.com/temporalio/temporal-proxy/tree/main/api/auth/v1). Each request carries what the call
 is addressing and who is making it:
 
-| Field              | Carries                                                                                                           |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `target.full_name` | The gRPC full method being invoked, leading slash included. Always set.                                           |
-| `target.namespace` | The Temporal Namespace the request names.                                                                         |
-| `credentials`      | One entry per declared header the caller sent, each with the canonical header name and every value sent under it. |
+| Field              | Carries                                                                                                                                                    |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target.full_name` | The gRPC full method being invoked, leading slash included. Set for every gRPC call, and empty for an HTTP request.                                        |
+| `target.namespace` | The Temporal Namespace the request names.                                                                                                                  |
+| `target.http`      | For a request to the [codec server or profiling routes](/production-deployment/temporal-proxy/codec-server): the route `group`, HTTP `method`, and `path`. |
+| `credentials`      | One entry per declared header the caller sent, each with the canonical header name and every value sent under it.                                         |
 
-Both `target` fields come from the stream rather than from anything the caller claims, so a caller cannot forge either
-by sending a header. `target.namespace` is empty when the method names no Namespace, when the caller sent no message to
-read one from, or when the service is not one the proxy forwards. Empty means unknown rather than a Namespace called
-nothing, so match a Namespace-scoped rule against `full_name` as well. `credentials` is empty when you declared no
-headers or the caller sent none of them, which is an unauthenticated caller rather than a trusted one.
+For a gRPC call, both `full_name` and `namespace` come from the stream rather than from anything the caller claims, so a
+caller cannot forge either by sending a header. `target.namespace` is empty when the method names no Namespace, when the
+caller sent no message to read one from, or when the service is not one the proxy forwards. Empty means unknown rather
+than a Namespace called nothing, so match a Namespace-scoped rule against `full_name` as well. `credentials` is empty
+when you declared no headers or the caller sent none of them, which is an unauthenticated caller rather than a trusted
+one.
+
+For an HTTP request, the caller chooses the Namespace through the codec server's path segment or `X-Namespace` header,
+and the proxy acts on the Namespace you authorized. Treat any `target.http.group` value you don't recognize as one you
+don't authorize, since a release can add groups.
 
 Answer with a `decision`:
 
@@ -399,6 +436,69 @@ upstreams:
 Credentials require TLS to the upstream. The proxy dials over TLS by default, so this is only an issue when you also set
 `insecure: true`. Credentials on a plaintext hop fail the configuration at startup rather than putting the key on the
 wire in the clear.
+
+## Tune upstream connections {/*#tune-upstream-connections*/}
+
+Each upstream takes an optional `connection` block. The defaults match the Temporal Go SDK, so a Worker gets the same
+limits through the proxy as on a direct connection:
+
+```yaml
+upstreams:
+  - name: cloud
+    hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
+    connection:
+      maxResponseSize: 128MiB # Largest response accepted from the upstream.
+      maxConnections: 32 # Connections calls are spread across, per target.
+      keepAlive:
+        time: 30s # Idle time before the proxy pings the connection.
+        timeout: 15s # Wait for the ping's ack before closing the connection.
+```
+
+| Field               | Default  | Rules                                                                                                         |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `maxResponseSize`   | `128MiB` | Positive and under 2GiB. A byte count, or a number with a decimal (`KB`, `MB`, `GB`) or binary (`KiB`, `MiB`, `GiB`) unit. |
+| `maxConnections`    | `32`     | 1 to 64.                                                                                                      |
+| `keepAlive.time`    | `30s`    | At least `10s`, the floor gRPC and the Temporal Service enforce.                                              |
+| `keepAlive.timeout` | `15s`    | Positive.                                                                                                     |
+
+- `maxResponseSize` is the largest response a Worker gets from that upstream, including any growth from decrypting
+  payloads on the way back. A response over the limit fails with `ResourceExhausted`, which a Workflow Task with a long
+  Event History can hit.
+- `maxConnections` spreads calls round-robin across that many connections. Each SDK long poll holds an HTTP/2 stream
+  for up to a minute, and a connection carries a limited number of streams, so too few connections stall calls behind
+  polls. A static upstream opens every connection at startup. A templated upstream opens up to `maxConnections` for each
+  target it resolves, usually one per Namespace, as calls reach them. See
+  [Size the connection pool](/production-deployment/temporal-proxy/sizing-and-performance#size-the-connection-pool).
+- `keepAlive` detects a connection that a NAT or load balancer dropped without closing, which would otherwise stall
+  polls until the operating system gives up on it.
+
+The [Temporal Cloud control plane connection](#answer-the-methods-cloud-does-not-serve) inherits its upstream's
+connection settings.
+
+:::note Version note
+
+The `connection` block is new in v0.9.0. Earlier releases dialed each upstream over one connection with gRPC's defaults,
+including a 4MiB response limit and no keepalive.
+
+:::
+
+### Discover upstreams through DNS SRV records
+
+Set an upstream's `hostPort` to `srv:///<record>` and the proxy balances calls round-robin across every backend the
+record lists:
+
+```yaml
+upstreams:
+  - name: self-hosted
+    hostPort: srv:///_grpc._tcp.temporal-frontend.temporal.svc.cluster.local
+```
+
+The proxy re-reads the record every 30 seconds, and within 5 seconds of a backend failing. `maxConnections` applies to
+each backend, so 4 connections across 10 backends opens 40.
+
+Over TLS, the proxy verifies every backend's certificate against the record name minus its leading `_service._proto`
+labels, `temporal-frontend.temporal.svc.cluster.local` in the example above, rather than the host each record points
+at. Set `tls.serverName` when the certificates carry a different name.
 
 ## Configure TLS {/*#configure-tls*/}
 

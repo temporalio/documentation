@@ -61,7 +61,7 @@ Pending Nexus Operations: 1
 [Retryable errors](/nexus/error-handling#errors-in-nexus-handlers) surface in the Pending Operation.
 Non-retryable errors resolve the Operation with a [Failed](/references/events#nexusoperationfailed), [TimedOut](/references/events#nexusoperationtimedout), or [Canceled](/references/events#nexusoperationcanceled) event.
 
-## Pending Callbacks
+## Pending callbacks
 
 Nexus completion callbacks are sent from the handler's Namespace to the caller's Namespace for asynchronous Operations.
 These can be viewed in the UI or from the CLI using the `temporal workflow describe` command.

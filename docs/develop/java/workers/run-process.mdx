@@ -1,12 +1,10 @@
 ---
 id: run-worker-process
-title: Run a Worker - Java SDK
+title: Run a Worker
 sidebar_label: Run a Worker
 description: Create and run a Temporal Worker using the Java SDK.
 toc_max_heading_level: 3
 tags:
-  - Java SDK
-  - Temporal SDKs
   - Workers
 ---
 
@@ -113,3 +111,28 @@ factory.awaitTermination(30, TimeUnit.SECONDS);
 
 Both calls apply to every Worker the factory created.
 See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.
+
+### Heartbeat during shutdown {/* #heartbeat-during-shutdown */}
+
+By default, after you call `shutdown()`, an Activity that calls `Activity.getExecutionContext().heartbeat()` doesn't send a Heartbeat.
+The call throws `ActivityWorkerShutdownException` instead.
+An Activity can catch this exception to detect that the Worker is shutting down.
+An Activity that ignores the exception keeps running, but the Temporal Service stops receiving its Heartbeats and can time it out with a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) before it finishes.
+
+To let Activities keep sending Heartbeats while the Worker drains, set `setAllowActivityHeartbeatDuringShutdown(true)` on the Worker options.
+This matches the behavior of the other Temporal SDKs.
+
+<!--SNIPSTART java-worker-heartbeat-during-shutdown-->
+[java-sandbox/worker-shutdown/src/main/java/io/temporal/docs/workershutdown/HeartbeatDuringShutdownExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/worker-shutdown/src/main/java/io/temporal/docs/workershutdown/HeartbeatDuringShutdownExamples.java)
+```java
+WorkerOptions options =
+    WorkerOptions.newBuilder().setAllowActivityHeartbeatDuringShutdown(true).build();
+Worker worker = factory.newWorker("your-task-queue", options);
+```
+<!--SNIPEND-->
+
+With this option enabled, `heartbeat()` no longer throws `ActivityWorkerShutdownException`, so an Activity can't use that exception to detect shutdown.
+Each Activity must finish within the timeout you pass to `awaitTermination()`, or use another signal to detect shutdown.
+
+The option has no effect on `shutdownNow()`, which attempts to stop running Activities by interrupting their threads. An Activity that ignores the interrupt may keep running.
+`setAllowActivityHeartbeatDuringShutdown` is experimental and requires Java SDK v1.36.0 or later.
