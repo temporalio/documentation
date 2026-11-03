@@ -135,8 +135,7 @@ designed for one pending approval at a time. A Query shows the pending tool call
 ## Stream output from a Workflow
 
 The Claude Agent SDK can stream a reply as it's generated. Set `include_partial_messages=True` in the options, as in the
-Claude Agent SDK, and the Workflow receives each `StreamEvent` along with the complete messages. The plugin reads each
-event from Claude Code in an Activity, so each one adds to the Workflow's Event History.
+Claude Agent SDK, and the Workflow receives each `StreamEvent` along with the complete messages.
 
 To show tokens to clients as they arrive, also pass a topic of a [Workflow Stream](/develop/python/workflows/workflow-streams)
 to `TemporalTransport` as `stream`. The Workflow publishes each `StreamEvent` to the topic, and any client can subscribe
