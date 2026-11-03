@@ -117,9 +117,9 @@ def setup_tracing(service_name: str) -> None:
 <!--SNIPEND-->
 
 Phoenix and Arize AX both ingest OTLP over HTTP. One exporter helper covers both: Phoenix by default, Arize AX when a
-space ID and API key are present. This guide and the sample were validated against Phoenix. The Arize AX settings
-follow [Arize's Temporal guide](https://arize.com/docs/ax/integrations/python-agent-frameworks/temporal/temporal-tracing)
-and were not exercised against an Arize AX space.
+space ID and API key are present. This guide and the sample were validated against Phoenix, and Arize validated them
+against an Arize AX space. The Arize AX settings follow
+[Arize's Temporal guide](https://arize.com/docs/ax/integrations/python-agent-frameworks/temporal/temporal-tracing).
 
 <!--SNIPSTART python-arize-tracing-exporter-->
 [arize_tracing/telemetry.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/telemetry.py)
@@ -626,9 +626,12 @@ Task replays from the start of history.
 ### Activity retries and Worker crashes
 
 Retries are real re-executions and stay visible: one `StartActivity` span with one `RunActivity` child per attempt,
-failed attempts carrying an error status and the exception. If a Worker dies while a Workflow waits, the
-`RunWorkflow` span is exported once, when the Workflow finishes on another Worker, and its duration covers the
-outage. If a Worker dies in the middle of an Activity attempt, that attempt's span was never ended and does not
+failed attempts carrying an error status and the exception. Arize AX lists a trace that contains a failed attempt as an
+error, even though the Workflow completed, so a view filtered on errors includes every retried Workflow. If a Worker
+dies while a Workflow waits, the `RunWorkflow` span is exported once, when the Workflow finishes on another Worker,
+and its duration covers the outage. The stopping Worker logs `Failed to detach context` with a traceback and then
+`Shutdown called, ignoring Span`: the open span was attached in a Workflow Task that no longer exists, and the trace is
+unaffected. If a Worker dies in the middle of an Activity attempt, that attempt's span was never ended and does not
 appear; the next attempt does, with the next attempt number. Spans that ended less than about half a second before
 a Worker process died can also be lost from the export buffer. Event History remains the source of truth.
 
@@ -645,6 +648,14 @@ A Workflow that continues as new writes its current trace context into the new r
 span nests under the previous run's span in the same trace. A reset or a retried Workflow reuses the original start
 context, so its `RunWorkflow` span appears as a second child of the same `StartWorkflow` span with its own
 `temporalRunID`. Because the session is the Workflow Id, all of these stay together in one Arize session.
+
+A reset that reapplies an Update or Signal has one known defect. The reset run keeps the original run's random seed
+until the SDK reseeds it at the reset point, and the reapplied handler runs before that reseed, so its `HandleUpdate`
+or `HandleSignal` span receives the first span identifier the original run drew, which is the original `RunWorkflow`
+span's. Phoenix deduplicates by span identifier and drops the reapplied handler's span. Arize AX keeps both, so the
+original run's Activity subtree appears twice and the original `RunWorkflow` node is labeled with the handler's name.
+Every other span of the reset run has a fresh identifier. The sample's verifier reports the dropped span as a
+warning. The fix belongs in the Python SDK and is tracked there.
 
 ## Resources
 
