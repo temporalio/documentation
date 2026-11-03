@@ -655,7 +655,8 @@ or `HandleSignal` span receives the first span identifier the original run drew,
 span's. Phoenix deduplicates by span identifier and drops the reapplied handler's span. Arize AX keeps both, so the
 original run's Activity subtree appears twice and the original `RunWorkflow` node is labeled with the handler's name.
 Every other span of the reset run has a fresh identifier. The sample's verifier reports the dropped span as a
-warning. The fix belongs in the Python SDK and is tracked there.
+warning. The fix belongs in the Python SDK and is tracked as
+[temporalio/sdk-python#2070](https://github.com/temporalio/sdk-python/issues/2070).
 
 ## Resources
 
