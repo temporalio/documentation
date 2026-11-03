@@ -54,6 +54,7 @@ Errors are JSON `{ error }`. A 400 or 405 also includes a `usage` string. A resu
 | `api/retrieve.js` | The Vercel Function: validation, the Kapa call, logging |
 | `api/_retrieve-lib.js` | Parameter parsing and URL rewriting, with no I/O. Tested in `api/_retrieve-lib.test.js` |
 | `bin/check-retrieve-links.js` | `yarn check:retrieve-links [baseUrl]`: asks 20 sample questions and checks that every docs `source_url` returns 200 |
+| `bin/check-retrieve-health.js` | `yarn check:retrieve-health [baseUrl]`: the daily health check. See [Health check](#health-check) |
 | `bin/report-retrieve-log.js` | `yarn report:retrieve-log`: summarizes the request log as Markdown. See [Summarize the log](#summarize-the-log) |
 
 `middleware.js` excludes `api/` from Markdown content negotiation. Without that, an agent that sends
@@ -85,6 +86,25 @@ The endpoint sends Kapa no source filter, and `RETRIEVE_URL_ALLOWLIST` does all 
 
 A 502 that starts when nothing was deployed most likely comes from a change on the Kapa side. The runtime log line
 `retrieve: Kapa returned <status>: <body>` gives Kapa's reason.
+
+## Health check
+
+The `Retrieve health check` workflow (`.github/workflows/check-retrieve-health.yml`) runs `bin/check-retrieve-health.js`
+against production daily at 14:00 UTC and on demand. A failed run posts to Slack through
+`notify-automation-failures.yml`. It asks two questions, so each run spends two Kapa queries:
+
+| Question | Fails when |
+| --- | --- |
+| free credits temporal cloud | The response isn't 200, has fewer than 5 results, or has no custom Q&A answer |
+| rust sdk workflow determinism | The response isn't 200, has fewer than 5 results, or has no file from a `github.com/temporalio` repository |
+
+Changes on the Kapa side have broken the endpoint with no deploy here, which no pull request check sees. On
+2026-10-30 every request returned 502, and once that was fixed, results came only from web crawl sources. The check
+catches both.
+
+Its requests carry `src=healthcheck`, which the log report leaves out, and an `agent` value unique to the run, so the
+CDN can't answer them from cache. If the custom Q&A pricing answer is retired, or the Rust SDK leaves the allowlist on
+purpose, change the question in the script rather than letting the check fail.
 
 ## Limits and cost
 
@@ -162,7 +182,7 @@ Don't commit the report: it contains question text from the public.
 | `--since YYYY-MM-DD` | 14 days before `--until` | First day to include, in UTC |
 | `--until YYYY-MM-DD` | Today | Last day to include, in UTC |
 | `--include-preview` | Off | Also count preview and development deployments |
-| `--include-tests` | Off | Also count `src=manual-test` and `src=link-check` |
+| `--include-tests` | Off | Also count `src=manual-test`, `src=link-check`, and `src=healthcheck` |
 | `--automation REGEX` | None | Also treat callers whose `agent` or user agent matches `REGEX` as automated tools. Repeatable |
 | `--hide-text` | Off | Leave out question text and `jtb` values, for a report that's only counts |
 | `--top N` | 15 | Rows per table |

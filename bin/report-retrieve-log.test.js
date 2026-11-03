@@ -62,6 +62,7 @@ describe('isExcluded', () => {
   it('leaves out our own test traffic unless asked', () => {
     assert.strictEqual(isExcluded(record({ src: 'manual-test' })), true);
     assert.strictEqual(isExcluded(record({ src: 'link-check' })), true);
+    assert.strictEqual(isExcluded(record({ src: 'healthcheck' })), true);
     assert.strictEqual(isExcluded(record({ src: 'link-check' }), { includeTests: true }), false);
   });
 });
