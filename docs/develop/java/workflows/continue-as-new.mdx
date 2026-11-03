@@ -9,8 +9,6 @@ tags:
   - continue-as-new
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components';
-
 This page covers the following for Java developers:
 
 - [What is Continue-As-New?](#what)
@@ -29,29 +27,51 @@ It also receives your Workflow's usual parameters.
 ## Use Continue-As-New with the Java SDK {/* #how */}
 
 First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
-This state is typically set to `None` for the original caller of the Workflow.
+This state is typically `Optional.empty()` for the original caller of the Workflow.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/safemessagepassing/ClusterManagerWorkflow.java" />
+<!--SNIPSTART java-continue-as-new-input {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/continue-as-new/src/main/java/io/temporal/docs/workflows/continueasnew/ClusterManagerWorkflow.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/continue-as-new/src/main/java/io/temporal/docs/workflows/continueasnew/ClusterManagerWorkflow.java)
 ```java
 class ClusterManagerInput {
   private final Optional<ClusterManagerState> state;
   private final boolean testContinueAsNew;
+
+  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+  public ClusterManagerInput(
+      @JsonProperty("state") Optional<ClusterManagerState> state,
+      @JsonProperty("test_continue_as_new") boolean testContinueAsNew) {
+    this.state = state;
+    this.testContinueAsNew = testContinueAsNew;
+  }
+
+  @JsonProperty("state")
+  public Optional<ClusterManagerState> getState() {
+    return state;
+  }
+
+  @JsonProperty("test_continue_as_new")
+  public boolean isTestContinueAsNew() {
+    return testContinueAsNew;
+  }
 }
 
 @WorkflowMethod
 ClusterManagerResult run(ClusterManagerInput input);
+```
+<!--SNIPEND-->
 
-````
 The test hook in the above snippet is covered [below](#how-to-test).
 
 Inside your Workflow, call the [`continueAsNew()`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#continueAsNew(io.temporal.workflow.ContinueAsNewOptions,java.lang.Object...)) function with the same type.
 This stops the Workflow right away and starts a new one.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/safemessagepassing/ClusterManagerWorkflowImpl.java" />
+<!--SNIPSTART java-continue-as-new-call {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/continue-as-new/src/main/java/io/temporal/docs/workflows/continueasnew/ClusterManagerWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/continue-as-new/src/main/java/io/temporal/docs/workflows/continueasnew/ClusterManagerWorkflowImpl.java)
 ```java
 Workflow.continueAsNew(
-  new ClusterManagerInput(Optional.of(state), input.isTestContinueAsNew()));
-````
+    new ClusterManagerInput(Optional.of(state), input.isTestContinueAsNew()));
+```
+<!--SNIPEND-->
 
 ### Considerations for Workflows with message handlers {/* #with-message-handlers */}
 
@@ -73,8 +93,8 @@ Instead, add a test hook to check your Workflow's Continue-as-New behavior faste
 For example, when `testContinueAsNew == true`, this sample creates a test-only variable called `maxHistoryLength` and sets it to a small value.
 A helper method in the Workflow checks it each time it considers using Continue-as-New:
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/safemessagepassing/ClusterManagerWorkflowImpl.java" />
-
+<!--SNIPSTART java-continue-as-new-should-continue {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/continue-as-new/src/main/java/io/temporal/docs/workflows/continueasnew/ClusterManagerWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/continue-as-new/src/main/java/io/temporal/docs/workflows/continueasnew/ClusterManagerWorkflowImpl.java)
 ```java
 private boolean shouldContinueAsNew() {
   if (Workflow.getInfo().isContinueAsNewSuggested()) {
@@ -88,3 +108,4 @@ private boolean shouldContinueAsNew() {
   return false;
 }
 ```
+<!--SNIPEND-->
