@@ -163,7 +163,8 @@ temporal server start-dev \
 </RunThis>
 
 `nexusoperation.enableStandalone` lets a Client start an Operation without a caller Workflow,
-which is how you run each Operation from the command line as you build it.
+which is how you run each Operation from the command line as you build it. Temporal CLI v1.10.0
+and later turn it on by default; passing it keeps the command working on earlier versions.
 `activity.enableCallbacks` allows a completion callback on a Standalone Activity Execution, which
 the `notifyRequester` Operation in [step 9](/develop/java/nexus/development-walkthrough/add-a-standalone-activity)
 needs.

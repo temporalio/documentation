@@ -269,7 +269,7 @@ To leave the Namespace with no rules, send `"unrestricted": {}` instead of `rule
   </TabItem>
   <TabItem value="cli" label="CLI">
 
-Install a Temporal Cloud CLI release that supports `namespace move-to-project`, then sign in with `temporal cloud login`. Use `temporal cloud whoami` to confirm the account.
+Install a Temporal Cloud CLI release that supports [`namespace move-to-project`](/cli/command-reference/cloud/namespace#move-to-project), then sign in with `temporal cloud login`. Use `temporal cloud whoami` to confirm the account.
 
 Check the Namespace's current rules and the rules available in the destination Project:
 
@@ -324,6 +324,19 @@ Projects group Nexus Endpoints for organization and authorization. They do not c
 Example: an Endpoint in Project `payments`, a target Namespace in `payments`, and a caller Namespace in `checkout`.
 That call is allowed when the `checkout` Namespace is on the Endpoint allowlist.
 A user who can only list Endpoints in `checkout` will not see the Endpoint in `payments`.
+
+### Move a Nexus Endpoint to another Project {/* #move-a-nexus-endpoint */}
+
+Use [`temporal cloud nexus endpoint move-to-project`](/cli/command-reference/cloud/nexus#endpoint-move-to-project) to move a Nexus Endpoint to another Project in the same Account. The Endpoint keeps its ID, name, target, and allowlist of caller Namespaces, so Nexus calls through it are unaffected. Access that comes from the source Project no longer applies, and access from the destination Project does.
+
+```bash
+temporal cloud nexus endpoint move-to-project \
+  --name <endpoint-name> \
+  --source-project-id <source-project-id> \
+  --destination-project-id <destination-project-id>
+```
+
+Pass `--id` instead of `--name` to identify the Endpoint by ID. As with a Namespace move, `--source-project-id` is a safety check: the move fails when the Endpoint is no longer in that Project.
 
 ## Manage Project access
 
