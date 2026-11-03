@@ -53,6 +53,8 @@ All interceptor methods are optional—it's up to the implementor to choose whic
 
 **Log start and completion of Activities**
 
+<!--SNIPSTART typescript-interceptors-activity-log-->
+[typescript-sandbox/src/workers/interceptors/activity-log-interceptor.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/interceptors/activity-log-interceptor.ts)
 ```ts
 import { ActivityInput, Next, WorkflowOutboundCallsInterceptor } from '@temporalio/workflow';
 
@@ -61,7 +63,7 @@ export class ActivityLogInterceptor implements WorkflowOutboundCallsInterceptor 
 
   async scheduleActivity(
     input: ActivityInput,
-    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>,
   ): Promise<unknown> {
     console.log('Starting activity', { activityType: input.activityType });
     try {
@@ -75,9 +77,12 @@ export class ActivityLogInterceptor implements WorkflowOutboundCallsInterceptor 
   }
 }
 ```
+<!--SNIPEND-->
 
 **Log Nexus Operations**
 
+<!--SNIPSTART typescript-interceptors-nexus-log-->
+[typescript-sandbox/src/workers/interceptors/nexus-interceptors.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/interceptors/nexus-interceptors.ts)
 ```ts
 import type {
   NexusInboundCallsInterceptor,
@@ -89,7 +94,7 @@ import type {
 export class NexusOperationLogInterceptor implements NexusInboundCallsInterceptor {
   async startOperation(
     input: NexusStartOperationInput,
-    next: Next<NexusInboundCallsInterceptor, 'startOperation'>
+    next: Next<NexusInboundCallsInterceptor, 'startOperation'>,
   ): Promise<NexusStartOperationOutput> {
     console.log('Starting Nexus operation', {
       service: input.ctx.service,
@@ -105,6 +110,7 @@ export class NexusOperationLogInterceptor implements NexusInboundCallsIntercepto
   }
 }
 ```
+<!--SNIPEND-->
 
 ## Register an Interceptor {/* #register-interceptor */}
 
@@ -136,27 +142,33 @@ At the time of construction, the Workflow context is already initialized for the
 [`workflowInfo()`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) function to access
 Workflow-specific information from an interceptor.
 
-`src/workflows/your-interceptors.ts`
-
+<!--SNIPSTART typescript-interceptors-workflow-module-->
+[typescript-sandbox/src/workers/interceptors/workflow-interceptors.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/interceptors/workflow-interceptors.ts)
 ```ts
 import { workflowInfo } from '@temporalio/workflow';
+import { ActivityLogInterceptor } from './activity-log-interceptor';
 
 export const interceptors = () => ({
   outbound: [new ActivityLogInterceptor(workflowInfo().workflowType)],
   inbound: [],
 });
 ```
+<!--SNIPEND-->
 
-`src/worker/index.ts`
-
+<!--SNIPSTART typescript-interceptors-register-workflow {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workers/interceptors/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/interceptors/worker.ts)
 ```ts
 const worker = await Worker.create({
+  connection,
+  taskQueue,
+  activities,
   workflowsPath: require.resolve('./workflows'),
   interceptors: {
-    workflowModules: [require.resolve('./workflows/your-interceptors')],
+    workflowModules: [require.resolve('./workflow-interceptors')],
   },
 });
 ```
+<!--SNIPEND-->
 
 ### Nexus interceptor registration
 
@@ -165,20 +177,28 @@ Nexus interceptors are registered on Worker creation via
 Pass an array of factory functions to `interceptors.nexus`.
 Each factory receives an [`OperationContext`](https://typescript.temporal.io/api/classes/nexus.OperationContext) and returns an object with optional `inbound` and `outbound` interceptors.
 
-`src/worker/index.ts`
-
+<!--SNIPSTART typescript-interceptors-register-nexus-->
+[typescript-sandbox/src/workers/interceptors/nexus-worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/interceptors/nexus-worker.ts)
 ```ts
+import { NativeConnection, Worker } from '@temporalio/worker';
 import { NexusOperationLogInterceptor } from './nexus-interceptors';
+import { echoServiceHandler } from './nexus-service';
 
-const worker = await Worker.create({
-  // ...
-  nexusServices: [/* your Nexus services */],
-  interceptors: {
-    nexus: [
-      (_ctx) => ({
-        inbound: new NexusOperationLogInterceptor(),
-      }),
-    ],
-  },
-});
+export async function createNexusWorker(connection: NativeConnection, taskQueue: string): Promise<Worker> {
+  const worker = await Worker.create({
+    connection,
+    taskQueue,
+    workflowsPath: require.resolve('./workflows'),
+    nexusServices: [echoServiceHandler],
+    interceptors: {
+      nexus: [
+        (_ctx) => ({
+          inbound: new NexusOperationLogInterceptor(),
+        }),
+      ],
+    },
+  });
+  return worker;
+}
 ```
+<!--SNIPEND-->
