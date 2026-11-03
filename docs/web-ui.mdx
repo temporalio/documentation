@@ -193,6 +193,33 @@ The History tab has the following views:
 
 The entire Workflow Execution Event History, in JSON format, can be downloaded from this section.
 
+### Import Event History into a local Web UI
+
+To inspect a Workflow Execution from another environment, import its Event History JSON into the Web UI included with a
+locally run Temporal Development Server. Event History import is unavailable in Temporal Cloud.
+
+1. Download the Workflow Execution's Event History as a JSON file from the source Web UI, or use the
+   [Temporal CLI](/cli/command-reference/workflow#show):
+
+   ```bash
+   temporal workflow show \
+     --workflow-id YourWorkflowId \
+     --run-id YourRunId \
+     --output json > history.json
+   ```
+
+2. Start a [local development server](/develop/run-a-development-server):
+
+   ```bash
+   temporal server start-dev
+   ```
+
+3. Open [http://localhost:8233/import/events](http://localhost:8233/import/events) on the same machine.
+4. Select the JSON file and click **Import** to view its Event History.
+
+The import displays the Event History for visualization and debugging. It does not create a Workflow Execution in the
+local Temporal Service or replay the Workflow code.
+
 ### Workflow Actions
 
 Workflow Executions can request a Cancellation, send a Signal or Update, or Reset and Terminate directly from the UI.
