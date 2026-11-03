@@ -23,7 +23,7 @@ This page introduces these features for the Temporal TypeScript SDK.
 ## Write message handlers {/* #writing-message-handlers */}
 
 :::info
-The code that follows is part of a working [message-passing sample](https://github.com/temporalio/samples-typescript/tree/main/message-passing/introduction).
+The code that follows is part of a working [message-passing sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/typescript-sandbox/src/workflows/message-passing/introduction).
 :::
 
 Follow these guidelines when writing your message handlers:
@@ -39,7 +39,9 @@ Follow these guidelines when writing your message handlers:
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
-```typescript
+<!--SNIPSTART typescript-message-passing-greeting-workflow {"selectedLines": ["1-13", "19-21", "26-30", "36-44", "98"]}-->
+[typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts)
+```ts
 export enum Language {
   ARABIC = 'ARABIC',
   CHINESE = 'CHINESE',
@@ -53,17 +55,17 @@ export enum Language {
 interface GetLanguagesInput {
   includeUnsupported: boolean;
 }
-
-// 👉 Use the object returned by defineQuery to set the query handler in
-// Workflow code, and when sending the Query in Client code.
+// ...
+// 👉 Use the objects returned by defineQuery, defineSignal, and defineUpdate to set
+// the message handlers in Workflow code, and to send messages from Client code.
 export const getLanguages = wf.defineQuery<Language[], [GetLanguagesInput]>('getLanguages');
-
+// ...
 export async function greetingWorkflow(): Promise<string> {
   const greetings: Partial<Record<Language, string>> = {
     [Language.CHINESE]: '你好，世界',
     [Language.ENGLISH]: 'Hello, world',
   };
-
+// ...
   wf.setHandler(getLanguages, (input: GetLanguagesInput): Language[] => {
     // 👉 A Query handler returns a value: it must not mutate the Workflow state
     // and can't perform async operations.
@@ -73,10 +75,10 @@ export async function greetingWorkflow(): Promise<string> {
       return Object.keys(greetings) as Language[];
     }
   });
-
-  ...
+// ...
 }
 ```
+<!--SNIPEND-->
 
 - A Query handler cannot be `async`.
   You can't perform async operations like executing an Activity in a Query handler.
@@ -87,25 +89,33 @@ export async function greetingWorkflow(): Promise<string> {
 
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
-```typescript
-// 👉 Use the object returned by defineSignal to set the Signal handler in
-// Workflow code, and to send the Signal from Client code.
+<!--SNIPSTART typescript-message-passing-greeting-workflow {"selectedLines": ["15-17", "19-20", "22", "26", "32-33", "46-50", "98"]}-->
+[typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts)
+```ts
+// ...
+interface ApproveInput {
+  name: string;
+}
+// ...
+// 👉 Use the objects returned by defineQuery, defineSignal, and defineUpdate to set
+// the message handlers in Workflow code, and to send messages from Client code.
+// ...
 export const approve = wf.defineSignal<[ApproveInput]>('approve');
-
+// ...
 export async function greetingWorkflow(): Promise<string> {
+// ...
   let approvedForRelease = false;
   let approverName: string | undefined;
-
+// ...
   wf.setHandler(approve, (input) => {
     // 👉 A Signal handler mutates the Workflow state but cannot return a value.
     approvedForRelease = true;
     approverName = input.name;
   });
-
-  ...
+// ...
 }
-...
 ```
+<!--SNIPEND-->
 
 - The handler cannot return a value.
   The response is sent immediately from the server, without waiting for the Workflow to process the Signal.
@@ -125,20 +135,24 @@ It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
 
-```typescript
-// 👉 Use the object returned by defineUpdate to set the Update handler in
-// Workflow code, and to send Updates from Client code.
+<!--SNIPSTART typescript-message-passing-greeting-workflow {"selectedLines": ["19-20", "23", "26-30", "34", "52-68", "98"]}-->
+[typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts)
+```ts
+// ...
+// 👉 Use the objects returned by defineQuery, defineSignal, and defineUpdate to set
+// the message handlers in Workflow code, and to send messages from Client code.
+// ...
 export const setLanguage = wf.defineUpdate<Language, [Language]>('setLanguage');
-
+// ...
 export async function greetingWorkflow(): Promise<string> {
   const greetings: Partial<Record<Language, string>> = {
     [Language.CHINESE]: '你好，世界',
     [Language.ENGLISH]: 'Hello, world',
   };
-
+// ...
   let language = Language.ENGLISH;
-
-wf.setHandler(
+// ...
+  wf.setHandler(
     setLanguage,
     (newLanguage: Language) => {
       // 👉 An Update handler can mutate the Workflow state and return a value.
@@ -153,12 +167,12 @@ wf.setHandler(
           throw new Error(`${newLanguage} is not supported`);
         }
       },
-    }
+    },
   );
-
-  ...
+// ...
 }
 ```
+<!--SNIPEND-->
 
 - `setHandler` can take `UpdateHandlerOptions` (such as `validator`, `description` and `unfinishedPolicy`) as described in the API reference docs for [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler).
 
@@ -193,13 +207,15 @@ To send Queries, Signals, or Updates, you call methods on a [WorkflowHandle](htt
 
 For example:
 
-```typescript
+<!--SNIPSTART typescript-message-passing-start {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/message-passing/introduction/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/client.ts)
+```ts
 const handle = await client.workflow.start(greetingWorkflow, {
-  taskQueue: 'my-task-queue',
-  args: [myArg],
-  workflowId: 'my-workflow-id',
+  taskQueue,
+  workflowId: 'greeting-workflow',
 });
 ```
+<!--SNIPEND-->
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
 
@@ -215,11 +231,14 @@ To check the argument types required when sending messages -- and the return typ
 
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to send a Query to a Workflow Execution:
 
-```typescript
+<!--SNIPSTART typescript-message-passing-send-query {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/message-passing/introduction/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/client.ts)
+```ts
 const supportedLanguages = await handle.query(getLanguages, {
   includeUnsupported: false,
 });
 ```
+<!--SNIPEND-->
 
 - Sending a Query doesn’t add events to a Workflow's Event History.
 
@@ -238,9 +257,12 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 Use [WorkflowHandle.signal](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal) to send a Signal:
 
-```typescript
-await handle.signal(greetingWorkflow.approve, { name: 'me' });
+<!--SNIPSTART typescript-message-passing-send-signal {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/message-passing/introduction/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/client.ts)
+```ts
+await handle.signal(approve, { name: 'me' });
 ```
+<!--SNIPEND-->
 
 - The call returns when the server accepts the Signal; it does _not_ wait for the Signal to be delivered to the Workflow Execution.
 
@@ -251,7 +273,9 @@ await handle.signal(greetingWorkflow.approve, { name: 'me' });
 A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 Use [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getExternalWorkflowHandle):
 
-```typescript
+<!--SNIPSTART typescript-message-passing-external-signal-->
+[typescript-sandbox/src/workflows/message-passing/signals/external-signal.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/signals/external-signal.ts)
+```ts
 import { getExternalWorkflowHandle } from '@temporalio/workflow';
 import { joinSignal } from './other-workflow';
 
@@ -260,6 +284,7 @@ export async function yourWorkflowThatSignals() {
   await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 }
 ```
+<!--SNIPEND-->
 
 When an External Signal is sent:
 
@@ -276,20 +301,23 @@ Instead, to communicate between Workflows, we use `getExternalWorkflowHandle` to
 Signal-With-Start allows a Client to send a Signal to a Workflow Execution, starting the Execution if it is not already running.
 Use [`Client.workflow.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart):
 
-```typescript
+<!--SNIPSTART typescript-message-passing-signal-with-start-->
+[typescript-sandbox/src/workflows/message-passing/signals/signal-with-start.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/signals/signal-with-start.ts)
+```ts
 import { Client } from '@temporalio/client';
-import { joinSignal, yourWorkflow } from './workflows';
+import { joinSignal, yourWorkflow } from './other-workflow';
 
-const client = new Client();
-
-await client.workflow.signalWithStart(yourWorkflow, {
-  workflowId: 'workflow-id-123',
-  taskQueue: 'my-taskqueue',
-  args: [{ foo: 1 }],
-  signal: joinSignal,
-  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
-});
+export async function signalWithStart(client: Client) {
+  await client.workflow.signalWithStart(yourWorkflow, {
+    workflowId: 'workflow-id-123',
+    taskQueue: 'my-taskqueue',
+    args: [{ foo: 1 }],
+    signal: joinSignal,
+    signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
+  });
+}
 ```
+<!--SNIPEND-->
 
 Signal-With-Start is limited to Client use.
 It cannot be called from a Workflow.
@@ -311,11 +339,14 @@ To send an Update to a Workflow Execution, you can:
 - Call [`WorkflowHandle.executeUpdate`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#executeUpdate) and wait for the Update to complete.
   This code fetches an Update result:
 
-  ```typescript
+  <!--SNIPSTART typescript-message-passing-execute-update {"enable_code_dedenting": true}-->
+  [typescript-sandbox/src/workflows/message-passing/introduction/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/client.ts)
+  ```ts
   let previousLanguage = await handle.executeUpdate(setLanguage, {
     args: [Language.CHINESE],
   });
   ```
+  <!--SNIPEND-->
 
 - Send [`WorkflowHandle.startUpdate`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#startUpdate) to receive an [`WorkflowUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowUpdateHandle) as soon as the Update is accepted or rejected.
 
@@ -325,13 +356,16 @@ To send an Update to a Workflow Execution, you can:
 
   For example:
 
-  ```typescript
+  <!--SNIPSTART typescript-message-passing-start-update {"enable_code_dedenting": true}-->
+  [typescript-sandbox/src/workflows/message-passing/introduction/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/client.ts)
+  ```ts
   const updateHandle = await handle.startUpdate(setLanguage, {
     args: [Language.ENGLISH],
     waitForStage: WorkflowUpdateStage.ACCEPTED,
   });
   previousLanguage = await updateHandle.result();
   ```
+  <!--SNIPEND-->
 
   For more details, see the "Async handlers" section.
 
@@ -364,29 +398,26 @@ You will need to provide a [`WithStartWorkflowOperation`](https://typescript.tem
 You must specify a [WorkflowIdConflictPolicy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
 Note that a `WithStartWorkflowOperation` can only be used once.
 
-Here's an example taken from the [early-return](https://github.com/temporalio/samples-typescript/tree/main/early-return) sample:
+Here's an example based on the [early-return](https://github.com/temporalio/samples-typescript/tree/main/early-return) sample:
 
-```typescript
-const startWorkflowOperation = new WithStartWorkflowOperation.create(
-  transactionWorkflow,
-  {
-    workflowId,
-    args: [transactionID],
-    taskQueue: 'early-return',
-    workflowIdConflictPolicy: 'FAIL',
-  },
-);
+<!--SNIPSTART typescript-message-passing-update-with-start {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/message-passing/update-with-start/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/update-with-start/client.ts)
+```ts
+const startWorkflowOperation = new WithStartWorkflowOperation(transactionWorkflow, {
+  workflowId,
+  args: [transactionID],
+  taskQueue: 'early-return',
+  workflowIdConflictPolicy: 'FAIL',
+});
 
-const earlyConfirmation = await client.workflow.executeUpdateWithStart(
-  getTransactionConfirmation,
-  {
-    startWorkflowOperation,
-  },
-);
+const earlyConfirmation = await client.workflow.executeUpdateWithStart(getTransactionConfirmation, {
+  startWorkflowOperation,
+});
 
 const wfHandle = await startWorkflowOperation.workflowHandle();
 const finalReport = await wfHandle.result();
 ```
+<!--SNIPEND-->
 
 :::info SEND MESSAGES WITHOUT TYPE SAFETY
 
@@ -429,31 +460,35 @@ See [Workflow message passing](/encyclopedia/workflow-message-passing) for guida
 The following code executes an Activity that makes a network call to a remote service.
 It modifies the Update handler from earlier on this page, turning it into an `async` function:
 
-```typescript
-// 👉 Use the objects returned by defineUpdate to set the Update handler in
-// Workflow code, and to send Updates from Client code.
+<!--SNIPSTART typescript-message-passing-greeting-workflow {"selectedLines": ["19-20", "24", "26-30", "34", "70-93", "98"]}-->
+[typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts)
+```ts
+// ...
+// 👉 Use the objects returned by defineQuery, defineSignal, and defineUpdate to set
+// the message handlers in Workflow code, and to send messages from Client code.
+// ...
 export const setLanguageUsingActivity = wf.defineUpdate<Language, [Language]>('setLanguageUsingActivity');
-
+// ...
 export async function greetingWorkflow(): Promise<string> {
   const greetings: Partial<Record<Language, string>> = {
     [Language.CHINESE]: '你好，世界',
     [Language.ENGLISH]: 'Hello, world',
   };
-
+// ...
   let language = Language.ENGLISH;
-
+// ...
   const lock = new Mutex();
   wf.setHandler(setLanguageUsingActivity, async (newLanguage) => {
     // 👉 An Update handler can mutate the Workflow state and return a value.
     // 👉 Since this update handler is async, it can execute an activity.
     if (!(newLanguage in greetings)) {
-      // 👉 Do the following with the lock held to ensure that multiple calls to set_language are processed in order.
+      // 👉 Do the following with the lock held to ensure that multiple calls to setLanguageUsingActivity are processed in order.
       await lock.runExclusive(async () => {
         if (!(newLanguage in greetings)) {
           const greeting = await callGreetingService(newLanguage);
           if (!greeting) {
             // 👉 An update validator cannot be async, so cannot be used to check that the remote
-            // call_greeting_service supports the requested language. Raising ApplicationError
+            // callGreetingService supports the requested language. Throwing ApplicationFailure
             // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
             // added to history.
             throw new wf.ApplicationFailure(`${newLanguage} is not supported by the greeting service`);
@@ -466,9 +501,10 @@ export async function greetingWorkflow(): Promise<string> {
     language = newLanguage;
     return previousLanguage;
   });
-  ...
+// ...
 }
 ```
+<!--SNIPEND-->
 
 After updating the code to use `async`, your Update handler can schedule an Activity and await the result.
 Although an `async` Signal handler can also execute an Activity, using an Update handler allows the client to receive a result or error once the Activity completes.
@@ -491,21 +527,26 @@ Here are three important use cases for `workflow.condition`:
 
 It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
 
-```typescript
+<!--SNIPSTART typescript-message-passing-greeting-workflow {"selectedLines": ["26", "32-33", "46-50", "95", "98"]}-->
+[typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/introduction/workflows.ts)
+```ts
+// ...
 export async function greetingWorkflow(): Promise<string> {
+// ...
   let approvedForRelease = false;
   let approverName: string | undefined;
-
+// ...
   wf.setHandler(approve, (input) => {
+    // 👉 A Signal handler mutates the Workflow state but cannot return a value.
     approvedForRelease = true;
     approverName = input.name;
   });
-  ...
-
+// ...
   await wf.condition(() => approvedForRelease);
-  ...
+// ...
 }
 ```
+<!--SNIPEND-->
 
 #### Use wait conditions in handlers
 
@@ -513,14 +554,17 @@ It's common to use a Workflow wait condition in a handler.
 For example, suppose your Workflow has a mutable variable `readyForUpdateToExecute` that indicates whether your Update handler should be allowed to start executing.
 You can use `workflow.condition` in the handler to make the handler pause until the condition is met:
 
-```typescript
+<!--SNIPSTART typescript-message-passing-wait-in-handler {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/message-passing/patterns/wait-in-handler.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/patterns/wait-in-handler.ts)
+```ts
 let readyForUpdateToExecute = false;
 
 wf.setHandler(myUpdate, async (input: MyUpdateInput): Promise<MyUpdateOutput> => {
   await wf.condition(() => readyForUpdateToExecute);
-  ...
+  return { greeting: `Hello, ${input.name}!` };
 });
 ```
+<!--SNIPEND-->
 
 Remember: handlers can execute before the main Workflow method starts.
 
@@ -534,12 +578,26 @@ When your Workflow uses `async` Signal or Update handlers, your main Workflow me
 The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying retrieve Update results.
 Use [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) and [`allHandlersFinished`](https://typescript.temporal.io/api/namespaces/workflow#condition#allhandlersfinished) to address this problem and allow your Workflow to end smoothly:
 
-```typescript
+<!--SNIPSTART typescript-message-passing-wait-for-handlers-->
+[typescript-sandbox/src/workflows/message-passing/patterns/wait-for-handlers.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/patterns/wait-for-handlers.ts)
+```ts
 export async function myWorkflow(): Promise<MyWorkflowOutput> {
+  const workflowOutput = { x: 0, y: 0 };
+  let finished = false;
+  wf.setHandler(mySignal, async () => {
+    const data = await myActivity();
+    workflowOutput.x = data.x;
+    workflowOutput.y = data.y;
+  });
+  wf.setHandler(finishSignal, () => void (finished = true));
+
+  await wf.condition(() => finished);
+  // 👉 Wait for any mySignal handler that is still running its Activity
   await wf.condition(wf.allHandlersFinished);
   return workflowOutput;
 }
 ```
+<!--SNIPEND-->
 
 By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
 You can silence these warnings on a per-handler basis by setting the `unfinishedPolicy` in `SignalHandlerOptions` or `UpdateHandlerOptions` when calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler)
@@ -552,7 +610,9 @@ Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
-```typescript
+<!--SNIPSTART typescript-message-passing-concurrency-bug-->
+[typescript-sandbox/src/workflows/message-passing/patterns/concurrency-bug.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/patterns/concurrency-bug.ts)
+```ts
 export async function myWorkflow(): Promise<MyWorkflowOutput> {
   let x = 0;
   let y = 0;
@@ -567,17 +627,16 @@ export async function myWorkflow(): Promise<MyWorkflowOutput> {
 
     y = data.y;
   });
-  ...
-}
 ```
+<!--SNIPEND-->
 
 Coordinating access using a lock (also known as a mutex) corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
-```typescript
-import { Mutex } from 'async-mutex';  // https://github.com/DirtyHairy/async-mutex
-
-...
+<!--SNIPSTART typescript-message-passing-concurrency-lock-->
+[typescript-sandbox/src/workflows/message-passing/patterns/concurrency-lock.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/patterns/concurrency-lock.ts)
+```ts
+import { Mutex } from 'async-mutex'; // https://github.com/DirtyHairy/async-mutex
 
 export async function myWorkflow(): Promise<MyWorkflowOutput> {
   let x = 0;
@@ -597,11 +656,8 @@ export async function myWorkflow(): Promise<MyWorkflowOutput> {
       y = data.y;
     });
   });
-  return {
-    name: 'hello',
-  };
-}
 ```
+<!--SNIPEND-->
 
 ## Message handler troubleshooting {/* #message-handler-troubleshooting */}
 
@@ -682,8 +738,8 @@ When working with Queries, you may encounter these errors:
 
 If you know the name of your Signals and Queries upfront, we recommend declaring them outside the Workflow Definition.
 
-<!--SNIPSTART typescript-blocked-workflow-->
-[signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/signals-queries/src/workflows.ts)
+<!--SNIPSTART typescript-message-passing-static-definitions-->
+[typescript-sandbox/src/workflows/message-passing/static-dynamic/static.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/static-dynamic/static.ts)
 ```ts
 import * as wf from '@temporalio/workflow';
 
@@ -718,17 +774,17 @@ You can handle it in two ways:
 - Avoid making it dynamic by collapsing all Signals into one handler and move the ID to the payload.
 - Actually make the Signal name dynamic by inlining the Signal definition per handler.
 
+<!--SNIPSTART typescript-message-passing-dynamic-definitions {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/message-passing/static-dynamic/dynamic.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/static-dynamic/dynamic.ts)
 ```ts
-import * as wf from '@temporalio/workflow';
-
 // "fat handler" solution
-wf.setHandler(`genericSignal`, (payload) => {
+wf.setHandler(wf.defineSignal<[TaskPayload]>('genericSignal'), (payload) => {
   switch (payload.taskId) {
     case taskAId:
-      // do task A things
+      handled.push(`genericSignal: task A`); // do task A things
       break;
     case taskBId:
-      // do task B things
+      handled.push(`genericSignal: task B`); // do task B things
       break;
     default:
       throw new Error('Unexpected task.');
@@ -736,20 +792,21 @@ wf.setHandler(`genericSignal`, (payload) => {
 });
 
 // "inline definition" solution
-wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => {
-  /* do task A things */
+wf.setHandler(wf.defineSignal<[TaskPayload]>(`task-${taskAId}`), (payload) => {
+  handled.push(`inline: ${payload.taskId}`); // do task A things
 });
-wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
-  /* do task B things */
+wf.setHandler(wf.defineSignal<[TaskPayload]>(`task-${taskBId}`), (payload) => {
+  handled.push(`inline: ${payload.taskId}`); // do task B things
 });
 
 // utility "inline definition" helper
-const inlineSignal = (signalName, handler) =>
-  wf.setHandler(wf.defineSignal(signalName), handler);
+const inlineSignal = (signalName: string, handler: (payload: TaskPayload) => void) =>
+  wf.setHandler(wf.defineSignal<[TaskPayload]>(signalName), handler);
 inlineSignal(`task-${taskBId}`, (payload) => {
-  /* do task B things */
+  handled.push(`helper: ${payload.taskId}`); // do task B things
 });
 ```
+<!--SNIPEND-->
 
 <details>
   <summary>
@@ -797,10 +854,13 @@ This will be clearer if you refer to the Client-side APIs.
 
 We named it `setHandler` instead of `subscribe` because a Signal or Query can have only one "handler" at a time, whereas `subscribe` could imply an Observable with multiple consumers and is a higher-level construct.
 
+<!--SNIPSTART typescript-message-passing-replace-handler {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/message-passing/static-dynamic/replace-handler.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/message-passing/static-dynamic/replace-handler.ts)
 ```ts
 wf.setHandler(MySignal, handlerFn1);
 wf.setHandler(MySignal, handlerFn2); // replaces handlerFn1
 ```
+<!--SNIPEND-->
 
 If you are familiar with [RxJS](https://rxjs.dev/), you are free to wrap your Signals and Queries into Observables if you want, or you could dynamically reassign the listener based on your business logic or Workflow state.
 

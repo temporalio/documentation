@@ -2,11 +2,12 @@ const crypto = require('crypto');
 const { waitUntil } = require('@vercel/functions');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
-const { header, ipHash, putRecord } = require('./_log');
+const { clientIp, header, ipHash, putRecord } = require('./_log');
 const {
   LIMITS,
   USAGE,
   isAllowedResult,
+  kapaIdentity,
   parseAllowlist,
   parseList,
   parseParams,
@@ -60,7 +61,7 @@ function log(record) {
   waitUntil(putRecord(pathname, record).catch((error) => console.error(`retrieve: Blob write failed: ${error.message}`)));
 }
 
-async function queryKapa(query) {
+async function queryKapa(query, identity) {
   const { KAPA_API_KEY, KAPA_PROJECT_ID, KAPA_INTEGRATION_ID } = process.env;
   // No top_k: Kapa's Retrieval endpoint rejects values above its maximum of 15,
   // which is also what it returns by default, so there's no room to ask for
@@ -71,7 +72,9 @@ async function queryKapa(query) {
   // filter as of 2026-10-30, but Kapa rejects the whole request when any ID in
   // it no longer exists, so deleting a source in Kapa failed every request. The
   // allowlist can't break that way.
-  const body = { query, integration_id: KAPA_INTEGRATION_ID };
+  //
+  // identity holds the hashed user ID and agent name for Kapa analytics.
+  const body = { query, integration_id: KAPA_INTEGRATION_ID, ...identity };
 
   return fetch(`https://api.kapa.ai/query/v1/projects/${KAPA_PROJECT_ID}/retrieval/`, {
     method: 'POST',
@@ -134,9 +137,15 @@ module.exports = async (request, response) => {
     return;
   }
 
+  const identity = kapaIdentity({
+    ip: clientIp(request),
+    agent: parsed.params.agent,
+    src: parsed.params.src,
+    salt: process.env.RETRIEVE_LOG_SALT,
+  });
   let upstream;
   try {
-    upstream = await queryKapa(parsed.params.q);
+    upstream = await queryKapa(parsed.params.q, identity);
   } catch (error) {
     const timedOut = error.name === 'TimeoutError';
     console.error(`retrieve: Kapa request failed: ${error.message}`);
