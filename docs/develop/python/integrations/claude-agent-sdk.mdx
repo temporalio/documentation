@@ -258,6 +258,13 @@ The following loop uses those options to resume the session after a lost connect
 ```
 <!--SNIPEND-->
 
+This loop answers one prompt. If the connection is lost before the prompt's identifier arrives, the loop starts a new
+session. In a conversation that spans several prompts, resume at the last reply instead, and send the prompt again.
+Claude Code may have saved the prompt before the connection was lost, and the resent prompt gets a new identifier, so
+resuming the whole session leaves two copies of it. Resuming at the last reply drops the saved copy. The
+[agent_chat sample](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/agent_chat/workflow.py)
+keeps the last reply's identifier across turns for this.
+
 :::note
 
 Claude Code repeats the interrupted turn, so tools and hooks may run again and previously approved tool calls may require
