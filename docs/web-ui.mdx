@@ -218,7 +218,10 @@ locally run Temporal Development Server. Event History import is unavailable in 
 4. Select the JSON file and click **Import** to view its Event History.
 
 The import displays the Event History for visualization and debugging. It does not create a Workflow Execution in the
-local Temporal Service or replay the Workflow code.
+local Temporal Service or replay the Workflow code. Import one Workflow Execution at a time.
+
+[Temporal Cloud Workflow History Export](/cloud/export) produces binary Protobuf files containing multiple Workflow
+Executions. The local Web UI cannot import those files directly.
 
 ### Workflow Actions
 
