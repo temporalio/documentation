@@ -18,7 +18,7 @@ The Workflow interface is a Java interface and is annotated with `@WorkflowInter
 Each Workflow interface must have only one method annotated with `@WorkflowMethod`.
 
 <!--SNIPSTART java-workflow-basics-interface {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DevelopWorkflowExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DevelopWorkflowExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DevelopWorkflowExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DevelopWorkflowExample.java)
 ```java
 // Workflow interface
 @WorkflowInterface
@@ -40,7 +40,7 @@ You can create [interface inheritance hierarchies](#interface-inheritance) to re
 A Workflow implementation implements a Workflow interface.
 
 <!--SNIPSTART java-workflow-basics-implementation {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DevelopWorkflowExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DevelopWorkflowExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DevelopWorkflowExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DevelopWorkflowExample.java)
 ```java
 // Define the Workflow implementation which implements our getGreeting Workflow method.
 public static class GreetingWorkflowImpl implements GreetingWorkflow {
@@ -67,7 +67,7 @@ Workflow interfaces.
 For example imagine a UI or CLI button that allows a `retryNow` Signal on any Workflow. To implement this feature you can redesign an interface like the following:
 
 <!--SNIPSTART java-workflow-basics-inheritance-retryable {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java)
 ```java
 public interface Retryable {
     @SignalMethod
@@ -95,7 +95,7 @@ public interface FileProcessingWorkflow extends Retryable {
 Then some other Workflow interface can extend just `Retryable`, for example:
 
 <!--SNIPSTART java-workflow-basics-inheritance-media {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java)
 ```java
 @WorkflowInterface
 public interface MediaProcessingWorkflow extends Retryable {
@@ -109,7 +109,7 @@ public interface MediaProcessingWorkflow extends Retryable {
 Now if we have two running Workflows, one that implements the `FileProcessingWorkflow` interface and another that implements the `MediaProcessingWorkflow` interface, we can Signal to both using their common interface and knowing their WorkflowIds, for example:
 
 <!--SNIPSTART java-workflow-basics-inheritance-signal {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/InterfaceInheritanceExample.java)
 ```java
 Retryable r1 = client.newWorkflowStub(Retryable.class, firstWorkflowId);
 Retryable r2 = client.newWorkflowStub(Retryable.class, secondWorkflowId);
@@ -124,7 +124,7 @@ A base interface can also declare the `@WorkflowMethod`.
 Each interface annotated with `@WorkflowInterface` that extends it defines its own Workflow Type, named after that interface:
 
 <!--SNIPSTART java-workflow-basics-base-workflow-method {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/BaseWorkflowMethodExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/BaseWorkflowMethodExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/BaseWorkflowMethodExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/BaseWorkflowMethodExample.java)
 ```java
 public interface BaseWorkflow {
     @WorkflowMethod
@@ -143,7 +143,7 @@ You can register implementations of both interfaces with the same Worker.
 Their Workflow Types are `Workflow1` and `Workflow2`:
 
 <!--SNIPSTART java-workflow-basics-base-workflow-method-registration {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/BaseWorkflowMethodExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/BaseWorkflowMethodExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/BaseWorkflowMethodExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/BaseWorkflowMethodExample.java)
 ```java
 worker.registerWorkflowImplementationTypes(
     Workflow1Impl.class, Workflow2Impl.class);
@@ -166,7 +166,7 @@ Note that all inputs should be serializable by the default Jackson JSON Payload 
 You can create a custom object and pass it to the Workflow method, as shown in the following example.
 
 <!--SNIPSTART java-workflow-basics-parameters {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/ParametersExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/ParametersExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/ParametersExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/ParametersExample.java)
 ```java
 @WorkflowInterface
 public interface YourWorkflow {
@@ -202,7 +202,7 @@ The Workflow Type defaults to the short name of the Workflow interface.
 In the following example, the Workflow Type defaults to `NotifyUserAccounts`.
 
 <!--SNIPSTART java-workflow-basics-type-default {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DefaultWorkflowTypeExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DefaultWorkflowTypeExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DefaultWorkflowTypeExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DefaultWorkflowTypeExample.java)
 ```java
 @WorkflowInterface
 public interface NotifyUserAccounts {
@@ -216,7 +216,7 @@ To overwrite this default naming and assign a custom Workflow Type, use the `@Wo
 In the following example, the Workflow Type is set to `your-workflow`.
 
 <!--SNIPSTART java-workflow-basics-type-custom {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/CustomWorkflowTypeExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/CustomWorkflowTypeExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/CustomWorkflowTypeExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/CustomWorkflowTypeExample.java)
 ```java
 @WorkflowInterface
 public interface NotifyUserAccounts {
@@ -237,7 +237,7 @@ The SDK will then ensure that your constructor receives the Workflow input argum
 Here's an example. Notice that the constructor and `getGreeting` must have the same parameters:
 
 <!--SNIPSTART java-workflow-basics-constructor-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/GreetingExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/GreetingExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/GreetingExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/GreetingExample.java)
 ```java
 public class GreetingExample {
     @WorkflowInterface
@@ -320,7 +320,7 @@ instead of `System.out.println` or a logger you create yourself. The SDK logger 
 avoid duplicates:
 
 <!--SNIPSTART java-workflow-basics-logging {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/LoggingExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/LoggingExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/LoggingExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/LoggingExample.java)
 ```java
 public static class MyWorkflowImpl implements MyWorkflow {
   private static final Logger logger = Workflow.getLogger(MyWorkflowImpl.class);
@@ -344,7 +344,7 @@ to get a `Random` instance seeded per Workflow Execution, and
 instead of `UUID.randomUUID()`:
 
 <!--SNIPSTART java-workflow-basics-random {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java)
 ```java
 int value = Workflow.newRandom().nextInt(100);
 UUID uniqueId = Workflow.randomUUID();
@@ -358,7 +358,7 @@ instead of `System.currentTimeMillis()` or `Instant.now()`. It returns the time 
 consistent across replays:
 
 <!--SNIPSTART java-workflow-basics-current-time {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java)
 ```java
 long currentTime = Workflow.currentTimeMillis();
 ```
@@ -381,7 +381,7 @@ Never use this to affect Workflow business logic. Branching on replay status bre
 :::
 
 <!--SNIPSTART java-workflow-basics-is-replaying {"enable_code_dedenting": true}-->
-[java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java)
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/DeterministicApisExample.java)
 ```java
 if (!WorkflowUnsafe.isReplaying()) {
   emitMetric("workflow_started", 1);
