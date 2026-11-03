@@ -203,9 +203,10 @@ To resume the interrupted turn, configure these Claude Agent SDK options.
 - `resume_session_at` resumes from the interrupted prompt.
 - `extra_args={"replay-user-messages": None}` makes the prompt identifier available in the response stream.
 
-On a lost connection, create a new client with these options and send `Continue from where you left off.` to finish the
-turn. If the prompt identifier never arrived, send the prompt again in a new session. See the
-[tools sample](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py).
+On a lost connection, create a new client with these options to resume the same session. If the prompt identifier
+arrived, resume at the prompt and send `Continue from where you left off.` Otherwise, resume at the last reply and send
+the prompt again. See the
+[agent chat sample](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/agent_chat/workflow.py).
 
 :::note
 
@@ -250,13 +251,11 @@ run in the Workflow and must be deterministic.
 Each turn adds to the Workflow's Event History. For a long conversation, finish the turn, disconnect, and
 [Continue-As-New](/develop/python/workflows/continue-as-new) with the session identifier. In the new Workflow run, set `resume` to that session identifier. See the [agent chat sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/agent_chat).
 
-**Session recovery across turns**
+**Session recovery**
 
-In a session that spans several prompts, a connection lost before the prompt identifier arrives can't start a new
-session. Resume at the last reply instead, with `resume_session_at` set to that reply's identifier, and send the prompt
-again. Claude Code may have saved the prompt before the connection was lost, and the resent prompt gets a new
-identifier, so resuming the whole session keeps both copies. See the
-[agent chat sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/agent_chat).
+When the prompt identifier never arrived, resume at the last reply rather than at the end of the session. Claude Code
+may have saved the prompt before the connection was lost. Resuming the whole session and sending the prompt again would
+leave it in the session twice. Before the session's first reply there is nothing to resume at, so start a new session.
 
 **Configuration**
 
