@@ -10,9 +10,13 @@ function header(request, name) {
   return (Array.isArray(value) ? value[0] : value) || null;
 }
 
+function clientIp(request) {
+  return header(request, 'x-real-ip') || (header(request, 'x-forwarded-for') || '').split(',')[0].trim() || null;
+}
+
 // A salted hash, so repeat callers can be grouped without storing their IP.
 function ipHash(request, salt) {
-  const ip = header(request, 'x-real-ip') || (header(request, 'x-forwarded-for') || '').split(',')[0].trim();
+  const ip = clientIp(request);
   if (!ip || !salt) return null;
   return crypto.createHash('sha256').update(`${salt}:${ip}`).digest('hex').slice(0, 16);
 }
@@ -29,4 +33,4 @@ function putRecord(pathname, record, { token } = {}) {
   });
 }
 
-module.exports = { header, ipHash, putRecord };
+module.exports = { clientIp, header, ipHash, putRecord };
