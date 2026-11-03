@@ -48,12 +48,14 @@ Activities can be invoked synchronously or asynchronously.
 
 In the following example, we use the type-safe `Workflow.newActivityStub` within the "FileProcessingWorkflow" Workflow implementation to create a client-side stub of the `FileProcessingActivities` class. We also define `ActivityOptions` and set `setStartToCloseTimeout` option to one hour.
 
+<!--SNIPSTART java-activity-execution-sync-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/SyncFileProcessingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/SyncFileProcessingWorkflowImpl.java)
 ```java
-public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
+public class SyncFileProcessingWorkflowImpl implements FileProcessingWorkflow {
 
     private final FileProcessingActivities activities;
 
-    public FileProcessingWorkflowImpl() {
+    public SyncFileProcessingWorkflowImpl() {
         this.activities = Workflow.newActivityStub(
                 FileProcessingActivities.class,
                 ActivityOptions.newBuilder()
@@ -78,15 +80,17 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
             }
         }
     }
-    // ...
 }
 ```
+<!--SNIPEND-->
 
 A Workflow can have multiple Activity stubs. Each Activity stub can have its own `ActivityOptions` defined.
 The following example shows a Workflow implementation with two typed Activity stubs.
 
+<!--SNIPSTART java-activity-execution-multiple-stubs {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/MultipleStubsWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/MultipleStubsWorkflowImpl.java)
 ```java
-public FileProcessingWorkflowImpl() {
+public MultipleStubsWorkflowImpl() {
     ActivityOptions options1 = ActivityOptions.newBuilder()
              .setTaskQueue("taskQueue1")
              .setStartToCloseTimeout(Duration.ofMinutes(10))
@@ -100,21 +104,25 @@ public FileProcessingWorkflowImpl() {
     this.store2 = Workflow.newActivityStub(FileProcessingActivities.class, options2);
 }
 ```
+<!--SNIPEND-->
 
 To invoke Activities inside Workflows without referencing the interface it implements, use an untyped Activity stub `Workflow.newUntypedActivityStub`.
 This is useful when the Activity type is not known at compile time, or to invoke Activities implemented in different programming languages.
 
+<!--SNIPSTART java-activity-execution-untyped-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/UntypedStubExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/UntypedStubExample.java)
 ```java
-   // Workflow code
-    ActivityOptions activityOptions =
-        ActivityOptions.newBuilder()
+// Workflow code
+ActivityOptions activityOptions =
+    ActivityOptions.newBuilder()
         .setStartToCloseTimeout(Duration.ofSeconds(3))
         .setTaskQueue("simple-queue-node")
         .build();
 
-    ActivityStub activity = Workflow.newUntypedActivityStub(activityOptions);
-    activity.execute("ComposeGreeting", String.class, "Hello World", "Spanish");
+ActivityStub activity = Workflow.newUntypedActivityStub(activityOptions);
+String result = activity.execute("ComposeGreeting", String.class, "Hello World", "Spanish");
 ```
+<!--SNIPEND-->
 
 ### Invoke Activities asynchronously {/* #invoking-activities-asynchronously */}
 
@@ -125,57 +133,63 @@ When invoking Activities, use `Async.function` for Activities that return a resu
 
 In the following asynchronous Activity invocation, the method reference is passed to `Async.function` followed by Activity arguments.
 
+<!--SNIPSTART java-activity-execution-async-function {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/AsyncFileProcessingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/AsyncFileProcessingWorkflowImpl.java)
 ```java
 Promise<String> localNamePromise = Async.function(activities::download, sourceBucket, sourceFile);
 ```
+<!--SNIPEND-->
 
 The following example calls two Activity methods, "download" and "upload", in parallel on multiple files.
 
+<!--SNIPSTART java-activity-execution-async-parallel {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/AsyncFileProcessingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/AsyncFileProcessingWorkflowImpl.java)
 ```java
-  public void processFile(Arguments args) {
+public void processFile(Arguments args) {
     List<Promise<String>> localNamePromises = new ArrayList<>();
     List<String> processedNames = null;
     try {
-      // Download all files in parallel.
-      for (String sourceFilename : args.getSourceFilenames()) {
-        Promise<String> localName =
-            Async.function(activities::download, args.getSourceBucketName(), sourceFilename);
-        localNamePromises.add(localName);
-      }
-      List<String> localNames = new ArrayList<>();
-      for (Promise<String> localName : localNamePromises) {
-        localNames.add(localName.get());
-      }
-      processedNames = activities.processFiles(localNames);
+        // Download all files in parallel.
+        for (String sourceFilename : args.getSourceFilenames()) {
+            Promise<String> localName =
+                Async.function(activities::download, args.getSourceBucketName(), sourceFilename);
+            localNamePromises.add(localName);
+        }
+        List<String> localNames = new ArrayList<>();
+        for (Promise<String> localName : localNamePromises) {
+            localNames.add(localName.get());
+        }
+        processedNames = activities.processFiles(localNames);
 
-      // Upload all results in parallel.
-      List<Promise<Void>> uploadedList = new ArrayList<>();
-      for (String processedName : processedNames) {
-        Promise<Void> uploaded =
-            Async.procedure(
-                activities::upload,
-                args.getTargetBucketName(),
-                args.getTargetFilename(),
-                processedName);
-        uploadedList.add(uploaded);
-      }
-      // Wait for all uploads to complete.
-      Promise.allOf(uploadedList).get();
-    } finally {
-      for (Promise<String> localNamePromise : localNamePromises) {
-        // Skip files that haven't completed downloading.
-        if (localNamePromise.isCompleted()) {
-          activities.deleteLocalFile(localNamePromise.get());
-        }
-      }
-      if (processedNames != null) {
+        // Upload all results in parallel.
+        List<Promise<Void>> uploadedList = new ArrayList<>();
         for (String processedName : processedNames) {
-          activities.deleteLocalFile(processedName);
+            Promise<Void> uploaded =
+                Async.procedure(
+                    activities::upload,
+                    args.getTargetBucketName(),
+                    args.getTargetFilename(),
+                    processedName);
+            uploadedList.add(uploaded);
         }
-      }
+        // Wait for all uploads to complete.
+        Promise.allOf(uploadedList).get();
+    } finally {
+        for (Promise<String> localNamePromise : localNamePromises) {
+            // Skip files that haven't completed downloading.
+            if (localNamePromise.isCompleted()) {
+                activities.deleteLocalFile(localNamePromise.get());
+            }
+        }
+        if (processedNames != null) {
+            for (String processedName : processedNames) {
+                activities.deleteLocalFile(processedName);
+            }
+        }
     }
-  }
+}
 ```
+<!--SNIPEND-->
 
 ### ActivityExecutionContext {/* #activity-execution-context */}
 
@@ -188,8 +202,13 @@ Therefore, calls to `getExecutionContext()` succeed only within the thread that 
 
 Following is an example of using the `ActivityExecutionContext`:
 
+<!--SNIPSTART java-activity-execution-context-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/context/FileProcessingActivitiesImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/context/FileProcessingActivitiesImpl.java)
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  private static final Logger log = LoggerFactory.getLogger(FileProcessingActivitiesImpl.class);
+  private final String localDirectory = "/tmp/";
 
   @Override
   public String download(String bucketName, String remoteName, String localName) {
@@ -201,13 +220,18 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
     log.info("workflowId=" + info.getWorkflowId());
     log.info("runId=" + info.getRunId());
     log.info("activityId=" + info.getActivityId());
-    log.info("activityTimeout=" + info.getStartToCloseTimeout();
+    log.info("activityTimeout=" + info.getStartToCloseTimeout());
 
     return downloadFileFromS3(bucketName, remoteName, localDirectory + localName);
   }
-    ...
+
+  private String downloadFileFromS3(String bucketName, String remoteName, String localPath) {
+    // Download s3://bucketName/remoteName to localPath.
+    return localPath;
+  }
 }
 ```
+<!--SNIPEND-->
 
 For details on getting the results of an Activity Execution, see [Activity Execution Result](#activity-execution-result).
 
@@ -229,22 +253,27 @@ You can set Activity Options using an `ActivityStub` within a Workflow implement
 
 The following uses `ActivityStub`.
 
+<!--SNIPSTART java-activity-execution-timeouts-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
 ```java
 GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
                 ActivityOptions.newBuilder()
                         .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                        // .setStartToCloseTimeout(Duration.ofSeconds(2)
-                        // .setScheduletoCloseTimeout(Duration.ofSeconds(20))
+                        // .setStartToCloseTimeout(Duration.ofSeconds(2))
+                        // .setScheduleToStartTimeout(Duration.ofSeconds(20))
                         .build());
 ```
+<!--SNIPEND-->
 
 The following uses `WorkflowImplementationOptions`.
 
+<!--SNIPSTART java-activity-execution-timeouts-wio {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
 ```java
 WorkflowImplementationOptions options =
             WorkflowImplementationOptions.newBuilder()
                     .setActivityOptions(
-                            ImmutableMap.of(
+                            Map.of(
                                     "GetCustomerGreeting",
                                     // Set Activity Execution timeout
                                     ActivityOptions.newBuilder()
@@ -254,6 +283,7 @@ WorkflowImplementationOptions options =
                                         .build()))
                     .build();
 ```
+<!--SNIPEND-->
 
 :::note
 
@@ -290,28 +320,34 @@ This or `StartToCloseTimeout` must be set.
 - Default: Unlimited.
   Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
 
-- With `ActivityStub`
+With `ActivityStub`:
 
-  ```java
-  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-                  ActivityOptions.newBuilder()
-                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                          .build());
-  ```
+<!--SNIPSTART java-activity-execution-schedule-to-close-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                        .build());
+```
+<!--SNIPEND-->
 
-- With `WorkflowImplementationOptions`
+With `WorkflowImplementationOptions`:
 
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                      "GetCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                                          .build()))
-                      .build();
-  ```
+<!--SNIPSTART java-activity-execution-schedule-to-close-wio {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+WorkflowImplementationOptions options =
+            WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            Map.of(
+                                    "GetCustomerGreeting",
+                                    ActivityOptions.newBuilder()
+                                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                                        .build()))
+                    .build();
+```
+<!--SNIPEND-->
 
 ### ScheduleToStartTimeout
 
@@ -320,31 +356,40 @@ To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#s
 - Type: `Duration`
 - Default: Unlimited. This timeout is non-retryable.
 
-- With `ActivityStub`
+With `ActivityStub`:
 
-  ```java
-  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-                  ActivityOptions.newBuilder()
-                          .setScheduleToStartTimeout(Duration.ofSeconds(5))
-                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                          // required when setting Activity options.
-                          .setScheduletoCloseTimeout(Duration.ofSeconds(20))
-                          .build());
-  ```
+<!--SNIPSTART java-activity-execution-schedule-to-start-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                        // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                        // required when setting Activity options.
+                        .setScheduleToCloseTimeout(Duration.ofSeconds(20))
+                        .build());
+```
+<!--SNIPEND-->
 
-- With `WorkflowImplementationOptions`
+With `WorkflowImplementationOptions`:
 
-  ```java
-  WorkflowImplementationOptions options =
-             WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "GetCustomerGreeting",
-                                ActivityOptions.newBuilder()
-                                    .setScheduleToStartTimeout(Duration.ofSeconds(5))
-                                    .build()))
-                      .build();
-  ```
+<!--SNIPSTART java-activity-execution-schedule-to-start-wio {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+WorkflowImplementationOptions options =
+           WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            Map.of(
+                              "GetCustomerGreeting",
+                              ActivityOptions.newBuilder()
+                                  .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                                  // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                  // required when setting Activity options.
+                                  .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                  .build()))
+                    .build();
+```
+<!--SNIPEND-->
 
 ### StartToCloseTimeout
 
@@ -355,29 +400,35 @@ This or `ScheduleToClose` must be set.
 - Type: `Duration`
 - Default: Defaults to [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) value
 
-- With `ActivityStub`
+With `ActivityStub`:
 
-  ```java
-  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-              ActivityOptions.newBuilder()
-                      .setStartToCloseTimeout(Duration.ofSeconds(2))
-                      .build());
-  ```
+<!--SNIPSTART java-activity-execution-start-to-close-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+            ActivityOptions.newBuilder()
+                    .setStartToCloseTimeout(Duration.ofSeconds(2))
+                    .build());
+```
+<!--SNIPEND-->
 
-- With `WorkflowImplementationOptions`
+With `WorkflowImplementationOptions`:
 
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "EmailCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                            // Set Activity Execution timeout (single run)
-                                            .setStartToCloseTimeout(Duration.ofSeconds(2))
-                                            .build()))
-                      .build();
-  ```
+<!--SNIPSTART java-activity-execution-start-to-close-wio {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+WorkflowImplementationOptions options =
+            WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            Map.of(
+                              "EmailCustomerGreeting",
+                                    ActivityOptions.newBuilder()
+                                          // Set Activity Execution timeout (single run)
+                                          .setStartToCloseTimeout(Duration.ofSeconds(2))
+                                          .build()))
+                    .build();
+```
+<!--SNIPEND-->
 
 ### HeartbeatTimeout
 
@@ -386,70 +437,82 @@ To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat
 - Type: `Duration`
 - Default: None
 
-- With `ActivityStub`
+With `ActivityStub`:
 
-  ```java
-  private final GreetingActivities activities =
-      Workflow.newActivityStub(
-          GreetingActivities.class,
-          ActivityOptions.newBuilder()
-              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-              // required when setting Activity options.
-              .setStartToCloseTimeout(Duration.ofSeconds(5))
-              .setHeartbeatTimeout(Duration.ofSeconds(2))
-              .build());
-  ```
+<!--SNIPSTART java-activity-execution-heartbeat-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+private final GreetingActivities activities =
+    Workflow.newActivityStub(
+        GreetingActivities.class,
+        ActivityOptions.newBuilder()
+            // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+            // required when setting Activity options.
+            .setStartToCloseTimeout(Duration.ofSeconds(5))
+            .setHeartbeatTimeout(Duration.ofSeconds(2))
+            .build());
+```
+<!--SNIPEND-->
 
-- With `WorkflowImplementationOptions`
+With `WorkflowImplementationOptions`:
 
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "EmailCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                                          // required when setting Activity options.
-                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
-                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
-                                            .build()))
-                      .build();
-  ```
+<!--SNIPSTART java-activity-execution-heartbeat-wio {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+WorkflowImplementationOptions options =
+            WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            Map.of(
+                              "EmailCustomerGreeting",
+                                    ActivityOptions.newBuilder()
+                                        // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                        // required when setting Activity options.
+                                          .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                          .setHeartbeatTimeout(Duration.ofSeconds(2))
+                                          .build()))
+                    .build();
+```
+<!--SNIPEND-->
 
 ### TaskQueue
 
 - Type: `String`
 - Default: Defaults to the Task Queue that the Workflow was started with.
 
-- With `ActivityStub`
+With `ActivityStub`:
 
-  ```java
-  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-                  ActivityOptions.newBuilder()
-                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are required when
-                          // setting Activity options.
-                          .setStartToCloseTimeout(Duration.ofSeconds(5))
-                          .setTaskQueue("yourTaskQueue")
-                          .build());
-  ```
+<!--SNIPSTART java-activity-execution-task-queue-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                ActivityOptions.newBuilder()
+                        // note that either StartToCloseTimeout or ScheduleToCloseTimeout are required when
+                        // setting Activity options.
+                        .setStartToCloseTimeout(Duration.ofSeconds(5))
+                        .setTaskQueue("yourTaskQueue")
+                        .build());
+```
+<!--SNIPEND-->
 
-- With `WorkflowImplementationOptions`
+With `WorkflowImplementationOptions`:
 
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "EmailCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                            // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                                            // required when setting Activity options.
-                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
-                                            .setTaskQueue("yourTaskQueue")
-                                            .build()))
-                      .build();
-  ```
+<!--SNIPSTART java-activity-execution-task-queue-wio {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+WorkflowImplementationOptions options =
+            WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            Map.of(
+                              "EmailCustomerGreeting",
+                                    ActivityOptions.newBuilder()
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                          // required when setting Activity options.
+                                          .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                          .setTaskQueue("yourTaskQueue")
+                                          .build()))
+                    .build();
+```
+<!--SNIPEND-->
 
 See [Task Queue](/task-queue)
 
@@ -460,71 +523,89 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
 - Type: `RetryOptions`
 - Default: Server-defined Activity Retry policy.
 
-- With `ActivityStub`
+With `ActivityStub`:
 
-  ```java
-  private final ActivityOptions options =
-      ActivityOptions.newBuilder()
-          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-          // required when setting Activity options.
-          .setStartToCloseTimeout(Duration.ofSeconds(5))
-          .setRetryOptions(
-              RetryOptions.newBuilder()
-                  .setInitialInterval(Duration.ofSeconds(1))
-                  .setMaximumInterval(Duration.ofSeconds(10))
-                  .build())
-          .build();
-  ```
+<!--SNIPSTART java-activity-execution-retry-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+private final ActivityOptions options =
+    ActivityOptions.newBuilder()
+        // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+        // required when setting Activity options.
+        .setStartToCloseTimeout(Duration.ofSeconds(5))
+        .setRetryOptions(
+            RetryOptions.newBuilder()
+                .setInitialInterval(Duration.ofSeconds(1))
+                .setMaximumInterval(Duration.ofSeconds(10))
+                .build())
+        .build();
+```
+<!--SNIPEND-->
 
-- With `WorkflowImplementationOptions`
+With `WorkflowImplementationOptions`:
 
-  ```java
-  WorkflowImplementationOptions options =
-          WorkflowImplementationOptions.newBuilder()
-                 .setActivityOptions(
-                      ImmutableMap.of(
-                          "EmailCustomerGreeting",
-                          ActivityOptions.newBuilder()
-                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                                // required when setting Activity options.
-                                .setStartToCloseTimeout(Duration.ofSeconds(5))
-                                .setRetryOptions(
-                                      RetryOptions.newBuilder()
-                                          .setDoNotRetry(NullPointerException.class.getName())
-                                          .build())
-                                .build()))
-                .build();
-  ```
+<!--SNIPSTART java-activity-execution-retry-wio {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+WorkflowImplementationOptions options =
+        WorkflowImplementationOptions.newBuilder()
+               .setActivityOptions(
+                    Map.of(
+                        "EmailCustomerGreeting",
+                        ActivityOptions.newBuilder()
+                              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                              // required when setting Activity options.
+                              .setStartToCloseTimeout(Duration.ofSeconds(5))
+                              .setRetryOptions(
+                                    RetryOptions.newBuilder()
+                                        .setDoNotRetry(NullPointerException.class.getName())
+                                        .build())
+                              .build()))
+              .build();
+```
+<!--SNIPEND-->
 
 ### setCancellationType
 
 - Type: `ActivityCancellationType`
 - Default: `ActivityCancellationType.TRY_CANCEL`
 
-- With `ActivityStub`
+With `ActivityStub`:
 
-  ```java
-  private final GreetingActivities activities =
-    Workflow.newActivityStub(
-        GreetingActivities.class,
-        ActivityOptions.newBuilder()
-            .setCancellationType(ActivityCancellationType.WAIT_CANCELLATION_COMPLETED)
-            .build());
-  ```
+<!--SNIPSTART java-activity-execution-cancellation-stub {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+private final GreetingActivities activities =
+  Workflow.newActivityStub(
+      GreetingActivities.class,
+      ActivityOptions.newBuilder()
+          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+          // required when setting Activity options.
+          .setStartToCloseTimeout(Duration.ofSeconds(5))
+          .setCancellationType(ActivityCancellationType.WAIT_CANCELLATION_COMPLETED)
+          .build());
+```
+<!--SNIPEND-->
 
-- With `WorkflowImplementationOptions`
+With `WorkflowImplementationOptions`:
 
-  ```java
-  WorkflowImplementationOptions options =
-          WorkflowImplementationOptions.newBuilder()
-                 .setActivityOptions(
-                      ImmutableMap.of(
-                          "EmailCustomerGreeting",
-                          ActivityOptions.newBuilder()
-                                .setCancellationType(ActivityCancellationType.WAIT_CANCELLATION_COMPLETED)
-                                .build()))
-                .build();
-  ```
+<!--SNIPSTART java-activity-execution-cancellation-wio {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/ActivityOptionsExample.java)
+```java
+WorkflowImplementationOptions options =
+        WorkflowImplementationOptions.newBuilder()
+               .setActivityOptions(
+                    Map.of(
+                        "EmailCustomerGreeting",
+                        ActivityOptions.newBuilder()
+                              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                              // required when setting Activity options.
+                              .setStartToCloseTimeout(Duration.ofSeconds(5))
+                              .setCancellationType(ActivityCancellationType.WAIT_CANCELLATION_COMPLETED)
+                              .build()))
+              .build();
+```
+<!--SNIPEND-->
 
 ## Get the results of an Activity Execution {/* #activity-execution-result */}
 
@@ -544,8 +625,17 @@ To correlate Activity invocation with completion, use either a `TaskToken` or Wo
 
 Following is an example of using `ActivityExecutionContext.doNotCompleteOnReturn()`:
 
+<!--SNIPSTART java-activity-execution-do-not-complete-on-return-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/asynccompletion/FileProcessingActivitiesImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/asynccompletion/FileProcessingActivitiesImpl.java)
 ```java
 public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  private final DownloadService downloadService;
+  private final String localDirectory = "/tmp/";
+
+  public FileProcessingActivitiesImpl(DownloadService downloadService) {
+    this.downloadService = downloadService;
+  }
 
   public String download(String bucketName, String remoteName, String localName) {
 
@@ -560,18 +650,26 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
     // Return value is ignored when doNotCompleteOnReturn was called.
     return "ignored";
   }
-  ...
+
+  private void asyncDownloadFileFromS3(byte[] taskToken, String bucketName, String remoteName, String localPath) {
+    // Starts the download and returns right away; the service completes the Activity later.
+    downloadService.startDownload(taskToken, bucketName, remoteName, localPath);
+  }
 }
 ```
+<!--SNIPEND-->
 
 When the download is complete, the download service potentially can complete the Activity, or fail it from a different process, for example:
 
+<!--SNIPSTART java-activity-execution-complete-from-another-process {"enable_code_dedenting": true}-->
+[java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/asynccompletion/DownloadService.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/execution/src/main/java/io/temporal/docs/activities/execution/asynccompletion/DownloadService.java)
 ```java
-  public <R> void completeActivity(byte[] taskToken, R result) {
-    completionClient.complete(taskToken, result);
-  }
+public <R> void completeActivity(byte[] taskToken, R result) {
+  completionClient.complete(taskToken, result);
+}
 
-  public void failActivity(byte[] taskToken, Exception failure) {
-    completionClient.completeExceptionally(taskToken, failure);
-  }
+public void failActivity(byte[] taskToken, Exception failure) {
+  completionClient.completeExceptionally(taskToken, failure);
+}
 ```
+<!--SNIPEND-->
