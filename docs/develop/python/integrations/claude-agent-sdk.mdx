@@ -134,13 +134,13 @@ designed for one pending approval at a time. A Query shows the pending tool call
 
 ## Stream output from a Workflow
 
-The Claude Agent SDK can stream a reply as it's generated. The plugin reads each event from Claude Code in an Activity, and
-the Workflow publishes it to a topic of a [Workflow Stream](/develop/python/workflows/workflow-streams). Any client can
-subscribe to the topic by Workflow Id to show tokens as they arrive.
+The Claude Agent SDK can stream a reply as it's generated. Set `include_partial_messages=True` in the options, as in the
+Claude Agent SDK, and the Workflow receives each `StreamEvent` along with the complete messages. The plugin reads each
+event from Claude Code in an Activity, so each one adds to the Workflow's Event History.
 
-Create a topic when the Workflow starts. Set `include_partial_messages=True` in the options, as in the Claude Agent SDK,
-and pass the topic to `TemporalTransport` as `stream`. The two go together. Setting one without the other raises
-`ValueError`.
+To show tokens to clients as they arrive, also pass a topic of a [Workflow Stream](/develop/python/workflows/workflow-streams)
+to `TemporalTransport` as `stream`. The Workflow publishes each `StreamEvent` to the topic, and any client can subscribe
+to it by Workflow ID.
 
 In the [streaming sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/streaming),
 a client subscribes to the topic and receives `stream_event` messages from Claude Code. For details on event delivery
@@ -280,7 +280,7 @@ Other Claude Agent SDK features that need no changes for Temporal can be used as
 | Custom tools | Supported | In-process MCP tool functions run in the Workflow and must be deterministic. |
 | Hooks | Supported | Hook callbacks run in the Workflow and must be deterministic. |
 | Tool approvals | Supported | The `can_use_tool` callback runs in the Workflow and must be deterministic. |
-| Streaming | Supported | Enable partial messages and pass a Workflow Stream topic to `TemporalTransport`. Retried turns can produce repeated output. |
+| Streaming | Supported | Enable partial messages to receive them in the Workflow. Pass a Workflow Stream topic to `TemporalTransport` to also publish them to clients. Retried turns can produce repeated output. |
 | Session recovery | Supported | A new connection needs access to the Claude Code session files. Resuming an interrupted turn can repeat tool calls and approvals. |
 | Custom connectors | Supported | `write`, `end_input`, and `close` must be safe to retry and call concurrently. |
 | Remote connections | Supported | Use a custom connector. For OpenTelemetry, pass `TRACEPARENT` and `TRACESTATE` in the Claude Code process environment when starting it. |
@@ -309,7 +309,7 @@ Each turn adds to the Workflow's Event History. For a long conversation, finish 
 | `ClaudeAgentSDKPlugin` | `connector` | `SubprocessConnector()` | Starts and connects to Claude Code. Provide a custom connector to run it in another environment. |
 | `TemporalTransport` | `options` | Required | Claude Agent SDK options. Pass the same options to the transport and the client. |
 | `TemporalTransport` | `activity_options` | None | Configures Activity options for `connect`, `write`, `read`, `end_input`, or `close`. Use `schedule_to_start_timeout` to detect a lost Worker sooner. |
-| `TemporalTransport` | `stream` | None | A Workflow Stream topic for partial messages. Set `include_partial_messages=True` in the Claude Agent SDK options when providing a topic. |
+| `TemporalTransport` | `stream` | None | A Workflow Stream topic that also gets each partial message. Takes effect with `include_partial_messages=True` in the Claude Agent SDK options. |
 
 **Failure behavior**
 
@@ -322,7 +322,7 @@ left unhandled. Other Activity errors are retried according to the Activity retr
 | `CLINotFoundError` | The Claude Code executable could not be found where the connector runs it. |
 | `ProcessError` | Claude Code exited with an error. |
 | `CLIJSONDecodeError` | Output from Claude Code could not be decoded as JSON. |
-| `ValueError` | The transport configuration is invalid. Set both `include_partial_messages` and `stream`, or neither, and pass `settings` as a JSON object string instead of a file path. |
+| `ValueError` | The transport configuration is invalid. Pass `settings` as a JSON object string instead of a file path. |
 
 ## Resources
 
