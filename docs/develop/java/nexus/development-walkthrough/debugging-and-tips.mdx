@@ -11,11 +11,12 @@ Most Nexus problems are wiring problems with a few recognizable symptoms. Start 
 
 ## Development server settings
 
-Two errors mean the development server is missing a setting that is off by default. See
+Two errors mean the development server is missing a setting. See
 [Start the development server](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server).
 
 **`Standalone Nexus operation is disabled`** comes from `temporal nexus operation execute`,
-`start`, `describe`, and `result` when the server was started without
+`start`, `describe`, and `result` when Standalone Nexus Operations are off in the server. Temporal
+CLI v1.10.0 and later turn them on by default. On earlier versions, start the server with
 `nexusoperation.enableStandalone=true`. Operations called from a caller Workflow are unaffected, so
 this only shows up on the command line.
 

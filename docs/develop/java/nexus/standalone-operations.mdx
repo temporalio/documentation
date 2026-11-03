@@ -72,8 +72,11 @@ temporal server start-dev \
   --dynamic-config-value nexusoperation.enableStandalone=true
 ```
 
-Without `nexusoperation.enableStandalone=true`, Temporal CLI v1.9.x dev servers reject Standalone Nexus Operations with
-`Standalone Nexus operation is disabled`.
+:::note
+
+If you see `Standalone Nexus operation is disabled` when running commands against a local dev server, upgrade to Temporal CLI v1.10.0 or later, which turns the feature on by default, or start the dev server with `--dynamic-config-value nexusoperation.enableStandalone=true`.
+
+:::
 
 The starter and Worker connect to two different Namespaces (a caller Namespace and a handler
 Namespace), mirroring how Nexus crosses Namespace boundaries.
