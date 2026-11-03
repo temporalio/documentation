@@ -203,67 +203,9 @@ To resume the interrupted turn, configure these Claude Agent SDK options.
 - `resume_session_at` resumes from the interrupted prompt.
 - `extra_args={"replay-user-messages": None}` makes the prompt identifier available in the response stream.
 
-The sample sets these options in `ClaudeAgentOptions`.
-
-<!--SNIPSTART python-claude-agent-sdk-session-options-->
-[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
-```python
-            extra_args={"replay-user-messages": None},
-            resume=session_id if prompt_id else None,
-            resume_session_at=prompt_id,
-```
-<!--SNIPEND-->
-
-The following loop uses those options to resume the session after a lost connection.
-
-<!--SNIPSTART python-claude-agent-sdk-tools-ask-->
-[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
-```python
-    async def ask(self, prompt: str) -> str:
-        """Answer the prompt, redoing the turn if the connection is lost."""
-        CONTINUE = "Continue from where you left off."
-        session_id = None  # Claude Code's, once it started
-        prompt_id = None  # The prompt's, once Claude Code saved it
-
-        while True:
-            try:
-                options = self.options(session_id, prompt_id)
-                transport = TemporalTransport(options)
-                async with ClaudeSDKClient(
-                    options=options, transport=transport
-                ) as client:
-                    await client.query(CONTINUE if prompt_id else prompt)
-
-                    async for message in client.receive_response():
-                        if (
-                            isinstance(message, SystemMessage)
-                            and message.subtype == "init"
-                        ):
-                            session_id = message.data["session_id"]
-                        elif (
-                            isinstance(message, UserMessage)
-                            and message.uuid
-                            and not prompt_id
-                        ):
-                            prompt_id = message.uuid
-                        elif isinstance(message, ResultMessage):
-                            return message.result or "\n".join(message.errors or [])
-
-                raise RuntimeError("Claude Code ended the turn without a result")
-
-            except CLIConnectionError:
-                # Redo the turn from the prompt if Claude Code saved it, or start again.
-                pass
-
-```
-<!--SNIPEND-->
-
-This loop answers one prompt. If the connection is lost before the prompt's identifier arrives, the loop starts a new
-session. In a conversation that spans several prompts, resume at the last reply instead, and send the prompt again.
-Claude Code may have saved the prompt before the connection was lost, and the resent prompt gets a new identifier, so
-resuming the whole session leaves two copies of it. Resuming at the last reply drops the saved copy. The
-[agent_chat sample](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/agent_chat/workflow.py)
-keeps the last reply's identifier across turns for this.
+On a lost connection, create a new client with these options and send `Continue from where you left off.` to finish the
+turn. If the prompt identifier never arrived, send the prompt again in a new session. See the
+[tools sample](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py).
 
 :::note
 
@@ -307,6 +249,14 @@ run in the Workflow and must be deterministic.
 
 Each turn adds to the Workflow's Event History. For a long conversation, finish the turn, disconnect, and
 [Continue-As-New](/develop/python/workflows/continue-as-new) with the session identifier. In the new Workflow run, set `resume` to that session identifier. See the [agent chat sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/agent_chat).
+
+**Session recovery across turns**
+
+In a session that spans several prompts, a connection lost before the prompt identifier arrives can't start a new
+session. Resume at the last reply instead, with `resume_session_at` set to that reply's identifier, and send the prompt
+again. Claude Code may have saved the prompt before the connection was lost, and the resent prompt gets a new
+identifier, so resuming the whole session keeps both copies. See the
+[agent chat sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/agent_chat).
 
 **Configuration**
 
