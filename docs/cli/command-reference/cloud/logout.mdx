@@ -3,7 +3,7 @@ id: logout
 title: Temporal CLI cloud logout command reference
 sidebar_label: logout
 description: Logout
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - login
 ---

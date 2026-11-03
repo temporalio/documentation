@@ -3,7 +3,7 @@ id: namespace
 title: Temporal CLI cloud namespace command reference
 sidebar_label: namespace
 description: Namespace Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - namespaces
 ---
@@ -1165,6 +1165,47 @@ Use the following options to change the behavior of this command. You can also u
 | `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
 | `--project-id` | No | **string** Filter namespaces by project ID. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+## move-to-project
+
+Move a namespace to a different project within the same account.
+
+The namespace keeps its identity, endpoint, and running workflow
+executions. Only its project and the access derived from that project
+change. Principals who reached the namespace only through the source
+project lose access once the move completes.
+
+Connectivity rules are scoped to a project, so the rules the namespace
+should have in the destination must be chosen in the same command. Pass
+--connectivity-rule-id once per rule, or --no-connectivity-rules to move
+the namespace without any. Omit both only when the namespace has no
+connectivity rules today.
+
+Example:
+
+```
+temporal cloud namespace move-to-project \
+  --namespace my-namespace.my-account \
+  --destination-project-id my-destination-project \
+  --source-project-id my-source-project \
+  --connectivity-rule-id <rule-id>
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--connectivity-rule-id` | No | **string[]** The ID of a connectivity rule the namespace should have in the destination project. Repeat to specify multiple. Mutually exclusive with --no-connectivity-rules. |
+| `--destination-project-id` | Yes | **string** The ID of the project to move the namespace to. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--no-connectivity-rules` | No | **bool** Move the namespace without any connectivity rules in the destination project. Mutually exclusive with --connectivity-rule-id. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--source-project-id` | Yes | **string** The ID of the project the namespace is expected to currently belong to. The move fails if the namespace has since moved elsewhere. |
 
 ## mtls
 
