@@ -56,9 +56,9 @@ export default function AgentDirective(): JSX.Element | null {
           surface the caller found the URL on; see readme/FEEDBACK.md. */}
       If this page is wrong or missing something you needed, or Temporal behaves differently from what it says, report it
       with{' '}
-      <code>
-        GET https://docs.temporal.io/api/feedback?title=&lt;summary&gt;&amp;message=&lt;what-happened&gt;&amp;category=documentation&amp;page_url={metadata.permalink}&amp;src=docs-page&amp;agent=&lt;your-name&gt;
-      </code>
+      {/* One string, so server rendering doesn't put <!-- --> markers around
+          the permalink in the HTML that agents read. */}
+      <code>{`GET https://docs.temporal.io/api/feedback?title=<summary>&message=<what-happened>&category=documentation&page_url=${metadata.permalink}&src=docs-page&agent=<your-name>`}</code>
       . Use <code>category=product</code> when the product, not the page, is wrong. Report only a specific problem you
       hit, send it once, and don't include personal data or credentials.
     </div>
