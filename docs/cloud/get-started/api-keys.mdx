@@ -49,8 +49,12 @@ The authentication process follows this pathway:
 - **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.[Email notifications](/cloud/notifications#admin-notifications) are sent at 30, 20, and 10 days before an API key expires.
 - **Design your code for key updates**: Use key management practices that retrieve your API keys without hard-coding
   them into your apps. This lets you restart your Workers to refresh your rotated keys without recompiling your code.
-- **Monitor API key usage**: Check usage metrics and logs regularly. Revoke the key immediately if you detect any
-  unexpected or unauthorized activity.
+- **Monitor API key usage**: Check usage metrics and logs regularly. If you detect unexpected or unauthorized activity,
+  disable or delete the key. The Namespace endpoint can keep accepting that key for up to 60 seconds. See
+  [Allow time for a new API key to propagate](#api-key-propagation).
+- **Allow time for a key change to reach the Namespace**: After you create, enable, disable, or delete a key, retry
+  Namespace authentication for 60 seconds before you rely on the new state. During rotation, keep the previous key until
+  the replacement succeeds. See [Allow time for a new API key to propagate](#api-key-propagation).
 - **Use a Key Management System (KMS)**: Use a Key Management System to minimize the risk of key leaks.
 
 For guidance on which identities should own API keys, when to use Namespace-scoped Service Accounts, and how to align
@@ -463,22 +467,38 @@ See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more informa
 ### Allow time for a new API key to propagate {/* #api-key-propagation */}
 
 After you create, enable, disable, or delete an API key, Temporal Cloud distributes that change asynchronously to the
-infrastructure that authenticates Namespace requests. During this propagation period, a Namespace endpoint can still
-return `Request unauthorized` for a key the control plane has already created. It can also still accept a key the
-control plane has already disabled or deleted.
+infrastructure that authenticates Namespace requests. A Cloud Ops API operation in `STATE_FULFILLED`, or a
+`temporal cloud` command that exits after waiting, means Temporal Cloud finished recording the change. The Namespace
+endpoint applies it afterward. Until then, a new or re-enabled key can receive `Request unauthorized`, and a disabled
+or deleted key can still be accepted.
 
-A Cloud Ops API operation in `STATE_FULFILLED` means the control plane finished the change. It does not mean the
-Namespace endpoint has applied it.
+Follow these practices:
 
-The secret is returned once, in the create response. Store it immediately. If automation then uses the new key against
-a Namespace, retry a Namespace request (for example, listing Workflows) with backoff for 60 seconds. If it still fails,
-check the key, the caller's permissions, and the target Namespace.
+- **Save the secret before you test the key.** The create response returns the secret once. Store it, then run the
+  checks below. You cannot retrieve the secret later.
+- **Retry Namespace authentication for 60 seconds.** After you create or enable a key, call the Namespace with that key
+  and retry with backoff for 60 seconds. Listing Workflows is a sufficient check:
 
-On a [High Availability](/cloud/high-availability) Namespace, each region loads the key on its own. A successful call to
-the active region does not mean the other region has the key yet.
+```bash
+temporal workflow list \
+    --address <namespace>.<account_id>.tmprl.cloud:7233 \
+    --namespace <namespace>.<account_id> \
+    --api-key <key-secret>
+```
 
-When rotating keys, keep the existing key until a Namespace request with the replacement succeeds. The same wait
-applies after disable and delete.
+`Request unauthorized` during this window means the Namespace endpoint has not loaded the key yet. If the call still
+fails after 60 seconds, check the key, the caller's permissions, and the target Namespace.
+
+- **Start Workers after a successful check.** Start or restart Workers only after a Namespace request with the new key
+  succeeds.
+- **Keep the previous key until the replacement works.** During rotation, leave the existing key in place until the
+  check above succeeds with the new key. Switch clients to the new key, then delete the old key.
+- **Wait 60 seconds after disable or delete.** A disabled or deleted key can still authenticate to the Namespace
+  endpoint until that endpoint loads the change. Wait 60 seconds after the operation reaches `STATE_FULFILLED` before
+  you rely on the Namespace endpoint rejecting the key.
+- **On a High Availability Namespace, wait out the full window.** Each region loads the key on its own. One successful
+  call shows that the active region has the key. Wait the full 60 seconds before you treat the key as ready for a
+  failover. See [High Availability](/cloud/high-availability).
 
 ## Use API keys to authenticate {/* #using-apikeys */}
 
