@@ -29,11 +29,11 @@ The way you write the Activity and register it with a Worker is identical to [Wo
 
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
-<!--SNIPSTART typescript-activity-fn -->
-[snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/activities.ts)
+<!--SNIPSTART typescript-quickstart-activity-->
+[typescript-sandbox/src/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities.ts)
 ```ts
 export async function greet(name: string): Promise<string> {
-  return `👋 Hello, ${name}!`;
+  return `Hello, ${name}!`;
 }
 ```
 <!--SNIPEND-->
@@ -60,11 +60,11 @@ breaking a function or method signature.
 
 This Activity takes a single `name` parameter of type `string`.
 
-<!--SNIPSTART typescript-activity-fn -->
-[snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/activities.ts)
+<!--SNIPSTART typescript-quickstart-activity-->
+[typescript-sandbox/src/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities.ts)
 ```ts
 export async function greet(name: string): Promise<string> {
-  return `👋 Hello, ${name}!`;
+  return `Hello, ${name}!`;
 }
 ```
 <!--SNIPEND-->
@@ -82,11 +82,14 @@ In TypeScript, the return value is always a Promise.
 
 In the following example, `Promise<string>` is the return value.
 
-```typescript
+<!--SNIPSTART typescript-quickstart-activity-->
+[typescript-sandbox/src/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities.ts)
+```ts
 export async function greet(name: string): Promise<string> {
-  return `👋 Hello, ${name}!`;
+  return `Hello, ${name}!`;
 }
 ```
+<!--SNIPEND-->
 
 ## Customize your Activity Type {/* #activity-type */}
 
@@ -96,22 +99,21 @@ your Activity Type.
 You can customize the name of the Activity when you register it with the Worker. In the following example, the Activity
 Name is `activityFoo`.
 
-<!--SNIPSTART typescript-custom-activity-type -->
-[snippets/src/worker-activity-type-custom.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/worker-activity-type-custom.ts)
+<!--SNIPSTART typescript-activity-basics-custom-type-->
+[typescript-sandbox/src/activities/basics/custom-type-worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/basics/custom-type-worker.ts)
 ```ts
 import { Worker } from '@temporalio/worker';
-import { greet } from './activities';
+import { greet } from '../../activities';
 
-async function run() {
-  const worker = await Worker.create({
+export async function createCustomTypeWorker(connection: NativeConnection): Promise<Worker> {
+  return await Worker.create({
+    connection,
     workflowsPath: require.resolve('./workflows'),
     taskQueue: 'snippets',
     activities: {
       activityFoo: greet,
     },
   });
-
-  await worker.run();
 }
 ```
 <!--SNIPEND-->
@@ -129,8 +131,8 @@ for using closures to do the following:
 - Store expensive dependencies for sharing, such as database connections.
 - Inject secret keys (such as environment variables) from the Worker to the Activity.
 
-<!--SNIPSTART typescript-activity-with-deps-->
-[activities-dependency-injection/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-dependency-injection/src/activities.ts)
+<!--SNIPSTART typescript-activity-basics-dependency-injection-->
+[typescript-sandbox/src/activities/basics/di-activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/basics/di-activities.ts)
 ```ts
 export interface DB {
   get(key: string): Promise<string>;
@@ -154,11 +156,13 @@ export const createActivities = (db: DB) => ({
 
 When you register these in the Worker, pass your shared dependencies accordingly:
 
-<!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
+<!--SNIPSTART typescript-activity-basics-dependency-injection-worker-->
+[typescript-sandbox/src/activities/basics/di-worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/basics/di-worker.ts)
 ```ts
-import { createActivities } from './activities';
+import { Worker } from '@temporalio/worker';
+import { createActivities } from './di-activities';
 
-async function run() {
+export async function createDependencyInjectionWorker(connection: NativeConnection): Promise<Worker> {
   // Mock DB connection initialization in Worker
   const db = {
     async get(_key: string) {
@@ -166,29 +170,24 @@ async function run() {
     },
   };
 
-  const worker = await Worker.create({
+  return await Worker.create({
+    connection,
     taskQueue: 'dependency-injection',
     workflowsPath: require.resolve('./workflows'),
     activities: createActivities(db),
   });
-
-  await worker.run();
 }
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
 ```
 <!--SNIPEND-->
 
 Because Activities are always referenced by name, inside the Workflow they can be proxied as normal, although the types
 need some adjustment:
 
-<!--SNIPSTART typescript-activity-deps-workflow-->
-[activities-dependency-injection/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-dependency-injection/src/workflows.ts)
+<!--SNIPSTART typescript-activity-basics-dependency-injection-workflow-->
+[typescript-sandbox/src/activities/basics/di-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/basics/di-workflow.ts)
 ```ts
-import type { createActivities } from './activities';
+import { proxyActivities } from '@temporalio/workflow';
+import type { createActivities } from './di-activities';
 
 // Note usage of ReturnType<> generic since createActivities is a factory function
 const { greet, greet_es } = proxyActivities<ReturnType<typeof createActivities>>({
@@ -204,32 +203,43 @@ const { greet, greet_es } = proxyActivities<ReturnType<typeof createActivities>>
 You can proxy multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts,
 retries, and options:
 
+<!--SNIPSTART typescript-activity-basics-multiple-activities-->
+[typescript-sandbox/src/activities/basics/multiple-activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/basics/multiple-activities.ts)
 ```ts
-export async function Workflow(name: string): Promise<string> {
+export async function multipleActivitiesWorkflow(name: string): Promise<string[]> {
   // destructuring multiple activities with the same options
-  const { act1, act2, act3 } = proxyActivities<typeof activities>();
-  /* activityOptions */
-  await act1();
-  await Promise.all([act2, act3]);
+  const { act1, act2, act3 } = proxyActivities<typeof activities>({
+    startToCloseTimeout: '30 seconds', // activityOptions
+  });
+  const first = await act1();
+  const [second, third] = await Promise.all([act2(), act3()]);
+  return [name, first, second, third];
 }
 ```
+<!--SNIPEND-->
 
 ### Dynamically reference Activities
 
 Because Activities are referenced only by their string names, you can reference them dynamically if needed:
 
-```js
-export async function DynamicWorkflow(activityName, ...args) {
-  const acts = proxyActivities(/* activityOptions */);
+<!--SNIPSTART typescript-activity-basics-dynamic-reference-->
+[typescript-sandbox/src/activities/basics/dynamic-activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/basics/dynamic-activities.ts)
+```ts
+export async function dynamicWorkflow(activityName: string, ...args: unknown[]): Promise<unknown> {
+  const acts = proxyActivities<Record<string, (...args: unknown[]) => Promise<unknown>>>({
+    startToCloseTimeout: '30 seconds', // activityOptions
+  });
 
   // these are equivalent
   await acts.activity1();
   await acts['activity1']();
 
   // dynamic reference to activities using activityName
-  let result = await acts[activityName](...args);
+  const result = await acts[activityName](...args);
+  return result;
 }
 ```
+<!--SNIPEND-->
 
 Type safety is still supported here, but we encourage you to validate and handle mismatches in Activity names. An
 invalid Activity name leads to a `NotFoundError` with a message that looks like this:

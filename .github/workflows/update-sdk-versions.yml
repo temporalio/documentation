@@ -2,7 +2,7 @@ name: 'Update SDK Versions'
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '15 */2 * * *'
   workflow_dispatch:
 
 jobs:

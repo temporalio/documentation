@@ -3,7 +3,7 @@ id: login
 title: Temporal CLI cloud login command reference
 sidebar_label: login
 description: Login
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - login
 ---
