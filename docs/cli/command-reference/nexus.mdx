@@ -3,7 +3,7 @@ id: nexus
 title: Temporal CLI nexus command reference
 sidebar_label: nexus
 description: Learn how to use Temporal Nexus commands for starting, listing, and managing Nexus Operation Executions.
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - Nexus
   - Temporal CLI
@@ -62,6 +62,29 @@ Use the following options to change the behavior of this command. You can also u
 | Flag | Required | Description |
 |------|----------|-------------|
 | `--query`, `-q` | No | **string** Query to filter Nexus Operation Executions to count. |
+
+### delete
+
+Delete a Nexus Operation Execution and its history. The request runs
+asynchronously. If the Operation is running, the Service terminates it
+before deletion. Without a Run ID, the latest run is deleted.
+
+```
+temporal nexus operation delete \
+    --operation-id YourOperationId \
+    --yes
+```
+
+Use "--run-id" to delete a specific run. Confirmation is required unless
+"--yes" is passed.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--operation-id` | Yes | **string** Nexus Operation ID. |
+| `--run-id`, `-r` | No | **string** Run ID of the Nexus Operation. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm deletion. |
 
 ### describe
 

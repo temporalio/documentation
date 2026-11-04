@@ -2,12 +2,21 @@
 // unit tested without Kapa or Vercel. The leading underscore keeps Vercel from
 // deploying this file as its own function.
 
+const crypto = require('crypto');
 const { followRedirects } = require('../bin/redirect-utils');
 
 const DOCS_HOST = 'docs.temporal.io';
 const ENDPOINT = `https://${DOCS_HOST}/api/retrieve`;
 
 const LIMITS = { q: 500, jtb: 300, src: 32, agent: 64 };
+
+// The src values our own checks send. The log report leaves them out, and Kapa
+// counts them as one user.
+const TEST_SRC = ['manual-test', 'link-check', 'healthcheck'];
+const TEST_CLIENT_ID = 'internal-check';
+
+// Placeholders copied from the usage text instead of a real value.
+const PLACEHOLDER = /^<?\s*(your[-_ ]?name|question|job[-_ ]to[-_ ]be[-_ ]done|agent|name)\s*>?$/i;
 
 const USAGE =
   `GET ${ENDPOINT}?q=<question>&jtb=<job-to-be-done>&src=<surface>&agent=<your-name>. ` +
@@ -133,13 +142,61 @@ function parseList(value) {
     .filter(Boolean);
 }
 
+// Groups the ways an agent might write its name: case, spaces, underscores,
+// surrounding quotes, and a trailing version ("Cursor/0.42", "codex@1.2").
+function normalizeAgent(agent) {
+  const value = String(agent ?? '')
+    .trim()
+    .replace(/^["'`]+|["'`]+$/g, '')
+    .trim();
+  if (value === '') return '(missing)';
+  if (PLACEHOLDER.test(value)) return '(placeholder)';
+  return value
+    .toLowerCase()
+    .replace(/[/@ ]v?\d[\w.-]*$/, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// The `user` and `mcp_client_meta` fields for the Kapa request, so Kapa
+// analytics count callers instead of showing one user for the integration.
+//
+// The user ID is a salted hash of the caller's IP and agent name, so Kapa can
+// group repeat callers without learning the IP. It's derived with a different
+// prefix from the log's ip_hash, so the two values don't match. Our own checks
+// share one ID, since the health check sends a new agent name on every run.
+// Without an IP there's nothing to group by, so no user is sent.
+function kapaIdentity({ ip, agent, src, salt }) {
+  if (TEST_SRC.includes(src)) {
+    return { user: { unique_client_id: TEST_CLIENT_ID }, mcp_client_meta: { name: src } };
+  }
+  const normalized = normalizeAgent(agent);
+  const name = normalized.startsWith('(') ? null : normalized;
+  const identity = {};
+  if (ip && salt) {
+    const id = crypto
+      .createHash('sha256')
+      .update(`${salt}:kapa:${ip}:${name || '-'}`)
+      .digest('hex')
+      .slice(0, 32);
+    identity.user = { unique_client_id: id };
+  }
+  if (name) identity.mcp_client_meta = { name };
+  return identity;
+}
+
 module.exports = {
   DOCS_HOST,
   ENDPOINT,
   LIMITS,
+  PLACEHOLDER,
+  TEST_SRC,
   USAGE,
   isAllowed,
   isAllowedResult,
+  kapaIdentity,
+  normalizeAgent,
   parseAllowlist,
   parseList,
   parseParams,
