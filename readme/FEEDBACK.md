@@ -10,8 +10,8 @@
 Each accepted submission is stored as one Blob in a private Vercel Blob store used only for feedback. A daily digest posts a summary to Slack, where the
 docs team fixes docs problems and forwards product problems to the team that owns them.
 
-Status: the endpoint is live but not advertised. The widget, the digest, and the agent-facing copy in `llms.txt` and
-the `.md` pages ship in later pull requests.
+Status: the endpoint is live but not advertised, and the [daily digest](#daily-digest) posts to Slack. The widget and
+the agent-facing copy in `llms.txt` and the `.md` pages ship in later pull requests.
 
 ## Agent reports
 
@@ -101,6 +101,52 @@ Errors are JSON `{ error }`. A 400, 405, or 413 also includes a `usage` string.
 The Blob write finishes before the response is sent, unlike `/api/retrieve`'s log. Feedback that isn't stored is
 lost, so the sender is told when that happens.
 
+## Daily digest
+
+`api/feedback-digest.js` posts the previous UTC day's feedback to Slack every day at 15:00 UTC, through Vercel Cron
+(`crons` in `vercel.json`). Vercel Cron runs only on the production deployment.
+
+The message has:
+
+- **Agent reports by category,** with product reports first so they can be forwarded. Reports with the same page and
+  title, ignoring case and spacing, are shown once with a count and the agents that sent them.
+- **Page ratings by page,** as Yes and No counts with a breakdown by reason, and comments listed under their reason.
+  Each rating is merged with its amendments, and the latest amendment wins.
+- **A seven-day rollup on Mondays,** listing the 10 pages with the most No ratings and docs reports.
+
+Only records with `deployment: production` are counted, since preview deployments write to the same store. Docs pages
+link to the site, and a page that isn't in the sitemap is marked `(not in sitemap)`. Everything a sender wrote,
+including a `page_url` on another host, is shown as inline code with Slack's `<`, `>`, and `&` escaped, so it can't
+mention a channel or render as a link.
+
+A message is posted even on a day with no feedback. Vercel Cron failures don't reach
+`notify-automation-failures.yml`, so a missing message is the sign that the digest failed. Check the function's
+runtime logs in Vercel.
+
+### Triage
+
+Whoever reads the digest:
+
+- Opens a GitHub issue, or fixes the page, for a documentation or docs search problem.
+- Forwards a product report to the channel of the team that owns the feature.
+- Ignores spam. If spam keeps coming from one source, look up its `ip_hash` in the store and tighten the Firewall rule.
+
+### Running it by hand
+
+Call the function with the cron secret. `?dry_run=1` returns the Slack message as JSON instead of posting it:
+
+```
+curl -sS -H "Authorization: Bearer $CRON_SECRET" \
+  'https://docs.temporal.io/api/feedback-digest?date=2026-11-03&dry_run=1'
+```
+
+| Parameter | Effect |
+| --- | --- |
+| `date` | Digest that UTC day instead of yesterday |
+| `dry_run=1` | Return the message without posting it |
+| `include_preview=1` | Count preview and development records too, for testing on a preview deployment |
+| `weekly=1` | Add the seven-day rollup on any day |
+
 ## Code
 
 | File | What it does |
@@ -109,6 +155,9 @@ lost, so the sender is told when that happens.
 | `api/_feedback-lib.js` | Parsing, `page_url` normalization, entry IDs, and amend tokens, with no I/O. Tested in `api/_feedback-lib.test.js` |
 | `api/_log.js` | `header()`, `ipHash()`, and `putRecord()`, shared with `api/retrieve.js` |
 | `api/_feedback.test.js` | Handler tests with Blob stubbed |
+| `api/feedback-digest.js` | The daily digest: reading the day's records, the sitemap check, the Slack post |
+| `api/_feedback-digest-lib.js` | Grouping records and formatting the Slack message, with no I/O. Tested in `api/_feedback-digest-lib.test.js` |
+| `api/_feedback-digest.test.js` | Digest handler tests with Blob, the sitemap, and Slack stubbed |
 
 The `Test API Functions` workflow (`.github/workflows/test-api.yml`) runs `node --test 'api/*.test.js'` on pull
 requests that change `api/`, `vercel.json`, or `bin/redirect-utils.js`.
@@ -121,6 +170,8 @@ These are Vercel project environment variables, set for Production and Preview:
 | --- | --- |
 | `FEEDBACK_LOG_SALT` | **Required.** A random string used to hash caller IPs and to sign amend tokens. Use a different value from `RETRIEVE_LOG_SALT`. Rotating it invalidates amend tokens issued in the last 30 minutes |
 | `FEEDBACK_BLOB_READ_WRITE_TOKEN` | **Required.** Added by Vercel when the feedback Blob store is connected to the project with the `FEEDBACK` environment variable prefix. The function never falls back to `BLOB_READ_WRITE_TOKEN`, which belongs to the `/api/retrieve` log's store |
+| `CRON_SECRET` | **Required for the digest.** A random string. Vercel Cron sends it as `Authorization: Bearer <secret>`, and the digest refuses any request without it. Mark it Sensitive |
+| `SLACK_FEEDBACK_WEBHOOK` | **Required for the digest.** A Slack incoming webhook URL for the docs feedback channel. Mark it Sensitive |
 
 ## Limits
 
