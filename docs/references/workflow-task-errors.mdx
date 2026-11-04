@@ -314,9 +314,6 @@ Read the stack trace in the WorkflowTaskFailed Event or the Worker logs, fix the
 New [Events](/references/events), such as Signals, arrived while the Workflow Task was running, and the Workflow tried to close without handling them.
 The Temporal Service fails the Workflow Task and schedules a new one that includes the new Events.
 
-While the retried task runs, the Service rejects new Signal requests with retryable `BUSY_WORKFLOW` errors so they cannot interrupt that closing attempt.
-See [Signals during Workflow closure](/sending-messages#signals-during-workflow-closure).
-
 This error is common when a Workflow receives many [Signals](/sending-messages#sending-signals).
 Before the Workflow completes, process every pending Signal.
 In the Go SDK, drain the Signal Channel with `ReceiveAsync`.
@@ -410,10 +407,9 @@ Reduce your request rate, or on Temporal Cloud, compare your throughput with the
 
 - Cause: `RESOURCE_EXHAUSTED_CAUSE_BUSY_WORKFLOW`
 
-This error can occur when a request cannot acquire the target Workflow Execution's lock within the time allowed by its deadline, or when a retried closing task temporarily blocks incoming requests.
+The target Workflow Execution is busy.
 
-Reduce requests to the affected execution by batching Signals or distributing work across more Workflow Executions, and handle any error returned after SDK retries.
-See [Signal throughput](/sending-messages#signal-throughput) and [Signals during Workflow closure](/sending-messages#signals-during-workflow-closure).
+Reduce the rate of requests, such as Signals and Updates, that you send to a single Workflow Execution.
 
 ### Resource Exhausted Cause Circuit Breaker Open {/* #resource-exhausted-cause-circuit-breaker-open */}
 

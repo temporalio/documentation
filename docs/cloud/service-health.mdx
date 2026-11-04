@@ -237,14 +237,9 @@ Resource exhaustion is distinct from rate limiting against your account limits. 
 
 ### Workflow lock contention (BusyWorkflow)
 
-Workflow lock contention occurs when operations compete to change the state of the same Workflow Execution.
-Each operation waits for an exclusive lock that is held until its changes are persisted.
-If a request cannot acquire the lock within the time allowed by its deadline, the Service returns `ResourceExhausted` with cause `BUSY_WORKFLOW`.
-In Service logs this appears as `Workflow is busy.`
+The most common cause of resource exhaustion is Workflow lock contention. Every operation that mutates a single Workflow Execution (starting it, sending a Signal, etc.) is serialized under a per-Workflow lock. A request waits for the lock and returns a retryable `ResourceExhausted` error with cause `BUSY_WORKFLOW` if the wait times out. In Service logs this appears as `Workflow is busy.`
 
-Reduce requests to the affected execution by batching Signals or distributing work across more Workflow Executions.
-Increasing Namespace capacity leaves the per-execution lock unchanged.
-See [Signal throughput](/sending-messages#signal-throughput) for guidance and [Signals during Workflow closure](/sending-messages#signals-during-workflow-closure) for the temporary rejection of Signals during a retried closing task.
+This is contention on a single Execution, not an account limit. Increasing your Actions, Requests, or Operations per second limits does not resolve it.
 
 To confirm lock contention:
 
@@ -255,8 +250,7 @@ To confirm lock contention:
 | `operation` | What it indicates | What to do |
 | ----------- | ----------------- | ---------- |
 | `StartWorkflowExecution` | Lock contention or repeated starts with the same Workflow ID. | Reduce requests to that Workflow ID and check [ID reuse rate limits](/evaluate/cloud/limits#per-primitive-id-reuse-rate-limits). |
-| `SignalWithStartWorkflowExecution` | Lock contention on a running Workflow Execution, temporary rejection during a retried closing task, or ID reuse rate limiting when starting a new Execution. | Batch Signals or distribute work across more executions. Check [ID reuse rate limits](/evaluate/cloud/limits#per-primitive-id-reuse-rate-limits) if the operation starts new Executions. |
-| `SignalWorkflowExecution` | Lock contention or temporary rejection during a retried closing task. | Follow the [Signal throughput guidance](/sending-messages#signal-throughput) and handle any delivery error returned after SDK retries. |
+| `SignalWorkflowExecution`, `SignalWithStartWorkflowExecution` | Too high a rate of Signals to one execution, or temporary rejection while a closing Workflow Task is retried. | Batch or coalesce Signals, or shard work across more executions. SDK Clients retry these errors automatically, subject to their retry settings and the call's deadline. |
 | `UpdateWorkflowExecution` | More than the per-execution in-flight Update limit (10) are outstanding. | Cap concurrent in-flight Updates on the client, then back off and retry. |
 | `RecordActivityTaskHeartbeat` | Too many Activities are heartbeating to the same execution. | Increase the heartbeat timeout and interval, and reduce the number of Activities heartbeating into one execution concurrently. |
 | `RespondWorkflowTaskCompleted` | A single Workflow schedules a large batch of Activities or Child Workflows in parallel, each taking the lock. | Limit concurrent operations to 500 or fewer per execution. Process the batch in smaller groups using a sliding-window or plain batching pattern instead of scheduling everything at once. |

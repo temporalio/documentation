@@ -347,10 +347,10 @@ This reduces Workflow's Event History size and decreases the loading time in the
 A single Workflow Execution may receive up to 10,000 Signals.
 After that limit is reached, no more Signals will be processed for that Workflow Execution.
 
-#### Signal throughput
-
-Concurrent Signal requests to the same Workflow Execution share a lock with other state changes, so throughput depends on persistence latency and the execution's workload.
-See [Signal throughput](/sending-messages#signal-throughput) for sustained-rate guidance, request waiting, and `BUSY_WORKFLOW` retries.
+For sustained traffic, aim for five or fewer Signals per second per Workflow Execution.
+Throughput depends on persistence latency and other operations that share the execution's lock.
+For higher volumes, batch events into each Signal or distribute them across more Workflow Executions.
+See [Workflow lock contention](/cloud/service-health#workflow-lock-contention-busyworkflow) to diagnose `BUSY_WORKFLOW` errors.
 
 ### Per Workflow Execution Update limits
 
