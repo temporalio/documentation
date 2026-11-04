@@ -528,7 +528,8 @@ The current SDK comes from the page's folder (`docs/develop/<id>/`), from an enc
 `<SdkTabs>` slot. `<SdkOnly>` or `<SdkTerm>` anywhere else, an unknown SDK id, or an unknown term fails the build.
 
 Keep headings and anchors in the page, not in a partial or inside `<SdkOnly>`, so every SDK's page has the same table of
-contents. If more than about a third of a partial's lines are inside `<SdkOnly>`, put that text back in the pages.
+contents. If more than about a third of a partial's lines are inside `<SdkOnly>`, put that text back in the pages:
+`yarn report:sdk-duplication` flags those partials.
 
 ### LLM markdown
 
