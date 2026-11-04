@@ -7,7 +7,8 @@
  * Run: node tests/test-mdx-to-md.mjs
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, mkdtempSync } from "fs";
+import { tmpdir } from "os";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import {
@@ -1497,6 +1498,61 @@ test("scanMarkdownImports finds .md component imports", () => {
   const map = scanMarkdownImports(`import AWSRegions from '@site/docs/regions/aws.md';\nimport X from './local.mdx';`);
   assert(map.AWSRegions === "@site/docs/regions/aws.md", "AWSRegions import missing");
   assert(map.X === "./local.mdx", "X import missing");
+});
+
+// ---------------------------------------------------------------------------
+// Transclusion of imported partials
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — partial transclusion");
+
+// A throwaway project root, so partials never live in docs/.
+const PARTIALS_ROOT = mkdtempSync(join(tmpdir(), "mdx-to-md-partials-"));
+mkdirSync(join(PARTIALS_ROOT, "docs/develop/_shared/topic"), { recursive: true });
+writeFileSync(
+  join(PARTIALS_ROOT, "docs/develop/_shared/topic/when.mdx"),
+  "Shared guidance for every SDK.\n"
+);
+
+const partialPage = (body) =>
+  `import When from '@site/docs/develop/_shared/topic/when.mdx';\nimport Rel from '../_shared/topic/when.mdx';\n\n${body}`;
+const transformPartialPage = (body) =>
+  transformMdx(partialPage(body), {
+    sourceFile: "docs/develop/go/page.mdx",
+    projectRoot: PARTIALS_ROOT,
+  });
+
+test("inlines an @site partial at the top level", () => {
+  const { markdown, warnings } = transformPartialPage("Before.\n\n<When />\n\nAfter.");
+  assertContains(markdown, "Shared guidance for every SDK.");
+  assertEqual(warnings.length, 0, `unexpected warnings: ${warnings.join("; ")}`);
+});
+
+test("inlines a relative partial against the importing page's folder", () => {
+  const { markdown } = transformPartialPage("<Rel />");
+  assertContains(markdown, "Shared guidance for every SDK.");
+});
+
+test("inlines a partial inside a TabItem body", () => {
+  const { markdown, warnings } = transformPartialPage(
+    `<Tabs>\n<TabItem value="go" label="Go">\n\n<When />\n\n</TabItem>\n</Tabs>`
+  );
+  assertContains(markdown, "**Go**");
+  assertContains(markdown, "Shared guidance for every SDK.");
+  assertEqual(warnings.length, 0, `unexpected warnings: ${warnings.join("; ")}`);
+});
+
+test("inlines a partial inside an SdkTabs slot", () => {
+  const { markdown } = transformPartialPage(
+    `<SdkTabs>\n<SdkTabs.Go>\n\n<Rel />\n\n</SdkTabs.Go>\n</SdkTabs>`
+  );
+  assertContains(markdown, "Shared guidance for every SDK.");
+});
+
+test("inlines a partial inside <details>", () => {
+  const { markdown } = transformPartialPage(
+    `<details>\n<summary>More</summary>\n\n<When />\n\n</details>`
+  );
+  assertContains(markdown, "Shared guidance for every SDK.");
 });
 
 // ---------------------------------------------------------------------------
