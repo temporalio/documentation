@@ -152,6 +152,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `RelatedReadContainer` / `RelatedReadItem` | `related-read-container` / `related-read-item` | `**Related:**` Markdown link list |
 | `RelatedReadList` | `related-read` | Link list from the `readList` prop |
 | `ToolTipTerm` | `tooltip-term` | Inline: replaced with the bare `term` text |
+| `ForOs` | `for-os` | Every OS variant kept. Block: a `**Windows:**` label line before the children. Inline: adjacent variants grouped as `(**Windows:** PowerShell; **macOS and Linux:** terminal)` |
 | `SetupSteps` / `SetupStep` | `setup-steps` / `setup-step` | Prose children plus code extracted from the `code={…}` JSX prop or `<CodeSnippet>` children |
 | `JsonTable` | `json-table` | Markdown table resolved from the referenced `static/json/*.json` |
 | `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
@@ -166,8 +167,11 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 
 **Transclusion.** Components imported from a Markdown file
 (`import AWSRegions from '@site/docs/.../awsregions.md'`) are inlined: when `<AWSRegions />` is
-encountered, the referenced file is read and transformed in place. These show as `transclude`
-in the audit.
+encountered on a line of its own, the referenced file is read and transformed in place. That
+works at the top level and inside nested bodies (tab items, `<details>`, release notes), which
+inherit the page's imports. These show as `transclude` in the audit. Underscore-prefixed files
+and folders (`_partial.mdx`, `docs/develop/_shared/**`) are partials: like Docusaurus, the
+plugin doesn't publish them as pages of their own (`plugins/shared/docsRouting.js`).
 
 **Audit false positives.** `scripts/audit-components.mjs` may list non-components (type
 generics in code examples like `SayHelloWorkflow`, CLI placeholders like `<ID>`). The

@@ -13,9 +13,9 @@ debug Temporal applications.
 
 The CLI is available for macOS, Linux, and Windows, or as a Docker image.
 
-<Tabs>
+<Tabs groupId="os" queryString>
 
-<TabItem value="macosinstall" label="macOS">
+<TabItem value="macos" label="macOS">
 
 Install with Homebrew:
 
@@ -32,7 +32,7 @@ extract the archive and add the `temporal` binary to your `PATH`.
 
 </TabItem>
 
-<TabItem value="linuxinstall" label="Linux">
+<TabItem value="linux" label="Linux">
 
 Install with Homebrew (if available):
 
@@ -49,7 +49,7 @@ extract the archive and add the `temporal` binary to your `PATH`.
 
 </TabItem>
 
-<TabItem value="windowsinstall" label="Windows">
+<TabItem value="windows" label="Windows">
 
 Download from the CDN:
 
@@ -60,7 +60,9 @@ extract the archive and add the `temporal.exe` binary to your `PATH`.
 
 </TabItem>
 
-<TabItem value="dockerinstall" label="Docker">
+</Tabs>
+
+### Run the CLI in Docker
 
 Temporal CLI container image is available on [DockerHub](https://hub.docker.com/r/temporalio/temporal) and can be run
 directly:
@@ -80,10 +82,6 @@ docker run --rm -p 7233:7233 -p 8233:8233 temporalio/temporal server start-dev -
 ```
 
 ::::
-
-</TabItem>
-
-</Tabs>
 
 ## Install the Temporal Cloud extension
 
