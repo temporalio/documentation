@@ -396,7 +396,8 @@ If producers stop sending signals but never send a flush, the workflow holds ope
 - **Forgetting to pass accumulated state into Continue-As-New.** The new run starts with empty state and re-processes events from scratch, producing duplicate batches.
 - **Calling activities inside signal handlers.** Signal handlers run synchronously in the workflow thread and must not block or call activities. Buffer the item and let the main loop handle activity calls.
 - **Assuming workflow completion means all events were captured.** Producers that send signals after the workflow completes will start a new accumulator instance. Decide whether this is intentional (a new accumulation window) or an error.
-- **Leaving accepted Signals out of the next run's state.** Process queued Signals or pass their contents to the next run before calling Continue-As-New. Preserve the queue checks in this pattern so accepted events are included in the accumulated state.
+- **Signal rate too high for one Workflow Execution.** High Signal traffic can cause lock contention, delay Workflow progress, and produce retryable `BUSY_WORKFLOW` errors. Partition by a finer-grained key, throttle producers, or batch multiple events into a single Signal payload to reduce the per-instance rate.
+- **Not draining the signal queue before calling Continue-As-New.** Drain and process queued Signals before continuing so their contents are included in the state passed to the next run. Keep the queue checks in these examples and do not call Continue-As-New unconditionally when the Event History grows large.
 
 ## Related
 
