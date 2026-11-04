@@ -57,12 +57,12 @@ using the same options for both the transport and the SDK call.
 
 <!--SNIPSTART python-claude-agent-sdk-structured-output-transport-->
 [claude_agent_sdk_plugin/structured_output/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/structured_output/workflow.py)
-```python
-                transport = TemporalTransport(options)
-                async with ClaudeSDKClient(
-                    options=options, transport=transport
-                ) as client:
-                    await client.query(query_prompt)
+```py
+transport = TemporalTransport(options)
+async with ClaudeSDKClient(
+    options=options, transport=transport
+) as client:
+    await client.query(query_prompt)
 ```
 <!--SNIPEND-->
 
@@ -77,14 +77,14 @@ Register `ClaudeAgentSDKPlugin` on the Worker. The plugin registers the Activiti
 
 <!--SNIPSTART python-claude-agent-sdk-tools-worker-->
 [claude_agent_sdk_plugin/tools/run_worker.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/run_worker.py)
-```python
-        worker = Worker(
-            client,
-            task_queue="claude-agent-sdk-tools",
-            workflows=[ToolsWorkflow],
-            activities=[fetch_weather],
-            plugins=[ClaudeAgentSDKPlugin()],
-        )
+```py
+worker = Worker(
+    client,
+    task_queue="claude-agent-sdk-tools",
+    workflows=[ToolsWorkflow],
+    activities=[fetch_weather],
+    plugins=[ClaudeAgentSDKPlugin()],
+)
 ```
 <!--SNIPEND-->
 
@@ -168,10 +168,10 @@ The Workflow continues to use `TemporalTransport` as before, while you pass your
 
 <!--SNIPSTART python-claude-agent-sdk-custom-connector-worker-->
 [claude_agent_sdk_plugin/plugin_with_custom_transport/run_worker.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/plugin_with_custom_transport/run_worker.py)
-```python
-        plugin = ClaudeAgentSDKPlugin(
-            connector=SandboxConnector(uploads={PLUGIN_DIR: LOCAL_PLUGIN_DIR})
-        )
+```py
+plugin = ClaudeAgentSDKPlugin(
+    connector=SandboxConnector(uploads={PLUGIN_DIR: LOCAL_PLUGIN_DIR})
+)
 ```
 <!--SNIPEND-->
 
