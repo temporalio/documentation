@@ -48,7 +48,7 @@ If you don't need the organizational boundaries offered by Projects, continue to
 
 Every Project has a unique, immutable `Project ID` and an editable `display name`. The Project ID is used by the Cloud Ops API, CLI, and Terraform to identify the Project when creating and managing Project-scoped resources.
 
-Namespaces cannot be moved between Projects currently, meaning all existing Namespaces will exist in the Default Project. You can create a new Project and place a new Namespace in that Project.
+You can move an existing Namespace to another Project. See [Move a Namespace to another Project](#move-a-namespace). You can also create a new Project and place a new Namespace in that Project.
 
 For limitations on the number of Projects per Account and number of resources per Project, see [Project-level limitations](/evaluate/cloud/limits#project-level).
 
@@ -90,7 +90,7 @@ In this call, `description` is a string description of the Project, `displayName
   </TabItem>
 </Tabs>
 
-After creating the Project, add new Namespaces and other supported resources within it. You cannot yet migrate resources from one Project to another.
+After creating the Project, add new Namespaces and other supported resources within it. A Namespace can be moved to another Project. See [Move a Namespace to another Project](#move-a-namespace). Other resources cannot yet be moved from one Project to another.
 
 
 ## Add Resources to a Project {/* #add-resources-to-a-project */}
@@ -199,6 +199,120 @@ Then attach the Connectivity Rule to a Namespace within the same project via [Up
   </TabItem>
 </Tabs>
 
+## Move a Namespace to another Project {/* #move-a-namespace */}
+
+You can move a Namespace to another Project in the same Temporal Cloud Account. The Namespace metadata and settings stay the same. That includes its name, full Namespace ID, gRPC endpoint, tags, and its other settings.
+
+A move changes which Project contains the Namespace and recalculates Project-level access:
+
+- Explicit Namespace-level role assignments and Namespace-scoped Service Accounts stay with the Namespace.
+- Access that comes only from the source Project does not carry over. A role on the destination Project applies after the move.
+- Project-scoped Service Accounts remain in their Project. A Service Account scoped to the source Project does not move with the Namespace.
+
+Running Workflows continue, but subsequent requests from workers or clients that relied on source-Project access can fail authorization. Review the identities used by your workers, clients, and automation before moving a production Namespace. See [Manage Project access](#manage-project-access).
+
+The destination Project must be operational and under its Namespace limit. The Namespace must be active. A suspended Namespace, a Namespace that is still updating, or a Namespace with a migration in progress cannot be moved.
+
+If **Move to Project** is not available, [contact Support](/evaluate/cloud/support#support-ticket).
+
+### Prepare the destination Project
+
+1. Confirm that you are an Account Owner or Global Admin, or a Project Admin on both Projects.
+2. Find the source and destination Project IDs in **Project Settings**, or run `temporal cloud project list`.
+3. Grant any destination-Project roles that workers, clients, and administrators need after the move.
+4. Identify users who will have Project Admin on the destination Project and an explicit role on the Namespace. Plan to remove those Namespace roles immediately after the move completes. Keep them in place until then so existing automations retain their access.
+5. Check the Namespace's [Connectivity Rules](/cloud/connectivity). A rule belongs to a Project and does not move with the Namespace. Create the replacement rules in the destination Project before the move.
+
+A Namespace with no Connectivity Rules accepts connections without rule-based network restrictions. Detach rules only when that is the intended result.
+
+The Cloud UI blocks the move when the Namespace has Connectivity Rules attached. To keep rule-based network restrictions, use the CLI or the Cloud Operations API and name rules that already exist in the destination Project.
+
+<Tabs groupID="move-namespace">
+  <TabItem value="cloud-ui" label="Cloud UI">
+
+1. Open the Project and select **Namespaces**.
+2. Scroll right to the **Capabilities** column.
+3. Select the vertical ellipsis (⋮) on the Namespace row, then select **Move to Project**.
+4. Select the destination Project.
+5. Review the access warning and select **Move Namespace**.
+
+You can also open the Namespace, select **Settings**, select **Danger Zone**, and select **Move Namespace**.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Call
+[`MoveNamespaceToProject`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/namespaces/{namespace}/move-to-project).
+Read the Namespace's current `resourceVersion` from
+[`GetNamespace`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/{namespace}).
+`ruleIds` is the full set of destination-Project rule IDs the Namespace should have after the move.
+
+```
+curl -sS -X POST "$BASE/cloud/namespaces/<namespace>.<account>/move-to-project" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "destinationProjectId": "<destination-project-id>",
+    "expectedSourceProjectId": "<source-project-id>",
+    "resourceVersion": "<current-namespace-resource-version>",
+    "ruleIds": {
+      "connectivityRuleIds": [
+        "<destination-rule-id>"
+      ]
+    }
+  }'
+```
+
+For authentication headers and API versioning, see [Cloud Ops API](/ops).
+
+To leave the Namespace with no rules, send `"unrestricted": {}` instead of `ruleIds`. Omit both only when the Namespace has no rules before the move. The response contains an async operation. Wait for that operation to finish before you treat the move as complete.
+
+  </TabItem>
+  <TabItem value="cli" label="CLI">
+
+Install a Temporal Cloud CLI release that supports `namespace move-to-project`, then sign in with `temporal cloud login`. Use `temporal cloud whoami` to confirm the account.
+
+Check the Namespace's current rules and the rules available in the destination Project:
+
+```bash
+temporal cloud namespace connectivity list \
+  --namespace <namespace>.<account>
+
+temporal cloud connectivity list \
+  --project-id <destination-project-id>
+```
+
+Move the Namespace and attach destination-Project rules. Repeat `--connectivity-rule-id` for each rule. Those rules replace the Namespace's current rules.
+
+```bash
+temporal cloud namespace move-to-project \
+  --namespace <namespace>.<account> \
+  --source-project-id <source-project-id> \
+  --destination-project-id <destination-project-id> \
+  --connectivity-rule-id <destination-rule-id>
+```
+
+Use `--no-connectivity-rules` instead of `--connectivity-rule-id` when the Namespace should have no rules after the move. Omit both only when the Namespace has no rules before the move.
+
+The source Project ID is a safety check: `--source-project-id` is required. The move fails when the Namespace is no longer in that Project. The CLI asks for confirmation and waits until the move finishes. Add `--auto-confirm` to skip the prompt. Add `--async` to return an operation ID, then wait with:
+
+```bash
+temporal cloud async-operation await \
+  --async-operation-id <operation-id>
+```
+
+  </TabItem>
+</Tabs>
+
+### Verify the move
+
+Confirm that the Namespace is in the destination Project and has the Connectivity Rules you intended. Test the identities used by your workers and clients, including any that previously relied on a source-Project role or a Project-scoped Service Account.
+
+### Resolve overlapping roles after the move
+
+A Namespace move keeps its explicit Namespace roles. If a user becomes a Project Admin in the destination Project after the move, that user has a role conflict between the Project role and the Namespace role because of [role precedence](#role-precedence). The conflict doesn't block the move, but any later update to that user fails until you remove the overlapping role.
+
+**Immediately after the move**, remove the user's redundant roles on the moved Namespace and keep their Project Admin role. Do this before any other update to that user. Keep the Namespace role in place until the move completes so automations that depend on it continue to work.
+
 ## Use Nexus across Projects {/* #use-nexus-across-projects */}
 
 Projects group Nexus Endpoints for organization and authorization. They do not change how Nexus Operations run.
@@ -211,7 +325,7 @@ Example: an Endpoint in Project `payments`, a target Namespace in `payments`, an
 That call is allowed when the `checkout` Namespace is on the Endpoint allowlist.
 A user who can only list Endpoints in `checkout` will not see the Endpoint in `payments`.
 
-## Manage Project Access
+## Manage Project access
 
 Users, groups, and Account-scoped Service Accounts can be granted Project-level roles. Each [Project role](#project-roles) applies to the Project and, depending on the role, may grant inherited access to resources within it.
 
@@ -307,9 +421,32 @@ Project Developer is a compatibility role that is automatically inherited by use
 
 :::
 
-A principal automatically inherits a Project-level access from their Account-level role. For example, a Global Admin automatically inherits the Project Admin access for every Project in the Account. 
+A principal automatically inherits a Project-level access from their Account-level role. For example, a Global Admin automatically inherits the Project Admin access for every Project in the Account.
 
 Project-level permissions are additive. Granting a Project-level role does not reduce permissions inherited from Account-level or Namespace-level roles. A principal's effective permissions are the union of all applicable Account-, Project-, and Namespace-level role assignments.
+
+### Role precedence {/* #role-precedence */}
+
+Role-precedence validation rejects a redundant lower-scope role when a broader-scope role already grants equal or greater access. This keeps role assignments aligned with effective access.
+
+When the principal's Account role is:
+
+| Existing Account role | Project role you can assign |
+| --- | --- |
+| Account Owner or Global Admin | None. These roles already include Project Admin on every Project. |
+| Developer | Project Admin, Project Write, Project Read, or Project Contribute. |
+| Finance Admin or Read-Only | Any Project role. |
+
+When the principal's Project role is:
+
+| Existing Project role | Namespace role you can assign in that Project |
+| --- | --- |
+| Project Admin | None. Project Admin already includes Namespace Admin on every Namespace in the Project. |
+| Project Write | Namespace Admin. |
+| Project Read | Namespace Admin or Namespace Write. |
+| Project Contribute, Project List, or Project Member | Any Namespace role. |
+
+The Cloud UI removes redundant Namespace roles when you upgrade an Account role. A [Namespace move](#move-a-namespace) does not. After a move, remove an explicit Namespace role that overlaps with Project Admin on the destination Project before you update that user again.
 
 ## Modify an existing Project
 

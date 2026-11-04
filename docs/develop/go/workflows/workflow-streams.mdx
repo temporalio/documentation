@@ -1,6 +1,6 @@
 ---
 id: workflow-streams
-title: Workflow Streams - Go SDK
+title: Workflow Streams
 sidebar_label: Workflow Streams
 toc_max_heading_level: 4
 tags:
@@ -22,8 +22,13 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 The library ships as `go.temporal.io/sdk/contrib/workflowstreams`. Enable streaming by constructing a `WorkflowStream` once at the top of your Workflow function, before any blocking call. Construction must happen there because the stream's handlers have to be registered before the first publish Signal arrives. Doing it after a blocking call would miss any publishes that arrived before the run body resumed.
 
+<!--SNIPSTART go-streams-order-workflow {"selectedLines": ["3-14", "21-25", "58"]}-->
+[go-sandbox/workflows/streams/order.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/order.go)
 ```go
+// ...
 import (
+	"time"
+
 	"go.temporal.io/sdk/contrib/workflowstreams"
 	"go.temporal.io/sdk/workflow"
 )
@@ -33,25 +38,29 @@ type OrderInput struct {
 	StreamState *workflowstreams.WorkflowStreamState
 }
 
+// ...
 func OrderWorkflow(ctx workflow.Context, input OrderInput) error {
 	stream, err := workflowstreams.NewWorkflowStream(ctx, input.StreamState)
 	if err != nil {
 		return err
 	}
-	// ... rest of the workflow
-	return nil
+// ...
 }
 ```
+<!--SNIPEND-->
 
 `NewWorkflowStream` creates the in-memory event log and registers the publish Signal, subscribe Update, and offset Query handlers on the current Workflow. The `priorState` argument is `nil` on a fresh start and a `*WorkflowStreamState` after a Continue-As-New rollover (see [Stream from long-running Workflows](#continue-as-new)).
 
-Construct exactly one `WorkflowStream` per Workflow. The constructor re-registers the handlers unconditionally on every call, so constructing more than one on the same Workflow registers duplicate handlers. The Go SDK doesn't expose an inspection API for existing handlers, so the library can't raise an exception on a duplicate the way the Python SDK does.
+Construct exactly one `WorkflowStream` per Workflow. The constructor re-registers the handlers unconditionally on every call, so constructing more than one on the same Workflow registers duplicate handlers. The Go SDK doesn't expose an inspection API for existing handlers, so the library can't return an error on a duplicate the way the Python SDK does.
 
 ## Publish from a Workflow
 
 Bind a [topic name](/workflow-streams#topics) with `stream.Topic(name)`, then call `Publish()` on the returned `*WorkflowTopicHandle` to append events. Repeated calls with the same name return the same handle.
 
+<!--SNIPSTART go-streams-order-workflow {"selectedLines": ["15-58"]}-->
+[go-sandbox/workflows/streams/order.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/order.go)
 ```go
+// ...
 type StatusEvent struct {
 	State    string
 	Progress int
@@ -64,6 +73,7 @@ func OrderWorkflow(ctx workflow.Context, input OrderInput) error {
 		return err
 	}
 	status := stream.Topic("status")
+	ctx = workflow.WithActivityOptions(ctx, workflow.ActivityOptions{StartToCloseTimeout: time.Minute})
 
 	if err := status.Publish(StatusEvent{State: "validating", Detail: "checking inventory"}); err != nil {
 		return err
@@ -86,9 +96,17 @@ func OrderWorkflow(ctx workflow.Context, input OrderInput) error {
 		return err
 	}
 
-	return status.Publish(StatusEvent{State: "completed", Progress: 100})
+	if err := status.Publish(StatusEvent{State: "completed", Progress: 100}); err != nil {
+		return err
+	}
+	// Give in-flight subscriber polls time to fetch the terminator before the Workflow returns.
+	if err := workflow.Sleep(ctx, 30*time.Second); err != nil {
+		return err
+	}
+	return nil
 }
 ```
+<!--SNIPEND-->
 
 `Publish()` runs the payload converter to encode each value. The codec chain (encryption, compression, etc.) runs once on the Signal or Update envelope that carries the batch, never per item, so encryption and compression are applied exactly once each direction.
 
@@ -96,90 +114,93 @@ Unlike the Python and TypeScript SDKs, Go topics carry no per-topic type binding
 
 ## Publish from a client
 
-Any process that has a Temporal Client and the target Workflow Id can publish to that Workflow's stream by constructing a `Client`. This is the general pattern and covers HTTP backends, starters, one-off scripts, other Workflows' Activities, and standalone Activities.
+Any process that has a Temporal Client and the target Workflow ID can publish to that Workflow's stream by constructing a `Client`. This is the general pattern and covers HTTP backends, starters, one-off scripts, other Workflows' Activities, and standalone Activities.
 
 Construct one with:
 
+<!--SNIPSTART go-streams-new-client-->
+[go-sandbox/workflows/streams/publish.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/publish.go)
 ```go
-workflowstreams.NewClient(temporalClient, workflowID, workflowstreams.Options{})
+streamClient := workflowstreams.NewClient(temporalClient, workflowID, workflowstreams.Options{})
 ```
+<!--SNIPEND-->
 
-Then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and `defer client.Close(ctx)` to flush on scope exit.
+Then use it the same way you would the Workflow-side handle: bind a topic, publish through it, and call `Close(ctx)` when you're done publishing. `Close` flushes the buffer, so check its error to confirm the final batch was delivered.
 
 When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [How events are delivered](/workflow-streams#how-events-are-delivered).
 
+<!--SNIPSTART go-streams-publish-from-client-->
+[go-sandbox/workflows/streams/publish.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/publish.go)
 ```go
-import (
-	"context"
-	"time"
-
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/workflowstreams"
-)
-
 func PublishStatus(ctx context.Context, temporalClient client.Client, workflowID string) error {
 	streamClient := workflowstreams.NewClient(temporalClient, workflowID, workflowstreams.Options{
 		BatchInterval: 200 * time.Millisecond,
 	})
-	defer streamClient.Close(ctx)
 
 	status := streamClient.Topic("status")
 	status.Publish(StatusEvent{State: "started"}, false)
 	// ...
-	// Buffer is flushed automatically on Close.
-	return nil
+	// Close flushes the buffer. Check its error to know the events were delivered.
+	return streamClient.Close(ctx)
 }
 ```
+<!--SNIPEND-->
 
-Inside an Activity scheduled by a Workflow, `workflowstreams.NewClientFromActivity()` infers the Temporal Client and the parent Workflow Id from the Activity context, so you don't have to thread them through the Activity's input:
+Inside an Activity scheduled by a Workflow, `workflowstreams.NewClientFromActivity()` infers the Temporal Client and the parent Workflow ID from the Activity context, so you don't have to thread them through the Activity's input:
 
+<!--SNIPSTART go-streams-publish-from-activity-->
+[go-sandbox/workflows/streams/stream_deltas.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/stream_deltas.go)
 ```go
 import (
 	"context"
-	"time"
 
 	"go.temporal.io/sdk/activity"
 	"go.temporal.io/sdk/contrib/workflowstreams"
 )
-
-type Delta struct {
-	Text string
-}
 
 func StreamDeltas(ctx context.Context, orderID string) error {
 	streamClient, err := workflowstreams.NewClientFromActivity(ctx, workflowstreams.Options{})
 	if err != nil {
 		return err
 	}
-	defer streamClient.Close(ctx)
 
 	deltas := streamClient.Topic("delta")
 	for delta := range generateDeltas(orderID) {
 		deltas.Publish(delta, false)
 		activity.RecordHeartbeat(ctx)
 	}
-	// Buffer is flushed automatically on Close.
-	return nil
+	// Close flushes the buffer. Return its error so a failed flush fails the Activity.
+	return streamClient.Close(ctx)
 }
 ```
+<!--SNIPEND-->
 
-For a [standalone Activity](/develop/go/activities) (one started directly via the Client rather than from a Workflow), there is no parent Workflow context to infer, so `NewClientFromActivity()` returns an error. Fall back to the general pattern with `activity.GetClient(ctx)` and the target Workflow Id threaded through the Activity's input.
+For a [standalone Activity](/develop/go/activities) (one started directly via the Client rather than from a Workflow), there is no parent Workflow context to infer, so `NewClientFromActivity()` returns an error. Fall back to the general pattern with `activity.GetClient(ctx)` and the target Workflow ID threaded through the Activity's input.
 
 Two operations give the application explicit control over when batches ship: the `forceFlush` argument on a publish for latency, and `client.Flush(ctx)` for confirmation that prior publications have landed.
 
 Pass `true` as the `forceFlush` argument on a publish to wake the background flusher so the current buffer ships without waiting for the next interval. The flusher only runs while the client is open (between construction and `Close`). The call returns immediately after appending to the buffer and signaling the flusher. It doesn't wait for delivery to the Workflow or to subscribers:
 
+<!--SNIPSTART go-streams-force-flush-->
+[go-sandbox/workflows/streams/publish.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/publish.go)
 ```go
 deltas.Publish(delta, true)
 ```
+<!--SNIPEND-->
 
 Use it for latency-sensitive events: the first delta of a response so the user sees something fast, or punctuated events like `RETRY` and `STATUS_CHANGE`. See [Tuning](/workflow-streams#tuning) for the trade-off against history pressure.
 
 Use `client.Flush(ctx)` when you need a mid-stream barrier. Successful completion of the flush is proof that the Temporal server has received all prior publications, so subsequent work that depends on those events being durable can proceed. The client stays open for further publishing afterward. `Close` already flushes on its way out, so the explicit call is only for barriers in the middle:
 
+<!--SNIPSTART go-streams-flush-barrier-->
+[go-sandbox/workflows/streams/publish.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/publish.go)
 ```go
 streamClient := workflowstreams.NewClient(temporalClient, workflowID, workflowstreams.Options{})
-defer streamClient.Close(ctx)
+defer func() {
+	if closeErr := streamClient.Close(ctx); err == nil {
+		err = closeErr
+	}
+}()
 deltas := streamClient.Topic("delta")
 
 for _, delta := range firstPhase() {
@@ -198,6 +219,7 @@ for _, delta := range secondPhase(checkpointID) {
 	deltas.Publish(delta, false)
 }
 ```
+<!--SNIPEND-->
 
 `Publish()` is non-blocking and applies no backpressure. From an Activity or other client, it appends to the client's in-memory buffer and returns. From inside a Workflow, it appends synchronously to the in-memory log. [Subscribers](/workflow-streams#subscribing) pull from the Workflow's log on their own schedule, so a slow subscriber doesn't slow down [publishers](/workflow-streams#publishing). If a publisher emits faster than batches can ship to the server, the buffer grows: the process uses more memory, the stream falls further behind real time, and at the limit Signals can't keep up.
 
@@ -209,7 +231,11 @@ If your application needs to bound this (to cap memory, to keep the stream close
 
 Once you have a client, range over `client.Subscribe()`, the counterpart to `Publish()`. It returns an [`iter.Seq2`](https://pkg.go.dev/iter#Seq2) iterator that yields a `WorkflowStreamItem` and an error on each step. Each item's `Data` is the raw payload; decode it at the call site with a payload converter.
 
+<!--SNIPSTART go-streams-subscribe-->
+[go-sandbox/workflows/streams/subscribe.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/subscribe.go)
 ```go
+package streams
+
 import (
 	"context"
 	"fmt"
@@ -238,6 +264,7 @@ func WatchOrder(ctx context.Context, temporalClient client.Client, orderID strin
 	return nil
 }
 ```
+<!--SNIPEND-->
 
 `SubscribeOptions` controls the subscription: `Topics` filters by name (empty or nil means all topics), `FromOffset` resumes from a stored global offset (zero means the beginning), and `PollCooldown` sets the minimum interval between polls. The iterator handles re-polling, pagination when a poll response hits the ~1 MB cap, and Workflow-side log truncation transparently. A single-topic convenience method, `streamClient.Topic("status").Subscribe(ctx, fromOffset)`, is equivalent to passing one name in `Topics`.
 
@@ -247,6 +274,8 @@ A subscriber doesn't need `Close()` because the background flusher only runs for
 
 Every item arrives as a raw `*commonpb.Payload` in `item.Data`, so a single subscription naturally consumes multiple topics whose payload types differ. Pass the topic names in `SubscribeOptions.Topics` (or leave it empty for every topic on the stream), dispatch on `item.Topic`, and decode into the matching type:
 
+<!--SNIPSTART go-streams-heterogeneous-topics-->
+[go-sandbox/workflows/streams/subscribe.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/subscribe.go)
 ```go
 for item, err := range stream.Subscribe(ctx, workflowstreams.SubscribeOptions{Topics: []string{"status", "progress"}}) {
 	if err != nil {
@@ -259,6 +288,9 @@ for item, err := range stream.Subscribe(ctx, workflowstreams.SubscribeOptions{To
 			return err
 		}
 		fmt.Printf("[status] %s: %s\n", evt.State, evt.Detail)
+		if evt.State == "completed" {
+			return nil
+		}
 	case "progress":
 		var evt ProgressEvent
 		if err := converter.GetDefaultDataConverter().FromPayload(item.Data, &evt); err != nil {
@@ -268,6 +300,7 @@ for item, err := range stream.Subscribe(ctx, workflowstreams.SubscribeOptions{To
 	}
 }
 ```
+<!--SNIPEND-->
 
 A single iterator over multiple topics also avoids the cancellation race that two concurrent subscribers would create. Because `item.Data` is the raw payload, it's also the right shape when you want to forward the bytes through to another system without decoding them.
 
@@ -282,22 +315,29 @@ There are two ways to provide that overlap.
 
 - [Fixed sleep](/workflow-streams#fixed-sleep). Sleep between the terminator and the return so any in-flight poll has time to fetch the terminator before the Workflow exits:
 
+  <!--SNIPSTART go-streams-order-workflow {"selectedLines": ["50-57"]}-->
+  [go-sandbox/workflows/streams/order.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/order.go)
   ```go
-  // at the end of the workflow function
-  if err := status.Publish(StatusEvent{State: "completed", Progress: 100}); err != nil {
-  	return err
-  }
-  if err := workflow.Sleep(ctx, 30*time.Second); err != nil {
-  	return err
-  }
-  return nil
+  // ...
+  	if err := status.Publish(StatusEvent{State: "completed", Progress: 100}); err != nil {
+  		return err
+  	}
+  	// Give in-flight subscriber polls time to fetch the terminator before the Workflow returns.
+  	if err := workflow.Sleep(ctx, 30*time.Second); err != nil {
+  		return err
+  	}
+  	return nil
   ```
+  <!--SNIPEND-->
 - [Acknowledgment handshake](/workflow-streams#acknowledgment-handshake). The subscriber sends a Signal once it has the terminator; the Workflow waits up to a timeout, returning as soon as the ack arrives:
 
+  <!--SNIPSTART go-streams-chat-workflow {"selectedLines": ["15-26", "35-40"]}-->
+  [go-sandbox/workflows/streams/chat/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/chat/workflow.go)
   ```go
+  // ...
   func ChatWorkflow(ctx workflow.Context, input ChatInput) (string, error) {
-  	stream, err := workflowstreams.NewWorkflowStream(ctx, input.StreamState)
-  	if err != nil {
+  	// The Workflow hosts the stream. The Activity publishes to it.
+  	if _, err := workflowstreams.NewWorkflowStream(ctx, input.StreamState); err != nil {
   		return "", err
   	}
 
@@ -307,14 +347,15 @@ There are two ways to provide that overlap.
   		ackCh.Receive(ctx, nil)
   		subscriberDone = true
   	})
-
-  	// ... do work and publish events ...
-
-  	// Returns true if the ack arrived, false on timeout. Either way, fall through.
+  // ...
+  	// Wait for the subscriber to ack the terminal `close` event. The timeout
+  	// is a fallback for when no subscriber is attached; with the ack, the
+  	// typical case exits as soon as the subscriber confirms.
   	_, _ = workflow.AwaitWithTimeout(ctx, 30*time.Second, func() bool { return subscriberDone })
   	return result, nil
   }
   ```
+  <!--SNIPEND-->
 
 The full pattern is wired into the [Stream LLM output](#stream-llm-output) example below.
 
@@ -324,6 +365,8 @@ You can [inspect the terminal status](/workflow-streams#inspecting-terminal-stat
 
 Workflows that run for hours or accumulate thousands of events need to periodically roll over via [Continue-As-New](/workflow-streams#stream-from-long-running-workflows) to keep history bounded. Subscribers automatically follow these rollovers. To keep a stream running across them without subscribers seeing a gap, carry both your application state and the stream state across the boundary. Add a `*WorkflowStreamState` field to your Workflow input, pass it to `NewWorkflowStream`, and return `stream.NewContinueAsNewError(ctx, wfn, buildArgs)` to invoke the rollover. The helper drains waiting subscribers, waits for in-flight handlers to finish, then returns a Continue-As-New error built from the args produced by `buildArgs(postDrainState)`:
 
+<!--SNIPSTART go-streams-continue-as-new-->
+[go-sandbox/workflows/streams/longrunning.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/longrunning.go)
 ```go
 type WorkflowInput struct {
 	ItemsProcessed int
@@ -354,14 +397,19 @@ func LongRunningWorkflow(ctx workflow.Context, input WorkflowInput) error {
 	}
 }
 ```
+<!--SNIPEND-->
 
 The `*WorkflowStreamState` field is `nil` on a fresh start and a populated snapshot after a rollover. The `buildArgs` callback receives the post-detach `*WorkflowStreamState` as its only argument, so the snapshot is guaranteed to happen *after* pollers detach.
 
 To pass other Continue-As-New parameters such as a different task queue, or to use a custom publisher TTL, use the explicit recipe instead. Drain the pollers, wait for handlers to finish, snapshot the state with your chosen TTL, then build the Continue-As-New error yourself (set options such as the task queue on the context first):
 
+<!--SNIPSTART go-streams-continue-as-new-explicit-->
+[go-sandbox/workflows/streams/longrunning.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/longrunning.go)
 ```go
 stream.DetachPollers()
-_ = workflow.Await(ctx, func() bool { return workflow.AllHandlersFinished(ctx) })
+if err := workflow.Await(ctx, func() bool { return workflow.AllHandlersFinished(ctx) }); err != nil {
+	return err
+}
 state, err := stream.GetState(30 * time.Minute) // custom publisher TTL
 if err != nil {
 	return err
@@ -372,6 +420,7 @@ return workflow.NewContinueAsNewError(ctx, LongRunningWorkflow, WorkflowInput{
 	StreamState:    state,
 })
 ```
+<!--SNIPEND-->
 
 The carried `WorkflowStreamState` includes the entire in-memory log of the previous run, so streams that carry large items can hit Temporal's per-payload size limit at the rollover. Offload the bytes via [External Storage](/external-storage) so each item is a small reference rather than the full payload, and combine that with `stream.Truncate(upToOffset)` to keep the carried log itself small.
 
@@ -384,11 +433,14 @@ There are two limits on the [deduplication window](/workflow-streams#deduplicati
 - **Publisher TTL.** At each Continue-As-New, deduplicate entries whose last-seen time is older than this are dropped. The last-seen time is updated on each *successful* publish (not on each retry attempt), so a publisher that retries through a long partition without success can still age out. A publisher that returns after a longer pause may produce a duplicate. `stream.NewContinueAsNewError(...)` snapshots with a 15-minute default; to tune it, use the explicit recipe above and pass your value to `GetState(publisherTTL)`.
 - **`MaxRetryDuration`.** A `Client` retries a failed batch for up to this long (default 10 minutes). If the duration elapses with the batch still pending, the client gives up, the pending batch is dropped, and a `FlushTimeoutError` is raised.
 
+  <!--SNIPSTART go-streams-max-retry-duration-->
+  [go-sandbox/workflows/streams/publish.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/publish.go)
   ```go
-  workflowstreams.NewClient(temporalClient, workflowID, workflowstreams.Options{
+  streamClient := workflowstreams.NewClient(temporalClient, workflowID, workflowstreams.Options{
   	MaxRetryDuration: 10 * time.Minute,
   })
   ```
+  <!--SNIPEND-->
 
   On timeout, the dropped batch is at-most-once: it may or may not have reached the Workflow. One operational caveat: the `FlushTimeoutError` is raised from inside the background flusher and terminates it. Until you call `client.Flush(ctx)` or `client.Close(ctx)`, subsequent publishes accumulate in the buffer with no flusher to ship them. `MaxRetryDuration` must be less than the workflow's publisher TTL to preserve exactly-once delivery.
 
@@ -410,8 +462,10 @@ If your Activity can retry, the consumer side has to account for it. A retried a
 <Tabs>
 <TabItem value="activity" label="activity.go">
 
+<!--SNIPSTART go-streams-chat-activity-->
+[go-sandbox/workflows/streams/chat/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/chat/activity.go)
 ```go
-package main
+package chat
 
 import (
 	"context"
@@ -438,7 +492,6 @@ func StreamCompletion(ctx context.Context, prompt string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer streamClient.Close(ctx)
 
 	deltas := streamClient.Topic("delta")
 	retry := streamClient.Topic("retry")
@@ -461,15 +514,22 @@ func StreamCompletion(ctx context.Context, prompt string) (string, error) {
 		full = append(full, token)
 	}
 	closeTopic.Publish(struct{}{}, false)
+	// Close flushes the buffer. Return its error so a failed flush fails the Activity.
+	if err := streamClient.Close(ctx); err != nil {
+		return "", err
+	}
 	return strings.Join(full, ""), nil
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="workflow" label="workflow.go">
 
+<!--SNIPSTART go-streams-chat-workflow-->
+[go-sandbox/workflows/streams/chat/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/chat/workflow.go)
 ```go
-package main
+package chat
 
 import (
 	"time"
@@ -484,8 +544,8 @@ type ChatInput struct {
 }
 
 func ChatWorkflow(ctx workflow.Context, input ChatInput) (string, error) {
-	stream, err := workflowstreams.NewWorkflowStream(ctx, input.StreamState)
-	if err != nil {
+	// The Workflow hosts the stream. The Activity publishes to it.
+	if _, err := workflowstreams.NewWorkflowStream(ctx, input.StreamState); err != nil {
 		return "", err
 	}
 
@@ -510,12 +570,15 @@ func ChatWorkflow(ctx workflow.Context, input ChatInput) (string, error) {
 	return result, nil
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="consumer" label="consumer.go">
 
+<!--SNIPSTART go-streams-chat-consumer-->
+[go-sandbox/workflows/streams/chat/consumer.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/streams/chat/consumer.go)
 ```go
-package main
+package chat
 
 import (
 	"context"
@@ -564,6 +627,7 @@ func StreamChat(ctx context.Context, temporalClient client.Client, chatID string
 	return strings.Join(output, ""), nil
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>

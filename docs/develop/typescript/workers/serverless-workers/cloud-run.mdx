@@ -1,6 +1,6 @@
 ---
 id: cloud-run
-title: Serverless Workers on GCP Cloud Run - TypeScript SDK
+title: Serverless Workers on GCP Cloud Run
 sidebar_label: GCP Cloud Run
 description: Run a Temporal Worker on a GCP Cloud Run worker pool using the TypeScript SDK.
 slug: /develop/typescript/workers/serverless-workers/cloud-run
@@ -23,9 +23,7 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
-  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
-  Create a [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team for access, and
-  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+  Cloud Run support is in Public Preview. APIs and configuration may change before the stable release.
 </ReleaseNoteHeader>
 
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
@@ -42,29 +40,36 @@ Build the Worker as you would any long-running TypeScript Worker, then pass `wor
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
+<!--SNIPSTART typescript-cloud-run-worker-->
+[typescript-sandbox/src/workers/serverless-workers/cloud-run/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/serverless-workers/cloud-run/worker.ts)
 ```ts
 import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
-const connection = await NativeConnection.connect({
-  address: process.env.TEMPORAL_ADDRESS,
-  apiKey: process.env.TEMPORAL_API_KEY,
-  tls: true,
-});
+async function run() {
+  const connection = await NativeConnection.connect({
+    address: process.env.TEMPORAL_ADDRESS,
+    apiKey: process.env.TEMPORAL_API_KEY,
+    tls: true,
+  });
 
-const worker = await Worker.create({
-  connection,
-  namespace: process.env.TEMPORAL_NAMESPACE!,
-  taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
-  workflowsPath: require.resolve('./workflows'),
-  workerDeploymentOptions: {
-    version: { deploymentName: 'my-app', buildId: 'build-1' },
-    useWorkerVersioning: true,
-    defaultVersioningBehavior: 'PINNED',
-  },
-});
+  const worker = await Worker.create({
+    connection,
+    namespace: process.env.TEMPORAL_NAMESPACE!,
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE!,
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    workerDeploymentOptions: {
+      version: { deploymentName: 'my-app', buildId: 'build-1' },
+      useWorkerVersioning: true,
+      defaultVersioningBehavior: 'PINNED',
+    },
+  });
 
-await worker.run();
+  await worker.run();
+}
 ```
+<!--SNIPEND-->
 
 `deploymentName` and `buildId` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -72,14 +77,17 @@ Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behav
 Setting `defaultVersioningBehavior` as shown above covers every Workflow on the Worker.
 To set the behavior per Workflow instead, pass the Workflow function to `setWorkflowOptions()` from `@temporalio/workflow`:
 
+<!--SNIPSTART typescript-cloud-run-versioning-behavior-->
+[typescript-sandbox/src/workers/serverless-workers/cloud-run/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/serverless-workers/cloud-run/workflows.ts)
 ```ts
 import { setWorkflowOptions } from '@temporalio/workflow';
 
 setWorkflowOptions({ versioningBehavior: 'PINNED' }, myWorkflow);
 export async function myWorkflow(): Promise<string> {
-  // ...
+  return await myActivity(['first', 'second', 'third']);
 }
 ```
+<!--SNIPEND-->
 
 For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/typescript/workers/run-worker-process).
 
@@ -122,17 +130,22 @@ An instance running a long Activity can be stopped mid-execution.
 
 Use [Activity Heartbeats](/develop/typescript/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
 
+<!--SNIPSTART typescript-cloud-run-heartbeat-->
+[typescript-sandbox/src/workers/serverless-workers/cloud-run/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/serverless-workers/cloud-run/activities.ts)
 ```ts
-import { heartbeat } from '@temporalio/activity';
+import { activityInfo, heartbeat } from '@temporalio/activity';
 
 export async function myActivity(items: string[]): Promise<string> {
-  for (let i = 0; i < items.length; i++) {
+  // Resume from the last item recorded by a Heartbeat, if this is a retry
+  const start: number = activityInfo().heartbeatDetails ?? 0;
+  for (let i = start; i < items.length; i++) {
     heartbeat(i);
     // ... process items[i]
   }
   return 'done';
 }
 ```
+<!--SNIPEND-->
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 

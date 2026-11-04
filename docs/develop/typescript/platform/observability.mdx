@@ -1,6 +1,6 @@
 ---
 id: observability
-title: Observability - TypeScript SDK
+title: Observability
 sidebar_label: Observability
 description: Enhance the observability of your Temporal Application with metrics, tracing, logging, and visibility features. View Workflow state, set up OpenTelemetry, and customize logging to monitor your Workflows and Activities.
 toc_max_heading_level: 4
@@ -38,14 +38,17 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 To set up tracing of Workflows and Activities, use our `opentelemetry-interceptors` package.
 (For details, see the next section.)
 
-```typescript
+<!--SNIPSTART typescript-observability-prometheus {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/platform/observability/metrics.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/metrics.ts)
+```ts
 telemetryOptions: {
   metrics: {
     prometheus: { bindAddress: '0.0.0.0:9464' },
   },
-  logging: { forward: { level: 'DEBUG' } },
+  logging: { filter: makeTelemetryFilterString({ core: 'DEBUG' }), forward: {} },
 },
 ```
+<!--SNIPEND-->
 
 ### Attach global tags to metrics
 
@@ -54,7 +57,13 @@ Global tags add your organization's information next to them, so a dashboard can
 
 Set [`globalTags`](https://typescript.temporal.io/api/namespaces/worker#metricsexporterconfig) on the metrics telemetry options passed to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.Runtime/#install).
 
-```typescript
+<!--SNIPSTART typescript-observability-global-tags-->
+[typescript-sandbox/src/loggers/telemetry-global-tags.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/loggers/telemetry-global-tags.ts)
+```ts
+import {
+  Runtime,
+} from '@temporalio/worker';
+
 Runtime.install({
   telemetryOptions: {
     metrics: {
@@ -69,6 +78,7 @@ Runtime.install({
   },
 });
 ```
+<!--SNIPEND-->
 
 Global tags reach the Prometheus and OpenTelemetry exporters.
 A buffered metrics exporter does not receive them.
@@ -130,25 +140,20 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 
 - At the top level of your Workflow code, add the following lines:
 
-  ```js
+  <!--SNIPSTART typescript-observability-jaeger-propagator-->
+  [typescript-sandbox/src/platform/observability/tracing/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/tracing/workflows.ts)
+  ```ts
   import { propagation } from '@opentelemetry/api';
-  import {
-    CompositePropagator,
-    W3CBaggagePropagator,
-    W3CTraceContextPropagator,
-  } from '@opentelemetry/core';
+  import { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } from '@opentelemetry/core';
   import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 
   propagation.setGlobalPropagator(
     new CompositePropagator({
-      propagators: [
-        new W3CTraceContextPropagator(),
-        new W3CBaggagePropagator(),
-        new JaegerPropagator(),
-      ],
+      propagators: [new W3CTraceContextPropagator(), new W3CBaggagePropagator(), new JaegerPropagator()],
     }),
   );
   ```
+  <!--SNIPEND-->
 
 Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the `README.md` file.
 
@@ -166,13 +171,15 @@ You can find the log levels supported by the `winston` package used in the examp
 
 Activities run in the standard Node.js environment and may therefore use any Node.js logger directly.
 
-The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entries emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entry emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
 Using the Activity Context logger
 </summary>
 
+<!--SNIPSTART typescript-observability-activity-logger-->
+[typescript-sandbox/src/platform/observability/logging/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/logging/activities.ts)
 ```ts
 import { log } from '@temporalio/activity';
 
@@ -181,6 +188,7 @@ export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
 ```
+<!--SNIPEND-->
 
 </details>
 
@@ -198,13 +206,15 @@ Workflows may not use regular Node.js loggers because:
 1. Workflows run in a sandboxed environment and cannot do any I/O.
 1. Workflow code might get replayed at any time, which would result in duplicated log messages.
 
-The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entries emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/platform/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entry emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
 Using the Workflow Context logger
 </summary>
 
+<!--SNIPSTART typescript-observability-workflow-logger-->
+[typescript-sandbox/src/platform/observability/logging/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/logging/workflows.ts)
 ```ts
 import { log } from '@temporalio/workflow';
 
@@ -213,6 +223,7 @@ export async function myWorkflow(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
 ```
+<!--SNIPEND-->
 
 </details>
 
@@ -251,7 +262,9 @@ A custom Runtime Logger may be registered when the SDK `Runtime` is instantiated
 To register a custom Runtime Logger, you must explicitly instantiate the Runtime, using the [`Runtime.install()`](https://typescript.temporal.io/api/classes/worker.Runtime/#install) function.
 For example:
 
-```typescript
+<!--SNIPSTART typescript-observability-runtime-logger-->
+[typescript-sandbox/src/loggers/simple-logger.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/loggers/simple-logger.ts)
+```ts
 import {
   DefaultLogger,
   makeTelemetryFilterString,
@@ -277,11 +290,14 @@ Runtime.install({
   },
 });
 ```
+<!--SNIPEND-->
 
 A common use case for this is to write log messages to a file to be picked up by a collector service, such as the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 For example:
 
-```typescript
+<!--SNIPSTART typescript-observability-runtime-logger-file-->
+[typescript-sandbox/src/loggers/telemetry-logger.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/loggers/telemetry-logger.ts)
+```ts
 import {
   DefaultLogger,
   makeTelemetryFilterString,
@@ -317,6 +333,7 @@ Runtime.install({
   },
 });
 ```
+<!--SNIPEND-->
 
 ### How to provide a custom logger {/* #custom-logger */}
 
@@ -329,6 +346,8 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 
 Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
 
+<!--SNIPSTART typescript-observability-default-logger-->
+[typescript-sandbox/src/platform/observability/logging/default-logger.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/logging/default-logger.ts)
 ```ts
 import { DefaultLogger, Runtime } from '@temporalio/worker';
 
@@ -337,25 +356,31 @@ const logger = new DefaultLogger('WARN', ({ level, message }) => {
 });
 Runtime.install({ logger });
 ```
+<!--SNIPEND-->
 
 The previous code example sets the default logger to log only messages with level `WARN` and higher.
 
 #### Accumulate logs for testing and reporting
 
+<!--SNIPSTART typescript-observability-accumulate-logs-->
+[typescript-sandbox/src/platform/observability/logging/accumulate-logs.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/logging/accumulate-logs.ts)
 ```ts
-import { DefaultLogger, LogEntry, LogLevel } from '@temporalio/worker';
+import { DefaultLogger, LogEntry } from '@temporalio/worker';
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger(LogLevel.TRACE, (entry) => logs.push(entry));
+const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
 
 logger.debug('hey', { a: 1 });
 logger.info('ho');
 logger.warn('lets', { a: 1 });
 logger.error('go');
 ```
+<!--SNIPEND-->
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
+<!--SNIPSTART typescript-observability-winston-logger-->
+[typescript-sandbox/src/loggers/custom-logger.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/loggers/custom-logger.ts)
 ```ts
 import { 
   DefaultLogger,
@@ -379,6 +404,7 @@ const logger = new DefaultLogger('DEBUG', (entry) => {
 
 Runtime.install({ logger });
 ```
+<!--SNIPEND-->
 
 ## Visibility APIs {/* #visibility */}
 
@@ -412,14 +438,16 @@ Here is how to query Workflow Executions:
 
 Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions):
 
-```typescript
-import { Connection } from '@temporalio/client';
-
-const connection = await Connection.connect();
+<!--SNIPSTART typescript-observability-list-workflows {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/platform/observability/visibility/list.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/visibility/list.ts)
+```ts
+const connection = await Connection.connect(connectionOptions);
 const response = await connection.workflowService.listWorkflowExecutions({
+  namespace: 'default',
   query: `ExecutionStatus = "Running"`,
 });
 ```
+<!--SNIPEND-->
 
 where `query` is a [List Filter](/list-filter).
 
@@ -429,8 +457,8 @@ After you've created custom Search Attributes in your Temporal Service (using `t
 
 Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
 
-<!--SNIPSTART typescript-search-attributes-client-->
-[search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/search-attributes/src/client.ts)
+<!--SNIPSTART typescript-observability-set-search-attributes {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/platform/observability/visibility/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/visibility/client.ts)
 ```ts
 const handle = await client.workflow.start(example, {
   taskQueue: 'search-attributes',
@@ -458,8 +486,8 @@ You can upsert Search Attributes to add or update Search Attributes from within 
 
 Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
 
-<!--SNIPSTART typescript-search-attributes-workflow -->
-[search-attributes/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/search-attributes/src/workflows.ts)
+<!--SNIPSTART typescript-observability-upsert-search-attributes-->
+[typescript-sandbox/src/platform/observability/visibility/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/visibility/workflows.ts)
 ```ts
 export async function example(): Promise<SearchAttributes> {
   const customInt = (workflowInfo().searchAttributes.CustomIntField?.[0] as number) || 0;
@@ -482,18 +510,18 @@ export async function example(): Promise<SearchAttributes> {
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
-```typescript
-import { upsertSearchAttributes } from '@temporalio/workflow';
+<!--SNIPSTART typescript-observability-remove-search-attribute-->
+[typescript-sandbox/src/platform/observability/visibility/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/visibility/workflows.ts)
+```ts
+export async function yourWorkflow(): Promise<SearchAttributes> {
+  upsertSearchAttributes({ CustomIntField: [1] });
 
-async function yourWorkflow() {
-  upsertSearchAttributes({ CustomIntField: 1 });
-
-// ... later, to remove:
-upsertSearchAttributes({ CustomIntField: null });
-}
+  // ... later, to remove:
+  upsertSearchAttributes({ CustomIntField: [] });
 ```
+<!--SNIPEND-->
 
-## Workflow Sinks
+## Workflow sinks
 
 Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
 
@@ -503,7 +531,7 @@ Workflows in Temporal may be replayed from the beginning of their history when r
 Sinks are written as objects with methods.
 Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
 
-### Comparing Sinks and Activities
+### Comparing sinks and Activities
 
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
@@ -516,16 +544,18 @@ However, they differ from Activities in important ways:
 
 Explicitly declaring a sink's interface is optional but is useful for ensuring type safety in subsequent steps:
 
-<!--SNIPSTART typescript-logger-sink-interface-->
-[packages/test/src/workflows/log-sink-tester.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sink-tester.ts)
+<!--SNIPSTART typescript-observability-sink-interface-->
+[typescript-sandbox/src/platform/observability/sinks/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/sinks/workflows.ts)
 ```ts
-import type { Sinks } from '@temporalio/workflow';
+import { log, proxySinks, Sinks } from '@temporalio/workflow';
 
-export interface CustomLoggerSinks extends Sinks {
-  customLogger: {
-    info(message: string): void;
+export interface AlertSinks extends Sinks {
+  alerter: {
+    alert(message: string): void;
   };
 }
+
+export type MySinks = AlertSinks;
 ```
 <!--SNIPEND-->
 
@@ -535,10 +565,11 @@ Implementing sinks is a two-step process.
 
 Implement and inject the Sink function into a Worker
 
-<!--SNIPSTART typescript-logger-sink-worker-->
-[sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/worker.ts)
+<!--SNIPSTART typescript-observability-sink-worker-->
+[typescript-sandbox/src/platform/observability/sinks/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/sinks/worker.ts)
 ```ts
-import { InjectedSinks, Worker } from '@temporalio/worker';
+import { InjectedSinks, NativeConnection, Worker } from '@temporalio/worker';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { MySinks } from './workflows';
 
 async function main() {
@@ -556,12 +587,15 @@ async function main() {
       },
     },
   };
+  const connection = await NativeConnection.connect(loadClientConnectConfig().connectionOptions);
   const worker = await Worker.create({
+    connection,
     workflowsPath: require.resolve('./workflows'),
     taskQueue: 'sinks',
     sinks,
   });
   await worker.run();
+  await connection.close();
   console.log('Worker gracefully shutdown');
 }
 
@@ -577,13 +611,15 @@ main().catch((err) => {
 
 ### Proxy and call a sink function from a Workflow
 
-<!--SNIPSTART typescript-logger-sink-workflow-->
-[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sample.ts)
+<!--SNIPSTART typescript-observability-sink-workflow-->
+[typescript-sandbox/src/platform/observability/sinks/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/platform/observability/sinks/workflows.ts)
 ```ts
-import * as wf from '@temporalio/workflow';
+const { alerter } = proxySinks<MySinks>();
 
-export async function logSampleWorkflow(): Promise<void> {
-  wf.log.info('Workflow execution started');
+export async function sinkWorkflow(): Promise<string> {
+  log.info('Workflow Execution started');
+  alerter.alert('alerter: Workflow Execution started');
+  return 'Hello, Temporal!';
 }
 ```
 <!--SNIPEND-->

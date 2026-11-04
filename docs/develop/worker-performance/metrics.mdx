@@ -21,7 +21,7 @@ The omitted prefix makes the names more readable and descriptive.
 The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 Performance tuning uses three important SDK metric groups:
 
-### Slot availability metrics {/* #slot-availability-metrics */}
+## Slot availability metrics {/* #slot-availability-metrics */}
 
 Temporal's [`worker_task_slots_available`](/references/sdk-metrics#worker_task_slots_available) and `worker_task_slots_used` gauges can report the number of available executor “slots” that are currently available and unoccupied for a Worker type.
 Tag these with `worker_type=WorkflowWorker` for Workflow Task Workers or `worker_type=ActivityWorker` for Activity Workers.
@@ -32,14 +32,14 @@ Unlike `worker_task_slots_used`, `worker_task_slots_available` can only be used 
 
 :::
 
-### Latency metrics
+## Latency metrics
 
 Temporal provides two latency timers: [`workflow_task_schedule_to_start_latency`](/references/sdk-metrics#workflow_task_schedule_to_start_latency) for Workflow Tasks and [`activity_schedule_to_start_latency`](/references/sdk-metrics#activity_schedule_to_start_latency) for Activities.
-A Schedule-To-Start latency is the time from when an Task is scheduled (that is, placed in a Queue) to when a Worker starts (that is, picks up from the Task Queue) that Task.
+A Schedule-To-Start latency is the time from when a Task is scheduled (that is, placed in a Queue) to when a Worker starts (that is, picks up from the Task Queue) that Task.
 These metrics help ensure that Tasks are being processed from the queue in a timely manner.
 For more information about `schedule_to_start` timeout and latency, see [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout).
 
-### Cache metrics
+## Cache metrics
 
 The [`sticky_cache_size`](/references/sdk-metrics#sticky_cache_size) and [`workflow_active_thread_count`](/references/sdk-metrics#workflow_active_thread_count) metrics report the size of the Workflow cache and the number of cached Workflow threads.
 

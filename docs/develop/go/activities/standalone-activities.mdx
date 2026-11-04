@@ -1,7 +1,7 @@
 ---
 id: standalone-activities
-title: Standalone Activities Feature Guide
-sidebar_label: Feature Guide
+title: Standalone Activities feature guide
+sidebar_label: Feature guide
 toc_max_heading_level: 4
 tags:
   - Activities
@@ -20,7 +20,7 @@ differs.
 
 :::tip
 
-New to Standalone Activities? Start with the [Standalone Activities Quickstart](/develop/go/activities/standalone-activities-quickstart).
+New to Standalone Activities? Start with the [Standalone Activities quickstart](/develop/go/activities/standalone-activities-quickstart).
 
 :::
 
@@ -32,18 +32,13 @@ This page covers the following:
 - [Count Standalone Activities](#count-activities)
 - [Run Standalone Activities with Temporal Cloud](#run-standalone-activities-temporal-cloud)
 
-:::note
-
-This documentation uses source code from the
-[standalone-activity/helloworld](https://github.com/temporalio/samples-go/tree/main/standalone-activity/helloworld).
-
-:::
-
 ## Get the result of a Standalone Activity {/* #get-activity-result */}
 
 Use `ActivityHandle.Get()` to block until the Activity completes and retrieve its result. This is analogous to calling
 `Get()` on a `WorkflowRun`.
 
+<!--SNIPSTART go-standalone-activity-get-result-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
 ```go
 var result string
 err = handle.Get(context.Background(), &result)
@@ -52,6 +47,7 @@ if err != nil {
 }
 log.Println("Activity result:", result)
 ```
+<!--SNIPEND-->
 
 If the Activity completed successfully, the result is deserialized into the provided pointer. If the Activity failed,
 the failure is returned as an error.
@@ -68,12 +64,14 @@ Use `client.GetActivityHandle()` to create a handle to a previously started Stan
 `client.GetWorkflow()` for Workflow Executions.
 
 `ActivityID` is required. `RunID` is optional. Leave it empty to target the latest Activity Execution with
-the given Activity Id.
+the given Activity ID.
 
+<!--SNIPSTART go-standalone-activity-get-handle-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
 ```go
 handle := c.GetActivityHandle(client.GetActivityHandleOptions{
 	ActivityID: "standalone_activity_helloworld_ActivityID",
-	RunID:      "the-run-id",
+	RunID:      runID, // Leave empty to target the latest Activity Execution.
 })
 
 // Use the handle to get the result, describe, cancel, or terminate
@@ -83,6 +81,7 @@ if err != nil {
 	log.Fatalln("Unable to get activity result", err)
 }
 ```
+<!--SNIPEND-->
 
 ## List Standalone Activities {/* #list-activities */}
 
@@ -92,6 +91,8 @@ Executions that match a [List Filter](/list-filter) query. The result contains a
 
 These APIs return only Standalone Activity Executions. Activities running inside Workflows are not included.
 
+<!--SNIPSTART go-standalone-activity-list-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
 ```go
 resp, err := c.ListActivities(context.Background(), client.ListActivitiesOptions{
 	Query: "TaskQueue = 'standalone-activity-helloworld'",
@@ -108,6 +109,7 @@ for info, err := range resp.Results {
 		info.ActivityID, info.ActivityType, info.Status)
 }
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI:
 
@@ -125,6 +127,8 @@ Use [`client.CountActivities()`](https://pkg.go.dev/go.temporal.io/sdk/client#Cl
 Executions that match a [List Filter](/list-filter) query. This returns the total count of executions (running,
 completed, failed, etc.) - not the number of queued tasks. It works the same way as counting Workflow Executions.
 
+<!--SNIPSTART go-standalone-activity-count-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
 ```go
 resp, err := c.CountActivities(context.Background(), client.CountActivitiesOptions{
 	Query: "TaskQueue = 'standalone-activity-helloworld'",
@@ -135,6 +139,7 @@ if err != nil {
 
 log.Println("Total activities:", resp.Count)
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI:
 
@@ -144,7 +149,7 @@ temporal activity count
 
 ## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
-The Worker and Client code in the [Standalone Activities Quickstart](/develop/go/activities/standalone-activities-quickstart)
+The Worker and Client code in the [Standalone Activities quickstart](/develop/go/activities/standalone-activities-quickstart)
 use `envconfig.MustLoadDefaultClientOptions()`, so the same code works against Temporal Cloud -
 configure the connection via environment variables or a TOML profile. No code changes are needed.
 
@@ -173,4 +178,4 @@ export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```
 
-Then run the Worker and starter code as shown in the [Standalone Activities Quickstart](/develop/go/activities/standalone-activities-quickstart).
+Then run the Worker and starter code as shown in the [Standalone Activities quickstart](/develop/go/activities/standalone-activities-quickstart).

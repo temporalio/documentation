@@ -1,7 +1,8 @@
 ---
 id: route-specialized-workloads
-title: Route specialized workloads
-description: Direct resource-intensive workloads to appropriate Task Queues to optimize resources
+title: Route GPU and high-memory Activities to dedicated Workers
+description: Give GPU, high-memory, and CPU Activities their own Task Queues so each runs only on Workers with the right hardware, shown with a Python ML pipeline.
+sidebar_label: Route specialized workloads
 toc_max_heading_level: 3
 author: Cecil Phillip
 tags:
@@ -106,7 +107,7 @@ This implementation requires code changes, Worker configuration, and deployment 
 
 ## Architecture diagram(s)
 
-### Resource-Based routing architecture
+### Resource-based routing architecture
 
 ```mermaid
 flowchart TB

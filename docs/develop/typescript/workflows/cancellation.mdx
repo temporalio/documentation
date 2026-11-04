@@ -1,6 +1,6 @@
 ---
 id: cancellation
-title: Cancel a Workflow - TypeScript SDK
+title: Cancel a Workflow
 sidebar_label: Cancellation
 slug: /develop/typescript/workflows/cancellation
 tags:
@@ -46,7 +46,9 @@ whether by a cancellation request against the Workflow Execution or by the
 - `ActivityCancellationType.ABANDON` fails the Activity call right away and does not ask for the cancellation at all.
   The Activity Execution runs to completion on its own.
 
-```typescript
+<!--SNIPSTART typescript-cancellation-cancellation-type-->
+[typescript-sandbox/src/workflows/cancellation/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation/workflows.ts)
+```ts
 import { ActivityCancellationType, proxyActivities } from '@temporalio/workflow';
 import type * as activities from './activities';
 
@@ -56,6 +58,7 @@ const { processOrder } = proxyActivities<typeof activities>({
   cancellationType: ActivityCancellationType.WAIT_CANCELLATION_COMPLETED,
 });
 ```
+<!--SNIPEND-->
 
 Child Workflows and Nexus Operations have their own cancellation type options, and both of those default to waiting
 for the cancellation to complete. See

@@ -3,7 +3,7 @@ id: task-queue
 title: Temporal CLI task-queue command reference
 sidebar_label: task-queue
 description: Temporal Task Queue commands facilitate operations like describing poller info, displaying partitions, fetching compatible Build IDs, and determining Build ID reachability for effective Workflow and Activity management.
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - Temporal CLI
 ---
@@ -42,6 +42,8 @@ This command returns the current configuration including:
 - Fairness key rate limit defaults: Default rate limits for fairness keys.
   If set, each individual fairness key will be limited to this rate,
   scaled by the weight of the fairness key.
+- Fairness key weight overrides: Custom weights for specific fairness keys.
+  These control the relative share of dispatches each key receives.
 
 Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
@@ -141,6 +143,12 @@ Such tasks are not counted by these metrics. Despite the inaccuracy of
 these two metrics, the derived metric of `BacklogIncreaseRate` is accurate
 for backlogs older than a few seconds.
 
+Use `--report-priority-stats` to show the same statistics by priority key
+for Workflow and Activity Task Queues. These figures include all build IDs,
+even when a build ID selection flag is used. Nexus tasks have no priority
+keys, so they are not included. The Server may return zero-count rows for
+its default priority key.
+
 Safely retire Workers assigned a Build ID by checking reachability across
 all task types. Use the flag `--report-reachability`:
 
@@ -185,12 +193,13 @@ Use the following options to change the behavior of this command. You can also u
 | `--legacy-mode` | No | **bool** Enable a legacy mode for servers that do not support rules-based worker versioning. This mode only provides pollers info. |
 | `--partitions-legacy` | No | **int** Query partitions 1 through `N`. Experimental/Temporary feature. Legacy mode only. |
 | `--report-config` | No | **bool** Include task queue configuration in the response. When enabled, the command will return the current rate limit configuration for the task queue. |
+| `--report-priority-stats` | No | **bool** Show Workflow and Activity statistics by priority key across all build IDs. This makes an extra server request for each applicable task queue type. |
 | `--report-reachability` | No | **bool** Display task reachability information. |
 | `--select-all-active` | No | **bool** Include all active versions. A version is active if it had new tasks or polls recently. |
 | `--select-build-id` | No | **string[]** Filter the Task Queue based on Build ID. |
 | `--select-unversioned` | No | **bool** Include the unversioned queue. |
 | `--task-queue`, `-t` | Yes | **string** Task Queue name. |
-| `--task-queue-type` | No | **string-enum[]** Task Queue type. If not specified, all types are reported. Accepted values: workflow, activity, nexus. |
+| `--task-queue-type` | No | **string-enum[]** Task Queue type. If not specified, all types are described. Priority statistics apply only to Workflow and Activity Task Queues. Accepted values: workflow, activity, nexus. |
 | `--task-queue-type-legacy` | No | **string-enum** Task Queue type (legacy mode only). Accepted values: workflow, activity. |
 
 ## get-build-id-reachability

@@ -40,14 +40,17 @@ is replay-safe when instrumenting Workflows.
 
 To emit metrics from the Temporal Client in Go, create a [metrics handler](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) from the [Client Options](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions) and specify a listener address to be used by Prometheus.
 
+<!--SNIPSTART go-observability-prometheus-metrics-->
+[go-sandbox/platform/observability/metrics.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/metrics.go)
 ```go
-client.Options{
-    MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
-      ListenAddress: "0.0.0.0:9090",
-      TimerType:     "histogram",
-    }
+clientOptions := client.Options{
+	MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
+		ListenAddress: "0.0.0.0:9090",
+		TimerType:     "histogram",
+	})),
 }
 ```
+<!--SNIPEND-->
 
 The Go SDK provides metrics handlers for [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) and [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry). Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsHandler`](/references/server-options#withcustommetricshandler) API.
 
@@ -61,27 +64,28 @@ Global tags add your organization's information next to them, so a dashboard can
 Call [`WithTags`](https://pkg.go.dev/go.temporal.io/sdk/client#MetricsHandler) on the metrics handler before you set it on the Client Options.
 Every metric created from that handler carries the tags, from both the Client and the Worker.
 
+<!--SNIPSTART go-observability-global-tags-->
+[go-sandbox/telemetry-worker/main-prometheus.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/telemetry-worker/main-prometheus.go)
 ```go
-func main() {
-  // Create the base OTel metrics handler
-  metricsHandler := temporalotel.NewMetricsHandler(temporalotel.MetricsHandlerOptions{})
+// Create the base OTel metrics handler
+metricsHandler := temporalotel.NewMetricsHandler(temporalotel.MetricsHandlerOptions{})
 
-  // Add global/static tags to all emitted metrics
-  globalTagsHandler := metricsHandler.WithTags(map[string]string{
-    "team": "content-platform",
-    "service": "checkout",
-    "cost_center": "cc-1042",
-    "environment": "production",
-  })
+// Add global/static tags to all emitted metrics
+globalTagsHandler := metricsHandler.WithTags(map[string]string{
+	"team":        "content-platform",
+	"service":     "checkout",
+	"cost_center": "cc-1042",
+	"environment": "production",
+})
 
-  // Attach the tagged handler to client options
-  clientOptions := client.Options{
-    MetricsHandler: globalTagsHandler,
-  }
-
-  temporalClient, err := client.Dial(clientOptions)
+// Attach the tagged handler to client options
+clientOptions := client.Options{
+	MetricsHandler: globalTagsHandler,
 }
+
+temporalClient, err := client.Dial(clientOptions)
 ```
+<!--SNIPEND-->
 
 #### Choose a tag set
 
@@ -114,7 +118,7 @@ A `cost_center` tag shows which budget owner drives Workflow and Activity volume
 SDK metrics count what your Workers and Clients do, which is not the same as the [Actions](/cloud/pricing#action) Temporal Cloud bills for, so use them to compare teams rather than to reconcile a bill.
 
 Keep tag values low cardinality.
-Your metrics backend stores one series per distinct combination of tag values, so a value that changes per Workflow Execution, such as a Workflow Id or a customer identifier, multiplies what it stores.
+Your metrics backend stores one series per distinct combination of tag values, so a value that changes per Workflow Execution, such as a Workflow ID or a customer identifier, multiplies what it stores.
 Ownership and deployment identifiers avoid this because they stay fixed for the life of the process.
 
 ### Configure OpenTelemetry counters as monotonic {/* #opentelemetry-monotonic-counters */}
@@ -128,16 +132,19 @@ Ownership and deployment identifiers avoid this because they stay fixed for the 
 By default, the OpenTelemetry metrics handler represents counters as `Int64UpDownCounter` instruments to preserve compatibility with earlier releases.
 To represent Temporal SDK counters as monotonic `Int64Counter` instruments, set `UseMonotonicCounters` to `true` when you create the handler:
 
+<!--SNIPSTART go-observability-monotonic-counters-->
+[go-sandbox/platform/observability/monotonic.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/monotonic.go)
 ```go
 metricsHandler := temporalotel.NewMetricsHandler(temporalotel.MetricsHandlerOptions{
-    Meter: otel.GetMeterProvider().Meter("temporal-sdk-go"),
-    UseMonotonicCounters: true,
+	Meter:                otel.GetMeterProvider().Meter("temporal-sdk-go"),
+	UseMonotonicCounters: true,
 })
 
 temporalClient, err := client.Dial(client.Options{
-    MetricsHandler: metricsHandler,
+	MetricsHandler: metricsHandler,
 })
 ```
+<!--SNIPEND-->
 
 Monotonic counters let exporters and metrics backends classify Temporal SDK counters correctly.
 The [`MetricsCounter`](https://pkg.go.dev/go.temporal.io/sdk/client#MetricsCounter) contract defines counters as ever-increasing.
@@ -162,31 +169,43 @@ The Go SDK provides tracing interceptors for [OpenTelemetry](https://pkg.go.dev/
 
 First, create a tracing interceptor for Client instantiation.
 
+<!--SNIPSTART go-observability-tracing-interceptors-->
+[go-sandbox/platform/observability/tracing.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/tracing.go)
 ```go
 // OpenTelemetry
-tracingInterceptor, err := opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})
+func newOpenTelemetryInterceptor() (interceptor.Interceptor, error) {
+	return opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})
+}
 
 // OpenTracing
-tracingInterceptor, err := opentracing.NewInterceptor(opentracing.TracerOptions{})
+func newOpenTracingInterceptor() (interceptor.Interceptor, error) {
+	return opentracing.NewInterceptor(opentracing.TracerOptions{})
+}
 
 // Datadog
-tracingInterceptor, err := tracing.NewTracingInterceptor(tracing.TracerOptions{})
+func newDatadogInterceptor() interceptor.Interceptor {
+	return tracing.NewTracingInterceptor(tracing.TracerOptions{})
+}
 ```
+<!--SNIPEND-->
 
  and register it by passing it to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions):
 
+<!--SNIPSTART go-observability-register-tracing-->
+[go-sandbox/platform/observability/tracing.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/tracing.go)
 ```go
 c, err := client.Dial(client.Options{
-    Interceptors: []interceptor.ClientInterceptor{tracingInterceptor},
+	Interceptors: []interceptor.ClientInterceptor{tracingInterceptor},
 })
 ```
+<!--SNIPEND-->
 
 You can also register interceptors through a [Plugin](/develop/plugins-guide#interceptors) if you’re building a reusable library.
 
 Each tracing interceptor uses its library's native propagation mechanism to serialize trace spans into Temporal headers. For example, OpenTelemetry uses its `TextMapPropagator` with the W3C TraceContext format. The SDK carries these headers across Workflow, Activity, and Child Workflow boundaries, so the tracing library can reconstruct the call graph.
 For more information, see the documentation for [OpenTelemetry](https://opentelemetry.io/), [OpenTracing](https://opentracing.io), and [Datadog](https://docs.datadoghq.com/tracing/).
 
-To build custom context propagation (for example, tenant IDs, auth tokens), see [Context Propagation](/develop/go/best-practices/context-propagation).
+To build custom context propagation (for example, tenant IDs, auth tokens), see [Context propagation](/develop/go/best-practices/context-propagation).
 
 ## Log from a Workflow {/* #logging */}
 
@@ -201,37 +220,40 @@ You can find the log levels supported by `slog` in [their official documentation
 
 In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.
 
+<!--SNIPSTART go-observability-workflow-logger-->
+[go-sandbox/platform/observability/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/workflow.go)
 ```go
 import (
-  "context"
-  "time"
+	"time"
 
-  "go.temporal.io/sdk/activity"
-  "go.temporal.io/sdk/workflow"
+	"go.temporal.io/sdk/workflow"
 )
 
 // Workflow is a standard workflow definition.
-// Note that the Workflow and Activity don't need to care that
-// their inputs/results are being compressed.
 func Workflow(ctx workflow.Context, name string) (string, error) {
-// ...
+	ao := workflow.ActivityOptions{
+		StartToCloseTimeout: 10 * time.Second,
+	}
+	ctx = workflow.WithActivityOptions(ctx, ao)
 
-workflow.WithActivityOptions(ctx, ao)
+	// Getting the logger from the context.
+	logger := workflow.GetLogger(ctx)
+	// Logging a message with the key value pair `name` and `name`
+	logger.Info("Workflow started", "name", name)
 
-// Getting the logger from the context.
-  logger := workflow.GetLogger(ctx)
-// Logging a message with the key value pair `name` and `name`
-  logger.Info("Compressed Payloads workflow started", "name", name)
+	var result string
+	err := workflow.ExecuteActivity(ctx, Activity, name).Get(ctx, &result)
+	if err != nil {
+		logger.Error("Activity failed.", "Error", err)
+		return "", err
+	}
 
-  info := map[string]string{
-    "name": name,
-  }
+	logger.Info("Workflow completed.", "result", result)
 
-  logger.Info("Compressed Payloads workflow completed.", "result", result)
-
-  return result, nil
+	return result, nil
 }
 ```
+<!--SNIPEND-->
 
 ### Provide a custom logger {/* #custom-logger */}
 
@@ -242,51 +264,62 @@ Because most modern logging libraries (zap, zerolog, logrus, etc.) can back a `s
 
 **Using slog directly:**
 
+<!--SNIPSTART go-observability-slog-logger-->
+[go-sandbox/platform/observability/slog_logger.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/slog_logger.go)
 ```go
 import (
-  "log/slog"
-  "os"
+	"log/slog"
+	"os"
 
-  "go.temporal.io/sdk/client"
-  "go.temporal.io/sdk/log"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/log"
 )
 
-func main() {
-  // ...
-  slogHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo})
-  logger := log.NewStructuredLogger(slog.New(slogHandler))
-  clientOptions := client.Options{
-    Logger: logger,
-  }
-  temporalClient, err := client.Dial(clientOptions)
-  // ...
+func DialWithSlog() (client.Client, error) {
+	// ...
+	slogHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo})
+	logger := log.NewStructuredLogger(slog.New(slogHandler))
+	clientOptions := client.Options{
+		Logger: logger,
+	}
+	temporalClient, err := client.Dial(clientOptions)
+	// ...
+	return temporalClient, err
 }
 ```
+<!--SNIPEND-->
 
 **Bridging a third-party logger through slog (example with zap):**
 
+<!--SNIPSTART go-observability-zap-logger-->
+[go-sandbox/platform/observability/zap_logger.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/zap_logger.go)
 ```go
 import (
-  "log/slog"
+	"log/slog"
 
-  "go.uber.org/zap"
-  "go.uber.org/zap/exp/zapslog"
-  "go.temporal.io/sdk/client"
-  "go.temporal.io/sdk/log"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/log"
+	"go.uber.org/zap"
+	"go.uber.org/zap/exp/zapslog"
 )
 
-func main() {
-  // ...
-  zapLogger, _ := zap.NewProduction()
-  handler := zapslog.NewHandler(zapLogger.Core())
-  logger := log.NewStructuredLogger(slog.New(handler))
-  clientOptions := client.Options{
-    Logger: logger,
-  }
-  temporalClient, err := client.Dial(clientOptions)
-  // ...
+func DialWithZap() (client.Client, error) {
+	// ...
+	zapLogger, err := zap.NewProduction()
+	if err != nil {
+		return nil, err
+	}
+	handler := zapslog.NewHandler(zapLogger.Core())
+	logger := log.NewStructuredLogger(slog.New(handler))
+	clientOptions := client.Options{
+		Logger: logger,
+	}
+	temporalClient, err := client.Dial(clientOptions)
+	// ...
+	return temporalClient, err
 }
 ```
+<!--SNIPEND-->
 
 As an alternative, you can implement the `log.Logger` interface directly.
 The Temporal samples repo has a [zap adapter](https://github.com/temporalio/samples-go/blob/main/zapadapter/zap_adapter.go) that can be used as a reference.
@@ -297,7 +330,7 @@ The term Visibility, within the Temporal Platform, refers to the subsystems and 
 
 ### Search Attributes {/* #search-attributes */}
 
-The typical method of retrieving a Workflow Execution is by its Workflow Id.
+The typical method of retrieving a Workflow Execution is by its Workflow ID.
 
 However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
 
@@ -326,24 +359,30 @@ The metadata returned from the [Visibility](/temporal-service/visibility) store 
 
 Use a List Filter to define a `request` to pass into `ListWorkflow()`.
 
+<!--SNIPSTART go-observability-list-request-->
+[go-sandbox/platform/observability/visibility.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/visibility.go)
 ```go
-request := &workflowservice.ListWorkflowExecutionsRequest{ Query: "CloseTime = missing" }
+request := &workflowservice.ListWorkflowExecutionsRequest{Query: "ExecutionStatus = 'Running'"}
 ```
+<!--SNIPEND-->
 
 This `request` value returns only open Workflows.
 For more List Filter examples, see the [examples provided for List Filters in the Temporal Visibility guide.](/list-filter#list-filter-examples)
 
+<!--SNIPSTART go-observability-list-workflows-->
+[go-sandbox/platform/observability/visibility.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/visibility.go)
 ```go
-resp, err := temporalClient.ListWorkflow(ctx.Background(), request)
+resp, err := temporalClient.ListWorkflow(context.Background(), request)
 if err != nil {
-  return err
+	return err
 }
 
 fmt.Println("First page of results:")
 for _, exec := range resp.Executions {
-  fmt.Printf("Workflow ID %v\n", exec.Execution.WorkflowId)
+	fmt.Printf("Workflow ID %v\n", exec.Execution.WorkflowId)
 }
 ```
+<!--SNIPEND-->
 
 ### Set custom Search Attributes {/* #custom-search-attributes */}
 
@@ -363,21 +402,27 @@ The values in the map must correspond to the [Search Attribute's value type](/se
 
 If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:
 
+<!--SNIPSTART go-observability-set-search-attributes-->
+[go-sandbox/platform/observability/visibility.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/visibility.go)
 ```go
 func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
-  // ...
-  searchAttributes := map[string]interface{}{
-    "CustomerId": payload["customer"],
-    "MiscData": payload["miscData"]
-  }
-  options := client.StartWorkflowOptions{
-    SearchAttributes:   searchAttributes
-    // ...
-  }
-  we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
-  // ...
+	// ...
+	searchAttributes := map[string]interface{}{
+		"CustomerId": payload["customer"],
+		"MiscData":   payload["miscData"],
+	}
+	options := client.StartWorkflowOptions{
+		ID:               workflowID,
+		TaskQueue:        "your-task-queue",
+		SearchAttributes: searchAttributes,
+		// ...
+	}
+	_, err := c.Client.ExecuteWorkflow(ctx, options, YourWorkflow, payload)
+	// ...
+	return err
 }
 ```
+<!--SNIPEND-->
 
 ### Upsert Search Attributes {/* #upsert-search-attributes */}
 
@@ -389,22 +434,30 @@ In advanced cases, you may want to dynamically update these attributes as the Wo
 `UpsertSearchAttributes` will merge attributes to the existing map in the Workflow.
 Consider this example Workflow code:
 
+<!--SNIPSTART go-observability-upsert-search-attributes-->
+[go-sandbox/platform/observability/visibility.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/observability/visibility.go)
 ```go
-func YourWorkflow(ctx workflow.Context, input string) error {
+func UpsertWorkflow(ctx workflow.Context, input string) error {
 
-  attr1 := map[string]interface{}{
-    "CustomIntField": 1,
-    "CustomBoolField": true,
-  }
-  workflow.UpsertSearchAttributes(ctx, attr1)
+	attr1 := map[string]interface{}{
+		"CustomIntField":  1,
+		"CustomBoolField": true,
+	}
+	if err := workflow.UpsertSearchAttributes(ctx, attr1); err != nil {
+		return err
+	}
 
-  attr2 := map[string]interface{}{
-    "CustomIntField": 2,
-    "CustomKeywordField": "seattle",
-  }
-  workflow.UpsertSearchAttributes(ctx, attr2)
+	attr2 := map[string]interface{}{
+		"CustomIntField":     2,
+		"CustomKeywordField": "seattle",
+	}
+	if err := workflow.UpsertSearchAttributes(ctx, attr2); err != nil {
+		return err
+	}
+	return nil
 }
 ```
+<!--SNIPEND-->
 
 After the second call to `UpsertSearchAttributes`, the map will contain:
 

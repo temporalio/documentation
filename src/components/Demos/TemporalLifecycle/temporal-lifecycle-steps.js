@@ -86,7 +86,7 @@ export const LIFECYCLE_STEPS = [
     number: 9,
     title: "Worker polls for an Activity Task",
     callout: { label: "Request", value: "PollActivityTask" },
-    events: ["ActivityTaskStarted"],
+    events: [],
     routes: [
       { from: "Worker", to: "Frontend" },
       { from: "Frontend", to: "Matching" },
@@ -94,7 +94,7 @@ export const LIFECYCLE_STEPS = [
       { from: "History", to: "Persistence" },
       { from: "Frontend", to: "Worker", return: true },
     ],
-    note: "A possibly different Worker polls the Activity Task Queue via Frontend.",
+    note: "A possibly different Worker polls the Activity Task Queue via Frontend. History records the started attempt but doesn't append ActivityTaskStarted until the Activity Execution completes or fails for the last time.",
   },
   {
     number: 10,
@@ -108,7 +108,7 @@ export const LIFECYCLE_STEPS = [
     number: 11,
     title: "Activity reports outcome",
     callout: { label: "Request", value: "RespondActivityTaskCompleted" },
-    events: ["ActivityTaskCompleted", "WorkflowTaskScheduled"],
+    events: ["ActivityTaskStarted", "ActivityTaskCompleted", "WorkflowTaskScheduled"],
     routes: [
       { from: "Worker", to: "Frontend" },
       { from: "Frontend", to: "History" },
@@ -117,16 +117,16 @@ export const LIFECYCLE_STEPS = [
     variants: {
       success: {
         callout: { label: "Request", value: "RespondActivityTaskCompleted" },
-        events: ["ActivityTaskCompleted", "WorkflowTaskScheduled"],
-        note: "History appends ActivityTaskCompleted and schedules the next Workflow Task.",
+        events: ["ActivityTaskStarted", "ActivityTaskCompleted", "WorkflowTaskScheduled"],
+        note: "History appends ActivityTaskStarted and ActivityTaskCompleted, and schedules the next Workflow Task.",
       },
       failure: {
         callout: { label: "Request", value: "RespondActivityTaskFailed" },
-        events: ["ActivityTaskFailed"],
-        note: "History may schedule a retry (new ActivityTaskScheduled) or propagate failure to the Workflow.",
+        events: ["ActivityTaskStarted", "ActivityTaskFailed", "WorkflowTaskScheduled"],
+        note: "If the Retry Policy allows another attempt, History schedules the retry without appending any Events. The Events shown are appended only when retries are exhausted or the failure is non-retryable.",
       },
     },
-    note: "History appends ActivityTaskCompleted and schedules the next Workflow Task.",
+    note: "History appends ActivityTaskStarted and ActivityTaskCompleted, and schedules the next Workflow Task.",
   },
   {
     number: 12,

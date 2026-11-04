@@ -12,13 +12,14 @@
  *   - <Tabs> / <TabItem>          → flatten all tabs with bold label headers
  *   - <SdkTabs> / <SdkTabs.Lang>  → flatten SDK tabs with bold language headers
  *   - :::note/tip/caution/danger  → blockquote with bold type prefix
- *   - <CodeSnippet language="x">  → fenced code block
+ *   - <CodeSnippet language="x">  → fenced code block (Snipsync bodies pass through)
  *   - <CallToAction href>         → markdown link (h3 title + p description)
  *   - <ReleaseNoteHeader>         → availability blockquote + body
  *   - <RelatedReadContainer>      → markdown link list from <RelatedReadItem>s
  *   - <RelatedReadList>           → markdown link list from readList prop
  *   - <SdkGuideLinks>             → markdown link list, one per SDK (path/filter/title or links prop)
  *   - <ToolTipTerm term="x" />    → inline replacement with the term text
+ *   - <ForOs os="x">              → every OS variant kept, each with a bold OS label
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <WalkthroughDemo> + <WalkthroughStep>/<WalkthroughCommand>/
@@ -41,13 +42,15 @@ import { cookbookPreviewToMarkdown, cookbookHomeToMarkdown } from "./component-h
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
+import { guidesGridToMarkdown } from "./component-handlers/guides-grid.mjs";
+import { forOsInlineToMarkdown, forOsBlockLineToMarkdown } from "./component-handlers/for-os.mjs";
 import {
   extractQuotedProp,
   renderWalkthroughStep,
 } from "./component-handlers/event-history-walkthrough.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, resolve, dirname, relative } from "path";
 
 // ---------------------------------------------------------------------------
 // COMPONENT_REGISTRY
@@ -62,6 +65,9 @@ export const COMPONENT_REGISTRY = {
 
   // Temporal custom components — content-bearing
   ZoomPanPinch: "transparent",
+  // Wraps code blocks the reader is meant to run. The terminal-window styling is
+  // the whole component; the fenced blocks inside carry all the content.
+  RunThis: "transparent",
   RelatedReadList: "related-read",
   RelatedReadContainer: "related-read-container",
   RelatedReadItem: "related-read-item",
@@ -72,6 +78,7 @@ export const COMPONENT_REGISTRY = {
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
+  ForOs: "for-os",
   ReleaseNoteHeader: "release-note-header",
   CallToAction: "call-to-action",
   SetupSteps: "setup-steps",
@@ -81,6 +88,7 @@ export const COMPONENT_REGISTRY = {
   CookbookPreview: "cookbook-preview",
   CookbookHome: "cookbook-home",
   SdkOverviewCards: "sdk-overview-cards",
+  GuidesGrid: "guides-grid",
   ViewSourceCodeNotice: "view-source-code-notice",
 
   // Homepage hero (docs/index.mdx). Copy is authored in the MDX and composed
@@ -100,6 +108,7 @@ export const COMPONENT_REGISTRY = {
   CommunityCard: "hero-card",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
+  NoZoom: "strip-tag",
   DT: "strip-tag",
   DD: "strip-tag",
 
@@ -115,6 +124,7 @@ export const COMPONENT_REGISTRY = {
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
   ServerlessWorkerDemo: "strip-block",
+  WorkerTuningSimulator: "strip-block",
   WalkthroughDemo: "event-history-demo",
   WalkthroughStep: "walkthrough-step",
   WalkthroughCommand: "walkthrough-entry",
@@ -141,7 +151,7 @@ const EVENT_HISTORY_DEMO_COMPONENTS = COMPONENTS_BY_STRATEGY("event-history-demo
 
 // Availability labels for ReleaseNoteHeader resolved `type` values.
 // Mirrors ReleaseNoteHeader.BASE_RELEASE_STAGES labels in the React component.
-const RELEASE_NOTE_LABELS = {
+export const RELEASE_NOTE_LABELS = {
   prerelease: "Pre-release",
   publicPreview: "Public Preview",
   publicpreview: "Public Preview",
@@ -365,6 +375,9 @@ export function applyInlineTransforms(line) {
     /<ToolTipTerm\b[^>]*>([\s\S]*?)<\/ToolTipTerm>/g,
     (m, inner) => extractProp(m, "term") || inner
   );
+
+  // Inline <ForOs os="x">...</ForOs> → (**OS:** ...), keeping every variant
+  out = forOsInlineToMarkdown(out);
 
   // Collapse a line left whitespace-only (e.g. after a comment was stripped)
   // to a true blank line — an indented blank could otherwise read as code.
@@ -653,7 +666,10 @@ export function transformMdx(mdxContent, options = {}) {
     if (!projectRoot) return null;
     let rel = importPath;
     if (rel.startsWith("@site/")) rel = rel.slice("@site/".length);
-    const full = join(projectRoot, rel);
+    // Relative imports (./_partial.mdx) resolve against the importing file.
+    const full = importPath.startsWith(".")
+      ? resolve(projectRoot, dirname(sourceFile), importPath)
+      : join(projectRoot, rel);
     if (!existsSync(full)) {
       warnings.push(`[${sourceFile}] transclusion target not found: ${importPath}`);
       return null;
@@ -661,7 +677,7 @@ export function transformMdx(mdxContent, options = {}) {
     try {
       const raw = readFileSync(full, "utf8");
       const inner = transformMdx(raw, {
-        sourceFile: importPath,
+        sourceFile: relative(projectRoot, full),
         projectRoot,
         mdxDir: options.mdxDir,
         _depth: depth + 1,
@@ -683,7 +699,12 @@ export function transformMdx(mdxContent, options = {}) {
     // ------------------------------------------------------------------
     if (!inCodeBlock) {
       const fenceMatch = trimmed.match(/^(`{3,}|~{3,})/);
-      if (fenceMatch && state !== State.SETUP_STEP && state !== State.WALKTHROUGH_STEP) {
+      if (
+        fenceMatch &&
+        state !== State.SETUP_STEP &&
+        state !== State.WALKTHROUGH_STEP &&
+        state !== State.CODE_SNIPPET
+      ) {
         inCodeBlock = true;
         codeBlockFence = fenceMatch[1];
         pushLine(line);
@@ -723,12 +744,23 @@ export function transformMdx(mdxContent, options = {}) {
     // --- CodeSnippet block ---
     if (state === State.CODE_SNIPPET) {
       if (/<\/CodeSnippet>/.test(line)) {
-        const code = unwrapJsxString(
-          dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "")
-        );
-        outputLines.push("```" + codeSnippetLang);
-        outputLines.push(code);
-        outputLines.push("```");
+        const body = dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "");
+        const code = unwrapJsxString(body);
+        if (code === body && /^\s*(`{3,}|~{3,})/m.test(body)) {
+          // Snipsync body: a source link and a fenced code block in Markdown.
+          const inner = transformMdx(body, {
+            sourceFile: sourceFile + "#code-snippet",
+            projectRoot,
+            mdxDir: options.mdxDir,
+            _depth: depth + 1,
+          });
+          warnings.push(...inner.warnings);
+          outputLines.push(inner.markdown.trim());
+        } else {
+          outputLines.push("```" + codeSnippetLang);
+          outputLines.push(code);
+          outputLines.push("```");
+        }
         outputLines.push("");
         state = State.NORMAL;
         codeSnippetLines = [];
@@ -1055,7 +1087,8 @@ export function transformMdx(mdxContent, options = {}) {
         // since the title is what the rendered page shows.
         const icon = label.split(' ')[0];
         outputLines.push(admonitionTitle ? `> **${icon} ${admonitionTitle}:**` : `> **${label}:**`);
-        for (const al of admonitionLines) {
+        for (const raw of admonitionLines) {
+          const al = forOsBlockLineToMarkdown(raw) ?? raw;
           outputLines.push(al.trim() === "" ? ">" : `> ${applyInlineTransforms(al)}`);
         }
         outputLines.push("");
@@ -1318,6 +1351,16 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- ForOs block wrapper → bold OS label, children pass through ---
+    if (state === State.NORMAL) {
+      const forOsLine = forOsBlockLineToMarkdown(line);
+      if (forOsLine !== null) {
+        outputLines.push(forOsLine);
+        outputLines.push("");
+        continue;
+      }
+    }
+
     // --- ZoomPanPinch / transparent wrappers — strip tags, keep content ---
     let transparentName = null;
     for (const name of COMPONENTS_BY_STRATEGY("transparent")) {
@@ -1448,6 +1491,21 @@ export function transformMdx(mdxContent, options = {}) {
       const md = sdkOverviewCardsToMarkdown({ projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
+      continue;
+    }
+
+    // --- GuidesGrid (self-closing, no props) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<GuidesGrid\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const md = guidesGridToMarkdown({ projectRoot, warnings, sourceFile });
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
       continue;
     }
 

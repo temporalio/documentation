@@ -51,7 +51,7 @@ export function jsonToMarkdownTable(data) {
 /**
  * Resolve a <JsonTable filename="..." /> to a Markdown table.
  *
- * @param {string} filename  - the `filename` prop, e.g. "/json/privatelink_aws.json"
+ * @param {string} filename  - the `filename` prop, e.g. "/json/table-data.json"
  * @param {object} options
  * @param {string} [options.projectRoot] - Docusaurus root; the file lives under static/
  * @param {string[]} [options.warnings]  - array to push warnings into

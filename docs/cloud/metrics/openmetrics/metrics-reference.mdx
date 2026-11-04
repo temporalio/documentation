@@ -57,8 +57,8 @@ When an opt-in label is enabled, it is populated on **all metrics** that support
 | Label | Available on | Description |
 | ----- | ----- | ----- |
 | `temporal_activity_type` | Activity metrics | The activity type name |
-| `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment name |
-| `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count` | The Worker Deployment Version Build ID |
+| `temporal_worker_deployment_name` | `temporal_cloud_v1_approximate_backlog_count`, `temporal_cloud_v1_approximate_backlog_age` | The Worker Deployment name |
+| `temporal_worker_build_id` | `temporal_cloud_v1_approximate_backlog_count`, `temporal_cloud_v1_approximate_backlog_age` | The Worker Deployment Version Build ID |
 | `nexus_service` | Nexus metrics | The Nexus Service name |
 | `nexus_operation` | Nexus metrics | The Nexus Operation name |
 
@@ -893,6 +893,24 @@ See [backlog accuracy limitations](/develop/worker-performance/task-queues#backl
 
 **Type**: Value
 
+#### temporal\_cloud\_v1\_approximate\_backlog\_age
+
+The approximate age, in seconds, of the oldest task in a task queue backlog.
+
+:::note Known accuracy limitations
+This metric is approximate and is subject to the same limitations as `temporal_cloud_v1_approximate_backlog_count`.
+See [backlog accuracy limitations](/develop/worker-performance/task-queues#backlog-accuracy-limitations) for details.
+:::
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `task_type` | Type of task: `workflow` or `activity` |
+| `temporal_worker_deployment_name` | The Worker Deployment name (opt-in) |
+| `temporal_worker_build_id` | The Worker Deployment Version Build ID (opt-in) |
+
+**Type**: Value
+
 #### temporal\_cloud\_v1\_poll\_success\_count
 
 Successfully matched tasks per second.
@@ -966,6 +984,10 @@ Does not include the `region` label. Actions are scoped to the Namespace level.
 #### temporal\_cloud\_v1\_billable\_action\_count
 
 The number of billable actions per second, broken down by action type and Workflow Type. Not all billable actions are included in this metric; see [Actions](/evaluate/cloud/actions) for details on exceptions.
+
+This metric is an estimate and can differ by up to 5% from the absolute Action counts recorded by metering. See
+[Compare Action metrics with metering](/evaluate/cloud/actions#compare-action-metrics-with-metering) for guidance on
+metered totals.
 
 | Label | Description |
 | ----- | ----- |

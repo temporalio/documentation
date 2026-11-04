@@ -10,7 +10,7 @@ tags:
   - Replay
 ---
 
-Making changes safely to existing Workflow code requires care. Your Workflow code--as opposed to your Activity code--must be [deterministic](/workflow-definition#deterministic-constraints). This means your changes to that code have to be as well. Changes to your Workflow code that qualify as non-deterministic need to be protected by either using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) to pin your Workflows to specific code revisions, or by using the [patching APIs](/workflow-definition#workflow-versioning) within your Workflow code.
+Making changes safely to existing Workflow code requires care. Your Workflow Definition--as opposed to your Activity code--must be [deterministic](/workflow-definition#deterministic-constraints). This means your changes to it have to be as well. Changes to your Workflow code that qualify as non-deterministic need to be protected by either using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) to pin your Workflows to specific code revisions, or by using the [patching APIs](/workflow-definition#workflow-versioning) within your Workflow code.
 
 :::note
 We strongly recommend using Worker Versioning as users see improved error rates when adopting it.
@@ -22,7 +22,7 @@ In this article, we’ll provide some advice on how you can safely validate chan
 Eager start does not respect Worker versioning. An eagerly started Workflow may run on any available local Worker even if that Worker is not the Current or Ramping version of its Worker deployment.
 :::
 
-## Use Replay Testing before and during your deployments
+## Use replay testing before and during your deployments
 
 The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](/workflow-execution#replay).
 
