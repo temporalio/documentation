@@ -2,7 +2,8 @@ import { SDKS } from './sdks';
 
 export const LANGUAGE_TAB_GROUP = 'language';
 
-export const SDK_LANGUAGES = SDKS.map(({ tabKey, label, icon }) => ({
+export const SDK_LANGUAGES = SDKS.map(({ id, tabKey, label, icon }) => ({
+  id,
   key: tabKey,
   label,
   icon,

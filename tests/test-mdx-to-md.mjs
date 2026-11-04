@@ -21,6 +21,7 @@ import {
   parseSdkGuideLinks,
   dedent,
   scanMarkdownImports,
+  resolveSdkOnlyBlocks,
   COMPONENT_REGISTRY,
   RELEASE_NOTE_LABELS,
 } from "../scripts/mdx-to-md.mjs";
@@ -1556,6 +1557,124 @@ test("inlines a partial inside <details>", () => {
 });
 
 // ---------------------------------------------------------------------------
+// SDK-conditional content: <SdkOnly>, <SdkTerm>, <SdkScope>
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — SDK-conditional content");
+
+writeFileSync(
+  join(PARTIALS_ROOT, "docs/develop/_shared/topic/state.mdx"),
+  [
+    "This state is typically set to <SdkTerm name=\"null\" /> for the original caller.",
+    "",
+    "<SdkOnly sdks=\"java\">",
+    "",
+    "Java-only paragraph.",
+    "",
+    "</SdkOnly>",
+    "",
+  ].join("\n")
+);
+
+const onPage = (sourceFile, body) =>
+  transformMdx(body, { sourceFile, projectRoot: PARTIALS_ROOT });
+const GO_PAGE = "docs/develop/go/workflows/page.mdx";
+const PY_PAGE = "docs/develop/python/workflows/page.mdx";
+const SHARED_PAGE = "docs/develop/plugins-guide.mdx";
+const stateImport = "import State from '@site/docs/develop/_shared/topic/state.mdx';\n\n";
+
+test("SdkTerm resolves for the page's SDK, as inline code", () => {
+  const body = 'Set it to <SdkTerm name="null" />, the <SdkTerm name="sdkName" /> way.';
+  assertContains(onPage(GO_PAGE, body).markdown, "Set it to `nil`, the Go SDK way.");
+  assertContains(onPage(PY_PAGE, body).markdown, "Set it to `None`, the Python SDK way.");
+});
+
+test("inline SdkOnly keeps or drops its text", () => {
+  const body = 'Call it<SdkOnly sdks="go"> with a context</SdkOnly><SdkOnly not="go"> directly</SdkOnly>.';
+  assertContains(onPage(GO_PAGE, body).markdown, "Call it with a context.");
+  assertContains(onPage(PY_PAGE, body).markdown, "Call it directly.");
+});
+
+test("block SdkOnly keeps or drops its content and never leaks tags", () => {
+  const body = 'Shared.\n\n<SdkOnly sdks="python">\n\nPython only.\n\n</SdkOnly>\n\n<SdkOnly not="python">\n\nEveryone else.\n\n</SdkOnly>\n\nAfter.';
+  const go = onPage(GO_PAGE, body).markdown;
+  const py = onPage(PY_PAGE, body).markdown;
+  assertContains(go, "Everyone else.");
+  assertNotContains(go, "Python only.");
+  assertContains(py, "Python only.");
+  assertNotContains(py, "Everyone else.");
+  assertNotContains(go + py, "SdkOnly");
+  assertContains(go, "After.");
+});
+
+test("block SdkOnly works inside an admonition", () => {
+  const body = ':::note\n\nShared note.\n\n<SdkOnly sdks="python">\n\nPython caveat.\n\n</SdkOnly>\n\n:::';
+  const py = onPage(PY_PAGE, body).markdown;
+  assertContains(py, "> Python caveat.");
+  assertNotContains(onPage(GO_PAGE, body).markdown, "Python caveat.");
+});
+
+test("SdkOnly inside a code fence is left as code", () => {
+  const body = '```mdx\n<SdkOnly sdks="python">\nexample\n</SdkOnly>\n```';
+  assertContains(onPage(GO_PAGE, body).markdown, '<SdkOnly sdks="python">');
+});
+
+test("a partial renders for the SDK of the page that imports it", () => {
+  const go = onPage(GO_PAGE, stateImport + "<State />").markdown;
+  const java = onPage("docs/develop/java/workflows/page.mdx", stateImport + "<State />").markdown;
+  assertContains(go, "set to `nil` for the original caller");
+  assertNotContains(go, "Java-only paragraph.");
+  assertContains(java, "set to `null` for the original caller");
+  assertContains(java, "Java-only paragraph.");
+});
+
+test("each SdkTabs slot renders for its own SDK", () => {
+  const body = stateImport + "<SdkTabs>\n<SdkTabs.Go>\n\n<State />\n\n</SdkTabs.Go>\n<SdkTabs.Python>\n\nUse <SdkTerm name=\"null\" />.\n\n</SdkTabs.Python>\n</SdkTabs>";
+  const { markdown, warnings } = onPage(SHARED_PAGE, body);
+  assertContains(markdown, "set to `nil` for the original caller");
+  assertContains(markdown, "Use `None`.");
+  assertEqual(warnings.length, 0, `unexpected warnings: ${warnings.join("; ")}`);
+});
+
+test("SdkScope renders its body for the named SDK", () => {
+  const body = stateImport + '<SdkScope sdk="java">\n\n<State />\n\n```java\ncode();\n```\n\n</SdkScope>\n\nAfter the scope.';
+  const { markdown, warnings } = onPage(SHARED_PAGE, body);
+  assertContains(markdown, "set to `null` for the original caller");
+  assertContains(markdown, "Java-only paragraph.");
+  assertContains(markdown, "```java\ncode();\n```");
+  assertContains(markdown, "After the scope.");
+  assertNotContains(markdown, "SdkScope");
+  assertEqual(warnings.length, 0, `unexpected warnings: ${warnings.join("; ")}`);
+});
+
+test("SDK content outside an SDK context warns and is dropped", () => {
+  const { markdown, warnings } = onPage(SHARED_PAGE, 'Value: <SdkTerm name="null" />.\n\n<SdkOnly sdks="go">\n\nGo.\n\n</SdkOnly>');
+  assertContains(markdown, "Value: .");
+  assertNotContains(markdown, "Go.");
+  assert(warnings.length === 2, `expected 2 warnings, got ${JSON.stringify(warnings)}`);
+  assert(warnings.every((w) => w.includes("outside an SDK page")), warnings.join("; "));
+});
+
+test("unknown SDK ids and terms, nesting, and unclosed blocks warn", () => {
+  const cases = [
+    ['<SdkOnly sdks="py">x</SdkOnly>', 'unknown SDK id "py"'],
+    ['<SdkTerm name="nope" />', 'unknown SDK term "nope"'],
+    ['<SdkOnly sdks="go">\n\n<SdkOnly sdks="go">\n\nx\n\n</SdkOnly>', "cannot be nested"],
+    ['<SdkOnly sdks="go">\n\nx', "never closed"],
+  ];
+  for (const [body, expected] of cases) {
+    const { warnings } = onPage(GO_PAGE, body);
+    assert(warnings.some((w) => w.includes(expected)), `"${expected}" not in ${JSON.stringify(warnings)}`);
+  }
+});
+
+test("resolveSdkOnlyBlocks leaves SdkTabs and SdkScope regions for their own pass", () => {
+  const lines = ["<SdkScope sdk=\"go\">", "<SdkOnly sdks=\"go\">", "x", "</SdkOnly>", "</SdkScope>"];
+  const { lines: out, errors } = resolveSdkOnlyBlocks(lines, null);
+  assertEqual(out.join("\n"), lines.join("\n"));
+  assertEqual(errors.length, 0);
+});
+
+// ---------------------------------------------------------------------------
 // Snapshot tests: fixture files
 // ---------------------------------------------------------------------------
 console.log("\n📸 Snapshot tests — fixture files");
@@ -1643,6 +1762,7 @@ test("all registry strategies are valid strings", () => {
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
     "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "guides-grid", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links", "event-history-demo", "walkthrough-step", "walkthrough-entry",
+    "sdk-only", "sdk-term", "sdk-scope",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {
     assert(

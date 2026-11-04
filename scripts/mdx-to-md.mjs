@@ -49,6 +49,13 @@ import {
   renderWalkthroughStep,
 } from "./component-handlers/event-history-walkthrough.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
+import { SDK_DATA } from "../src/constants/sdkData.js";
+import {
+  sdkFromSourcePath,
+  sdkOnlyIncludes,
+  resolveSdkTerm,
+  parseSdkList,
+} from "../src/utils/sdkContent.js";
 import { readFileSync, existsSync } from "fs";
 import { join, resolve, dirname, relative } from "path";
 
@@ -77,6 +84,12 @@ export const COMPONENT_REGISTRY = {
   Video: "video",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
+  // SDK-conditional content (src/components/elements/Sdk/SdkContent.js),
+  // resolved for the page's SDK: blocks by resolveSdkOnlyBlocks, inline uses
+  // by applyInlineTransforms, scopes by the SDK_SCOPE state.
+  SdkOnly: "sdk-only",
+  SdkTerm: "sdk-term",
+  SdkScope: "sdk-scope",
   ToolTipTerm: "tooltip-term",
   ForOs: "for-os",
   ReleaseNoteHeader: "release-note-header",
@@ -172,17 +185,10 @@ function releaseNoteLabelFromType(resolvedType) {
   );
 }
 
-// SdkTabs sub-component name → display label.
-const SDK_TAB_LABELS = {
-  Go: "Go",
-  Java: "Java",
-  Python: "Python",
-  TypeScript: "TypeScript",
-  DotNet: ".NET",
-  Ruby: "Ruby",
-  Php: "PHP",
-  PHP: "PHP",
-};
+// SdkTabs slot name (<SdkTabs.DotNet>) → SDK entry, for the slot's display
+// label and its SDK context. `Php` is a legacy spelling of `PHP`.
+const SDK_TAB_SLOTS = Object.fromEntries(SDK_DATA.map((sdk) => [sdk.tabSlot, sdk]));
+SDK_TAB_SLOTS.Php = SDK_TAB_SLOTS.PHP;
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -284,18 +290,9 @@ export function parseReadList(tagStr) {
   return results;
 }
 
-// Mirrors SdkGuideLinks.js DEFAULT_SDKS — sdk slug + display label, used to
-// auto-generate per-SDK links from a shared `path` prop.
-const SDK_GUIDE_DEFAULT_SDKS = [
-  { sdk: "go", label: "Go" },
-  { sdk: "java", label: "Java" },
-  { sdk: "php", label: "PHP" },
-  { sdk: "python", label: "Python" },
-  { sdk: "ruby", label: "Ruby" },
-  { sdk: "rust", label: "Rust" },
-  { sdk: "typescript", label: "TypeScript" },
-  { sdk: "dotnet", label: ".NET" },
-];
+// Same list and order as SdkGuideLinks.js DEFAULT_SDKS — sdk slug + display
+// label, used to auto-generate per-SDK links from a shared `path` prop.
+const SDK_GUIDE_DEFAULT_SDKS = SDK_DATA.map(({ id, label }) => ({ sdk: id, label }));
 
 /**
  * Parse a <SdkGuideLinks .../> tag into {text, href} items, mirroring
@@ -358,11 +355,15 @@ export function dedent(lines) {
 }
 
 /**
- * Strip MDX expression comments ({​/* ... *​/}) and replace inline
- * <ToolTipTerm term="x" /> with the bare term. Applied only to prose content
+ * Strip MDX expression comments ({​/* ... *​/}), replace inline
+ * <ToolTipTerm term="x" /> with the bare term, and resolve inline
+ * <SdkOnly>/<SdkTerm> for `sdkContext.sdk`. Applied only to prose content
  * lines (never inside code fences).
+ *
+ * @param {string} line
+ * @param {{ sdk?: string|null, warn?: (msg: string) => void }} [sdkContext]
  */
-export function applyInlineTransforms(line) {
+export function applyInlineTransforms(line, sdkContext = {}) {
   let out = line;
 
   // Strip single-line MDX comments: {/* ... */}, tolerating a space before the
@@ -379,11 +380,108 @@ export function applyInlineTransforms(line) {
   // Inline <ForOs os="x">...</ForOs> → (**OS:** ...), keeping every variant
   out = forOsInlineToMarkdown(out);
 
+  if (out.includes("<Sdk")) out = resolveInlineSdkContent(out, sdkContext);
+
   // Collapse a line left whitespace-only (e.g. after a comment was stripped)
   // to a true blank line — an indented blank could otherwise read as code.
   if (/^\s+$/.test(out)) return "";
 
   return out;
+}
+
+/**
+ * Resolve <SdkOnly sdks="...">text</SdkOnly> and <SdkTerm name="..." /> within
+ * one line for `sdk`. Invalid uses are reported through `warn` and dropped; the
+ * React components throw on the same input, so the site build fails too.
+ */
+function resolveInlineSdkContent(line, { sdk = null, warn = () => {} } = {}) {
+  const fail = (err) => {
+    warn(err.message);
+    return "";
+  };
+  let out = line.replace(/<SdkOnly\b([^>]*)>([\s\S]*?)<\/SdkOnly>/g, (_m, attrs, inner) => {
+    try {
+      return sdkOnlyIncludes(sdkOnlyProps(attrs), sdk) ? inner : "";
+    } catch (err) {
+      return fail(err);
+    }
+  });
+  out = out.replace(/<SdkTerm\b[^>]*\/>/g, (m) => {
+    try {
+      const { text, code } = resolveSdkTerm(extractProp(m, "name"), sdk);
+      return code ? "`" + text + "`" : text;
+    } catch (err) {
+      return fail(err);
+    }
+  });
+  return out;
+}
+
+// The `sdks` / `not` props of an <SdkOnly ...> tag. Absent props stay undefined.
+function sdkOnlyProps(tagStr) {
+  return {
+    sdks: extractProp(tagStr, "sdks") ?? undefined,
+    not: extractProp(tagStr, "not") ?? undefined,
+  };
+}
+
+/**
+ * Resolve block-level <SdkOnly> for `sdk`: an open tag alone on its line, the
+ * Markdown content, and a close tag alone on its line. Kept content loses its
+ * wrapper tags; dropped content disappears. Regions inside <SdkTabs> or
+ * <SdkScope> are left alone, since they render for a different SDK and are
+ * resolved when that body is transformed. Code fences are skipped.
+ *
+ * Runs on a page's lines before the main pass, so it covers every container
+ * (admonitions, tabs, details) without each needing its own handling.
+ *
+ * @returns {{ lines: string[], errors: string[] }}
+ */
+export function resolveSdkOnlyBlocks(lines, sdk) {
+  const out = [];
+  const errors = [];
+  let fence = null;
+  let scopeDepth = 0;
+  // While inside an <SdkOnly> block: whether its content is kept.
+  let keep = null;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    const fenceMatch = trimmed.match(/^(`{3,}|~{3,})/);
+    if (fence) {
+      if (trimmed.startsWith(fence)) fence = null;
+      if (keep !== false) out.push(line);
+      continue;
+    }
+    if (fenceMatch) fence = fenceMatch[1];
+
+    if (/^<(SdkTabs|SdkScope)[\s>]/.test(trimmed) && !/\/>\s*$/.test(trimmed)) scopeDepth++;
+    else if (/^<\/(SdkTabs|SdkScope)>/.test(trimmed)) scopeDepth = Math.max(0, scopeDepth - 1);
+
+    if (scopeDepth === 0 && /^<SdkOnly\b[^>]*>$/.test(trimmed)) {
+      if (keep !== null) {
+        errors.push(`line ${i + 1}: <SdkOnly> cannot be nested inside another <SdkOnly>`);
+        continue;
+      }
+      try {
+        keep = sdkOnlyIncludes(sdkOnlyProps(trimmed), sdk);
+      } catch (err) {
+        errors.push(`line ${i + 1}: ${err.message}`);
+        keep = false;
+      }
+      continue;
+    }
+    if (scopeDepth === 0 && keep !== null && /^<\/SdkOnly>$/.test(trimmed)) {
+      keep = null;
+      continue;
+    }
+    if (keep !== false) out.push(line);
+  }
+
+  if (keep !== null) errors.push("<SdkOnly> block is never closed");
+  return { lines: out, errors };
 }
 
 /**
@@ -479,6 +577,7 @@ const State = {
   TABITEM: "TABITEM",
   SDK_TABS: "SDK_TABS",
   SDK_TABITEM: "SDK_TABITEM",
+  SDK_SCOPE: "SDK_SCOPE",
   DETAILS: "DETAILS",
   STRIP_BLOCK: "STRIP_BLOCK",
   CODE_SNIPPET: "CODE_SNIPPET",
@@ -539,7 +638,18 @@ export function transformMdx(mdxContent, options = {}) {
   const warnings = [];
 
   const { data: frontmatter, content } = parseFrontmatter(mdxContent);
-  const lines = content.split("\n");
+
+  // The SDK this content renders for: inherited from the enclosing page or
+  // <SdkScope>/<SdkTabs> slot, else read from the docs/develop/<id>/ path.
+  const sdk = options._sdk !== undefined ? options._sdk : sdkFromSourcePath(sourceFile);
+  const sdkContext = {
+    sdk,
+    warn: (msg) => warnings.push(`[${sourceFile}] ${msg}`),
+  };
+
+  const sdkBlocks = resolveSdkOnlyBlocks(content.split("\n"), sdk);
+  for (const err of sdkBlocks.errors) sdkContext.warn(err);
+  const lines = sdkBlocks.lines;
 
   // Map of <Name /> components imported from .md(x) files, for transclusion.
   // A nested body (tab item, details, release note, ...) has no import lines
@@ -549,13 +659,14 @@ export function transformMdx(mdxContent, options = {}) {
   // Options for re-transforming a body nested inside this page. `suffix` tags
   // the source file in warnings (e.g. "#tab"); dirname() still resolves to the
   // page's own directory, so relative imports keep resolving correctly.
-  function childOptions(suffix) {
+  function childOptions(suffix, childSdk = sdk) {
     return {
       sourceFile: sourceFile + suffix,
       projectRoot,
       mdxDir: options.mdxDir,
       _depth: depth + 1,
       _inheritedImports: mdImports,
+      _sdk: childSdk,
     };
   }
 
@@ -583,6 +694,12 @@ export function transformMdx(mdxContent, options = {}) {
   let currentTabLabel = null;
   let tabItemLines = [];
   let tabsOutputLines = [];
+  let currentTabSdk = null;
+
+  // --- SdkScope state ---
+  let scopeSdk = null;
+  let scopeDepth = 0;
+  let scopeLines = [];
 
   // --- Admonition state ---
   let admonitionType = null;
@@ -653,19 +770,23 @@ export function transformMdx(mdxContent, options = {}) {
     if (state === State.TABITEM || state === State.SDK_TABITEM) tabItemLines.push(l);
     else if (state === State.ADMONITION) admonitionLines.push(l);
     else if (state === State.DETAILS) detailsLines.push(l);
+    else if (state === State.SDK_SCOPE) scopeLines.push(l);
     else outputLines.push(l);
   }
 
-  // Emit prose content with inline transforms applied (comments, ToolTipTerm).
+  // Emit prose content with inline transforms applied (comments, ToolTipTerm,
+  // SdkOnly/SdkTerm).
   function emitContent(l) {
-    pushLine(applyInlineTransforms(l));
+    pushLine(applyInlineTransforms(l, sdkContext));
   }
 
-  function flushTabItem(label) {
+  // `tabSdk` is the SDK an <SdkTabs> slot renders for; plain <TabItem>s keep
+  // the page's own SDK.
+  function flushTabItem(label, tabSdk = sdk) {
     if (label === null || label === undefined) return;
     tabsOutputLines.push(`**${label}**`);
     tabsOutputLines.push("");
-    const inner = transformMdx(tabItemLines.join("\n"), childOptions("#tab"));
+    const inner = transformMdx(tabItemLines.join("\n"), childOptions("#tab", tabSdk));
     warnings.push(...inner.warnings);
     tabsOutputLines.push(...inner.markdown.split("\n"));
     tabsOutputLines.push("");
@@ -687,11 +808,13 @@ export function transformMdx(mdxContent, options = {}) {
     }
     try {
       const raw = readFileSync(full, "utf8");
+      // A partial renders for the SDK of the page (or scope) that imports it.
       const inner = transformMdx(raw, {
         sourceFile: relative(projectRoot, full),
         projectRoot,
         mdxDir: options.mdxDir,
         _depth: depth + 1,
+        _sdk: sdk,
       });
       warnings.push(...inner.warnings);
       return inner.markdown;
@@ -854,7 +977,8 @@ export function transformMdx(mdxContent, options = {}) {
       const sub = trimmed.match(/^<SdkTabs\.([A-Za-z]+)[\s>]/);
       if (sub) {
         const lang = sub[1];
-        currentTabLabel = SDK_TAB_LABELS[lang] || lang;
+        currentTabLabel = SDK_TAB_SLOTS[lang]?.label || lang;
+        currentTabSdk = SDK_TAB_SLOTS[lang]?.id ?? null;
         tabItemLines = [];
         state = State.SDK_TABITEM;
         continue;
@@ -870,12 +994,29 @@ export function transformMdx(mdxContent, options = {}) {
     if (state === State.SDK_TABITEM) {
       const subClose = trimmed.match(/^<\/SdkTabs\.[A-Za-z]+>/);
       if (subClose) {
-        flushTabItem(currentTabLabel);
+        flushTabItem(currentTabLabel, currentTabSdk);
         currentTabLabel = null;
         state = State.SDK_TABS;
         continue;
       }
       tabItemLines.push(line);
+      continue;
+    }
+
+    // --- SdkScope: re-transform the body for the scope's SDK ---
+    if (state === State.SDK_SCOPE) {
+      if (isOpenTag(line, "SdkScope") && !trimmed.endsWith("/>")) scopeDepth++;
+      if (isCloseTag(line, "SdkScope") && --scopeDepth === 0) {
+        const inner = transformMdx(scopeLines.join("\n"), childOptions("#sdk-scope", scopeSdk));
+        warnings.push(...inner.warnings);
+        outputLines.push(...inner.markdown.split("\n"));
+        outputLines.push("");
+        state = State.NORMAL;
+        scopeLines = [];
+        scopeSdk = null;
+        continue;
+      }
+      scopeLines.push(line);
       continue;
     }
 
@@ -1075,7 +1216,7 @@ export function transformMdx(mdxContent, options = {}) {
         outputLines.push(admonitionTitle ? `> **${icon} ${admonitionTitle}:**` : `> **${label}:**`);
         for (const raw of admonitionLines) {
           const al = forOsBlockLineToMarkdown(raw) ?? raw;
-          outputLines.push(al.trim() === "" ? ">" : `> ${applyInlineTransforms(al)}`);
+          outputLines.push(al.trim() === "" ? ">" : `> ${applyInlineTransforms(al, sdkContext)}`);
         }
         outputLines.push("");
         state = State.NORMAL;
@@ -1171,6 +1312,20 @@ export function transformMdx(mdxContent, options = {}) {
       tabsOutputLines = [];
       tabItemLines = [];
       currentTabLabel = null;
+      continue;
+    }
+
+    // --- SdkScope open ---
+    if (state === State.NORMAL && isOpenTag(line, "SdkScope") && !trimmed.endsWith("/>")) {
+      try {
+        [scopeSdk] = parseSdkList(extractProp(line, "sdk"));
+      } catch (err) {
+        sdkContext.warn(`<SdkScope>: ${err.message}`);
+        scopeSdk = null;
+      }
+      state = State.SDK_SCOPE;
+      scopeDepth = 1;
+      scopeLines = [];
       continue;
     }
 
@@ -1641,6 +1796,11 @@ export function transformMdx(mdxContent, options = {}) {
     const genericJsxClose = trimmed.match(/^<\/([A-Z][A-Za-z0-9]*)>\s*$/);
     const KNOWN_INLINE = ["Tabs", "TabItem", "ZoomPanPinch", "RelatedReadList"];
 
+    // <SdkTerm /> alone on a line is still prose, resolved inline.
+    if (genericJsxSelfClose && genericJsxSelfClose[1] === "SdkTerm") {
+      emitContent(line);
+      continue;
+    }
     if (genericJsxSelfClose) {
       const compName = genericJsxSelfClose[1];
       if (!COMPONENT_REGISTRY[compName] && !mdImports[compName]) {

@@ -143,7 +143,10 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | Component(s) | Strategy | Output |
 |---|---|---|
 | `Tabs` / `TabItem` | `tabs` / `tabitem` | All tabs flattened, each under a **bold label** header |
-| `SdkTabs` / `SdkTabs.<Lang>` | `sdk-tabs` | Same, with language labels (`DotNet` → **.NET**) |
+| `SdkTabs` / `SdkTabs.<Lang>` | `sdk-tabs` | Same, with language labels (`DotNet` → **.NET**). Each slot is transformed for its own SDK, so `SdkOnly`/`SdkTerm` inside it resolve for that SDK |
+| `SdkOnly` | `sdk-only` | Kept (tags removed) or dropped for the page's SDK. Works as a block (open and close tags on their own lines) or inline within a line |
+| `SdkTerm` | `sdk-term` | Inline: replaced with the page SDK's value from `SDK_TERMS` (`src/constants/sdkData.js`), in backticks for code terms |
+| `SdkScope` | `sdk-scope` | Wrapper stripped; the body is transformed for the `sdk` prop's SDK |
 | `CodeSnippet` | `code-snippet` | Fenced code block using the `language` prop; a Snipsync body passes through as Markdown |
 | `CaptionedImage`, `EnlargeImage`, `Components.CaptionedImage` | `captioned-image` | `![alt or caption or title](src)` |
 | YouTube/`<iframe>` embeds (often in a styled `<div>`) | strip | Removed; keep a markdown Watch link in surrounding tip/prose for LLMs |
@@ -173,6 +176,13 @@ inherit the page's imports. These show as `transclude` in the audit. Underscore-
 and folders (`_partial.mdx`, `docs/develop/_shared/**`) are partials: like Docusaurus, the
 plugin doesn't publish them as pages of their own (`plugins/shared/docsRouting.js`).
 
+**SDK context.** A page under `docs/develop/<id>/` renders for that SDK, and so does every
+partial it transcludes. `<SdkOnly>` and `<SdkTerm>` resolve for that SDK, with the same rules as
+the React components (`src/utils/sdkContent.js`), so each SDK's `.md` contains only its own text.
+An `<SdkTabs>` slot or an `<SdkScope sdk="...">` sets the SDK for its body. Used outside any
+SDK context, these components produce a transform warning (and the site build fails on the
+React side).
+
 **Audit false positives.** `scripts/audit-components.mjs` may list non-components (type
 generics in code examples like `SayHelloWorkflow`, CLI placeholders like `<ID>`). The
 transformer itself is safe from these — its detection is anchored to whole lines.
@@ -196,7 +206,7 @@ to one prompts updating the other. Components transformed generically (e.g. `Tab
 
 ### Known limitation: content/logic duplicated between components and handlers (follow-up)
 
-A few handlers currently re-express something that also lives in the React component, which
+One handler currently re-expresses something that also lives in the React component, which
 means two places to keep in sync. This is a known issue to be addressed in a follow-up; the
 cross-reference comments above are an interim guard, not the fix.
 
@@ -206,13 +216,10 @@ cross-reference comments above are an interim guard, not the fix.
   `src/components/IntegrationsGrid/index.tsx`. The intended fix is to extract that filtering into
   a shared, framework-agnostic module that both import (the pattern already used by
   `src/constants/featureReleaseTypes.js`).
-- **`SdkOverviewCards` — duplicated SDK metadata.** Version numbers are shared
-  (`src/data/sdk-versions.json`), but the id/label/API-reference-href list in
-  `scripts/component-handlers/sdk-overview-cards.mjs` duplicates `SDKS` in
-  `src/constants/sdks.js`, because that file's icon imports aren't plain-Node-importable from an
-  `.mjs` script. Update both if a label or API reference link changes.
 
-Not affected: `JsonTable` (shared JSON data; only the render *format* differs) and
+Not affected: `SdkOverviewCards`, `SdkGuideLinks`, and `SdkTabs` (the SDK list comes from
+`src/constants/sdkData.js`, which has no icon imports, so the handlers and components share it),
+`JsonTable` (shared JSON data; only the render *format* differs), and
 `QuickstartCards`/`PatternCards` (content lives in the MDX `items` prop — a single source).
 
 ## Testing
