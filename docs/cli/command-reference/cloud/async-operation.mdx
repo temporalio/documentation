@@ -24,6 +24,8 @@ This page provides a reference for the `temporal cloud async-operation` commands
 Wait for a Temporal Cloud async operation to reach a terminal state.
 Polls the operation status until it completes, fails, or is cancelled.
 
+For API key create, enable, disable, and delete, `STATE_FULFILLED` confirms that the control plane operation completed. It does not confirm that the Namespace endpoint has applied the change. Waiting for the operation to finish does not replace checking that the key behaves as expected against the intended Namespace. See [Allow time for a new API key to propagate](/cloud/api-keys#api-key-propagation).
+
 Example:
 
 ```

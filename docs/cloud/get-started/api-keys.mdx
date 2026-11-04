@@ -25,6 +25,7 @@ Temporal Cloud API keys offer industry-standard identity-based authentication fo
 - [User API key management](#user-api-keys)
 - [Manage API keys for Service Accounts](#serviceaccount-api-keys)
 - [API keys for Namespace authentication](#namespace-authentication)
+- [Allow time for a new API key to propagate](#api-key-propagation)
 - [Use API keys to authenticate](#using-apikeys)
 - [Troubleshoot your API key use](#troubleshooting)
 - [API keys: Frequently asked questions](#faqs)
@@ -178,9 +179,13 @@ tcld apikey create \
 
 Duration specifies the time until the API key expires, for example, "30d" or "4d12h".
 
+A completed create command does not mean a Namespace endpoint will accept the key immediately. See
+[Allow time for a new API key to propagate](#api-key-propagation).
+
 ### Enable or disable an API key {/* #enable-or-disable-an-api-key */}
 
-You can enable or disable API keys. When disabled, an API key cannot authenticate with Temporal Cloud.
+You can enable or disable API keys. After the change propagates, a disabled API key cannot authenticate to a Namespace
+endpoint. See [Allow time for a new API key to propagate](#api-key-propagation).
 
 #### Manage API key state with the Temporal Cloud UI
 
@@ -218,7 +223,8 @@ tcld apikey enable --id <api-key-id>
 
 ### Delete an API key
 
-Deleting an API key stops it from authenticating with Temporal Cloud.
+Deleting an API key stops it from authenticating with Temporal Cloud once the change has propagated. See
+[Allow time for a new API key to propagate](#api-key-propagation).
 
 :::caution
 
@@ -264,7 +270,8 @@ tcld apikey delete --id <api-key-id>
 Temporal API keys automatically expire based on the specified expiration time. [Email notifications](/cloud/notifications#admin-notifications) will be sent from Temporal Cloud to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. Follow these steps to rotate API keys:
 
 1. Create a new key. You may reuse key names if that helps.
-1. Ensure that both the original key and new key function properly before moving to the next step.
+1. Ensure that both the original key and new key work against the target Namespace endpoint before moving to the next
+   step. See [Allow time for a new API key to propagate](#api-key-propagation).
 1. Switch clients to load the new key and start using it.
 1. Delete the old key after it is no longer in use.
 
@@ -331,6 +338,9 @@ tcld apikey create \
 </TabItem>
 </Tabs>
 
+A completed create command does not mean a Namespace endpoint will accept the key immediately. See
+[Allow time for a new API key to propagate](#api-key-propagation).
+
 ### Enable or disable an API key {/* #enable-or-disable-an-api-key-1 */}
 
 Global Administrators and Account Owners can manage API key access for any user in their account using the Temporal
@@ -344,8 +354,8 @@ Follow these steps:
 1. Global Administrators or Account Owners can go to [API Keys](https://cloud.temporal.io/keys).
    Namespace Admins can go to [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 1. Find the API key. Use the vertical ellipsis menu in the table row and select the Disable/Enable option to perform the
-   action. There may be a delay after changing the status. Once successful, the updated API key status will be shown in
-   the row.
+   action. The table row may take a moment to show the new status. A Namespace endpoint applies the change separately.
+   See [Allow time for a new API key to propagate](#api-key-propagation).
 
 #### Manage keys with the CLI
 
@@ -372,12 +382,14 @@ tcld apikey enable --id <api-key-id>
 </TabItem>
 </Tabs>
 
-This command is the same for users and Service Accounts.
+This command is the same for users and Service Accounts. A Namespace endpoint may not reflect the new state until
+propagation finishes. See [Allow time for a new API key to propagate](#api-key-propagation).
 
 ### Delete an API key for a Service Account
 
 Global Administrators and Account Owners can delete API keys for any user or Service Account in their account using the
-Temporal Cloud UI or the CLI. Deleting a key removes its ability to authenticate with Temporal Cloud. If you delete an
+Temporal Cloud UI or the CLI. Deleting a key removes its ability to authenticate with Temporal Cloud once the change
+has propagated. If you delete an
 API key used by a Worker to run a Workflow, that Worker will fail to connect to Temporal server unless you rotate the
 API key with a new one.
 
@@ -386,8 +398,9 @@ API key with a new one.
 Follow these steps:
 
 1. Go to [API Keys](https://cloud.temporal.io/keys).
-1. Locate the API key. Use the vertical ellipsis menu in the table row and select the Delete option. There may be a
-   delay after deleting the API key.
+1. Locate the API key. Use the vertical ellipsis menu in the table row and select the Delete option. The table row may
+   take a moment to show the new status. A Namespace endpoint applies the change separately. See
+   [Allow time for a new API key to propagate](#api-key-propagation).
 1. Once successful, the updated API key status will be reflected in the row.
 
 #### Delete a Service Account API key with the CLI
@@ -418,7 +431,8 @@ tcld apikey delete --id <api-key-id>
 Temporal API keys automatically expire based on the specified expiration time. [Email notifications](/cloud/notifications#admin-notifications) will be sent from Temporal Cloud to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. Follow these steps to rotate API keys:
 
 1. Create a new key. You may reuse key names if that helps.
-1. Ensure that both the original key and new key function properly before moving to the next step.
+1. Ensure that both the original key and new key work against the target Namespace endpoint before moving to the next
+   step. See [Allow time for a new API key to propagate](#api-key-propagation).
 1. Switch clients to load the new key and start using it.
 1. Delete the old key after it is no longer in use.
 
@@ -445,6 +459,26 @@ A Namespace created with API key authentication cannot later enable mTLS alongsi
 [How to access a Namespace](/cloud/namespaces#access-namespaces).
 
 See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
+
+### Allow time for a new API key to propagate {/* #api-key-propagation */}
+
+After you create, enable, disable, or delete an API key, Temporal Cloud distributes that change asynchronously to the
+infrastructure that authenticates Namespace requests. During this propagation period, a Namespace endpoint can still
+return `Request unauthorized` for a key the control plane has already created. It can also still accept a key the
+control plane has already disabled or deleted.
+
+A Cloud Ops API operation in `STATE_FULFILLED` means the control plane finished the change. It does not mean the
+Namespace endpoint has applied it.
+
+The secret is returned once, in the create response. Store it immediately. If automation then uses the new key against
+a Namespace, retry a Namespace request (for example, listing Workflows) with backoff for 60 seconds. If it still fails,
+check the key, the caller's permissions, and the target Namespace.
+
+On a [High Availability](/cloud/high-availability) Namespace, each region loads the key on its own. A successful call to
+the active region does not mean the other region has the key yet.
+
+When rotating keys, keep the existing key until a Namespace request with the replacement succeeds. The same wait
+applies after disable and delete.
 
 ## Use API keys to authenticate {/* #using-apikeys */}
 
@@ -524,6 +558,10 @@ To use an API key with the [Temporal Terraform Provider](/cloud/terraform-provid
 key as a provider argument.
 
 ## Troubleshoot your API key use {/* #troubleshooting */}
+
+**New API key still propagating**: A new, disabled, or deleted key can return `Request unauthorized`, or keep working,
+until Temporal Cloud finishes propagating the change. See
+[Allow time for a new API key to propagate](#api-key-propagation).
 
 **Invalid API key errors**: Check that you copied the key correctly and that it hasn't been revoked or expired.
 
