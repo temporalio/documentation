@@ -10,8 +10,9 @@
 Each accepted submission is stored as one Blob in a private Vercel Blob store used only for feedback. A daily digest posts a summary to Slack, where the
 docs team fixes docs problems and forwards product problems to the team that owns them.
 
-Status: the endpoint is live but not advertised, and the [daily digest](#daily-digest) posts to Slack. The widget and
-the agent-facing copy in `llms.txt` and the `.md` pages ship in later pull requests.
+Status: the endpoint is live, and the [daily digest](#daily-digest) posts to Slack. Agents are told about it in
+`/llms.txt`, on every docs page and `.md` page, and on the `.md` 404 page (see [Where agents find it](#where-agents-find-it)).
+The widget ships in a later pull request.
 
 ## Agent reports
 
@@ -56,6 +57,20 @@ the bare URL doesn't create a record.
 - A URL on another host, such as a GitHub issue, is kept as sent.
 
 A stored report returns `202 { id, message }`. The message tells the agent it doesn't need to send the report again.
+
+### Where agents find it
+
+| Surface | `src` | Where it lives |
+| --- | --- | --- |
+| `## Reporting problems` in `/llms.txt`, plus a pointer from its search endpoint section | `llms` | `llmsTxt.rootContent` in `docusaurus.config.js` |
+| Visually hidden text on every docs page | `docs-page` | `src/components/LLMActions/AgentDirective.tsx` |
+| Blockquote under the H1 of every `.md` page | `md-page` | `withAgentDirective()` in `plugins/markdown-pages/index.js` |
+| Body of a `.md` URL that doesn't exist | `md-404` | `api/markdown-not-found.js` |
+
+The page and `.md` copy fills in `page_url` with the page's own path. Every surface asks for a specific problem the
+agent hit, sent once, with no personal data or credentials, and none asks the agent to send a report when nothing went
+wrong. Count reports per `src` to see which surface agents use, the same way the `/api/retrieve` log does. See
+[MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md#feedback-endpoint).
 
 ## Widget submissions
 
