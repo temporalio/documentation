@@ -111,6 +111,31 @@ rebuilds the trend whenever you need it.
 The code block parser lives in `bin/code-blocks.js`, so other scripts that need to tell synced code from hand-written
 code can share it.
 
+## sdk-duplication
+
+`bin/report-sdk-duplication.js` (run via `yarn report:sdk-duplication`) measures how much of `docs/develop/` repeats
+itself across SDKs, so work that moves shared content into partials or components can be tracked. It reports:
+
+- **Topics.** Each SDK's `docs/develop/<id>/` tree, matched by file path, with a few known renames folded together
+  (`workers/run-process` and `workers/run-worker-process`, for example). For each topic: which SDKs have a page, and
+  which heading anchors every SDK shares.
+- **Shared prose.** A prose line counts as shared when another SDK's page for the same topic has the same line, once
+  inline code, link targets, and SDK names are replaced with placeholders. Code blocks, JSX, and imports don't count,
+  and neither do lines shorter than 20 characters. The headline covers topics that 3 or more SDKs have.
+- **Hand-written per-SDK link lists** outside `docs/develop/`: runs of consecutive lines that link to the
+  `/develop/<id>/` pages of 3 or more SDKs, outside tab blocks. Each one is a candidate for `<SdkGuideLinks>`.
+- **Shared partials** under `docs/develop/_shared/`: the share of each partial's lines inside `<SdkOnly>`, and any
+  `<SdkOnly>` or `<SdkTerm>` with an unknown SDK id or term. A partial with more than a third of its lines inside
+  `<SdkOnly>` is flagged, because it's then easier to read as separate pages.
+
+```bash
+yarn report:sdk-duplication                                  # text report
+yarn report:sdk-duplication --json                           # machine-readable
+yarn report:sdk-duplication --topic workflows/continue-as-new   # one topic, per SDK
+```
+
+It always exits 0. This is a report, not a check.
+
 ## validate-redirects
 
 `bin/validate-redirects.js` (run via `yarn check:redirects`) checks the `redirects` in `vercel.json` for rules that
