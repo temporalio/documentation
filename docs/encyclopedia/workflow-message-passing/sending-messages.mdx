@@ -25,6 +25,30 @@ You can send Signals from any Temporal Client, the Temporal CLI, or you can Sign
 
 You can also Signal-With-Start to lazily initialize a Workflow while sending a Signal.
 
+#### Plan for Signal throughput {/* #signal-throughput */}
+
+The Temporal Service serializes state changes to each Workflow Execution under a single lock, which is held until the changes are persisted.
+Signals share this lock with other operations, including Workflow Task completions and Activity state changes, so the sustainable rate depends on persistence latency and the execution's workload.
+Separate Workflow Executions have independent locks.
+
+Signal and Signal-With-Start requests targeting a running Workflow Execution wait if another operation holds the lock.
+If it cannot acquire the lock within the time allowed by the request deadline, the Service returns a retryable `ResourceExhausted` error with cause `BUSY_WORKFLOW`.
+SDK Clients retry these errors automatically, subject to their retry settings and the call's deadline.
+Handle any error returned to your application so it can retry delivery.
+
+For sustained traffic, aim for five or fewer Signals per second per Workflow Execution and test with your expected workload.
+To support higher volumes, batch multiple events into each Signal or distribute them across more Workflow Executions.
+Increasing Namespace capacity leaves the per-execution lock unchanged.
+
+#### Send Signals during Workflow closure {/* #signals-during-workflow-closure */}
+
+If a Signal arrives while a Worker is processing a Workflow Task that attempts to complete, fail, cancel, or Continue-As-New, the Service accepts the Signal and rejects the closing Command with an [Unhandled Command](/references/workflow-task-errors#unhandled-command) failure.
+It schedules another Workflow Task that includes the accepted Signal.
+While that task runs, new Signal requests receive retryable `BUSY_WORKFLOW` errors, allowing the Worker to process the pending Events and close the execution without further Signals interrupting it.
+
+The protection ends when the retried Workflow Task finishes.
+Before calling [Continue-As-New](/workflow-execution/continue-as-new), process accepted Signals or carry their contents into the next run's arguments.
+
 #### Send a Signal from a Temporal Client or the CLI
 
 <RelatedReadContainer>

@@ -85,18 +85,17 @@ Modeling each player as an Actor Workflow gives you a single authoritative repre
 
 Every Workflow Execution in Temporal produces an append-only Event History. This history has a limit of 51,200 Events or 50 MB. For actor Workflows that run indefinitely, Event History growth must be managed proactively.
 
-Continue-As-New atomically completes the current Workflow Execution and starts a new one with the same Workflow Id, carrying forward any state you provide as arguments. From the perspective of external callers, the Workflow Id remains the same. Signals sent during the transition are not lost; the Temporal Service buffers them for the new execution.
+Continue-As-New atomically completes the current Workflow Execution and starts a new one with the same Workflow ID, carrying forward any state you provide as arguments.
+Process accepted Signals or pass their contents to the next run before continuing.
+See [Signals during Workflow closure](/sending-messages#signals-during-workflow-closure) for how concurrent requests are handled.
 
 Before executing Continue-As-New, you must ensure that all in-progress Signal and Update handlers have finished processing. The `workflow.all_handlers_finished` predicate provides this guarantee.
 
 ### Signal volume limits
 
-Two hard limits govern Signal volume per Workflow Execution:
-
-- **10,000 total Signals** per Execution. Continue-As-New resets this counter, so an entity that transitions regularly is not constrained by it in practice.
-- **2,000 pending Signals** (unprocessed Signals buffered by the server) at any one time. If this limit is reached, new Signals are rejected.
-
-Beyond these limits, the practical throughput ceiling is Worker-side: each Signal triggers a Workflow Task, and a Workflow processes one Workflow Task at a time. For typical short tasks, this yields a few Workflow Tasks per second per Workflow Execution.
+On Temporal Cloud, each Workflow Execution can receive up to 10,000 Signals, and Continue-As-New resets this counter.
+Incoming requests share a server lock with other state changes to the same execution, so their sustainable rate depends on persistence latency and the execution's workload.
+Follow the [Signal throughput guidance](/sending-messages#signal-throughput) when sizing traffic for each player session.
 
 If your use case requires higher Signal ingestion rates — for example, streaming real-time game telemetry — consider one of these approaches:
 
