@@ -251,7 +251,7 @@ This class also has three fields:
 * `remaining_balance` the number of points remaining in the user’s account
 * `reward` the same value as the input reward string
 
-Finally, create an input class for each of the three Activities you'll write in Step 2. Temporal recommends passing a single dataclass to each Activity, because you can add fields with defaults later without breaking existing callers.
+Finally, create an input class for each of the four Activities you'll write in Step 2. Temporal recommends passing a single dataclass to each Activity, because you can add fields with defaults later without breaking existing callers.
 
 ```python
 @dataclass
@@ -267,6 +267,14 @@ class TierChangeNotification:
     customer_id: str
     old_tier: str
     new_tier: str
+
+
+@dataclass
+class PointsFailureNotification:
+    customer_id: str
+    event_id: str
+    points: int
+    reason: str
 
 
 @dataclass
@@ -293,12 +301,17 @@ import logging
 
 from temporalio import activity
 
-from models import PointsTransaction, RedemptionRecord, TierChangeNotification
+from models import (
+    PointsFailureNotification,
+    PointsTransaction,
+    RedemptionRecord,
+    TierChangeNotification,
+)
 
 logger = logging.getLogger(__name__)
 ```
 
-You’re going to define three Activities in this file, for recording a points transaction, recording a redemption, and notifying the user when they’ve changed tiers. Start with the points transaction:
+You’re going to define four Activities in this file, for recording a points transaction, notifying the user when they’ve changed tiers, notifying the user when a points transaction couldn't be recorded, and recording a redemption. Start with the points transaction:
 
 ```python
 @activity.defn
@@ -332,6 +345,24 @@ async def send_tier_change_notification(notification: TierChangeNotification) ->
 
 This Activity sends a notification (using `activity.logger`) when a customer’s loyalty tier changes. This is a non-critical Activity, meaning that if this Activity fails after all retries, the Workflow logs the failure and continues, rather than terminating. 
 
+The next Activity tells the user when a points transaction couldn't be recorded:
+
+```python
+@activity.defn
+async def send_points_failure_notification(
+    notification: PointsFailureNotification,
+) -> bool:
+    activity.logger.info(
+        "Sending points failure notification to customer %s for event %s",
+        notification.customer_id,
+        notification.event_id,
+    )
+    # await email_service.send(template="points_failure", to=..., context={...})
+    return True
+```
+
+The Workflow calls this Activity when `record_points_transaction` fails after all its retries. Like the tier change notification, it's non-critical.
+
 Finally, the Activity to record a redemption is similar to recording a points transaction:
 
 ```python
@@ -363,12 +394,12 @@ from collections import deque
 from datetime import timedelta
 ```
 
-Next, some Temporal-specific imports: `workflow`, `RetryPolicy`, and `ApplicationError`. These are standards for most Workflow definitions:
+Next, some Temporal-specific imports: `workflow`, `RetryPolicy`, `ActivityError`, and `ApplicationError`. These are standards for most Workflow definitions:
 
 ```python
 from temporalio import workflow
 from temporalio.common import RetryPolicy
-from temporalio.exceptions import ApplicationError
+from temporalio.exceptions import ActivityError, ApplicationError
 ```
 
 Now you'll need to import the Activities and data classes you created in Steps 1 and 2. You need to indicate to the Workflow that these items are safe to use during the Replay process, so you wrap them in `workflow.unsafe.imports_passed_through()`:
@@ -378,6 +409,7 @@ with workflow.unsafe.imports_passed_through():
     from activities import (
         record_points_transaction,
         record_redemption,
+        send_points_failure_notification,
         send_tier_change_notification,
     )
     from models import (
@@ -385,6 +417,7 @@ with workflow.unsafe.imports_passed_through():
         LoyaltySummary,
         LoyaltyTier,
         PointsEvent,
+        PointsFailureNotification,
         PointsTransaction,
         RedemptionRecord,
         RedemptionRequest,
@@ -404,7 +437,7 @@ DB_RETRY_POLICY = RetryPolicy(
 )
 ```
 
-This Retry Policy sets the initial retry at one second. The backoff coefficient is the factor by which the interval is increased each time. In this case, that means it doubles every interval. The interval never grows longer than 30 seconds, and the Workflow stops retrying after 10 attempts. This is a reasonable policy for database writes, because a connection failure may resolve quickly, but if the database is down for a while, you don't want to keep retrying. 
+This Retry Policy sets the initial retry at one second. The backoff coefficient is the factor by which the interval is increased each time. In this case, that means it doubles every interval. The interval never grows longer than 30 seconds, and the Workflow stops retrying after 10 attempts. This is a reasonable policy for database writes, because a connection failure may resolve quickly, but if the database is down for a while, you don't want to keep retrying. When the attempts run out, the Activity raises an `ActivityError`, which the Workflow catches so that one failed write doesn't fail the customer's entity Workflow.
 
 Next, define the Retry Policy for notifications: 
 
@@ -575,17 +608,25 @@ After the Queries, add the Update handler to the class. There's only one Update,
 
         self._state.points_balance -= request.points
 
-        await workflow.execute_activity(
-            record_redemption,
-            RedemptionRecord(
-                customer_id=self._state.customer_id,
-                event_id=request.event_id,
-                points=request.points,
-                reward=request.reward,
-            ),
-            start_to_close_timeout=timedelta(seconds=30),
-            retry_policy=DB_RETRY_POLICY,
-        )
+        try:
+            await workflow.execute_activity(
+                record_redemption,
+                RedemptionRecord(
+                    customer_id=self._state.customer_id,
+                    event_id=request.event_id,
+                    points=request.points,
+                    reward=request.reward,
+                ),
+                start_to_close_timeout=timedelta(seconds=30),
+                retry_policy=DB_RETRY_POLICY,
+            )
+        except ActivityError as err:
+            self._state.points_balance += request.points
+            raise ApplicationError(
+                "Redemption could not be recorded; no points were deducted",
+                type="RedemptionNotRecorded",
+                non_retryable=True,
+            ) from err
 
         self._state.processed_event_ids.append(request.event_id)
         self._trim_processed_ids()
@@ -610,6 +651,8 @@ The Update starts with the idempotency check. If the `event_id` has already been
 Next, if the account is inactive or has insufficient points for the redemption, the Update raises an application error.
 
 After that is the subtraction that deducts the redeemed points. The Update then records the event, adds the event ID to the list of processed events, logs the event as processed, and returns the result.
+
+The Update deducts the points before it calls `record_redemption`, which reserves them. The handler waits while the Activity runs, and another redemption can start in that time. Because the balance is already lower, the second redemption's balance check can't spend the same points. If `record_redemption` fails after all its retries, the Update adds the points back and raises a `RedemptionNotRecorded` error to the caller. The event ID isn't added to the processed list, so the caller can retry the redemption with the same `event_id`.
 
 The `redeem_points` Update calls the `record_redemption` Activity directly via `await` rather than enqueuing it for the main loop. The Python and TypeScript SDKs support `async` Update handlers, making this safe. The trade-off keeps redemption logic self-contained and returns the confirmed result to the caller in a single round trip. It is safe here because `record_redemption` is idempotent — a replay detects the duplicate `event_id` and returns without creating a second record. If you are using the Java SDK, Update handlers cannot be `async`; enqueue the work for the main loop instead.
 
@@ -642,17 +685,27 @@ Now add the method that processes the events to the class:
             )
             return
 
-        await workflow.execute_activity(
-            record_points_transaction,
-            PointsTransaction(
-                customer_id=self._state.customer_id,
-                event_id=event_id,
-                points=points,
-                reason=event.reason,
-            ),
-            start_to_close_timeout=timedelta(seconds=30),
-            retry_policy=DB_RETRY_POLICY,
-        )
+        try:
+            await workflow.execute_activity(
+                record_points_transaction,
+                PointsTransaction(
+                    customer_id=self._state.customer_id,
+                    event_id=event_id,
+                    points=points,
+                    reason=event.reason,
+                ),
+                start_to_close_timeout=timedelta(seconds=30),
+                retry_policy=DB_RETRY_POLICY,
+            )
+        except ActivityError:
+            workflow.logger.error(
+                "Failed to record event %s for customer %s after all retries; "
+                "skipping event",
+                event_id,
+                self._state.customer_id,
+            )
+            await self._notify_points_failure(event)
+            return
 
         self._state.points_balance += points
         if points > 0:
@@ -671,9 +724,32 @@ Now add the method that processes the events to the class:
         )
 
         await self._evaluate_tier()
+
+    async def _notify_points_failure(self, event: PointsEvent) -> None:
+        try:
+            await workflow.execute_activity(
+                send_points_failure_notification,
+                PointsFailureNotification(
+                    customer_id=self._state.customer_id,
+                    event_id=event.event_id,
+                    points=event.points,
+                    reason=event.reason,
+                ),
+                start_to_close_timeout=timedelta(seconds=30),
+                retry_policy=NOTIFICATION_RETRY_POLICY,
+            )
+        except ActivityError:
+            workflow.logger.warning(
+                "Failed to send points failure notification for customer %s",
+                self._state.customer_id,
+            )
 ```
 
 This function processes a single points event. First it checks for duplicate event IDs and skips the transaction if one is found. Next it records the transaction via an Activity. Recording the transaction before updating the state means that it won't be double-counted if the Activity retries. Once the Activity confirms, it updates in-memory state, appends the list of processed events, and logs the event. Finally, it evaluates whether the user is at a new tier.
+
+If `record_points_transaction` fails after all the attempts in `DB_RETRY_POLICY`, the Workflow catches the `ActivityError`, logs the failure, and calls `_notify_points_failure` to tell the customer. It then skips the event without changing the balance or adding the event ID to the processed list, so one failed write doesn't block the events behind it in the queue. Because the event ID isn't recorded, the client can send the same event again once the database recovers. The notification is non-critical, so if it also fails, the Workflow logs a warning and continues.
+
+Both the main loop and `_do_continue_as_new` process events through `_process_points_event`, so this handling covers both.
 
 Next, add the methods that evaluate the tier to the class:
 
@@ -790,6 +866,7 @@ from temporalio.worker import Worker
 from activities import (
     record_points_transaction,
     record_redemption,
+    send_points_failure_notification,
     send_tier_change_notification,
 )
 from workflows import LoyaltyEntityWorkflow
@@ -823,6 +900,7 @@ async def main() -> None:
             activities=[
                 record_points_transaction,
                 record_redemption,
+                send_points_failure_notification,
                 send_tier_change_notification,
             ],
             activity_executor=activity_executor,
@@ -836,7 +914,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-The Worker registers the `LoyaltyEntityWorkflow` class and all three Activity functions on the `loyalty-points-queue` Task Queue. Setting `max_concurrent_workflow_tasks` higher than the default makes sense here because Entity Workflows spend most of their time blocked on `wait_condition`, so one Worker can host many concurrent instances.
+The Worker registers the `LoyaltyEntityWorkflow` class and all four Activity functions on the `loyalty-points-queue` Task Queue. Setting `max_concurrent_workflow_tasks` higher than the default makes sense here because Entity Workflows spend most of their time blocked on `wait_condition`, so one Worker can host many concurrent instances.
 
 To start the Worker, run:
 
@@ -893,7 +971,7 @@ Add the code to start the entity:
 
 We're hard-coding a customer ID for example purposes and setting up the convention for the Workflow ID. 
 
-The `handle` calls `start_workflow`. There's no initial state needed here, because the Workflow derives the customer ID from the Workflow ID. If the Workflow is already running, `start_workflow` raises a `WorkflowAlreadyStartedError`.
+`start_workflow` starts the Workflow and returns a handle. There's no initial state needed here, because the Workflow derives the customer ID from the Workflow ID. If the Workflow is already running, `start_workflow` raises a `WorkflowAlreadyStartedError`.
 
 Add some code to test Signals:
 
@@ -1002,7 +1080,7 @@ This code uses a loop to send a bunch of Signals at once, which is followed by a
 
 You've got all the pieces working now, and the client code will show the correct results from the tests.
 
-The Continue-As-New feature means that you can run this same Workflow as long as you want, even as the client code changes. There's a little more you should know about how that works.
+Continue-As-New lets this same Workflow run indefinitely without its Event History growing past the limits. There's a little more you should know about how that works.
 
 ## Step 6: Handle Continue-As-New for indefinite execution
 
@@ -1087,7 +1165,7 @@ Entity Workflows are the hardest case for code evolution: a loyalty account can 
 | `PINNED` | Each execution completes on the version where it started | Long-lived entities; no patching needed within a run |
 | `AUTO_UPGRADE` | Moves to the latest version automatically | Short Workflows that complete before the next deploy |
 
-### Step 1: Annotate the Workflow
+### Annotate the Workflow
 
 Add `versioning_behavior=VersioningBehavior.PINNED` to `@workflow.defn` in `workflows.py`:
 
@@ -1099,7 +1177,7 @@ class LoyaltyEntityWorkflow:
     ...
 ```
 
-### Step 2: Configure the Worker
+### Configure the Worker
 
 Update `worker.py` to declare the deployment name and build ID:
 
@@ -1123,6 +1201,7 @@ async def main() -> None:
             activities=[
                 record_points_transaction,
                 record_redemption,
+                send_points_failure_notification,
                 send_tier_change_notification,
             ],
             activity_executor=activity_executor,
@@ -1139,7 +1218,7 @@ async def main() -> None:
         await worker.run()
 ```
 
-### Step 3: Roll out changes with the CLI
+### Roll out changes with the CLI
 
 **Initial deployment** — start the first versioned build and make it Current:
 
@@ -1216,6 +1295,7 @@ You've built a loyalty account system where each customer is an independent, sel
 
 ## Related resources
 
+- [Entity Workflow pattern](/design-patterns/entity-workflow)
 - [Temporal Python SDK documentation](/develop/python)
 - [Temporal Python SDK API Reference](https://python.temporal.io)
 - [Message Passing — Signals, Queries, Updates](/develop/python/workflows/message-passing)
