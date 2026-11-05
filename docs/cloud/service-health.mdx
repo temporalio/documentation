@@ -249,7 +249,7 @@ To confirm lock contention:
 
 | `operation` | What it indicates | What to do |
 | ----------- | ----------------- | ---------- |
-| `StartWorkflowExecution`, `SignalWithStartWorkflowExecution` | Too many starts using the same Workflow ID, or Workflow lock contention. | Reduce requests to that Workflow ID. For repeated starts, see [ID reuse rate limits](/evaluate/cloud/limits#per-primitive-id-reuse-rate-limits). |
+| `StartWorkflowExecution`, `SignalWithStartWorkflowExecution` | The same Workflow ID was started again too quickly, or the request timed out waiting for the execution's lock. | Check for a client path firing duplicate starts and see [ID reuse rate limits](/evaluate/cloud/limits#per-primitive-id-reuse-rate-limits). Retry with backoff and reduce concurrent requests to that Workflow ID. |
 | `SignalWorkflowExecution`, `SignalWithStartWorkflowExecution` | Too high of a rate of Signals to one execution. | Batch or coalesce Signals (for example, one Signal per N events), or shard work across more executions. |
 | `UpdateWorkflowExecution` | More than the per-execution in-flight Update limit (10) are outstanding. | Cap concurrent in-flight Updates on the client, then back off and retry. |
 | `RecordActivityTaskHeartbeat` | Too many Activities are heartbeating to the same execution. | Increase the heartbeat timeout and interval, and reduce the number of Activities heartbeating into one execution concurrently. |
