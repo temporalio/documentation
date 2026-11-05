@@ -167,6 +167,7 @@ sent, and a failed write never fails the request.
 | `deployment` | `production`, `preview`, or `development` |
 | `fetched_count` | Results Kapa returned |
 | `dropped_count` | Results Kapa returned that were malformed or that `RETRIEVE_URL_ALLOWLIST` dropped |
+| `dropped_sources` | Results the allowlist dropped, counted by source: the host, or `github.com/<owner>/<repo>` for GitHub. For example, `{ "community.temporal.io": 4 }`. Malformed results aren't included. Records written before 2026-11-06 don't have it |
 | `status`, `upstream_status` | Status returned to the caller, and Kapa's status |
 | `result_count` | Number of results returned. Kapa returns at most 15 and the endpoint doesn't ask for more, because Kapa's Retrieval endpoint rejects a `top_k` above 15, so the allowlist can shrink an answer. `0` with `dropped_count` at `0` points at a content gap. `0` with `fetched_count` above `0` means every hit was outside the allowlist |
 | `latency_ms` | Time spent in the function |
@@ -222,8 +223,9 @@ The report has a section for each experiment question:
   question was sent word for word, questions per topic, and the most common questions.
 - **Gaps:** Kapa returns results for almost any question, so a gap shows up as an answer left thin after the
   allowlist. The section shows how many results each answered call got, the share of Kapa's results the allowlist
-  dropped, and the low-yield questions (two or fewer results) with their dropped share. A high dropped share means
-  other sources outranked the docs for that question.
+  dropped, which sources those dropped results came from, and the low-yield questions (two or fewer results) with
+  their dropped share and the source dropped most for each. A high dropped share means other sources outranked the
+  docs for that question.
 - **Intent:** how often `jtb` is filled in, and a sample of values.
 - **Health:** status codes, why requests got a 400 (missing `q` or `q` over the length limit), how many sent a
   placeholder such as `<question>` as the question, and p50 and p95 latency for 200s.

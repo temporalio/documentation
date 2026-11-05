@@ -243,6 +243,9 @@ function summarize(records, options = {}) {
     lowYield: new Map(),
     fetchedTotal: 0,
     droppedTotal: 0,
+    droppedBySource: new Map(),
+    droppedSourceCalls: new Map(),
+    sourcedCalls: 0,
     jtbFilled: 0,
     jtbSamples: [],
     missingBoth: 0,
@@ -292,12 +295,23 @@ function summarize(records, options = {}) {
     s.fetchedTotal += y.fetched;
     s.droppedTotal += y.dropped;
     count(s.byYield, yieldBucket(y.results));
+    // Records written before dropped_sources existed don't say where drops came from.
+    const sources =
+      r.dropped_sources && typeof r.dropped_sources === 'object' ? Object.entries(r.dropped_sources) : null;
+    if (sources) {
+      s.sourcedCalls++;
+      for (const [label, n] of sources) {
+        count(s.droppedBySource, label, n);
+        count(s.droppedSourceCalls, label);
+      }
+    }
     if (y.results <= LOW_YIELD) {
-      const low = s.lowYield.get(key) || { count: 0, results: 0, dropped: 0, fetched: 0 };
+      const low = s.lowYield.get(key) || { count: 0, results: 0, dropped: 0, fetched: 0, sources: new Map() };
       low.count++;
       low.results += y.results;
       low.dropped += y.dropped;
       low.fetched += y.fetched;
+      for (const [label, n] of sources || []) count(low.sources, label, n);
       s.lowYield.set(key, low);
     }
   }
@@ -369,6 +383,17 @@ function renderMarkdown(s, { since, until, top = 15, hideText = false } = {}) {
       `Across ${answered} answered calls, the allowlist dropped ${s.droppedTotal} of ${s.fetchedTotal} results ` +
       `(${pct(s.droppedTotal, s.fetchedTotal)}).\n`
   );
+  if (s.sourcedCalls) {
+    out.push(`Where the dropped results came from, across the ${s.sourcedCalls} answered calls that record it:\n`);
+    out.push(
+      table(
+        ['Source', 'Results dropped', 'Calls'],
+        sortedEntries(s.droppedBySource)
+          .slice(0, top)
+          .map(([label, n]) => [label, n, s.droppedSourceCalls.get(label)])
+      )
+    );
+  }
   out.push('Results returned per answered call:\n');
   const bucketOrder = ['0', '1', '2', '3-5', '6-10', '11-15'];
   out.push(
@@ -393,8 +418,9 @@ function renderMarkdown(s, { since, until, top = 15, hideText = false } = {}) {
         low.count,
         (low.results / low.count).toFixed(1),
         pct(low.dropped, low.fetched),
+        sortedEntries(low.sources)[0]?.[0] ?? '-',
       ]);
-    out.push(table(['Question', 'Calls', 'Avg results', 'Dropped'], rows));
+    out.push(table(['Question', 'Calls', 'Avg results', 'Dropped', 'Top dropped source'], rows));
   }
 
   out.push('## Intent\n');
