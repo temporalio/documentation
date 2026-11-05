@@ -165,6 +165,10 @@ describe('results', () => {
       { content: 'page', source_url: `${DOCS}/workflows.md`, page_url: `${DOCS}/workflows#x` },
     ]);
     assert.strictEqual(record().dropped_count, 2);
+    assert.deepStrictEqual(record().dropped_sources, {
+      'temporalio.slack.com': 1,
+      'github.com/temporalio/edu-101-python-content': 1,
+    });
     assert.strictEqual(record().result_count, 1);
     assert.deepStrictEqual(record().top_pages, [`${DOCS}/workflows#x`]);
   });
@@ -191,6 +195,8 @@ describe('results', () => {
     assert.strictEqual(res.statusCode, 200);
     assert.strictEqual(res.body.length, 1);
     assert.strictEqual(record().dropped_count, 3);
+    // Malformed results have no URL to label, so they're only in dropped_count.
+    assert.deepStrictEqual(record().dropped_sources, {});
   });
 
   it('sends the question and keys to Kapa', async () => {

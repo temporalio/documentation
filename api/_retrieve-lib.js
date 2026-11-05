@@ -126,6 +126,35 @@ function isAllowedResult(result, allowlist) {
   return isAllowed(result.source_url, allowlist);
 }
 
+// Where a dropped result came from, for the log: the host, plus the owner and
+// repository for github.com, where every repository shares one host. That's
+// enough to see which sources outrank the docs without logging page paths.
+function sourceLabel(sourceUrl) {
+  let url;
+  try {
+    url = new URL(sourceUrl);
+  } catch {
+    return '(invalid URL)';
+  }
+  const host = url.hostname.toLowerCase();
+  if (host === 'github.com') {
+    const [owner, repo] = url.pathname.split('/').filter(Boolean);
+    if (owner && repo) return `${host}/${owner}/${repo}`.toLowerCase();
+  }
+  return host;
+}
+
+// How many valid results the allowlist dropped, per sourceLabel.
+function droppedSources(results, allowlist) {
+  const counts = {};
+  for (const result of results) {
+    if (isAllowedResult(result, allowlist)) continue;
+    const label = sourceLabel(result.source_url);
+    counts[label] = (counts[label] || 0) + 1;
+  }
+  return counts;
+}
+
 // Kapa results that can be filtered and shaped: objects with a string `content`
 // and `source_url`. Anything else is dropped rather than passed to the caller.
 function validResults(results) {
@@ -193,6 +222,7 @@ module.exports = {
   PLACEHOLDER,
   TEST_SRC,
   USAGE,
+  droppedSources,
   isAllowed,
   isAllowedResult,
   kapaIdentity,
@@ -202,5 +232,6 @@ module.exports = {
   parseParams,
   toMarkdownUrl,
   shapeResults,
+  sourceLabel,
   validResults,
 };
