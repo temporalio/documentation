@@ -40,11 +40,11 @@ as a dependency to your project:
 
 **[Apache Maven](https://maven.apache.org/):**
 
-```maven
+```xml
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>temporal-testing</artifactId>
-    <version>1.36.0</version>
+    <version>1.40.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -52,19 +52,22 @@ as a dependency to your project:
 **[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
-testImplementation ("io.temporal:temporal-testing:1.36.0")
+testImplementation ("io.temporal:temporal-testing:1.40.0")
 ```
 
-If you need JUnit4 or JUnit5 extensions:
+If you need the JUnit4 or JUnit5 extensions with Gradle, request the matching capability:
 
-```
-testImplementation("io.temporal:temporal-testing:1.36.0") {
+```groovy
+testImplementation("io.temporal:temporal-testing:1.40.0") {
     capabilities {
         requireCapability("io.temporal:temporal-testing-junit4")
         //requireCapability("io.temporal:temporal-testing-junit5")
     }
 }
 ```
+
+With Maven, the `temporal-testing` artifact already includes `TestWorkflowRule` and `TestWorkflowExtension`.
+Add JUnit4 or JUnit5 to your test dependencies to use them.
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
 
@@ -82,14 +85,14 @@ For example, you can test an Activity for:
 
 Here's an example of an Activity that will be referenced in the sections below:
 
+<!--SNIPSTART java-testing-suite-greet-activities-impl-->
+[java-sandbox/best-practices/testing-suite/src/main/java/io/temporal/docs/bestpractices/testingsuite/GreetActivitiesImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/main/java/io/temporal/docs/bestpractices/testingsuite/GreetActivitiesImpl.java)
 ```java
-package helloworkflow;
-
-import java.util.concurrent.TimeUnit;
+package io.temporal.docs.bestpractices.testingsuite;
 
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
-import io.temporal.client.ActivityCompletionException;
+import java.util.concurrent.TimeUnit;
 
 public class GreetActivitiesImpl implements GreetActivities {
 
@@ -98,12 +101,8 @@ public class GreetActivitiesImpl implements GreetActivities {
     ActivityExecutionContext context = Activity.getExecutionContext();
 
     for (int i = 0; i < 5; i++) {
-      try {
-        context.heartbeat(null);
-      } catch (ActivityCompletionException e) {
-        throw e;
-      }
-      
+      // Throws ActivityCompletionException when the Activity is canceled.
+      context.heartbeat(null);
       sleep(1);
     }
 
@@ -120,19 +119,21 @@ public class GreetActivitiesImpl implements GreetActivities {
   }
 }
 ```
+<!--SNIPEND-->
 
 ### Run an Activity {/* #run-an-activity */}
 
 The following code implements unit tests for the `greet` Activity above:
 
+<!--SNIPSTART java-testing-suite-run-activity-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/GreetActivitiesTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/GreetActivitiesTest.java)
 ```java
-package helloworkflow;
+package io.temporal.docs.bestpractices.testingsuite;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
-
 import io.temporal.testing.TestActivityEnvironment;
+import org.junit.jupiter.api.Test;
 
 public class GreetActivitiesTest {
 
@@ -150,6 +151,7 @@ public class GreetActivitiesTest {
   }
 }
 ```
+<!--SNIPEND-->
 
 ### Listen to Heartbeats {/* #listen-to-heartbeats */}
 
@@ -157,6 +159,8 @@ Activities usually issue periodic Heartbeats, a ping that shows that an Activity
 
 When testing Activities that support Heartbeats, make sure you can see those Heartbeats in your test code.
 
+<!--SNIPSTART java-testing-suite-listen-heartbeats {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/ActivityHeartbeatTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/ActivityHeartbeatTest.java)
 ```java
 @Test
 void testActivityHeartbeat() {
@@ -165,8 +169,8 @@ void testActivityHeartbeat() {
   AtomicInteger heartbeatCount = new AtomicInteger(0);
 
   env.setActivityHeartbeatListener(
-    Void.class,
-    heartbeat -> heartbeatCount.incrementAndGet());
+      Void.class,
+      heartbeat -> heartbeatCount.incrementAndGet());
 
   env.registerActivitiesImplementations(new GreetActivitiesImpl());
 
@@ -178,29 +182,70 @@ void testActivityHeartbeat() {
   assertEquals(5, heartbeatCount.get());
 }
 ```
+<!--SNIPEND-->
 
 ### Cancel an Activity {/* #cancel-an-activity */}
 
 Activity cancellation lets Activities know they don't need to continue work and gives time for the Activity to clean up any resources it's created. You can cancel Java-based Activities if they emit Heartbeats. To test an Activity that reacts to Cancellations, make sure that the Activity reacts correctly and cancels.
 
+The following Workflow runs the `greet` Activity in a Cancellation Scope and cancels that scope when it receives the
+`cancelActivity` Signal:
+
+<!--SNIPSTART java-testing-suite-cancellable-workflow-->
+[java-sandbox/best-practices/testing-suite/src/main/java/io/temporal/docs/bestpractices/testingsuite/CancellableGreetingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/main/java/io/temporal/docs/bestpractices/testingsuite/CancellableGreetingWorkflowImpl.java)
+```java
+public class CancellableGreetingWorkflowImpl implements CancellableGreetingWorkflow {
+  private CancellationScope scope;
+
+  private final GreetActivities activities =
+      Workflow.newActivityStub(
+          GreetActivities.class,
+          ActivityOptions.newBuilder()
+              .setStartToCloseTimeout(Duration.ofSeconds(30))
+              // The Activity learns about the cancellation on its next Heartbeat.
+              .setHeartbeatTimeout(Duration.ofSeconds(2))
+              // Wait for the Activity to acknowledge the cancellation before failing.
+              .setCancellationType(ActivityCancellationType.WAIT_CANCELLATION_COMPLETED)
+              .build());
+
+  @Override
+  public String sayHello(String name) {
+    scope = Workflow.newCancellationScope(() -> activities.greet(name));
+    scope.run();
+    return "Activity completed without being canceled";
+  }
+
+  @Override
+  public void cancelActivity() {
+    if (scope != null) {
+      scope.cancel("canceled by test");
+    }
+  }
+}
+```
+<!--SNIPEND-->
+
+The test sends the Signal one second after the Workflow starts and checks that the Workflow fails with an
+`ActivityFailure` caused by a `CanceledFailure`:
+
+<!--SNIPSTART java-testing-suite-cancel-activity {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/CancelActivityTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/CancelActivityTest.java)
 ```java
 @Test
 void testCancelActivity() {
   try (TestWorkflowEnvironment env = TestWorkflowEnvironment.newInstance()) {
     Worker worker = env.newWorker(TASK_QUEUE);
 
-    worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
+    worker.registerWorkflowImplementationTypes(CancellableGreetingWorkflowImpl.class);
     worker.registerActivitiesImplementations(new GreetActivitiesImpl());
 
     env.start();
 
-    SayHelloWorkflow workflow =
-      env.getWorkflowClient()
-        .newWorkflowStub(
-            SayHelloWorkflow.class,
-            WorkflowOptions.newBuilder()
-              .setTaskQueue(TASK_QUEUE)
-              .build());
+    CancellableGreetingWorkflow workflow =
+        env.getWorkflowClient()
+            .newWorkflowStub(
+                CancellableGreetingWorkflow.class,
+                WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
 
     WorkflowClient.start(workflow::sayHello, "Temporal");
 
@@ -220,6 +265,7 @@ void testCancelActivity() {
   }
 }
 ```
+<!--SNIPEND-->
 
 ## Testing Workflows {/* #test-workflows */}
 
@@ -230,80 +276,101 @@ When integration testing Workflows with a Worker, you can mock Activities by pro
 In cases where you do not wish to execute your actual Activity or Nexus Operation implementations during
 unit testing, you can use a framework such as [Mockito](https://site.mockito.org/) to mock them.
 
-The following code implements a unit test that shows how Activities can be mocked:
+The following test registers a Mockito mock of `GreetActivities` on the Worker, so the Workflow runs without calling the real Activity:
 
+<!--SNIPSTART java-testing-suite-mock-activity {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/MockedActivityTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/MockedActivityTest.java)
 ```java
 @Test
 public void testMockedActivity() {
-  GreetActivities activities =
-    mock(GreetActivities.class, withSettings().withoutAnnotations());
+  try (TestWorkflowEnvironment testEnv = TestWorkflowEnvironment.newInstance()) {
+    // withoutAnnotations() keeps Mockito from copying @ActivityInterface onto the mock class.
+    GreetActivities activities =
+        mock(GreetActivities.class, withSettings().withoutAnnotations());
+    when(activities.greet("Temporal")).thenReturn("Hello from the mock!");
 
-  when(activities.greet("Temporal")).thenReturn("Hello Temporal!");
+    Worker worker = testEnv.newWorker(TASK_QUEUE);
+    worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
+    worker.registerActivitiesImplementations(activities);
+    testEnv.start();
 
-  assertEquals("Hello Temporal!", activities.greet("Temporal"));
+    SayHelloWorkflow workflow =
+        testEnv
+            .getWorkflowClient()
+            .newWorkflowStub(
+                SayHelloWorkflow.class,
+                WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
+
+    assertEquals("Hello from the mock!", workflow.sayHello("Temporal"));
+  }
 }
 ```
+<!--SNIPEND-->
 
 #### Testing with JUnit4
 
-For JUnit4 tests, Temporal provides the `TestWorkflowRule` class which simplifies the Temporal test environment setup, as well as the creation and shutdown of Workflow Workers in your tests. You can now rewrite the above Activity test class as follows:
+For JUnit4 tests, Temporal provides the `TestWorkflowRule` class which simplifies the Temporal test environment setup, as well as the creation and shutdown of Workflow Workers in your tests. The following test runs `SayHelloWorkflowImpl` with a `TestWorkflowRule`:
 
+<!--SNIPSTART java-testing-suite-junit4-rule-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/SayHelloWorkflowJUnit4Test.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/SayHelloWorkflowJUnit4Test.java)
 ```java
-public class GreetActivitiesJUnit4Test {
-    @Rule
-    public TestWorkflowRule testWorkflowRule =
-        TestWorkflowRule.newBuilder()
-            .setWorkflowTypes(SayHelloWorkflowImpl.class)
-            .setActivityImplementations(new GreetActivitiesImpl())
-            .build();
-
-    @Test
-    public void testActivityImpl() {
-        // Get a workflow stub using the same task queue the worker uses.
-        GreetingWorkflow workflow =
-            testWorkflowRule
-                .getWorkflowClient()
-                .newWorkflowStub(
-                    GreetingWorkflow.class,
-                    WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build()
-                );
-        // Execute a workflow waiting for it to complete.
-        String greeting = workflow.sayHello("Temporal");
-        assertEquals("Hello Temporal!", greeting);
-
-        testWorkflowRule.getTestEnvironment().shutdown();
-    }
-}
-```
-
-#### Testing with JUnit5
-
-For JUnit5 tests, Temporal also provides the `TestWorkflowExtension` helper class.
-This class can be used to simplify the Temporal test environment setup as well as Workflow Worker startup and shutdowns.
-
-To start using JUnit5 `TestWorkflowExtension` in your tests with [Gradle](https://gradle.org/), you need to enable capability [`io.temporal:temporal-testing-junit5`]:
-
-
-Now you can use JUnit5 and rewrite the above test class as follows:
-
-```java
-public class GreetActivitiesJUnit5Test {
-  @RegisterExtension
-  public static final TestWorkflowExtension testWorkflowExtension =
-    TestWorkflowExtension.newBuilder()
-      .setWorkflowTypes(SayHelloWorkflowImpl.class)
-      .setActivityImplementations(new GreetActivitiesImpl())
-      .build();
+public class SayHelloWorkflowJUnit4Test {
+  @Rule
+  public TestWorkflowRule testWorkflowRule =
+      TestWorkflowRule.newBuilder()
+          .setWorkflowTypes(SayHelloWorkflowImpl.class)
+          .setActivityImplementations(new GreetActivitiesImpl())
+          .build();
 
   @Test
-  public void testActivityImpl(
-    TestWorkflowEnvironment testEnv, Worker worker, SayHelloWorkflow workflow) {
+  public void testSayHello() {
+    // Get a workflow stub using the same task queue the worker uses.
+    SayHelloWorkflow workflow =
+        testWorkflowRule
+            .getWorkflowClient()
+            .newWorkflowStub(
+                SayHelloWorkflow.class,
+                WorkflowOptions.newBuilder().setTaskQueue(testWorkflowRule.getTaskQueue()).build());
     // Execute a workflow waiting for it to complete.
     String greeting = workflow.sayHello("Temporal");
     assertEquals("Hello Temporal!", greeting);
   }
 }
 ```
+<!--SNIPEND-->
+
+#### Testing with JUnit5
+
+For JUnit5 tests, Temporal also provides the `TestWorkflowExtension` helper class.
+This class can be used to simplify the Temporal test environment setup as well as Workflow Worker startup and shutdowns.
+
+To use `TestWorkflowExtension` with [Gradle](https://gradle.org/), enable the `io.temporal:temporal-testing-junit5`
+capability shown in [Setup testing dependency](#setup-testing-dependency).
+
+The following test uses `TestWorkflowExtension`, which passes the test environment, the Worker, and a Workflow stub to
+the test method as parameters:
+
+<!--SNIPSTART java-testing-suite-junit5-extension-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/SayHelloWorkflowJUnit5Test.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/SayHelloWorkflowJUnit5Test.java)
+```java
+public class SayHelloWorkflowJUnit5Test {
+  @RegisterExtension
+  public static final TestWorkflowExtension testWorkflowExtension =
+      TestWorkflowExtension.newBuilder()
+          .setWorkflowTypes(SayHelloWorkflowImpl.class)
+          .setActivityImplementations(new GreetActivitiesImpl())
+          .build();
+
+  @Test
+  public void testSayHello(
+      TestWorkflowEnvironment testEnv, Worker worker, SayHelloWorkflow workflow) {
+    // Execute a workflow waiting for it to complete.
+    String greeting = workflow.sayHello("Temporal");
+    assertEquals("Hello Temporal!", greeting);
+  }
+}
+```
+<!--SNIPEND-->
 
 You can find more unit test examples in the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples).
 
@@ -326,8 +393,8 @@ With that in place, you can then mock a Nexus endpoint exactly like any other Wo
 The following are samples derived from [the test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples/nexus/caller) to demonstrate this.
 
 #### Mocking Nexus handlers with JUnit4
-<!--SNIPSTART java-nexus-sample-junit4-mock-->
-[core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowMockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowMockTest.java)
+<!--SNIPSTART java-testing-suite-nexus-handler-junit4-mock-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/nexus/caller/CallerWorkflowMockTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/nexus/caller/CallerWorkflowMockTest.java)
 ```java
 public class CallerWorkflowMockTest {
 
@@ -402,13 +469,12 @@ public class CallerWorkflowMockTest {
     testWorkflowRule.getTestEnvironment().shutdown();
   }
 }
-
 ```
 <!--SNIPEND-->
 
 #### Mocking Nexus handlers with JUnit5
-<!--SNIPSTART java-nexus-sample-junit5-mock-->
-[core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowJunit5MockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/CallerWorkflowJunit5MockTest.java)
+<!--SNIPSTART java-testing-suite-nexus-handler-junit5-mock-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/nexus/caller/CallerWorkflowJunit5MockTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/nexus/caller/CallerWorkflowJunit5MockTest.java)
 ```java
 public class CallerWorkflowJunit5MockTest {
 
@@ -471,7 +537,6 @@ public class CallerWorkflowJunit5MockTest {
     testEnv.shutdown();
   }
 }
-
 ```
 <!--SNIPEND-->
 
@@ -482,8 +547,8 @@ The code will mock the implementation of the `SampleNexusService` class with the
 Those methods can be directly mocked with static return values or they can return an instance variable which each unit test can modify to return a desired value.
 
 #### Mocking the Nexus Service with JUnit4
-<!--SNIPSTART java-nexus-service-sample-junit4-mock-->
-[core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceMockTest.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceMockTest.java)
+<!--SNIPSTART java-testing-suite-nexus-service-junit4-mock-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/nexus/caller/NexusServiceMockTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/nexus/caller/NexusServiceMockTest.java)
 ```java
 public class NexusServiceMockTest {
 
@@ -570,13 +635,12 @@ public class NexusServiceMockTest {
     verifyNoMoreInteractions(mockNexusService);
   }
 }
-
 ```
 <!--SNIPEND-->
 
 #### Mocking the Nexus Service with JUnit5
-<!--SNIPSTART java-nexus-service-sample-junit5-mock-->
-[core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceJunit5Test.java](https://github.com/temporalio/samples-java/blob/main/core/src/test/java/io/temporal/samples/nexus/caller/NexusServiceJunit5Test.java)
+<!--SNIPSTART java-testing-suite-nexus-service-junit5-mock-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/nexus/caller/NexusServiceJunit5Test.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/nexus/caller/NexusServiceJunit5Test.java)
 ```java
 public class NexusServiceJunit5Test {
 
@@ -663,7 +727,6 @@ public class NexusServiceJunit5Test {
     verifyNoMoreInteractions(mockNexusService);
   }
 }
-
 ```
 <!--SNIPEND-->
 
@@ -689,14 +752,16 @@ When you execute a Workflow and wait for the result, the test environment automa
 
 Here's an example of a Workflow that implements `Workflow.sleep` to wait for a day before calling the Activity:
 
+<!--SNIPSTART java-testing-suite-sleep-workflow-->
+[java-sandbox/best-practices/testing-suite/src/main/java/io/temporal/docs/bestpractices/testingsuite/SayHelloWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/main/java/io/temporal/docs/bestpractices/testingsuite/SayHelloWorkflowImpl.java)
 ```java
 public class SayHelloWorkflowImpl implements SayHelloWorkflow {
   private final GreetActivities activities =
-    Workflow.newActivityStub(
-      GreetActivities.class,
-      ActivityOptions.newBuilder()
-        .setStartToCloseTimeout(Duration.ofSeconds(30))
-        .build());
+      Workflow.newActivityStub(
+          GreetActivities.class,
+          ActivityOptions.newBuilder()
+              .setStartToCloseTimeout(Duration.ofSeconds(30))
+              .build());
 
   @Override
   public String sayHello(String name) {
@@ -708,26 +773,29 @@ public class SayHelloWorkflowImpl implements SayHelloWorkflow {
   }
 }
 ```
+<!--SNIPEND-->
 
 Here's what the test for that Workflow could look like:
 
+<!--SNIPSTART java-testing-suite-skip-time-automatically {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/SkipTimeTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/SkipTimeTest.java)
 ```java
 @Test
 void testSleepCompletesWithoutWaitingOneDay() {
   try (TestWorkflowEnvironment testEnv = TestWorkflowEnvironment.newInstance()) {
     Worker worker = testEnv.newWorker(TASK_QUEUE);
-    
+
     worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
     worker.registerActivitiesImplementations(new GreetActivitiesImpl());
-    
+
     testEnv.start();
 
     SayHelloWorkflow workflow =
-      testEnv
-        .getWorkflowClient()
-        .newWorkflowStub(
-          SayHelloWorkflow.class,
-          WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
+        testEnv
+            .getWorkflowClient()
+            .newWorkflowStub(
+                SayHelloWorkflow.class,
+                WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).build());
 
     String result = workflow.sayHello("Temporal");
 
@@ -735,6 +803,7 @@ void testSleepCompletesWithoutWaitingOneDay() {
   }
 }
 ```
+<!--SNIPEND-->
 
 Use `Workflow.sleep()` in Workflow code, not `Thread.sleep()`. `Workflow.sleep()` creates a Temporal timer that the test environment can skip. `Thread.sleep()` blocks a Java thread in real time and is not controlled by Temporal’s time-skipping test server.
 
@@ -744,8 +813,10 @@ Use `TestWorkflowEnvironment.sleep(Duration)` when you want to advance virtual t
 
 Here's an example of a Workflow test that lets you manually advance time with `testEnv.sleep()`:
 
+<!--SNIPSTART java-testing-suite-skip-time-manually-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/ManualTimeSkippingTest.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/ManualTimeSkippingTest.java)
 ```java
-package helloworkflow;
+package io.temporal.docs.bestpractices.testingsuite;
 
 import java.time.Duration;
 
@@ -817,6 +888,7 @@ public class ManualTimeSkippingTest {
   }
 }
 ```
+<!--SNIPEND-->
 
 ## How to Replay a Workflow Execution {/* #replay */}
 
@@ -839,6 +911,8 @@ To replay Workflow Executions, use the [WorkflowReplayer](https://www.javadoc.io
 In the following example, Event Histories are downloaded from the server, and then replayed.
 Note that this requires Advanced Visibility to be enabled.
 
+<!--SNIPSTART java-testing-suite-replay-from-server {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/ReplayExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/ReplayExamples.java)
 ```java
 // Note we assume you already have a WorkflowServiceStubs (`service`) and WorkflowClient (`client`)
 // in scope.
@@ -856,7 +930,7 @@ List<WorkflowExecutionHistory> histories =
               GetWorkflowExecutionHistoryResponse weh =
                   service.blockingStub().getWorkflowExecutionHistory(
                       GetWorkflowExecutionHistoryRequest.newBuilder()
-                          .setNamespace(testEnvironment.getNamespace())
+                          .setNamespace(client.getOptions().getNamespace())
                           .setExecution(info.getExecution())
                           .build());
               return new WorkflowExecutionHistory(
@@ -865,15 +939,19 @@ List<WorkflowExecutionHistory> histories =
         .collect(Collectors.toList());
 
 WorkflowReplayer.replayWorkflowExecutions(
-    histories, true, WorkflowA.class, WorkflowB.class, WorkflowC.class);
+    histories, true, SayHelloWorkflowImpl.class, CancellableGreetingWorkflowImpl.class);
 ```
+<!--SNIPEND-->
 
 In the next example, a single history is loaded from a JSON file on disk:
 
+<!--SNIPSTART java-testing-suite-replay-from-file {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/ReplayExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/testing-suite/src/test/java/io/temporal/docs/bestpractices/testingsuite/ReplayExamples.java)
 ```java
 File file = new File("my_history.json");
-WorkflowReplayer.replayWorkflowExecution(file, MyWorkflow.class);
+WorkflowReplayer.replayWorkflowExecution(file, SayHelloWorkflowImpl.class);
 ```
+<!--SNIPEND-->
 
 In both examples, if Event History is non-deterministic, an error is thrown.
 You can choose to wait until all histories have been replayed with `replayWorkflowExecutions` by setting the `failFast` argument to `false`.
