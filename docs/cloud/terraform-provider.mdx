@@ -819,6 +819,10 @@ From the example in the [Terraform Registry](https://registry.terraform.io/provi
    temporalcloud_apikey.global_apikey: Creation complete after 1s [id=kayBf38JIWkMPmnfr59iEIaEk2L7uqR4]
    ```
 
+   `Creation complete` doesn't mean a Namespace endpoint accepts the key yet. Retry Namespace requests with backoff
+   before you start Workers with the new key. See
+   [Allow time for API key changes to propagate](/cloud/api-keys#api-key-propagation).
+
 1. Access the API Key Token securely. You'll notice that if you view the state for the API Key resource, the token value
    is not displayed.
 
