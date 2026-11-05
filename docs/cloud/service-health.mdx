@@ -237,7 +237,7 @@ Resource exhaustion is distinct from rate limiting against your account limits. 
 
 ### Workflow lock contention (BusyWorkflow)
 
-The most common cause of resource exhaustion is Workflow lock contention. Every operation that mutates a single Workflow Execution (starting it, sending a Signal, etc.) is serialized under a per-Workflow lock. When operations reach one Execution faster than that lock can be acquired, the Service rejects the excess with a `ResourceExhausted` error. In Service logs this appears as `Workflow is busy.`
+The most common cause of resource exhaustion is Workflow lock contention. Every operation that mutates a single Workflow Execution (starting it, sending a Signal, etc.) is serialized under a per-Workflow lock. A request waits for the lock and returns a retryable `ResourceExhausted` error with cause `BUSY_WORKFLOW` if the wait times out. In Service logs this appears as `Workflow is busy.`
 
 This is contention on a single Execution, not an account limit. Increasing your Actions, Requests, or Operations per second limits does not resolve it.
 
@@ -249,8 +249,8 @@ To confirm lock contention:
 
 | `operation` | What it indicates | What to do |
 | ----------- | ----------------- | ---------- |
-| `StartWorkflowExecution`, `SignalWithStartWorkflowExecution` | The same Workflow ID was started again within a short de-duplication window (about one second). The first start succeeded; the duplicate was rejected. | Usually safe to ignore. Do not aggressively retry. There may be a client path firing the duplicate start. |
-| `SignalWorkflowExecution` | Too high of a rate of Signals to one execution. | Batch or coalesce Signals (for example, one Signal per N events), shard work across more executions, or buffer Signals and drain them in the main Workflow loop. |
+| `StartWorkflowExecution` | The same Workflow ID was started again too quickly, or the request timed out waiting for the execution's lock. | Check for a client path firing duplicate starts and see [ID reuse rate limits](/evaluate/cloud/limits#per-primitive-id-reuse-rate-limits). Retry with backoff and reduce concurrent requests to that Workflow ID. |
+| `SignalWorkflowExecution`, `SignalWithStartWorkflowExecution` | Too high of a rate of Signals to one execution. Signal-With-Start can also hit ID reuse rate limits when starting a new Execution. | Batch or coalesce Signals (for example, one Signal per N events), or shard work across more executions. For repeated starts, see [ID reuse rate limits](/evaluate/cloud/limits#per-primitive-id-reuse-rate-limits). |
 | `UpdateWorkflowExecution` | More than the per-execution in-flight Update limit (10) are outstanding. | Cap concurrent in-flight Updates on the client, then back off and retry. |
 | `RecordActivityTaskHeartbeat` | Too many Activities are heartbeating to the same execution. | Increase the heartbeat timeout and interval, and reduce the number of Activities heartbeating into one execution concurrently. |
 | `RespondWorkflowTaskCompleted` | A single Workflow schedules a large batch of Activities or Child Workflows in parallel, each taking the lock. | Limit concurrent operations to 500 or fewer per execution. Process the batch in smaller groups using a sliding-window or plain batching pattern instead of scheduling everything at once. |
