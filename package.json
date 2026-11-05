@@ -102,14 +102,14 @@
     "search-insights": "^2",
     "sharp": "^0.35.5",
     "snipsync": "^1.13.0",
-    "uuid": "^14.0.2",
+    "uuid": "^14.0.3",
     "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0",
     "wait-on": "^9.5.1",
     "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
-    "@types/node": "^26.6.3",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
     "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.23.2",
     "global-jsdom": "^30.0.0",

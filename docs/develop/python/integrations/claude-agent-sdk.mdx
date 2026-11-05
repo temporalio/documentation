@@ -57,12 +57,12 @@ using the same options for both the transport and the SDK call.
 
 <!--SNIPSTART python-claude-agent-sdk-structured-output-transport-->
 [claude_agent_sdk_plugin/structured_output/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/structured_output/workflow.py)
-```python
-                transport = TemporalTransport(options)
-                async with ClaudeSDKClient(
-                    options=options, transport=transport
-                ) as client:
-                    await client.query(query_prompt)
+```py
+transport = TemporalTransport(options)
+async with ClaudeSDKClient(
+    options=options, transport=transport
+) as client:
+    await client.query(query_prompt)
 ```
 <!--SNIPEND-->
 
@@ -77,14 +77,14 @@ Register `ClaudeAgentSDKPlugin` on the Worker. The plugin registers the Activiti
 
 <!--SNIPSTART python-claude-agent-sdk-tools-worker-->
 [claude_agent_sdk_plugin/tools/run_worker.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/run_worker.py)
-```python
-        worker = Worker(
-            client,
-            task_queue="claude-agent-sdk-tools",
-            workflows=[ToolsWorkflow],
-            activities=[fetch_weather],
-            plugins=[ClaudeAgentSDKPlugin()],
-        )
+```py
+worker = Worker(
+    client,
+    task_queue="claude-agent-sdk-tools",
+    workflows=[ToolsWorkflow],
+    activities=[fetch_weather],
+    plugins=[ClaudeAgentSDKPlugin()],
+)
 ```
 <!--SNIPEND-->
 
@@ -134,13 +134,12 @@ designed for one pending approval at a time. A Query shows the pending tool call
 
 ## Stream output from a Workflow
 
-The Claude Agent SDK can stream a reply as it's generated. The plugin reads each event from Claude Code in an Activity, and
-the Workflow publishes it to a topic of a [Workflow Stream](/develop/python/workflows/workflow-streams). Any client can
-subscribe to the topic by Workflow Id to show tokens as they arrive.
+The Claude Agent SDK can stream a reply as it's generated. Set `include_partial_messages=True` in the options, as in the
+Claude Agent SDK, and the Workflow receives each `StreamEvent` along with the complete messages.
 
-Create a topic when the Workflow starts. Set `include_partial_messages=True` in the options, as in the Claude Agent SDK,
-and pass the topic to `TemporalTransport` as `stream`. The two go together. Setting one without the other raises
-`ValueError`.
+To show tokens to clients as they arrive, also pass a topic of a [Workflow Stream](/develop/python/workflows/workflow-streams)
+to `TemporalTransport` as `stream`. The Workflow publishes each `StreamEvent` to the topic, and any client can subscribe
+to it by Workflow ID.
 
 In the [streaming sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/streaming),
 a client subscribes to the topic and receives `stream_event` messages from Claude Code. For details on event delivery
@@ -169,10 +168,10 @@ The Workflow continues to use `TemporalTransport` as before, while you pass your
 
 <!--SNIPSTART python-claude-agent-sdk-custom-connector-worker-->
 [claude_agent_sdk_plugin/plugin_with_custom_transport/run_worker.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/plugin_with_custom_transport/run_worker.py)
-```python
-        plugin = ClaudeAgentSDKPlugin(
-            connector=SandboxConnector(uploads={PLUGIN_DIR: LOCAL_PLUGIN_DIR})
-        )
+```py
+plugin = ClaudeAgentSDKPlugin(
+    connector=SandboxConnector(uploads={PLUGIN_DIR: LOCAL_PLUGIN_DIR})
+)
 ```
 <!--SNIPEND-->
 
@@ -204,60 +203,10 @@ To resume the interrupted turn, configure these Claude Agent SDK options.
 - `resume_session_at` resumes from the interrupted prompt.
 - `extra_args={"replay-user-messages": None}` makes the prompt identifier available in the response stream.
 
-The sample sets these options in `ClaudeAgentOptions`.
-
-<!--SNIPSTART python-claude-agent-sdk-session-options-->
-[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
-```python
-            extra_args={"replay-user-messages": None},
-            resume=session_id if prompt_id else None,
-            resume_session_at=prompt_id,
-```
-<!--SNIPEND-->
-
-The following loop uses those options to resume the session after a lost connection.
-
-<!--SNIPSTART python-claude-agent-sdk-tools-ask-->
-[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
-```python
-    async def ask(self, prompt: str) -> str:
-        """Answer the prompt, redoing the turn if the connection is lost."""
-        CONTINUE = "Continue from where you left off."
-        session_id = None  # Claude Code's, once it started
-        prompt_id = None  # The prompt's, once Claude Code saved it
-
-        while True:
-            try:
-                options = self.options(session_id, prompt_id)
-                transport = TemporalTransport(options)
-                async with ClaudeSDKClient(
-                    options=options, transport=transport
-                ) as client:
-                    await client.query(CONTINUE if prompt_id else prompt)
-
-                    async for message in client.receive_response():
-                        if (
-                            isinstance(message, SystemMessage)
-                            and message.subtype == "init"
-                        ):
-                            session_id = message.data["session_id"]
-                        elif (
-                            isinstance(message, UserMessage)
-                            and message.uuid
-                            and not prompt_id
-                        ):
-                            prompt_id = message.uuid
-                        elif isinstance(message, ResultMessage):
-                            return message.result or "\n".join(message.errors or [])
-
-                raise RuntimeError("Claude Code ended the turn without a result")
-
-            except CLIConnectionError:
-                # Redo the turn from the prompt if Claude Code saved it, or start again.
-                pass
-
-```
-<!--SNIPEND-->
+On a lost connection, create a new client with these options to resume the same session. If the prompt identifier
+arrived, resume at the prompt and send `Continue from where you left off.` Otherwise, resume at the last reply and send
+the prompt again. See the
+[agent chat sample](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/agent_chat/workflow.py).
 
 :::note
 
@@ -280,7 +229,7 @@ Other Claude Agent SDK features that need no changes for Temporal can be used as
 | Custom tools | Supported | In-process MCP tool functions run in the Workflow and must be deterministic. |
 | Hooks | Supported | Hook callbacks run in the Workflow and must be deterministic. |
 | Tool approvals | Supported | The `can_use_tool` callback runs in the Workflow and must be deterministic. |
-| Streaming | Supported | Enable partial messages and pass a Workflow Stream topic to `TemporalTransport`. Retried turns can produce repeated output. |
+| Streaming | Supported | Enable partial messages to receive them in the Workflow. Pass a Workflow Stream topic to `TemporalTransport` to also publish them to clients. Retried turns can produce repeated output. |
 | Session recovery | Supported | A new connection needs access to the Claude Code session files. Resuming an interrupted turn can repeat tool calls and approvals. |
 | Custom connectors | Supported | `write`, `end_input`, and `close` must be safe to retry and call concurrently. |
 | Remote connections | Supported | Use a custom connector. For OpenTelemetry, pass `TRACEPARENT` and `TRACESTATE` in the Claude Code process environment when starting it. |
@@ -302,6 +251,12 @@ run in the Workflow and must be deterministic.
 Each turn adds to the Workflow's Event History. For a long conversation, finish the turn, disconnect, and
 [Continue-As-New](/develop/python/workflows/continue-as-new) with the session identifier. In the new Workflow run, set `resume` to that session identifier. See the [agent chat sample](https://github.com/temporalio/samples-python/tree/main/claude_agent_sdk_plugin/agent_chat).
 
+**Session recovery**
+
+When the prompt identifier never arrived, resume at the last reply rather than at the end of the session. Claude Code
+may have saved the prompt before the connection was lost. Resuming the whole session and sending the prompt again would
+leave it in the session twice. Before the session's first reply there is nothing to resume at, so start a new session.
+
 **Configuration**
 
 | API | Option | Default | Behavior |
@@ -309,7 +264,7 @@ Each turn adds to the Workflow's Event History. For a long conversation, finish 
 | `ClaudeAgentSDKPlugin` | `connector` | `SubprocessConnector()` | Starts and connects to Claude Code. Provide a custom connector to run it in another environment. |
 | `TemporalTransport` | `options` | Required | Claude Agent SDK options. Pass the same options to the transport and the client. |
 | `TemporalTransport` | `activity_options` | None | Configures Activity options for `connect`, `write`, `read`, `end_input`, or `close`. Use `schedule_to_start_timeout` to detect a lost Worker sooner. |
-| `TemporalTransport` | `stream` | None | A Workflow Stream topic for partial messages. Set `include_partial_messages=True` in the Claude Agent SDK options when providing a topic. |
+| `TemporalTransport` | `stream` | None | A Workflow Stream topic that also gets each partial message. Takes effect with `include_partial_messages=True` in the Claude Agent SDK options. |
 
 **Failure behavior**
 
@@ -322,7 +277,7 @@ left unhandled. Other Activity errors are retried according to the Activity retr
 | `CLINotFoundError` | The Claude Code executable could not be found where the connector runs it. |
 | `ProcessError` | Claude Code exited with an error. |
 | `CLIJSONDecodeError` | Output from Claude Code could not be decoded as JSON. |
-| `ValueError` | The transport configuration is invalid. Set both `include_partial_messages` and `stream`, or neither, and pass `settings` as a JSON object string instead of a file path. |
+| `ValueError` | The transport configuration is invalid. Pass `settings` as a JSON object string instead of a file path. |
 
 ## Resources
 

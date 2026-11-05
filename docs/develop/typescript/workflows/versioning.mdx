@@ -42,8 +42,8 @@ When you want to make substantive code changes that may affect existing Workflow
 
 Suppose you have an initial Workflow that runs `activityA`:
 
-<!--SNIPSTART typescript-patching-1-->
-[patching-api/src/workflows-v1.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v1.ts)
+<!--SNIPSTART typescript-versioning-patching-v1-->
+[typescript-sandbox/src/workflows/versioning/patching/workflows-v1.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/versioning/patching/workflows-v1.ts)
 ```ts
 // v1
 export async function myWorkflow(): Promise<void> {
@@ -56,8 +56,8 @@ export async function myWorkflow(): Promise<void> {
 
 Now, you want to update your code to run `activityB` instead. This represents your desired end state.
 
-<!--SNIPSTART typescript-patching-final-->
-[patching-api/src/workflows-vFinal.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-vFinal.ts)
+<!--SNIPSTART typescript-versioning-patching-final-->
+[typescript-sandbox/src/workflows/versioning/patching/workflows-vFinal.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/versioning/patching/workflows-vFinal.ts)
 ```ts
 // vFinal
 export async function myWorkflow(): Promise<void> {
@@ -83,8 +83,8 @@ Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case `your-change-id`).
 This ensures you can safely deploy code from `v2` as a "feature flag" alongside the original version (`v1`).
 
-<!--SNIPSTART typescript-patching-2-->
-[patching-api/src/workflows-v2.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v2.ts)
+<!--SNIPSTART typescript-versioning-patching-v2-->
+[typescript-sandbox/src/workflows/versioning/patching/workflows-v2.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/versioning/patching/workflows-v2.ts)
 ```ts
 // v2
 import { patched } from '@temporalio/workflow';
@@ -109,8 +109,8 @@ Once your Workflows are no longer running the pre-patch code paths, you can depl
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
 Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Event History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
-<!--SNIPSTART typescript-patching-3-->
-[patching-api/src/workflows-v3.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v3.ts)
+<!--SNIPSTART typescript-versioning-patching-v3-->
+[typescript-sandbox/src/workflows/versioning/patching/workflows-v3.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/versioning/patching/workflows-v3.ts)
 ```ts
 // v3
 import { deprecatePatch } from '@temporalio/workflow';
@@ -137,26 +137,37 @@ To understand why Patching is useful, it's helpful to demonstrate cutting over a
 Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
 To do this, you can copy the Workflow Definition function, giving it a different name, and register both names with your Workers.
 
-For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
+For example, you would duplicate `pizzaWorkflow` as `pizzaWorkflowV2`:
 
-```typescript
-function pizzaWorkflow(order: PizzaOrder): Promise<OrderConfirmation> {
+<!--SNIPSTART typescript-versioning-cutover-workflows-->
+[typescript-sandbox/src/workflows/versioning/cutover/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/versioning/cutover/workflows.ts)
+```ts
+export async function pizzaWorkflow(order: PizzaOrder): Promise<OrderConfirmation> {
   // this function contains the original code
+  return { orderNumber: order.orderNumber, status: 'SUCCESS' };
 }
 
-function pizzaWorkflowV2(order: PizzaOrder): Promise<OrderConfirmation> {
+export async function pizzaWorkflowV2(order: PizzaOrder): Promise<OrderConfirmation> {
   // this function contains the updated code
+  const status = order.pizzas.length > 0 ? 'SUCCESS' : 'EMPTY_ORDER';
+  return { orderNumber: order.orderNumber, status };
 }
 ```
+<!--SNIPEND-->
 
 You would then need to update the Worker configuration, and any other identifier strings, to register both Workflow Types:
 
-```typescript
+<!--SNIPSTART typescript-versioning-cutover-worker {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/versioning/cutover/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/versioning/cutover/worker.ts)
+```ts
 const worker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
   // other configurations
+  connection,
+  taskQueue: 'pizza-tasks',
 });
 ```
+<!--SNIPEND-->
 
 The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow.
 This can become impractical over time.
