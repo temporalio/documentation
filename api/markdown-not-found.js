@@ -15,7 +15,21 @@ This URL does not match a page in the Temporal documentation.
 - [Documentation index](https://docs.temporal.io/llms.txt)
 - [Documentation sitemap](https://docs.temporal.io/sitemap.xml)
 - [Temporal documentation home](https://docs.temporal.io/)
+
+## Report a broken link
+
+If a link on a docs page led you here, you can report it. If you built or guessed this URL yourself, don't. No
+authentication is required. Set \`page_url\` to the page that had the link, not to this URL, and don't include personal
+data or credentials:
+
+\`\`\`
+GET https://docs.temporal.io/api/feedback?title=Broken+link&message=<where-the-link-was-and-where-it-pointed>&category=documentation&page_url=<page-with-the-link>&src=md-404&agent=<your-name>
+\`\`\`
 `;
+// The body is static on purpose: echoing the requested path would let anyone
+// put text of their choosing on a docs.temporal.io page an agent reads.
+// src=md-404 tells the feedback store which surface the caller found the URL
+// on; see readme/FEEDBACK.md.
 
 module.exports = (request, response) => {
   // A rewrite keeps the requested URL in request.url.

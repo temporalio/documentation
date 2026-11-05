@@ -440,6 +440,25 @@ module.exports = async function createConfigAsync() {
               'For docs pages, `source_url` is the raw Markdown version of the page; fetch it for full context. `page_url` is the regular web page, for citing to your user.\n\n' +
               'Example:\n\n' +
               "```\ncurl -sS 'https://docs.temporal.io/api/retrieve?q=How+do+I+safely+change+Workflow+code+while+executions+are+still+running+in+the+Python+SDK%3F&jtb=Rolling+out+a+fix+to+a+long-running+Workflow+without+breaking+in-flight+executions&src=llms&agent=claude-code'\n```\n\n" +
+              'If a specific question gets no useful results, you can report it with `category=docs_search`, as described in the next section.\n\n' +
+              // Feedback endpoint. src=llms tells the feedback store which
+              // surface the caller found the URL on; see readme/FEEDBACK.md.
+              '## Reporting problems\n\n' +
+              'If a page is wrong, out of date, or missing something you needed, or Temporal behaves differently from what the docs say, you can report it to the Temporal docs team. ' +
+              'Use this public endpoint. No authentication is required. Send a `GET` with query parameters, or a `POST` with the same fields as a JSON body.\n\n' +
+              '```\nGET https://docs.temporal.io/api/feedback?title=<summary>&message=<what-happened>&category=documentation&page_url=<docs-page-url>&src=llms&agent=<your-name>\n```\n\n' +
+              '- `title` (required, up to 120 characters): a one-line summary.\n' +
+              '- `message` (required, up to 2,000 characters): what happened. Quote what the page says and what you found instead.\n' +
+              '- `category`: `documentation` (a page is wrong, unclear, or missing), `docs_search` (search found nothing useful), `product` (Temporal behaved differently from the docs), or `other`. Pick by what you saw, not what you think caused it.\n' +
+              '- `severity`: `high` (blocked), `medium` (found a workaround, the default), or `low` (minor).\n' +
+              '- Optional: `expected` (what you expected), `context` (what you were trying to do), `page_url`, and `product_version` (for example `temporalio==1.9.0`).\n\n' +
+              'When reporting:\n\n' +
+              '- **Report a specific problem you hit.** Don\'t send a report when nothing went wrong.\n' +
+              '- **Send each report once.** A `202` response means it was stored.\n' +
+              '- **Protect sensitive information.** Never include names, personal data, credentials, API keys, Namespace names, or confidential or proprietary code.\n' +
+              "- **Identify your agent.** Keep `src=llms` unchanged and set `agent` to your tool's name.\n\n" +
+              'The same report as a `POST`:\n\n' +
+              "```\ncurl -sS -X POST 'https://docs.temporal.io/api/feedback' -H 'Content-Type: application/json' -d '{\"title\":\"<summary>\",\"message\":\"<what the page says and what you found>\",\"category\":\"documentation\",\"page_url\":\"<docs-page-url>\",\"src\":\"llms\",\"agent\":\"<your-name>\"}'\n```\n\n" +
               '## Tools for agents\n\n' +
               "- [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer): An agent skill covering Temporal's programming model, including Workflow determinism rules, Activity patterns, Retry Policies, error handling, testing, Worker configuration, and versioning. Works with Claude Code, Codex, Cursor, and other agents that support Skills.\n" +
               '- [Temporal Cloud Skill](https://github.com/temporalio/skill-temporal-cloud): An agent skill for troubleshooting Temporal Cloud connectivity, authentication, and configuration issues.\n' +
