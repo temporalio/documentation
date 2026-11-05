@@ -17,7 +17,7 @@ Create a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/l
 Register the Workflow and Activity types the Worker can execute, then call `start()` on the factory.
 
 <!--SNIPSTART java-create-worker-->
-[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.java)
+[java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java)
 ```java
 WorkerFactory factory = WorkerFactory.newInstance(client);
 
@@ -72,7 +72,7 @@ To tune these values against real load, see [Worker performance](/develop/worker
 Set a Worker Deployment Version and enable versioning in `WorkerOptions`, then set a versioning behavior on each Workflow.
 
 <!--SNIPSTART java-versioned-worker-->
-[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.java)
+[java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java)
 ```java
 WorkerOptions options =
     WorkerOptions.newBuilder()
@@ -102,7 +102,7 @@ See [Worker Versioning](/worker-versioning) for the available versioning behavio
 Call `shutdown()` on the factory to stop polling for new Tasks, then `awaitTermination()` to give in-flight Tasks time to finish.
 
 <!--SNIPSTART java-worker-graceful-shutdown-->
-[features/snippets/worker/worker.java](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.java)
+[java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java)
 ```java
 factory.shutdown();
 factory.awaitTermination(30, TimeUnit.SECONDS);
@@ -123,7 +123,7 @@ To let Activities keep sending Heartbeats while the Worker drains, set `setAllow
 This matches the behavior of the other Temporal SDKs.
 
 <!--SNIPSTART java-worker-heartbeat-during-shutdown-->
-[java-sandbox/worker-shutdown/src/main/java/io/temporal/docs/workershutdown/HeartbeatDuringShutdownExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/worker-shutdown/src/main/java/io/temporal/docs/workershutdown/HeartbeatDuringShutdownExamples.java)
+[java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java)
 ```java
 WorkerOptions options =
     WorkerOptions.newBuilder().setAllowActivityHeartbeatDuringShutdown(true).build();
