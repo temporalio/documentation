@@ -131,7 +131,7 @@ A History Shard assumes that only one concurrent operation can be within a parti
 In essence, the number of History Shards represents the number of concurrent database operations that can occur for a Temporal Service.
 This means that the number of History Shards in a Temporal Service plays a significant role in the performance of your Temporal Application.
 
-Before integrating a database, the total number of History Shards for the Temporal Service must be chosen and set in the Temporal Service's configuration (see [persistence](/references/configuration#persistence)).
+Before integrating a database, the total number of History Shards for the Temporal Service must be chosen and set in the Temporal Service's configuration (see [persistence](/references/service-configuration#persistence)).
 After the Shard count is configured and the database integrated, the total number of History Shards for the Temporal Service cannot be changed.
 
 In theory, a Temporal Service can operate with an unlimited number of History Shards, but each History Shard adds compute overhead to the Temporal Service.

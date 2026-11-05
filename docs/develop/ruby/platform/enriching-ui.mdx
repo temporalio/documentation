@@ -1,6 +1,6 @@
 ---
 id: enriching-ui
-title: Enriching the user interface - Ruby SDK
+title: Enriching the user interface
 sidebar_label: Enriching the UI
 description: Add contextual information to workflows and events in the Temporal UI using the Ruby SDK.
 toc_max_heading_level: 3
@@ -13,7 +13,7 @@ tags:
 Temporal supports adding context to Workflows and Events with metadata. 
 This helps users identify and understand Workflows and their operations.
 
-## Adding Summary and Details to Workflows
+## Adding summary and details to Workflows
 
 ### Starting a Workflow
 
@@ -55,7 +55,7 @@ result = client.execute_workflow(
 )
 ```
 
-#### Inside the Workflow
+### Inside the Workflow
 
 Within a Workflow, you can get and set the _current workflow details_. 
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
@@ -78,7 +78,7 @@ class YourWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-#### Adding Summary to Activities and Timers
+### Adding Summary to Activities and Timers
 
 You can attach a `summary:` to activities when starting them from within a Workflow:
 
@@ -117,14 +117,14 @@ end
 
 The input format for `summary:` is a string, and limited to 200 bytes.
 
-## Viewing Summary and Details in the UI
+## Viewing summary and details in the UI
 
 Once you've added summaries and details to your Workflows, Activities, and Timers, you can view this enriched information in the Temporal Web UI. 
 Navigate to your Workflow's details page to see the metadata displayed in three key locations:
 
-### Workflow Overview Section
+### User Metadata
 
-At the top of the workflow details page, you'll find the workflow-level metadata:
+On the Workflow Details page, under the **User Metadata** tab, you'll find the workflow-level metadata:
 
 - **Summary & Details** - Displays the static summary and static details set when starting the workflow
 - **Current Details** - Displays the dynamic details that can be updated during workflow execution
@@ -143,6 +143,6 @@ Activity `Summary` support on the Timeline shipped in Temporal UI **v2.34.6** an
 
 ### Event History
 
-Individual events in the Workflow's Event History display their associated summaries when available:
+Individual events in the Workflow's Event History display their associated summaries when available.
 
 Workflow, Activity and Timer summaries appear in purple text next to their corresponding Events, providing immediate context without requiring you to expand the event details. When you do expand an event, the summary is also prominently displayed in the detailed view.

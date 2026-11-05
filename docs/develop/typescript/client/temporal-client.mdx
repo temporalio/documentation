@@ -1,11 +1,11 @@
 ---
 id: temporal-client
-title: Temporal Client - Typescript SDK
+title: Temporal Client
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description:
-  The Temporal Client SDK enables seamless communication with the Temporal Service, allowing applications to start
-  Workflow Executions, send Signals, and query Workflows efficiently.
+  Connect to a development Temporal Service or Temporal Cloud from TypeScript, connect a Worker with NativeConnection,
+  and get Workflow Execution results.
 tags:
   - Temporal Client
   - TypeScript SDK
@@ -43,6 +43,8 @@ To connect to a development Temporal service from a Temporal Application or from
 object to connect to the Temporal Service. Then pass in that connection when you create a new `Client` instance. If you
 leave the connection options empty, the SDK defaults to connecting to `127.0.0.1:7233` in the `default` Namespace.
 
+<!--SNIPSTART typescript-client-connect-local-->
+[typescript-sandbox/src/client/temporal-client/connect-local.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/connect-local.ts)
 ```ts
 import { Connection, Client } from '@temporalio/client';
 
@@ -59,6 +61,7 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+<!--SNIPEND-->
 
 If you need to connect to a Temporal Service with custom options, you can provide connection options directly in code,
 load them from **environment variables**, or a **TOML configuration file** using the `@temporalio/envconfig` helpers. We
@@ -121,8 +124,8 @@ service-version = "v1.2.3"
 You can create a Temporal Client using a profile from the configuration file as follows. In this example, you load the
 `default` profile for local development:
 
-{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
-[env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+{/* SNIPSTART typescript-client-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
+[typescript-sandbox/src/client/temporal-client/env-config/load-from-file.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/env-config/load-from-file.ts)
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -194,8 +197,8 @@ After setting the environment variables, use the following code to create the Te
 variables take precedence, they will override any values set in the configuration file. Therefore, you may leave
 `loadClientConnectConfig`'s arguments empty:
 
-{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "7,17-18", "selectedLines": ["1-5","17","19","22-40"]} */}
-[env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+{/* SNIPSTART typescript-client-env-config-load-default-profile {"highlightedLines": "7,17-18", "selectedLines": ["1-5", "17", "19", "22-40"]} */}
+[typescript-sandbox/src/client/temporal-client/env-config/load-from-file.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/env-config/load-from-file.ts)
 ```ts {7,17-18}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -237,17 +240,20 @@ If you don't want to use environment variables or a configuration file, you can 
 code. This is convenient for local development and testing. You can also load a base configuration from environment
 variables or a configuration file, and then override specific options in code.
 
+<!--SNIPSTART typescript-client-connect-code {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/connect-cloud.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/connect-cloud.ts)
 ```ts
 const connection = await Connection.connect({
-    address: <endpoint>,
-    tls: true,
-    apiKey: <APIKey>,
+  address: '<endpoint>',
+  tls: true,
+  apiKey: '<APIKey>',
 });
 const client = new Client({
-    connection,
-    namespace: <namespace_id>.<account_id>,
+  connection,
+  namespace: '<namespace_id>.<account_id>',
 });
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -326,8 +332,8 @@ configuration to the `Connection.connect` method. After that, you then pass the 
 the `Client` constructor to create a Temporal Client using the `staging` profile as follows. After loading the profile,
 you can also programmatically override specific connection options before creating the client.
 
-{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
-[env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
+{/* SNIPSTART typescript-client-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
+[typescript-sandbox/src/client/temporal-client/env-config/load-profile.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/env-config/load-profile.ts)
 ```ts {15-18,30-31}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -401,8 +407,8 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
-{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29", "selectedLines": ["1-5","17","19","22-40"]} */}
-[env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+{/* SNIPSTART typescript-client-env-config-load-default-profile {"highlightedLines": "17-19,28-29", "selectedLines": ["1-5", "17", "19", "22-40"]} */}
+[typescript-sandbox/src/client/temporal-client/env-config/load-from-file.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/env-config/load-from-file.ts)
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -443,23 +449,29 @@ main().catch((err) => {
 You can also provide connections options in your code directly. To create an initial connection, provide the Namespace
 and API key values to the `Connection.connect` method.
 
+<!--SNIPSTART typescript-client-connect-code {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/connect-cloud.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/connect-cloud.ts)
 ```ts
 const connection = await Connection.connect({
-    address: <endpoint>,
-    tls: true,
-    apiKey: <APIKey>,
+  address: '<endpoint>',
+  tls: true,
+  apiKey: '<APIKey>',
 });
 const client = new Client({
-    connection,
-    namespace: <namespace_id>.<account_id>,
+  connection,
+  namespace: '<namespace_id>.<account_id>',
 });
 ```
+<!--SNIPEND-->
 
 To update an API key, use the `setApiKey` method on the Connection object:
 
+<!--SNIPSTART typescript-client-set-api-key {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/connect-cloud.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/connect-cloud.ts)
 ```ts
-connection.setApiKey(<APIKey>);
+connection.setApiKey('<APIKey>');
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -499,14 +511,17 @@ api_key = "your-api-key-here"
 Use the `loadClientConnectConfig` helper from `@temporalio/envconfig` to load the `staging` profile from the
 configuration file and create a `NativeConnection` object as follows:
 
-```ts {1,15,17}
-import { NativeConnection } from '@temporalio/worker';
+<!--SNIPSTART typescript-client-worker-connect-config-file {"highlightedLines": "1,11,16"}-->
+[typescript-sandbox/src/client/temporal-client/worker-connect-config-file.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/worker-connect-config-file.ts)
+```ts {1,11,16}
+import { NativeConnection, Worker } from '@temporalio/worker';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
+import * as activities from './activities';
 
 async function main() {
-  const configFile = resolve(__dirname, '../config.toml');
-  const profileName = 'staging'
+  const configFile = resolve(__dirname, 'config.toml');
+  const profileName = 'staging';
 
   // Load the 'staging' profile.
   const config = loadClientConnectConfig({
@@ -518,11 +533,15 @@ async function main() {
 
   const worker = await Worker.create({
     connection,
-    namespace: <namespace_id>.<account_id>,
-    // ...
-});
+    namespace: config.namespace,
+    taskQueue: 'your-task-queue',
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+  });
+  await worker.run();
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -540,9 +559,12 @@ export TEMPORAL_TLS_CLIENT_KEY_PATH="/path/to/your/client/key.pem"
 After setting the environment variables, use the following code to create a `NativeConnection` object using the
 `loadClientConnectConfig` helper from `@temporalio/envconfig`:
 
-```ts {1,5}
-import { NativeConnection } from '@temporalio/worker';
+<!--SNIPSTART typescript-client-worker-connect-env {"highlightedLines": "1,6,8"}-->
+[typescript-sandbox/src/client/temporal-client/worker-connect-env.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/worker-connect-env.ts)
+```ts {1,6,8}
+import { NativeConnection, Worker } from '@temporalio/worker';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
+import * as activities from './activities';
 
 async function main() {
   const config = loadClientConnectConfig();
@@ -551,11 +573,15 @@ async function main() {
 
   const worker = await Worker.create({
     connection,
-    namespace: process.env.TEMPORAL_NAMESPACE,
-    // ...
+    namespace: config.namespace,
+    taskQueue: 'your-task-queue',
+    workflowsPath: require.resolve('./workflows'),
+    activities,
   });
+  await worker.run();
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -565,41 +591,44 @@ You can also provide connections options in your TypeScript code directly. To cr
 connections to the ` NativeConnection.connect` method, and then pass the resulting `NativeConnection` object to
 `Worker.create()` when creating the Worker:
 
-```ts {1,4,9}
-import { NativeConnection } from '@temporalio/worker';
-import { loadClientConnectConfig } from '@temporalio/envconfig';
-
+<!--SNIPSTART typescript-client-worker-connect-code {"highlightedLines": "1,6-7", "enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/worker-connect-code.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/worker-connect-code.ts)
+```ts {1,6-7}
 const connection = await NativeConnection.connect({
-    address: <endpoint>,
-    tls: true,
-    apiKey: <APIKey>,
+  address: '<endpoint>',
+  tls: true,
+  apiKey: '<APIKey>',
 });
 const worker = await Worker.create({
-    connection,
-    namespace: <namespace_id>.<account_id>,
-    // ...
+  connection,
+  namespace: '<namespace_id>.<account_id>',
+  taskQueue: 'your-task-queue',
+  workflowsPath: require.resolve('./workflows'),
+  activities,
 });
 ```
+<!--SNIPEND-->
 
 `@temporalio/worker` v1.15.0 and later support replacing a running Worker's connection, which lets you rotate an mTLS
 client certificate without restarting the Worker. gRPC's TLS credentials don't support dynamic certs, so instead of
 updating the existing `NativeConnection` you create a new one with the new certificate and assign it to `worker.connection`:
 
+<!--SNIPSTART typescript-client-worker-rotate-certificate {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/worker-connect-code.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/worker-connect-code.ts)
 ```ts
-import { readFileSync } from 'fs';
-
 const newConnection = await NativeConnection.connect({
-    address: <endpoint>,
-    tls: {
-        clientCertPair: {
-            crt: readFileSync('client-cert-new.pem'),
-            key: readFileSync('client-key-new.pem'),
-        },
+  address: '<endpoint>',
+  tls: {
+    clientCertPair: {
+      crt: readFileSync('client-cert-new.pem'),
+      key: readFileSync('client-key-new.pem'),
     },
+  },
 });
 
 worker.connection = newConnection;
 ```
+<!--SNIPEND-->
 
 The Worker starts using `newConnection` for subsequent calls to the Temporal Service; calls already in flight on the old
 connection finish normally.
@@ -608,21 +637,21 @@ connection finish normally.
 
 </Tabs>
 
-## NativeConnection, Connection, and Client
+## `NativeConnection`, `Connection`, and `Client`
 
 `NativeConnection`, `Connection`, and `Client` are all classes provided by the TypeScript SDK to facilitate
 communication with the Temporal Service. This section explains the differences between these classes and their
 respective use cases. For detailed information about each class, refer to the
 [Temporal TypeScript API documentation](https://typescript.temporal.io/api/namespaces/client).
 
-### NativeConnection vs. Connection {/* #native-connection-vs-connection */}
+### `NativeConnection` versus `Connection` {/* #native-connection-vs-connection */}
 
 The TypeScript SDK provides two types of connection classes to connect to the Temporal Service: `NativeConnection` and
 `Connection`. The `NativeConnection` class is used to connect from a Worker, while the `Connection` class is used to
 connect from a Temporal Application or from within an Activity, typically through a `Client` object. Both connection
 classes accept the same set of connection options.
 
-### Connection vs. Client {/* #connection-vs-client */}
+### `Connection` versus `Client` {/* #connection-vs-client */}
 
 A `Client` object is a high-level, lightweight abstraction that simplifies interaction with the Temporal Service. It
 internally manages a `Connection` object to handle the low-level communication details. The `Client` class provides
@@ -637,13 +666,11 @@ When instantiating a `Connection`, you specify most connection options except fo
 Service endpoint, TLS settings, and authentication credentials. When instantiating a `Client`, you provide the
 `Connection` object and the Namespace you want to connect to, along with other client options.
 
-## Start Workflow Execution {/* #start-workflow-execution */}
+## Start a Workflow Execution {/* #start-workflow-execution */}
 
-**How to start a Workflow Execution using the Typescript SDK**
-
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
-you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
-language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters. To start a Workflow Execution, you must
+supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific
+contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
 within another Workflow Execution, use either the Child Workflow or External Workflow APIs.
@@ -660,15 +687,17 @@ When you have a Client, you can schedule the start of a Workflow with `client.wo
 `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the
 receipt.
 
-```typescript
+<!--SNIPSTART typescript-client-start-workflow {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/start-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/start-workflow.ts)
+```ts
 const handle = await client.workflow.start(example, {
   workflowId: 'your-workflow-id',
   taskQueue: 'your-task-queue',
   args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
 });
-const handle = client.getHandle(workflowId);
 const result = await handle.result();
 ```
+<!--SNIPEND-->
 
 Calling `client.workflow.start()` and `client.workflow.execute()` send a command to Temporal Server to schedule a new
 Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow
@@ -678,12 +707,12 @@ You can test this by executing a Client command without a matching Worker. Tempo
 History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue
 and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a
+Workflow Executions run in a separate V8 isolate context to provide a
 [deterministic runtime](/workflow-definition#deterministic-constraints).
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
+The only Workflow Option that you must set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
 Queue name.
@@ -705,44 +734,41 @@ The Worker needs three main things:
     `require.resolve('./workflows')`. Workflows are bundled with their dependencies.
   - If you prefer to handle the bundling yourself, pass a prebuilt bundle to `workflowBundle`.
 
+<!--SNIPSTART typescript-client-task-queue-worker-->
+[typescript-sandbox/src/client/temporal-client/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/worker.ts)
 ```ts
 import { Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
-async function run() {
+export async function run(connection?: NativeConnection): Promise<void> {
   // Step 1: Register Workflows and Activities with the Worker and connect to
   // the Temporal server.
   const worker = await Worker.create({
+    connection,
     workflowsPath: require.resolve('./workflows'),
     activities,
     taskQueue: 'hello-world',
   });
-  // Worker connects to localhost by default and uses console.error for logging.
+  // Without a connection, the Worker connects to localhost:7233.
   // Customize the Worker by passing more options to create():
   // https://typescript.temporal.io/api/classes/worker.Worker
   // If you need to configure server connection parameters, see docs:
-  // /typescript/security#encryption-in-transit-with-mtls
+  // /develop/typescript/client/temporal-client#connect-to-temporal-service-from-a-worker
 
-  // Step 2: Start accepting tasks on the `tutorial` queue
+  // Step 2: Start accepting tasks on the `hello-world` queue
   await worker.run();
 }
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
 ```
+<!--SNIPEND-->
 
 `taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and
 Activities with the Worker.
 
 When scheduling a Workflow, you must specify `taskQueue`.
 
+<!--SNIPSTART typescript-client-execute-task-queue {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/start-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/start-workflow.ts)
 ```ts
-import { Client, Connection } from '@temporalio/client';
-// This is the code that is used to start a Workflow.
-const connection = await Connection.create();
-const client = new Client({ connection });
 const result = await client.workflow.execute(yourWorkflow, {
   // required
   taskQueue: 'your-task-queue',
@@ -750,16 +776,22 @@ const result = await client.workflow.execute(yourWorkflow, {
   workflowId: 'your-workflow-id',
 });
 ```
+<!--SNIPEND-->
 
 When creating a Worker, you must pass the `taskQueue` option to the `Worker.create()` function.
 
+<!--SNIPSTART typescript-client-task-queue-worker-options {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/worker.ts)
 ```ts
 const worker = await Worker.create({
+  connection,
+  workflowsPath: require.resolve('./workflows'),
   // imported elsewhere
   activities,
   taskQueue: 'your-task-queue',
 });
 ```
+<!--SNIPEND-->
 
 Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option
 to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify `taskQueue`, the TypeScript SDK
@@ -771,20 +803,23 @@ Although it is not required, we recommend providing your own
 [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
 identifier, such as an order identifier or customer identifier.
 
-Connect to a Client with `client.workflow.start()` and any arguments. Then specify your `taskQueue` and set your
+Call `client.workflow.start()` with your Workflow and any arguments. Then specify your `taskQueue` and set your
 `workflowId` to a meaningful business identifier.
 
-```typescript
+<!--SNIPSTART typescript-client-workflow-id {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/start-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/start-workflow.ts)
+```ts
 const handle = await client.workflow.start(example, {
   workflowId: 'yourWorkflowId',
   taskQueue: 'yourTaskQueue',
   args: ['your', 'arg', 'uments'],
 });
 ```
+<!--SNIPEND-->
 
-This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
+This starts a Workflow Execution with the given Workflow ID, Task Queue name, and arguments.
 
-### Get the results of a Workflow Execution {/* #get-workflow-results */}
+## Get Workflow results {/* #get-workflow-results */}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -799,36 +834,43 @@ results of Workflow Executions.
 
 To return the results of a Workflow Execution:
 
-```typescript
+<!--SNIPSTART typescript-client-return-result {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/workflows.ts)
+```ts
 return 'Completed ' + wf.workflowInfo().workflowId + ', Total Charged: ' + totalCharged;
 ```
+<!--SNIPEND-->
 
 `totalCharged` is just a function declared in your code. For a full example, see
 [subscription-workflow-project-template-typescript/src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/main/src/workflows.ts).
 
-A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result
+A Workflow function may return a result. If it doesn't (in which case the return type is `Promise<void>`), the result
 will be `undefined`.
 
 If you started a Workflow with `client.workflow.start()`, you can choose to wait for the result anytime with
 `handle.result()`.
 
-```typescript
-const handle = client.getHandle(workflowId);
+<!--SNIPSTART typescript-client-get-result {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/start-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/start-workflow.ts)
+```ts
+const handle = client.workflow.getHandle(workflowId);
 const result = await handle.result();
 ```
+<!--SNIPEND-->
 
 Using a Workflow Handle isn't necessary with `client.workflow.execute()`.
-
-Workflows that prematurely end will throw a `WorkflowFailedError` if you call `result()`.
 
 If you call `result()` on a Workflow that prematurely ended for some reason, it throws a
 [`WorkflowFailedError` error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError/) that reflects the
 reason. For that reason, it is recommended to catch that error.
 
-```typescript
-const handle = client.getHandle(workflowId);
+<!--SNIPSTART typescript-client-workflow-failed-error {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/client/temporal-client/start-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/client/temporal-client/start-workflow.ts)
+```ts
+const handle = client.workflow.getHandle(workflowId);
 try {
   const result = await handle.result();
+  return result;
 } catch (err) {
   if (err instanceof WorkflowFailedError) {
     throw new Error('Temporal workflow failed: ' + workflowId, {
@@ -841,3 +883,4 @@ try {
   }
 }
 ```
+<!--SNIPEND-->

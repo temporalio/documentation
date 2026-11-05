@@ -26,6 +26,7 @@ temp/
 .env.production.local
 .vs
 .claude/*
+!.claude/skills/
 .omc
 
 npm-debug.log*

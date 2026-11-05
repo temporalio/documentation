@@ -1,7 +1,7 @@
 ---
 id: standalone-activities
-title: Standalone Activities Feature Guide
-sidebar_label: Feature Guide
+title: Standalone Activities feature guide
+sidebar_label: Feature guide
 toc_max_heading_level: 4
 tags:
   - Activities
@@ -11,12 +11,8 @@ tags:
 description: Execute Activities independently without a Workflow using the Temporal Ruby SDK.
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader featureName="standaloneActivity" />
-
-Standalone Activities are Activities that run independently, without being orchestrated by a
-Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
+[Standalone Activities](/standalone-activity) are Activities that run independently, without being orchestrated
+by a Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
 Activity directly from a [`Temporalio::Client`](https://ruby.temporal.io/Temporalio/Client.html).
 
 The way you write the Activity and register it with a Worker is identical to [Workflow
@@ -25,12 +21,13 @@ Activity directly from your Temporal Client.
 
 :::tip
 
-New to Standalone Activities? Start with the [Standalone Activities Quickstart](/develop/ruby/activities/standalone-activities-quickstart).
+New to Standalone Activities? Start with the [Standalone Activities quickstart](/develop/ruby/activities/standalone-activities-quickstart).
 
 :::
 
 This page covers the following:
 
+- [Prerequisites](#prerequisites)
 - [Start a Standalone Activity without waiting for the result](#start-activity)
 - [Get a handle to an existing Standalone Activity](#get-activity-handle)
 - [Wait for the result of a Standalone Activity](#get-activity-result)
@@ -45,6 +42,17 @@ This documentation uses source code from the
 sample.
 
 :::
+
+## Prerequisites {/* #prerequisites */}
+
+Standalone Activities require:
+
+- **Ruby** 3.3+
+- **Temporal Ruby SDK** v1.9.0 or higher
+- **[Temporal CLI](/cli/setup-cli)** v1.9.1 or higher
+
+The [Standalone Activities quickstart](/develop/ruby/activities/standalone-activities-quickstart)
+walks through installing these.
 
 ## Start a Standalone Activity without waiting for the result {/* #start-activity */}
 
@@ -155,7 +163,7 @@ temporal activity list
 ```
 
 The query parameter accepts the same [List Filter](/list-filter) syntax used for [Workflow
-Visibility](/visibility). For example, `ActivityType = 'ComposeGreeting' AND Status = 'Running'`.
+Visibility](/visibility). For example, `ActivityType = 'ComposeGreeting' AND ExecutionStatus = 'Running'`.
 
 ## Count Standalone Activities {/* #count-activities */}
 
@@ -188,7 +196,7 @@ temporal activity count
 
 ## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
-The Worker and Client code in the [Standalone Activities Quickstart](/develop/ruby/activities/standalone-activities-quickstart)
+The Worker and Client code in the [Standalone Activities quickstart](/develop/ruby/activities/standalone-activities-quickstart)
 use [`Temporalio::EnvConfig::ClientConfig.load_client_connect_options`](https://ruby.temporal.io/Temporalio/EnvConfig/ClientConfig.html#load_client_connect_options-class_method),
 so the same code works against Temporal Cloud — configure the connection via environment
 variables or a TOML profile. No code changes are needed.
@@ -218,4 +226,4 @@ export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```
 
-Then run the Worker and starter code as shown in the [Standalone Activities Quickstart](/develop/ruby/activities/standalone-activities-quickstart).
+Then run the Worker and starter code as shown in the [Standalone Activities quickstart](/develop/ruby/activities/standalone-activities-quickstart).

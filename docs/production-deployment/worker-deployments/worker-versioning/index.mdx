@@ -1,6 +1,7 @@
 ---
 id: index
 title: Worker Versioning
+slug: /production-deployment/worker-deployments/worker-versioning
 description:
   Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for
   patching to support multiple code paths.
@@ -19,7 +20,7 @@ called [Worker Deployment Versions](/worker-versioning#deployment-versions).
 For most teams, Worker Versioning should be the default recommendation for deploying Workflow code changes in
 production. If you can run versioned worker deployments, prefer Worker Versioning over patching.
 
-Worker Versioning unlocks important benefits for users of [blue-green or rainbow deployments](#deployment-systems).
+Worker Versioning provides the following benefits for [blue-green or rainbow deployments](#deployment-systems):
 
 - Ramping traffic gradually to a new Worker Deployment Version.
 - Verifying a new Deployment Version with tests before sending production traffic to it.
@@ -86,6 +87,14 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - For a given Workflow, its [**Target Worker Deployment Version**](/worker-versioning#versioning-definitions) is the
   version it will move to next.
 
+:::caution Before you enable Worker Versioning
+
+Worker Versioning has [limits](/evaluate/cloud/limits#worker-versioning-level) on the number of deployments, versions, and Task Queues. Review those limits before enabling versioning.
+
+In particular, do not enable Worker Versioning for worker-specific Task Queues — versioning is not relevant for such queues, and it will unnecessarily exhaust the [per-version Task Queue limit](/evaluate/cloud/limits#max-task-queues-in-deployment-version-limits).
+
+:::
+
 ## Setting up your deployment system {/* #deployment-systems */}
 
 If you haven't already, you'll want to pick a container deployment solution for your Workers.
@@ -144,7 +153,7 @@ CaN boundary without patching. See [Upgrading on Continue-as-New](/production-de
 
 :::
 
-### Default Versioning Behavior Considerations
+### Default versioning behavior considerations
 
 If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning.
 Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.

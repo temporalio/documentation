@@ -1,0 +1,46 @@
+# Explicit tag definitions.
+#
+# Docusaurus auto-generates a tag's permalink from its label using lodash
+# kebabCase unless it's listed here. kebabCase mis-slugs pluralized acronyms
+# and unspaced CamelCase (for example "Temporal SDKs" -> "temporal-sd-ks",
+# "TypeScript SDK" -> "type-script-sdk"), so any tag affected by that needs an
+# explicit `permalink` below.
+#
+# A tag only needs an entry here if its auto-generated permalink is wrong.
+# label is required whenever a tag is listed, otherwise Docusaurus falls back
+# to `lodash.capitalize()`, which lowercases everything after the first
+# letter (breaking proper-noun casing like "Temporal SDKs").
+#
+# If you fix a tag's permalink here, also add a redirect in vercel.json from
+# the old auto-generated slug to the new one.
+Temporal SDKs:
+  label: Temporal SDKs
+  permalink: /temporal-sdks
+
+TypeScript SDK:
+  label: TypeScript SDK
+  permalink: /typescript-sdk
+
+TRUs:
+  label: TRUs
+  permalink: /trus
+
+Google GenAI:
+  label: Google GenAI
+  permalink: /google-genai
+
+LangGraph:
+  label: LangGraph
+  permalink: /langgraph
+
+LangSmith:
+  label: LangSmith
+  permalink: /langsmith
+
+OpenAI Agents SDK:
+  label: OpenAI Agents SDK
+  permalink: /openai-agents-sdk
+
+OpenMetrics:
+  label: OpenMetrics
+  permalink: /openmetrics

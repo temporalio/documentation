@@ -24,19 +24,19 @@ covers why workloads hit APS limits, how to design Workflows that use actions ef
 [Provisioned Capacity](#provisioned-capacity-and-trus) — Temporal Resource Units (TRUs) that reserve additional
 capacity for spiky or unpredictable workloads.
 
-## Understanding actions in Temporal
+## Understand actions in Temporal {/* #understanding-actions-in-temporal */}
 
 ### What counts as an action?
 
 Actions are the fundamental operations that drive your Workflows forward.
-The following is a partial list — see [the full list in our documentation](/cloud/actions).
+The following is a partial list — see [the full list in our documentation](/evaluate/cloud/actions).
 
 - Workflows: Starting, completing, resetting. Also starting Child Workflows, as well as Schedules and Timers
 - Activities: Starting, retrying, Heartbeating
 - Signals, Updates, and Queries 
 
 Actions that count toward an APS limit are, with a few exemptions, the same as actions that are billable. 
-The key insight here is that nearly everything that happens in Temporal--state changes, decision points, interactions--is counted as an action.
+Nearly everything that happens in Temporal (state changes, decision points, interactions) counts as an action.
 
 ### The action multiplier effect
 
@@ -49,7 +49,7 @@ These can all contribute to the multiplier effect.
 ### The effect of rate limiting
 
 In Temporal Cloud, the effect of rate limiting is increased latency, not lost work. 
-Workers [might take longer](/cloud/service-availability#throughput) to complete Workflows. 
+Workers [might take longer](/cloud/slo#throughput) to complete Workflows. 
 
 ## Common reasons customers hit APS limits
 
@@ -69,7 +69,7 @@ Common bursty patterns include:
 - Retry Storms: when a large number of Workflows get stuck on an Activity, and that Activity is failing, if retry delay is very short, this can cause a spike in Actions.
 - Timer Storms: a large number of Workflows all set a Timer for the exact same time--triggering a spike as those Timers fire and then Activities run, causing a lot of actions all at the same time.
 
-These types of processes can result in your Namespace averaging 200 APS over a day, but spiking to 800 APS or more during your peak hour/day/event/etc. 
+These types of processes can result in your Namespace averaging 200 APS over a day, but spiking to 800 APS or more during your peak hour, day, or event. 
 
 #### How to mitigate
 
@@ -151,7 +151,7 @@ Each separate Activity adds Action overhead.
 
 ### Multiple use cases in one Namespace
 Often when starting with Temporal, the first use case is implemented in a single Namespace, generally one per logical environment. 
-When the second Temporal use case is implemented, it runs in the same Namespace, the same for the third, fourth, etc. 
+When the second Temporal use case is implemented, it runs in the same Namespace, as do the third, fourth, and any later ones. 
 
 An APS limit is set per Namespace, so multiple use cases with multiple traffic patterns in the same Namespace can exhaust this limit quickly.
 
@@ -210,18 +210,18 @@ Since you understand your workload patterns better than any auto-scaling system,
 - **Schedule capacity changes**: Use [Temporal Schedules](/schedule) or Workflows to increase TRUs before known events
 - **React to leading indicators**: If your application has upstream signals (incoming order queue depth, marketing campaign start), use those to trigger capacity changes proactively
 
-## Knowing if you're hitting APS limits
+## Know if you're hitting APS limits {/* #knowing-if-youre-hitting-aps-limits */}
 
 In addition to understanding the patterns that can affect APS limits on a Temporal Namespace, it's also important to know if you're approaching (or exceeding) these limits.
 Temporal Cloud provides several metrics that, if tracked, will tell you if you're being rate limited due to APS.
 See the documentation on [detecting resource exhaustion](/cloud/service-health#rps-aps-rate-limits) for an explanation of those metrics as well as a sample Grafana dashboard that shows how they could be viewed.
 
-### Monitoring for TRU decisions
+### Monitor for TRU decisions {/* #monitoring-for-tru-decisions */}
 
 If you're considering Provisioned capacity, set up monitoring to understand your usage patterns:
 
 - **Use [OpenMetrics](/cloud/metrics/openmetrics)**: For real-time visibility into APS consumption, integrate Temporal Cloud metrics with your observability stack
-- **Track APS usage vs. limits**: Monitor [`temporal_cloud_v1_total_action_throttled_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_throttled_count) to detect throttling events
+- **Track APS usage against limits**: Monitor [`temporal_cloud_v1_total_action_throttled_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_throttled_count) to detect throttling events
 - **Set alerts at 70-80% utilization**: This gives you time to provision TRUs before hitting limits
 - **Analyze historical patterns**: Understanding your traffic patterns helps you decide between reactive TRU provisioning and proactive automation
 

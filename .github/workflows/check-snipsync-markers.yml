@@ -1,0 +1,41 @@
+name: Check Snipsync Markers
+
+# Fails when a SNIPSTART marker in docs/ has no SNIPEND, or closes in the other
+# marker style. Snipsync logs a warning for those, skips the snippet, and exits 0,
+# so the snippet silently stops refreshing from its source repository. See
+# bin/check-snipsync-markers.js and readme/UTILITIES.md.
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "bin/check-snipsync-markers.js"
+      - "bin/check-snipsync-markers.test.js"
+      - "bin/check-orphan-pages.js"
+      - ".github/workflows/check-snipsync-markers.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check-snipsync-markers:
+    name: Check Snipsync markers are paired
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Test the checker
+        run: node --test bin/check-snipsync-markers.test.js
+
+      - name: Check Snipsync markers
+        run: node bin/check-snipsync-markers.js

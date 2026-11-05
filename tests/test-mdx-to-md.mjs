@@ -7,7 +7,8 @@
  * Run: node tests/test-mdx-to-md.mjs
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, mkdtempSync } from "fs";
+import { tmpdir } from "os";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import {
@@ -21,7 +22,9 @@ import {
   dedent,
   scanMarkdownImports,
   COMPONENT_REGISTRY,
+  RELEASE_NOTE_LABELS,
 } from "../scripts/mdx-to-md.mjs";
+import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { jsonToMarkdownTable } from "../scripts/component-handlers/data-tables.mjs";
 import {
   selectIntegrations,
@@ -548,6 +551,14 @@ test("multiline DocCardList with children is stripped", () => {
   assertNotContains(markdown, "Card");
 });
 
+test("WorkerTuningSimulator is stripped without a warning", () => {
+  const { markdown, warnings } = transformMdx(`Before\n<WorkerTuningSimulator />\nAfter`);
+  assertContains(markdown, "Before");
+  assertContains(markdown, "After");
+  assertNotContains(markdown, "WorkerTuningSimulator");
+  assert(!warnings.some((w) => w.includes("WorkerTuningSimulator")), "Unexpected warning");
+});
+
 // ---------------------------------------------------------------------------
 // Unit tests: transformMdx — warnings for unknown components
 // ---------------------------------------------------------------------------
@@ -604,6 +615,49 @@ test("CodeSnippet on a single line is handled", () => {
   const { markdown } = transformMdx(input);
   assertContains(markdown, "```bash");
   assertContains(markdown, "brew install temporal");
+});
+
+test("CodeSnippet with a Snipsync body keeps the synced fence", () => {
+  const input = [
+    '<CodeSnippet title="service.go">',
+    "",
+    "<!--SNIPSTART go-nexus-service-->",
+    "[nexus/service.go](https://github.com/temporalio/samples-go/blob/main/nexus/service.go)",
+    "```go",
+    "package greeting",
+    "```",
+    "<!--SNIPEND-->",
+    "",
+    "</CodeSnippet>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "```go\npackage greeting\n```");
+  assertNotContains(markdown, "```\n<!--SNIPSTART");
+  assertNotContains(markdown, "<CodeSnippet");
+});
+
+test("SetupStep with a CodeSnippet child and no code={} prop", () => {
+  const input = [
+    "<SetupSteps>",
+    "<SetupStep>",
+    '<CodeSnippet title="service.go">',
+    "",
+    "```go",
+    "package greeting",
+    "```",
+    "",
+    "</CodeSnippet>",
+    "",
+    "## Define the Nexus Service",
+    "",
+    "</SetupStep>",
+    "</SetupSteps>",
+  ].join("\n");
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "## Define the Nexus Service");
+  assertContains(markdown, "```go\npackage greeting\n```");
+  assertNotContains(markdown, "SetupStep");
+  assertNotContains(markdown, "CodeSnippet");
 });
 
 // ---------------------------------------------------------------------------
@@ -746,26 +800,40 @@ test("self-closing ReleaseNoteHeader does NOT swallow the page body", () => {
   assertNotContains(markdown, "ReleaseNoteHeader");
 });
 
+// Picks a feature from the feature map so the featureName tests survive
+// release-stage changes. Prefers a stage other than the publicPreview default,
+// so a broken lookup can't pass by falling through to the default.
+function pickMappedFeature() {
+  const entries = Object.entries(FEATURE_RELEASE_TYPES);
+  return entries.find(([, type]) => type !== "publicPreview") ?? entries[0];
+}
+
 test("self-closing ReleaseNoteHeader resolves label from featureName", () => {
-  const input = `<ReleaseNoteHeader featureName="cloudCli" />\n\nCommand reference content.`;
+  const [featureName, mappedType] = pickMappedFeature();
+  const input = `<ReleaseNoteHeader featureName="${featureName}" />\n\nCommand reference content.`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Public Preview**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
   assertContains(markdown, "Command reference content.");
   assertNotContains(markdown, "ReleaseNoteHeader");
 });
 
 test("ReleaseNoteHeader resolves label from featureName in paired form", () => {
-  const input = `<ReleaseNoteHeader featureName="standaloneActivity">\nAvailable in preview.\n</ReleaseNoteHeader>`;
+  const [featureName, mappedType] = pickMappedFeature();
+  const input = `<ReleaseNoteHeader featureName="${featureName}">\nAvailable in preview.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Public Preview**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
   assertContains(markdown, "Available in preview.");
   assertNotContains(markdown, "> ****");
 });
 
 test("ReleaseNoteHeader featureName overrides explicit type when mapped", () => {
-  const input = `<ReleaseNoteHeader featureName="serverlessWorkersCloudRun" type="publicPreview">\nBody.\n</ReleaseNoteHeader>`;
+  // Derived from the feature map so the test survives release-stage changes.
+  const [featureName, mappedType] = Object.entries(FEATURE_RELEASE_TYPES)[0];
+  const explicitType = mappedType === "prerelease" ? "publicPreview" : "prerelease";
+  const input = `<ReleaseNoteHeader featureName="${featureName}" type="${explicitType}">\nBody.\n</ReleaseNoteHeader>`;
   const { markdown } = transformMdx(input);
-  assertContains(markdown, "> **Pre-release**");
+  assertContains(markdown, `> **${RELEASE_NOTE_LABELS[mappedType]}**`);
+  assertNotContains(markdown, `> **${RELEASE_NOTE_LABELS[explicitType]}**`);
 });
 
 // ---------------------------------------------------------------------------
@@ -1433,6 +1501,61 @@ test("scanMarkdownImports finds .md component imports", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Transclusion of imported partials
+// ---------------------------------------------------------------------------
+console.log("\n📦 transformMdx — partial transclusion");
+
+// A throwaway project root, so partials never live in docs/.
+const PARTIALS_ROOT = mkdtempSync(join(tmpdir(), "mdx-to-md-partials-"));
+mkdirSync(join(PARTIALS_ROOT, "docs/develop/_shared/topic"), { recursive: true });
+writeFileSync(
+  join(PARTIALS_ROOT, "docs/develop/_shared/topic/when.mdx"),
+  "Shared guidance for every SDK.\n"
+);
+
+const partialPage = (body) =>
+  `import When from '@site/docs/develop/_shared/topic/when.mdx';\nimport Rel from '../_shared/topic/when.mdx';\n\n${body}`;
+const transformPartialPage = (body) =>
+  transformMdx(partialPage(body), {
+    sourceFile: "docs/develop/go/page.mdx",
+    projectRoot: PARTIALS_ROOT,
+  });
+
+test("inlines an @site partial at the top level", () => {
+  const { markdown, warnings } = transformPartialPage("Before.\n\n<When />\n\nAfter.");
+  assertContains(markdown, "Shared guidance for every SDK.");
+  assertEqual(warnings.length, 0, `unexpected warnings: ${warnings.join("; ")}`);
+});
+
+test("inlines a relative partial against the importing page's folder", () => {
+  const { markdown } = transformPartialPage("<Rel />");
+  assertContains(markdown, "Shared guidance for every SDK.");
+});
+
+test("inlines a partial inside a TabItem body", () => {
+  const { markdown, warnings } = transformPartialPage(
+    `<Tabs>\n<TabItem value="go" label="Go">\n\n<When />\n\n</TabItem>\n</Tabs>`
+  );
+  assertContains(markdown, "**Go**");
+  assertContains(markdown, "Shared guidance for every SDK.");
+  assertEqual(warnings.length, 0, `unexpected warnings: ${warnings.join("; ")}`);
+});
+
+test("inlines a partial inside an SdkTabs slot", () => {
+  const { markdown } = transformPartialPage(
+    `<SdkTabs>\n<SdkTabs.Go>\n\n<Rel />\n\n</SdkTabs.Go>\n</SdkTabs>`
+  );
+  assertContains(markdown, "Shared guidance for every SDK.");
+});
+
+test("inlines a partial inside <details>", () => {
+  const { markdown } = transformPartialPage(
+    `<details>\n<summary>More</summary>\n\n<When />\n\n</details>`
+  );
+  assertContains(markdown, "Shared guidance for every SDK.");
+});
+
+// ---------------------------------------------------------------------------
 // Snapshot tests: fixture files
 // ---------------------------------------------------------------------------
 console.log("\n📸 Snapshot tests — fixture files");
@@ -1516,9 +1639,9 @@ test("all registry strategies are valid strings", () => {
   const validStrategies = [
     "tabs", "tabitem", "transparent", "related-read",
     "related-read-container", "related-read-item",
-    "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term",
+    "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term", "for-os",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
-    "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
+    "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "guides-grid", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links", "event-history-demo", "walkthrough-step", "walkthrough-entry",
   ];
   for (const [comp, strategy] of Object.entries(COMPONENT_REGISTRY)) {

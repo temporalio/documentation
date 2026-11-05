@@ -1,40 +1,38 @@
 ---
 id: basics
-title: Workflow basics - Go SDK
+title: Workflow basics
 sidebar_label: Workflow basics
 description: This section explains Workflow basics with the Go SDK
 toc_max_heading_level: 4
 tags:
+  - Workflows
   - Go SDK
   - Temporal SDKs
 ---
 
-## How to develop a basic Workflow {/* #develop-workflows */}
+## Develop a basic Workflow {/* #develop-workflows */}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflow-definition) is an exportable function.
 Below is an example of a basic Workflow Definition.
 
+<!--SNIPSTART go-workflows-basics-simple-->
+[go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
 ```go
-package yourapp
-
-import (
-    "time"
-
-    "go.temporal.io/sdk/workflow"
-)
 func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
-    // ...
-    return nil
+	// ...
+	return nil
 }
 ```
+<!--SNIPEND-->
 
-### How to define Workflow parameters {/* #workflow-parameters */}
+### Define Workflow parameters {/* #workflow-parameters */}
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
+For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
 
 The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type.
 It is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
@@ -50,43 +48,28 @@ However, the best practice is to pass a single parameter that is of a `struct` t
 
 All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
 
-```go {9-12,14}
-package yourapp
-
-import (
-    "time"
-
-    "go.temporal.io/sdk/workflow"
-)
-
+<!--SNIPSTART go-activities-execution-workflow {"highlightedLines": "2-5,7", "selectedLines": ["10-13", "20", "38-42", "66"]}-->
+[go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
+```go {2-5,7}
+// ...
 type YourWorkflowParam struct {
 	WorkflowParamX string
 	WorkflowParamY int
 }
-
+// ...
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
-    activityOptions := workflow.ActivityOptions{
-        StartToCloseTimeout: 10 * time.Second,
-    }
-    ctx = workflow.WithActivityOptions(ctx, activityOptions)
-    activityParam := YourActivityParam{
-        ActivityParamX: param.WorkflowParamX,
-        ActivityParamY: param.WorkflowParamY,
-    }
-
-    var a *YourActivityObject
-
-    var activityResult YourActivityResultObject
-
-    err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
-    if err != nil {
-        return nil, err
-    }
-    return nil
+// ...
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+	activityParam := YourActivityParam{
+		ActivityParamX: param.WorkflowParamX,
+		ActivityParamY: param.WorkflowParamY,
+	}
+// ...
 }
 ```
+<!--SNIPEND-->
 
-### How to define Workflow return parameters {/* #workflow-return-values */}
+### Define Workflow return parameters {/* #workflow-return-values */}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -99,104 +82,84 @@ However, it's not possible to receive both a custom value and an error in the ca
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
-```go {11-14,35-38}
-package yourapp
-
-import (
-    "time"
-
-    "go.temporal.io/sdk/workflow"
-)
-
-// other structs and code
-
+<!--SNIPSTART go-activities-execution-workflow {"highlightedLines": "2-5,9-13", "selectedLines": ["15-18", "20", "61-66"]}-->
+[go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
+```go {2-5,9-13}
+// ...
 type YourWorkflowResultObject struct {
-    WFResultFieldX string
-    WFResultFieldY int
+	WFResultFieldX string
+	WFResultFieldY int
 }
-
+// ...
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
-    activityOptions := workflow.ActivityOptions{
-        StartToCloseTimeout: 10 * time.Second,
-    }
-    ctx = workflow.WithActivityOptions(ctx, activityOptions)
-    activityParam := YourActivityParam{
-        ActivityParamX: param.WorkflowParamX,
-        ActivityParamY: param.WorkflowParamY,
-    }
-
-    var a *YourActivityObject
-
-    var activityResult YourActivityResultObject
-
-    err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
-    if err != nil {
-        return nil, err
-    }
-    
-    workflowResult := &YourWorkflowResultObject{
-        WFResultFieldX: activityResult.ResultFieldX,
-        WFResultFieldY: activityResult.ResultFieldY,
-    }
-    return workflowResult, nil
+// ...
+	workflowResult := &YourWorkflowResultObject{
+		WFResultFieldX: activityResult.ResultFieldX,
+		WFResultFieldY: activityResult.ResultFieldY,
+	}
+	return workflowResult, nil
 }
 ```
+<!--SNIPEND-->
 
-### How to customize Workflow Type in Go {/* #customize-workflow-type */}
+### Customize Workflow Type {/* #customize-workflow-type */}
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
-```go {20,24-27}
+<!--SNIPSTART go-activities-worker {"highlightedLines": "22-26"}-->
+[go-sandbox/activities/workers/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/workers/main.go)
+```go {22-26}
 package main
 
 import (
-    "log"
+	"log"
 
-    "go.temporal.io/sdk/activity"
-    "go.temporal.io/sdk/client"
-    "go.temporal.io/sdk/worker"
-    "go.temporal.io/sdk/workflow"
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
 
-    "documentation-samples-go/yourapp"
+	"my-org/quickstart/activities/basics"
 )
+
 func main() {
-    temporalClient, err := client.Dial(client.Options{})
-    if err != nil {
-        log.Fatalln("Unable to create client", err)
-    }
-    defer temporalClient.Close()
-    
-    yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
-    
-    yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
-    
-    registerWFOptions := workflow.RegisterOptions{
-        Name: "JustAnotherWorkflow",
-    }
-    yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
-    
-    message := "This could be a connection string or endpoint details"
-    number := 100
-    activities := &yourapp.YourActivityObject{
-        Message: &message,
-        Number:  &number,
-    }
-    
-    registerAOptions := activity.RegisterOptions{
-        Name: "JustAnotherActivity",
-    }
-    yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
-    
-    err = yourWorker.Run(worker.InterruptCh())
-    if err != nil {
-        log.Fatalln("Unable to start Worker", err)
-    }
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+	yourWorker.RegisterWorkflow(basics.YourWorkflowDefinition)
+	registerWFOptions := workflow.RegisterOptions{
+		Name: "JustAnotherWorkflow",
+	}
+	yourWorker.RegisterWorkflowWithOptions(basics.YourSimpleWorkflowDefinition, registerWFOptions)
+
+	message := "This could be a connection string or endpoint details"
+	number := 100
+	activities := &basics.YourActivityObject{
+		Message: &message,
+		Number:  &number,
+	}
+	yourWorker.RegisterActivity(activities)
+
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(basics.YourSimpleActivityDefinition, registerAOptions)
+
+	err = yourWorker.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start Worker", err)
+	}
 }
 ```
+<!--SNIPEND-->
 
-### How to develop Workflow logic {/* #workflow-logic-requirements */}
+### Develop Workflow logic {/* #workflow-logic-requirements */}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints). Each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with application code outside the Workflow.
 
@@ -206,7 +169,7 @@ In Go, Workflow Definition code cannot directly do the following:
   Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map.
   This technique provides deterministic results.
   You can also use a Side Effect or an Activity to process the map instead.
-- Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
+- Call an external API, conduct a file I/O operation, talk to another service, and so on. (Use an Activity for these.)
 
 The Temporal Go SDK has APIs to handle equivalent Go constructs:
 
@@ -226,13 +189,17 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 Use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) instead of the standard
 `log` package or `fmt.Println`. The SDK logger skips log messages during replay to avoid duplicates:
 
+<!--SNIPSTART go-workflows-basics-logging-->
+[go-sandbox/workflows/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/basics/workflow.go)
 ```go
 func MyWorkflow(ctx workflow.Context, name string) (string, error) {
 	logger := workflow.GetLogger(ctx)
 	logger.Info("Starting workflow", "name", name)
 	// ...
+	return "Hello " + name, nil
 }
 ```
+<!--SNIPEND-->
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/go/platform/observability#logging).
 
@@ -242,13 +209,18 @@ The Go SDK does not provide a seeded random source or a UUID helper. Generate th
 [Side Effect](/develop/go/workflows/side-effects), which records the result in the Event History and returns the
 recorded value on replay:
 
+<!--SNIPSTART go-workflows-basics-side-effect-uuid-->
+[go-sandbox/workflows/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/basics/workflow.go)
 ```go
 var id string
 encodedID := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
 	return uuid.New().String()
 })
-encodedID.Get(&id)
+if err := encodedID.Get(&id); err != nil {
+	return nil, err
+}
 ```
+<!--SNIPEND-->
 
 An Activity works for this too, and is the better choice when the value comes from an external system. A Side Effect is
 cheaper for purely local generation.
@@ -258,9 +230,12 @@ cheaper for purely local generation.
 Use [`workflow.Now(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Now) instead of `time.Now()`. It returns the
 time of the last Workflow Task, which is consistent across replays:
 
+<!--SNIPSTART go-workflows-basics-now-->
+[go-sandbox/workflows/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/basics/workflow.go)
 ```go
 currentTime := workflow.Now(ctx)
 ```
+<!--SNIPEND-->
 
 To wait, use [`workflow.Sleep(ctx, d)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) instead of `time.Sleep`.
 
@@ -275,8 +250,11 @@ Never use this to affect Workflow business logic. Branching on replay status bre
 
 :::
 
+<!--SNIPSTART go-workflows-basics-is-replaying-->
+[go-sandbox/workflows/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/basics/workflow.go)
 ```go
 if !workflow.IsReplaying(ctx) {
 	emitMetric("workflow_started", 1)
 }
 ```
+<!--SNIPEND-->

@@ -8,6 +8,10 @@ link: https://github.com/temporalio/documentation/blob/main/AGENTS.md
 level: suggestion
 ignorecase: true
 tokens:
-  - '\bWorkflows?\s+(?:is|are|was|were|must be|needs? to be|should be|remains?)\s+(?:non-)?deterministic\b'
+  - '\bWorkflows?\s+(?:is|are|was|were|be|must be|must remain|must stay|needs? to be|should be|remains?|stays?)\s+(?:non-)?deterministic\b'
   - '\b(?:non-)?deterministic Workflows?[,.;:]'
   - '\bWorkflow determinism\b'
+  - '\bWorkflow code(?:\s*(?:--[^.]{0,80}?--|\([^)]{0,80}\))\s*|\s+)(?:is|are|was|were|be|must be|must remain|must stay|needs? to be|should be|remains?|stays?)\s+(?:non-)?deterministic\b'
+  - '\b(?:non-)?deterministic Workflow code\b'
+  - '\bkeep(?:s|ing)? Workflow code(?: execution)? (?:non-)?deterministic\b'
+  - '\bdeterministic (?:constraints?|requirements?) (?:of|on|for) (?:the )?Workflow code\b'

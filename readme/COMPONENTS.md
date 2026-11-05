@@ -27,6 +27,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using SdkGuideLinks](#using-sdkguidelinks)
 - [Using AnnotatedCode](#using-annotatedcode)
 - [Using ReleaseNoteHeader](#using-release-note-header)
+- [Using ForOs](#using-foros)
 
 ## Finding Components
 
@@ -100,7 +101,7 @@ For example:
 
 ```
 <RelatedReadItem
-    path="/cloud/metrics/prometheus-grafana"
+    path="/cloud/metrics/openmetrics/metrics-integrations"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide"
 />
@@ -121,6 +122,38 @@ Components imported this way use the "Components." prefix before their name:
 ...Content that is folded away...
 </Components.RelatedRead>
 ```
+
+## Using SetupSteps and CodeSnippet
+
+`SetupSteps` lays out quickstart steps as prose on the left and code on the right. Each `SetupStep` takes its code
+column from either a `code={…}` prop or its `<CodeSnippet>` children.
+
+To keep a snippet in sync with a sample repository, put the `CodeSnippet` inside the `SetupStep` body instead of the
+`code={…}` prop. The prop is a JavaScript expression, so MDX doesn't parse Markdown or `<!--SNIPSTART-->` markers in
+it. Leave blank lines around the Snipsync markers:
+
+```mdx
+<SetupStep>
+
+<CodeSnippet title="service.go">
+
+<!--SNIPSTART go-nexus-quickstart-service-->
+<!--SNIPEND-->
+
+</CodeSnippet>
+
+## 1. Define the Nexus Service
+
+Create a file called `service.go`.
+
+</SetupStep>
+```
+
+After `yarn snipsync` fills the markers, `CodeSnippet` renders the synced code block with the source file as its title,
+linked to the sample repository. A `title` prop replaces the file path text. The fence's language is used unless you
+pass `language`.
+
+`CodeSnippet` still accepts a hand-written template literal: ``<CodeSnippet language="go">{`...`}</CodeSnippet>``.
 
 ## Using IntegrationsGrid
 
@@ -196,7 +229,7 @@ Add a new entry to the `integrations` array with the following shape:
 | --- | --- | --- | --- |
 | `name` | `string` | Yes | Display name of the integration. |
 | `description` | `string` | Yes | One-sentence summary shown on the card. |
-| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
+| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent memory`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
 | `sdk` | `SDK` | No | The language SDK this integration targets. Omit for language-agnostic integrations (such as Temporal Cloud metrics exporters). |
 | `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/langsmith`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
 
@@ -315,7 +348,7 @@ Usage:
 
 ```
 <RelatedReadContainer>
-  <RelatedReadItem path="/cloud/metrics/prometheus-grafana"
+  <RelatedReadItem path="/cloud/metrics/openmetrics/metrics-integrations"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide" />
   <RelatedReadItem path="/cloud/worker-health"
@@ -667,7 +700,7 @@ Use the `type` prop to set a specific type if the release stage is only for one 
 Add `children` for more detailed messaging.
 ```js
 <ReleaseNoteHeader featureName="serverlessWorkers">
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  To request access during Pre-release, create a [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team.
   APIs are experimental and may be subject to backwards-incompatible changes.
   [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
@@ -690,3 +723,59 @@ Use the `href` prop to make the `children` content a link.
   Sign up for updates to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
 ```
+## Using ForOs
+
+Role: Show OS-specific wording outside a tab set, such as "open PowerShell" on Windows and "open a terminal" on macOS
+and Linux.
+
+`ForOs` shows its children only when the reader's selected OS is in its `os` list. The selected OS is the same one
+`<Tabs groupId="os" queryString>` uses: the `?os=` query string first, then the OS tab the reader last picked, then
+`macos`. On a reader's first visit, `src/client/detectOs.js` pre-selects their OS from the browser, so Windows and Linux
+readers start on their own tab.
+
+Only use `ForOs` on a page that also has a `<Tabs groupId="os" queryString>` set. Those tabs are the only way a reader
+can switch OS, so without them a reader sees one variant and has no way to change it.
+
+How to import:
+
+```
+import { ForOs } from '@site/src/components';
+```
+
+### Usage
+
+Inline, in a sentence. Put the variants next to each other so exactly one shows for each OS:
+
+```
+Open a new <ForOs os="windows">PowerShell</ForOs><ForOs os="macos linux">terminal</ForOs> window.
+```
+
+Around block content. Leave a blank line after the opening tag and before the closing tag so the children parse as
+Markdown:
+
+```
+<ForOs os="windows">
+
+Run the installer as an administrator.
+
+</ForOs>
+```
+
+The component renders no wrapper element, and it updates as soon as the reader clicks another OS tab on the page.
+
+### Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `os` | `string` | Yes | Space-separated OS values: `macos`, `windows`, `linux`, or `docker` (the CLI setup page's extra tab). |
+| `children` | Markdown or text | Yes | Content shown for those OS values. |
+
+### LLM markdown
+
+Registered as `for-os` in the MDX → Markdown pipeline. The `.md` output keeps every variant, each with a bold OS label.
+A block becomes a `**Windows:**` line before its children. Adjacent inline variants become one parenthetical, for
+example `open a new (**Windows:** PowerShell; **macOS and Linux:** terminal) window`.
+
+### Where the component is used
+
+- Python SDK set-up — "open a new terminal window" step
