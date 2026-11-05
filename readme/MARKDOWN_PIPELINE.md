@@ -272,6 +272,23 @@ endpoint's request log shows which channel a caller found the URL on:
 Don't change this copy mid-experiment unless it's broken, so results from before and after a
 change stay comparable. See [AGENT-RETRIEVE.md](./AGENT-RETRIEVE.md) for the endpoint and its log.
 
+### Feedback endpoint
+
+The same three channels, plus the `.md` 404 page, tell agents how to report a problem to
+`/api/feedback`. Each carries its own `src` value, which is stored with the report:
+
+| Channel | `src` | Where it lives |
+| --- | --- | --- |
+| `## Reporting problems` in `/llms.txt` | `llms` | `llmsTxt.rootContent` in `docusaurus.config.js` |
+| Visually hidden body text | `docs-page` | `AgentDirective.tsx`, with `page_url` filled in |
+| Blockquote under the H1 | `md-page` | `withAgentDirective()` in the `markdown-pages` plugin, with `page_url` filled in |
+| Body of a `.md` URL that doesn't exist | `md-404` | `api/markdown-not-found.js` |
+
+The `/llms.txt` copy also points from the search endpoint section to `category=docs_search`, for
+a question that gets no useful results. The 404 body is static and never repeats the requested
+path, so a crafted URL can't put its own text in front of an agent. See
+[FEEDBACK.md](./FEEDBACK.md) for the endpoint and the daily digest.
+
 ## Page actions (the buttons)
 
 `src/components/LLMActions/LLMActions.tsx` renders the on-page action group — a **Copy**
