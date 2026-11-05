@@ -222,6 +222,9 @@ temporal worker deployment describe-version \
   | jq .drainageInfo.drainageStatus
 ```
 
+Temporal CLI v1.10.0 and later leave `drainageInfo` out of the JSON output until the Temporal Service sets it, so the command prints `null` until then.
+Treat `null` as not yet drained.
+
 Recommended approach:
 
 1. Repeat the idempotent recovery commands on `Running` Workflows until the drainage status reports `drained`. The Temporal Service refreshes drainage status periodically, so it may take a few minutes after the last running Workflow closes.

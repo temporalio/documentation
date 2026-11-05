@@ -124,7 +124,8 @@ The following features are not supported yet:
   - UI list-page operator actions
   - HA / multi-region (global) namespaces using selective API forwarding
 
-Delete is supported by the Temporal Service. Neither the Temporal CLI nor the SDKs expose it yet.
+Delete is supported by the Temporal Service and by Temporal CLI v1.10.0 and later, with
+[`temporal nexus operation delete`](/cli/command-reference/nexus#delete). The SDKs don't expose it yet.
 
 ## Temporal CLI support
 
@@ -150,13 +151,14 @@ Which should output v1.9.0 or higher.
 :::warning
 
 - If you see `unknown command "nexus operation"`, upgrade to Temporal CLI v1.9.0 or higher.
-- If you see `Standalone Nexus operation is disabled` when running commands against a local dev server, start the dev server with `--dynamic-config-value nexusoperation.enableStandalone=true`.
+- If you see `Standalone Nexus operation is disabled` when running commands against a local dev server, upgrade to Temporal CLI v1.10.0 or later, which turns the feature on by default, or start the dev server with `--dynamic-config-value nexusoperation.enableStandalone=true`.
 - If you don't see the Standalone Nexus Operations button in the Temporal UI, make sure the UI is running the latest release and has the `EnableStandaloneNexusOperations` feature flag enabled.
 
 :::
 
 The `temporal nexus operation` subcommand supports Standalone Nexus Operations with commands
-including: `start`, `execute`, `result`, `list`, `count`, `describe`, `cancel`, and `terminate`.
+including: `start`, `execute`, `result`, `list`, `count`, `describe`, `cancel`, `terminate`, and
+`delete` (v1.10.0 and later).
 The Nexus Endpoint must already exist on the server — create it with
 [`temporal operator nexus endpoint create`](/cli/command-reference/operator#create-1).
 
