@@ -12,13 +12,14 @@
  *   - <Tabs> / <TabItem>          → flatten all tabs with bold label headers
  *   - <SdkTabs> / <SdkTabs.Lang>  → flatten SDK tabs with bold language headers
  *   - :::note/tip/caution/danger  → blockquote with bold type prefix
- *   - <CodeSnippet language="x">  → fenced code block
+ *   - <CodeSnippet language="x">  → fenced code block (Snipsync bodies pass through)
  *   - <CallToAction href>         → markdown link (h3 title + p description)
  *   - <ReleaseNoteHeader>         → availability blockquote + body
  *   - <RelatedReadContainer>      → markdown link list from <RelatedReadItem>s
  *   - <RelatedReadList>           → markdown link list from readList prop
  *   - <SdkGuideLinks>             → markdown link list, one per SDK (path/filter/title or links prop)
  *   - <ToolTipTerm term="x" />    → inline replacement with the term text
+ *   - <ForOs os="x">              → every OS variant kept, each with a bold OS label
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
  *   - <WalkthroughDemo> + <WalkthroughStep>/<WalkthroughCommand>/
@@ -42,6 +43,7 @@ import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
 import { guidesGridToMarkdown } from "./component-handlers/guides-grid.mjs";
+import { forOsInlineToMarkdown, forOsBlockLineToMarkdown } from "./component-handlers/for-os.mjs";
 import {
   extractQuotedProp,
   renderWalkthroughStep,
@@ -63,6 +65,9 @@ export const COMPONENT_REGISTRY = {
 
   // Temporal custom components — content-bearing
   ZoomPanPinch: "transparent",
+  // Wraps code blocks the reader is meant to run. The terminal-window styling is
+  // the whole component; the fenced blocks inside carry all the content.
+  RunThis: "transparent",
   RelatedReadList: "related-read",
   RelatedReadContainer: "related-read-container",
   RelatedReadItem: "related-read-item",
@@ -73,6 +78,7 @@ export const COMPONENT_REGISTRY = {
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
+  ForOs: "for-os",
   ReleaseNoteHeader: "release-note-header",
   CallToAction: "call-to-action",
   SetupSteps: "setup-steps",
@@ -118,6 +124,7 @@ export const COMPONENT_REGISTRY = {
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
   ServerlessWorkerDemo: "strip-block",
+  WorkerTuningSimulator: "strip-block",
   WalkthroughDemo: "event-history-demo",
   WalkthroughStep: "walkthrough-step",
   WalkthroughCommand: "walkthrough-entry",
@@ -369,6 +376,9 @@ export function applyInlineTransforms(line) {
     (m, inner) => extractProp(m, "term") || inner
   );
 
+  // Inline <ForOs os="x">...</ForOs> → (**OS:** ...), keeping every variant
+  out = forOsInlineToMarkdown(out);
+
   // Collapse a line left whitespace-only (e.g. after a comment was stripped)
   // to a true blank line — an indented blank could otherwise read as code.
   if (/^\s+$/.test(out)) return "";
@@ -519,6 +529,7 @@ export function findHtmlEmbedEnd(lines, i) {
  * @param {string} [options.projectRoot] - Docusaurus root (for data handlers / transclusion)
  * @param {string} [options.mdxDir]     - directory of the source file (for relative transclusion)
  * @param {number} [options._depth]     - internal recursion guard
+ * @param {object} [options._inheritedImports] - internal: enclosing page's partial imports
  * @returns {{ markdown: string, warnings: string[] }}
  */
 export function transformMdx(mdxContent, options = {}) {
@@ -531,7 +542,22 @@ export function transformMdx(mdxContent, options = {}) {
   const lines = content.split("\n");
 
   // Map of <Name /> components imported from .md(x) files, for transclusion.
-  const mdImports = scanMarkdownImports(mdxContent);
+  // A nested body (tab item, details, release note, ...) has no import lines
+  // of its own, so it inherits the enclosing page's map.
+  const mdImports = { ...(options._inheritedImports || {}), ...scanMarkdownImports(mdxContent) };
+
+  // Options for re-transforming a body nested inside this page. `suffix` tags
+  // the source file in warnings (e.g. "#tab"); dirname() still resolves to the
+  // page's own directory, so relative imports keep resolving correctly.
+  function childOptions(suffix) {
+    return {
+      sourceFile: sourceFile + suffix,
+      projectRoot,
+      mdxDir: options.mdxDir,
+      _depth: depth + 1,
+      _inheritedImports: mdImports,
+    };
+  }
 
   const outputLines = [];
 
@@ -639,12 +665,7 @@ export function transformMdx(mdxContent, options = {}) {
     if (label === null || label === undefined) return;
     tabsOutputLines.push(`**${label}**`);
     tabsOutputLines.push("");
-    const inner = transformMdx(tabItemLines.join("\n"), {
-      sourceFile: sourceFile + "#tab",
-      projectRoot,
-      mdxDir: options.mdxDir,
-      _depth: depth + 1,
-    });
+    const inner = transformMdx(tabItemLines.join("\n"), childOptions("#tab"));
     warnings.push(...inner.warnings);
     tabsOutputLines.push(...inner.markdown.split("\n"));
     tabsOutputLines.push("");
@@ -689,7 +710,12 @@ export function transformMdx(mdxContent, options = {}) {
     // ------------------------------------------------------------------
     if (!inCodeBlock) {
       const fenceMatch = trimmed.match(/^(`{3,}|~{3,})/);
-      if (fenceMatch && state !== State.SETUP_STEP && state !== State.WALKTHROUGH_STEP) {
+      if (
+        fenceMatch &&
+        state !== State.SETUP_STEP &&
+        state !== State.WALKTHROUGH_STEP &&
+        state !== State.CODE_SNIPPET
+      ) {
         inCodeBlock = true;
         codeBlockFence = fenceMatch[1];
         pushLine(line);
@@ -729,12 +755,18 @@ export function transformMdx(mdxContent, options = {}) {
     // --- CodeSnippet block ---
     if (state === State.CODE_SNIPPET) {
       if (/<\/CodeSnippet>/.test(line)) {
-        const code = unwrapJsxString(
-          dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "")
-        );
-        outputLines.push("```" + codeSnippetLang);
-        outputLines.push(code);
-        outputLines.push("```");
+        const body = dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "");
+        const code = unwrapJsxString(body);
+        if (code === body && /^\s*(`{3,}|~{3,})/m.test(body)) {
+          // Snipsync body: a source link and a fenced code block in Markdown.
+          const inner = transformMdx(body, childOptions("#code-snippet"));
+          warnings.push(...inner.warnings);
+          outputLines.push(inner.markdown.trim());
+        } else {
+          outputLines.push("```" + codeSnippetLang);
+          outputLines.push(code);
+          outputLines.push("```");
+        }
         outputLines.push("");
         state = State.NORMAL;
         codeSnippetLines = [];
@@ -775,12 +807,7 @@ export function transformMdx(mdxContent, options = {}) {
         let note = `> **${releaseNoteLabel}**`;
         if (releaseNoteLangs) note += ` — ${releaseNoteLangs}`;
         outputLines.push(note);
-        const body = transformMdx(releaseNoteLines.join("\n"), {
-          sourceFile: sourceFile + "#release-note",
-          projectRoot,
-          mdxDir: options.mdxDir,
-          _depth: depth + 1,
-        });
+        const body = transformMdx(releaseNoteLines.join("\n"), childOptions("#release-note"));
         warnings.push(...body.warnings);
         const bodyLines = dedent(body.markdown.split("\n"));
         for (const bl of bodyLines) {
@@ -885,12 +912,7 @@ export function transformMdx(mdxContent, options = {}) {
         // code-only: it mixes prose, links, lists, tabs, and <CodeSnippet>
         // blocks. Convert its HTML to Markdown, then run it back through the
         // transformer so <Tabs>/<TabItem>/<CodeSnippet> are handled too.
-        const inner = transformMdx(setupChildLines.join("\n"), {
-          sourceFile: sourceFile + "#setup-step",
-          projectRoot,
-          mdxDir: options.mdxDir,
-          _depth: depth + 1,
-        });
+        const inner = transformMdx(setupChildLines.join("\n"), childOptions("#setup-step"));
         warnings.push(...inner.warnings);
         const childMd = inner.markdown.trim();
         if (childMd) {
@@ -899,12 +921,7 @@ export function transformMdx(mdxContent, options = {}) {
         }
         const prop = transformMdx(
           setupCodePropToMarkdown(setupCodePropLines).join("\n"),
-          {
-            sourceFile: sourceFile + "#setup-step-code",
-            projectRoot,
-            mdxDir: options.mdxDir,
-            _depth: depth + 1,
-          }
+          childOptions("#setup-step-code")
         );
         warnings.push(...prop.warnings);
         const propMd = prop.markdown.trim();
@@ -954,12 +971,7 @@ export function transformMdx(mdxContent, options = {}) {
     // ledger entries, then the prose body, and render on close ---
     if (state === State.WALKTHROUGH_STEP) {
       if (isCloseTag(line, "WalkthroughStep")) {
-        const inner = transformMdx(stepProseLines.join("\n"), {
-          sourceFile: sourceFile + "#walkthrough-step",
-          projectRoot,
-          mdxDir: options.mdxDir,
-          _depth: depth + 1,
-        });
+        const inner = transformMdx(stepProseLines.join("\n"), childOptions("#walkthrough-step"));
         warnings.push(...inner.warnings);
         const rendered = renderWalkthroughStep(
           {
@@ -1061,7 +1073,8 @@ export function transformMdx(mdxContent, options = {}) {
         // since the title is what the rendered page shows.
         const icon = label.split(' ')[0];
         outputLines.push(admonitionTitle ? `> **${icon} ${admonitionTitle}:**` : `> **${label}:**`);
-        for (const al of admonitionLines) {
+        for (const raw of admonitionLines) {
+          const al = forOsBlockLineToMarkdown(raw) ?? raw;
           outputLines.push(al.trim() === "" ? ">" : `> ${applyInlineTransforms(al)}`);
         }
         outputLines.push("");
@@ -1324,6 +1337,16 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- ForOs block wrapper → bold OS label, children pass through ---
+    if (state === State.NORMAL) {
+      const forOsLine = forOsBlockLineToMarkdown(line);
+      if (forOsLine !== null) {
+        outputLines.push(forOsLine);
+        outputLines.push("");
+        continue;
+      }
+    }
+
     // --- ZoomPanPinch / transparent wrappers — strip tags, keep content ---
     let transparentName = null;
     for (const name of COMPONENTS_BY_STRATEGY("transparent")) {
@@ -1547,12 +1570,7 @@ export function transformMdx(mdxContent, options = {}) {
           outputLines.push(`#### ${detailsSummary}`);
           outputLines.push("");
         }
-        const inner = transformMdx(detailsLines.join("\n"), {
-          sourceFile,
-          projectRoot,
-          mdxDir: options.mdxDir,
-          _depth: depth + 1,
-        });
+        const inner = transformMdx(detailsLines.join("\n"), childOptions(""));
         warnings.push(...inner.warnings);
         outputLines.push(...inner.markdown.split("\n"));
         outputLines.push("");

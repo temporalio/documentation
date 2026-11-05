@@ -36,10 +36,13 @@ This is useful if you want to do something after it has only started, or to get 
 
 :::
 
-```python
+<!--SNIPSTART python-child-workflows-execute-->
+[python-sandbox/workflows/child_workflows/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/child_workflows/workflows.py)
+```py
 from temporalio import workflow
-from dataobject import ComposeGreetingInput
 from temporalio.workflow import ParentClosePolicy
+
+from child_workflows.dataobject import ComposeGreetingInput
 
 
 @workflow.defn
@@ -60,6 +63,7 @@ class GreetingWorkflow:
             parent_close_policy=ParentClosePolicy.ABANDON,
         )
 ```
+<!--SNIPEND-->
 
 ### Set a Parent Close Policy {/* #parent-close-policy */}
 
@@ -69,9 +73,14 @@ The default Parent Close Policy option is set to terminate the Child Workflow Ex
 
 Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
-```python {1,19}
+<!--SNIPSTART python-child-workflows-execute {"highlightedLines": "2,22"}-->
+[python-sandbox/workflows/child_workflows/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workflows/child_workflows/workflows.py)
+```py {2,22}
+from temporalio import workflow
 from temporalio.workflow import ParentClosePolicy
-# ...
+
+from child_workflows.dataobject import ComposeGreetingInput
+
 
 @workflow.defn
 class ComposeGreetingWorkflow:
@@ -91,3 +100,4 @@ class GreetingWorkflow:
             parent_close_policy=ParentClosePolicy.ABANDON,
         )
 ```
+<!--SNIPEND-->

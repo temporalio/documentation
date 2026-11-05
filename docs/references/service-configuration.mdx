@@ -431,15 +431,12 @@ clusterMetadata:
       enabled: true
       initialFailoverVersion: 0
       rpcAddress: '127.0.0.1:7233'
-  #replicationConsumer:
-  #type: kafka
 ```
 
 - `currentClusterName`: **Required.** The name of the local cluster.
   You can't change this value after the first run. The Temporal Service ignores any later changes.
 - `enableGlobalNamespace`: Boolean. Enables Global Namespaces.
   - Default: `false`.
-- `replicationConsumer`: How the cluster consumes replication tasks. Supported values for `type` are `kafka` and `rpc`.
 - `failoverVersionIncrement`: The amount each cluster's failover version increases by on failover.
 - `masterClusterName`: The name of the primary cluster.
   Only the primary cluster can register or update Namespaces. Any cluster can fail over a Namespace.
@@ -513,7 +510,7 @@ It has a `history` subsection and a `visibility` subsection, which each support 
   - `disabled`: Also set `enableRead` to `false`, and set `state` to `disabled` in `namespaceDefaults` with no `provider` or `URI`.
 - `enableRead`: Boolean. When `true`, clients can read archived data.
 - `provider`: Where to store archived data.
-  Supported providers are `filestore`, `gstorage`, `s3`, and custom providers.
+  Supported providers are `filestore`, `gstorage`, `s3store`, and custom providers.
   The default configuration uses `filestore`.
 
 The following example enables Archival:

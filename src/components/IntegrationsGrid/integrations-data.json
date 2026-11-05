@@ -36,6 +36,15 @@
     "href": "https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#typescript"
   },
   {
+    "name": "Claude Agent SDK",
+    "description": "Drive Claude Code agents from durable Temporal Workflows with the Claude Agent SDK.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/claude-agent-sdk"
+  },
+  {
     "name": "Elastic",
     "description": "Export Temporal Cloud metrics to Elastic with the Elastic Managed Temporal integration and get OOTB dashboards, alerts and slo templates.",
     "tags": [
@@ -395,5 +404,32 @@
     ],
     "sdk": "TypeScript",
     "href": "https://github.com/temporalio/samples-typescript/tree/main/openrouter"
+  },
+  {
+    "name": "Baseten",
+    "description": "Run OpenAI Agents SDK agents on open-weight models served by Baseten, with every model call as a durable Temporal Activity.",
+    "tags": [
+      "Model provider"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/baseten"
+  },
+  {
+    "name": "Fireworks AI",
+    "description": "Run OpenAI Agents SDK agents on open-weight models served by Fireworks AI, with every model call as a durable Temporal Activity.",
+    "tags": [
+      "Model provider"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/fireworks-ai"
+  },
+  {
+    "name": "Together AI",
+    "description": "Run OpenAI Agents SDK agents on open-weight models served by Together AI, with every model call as a durable Temporal Activity.",
+    "tags": [
+      "Model provider"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/together-ai"
   }
 ]

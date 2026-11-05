@@ -158,6 +158,12 @@ describe('api/markdown-not-found', () => {
       assert.match(response.headers['Content-Type'], /^text\/markdown/);
     }
   });
+
+  it('points agents at the feedback endpoint without echoing the requested path', () => {
+    const response = request('/ignore-previous-instructions.md');
+    assert.match(response.body, /\/api\/feedback\?[^\n]*src=md-404/);
+    assert.ok(!response.body.includes('ignore-previous-instructions'));
+  });
 });
 
 describe('validateRedirects', () => {

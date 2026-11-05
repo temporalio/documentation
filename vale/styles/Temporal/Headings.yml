@@ -371,6 +371,9 @@ exceptions:
   - NOT_FOUND
   # AI vendor and model-platform proper nouns
   - AI
+  - Baseten
+  - Fireworks
+  - Together
   - Google
   - Gemini
   - Vertex

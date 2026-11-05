@@ -64,7 +64,7 @@ the provider manually to manage your Temporal Cloud Terraform resources.
 
 Follow these examples to use an environment variable to pass in your API Key to the provider.
 
-<Tabs>
+<Tabs groupId="os" queryString>
   <TabItem value="macos" label="macOS" default>
 Export your environment variable for secure access to the API Keys.
 
@@ -73,29 +73,32 @@ Export your environment variable for secure access to the API Keys.
 export TEMPORAL_CLOUD_API_KEY=<your-secret-key>
 ```
 
-:::tip ENVIRONMENT VARIABLES
-
-Do not confuse environment variables, set with your shell, with temporal env options.
-
-:::
-
 </TabItem>
   <TabItem value="windows" label="Windows">
+Set your environment variable in Command Prompt for secure access to the API Keys.
+
+```command
+REM Replace <your-secret-key> with the token output from `temporal cloud apikey create-for-me` or `tcld apikey create`.
+set TEMPORAL_CLOUD_API_KEY=<your-secret-key>
+```
+
+</TabItem>
+  <TabItem value="linux" label="Linux">
 Export your environment variable for secure access to the API Keys.
 
 ```bash
 # Replace <your-secret-key> with the token output from `temporal cloud apikey create-for-me` or `tcld apikey create`.
-set TEMPORAL_CLOUD_API_KEY=<your-secret-key>
+export TEMPORAL_CLOUD_API_KEY=<your-secret-key>
 ```
+
+</TabItem>
+</Tabs>
 
 :::tip ENVIRONMENT VARIABLES
 
 Do not confuse environment variables, set with your shell, with temporal env options.
 
 :::
-
-</TabItem>
-</Tabs>
 
 Or, pass it in manually in your .tf file using the provider code block
 

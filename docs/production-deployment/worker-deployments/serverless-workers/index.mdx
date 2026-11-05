@@ -30,6 +30,14 @@ it, the [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-wo
 compute is where the providers differ. On AWS Lambda and AgentCore Runtime, the WCI invokes compute in response to
 unmet Task Queue demand. On GCP Cloud Run, it resizes a Worker Pool of long-lived instances that poll continuously.
 
+:::caution Multi-cloud Replication is not supported
+
+Serverless Workers do not support [Multi-cloud Replication](/cloud/high-availability#multi-cloud-replication).
+They must be invoked from the same cloud provider where the Namespace is currently active. After a failover to a
+different cloud provider, Serverless Workers can no longer be invoked. This is a temporary restriction during Public Preview.
+
+:::
+
 ## Supported providers
 
 - [**AWS Lambda**](/production-deployment/worker-deployments/serverless-workers/aws-lambda) - Deploy a Serverless Worker

@@ -3,6 +3,23 @@
   "github": {
     "silent": true
   },
+  "functions": {
+    "api/retrieve.js": {
+      "maxDuration": 15
+    },
+    "api/feedback.js": {
+      "maxDuration": 10
+    },
+    "api/feedback-digest.js": {
+      "maxDuration": 60
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/feedback-digest",
+      "schedule": "0 15 * * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/img/og/:path*",
@@ -2576,6 +2593,21 @@
     {
       "source": "/schedules",
       "destination": "/schedule",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosting-guide/:path*",
+      "destination": "/self-hosted-guide/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/checklist",
+      "destination": "/self-hosted-guide/production-checklist",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/nexus",
+      "destination": "/production-deployment/self-hosted-guide/nexus",
       "permanent": true
     },
     {

@@ -15,6 +15,8 @@ repository.
 | CI jobs and scheduled jobs   | [AUTOMATIONS.md](./readme/AUTOMATIONS.md)                                  |
 | AI research sources for content review | [AI-KNOWLEDGE-SOURCES.md](./readme/AI-KNOWLEDGE-SOURCES.md)       |
 | Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
+| Agent search endpoint (`/api/retrieve`) | [AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md)           |
+| Feedback endpoint (`/api/feedback`) | [FEEDBACK.md](./readme/FEEDBACK.md)                           |
 
 ## Repository overview
 
@@ -48,6 +50,18 @@ In body prose, use **Temporal Service**, not **Cluster** or **Temporal Cluster**
 - Incorrect: "The Worker polls the Cluster for tasks."
 
 Exceptions: **Multi-Cluster Replication**, code/config identifiers, and CLI command names.
+
+### Determinism applies to the Workflow Definition
+
+A [Workflow Definition](/workflow-definition) must be deterministic. Don't say "the Workflow" or "Workflow code" must be
+deterministic: "Workflow code" is ambiguous with Activity code, which can be non-deterministic.
+
+- Correct: "A Workflow Definition must be deterministic."
+- Incorrect: "Workflow code must be deterministic."
+
+"Workflow code" is fine when the sentence isn't about determinism, for example "Don't do I/O in Workflow code."
+The advisory Vale rule `Temporal.DeterminismScope` flags the incorrect phrasings. See
+`vale/styles/Temporal/DeterminismScope.yml`.
 
 ### Identifier abbreviation
 
@@ -194,6 +208,9 @@ yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs we
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
 yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
+yarn check:retrieve-links # /api/retrieve results whose docs links don't return 200; advisory, see AGENT-RETRIEVE.md
+yarn check:retrieve-health # /api/retrieve is up and returns custom Q&A and GitHub results; runs daily, see AGENT-RETRIEVE.md
+yarn report:retrieve-log  # summarize the /api/retrieve request log; needs BLOB_READ_WRITE_TOKEN, see AGENT-RETRIEVE.md
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
@@ -218,6 +235,11 @@ uses `{/* */}`.
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
 serve. Fix the rule. A known, accepted exception belongs in `bin/redirect-baseline.json` with a note.
+
+`yarn check:retrieve-links [baseUrl]` asks the `/api/retrieve` endpoint 20 sample questions and reports docs links in the
+results that don't return 200. Pass a preview deployment URL to check a branch. It sends one request every few seconds to
+stay under the endpoint's rate limit, so a run takes about two minutes. See
+[AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md).
 
 `yarn check:ts-samples` and `yarn check:py-samples` type-check the TypeScript and Python code blocks that aren't
 synced by Snipsync against the latest SDK release, and report classes, methods, exports, and arguments the SDK doesn't

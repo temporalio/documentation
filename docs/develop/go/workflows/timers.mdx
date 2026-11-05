@@ -20,15 +20,27 @@ Sleeping is a resource-light operation: it does not tie up the process, and you 
 
 To set a Timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass the duration you want to wait before continuing.
 
+<!--SNIPSTART go-timer-new-timer-->
+[go-sandbox/workflows/timers/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/timers/workflow.go)
 ```go
+// Use a cancelable Context so the Workflow can cancel the Timer early.
+timerCtx, cancelTimer := workflow.WithCancel(ctx)
+defer cancelTimer()
 timer := workflow.NewTimer(timerCtx, duration)
 ```
+<!--SNIPEND-->
 
-To set a sleep duration in Go, use the [`sleep()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) function and pass the duration you want to wait before continuing.
+To set a sleep duration in Go, use the [`Sleep()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) function and pass the duration you want to wait before continuing.
 A zero or negative sleep duration causes the function to return immediately.
 
+<!--SNIPSTART go-timer-sleep-->
+[go-sandbox/workflows/timers/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/timers/workflow.go)
 ```go
-sleep = workflow.Sleep(ctx, 10*time.Second)
+err := workflow.Sleep(ctx, 10*time.Second)
+if err != nil {
+	return err
+}
 ```
+<!--SNIPEND-->
 
 For more information, see the [Timer](https://github.com/temporalio/samples-go/tree/main/timer) example in the [Go Samples repository](https://github.com/temporalio/samples-go).

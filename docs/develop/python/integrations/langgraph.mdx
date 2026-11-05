@@ -39,24 +39,28 @@ samples for the complete code.
 
 ## Install the plugin
 
-Install the Temporal Python SDK with LangGraph support (requires `temporalio` 1.27.0 or later):
+Install the standalone `temporalio-langgraph` package:
 
 ```bash
-uv add "temporalio[langgraph]"
+uv add temporalio-langgraph
 ```
 
 or with pip:
 
 ```bash
-pip install "temporalio[langgraph]"
+pip install temporalio-langgraph
 ```
+
+The package installs the Temporal Python SDK and LangGraph dependencies. Refer to the
+[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/langgraph/pyproject.toml)
+for supported Python and dependency versions.
 
 :::note
 
-Python 3.11 or newer is required for the Functional API (`@entrypoint` / `@task`), for `interrupt()`, and for streaming
-from a node running in the Workflow. On older Python versions the plugin loads but emits a warning, and those features
-will not work because LangGraph relies on `contextvars` propagation through `asyncio.create_task()`, which is only
-available from Python 3.11 onward.
+Use a Python runtime that supports the `context` parameter of
+[`asyncio.create_task()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) for the Functional API
+(`@entrypoint` / `@task`), `interrupt()`, and streaming from a node running in the Workflow. LangGraph uses this parameter
+to propagate `contextvars`. The plugin warns if your runtime does not support these features.
 
 :::
 
@@ -73,7 +77,7 @@ from datetime import timedelta
 
 from langgraph.graph import START, StateGraph
 from temporalio import workflow
-from temporalio.contrib.langgraph import graph
+from temporalio.langgraph import graph
 
 
 async def process_query(query: str) -> str:
@@ -111,7 +115,7 @@ Create a `LangGraphPlugin` with your graphs and pass it to the Worker:
 import asyncio
 
 from temporalio.client import Client
-from temporalio.contrib.langgraph import LangGraphPlugin
+from temporalio.langgraph import LangGraphPlugin
 from temporalio.worker import Worker
 
 
@@ -190,7 +194,7 @@ from datetime import timedelta
 from langgraph.func import entrypoint as lg_entrypoint
 from langgraph.func import task
 from temporalio import workflow
-from temporalio.contrib.langgraph import entrypoint
+from temporalio.langgraph import entrypoint
 
 
 @task
@@ -241,7 +245,7 @@ class ReactAgentWorkflow:
 ### Configure the Worker with the Functional API
 
 ```python
-from temporalio.contrib.langgraph import LangGraphPlugin
+from temporalio.langgraph import LangGraphPlugin
 
 plugin = LangGraphPlugin(
     entrypoints={"react-agent": react_agent},
@@ -279,7 +283,7 @@ from `runtime.context`:
 from langgraph.runtime import Runtime
 from typing_extensions import TypedDict
 
-from temporalio.contrib.langgraph import graph
+from temporalio.langgraph import graph
 
 
 class Context(TypedDict):
@@ -309,7 +313,7 @@ or `entrypoint(name, cache=...)` in the new run to skip re-executing nodes that 
 
 ```python
 from temporalio import workflow
-from temporalio.contrib.langgraph import cache, graph
+from temporalio.langgraph import cache, graph
 
 
 @workflow.defn
@@ -344,7 +348,7 @@ from langgraph.graph import START, StateGraph
 from typing_extensions import TypedDict
 
 from temporalio import workflow
-from temporalio.contrib.langgraph import LangGraphPlugin, graph
+from temporalio.langgraph import LangGraphPlugin, graph
 from temporalio.contrib.workflow_streams import WorkflowStream, WorkflowStreamClient
 
 
@@ -405,9 +409,8 @@ print(await handle.result())
 
 :::note
 
-Streaming from a node running in the Workflow (`execute_in: "workflow"`) requires Python
-3.11 or newer, because LangGraph relies on `contextvars` propagation through
-`asyncio.create_task()`. See the [installation note](#install-the-plugin) above.
+For streaming from a node running in the Workflow (`execute_in: "workflow"`), check the Python runtime requirements
+in the [installation note](#install-the-plugin).
 
 :::
 
@@ -451,7 +454,7 @@ For a complete working example, see the
 ## Tracing
 
 For tracing your LangGraph Workflows and Activities, we recommend the
-[Temporal LangSmith plugin](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith). It
+[Temporal LangSmith plugin](/develop/python/integrations/langsmith). It
 composes with `LangGraphPlugin` — pass both plugins to your Worker.
 
 ## Stores are not supported
@@ -498,7 +501,7 @@ Use `execute_in: "workflow"` when a node:
 
 :::warning
 
-Workflow code must be [deterministic](/develop/python/workflows/basics#workflow-logic-requirements). A node running in
+A Workflow Definition must be [deterministic](/develop/python/workflows/basics#workflow-logic-requirements). A node running in
 the Workflow **must not** make network calls, use `random`, read the system clock, or do file I/O. Violating this causes
 non-determinism errors on replay.
 

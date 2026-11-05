@@ -43,8 +43,8 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 1. Create an S3 client using `aioboto3` and pass it to the `S3StorageDriver`. The driver uses your standard AWS
    credentials from the environment (environment variables, IAM role, or AWS config file):
 
-   <!--SNIPSTART python-s3-driver-create-->
-   [features/snippets/external_storage/s3_setup/s3_driver_create.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.py)
+   <!--SNIPSTART python-external-storage-s3-driver-create-->
+   [python-sandbox/best_practices/external_storage/s3_driver.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/external_storage/s3_driver.py)
    ```py
    session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
    async with session.client("s3") as s3_client:
@@ -57,8 +57,8 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
 
 2. Configure the driver on your `DataConverter` and pass the converter to your Client and Worker:
 
-   <!--SNIPSTART python-s3-external-storage-setup-->
-   [features/snippets/external_storage/s3_setup/s3_external_storage_setup.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.py)
+   <!--SNIPSTART python-external-storage-s3-setup-->
+   [python-sandbox/best_practices/external_storage/s3_driver.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/external_storage/s3_driver.py)
    ```py
    data_converter = dataclasses.replace(
        DataConverter.default,
@@ -72,8 +72,7 @@ The Python SDK includes an S3 storage driver. Follow these steps to set it up:
    worker = Worker(
        client,
        task_queue="my-task-queue",
-       workflows=[],
-       activities=[],
+       workflows=[LargePayloadWorkflow],
    )
    ```
    <!--SNIPEND-->
@@ -98,8 +97,8 @@ The following example shows a custom driver that uses local disk as the backing 
 development and testing only. In production, use a durable storage system that is accessible to all Workers.
 For example, see the [Redis storage driver sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis).
 
-<!--SNIPSTART python-custom-storage-driver-->
-[features/snippets/external_storage/custom_driver/custom_storage_driver.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.py)
+<!--SNIPSTART python-external-storage-custom-driver-->
+[python-sandbox/best_practices/external_storage/local_disk_driver.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/external_storage/local_disk_driver.py)
 ```py
 class LocalDiskStorageDriver(StorageDriver):
     def __init__(self, store_dir: str = "/tmp/temporal-payload-store") -> None:
@@ -144,8 +143,6 @@ class LocalDiskStorageDriver(StorageDriver):
             payload.ParseFromString(raw)
             payloads.append(payload)
         return payloads
-
-
 ```
 <!--SNIPEND-->
 
@@ -186,8 +183,8 @@ returns the payload.
 Pass an `ExternalStorage` instance to your `DataConverter` and use the converter when creating your Client and Worker.
 You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
 
-<!--SNIPSTART python-custom-driver-data-converter-->
-[features/snippets/external_storage/custom_driver/custom_driver_data_converter.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_driver_data_converter.py)
+<!--SNIPSTART python-external-storage-custom-driver-data-converter-->
+[python-sandbox/best_practices/external_storage/local_disk_driver.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/external_storage/local_disk_driver.py)
 ```py
 data_converter = dataclasses.replace(
     DataConverter.default,
@@ -259,6 +256,8 @@ driver at the MRAP ARN instead of a bucket name. See
 
 In code, the only change is the value you pass as `bucket`:
 
+<!--SNIPSTART python-external-storage-s3-mrap-->
+[python-sandbox/best_practices/external_storage/s3_driver.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/external_storage/s3_driver.py)
 ```py
 session = aioboto3.Session(profile_name=AWS_PROFILE, region_name=AWS_REGION)
 async with session.client("s3") as s3_client:
@@ -267,6 +266,7 @@ async with session.client("s3") as s3_client:
         bucket="arn:aws:s3::123456789012:accesspoint/mfzwi23gnjvgw.mrap",
     )
 ```
+<!--SNIPEND-->
 
 `aioboto3` (via `botocore`) automatically uses [SigV4A](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html)
 signing when the bucket value is an MRAP ARN. Make sure your `botocore` version is recent enough to support SigV4A.
