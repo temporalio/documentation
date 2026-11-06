@@ -128,13 +128,63 @@ temporal-ui:
     - TEMPORAL_AUTH_CLIENT_ID=xxxxxxxxxxxxxx
     - TEMPORAL_AUTH_CLIENT_SECRET=xxxxxxxxxxxxxx
     - TEMPORAL_AUTH_CALLBACK_URL=https://your-domain/auth/sso/callback
-    - TEMPORAL_AUTH_SCOPES=openid profile email
+    - TEMPORAL_AUTH_SCOPES=openid,profile,email,offline_access
   image: temporalio/ui:latest
   networks:
     - temporal-network
   ports:
     - 8080:8080
 ```
+
+#### Change the Web UI session length
+
+The Web UI has no single session timeout setting.
+How long a user stays signed in depends on the IdP's tokens and one optional Web UI setting:
+
+- **Refresh token.** The Web UI Server uses the refresh token from the IdP to get new access tokens, so a user stays signed in until the refresh token expires.
+  Include the `offline_access` scope so the IdP issues a refresh token.
+  Google doesn't support this scope, so refresh behavior there follows Google's token policies.
+- **Refresh token lifetime.** The Web UI Server stores the refresh token in a browser cookie.
+  It sets the cookie's lifetime from the token's `exp` claim if the token is a JSON Web Token (JWT).
+  If the IdP issues opaque refresh tokens, set [`refreshTokenDuration`](/references/web-ui-configuration#providers) to the lifetime configured at the IdP.
+  Otherwise, the Web UI Server assumes 7 days.
+  The cookie lifetime never exceeds 30 days.
+- **Maximum session duration.** Set [`maxSessionDuration`](/references/web-ui-configuration#auth) to force users to sign in again after a fixed time, even if their tokens are still valid.
+  This setting can only shorten a session.
+
+To make sessions longer, increase the refresh token lifetime in your IdP's settings.
+If the IdP issues opaque refresh tokens, also set `refreshTokenDuration` to match.
+Setting `refreshTokenDuration` alone doesn't extend a session, because it only tells the Web UI Server how long to keep the cookie.
+If you set `maxSessionDuration`, make sure it is longer than the session you want.
+
+To make sessions shorter, set `maxSessionDuration`, or shorten the refresh token lifetime at the IdP.
+
+```yaml
+auth:
+  enabled: true
+  maxSessionDuration: 8h
+  providers:
+    - label: My IdP
+      type: oidc
+      providerUrl: https://example.com
+      clientId: xxxxxxxxxxxxxx
+      clientSecret: xxxxxxxxxxxxxx
+      callbackUrl: https://your-domain/auth/sso/callback
+      scopes:
+        - openid
+        - profile
+        - email
+        - offline_access
+      refreshTokenDuration: 24h
+```
+
+With Docker, set [`TEMPORAL_MAX_SESSION_DURATION`](/references/web-ui-environment-variables#temporal_max_session_duration) and [`TEMPORAL_AUTH_REFRESH_TOKEN_DURATION`](/references/web-ui-environment-variables#temporal_auth_refresh_token_duration) instead.
+
+When a Web UI session ends, the Web UI redirects the user to the IdP.
+If the user still has an active session at the IdP, the IdP may sign them in again without asking for credentials.
+To require credentials or multi-factor authentication more often, change the IdP's own session policy.
+
+For Temporal Cloud, see [Restrict Cloud UI session lifetimes](/best-practices/security-controls#restrict-cloud-ui-session-lifetimes).
 
 For more general guidance for configuration, refer to the [Temporal UI README](https://github.com/temporalio/ui?tab=readme-ov-file#configuration).
 For more details on configuration with Docker, refer to [Temporal UI Config](https://github.com/temporalio/ui/blob/main/server/config/docker.yaml).
