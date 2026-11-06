@@ -30,6 +30,9 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parent.parent
 MANIFESTS_DIR = SKILL_DIR / "manifests"
 EXTRACT_SCRIPT = SKILL_DIR / "scripts" / "extract_guide.py"
+STATIC_SCRIPT = SKILL_DIR / "scripts" / "static_checks.py"
+
+ALL_STATIC_CHECKS = ("unused_imports", "unhandled_failures")
 
 TEMPORAL_HOST = "127.0.0.1"
 TEMPORAL_PORT = 7233
@@ -127,6 +130,55 @@ def tail(path: Path, n: int = 40) -> str:
 
 
 # --------------------------------------------------------------------------- #
+# static checks
+# --------------------------------------------------------------------------- #
+def run_static_checks(src_dir: Path, checks_cfg: dict) -> tuple[list[dict], bool]:
+    """Run the static source checks and print their section. Returns (findings, fatal).
+
+    `fatal` is True only when the manifest opted in with `checks.fail_on_findings`
+    and at least one finding was reported. By default these checks are advisory:
+    they surface defects a passing end-to-end run can't (dead imports, unhandled
+    failure paths) without turning a working guide red.
+    """
+    # Which checks to run. Each defaults on; set a check to false in the manifest
+    # to turn it off. `fail_on_findings` and `exclude` are config, not checks.
+    enabled = [
+        name for name in ALL_STATIC_CHECKS if checks_cfg.get(name, True)
+    ]
+    if not enabled:
+        return [], False
+
+    exclude = ",".join(checks_cfg.get("exclude", []))
+    cmd = [sys.executable, str(STATIC_SCRIPT), str(src_dir), "--checks", ",".join(enabled)]
+    if exclude:
+        cmd += ["--exclude", exclude]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if res.returncode != 0:
+        log("static checks could not run:")
+        print(res.stderr or res.stdout)
+        return [], False
+
+    data = json.loads(res.stdout)
+    findings = data.get("findings", [])
+    errors = data.get("errors", [])
+
+    print("\n" + "=" * 60)
+    print("STATIC CHECKS")
+    print("=" * 60)
+    if not findings and not errors:
+        print("  [OK] no findings")
+    for err in errors:
+        print(f"  [SKIP] {err['file']}: {err['message']}")
+    for f in findings:
+        print(f"  [{f['check']}] {f['file']}:{f['line']}  {f['message']}")
+
+    fatal = bool(findings) and bool(checks_cfg.get("fail_on_findings", False))
+    if findings and not fatal:
+        print("  (advisory: these do not fail the run; set checks.fail_on_findings to change that)")
+    return findings, fatal
+
+
+# --------------------------------------------------------------------------- #
 # manifest
 # --------------------------------------------------------------------------- #
 def load_manifest(arg: str) -> tuple[Path, dict]:
@@ -215,6 +267,11 @@ def run(manifest_arg: str, keep: bool, verbose: bool, auto_install: bool) -> int
         extracted = json.loads(res.stdout)
         log(f"extracted {len(extracted['written'])} files: {', '.join(extracted['written'])}")
 
+        # 1b. Static checks over the reconstructed source (unused imports,
+        # unhandled failure paths). These need no server or execution, so run
+        # them now; they're advisory unless the manifest opts into failing.
+        static_findings, static_fatal = run_static_checks(src_dir, manifest.get("checks", {}))
+
         # 2. Python environment.
         python = setup_python_env(workdir, manifest, verbose)
 
@@ -300,12 +357,16 @@ def run(manifest_arg: str, keep: bool, verbose: bool, auto_install: bool) -> int
         if checks.get("driver_exit_zero", True):
             print(f"  [{'PASS' if driver.returncode == 0 else 'FAIL'}] driver exited 0 (got {driver.returncode})")
 
-        all_pass = exit_ok and all(ok for _, ok in results)
+        run_pass = exit_ok and all(ok for _, ok in results)
+        if static_fatal:
+            print(f"  [FAIL] static checks reported {len(static_findings)} finding(s) "
+                  f"(checks.fail_on_findings is set)")
+        all_pass = run_pass and not static_fatal
         print("-" * 60)
         print("RESULT:", "PASS ✅" if all_pass else "FAIL ❌")
         print("=" * 60)
 
-        if not all_pass:
+        if not run_pass:
             print("\n--- driver output ---\n" + (driver_out or "(none)"))
             print("\n--- worker log (tail) ---\n" + tail(worker_log))
             print("\n--- server log (tail) ---\n" + tail(server_log))

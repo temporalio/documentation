@@ -40,6 +40,10 @@ A `skip` manifest records the decision so the guide isn't silently untested:
 | `driver_timeout_seconds` | no | Hard cap on the driver (default 120). |
 | `assert.stdout_contains` | yes | Exact substrings the driver's output must contain. Pick lines that prove the behavior ran. |
 | `assert.driver_exit_zero` | no | Require the driver to exit 0 (default true). |
+| `checks.unused_imports` | no | Static check: imports the code never uses. Default on; set `false` to skip (see [Static checks](#static-checks)). |
+| `checks.unhandled_failures` | no | Static check: unhandled failure paths. Default on; set `false` to skip. |
+| `checks.fail_on_findings` | no | Make static findings fail the run (default false — findings are advisory). |
+| `checks.exclude` | no | Filenames the static checks skip (e.g. a deliberately-minimal snippet). |
 | `_notes` | no | Free text: where the expected numbers come from, caveats, why anything is excluded. |
 
 ## Writing good assertions
@@ -55,6 +59,43 @@ accrual, tiering, redemption, or the batch path would fail a specific assertion 
 
 Prefer a few meaningful lines over many trivial ones. If the guide's driver doesn't print enough to assert on, that is
 itself worth noting to the guide's author; don't weaken the test to match thin output.
+
+## Static checks
+
+The end-to-end run catches a guide whose happy path broke. It cannot catch defects that leave the happy path green: an
+import the code never uses, or a failure path that never runs because nothing failed. Both are things human reviewers
+have flagged on real guide PRs (an unused `import asyncio`; a `wait_condition` timeout and an exhausted Activity retry
+that each fail the Workflow uncaught). So after reconstructing the project, the harness also runs
+`scripts/static_checks.py` over the extracted source — pure `ast` parsing, no server, no execution — and prints a
+`STATIC CHECKS` section.
+
+Two checks run, both on by default:
+
+- **`unused_imports`** — an imported name the file never references. Handles `import a.b` / `as` aliases / `from m import
+  x`, treats `__all__` entries as used, and skips `from __future__` and star-imported files. Blind spot: a name used only
+  inside a *string* annotation reads as unused, so a purely type-checking import can be a false positive.
+- **`unhandled_failures`** — two Temporal-specific smells: a `workflow.wait_condition(..., timeout=...)` with no enclosing
+  `try`/`except` for `asyncio.TimeoutError`, and an `execute_activity*` call with no surrounding `try`/`except` when the
+  file builds a `RetryPolicy(maximum_attempts=...)` (a bounded policy is what makes an exhausted retry terminal). The list
+  of patterns is meant to grow.
+
+These are **heuristics reported for a human to judge, not proof of a bug**, so they are **advisory by default**: findings
+print but do not change the exit code, and a working guide stays green. A manifest that wants them enforced sets
+`checks.fail_on_findings: true`. Turn a check off with `"unused_imports": false` (or `"unhandled_failures": false`), and
+exempt specific files with `checks.exclude`:
+
+```json
+"checks": {
+  "unhandled_failures": true,
+  "unused_imports": true,
+  "fail_on_findings": false,
+  "exclude": ["minimal_snippet.py"]
+}
+```
+
+Omit `checks` entirely and both run advisory. A real finding is a note for the guide's author, the same as a failed
+assertion — don't silence it with `exclude` to make a page look clean; `exclude` is for a file where the check genuinely
+doesn't apply.
 
 ## Setup steps
 

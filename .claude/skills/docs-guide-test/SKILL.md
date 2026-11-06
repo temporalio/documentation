@@ -58,15 +58,21 @@ The script, in order:
    default rule is "a fenced `python` block whose first line is a `# filename.py` comment is a complete file" — which
    is the convention these guides already follow, and which naturally skips partial or alternative snippets (for
    example optional "add this line" variants) that lack the header. See the extractor's `--help` for other modes.
-3. **Starts a fresh local server.** It runs `temporal server start-dev`, which keeps state in memory, so every run
+3. **Runs static checks over the reconstructed source.** Before anything executes, it parses the extracted files and
+   reports two classes of defect a passing run can't catch: imports the code never uses, and unhandled failure paths (a
+   `wait_condition` timeout or an exhausted Activity retry that would fail the Workflow uncaught). These are heuristics,
+   printed as advisory findings by default — they don't turn a working guide red unless a manifest sets
+   `checks.fail_on_findings`. See [references/authoring-manifests.md](references/authoring-manifests.md).
+4. **Starts a fresh local server.** It runs `temporal server start-dev`, which keeps state in memory, so every run
    starts clean and Workflow Ids never collide across runs. If port 7233 is already in use, the script stops and asks
    you to shut down the other server rather than silently reusing an unknown one.
-4. **Runs the worker, then the driver.** The worker starts in the background; the driver (the guide's starter program)
+5. **Runs the worker, then the driver.** The worker starts in the background; the driver (the guide's starter program)
    runs to completion with its output captured.
-5. **Checks the assertions.** Each string the manifest expects in the output is checked against what the driver
+6. **Checks the assertions.** Each string the manifest expects in the output is checked against what the driver
    printed. All present means pass.
-6. **Tears everything down** and prints a report. On failure it dumps the driver output and the tails of the worker and
-   server logs so you can see what broke. Exit code is 0 on pass, 1 on any failure.
+7. **Tears everything down** and prints a report. On failure it dumps the driver output and the tails of the worker and
+   server logs so you can see what broke. Exit code is 0 on pass, 1 on any failure (a static finding only counts when
+   `checks.fail_on_findings` is set).
 
 Pass `--keep` to leave the scratch directory and servers up for inspection, and `--verbose` to stream the logs.
 
