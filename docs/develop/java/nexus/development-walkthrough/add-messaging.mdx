@@ -38,8 +38,8 @@ If the caller can proceed without hearing back, use a Signal. If the caller only
 
 Add a Signal handler that increments the reminder count, a Query handler that reports progress, and an Update handler that records the decision. Recording `APPROVED` or `DENIED` satisfies the condition the Workflow is blocked on, so the Workflow returns that decision as its result.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-approval-workflow-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflow.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflow.java)
+<!--SNIPSTART java-nexus-walkthrough-approval-workflow {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalWorkflow.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalWorkflow.java)
 ```java
 public interface ApprovalWorkflow {
 
@@ -122,8 +122,8 @@ One Signal fits easily. A handler that sends several messages or does slow work 
 
 :::
 
-<!--SNIPSTART samples-java-nexus-walkthrough-remind-approver-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+<!--SNIPSTART java-nexus-walkthrough-remind-approver {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java)
 ```java
 @TemporalOperation
 public TemporalOperationResult<Void> remindApprover(
@@ -144,8 +144,8 @@ Send the Query through the Client and return its answer as a synchronous result.
 
 A Worker answers the Query, so the Operation fails if no Worker is polling the approval's Task Queue.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-get-approval-status-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+<!--SNIPSTART java-nexus-walkthrough-get-approval-status {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java)
 ```java
 @TemporalOperation
 public TemporalOperationResult<GetApprovalStatusOutput> getApprovalStatus(
@@ -172,8 +172,8 @@ An Update can refuse a request; a Signal cannot, because by the time its handler
 
 The approval's **validator**, the `@UpdateValidatorMethod` in the Workflow interface above, rejects a second decision for an approval that is already decided. Without it, the later decision would overwrite the first. A rejected Update never runs the handler or reaches Event History, and the caller sees a failed Operation. A validator takes the same arguments as the handler, returns nothing, and must not change Workflow state.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-submit-decision-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+<!--SNIPSTART java-nexus-walkthrough-submit-decision {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java)
 ```java
 @TemporalOperation
 public TemporalOperationResult<SubmitDecisionOutput> submitDecision(
@@ -255,7 +255,7 @@ temporal nexus operation execute \
 ```
 Results:
   Status  COMPLETED
-  Result  {"pending":true,"remindersSent":1,"notesAttached":0}
+  Result  {"notesAttached":0,"pending":true,"remindersSent":1}
 ```
 
 The Update returns confirmation, including the Workflow's reminder count:
