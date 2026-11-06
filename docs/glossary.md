@@ -369,9 +369,9 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 #### [NexGen](/nexus/nexgen)
 
-NexGen generates client code for Go, Java, Python, and TypeScript from a schema file that defines the contract. Both
-sides can then use code generated from the same file, which gives data validation and type safety across the languages
-and helps prevent drift.
+NexGen generates typed models, runtime validators, and Nexus Service definitions in C#, Go, Java, Python, and
+TypeScript from one schema file. The handler and the caller each generate code from that file, so both sides use the same
+types even when they're written in different languages.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
