@@ -1,6 +1,6 @@
 ---
 id: data-encryption
-title: Payload encryption - TypeScript SDK
+title: Payload encryption
 sidebar_label: Payload encryption
 toc_max_heading_level: 3
 tags:
@@ -24,8 +24,8 @@ The server itself never adds encryption over Payloads. Therefore, unless client-
 
 The following is an example class that implements the `PayloadCodec` interface:
 
-<!--SNIPSTART typescript-encryption-codec -->
-[encryption/src/encryption-codec.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/encryption-codec.ts)
+<!--SNIPSTART typescript-data-encryption-codec-->
+[typescript-sandbox/src/best-practices/data-handling/data-encryption/encryption-codec.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/data-encryption/encryption-codec.ts)
 ```ts
 import { webcrypto as crypto } from 'node:crypto';
 import { METADATA_ENCODING_KEY, Payload, PayloadCodec, ValueError } from '@temporalio/common';
@@ -112,13 +112,13 @@ async function fetchKey(_keyId: string): Promise<crypto.CryptoKey> {
 ```
 <!--SNIPEND-->
 
-The encryption and decryption code is in [src/crypto.ts](https://github.com/temporalio/samples-typescript/tree/main/encryption/src/crypto.ts).
-Because encryption is CPU intensive, and doing AES with the crypto module built into Node.js blocks the main thread, we use `@ronomon/crypto-async`, which uses the Node.js thread pool.
+The encryption and decryption code is in [crypto.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/data-encryption/crypto.ts).
+It uses AES-GCM through the Web Crypto API (`crypto.subtle`) built into Node.js, which runs asynchronously and doesn't block the main thread.
 
 As before, we provide a custom Data Converter to the Client and Worker:
 
-<!--SNIPSTART typescript-encryption-client -->
-[encryption/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/client.ts)
+<!--SNIPSTART typescript-data-encryption-client {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/best-practices/data-handling/data-encryption/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/data-encryption/client.ts)
 ```ts
 const client = new Client({
   connection,
@@ -128,7 +128,7 @@ const client = new Client({
 const handle = await client.workflow.start(example, {
   args: ['Alice: Private message for Bob.'],
   taskQueue: 'encryption',
-  workflowId: `my-business-id-${uuid()}`,
+  workflowId: `my-business-id-${nanoid()}`,
 });
 
 console.log(`Started workflow ${handle.workflowId}`);
@@ -136,10 +136,11 @@ console.log(await handle.result());
 ```
 <!--SNIPEND-->
 
-<!--SNIPSTART typescript-encryption-worker -->
-[encryption/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/worker.ts)
+<!--SNIPSTART typescript-data-encryption-worker {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/best-practices/data-handling/data-encryption/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/data-encryption/worker.ts)
 ```ts
 const worker = await Worker.create({
+  connection,
   workflowsPath: require.resolve('./workflows'),
   taskQueue: 'encryption',
   dataConverter: await getDataConverter(),
@@ -151,8 +152,8 @@ When the Client sends `'Alice: Private message for Bob.'` to the Workflow, it ge
 The Workflow receives the decrypted message and appends another message.
 When it returns that longer string, the string gets encrypted by the Worker and decrypted by the Client.
 
-<!--SNIPSTART typescript-encryption-workflow -->
-[encryption/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/workflows.ts)
+<!--SNIPSTART typescript-data-encryption-workflow-->
+[typescript-sandbox/src/best-practices/data-handling/data-encryption/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/data-encryption/workflows.ts)
 ```ts
 export async function example(message: string): Promise<string> {
   return `${message}\nBob: Hi Alice, I'm Workflow Bob.`;

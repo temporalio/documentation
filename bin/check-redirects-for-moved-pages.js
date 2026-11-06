@@ -3,6 +3,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { compileRule, compileRedirects } = require('./redirect-utils');
 
 const VERCEL_JSON = path.join(process.cwd(), 'vercel.json');
 
@@ -106,39 +107,21 @@ function getMovedOrDeletedDocFiles(baseSha) {
   return { files, mergeBase };
 }
 
+// Compile a vercel.json redirect source with the same path-to-regexp version
+// Vercel uses, so a rule matches here exactly when it matches in production.
 function vercelPatternToRegex(pattern) {
-  // Convert Vercel redirect patterns like /foo/:path* to a regex.
-  // Replace named params before escaping so the colons and wildcards are
-  // consumed first, then escape whatever literal characters remain.
-  const tokens = [];
-  const tokenized = pattern
-    .replace(/:([a-zA-Z]+)\*/g, () => {
-      tokens.push('.+');
-      return `__TOKEN_${tokens.length - 1}__`;
-    })
-    .replace(/:([a-zA-Z]+)/g, () => {
-      tokens.push('[^/]+');
-      return `__TOKEN_${tokens.length - 1}__`;
-    });
-
-  let regexStr = tokenized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  for (let i = 0; i < tokens.length; i++) {
-    regexStr = regexStr.replace(`__TOKEN_${i}__`, tokens[i]);
-  }
-  return new RegExp(`^${regexStr}$`);
+  return compileRule({ source: pattern, destination: '/' }, 0).regex;
 }
 
 function loadRedirects() {
   const config = JSON.parse(fs.readFileSync(VERCEL_JSON, 'utf8'));
-  return (config.redirects || []).map((r) => ({
-    source: r.source,
-    destination: r.destination,
-    regex: vercelPatternToRegex(r.source),
-  }));
+  return compileRedirects(config.redirects || []);
 }
 
+// Redirects whose source doesn't compile have no regex; bin/validate-redirects.js
+// reports those.
 function findMatchingRedirect(urlPath, redirects) {
-  return redirects.find((r) => r.regex.test(urlPath));
+  return redirects.find((r) => !r.conditional && r.regex && r.regex.test(urlPath));
 }
 
 function main() {

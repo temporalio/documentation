@@ -3,6 +3,9 @@ id: event-accumulator
 title: "Event Accumulator Pattern"
 sidebar_label: "Event Accumulator"
 description: "Durably collect and deduplicate signals from multiple senders, then process the batch after a sliding inactivity timeout."
+tags:
+  - Design Patterns
+  - Signals
 ---
 
 import Tabs from '@theme/Tabs';
@@ -381,7 +384,7 @@ If producers stop sending signals but never send a flush, the workflow holds ope
 - **Pass accumulated state as workflow arguments into each Continue-As-New run.** Workflow state does not survive a Continue-As-New transition automatically; always pass items and the seen-keys list as arguments to the new run. If you omit the seen-keys list, any signal delivered to both the old and new run during the Continue-As-New handoff will be processed again in the new run, producing duplicate entries in the batch.
 - **Keep signal handlers fast and side-effect free.** Signal handlers must not call activities or yield to the scheduler. Buffer incoming signals and process them in the main workflow loop.
 - **Add a flush signal for testing and operational runbooks.** An explicit flush signal lets you trigger early batch processing without waiting for the timeout, which is useful for end-to-end tests and manual intervention.
-- **Keep producer signal rate below 5/sec per workflow instance.** Each signal briefly locks the workflow execution. A sustained rate above roughly 5 signals/second causes workflow task backlog, limits throughput, and can eventually prevent Continue-As-New from completing. If your producer rate is higher, partition by a finer-grained key so each accumulator workflow receives a manageable share of the total signal volume.
+- **Keep producer signal rate below 5/sec per workflow instance.** Each signal briefly locks the workflow execution. A sustained rate above roughly 5 signals/second can cause Workflow Task backlog, limit throughput, and delay Continue-As-New. If your producer rate is higher, partition by a finer-grained key so each accumulator workflow receives a manageable share of the total signal volume.
 - **Account for the 10,000-signal-per-run limit on Temporal Cloud.** A single workflow run in Temporal Cloud can receive at most 10,000 signals. If your accumulation window is long and producers are active, ensure your Continue-As-New trigger fires well before the per-run signal count reaches this limit.
 
 ## Common pitfalls
@@ -393,8 +396,8 @@ If producers stop sending signals but never send a flush, the workflow holds ope
 - **Forgetting to pass accumulated state into Continue-As-New.** The new run starts with empty state and re-processes events from scratch, producing duplicate batches.
 - **Calling activities inside signal handlers.** Signal handlers run synchronously in the workflow thread and must not block or call activities. Buffer the item and let the main loop handle activity calls.
 - **Assuming workflow completion means all events were captured.** Producers that send signals after the workflow completes will start a new accumulator instance. Decide whether this is intentional (a new accumulation window) or an error.
-- **Signal rate too high to allow Continue-As-New to complete.** Continue-As-New requires a brief window (~100 ms) with no unhandled signals. If producers send signals continuously without pause, the workflow can never enter that window, history grows without bound, and Temporal will eventually terminate the workflow. Partition by a finer-grained key, throttle producers, or batch multiple events into a single signal payload to keep the per-instance signal rate low enough for CAN to succeed.
-- **Not draining the signal queue before calling Continue-As-New.** Any signal that arrives between the CAN decision and the actual CAN execution can be lost if the signal buffer is not empty when CAN fires. All SDK implementations in this pattern guard against this by re-checking the unprocessed queue before continuing; do not remove that guard or call CAN unconditionally on the history-size trigger.
+- **Signals arriving during Continue-As-New.** Continue-As-New needs a brief window, on the order of 100 ms, with no unhandled Signals. If a Signal is accepted during a closing Workflow Task, that task fails and is retried with the new Event. While the retried task runs, the Service rejects further Signals with retryable `BUSY_WORKFLOW` errors so they cannot interrupt the closing attempt. Partition by a finer-grained key, throttle producers, or batch multiple events into a single Signal payload to reduce contention.
+- **Not draining the signal queue before calling Continue-As-New.** Drain and process queued Signals before continuing so their contents are included in the state passed to the next run. Keep the queue checks in these examples and do not call Continue-As-New unconditionally when the Event History grows large.
 
 ## Related
 

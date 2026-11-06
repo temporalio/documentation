@@ -1,6 +1,6 @@
 ---
 id: entity-pattern
-title: Entity pattern - TypeScript SDK
+title: Entity pattern
 sidebar_label: Entity pattern
 slug: /develop/typescript/best-practices/entity-pattern
 toc_max_heading_level: 4
@@ -15,20 +15,23 @@ description: Implement the Single-Entity Design Pattern in TypeScript to manage 
 The following is a simple pattern that represents a single entity.
 It tracks the number of iterations regardless of frequency, and calls `continueAsNew` while properly handling pending updates from Signals.
 
+<!--SNIPSTART typescript-entity-pattern-workflow-->
+[typescript-sandbox/src/best-practices/entity-pattern/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/entity-pattern/workflows.ts)
 ```ts
 interface Input {
   /* Define your Workflow input type here */
+  entityId: string;
 }
 interface Update {
   /* Define your Workflow update type here */
+  value: number;
 }
+
+export const updateSignal = defineSignal<[Update]>('update');
 
 const MAX_ITERATIONS = 1;
 
-export async function entityWorkflow(
-  input: Input,
-  isNew = true,
-): Promise<void> {
+export async function entityWorkflow(input: Input, isNew = true): Promise<void> {
   try {
     const pendingUpdates = Array<Update>();
     setHandler(updateSignal, (updateCommand) => {
@@ -46,7 +49,7 @@ export async function entityWorkflow(
       await condition(() => pendingUpdates.length > 0, '1 day');
 
       while (pendingUpdates.length) {
-        const update = pendingUpdates.shift();
+        const update = pendingUpdates.shift()!;
         await runAnActivityOrChildWorkflow(update);
       }
     }
@@ -61,3 +64,4 @@ export async function entityWorkflow(
   await continueAsNew<typeof entityWorkflow>(input, false);
 }
 ```
+<!--SNIPEND-->

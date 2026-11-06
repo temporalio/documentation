@@ -29,7 +29,7 @@ If the Worker's clock doesn't match the Temporal Service, synchronize all clocks
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
 
-If you're using Temporal Cloud, create a [support ticket](/cloud/support#support-ticket) with as much information as possible, including the Namespace Name and the Workflow Ids of some Workflow Executions in which the issue occurs.
+If you're using Temporal Cloud, create a [support ticket](/evaluate/cloud/support#support-ticket) with as much information as possible, including the Namespace Name and the Workflow Ids of some Workflow Executions in which the issue occurs.
 
 :::
 
@@ -65,12 +65,12 @@ Use the following query to check for errors in `RpsLimit`, `ConcurrentLimit` and
 sum(rate(service_errors_resource_exhausted{}[1m])) by (resource_exhausted_cause)
 ```
 
-Look for high latencies, short timeouts, and other abnormal [Temporal Service metrics](/references/cluster-metrics).
+Look for high latencies, short timeouts, and other abnormal [Temporal Service metrics](/references/service-metrics).
 If the metrics come from a specific service (such as History Service), check the service's health and performance.
 
 ### Check Workflow logic
 
-Check your [Client and Worker configuration](/references/configuration) files for missing or invalid target values, such as the following:
+Check your [Client and Worker configuration](/references/service-configuration) files for missing or invalid target values, such as the following:
 
 - Server names
 - Network or host addresses
@@ -118,5 +118,5 @@ If you increase `frontend.keepAliveMaxConnectionAge` values, consider monitoring
 
 Still unable to resolve your issue?
 
-- If you use Temporal Cloud, create a [support ticket](/cloud/support#support-ticket).
+- If you use Temporal Cloud, create a [support ticket](/evaluate/cloud/support#support-ticket).
 - If you use our open source software or Temporal Cloud, check for similar questions and possible solutions in our [community forum](https://community.temporal.io) or [community Slack](https://temporal.io/slack).

@@ -1,25 +1,27 @@
 ---
 id: enriching-ui
-title: Enriching the user interface - Java SDK
+title: Enriching the user interface
 sidebar_label: Enriching the UI
 description: Add contextual information to workflows and events in the Temporal UI using the Java SDK.
 toc_max_heading_level: 3
 tags:
   - UI Enrichment
-  - Java SDK
-  - Temporal SDKs
 ---
 
 Temporal supports adding context to Workflows and Events with metadata. 
 This helps users identify and understand Workflows and their operations.
 
-## Adding Summary and Details to Workflows
+## Adding summary and details to Workflows
 
 ### Starting a Workflow
 
 When starting a workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
+<!--SNIPSTART java-enriching-ui-static-summary-->
+[java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/Main.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/Main.java)
 ```java
+package io.temporal.docs.platform.enrichingui;
+
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.serviceclient.WorkflowServiceStubs;
@@ -29,23 +31,30 @@ public class Main {
         // Create service stubs and workflow client
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
         WorkflowClient workflowClient = WorkflowClient.newInstance(service);
-        
+
+        String result = runWorkflow(workflowClient);
+        System.out.println(result);
+        System.exit(0);
+    }
+
+    public static String runWorkflow(WorkflowClient workflowClient) {
         // Create workflow options with static summary and details
         WorkflowOptions options = WorkflowOptions.newBuilder()
-                .setWorkflowId("your-workflow-id")
-                .setTaskQueue("your-task-queue")
-                .setStaticSummary("Order processing for customer #12345")
-                .setStaticDetails("Processing premium order with expedited shipping")
-                .build();
-        
+            .setWorkflowId("your-workflow-id")
+            .setTaskQueue("your-task-queue")
+            .setStaticSummary("Order processing for customer #12345")
+            .setStaticDetails("Processing premium order with expedited shipping")
+            .build();
+
         // Create the workflow stub
         YourWorkflow workflow = workflowClient.newWorkflowStub(YourWorkflow.class, options);
-        
-        // Start the workflow
-        String result = workflow.yourWorkflowMethod("workflow input");
+
+        // Start the workflow and wait for its result
+        return workflow.yourWorkflowMethod("workflow input");
     }
 }
 ```
+<!--SNIPEND-->
 
 `setStaticSummary()` sets a single-line description that appears in the Workflow list view, limited to 200 bytes.
 `setStaticDetails()` sets multi-line comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
@@ -54,10 +63,13 @@ The input format is standard Markdown excluding images, HTML, and scripts.
 
 You can also use `WorkflowClient.start()` for async execution:
 
+<!--SNIPSTART java-enriching-ui-async-start {"enable_code_dedenting": true}-->
+[java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/AsyncStart.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/AsyncStart.java)
 ```java
 // Start workflow asynchronously
 WorkflowExecution execution = WorkflowClient.start(workflow::yourWorkflowMethod, "workflow input");
 ```
+<!--SNIPEND-->
 
 ### Inside the Workflow
 
@@ -65,41 +77,50 @@ Within a Workflow, you can get and set the _current workflow details_.
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
 Current Workflow details also takes Markdown format (excluding images, HTML, and scripts) and can span multiple lines.
 
+<!--SNIPSTART java-enriching-ui-current-details-->
+[java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/CurrentDetailsWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/CurrentDetailsWorkflowImpl.java)
 ```java
+package io.temporal.docs.platform.enrichingui;
+
 import io.temporal.workflow.Workflow;
 
-public class YourWorkflowImpl implements YourWorkflow {
+public class CurrentDetailsWorkflowImpl implements YourWorkflow {
     @Override
     public String yourWorkflowMethod(String input) {
         // Get the current details
         String currentDetails = Workflow.getCurrentDetails();
-        Workflow.getLogger(YourWorkflowImpl.class).info("Current details: " + currentDetails);
-        
+        Workflow.getLogger(CurrentDetailsWorkflowImpl.class).info("Current details: {}", currentDetails);
+
         // Set/update the current details
         Workflow.setCurrentDetails("Updated workflow details with new status");
-        
+
         return "Workflow completed";
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Adding Summary to Activities and Timers
 
 You can attach a `setSummary()` to Activities when starting them from within a Workflow:
 
+<!--SNIPSTART java-enriching-ui-activity-summary-->
+[java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/ActivitySummaryWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/ActivitySummaryWorkflowImpl.java)
 ```java
+package io.temporal.docs.platform.enrichingui;
+
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 import java.time.Duration;
 
-public class YourWorkflowImpl implements YourWorkflow {
-    private final YourActivities activities = 
+public class ActivitySummaryWorkflowImpl implements YourWorkflow {
+    private final YourActivities activities =
         Workflow.newActivityStub(YourActivities.class,
             ActivityOptions.newBuilder()
                 .setStartToCloseTimeout(Duration.ofSeconds(10))
                 .setSummary("Processing user data")
                 .build());
-    
+
     @Override
     public String yourWorkflowMethod(String input) {
         // Execute the activity with the summary
@@ -108,39 +129,45 @@ public class YourWorkflowImpl implements YourWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 Similarly, you can attach a `setSummary()` to timers within a Workflow:
 
+<!--SNIPSTART java-enriching-ui-timer-summary-->
+[java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/TimerSummaryWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/enriching-ui/src/main/java/io/temporal/docs/platform/enrichingui/TimerSummaryWorkflowImpl.java)
 ```java
-import io.temporal.workflow.Workflow;
+package io.temporal.docs.platform.enrichingui;
+
 import io.temporal.workflow.TimerOptions;
+import io.temporal.workflow.Workflow;
 import java.time.Duration;
 
-public class YourWorkflowImpl implements YourWorkflow {
+public class TimerSummaryWorkflowImpl implements YourWorkflow {
     @Override
     public String yourWorkflowMethod(String input) {
         // Create a timer with a summary
-        Workflow.newTimer(Duration.ofMinutes(5), 
+        Workflow.newTimer(Duration.ofMinutes(5),
             TimerOptions.newBuilder()
                 .setSummary("Waiting for payment confirmation")
                 .build())
             .get(); // Wait for the timer to fire
-        
+
         return "Timer completed";
     }
 }
 ```
+<!--SNIPEND-->
 
 The input format for `setSummary()` is a string, and limited to 200 bytes.
 
-## Viewing Summary and Details in the UI
+## Viewing summary and details in the UI
 
 Once you've added summaries and details to your Workflows, Activities, and Timers, you can view this enriched information in the Temporal Web UI. 
 Navigate to your Workflow's details page to see the metadata displayed in three key locations:
 
-### Workflow Overview Section
+### User Metadata
 
-At the top of the workflow details page, you'll find the workflow-level metadata:
+On the Workflow Details page, under the **User Metadata** tab, you'll find the workflow-level metadata:
 
 - **Summary & Details** - Displays the static summary and static details set when starting the workflow
 - **Current Details** - Displays the dynamic details that can be updated during workflow execution

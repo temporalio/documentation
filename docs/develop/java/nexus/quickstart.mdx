@@ -1,11 +1,10 @@
 ---
 id: quickstart
-title: Nexus Java Quickstart
+title: Nexus Java quickstart
 sidebar_label: Quickstart
 description: Build a Nexus Service that wraps an existing Temporal Workflow using the Java SDK
 tags:
   - Nexus
-  - Java SDK
   - setup
   - getting started
 hide_table_of_contents: true
@@ -13,10 +12,10 @@ hide_table_of_contents: true
 
 import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components';
 
-[Temporal Nexus](/evaluate/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations. Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
+[Temporal Nexus](/evaluate/features/nexus) connects Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations. Build a Nexus Service that wraps an existing Temporal Workflow, then invoke it from a caller Workflow.
 
 :::info
-To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/nexus). To learn how Nexus works, see [Temporal Nexus](/nexus).
+To evaluate whether Nexus fits your use case, see the [evaluation guide](/evaluate/features/nexus). To learn how Nexus works, see [Temporal Nexus](/nexus).
 :::
 
 **Prerequisites:** Complete the [Java SDK Quickstart](/develop/java/set-up-your-local-java) first.
@@ -33,11 +32,14 @@ By the end of this guide:
 
 <SetupSteps>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="java">
-{`package helloworkflow;
+<CodeSnippet title="SayHelloNexusService.java">
+
+<!--SNIPSTART java-nexus-quickstart-service-->
+[java-sandbox/nexus/quickstart/src/main/java/helloworkflow/SayHelloNexusService.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/quickstart/src/main/java/helloworkflow/SayHelloNexusService.java)
+```java
+package helloworkflow;
 
 import io.nexusrpc.Operation;
 import io.nexusrpc.Service;
@@ -48,11 +50,11 @@ public interface SayHelloNexusService {
     @Operation
     String sayHello(String name);
 
-}`}
-</CodeSnippet>
+}
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 1. Define the Nexus Service
 
@@ -67,11 +69,14 @@ The `@Operation` annotation marks `sayHello` as a callable Nexus Operation.
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="java">
-{`package helloworkflow;
+<CodeSnippet title="SayHelloNexusServiceImpl.java">
+
+<!--SNIPSTART java-nexus-quickstart-handler-->
+[java-sandbox/nexus/quickstart/src/main/java/helloworkflow/SayHelloNexusServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/quickstart/src/main/java/helloworkflow/SayHelloNexusServiceImpl.java)
+```java
+package helloworkflow;
 
 import io.nexusrpc.handler.OperationHandler;
 import io.nexusrpc.handler.OperationImpl;
@@ -98,11 +103,11 @@ public class SayHelloNexusServiceImpl {
         );
     }
 
-}`}
-</CodeSnippet>
+}
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 2. Define the Nexus Operation Handlers
 
@@ -115,11 +120,14 @@ The handler bridges the Nexus `String` input to `SayHelloWorkflow`'s `sayHello` 
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="java">
-{`package helloworkflow;
+<CodeSnippet title="SayHelloWorker.java">
+
+<!--SNIPSTART java-nexus-quickstart-worker-->
+[java-sandbox/nexus/quickstart/src/main/java/helloworkflow/SayHelloWorker.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/quickstart/src/main/java/helloworkflow/SayHelloWorker.java)
+```java
+package helloworkflow;
 
 import io.temporal.client.WorkflowClient;
 import io.temporal.serviceclient.WorkflowServiceStubs;
@@ -145,11 +153,11 @@ public class SayHelloWorker {
 
     }
 
-}`}
-</CodeSnippet>
+}
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 3. Register the Nexus Service Handler in a Worker
 
@@ -162,11 +170,14 @@ The registerNexusServiceImplementation parameter registers the handler so it can
 
 </SetupStep>
 
-<SetupStep code={
-<>
+<SetupStep>
 
-<CodeSnippet language="java">
-{`package helloworkflow;
+<CodeSnippet title="NexusCallerWorkflow.java">
+
+<!--SNIPSTART java-nexus-quickstart-caller-workflow-interface-->
+[java-sandbox/nexus/quickstart/src/main/java/helloworkflow/NexusCallerWorkflow.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/quickstart/src/main/java/helloworkflow/NexusCallerWorkflow.java)
+```java
+package helloworkflow;
 
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
@@ -177,11 +188,18 @@ public interface NexusCallerWorkflow {
     @WorkflowMethod
     String greetThroughNexus(String name);
 
-}`}
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
 
-<CodeSnippet language="java">
-{`package helloworkflow;
+<CodeSnippet title="NexusCallerWorkflowImpl.java">
+
+<!--SNIPSTART java-nexus-quickstart-caller-workflow-impl-->
+[java-sandbox/nexus/quickstart/src/main/java/helloworkflow/NexusCallerWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/quickstart/src/main/java/helloworkflow/NexusCallerWorkflowImpl.java)
+```java
+package helloworkflow;
 
 import io.temporal.workflow.NexusOperationOptions;
 import io.temporal.workflow.NexusServiceOptions;
@@ -206,11 +224,11 @@ public class NexusCallerWorkflowImpl implements NexusCallerWorkflow {
         return nexusService.sayHello(name);
     }
 
-}`}
-</CodeSnippet>
+}
+```
+<!--SNIPEND-->
 
-</>
-}>
+</CodeSnippet>
 
 ## 4. Develop the caller Workflow
 
@@ -253,11 +271,14 @@ Make sure your local Temporal dev server is running (`temporal server start-dev`
 
 </SetupStep>
 
-<SetupStep wide code={
-<>
+<SetupStep wide>
 
-<CodeSnippet language="java">
-{`package helloworkflow;
+<CodeSnippet title="NexusCallerStarter.java">
+
+<!--SNIPSTART java-nexus-quickstart-caller-starter-->
+[java-sandbox/nexus/quickstart/src/main/java/helloworkflow/NexusCallerStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/quickstart/src/main/java/helloworkflow/NexusCallerStarter.java)
+```java
+package helloworkflow;
 
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
@@ -312,13 +333,13 @@ public class NexusCallerStarter {
 
     }
 
-}`}
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
 
-</>
-}>
-
-## 6. Run and Verify
+## 6. Run and verify
 
 Create `NexusCallerStarter.java` to start the caller Worker and execute the Workflow.
 
@@ -327,19 +348,58 @@ The full request flows from the caller Workflow, through the Nexus Endpoint, to 
 
 **Run the application:**
 
-1. Start the handler Worker in one terminal:
+Start the handler Worker in one terminal:
+
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
 
 ```bash
 mvn compile exec:java \
   -Dexec.mainClass="helloworkflow.SayHelloWorker"
 ```
 
-2. Run the caller in another terminal:
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+./gradlew runWorker
+```
+
+</TabItem>
+</Tabs>
+
+Run the caller in another terminal:
+
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
 
 ```bash
 mvn compile exec:java \
   -Dexec.mainClass="helloworkflow.NexusCallerStarter"
 ```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+Add a task for the caller to your `build.gradle`, next to the `runWorker` and `runStarter` tasks from the Java SDK Quickstart:
+
+```groovy
+tasks.register('runCallerStarter', JavaExec) {
+    group = 'application'
+    description = 'Run the Nexus caller Worker and Workflow'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'helloworkflow.NexusCallerStarter'
+}
+```
+
+Then run it:
+
+```bash
+./gradlew runCallerStarter
+```
+
+</TabItem>
+</Tabs>
 
 You should see:
 
@@ -354,11 +414,11 @@ In `default`, find the `SayHelloWorkflow` execution that was started by the Nexu
 </SetupStep>
 </SetupSteps>
 
-## Next Steps
+## Next steps
 
 Now that you have a working Nexus Service, here are some resources to deepen your understanding:
 
-- **[Java Nexus Feature Guide](/develop/java/nexus)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
+- **[Java Nexus feature guide](/develop/java/nexus)**: Covers synchronous and asynchronous Operations, error handling, cancellation, and cross-Namespace calls.
 - **[Nexus Operations](/nexus/operations)**: The full Operation lifecycle, including retries, timeouts, and execution semantics.
 - **[Nexus Services](/nexus/services)**: Designing Service contracts and registering multiple Services per Worker.
 - **[Nexus Patterns](/nexus/patterns)**: Comparing the collocated and router-queue deployment patterns.

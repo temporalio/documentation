@@ -1,6 +1,6 @@
 ---
 id: timeouts
-title: Workflow Timeouts - Java SDK
+title: Workflow Timeouts
 sidebar_label: Timeouts
 description: Optimize Workflow Execution with Temporal Java SDK - Set Workflow Timeouts and Retry Policies efficiently.
 toc_max_heading_level: 4
@@ -9,8 +9,6 @@ tags:
   - Workflows
   - Errors
   - Failures
-  - Java SDK
-  - Temporal SDKs
 ---
 
 ## Workflow timeouts {/* #workflow-timeouts */}
@@ -35,24 +33,25 @@ Available timeouts are:
 - [setWorkflowRunTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration))
 - [setWorkflowTaskTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration))
 
+<!--SNIPSTART java-workflow-timeouts-execution-timeout {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/timeouts/src/main/java/io/temporal/docs/workflows/timeouts/TimeoutsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/timeouts/src/main/java/io/temporal/docs/workflows/timeouts/TimeoutsExample.java)
 ```java
-//create Workflow stub for YourWorkflowInterface
-YourWorkflowInterface workflow1 =
-    WorkerGreet.greetclient.newWorkflowStub(
+// Create a Workflow stub for GreetWorkflowInterface
+GreetWorkflowInterface workflow1 =
+    client.newWorkflowStub(
         GreetWorkflowInterface.class,
         WorkflowOptions.newBuilder()
-                .setWorkflowId("YourWorkflow")
-                .setTaskQueue(WorkerGreet.TASK_QUEUE)
-                // Set Workflow Timeout duration
-                .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
-                // .setWorkflowRunTimeout(Duration.ofSeconds(10))
-                // .setWorkflowTaskTimeout(Duration.ofSeconds(10))
-                .build());
+            .setWorkflowId("YourWorkflow")
+            .setTaskQueue(TASK_QUEUE)
+            // Set Workflow Timeout duration
+            .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
+            // .setWorkflowRunTimeout(Duration.ofSeconds(10))
+            // .setWorkflowTaskTimeout(Duration.ofSeconds(10))
+            .build());
 ```
+<!--SNIPEND-->
 
-## Workflow Retry Policy {/* #workflow-retries */}
-
-**How to set a Workflow Retry Policy in Java.**
+## Workflow retries {/* #workflow-retries */}
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -60,20 +59,27 @@ Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution
 
 Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
 
-To set a Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance use [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+To set Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance, use [`WorkflowOptions.Builder.setRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setRetryOptions(io.temporal.common.RetryOptions)).
 
 - Type: `RetryOptions`
 - Default: `Null` which means no retries will be attempted.
 
+<!--SNIPSTART java-workflow-timeouts-retry-options {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/timeouts/src/main/java/io/temporal/docs/workflows/timeouts/TimeoutsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/timeouts/src/main/java/io/temporal/docs/workflows/timeouts/TimeoutsExample.java)
 ```java
-//create Workflow stub for GreetWorkflowInterface
+// Create a Workflow stub for GreetWorkflowInterface
 GreetWorkflowInterface workflow1 =
-    WorkerGreet.greetclient.newWorkflowStub(
+    client.newWorkflowStub(
         GreetWorkflowInterface.class,
         WorkflowOptions.newBuilder()
-                .setWorkflowId("GreetWF")
-                .setTaskQueue(WorkerGreet.TASK_QUEUE)
-                // Set Workflow Retry Options
-                .setRetryOptions(RetryOptions.newBuilder()
-                .build());
+            .setWorkflowId("GreetWF")
+            .setTaskQueue(TASK_QUEUE)
+            // Set Workflow Retry Options
+            .setRetryOptions(
+                RetryOptions.newBuilder()
+                    .setInitialInterval(Duration.ofSeconds(1))
+                    .setMaximumAttempts(3)
+                    .build())
+            .build());
 ```
+<!--SNIPEND-->

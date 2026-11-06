@@ -1,6 +1,6 @@
 ---
 id: external-storage
-title: External Storage - Go SDK
+title: External Storage
 sidebar_label: External Storage
 slug: /develop/go/data-handling/external-storage
 toc_max_heading_level: 3
@@ -80,8 +80,8 @@ follow. Only the driver setup differs between the two. Everything after that is 
     The AWS SDK reads
     [environment variables, an IAM role, or your AWS config file](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html).
 
-         <!--SNIPSTART go-s3-driver-create-->
-         [features/snippets/external_storage/s3_setup/s3_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.go)
+         <!--SNIPSTART go-external-storage-s3-driver-->
+         [go-sandbox/bestpractices/externalstorage/drivers.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/externalstorage/drivers.go)
          ```go
          cfg, err := config.LoadDefaultConfig(context.Background(),
          	config.WithRegion("us-east-2"),
@@ -107,8 +107,8 @@ follow. Only the driver setup differs between the two. Everything after that is 
     The Google Cloud SDK reads
     [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials).
 
-    <!--SNIPSTART go-gcs-driver-create-->
-    [features/snippets/external_storage/gcs_setup/gcs_driver_create.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/gcs_setup/gcs_driver_create.go)
+    <!--SNIPSTART go-external-storage-gcs-driver-->
+    [go-sandbox/bestpractices/externalstorage/drivers.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/externalstorage/drivers.go)
     ```go
     gcsClient, err := storage.NewClient(context.Background())
     if err != nil {
@@ -135,8 +135,8 @@ follow. Only the driver setup differs between the two. Everything after that is 
 2.  Configure the driver on `ExternalStorage` and pass it in your Client options. This step is the same for every
     driver:
 
-    <!--SNIPSTART go-s3-external-storage-setup-->
-    [features/snippets/external_storage/s3_setup/s3_external_storage_setup.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.go)
+    <!--SNIPSTART go-external-storage-setup-->
+    [go-sandbox/bestpractices/externalstorage/setup.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/externalstorage/setup.go)
     ```go
     c, err := client.Dial(client.Options{
     	HostPort: "localhost:7233",
@@ -164,7 +164,7 @@ follow. Only the driver setup differs between the two. Everything after that is 
     business logic. Both drivers upload and download payloads concurrently, and verify a SHA-256 hash of the contents on
     retrieve. Each driver rejects any single payload larger than `MaxPayloadSize`, which defaults to 50 MiB.
 
-    The hash forms part of the object key, along with the Namespace, Workflow Id, and Run Id. When one Workflow Run
+    The hash forms part of the object key, along with the Namespace, Workflow ID, and Run ID. When one Workflow Run
     passes the same payload to several Activities, the key is identical each time, so the driver uploads the payload
     once and the later writes reuse that object. A different Run, Workflow, or Namespace produces a different key, so it
     stores its own copy even when the bytes are identical. Storage therefore scales with the number of Runs, not with
@@ -182,8 +182,8 @@ Refer to [Choose a storage system](/external-storage#choose-storage) for guidanc
 The following example shows a custom driver that uses local disk as the backing store. This example is for local
 development and testing only. In production, use a durable storage system that is accessible to all Workers:
 
-<!--SNIPSTART go-custom-storage-driver-->
-[features/snippets/external_storage/custom_driver/custom_storage_driver.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/custom_driver/custom_storage_driver.go)
+<!--SNIPSTART go-external-storage-custom-driver-->
+[go-sandbox/bestpractices/externalstorage/custom_storage_driver.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/externalstorage/custom_storage_driver.go)
 ```go
 type LocalDiskStorageDriver struct {
 	storeDir string
@@ -304,13 +304,16 @@ returns the payload.
 
 Pass an `ExternalStorage` struct with your driver in the Client options:
 
+<!--SNIPSTART go-external-storage-custom-driver-client-->
+[go-sandbox/bestpractices/externalstorage/setup.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/externalstorage/setup.go)
 ```go
 c, err := client.Dial(client.Options{
-    ExternalStorage: converter.ExternalStorage{
-        Drivers: []converter.StorageDriver{NewLocalDiskStorageDriver("/tmp/temporal-payload-store")},
-    },
+	ExternalStorage: converter.ExternalStorage{
+		Drivers: []converter.StorageDriver{NewLocalDiskStorageDriver("/tmp/temporal-payload-store")},
+	},
 })
 ```
+<!--SNIPEND-->
 
 You can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services.
 
@@ -322,8 +325,8 @@ externalize all payloads regardless of size. A value of 0 is interpreted as the 
 the threshold stay inline in Event History. The size compared against the threshold is that of the serialized Payload,
 which includes its metadata, not just your data.
 
-<!--SNIPSTART go-external-storage-threshold-->
-[features/snippets/external_storage/threshold/threshold_config.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.go)
+<!--SNIPSTART go-external-storage-size-threshold-->
+[go-sandbox/bestpractices/externalstorage/setup.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/externalstorage/setup.go)
 ```go
 c, err := client.Dial(client.Options{
 	ExternalStorage: converter.ExternalStorage{
@@ -357,15 +360,15 @@ the `DriverName` option on at least one of them.
 The following example registers two drivers but always selects `preferredDriver` for new payloads. The `legacyDriver` is
 only registered so the Worker can retrieve payloads that were previously stored with it:
 
-<!--SNIPSTART go-external-storage-multiple-drivers-->
-[features/snippets/external_storage/multiple_drivers/multiple_drivers.go](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/multiple_drivers/multiple_drivers.go)
+<!--SNIPSTART go-external-storage-multi-driver-selector-->
+[go-sandbox/bestpractices/externalstorage/multiple_drivers.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/externalstorage/multiple_drivers.go)
 ```go
 type PreferredSelector struct {
 	preferred converter.StorageDriver
 }
 
 func (s *PreferredSelector) SelectDriver(
-	ctx converter.StorageDriverStoreContext,
+	ctx converter.StorageDriverSelectContext,
 	payload *commonpb.Payload,
 ) (converter.StorageDriver, error) {
 	return s.preferred, nil
@@ -390,12 +393,15 @@ driver at the MRAP ARN instead of a bucket name. See
 
 In code, the only change is the value you pass to `s3driver.StaticBucket`:
 
+<!--SNIPSTART go-external-storage-s3-mrap-->
+[go-sandbox/bestpractices/externalstorage/drivers.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/externalstorage/drivers.go)
 ```go
 driver, err := s3driver.NewDriver(s3driver.Options{
 	Client: awssdkv2.NewClient(s3.NewFromConfig(cfg)),
 	Bucket: s3driver.StaticBucket("arn:aws:s3::123456789012:accesspoint/mfzwi23gnjvgw.mrap"),
 })
 ```
+<!--SNIPEND-->
 
 The AWS SDK for Go v2 automatically uses
 [SigV4A](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html) signing when the

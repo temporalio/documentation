@@ -1,7 +1,7 @@
 ---
 id: message-passing
-title: Workflow message passing - Java SDK
-sidebar_label: Messages
+title: Workflow message passing
+sidebar_label: Message passing
 description: Develop with Queries, Signals, and Updates with the Temporal Java SDK.
 toc_max_heading_level: 3
 tags:
@@ -10,8 +10,6 @@ tags:
   - Signals
   - Queries
   - Updates
-  - Java SDK
-  - Temporal SDKs
 ---
 
 A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
@@ -33,6 +31,8 @@ Follow these guidelines when writing your message handlers:
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
+<!--SNIPSTART java-message-passing-intro {"selectedLines": ["1-21", "33-34", "38-41", "56", "58", "71-80", "104-105"]}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingIntro.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingIntro.java)
 ```java
 public class MessagePassingIntro {
 
@@ -55,32 +55,34 @@ public class MessagePassingIntro {
             this.includeUnsupported = includeUnsupported;
         }
     }
-
+// ...
     @WorkflowInterface
     public interface GreetingWorkflow {
-        ...
-        // 👉 Use the @QueryMethod annotation to define a Query handler in the
+// ...
+        // Use the @QueryMethod annotation to define a Query handler in the
         // Workflow interface.
         @QueryMethod
         List<Language> getLanguages(GetLanguagesInput input);
+// ...
     }
-
+// ...
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
-        ...
+// ...
         @Override
         public List<Language> getLanguages(GetLanguagesInput input) {
-            // 👉 The Query handler returns a value: it must not mutate the Workflow state
+            // The Query handler returns a value: it must not mutate the Workflow state
             // or perform blocking operations.
             if (input.includeUnsupported) {
                 return Arrays.asList(Language.values());
             } else {
-                return new ArrayList(greetings.keySet());
+                return new ArrayList<>(greetings.keySet());
             }
         }
+// ...
     }
-
 }
 ```
+<!--SNIPEND-->
 
 - A Query handler must not modify Workflow state.
 - You can't perform blocking operations such as executing an Activity in a Query handler.
@@ -90,11 +92,13 @@ public class MessagePassingIntro {
 
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
+<!--SNIPSTART java-message-passing-intro {"selectedLines": ["1", "23-31", "33-34", "43-46", "56", "58", "62-63", "82-87", "104-105"]}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingIntro.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingIntro.java)
 ```java
 public class MessagePassingIntro {
-
+// ...
     public static class ApproveInput {
-        private String name;
+        public String name;
 
         public ApproveInput() {}
 
@@ -102,35 +106,38 @@ public class MessagePassingIntro {
             this.name = name;
         }
     }
-
+// ...
     @WorkflowInterface
     public interface GreetingWorkflow {
-        ...
-        // 👉 Use the @SignalMethod annotation to define a Signal handler in the
+// ...
+        // Use the @SignalMethod annotation to define a Signal handler in the
         // Workflow interface.
         @SignalMethod
         void approve(ApproveInput input);
+// ...
     }
-
+// ...
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
-        ...
-        private Boolean approvedForRelease;
+// ...
+        private boolean approvedForRelease;
         private String approverName;
-
+// ...
         @Override
         public void approve(ApproveInput input) {
-            // 👉 The Signal handler mutates the Workflow state but cannot return a value.
+            // The Signal handler mutates the Workflow state but cannot return a value.
             this.approvedForRelease = true;
             this.approverName = input.name;
         }
+// ...
     }
 }
 ```
+<!--SNIPEND-->
 
 - The handler should not return a value.
   The response is sent immediately from the server, without waiting for the Workflow to process the Signal.
 
-- The Signal annotation accepts arguments (`name`, and `unfinished_policy`) as described in the API reference docs for [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html).
+- The Signal annotation accepts arguments (`name` and `unfinishedPolicy`) as described in the API reference docs for [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html).
 
 - Signal (and Update) handlers can be blocking.
   This allows you to use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), and more.
@@ -143,26 +150,30 @@ It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
 
+<!--SNIPSTART java-message-passing-intro {"selectedLines": ["1", "33-34", "48-55", "56", "58", "89-103", "104-105"]}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingIntro.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingIntro.java)
 ```java
 public class MessagePassingIntro {
+// ...
     @WorkflowInterface
     public interface GreetingWorkflow {
-        ...
-        // 👉 Use the @UpdateMethod annotation to define an Update handler in the
+// ...
+        // Use the @UpdateMethod annotation to define an Update handler in the
         // Workflow interface.
         @UpdateMethod
         Language setLanguage(Language language);
 
-        // 👉 Update validators are optional
+        // Update validators are optional
         @UpdateValidatorMethod(updateName = "setLanguage")
         void setLanguageValidator(Language language);
+// ...
     }
-
+// ...
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
-        ...
+// ...
         @Override
         public Language setLanguage(Language language) {
-            // 👉 The Update handler can mutate the Workflow state and return a value.
+            // The Update handler can mutate the Workflow state and return a value.
             Language previousLanguage = this.language;
             this.language = language;
             return previousLanguage;
@@ -170,16 +181,18 @@ public class MessagePassingIntro {
 
         @Override
         public void setLanguageValidator(Language language) {
-            // 👉 The Update validator performs validation but cannot mutate the Workflow state.
+            // The Update validator performs validation but cannot mutate the Workflow state.
             if (!greetings.containsKey(language)) {
                 throw new IllegalArgumentException("Unsupported language: " + language);
             }
         }
+// ...
     }
 }
 ```
+<!--SNIPEND-->
 
-- The Update annotation accepts arguments (`name`, and `unfinished_policy`) as described in the API reference docs for [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html).
+- The Update annotation accepts arguments (`name` and `unfinishedPolicy`) as described in the API reference docs for [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html).
 
 - About validators:
   - Use validators to reject an Update before it is written to History.
@@ -210,6 +223,8 @@ Use [newWorkflowStub](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/
 
 For example:
 
+<!--SNIPSTART java-message-passing-stub {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java)
 ```java
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
@@ -224,6 +239,7 @@ GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workf
 // Start workflow asynchronously and call its getGreeting workflow method
 WorkflowClient.start(workflow::getGreetings);
 ```
+<!--SNIPEND-->
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
 
@@ -239,10 +255,13 @@ To check the argument types required when sending messages -- and the return typ
 
 Call a Query method defined within a Workflow from a `WorkflowStub` created in Client code to send a Query to a Workflow Execution:
 
+<!--SNIPSTART java-message-passing-send-query {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java)
 ```java
 List<Language> languages = workflow.getLanguages(new GetLanguagesInput(false));
 System.out.println("Supported languages: " + languages);
 ```
+<!--SNIPEND-->
 
 - Sending a Query doesn’t add events to a Workflow's Event History.
 
@@ -261,9 +280,12 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 To send a Signal from Client code, call a Signal method on the WorkflowStub:
 
+<!--SNIPSTART java-message-passing-send-signal {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java)
 ```java
 workflow.approve(new ApproveInput("Me"));
 ```
+<!--SNIPEND-->
 
 - The call returns when the server accepts the Signal; it does _not_ wait for the Signal to be delivered to the Workflow Execution.
 
@@ -275,10 +297,13 @@ A Workflow can send a Signal to another Workflow, known as an _External Signal_.
 Use [`Workflow.newExternalWorkflowStub`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newExternalWorkflowStub(java.lang.Class,io.temporal.api.common.v1.WorkflowExecution)) in your _current_ Workflow to create an `ExternalWorkflowStub` for the other Workflow.
 Call Signal methods on the external stub to Signal the other Workflow:
 
+<!--SNIPSTART java-message-passing-external-signal {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/ExternalSignalExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/ExternalSignalExample.java)
 ```java
 OtherWorkflow other = Workflow.newExternalWorkflowStub(OtherWorkflow.class, otherWorkflowID);
 other.mySignalMethod();
 ```
+<!--SNIPEND-->
 
 When an External Signal is sent:
 
@@ -292,24 +317,27 @@ If there's a Workflow running with the given Workflow Id, it will be signaled.
 If there isn't, a new Workflow will be started and immediately signaled.
 To use Signal-With-Start, call `signalWithStart` and pass the name of your Signal with its arguments:
 
+<!--SNIPSTART java-message-passing-signal-with-start {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/SignalWithStartExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/SignalWithStartExample.java)
 ```java
-public static void signalWithStart() {
-    // WorkflowStub is a client-side stub to a single Workflow instance
-    WorkflowStub untypedWorkflowStub = client.newUntypedWorkflowStub("GreetingWorkflow",
+// WorkflowStub is a client-side stub to a single Workflow instance
+WorkflowStub untypedWorkflowStub = client.newUntypedWorkflowStub("GreetingWorkflow",
     WorkflowOptions.newBuilder()
-            .setWorkflowId(workflowId)
-            .setTaskQueue(taskQueue)
-            .build());
+        .setWorkflowId(workflowId)
+        .setTaskQueue(taskQueue)
+        .build());
 
-    untypedWorkflowStub.signalWithStart("setCustomer", new Object[] {customer2}, new Object[] {customer1});
+untypedWorkflowStub.signalWithStart("setCustomer", new Object[] {customer2}, new Object[] {customer1});
 
-    String greeting = untypedWorkflowStub.getResult(String.class);
-}
+String greeting = untypedWorkflowStub.getResult(String.class);
 ```
+<!--SNIPEND-->
 
 Here's the `WorkflowInterface` for the previous example.
 When using Signal-With-Start, the Signal handler (`setCustomer`) will be executed before the Workflow method (`greet`).
 
+<!--SNIPSTART java-message-passing-signal-with-start-interface {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/SignalWithStartExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/SignalWithStartExample.java)
 ```java
 @WorkflowInterface
 public interface GreetingWorkflow {
@@ -323,6 +351,7 @@ public interface GreetingWorkflow {
     Customer getCustomer();
 }
 ```
+<!--SNIPEND-->
 
 ### Send an Update {/* #send-update-from-client */}
 
@@ -336,32 +365,38 @@ You can't send Updates directly from one Workflow to another. If you need to sen
 - `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
 - `WorkflowExecutionUpdateCompleted` is added to the Event History when the Worker confirms that the Update has finished.
 
-To send an Update to a Workflow Execution, you can:
+To send an Update to a Workflow Execution, you can call the Update method or use `startUpdate`.
 
-- Call the Update method on a WorkflowStub in Client code and wait for the Update to complete.
-  This code fetches an Update result:
+Call the Update method on a WorkflowStub in Client code and wait for the Update to complete.
+This code fetches an Update result:
 
-  ```java
-  Language previousLanguage = workflow.setLanguage(Language.CHINESE);
-  ```
+<!--SNIPSTART java-message-passing-send-update {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java)
+```java
+Language previousLanguage = workflow.setLanguage(Language.CHINESE);
+```
+<!--SNIPEND-->
 
-- Send [`startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) to receive an [`WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
+Or send [`startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) to receive an [`WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
 
-  - Use this `WorkflowUpdateHandle` later to fetch your results.
-  - Blocking Update handlers normally perform long-running asynchronous operations.
-  - `startUpdate` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
+- Use this `WorkflowUpdateHandle` later to fetch your results.
+- Blocking Update handlers normally perform long-running asynchronous operations.
+- `startUpdate` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
 
-  For example:
+For example:
 
-  ```java
-  WorkflowUpdateHandle<Language> handle =
-      WorkflowStub.fromTyped(workflow)
-          .startUpdate(
-              "setLanguage", WorkflowUpdateStage.ACCEPTED, Language.class, Language.ENGLISH);
-  previousLanguage = handle.getResultAsync().get();
-  ```
+<!--SNIPSTART java-message-passing-start-update {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java)
+```java
+WorkflowUpdateHandle<Language> handle =
+    WorkflowStub.fromTyped(workflow)
+        .startUpdate(
+            "setLanguage", WorkflowUpdateStage.ACCEPTED, Language.class, Language.ENGLISH);
+previousLanguage = handle.getResultAsync().get();
+```
+<!--SNIPEND-->
 
-  For more details, see the "Blocking handlers" section.
+For more details, see [Do blocking operations in handlers](#blocking-handlers).
 
 To obtain an Update handle, you can:
 
@@ -413,6 +448,8 @@ You will need to provide:
 
 For example:
 
+<!--SNIPSTART java-message-passing-start-update-with-start {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java)
 ```java
 WorkflowUpdateHandle<Language> handle =
     WorkflowClient.startUpdateWithStart(
@@ -423,6 +460,7 @@ WorkflowUpdateHandle<Language> handle =
 
 Language previousLanguage = handle.getResultAsync().get();
 ```
+<!--SNIPEND-->
 
 To obtain the update result directly, use the [`executeUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#executeUpdateWithStart(io.temporal.workflow.Functions.Func,io.temporal.client.UpdateOptions,io.temporal.client.WithStartWorkflowOperation)) WorkflowClient API.
 It returns once the update result is available; or when the API call times out.
@@ -431,6 +469,8 @@ When specified, it must be `WorkflowUpdateStage.COMPLETED`.
 
 For example:
 
+<!--SNIPSTART java-message-passing-execute-update-with-start {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/MessagePassingStarter.java)
 ```java
 Language previousLanguage =
     WorkflowClient.executeUpdateWithStart(
@@ -439,6 +479,7 @@ Language previousLanguage =
         UpdateOptions.<Language>newBuilder().build(),
         new WithStartWorkflowOperation<>(workflow::getGreetings));
 ```
+<!--SNIPEND-->
 
 For more examples, see the [Java sample for early-return pattern](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/earlyreturn).
 
@@ -474,40 +515,40 @@ For additional information, see [Inject work into the main Workflow](/handling-m
 ### Do blocking operations in handlers {/* #blocking-handlers */}
 
 Signal and Update handlers can block.
-This allows you to use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), Activities, Child Workflows, [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, etc.
+This allows you to use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), Activities, Child Workflows, [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, and so on.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
-It's essential to understand the things that could go wrong in order to use blocking handlers safely.
+To use blocking handlers safely, understand what can go wrong.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of blocking Signal and Update handlers, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
 The following code modifies the Update handler from earlier on in this page.
 The Update handler now makes a blocking call to execute an Activity:
 
+<!--SNIPSTART java-message-passing-blocking-handler {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/BlockingHandlerExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/BlockingHandlerExample.java)
 ```java
-public static class GreetingWorkflowImpl implements GreetingWorkflow {
-    ...
-    @Override
-    public Language setLanguage(Language language) {
-        if (!greetings.containsKey(language)) {
-            String greeting = activity.greetingService(language);
-            if (greeting == null) {
-                // 👉 An update validator cannot be blocking, so cannot be used to check that the remote
-                // greetingService supports the requested language. Throwing an ApplicationFailure
-                // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
-                // added to history.
-                throw ApplicationFailure.newFailure("Greeting service does not support: " + language, "GreetingFailure")
-            }
-            greetings.put(language, greeting);
+@Override
+public Language setLanguage(Language language) {
+    if (!greetings.containsKey(language)) {
+        String greeting = activity.greetingService(language);
+        if (greeting == null) {
+            // An update validator cannot be blocking, so cannot be used to check that the remote
+            // greetingService supports the requested language. Throwing an ApplicationFailure
+            // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
+            // added to history.
+            throw ApplicationFailure.newFailure("Greeting service does not support: " + language, "GreetingFailure");
         }
-        Language previousLanguage = this.language;
-        this.language = language;
-        return previousLanguage;
+        greetings.put(language, greeting);
     }
+    Language previousLanguage = this.language;
+    this.language = language;
+    return previousLanguage;
 }
 ```
+<!--SNIPEND-->
 
 Although a Signal handler can also make blocking calls like this, using an Update handler allows the Client to receive a result or error once the Activity completes.
-This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
+This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, and so on.
 
 ### Add blocking wait conditions {/* #block-with-wait */}
 
@@ -525,15 +566,20 @@ Here are two important use cases for `Workflow.await`:
 
 It's common to use `Workflow.await` in a handler.
 For example, suppose your Workflow class has a `updateReadyToExecute` method that indicates whether your Update handler should be allowed to start executing.
-You can use `workflow.wait_condition` in the handler to make the handler pause until the condition is met:
+You can use `Workflow.await` in the handler to make the handler pause until the condition is met:
 
+<!--SNIPSTART java-message-passing-wait-in-handler {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/WaitInHandlerExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/WaitInHandlerExample.java)
 ```java
 @Override
 public String setLanguage(UpdateInput input) {
     Workflow.await(() -> this.updateReadyToExecute(input));
-    ...
+    String previousLanguage = this.language;
+    this.language = input.language;
+    return previousLanguage;
 }
 ```
+<!--SNIPEND-->
 
 Remember: handlers can execute before the main Workflow method starts.
 
@@ -547,29 +593,37 @@ When your Workflow uses blocking Signal or Update handlers, your main Workflow m
 The Workflow completing may interrupt the handler before it finishes crucial work and cause Client errors when trying to retrieve Update results.
 Use `Workflow.await` to wait for [`Workflow.isEveryHandlerFinished`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#isEveryHandlerFinished()) to return `true` to address this problem and allow your Workflow to end smoothly:
 
+<!--SNIPSTART java-message-passing-wait-for-handlers {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/HandlersFinishedExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/HandlersFinishedExample.java)
 ```java
-public class MyWorkflowImpl implements MyWorkflow {
-    ...
-    @Override
-    public String run() {
-        ...
-        Workflow.await(() -> Workflow.isEveryHandlerFinished());
-        return "workflow-result";
-    }
+@Override
+public String run() {
+    Workflow.await(() -> finished);
+    Workflow.await(() -> Workflow.isEveryHandlerFinished());
+    return "workflow-result";
 }
 ```
+<!--SNIPEND-->
 
 By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
 You can silence these warnings on a per-handler basis by passing the `unfinishedPolicy` argument to the [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html) / [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html) annotation:
 
+<!--SNIPSTART java-message-passing-unfinished-policy {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/HandlersFinishedExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/HandlersFinishedExample.java)
 ```java
 @WorkflowInterface
 public interface MyWorkflow {
-    ...
+    @WorkflowMethod
+    String run();
+
+    @SignalMethod
+    void finish();
+
     @UpdateMethod(unfinishedPolicy = HandlerUnfinishedPolicy.ABANDON)
     void myUpdate();
 }
 ```
+<!--SNIPEND-->
 
 See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
@@ -590,6 +644,8 @@ Do not make blocking calls from within your `@WorkflowInit` method. This could r
 Here's an example.
 Notice that the constructor and `getGreeting` must have the same parameters:
 
+<!--SNIPSTART java-workflow-basics-constructor-->
+[java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/GreetingExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/basics/src/main/java/io/temporal/docs/workflows/basics/GreetingExample.java)
 ```java
 public class GreetingExample {
     @WorkflowInterface
@@ -601,27 +657,38 @@ public class GreetingExample {
         boolean checkTitleValidity();
     }
 
+    @ActivityInterface
+    public interface TitleActivities {
+        boolean checkTitleValidity(String nameWithTitle);
+    }
+
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
         private final String nameWithTitle;
         private boolean titleHasBeenChecked;
-        ...
+
+        private final TitleActivities activity = Workflow.newActivityStub(
+            TitleActivities.class,
+            ActivityOptions.newBuilder()
+                .setStartToCloseTimeout(Duration.ofSeconds(10))
+                .build());
+
         // Note the annotation is on a public constructor
         @WorkflowInit
         public GreetingWorkflowImpl(String input) {
-          this.nameWithTitle = "Sir " + input;
+          this.nameWithTitle = "Knight " + input;
           this.titleHasBeenChecked = false;
         }
 
         @Override
         public String getGreeting(String input) {
-          Workflow.await(() -> titleHasBeenChecked)
+          Workflow.await(() -> titleHasBeenChecked);
           return "Hello " + nameWithTitle;
         }
 
         @Override
         public boolean checkTitleValidity() {
-          // 👉 The handler is now guaranteed to see the workflow input
-          // after it has been processed by the constructor.
+          // The handler can read nameWithTitle because the constructor
+          // has already processed the Workflow input.
           boolean isValid = activity.checkTitleValidity(nameWithTitle);
           titleHasBeenChecked = true;
           return isValid;
@@ -629,6 +696,7 @@ public class GreetingExample {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Use locks to prevent concurrent handler execution {/* #control-handler-concurrency */}
 
@@ -636,45 +704,46 @@ Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
+<!--SNIPSTART java-message-passing-bad-handler {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/LockExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/LockExample.java)
 ```java
-public class DataWorkflowImpl implements DataWorkflow {
-    ...
-    @Override
-    public void badSignalHandler() {
-        Data data = activity.fetchData();
-        this.x = data.x;
-        // 🐛🐛 Bug!! If multiple instances of this method are executing concurrently, then
-        // there may be times when the Workflow has self.x from one Activity execution and self.y from another.
-        Workflow.sleep(Duration.ofSeconds(1));
-        this.y = data.y;
-    }
+@Override
+public void badSignalHandler() {
+    Data data = activity.fetchData();
+    this.x = data.x;
+    // Bug! If multiple instances of this method are executing concurrently, then
+    // there may be times when the Workflow has this.x from one Activity execution and this.y from another.
+    Workflow.sleep(Duration.ofSeconds(1));
+    this.y = data.y;
 }
 ```
+<!--SNIPEND-->
 
 Coordinating access with `WorkflowLock` corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
+<!--SNIPSTART java-message-passing-safe-handler {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/LockExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/LockExample.java)
 ```java
-public class DataWorkflowImpl implements DataWorkflow {
-    WorkflowLock lock = Workflow.newWorkflowLock();
-    ...
-    @Override
-    public void safeSignalHandler() {
-        try {
-            lock.lock();
-            Data data = activity.fetchData();
-            this.x = data.x;
-            // ✅ OK: the scheduler may switch now to a different handler execution,
-            // or to the main workflow method, but no other execution of this handler
-            // can run until this execution finishes.
-            Workflow.sleep(Duration.ofSeconds(1));
-            this.y = data.y;
-        } finally {
-            lock.unlock()
-        }
+WorkflowLock lock = Workflow.newWorkflowLock();
+
+@Override
+public void safeSignalHandler() {
+    lock.lock();
+    try {
+        Data data = activity.fetchData();
+        this.x = data.x;
+        // OK: the scheduler may switch now to a different handler execution,
+        // or to the main workflow method, but no other execution of this handler
+        // can run until this execution finishes.
+        Workflow.sleep(Duration.ofSeconds(1));
+        this.y = data.y;
+    } finally {
+        lock.unlock();
     }
 }
 ```
+<!--SNIPEND-->
 
 ## Message handler troubleshooting {/* #message-handler-troubleshooting */}
 
@@ -779,15 +848,20 @@ Register a Workflow implementation type that extends `DynamicWorkflow` to implem
 The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
 These inputs can be specified by the Client when invoking the Workflow Execution.
 
+<!--SNIPSTART java-message-passing-dynamic-workflow {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java)
 ```java
-public class MyDynamicWorkflow implements DynamicWorkflow {
-   @Override
+public static class MyDynamicWorkflow implements DynamicWorkflow {
+    @Override
     public Object execute(EncodedValues args) {
+        String workflowType = Workflow.getInfo().getWorkflowType();
+        return workflowType + ": " + args.get(0, String.class);
     }
 }
 ```
+<!--SNIPEND-->
 
-### How to set a Dynamic Activity {/* #set-a-dynamic-activity */}
+### Set a Dynamic Activity {/* #set-a-dynamic-activity */}
 
 To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
 
@@ -796,68 +870,80 @@ When an Activity implementation that extends `DynamicActivity` is registered, it
 
 The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
 
+<!--SNIPSTART java-message-passing-dynamic-activity {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java)
 ```java
 // Dynamic Activity implementation
- public static class DynamicGreetingActivityImpl implements DynamicActivity {
-   @Override
-   public Object execute(EncodedValues args) {
-     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-     return activityType
-         + ": "
-         + args.get(0, String.class)
-         + " "
-         + args.get(1, String.class)
-         + " from: "
-         + args.get(2, String.class);
-   }
- }
+public static class DynamicGreetingActivityImpl implements DynamicActivity {
+    @Override
+    public Object execute(EncodedValues args) {
+        String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+        return activityType
+            + ": "
+            + args.get(0, String.class)
+            + " "
+            + args.get(1, String.class)
+            + " from: "
+            + args.get(2, String.class);
+    }
+}
 ```
+<!--SNIPEND-->
 
 Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
 
-### How to set a Dynamic Signal {/* #set-a-dynamic-signal */}
+### Set a Dynamic Signal {/* #set-a-dynamic-signal */}
 
 You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
 
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
+Use `Workflow.registerListener(Object)` to register an implementation of `DynamicSignalHandler` in the Workflow implementation code.
 
+<!--SNIPSTART java-message-passing-dynamic-signal {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java)
 ```java
 Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+    (DynamicSignalHandler)
+        (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
+<!--SNIPEND-->
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+A Workflow Execution has one dynamic Signal handler. Registering another `DynamicSignalHandler` replaces the previous one.
 `DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-### How to set a Dynamic Query {/* #set-a-dynamic-query */}
+### Set a Dynamic Query {/* #set-a-dynamic-query */}
 
 You can also implement Query handlers dynamically. This is useful for library-level code and implementation of DSLs.
 
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
+Use `Workflow.registerListener(Object)` to register an implementation of `DynamicQueryHandler` in the Workflow implementation code.
 
+<!--SNIPSTART java-message-passing-dynamic-query {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java)
 ```java
 Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+    (DynamicQueryHandler)
+        (queryName, encodedArgs) -> name);
 ```
+<!--SNIPEND-->
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+A Workflow Execution has one dynamic Query handler. Registering another `DynamicQueryHandler` replaces the previous one.
 `DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-### How to set a Dynamic Update {/* #set-a-dynamic-update */}
+### Set a Dynamic Update {/* #set-a-dynamic-update */}
 
 You can also implement Update handlers dynamically.
 This is useful for library-level code and implementation of DSLs.
 
+<!--SNIPSTART java-message-passing-dynamic-update {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/message-passing/src/main/java/io/temporal/docs/workflows/messagepassing/DynamicExample.java)
 ```java
 Workflow.registerListener(
-  (DynamicUpdateHandler)
-      (updateName, encodedArgs) -> encodedArgs.get(0, String.class));
+    (DynamicUpdateHandler)
+        (updateName, encodedArgs) -> encodedArgs.get(0, String.class));
 ```
+<!--SNIPEND-->
 
 When registered, any Updates sent to the Workflow without a defined handler will be delivered to the `DynamicUpdateHandler`.
-You can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+A Workflow Execution has one dynamic Update handler. Registering another `DynamicUpdateHandler` replaces the previous one.
 `DynamicUpdateHandler` can be implemented in both regular and dynamic Workflow implementations.

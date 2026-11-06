@@ -1,85 +1,81 @@
 ---
 id: asynchronous-activity
-title: Asynchronous Activity completion - Java SDK
-sidebar_label: Asynchronous Activity completion
+title: Asynchronous Activity Completion
+sidebar_label: Asynchronous Activity Completion
 toc_max_heading_level: 4
 tags:
   - Activities
-  - Java SDK
-  - Temporal SDKs
 description: Asynchronously complete an Activity in a Workflow with Temporal. Follow steps to provide identifying information, use Temporal Client, and set the complete() method.
 ---
-
-This page shows how to asynchronously complete an Activity
 
 [Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
 
 There are three steps to follow:
 
 1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
-   Identifying information can be a [Task Token](/activity-execution#task-token), or a combination of Namespace, Workflow Id, and Activity Id.
+   Identifying information can be a [Task Token](/activity-execution#task-token), or a combination of Namespace, Workflow ID, and Activity ID.
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
-To complete an Activity asynchronously, set the [`ActivityCompletionClient`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityCompletionClient.html) interface to the `complete()` method.
+To complete an Activity asynchronously, give the Activity implementation an [`ActivityCompletionClient`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityCompletionClient.html).
+Create one with `client.newActivityCompletionClient()` when you register the Activity with the Worker.
+When the work finishes, call the client's `complete()` method with the Task Token.
+In this example, `composeGreetingAsync()` runs on another thread and completes the Activity.
 
+<!--SNIPSTART java-asynchronous-activity-completion-client {"enable_code_dedenting": true}-->
+[java-sandbox/activities/asynchronous-activity/src/main/java/io/temporal/docs/activities/asynchronousactivity/HelloAsyncActivityCompletion.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/asynchronous-activity/src/main/java/io/temporal/docs/activities/asynchronousactivity/HelloAsyncActivityCompletion.java)
 ```java
-    @Override
-    public String composeGreeting(String greeting, String name) {
+/*
+ * ActivityCompletionClient is used to asynchronously complete activities. In this example we
+ * will use this client alongside with {@link
+ * io.temporal.activity.ActivityExecutionContext#doNotCompleteOnReturn()} which means our
+ * activity method will not complete when it returns, however is expected to be completed
+ * asynchronously using the client.
+ */
+private final ActivityCompletionClient completionClient;
 
-      // Get the activity execution context
-      ActivityExecutionContext context = Activity.getExecutionContext();
+GreetingActivitiesImpl(ActivityCompletionClient completionClient) {
+  this.completionClient = completionClient;
+}
 
-      // Set a correlation token that can be used to complete the activity asynchronously
-      byte[] taskToken = context.getTaskToken();
+// Method that will complete action execution using the defined ActivityCompletionClient
+private void composeGreetingAsync(byte[] taskToken, String greeting, String name) {
+  String result = greeting + " " + name + "!";
 
-      /**
-       * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
-       * activity. In real-life applications this could be any service. The composeGreetingAsync
-       * method is the one that will actually complete workflow action execution.
-       */
-      ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
-      context.doNotCompleteOnReturn();
-
-      // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
-      // ignored.
-      return "ignored";
-    }
-
-    // Method that will complete action execution using the defined ActivityCompletionClient
-    private void composeGreetingAsync(byte[] taskToken, String greeting, String name) {
-      String result = greeting + " " + name + "!";
-
-      // Complete our workflow activity using ActivityCompletionClient
-      completionClient.complete(taskToken, result);
-    }
-  }
+  // Complete our workflow activity using ActivityCompletionClient
+  completionClient.complete(taskToken, result);
+}
 ```
+<!--SNIPEND-->
 
-Alternatively, set the [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()) method during an Activity Execution.
+In the Activity method, get the Task Token from the Activity Execution context, hand the work off, and call [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()) before the method returns.
 
+<!--SNIPSTART java-asynchronous-activity-do-not-complete-on-return {"enable_code_dedenting": true}-->
+[java-sandbox/activities/asynchronous-activity/src/main/java/io/temporal/docs/activities/asynchronousactivity/HelloAsyncActivityCompletion.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/asynchronous-activity/src/main/java/io/temporal/docs/activities/asynchronousactivity/HelloAsyncActivityCompletion.java)
 ```java
-    @Override
-    public String composeGreeting(String greeting, String name) {
+@Override
+public String composeGreeting(String greeting, String name) {
 
-      // Get the activity execution context
-      ActivityExecutionContext context = Activity.getExecutionContext();
+  // Get the activity execution context
+  ActivityExecutionContext context = Activity.getExecutionContext();
 
-      // Set a correlation token that can be used to complete the activity asynchronously
-      byte[] taskToken = context.getTaskToken();
+  // Set a correlation token that can be used to complete the activity asynchronously
+  byte[] taskToken = context.getTaskToken();
 
-      /**
-       * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
-       * activity. In real-life applications this could be any service. The composeGreetingAsync
-       * method is the one that will actually complete workflow action execution.
-       */
-      ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
-      context.doNotCompleteOnReturn();
+  /*
+   * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
+   * activity. In real-life applications this could be any service. The composeGreetingAsync
+   * method is the one that will actually complete workflow action execution.
+   */
+  ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
+  context.doNotCompleteOnReturn();
 
-      // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
-      // ignored.
-      return "ignored";
-    }
+  // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
+  // ignored.
+  return "ignored";
+}
 ```
+<!--SNIPEND-->
 
-When this method is called during an Activity Execution, the Activity Execution does not complete when its method returns.
+When `doNotCompleteOnReturn()` is called during an Activity Execution, the Activity Execution does not complete when its method returns.
+The method's return value is ignored, and the Activity Execution stays open until the `ActivityCompletionClient` completes it.

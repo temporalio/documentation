@@ -1,0 +1,46 @@
+name: Check Index Slugs
+
+# Fails when a docs page builds at a URL that ends in "/". vercel.json
+# redirects every such URL to the same path without the slash, so the page's
+# canonical URL, sitemap entry, and sidebar links would all point at a
+# redirect. See bin/check-index-slugs.js and readme/UTILITIES.md.
+#
+# package.json and yarn.lock are in the paths because the checker calls
+# Docusaurus's own slug function: a Docusaurus upgrade reruns the tests.
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "bin/check-index-slugs.js"
+      - "bin/check-index-slugs.test.js"
+      - "bin/check-orphan-pages.js"
+      - "package.json"
+      - "yarn.lock"
+      - ".github/workflows/check-index-slugs.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check-index-slugs:
+    name: Check for page URLs that end in a slash
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Test the checker
+        run: node --test bin/check-index-slugs.test.js
+
+      - name: Check page URLs
+        run: node bin/check-index-slugs.js

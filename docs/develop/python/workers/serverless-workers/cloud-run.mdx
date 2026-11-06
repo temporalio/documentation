@@ -1,6 +1,6 @@
 ---
 id: cloud-run
-title: Serverless Workers on GCP Cloud Run - Python SDK
+title: Serverless Workers on GCP Cloud Run
 sidebar_label: GCP Cloud Run
 description: Run a Temporal Worker on a GCP Cloud Run worker pool using the Python SDK.
 slug: /develop/python/workers/serverless-workers/cloud-run
@@ -15,15 +15,13 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="serverlessWorkersCloudRun">
-  Cloud Run support is in Pre-release, and its APIs may change in backwards-incompatible ways.
-  Create a [support ticket](/cloud/support#support-ticket) or contact your account team for access, and
-  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) to hear when Cloud Run reaches Public Preview.
+  Cloud Run support is in Public Preview. APIs and configuration may change before the stable release.
 </ReleaseNoteHeader>
 
 On a [GCP Cloud Run worker pool](https://cloud.google.com/run/docs/resource-model#worker-pools), you run a standard long-lived Temporal Worker.
 Register Workflows and Activities the same way you would with any other Python Worker, and Temporal Cloud scales the pool up and down as work arrives and drains.
 
-A Cloud Run Worker needs no Cloud Run-specific package.
+A Cloud Run Worker needs no Cloud Run-specific runtime or handler.
 The one addition to a standard Worker is [Worker Versioning](/worker-versioning), which is required for Serverless Workers.
 
 For the end-to-end deployment guide covering the Worker Pool, IAM, and compute configuration, see [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
@@ -34,7 +32,9 @@ Build the Worker as you would any long-running Python Worker, then pass `deploym
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
-```python
+<!--SNIPSTART python-cloud-run-versioned-worker-->
+[python-sandbox/workers/cloud_run_worker/versioned_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/cloud_run_worker/versioned_worker.py)
+```py
 import asyncio
 import os
 
@@ -43,8 +43,8 @@ from temporalio.common import VersioningBehavior, WorkerDeploymentVersion
 from temporalio.envconfig import ClientConfig
 from temporalio.worker import Worker, WorkerDeploymentConfig
 
-from my_activities import my_activity
-from my_workflows import MyWorkflow
+from cloud_run_worker.my_activities import my_activity
+from cloud_run_worker.my_workflows import MyWorkflow
 
 
 async def main() -> None:
@@ -70,6 +70,7 @@ async def main() -> None:
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+<!--SNIPEND-->
 
 `deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -77,17 +78,30 @@ Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behav
 Setting `default_versioning_behavior` as shown above covers every Workflow on the Worker.
 To set the behavior per Workflow instead, pass `versioning_behavior` to the `@workflow.defn` decorator:
 
-```python
+<!--SNIPSTART python-cloud-run-workflow-versioning-behavior-->
+[python-sandbox/workers/cloud_run_worker/my_workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/cloud_run_worker/my_workflows.py)
+```py
+from datetime import timedelta
+
 from temporalio import workflow
 from temporalio.common import VersioningBehavior
+
+with workflow.unsafe.imports_passed_through():
+    from cloud_run_worker.my_activities import my_activity
 
 
 @workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
 class MyWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
-        ...
+        return await workflow.execute_activity(
+            my_activity,
+            [name],
+            start_to_close_timeout=timedelta(minutes=5),
+            heartbeat_timeout=timedelta(seconds=30),
+        )
 ```
+<!--SNIPEND-->
 
 For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/python/workers/run-worker-process).
 
@@ -100,13 +114,16 @@ For the full list of supported variables, the config file format, and profiles, 
 `ClientConfig.load_client_connect_config()` returns the keyword arguments for `Client.connect`, which is why the Worker above unpacks it with `**`.
 To inspect or change values before connecting, load the profile instead and convert it yourself:
 
-```python
+<!--SNIPSTART python-cloud-run-connect-profile-->
+[python-sandbox/workers/cloud_run_worker/connect_profile.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/cloud_run_worker/connect_profile.py)
+```py
 from temporalio.envconfig import ClientConfigProfile
 
 profile = ClientConfigProfile.load()
 connect_config = profile.to_client_connect_config()
 client = await Client.connect(**connect_config)
 ```
+<!--SNIPEND-->
 
 ## Keep Activities safe across scale-in {/* #scale-in */}
 
@@ -115,21 +132,155 @@ An instance running a long Activity can be stopped mid-execution.
 
 Use [Activity Heartbeats](/develop/python/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
 
-```python
+<!--SNIPSTART python-cloud-run-heartbeat-activity-->
+[python-sandbox/workers/cloud_run_worker/my_activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/cloud_run_worker/my_activities.py)
+```py
 from temporalio import activity
 
 
 @activity.defn
 async def my_activity(items: list[str]) -> str:
-    for i, item in enumerate(items):
+    # Resume after the last item a previous attempt recorded, if there was one.
+    details = activity.info().heartbeat_details
+    start = details[0] + 1 if details else 0
+    for i, item in enumerate(items[start:], start=start):
         activity.heartbeat(i)
         # ... process item
     return "done"
 ```
+<!--SNIPEND-->
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
-## Add observability {/* #add-observability */}
+## Configure OpenTelemetry {/* #opentelemetry */}
 
-A Cloud Run Worker emits the same traces and metrics as a Worker anywhere else.
-For how to configure metrics export and OpenTelemetry tracing interceptors, see [Observability - Python SDK](/develop/python/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
+Run an OpenTelemetry Collector as a sidecar in the Worker Pool. The Cloud Run OpenTelemetry plugin exports metrics and traces by OTLP gRPC to the Collector at `localhost:4317`. It configures the endpoint, service name, Core SDK metrics, and tracer provider from Cloud Run defaults.
+
+Create the plugin and pass it to `Client.connect`. The sample also registers `CloudRunIdPlugin` on the same Client and
+reads its connection settings from the environment:
+
+<!--SNIPSTART python-cloud-run-sandbox-otel-->
+[python-sandbox/workers/cloud_run_worker/otel_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/cloud_run_worker/otel_worker.py)
+```py
+# OpenTelemetryPlugin exports Core metrics and traces to the collector
+# sidecar; CloudRunIdPlugin sets the client identity from instance metadata.
+plugin = OpenTelemetryPlugin(add_temporal_spans=True)
+client = await Client.connect(
+    settings.address,
+    namespace=settings.namespace,
+    api_key=settings.api_key,
+    tls=settings.tls,
+    plugins=[plugin, CloudRunIdPlugin()],
+)
+```
+<!--SNIPEND-->
+
+Configure the Collector sidecar to receive OTLP gRPC on `localhost:4317`, export traces to Google Cloud, and export metrics to Google Managed Service for Prometheus:
+
+<!--SNIPSTART python-cloud-run-sandbox-collector-config-->
+[python-sandbox/workers/cloud_run_worker/collector-config.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/cloud_run_worker/collector-config.yaml)
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: localhost:4317
+
+processors:
+  batch/traces:
+    send_batch_max_size: 200
+    send_batch_size: 200
+    timeout: 5s
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 65
+    spike_limit_percentage: 20
+  resource_detection:
+    detectors: [gcp]
+    timeout: 10s
+  # Rename Temporal datapoint labels that collide with the target labels Managed Service for Prometheus injects (e.g. namespace).
+  transform/collision:
+    metric_statements:
+      - context: datapoint
+        statements:
+          - set(attributes["exported_location"], attributes["location"])
+          - delete_key(attributes, "location")
+          - set(attributes["exported_cluster"], attributes["cluster"])
+          - delete_key(attributes, "cluster")
+          - set(attributes["exported_namespace"], attributes["namespace"])
+          - delete_key(attributes, "namespace")
+          - set(attributes["exported_job"], attributes["job"])
+          - delete_key(attributes, "job")
+          - set(attributes["exported_instance"], attributes["instance"])
+          - delete_key(attributes, "instance")
+          - set(attributes["exported_project_id"], attributes["project_id"])
+          - delete_key(attributes, "project_id")
+  # The Telemetry API expects the Google Cloud project in gcp.project_id.
+  transform/set_project_id:
+    error_mode: ignore
+    trace_statements:
+      - set(resource.attributes["gcp.project_id"], resource.attributes["gcp.project.id"]) where resource.attributes["gcp.project.id"] != nil
+      - set(resource.attributes["gcp.project_id"], resource.attributes["cloud.account.id"]) where resource.attributes["gcp.project_id"] == nil and resource.attributes["cloud.account.id"] != nil
+
+exporters:
+  googlemanagedprometheus:
+  otlp_grpc:
+    endpoint: telemetry.googleapis.com:443
+    compression: none
+    balancer_name: pick_first
+    auth:
+      authenticator: googleclientauth
+
+extensions:
+  googleclientauth:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+service:
+  extensions: [googleclientauth, health_check]
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, resource_detection, transform/collision]
+      exporters: [googlemanagedprometheus]
+    traces:
+      receivers: [otlp]
+      processors:
+        [memory_limiter, resource_detection, transform/set_project_id, batch/traces]
+      exporters: [otlp_grpc]
+```
+<!--SNIPEND-->
+
+Wait until the Collector accepts connections before starting the Worker. On shutdown, call `plugin.shutdown()` after the Worker stops so traces can flush. For a Collector configuration that exports traces to Google Cloud and metrics to Google Managed Service for Prometheus, see the [Python Cloud Run sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/python-sandbox/workers/cloud_run_worker).
+
+## Set a Worker identity {/* #worker-identity */}
+
+Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revision>`. It reads Cloud Run environment variables and instance metadata when
+the Client connects, then Workers created from that Client inherit the identity.
+
+Register the plugin when connecting the Client:
+
+<!--SNIPSTART python-cloud-run-identity {"selectedLines": ["3-4", "8", "12-19"]}-->
+[python-sandbox/workers/cloud_run_worker/identity_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/cloud_run_worker/identity_worker.py)
+```py
+# ...
+from temporalio.client import Client
+from temporalio.contrib.gcp.cloud_run.id import CloudRunIdPlugin
+# ...
+from cloud_run_worker.settings import load_settings
+# ...
+    settings = load_settings()
+    client = await Client.connect(
+        settings.address,
+        namespace=settings.namespace,
+        api_key=settings.api_key,
+        tls=settings.tls,
+        plugins=[CloudRunIdPlugin()],
+    )
+```
+<!--SNIPEND-->
+
+The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry plugin.
+
+The ID plugin requires the Cloud Run metadata server, so it fails when the Worker runs outside Cloud Run. For a complete
+example, see the [Python Cloud Run sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/python-sandbox/workers/cloud_run_worker).

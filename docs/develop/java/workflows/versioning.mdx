@@ -1,21 +1,19 @@
 ---
 id: versioning
-title: Versioning - Java SDK
+title: Versioning
 sidebar_label: Versioning
 slug: /develop/java/workflows/versioning
 toc_max_heading_level: 2
-description: The Temporal Platform ensures deterministic Workflow code, offering versioning features in the Java SDK with Workflow Patching APIs and Worker Build Ids for efficient updates.
+description: Update running Workflows without breaking determinism using the Java SDK's Workflow Patching APIs and Worker Build IDs.
 tags:
   - Workflows
   - Versioning
   - Patching
-  - Java SDK
-  - Temporal SDKs
 ---
 
 Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
 
-The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints). If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows. This only applies to Workflow orchestration logic. Non-deterministic work such as API calls, and database queries should be placed in Activities, which Temporal retries reliably.
+The Temporal Platform requires that Workflow Definitions are [deterministic](/workflow-definition#deterministic-constraints). If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows. This only applies to Workflow orchestration logic. Non-deterministic work such as API calls, and database queries should be placed in Activities, which Temporal retries reliably.
 
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
 There are two primary Versioning methods that you can use:
@@ -24,7 +22,7 @@ There are two primary Versioning methods that you can use:
 - [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
 
 :::danger
-Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/java/worker-versioning-legacy) docs if needed. 
+Support for the experimental Worker Versioning method before 2025 was scheduled for removal from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](/develop/java/worker-versioning-legacy) docs if needed.
 :::
 
 ## Worker Versioning
@@ -33,7 +31,7 @@ Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-
 
 ## Versioning with Patching {/* #patching */}
 
-### Patching with GetVersion
+### Patching with `getVersion`
 
 A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
 It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
@@ -41,6 +39,8 @@ When you want to make substantive code changes that may affect existing Workflow
 
 Consider the following Workflow Definition:
 
+<!--SNIPSTART java-versioning-original {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/FileProcessingWorkflowOriginal.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/FileProcessingWorkflowOriginal.java)
 ```java
 public void processFile(Arguments args) {
     String localName = null;
@@ -59,13 +59,16 @@ public void processFile(Arguments args) {
     }
 }
 ```
+<!--SNIPEND-->
 
 Imagine you want to revise this Workflow by adding another Activity to calculate a file checksum.
 If an existing Workflow Execution was started by the original version of the Workflow code, where there was no `calculateChecksum()` Activity, and then resumed running on a new Worker where this Activity had been added, the server side Event History would be out of sync.
 This would cause the Workflow to fail with a nondeterminism error.
 
-To resolve this, you can use `workflow.GetVersion()` to patch to your Workflow:
+To resolve this, you can use `Workflow.getVersion()` to patch your Workflow:
 
+<!--SNIPSTART java-versioning-get-version {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/FileProcessingWorkflowPatched.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/FileProcessingWorkflowPatched.java)
 ```java
 public void processFile(Arguments args) {
     String localName = null;
@@ -91,11 +94,14 @@ public void processFile(Arguments args) {
     }
 }
 ```
+<!--SNIPEND-->
 
-When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `GetVersion` for this change id — `checksumAdded` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
+When `Workflow.getVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `getVersion` for this change ID — `checksumAdded` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
 
 After all the Workflow Executions prior to version 1 have left retention, you can remove the code for that version.
 
+<!--SNIPSTART java-versioning-remove-old-version {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/FileProcessingWorkflowPatchRemoved.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/FileProcessingWorkflowPatchRemoved.java)
 ```java
 public void processFile(Arguments args) {
     String localName = null;
@@ -120,6 +126,7 @@ public void processFile(Arguments args) {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Adding support for versioned Workflow visibility in the Event History
 
@@ -130,6 +137,8 @@ This adds a [Search Attribute](/search-attribute#default-search-attribute) named
 
 Starting with Java SDK v1.30.0, you can enable automatic `TemporalChangeVersion` upserts by setting `enableUpsertVersionSearchAttributes` in `WorkflowImplementationOptions`:
 
+<!--SNIPSTART java-versioning-auto-upsert {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/ChangeVersionExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/ChangeVersionExample.java)
 ```java
 WorkflowImplementationOptions options = WorkflowImplementationOptions.newBuilder()
     .setEnableUpsertVersionSearchAttributes(true)
@@ -137,6 +146,7 @@ WorkflowImplementationOptions options = WorkflowImplementationOptions.newBuilder
 
 worker.registerWorkflowImplementationTypes(options, YourWorkflowImpl.class);
 ```
+<!--SNIPEND-->
 
 When enabled, each call to `Workflow.getVersion` automatically upserts the `TemporalChangeVersion` Search Attribute with a keyword list of `"<Change ID>-<Version>"` entries.
 
@@ -151,15 +161,23 @@ However, once enabled, you cannot roll back to a version of the SDK that does no
 
 If you are using a version of the Java SDK earlier than v1.30.0, or prefer to control the upsert yourself, you can set the attribute manually.
 
+<!--SNIPSTART java-versioning-search-attribute-key {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/ChangeVersionSearchAttributes.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/ChangeVersionSearchAttributes.java)
 ```java
 import io.temporal.common.SearchAttributeKey;
+import java.util.List;
 
-public static final SearchAttributeKey<List<String>> TEMPORAL_CHANGE_VERSION =
-    SearchAttributeKey.forKeywordList("TemporalChangeVersion");
+public class ChangeVersionSearchAttributes {
+    public static final SearchAttributeKey<List<String>> TEMPORAL_CHANGE_VERSION =
+        SearchAttributeKey.forKeywordList("TemporalChangeVersion");
+}
 ```
+<!--SNIPEND-->
 
 Set this attribute when you call `getVersion`:
 
+<!--SNIPSTART java-versioning-manual-upsert {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/ChangeVersionExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/ChangeVersionExample.java)
 ```java
 int version = Workflow.getVersion("MovedThankYouAfterLoop", Workflow.DEFAULT_VERSION, 1);
 
@@ -168,9 +186,12 @@ if (version != Workflow.DEFAULT_VERSION) {
       .valueSet(Arrays.asList("MovedThankYouAfterLoop-" + version)));
 }
 ```
+<!--SNIPEND-->
 
 For multiple `getVersion` calls, collect all version changes and set the attribute once:
 
+<!--SNIPSTART java-versioning-manual-upsert-multiple {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/ChangeVersionExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/ChangeVersionExample.java)
 ```java
 List<String> list = new ArrayList<String>();
 int versionOne = Workflow.getVersion("versionOne", Workflow.DEFAULT_VERSION, 1);
@@ -183,9 +204,10 @@ if (versionTwo != Workflow.DEFAULT_VERSION) {
 }
 Workflow.upsertTypedSearchAttributes(TEMPORAL_CHANGE_VERSION.valueSet(list));
 ```
+<!--SNIPEND-->
 
 Patching allows you to make changes to currently running Workflows.
-It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+It introduces compatible changes without causing non-determinism errors.
 
 ### Workflow cutovers
 
@@ -196,49 +218,54 @@ To do this, you can copy the Workflow Definition function, giving it a different
 
 For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
 
+<!--SNIPSTART java-versioning-cutover {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/PizzaCutoverExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/PizzaCutoverExample.java)
 ```java
-import io.temporal.workflow.WorkflowInterface;
-import io.temporal.workflow.WorkflowMethod;
-
 @WorkflowInterface
 public interface PizzaWorkflow {
 
-  @WorkflowMethod
-  public OrderConfirmation pizzaWorkflow(PizzaOrder order);
+    @WorkflowMethod
+    OrderConfirmation pizzaWorkflow(PizzaOrder order);
 }
 
-public class PizzaWorkflowImpl{
+public static class PizzaWorkflowImpl implements PizzaWorkflow {
 
-  @Override
-  public OrderConfirmation pizzaWorkflow(PizzaOrder order){
-      // implementation code omitted for this example
-  }
+    @Override
+    public OrderConfirmation pizzaWorkflow(PizzaOrder order) {
+        // implementation code omitted for this example
+        return new OrderConfirmation(order.orderNumber, "SUCCESS");
+    }
 }
 
 @WorkflowInterface
 public interface PizzaWorkflowV2 {
 
-  @WorkflowMethod
-  public OrderConfirmation pizzaWorkflow(PizzaOrder order);
+    @WorkflowMethod
+    OrderConfirmation pizzaWorkflow(PizzaOrder order);
 }
 
-public class PizzaWorkflowImplV2 implements PizzaWorkflowV2{
+public static class PizzaWorkflowImplV2 implements PizzaWorkflowV2 {
 
-  @Override
-  public OrderConfirmation pizzaWorkflow(PizzaOrder order){
-      // implementation code omitted for this example
-  }
+    @Override
+    public OrderConfirmation pizzaWorkflow(PizzaOrder order) {
+        // implementation code omitted for this example
+        return new OrderConfirmation(order.orderNumber, "SUCCESS");
+    }
 }
 ```
+<!--SNIPEND-->
 
 It is necessary to create a separate interface because a Workflow Interface can only have one Workflow Method.
 
 You would then need to update the Worker configuration, and any other identifier strings, to register both Workflow Types:
 
+<!--SNIPSTART java-versioning-cutover-register {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/PizzaCutoverExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/versioning/src/main/java/io/temporal/docs/workflows/versioning/PizzaCutoverExample.java)
 ```java
 worker.registerWorkflowImplementationTypes(PizzaWorkflowImpl.class);
 worker.registerWorkflowImplementationTypes(PizzaWorkflowImplV2.class);
 ```
+<!--SNIPEND-->
 
 The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow.
 This can become impractical over time.

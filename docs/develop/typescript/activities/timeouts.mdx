@@ -1,8 +1,8 @@
 ---
 id: timeouts
-title: Activity Timeouts - TypeScript SDK
+title: Activity Timeouts
 sidebar_label: Timeouts
-description: Optimize Workflow Execution with Temporal TypeScript SDK - Set Activity Timeouts and Retry Policies efficiently.
+description: Set the Schedule-To-Close, Start-To-Close, and Heartbeat Timeouts on a TypeScript Activity, tune its Retry Policy, and override the next retry delay.
 toc_max_heading_level: 4
 tags:
   - Activities
@@ -13,17 +13,7 @@ tags:
   - Temporal SDKs
 ---
 
-This page shows how to do the following:
-
-- [Activity Timeouts](#activity-timeouts)
-- [Activity Retry Policy](#activity-retries)
-- [Activity next Retry delay](#activity-next-retry-delay)
-- [Heartbeat an Activity](#activity-heartbeats)
-- [Activity Heartbeat Timeout](#activity-heartbeat-timeout)
-
 ## Activity Timeouts {/* #activity-timeouts */}
-
-**How to set Activity Timeouts using the Temporal TypeScript SDK**
 
 Each Activity Timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -41,17 +31,18 @@ The following properties can be set on the [`ActivityOptions`](https://typescrip
 - [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#starttoclosetimeout)
 - [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletostarttimeout)
 
-```typescript
+<!--SNIPSTART typescript-activity-timeouts-options-->
+[typescript-sandbox/src/activities/timeouts/timeouts-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/timeouts/timeouts-workflow.ts)
+```ts
 const { myActivity } = proxyActivities<typeof activities>({
   scheduleToCloseTimeout: '5m',
   // startToCloseTimeout: "30s", // recommended
   // scheduleToStartTimeout: "60s",
 });
 ```
+<!--SNIPEND-->
 
-## Activity Retry Policy {/* #activity-retries */}
-
-**How to set an Activity Retry Policy using the Temporal TypeScript SDK**
+### Activity Retry Policy {/* #activity-retries */}
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -59,35 +50,37 @@ Activity Executions are automatically associated with a default [Retry Policy](/
 
 To set an Activity's Retry Policy in TypeScript, assign the [`ActivityOptions.retry`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#retry) property when creating the corresponding Activity proxy function using the [`proxyActivities()`](https://typescript.temporal.io/api/namespaces/workflow#proxyactivities) API.
 
-```typescript
-const { myActivity } = proxyActivities<typeof activities>({
-  // ...
+<!--SNIPSTART typescript-activity-timeouts-retry-policy-->
+[typescript-sandbox/src/activities/timeouts/retry-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/timeouts/retry-workflow.ts)
+```ts
+const { chargeCard } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s',
   retry: {
     initialInterval: '10s',
     maximumAttempts: 5,
   },
 });
 ```
+<!--SNIPEND-->
 
-## Activity next Retry delay {/* #activity-next-retry-delay */}
-
-**How to override the next Retry delay following an Activity failure using the Temporal TypeScript SDK**
+### Activity next retry delay {/* #activity-next-retry-delay */}
 
 The time to wait after a retryable Activity failure until the next retry is attempted is normally determined by that Activity's Retry Policy.
 However, an Activity may override that duration when explicitly failing with an [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure) by setting a next Retry delay.
 
 To override the next Retry delay for an `ApplicationFailure` thrown by an Activity in TypeScript, provide the [`nextRetryDelay`](https://typescript.temporal.io/api/interfaces/common.ApplicationFailureOptions#nextretrydelay) property on the object argument of the [`ApplicationFailure.create()`](https://typescript.temporal.io/api/classes/common.ApplicationFailure#create) factory method.
 
-```typescript
+<!--SNIPSTART typescript-activity-timeouts-next-retry-delay {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/activities/timeouts/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/timeouts/activities.ts)
+```ts
 throw ApplicationFailure.create({
-  // ...
+  message: 'Payment service is unavailable',
   nextRetryDelay: '15s',
 });
 ```
+<!--SNIPEND-->
 
 ## Heartbeat an Activity {/* #activity-heartbeats */}
-
-**How to Heartbeat an Activity using the Temporal TypeScript SDK**
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/temporal-service).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activity-execution) is making progress and the Worker has not crashed.
@@ -114,7 +107,9 @@ Heartbeat throttling may lead to Cancellation getting delivered later than expec
 
 To Heartbeat an Activity Execution in TypeScript, call the [`heartbeat()`](https://typescript.temporal.io/api/namespaces/activity#heartbeat) function from the Activity implementation.
 
-```typescript
+<!--SNIPSTART typescript-activity-timeouts-heartbeat-->
+[typescript-sandbox/src/activities/timeouts/heartbeat.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/timeouts/heartbeat.ts)
+```ts
 export async function myActivity(): Promise<void> {
   for (let progress = 1; progress <= 1000; ++progress) {
     // Do something that takes time
@@ -124,12 +119,15 @@ export async function myActivity(): Promise<void> {
   }
 }
 ```
+<!--SNIPEND-->
 
 An Activity may optionally checkpoint its progression, by providing a `details` argument to the [`heartbeat()`](https://typescript.temporal.io/api/namespaces/activity#heartbeat) function.
 Should the Activity Execution times out and gets retried, then the Temporal Server will provide the `details` from the last Heartbeat it received to the next Activity Execution.
 This can be used to allow the Activity to efficiently resume its work.
 
-```typescript
+<!--SNIPSTART typescript-activity-timeouts-heartbeat-details-->
+[typescript-sandbox/src/activities/timeouts/heartbeat-checkpoint.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/timeouts/heartbeat-checkpoint.ts)
+```ts
 export async function myActivity(): Promise<void> {
   // Resume work from latest heartbeat, if there's one, or start from 1 otherwise
   const startingPoint = activityInfo().heartbeatDetails?.progress ?? 1;
@@ -142,19 +140,21 @@ export async function myActivity(): Promise<void> {
   }
 }
 ```
+<!--SNIPEND-->
 
-## Activity Heartbeat Timeout {/* #activity-heartbeat-timeout */}
-
-**How to set a Heartbeat Timeout using the Temporal TypeScript SDK**
+### Activity Heartbeat Timeout {/* #activity-heartbeat-timeout */}
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 If the Temporal Server doesn't receive a Heartbeat before expiration of the Heartbeat Timeout, the Activity is considered as timed out and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
 
 To set an Activity's Heartbeat Timeout in TypeScript, set the [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout) property when creating the corresponding Activity proxy functions using the [`proxyActivities()`](https://typescript.temporal.io/api/namespaces/workflow#proxyactivities) API.
 
-```typescript
+<!--SNIPSTART typescript-activity-timeouts-heartbeat-timeout-->
+[typescript-sandbox/src/activities/timeouts/heartbeat-timeout-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/timeouts/heartbeat-timeout-workflow.ts)
+```ts
 const { myLongRunningActivity } = proxyActivities<typeof activities>({
-  // ...
+  startToCloseTimeout: '1h',
   heartbeatTimeout: '30s',
 });
 ```
+<!--SNIPEND-->
