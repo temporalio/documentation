@@ -44,7 +44,7 @@ module.exports = async (request, response) => {
 
   const suggestions = await searchSuggestions(pathname);
   const suggested = suggestions.length
-    ? `\n## Pages that match this URL\n\n${toMarkdownList(suggestions)}\n`
+    ? `\n## Suggested pages\n\n${toMarkdownList(suggestions)}\n`
     : '';
 
   response
