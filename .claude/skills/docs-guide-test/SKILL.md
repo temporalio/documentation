@@ -59,10 +59,12 @@ The script, in order:
    is the convention these guides already follow, and which naturally skips partial or alternative snippets (for
    example optional "add this line" variants) that lack the header. See the extractor's `--help` for other modes.
 3. **Runs static checks over the reconstructed source.** Before anything executes, it parses the extracted files and
-   reports two classes of defect a passing run can't catch: imports the code never uses, and unhandled failure paths (a
-   `wait_condition` timeout or an exhausted Activity retry that would fail the Workflow uncaught). These are heuristics,
-   printed as advisory findings by default — they don't turn a working guide red unless a manifest sets
-   `checks.fail_on_findings`. See [references/authoring-manifests.md](references/authoring-manifests.md).
+   reports four classes of defect a passing run can't catch: imports the code never uses; unhandled failure paths (a
+   `wait_condition` timeout or an exhausted Activity retry that would fail the Workflow uncaught); names used but defined
+   nowhere in the project (a block the guide forgot to show, or a rename); and non-determinism in Workflow code
+   (wall-clock, randomness, or I/O that breaks replay). These are heuristics, printed as advisory findings by default —
+   they don't turn a working guide red unless a manifest sets `checks.fail_on_findings`. See
+   [references/authoring-manifests.md](references/authoring-manifests.md).
 4. **Starts a fresh local server.** It runs `temporal server start-dev`, which keeps state in memory, so every run
    starts clean and Workflow Ids never collide across runs. If port 7233 is already in use, the script stops and asks
    you to shut down the other server rather than silently reusing an unknown one.

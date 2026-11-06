@@ -32,7 +32,12 @@ MANIFESTS_DIR = SKILL_DIR / "manifests"
 EXTRACT_SCRIPT = SKILL_DIR / "scripts" / "extract_guide.py"
 STATIC_SCRIPT = SKILL_DIR / "scripts" / "static_checks.py"
 
-ALL_STATIC_CHECKS = ("unused_imports", "unhandled_failures")
+ALL_STATIC_CHECKS = (
+    "unused_imports",
+    "unhandled_failures",
+    "undefined_names",
+    "nondeterminism",
+)
 
 TEMPORAL_HOST = "127.0.0.1"
 TEMPORAL_PORT = 7233

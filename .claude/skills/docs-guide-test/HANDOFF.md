@@ -104,8 +104,13 @@ Added a static-analysis phase that runs over the reconstructed source before exe
 end-to-end run can't. Prompted by review comments on PR #5461 (the Entity Pattern revision): an unused `import asyncio`,
 and failure paths that fail the Workflow uncaught (a `wait_condition` timeout; an exhausted bounded Activity retry).
 
-- New `scripts/static_checks.py` (pure stdlib `ast`, no deps, no server). Two checks: `unused_imports` and
-  `unhandled_failures` (the two Temporal smells above; pattern list is meant to grow).
+- New `scripts/static_checks.py` (pure stdlib `ast`, no deps, no server). Four checks: `unused_imports`,
+  `unhandled_failures` (the two Temporal smells above), `undefined_names` (project-wide completeness — a name defined in
+  none of the extracted files; backs off on `import *`), and `nondeterminism` (wall-clock/randomness/I/O inside a
+  `@workflow.defn` class, scoped so Activities are left alone). Pattern lists are meant to grow.
+- Validated on the real pre-revision entity-pattern guide: the checks independently reproduced the human findings from
+  PR #5461 (unused `asyncio`/`asdict`/`PointsEvent`, the uncaught `wait_condition` timeout, both uncaught bounded-retry
+  Activity calls) with no undefined-name or non-determinism false positives on the correct code.
 - Wired into `run_guide_test.py` as step 1b (right after extraction). Prints a `STATIC CHECKS` section.
 - **Advisory by default** — findings print but don't change the exit code; a manifest sets `checks.fail_on_findings:
   true` to enforce. Per-check on/off and `checks.exclude` supported. Config documented in `authoring-manifests.md`.

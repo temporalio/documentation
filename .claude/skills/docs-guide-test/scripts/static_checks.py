@@ -10,6 +10,13 @@ path green:
   * **unhandled failure conditions** — a failure path (a `wait_condition` timeout,
     an Activity whose bounded retries are exhausted) is never exercised when
     nothing fails, so the Workflow that *would* crash on it runs clean.
+  * **undefined names** — a reference to a symbol defined nowhere in the
+    reconstructed project (a block the guide forgot to show, or a rename that
+    left a call site behind). The code is incomplete, but the gap is invisible
+    until a reader assembles and runs it.
+  * **non-determinism** — wall-clock reads, randomness, or I/O used directly in
+    Workflow code instead of the deterministic `workflow.*` equivalents. The
+    happy path runs, but the Workflow fails to replay.
 
 Both are findings a human reviewer raised on real guide PRs. They are structural
 properties of the source, so this script finds them by parsing the extracted
@@ -29,11 +36,17 @@ from __future__ import annotations
 
 import argparse
 import ast
+import builtins
 import json
 import sys
 from pathlib import Path
 
-ALL_CHECKS = ("unused_imports", "unhandled_failures")
+ALL_CHECKS = (
+    "unused_imports",
+    "unhandled_failures",
+    "undefined_names",
+    "nondeterminism",
+)
 
 # Exception names that count as handling a wait_condition timeout.
 _TIMEOUT_EXCS = {
@@ -250,17 +263,217 @@ def check_unhandled_failures(filename: str, tree: ast.Module) -> list[dict]:
 
 
 # --------------------------------------------------------------------------- #
+# check: undefined names (project-wide)
+# --------------------------------------------------------------------------- #
+# Names available without being defined in the source.
+_BUILTIN_NAMES = set(dir(builtins)) | {
+    "__name__", "__file__", "__doc__", "__package__", "__spec__", "__loader__",
+    "__builtins__", "__class__", "__qualname__", "__module__", "__annotations__",
+    "__dict__", "__path__", "__all__",
+}
+
+
+def _collect_defined(tree: ast.Module) -> set[str]:
+    """Every name this module binds, across all scopes.
+
+    Deliberately flattens scopes into one set: a name bound as a local, a
+    parameter, a loop/comprehension target, an `except ... as`, a function or
+    class, or an import counts as 'defined' everywhere. That trades scope
+    precision (a false negative if a name is bound in one function but used
+    undefined in another) for very few false positives — which is the right
+    bias for a completeness check whose job is to flag names defined *nowhere*.
+    """
+    defined: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
+            defined.add(node.id)
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            defined.add(node.name)
+        elif isinstance(node, ast.arg):
+            defined.add(node.arg)
+        elif isinstance(node, ast.ExceptHandler) and node.name:
+            defined.add(node.name)
+        elif isinstance(node, (ast.Global, ast.Nonlocal)):
+            defined.update(node.names)
+        elif isinstance(node, ast.Import):
+            for alias in node.names:
+                defined.add((alias.asname or alias.name).split(".")[0])
+        elif isinstance(node, ast.ImportFrom):
+            if node.module == "__future__":
+                continue
+            for alias in node.names:
+                if alias.name != "*":
+                    defined.add(alias.asname or alias.name)
+        else:
+            # match-statement captures (3.10+), guarded so older grammars are fine.
+            cls = node.__class__.__name__
+            if cls == "MatchAs" and getattr(node, "name", None):
+                defined.add(node.name)
+            elif cls == "MatchStar" and getattr(node, "name", None):
+                defined.add(node.name)
+            elif cls == "MatchMapping" and getattr(node, "rest", None):
+                defined.add(node.rest)
+    return defined
+
+
+def _has_star_import(tree: ast.Module) -> bool:
+    return any(
+        isinstance(n, ast.ImportFrom) and any(a.name == "*" for a in n.names)
+        for n in ast.walk(tree)
+    )
+
+
+def check_undefined_names(parsed: list[tuple[str, ast.Module]]) -> list[dict]:
+    """Flag names loaded but defined nowhere in the whole reconstructed project.
+
+    Resolves across all extracted files at once, because a guide splits its code
+    over worker/workflow/activities files that reference each other. A flagged
+    name is defined in none of them and isn't a builtin — almost always a block
+    the guide didn't show or a rename it half-applied. A `from m import *` in any
+    file hides what's defined, so the check backs off entirely rather than guess.
+    """
+    if any(_has_star_import(tree) for _, tree in parsed):
+        return []
+
+    defined: set[str] = set(_BUILTIN_NAMES)
+    for _, tree in parsed:
+        defined |= _collect_defined(tree)
+
+    first_use: dict[tuple[str, str], int] = {}  # (file, name) -> lowest line
+    for filename, tree in parsed:
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
+                if node.id not in defined:
+                    key = (filename, node.id)
+                    if key not in first_use or node.lineno < first_use[key]:
+                        first_use[key] = node.lineno
+
+    return [
+        {
+            "check": "undefined_names",
+            "file": filename,
+            "line": line,
+            "symbol": name,
+            "message": (
+                f"'{name}' is used but defined nowhere in the reconstructed "
+                f"project (a block the guide didn't show, or a rename)"
+            ),
+        }
+        for (filename, name), line in first_use.items()
+    ]
+
+
+# --------------------------------------------------------------------------- #
+# check: non-determinism in Workflow code
+# --------------------------------------------------------------------------- #
+# Calls that are non-deterministic in a Workflow, mapped to the SDK-safe form.
+_ND_NONDET_EXACT = {
+    "datetime.now": "workflow.now()",
+    "datetime.utcnow": "workflow.now()",
+    "datetime.today": "workflow.now()",
+    "datetime.datetime.now": "workflow.now()",
+    "datetime.datetime.utcnow": "workflow.now()",
+    "datetime.datetime.today": "workflow.now()",
+    "time.time": "workflow.now() / workflow.time()",
+    "time.time_ns": "workflow.now()",
+    "time.monotonic": "workflow.now()",
+    "time.monotonic_ns": "workflow.now()",
+    "time.sleep": "workflow.sleep()",
+    "asyncio.sleep": "workflow.sleep()",
+    "uuid.uuid1": "workflow.uuid4()",
+    "uuid.uuid4": "workflow.uuid4()",
+    "os.urandom": "workflow.random()",
+    "os.getrandom": "workflow.random()",
+}
+_ND_NONDET_PREFIX = ("random.", "secrets.")  # -> workflow.random()
+_ND_IO_PREFIX = ("requests.", "httpx.", "aiohttp.", "urllib.", "socket.")
+_ND_IO_BARE = {"open", "input"}
+
+# A decorator marks a Workflow when its dotted name is `workflow.defn` (or a
+# bare `defn` imported from temporalio.workflow).
+def _is_workflow_class(node: ast.ClassDef) -> bool:
+    for dec in node.decorator_list:
+        target = dec.func if isinstance(dec, ast.Call) else dec
+        name = _dotted(target)
+        if name == "defn" or name.endswith(".defn"):
+            return True
+    return False
+
+
+def check_nondeterminism(filename: str, tree: ast.Module) -> list[dict]:
+    """Flag wall-clock, randomness, and I/O used directly in Workflow code.
+
+    Scoped to classes decorated `@workflow.defn`: that's where the SDK enforces
+    determinism, and where these calls break replay. Activities (and plain
+    helpers) may read the clock or do I/O, so they're left alone. Only
+    module-qualified calls (`random.random()`, `time.time()`) and bare
+    `open`/`input` are matched; a `from random import randint` style call is a
+    known blind spot.
+    """
+    findings: list[dict] = []
+    for cls in ast.walk(tree):
+        if not (isinstance(cls, ast.ClassDef) and _is_workflow_class(cls)):
+            continue
+        for node in ast.walk(cls):
+            if not isinstance(node, ast.Call):
+                continue
+            dotted = _call_name(node)
+            bare = dotted.split(".")[-1]
+
+            suggestion = None
+            is_io = False
+            if dotted in _ND_NONDET_EXACT:
+                suggestion = _ND_NONDET_EXACT[dotted]
+            elif dotted.startswith(_ND_NONDET_PREFIX):
+                suggestion = "workflow.random()"
+            elif dotted.startswith(_ND_IO_PREFIX) or (bare in _ND_IO_BARE and dotted == bare):
+                is_io = True
+
+            if is_io:
+                msg = (
+                    f"`{dotted}` performs I/O, which isn't allowed in Workflow code; "
+                    f"move it into an Activity"
+                )
+            elif suggestion:
+                msg = (
+                    f"`{dotted}` is non-deterministic in Workflow code and breaks "
+                    f"replay; use `{suggestion}`"
+                )
+            else:
+                continue
+
+            findings.append(
+                {
+                    "check": "nondeterminism",
+                    "file": filename,
+                    "line": node.lineno,
+                    "symbol": f"{dotted}(...)",
+                    "message": msg,
+                }
+            )
+    return findings
+
+
+# --------------------------------------------------------------------------- #
 # driver
 # --------------------------------------------------------------------------- #
-CHECKS = {
+# Checks that look at one file at a time.
+PER_FILE_CHECKS = {
     "unused_imports": check_unused_imports,
     "unhandled_failures": check_unhandled_failures,
+    "nondeterminism": check_nondeterminism,
+}
+# Checks that need every file at once.
+PROJECT_CHECKS = {
+    "undefined_names": check_undefined_names,
 }
 
 
 def run(src_dir: Path, enabled: list[str], exclude: set[str]) -> dict:
     findings: list[dict] = []
     errors: list[dict] = []
+    parsed: list[tuple[str, ast.Module]] = []
+
     for path in sorted(src_dir.rglob("*.py")):
         if path.name in exclude:
             continue
@@ -270,8 +483,18 @@ def run(src_dir: Path, enabled: list[str], exclude: set[str]) -> dict:
         except SyntaxError as exc:
             errors.append({"file": rel, "message": f"could not parse: {exc}"})
             continue
+        parsed.append((rel, tree))
         for name in enabled:
-            findings.extend(CHECKS[name](rel, tree))
+            check = PER_FILE_CHECKS.get(name)
+            if check:
+                findings.extend(check(rel, tree))
+
+    for name in enabled:
+        check = PROJECT_CHECKS.get(name)
+        if check:
+            findings.extend(check(parsed))
+
+    findings.sort(key=lambda f: (f["file"], f["line"]))
     return {"findings": findings, "errors": errors}
 
 
@@ -293,7 +516,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     enabled = [c.strip() for c in args.checks.split(",") if c.strip()]
-    unknown = [c for c in enabled if c not in CHECKS]
+    unknown = [c for c in enabled if c not in ALL_CHECKS]
     if unknown:
         print(f"error: unknown check(s): {', '.join(unknown)}", file=sys.stderr)
         return 2

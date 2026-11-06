@@ -42,6 +42,8 @@ A `skip` manifest records the decision so the guide isn't silently untested:
 | `assert.driver_exit_zero` | no | Require the driver to exit 0 (default true). |
 | `checks.unused_imports` | no | Static check: imports the code never uses. Default on; set `false` to skip (see [Static checks](#static-checks)). |
 | `checks.unhandled_failures` | no | Static check: unhandled failure paths. Default on; set `false` to skip. |
+| `checks.undefined_names` | no | Static check: names defined nowhere in the reconstructed project. Default on; set `false` to skip. |
+| `checks.nondeterminism` | no | Static check: wall-clock/randomness/I/O in Workflow code. Default on; set `false` to skip. |
 | `checks.fail_on_findings` | no | Make static findings fail the run (default false — findings are advisory). |
 | `checks.exclude` | no | Filenames the static checks skip (e.g. a deliberately-minimal snippet). |
 | `_notes` | no | Free text: where the expected numbers come from, caveats, why anything is excluded. |
@@ -69,7 +71,7 @@ that each fail the Workflow uncaught). So after reconstructing the project, the 
 `scripts/static_checks.py` over the extracted source — pure `ast` parsing, no server, no execution — and prints a
 `STATIC CHECKS` section.
 
-Two checks run, both on by default:
+Four checks run, all on by default:
 
 - **`unused_imports`** — an imported name the file never references. Handles `import a.b` / `as` aliases / `from m import
   x`, treats `__all__` entries as used, and skips `from __future__` and star-imported files. Blind spot: a name used only
@@ -78,6 +80,17 @@ Two checks run, both on by default:
   `try`/`except` for `asyncio.TimeoutError`, and an `execute_activity*` call with no surrounding `try`/`except` when the
   file builds a `RetryPolicy(maximum_attempts=...)` (a bounded policy is what makes an exhausted retry terminal). The list
   of patterns is meant to grow.
+- **`undefined_names`** — a name loaded but defined nowhere in the *whole* reconstructed project (resolved across every
+  extracted file at once, since guides split code over worker/workflow/activities files that import each other). This is
+  the completeness check: a flagged name is usually a block the guide forgot to show or a rename it half-applied. It
+  flattens all scopes into one defined-set to keep false positives near zero, and backs off entirely if any file has a
+  `from m import *`. Blind spot: a name defined in one function but used undefined in another won't be caught (a
+  deliberate bias toward precision).
+- **`nondeterminism`** — wall-clock reads (`datetime.now`, `time.time`), randomness (`random.*`, `uuid.uuid4`,
+  `secrets.*`), or I/O (`requests`/`httpx`/`urllib`/`socket`, bare `open`/`input`) called **inside a class decorated
+  `@workflow.defn`**, where they break replay; the finding names the `workflow.*` equivalent. Scoped to Workflow classes,
+  so Activities and plain helpers — which may read the clock or do I/O — are left alone. Only module-qualified calls and
+  bare `open`/`input` are matched; a `from random import randint` style import is a known blind spot.
 
 These are **heuristics reported for a human to judge, not proof of a bug**, so they are **advisory by default**: findings
 print but do not change the exit code, and a working guide stays green. A manifest that wants them enforced sets
@@ -86,8 +99,10 @@ exempt specific files with `checks.exclude`:
 
 ```json
 "checks": {
-  "unhandled_failures": true,
   "unused_imports": true,
+  "unhandled_failures": true,
+  "undefined_names": true,
+  "nondeterminism": true,
   "fail_on_findings": false,
   "exclude": ["minimal_snippet.py"]
 }
