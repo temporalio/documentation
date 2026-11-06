@@ -2,7 +2,7 @@
 id: request-cancel
 title: Request Cancel for an Activity
 sidebar_label: Request Cancel
-description: Ask an Activity Execution to close gracefully so your code can clean up, and what to expect when an attempt is already running.
+description: Ask a Standalone Activity to stop at a safe point. Cancellation reaches a running attempt through Heartbeats, so your code can clean up.
 slug: /activity-operations/request-cancel
 toc_max_heading_level: 4
 tags:

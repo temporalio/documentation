@@ -2,8 +2,7 @@
 id: activities
 title: What is a Temporal Activity?
 sidebar_label: Activities
-description:
-  Learn how Temporal turns a plain function you write into a Temporal Activity and durably executes it as a Workflow step or background job.
+description: An Activity is a function a Worker runs, started from a Workflow or on its own as a background job, with retries and a durable Activity Execution.
 slug: /activities
 toc_max_heading_level: 4
 tags:
