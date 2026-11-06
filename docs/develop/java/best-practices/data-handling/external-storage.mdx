@@ -10,6 +10,8 @@ description: Offload large payloads to Amazon S3 using the claim check pattern i
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <ReleaseNoteHeader type="prerelease">
   APIs and configuration may change before General Availability. Join the
@@ -35,18 +37,43 @@ The Java SDK includes an experimental S3 storage driver. It requires Java SDK v1
 - AWS credentials that can read and write S3 objects. The AWS SDK for Java reads its standard credential provider chain,
   including environment variables, IAM roles, and AWS configuration files.
 - The AWS SDK v2 S3 driver module. Use the same version as your Temporal Java SDK dependency. The module includes the
-  generic S3 driver and AWS S3 client as transitive dependencies:
+  generic S3 driver and AWS S3 client as transitive dependencies.
 
-  ```gradle
-  implementation "io.temporal:temporal-payload-storage-s3driver-awssdkv2:1.39.0"
-  ```
+Add the driver module to your build:
+
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
+<!--SNIPSTART java-external-storage-maven-dependency {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/external-storage/pom.xml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/external-storage/pom.xml)
+```xml
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-payload-storage-s3driver-awssdkv2</artifactId>
+    <version>1.40.0</version>
+</dependency>
+```
+<!--SNIPEND-->
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+<!--SNIPSTART java-external-storage-gradle-dependency {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/external-storage/build.gradle](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/external-storage/build.gradle)
+```gradle
+implementation 'io.temporal:temporal-payload-storage-s3driver-awssdkv2:1.40.0'
+```
+<!--SNIPEND-->
+
+</TabItem>
+</Tabs>
 
 ### Procedure
 
 1. Create an asynchronous S3 client, wrap it in an `S3AsyncClientAdapter`, and create an `S3StorageDriver`:
 
-   <!--SNIPSTART java-s3-driver-create-->
-   [java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/S3StorageDriverExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/S3StorageDriverExamples.java)
+   <!--SNIPSTART java-s3-driver-create {"enable_code_dedenting": true}-->
+   [java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/S3StorageDriverExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/S3StorageDriverExamples.java)
    ```java
    S3AsyncClient s3Client = S3AsyncClient.builder().region(Region.US_EAST_2).build();
 
@@ -63,8 +90,8 @@ The Java SDK includes an experimental S3 storage driver. It requires Java SDK v1
 2. Add the driver to `ExternalStorage`, then set it on `WorkflowClientOptions`. A Worker created from that Client
    inherits the configuration:
 
-   <!--SNIPSTART java-s3-external-storage-setup-->
-   [java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/S3StorageDriverExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/S3StorageDriverExamples.java)
+   <!--SNIPSTART java-s3-external-storage-setup {"enable_code_dedenting": true}-->
+   [java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/S3StorageDriverExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/S3StorageDriverExamples.java)
    ```java
    ExternalStorage externalStorage = ExternalStorage.newBuilder().setDriver(driver).build();
 
@@ -96,7 +123,7 @@ on local disk. Use it for local development and tests, not in production: Worker
 A production driver must use a durable store that every Client and Worker can access.
 
 <!--SNIPSTART java-custom-storage-driver-->
-[java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/LocalDiskStorageDriver.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/LocalDiskStorageDriver.java)
+[java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/LocalDiskStorageDriver.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/LocalDiskStorageDriver.java)
 ```java
 class LocalDiskStorageDriver implements StorageDriver {
   private static final String CLAIM_PATH = "path";
@@ -199,8 +226,8 @@ The size threshold applies to the serialized Payload, including its metadata. By
 256 KiB or larger are offloaded. Payloads smaller than the threshold stay inline in Event History. Set a higher value to
 offload less data or set the value to `0` to offload every Payload.
 
-<!--SNIPSTART java-external-storage-threshold-->
-[java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/ExternalStorageConfigurationExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/ExternalStorageConfigurationExamples.java)
+<!--SNIPSTART java-external-storage-threshold {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/ExternalStorageConfigurationExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/ExternalStorageConfigurationExamples.java)
 ```java
 return ExternalStorage.newBuilder().setDriver(driver).setPayloadSizeThreshold(0).build();
 ```
@@ -217,8 +244,8 @@ Every registered driver needs a distinct `getName()` value. For example, set a d
 when registering two S3 drivers. The following configuration stores new Payloads with `preferredDriver`, while keeping
 `legacyDriver` available to retrieve references that it created:
 
-<!--SNIPSTART java-external-storage-multiple-drivers-->
-[java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/ExternalStorageConfigurationExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/ExternalStorageConfigurationExamples.java)
+<!--SNIPSTART java-external-storage-multiple-drivers {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/ExternalStorageConfigurationExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/ExternalStorageConfigurationExamples.java)
 ```java
 return ExternalStorage.newBuilder()
     .setDrivers(Arrays.asList(preferredDriver, legacyDriver))
@@ -234,8 +261,8 @@ and an [S3 Multi-Region Access Point (MRAP)](https://aws.amazon.com/s3/features/
 the driver bucket to the MRAP ARN. Enable ARN-region routing on the AWS SDK client so it sends a request to the Region
 in the ARN:
 
-<!--SNIPSTART java-s3-mrap-driver-create-->
-[java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/S3StorageDriverExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/external-storage/src/main/java/io/temporal/docs/externalstorage/S3StorageDriverExamples.java)
+<!--SNIPSTART java-s3-mrap-driver-create {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/S3StorageDriverExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/external-storage/src/main/java/io/temporal/docs/bestpractices/externalstorage/S3StorageDriverExamples.java)
 ```java
 S3AsyncClient s3Client =
     S3AsyncClient.builder()
