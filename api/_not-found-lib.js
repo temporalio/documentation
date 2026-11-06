@@ -76,19 +76,39 @@ function titleOf(hierarchy) {
   return lvl1 || lvl0;
 }
 
+// True when Algolia matched any query word in that heading level.
+function matched(hit, level) {
+  const result = hit && hit._highlightResult && hit._highlightResult.hierarchy && hit._highlightResult.hierarchy[level];
+  return Boolean(result) && result.matchLevel !== 'none';
+}
+
 // Keeps the first (best-ranked) hit for each docs page, skipping the page that
 // was asked for. Hits from other sites in the index, such as the courses site,
-// are dropped.
+// are dropped. Only the page title (H1) and H2 headings are searched. A hit
+// whose H1 matched suggests the page. A hit that matched only in an H2 suggests
+// that section, titled "Page: Section" and linked to its anchor, so the reader
+// can see why the page was offered.
 function pickSuggestions(hits, requestedPath, limit = MAX_SUGGESTIONS) {
   const requested = pageUrl(`${SITE}${requestedPath}`);
   const seen = new Set();
   const picked = [];
   for (const hit of Array.isArray(hits) ? hits : []) {
     const url = pageUrl(hit && (hit.url_without_anchor || hit.url));
-    const title = titleOf(hit && hit.hierarchy);
-    if (!url || !title || url === requested || seen.has(url)) continue;
+    if (!url || url === requested || seen.has(url)) continue;
+
+    const hierarchy = (hit && hit.hierarchy) || {};
+    const h2 = titleOf({ lvl1: hierarchy.lvl2 });
+    const h2Only = Boolean(h2) && matched(hit, 'lvl2') && !matched(hit, 'lvl1');
+    const title = h2Only ? `${titleOf({ lvl1: hierarchy.lvl1 })}: ${h2}` : titleOf(hierarchy);
+    if (!title) continue;
+
+    let target = url;
+    if (h2Only) {
+      const anchor = typeof hit.anchor === 'string' ? hit.anchor : new URL(hit.url, SITE).hash.slice(1);
+      if (/^[\w.-]+$/.test(anchor)) target = `${url}#${anchor}`;
+    }
     seen.add(url);
-    picked.push({ url, title });
+    picked.push({ url: target, title });
     if (picked.length === limit) break;
   }
   return picked;
@@ -120,8 +140,11 @@ async function searchSuggestions(pathname, { fetchImpl = fetch } = {}) {
       body: JSON.stringify({
         query,
         hitsPerPage: 20,
-        attributesToRetrieve: ['url', 'url_without_anchor', 'hierarchy'],
-        attributesToHighlight: [],
+        // Match page titles (H1) and H2 headings only. Body text and deeper
+        // headings matched too loosely: "durable timer" suggested Schedules.
+        restrictSearchableAttributes: ['hierarchy.lvl1', 'hierarchy.lvl2'],
+        attributesToRetrieve: ['url', 'url_without_anchor', 'anchor', 'hierarchy'],
+        attributesToHighlight: ['hierarchy.lvl1', 'hierarchy.lvl2'],
         attributesToSnippet: [],
       }),
       signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),

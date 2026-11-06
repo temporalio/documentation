@@ -83,6 +83,50 @@ describe('pickSuggestions', () => {
     assert.strictEqual(picked[0].title, 'Messages: Signals, Queries, & Updates <x>');
   });
 
+  it('suggests the page when the H1 matched', () => {
+    const picked = pickSuggestions(
+      [
+        {
+          url: `${D}/timers#what`,
+          hierarchy: { lvl0: 'Workflows', lvl1: 'Timers', lvl2: 'What is a Timer?' },
+          _highlightResult: { hierarchy: { lvl1: { matchLevel: 'full' }, lvl2: { matchLevel: 'partial' } } },
+        },
+      ],
+      '/x',
+    );
+    assert.deepStrictEqual(picked, [{ url: `${D}/timers`, title: 'Workflows: Timers' }]);
+  });
+
+  it('suggests the section when only an H2 matched', () => {
+    const picked = pickSuggestions(
+      [
+        {
+          url: `${D}/features/schedules#timers`,
+          anchor: 'timers',
+          hierarchy: { lvl0: 'Features', lvl1: 'Schedules', lvl2: 'Timers and Start Delay\u200b' },
+          _highlightResult: { hierarchy: { lvl1: { matchLevel: 'none' }, lvl2: { matchLevel: 'full' } } },
+        },
+      ],
+      '/x',
+    );
+    assert.deepStrictEqual(picked, [{ url: `${D}/features/schedules#timers`, title: 'Schedules: Timers and Start Delay' }]);
+  });
+
+  it('ignores an unsafe anchor', () => {
+    const picked = pickSuggestions(
+      [
+        {
+          url: `${D}/a`,
+          anchor: '"><script>',
+          hierarchy: { lvl1: 'A', lvl2: 'B' },
+          _highlightResult: { hierarchy: { lvl1: { matchLevel: 'none' }, lvl2: { matchLevel: 'full' } } },
+        },
+      ],
+      '/x',
+    );
+    assert.strictEqual(picked[0].url, `${D}/a`);
+  });
+
   it('tolerates a missing hits array', () => {
     assert.deepStrictEqual(pickSuggestions(undefined, '/x'), []);
   });
@@ -148,6 +192,7 @@ describe('searchSuggestions', () => {
     };
     const result = await searchSuggestions('/workflow-defn', { fetchImpl });
     assert.strictEqual(body.query, 'workflow defn');
+    assert.deepStrictEqual(body.restrictSearchableAttributes, ['hierarchy.lvl1', 'hierarchy.lvl2']);
     assert.deepStrictEqual(result, [{ url: `${D}/workflows`, title: 'Workflows' }]);
   });
 

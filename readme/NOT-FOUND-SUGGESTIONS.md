@@ -12,9 +12,12 @@ the page's JavaScript see the list too.
    letter or digit, no pure numbers, no repeated words, at most 8 words. `/develop/python/workflow-versioning.md`
    becomes `develop python workflow versioning`.
 3. `searchSuggestions` sends the string to the Algolia index the site search uses
-   (`src/constants/algolia.js`, a public search-only key). It keeps the first hit for each `docs.temporal.io` page, skips
-   the requested page, and gives up after 2 seconds. Any failure means no suggestions, so the 404 is never worse than
-   before.
+   (`src/constants/algolia.js`, a public search-only key). It searches only page titles (H1) and H2 headings, because
+   body text and deeper headings matched too loosely: a search for "durable timer" suggested Schedules, a concept
+   readers confuse with Timers. A hit whose H1 matched suggests the page. A hit that matched only in an H2 suggests that
+   section ("Page: Section", linked to its anchor). It keeps the first hit for each `docs.temporal.io` page, skips the
+   requested page, and gives up after 2 seconds. Any failure means no suggestions, so the 404 is never worse than
+   before. A path whose words don't all appear in titles gets no suggestions rather than a loose match.
 4. The response keeps status 404 and `noindex`. HTML responses are the static `/404.html` with the list injected before
    `</body>`. The page is fetched from the deployment that is answering (the request host outside production, `docs.temporal.io`
    in production), because it names that build's JavaScript files. Markdown responses add a "Suggested pages" section. Both are cached at the CDN for an hour, per path.
