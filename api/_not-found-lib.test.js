@@ -3,6 +3,7 @@ const assert = require('node:assert');
 
 const {
   injectIntoHtml,
+  pageHost,
   pathToQuery,
   pickSuggestions,
   searchSuggestions,
@@ -177,5 +178,22 @@ describe('searchSuggestions', () => {
       [],
     );
     assert.deepStrictEqual(await searchSuggestions('/abc', { fetchImpl: ok(undefined) }), []);
+  });
+});
+
+describe('pageHost', () => {
+  const preview = 'temporal-documentation-git-x.preview.thundergun.io';
+  it('uses docs.temporal.io in production whatever the request says', () => {
+    assert.strictEqual(pageHost({ host: preview }, 'production'), 'docs.temporal.io');
+  });
+  it('uses the request host on a preview deployment', () => {
+    assert.strictEqual(pageHost({ host: preview }, 'preview'), preview);
+    assert.strictEqual(pageHost({ 'x-forwarded-host': `${preview}, other.example` }, 'preview'), preview);
+    assert.strictEqual(pageHost({ host: 'localhost:3000' }, undefined), 'localhost:3000');
+  });
+  it('falls back to production for a missing or malformed host', () => {
+    assert.strictEqual(pageHost({}, 'preview'), 'docs.temporal.io');
+    assert.strictEqual(pageHost({ host: 'a.com/evil' }, 'preview'), 'docs.temporal.io');
+    assert.strictEqual(pageHost({ host: 'user@a.com' }, 'preview'), 'docs.temporal.io');
   });
 });

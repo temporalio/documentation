@@ -16,7 +16,8 @@ the page's JavaScript see the list too.
    the requested page, and gives up after 2 seconds. Any failure means no suggestions, so the 404 is never worse than
    before.
 4. The response keeps status 404 and `noindex`. HTML responses are the static `/404.html` with the list injected before
-   `</body>`. Markdown responses add a "Pages that match this URL" section. Both are cached at the CDN for an hour, per path.
+   `</body>`. The page is fetched from the deployment that is answering (the request host outside production, `docs.temporal.io`
+   in production), because it names that build's JavaScript files. Markdown responses add a "Pages that match this URL" section. Both are cached at the CDN for an hour, per path.
 
 The suggestions come from the search index. The requested path and the search string are never written into the response.
 

@@ -162,6 +162,21 @@ function toHtmlBlock(suggestions) {
   );
 }
 
+// The host to fetch the static 404 page from. It must be the deployment that
+// is answering, because the page names that build's JavaScript files, and a
+// preview's differ from production's. Production always uses docs.temporal.io.
+// Other environments (preview deployments, `vercel dev`) use the request's
+// host, so long as it is a plain hostname. Those deployments only run code from
+// the repository's own branches.
+function pageHost(headers, vercelEnv) {
+  if (vercelEnv === 'production') return 'docs.temporal.io';
+  const raw = headers['x-forwarded-host'] || headers.host;
+  const host = String(Array.isArray(raw) ? raw[0] : raw || '')
+    .split(',')[0]
+    .trim();
+  return /^[a-z0-9]([a-z0-9.-]*[a-z0-9])?(:\d{1,5})?$/i.test(host) ? host : 'docs.temporal.io';
+}
+
 // Puts the block just before </body>, or at the end if the page has none.
 function injectIntoHtml(html, block) {
   if (!block) return html;
@@ -169,4 +184,4 @@ function injectIntoHtml(html, block) {
   return index === -1 ? html + block : html.slice(0, index) + block + html.slice(index);
 }
 
-module.exports = { injectIntoHtml, pathToQuery, pickSuggestions, searchSuggestions, toHtmlBlock, toMarkdownList, withUtm };
+module.exports = { injectIntoHtml, pageHost, pathToQuery, pickSuggestions, searchSuggestions, toHtmlBlock, toMarkdownList, withUtm };

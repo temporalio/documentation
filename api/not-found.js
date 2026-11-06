@@ -1,18 +1,10 @@
-const { injectIntoHtml, searchSuggestions, toHtmlBlock } = require('./_not-found-lib');
+const { injectIntoHtml, pageHost, searchSuggestions, toHtmlBlock } = require('./_not-found-lib');
 
 // The 404 page for a missing docs URL, with suggested pages from Algolia added
 // for readers and agents that don't run the page's JavaScript. vercel.json
 // rewrites unmatched extensionless paths here. See readme/NOT-FOUND-SUGGESTIONS.md.
 
 const PRODUCTION_HOST = 'docs.temporal.io';
-
-// The static 404 page is fetched from the host the request came in on, so a
-// preview deployment serves its own build. Any other host is ignored, so a
-// forged Host header can't point this function at another server.
-function ownHost(request) {
-  const host = String(request.headers['x-forwarded-host'] || request.headers.host || '').split(',')[0].trim();
-  return /^([a-z0-9-]+\.vercel\.app|localhost(:\d+)?)$/i.test(host) ? host : PRODUCTION_HOST;
-}
 
 const FALLBACK_PAGE =
   '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex">' +
@@ -22,8 +14,8 @@ const FALLBACK_PAGE =
 
 async function staticPage(request) {
   try {
-    const host = ownHost(request);
-    const scheme = host.startsWith('localhost') ? 'http' : 'https';
+    const host = pageHost(request.headers, process.env.VERCEL_ENV);
+    const scheme = /^localhost(:\d+)?$/.test(host) ? 'http' : 'https';
     const response = await fetch(`${scheme}://${host}/404.html`, { signal: AbortSignal.timeout(3000) });
     if (response.ok) return await response.text();
   } catch {
