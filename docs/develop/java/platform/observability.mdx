@@ -24,6 +24,16 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
+:::tip[Use the OpenTelemetry v2 integration]
+
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/java/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
+
+:::
+
 - For an overview of Prometheus and Grafana integration, refer to the [Monitoring](/self-hosted-guide/monitoring) guide.
 - For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
 - For an end-to-end example that exposes metrics with the Java SDK, refer to the [samples-java](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/metrics) repo.
@@ -129,6 +139,16 @@ Ownership and deployment identifiers avoid this because they stay fixed for the 
 
 Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and any Child Workflows.
 
+:::tip[Use the OpenTelemetry v2 integration]
+
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/java/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
+
+:::
+
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
 To configure tracing in Java, register the `OpenTracingClientInterceptor` and `OpenTracingWorkerInterceptor` interceptors.
@@ -189,6 +209,16 @@ Loggers create an audit trail and capture information about your Workflow's oper
 An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
 In production, you might use info or warn to avoid excessive log volume.
+
+:::tip[Use the OpenTelemetry v2 integration]
+
+To instrument Temporal applications with OpenTelemetry, use the
+[OpenTelemetry v2 integration](/develop/java/integrations/opentelemetry-v2)
+([Pre-release](/evaluate/development-production-features/release-stages#pre-release)).
+It propagates OpenTelemetry context across Temporal boundaries and
+is replay-safe when instrumenting Workflows.
+
+:::
 
 You can find the log levels supported by `slf4j` in [their official documentation](https://www.slf4j.org/apidocs/org/slf4j/ext/XLogger.Level.html). The Temporal SDK core normally uses `WARN` as its default logging level.
 
