@@ -39,8 +39,8 @@ Supporting information, such as a justification or a manager's note, comes from 
 
 `attachApprovalContext` uses **Signal-with-Start** instead. If the approval is running, the note is delivered to it. If not, the approval is started and the note is delivered. The caller doesn't need to know which happened.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-attach-context-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+<!--SNIPSTART java-nexus-walkthrough-attach-context {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java)
 ```java
 @TemporalOperation
 public TemporalOperationResult<Void> attachApprovalContext(
@@ -87,8 +87,8 @@ Because `attachApprovalContext` can create the approval, a Workflow with that Id
 
 That is why `requestApproval` sets the Workflow Id conflict policy to **use-existing**. A start against a running approval then attaches the Operation's completion callback to that Execution, and the caller receives its decision when it completes.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-request-approval-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+<!--SNIPSTART java-nexus-walkthrough-request-approval {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java)
 ```java
 @TemporalOperation
 public TemporalOperationResult<RequestApprovalOutput> requestApproval(
