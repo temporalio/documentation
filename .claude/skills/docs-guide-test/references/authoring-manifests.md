@@ -31,7 +31,7 @@ A `skip` manifest records the decision so the guide isn't silently untested:
 | `language` | yes | Fenced-block language to extract and run. Only `python` is supported today. |
 | `python` | python | Python version `uv` provisions for the run (e.g. `"3.12"`). Keep it within the guide's stated minimum and a version the SDK ships wheels for. |
 | `pip` | python | Dependencies to install, as pip requirement strings. Mirror the guide's prerequisites (e.g. `["temporalio>=1.7.0"]`). |
-| `extract.mode` | no | `"comment-header"` (default): a block whose first line is `# name.ext` is a complete file. `"prose-filename"`: the filename comes from the prose just above the block. `"concat-header"`: a `# name.ext` header starts a file and following header-less blocks append to it (for Code Sandwich guides). See [Extraction notes](#extraction-notes). |
+| `extract.mode` | no | `"concat-header"` (default): a `# name.ext` header starts a file and following header-less blocks append to it (Code Sandwich guides). `"comment-header"`: a block whose first line is `# name.ext` is one complete file, header-less blocks ignored (guides not yet converted). `"prose-filename"`: the filename comes from the prose just above the block. See [Extraction notes](#extraction-notes). |
 | `extract.exclude` | no | Filenames to leave out of the run even though they carry a header (e.g. a determinism-replay helper that needs a saved history). |
 | `setup` | no | Shell-style commands run once after the server is ready and before the worker, for state the guide expects to exist but a fresh `temporal server start-dev` does not create: custom Search Attributes, extra Namespaces. A failing step fails the run (see [Setup steps](#setup-steps)). |
 | `worker` | yes | Command that starts the worker, relative to the reconstructed source dir. `python <file>` runs under the provisioned venv. |
@@ -132,11 +132,14 @@ code depends on the step. Keep steps to real setup the guide documents — don't
 
 ## Extraction notes
 
-`comment-header` mode keys on the `# filename.py` header these guides already use, and takes the **first** block per
-filename. That is deliberate: guides often show a complete file once, then later show a one-line variant ("add
-`versioning_behavior=...`") in a block with no filename header. The header rule runs the real file and ignores the
-variant. If a guide genuinely builds one file across several headed blocks, this mode won't concatenate them yet — note
-it in `_notes` and extend the extractor rather than hand-editing extracted files.
+`concat-header` is the default (described last, below); the other two modes are opt-in, set with `extract.mode`.
+
+`comment-header` mode keys on the `# filename.py` header and takes the **first** block per filename, ignoring any
+header-less blocks. Use it for a guide not yet rewritten in Code Sandwich form: such a guide often shows a complete file
+once, then later a header-less variant ("add `versioning_behavior=...`"), and first-block-wins runs the real file while
+ignoring the variant — whereas the default `concat-header` would append that variant and corrupt the file.
+`celery-to-standalone-activity` and `durable-gaming-sessions` pin `comment-header` for exactly this reason (see their
+`_notes`); drop the pin when the published guide moves to Code Sandwich.
 
 `prose-filename` mode is for guides that name each file in the prose above the block ("Create a file named
 `models.py`:") instead of in a first-line comment. It takes the nearest backtick-quoted `name.ext` within a few
@@ -144,9 +147,9 @@ non-empty lines above the fence, and keeps the same first-block-wins and `exclud
 follows that convention end to end; `comment-header` is more precise when the guide uses in-block headers, so it stays
 the default. `reliable-document-approvals` uses `prose-filename`.
 
-`concat-header` mode is for guides written with the **Code Sandwich** technique (the structure the `docs-guide-revision`
-skill produces): one file is introduced by a `# name.ext` header block holding just the imports, then built up across
-many header-less blocks interleaved with prose. Here a header *starts or switches* the current file and every following
+`concat-header` mode is the **default**, for guides written with the **Code Sandwich** technique (the structure the
+`docs-guide-revision` skill produces): one file is introduced by a `# name.ext` header block holding just the imports,
+then built up across many header-less blocks interleaved with prose. Here a header *starts or switches* the current file and every following
 header-less block in the target language is appended to it, so the file is concatenated rather than taken from its first
 block. It relies on the guide presenting each file's blocks contiguously and at the right indentation — method blocks
 shown indented under their class, not dedented to column 0 — so a block that pastes a method at column 0 reconstructs a

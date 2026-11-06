@@ -54,10 +54,11 @@ The script, in order:
    Homebrew when the machine allows it, because the user opted into auto-install. `uv` runs the guide's code on a
    pinned Python version from the manifest, which keeps the test off whatever Python happens to be the system default
    and avoids missing-wheel surprises on brand-new Python releases.
-2. **Reconstructs the project.** It extracts the guide's code blocks into a scratch directory. For Python guides the
-   default rule is "a fenced `python` block whose first line is a `# filename.py` comment is a complete file" — which
-   is the convention these guides already follow, and which naturally skips partial or alternative snippets (for
-   example optional "add this line" variants) that lack the header. See the extractor's `--help` for other modes.
+2. **Reconstructs the project.** It extracts the guide's code blocks into a scratch directory. The default rule is
+   Code Sandwich: a fenced `python` block whose first line is a `# filename.py` comment starts a file, and the
+   header-less blocks that follow are appended to it — the structure the guides are being rewritten into. A guide not
+   yet converted pins `extract.mode: comment-header` in its manifest (first complete block per file, header-less
+   variants ignored), or `prose-filename`. See [references/authoring-manifests.md](references/authoring-manifests.md).
 3. **Runs static checks over the reconstructed source.** Before anything executes, it parses the extracted files and
    reports four classes of defect a passing run can't catch: imports the code never uses; unhandled failure paths (a
    `wait_condition` timeout or an exhausted Activity retry that would fail the Workflow uncaught); names used but defined

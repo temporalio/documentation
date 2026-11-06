@@ -4,7 +4,6 @@
   "python": "3.12",
   "pip": ["temporalio>=1.7.0"],
   "extract": {
-    "mode": "comment-header",
     "exclude": ["test_determinism.py"]
   },
   "worker": "python worker.py",

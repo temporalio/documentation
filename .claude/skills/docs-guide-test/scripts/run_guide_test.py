@@ -258,7 +258,7 @@ def run(manifest_arg: str, keep: bool, verbose: bool, auto_install: bool) -> int
         # 1. Reconstruct the project from the guide's code blocks.
         extract = manifest.get("extract", {})
         exclude = ",".join(extract.get("exclude", []))
-        mode = extract.get("mode", "comment-header")
+        mode = extract.get("mode", "concat-header")
         src_dir = workdir / "src"
         cmd = [sys.executable, str(EXTRACT_SCRIPT), str(guide_path), str(src_dir), "--lang", language, "--mode", mode]
         if exclude:

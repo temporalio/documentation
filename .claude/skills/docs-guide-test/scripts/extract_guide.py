@@ -5,29 +5,28 @@ Temporal guides under docs/guides/ show their code as fenced blocks, one file at
 time, with the file's name as a comment on the first line (for example `# worker.py`).
 This script pulls those blocks back out into real files so the guide can be run.
 
-Default mode ("comment-header"): a fenced block in the target language whose first
+Default mode ("concat-header"): the Code Sandwich convention the guides are moving to,
+where one file is shown as a `# name.ext` header block followed by many header-less
+continuation blocks interleaved with prose. A `# name.ext` header starts (or switches)
+the current file, and every following header-less block in the target language is
+appended to it until the next header. It only works when a guide presents each file's
+blocks contiguously and at the right indentation (method blocks shown indented under
+their class, not dedented to column 0). Excluded files and their continuation blocks are
+skipped together.
+
+Alternate mode ("comment-header"): a fenced block in the target language whose first
 non-empty line is a `# name.ext` (or `// name.ext`) comment is treated as a complete
 file. The first block for a given filename wins; later blocks with the same name are
-skipped, which is what keeps optional or alternative snippets (a "change this line to
-..." variant shown later in the guide) from clobbering the real file. Blocks with no
-filename header are ignored entirely.
+skipped, which keeps optional or alternative snippets (a "change this line to ..."
+variant shown later) from clobbering the real file, and blocks with no filename header
+are ignored entirely. Use it for guides not yet rewritten in Code Sandwich form, where
+concatenating the header-less variant blocks would corrupt the file.
 
 Alternate mode ("prose-filename"): some guides name each file in the prose just above
 the block ("Create a file named `models.py`:") instead of in a comment on the first
 line. In this mode the filename is taken from the nearest backtick-quoted `name.ext`
 in the few non-empty lines preceding the fence. The same first-block-wins and exclude
-rules apply. Use this only for guides that follow the prose convention; the default
-comment-header mode is more precise when the guide uses in-block headers.
-
-Alternate mode ("concat-header"): for guides built with the "Code Sandwich" technique,
-where one file is shown as a `# name.ext` header block followed by many header-less
-continuation blocks interleaved with prose. Here a `# name.ext` header starts (or
-switches) the current file, and every following header-less block in the target
-language is appended to it until the next header. This is the opposite of
-first-block-wins — it concatenates — so it only works when a guide presents each file's
-blocks contiguously and at the right indentation (method blocks shown indented under
-their class, not dedented to column 0). Excluded files and their continuation blocks
-are skipped together.
+rules apply. Use this only for guides that follow the prose convention.
 
 Usage:
     extract_guide.py GUIDE.mdx OUT_DIR [--lang python]
@@ -194,9 +193,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--lang", default="python", help="Fenced-block language tag to extract (default: python)")
     p.add_argument(
         "--mode",
-        default="comment-header",
+        default="concat-header",
         choices=["comment-header", "prose-filename", "concat-header"],
-        help="How to find each block's filename (default: comment-header)",
+        help="How to find each block's filename (default: concat-header, for Code Sandwich guides)",
     )
     p.add_argument("--exclude", default="", help="Comma-separated filenames to extract-skip (e.g. test_determinism.py)")
     args = p.parse_args(argv)

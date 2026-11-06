@@ -121,6 +121,22 @@ and failure paths that fail the Workflow uncaught (a `wait_condition` timeout; a
 - Scope note: unused *definitions* like the PR's unused `PointsEvent` dataclass are dead-code detection, not unused
   imports — deliberately left out as a separate, noisier check for later.
 
+## Update (2026-11-06): concat-header is now the default
+
+Code Sandwich is the structure all guides are moving to, so `concat-header` is now the default extraction mode (in
+`extract_guide.py` argparse and the `run_guide_test.py` manifest fallback). Guides not yet republished in Code Sandwich
+form pin an explicit mode:
+
+- `entity-pattern-loyalty-points` — dropped its explicit mode; rides the default (concat output is identical to
+  comment-header for the current single-block file, and PASSES).
+- `celery-to-standalone-activity` — pinned `comment-header`: concat would append its `(updated)`/`(excerpt)` variant
+  blocks (header-less) into the files. Still PASSES.
+- `durable-gaming-sessions` — pinned `comment-header`: under concat a dedented snippet is appended to `starter.py` and
+  it no longer compiles. Still red for the known str-enum bug, not a new failure.
+- `reliable-document-approvals` — keeps `prose-filename` (names files in prose, not headers).
+
+Each pin's `_notes` says to drop it once the published guide is rewritten in Code Sandwich form.
+
 ## Open next steps (none done yet)
 
 - Decide whether to **fix the two guide bugs** (gaming str-enum; approvals lost-signal race) and in how many PRs. The
