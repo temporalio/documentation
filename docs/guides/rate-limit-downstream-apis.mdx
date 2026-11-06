@@ -13,160 +13,29 @@ tags:
 
 **by Cecil Phillip**
 
-### Problem statement
+Third-party APIs such as SendGrid, Stripe, OpenAI, and Twilio let you add email, payments, AI, and messaging to an application without building them yourself, but each one enforces rate limits, and those limits vary by provider, service, and plan. Exceed them and you get HTTP 429 "Too Many Requests" errors, Activities that consume Worker resources on calls that were always going to fail, Workflows that can't make progress, and, after repeated violations, a temporary or permanent ban from the service. One Workflow's excessive calls can even affect others. Handling 429s with retries alone is reactive: by the time you retry, the limit has already been exceeded.
 
-Modern applications integrate with numerous external APIs (SendGrid, Stripe, OpenAI, Twilio) that enforce rate limits to protect their infrastructure. These limits vary by provider service and plan, for example:
+A more reliable approach is to keep the requests from exceeding the limit in the first place. Give each rate-limited API its own Task Queue, and configure the Workers that poll it with a queue-wide Activity rate limit. The Temporal Server enforces that limit across every Worker on the queue, so you can add Workers without sending the API more requests than it allows. Per-Worker and concurrency limits add finer control where an API needs it, and when an occasional 429 still gets through, your Activities wait as long as the API's `Retry-After` header asks.
 
-- **SendGrid:** 100 emails/minute on free tier, 1000/minute on paid
-- **Stripe:** 100 requests/second globally
-- **OpenAI:** 60 requests/minute, 90,000 tokens/minute
-- **Twilio:** 1 request/second per phone number
-
-Without proactive rate limiting when calling downstream services, users may experience the following issues:
-- **HTTP 429 errors:** Activities overwhelm APIs causing "Too Many Requests" errors
-- **Account suspension:** Repeated violations can lead to temporary or permanent bans from the downstream service
-- **Failed Workflows:** Without proper retry handling, Workflows may not be able to continue to make progress
-- **Wasted execution:** Activities that will fail due to rate limits consume Worker resources
-- **Cascading failures:** One Workflow's excessive API calls could affect others
-
-### Solution
-
-Use separate Task Queues with rate limiting configuration to protect downstream APIs. Create one Task Queue per rate-limited API and configure:
-
-- `max_task_queue_activities_per_second`: Global rate limit across all Workers on the queue
-- `max_activities_per_second`: Per-Worker rate limit (optional, for additional control)
-- `max_concurrent_activities`: Limit concurrent executions when API has concurrency limits
-
-This ensures Activities calling external APIs never exceed their rate limits, preventing 429 errors and account issues.
-
-### Outcomes
+With this guide, you'll build a notification system that calls SendGrid, OpenAI, and Stripe through rate-limited Task Queues, with:
 
 - **Rate limit compliance:** Activities respect API rate limits, eliminating 429 errors and preventing account suspension
 - **Improved reliability:** Workflows complete successfully without failures caused by rate limits
 - **Resource efficiency:** Workers don't waste resources on doomed-to-fail Activities
 - **Better API relationships:** Consistent rate limit compliance maintains good standing with API providers
-- **Independent scaling:** Add more Workers without exceeding API rate limits (global queue limit applies)
+- **Independent scaling:** Add more Workers without exceeding API rate limits, because the queue-wide limit still applies
 
-## Background and best practices
+## Background
 
-### Task Queue fundamentals
+The solution to rate limiting downstream APIs is to use a Task Queue routing pattern. Instead of letting every Worker call an external API as fast as it can, you route that API's Activities to a dedicated Task Queue, and the Temporal Server limits how quickly Activity Tasks from that queue are dispatched to Workers. For more about the pattern, including how the queue-wide limit compares with per-Worker and concurrency-slot alternatives, see [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting).
 
-Task Queues in Temporal are dynamically created when first referenced. Rate limiting is configured at the Worker level and enforced by the Temporal Server.
-
-**Recommended practice:** Create one Task Queue per rate-limited API to isolate rate limits.
-
-### Rate limiting configuration options
-
-The Python SDK provides three rate limiting controls:
-
-1. **max_task_queue_activities_per_second** (global): Limits Activity dispatch across ALL Workers on this queue. Enforced by Temporal Server. Best for API rate limits. Last value wins.
-
-2. **max_activities_per_second** (per-worker): Limits Activities per Worker. Can be combined with global limit for finer control.
-
-3. **max_concurrent_activities** (concurrency): Limits concurrent executions. Use when API has concurrent connection limits (for example, database pool size).
-
-**Important:** Eager Activity execution can bypass a Task Queue's rate limit. It applies only when an Activity is scheduled on the same Task Queue as its Workflow and the Worker running the Workflow has the Activity registered. The Temporal Service then returns the Activity Task directly to that Worker instead of dispatching it through the Task Queue. A Worker that sets `max_task_queue_activities_per_second` never requests eager execution, so set it on every Worker that polls a rate-limited queue. This guide schedules each API's Activities on a dedicated Task Queue, separate from the Workflow Task Queue, so its Activities never run eagerly.
-
-### Handling HTTP 429 responses
-
-Even with rate limiting, occasional 429 errors may occur due to:
-- Other systems using the same API key
-- API provider reducing limits temporarily
-- Burst traffic patterns
-
-**Recommended practice:** Raise an exception with a specific next retry delay from the API's `Retry-After` header, and fallback to exponential backoff when the header is not available:
-
-1. When catching 429 errors, check for the `Retry-After` response header
-2. If present, raise an `ApplicationError` with `next_retry_delay` set to the header value
-3. If not present, raise the exception normally to use the Activity's Retry Policy
-
-```python
-from temporalio.common import RetryPolicy
-
-retry_policy=RetryPolicy(
-    initial_interval=timedelta(seconds=1),
-    maximum_interval=timedelta(minutes=10),
-    backoff_coefficient=2.0,
-    maximum_attempts=5,
-)
-```
-
-**Understanding the retry cadence:**
-
-With this configuration, the retry intervals follow this pattern:
-- Attempt 1: 1 second
-- Attempt 2: 2 seconds (1s × 2.0)
-- Attempt 3: 4 seconds (2s × 2.0)
-- Attempt 4: 8 seconds (4s × 2.0)
-- Attempt 5: 16 seconds (8s × 2.0)
-
-Total time before failure: ~31 seconds across 5 attempts.
-
-**Key differences from default Retry Policy:**
-- **maximum_attempts**: Set to `5` instead of the default `unlimited`. This prevents infinite retries for persistent rate limiting issues and ensures timely failure detection.
-- **maximum_interval**: Set to `10 minutes` instead of the default `100x initial_interval`. This caps retry delays at a reasonable duration.
-
-For rate-limited APIs, capping `maximum_attempts` ensures that Activities don't retry indefinitely if an API is experiencing extended downtime or if your rate limits have been permanently reduced.
-
-This approach respects the API's rate limit guidance while providing a sensible fallback strategy.
-
-### Operational considerations
-
-- **Monitor API usage:** Track actual API calls vs rate limits to adjust configured rate limits in your Temporal Task Queues
-- **API limit changes:** API providers may change rate limits; monitor and update Worker configuration
-- **Burst allowance:** Some APIs allow short bursts above stated limits; test to determine safe Temporal limits
-- **Multiple environments:** Use separate API keys and Task Queues for dev/staging/prod
-
-#### Task Queue backlog and draining strategies
-
-During throttling events, Task Queues can grow significantly. Operators need to switch to **draining mitigation mode** when backlogs occur.
-
-**Critical considerations:**
-- **Determine acceptable SLA/SLO for draining:** How long is acceptable for the queue to drain? Hours? Days?
-- **Cascading failures:** Simply increasing downstream API or Temporal Cloud rate limits may move the bottleneck elsewhere, potentially overwhelming the next component in line
-
-**Mitigation strategies (in order of consideration):**
-
-1. **Request downstream API rate limit increases** - Work with API providers to increase your rate limits
-2. **Request Temporal Cloud rate limit increases** - If using Temporal Cloud, request higher limits
-3. **Scale Worker pools** - Add more Workers or adjust Worker configuration
-4. **Increase internal resources** - Scale your infrastructure
-5. **Identify the next bottleneck** - Determine what will become throttled next to prevent cascading failures
-
-#### CLI commands for operators
-
-**Adjust Task Queue rate limits dynamically:**
-
-```bash
-# Set rate limit for a specific task queue
-temporal task-queue config set --queue-rps-limit 99 --task-queue sendgrid-api
-```
-
-This allows operators to adjust rate limits without redeploying workers.
-
-**Reset stuck activities:**
-
-When activities are stuck at their maximum retry intervals:
-
-```bash
-# Reset activities to retry immediately
-temporal activity reset --workflow-id <workflow-id> --activity-id <activity-id>
-```
-
-This is useful when downstream APIs recover from outages and you want to immediately retry activities that are waiting at long backoff intervals (for example, 10 minutes).
-
-## Target audience
-
-- **Temporal Workflow & Activity developers:** Implementing API integrations with rate limiting
-- **Platform operators:** Configuring and monitoring rate-limited Workers
-- **API integration engineers:** Ensuring compliance with third-party API limits
-- **SRE teams:** Preventing API-related outages
-
-This implementation requires Worker configuration, Activity error handling, and monitoring of API usage against limits.
+In this guide, a notification Workflow sends email through SendGrid and generates text with OpenAI, and a third pool of Workers handles Stripe payments. Each API gets its own Task Queue and its own Workers, configured with a rate limit set just under what the API allows. The Workflow runs on a separate Task Queue of its own and sends each Activity to the queue for its API.
 
 ## Prerequisites
 
-### Required software, infrastructure, and tools
+This guide requires Python, the Temporal Python SDK, a Temporal Server, and API keys for the external services you want to call.
+
+### Required software and infrastructure
 
 - Temporal Server v1.17+ (for `max_task_queue_activities_per_second` support)
 - Python 3.8 or later
@@ -181,14 +50,53 @@ This implementation requires Worker configuration, Activity error handling, and 
 
 ### Required concepts
 
-- Temporal Workflows, Activities, and Task Queues
+You should be familiar with the following before proceeding:
+
+- [Temporal Workflows](/workflows): The durable, stateful functions that Temporal orchestrates
+- [Temporal Activities](/activities): The functions that perform side effects, such as calls to external APIs
+- [Temporal Task Queues](/task-queue): The named queues that route work from the Temporal Server to Workers
+- [Retry Policies](/encyclopedia/retry-policies): How Temporal retries failed Activities, including exponential backoff
 - HTTP client libraries (httpx, requests)
 - API authentication (API keys, OAuth)
-- Exponential backoff and retry strategies
 
-## Architecture diagram(s)
+### Operational considerations
 
-### Rate-limited Task Queues architecture
+Before implementing this pattern, keep the following in mind:
+
+**Monitor API usage.** Track actual API calls against rate limits so you can adjust the limits configured on your Task Queues.
+
+**API limit changes.** API providers may change their rate limits. Monitor them and update your Worker configuration to match.
+
+**Burst allowance.** Some APIs allow short bursts above their stated limits. Test to determine safe Temporal limits.
+
+**Multiple environments.** Use separate API keys and Task Queues for dev, staging, and prod.
+
+## Step 1: Identify API rate limits
+
+Every limit you configure later comes from this inventory, so start by documenting the rate limits of each external API your application uses. Limits vary by provider and plan. SendGrid, for example, allows 100 emails per minute on its free tier and 1,000 per minute on paid plans.
+
+Here's an example inventory:
+
+| API | Rate Limit | Concurrency Limit | Plan/Tier | Notes |
+|-----|-----------|-------------------|-----------|-------|
+| SendGrid | 100 req/min | None | Free | Burst: 300/min for 1 min |
+| Stripe | 100 req/sec | None | Standard | Per API key globally |
+| OpenAI | 60 req/min | None | Tier 1 | Also: 90K tokens/min |
+| Twilio | 60 req/min | None | Free | Per phone number |
+| Database | None | 100 connections | N/A | Connection pool limit |
+
+To build your own:
+
+1. Review the API documentation for each integrated service.
+2. Check the limits for your current plan or tier.
+3. Determine whether each limit applies per API key, per account, or per resource.
+4. Set Temporal rate limits to 90% of the API limits, to leave a safety buffer.
+
+With each limit written down, along with what it applies to, you have the numbers your Workers will enforce. Next, you'll give each API a Task Queue to enforce them on.
+
+## Step 2: Define Task Queue constants
+
+Each rate-limited API gets its own Task Queue, which isolates one API's limit from another's. The following diagram shows the goal: the Workflow routes each Activity to the queue for its API, and each queue's pool of Workers calls that API no faster than the queue's global limit.
 
 ```mermaid
 flowchart TB
@@ -252,48 +160,34 @@ flowchart TB
     class AITQ purple
 ```
 
-## Implementation plan
+Task Queues in Temporal are created dynamically the first time they're referenced, so you don't need to register them anywhere. You only need names that your Workers and your Workflow agree on.
 
-### Step 1: Identify API rate limits
-
-Document rate limits for all external APIs your application uses.
-
-**Example rate limit inventory:**
-
-| API | Rate Limit | Concurrency Limit | Plan/Tier | Notes |
-|-----|-----------|-------------------|-----------|-------|
-| SendGrid | 100 req/min | None | Free | Burst: 300/min for 1 min |
-| Stripe | 100 req/sec | None | Standard | Per API key globally |
-| OpenAI | 60 req/min | None | Tier 1 | Also: 90K tokens/min |
-| Twilio | 60 req/min | None | Free | Per phone number |
-| Database | None | 100 connections | N/A | Connection pool limit |
-
-**Actions:**
-1. Review API documentation for each integrated service
-2. Check your current plan/tier limits
-3. Determine if limits are per API key, per account, or per resource
-4. Set Temporal rate limits to 90% of API limits (leave safety buffer)
-
-### Step 2: Define Task Queue constants
-
-**File: `task_queues.py`**
+Create a file named `task_queues.py` and define one constant per API:
 
 ```python
-"""Task Queue constants for rate-limited APIs."""
-
-# Rate-limited API task queues
+# task_queues.py
 SENDGRID_API_QUEUE = "sendgrid-api"
 STRIPE_API_QUEUE = "stripe-api"
 OPENAI_API_QUEUE = "openai-api"
 TWILIO_API_QUEUE = "twilio-api"
 ```
 
-### Step 3: Configure Workers with rate limiting
+Each constant names the Task Queue for one rate-limited API. Keeping the names in a single module means the Workers that poll a queue and the Workflow that sends Activities to it always use the same string.
 
-**File: `worker_sendgrid.py`**
+With a named queue for each API, you're ready to start the Workers that poll those queues and enforce each API's limit.
+
+## Step 3: Configure Workers with rate limiting
+
+Rate limiting is configured on the Worker, and the limit that matters most is enforced by the Temporal Server across every Worker on the queue. You'll create one Worker program per API. The Python SDK gives you three controls:
+
+- **`max_task_queue_activities_per_second`** (global): Limits Activity dispatch across all Workers on the queue. The Temporal Server enforces it, which makes it the best fit for API rate limits. If Workers on the same queue set different values, the last value wins.
+- **`max_activities_per_second`** (per-Worker): Limits the Activities a single Worker runs. You can combine it with the global limit for finer control.
+- **`max_concurrent_activities`** (concurrency): Limits concurrent executions. Use it when an API or resource limits concurrent connections, such as a database connection pool.
+
+Start with SendGrid. Create a file named `worker_sendgrid.py` and add the imports:
 
 ```python
-"""Worker for rate-limited SendGrid email activities."""
+# worker_sendgrid.py
 import asyncio
 import logging
 from temporalio.client import Client
@@ -303,8 +197,13 @@ from task_queues import SENDGRID_API_QUEUE
 from activities import send_email, send_batch_email
 
 logging.basicConfig(level=logging.INFO)
+```
 
+Along with the Temporal `Client` and `Worker` classes, you're importing the SendGrid queue name from Step 2 and the Activities this Worker will run. You'll write those Activities in Step 4.
 
+Now add a `main` function that connects to Temporal, creates the Worker, and runs it:
+
+```python
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -312,16 +211,8 @@ async def main():
         client,
         task_queue=SENDGRID_API_QUEUE,
         activities=[send_email, send_batch_email],
-
-        # SendGrid free tier: 100 emails/minute = 1.67/sec
-        # Set to 1.5/sec for safety buffer
-        # This limit applies GLOBALLY across all workers on this queue
         max_task_queue_activities_per_second=1.5,
-
-        # Optional: Also limit per-worker to prevent single worker bursts
         max_activities_per_second=0.5,
-
-        # Limit concurrent connections (SendGrid allows many concurrent)
         max_concurrent_activities=20,
     )
 
@@ -331,15 +222,24 @@ async def main():
     )
     await worker.run()
 
-
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-**File: `worker_openai.py`**
+The Worker polls the SendGrid queue and registers the SendGrid Activities. The three rate-limiting settings do the real work:
+
+- `max_task_queue_activities_per_second=1.5`: SendGrid's free tier allows 100 emails per minute, about 1.67 per second. A limit of 1.5 per second leaves a safety buffer. This limit applies globally, across all Workers on this queue.
+- `max_activities_per_second=0.5`: This optional per-Worker limit keeps any single Worker from bursting.
+- `max_concurrent_activities=20`: This caps concurrent connections. SendGrid allows many concurrent connections, so the cap is generous.
+
+:::caution
+Eager Activity execution can bypass a Task Queue's rate limit. It applies only when an Activity is scheduled on the same Task Queue as its Workflow and the Worker running the Workflow has the Activity registered. The Temporal Service then returns the Activity Task directly to that Worker instead of dispatching it through the Task Queue. A Worker that sets `max_task_queue_activities_per_second` never requests eager execution, so set it on every Worker that polls a rate-limited queue.
+:::
+
+The OpenAI Worker follows the same structure. Create a file named `worker_openai.py`:
 
 ```python
-"""Worker for rate-limited OpenAI API activities."""
+# worker_openai.py
 import asyncio
 import logging
 from temporalio.client import Client
@@ -350,7 +250,6 @@ from activities import generate_text, generate_embeddings
 
 logging.basicConfig(level=logging.INFO)
 
-
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -358,12 +257,7 @@ async def main():
         client,
         task_queue=OPENAI_API_QUEUE,
         activities=[generate_text, generate_embeddings],
-
-        # OpenAI Tier 1: 60 requests/minute = 1/sec
-        # Set to 0.9/sec for safety
         max_task_queue_activities_per_second=0.9,
-
-        # Limit concurrent requests
         max_concurrent_activities=5,
     )
 
@@ -373,15 +267,16 @@ async def main():
     )
     await worker.run()
 
-
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-**File: `worker_stripe.py`**
+OpenAI's Tier 1 limit is 60 requests per minute, or 1 per second, so this Worker sets the global limit to 0.9 per second for safety. It also limits concurrent requests to 5.
+
+Finally, create a file named `worker_stripe.py`:
 
 ```python
-"""Worker for rate-limited Stripe API activities."""
+# worker_stripe.py
 import asyncio
 import logging
 from temporalio.client import Client
@@ -392,7 +287,6 @@ from activities import create_payment, refund_payment
 
 logging.basicConfig(level=logging.INFO)
 
-
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -400,12 +294,7 @@ async def main():
         client,
         task_queue=STRIPE_API_QUEUE,
         activities=[create_payment, refund_payment],
-
-        # Stripe: 100 requests/second globally
-        # Set to 90/sec for safety
         max_task_queue_activities_per_second=90,
-
-        # High concurrency allowed
         max_concurrent_activities=50,
     )
 
@@ -415,41 +304,46 @@ async def main():
     )
     await worker.run()
 
-
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-**Deployment guidance:**
-- Deploy 2-5 Workers per API-specific Task Queue
-- Rate limit is enforced globally by Temporal Service across all Workers
-- More Workers = better fault tolerance, but rate limit still applies
-- Monitor Worker CPU/memory; rate-limited Workers typically have low utilization
+Stripe allows 100 requests per second globally, so this Worker sets the global limit to 90 per second for safety. Stripe allows high concurrency, so up to 50 Activities can run at once.
 
-### Step 4: Implement Activities with proper error handling
+When you deploy these Workers, keep the following in mind:
 
-**File: `activities.py`**
+- Deploy 2–5 Workers per API-specific Task Queue.
+- The Temporal Service enforces the rate limit globally, across all Workers on the queue.
+- More Workers give you better fault tolerance, but the rate limit still applies.
+- Monitor Worker CPU and memory. Rate-limited Workers typically have low utilization.
+
+Your Workers are now configured to take Activity Tasks no faster than each API allows. They can't start yet, though, because the Activities they register don't exist. You'll write those next.
+
+## Step 4: Implement Activities and error handling
+
+Each Activity makes one call to an external API. The Task Queue limits from Step 3 keep those calls within bounds, so the Activities don't need any rate-limiting logic of their own. They do need to handle the occasional 429 that gets through anyway.
+
+Create a file named `activities.py` and add the imports and API keys:
 
 ```python
-"""Activities that call rate-limited external APIs."""
+# activities.py
 import httpx
 from temporalio import activity
 from temporalio.exceptions import ApplicationError
 from datetime import timedelta
 
-# API keys (use environment variables in production)
 SENDGRID_API_KEY = "your-sendgrid-key"
 STRIPE_API_KEY = "your-stripe-key"
 OPENAI_API_KEY = "your-openai-key"
+```
 
+The Activities use `httpx` for asynchronous HTTP calls and `ApplicationError` to tell Temporal when to retry. The API keys are placeholders; in production, read them from environment variables instead.
 
+Next, add the `send_email` Activity. Start with the request to SendGrid:
+
+```python
 @activity.defn
 async def send_email(email_data: dict) -> dict:
-    """
-    Send email via SendGrid.
-
-    Rate limited by worker configuration to 1.5/sec globally.
-    """
     activity.logger.info(f"Sending email to {email_data['to']}")
 
     async with httpx.AsyncClient() as client:
@@ -473,14 +367,20 @@ async def send_email(email_data: dict) -> dict:
             activity.logger.info(f"Email sent to {email_data['to']}")
 
             return {"status": "sent", "email": email_data["to"]}
+```
 
+`send_email` posts the message to SendGrid's mail-send endpoint and returns a status on success. Notice that it doesn't throttle itself: the SendGrid Worker already limits it to 1.5 executions per second globally. `raise_for_status()` turns any error response into an exception, which you'll handle next.
+
+Even with rate limiting, occasional 429 errors can occur. Another system might be using the same API key, the provider might reduce its limits temporarily, or traffic might arrive in a burst. When that happens, check the response for a `Retry-After` header. If it's present, raise an `ApplicationError` with `next_retry_delay` set to the header's value, so Temporal retries when the API says to. If it's not present, re-raise the exception so the Activity's Retry Policy falls back to exponential backoff.
+
+Still inside `send_email`, add the error handling:
+
+```python
         except httpx.HTTPStatusError as e:
             if e.response.status_code == 429:
-                # Check for Retry-After header (in seconds)
                 retry_after = e.response.headers.get("Retry-After")
 
                 if retry_after:
-                    # Use specific retry delay from API
                     retry_delay = timedelta(seconds=int(retry_after))
                     activity.logger.warning(
                         f"Rate limit hit for {email_data['to']}, "
@@ -492,29 +392,27 @@ async def send_email(email_data: dict) -> dict:
                         next_retry_delay=retry_delay,
                     )
                 else:
-                    # Fallback to exponential backoff via retry policy
                     activity.logger.warning(
                         f"Rate limit hit for {email_data['to']}, "
                         f"using exponential backoff"
                     )
                     raise
 
-            # Other HTTP errors
             activity.logger.error(f"HTTP error {e.response.status_code}: {e}")
             raise
 
         except Exception as e:
             activity.logger.error(f"Failed to send email: {e}")
             raise
+```
 
+The `Retry-After` value is a number of seconds, so it converts directly to a `timedelta`. Setting `non_retryable=False` keeps the error retryable; `next_retry_delay` only overrides how long Temporal waits before the next attempt. Any other HTTP error is logged and re-raised, as is any other exception, so Temporal's normal retry behavior applies to those.
 
+The OpenAI Activity follows the same pattern. Add `generate_text`:
+
+```python
 @activity.defn
 async def generate_text(prompt: str) -> dict:
-    """
-    Generate text using OpenAI API.
-
-    Rate limited to 0.9/sec globally.
-    """
     activity.logger.info(f"Generating text for prompt: {prompt[:50]}...")
 
     async with httpx.AsyncClient() as client:
@@ -543,12 +441,10 @@ async def generate_text(prompt: str) -> dict:
 
         except httpx.HTTPStatusError as e:
             if e.response.status_code == 429:
-                # Check for Retry-After header
                 retry_after = e.response.headers.get("Retry-After")
                 error_data = e.response.json()
 
                 if retry_after:
-                    # Use specific retry delay from API
                     retry_delay = timedelta(seconds=int(retry_after))
                     activity.logger.warning(
                         f"OpenAI rate limit, retry after {retry_after}s: "
@@ -560,7 +456,6 @@ async def generate_text(prompt: str) -> dict:
                         next_retry_delay=retry_delay,
                     )
                 else:
-                    # Fallback to exponential backoff
                     activity.logger.warning(
                         f"OpenAI rate limit, using exponential backoff: "
                         f"{error_data.get('error', {}).get('message')}"
@@ -569,15 +464,15 @@ async def generate_text(prompt: str) -> dict:
 
             activity.logger.error(f"OpenAI error {e.response.status_code}: {e}")
             raise
+```
 
+`generate_text` sends the prompt to OpenAI's chat completions endpoint, with a longer timeout than the email call, and returns the generated text along with token usage. The 429 handling matches `send_email`, except that it also reads the error message from the response body and includes it in the log. The SendGrid Worker's global limit doesn't apply here; the OpenAI Worker limits this Activity to 0.9 executions per second.
 
+Finally, add `create_payment` for Stripe:
+
+```python
 @activity.defn
 async def create_payment(payment_data: dict) -> dict:
-    """
-    Create payment using Stripe API.
-
-    Rate limited to 90/sec globally.
-    """
     activity.logger.info(
         f"Creating payment for ${payment_data['amount']/100:.2f}"
     )
@@ -609,11 +504,9 @@ async def create_payment(payment_data: dict) -> dict:
 
         except httpx.HTTPStatusError as e:
             if e.response.status_code == 429:
-                # Check for Retry-After header
                 retry_after = e.response.headers.get("Retry-After")
 
                 if retry_after:
-                    # Use specific retry delay from API
                     retry_delay = timedelta(seconds=int(retry_after))
                     activity.logger.warning(
                         f"Stripe rate limit hit, retry after {retry_after}s"
@@ -624,7 +517,6 @@ async def create_payment(payment_data: dict) -> dict:
                         next_retry_delay=retry_delay,
                     )
                 else:
-                    # Fallback to exponential backoff
                     activity.logger.warning(
                         "Stripe rate limit hit, using exponential backoff"
                     )
@@ -634,12 +526,18 @@ async def create_payment(payment_data: dict) -> dict:
             raise
 ```
 
-### Step 5: Route Activities to rate-limited queues in Workflows
+`create_payment` creates and confirms a Stripe payment intent. Unlike the other two calls, it sends form-encoded `data` rather than JSON. The Stripe Worker limits it to 90 executions per second, and its 429 handling follows the same pattern as the other Activities.
 
-**File: `notification_workflow.py`**
+Your Activities now make their API calls and respond sensibly when a provider pushes back. The remaining piece is a Workflow that sends each Activity to the right queue.
+
+## Step 5: Route Activities to rate-limited queues in Workflows
+
+An Activity doesn't choose its own Task Queue; the Workflow chooses one each time it schedules the Activity. In this step, you'll write a notification Workflow that sends email work to the SendGrid queue and AI work to the OpenAI queue, then a starter that runs 100 notifications at once.
+
+Create a file named `notification_workflow.py` and add the imports:
 
 ```python
-"""Workflow that routes to rate-limited API queues."""
+# notification_workflow.py
 from datetime import timedelta
 from dataclasses import dataclass
 from temporalio import workflow
@@ -647,23 +545,27 @@ from temporalio.common import RetryPolicy
 
 with workflow.unsafe.imports_passed_through():
     from task_queues import SENDGRID_API_QUEUE, OPENAI_API_QUEUE, STRIPE_API_QUEUE
+```
 
+The queue constants are imported inside `workflow.unsafe.imports_passed_through()`, which lets the Workflow sandbox use the `task_queues` module as is instead of re-importing it for each Workflow run.
 
+Define the Workflow's input:
+
+```python
 @dataclass
 class NotificationRequest:
     user_email: str
     notification_type: str
     data: dict
+```
 
+`notification_type` determines which APIs the Workflow calls, and `data` carries the content of the notification.
 
+Now define the Workflow class and start its `run` method:
+
+```python
 @workflow.defn
 class NotificationWorkflow:
-    """
-    Send notifications via multiple rate-limited APIs.
-
-    Routes to appropriate queues based on notification type.
-    """
-
     @workflow.run
     async def run(self, request: NotificationRequest) -> dict:
         workflow.logger.info(
@@ -672,8 +574,13 @@ class NotificationWorkflow:
         )
 
         results = {}
+```
 
-        # Send email (rate-limited to 1.5/sec)
+`NotificationWorkflow` sends a notification through one or more rate-limited APIs, routing each Activity to the right queue based on the notification type. `results` collects the output of each Activity it runs.
+
+Inside `run`, add the email branch:
+
+```python
         if "email" in request.notification_type:
             email_result = await workflow.execute_activity(
                 "send_email",
@@ -692,8 +599,30 @@ class NotificationWorkflow:
                 ),
             )
             results["email"] = email_result
+```
 
-        # Generate AI content (rate-limited to 0.9/sec)
+When the notification type includes `email`, the Workflow schedules `send_email` by name and sets `task_queue=SENDGRID_API_QUEUE`, so the Activity is dispatched at no more than the SendGrid queue's 1.5 per second. Because the API queues are separate from the Workflow's own Task Queue, these Activities never run eagerly.
+
+The Retry Policy is what takes over when an Activity re-raises a 429 without a `Retry-After` header. With this configuration, the retry intervals follow this pattern:
+
+- Attempt 1: 1 second
+- Attempt 2: 2 seconds (1s × 2.0)
+- Attempt 3: 4 seconds (2s × 2.0)
+- Attempt 4: 8 seconds (4s × 2.0)
+- Attempt 5: 16 seconds (8s × 2.0)
+
+Total time before failure: ~31 seconds across 5 attempts.
+
+Two settings differ from the default Retry Policy:
+
+- **`maximum_attempts`** is set to `5` instead of the default, unlimited. This prevents infinite retries for persistent rate-limiting issues and ensures timely failure detection. Activities won't retry indefinitely if an API is experiencing extended downtime or if your rate limits have been permanently reduced.
+- **`maximum_interval`** is set to 10 minutes instead of the default, 100 times `initial_interval`. This caps retry delays at a reasonable duration.
+
+Together with the `Retry-After` handling in your Activities, this respects each API's rate-limit guidance while providing a sensible fallback.
+
+Still inside `run`, add the AI branch and return the results:
+
+```python
         if "ai" in request.notification_type:
             ai_result = await workflow.execute_activity(
                 "generate_text",
@@ -713,20 +642,19 @@ class NotificationWorkflow:
         return results
 ```
 
-**Starter example:**
+When the type includes `ai`, the Workflow schedules `generate_text` on the OpenAI queue, which limits it to 0.9 per second. It allows a longer Start-To-Close Timeout of 5 minutes for text generation and uses the same Retry Policy.
+
+To see the rate limits at work, create a file named `start_workflow.py`:
 
 ```python
 # start_workflow.py
-"""Start notification workflow."""
 import asyncio
 from temporalio.client import Client
 from notification_workflow import NotificationWorkflow, NotificationRequest
 
-
 async def main():
     client = await Client.connect("localhost:7233")
 
-    # Send 100 notifications - rate limiting prevents API overload
     for i in range(100):
         request = NotificationRequest(
             user_email=f"user{i}@example.com",
@@ -745,41 +673,77 @@ async def main():
 
     print("All workflows started. Rate limiting ensures API compliance.")
 
-
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## Conclusion
+The starter launches 100 email notifications as fast as it can. The Workflows all start right away on the `workflows` Task Queue, but their `send_email` Activities are dispatched no faster than the SendGrid queue allows, so rate limiting prevents API overload.
 
-By implementing rate-limited separate Task Queues for external APIs, you have achieved:
+:::note
+TODO: Link to the complete, commented source for this guide.
+:::
 
-1. **Rate limit compliance:** Activities respect API rate limits (for example, SendGrid 1.5/sec, OpenAI 0.9/sec), eliminating 429 errors and preventing account suspension
+You now have the full pipeline: a queue per API, Workers that enforce each API's limit, Activities that honor `Retry-After`, and a Workflow that routes work to the right place. Next, you'll prepare for the times when a downstream API throttles you anyway.
 
-2. **Improved reliability:** Workflows complete successfully without rate limit failures. Global rate limiting ensures that adding more Workers doesn't violate API limits.
+## Step 6: Drain backlogs and adjust limits
 
-3. **Better API relationships:** Consistent rate limit compliance maintains good standing with API providers, avoiding temporary bans or throttling
+Rate limits protect the APIs, but they also mean that work waits its turn. During throttling events, Task Queues can grow significantly, and operators need to switch to draining mitigation mode when backlogs occur.
 
-4. **Independent scaling:** Add more Workers to increase throughput for other operations without exceeding API rate limits (global queue limit still applies)
+### Plan for draining
 
-Your application now safely integrates with rate-limited external APIs, ensuring compliance and reliability.
+Before a backlog forms, decide on these points:
+
+- **Acceptable SLA/SLO for draining:** How long is acceptable for the queue to drain? Hours? Days?
+- **Cascading failures:** Simply increasing downstream API or Temporal Cloud rate limits may move the bottleneck elsewhere, potentially overwhelming the next component in line.
+
+When a backlog does form, consider these mitigation strategies in order:
+
+1. **Request downstream API rate limit increases:** Work with API providers to increase your rate limits.
+2. **Request Temporal Cloud rate limit increases:** If you use Temporal Cloud, request higher limits.
+3. **Scale Worker pools:** Add more Workers or adjust Worker configuration.
+4. **Increase internal resources:** Scale your infrastructure.
+5. **Identify the next bottleneck:** Determine what will be throttled next, to prevent cascading failures.
+
+### Adjust limits and reset Activities from the CLI
+
+Operators can change a Task Queue's rate limit without redeploying Workers. To set the limit for the SendGrid queue:
+
+```bash
+temporal task-queue config set --queue-rps-limit 99 --task-queue sendgrid-api
+```
+
+When a downstream API recovers from an outage, some Activities may still be waiting at their maximum retry interval, which is 10 minutes with the Retry Policy in this guide. To reset an Activity so it retries immediately:
+
+```bash
+temporal activity reset --workflow-id <workflow-id> --activity-id <activity-id>
+```
+
+With these tools, operators can work through a backlog without redeploying anything, while the rate-limited queues keep protecting the APIs downstream.
+
+## Outcomes
+
+You've built a notification system that stays within the rate limits of every API it calls. Each API has its own Task Queue, the Temporal Server enforces a queue-wide dispatch rate across all of that queue's Workers, per-Worker and concurrency limits add finer control, and Activities wait for the API's `Retry-After` interval when a 429 slips through. Because the limit belongs to the queue rather than to any one Worker, you can scale Workers for fault tolerance without putting your standing with an API provider at risk. The same approach works for any shared resource with a fixed capacity: database connection pools, internal services with quotas, SMS gateways, or LLM providers with token budgets.
 
 ## Related resources
 
+### Related patterns
+
+- [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting) - Pattern catalog reference for this technique, covering `MaxTaskQueueActivitiesPerSecond` versus per-worker and concurrency-slot alternatives
+- [Separate Task Queues - Worker Affinity](worker-execution-affinity) - For activities on same Worker
+
 ### Official documentation
+
 - [Temporal Documentation - Task Routing](/task-routing)
 - [Temporal Best Practices - Separate Task Queues](/best-practices/worker#separate-task-queues-logically)
 - [Python SDK Worker Configuration](https://python.temporal.io/temporalio.worker.Worker.html)
 
-### Related patterns
-- [Downstream Rate Limiting](/design-patterns/downstream-rate-limiting) - Pattern catalog reference for this technique, covering `MaxTaskQueueActivitiesPerSecond` versus per-worker and concurrency-slot alternatives
-- [Separate Task Queues - Worker Affinity](worker-execution-affinity) - For activities on same Worker
-
 ### Community resources
+
 - [Forum: When to Use Multiple Task Queues](https://community.temporal.io/t/in-what-situation-should-we-use-multiple-separated-task-queues/1254)
 - [Slack: Rate Limiting Activities](https://temporal.io/slack) - Search for "rate limiting" discussions
 
 ### API documentation
+
 - [SendGrid Rate Limits](https://docs.sendgrid.com/api-reference/rate-limits)
 - [Stripe Rate Limits](https://docs.stripe.com/rate-limits)
 - [OpenAI Rate Limits](https://platform.openai.com/docs/guides/rate-limits)
