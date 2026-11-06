@@ -166,7 +166,8 @@ Then register a new Namespace with Archival enabled.
 
 :::note
 
-If the retention period isn't set, it defaults to 72h. The minimum retention period is one day. For retention maximums,
+If the retention period isn't set, it defaults to 72h. The minimum retention period is one hour for a local Namespace and
+one day for a global Namespace that replicates across clusters. For retention maximums,
 check [Temporal Service Retention Period limits](/temporal-service/temporal-server#retention-period) for your server
 version.
 

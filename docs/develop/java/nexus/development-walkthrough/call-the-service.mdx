@@ -8,6 +8,8 @@ tags:
 ---
 
 import { RunThis, CallToAction } from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 Call the approval Operations from a Workflow in the caller Namespace. The caller knows only the Endpoint name and the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract).
 
@@ -27,8 +29,8 @@ So the contract is enforced twice: a field the contract lacks fails at build tim
 
 In Java, the generated Service interface works directly as a Nexus Service stub. Create it inside the caller Workflow with Operation options, then call its methods as if they were local. This Workflow runs the whole flow, including Operations that later steps add.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-caller-workflow-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/ApprovalCallerWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/ApprovalCallerWorkflowImpl.java)
+<!--SNIPSTART java-nexus-walkthrough-caller-workflow {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/caller/ApprovalCallerWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/caller/ApprovalCallerWorkflowImpl.java)
 ```java
 public class ApprovalCallerWorkflowImpl implements ApprovalCallerWorkflow {
 
@@ -148,8 +150,8 @@ public class ApprovalCallerWorkflowImpl implements ApprovalCallerWorkflow {
 The Endpoint name is bound once, when the caller Worker registers the Workflow, so the Workflow
 refers to the Service by its contract alone:
 
-<!--SNIPSTART samples-java-nexus-walkthrough-caller-worker-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerWorker.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/caller/CallerWorker.java)
+<!--SNIPSTART java-nexus-walkthrough-caller-worker {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/caller/CallerWorker.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/caller/CallerWorker.java)
 ```java
 public static void main(String[] args) {
   WorkflowClient client = ClientOptions.getWorkflowClient(args);
@@ -178,11 +180,26 @@ Run the caller Worker in another terminal, alongside the handler Worker from
 
 <RunThis>
 
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
 ```bash title="Run: start the caller Worker"
-./gradlew -q :core:execute \
-  -PmainClass=io.temporal.samples.nexuswalkthrough.caller.CallerWorker \
+mvn compile exec:java \
+  -Dexec.mainClass=io.temporal.docs.nexus.developmentwalkthrough.caller.CallerWorker \
+  -Dexec.args="-target-host localhost:7233 -namespace approval-caller-namespace"
+```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash title="Run: start the caller Worker"
+gradle -q execute \
+  -PmainClass=io.temporal.docs.nexus.developmentwalkthrough.caller.CallerWorker \
   --args="-target-host localhost:7233 -namespace approval-caller-namespace"
 ```
+
+</TabItem>
+</Tabs>
 
 </RunThis>
 

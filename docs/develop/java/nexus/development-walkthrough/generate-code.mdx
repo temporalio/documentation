@@ -32,29 +32,19 @@ check that it has binaries attached before you download it. Some releases have n
 
 :::
 
-Run this command from the root of the `samples-java` clone you made in
+Run this command from the project directory you cloned in
 [Before you start](/develop/java/nexus/development-walkthrough#clone-the-sample-project).
 It reads
-[approval.nexusrpc.yaml](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml),
+[approval.nexusrpc.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/approval.nexusrpc.yaml),
 the contract from [step 1](/develop/java/nexus/development-walkthrough/define-the-data-contract#write-the-contract).
-
-{/*
-MERGE DEPENDENCY, not page content. Keep this commented until the sample lands.
-
-The two links above, and every Snipsync block in this walkthrough, point at
-core/src/main/java/io/temporal/samples/nexuswalkthrough in samples-java, which
-does not exist on GitHub yet. They resolve once temporalio/samples-java#793
-merges. Until then the link checker in CI will report them, and `yarn snipsync`
-finds no matching samples-java-nexus-walkthrough-* snippet ids.
-*/}
 
 <RunThis>
 
 ```bash title="Run: generate the Java code"
 nexgen java \
-  --output core/src/main/java/io/temporal/samples/nexuswalkthrough/generatedservice \
-  --package-name io.temporal.samples.nexuswalkthrough.generatedservice \
-  core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml
+  --output src/main/java/io/temporal/docs/nexus/developmentwalkthrough/generatedservice \
+  --package-name io.temporal.docs.nexus.developmentwalkthrough.generatedservice \
+  src/main/java/io/temporal/docs/nexus/developmentwalkthrough/approval.nexusrpc.yaml
 ```
 
 </RunThis>
