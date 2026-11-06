@@ -34,9 +34,12 @@ Build the Worker as you would any long-running Rust Worker, then set `deployment
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
+<!--SNIPSTART rust-cloud-run-worker-->
+[rust-sandbox/workers/cloud-run/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/cloud-run/src/main.rs)
 ```rust
 use std::str::FromStr;
 
+use my_worker::{activities::MyActivities, workflows::MyWorkflow};
 use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions, Url};
 use temporalio_common::worker::{
     VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
@@ -80,6 +83,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 `deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -95,7 +99,7 @@ Read the Namespace, address, and Task Queue from environment variables you set o
 The Worker above reads `TEMPORAL_ADDRESS`, `TEMPORAL_NAMESPACE`, `TEMPORAL_API_KEY`, and `TEMPORAL_TASK_QUEUE`, so the same image can run against any Namespace.
 
 Setting `api_key` alone does not enable TLS. `Connection::connect` applies TLS only when `tls_options` is set, so a Temporal Cloud connection needs `.tls_options(TlsOptions::default())` as well, or it fails with `Connecting to HTTPS without TLS enabled`.
-To rotate the key without restarting the Worker, call `set_api_key` on the connected Client.
+To rotate the key without restarting the Worker, call `client.connection().set_api_key(Some(new_key))`.
 
 For the shared configuration format that other Temporal tools read, see [Environment configuration](/develop/environment-configuration).
 
@@ -103,7 +107,9 @@ For the shared configuration format that other Temporal tools read, see [Environ
 
 Compile the Worker in one stage and copy the binary into a runtime image:
 
-```dockerfile
+<!--SNIPSTART rust-cloud-run-dockerfile-->
+[rust-sandbox/workers/cloud-run/Dockerfile](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/cloud-run/Dockerfile)
+```Dockerfile
 FROM rust:1.92-slim AS build
 
 RUN apt-get update \
@@ -125,6 +131,7 @@ WORKDIR /app
 COPY --from=build /src/target/release/my-worker /app/worker
 CMD ["/app/worker"]
 ```
+<!--SNIPEND-->
 
 The build stage needs `libprotobuf-dev` as well as `protobuf-compiler`. The compiler package alone installs `protoc` without the well-known type definitions, and the build then fails with `google/protobuf/duration.proto: File not found`.
 
