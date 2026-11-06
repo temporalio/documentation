@@ -17,14 +17,15 @@ tags:
 You can start a Nexus operation from a Workflow using `ctx.start_nexus_operation()`:
 Enable the `experimental` feature for the `temporalio-sdk` dependency to use this API.
 
+<!--SNIPSTART rust-nexus-call-operation-->
+[rust-sandbox/nexus/feature-guide/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/nexus/feature-guide/src/workflows.rs)
 ```rust
 use std::time::Duration;
 
 use temporalio_common::protos::coresdk::AsJsonPayloadExt;
 use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::{
-    ApplicationFailure, NexusOperationOptions, WorkflowContext, WorkflowContextView,
-    WorkflowResult,
+    ApplicationFailure, NexusOperationOptions, WorkflowContext, WorkflowContextView, WorkflowResult,
 };
 
 #[workflow]
@@ -66,12 +67,14 @@ impl GreetingWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Nexus Operation arguments
 
-- `endpoint` - The Nexus endpoint name
+- `endpoint` - The Nexus Endpoint name. The Endpoint must already exist, or the command fails.
 - `service` - The service name
 - `operation` - The operation name
 - `input` - The input payload (optional)
-- `start_to_close_timeout` - How long the operation can run
 - `schedule_to_close_timeout` - How long the caller waits for the operation to complete
+- `schedule_to_start_timeout` - How long the caller waits for the handler to start the operation
+- `start_to_close_timeout` - How long an asynchronous operation can run after it starts. Synchronous operations ignore it.
