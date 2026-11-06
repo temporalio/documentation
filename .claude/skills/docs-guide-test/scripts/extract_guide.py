@@ -19,8 +19,19 @@ in the few non-empty lines preceding the fence. The same first-block-wins and ex
 rules apply. Use this only for guides that follow the prose convention; the default
 comment-header mode is more precise when the guide uses in-block headers.
 
+Alternate mode ("concat-header"): for guides built with the "Code Sandwich" technique,
+where one file is shown as a `# name.ext` header block followed by many header-less
+continuation blocks interleaved with prose. Here a `# name.ext` header starts (or
+switches) the current file, and every following header-less block in the target
+language is appended to it until the next header. This is the opposite of
+first-block-wins — it concatenates — so it only works when a guide presents each file's
+blocks contiguously and at the right indentation (method blocks shown indented under
+their class, not dedented to column 0). Excluded files and their continuation blocks
+are skipped together.
+
 Usage:
-    extract_guide.py GUIDE.mdx OUT_DIR [--lang python] [--mode comment-header]
+    extract_guide.py GUIDE.mdx OUT_DIR [--lang python]
+                      [--mode comment-header|prose-filename|concat-header]
                       [--exclude a.py,b.py]
 
 Prints a JSON summary of what it wrote to stdout.
@@ -82,6 +93,13 @@ def _name_from_comment_header(block: list[str]) -> str | None:
     return m.group(1) if m else None
 
 
+def _append_block(lines: list[str], block: list[str]) -> None:
+    """Append a block to a file's accumulating lines, with a blank separator."""
+    if lines:
+        lines.append("")
+    lines.extend(block)
+
+
 def _name_from_prose(lines: list[str], open_index: int) -> str | None:
     """Return the filename named in the prose just above the fence, or None.
 
@@ -110,29 +128,52 @@ def extract(guide: Path, out_dir: Path, lang: str, exclude: set[str], mode: str 
     all_lines = text.splitlines()
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    written: list[str] = []
+    # Build an ordered map of filename -> accumulated lines, then write once.
+    files: dict[str, list[str]] = {}
     skipped_duplicate: list[str] = []
     excluded: list[str] = []
 
-    for info, block, open_index in _iter_code_blocks(text):
-        if info != lang:
-            continue
-        if mode == "prose-filename":
-            name = _name_from_prose(all_lines, open_index)
-        else:
-            name = _name_from_comment_header(block)
-        if not name:
-            continue
-        base = Path(name).name  # flatten any path in the header to a bare filename
-        if base in exclude:
-            if base not in excluded:
-                excluded.append(base)
-            continue
-        target = out_dir / base
-        if target.exists():
-            skipped_duplicate.append(base)
-            continue
-        target.write_text("\n".join(block).rstrip() + "\n", encoding="utf-8")
+    if mode == "concat-header":
+        current: str | None = None  # file the current run of blocks belongs to
+        current_excluded = False
+        for info, block, _ in _iter_code_blocks(text):
+            if info != lang:
+                continue
+            header = _name_from_comment_header(block)
+            if header:
+                base = Path(header).name
+                current = base
+                current_excluded = base in exclude
+                if current_excluded:
+                    if base not in excluded:
+                        excluded.append(base)
+                    continue
+                _append_block(files.setdefault(base, []), block)
+            elif current is not None and not current_excluded:
+                _append_block(files[current], block)
+    else:
+        for info, block, open_index in _iter_code_blocks(text):
+            if info != lang:
+                continue
+            if mode == "prose-filename":
+                name = _name_from_prose(all_lines, open_index)
+            else:
+                name = _name_from_comment_header(block)
+            if not name:
+                continue
+            base = Path(name).name  # flatten any path in the header to a bare filename
+            if base in exclude:
+                if base not in excluded:
+                    excluded.append(base)
+                continue
+            if base in files:  # first block per filename wins
+                skipped_duplicate.append(base)
+                continue
+            files[base] = list(block)
+
+    written: list[str] = []
+    for base, lines in files.items():
+        (out_dir / base).write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
         written.append(base)
 
     return {
@@ -154,7 +195,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument(
         "--mode",
         default="comment-header",
-        choices=["comment-header", "prose-filename"],
+        choices=["comment-header", "prose-filename", "concat-header"],
         help="How to find each block's filename (default: comment-header)",
     )
     p.add_argument("--exclude", default="", help="Comma-separated filenames to extract-skip (e.g. test_determinism.py)")

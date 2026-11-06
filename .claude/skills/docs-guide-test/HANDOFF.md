@@ -126,8 +126,14 @@ and failure paths that fail the Workflow uncaught (a `wait_condition` timeout; a
 - Decide whether to **fix the two guide bugs** (gaming str-enum; approvals lost-signal race) and in how many PRs. The
   user was asked and had not answered when this summary was written.
 - Possibly **push / open a PR** for the skill branch.
-- Future harness work: a **TypeScript runner** (unblocks `recover-without-restart`), a **mock layer** for
-  external-API guides (unblocks `rate-limit-downstream-apis`), and extractor support for concatenating a file that is
-  built across several code blocks.
+- Future harness work: a **TypeScript runner** (unblocks `recover-without-restart`) and a **mock layer** for
+  external-API guides (unblocks `rate-limit-downstream-apis`).
+- **Done (2026-11-06): concat-header extraction mode.** `extract_guide.py` now has a `concat-header` mode that assigns
+  header-less continuation blocks to the most recent `# name.ext` header, so Code Sandwich guides (the structure
+  `docs-guide-revision` produces) reconstruct correctly. Verified against PR #5461's rewrite of the loyalty guide: with
+  `comment-header` the files came out as import-only stubs and the worker failed on ImportError; with `concat-header`
+  the project rebuilt fully (workflows.py back to 338 lines), compiled, ran green on all four assertions, **and the
+  static checks reported zero findings** — the PR fixed every unused-import and unhandled-failure item the live page
+  still has. (Live vs PR is a clean before/after for the checks.)
 - The sibling session that broadened coverage:
   `local_38bdf467-1a5a-45d0-abc5-cf1285ddfc76` ("Add manifests for other self-contained guides"), idle.
