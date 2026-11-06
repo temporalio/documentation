@@ -370,7 +370,7 @@ Each definition must be one of `cassandra`, `sql`, `elasticsearch`, or `customDa
 - `user`: The username the `gocql` client authenticates with.
 - `password`: The password the `gocql` client authenticates with.
 - `datacenter`: The data center filter for Cassandra.
-- `maxConns`: The maximum number of connections to this data store for a single TLS configuration.
+- `maxConns`: The maximum number of connections to this data store for a single keyspace.
 - `tls`: TLS settings. See [tls](#tls-1).
 
 #### sql
@@ -594,13 +594,35 @@ The `dcRedirectionPolicy` section configures whether the Frontend Service forwar
 - `policy`: Supported values are `noop`, `selected-apis-forwarding`, and `all-apis-forwarding`.
   - Default: `noop`.
   - `noop`: No forwarding.
-  - `selected-apis-forwarding`: Forwards the following APIs to the active cluster for the Namespace:
+  - `selected-apis-forwarding`: Forwards the following APIs to the active cluster for the Namespace.
+
+    Workflow APIs:
+
     - `StartWorkflowExecution`
     - `SignalWithStartWorkflowExecution`
     - `SignalWorkflowExecution`
     - `RequestCancelWorkflowExecution`
     - `TerminateWorkflowExecution`
+    - `DeleteWorkflowExecution`
     - `QueryWorkflow`
+
+    Standalone Activity APIs:
+
+    - `StartActivityExecution`
+    - `RequestCancelActivityExecution`
+    - `TerminateActivityExecution`
+    - `DeleteActivityExecution`
+    - `PauseActivityExecution`
+    - `UnpauseActivityExecution`
+    - `ResetActivityExecution`
+    - `UpdateActivityExecutionOptions`
+
+    Standalone Nexus Operation APIs:
+
+    - `StartNexusOperationExecution`
+    - `RequestCancelNexusOperationExecution`
+    - `TerminateNexusOperationExecution`
+    - `DeleteNexusOperationExecution`
   - `all-apis-forwarding`: Forwards all APIs for the Namespace to the active cluster.
 
 ```yaml
