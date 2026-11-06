@@ -1,0 +1,20 @@
+{
+  "guide": "docs/guides/celery-to-standalone-activity.mdx",
+  "language": "python",
+  "python": "3.12",
+  "pip": ["temporalio>=1.33.0"],
+  "extract": {
+    "mode": "comment-header"
+  },
+  "worker": "python worker.py",
+  "driver": "python execute_activity.py",
+  "startup_wait_seconds": 5,
+  "driver_timeout_seconds": 60,
+  "assert": {
+    "driver_exit_zero": true,
+    "stdout_contains": [
+      "Result: sent to user42@example.com"
+    ]
+  },
+  "_notes": "Self-contained: the Activity's get_user/deliver_email are in-file mocks, no external APIs. Uses Standalone Activities (client.execute_activity with no Workflow), which need the Python SDK >= 1.33.0 (pinned). The guide states Temporal Server >= 1.32.0, but this passes on the dev server bundled with Temporal CLI 1.8.2 (Server 1.31.2). Driver is execute_activity.py (the plain .get() equivalent); it prints 'Result: sent to user42@example.com' from the mock, proving the Activity ran end to end on a Worker. comment-header mode naturally ignores the later '# execute_activity.py (updated)' and '# my_activity.py (excerpt)' blocks because their headers are not bare filenames, so the first full version of each file wins. Pinned to comment-header rather than the concat-header default: this published guide isn't in Code Sandwich form, and concat-header would read those '(updated)'/'(excerpt)' variants as header-less blocks and append them into the files. Drop the pin once the guide is rewritten in Code Sandwich form."
+}
