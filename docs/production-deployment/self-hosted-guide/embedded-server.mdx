@@ -118,7 +118,8 @@ SQLite is intended for testing and development only:
 - **Not scalable**: Cannot handle production workloads
 - **Single shard**: Use `NumHistoryShards: 1` for SQLite
 
-For production, use MySQL, PostgreSQL, or Cassandra with a properly scaled multi-node deployment.
+For production, run Temporal Server as a service with MySQL, PostgreSQL, or Cassandra.
+See [Deployment](/self-hosted-guide/deployment) and [Run a small self-hosted Temporal Service](/self-hosted-guide/small-deployment).
 
 ## Examples
 
