@@ -208,6 +208,61 @@ arrived, resume at the prompt and send `Continue from where you left off.` Other
 the prompt again. See the
 [agent chat sample](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/agent_chat/workflow.py).
 
+The sample sets these options in `ClaudeAgentOptions`.
+
+<!--SNIPSTART python-claude-agent-sdk-session-options-->
+[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
+```py
+extra_args={"replay-user-messages": None},
+resume=session_id if prompt_id else None,
+resume_session_at=prompt_id,
+```
+<!--SNIPEND-->
+
+The following loop uses those options to resume the session after a lost connection.
+
+<!--SNIPSTART python-claude-agent-sdk-tools-ask-->
+[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
+```py
+async def ask(self, prompt: str) -> str:
+    """Answer the prompt, redoing the turn if the connection is lost."""
+    CONTINUE = "Continue from where you left off."
+    session_id = None  # Claude Code's, once it started
+    prompt_id = None  # The prompt's, once Claude Code saved it
+
+    while True:
+        try:
+            options = self.options(session_id, prompt_id)
+            transport = TemporalTransport(options)
+            async with ClaudeSDKClient(
+                options=options, transport=transport
+            ) as client:
+                await client.query(CONTINUE if prompt_id else prompt)
+
+                async for message in client.receive_response():
+                    if (
+                        isinstance(message, SystemMessage)
+                        and message.subtype == "init"
+                    ):
+                        session_id = message.data["session_id"]
+                    elif (
+                        isinstance(message, UserMessage)
+                        and message.uuid
+                        and not prompt_id
+                    ):
+                        prompt_id = message.uuid
+                    elif isinstance(message, ResultMessage):
+                        return message.result or "\n".join(message.errors or [])
+
+            raise RuntimeError("Claude Code ended the turn without a result")
+
+        except CLIConnectionError:
+            # Redo the turn from the prompt if Claude Code saved it, or start again.
+            pass
+
+```
+<!--SNIPEND-->
+
 :::note
 
 Claude Code repeats the interrupted turn, so tools and hooks may run again and previously approved tool calls may require
