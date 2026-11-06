@@ -436,8 +436,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```
 
 The Rust SDK sets the versioning behavior on the Worker rather than per Workflow, so `default_versioning_behavior`
-covers every Workflow the Worker registers. Setting it to `VersioningBehavior::Unspecified` is an error at
-startup.
+covers every Workflow the Worker registers. If you set `default_versioning_behavior` without
+`use_worker_versioning(true)`, `Worker::new()` returns an error.
 
 Setting `api_key` does not by itself apply TLS on this connection path, so set `tls_options` as well or the Worker
 fails with `Connecting to HTTPS without TLS enabled`.

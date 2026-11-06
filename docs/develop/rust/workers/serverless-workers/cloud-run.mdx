@@ -84,7 +84,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 `deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
 The Rust SDK sets the versioning behavior on the Worker rather than per Workflow, so `default_versioning_behavior` covers every Workflow the Worker registers.
-Setting it to `VersioningBehavior::Unspecified` is an error at startup.
+If you set `default_versioning_behavior` without `use_worker_versioning(true)`, `Worker::new()` returns an error.
 See [versioning behaviors](/worker-versioning#versioning-behaviors) for what `Pinned` and `AutoUpgrade` mean.
 
 For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/rust/workers/worker-process).
