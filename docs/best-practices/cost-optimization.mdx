@@ -217,8 +217,8 @@ For very large payloads or binary data, store data externally (S3 or GCS) and pa
 
 #### Schedules
 
+Audit Schedules periodically and delete the ones you no longer need, for example with `temporal schedule delete` (see [Delete](/cli/command-reference/schedule#delete)) or your SDK's delete-Schedule API.
 Each [Schedule](/schedule) keeps its own backing Workflow Execution open for as long as the Schedule exists, so running Schedules contribute to Active Storage.
-Audit Schedules periodically and delete the ones you no longer need — for example with `temporal schedule delete` (see [Delete](/cli/command-reference/schedule#delete)) or your SDK's delete-Schedule API.
 
 **Considerations**:
 
