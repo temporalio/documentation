@@ -922,6 +922,12 @@ const developRustCategory = {
       'develop/rust/quickstart',
       {
         type: 'category',
+        label: 'Data handling',
+        collapsed: true,
+        items: ['develop/rust/data-handling/external-storage'],
+      },
+      {
+        type: 'category',
         label: 'Workflows',
         collapsed: true,
         link: {
