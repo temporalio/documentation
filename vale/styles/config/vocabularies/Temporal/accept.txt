@@ -909,3 +909,4 @@ operationalize
 zeitwerk
 zerolog
 zsh
+Nemotron
