@@ -28,22 +28,26 @@ For a conceptual overview of External Storage and its use cases, see [External S
 :::note Rust API availability
 
 The Rust API requires the `experimental` Cargo feature. The examples on this page target
-[Rust SDK revision `51009f8`](https://github.com/temporalio/sdk-rust/tree/51009f8c1163f333816ef1b2ffa7b66ba82408ba),
-which includes APIs absent from the published Rust SDK 1.1.2 crates. Use the pinned dependencies in the
-[example project](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/rust-sandbox/external-storage)
+[Rust SDK revision `5100971`](https://github.com/temporalio/sdk-rust/tree/51009718748275da9ece33041d4ace08049cc41e),
+from [S3 driver PR #1721](https://github.com/temporalio/sdk-rust/pull/1721). This PR has not merged, and the
+`temporalio-aws-s3driver` crate is not yet released. Use the pinned dependencies in the
+[example project](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/rust-sdk-s3-driver/rust-sandbox/external-storage)
 to try this implementation. See [Current limitations](#current-limitations) before using it.
 
 :::
 
 ## Store and retrieve large payloads with Amazon S3
 
-The Rust SDK accepts a custom implementation of `StorageDriver`. The example project provides an S3 driver built
-with the AWS SDK for Rust; it is example code, rather than a built-in Temporal driver.
+Use the SDK-provided `S3StorageDriver` from the `temporalio-aws-s3driver` crate. Its default `aws-sdk` feature
+includes `AwsSdkS3StorageDriverClient`, which connects the driver to the official AWS SDK for Rust. The examples
+pin this crate and the other Temporal crates to the same revision of the unmerged SDK PR.
 
 ### Prerequisites
 
-- An S3 bucket accessible to every Client and Worker that handles stored payloads, with `s3:PutObject` and `s3:GetObject`
-  permissions for the `temporal-payloads/` prefix.
+- An S3 bucket accessible to every Client and Worker that handles stored payloads. Processes that store payloads need
+  `s3:PutObject` and `s3:GetObject` permissions for the driver's `v0/` object prefix, plus `s3:ListBucket` on the bucket.
+  The driver checks for existing objects before uploading; without `s3:ListBucket`, S3 can return 403 for a missing
+  object instead of 404. Processes that only retrieve payloads need `s3:GetObject`.
 - AWS credentials and a Region configured for the AWS SDK for Rust, for example through an IAM role and `AWS_REGION`.
 - The example project's pinned dependencies, with its `s3` feature enabled. The project enables
   [`aws-config`'s `credentials-login` feature](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credentials.html)
@@ -55,17 +59,27 @@ See [Lifecycle management](/external-storage#lifecycle) and
 
 ### Create the storage driver
 
-Create an AWS S3 client and pass it and your bucket name to the example's `S3StorageDriver`.
-The AWS SDK loads credentials and Region settings through its default configuration chain.
+Import the SDK driver and AWS adapter, create an AWS S3 client, and configure the driver with your bucket name.
+The AWS SDK loads credentials and Region settings through its default configuration chain. Set `bucket` to your bucket
+name before running this snippet.
 
 <!--SNIPSTART rust-external-storage-s3-create-->
-[rust-sandbox/external-storage/src/s3_driver.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/s3_driver.rs)
+[rust-sandbox/external-storage/src/s3_setup.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/s3_setup.rs)
 ```rs
-let config = aws_config::load_defaults(aws_config::BehaviorVersion::latest()).await;
-let driver = S3StorageDriver {
-    client: aws_sdk_s3::Client::new(&config),
-    bucket,
+use std::sync::Arc;
+use temporalio_aws_s3driver::{
+    AwsSdkS3StorageDriverClient, S3StorageDriver, S3StorageDriverOptions,
 };
+
+let config = aws_config::load_defaults(aws_config::BehaviorVersion::latest()).await;
+let driver = S3StorageDriver::new(
+    S3StorageDriverOptions::builder()
+        .client(Arc::new(AwsSdkS3StorageDriverClient::new(
+            aws_sdk_s3::Client::new(&config),
+        )))
+        .bucket(bucket)
+        .build(),
+);
 ```
 <!--SNIPEND-->
 
@@ -75,7 +89,7 @@ Wrap the driver in `Arc<dyn StorageDriver>`, create `ExternalStorage`, and attac
 Set that converter on the Client options before constructing the Client. The Worker uses the Client's Data Converter.
 
 <!--SNIPSTART rust-external-storage-setup-->
-[rust-sandbox/external-storage/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/main.rs)
+[rust-sandbox/external-storage/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/main.rs)
 ```rs
 let storage = ExternalStorage::new(driver)?;
 let data_converter = DataConverter::default().with_external_storage(storage);
@@ -144,8 +158,8 @@ Return an error for a missing object, invalid claim, failed download, or corrupt
 Payload Codec and Payload Converter to recover the application value.
 
 Acquire a permit from `context.limiter` for each storage request and hold it until that request completes.
-The current implementation does not enforce concurrency limits, but drivers should use the limiter interface.
-The example drivers issue their requests sequentially within each call.
+The current implementation does not enforce driver request limits, but custom drivers should use the limiter interface.
+The local-disk example issues its requests sequentially within each call.
 
 ### Use local disk for development
 
@@ -156,7 +170,7 @@ Use it only for local development. Every process must share the same directory, 
 atomic writes or production storage durability.
 
 <!--SNIPSTART rust-external-storage-local-driver-->
-[rust-sandbox/external-storage/src/local_disk_driver.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/local_disk_driver.rs)
+[rust-sandbox/external-storage/src/local_disk_driver.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/local_disk_driver.rs)
 ```rs
 // For local development only. All processes must share this directory.
 #[derive(Clone)]
@@ -236,113 +250,6 @@ cd rust-sandbox/external-storage
 cargo run
 ```
 
-### Use Amazon S3 as the backing store
-
-The S3 example uses the same protobuf serialization and SHA-256 verification. It stores objects under a fixed prefix
-and reads from the configured bucket. Keep the bucket configuration stable for existing claims, or retain the old
-driver when migrating to a new bucket.
-
-<!--SNIPSTART rust-external-storage-s3-driver-->
-[rust-sandbox/external-storage/src/s3_driver.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/s3_driver.rs)
-```rs
-// Example driver, not a built-in Temporal driver.
-#[derive(Clone)]
-pub struct S3StorageDriver {
-    pub client: Client,
-    pub bucket: String,
-}
-
-impl StorageDriver for S3StorageDriver {
-    fn name(&self) -> &str {
-        "s3-payloads"
-    }
-    fn driver_type(&self) -> &str {
-        "example.s3"
-    }
-
-    fn store(
-        &self,
-        context: &StorageDriverStoreContext,
-        payloads: Vec<Payload>,
-    ) -> BoxFuture<'static, Result<Vec<StorageDriverClaim>, StorageDriverError>> {
-        let driver = self.clone();
-        let limiter = context.limiter.clone();
-        Box::pin(async move {
-            let mut claims = Vec::with_capacity(payloads.len());
-            for payload in payloads {
-                let _permit = limiter.acquire(&payload).await?;
-                let bytes = payload.encode_to_vec();
-                let checksum = format!("{:x}", Sha256::digest(&bytes));
-                let key = format!("temporal-payloads/{checksum}");
-                driver
-                    .client
-                    .put_object()
-                    .bucket(&driver.bucket)
-                    .key(&key)
-                    .body(ByteStream::from(bytes))
-                    .send()
-                    .await
-                    .map_err(|e| anyhow::Error::new(e).context("S3 upload failed"))?;
-                claims.push(StorageDriverClaim::new(HashMap::from([
-                    ("key".to_owned(), key),
-                    ("sha256".to_owned(), checksum),
-                ])));
-            }
-            Ok(claims)
-        })
-    }
-
-    fn retrieve(
-        &self,
-        context: &StorageDriverRetrieveContext,
-        claims: Vec<StorageDriverClaim>,
-    ) -> BoxFuture<'static, Result<Vec<Payload>, StorageDriverError>> {
-        let driver = self.clone();
-        let limiter = context.limiter.clone();
-        Box::pin(async move {
-            let mut payloads = Vec::with_capacity(claims.len());
-            for claim in claims {
-                let _permit = limiter.acquire(&claim).await?;
-                let key = claim
-                    .claim_data
-                    .get("key")
-                    .ok_or_else(|| anyhow!("claim is missing its key"))?;
-                let checksum = claim
-                    .claim_data
-                    .get("sha256")
-                    .ok_or_else(|| anyhow!("claim is missing its checksum"))?;
-                if !(checksum.len() == 64
-                    && checksum.bytes().all(|b| b.is_ascii_hexdigit())
-                    && *key == format!("temporal-payloads/{checksum}"))
-                {
-                    return Err(anyhow!("invalid S3 claim").into());
-                }
-                let response = driver
-                    .client
-                    .get_object()
-                    .bucket(&driver.bucket)
-                    .key(key)
-                    .send()
-                    .await
-                    .map_err(|e| anyhow::Error::new(e).context("S3 download failed"))?;
-                let bytes = response
-                    .body
-                    .collect()
-                    .await
-                    .map_err(|e| anyhow::Error::new(e).context("S3 body read failed"))?
-                    .into_bytes();
-                if !(format!("{:x}", Sha256::digest(&bytes)) == *checksum) {
-                    return Err(anyhow!("payload checksum mismatch").into());
-                }
-                payloads.push(Payload::decode(bytes.as_ref())?);
-            }
-            Ok(payloads)
-        })
-    }
-}
-```
-<!--SNIPEND-->
-
 ## Configure the payload size threshold
 
 By default, the SDK offloads payloads whose encoded size is at least 256 KiB. The size includes Payload metadata,
@@ -351,7 +258,7 @@ and is measured after any Payload Codec has run. Smaller payloads stay inline in
 Use `with_payload_size_threshold` to change the threshold. Set it to `0` to offload every payload.
 
 <!--SNIPSTART rust-external-storage-threshold-->
-[rust-sandbox/external-storage/src/configuration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/configuration.rs)
+[rust-sandbox/external-storage/src/configuration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/configuration.rs)
 ```rs
 let storage = ExternalStorage::new(driver)?.with_payload_size_threshold(256 * 1024);
 let data_converter = DataConverter::default().with_external_storage(storage);
@@ -368,7 +275,7 @@ Each driver must have a distinct, stable name. Retain legacy drivers and their b
 references can be read, including during replay.
 
 <!--SNIPSTART rust-external-storage-selector-->
-[rust-sandbox/external-storage/src/configuration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/configuration.rs)
+[rust-sandbox/external-storage/src/configuration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/configuration.rs)
 ```rs
 struct PreferDriver(Arc<dyn StorageDriver>);
 
@@ -398,12 +305,14 @@ pub fn migration_storage(
 
 The pinned Rust implementation has these limitations:
 
-- Storage request concurrency limits are not enforced. Bound requests in your driver if needed.
+- Up to eight payload fields per message are stored or retrieved at once. Storage requests are not otherwise limited.
+  Bound requests in a custom driver if needed.
 - Reference tokens do not pass through Payload Codecs. Claim data is written to Event History unencrypted,
   and Rust does not recognize a reference token that another SDK has encoded with a Payload Codec.
 - Workflow replay stores payloads again. Plan for repeated writes and their storage costs. Content-addressed keys,
-  as used in the example drivers, reuse object keys for identical payloads.
+  as used in the local-disk example, reuse object keys for identical payloads. The SDK S3 driver also checks for
+  existing objects before uploading, with keys scoped to the execution context.
 - Fetching a Workflow's Event History returns stored reference tokens, rather than resolving them to original payloads.
 
 These limitations are documented on the SDK's
-[`ExternalStorage` type](https://github.com/temporalio/sdk-rust/blob/51009f8c1163f333816ef1b2ffa7b66ba82408ba/crates/common-wasm/src/external_storage.rs).
+[`ExternalStorage` type](https://github.com/temporalio/sdk-rust/blob/51009718748275da9ece33041d4ace08049cc41e/crates/common-wasm/src/external_storage.rs).
