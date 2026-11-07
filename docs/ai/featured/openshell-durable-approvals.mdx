@@ -1,0 +1,106 @@
+---
+id: openshell-durable-approvals
+title: Durable approvals for sandboxed agents with NVIDIA OpenShell
+sidebar_label: Durable approvals with NVIDIA OpenShell
+description: Gate an agent's network access on a human approval that lives in the Workflow, with NVIDIA OpenShell sandboxes you can delete and rebuild with the same grants.
+slug: /ai/featured/openshell-durable-approvals
+tags:
+  - Workflows
+  - Activities
+  - Updates
+# Tracks the README this page was built from. When the source repo changes,
+# diff it against source_commit, update the page, then bump both fields.
+source_repo: https://github.com/temporalio/ai-cookbook
+source_path: agents/openshell_durable_approvals_python/README.md
+source_commit: d3bf50583eba613a016f45e068df27565f5894cc
+source_synced: 2026-11-07
+---
+
+import { ViewSourceCodeNotice } from '@site/src/components';
+
+<ViewSourceCodeNotice href="https://github.com/temporalio/ai-cookbook/tree/main/agents/openshell_durable_approvals_python" />
+
+An agent that runs code a model wrote needs a sandbox. A sandbox that needs a person to open a door, for example to let
+a tool reach a host the policy does not allow, needs that approval to live somewhere that survives the sandbox, the
+Worker, and a day-long wait. This reference architecture, built with NVIDIA, keeps the approval in the Temporal
+Workflow. The sandbox becomes disposable; the approval does not.
+
+The companion recipe in the [AI Cookbook](/ai/cookbook/openshell-durable-approvals-python) runs the whole sequence on a
+laptop: a denied request, the operator's approval, a sandbox deleted mid-run and rebuilt with the same grant, a review
+that holds no sandbox, and an audit bundle at the end.
+
+## Who does what
+
+- **NVIDIA OpenShell contains.** The code the model wrote runs in an *exec* sandbox whose policy has no network rules.
+  The agent's tools run in a *tools* sandbox that reaches the network only through grants an operator approves. OpenShell
+  holds the model API key; the sandbox only sees a placeholder.
+- **Temporal manages and remembers.** The agent loop is a Workflow. Every model call, sandbox operation, and grant is an
+  Activity with retries and heartbeats. Human decisions are Workflow Updates with validators, recorded in the Event
+  History.
+- **NVIDIA Nemotron thinks.** The agent uses the
+  [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents). NVIDIA NIM (NVIDIA Inference
+  Microservices) serves the OpenAI chat-completions API, so the model provider is an endpoint address and a key.
+- The full demo behind this page adds two more parts. **NVIDIA Isaac Sim judges** the agent's warehouse layout by
+  driving a simulated robot through it. **NVIDIA NeMo Relay records** what the model saw, answered, and called, and
+  its trace continues across a Worker restart.
+
+## One approval, end to end
+
+1. The agent's search tool calls the asset catalog from the tools sandbox, whose policy has no rule for that host.
+2. OpenShell denies the connection at the socket. The tool returns `denied` instead of raising, so the agent loop keeps
+   control.
+3. The Workflow publishes a grant request and waits on a durable condition. Nothing runs on its behalf while it waits,
+   so the Workers can scale to zero.
+4. The operator's decision arrives as a Workflow Update. A validator checks the host and that no decision was already
+   made before anything reaches the Event History.
+5. An Activity applies the grant to the running sandbox with `openshell policy update … --wait`, and the retried search
+   goes through.
+6. The grant is Workflow state. Every later sandbox generation starts with it.
+
+```python
+@workflow.update
+async def grant(self, decision: GrantDecision) -> str:
+    self.ctx.grant_decision = decision
+    return decision.decision
+
+@grant.validator
+def _validate_grant(self, decision: GrantDecision) -> None:
+    pending = self.ctx.pending_grant if self.ctx else None
+    if not pending or decision.host != pending["host"] or self.ctx.grant_decision is not None:
+        raise ValueError(f"no grant pending for {decision.host!r}")
+```
+
+## Rebuilding without losing control
+
+Delete a sandbox while the agent works, and the next tool call fails with `SandboxLost`. The tool asks the Workflow
+for the next generation. The Workflow creates both sandboxes again, with every approved grant from its state in the
+tools policy and the agent's files back in place. Before each human review, the Workflow exports the sandboxes' gateway
+logs and deletes them. A review that takes a day costs a day of history storage, not a day of sandbox time.
+
+## Run it
+
+```sh
+git clone https://github.com/temporalio/ai-cookbook.git
+cd ai-cookbook/agents/openshell_durable_approvals_python
+uv sync
+export NVIDIA_API_KEY=nvapi-...                # build.nvidia.com
+temporal server start-dev                      # terminal 1
+uv run python -m worker                        # terminal 2
+uv run python -m start_workflow                # terminal 3: prints the workflow id
+uv run python -m grant <workflow-id> approved
+uv run python -m delete_sandbox <workflow-id> exec
+uv run python -m review <workflow-id> approve
+uv run python -m bundle <workflow-id>
+```
+
+Without OpenShell installed, a fake backend reproduces the control flow in plain directories, with no isolation. With
+OpenShell on the `PATH`, the same commands create real sandboxes from `python:3.12-slim`.
+
+## Learn more
+
+- [The recipe](/ai/cookbook/openshell-durable-approvals-python) and its
+  [source](https://github.com/temporalio/ai-cookbook/tree/main/agents/openshell_durable_approvals_python)
+- [NVIDIA OpenShell documentation](https://docs.nvidia.com/openshell) and
+  [repository](https://github.com/NVIDIA/OpenShell)
+- [NVIDIA NeMo Relay](https://github.com/NVIDIA/NeMo-Relay) and [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim)
+- [Human-in-the-loop recipe](/ai/cookbook/human-in-the-loop-python) and the [Approval pattern](/design-patterns/approval)
