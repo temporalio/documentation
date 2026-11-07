@@ -18,12 +18,12 @@ import { ReleaseNoteHeader } from '@site/src/components';
   [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
 </ReleaseNoteHeader>
 
-External Storage replaces large payloads with small reference tokens in Event History. Your Clients and Workers
-store and retrieve the original payloads through a storage driver, so your Workflow and Activity business logic
-can keep using the original input and result types.
+The Temporal Service enforces a 2 MB per-payload limit by default. This limit is configurable on self-hosted
+deployments. When your Workflows or Activities handle data larger than the limit, you can offload payloads to external
+storage, such as Amazon S3, and pass a small reference token through the Event History instead. This page shows you how
+to set up External Storage with Amazon S3 and how to implement a custom storage driver.
 
-The Temporal Service enforces a 2 MB per-payload limit by default. This limit is configurable on self-hosted deployments.
-For a conceptual overview, storage selection, and retention requirements, see [External Storage](/external-storage).
+For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
 
 :::note Rust API availability
 
