@@ -126,7 +126,7 @@ To let Activities keep sending Heartbeats while the Worker drains, set `setAllow
 This matches the behavior of the other Temporal SDKs.
 
 <!--SNIPSTART java-worker-heartbeat-during-shutdown {"enable_code_dedenting": true}-->
-[java-sandbox/worker-shutdown/src/main/java/io/temporal/docs/workershutdown/HeartbeatDuringShutdownExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/worker-shutdown/src/main/java/io/temporal/docs/workershutdown/HeartbeatDuringShutdownExamples.java)
+[java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/run-process/src/main/java/io/temporal/docs/workers/runprocess/WorkerExamples.java)
 ```java
 WorkerOptions options =
     WorkerOptions.newBuilder().setAllowActivityHeartbeatDuringShutdown(true).build();
