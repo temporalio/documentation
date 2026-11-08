@@ -171,6 +171,7 @@ public class SampleNexusServiceImpl {
       SampleNexusService.EchoInput input) {
     return TemporalOperationResult.sync(new SampleNexusService.EchoOutput(input.getMessage()));
   }
+// ...
 }
 ```
 <!--SNIPEND-->
@@ -226,6 +227,7 @@ value is delivered to the caller as the Operation's result.
 @ServiceImpl(service = SampleNexusService.class)
 public class SampleNexusServiceImpl {
 
+// ...
   @TemporalOperation
   public TemporalOperationResult<SampleNexusService.HelloOutput> hello(
       TemporalOperationStartContext ctx,
@@ -242,6 +244,7 @@ public class SampleNexusServiceImpl {
                     input.getName(), input.getLanguage().name().toLowerCase(Locale.ROOT)))
             .build());
   }
+// ...
 }
 ```
 <!--SNIPEND-->
