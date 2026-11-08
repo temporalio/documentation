@@ -9,8 +9,17 @@
     },
     "api/feedback.js": {
       "maxDuration": 10
+    },
+    "api/feedback-digest.js": {
+      "maxDuration": 60
     }
   },
+  "crons": [
+    {
+      "path": "/api/feedback-digest",
+      "schedule": "0 15 * * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/img/og/:path*",

@@ -122,7 +122,9 @@ The following features are not supported yet:
   - Reset
   - Batch `--query` support for cancel, terminate, and delete
   - UI list-page operator actions
-  - HA / multi-region (global) namespaces using selective API forwarding
+  - HA / multi-region (global) Namespaces using selective API forwarding. Although Temporal Server
+    v1.32.1 lists the Standalone Nexus Operation APIs for selective forwarding, Standalone Nexus
+    Operations are not supported on these Namespaces.
 
 Delete is supported by the Temporal Service. Neither the Temporal CLI nor the SDKs expose it yet.
 

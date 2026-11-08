@@ -10,7 +10,7 @@ tags:
 hide_table_of_contents: true
 ---
 
-import { CallToAction, SetupSteps, SetupStep, CodeSnippet } from '@site/src/components';
+import { CallToAction, SetupSteps, SetupStep, CodeSnippet, ForOs } from '@site/src/components';
 
 # Quickstart
 
@@ -128,7 +128,7 @@ temporal server start-dev --ui-port 8080
 
 ## Start the development server
 
-Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
+Once you've installed Temporal CLI and added it to your PATH, open a new <ForOs os="windows">PowerShell</ForOs><ForOs os="macos linux">terminal</ForOs> window and run the following command.
 
 This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory
 database.

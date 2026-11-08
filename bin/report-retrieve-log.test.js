@@ -293,6 +293,19 @@ describe('summarize', () => {
     assert.strictEqual(s.droppedTotal, 3 * 4 + 15 + 14);
   });
 
+  it('counts where dropped results came from, when records say', () => {
+    const t = summarize([
+      record({ dropped_sources: { 'community.temporal.io': 2, 'github.com/temporalio/edu-101': 1 } }),
+      record({ q: 'Gap', result_count: 0, dropped_count: 15, dropped_sources: { 'community.temporal.io': 15 } }),
+      record({ q: 'Gap', result_count: 0, dropped_count: 15 }),
+      record({ dropped_sources: {} }),
+    ]);
+    assert.strictEqual(t.sourcedCalls, 3);
+    assert.strictEqual(t.droppedBySource.get('community.temporal.io'), 17);
+    assert.strictEqual(t.droppedSourceCalls.get('community.temporal.io'), 2);
+    assert.strictEqual(t.lowYield.get('gap').sources.get('community.temporal.io'), 15);
+  });
+
   it('explains rejections and counts placeholders', () => {
     assert.strictEqual(s.rejects.get('Missing q'), 1);
     assert.strictEqual(s.rejects.get('q over the length limit'), 1);
@@ -337,7 +350,13 @@ describe('uaAgentRows', () => {
 describe('renderMarkdown', () => {
   const s = summarize([
     record({ q: 'Secret | question', jtb: 'Private goal' }),
-    record({ q: 'Gap question', result_count: 0, fetched_count: 15, dropped_count: 15 }),
+    record({
+      q: 'Gap question',
+      result_count: 0,
+      fetched_count: 15,
+      dropped_count: 15,
+      dropped_sources: { 'community.temporal.io': 15 },
+    }),
   ]);
   const opts = { since: '2026-10-24', until: '2026-10-24' };
 
@@ -346,7 +365,8 @@ describe('renderMarkdown', () => {
     for (const heading of ['## Discovery', '## Who', '## What', '## Gaps', '## Intent', '## Health', '## Noise']) {
       assert.ok(md.includes(heading), heading);
     }
-    assert.ok(md.includes('| Gap question | 1 | 0.0 | 100% |'));
+    assert.ok(md.includes('| Gap question | 1 | 0.0 | 100% | community.temporal.io |'));
+    assert.ok(md.includes('| community.temporal.io | 15 | 1 |'));
     assert.ok(md.includes('| claude-code | claude-code | 2 | 100% |'));
   });
 
