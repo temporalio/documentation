@@ -173,8 +173,10 @@ public class HelloService
 :::note[Query availability]
 
 Querying a Workflow from an Operation handler is available in Temporal Cloud, and on a self-hosted Temporal Service from Server v1.33.0.
-To try it against a local development server before that release, use the [v1.8.3-server-1.32.0-162.0 Temporal CLI release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0) in place of the CLI version listed in the prerequisites above.
-That release bundles a Server build with Nexus Query support. Signals, Signal-with-Start, and Updates need no special build.
+Before v1.33.0 it's available as a pre-release.
+To try it on a local development server, install the [v1.8.3-server-1.32.0-162.0 Temporal CLI pre-release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0), which bundles a Server build with Nexus Query support.
+Use it in place of the CLI version in the prerequisites, even though its version number is lower.
+Signals, Signal-with-Start, and Updates don't need this build.
 
 :::
 
