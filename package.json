@@ -98,7 +98,7 @@
     "react-icons": "^5.7.0",
     "react-instantsearch": "^7.52.0",
     "react-markdown": "^10.1.0",
-    "satori": "^0.33.5",
+    "satori": "^0.63.2",
     "search-insights": "^2",
     "sharp": "^0.35.5",
     "snipsync": "^1.13.0",
