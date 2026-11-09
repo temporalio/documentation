@@ -23,13 +23,16 @@ Each Workflow timeout controls the maximum duration of a different aspect of a W
 
 Set these values as keyword parameter options when starting a Workflow.
 
-```ruby
+<!--SNIPSTART ruby-workflow-timeouts-execution-timeout {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/timeouts/client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/timeouts/client.rb)
+```rb
 result = my_client.execute_workflow(
   MyWorkflow, 'some-input',
   id: 'my-workflow-id', task_queue: 'my-task-queue',
   execution_timeout: 5 * 60
 )
 ```
+<!--SNIPEND-->
 
 ## Workflow retries {/* #workflow-retries */}
 
@@ -41,10 +44,13 @@ Workflow Executions do not retry by default, and Retry Policies should be used w
 
 The `retry_policy` can be set when calling `start_workflow` or `execute_workflow`.
 
-```ruby
+<!--SNIPSTART ruby-workflow-timeouts-retry-policy {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/timeouts/client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/timeouts/client.rb)
+```rb
 result = my_client.execute_workflow(
   MyWorkflow, 'some-input',
   id: 'my-workflow-id', task_queue: 'my-task-queue',
   retry_policy: Temporalio::RetryPolicy.new(max_interval: 10)
 )
 ```
+<!--SNIPEND-->
