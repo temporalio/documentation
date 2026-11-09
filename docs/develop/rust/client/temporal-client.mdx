@@ -75,10 +75,11 @@ service-version = "v1.2.3"
 
 Load the configuration and connect with the `prod` profile as follows:
 
+<!--SNIPSTART rust-temporal-client-connect-profile-->
+[rust-sandbox/client/temporal-client/src/bin/connect_prod_profile.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/connect_prod_profile.rs)
 ```rust
 use temporalio_client::{
-    Client, ClientOptions, Connection,
-    envconfig::LoadClientConfigProfileOptions,
+    Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
 };
 
 #[tokio::main]
@@ -89,13 +90,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             .build(),
     )?;
     let connection = Connection::connect(conn_opts).await?;
-    let client = Client::new(connection, client_opts)?;
+    let _client = Client::new(connection, client_opts)?;
 
-    ...
+    // Use the client to start Workflow Executions, send Signals, and so on.
+    println!("Connected with the prod profile!");
 
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -103,9 +106,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 You can also configure the Temporal Client with environment variables using `envconfig`. This is useful for local development, CI, and production deployments.
 
+<!--SNIPSTART rust-temporal-client-worker-env-->
+[rust-sandbox/client/temporal-client/src/bin/worker.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/worker.rs)
 ```rust
+use temporal_client::{activities::GreetingActivities, workflows::HelloWorldWorkflow};
 use temporalio_client::{
-    Client, ClientOptions, Connection,
+    Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
 };
 use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 
@@ -113,7 +119,7 @@ use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let runtime = Runtime::from_current_tokio(Default::default())?;
     let (conn_opts, client_opts) =
-        ClientOptions::load_from_config(Default::default())?;
+        ClientOptions::load_from_config(LoadClientConfigProfileOptions::default())?;
     let connection = Connection::connect(conn_opts).await?;
     let client = Client::new(connection, client_opts)?;
 
@@ -129,6 +135,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -136,13 +143,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 You can also specify connection options directly in code. This is convenient for local development and testing.
 
+<!--SNIPSTART rust-temporal-client-connect-code-->
+[rust-sandbox/client/temporal-client/src/bin/start_workflow.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/start_workflow.rs)
 ```rust
+use std::str::FromStr;
+
+use temporal_client::workflows::GreetingsWorkflow;
+use temporalio_client::{
+    Client, ClientOptions, Connection, ConnectionOptions, Url, WorkflowStartOptions,
+};
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let (conn_opts, client_opts) =
-        ClientOptions::load_from_config(Default::default())?;
-    let connection = Connection::connect(conn_opts).await?;
-    let client = Client::new(connection, client_opts)?;
+    let connection_options =
+        ConnectionOptions::new(Url::from_str("http://localhost:7233")?).build();
+    let connection = Connection::connect(connection_options).await?;
+    let client = Client::new(connection, ClientOptions::new("default").build())?;
 
     let wf_handle = client
         .start_workflow(
@@ -151,8 +167,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
         )
         .await?;
+    println!("Started Workflow, Run ID: {:?}", wf_handle.run_id());
+
+    Ok(())
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -199,10 +219,11 @@ client_key_path = "/path/to/client.key"
 
 Then load the profile and connect:
 
+<!--SNIPSTART rust-temporal-client-cloud-profile-->
+[rust-sandbox/client/temporal-client/src/bin/connect_api_profile.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/connect_api_profile.rs)
 ```rust
 use temporalio_client::{
-    Client, ClientOptions, Connection,
-    envconfig::LoadClientConfigProfileOptions,
+    Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
 };
 
 #[tokio::main]
@@ -215,12 +236,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Client setup
     let connection = Connection::connect(conn_opts).await?;
-    let client = Client::new(connection, client_opts)?;
+    let _client = Client::new(connection, client_opts)?;
 
     println!("Connected to Temporal Cloud!");
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -236,10 +258,12 @@ The following environment variables are commonly used to connect to Temporal Clo
 
 After setting the environment variables, load the configuration and connect:
 
+<!--SNIPSTART rust-temporal-client-worker-env-->
+[rust-sandbox/client/temporal-client/src/bin/worker.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/worker.rs)
 ```rust
+use temporal_client::{activities::GreetingActivities, workflows::HelloWorldWorkflow};
 use temporalio_client::{
-    Client, ClientOptions, Connection,
-    envconfig::LoadClientConfigProfileOptions,
+    Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
 };
 use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 
@@ -263,6 +287,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -270,28 +295,31 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 You can also specify connection options directly in code for Temporal Cloud.
 
+<!--SNIPSTART rust-temporal-client-cloud-code-->
+[rust-sandbox/client/temporal-client/src/bin/connect_cloud_api_key.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/connect_cloud_api_key.rs)
 ```rust
 use std::str::FromStr;
-use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, Url};
+
+use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions, Url};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let connection_options = ConnectionOptions::new(Url::from_str(
         "https://your-namespace.a1b2c.tmprl.cloud:7233",
     )?)
-        .api_key("your-api-key")
-        .build();
+    .api_key("your-api-key")
+    // An API key doesn't turn on TLS by itself.
+    .tls_options(TlsOptions::default())
+    .build();
 
     let connection = Connection::connect(connection_options).await?;
-    let _client = Client::new(
-        connection,
-        ClientOptions::new("your-namespace").build(),
-    )?;
+    let _client = Client::new(connection, ClientOptions::new("your-namespace").build())?;
 
     println!("Connected to Temporal Cloud!");
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -316,16 +344,18 @@ Starting a Workflow Execution creates the first [WorkflowExecutionStarted](/refe
 
 In Rust, use `start_workflow()` to start a Workflow and return a handle.
 
+<!--SNIPSTART rust-temporal-client-start-workflow {"enable_code_dedenting": true, "selectedLines": ["1-7"]}-->
+[rust-sandbox/client/temporal-client/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/client.rs)
 ```rust
-let handle = client.start_workflow(
-    GreetingsWorkflow::run,
-    (),
-    WorkflowStartOptions::new(
-        "my-task-queue",
-        "greetings-workflow-10",
-    ).build()
-).await?;
+let handle = client
+    .start_workflow(
+        GreetingsWorkflow::run,
+        (),
+        WorkflowStartOptions::new("your-task-queue", "your-workflow-id").build(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
@@ -335,17 +365,18 @@ For a Workflow to make progress, at least one Worker must be polling the same Ta
 
 In Rust, set the Task Queue in `WorkflowStartOptions`:
 
+<!--SNIPSTART rust-temporal-client-start-workflow {"enable_code_dedenting": true, "selectedLines": ["1-7"]}-->
+[rust-sandbox/client/temporal-client/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/client.rs)
 ```rust
 let handle = client
     .start_workflow(
         GreetingsWorkflow::run,
         (),
-        WorkflowStartOptions::new(
-            "your-task-queue", 
-            "your-workflow-id"
-        ).build(),
-    ).await?;
+        WorkflowStartOptions::new("your-task-queue", "your-workflow-id").build(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
 ### Set a Workflow Id {/* #workflow-id */}
 
@@ -356,17 +387,18 @@ customer identifier.
 
 In Rust, set the Workflow Id in `WorkflowStartOptions`:
 
+<!--SNIPSTART rust-temporal-client-start-workflow {"enable_code_dedenting": true, "selectedLines": ["1-7"]}-->
+[rust-sandbox/client/temporal-client/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/client.rs)
 ```rust
 let handle = client
     .start_workflow(
         GreetingsWorkflow::run,
         (),
-        WorkflowStartOptions::new(
-            "your-task-queue", 
-            "your-workflow-id"
-        ).build(),
-    ).await?;
+        WorkflowStartOptions::new("your-task-queue", "your-workflow-id").build(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
 ## Get Workflow results {/* #get-workflow-results */}
 
@@ -375,16 +407,16 @@ You can use that handle to wait for the result, describe the Workflow, or intera
 
 To get the result of a newly started Workflow:
 
+<!--SNIPSTART rust-temporal-client-start-workflow {"enable_code_dedenting": true}-->
+[rust-sandbox/client/temporal-client/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/client.rs)
 ```rust
 let handle = client
     .start_workflow(
         GreetingsWorkflow::run,
         (),
-        WorkflowStartOptions::new(
-            "your-task-queue", 
-            "your-workflow-id"
-        ).build(),
-    ).await?;
+        WorkflowStartOptions::new("your-task-queue", "your-workflow-id").build(),
+    )
+    .await?;
 
 let result = handle
     .get_result(WorkflowGetResultOptions::default())
@@ -392,3 +424,4 @@ let result = handle
 
 println!("Result: {:?}", result);
 ```
+<!--SNIPEND-->
