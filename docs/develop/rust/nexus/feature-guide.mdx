@@ -76,5 +76,5 @@ impl GreetingWorkflow {
 - `operation` - The operation name
 - `input` - The input payload (optional)
 - `schedule_to_close_timeout` - How long the caller waits for the operation to complete
-- `schedule_to_start_timeout` - How long the caller waits for the handler to start the operation
-- `start_to_close_timeout` - How long an asynchronous operation can run after it starts. Synchronous operations ignore it.
+- `schedule_to_start_timeout` - How long the caller waits for the handler to start the operation. Requires Temporal Server 1.31.0 or later.
+- `start_to_close_timeout` - How long an asynchronous operation can run after it starts. Synchronous operations ignore it. Requires Temporal Server 1.31.0 or later.
