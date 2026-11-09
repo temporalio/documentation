@@ -27,11 +27,13 @@ In Rust, awaiting `ctx.start_child_workflow()` waits for this Event before retur
 
 To start a Child Workflow in Rust, use `ctx.start_child_workflow()`:
 
+<!--SNIPSTART rust-child-workflows-start-->
+[rust-sandbox/workflows/child-workflows/src/start.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/child-workflows/src/start.rs)
 ```rust
 use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::{ChildWorkflowOptions, WorkflowContext, WorkflowContextView, WorkflowResult};
 
-// child workflow
+// Child Workflow
 #[workflow]
 pub struct ComposeGreetingWorkflow {
     pub name: String,
@@ -51,7 +53,7 @@ impl ComposeGreetingWorkflow {
     }
 }
 
-// parent workflow
+// Parent Workflow
 #[workflow]
 pub struct GreetingWorkflow {
     pub name: String,
@@ -82,7 +84,7 @@ impl GreetingWorkflow {
     }
 }
 ```
-
+<!--SNIPEND-->
 
 ### Specify Child Workflow options
 
@@ -92,7 +94,10 @@ Use [`ChildWorkflowOptions`](https://docs.rs/temporalio-sdk/latest/temporalio_sd
 
 You can start multiple Child Workflows and wait for all of them:
 
+<!--SNIPSTART rust-child-workflows-parallel {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/child-workflows/src/parallel.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/child-workflows/src/parallel.rs)
 ```rust
+#[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<Option<String>>> {
     let name = ctx.state(|s| s.name.clone());
 
@@ -103,7 +108,7 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<Option<S
             ChildWorkflowOptions::workflow_id("greeting-child-en".to_string()),
         )
         .await?;
-    
+
     let es_greeting_child = ctx
         .start_child_workflow(
             ComposeEsGreetingWorkflow::run,
@@ -111,19 +116,17 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<Option<S
             ChildWorkflowOptions::workflow_id("greeting-child-es".to_string()),
         )
         .await?;
-    
-    let en_result = en_greeting_child.result().await;
-    let es_result = es_greeting_child.result().await;
 
-    let combined = vec![en_result, es_result];
+    // Both Child Workflows are running. Wait for each result.
+    let en_result = en_greeting_child.result().await.ok();
+    let es_result = es_greeting_child.result().await.ok();
 
-    print!("Combined greetings: {:?}", combined);
-
-    ...
+    Ok(vec![en_result, es_result])
 }
 ```
+<!--SNIPEND-->
 
-Both child Workflows run in parallel and the parent waits for both to complete.
+The parent starts both Child Workflows before it waits on either result, so they run at the same time. The parent then waits for both to complete.
 
 ## Parent Close Policy {/* #parent-close-policy */}
 
@@ -131,11 +134,11 @@ A [Parent Close Policy](/parent-close-policy) determines what happens to a Child
 
 The default Parent Close Policy is set to terminate the Child Workflow Execution.
 
-Set Parent Close Policy using the [`parent_close_policy`](https://docs.rs/temporalio-sdk/latest/temporalio_sdk/enum.ParentClosePolicy.html) field in `ChildWorkflowOptions`:
+Set Parent Close Policy using the [`parent_close_policy`](https://docs.rs/temporalio-sdk/latest/temporalio_sdk/enum.ParentClosePolicy.html) field in `ChildWorkflowOptions`. Import `ParentClosePolicy` from `temporalio_sdk`:
 
+<!--SNIPSTART rust-child-workflows-parent-close-policy {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/child-workflows/src/parent_close.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/child-workflows/src/parent_close.rs)
 ```rust
-use temporalio_sdk::ParentClosePolicy;
-
 let es_greeting_child = ctx
     .start_child_workflow(
         ComposeEsGreetingWorkflow::run,
@@ -147,6 +150,7 @@ let es_greeting_child = ctx
     )
     .await?;
 ```
+<!--SNIPEND-->
 
 ### Parent Close Policy options
 

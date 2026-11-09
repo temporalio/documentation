@@ -37,21 +37,23 @@ Available fields:
 - `run_timeout`
 - `task_timeout`
 
+<!--SNIPSTART rust-workflow-timeouts-timeouts {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/timeouts/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/timeouts/src/client.rs)
 ```rust
-let wf_handle = client.start_workflow(
-    GreetingsWorkflow::run, 
-    (), 
-    WorkflowStartOptions::new(
-        "my-task-queue", 
-        "greetings-workflow-10",
+let wf_handle = client
+    .start_workflow(
+        GreetingsWorkflow::run,
+        (),
+        WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10")
+            // Set timeouts
+            .execution_timeout(Duration::from_secs(3600))
+            .run_timeout(Duration::from_secs(600))
+            .task_timeout(Duration::from_secs(10))
+            .build(),
     )
-    // Set timeouts
-    .execution_timeout(Duration::from_secs(3600))
-    .run_timeout(Duration::from_secs(600))
-    .task_timeout(Duration::from_secs(10))
-    .build()
-).await?;
+    .await?;
 ```
+<!--SNIPEND-->
 
 ## Workflow retries {/* #workflow-retries */}
 
@@ -61,25 +63,27 @@ Workflow Executions do **not retry by default**. Retry Policies should only be a
 
 To enable retries, configure a [Retry Policy](/encyclopedia/retry-policies) when starting the Workflow.
 
+<!--SNIPSTART rust-workflow-timeouts-retry-policy {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/timeouts/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/timeouts/src/client.rs)
 ```rust
-let wf_handle = client.start_workflow(
-    GreetingsWorkflow::run, 
-    (), 
-    WorkflowStartOptions::new(
-        "my-task-queue", 
-        "greetings-workflow-10",
-    )
-    .retry_policy(
-        RetryPolicy::builder()
-            .initial_interval(Duration::from_secs(1))
-            .backoff_coefficient(2.0)
-            .maximum_interval(Duration::from_secs(100))
-            .maximum_attempts(5)
-            .non_retryable_error_types(["NonRetryableError"])
+let wf_handle = client
+    .start_workflow(
+        GreetingsWorkflow::run,
+        (),
+        WorkflowStartOptions::new("my-task-queue", "greetings-workflow-11")
+            .retry_policy(
+                RetryPolicy::builder()
+                    .initial_interval(Duration::from_secs(1))
+                    .backoff_coefficient(2.0)
+                    .maximum_interval(Duration::from_secs(100))
+                    .maximum_attempts(5)
+                    .non_retryable_error_types(["NonRetryableError"])
+                    .build(),
+            )
             .build(),
     )
-    .build()
-).await?;
+    .await?;
 ```
+<!--SNIPEND-->
 
 Retry Policies define retry behavior such as backoff intervals, maximum attempts, and retry conditions.

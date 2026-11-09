@@ -24,9 +24,11 @@ The `#[activities]` macro marks an `impl` block as containing Activity definitio
 
 Here's an example of an Activity:
 
+<!--SNIPSTART rust-activity-basics-definition-->
+[rust-sandbox/activities/basics/src/definition.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/definition.rs)
 ```rust
-use temporalio_sdk::activities::{ActivityContext, ActivityError};
 use temporalio_macros::activities;
+use temporalio_sdk::activities::{ActivityContext, ActivityError};
 
 pub struct GreetingActivities;
 
@@ -38,12 +40,16 @@ impl GreetingActivities {
     }
 
     #[activity]
-    pub async fn send_notification(_ctx: ActivityContext, message: String) -> Result<(), ActivityError> {
+    pub async fn send_notification(
+        _ctx: ActivityContext,
+        message: String,
+    ) -> Result<(), ActivityError> {
         println!("Sending notification: {}", message);
         Ok(())
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Define Activity parameters {/* #activity-parameters */}
 
@@ -66,10 +72,12 @@ The `ActivityContext` parameter provides access to Activity execution informatio
 
 Activities can also take `Arc<Self>` and be registered using an instance. Here's an example using `Arc`:
 
+<!--SNIPSTART rust-activity-basics-arc-->
+[rust-sandbox/activities/basics/src/arc_instance.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/arc_instance.rs)
 ```rust
-struct SleeperActivities {
-    acts_started: Arc<Semaphore>,
-    acts_done: Arc<Semaphore>,
+pub struct SleeperActivities {
+    pub acts_started: Arc<Semaphore>,
+    pub acts_done: Arc<Semaphore>,
 }
 
 #[activities]
@@ -88,11 +96,14 @@ impl SleeperActivities {
     }
 }
 ```
+<!--SNIPEND-->
 
 Activity parameters should be serializable and deserializable using serde. Use `#[derive(Serialize, Deserialize)]` on your data types:
 
+<!--SNIPSTART rust-activity-basics-parameters-->
+[rust-sandbox/activities/basics/src/parameters.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/parameters.rs)
 ```rust
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use temporalio_macros::activities;
 use temporalio_sdk::activities::{ActivityContext, ActivityError};
 
@@ -115,6 +126,7 @@ impl GreetingActivities {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Define Activity return values {/* #activity-return-values */}
 
@@ -124,6 +136,8 @@ Activity return values are subject to payload size limits in Temporal. The defau
 
 The return type of an Activity is `Result<T, ActivityError>`. The `T` type must implement `Serialize`. Use `ApplicationFailure::new` for errors that should be retried, and `ApplicationFailure::non_retryable` for permanent failures:
 
+<!--SNIPSTART rust-activity-basics-return-values-->
+[rust-sandbox/activities/basics/src/return_values.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/return_values.rs)
 ```rust
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ProcessedData {
@@ -147,9 +161,7 @@ impl MyActivities {
 
         // If an error should not be retried
         if input.len() > 1000000 {
-            return Err(
-                ApplicationFailure::non_retryable("Input too large").into(),
-            );
+            return Err(ApplicationFailure::non_retryable("Input too large").into());
         }
 
         let result = ProcessedData {
@@ -160,13 +172,16 @@ impl MyActivities {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Customize your Activity Type {/* #activity-type */}
 
 Activities have a Type that refers to the Activity name. The Activity name is used to identify Activity Types in the Workflow Execution Event History, Visibility Queries, and Metrics.
 
-By default, the Activity name is the method name. You can customize it by providing a `name` parameter to the `#[activity]` macro:
+By default, the Activity name is the `impl` type name and the method name joined by `::`, such as `GreetingActivities::greet`. You can customize it by providing a `name` parameter to the `#[activity]` macro:
 
+<!--SNIPSTART rust-activity-basics-activity-type-->
+[rust-sandbox/activities/basics/src/activity_type.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/activity_type.rs)
 ```rust
 #[activities]
 impl GreetingActivities {
@@ -176,9 +191,13 @@ impl GreetingActivities {
     }
 
     #[activity(name = "send_email")]
-    pub async fn send_notification(_ctx: ActivityContext, message: String) -> Result<(), ActivityError> {
+    pub async fn send_notification(
+        _ctx: ActivityContext,
+        message: String,
+    ) -> Result<(), ActivityError> {
         println!("Sending notification: {}", message);
         Ok(())
     }
 }
 ```
+<!--SNIPEND-->

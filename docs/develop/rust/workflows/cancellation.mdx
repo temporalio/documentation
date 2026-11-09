@@ -36,17 +36,24 @@ process.
 - The Workflow code can handle the cancelation and execute any cleanup logic.
 - The system doesn't forcefully stop the Workflow.
 
-To cancel a Workflow Execution in Rust, use the `cancel` method on the Workflow handler:
+To cancel a Workflow Execution in Rust, use the `cancel` method on the Workflow handle:
 
+<!--SNIPSTART rust-cancellation-cancel {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/cancellation/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/cancellation/src/client.rs)
 ```rust
-let handle = client.start_workflow(
-    GreetingsWorkflow::run, 
-    (), 
-    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()
-).await?;
+let handle = client
+    .start_workflow(
+        CancellationWorkflow::run,
+        (),
+        WorkflowStartOptions::new("my-task-queue", "cancellation-workflow-1").build(),
+    )
+    .await?;
 
-handle.cancel(WorkflowCancelOptions::builder().reason("No longer needed").build()).await?;
+handle
+    .cancel(WorkflowCancelOptions::builder().reason("No longer needed").build())
+    .await?;
 ```
+<!--SNIPEND-->
 
 ### Cancel an Activity from a Workflow {/* #cancel-activity */}
 
@@ -62,8 +69,11 @@ the error must be propagated.
 
 Example of a cancellable Activity in Rust:
 
+<!--SNIPSTART rust-cancellation-activities-->
+[rust-sandbox/workflows/cancellation/src/activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/cancellation/src/activities.rs)
 ```rust
-#![allow(unreachable_pub)]
+use std::time::Duration;
+
 use temporalio_macros::activities;
 use temporalio_sdk::activities::{ActivityContext, ActivityError};
 
@@ -77,11 +87,12 @@ impl CancellationActivities {
         _input: (),
     ) -> Result<String, ActivityError> {
         loop {
+            // A cancellation request reaches the Activity through its Heartbeats.
             if ctx.is_cancelled() {
                 return Err(ActivityError::cancelled());
             }
             ctx.record_heartbeat(()).await?;
-            tokio::time::sleep(std::time::Duration::from_millis(200)).await;
+            tokio::time::sleep(Duration::from_millis(200)).await;
         }
     }
 
@@ -91,10 +102,23 @@ impl CancellationActivities {
     }
 }
 ```
+<!--SNIPEND-->
 
-Canceling the Activity from a Workflow:
+Canceling the Workflow cancels its running Activity. By default, an Activity uses the Workflow's cancellation token:
 
+<!--SNIPSTART rust-cancellation-workflow-->
+[rust-sandbox/workflows/cancellation/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/cancellation/src/workflows.rs)
 ```rust
+use std::time::Duration;
+
+use temporalio_macros::{workflow, workflow_methods};
+use temporalio_sdk::{
+    ActivityExecutionError, ActivityOptions, WorkflowCancellationToken, WorkflowContext,
+    WorkflowResult,
+};
+
+use crate::activities::CancellationActivities;
+
 fn activity_opts() -> ActivityOptions {
     ActivityOptions::with_start_to_close_timeout(Duration::from_secs(300))
         .heartbeat_timeout(Duration::from_secs(5))
@@ -121,6 +145,7 @@ impl CancellationWorkflow {
             Ok(value) => Ok(value),
             Err(ActivityExecutionError::Cancelled(_)) => {
                 let reason = ctx.cancellation_token().reason().unwrap_or_default();
+                // Use a new cancellation token so the cleanup Activity isn't canceled too.
                 let cleanup_result = ctx
                     .execute_activity(
                         CancellationActivities::cleanup,
@@ -138,6 +163,11 @@ impl CancellationWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
+
+The Workflow catches the cancellation error, runs a cleanup Activity with a new cancellation token so the cleanup isn't canceled too, and returns `Ok`.
+Because it returns `Ok`, the Workflow Execution closes as Completed.
+To close it as Canceled, return `Err(WorkflowTermination::cancelled())` after the cleanup.
 
 ## Terminate a Workflow Execution {/* #termination */}
 
@@ -148,21 +178,24 @@ Terminating a Workflow forcefully stops Workflow Execution. This action resemble
 - The Workflow code gets no chance to handle termination.
 - A Workflow Task doesn't get scheduled.
 
-To terminate a Workflow Execution in Rust, use the `terminate` method on the client.
+To terminate a Workflow Execution in Rust, use the `terminate` method on the Workflow handle:
 
+<!--SNIPSTART rust-cancellation-terminate {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/cancellation/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/cancellation/src/client.rs)
 ```rust
-let handle = client.start_workflow(
-    GreetingsWorkflow::run, 
-    (), 
-    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()
-).await?;
+let handle = client
+    .start_workflow(
+        CancellationWorkflow::run,
+        (),
+        WorkflowStartOptions::new("my-task-queue", "cancellation-workflow-2").build(),
+    )
+    .await?;
 
-handle.terminate(WorkflowTerminateOptions::builder()
-    .reason("Emergency shutdown")
-    .build()
-).await?;
-
+handle
+    .terminate(WorkflowTerminateOptions::builder().reason("Emergency shutdown").build())
+    .await?;
 ```
+<!--SNIPEND-->
 
 ## Reset a Workflow Execution {/* #reset */}
 
