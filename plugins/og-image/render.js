@@ -116,6 +116,9 @@ function buildTree({ title, description, footerText = DEFAULT_FOOTER_TEXT }, { l
               flexDirection: 'column',
               justifyContent: 'space-between',
               padding: '64px',
+              // Without border-box, satori 0.63 adds the padding on top of
+              // height: 100%, which pushes the footer off the card.
+              boxSizing: 'border-box',
               fontFamily: 'Inter',
             },
             children: [
