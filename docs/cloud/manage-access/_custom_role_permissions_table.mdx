@@ -41,6 +41,11 @@
 | Permission | Cloud Ops API | Resource type |
 | ---------- | ------------- | ------------- |
 | `cloud.namespace.addRegion` | [AddNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/%7Bnamespace%7D/add-region) | Namespace |
+| `cloud.namespace.callerratelimit.create` | [CreateCallerRateLimit](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/caller-rate-limits/POST/cloud/namespaces/%7Bnamespace%7D/caller-ratelimits) | Namespace |
+| `cloud.namespace.callerratelimit.delete` | [DeleteCallerRateLimit](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/caller-rate-limits/DELETE/cloud/namespaces/%7Bnamespace%7D/caller-ratelimits/%7BcallerRateLimitId%7D) | Namespace |
+| `cloud.namespace.callerratelimit.get` | [GetCallerRateLimit](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/caller-rate-limits/GET/cloud/namespaces/%7Bnamespace%7D/caller-ratelimits/%7BcallerRateLimitId%7D) | Namespace |
+| `cloud.namespace.callerratelimit.list` | [GetCallerRateLimits](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/caller-rate-limits/GET/cloud/namespaces/%7Bnamespace%7D/caller-ratelimits) | Namespace |
+| `cloud.namespace.callerratelimit.update` | [UpdateCallerRateLimit](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/caller-rate-limits/POST/cloud/namespaces/%7Bnamespace%7D/caller-ratelimits/%7BcallerRateLimitId%7D) | Namespace |
 | `cloud.namespace.capacityinfo.get` | [GetNamespaceCapacityInfo](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D/capacity-info) | Namespace |
 | `cloud.namespace.delete` | [DeleteNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/DELETE/cloud/namespaces/%7Bnamespace%7D) | Namespace |
 | `cloud.namespace.deleteRegion` | [DeleteNamespaceRegion](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/DELETE/cloud/namespaces/%7Bnamespace%7D/regions/%7Bregion%7D) | Namespace |
