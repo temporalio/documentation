@@ -16,7 +16,9 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 Export closed Workflow Event Histories from an Azure-hosted Temporal Cloud Namespace to an Azure Blob Storage container.
 Export is available wherever Temporal Cloud supports Azure Namespaces.
-For export timing and file format, see [Workflow History Export](/cloud/export).
+Export runs in hourly batches and only includes Workflow Executions that close after you enable export.
+It does not backfill Workflow Executions that closed before export was enabled.
+See [Workflow History Export](/cloud/export) for delivery guarantees and timing.
 
 ## Prerequisites
 

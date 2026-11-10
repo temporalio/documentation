@@ -17,9 +17,16 @@ Workflow History Export allows users to export closed Workflow Histories from Te
 Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a Self-Hosted Temporal Server. 
 Archival is not supported in Temporal Cloud.
 
-Exports run hourly, beginning 10 minutes after the hour. 
-Allow up to 24 hours for a closed Workflow to appear in the exported file.
-Delivery is guaranteed at least once.
+Workflow History Export only exports Workflow Executions that close after you enable export.
+It does not backfill Workflow Executions that closed before export was enabled, even if their Event Histories are still within the Namespace's retention period.
+When you re-enable export after disabling it, Workflow Executions that closed while export was disabled are not backfilled.
+
+Exports run in hourly batches, beginning 10 minutes after the hour.
+Allow up to 24 hours for an eligible closed Workflow Execution to appear in an exported file.
+
+Workflow History Export guarantees at-least-once delivery of eligible Workflow Executions.
+The same Workflow Execution may be exported more than once, so duplicates are possible.
+Handle duplicate Workflow Executions when processing exported data.
 
 ## What's in the exported data {/* #exported-data */}
 
@@ -152,8 +159,9 @@ After Export has been configured, you can check that it's still working in sever
 
 1. **Object Storage**:
 
-   - File Delivery: After the initial hour of setting up, inspect your object storage.
-     You should see the exported Event History files.
+   - File Delivery: After enabling export and closing a Workflow Execution, inspect your object storage for exported Event History files.
+     Exports run in hourly batches, but allow up to 24 hours for the Workflow Execution to appear.
+     Workflow Executions that closed before export was enabled are not exported.
    - Directory Structure: Your exported files will adhere to the following naming convention and path:
 
    ```bash

@@ -29,6 +29,10 @@ Before configuring the Export Sink, ensure you have the following:
 
 There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), the [CLI](#using-the-cli), or [`terraform`](#using-terraform).
 
+Export runs in hourly batches and only includes Workflow Executions that close after you enable export.
+It does not backfill Workflow Executions that closed before export was enabled.
+See [Workflow History Export](/cloud/export) for delivery guarantees and timing.
+
 ### Using Temporal Cloud UI
 
 You can use the Temporal Cloud UI to configure the Workflow History Export.
