@@ -62,7 +62,7 @@ Contracts are modeled with JSON Schema 2020-12. Each definition file is one of t
 
 A file is one or the other. A contract can span several files, with a Nexus document pulling in types from pure-schema files through `$ref`.
 
-The approval contract declares a Service, so its entry file is a Nexus document with two sections. `services` declares the Service and its Operations, each naming its input and output by reference. `$defs` declares the types those references point at, in ordinary JSON Schema with nothing Nexus-specific, which is what lets the same types generate into four languages.
+The approval contract declares a Service, so its entry file is a Nexus document with two sections. `services` declares the Service and its Operations, each naming its input and output by reference. `$defs` declares the types those references point at, in ordinary JSON Schema with nothing Nexus-specific, which is what lets the same types generate into five languages.
 
 :::note How to write a contract of your own
 
