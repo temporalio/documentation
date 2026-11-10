@@ -33,13 +33,18 @@ Available timeout fields include:
 - `schedule_to_start_timeout`
 - `start_to_close_timeout`
 
-```rust
-let greeting = ctx.execute_activity(
-    MyActivities::greet,
-    name,
-    ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
-).await?;
+<!--SNIPSTART rust-activity-timeouts-start-to-close {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/timeouts/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/workflows.rs)
+```rs
+let greeting = ctx
+    .execute_activity(
+        MyActivities::greet,
+        name,
+        ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
 ### Set an Activity Retry Policy {/* #activity-retries */}
 
@@ -47,50 +52,57 @@ A Retry Policy works together with timeouts to provide fine-grained control over
 
 In Rust, configure the Retry Policy as part of the Activity options when scheduling the Activity from Workflow code. Because the Rust SDK API is still evolving, treat the following as representative of the current style rather than a guaranteed stable surface.
 
-```rust
-let language = ctx.execute_activity(
-    MyActivities::call_greeting_service,
-    ActivityLanguages::English,
-    ActivityOptions::with_start_to_close_timeout(Duration::from_secs(30))
-        .retry_policy(
-            RetryPolicy::builder()
-                .initial_interval(Duration::from_secs(10))
-                .backoff_coefficient(2.0)
-                .maximum_interval(Duration::from_secs(100))
-                .maximum_attempts(5)
-                .non_retryable_error_types(["NonRetryableError"])
-                .build(),
-        )
-        .build(),
-).await?;
+<!--SNIPSTART rust-activity-timeouts-retry-policy {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/timeouts/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/workflows.rs)
+```rs
+let language = ctx
+    .execute_activity(
+        MyActivities::call_greeting_service,
+        ActivityLanguages::English,
+        ActivityOptions::with_start_to_close_timeout(Duration::from_secs(30))
+            .retry_policy(
+                RetryPolicy::builder()
+                    .initial_interval(Duration::from_secs(10))
+                    .backoff_coefficient(2.0)
+                    .maximum_interval(Duration::from_secs(100))
+                    .maximum_attempts(5)
+                    .non_retryable_error_types(["NonRetryableError"])
+                    .build(),
+            )
+            .build(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
-### Override the retry interval with `explicit_delay` {/* #next-retry-delay */}
+### Override the retry interval with `next_retry_delay` {/* #next-retry-delay */}
 
 To override the next retry interval set by the current policy, return a failure from an Activity with a custom next retry delay. That value replaces the interval the Retry Policy would otherwise use for the next retry attempt. This is useful when retry timing depends on runtime state such as the current attempt number.
 
 For example, you can increase the delay linearly with each attempt instead of using the exponential backoff defined by a backoff coefficient:
 
-```rust
+<!--SNIPSTART rust-activity-timeouts-next-retry-delay-->
+[rust-sandbox/activities/timeouts/src/retry_delay.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/retry_delay.rs)
+```rs
+use std::time::Duration;
+
 use temporalio_macros::activities;
 use temporalio_sdk::{
     ApplicationFailure,
     activities::{ActivityContext, ActivityError},
 };
-use std::sync::atomic::AtomicUsize;
 
-struct TestGreetActivities {
-    counter: AtomicUsize,
-}
+pub struct TestGreetActivities;
 
 #[activities]
 impl TestGreetActivities {
     #[activity]
-    pub async fn greet(_ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
+    pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
         if name == "ziggy" {
+            // Wait 5 seconds after the first attempt, 10 after the second, and so on.
+            let attempt = ctx.info().attempt;
             return Err(ApplicationFailure::builder("Ziggy is not a valid name")
-                // next retry will be after 5 seconds
-                .next_retry_delay(std::time::Duration::from_secs(5))
+                .next_retry_delay(Duration::from_secs(5 * u64::from(attempt)))
                 .build()
                 .into());
         }
@@ -98,6 +110,7 @@ impl TestGreetActivities {
     }
 }
 ```
+<!--SNIPEND-->
 
 ## Heartbeat an Activity {/* #activity-heartbeats */}
 
@@ -109,7 +122,10 @@ Heartbeats can include `details` that describe current progress. If the Activity
 
 To heartbeat an Activity in Rust, call the heartbeat API from inside the Activity with `record_heartbeat`:
 
-```rust
+<!--SNIPSTART rust-activity-timeouts-heartbeat {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/timeouts/src/heartbeat.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/heartbeat.rs)
+```rs
+#[activity]
 pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
     ctx.record_heartbeat("greet activity started".to_string())
         .await?;
@@ -121,12 +137,15 @@ pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, Activit
     Ok(format!("Hello, {}!", name))
 }
 ```
+<!--SNIPEND-->
 
 ### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works together with Activity heartbeats and sets the maximum time allowed between heartbeats. Configure it as part of the Activity options when scheduling the Activity.
 
-```rust
+<!--SNIPSTART rust-activity-timeouts-heartbeat-timeout {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/timeouts/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/workflows.rs)
+```rs
 let language = ctx.execute_activity(
     MyActivities::call_greeting_service,
     ActivityLanguages::English,
@@ -135,3 +154,4 @@ let language = ctx.execute_activity(
         .build(),
 );
 ```
+<!--SNIPEND-->
