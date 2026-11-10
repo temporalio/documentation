@@ -1,0 +1,365 @@
+---
+id: payload-encryption-validation
+title: Payload encryption validation
+sidebar_label: Payload encryption validation
+description: Check Payloads for the encryption metadata configured on a Temporal Cloud Namespace, and reject requests that do not match.
+toc_max_heading_level: 3
+tags:
+  - Temporal Cloud
+  - Security
+  - Encryption
+  - Namespaces
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="payloadEncryptionValidation">
+Access is invite-only. Behavior and configuration can change. There is no additional charge. Contact your Temporal account team or <a href="/evaluate/cloud/support#support-ticket">Temporal support</a> to request access.
+</ReleaseNoteHeader>
+
+Payload encryption validation is a Namespace-level Temporal Cloud control. It checks whether supported incoming Payloads carry the encryption metadata expected from your [Payload Codec](/payload-codec) or [encryption proxy](/production-deployment/temporal-proxy/encrypt-payloads).
+
+Use it to monitor encryption configuration gaps through [OpenMetrics](/cloud/metrics/openmetrics) and, in `deny` mode, reject requests that do not match the metadata key and accepted values, before Temporal Cloud accepts them.
+
+## Check incoming Payloads
+
+Payload encryption validation checks inbound requests for a Namespace. It reports, or rejects, Payloads whose metadata does not match the metadata key and accepted values you configure. For example:
+
+```text
+metadata["encoding"] = "binary/encrypted"
+```
+
+You can configure a different metadata key and multiple accepted values to match your encryption implementation. A Payload passes when the value of that key is one of the accepted values.
+
+Payload encryption validation complements your existing encryption implementation. It does not:
+
+- Encrypt or decrypt Payloads. A Payload Codec still does the encryption.
+- Inspect Payload contents, hold your keys, or prove that a particular cipher was used.
+- Validate encryption algorithms, keys, or key strength.
+- Detect plaintext that has been incorrectly or intentionally labeled with an accepted metadata value.
+
+Only configure metadata values that your implementation uses to identify encrypted Payloads. Adding an accepted metadata value to plaintext does not encrypt it. The check compares that metadata key with the accepted values. Temporal Cloud does not detect a forged metadata value.
+
+## Choose a validation mode
+
+| Mode | Behavior |
+| --- | --- |
+| `disabled` | No check. Omitting the setting and setting the mode to `disabled` both skip validation. `disabled` keeps the saved metadata key, accepted values, and inspect options. |
+| `warn` | Validates supported Payloads and reports failures through [metrics](#monitor-validation-results). Requests continue to be processed and stored. |
+| `deny` | Rejects a request that contains a supported Payload that does not match the configured metadata key and accepted values, and reports the rejection through [metrics](#monitor-validation-results). |
+
+`warn` and `deny` use the same configured inspection scope. `warn` is an observation mode.
+
+:::caution Start with warn
+
+Use `warn` to identify and remediate configuration gaps before enabling `deny`.
+
+`deny` can disrupt applications, including requests sent by Workers and requests associated with existing Workflow Executions. See [Enable deny safely](#enable-deny-safely).
+
+:::
+
+## Prepare a Namespace
+
+Before you enable payload encryption validation:
+
+- Contact your account team or [Temporal support](/evaluate/cloud/support#support-ticket) to have payload encryption validation enabled on your Temporal Cloud account. An account that is not enabled receives `PermissionDenied: payload encryption validation is not enabled for this account`.
+- You need [Namespace Admin](/cloud/manage-access/users#namespace-level-permissions) permission to change the configuration.
+- Configure application-layer encryption with a [Payload Codec](/payload-codec) or [Temporal Proxy](/production-deployment/temporal-proxy/encrypt-payloads).
+- Verify the [metadata key and accepted values](#set-the-metadata-key-and-values) your encryption implementation produces.
+- Identify the Clients, Workers, SDK versions, and operational tools that send requests to the Namespace.
+- Set up access to Temporal Cloud metrics so you can observe validation results.
+
+Configuring a Codec Server endpoint for the Web UI or CLI does not encrypt every Client and Worker. Verify encryption on each sending path.
+
+For background, see [Payload Codecs](/payload-codec) and [Failure Converters](/failure-converter).
+
+## Set the metadata key and values {/* #set-the-metadata-key-and-values */}
+
+The default match is:
+
+- Metadata key: `encoding`
+- Accepted value: `binary/encrypted`
+
+That is the metadata the [encryption samples](/payload-codec#encryption) set. Add other values when a custom codec writes a different metadata value, such as `binary/aes256`. Only list values that your codec sets on encrypted Payloads.
+
+One key and multiple values lets you roll out a new metadata value while `deny` stays on. You can set up to 4 accepted values. Each key and value must be non-blank and at most 255 bytes.
+
+To migrate a codec, add the new value, deploy the new codec, wait until metrics show no traffic on the old value, then remove the old value. Stay in `deny` through that change. See [Migrate accepted metadata values](#migrate-accepted-metadata-values).
+
+### Reserved encryption metadata values
+
+Temporal Cloud reserves certain payload encoding metadata values, including `json/plain` and `json/protobuf`. Do not use these metadata key and value match.
+
+**Do not use these reserved values as accepted encryption metadata in EVE (and in your Payload Codec if you intend to use EVE for validation).** These values represent standard, non-encrypted payload encodings and must not be used to indicate encryption.
+
+EVE configuration requests that include reserved metadata key-value combinations will be rejected.
+
+## Review what is checked
+
+Payload encryption validation checks inbound Temporal requests that carry Payloads. Read [Review coverage and exclusions](#review-coverage-and-exclusions) before you enable `deny`.
+
+On every Namespace where validation is enabled, the check includes Workflow and Activity inputs and results, Signal, Query, and Update arguments, Activity heartbeats, Schedule action input, Memos, and Local Activity markers.
+
+Checks on Headers and Failures are configured separately. They depend on your SDK and on the outcome you want.
+
+Fields that are not checked:
+
+- Search Attributes. They stay queryable.
+- Version and patch markers.
+- Payloads stored in external payload storage.
+- Responses from Temporal Cloud.
+- Event History that is already stored. This control applies to new requests.
+
+## Configure a Namespace
+
+A [Namespace Admin](/cloud/manage-access/users#namespace-level-permissions) can configure payload encryption validation on a Namespace.
+
+### Use the Temporal Cloud UI
+
+1. Open your Namespace in Temporal Cloud.
+2. Open the Namespace settings and select **Encryption Validation**.
+3. Configure the metadata key and accepted values. The defaults are `encoding` and `binary/encrypted`.
+4. Select **WARN** and save the configuration.
+5. Leave Header and Failure inspection disabled until you have tested those paths.
+
+Header and Failure inspection are disabled by default.
+
+### Use the Cloud Ops API
+
+Set `encryption_validation` on the Namespace spec in CreateNamespace or UpdateNamespace.
+
+```json
+{
+  "encryption_validation": {
+    "mode": "ENCRYPTION_VALIDATION_MODE_WARN",
+    "metadata_key": "encoding",
+    "metadata_values": ["binary/encrypted"],
+    "inspect_header": false,
+    "inspect_failure": false
+  }
+}
+```
+
+The API `mode` value is the enum name: `ENCRYPTION_VALIDATION_MODE_DISABLED`, `ENCRYPTION_VALIDATION_MODE_WARN`, or `ENCRYPTION_VALIDATION_MODE_DENY`. The CLI and Terraform use `disabled`, `warn`, and `deny`.
+
+### Use the Temporal Cloud CLI
+
+These commands are experimental and are part of the `temporal cloud` CLI. `tcld` does not have them. The Namespace argument is `namespace.account`.
+
+Read the current setting. If the metadata key or values are empty, the response shows the server defaults that apply: `encoding` and `binary/encrypted`.
+
+```bash
+temporal cloud namespace encryption-validation get \
+  --namespace my-namespace.my-account
+```
+
+Turn validation on in `warn` mode. If the Namespace has no setting yet, pass `--mode`. Omitted key and values use the server defaults: metadata key `encoding`, accepted value `binary/encrypted`, Header inspection off, Failure inspection off.
+
+```bash
+temporal cloud namespace encryption-validation set \
+  --namespace my-namespace.my-account \
+  --mode warn
+```
+
+Set the metadata key and values. `--metadata-value` replaces the whole list. Repeat it for each accepted value, up to 4. Omitted flags keep their current values. `--mode` is required only when the Namespace has no setting yet. At least one flag must be set. If nothing would change, the command returns an error unless you pass `--idempotent`.
+
+```bash
+temporal cloud namespace encryption-validation set \
+  --namespace my-namespace.my-account \
+  --mode warn \
+  --metadata-key encoding \
+  --metadata-value binary/encrypted \
+  --metadata-value binary/aes256
+```
+
+Switch to `deny`:
+
+```bash
+temporal cloud namespace encryption-validation set \
+  --namespace my-namespace.my-account \
+  --mode deny
+```
+
+Turn validation off. The metadata key, accepted values, and inspect settings are kept.
+
+```bash
+temporal cloud namespace encryption-validation disable \
+  --namespace my-namespace.my-account
+```
+
+Set it when creating a Namespace. If any `--encryption-validation-*` flag is present, `--encryption-validation-mode` is required.
+
+```bash
+temporal cloud namespace create \
+  --namespace my-namespace \
+  --region aws-us-west-2 \
+  --retention-days 30 \
+  --encryption-validation-mode warn \
+  --encryption-validation-metadata-key encoding \
+  --encryption-validation-metadata-value binary/encrypted
+```
+
+### Use Terraform
+
+Use a provider release (v1.11.0+) that includes `encryption_validation`.
+
+The example below enables validation in `warn` mode. It accepts Payloads whose metadata matches `encoding = binary/encrypted` or `encoding = binary/aes256`. Header and Failure checks are skipped.
+
+```hcl
+resource "temporalcloud_namespace" "payments" {
+  name           = "payments"
+  regions        = ["aws-us-west-2"]
+  retention_days = 30
+  api_key_auth   = true
+
+  encryption_validation = {
+    mode            = "warn"
+    metadata_key    = "encoding"
+    metadata_values = ["binary/encrypted", "binary/aes256"]
+    inspect_header  = false
+    inspect_failure = false
+  }
+}
+```
+
+`mode` must be `disabled`, `warn`, or `deny`. To leave a Namespace unconfigured, omit `encryption_validation` or set it to `{}`. Once configured, you cannot remove the attribute. Set `mode = "disabled"` to turn validation off.
+
+If you set `metadata_key` or `metadata_values`, you must also set `mode`. If you omit them, the key defaults to `encoding` and the accepted value defaults to `binary/encrypted`.
+
+The `encryption_validation` block is read-only on the Namespace data source. The [Terraform Registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace) is the schema reference.
+
+## Review coverage and exclusions {/* #review-coverage-and-exclusions */}
+
+Payload encryption validation applies to supported requests entering Temporal Cloud. It does not validate all data associated with a Workflow Execution.
+
+| Area | Behavior |
+| --- | --- |
+| Supported incoming Payloads | Includes Workflow and Activity inputs and results, Signal, Query, and Update arguments, heartbeat details, Schedule action inputs, Memos, and Local Activity markers when those Payloads are present on an inspected request. |
+| Headers | Not inspected by default. Header encryption behavior varies by SDK and configuration. Enable inspection only after testing the relevant Client and Worker paths. |
+| Failure messages, stack traces, and encoded attributes | Off by default. While `inspect_failure` is false, every Payload inside a Failure is skipped. Turn it on to check encoded Failure attributes. If the message and stack trace stayed plain strings, a non-empty message or stack trace is treated as unencrypted. |
+| Search Attributes | Excluded. Search Attributes must remain queryable. Do not put sensitive information in them. |
+| Version and patch markers | Excluded. This exclusion does not apply to all marker types. Local Activity markers remain in scope. |
+| External payload storage and claim checks | Outside the current validation scope. |
+| Server responses | Not inspected. Validation applies to incoming requests, including requests sent by Workers. |
+| Existing Event History | Not scanned or remediated. Validation governs new incoming requests. |
+| Archives, exports, logs, metrics, and traces | Outside the validation scope. |
+
+### Inspect headers
+
+Do not assume that configuring a Payload Codec also encrypts Headers. Header behavior differs across SDKs, and some paths require explicit configuration or a separate encryption implementation.
+
+Before enabling Header inspection, test context propagation and the relevant Client and Worker paths in `warn`. With `deny` enabled, non-matching Header Payloads can cause request rejection even when Workflow and Activity Payloads are encrypted.
+
+### Inspect failures
+
+Failure inspection is off by default. While it is off, Payloads inside a Failure are not checked. Turn it on after you configure a [Failure Converter](/failure-converter) so the encoded attributes carry an accepted metadata value. If the SDK leaves the message and stack trace as plain strings, a non-empty message or stack trace fails validation. Exercise failure paths in `warn` before `deny`.
+
+## Monitor validation results {/* #monitor-validation-results */}
+
+When validation is enabled, Temporal Cloud publishes inspected Payloads per second as [`temporal_cloud_v1_payload_encryption_validation_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_payload_encryption_validation_count). The metric is a per-second rate. `temporal_execution_type` is opt-in. `field` is not on this scrape. A Namespace set to `disabled` emits nothing.
+
+| Label | Meaning |
+| --- | --- |
+| `status` | `pass`, `warn`, or `deny` |
+| `temporal_namespace` | Namespace name |
+| `temporal_account` | Account ID |
+| `region` | Region that recorded the sample |
+| `operation` | RPC name, such as `StartWorkflowExecution` |
+| `temporal_execution_type` | Opt-in. Request it with `labels=temporal_execution_type`. Workflow type, Activity type, or Nexus service and operation. The value `_unknown_` means the request did not carry a type. |
+
+`principal_type`, `principal_name`, and `field` are not on the OpenMetrics scrape yet due to cardinality impact. Reach out to Temporal Support if you need to access such information.
+
+Use `warn` counts to find the Client to fix. This metric has no `field` label, so Header, Memo, and Failure are not separate series. Use `operation`, the client error, and the codec configuration.
+
+| What to look at | Usual fix |
+| --- | --- |
+| Start, Signal, Update, Activity completion | The Worker or Client is not using the Payload Codec. |
+| Memo | Confirm the SDK version applies the codec to Memos. |
+| Header, and Header inspection is on | The Context Propagator wrote a Payload with the default converter. Encrypt there, or turn Header inspection off. |
+| Failure, and Failure inspection is on | Configure a Failure Converter that encodes the Failure through the same codec. |
+
+Keep these limits in mind:
+
+- A count of zero warnings does not by itself show that you are ready for `deny`. Confirm that representative traffic was inspected.
+- Validation results describe the configured inspection scope. They do not cover excluded data or historical data.
+- `temporal_execution_type` is best-effort. It can be `_unknown_` when the request does not identify a Workflow or Activity type. `SignalWorkflowExecution` often has no type.
+- Metrics do not identify a specific Workflow Execution or the exact sending application. Correlate them with Client and Worker errors.
+
+## Enable deny safely {/* #enable-deny-safely */}
+
+Use the progression `disabled`, then `warn`, then `deny`:
+
+1. Establish a baseline in `warn`. Exercise representative traffic, including less-frequent paths such as Signals, Updates, Schedules, heartbeats, failures, and context propagation where you use them.
+2. Investigate validation failures. Check codec configuration, metadata values, SDK behavior, and optional inspection settings.
+3. Test optional inspection separately. Verify Header and Failure behavior before you include them in enforcement.
+4. Validate positive and negative cases. Confirm that encrypted Payloads with the expected metadata pass, and that deliberately non-matching test requests produce warnings.
+5. Coordinate with application owners. Agree on an evaluation window, monitoring, and a rollback decision before enabling `deny`.
+6. Enable `deny` in the evaluation Namespace. Confirm that expected requests succeed and that non-compliant test requests are rejected. `deny` can stop traffic from any Client that does not set an accepted metadata value, including Schedules, Nexus callers, and batch operations.
+7. Monitor for unexpected rejections. If necessary, return to `warn` while you investigate. `warn` allows non-compliant requests to be processed and persisted.
+
+Use synthetic, non-sensitive data for negative tests.
+
+## Troubleshoot validation results
+
+| Symptom | What to check |
+| --- | --- |
+| Unexpected `warn` or `deny` results | Confirm the Namespace mode, metadata key, accepted values, and inspection options. Verify the outgoing metadata from the sending Client or Worker. |
+| Some applications pass while others fail | Check every Client and Worker Data Converter and Payload Codec configuration, SDK version, and any encryption proxy path. |
+| Failures begin after Header inspection is enabled | Verify Header encryption and context propagation for each SDK and request path. Test in `warn` before enforcing. |
+| Failures begin after Failure inspection is enabled | Check Failure Converter configuration and encryption of encoded attributes. Exercise failure cases explicitly. |
+| A rejected Workflow start is absent from the UI | `deny` returns `InvalidArgument` and does not store the request. A rejected start does not create a Workflow Execution. See the client errors below. |
+| No validation metrics appear | Confirm validation is enabled, representative requests contain inspected Payloads, and your metrics access and query are configured. An absence of metrics is not proof of compliance. |
+| Execution type is unknown | Type attribution is best-effort. Use request context and application logs along with this label. |
+
+A rejected Payload returns:
+
+```text
+Unencrypted payload not allowed in <field> for method <Method>
+```
+
+When Failure inspection rejects a plain Failure message or stack trace, the client error is:
+
+```text
+Unencrypted failure attributes not allowed in <field> for method <Method>
+```
+
+Fix the encryption implementation or the metadata mismatch. Do not resolve validation failures by labeling plaintext with an accepted metadata value.
+
+When you contact Temporal, provide the account and Namespace, region, timestamp and time zone, SDK and version, operation, configuration, and a sanitized error or reproduction. Do not include plaintext sensitive Payloads or encryption keys.
+
+## Migrate accepted metadata values {/* #migrate-accepted-metadata-values */}
+
+Multiple accepted values support a gradual migration between metadata values:
+
+1. Add the new metadata value while keeping the old accepted value.
+2. Roll out the updated encryption implementation across Clients and Workers.
+3. Verify that the relevant senders use the new metadata value and continue to pass validation.
+4. Remove the old accepted value when the migration is complete.
+
+You can keep up to 4 accepted values during the migration. Both values must be values your codec writes on encrypted Payloads. Accepting multiple values does not validate the cipher or the key.
+
+## Frequently asked questions
+
+### Does payload encryption validation encrypt data?
+
+No. Configure a Payload Codec or encryption proxy to perform application-layer encryption. Payload encryption validation checks the metadata that implementation produces.
+
+### Does passing validation prove a Payload is encrypted?
+
+No. It confirms that the Payload metadata matches the configured metadata key and one of the accepted values. The check does not verify ciphertext or detect a forged metadata value.
+
+### Does warn prevent non-compliant data from being stored?
+
+No. `warn` allows requests to proceed. Use it to identify and remediate gaps before you evaluate `deny`.
+
+### Does payload encryption validation scan or repair existing Event History?
+
+No. It validates new incoming requests on supported paths. It does not scan or modify previously persisted data.
+
+### Is payload encryption validation available for self-hosted Temporal Server?
+
+This feature is specific to Temporal Cloud.
+
+### Does payload encryption validation guarantee regulatory compliance?
+
+No. It is one control that can support your organization's encryption governance. Consider its metadata trust model and coverage exclusions alongside your other security controls.

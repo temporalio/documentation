@@ -1515,6 +1515,7 @@ module.exports = {
         'cloud/operation-api',
         'cloud/rpo-rto',
         'cloud/projects',
+        'cloud/payload-encryption-validation',
         'cloud/terraform-provider',
         'cloud/slo',
       ],
