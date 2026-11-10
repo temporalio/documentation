@@ -27,7 +27,7 @@ For a conceptual overview of External Storage and its use cases, see [External S
 
 External Storage requires Rust SDK 1.2.0 or later. The SDK-provided S3 driver is available in the
 `temporalio-aws-s3driver` crate starting with version 0.1.0. The
-[example project](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/rust-sdk-s3-driver/rust-sandbox/external-storage)
+[example project](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/rust-sandbox/external-storage)
 uses these published crates.
 
 ## Store and retrieve large payloads with Amazon S3
@@ -40,10 +40,19 @@ includes `AwsSdkS3StorageDriverClient`, which connects the driver to the officia
 - An S3 bucket that your Clients and Workers can access. Your Clients and Workers need `s3:PutObject` and `s3:GetObject`
   permissions on the objects, and `s3:ListBucket` permission on the bucket.
 - AWS credentials and a Region configured for the AWS SDK for Rust, for example through an IAM role and `AWS_REGION`.
-- Add `temporalio-aws-s3driver = "0.1.0"` to your dependencies. The example project includes this dependency behind
-  its `s3` feature, which you enable with `--features s3`. The project enables
-  [`aws-config`'s `credentials-login` feature](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credentials.html)
-  so it can use credentials from `aws login`.
+- Rust SDK 1.2.0 or later with the `experimental` Cargo feature enabled, and `temporalio-aws-s3driver` 0.1.0 or later.
+
+Configure these dependencies in `Cargo.toml`:
+
+```toml
+[dependencies]
+temporalio-sdk = { version = "1.2.0", features = ["experimental"] }
+temporalio-aws-s3driver = "0.1.0"
+```
+
+The example project groups its S3 dependencies under the `s3` feature, which you enable with `--features s3`.
+It also enables [`aws-config`'s `credentials-login` feature](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credentials.html)
+so it can use credentials from `aws login`.
 
 Keep stored payloads available for the entire Workflow lifetime, including retries, replay, and retention.
 See [Lifecycle management](/external-storage#lifecycle) and
@@ -60,7 +69,7 @@ Load your AWS configuration with `aws_config::load_defaults` and create an `aws_
 Call `.build()` and pass the options to `S3StorageDriver::new`.
 
 <!--SNIPSTART rust-external-storage-s3-create {"highlightedLines": "3,6,9-13"}-->
-[rust-sandbox/external-storage/src/s3_setup.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/s3_setup.rs)
+[rust-sandbox/external-storage/src/s3_setup.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/s3_setup.rs)
 ```rs {3,6,9-13}
 use std::sync::Arc;
 use temporalio_aws_s3driver::{
@@ -85,7 +94,7 @@ Wrap the driver in `Arc<dyn StorageDriver>`, create `ExternalStorage`, and attac
 Set that converter on the Client options before constructing the Client. The Worker uses the Client's Data Converter.
 
 <!--SNIPSTART rust-external-storage-setup-->
-[rust-sandbox/external-storage/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/main.rs)
+[rust-sandbox/external-storage/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/main.rs)
 ```rs
 let storage = ExternalStorage::new(driver)?;
 let data_converter = DataConverter::default().with_external_storage(storage);
@@ -176,7 +185,7 @@ Use it only for local development. Every process must share the same directory, 
 atomic writes or production storage durability.
 
 <!--SNIPSTART rust-external-storage-local-driver-->
-[rust-sandbox/external-storage/src/local_disk_driver.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/local_disk_driver.rs)
+[rust-sandbox/external-storage/src/local_disk_driver.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/local_disk_driver.rs)
 ```rs
 // For local development only. All processes must share this directory.
 #[derive(Clone)]
@@ -264,7 +273,7 @@ and is measured after any Payload Codec has run. Smaller payloads stay inline in
 Use `with_payload_size_threshold` to change the threshold. Set it to `0` to offload every payload.
 
 <!--SNIPSTART rust-external-storage-threshold-->
-[rust-sandbox/external-storage/src/configuration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/configuration.rs)
+[rust-sandbox/external-storage/src/configuration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/configuration.rs)
 ```rs
 let storage = ExternalStorage::new(driver)?.with_payload_size_threshold(256 * 1024);
 let data_converter = DataConverter::default().with_external_storage(storage);
@@ -281,7 +290,7 @@ Each driver must have a distinct, stable name. Retain legacy drivers and their b
 references can be read, including during replay.
 
 <!--SNIPSTART rust-external-storage-selector-->
-[rust-sandbox/external-storage/src/configuration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/configuration.rs)
+[rust-sandbox/external-storage/src/configuration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/external-storage/src/configuration.rs)
 ```rs
 struct PreferDriver(Arc<dyn StorageDriver>);
 
