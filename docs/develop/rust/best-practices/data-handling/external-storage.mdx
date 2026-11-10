@@ -55,13 +55,20 @@ so repeated storage within the same context can reuse an object.
 
 ### Create the storage driver
 
-Import the SDK driver and AWS adapter, create an AWS S3 client, and configure the driver with your bucket name.
-The AWS SDK loads credentials and Region settings through its default configuration chain. Set `bucket` to your bucket
-name before running this snippet.
+1. **Import the driver types.** `S3StorageDriver` stores and retrieves payloads. `AwsSdkS3StorageDriverClient` connects
+   it to the AWS SDK for Rust. `S3StorageDriverOptions` configures the driver, and `Arc` lets it share the client.
+2. **Load your AWS configuration.** `aws_config::load_defaults` loads credentials and Region settings. For local
+   development, you can authenticate with `aws login` and set `AWS_REGION` to your bucket's Region before starting
+   your application.
+3. **Create the S3 client.** Pass the loaded configuration to `aws_sdk_s3::Client::new`. Wrap that client in
+   `AwsSdkS3StorageDriverClient` and `Arc`, then pass it to the options builder with `.client(...)`.
+4. **Set the bucket and build the driver.** Set `bucket` to your bucket name, for example with
+   `let bucket = "my-temporal-payloads".to_owned();`. Pass it to `.bucket(bucket)`, call `.build()` to create the options,
+   and pass those options to `S3StorageDriver::new`.
 
-<!--SNIPSTART rust-external-storage-s3-create-->
+<!--SNIPSTART rust-external-storage-s3-create {"highlightedLines": "3,6,9-13"}-->
 [rust-sandbox/external-storage/src/s3_setup.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/rust-sdk-s3-driver/rust-sandbox/external-storage/src/s3_setup.rs)
-```rs
+```rs {3,6,9-13}
 use std::sync::Arc;
 use temporalio_aws_s3driver::{
     AwsSdkS3StorageDriverClient, S3StorageDriver, S3StorageDriverOptions,
