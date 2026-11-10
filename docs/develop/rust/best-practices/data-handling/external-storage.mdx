@@ -37,8 +37,8 @@ includes `AwsSdkS3StorageDriverClient`, which connects the driver to the officia
 
 ### Prerequisites
 
-- An S3 bucket accessible to your Clients and Workers, with `s3:PutObject` and `s3:GetObject` permissions on its objects
-  and `s3:ListBucket` permission on the bucket.
+- An S3 bucket that your Clients and Workers can access. Your Clients and Workers need `s3:PutObject` and `s3:GetObject`
+  permissions on the objects, and `s3:ListBucket` permission on the bucket.
 - AWS credentials and a Region configured for the AWS SDK for Rust, for example through an IAM role and `AWS_REGION`.
 - Add `temporalio-aws-s3driver = "0.1.0"` to your dependencies. The example project includes this dependency behind
   its `s3` feature, which you enable with `--features s3`. The project enables
