@@ -19,6 +19,7 @@ const BASE_ENV = {
   RETRIEVE_LOG_SALT: 'salt',
   BLOB_READ_WRITE_TOKEN: 'token',
 };
+// KAPA_SOURCE_IDS is no longer read, but one test sets it to prove that.
 const ENV_KEYS = [...Object.keys(BASE_ENV), 'KAPA_SOURCE_IDS'];
 
 const originalLoad = Module._load;
@@ -218,11 +219,42 @@ describe('results', () => {
     assert.strictEqual(record().dropped_count, 20);
   });
 
-  it('does not expose how many source IDs were sent', async () => {
-    const res = await call('?q=x', { env: { KAPA_SOURCE_IDS: 'a,b,c' } });
-    assert.strictEqual(res.headers['x-retrieve-source-filter'], undefined);
-    assert.strictEqual(kapaCalls[0].body.source_ids_include.length, 3);
-    assert.strictEqual(record().source_ids_sent, 3);
+  // Kapa rejects every request whose source_ids_include names a deleted
+  // source, so a leftover KAPA_SOURCE_IDS must not reach it.
+  it('sends no source filter, even with KAPA_SOURCE_IDS set', async () => {
+    const res = await call('?q=x', { env: { KAPA_SOURCE_IDS: 'a,b' } });
+    assert.strictEqual(res.statusCode, 200);
+    assert.ok(!('source_ids_include' in kapaCalls[0].body));
+    assert.ok(!('source_group_ids_include' in kapaCalls[0].body));
+    assert.ok(!('source_ids_sent' in record()));
+  });
+});
+
+describe('Kapa identity', () => {
+  it('sends a hashed user ID and the agent name, never the IP', async () => {
+    await call('?q=x&src=md-page&agent=Cursor', { headers: { 'x-real-ip': '203.0.113.7' } });
+    const { user, mcp_client_meta } = kapaCalls[0].body;
+    assert.match(user.unique_client_id, /^[0-9a-f]{32}$/);
+    assert.deepStrictEqual(mcp_client_meta, { name: 'cursor' });
+    assert.ok(!JSON.stringify(kapaCalls[0].body).includes('203.0.113.7'));
+  });
+
+  it('sends the same ID for the same caller', async () => {
+    const headers = { 'x-forwarded-for': '203.0.113.7, 10.0.0.1' };
+    await call('?q=a&agent=Cursor', { headers });
+    await call('?q=b&agent=cursor/0.42', { headers });
+    assert.strictEqual(kapaCalls[0].body.user.unique_client_id, kapaCalls[1].body.user.unique_client_id);
+  });
+
+  it('sends no user without an IP', async () => {
+    await call('?q=x');
+    assert.ok(!('user' in kapaCalls[0].body));
+    assert.ok(!('mcp_client_meta' in kapaCalls[0].body));
+  });
+
+  it('counts the health check as one internal user', async () => {
+    await call('?q=x&src=healthcheck&agent=healthcheck-123', { headers: { 'x-real-ip': '203.0.113.7' } });
+    assert.deepStrictEqual(kapaCalls[0].body.user, { unique_client_id: 'internal-check' });
   });
 });
 

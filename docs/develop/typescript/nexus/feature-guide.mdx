@@ -38,7 +38,7 @@ This page shows how to do the following:
 
 :::note
 
-This documentation uses source code derived from the [TypeScript Nexus sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-hello) and the [nexus-messaging-temporal-operation sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging-temporal-operation).
+This documentation uses source code from the [Nexus feature guide sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/typescript-sandbox/src/nexus/feature-guide) in the `typescript-sandbox` folder of the documentation-sdk-code-examples repository, which is derived from the [nexus-hello](https://github.com/temporalio/samples-typescript/tree/main/nexus-hello) and [nexus-messaging-temporal-operation](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging-temporal-operation) samples.
 
 :::
 
@@ -143,19 +143,23 @@ and the Operation completes during the call.
 Handlers should be reliable to avoid tripping the [circuit breaker](/nexus/operations#circuit-breaking), and the whole
 call has to finish inside the [Nexus request timeout](/evaluate/cloud/limits#nexus-operation-request-timeout).
 
+<!--SNIPSTART typescript-nexus-feature-guide-handler {"selectedLines": ["1-3", "6-11", "23"]}-->
+[typescript-sandbox/src/nexus/feature-guide/service/handler.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/nexus/feature-guide/service/handler.ts)
 ```ts
 import * as nexus from 'nexus-rpc';
 import * as temporalNexus from '@temporalio/nexus';
-import { helloService, EchoInput, EchoOutput } from '../api';
-
+import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from '../api';
+// ...
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
   echo: new temporalNexus.TemporalOperationHandler<EchoInput, EchoOutput>({
     start: async (ctx, client, input) => {
       return temporalNexus.TemporalOperationResult.sync({ message: input.message });
     },
   }),
+// ...
 });
 ```
+<!--SNIPEND-->
 
 ### Use the Temporal Client for Signals, Queries, and Updates
 
@@ -182,6 +186,8 @@ through `client.client` rather than constructing your own.
 In this example the Workflow ID is derived from an identifier carried in the Operation input, so the caller only needs
 the identifier it cares about:
 
+<!--SNIPSTART typescript-nexus-feature-guide-messaging-->
+[typescript-sandbox/src/nexus/feature-guide/messaging/handler.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/nexus/feature-guide/messaging/handler.ts)
 ```ts
 function workflowIdForUser(userId: string): string {
   return `GreetingWorkflow_for_${userId}`;
@@ -197,6 +203,7 @@ export const nexusGreetingServiceHandler = nexus.serviceHandler(nexusGreetingSer
   }),
 });
 ```
+<!--SNIPEND-->
 
 There are two examples of messaging through Nexus in the sample code, [caller pattern](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging/src/callerpattern) and [on-demand pattern](https://github.com/temporalio/samples-typescript/tree/main/nexus-messaging/src/ondemandpattern).
 The caller pattern shows how to send messages to an existing Workflow, while the on-demand pattern shows how to start a Workflow through Nexus and then send Signals to it.
@@ -206,8 +213,12 @@ The caller pattern shows how to send messages to an existing Workflow, while the
 Call `startWorkflow` on the Client. The Operation completes when the Workflow returns, and the Workflow's return value
 is delivered to the caller as the Operation's result.
 
+<!--SNIPSTART typescript-nexus-feature-guide-handler {"selectedLines": ["6", "12-23"]}-->
+[typescript-sandbox/src/nexus/feature-guide/service/handler.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/nexus/feature-guide/service/handler.ts)
 ```ts
+// ...
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
+// ...
   hello: new temporalNexus.TemporalOperationHandler<HelloInput, HelloOutput>({
     start: async (ctx, client, input) =>
       client.startWorkflow(helloWorkflow, {
@@ -221,6 +232,7 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
   }),
 });
 ```
+<!--SNIPEND-->
 
 Workflow IDs should typically be business-meaningful identifiers and are used to dedupe Workflow starts.
 In general, the Workflow ID should be passed in the Operation input as part of the Nexus Service contract.
@@ -236,23 +248,27 @@ In general, the Workflow ID should be passed in the Operation input as part of t
 A Nexus Operation can only take one input parameter. To start a Workflow that takes several, spread the pieces of the
 input across the `args` array:
 
+<!--SNIPSTART typescript-nexus-feature-guide-multiple-args {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/nexus/feature-guide/service/multiple-args.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/nexus/feature-guide/service/multiple-args.ts)
 ```ts
-client.startWorkflow(helloWorkflow, {
+client.startWorkflow(helloWorkflowWithArgs, {
   args: [input.name, input.language],
   workflowId: `hello-${input.name}-${input.language}`,
-});
+}),
 ```
+<!--SNIPEND-->
 
 ### Register a Nexus Service in a Worker
 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register your Nexus Service handler in a Worker.
 
-<!--SNIPSTART typescript-nexus-hello-service-worker {"selectedLines": ["1-3","9-17"]}-->
-[nexus-hello/src/service/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/worker.ts)
+<!--SNIPSTART typescript-nexus-feature-guide-service-worker {"selectedLines": ["1-4", "9-17"]}-->
+[typescript-sandbox/src/nexus/feature-guide/service/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/nexus/feature-guide/service/worker.ts)
 ```ts
 import { Worker, NativeConnection } from '@temporalio/worker';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { helloServiceHandler } from './handler';
-
+import { helloArgsServiceHandler } from './multiple-args';
 // ...
     const namespace = 'my-target-namespace';
     const serviceTaskQueue = 'my-handler-task-queue';
@@ -261,7 +277,7 @@ import { helloServiceHandler } from './handler';
       namespace,
       taskQueue: serviceTaskQueue,
       workflowsPath: require.resolve('./workflows'),
-      nexusServices: [helloServiceHandler],
+      nexusServices: [helloServiceHandler, helloArgsServiceHandler],
     });
 ```
 <!--SNIPEND-->
@@ -271,16 +287,15 @@ import { helloServiceHandler } from './handler';
 To execute a Nexus Operation from a Workflow, import the necessary service definition types, then use `@temporalio/workflow`'s `createNexusServiceClient` to create a Nexus client for that service.
 You will need to provide the Nexus Endpoint name, which you registered previously in [Create a Nexus Endpoint to route requests from caller to handler](#create-nexus-endpoint).
 
-<!--SNIPSTART typescript-nexus-hello-service-caller-workflow {"selectedLines": ["1-5","21-34"]}-->
-
-[nexus-hello/src/caller/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/caller/workflows.ts)
-
+<!--SNIPSTART typescript-nexus-feature-guide-caller-workflow {"selectedLines": ["1-5", "17-30"]}-->
+[typescript-sandbox/src/nexus/feature-guide/caller/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/nexus/feature-guide/caller/workflows.ts)
 ```ts
-import * as wf from "@temporalio/workflow";
-import { helloService, LanguageCode } from "../service/api";
+import * as wf from '@temporalio/workflow';
+import { helloArgsService, helloService, LanguageCode } from '../api';
 
-const HELLO_SERVICE_ENDPOINT = "hello-service-endpoint-name";
+const HELLO_SERVICE_ENDPOINT = 'my-nexus-endpoint-name';
 
+// ...
 export async function helloCallerWorkflow(name: string, language: LanguageCode): Promise<string> {
   const nexusClient = wf.createNexusServiceClient({
     service: helloService,
@@ -288,37 +303,36 @@ export async function helloCallerWorkflow(name: string, language: LanguageCode):
   });
 
   const helloResult = await nexusClient.executeOperation(
-    "hello",
+    'hello',
     { name, language },
-    { scheduleToCloseTimeout: "10s" }
+    { scheduleToCloseTimeout: '10s' },
   );
 
   return helloResult.message;
 }
 ```
-
 <!--SNIPEND-->
 
 ### Register the caller Workflow in a Worker and start the caller Workflow
 
 This Workflow can be registered with a Worker and started using `client.startWorkflow()` or `client.executeWorkflow()`, as usual.
-Refer to the [complete TypeScript sample](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello) for reference.
+Refer to the [complete TypeScript sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/typescript-sandbox/src/nexus/feature-guide) for reference.
 
-- [nexus-hello/src/caller/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/caller/worker.ts) shows how to register the caller Workflow in a Worker and run the Worker.
-- [nexus-hello/src/starter.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/starter.ts) shows how to use a Temporal Client to execute the sample caller Workflow.
+- [caller/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/nexus/feature-guide/caller/worker.ts) shows how to register the caller Workflow in a Worker and run the Worker.
+- [starter.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/nexus/feature-guide/starter.ts) shows how to use a Temporal Client to execute the sample caller Workflow.
 
 
 ## Make Nexus calls across Namespaces with a development Server {/* #nexus-calls-across-namespaces-dev-server */}
 
-Follow the steps below to run the Nexus handler Worker, the Nexus caller Worker, and the starter app.
+Follow the steps below, from the `typescript-sandbox` folder, to run the Nexus handler Worker, the Nexus caller Worker, and the starter app.
 
-1. Run `npm run start.service` to start the Worker that will be serving the Nexus Operation handlers and its associated
+1. Run `npm run nexus.start.service` to start the Worker that will be serving the Nexus Operation handlers and its associated
 Workflows. That Worker connects to the `my-target-namespace` namespace.
 
-2. In another shell, run `npm run start.caller` to start the Worker that will be serving the Caller Workflows. That
+2. In another shell, run `npm run nexus.start.caller` to start the Worker that will be serving the Caller Workflows. That
 Worker connects to the `my-caller-namespace` namespace.
 
-3. In a third shell, `npm run workflow` to start an instance of the caller Workflows.
+3. In a third shell, run `npm run nexus.workflow` to start an instance of the caller Workflows.
 
 Example output:
 

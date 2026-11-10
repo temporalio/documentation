@@ -3,7 +3,7 @@ id: config
 title: Temporal CLI config command reference
 sidebar_label: config
 description: Temporal CLI 'config' commands allow the getting, setting, deleting, and listing of configuration properties for connecting to Temporal.
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - Temporal CLI
 ---

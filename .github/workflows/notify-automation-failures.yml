@@ -23,6 +23,7 @@ on:
       - Environment config drift
       - Cloud console links
       - Snipsync Coverage
+      - Retrieve health check
     types:
       - completed
 
@@ -32,7 +33,8 @@ permissions:
 jobs:
   notify:
     # `Check Metrics Against SDKs`, the sample checks, `Environment config
-    # drift`, `Cloud console links`, and `Snipsync Coverage` also run on pull_request; exclude those
+    # drift`, `Cloud console links`, `Snipsync Coverage`, and `Retrieve health
+    # check` also run on pull_request; exclude those
     # runs so this only reports invocations that have nowhere else to surface,
     # such as the scheduled ones.
     if: >-
