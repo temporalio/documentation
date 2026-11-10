@@ -4284,10 +4284,10 @@
     d3-selection "^3.0.0"
     d3-transition "^3.0.1"
 
-"@vercel/blob@2.8.1":
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/@vercel/blob/-/blob-2.8.1.tgz#fec01bdaf5cbb4d5622c1f0b37ef848d3aed4f7a"
-  integrity sha512-QFX17sMRoBnPuNyHsQsY5GsYRg9HoE8yGKKbfB/V/JK9QuyQp10R5qeNntT6EgUJ4cQ3R+sH26n5l/LacfzzEw==
+"@vercel/blob@2.8.2":
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/@vercel/blob/-/blob-2.8.2.tgz#470ed44ccfaab2aaa4a327d8a9fe16fce2fb961b"
+  integrity sha512-ZUUWO2VA00r9ZTRtKgH4va7FGOUxUtge2FaRr9WZmeeX2s3C3qVe2tOTLTbv/tkcd+L+ijxaI2eP9S1/mGHc9Q==
   dependencies:
     "@vercel/oidc" "^3.6.1"
     async-retry "^1.3.3"
