@@ -126,7 +126,9 @@ Header and Failure inspection are disabled by default.
 
 ### Use the Cloud Ops API
 
-Set `encryption_validation` on the Namespace spec in CreateNamespace or UpdateNamespace.
+For CreateNamespace, include `encryption_validation` in the Namespace spec. The JSON below is a spec fragment, not a complete request.
+
+For UpdateNamespace, first call GetNamespace, preserve the complete returned spec and resource version, and change only `spec.encryption_validation`. Submit the complete updated spec with that resource version because UpdateNamespace replaces the entire spec. See the [Cloud Ops API update example](/cloud/high-availability/enable#set-forwarding-curl).
 
 ```json
 {
