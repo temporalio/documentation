@@ -108,10 +108,12 @@ let mut worker = Worker::new(&runtime, client.clone(), worker_options)?;
 Configure compatible drivers on every Client and Worker process that can send or receive an offloaded payload,
 including Clients that fetch Workflow results. Drivers run outside Workflow Definitions.
 
-Fetching Event History in Rust SDK 1.2.0 returns the stored reference tokens without retrieving their payloads.
+:::caution Payload Codec compatibility
 
 Before sharing externally stored payloads with other SDKs, verify that their reference tokens are not encoded by a
 Payload Codec. Rust SDK 1.2.0 does not recognize reference tokens that another SDK has encoded with a Payload Codec.
+
+:::
 
 The complete example registers a Workflow and an echo Activity, starts a Worker, and sends a 3 MiB string through
 Workflow input, Activity input and result, and Workflow result. Run it against a local Temporal Service:
