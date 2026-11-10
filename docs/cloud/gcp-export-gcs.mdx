@@ -38,10 +38,7 @@ Before configuring the Export sink, complete the following steps in Google Cloud
 
 There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), the [CLI](#using-the-cli), or [`terraform`](#using-terraform).
 
-Export runs in hourly batches.
-Enable export before Workflow Executions close to ensure they are exported; backfill of previously closed Workflow Executions is not guaranteed.
-A Workflow Execution that closed before you enabled export may still be included if the hourly batch for the hour in which it closed has not run yet.
-See [Workflow History Export](/cloud/export) for delivery guarantees and timing.
+See [export timing and delivery guarantees](/cloud/export#timing-and-delivery-guarantees).
 
 
 :::note Why does Temporal Cloud provision multiple service accounts for Export?
@@ -78,7 +75,6 @@ The following steps guide you through setting up Workflow History Export using t
 5. The page will auto-refresh and you should see the status “Enabled” on the Export screen.
    You are now ready to export Workflow histories.
 6. You can toggle the enable button if you want to stop export and resume in the future.
-   **Note**: Workflow Executions that closed while export was disabled are not guaranteed to be exported when you re-enable it.
 7. You can also delete export by clicking **Delete**.
 
 :::tip
