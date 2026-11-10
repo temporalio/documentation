@@ -31,8 +31,10 @@ Build the Worker as you would any long-running Java Worker, then set `WorkerDepl
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
+<!--SNIPSTART java-cloud-run-versioned-worker-->
+[java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/VersionedWorker.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/VersionedWorker.java)
 ```java
-package example;
+package io.temporal.docs.workers.cloudrun;
 
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
@@ -45,42 +47,47 @@ import io.temporal.worker.WorkerDeploymentOptions;
 import io.temporal.worker.WorkerFactory;
 import io.temporal.worker.WorkerOptions;
 
-String apiKey = System.getenv("TEMPORAL_API_KEY");
+public final class VersionedWorker {
+  public static void main(String[] args) {
+    String apiKey = System.getenv("TEMPORAL_API_KEY");
 
-WorkflowServiceStubs service =
-    WorkflowServiceStubs.newServiceStubs(
-        WorkflowServiceStubsOptions.newBuilder()
-            .setTarget(System.getenv("TEMPORAL_ADDRESS"))
-            .setEnableHttps(true)
-            .addApiKey(() -> apiKey)
-            .build());
+    WorkflowServiceStubs service =
+        WorkflowServiceStubs.newServiceStubs(
+            WorkflowServiceStubsOptions.newBuilder()
+                .setTarget(System.getenv("TEMPORAL_ADDRESS"))
+                .setEnableHttps(true)
+                .addApiKey(() -> apiKey)
+                .build());
 
-WorkflowClient client =
-    WorkflowClient.newInstance(
-        service,
-        WorkflowClientOptions.newBuilder()
-            .setNamespace(System.getenv("TEMPORAL_NAMESPACE"))
-            .build());
+    WorkflowClient client =
+        WorkflowClient.newInstance(
+            service,
+            WorkflowClientOptions.newBuilder()
+                .setNamespace(System.getenv("TEMPORAL_NAMESPACE"))
+                .build());
 
-WorkerFactory factory = WorkerFactory.newInstance(client);
+    WorkerFactory factory = WorkerFactory.newInstance(client);
 
-Worker worker =
-    factory.newWorker(
-        System.getenv("TEMPORAL_TASK_QUEUE"),
-        WorkerOptions.newBuilder()
-            .setDeploymentOptions(
-                WorkerDeploymentOptions.newBuilder()
-                    .setUseVersioning(true)
-                    .setVersion(new WorkerDeploymentVersion("my-app", "build-1"))
-                    .setDefaultVersioningBehavior(VersioningBehavior.PINNED)
-                    .build())
-            .build());
+    Worker worker =
+        factory.newWorker(
+            System.getenv("TEMPORAL_TASK_QUEUE"),
+            WorkerOptions.newBuilder()
+                .setDeploymentOptions(
+                    WorkerDeploymentOptions.newBuilder()
+                        .setUseVersioning(true)
+                        .setVersion(new WorkerDeploymentVersion("my-app", "build-1"))
+                        .setDefaultVersioningBehavior(VersioningBehavior.PINNED)
+                        .build())
+                .build());
 
-worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+    worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+    worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 
-factory.start();
+    factory.start();
+  }
+}
 ```
+<!--SNIPEND-->
 
 The two arguments to `WorkerDeploymentVersion` are the deployment name and the build ID, and together they identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -88,18 +95,31 @@ Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behav
 Setting `setDefaultVersioningBehavior` as shown above covers every Workflow on the Worker.
 To set the behavior per Workflow instead, annotate the Workflow method with `@WorkflowVersioningBehavior`:
 
+<!--SNIPSTART java-cloud-run-workflow-versioning-behavior-->
+[java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/perworkflow/GreetingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/perworkflow/GreetingWorkflowImpl.java)
 ```java
+import io.temporal.activity.ActivityOptions;
 import io.temporal.common.VersioningBehavior;
+import io.temporal.docs.workers.cloudrun.GreetingActivities;
+import io.temporal.docs.workers.cloudrun.GreetingWorkflow;
+import io.temporal.workflow.Workflow;
 import io.temporal.workflow.WorkflowVersioningBehavior;
+import java.time.Duration;
 
 public class GreetingWorkflowImpl implements GreetingWorkflow {
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder().setStartToCloseTimeout(Duration.ofSeconds(10)).build());
+
   @Override
   @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
-  public String run(String name) {
-    // ...
+  public String getGreeting(String name) {
+    return activities.composeGreeting(name);
   }
 }
 ```
+<!--SNIPEND-->
 
 For general Worker setup and options that are not specific to Cloud Run, see [Run a Worker](/develop/java/workers/run-worker-process).
 
@@ -118,9 +138,12 @@ Cloud Run runs one JVM per instance, so give the JVM a heap sized to the instanc
 Java reads the container's memory limit and defaults the maximum heap to a quarter of it, which leaves most of a small instance unused.
 Set `-XX:MaxRAMPercentage` to raise that share:
 
+<!--SNIPSTART java-cloud-run-dockerfile-cmd-->
+[java-sandbox/workers/cloud-run/worker.dockerfile](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/cloud-run/worker.dockerfile)
 ```dockerfile
 CMD ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/worker.jar"]
 ```
+<!--SNIPEND-->
 
 A Cloud Run Worker Pool defaults to 512 MiB per instance. Raise `--memory` when you create the pool if your Worker needs more.
 
@@ -129,20 +152,30 @@ A Cloud Run Worker Pool defaults to 512 MiB per instance. Raise `--memory` when 
 The WCI decides when to remove an instance from Task Queue activity, not from what an individual instance is doing.
 An instance running a long Activity can be stopped mid-execution.
 
-Use [Activity Heartbeats](/develop/java/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
+Use [Activity Heartbeats](/develop/java/activities/timeouts#activity-heartbeats) to record progress, and read the last Heartbeat details at the start of the Activity so a retry resumes from that point instead of starting over:
 
+<!--SNIPSTART java-cloud-run-heartbeat-->
+[java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/heartbeat/ItemActivitiesImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/heartbeat/ItemActivitiesImpl.java)
 ```java
-public class GreetingActivitiesImpl implements GreetingActivities {
+public class ItemActivitiesImpl implements ItemActivities {
   @Override
   public String process(List<String> items) {
-    for (int i = 0; i < items.size(); i++) {
-      Activity.getExecutionContext().heartbeat(i);
-      // ... process items.get(i)
+    ActivityExecutionContext context = Activity.getExecutionContext();
+    // On a retry, start after the last item the previous attempt recorded.
+    int start = context.getHeartbeatDetails(Integer.class).map(i -> i + 1).orElse(0);
+    for (int i = start; i < items.size(); i++) {
+      processItem(items.get(i));
+      context.heartbeat(i);
     }
     return "done";
   }
+
+  protected void processItem(String item) {
+    // ... process the item
+  }
 }
 ```
+<!--SNIPEND-->
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
@@ -152,8 +185,8 @@ Run an OpenTelemetry Collector as a sidecar in the Worker Pool. The Cloud Run Op
 
 Create both Cloud Run plugins and register them on `WorkflowServiceStubsOptions` before you create the Client:
 
-<!--SNIPSTART java-cloud-run-worker-->
-[gcp/cloud-run/src/main/java/io/temporal/samples/gcp/cloudrun/CloudRunWorker.java](https://github.com/temporalio/samples-java/blob/main/gcp/cloud-run/src/main/java/io/temporal/samples/gcp/cloudrun/CloudRunWorker.java)
+<!--SNIPSTART java-cloud-run-plugins {"enable_code_dedenting": true}-->
+[java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/CloudRunWorker.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/CloudRunWorker.java)
 ```java
 ClientConfigProfile profile = ClientConfigProfile.load();
 CloudRunOpenTelemetryPlugin otelPlugin = CloudRunOpenTelemetryPlugin.newBuilder().build();
@@ -169,8 +202,8 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceOptio
 
 Configure the Collector sidecar to receive OTLP gRPC on `localhost:4317`, export traces to Google Cloud, and export metrics to Google Managed Service for Prometheus:
 
-<!--SNIPSTART java-cloud-run-collector-config-->
-[gcp/cloud-run/collector-config.yaml](https://github.com/temporalio/samples-java/blob/main/gcp/cloud-run/collector-config.yaml)
+<!--SNIPSTART java-cloud-run-otel-collector-config-->
+[java-sandbox/workers/cloud-run/collector-config.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/cloud-run/collector-config.yaml)
 ```yaml
 receivers:
   otlp:
@@ -268,23 +301,29 @@ Use `CloudRunIdPlugin` to identify each Worker instance as `<instance-id>@<revis
 `WorkflowServiceStubsOptions` before creating the service stubs. Clients and Workers created from those service stubs
 inherit the identity:
 
+<!--SNIPSTART java-cloud-run-worker-identity-->
+[java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/IdentityExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workers/cloud-run/src/main/java/io/temporal/docs/workers/cloudrun/IdentityExample.java)
 ```java
 import io.temporal.client.WorkflowClient;
 import io.temporal.envconfig.ClientConfigProfile;
 import io.temporal.gcp.cloudrun.id.CloudRunIdPlugin;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import java.io.IOException;
 
-// ...
+public final class IdentityExample {
+  public static WorkflowClient newClient() throws IOException {
     ClientConfigProfile profile = ClientConfigProfile.load();
     WorkflowServiceStubsOptions serviceOptions =
         WorkflowServiceStubsOptions.newBuilder(profile.toWorkflowServiceStubsOptions())
             .setPlugins(new CloudRunIdPlugin())
             .build();
     WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceOptions);
-    WorkflowClient client = WorkflowClient.newInstance(service, profile.toWorkflowClientOptions());
-    // ...
+    return WorkflowClient.newInstance(service, profile.toWorkflowClientOptions());
+  }
+}
 ```
+<!--SNIPEND-->
 
 The [preceding example](#opentelemetry) registers `CloudRunIdPlugin` alongside the OpenTelemetry plugin.
 

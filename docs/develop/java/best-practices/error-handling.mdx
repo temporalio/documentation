@@ -39,8 +39,9 @@ Use this rule of thumb when deciding what to catch in a Workflow, Update, or Sig
 
 1. **`Error`** — never catch it. If you must run cleanup on any exit path, use a
    [detached Cancellation Scope](/develop/java/workflows/cancellation) rather than a broad catch (see [Cancellation](#cancellation) below).
-2. **`CanceledFailure`** — rethrow it, optionally after cleanup in a detached Cancellation Scope. Don't swallow it: cancellation
-   is cooperative, and swallowing it lets the Workflow Execution finish as "Completed" instead of "Canceled."
+2. **`CanceledFailure`** — rethrow it, optionally after cleanup in a detached Cancellation Scope. Don't swallow it:
+   cancellation is cooperative, so swallowing it lets Workflow logic keep running after the cancellation request. The
+   Java SDK still closes the Workflow Execution as "Canceled," so whatever the Workflow returns is discarded.
 3. **`ActivityFailure`, `ChildWorkflowFailure`, or `ApplicationFailure`** that you recognize and can recover from — handle it.
 4. **Everything else** — rethrow it. A plain `RuntimeException` that isn't recognized above fails the current
    [Workflow Task](/tasks#workflow-task-execution), which retries indefinitely rather than failing the Workflow Execution. To fail the
@@ -51,38 +52,45 @@ Use this rule of thumb when deciding what to catch in a Workflow, Update, or Sig
 A `catch (Throwable t)` (or `catch (Exception e)` that only logs and returns) placed around Workflow logic "to be
 safe" is the most common way this rule gets broken:
 
+<!--SNIPSTART java-error-handling-swallow-anti-pattern {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/SwallowingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/SwallowingWorkflowImpl.java)
 ```java
 // Anti-pattern: never do this in Workflow, Update, or Signal code.
 try {
-  return doWorkflowLogic();
+    return doWorkflowLogic(order);
 } catch (Throwable t) {
-  logger.error("workflow failed", t);
-  return defaultResult();
+    logger.error("workflow failed", t);
+    return defaultResult();
 }
 ```
+<!--SNIPEND-->
 
 This single catch block causes three separate problems at once:
 
 - `DestroyWorkflowThreadError` and `UnsupportedVersion` are swallowed instead of reaching the SDK, which can stall
   Worker cache eviction and interfere with replay.
-- `CanceledFailure` is swallowed, so a canceled Workflow Execution reports "Completed" instead of "Canceled."
+- `CanceledFailure` is swallowed, so the Workflow carries on and returns `defaultResult()` as though nothing happened.
+  The Workflow Execution still closes as "Canceled," and that result is discarded.
 - Every other exception — including real bugs — disappears with only a log line instead of failing the Workflow
   Task or Workflow Execution, so there's no signal in the Event History that anything went wrong.
 
 Catch the narrowest type you can actually recover from, log and rethrow anything you don't recognize, and let `Error`
 and `CanceledFailure` propagate untouched:
 
+<!--SNIPSTART java-error-handling-narrow-catch {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/NarrowCatchWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/NarrowCatchWorkflowImpl.java)
 ```java
 try {
-  return doWorkflowLogic();
+    return doWorkflowLogic(order);
 } catch (ActivityFailure e) {
-  if (e.getCause() instanceof ApplicationFailure appFailure
-      && "ValidationError".equals(appFailure.getType())) {
-    return defaultResult();
-  }
-  throw e; // don't recognize it — propagate
+    if (e.getCause() instanceof ApplicationFailure appFailure
+        && "ValidationError".equals(appFailure.getType())) {
+        return defaultResult();
+    }
+    throw e; // don't recognize it — propagate
 }
 ```
+<!--SNIPEND-->
 
 ## Wrap checked exceptions instead of adding them to method signatures {/* #wrap-checked-exceptions */}
 
@@ -93,18 +101,21 @@ inside an Activity, or
 [`Workflow.wrap()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#wrap(java.lang.Exception)>)
 inside a Workflow, before rethrowing it:
 
+<!--SNIPSTART java-error-handling-wrap-checked-exception-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/GreetingActivitiesImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/GreetingActivitiesImpl.java)
 ```java
-static class GreetingActivitiesImpl implements GreetingActivities {
-  @Override
-  public String composeGreeting(String greeting, String name) {
-    try {
-      return callExternalService(greeting, name); // declares `throws IOException`
-    } catch (IOException e) {
-      throw Activity.wrap(e);
+public class GreetingActivitiesImpl implements GreetingActivities {
+    @Override
+    public String composeGreeting(String greeting, String name) {
+        try {
+            return callExternalService(greeting, name); // declares `throws IOException`
+        } catch (IOException e) {
+            throw Activity.wrap(e);
+        }
     }
-  }
 }
 ```
+<!--SNIPEND-->
 
 `wrap()` only does something to a checked exception. Given that, you don't need to reason about what to pass it:
 
@@ -155,18 +166,21 @@ Two details matter once you reach an `ApplicationFailure`:
   exception type. `type` defaults to the thrown exception's fully qualified class name unless you set it explicitly
   with `ApplicationFailure.newFailure(message, type, ...)`.
 
+<!--SNIPSTART java-error-handling-read-cause-chain {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/CauseChainWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/CauseChainWorkflowImpl.java)
 ```java
 try {
-  return activities.processCreditCard(orderId);
+    return Result.approved(activities.processCreditCard(orderId));
 } catch (ActivityFailure e) {
-  if (e.getCause() instanceof ApplicationFailure appFailure) {
-    if ("ValidationError".equals(appFailure.getType())) {
-      return Result.rejected(appFailure.getOriginalMessage());
+    if (e.getCause() instanceof ApplicationFailure appFailure) {
+        if ("ValidationError".equals(appFailure.getType())) {
+            return Result.rejected(appFailure.getOriginalMessage());
+        }
     }
-  }
-  throw e;
+    throw e;
 }
 ```
+<!--SNIPEND-->
 
 ## Handle Activity and Child Workflow failures {/* #handle-activity-failures */}
 
@@ -174,20 +188,23 @@ Catch `ActivityFailure` (or `ChildWorkflowFailure`) around a call, not `Applicat
 or Child Workflow boundary always wraps the underlying failure. Always check for `CanceledFailure` as the cause
 before handling anything else, and rethrow it unhandled:
 
+<!--SNIPSTART java-error-handling-handle-activity-failure {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/ChargeWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/ChargeWorkflowImpl.java)
 ```java
 try {
-  return activities.charge(order);
+    return Result.approved(activities.charge(order));
 } catch (ActivityFailure e) {
-  if (e.getCause() instanceof CanceledFailure) {
-    throw e; // never swallow cancellation
-  }
-  if (e.getCause() instanceof ApplicationFailure appFailure
-      && "PaymentDeclined".equals(appFailure.getType())) {
-    return Result.declined(appFailure.getOriginalMessage());
-  }
-  throw e; // don't recognize it — propagate
+    if (e.getCause() instanceof CanceledFailure) {
+        throw e; // never swallow cancellation
+    }
+    if (e.getCause() instanceof ApplicationFailure appFailure
+        && "PaymentDeclined".equals(appFailure.getType())) {
+        return Result.declined(appFailure.getOriginalMessage());
+    }
+    throw e; // don't recognize it — propagate
 }
 ```
+<!--SNIPEND-->
 
 For deciding which failures should skip retries, see [Non-Retryable Errors](/design-patterns/non-retryable-errors),
 which has a Java example for both marking a failure non-retryable at the throw site and listing non-retryable types
@@ -199,19 +216,26 @@ full set of retry strategies, see [Error Handling & Retry Patterns](/design-patt
 
 Cancellation is cooperative — the Worker never force-stops running Workflow code. A cancellation request cancels the
 current [Cancellation Scope](/develop/java/workflows/cancellation), and the next cancelable call inside it (an
-Activity, Timer, or Child Workflow) throws `CanceledFailure`. If you need cleanup to run after a cancellation — for
+Activity, Timer, or Child Workflow) fails with a `CanceledFailure`. An Activity call throws an `ActivityFailure` whose
+cause is the `CanceledFailure`, so check the cause rather than catching `CanceledFailure` directly. If you need cleanup to run after a cancellation — for
 example, compensating an Activity that already applied its effect — run it in a
 [detached Cancellation Scope](/develop/java/workflows/cancellation#cancel-activity), since a normal scope is a child
 of the one that was just canceled and any call inside it would be canceled immediately:
 
+<!--SNIPSTART java-error-handling-cancellation-cleanup {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/CancellationWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/CancellationWorkflowImpl.java)
 ```java
 try {
-  activities.longRunningWork();
-} catch (CanceledFailure e) {
-  Workflow.newDetachedCancellationScope(() -> activities.compensate()).run();
-  throw e; // rethrow after cleanup so the Workflow Execution ends "Canceled"
+    activities.longRunningWork();
+} catch (ActivityFailure e) {
+    if (e.getCause() instanceof CanceledFailure) {
+        // The canceled scope would cancel this call right away, so run it detached.
+        Workflow.newDetachedCancellationScope(() -> activities.compensate()).run();
+    }
+    throw e; // rethrow so no further Workflow logic runs
 }
 ```
+<!--SNIPEND-->
 
 ## Centralize failure conversion with a Worker Interceptor {/* #centralize-with-interceptor */}
 
@@ -221,35 +245,41 @@ domain exceptions into `ApplicationFailure` with a consistent `type` and non-ret
 [`ActivityInboundCallsInterceptor.execute()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/interceptors/ActivityInboundCallsInterceptor.html)
 centralizes that mapping in one place instead of repeating it in every Activity implementation:
 
+<!--SNIPSTART java-error-handling-error-normalizing-interceptor-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/ErrorNormalizingWorkerInterceptor.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/ErrorNormalizingWorkerInterceptor.java)
 ```java
 public final class ErrorNormalizingWorkerInterceptor extends WorkerInterceptorBase {
-  @Override
-  public ActivityInboundCallsInterceptor interceptActivity(ActivityInboundCallsInterceptor next) {
-    return new ActivityInboundCallsInterceptorBase(next) {
-      @Override
-      public ActivityOutput execute(ActivityInput input) {
-        try {
-          return super.execute(input);
-        } catch (ApplicationFailure | TimeoutFailure | CanceledFailure f) {
-          throw f; // already a well-formed Temporal failure — pass through
-        } catch (PaymentDeclinedException e) {
-          throw ApplicationFailure.newNonRetryableFailure(e.getMessage(), "PaymentDeclined", e.toDetail());
-        } catch (Exception e) {
-          throw Activity.wrap(e); // uniform fallback: type = class name, retryable
-        }
-      }
-    };
-  }
+    @Override
+    public ActivityInboundCallsInterceptor interceptActivity(ActivityInboundCallsInterceptor next) {
+        return new ActivityInboundCallsInterceptorBase(next) {
+            @Override
+            public ActivityOutput execute(ActivityInput input) {
+                try {
+                    return super.execute(input);
+                } catch (ApplicationFailure | TimeoutFailure | CanceledFailure f) {
+                    throw f; // already a well-formed Temporal failure — pass through
+                } catch (PaymentDeclinedException e) {
+                    throw ApplicationFailure.newNonRetryableFailure(e.getMessage(), "PaymentDeclined", e.toDetail());
+                } catch (Exception e) {
+                    throw Activity.wrap(e); // uniform fallback: type = class name, retryable
+                }
+            }
+        };
+    }
 }
 ```
+<!--SNIPEND-->
 
 Register it on the Worker Factory:
 
+<!--SNIPSTART java-error-handling-register-interceptor {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/WorkerSetup.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/WorkerSetup.java)
 ```java
-WorkerFactoryOptions.newBuilder()
+WorkerFactoryOptions factoryOptions = WorkerFactoryOptions.newBuilder()
     .setWorkerInterceptors(new ErrorNormalizingWorkerInterceptor())
     .build();
 ```
+<!--SNIPEND-->
 
 Because the interceptor sees the original exception before the SDK's default conversion runs, it's the layer to
 attach `details` and a non-retryable classification consistently, rather than depending on every Activity
@@ -263,12 +293,15 @@ Throwing `ApplicationFailure` from Workflow code is the only way to fail a Workf
 unhandled exception fails only the current Workflow Task, which the Worker retries indefinitely — this is intentional:
 a plain bug should be fixable with a new deployment, not permanently fail every Workflow Execution that hit it.
 
+<!--SNIPSTART java-error-handling-fail-workflow {"enable_code_dedenting": true}-->
+[java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/OrderValidationWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/best-practices/error-handling/src/main/java/io/temporal/docs/bestpractices/errorhandling/OrderValidationWorkflowImpl.java)
 ```java
 if (order.getTotal().compareTo(BigDecimal.ZERO) <= 0) {
-  throw ApplicationFailure.newNonRetryableFailure(
-      "Order total must be positive: " + order.getTotal(), "InvalidOrderTotal");
+    throw ApplicationFailure.newNonRetryableFailure(
+        "Order total must be positive: " + order.getTotal(), "InvalidOrderTotal");
 }
 ```
+<!--SNIPEND-->
 
 If you want specific plain exception types to fail the Workflow Execution instead of retrying the Workflow Task,
 list them with

@@ -369,8 +369,8 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 #### [NexGen](/nexus/nexgen)
 
-NexGen generates typed models, runtime validators, and Nexus Service definitions in C#, Go, Java, Python, and
-TypeScript from one schema file. The handler and the caller each generate code from that file, so both sides use the same
+NexGen generates typed models, runtime validators, and Nexus Service definitions in Go, Java, Python, TypeScript,
+and .NET from one schema file. The handler and the caller each generate code from that file, so both sides use the same
 types even when they're written in different languages.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->

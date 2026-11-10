@@ -6,6 +6,7 @@ const { compileRedirects } = require('../bin/redirect-utils');
 const {
   LIMITS,
   isAllowed,
+  droppedSources,
   isAllowedResult,
   kapaIdentity,
   parseAllowlist,
@@ -14,6 +15,7 @@ const {
   toMarkdownUrl,
   shapeResults,
   validResults,
+  sourceLabel,
 } = require('./_retrieve-lib');
 
 const compiled = compileRedirects([
@@ -193,6 +195,41 @@ describe('isAllowedResult', () => {
     assert.strictEqual(isAllowedResult({ content: 'x', source_url: 'https://docs.temporal.io/workflows' }, allowlist), true);
     assert.strictEqual(isAllowedResult({ content: 'x', source_url: 'https://temporalio.slack.com/archives/C1/p1' }, allowlist), false);
     assert.strictEqual(isAllowedResult({ content: 'x', source_url: '  ' }, allowlist), false);
+  });
+});
+
+describe('sourceLabel', () => {
+  it('uses the host for most sources', () => {
+    assert.strictEqual(sourceLabel('https://Community.Temporal.io/t/some-topic/123'), 'community.temporal.io');
+  });
+
+  it('keeps the owner and repository for github.com', () => {
+    assert.strictEqual(
+      sourceLabel('https://github.com/temporalio/sdk-python/blob/main/README.md'),
+      'github.com/temporalio/sdk-python'
+    );
+    assert.strictEqual(sourceLabel('https://github.com/temporalio'), 'github.com');
+  });
+
+  it('labels a URL it cannot parse', () => {
+    assert.strictEqual(sourceLabel('not a url'), '(invalid URL)');
+  });
+});
+
+describe('droppedSources', () => {
+  it('counts only the results the allowlist drops', () => {
+    const allowlist = parseAllowlist(['docs.temporal.io']);
+    const results = [
+      { content: 'a', source_url: 'https://docs.temporal.io/workflows' },
+      { content: 'b', source_url: 'https://community.temporal.io/t/x/1' },
+      { content: 'c', source_url: 'https://community.temporal.io/t/y/2' },
+      { content: 'd', source_url: '' },
+      { content: 'e', source_url: 'https://github.com/temporalio/edu-101/blob/main/x.md' },
+    ];
+    assert.deepStrictEqual(droppedSources(results, allowlist), {
+      'community.temporal.io': 2,
+      'github.com/temporalio/edu-101': 1,
+    });
   });
 });
 
