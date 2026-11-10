@@ -86,13 +86,14 @@ One key and multiple values lets you roll out a new metadata value while `deny` 
 
 To migrate a codec, add the new value, deploy the new codec, wait until metrics show no traffic on the old value, then remove the old value. Stay in `deny` through that change. See [Migrate accepted metadata values](#migrate-accepted-metadata-values).
 
-### Reserved encryption metadata values
+### Reject reserved metadata matches
 
-Temporal Cloud reserves certain payload encoding metadata values, including `json/plain` and `json/protobuf`. Do not use these metadata key and value match.
+Temporal Cloud rejects a configuration that contains either of these exact metadata matches:
 
-**Do not use these reserved values as accepted encryption metadata in EVE (and in your Payload Codec if you intend to use EVE for validation).** These values represent standard, non-encrypted payload encodings and must not be used to indicate encryption.
+- key `encoding`, value `json/plain`
+- key `encoding`, value `json/protobuf`
 
-EVE configuration requests that include reserved metadata key-value combinations will be rejected.
+An unencrypted Payload already carries these matches. Omitting the metadata key uses `encoding`, so an accepted value of `json/plain` or `json/protobuf` is the same match and is rejected.
 
 ## Review what is checked
 
