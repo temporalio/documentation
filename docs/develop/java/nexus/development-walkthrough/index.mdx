@@ -31,6 +31,7 @@ The Service needs to:
 
 - Start an approval and eventually return `APPROVED` or `DENIED`
 - Accept a nudge that asks the approver again, and count how many have been sent
+- Read an approval's progress without changing it
 - Accept supporting information for a purchase, whether or not its approval exists yet
 - Accept a decision and confirm it was recorded
 - Send a notification when the decision is final
@@ -41,7 +42,7 @@ Each of those needs a different Nexus capability, introduced one step at a time.
 
 **This walkthrough builds the Service in Java.** [NexGen](/nexus/nexgen) generates code from the same contract in Go, Python, and TypeScript, and the reasoning at each step is the same in all of them.
 
-The Java sample is [nexuswalkthrough](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough).
+The Java sample is [development-walkthrough](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/java-sandbox/nexus/development-walkthrough).
 
 **Any caller can call any handler, because the contract is the only thing the two sides share.** A Go caller can drive a Python handler, and a TypeScript caller can drive the Java handler built here. [Step 6](/develop/java/nexus/development-walkthrough/call-the-service) builds the Java caller.
 
@@ -54,7 +55,7 @@ restoring this means putting the table back, not just uncommenting it.
 
 | Language | Sample |
 | --- | --- |
-| Java (this walkthrough) | [nexuswalkthrough](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough) |
+| Java (this walkthrough) | [development-walkthrough](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/java-sandbox/nexus/development-walkthrough) |
 | Go | TODO |
 | Python | TODO |
 | TypeScript | TODO |
@@ -80,9 +81,9 @@ temporal --version
 
 **Run every terminal command, in order**, or later steps may fail.
 
-**A block headed by a file path is sample code** to read. You don't need to type it: it's already in the [sample codebase](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuswalkthrough), and the file name links to the file.
+**A block headed by a file path is sample code** to read. You don't need to type it: it's already in the [sample codebase](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/java-sandbox/nexus/development-walkthrough), and the file name links to the file.
 
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalWorkflowId.java)
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalWorkflowId.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalWorkflowId.java)
 
 ```java
   public static String forItem(String itemId) {
@@ -100,14 +101,16 @@ temporal version 1.9.1 (Server 1.32.0, UI 2.54.1)
 
 ### 1. Clone the sample project {/* #clone-the-sample-project */}
 
-This walkthrough runs inside a clone of the [samples-java](https://github.com/temporalio/samples-java)
-repository. Every command and file path is relative to the repository root.
+This walkthrough runs inside a clone of the
+[documentation-sdk-code-examples](https://github.com/temporalio/documentation-sdk-code-examples)
+repository. Every command and file path is relative to the `java-sandbox/nexus/development-walkthrough`
+project directory. The run commands use Maven or [Gradle](https://gradle.org/install/), and need Java 21 or later.
 
 <RunThis>
 
 ```bash title="Run: clone the sample"
-git clone https://github.com/temporalio/samples-java.git
-cd samples-java
+git clone https://github.com/temporalio/documentation-sdk-code-examples.git
+cd documentation-sdk-code-examples/java-sandbox/nexus/development-walkthrough
 ```
 
 </RunThis>
@@ -144,7 +147,7 @@ each one runs against what the last one left running.
 
 <CallToAction href="/develop/java/nexus/development-walkthrough/define-the-data-contract" analyticsId="nexus-walkthrough-step-1-cta">
   <h3>Step 1: Define the data contract</h3>
-  <p>The five Operations callers need, and the types they carry.</p>
+  <p>The six Operations callers need, and the types they carry.</p>
 </CallToAction>
 
 [Debugging and tips](/develop/java/nexus/development-walkthrough/debugging-and-tips) collects the

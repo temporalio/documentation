@@ -33,25 +33,32 @@ To emit metrics with the Java SDK, use the [`MicrometerClientStatsReporter`](htt
 
 The following example shows how to use `MicrometerClientStatsReporter` to define the metrics scope and set it with the `WorkflowServiceStubsOptions`.
 
+<!--SNIPSTART java-observability-metrics-scope {"enable_code_dedenting": true}-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/metrics/MetricsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/metrics/MetricsExample.java)
 ```java
-//...
-   // see the Micrometer documentation for configuration details on other supported monitoring systems.
-   // in this example shows how to set up Prometheus registry and stats reported.
-   PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-   StatsReporter reporter = new MicrometerClientStatsReporter(registry);
-    // set up a new scope, report every 10 seconds
-     Scope scope = new RootScopeBuilder()
-             .reporter(reporter)
-             .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
-   // for Prometheus collection, expose a scrape endpoint.
-   //...
-   // add metrics scope to WorkflowServiceStub options
-   WorkflowServiceStubsOptions stubOptions =
-       WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
-//...
-```
+// See the Micrometer documentation for configuring other supported monitoring systems.
+// This example sets up a Prometheus registry and stats reporter.
+PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+StatsReporter reporter = new MicrometerClientStatsReporter(registry);
 
-For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/637c2e66fd2dab43d9f3f39e5fd9c55e4f3884f0/core/src/main/java/io/temporal/samples/metrics).
+// Set up a new scope that reports every 10 seconds.
+Scope scope = new RootScopeBuilder()
+    .reporter(reporter)
+    .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
+
+// For Prometheus collection, expose a scrape endpoint that serves registry.scrape().
+
+// Add the metrics scope to the WorkflowServiceStubs options.
+WorkflowServiceStubsOptions stubOptions =
+    WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
+```
+<!--SNIPEND-->
+
+`temporal-sdk` depends on an older `micrometer-core` than current `micrometer-registry-prometheus` releases.
+Import the `io.micrometer:micrometer-bom` matching your registry version so both resolve to the same version.
+Otherwise, creating a `PrometheusMeterRegistry` fails at runtime with a `NoClassDefFoundError`.
+
+For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/metrics).
 For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://docs.micrometer.io/micrometer/reference/implementations/prometheus.html#_configuring) documentation.
 
 ### Attach global tags to metrics
@@ -62,27 +69,27 @@ Global tags add your organization's information next to them, so a dashboard can
 Pass the tags to `RootScopeBuilder.tags` when you build the metrics scope.
 Every metric reported through that scope carries them, from both the Client and the Worker.
 
+<!--SNIPSTART java-observability-metrics-global-tags {"enable_code_dedenting": true}-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/metrics/MetricsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/metrics/MetricsExample.java)
 ```java
-//...
-// Set up prometheus registry and stats reported
-    PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-    StatsReporter reporter = new MicrometerClientStatsReporter(registry);
+PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+StatsReporter reporter = new MicrometerClientStatsReporter(registry);
 
-    Map<String, String> globalTags = new HashMap<>();
-    globalTags.put("team", "content-platform");
-    globalTags.put("service", "checkout");
-    globalTags.put("cost_center", "cc-1042");
-    globalTags.put("environment", "production");
+Map<String, String> globalTags = new HashMap<>();
+globalTags.put("team", "content-platform");
+globalTags.put("service", "checkout");
+globalTags.put("cost_center", "cc-1042");
+globalTags.put("environment", "production");
 
-    Scope scope = new RootScopeBuilder()
-        .tags(globalTags)
-        .reporter(reporter)
-        .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
+Scope scope = new RootScopeBuilder()
+    .tags(globalTags)
+    .reporter(reporter)
+    .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
 
-    WorkflowServiceStubsOptions stubOptions =
-        WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
-//...
+WorkflowServiceStubsOptions stubOptions =
+    WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
 ```
+<!--SNIPEND-->
 
 #### Choose a tag set
 
@@ -124,43 +131,44 @@ Tracing allows you to view the call graph of a Workflow along with its Activitie
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
-To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor.
+To configure tracing in Java, register the `OpenTracingClientInterceptor` and `OpenTracingWorkerInterceptor` interceptors.
 You can register the interceptors on both the Temporal Client side and the Worker side, or through a [Plugin](/develop/plugins-guide#interceptors) if you're building a reusable library.
 
-The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Temporal Client.
+Both interceptors take an `OpenTracingOptions` that holds your `io.opentracing.Tracer`, such as a Jaeger tracer or the
+OpenTelemetry OpenTracing shim. The no-argument constructors use `GlobalTracer.get()`.
 
+<!--SNIPSTART java-observability-tracing-options {"enable_code_dedenting": true}-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/tracing/TracingExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/tracing/TracingExample.java)
 ```java
-WorkflowClientOptions.newBuilder()
-   //...
-   .setInterceptors(new OpenTracingClientInterceptor())
-   .build();
+OpenTracingOptions tracingOptions = OpenTracingOptions.newBuilder().setTracer(tracer).build();
 ```
+<!--SNIPEND-->
 
+The following example registers `OpenTracingClientInterceptor` on the Temporal Client:
+
+<!--SNIPSTART java-observability-tracing-client {"enable_code_dedenting": true}-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/tracing/TracingExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/tracing/TracingExample.java)
 ```java
 WorkflowClientOptions clientOptions =
     WorkflowClientOptions.newBuilder()
-        .setInterceptors(new OpenTracingClientInterceptor(JaegerUtils.getJaegerOptions(type)))
+        .setInterceptors(new OpenTracingClientInterceptor(tracingOptions))
         .build();
 WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
+<!--SNIPEND-->
 
-The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
+The following example registers `OpenTracingWorkerInterceptor` on the Worker:
 
-```java
-WorkerFactoryOptions.newBuilder()
-   //...
-   .setWorkerInterceptors(new OpenTracingWorkerInterceptor())
-   .build();
-```
-
+<!--SNIPSTART java-observability-tracing-worker {"enable_code_dedenting": true}-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/tracing/TracingExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/tracing/TracingExample.java)
 ```java
 WorkerFactoryOptions factoryOptions =
     WorkerFactoryOptions.newBuilder()
-        .setWorkerInterceptors(
-            new OpenTracingWorkerInterceptor(JaegerUtils.getJaegerOptions(type)))
+        .setWorkerInterceptors(new OpenTracingWorkerInterceptor(tracingOptions))
         .build();
 WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
 ```
+<!--SNIPEND-->
 
 For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/main/contrib/temporal-opentracing/README.md).
 
@@ -186,9 +194,12 @@ You can find the log levels supported by `slf4j` in [their official documentatio
 
 To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method.
 
+<!--SNIPSTART java-observability-workflow-logger {"enable_code_dedenting": true}-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/logging/GreetingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/logging/GreetingWorkflowImpl.java)
 ```java
-private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
+private static final Logger logger = Workflow.getLogger(GreetingWorkflowImpl.class);
 ```
+<!--SNIPEND-->
 
 Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
 
@@ -230,37 +241,61 @@ The steps to using custom Search Attributes are:
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
+Define a typed `SearchAttributeKey` for each custom Search Attribute in a shared constants file:
+
+<!--SNIPSTART java-observability-search-attribute-key-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/searchattributes/Constants.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/searchattributes/Constants.java)
+```java
+// In a shared constants file, so all files have access
+public class Constants {
+    public static final String TASK_QUEUE_NAME = "pizza-tasks";
+
+    public static final SearchAttributeKey<Boolean> IS_ORDER_FAILED =
+        SearchAttributeKey.forBoolean("isOrderFailed");
+}
+```
+<!--SNIPEND-->
+
 When starting a Workflow Execution with your Client, include the Custom Search Attribute in the options using `WorkflowOptions.newBuilder().setTypedSearchAttributes()`:
 
+<!--SNIPSTART java-observability-set-search-attributes-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/searchattributes/Starter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/searchattributes/Starter.java)
 ```java
-    // In a shared constants file, so all files have access
+public class Starter {
 
-    public static final SearchAttributeKey<Boolean> IS_ORDER_FAILED = SearchAttributeKey.forBoolean("isOrderFailed");
-...
-    // In main
-    WorkflowOptions options = WorkflowOptions.newBuilder()
-        .setWorkflowId(workflowID)
-        .setTaskQueue(Constants.TASK_QUEUE_NAME)
-        .setTypedSearchAttributes(generateSearchAttributes())
-        .build();
+    public static void main(String[] args) {
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowClient client = WorkflowClient.newInstance(service);
+        String workflowID = "pizza-order-1";
 
-    PizzaWorkflow workflow = client.newWorkflowStub(PizzaWorkflow.class, options);
-...
+        WorkflowOptions options = WorkflowOptions.newBuilder()
+            .setWorkflowId(workflowID)
+            .setTaskQueue(Constants.TASK_QUEUE_NAME)
+            .setTypedSearchAttributes(generateSearchAttributes())
+            .build();
 
-    // Further down in the file
-    private static SearchAttributes generateSearchAttributes(){
+        PizzaWorkflow workflow = client.newWorkflowStub(PizzaWorkflow.class, options);
+        WorkflowClient.start(workflow::orderPizza, "701 Mission Street");
+        System.exit(0);
+    }
+
+    public static SearchAttributes generateSearchAttributes() {
         return SearchAttributes.newBuilder().set(Constants.IS_ORDER_FAILED, false).build();
     }
+}
 ```
+<!--SNIPEND-->
 
-Each `SearchAttribute` object represents a custom attribute name, and the value is a [`SearchAttributeKey`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/SearchAttributeKey.html#forBoolean(java.lang.String)) representing a specific type. Currently the following types are supported:
+Each [`SearchAttributeKey`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/SearchAttributeKey.html) holds a custom attribute's name and type.
+Create one with the factory method for its type:
 
-- Boolean
-- Double
-- Long
-- KeyWord
-- KeyWordList
-- Text
+- `forBoolean`
+- `forDouble`
+- `forLong`
+- `forKeyword`
+- `forKeywordList`
+- `forText`
+- `forOffsetDateTime`
 
 In this example `isOrderFailed` is set as a Search Attribute. This attribute is
 useful for querying Workflows based on the success/failure of customer orders.
@@ -268,39 +303,30 @@ useful for querying Workflows based on the success/failure of customer orders.
 ### How to upsert Search Attributes {/* #upsert-search-attributes */}
 
 Within the Workflow code, you can dynamically add or update Search Attributes using [`upsertTypedSearchAttributes`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertTypedSearchAttributes(io.temporal.common.SearchAttributeUpdate...)).
-This method is particularly useful for Workflows whose attributes need to change based on internal logic or external events.
+Use it when an attribute needs to change based on Workflow logic or external events.
+The following example sets `isOrderFailed` based on whether the `getDistance` Activity succeeds:
 
+<!--SNIPSTART java-observability-upsert-search-attributes {"enable_code_dedenting": true}-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/searchattributes/PizzaWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/searchattributes/PizzaWorkflowImpl.java)
 ```java
-  import io.temporal.workflow.Workflow;
-
-  ...
-
-  // Existing Workflow Logic
-
-  Map<String, Object> searchAttribute = new HashMap<>();
-
-  Distance distance;
-  try {
+int distance;
+try {
     distance = activities.getDistance(address);
-    searchAttribute.put("isOrderFailed", false);
     Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueSet(false));
-  } catch (NullPointerException e) {
-    searchAttribute.put("isOrderFailed", true);
+} catch (ActivityFailure e) {
     Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueSet(true));
-    throw new NullPointerException("Unable to get distance");
-  }
+    throw e;
+}
 ```
+<!--SNIPEND-->
 
 ### How to remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
 To remove a Search Attribute that was previously set, unset its value.
 
+<!--SNIPSTART java-observability-remove-search-attribute {"enable_code_dedenting": true}-->
+[java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/searchattributes/PizzaWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/platform/observability/src/main/java/io/temporal/docs/platform/observability/searchattributes/PizzaWorkflowImpl.java)
 ```java
-    // In a shared constants file, so all files have access
-
-    public static final SearchAttributeKey<Boolean> IS_ORDER_FAILED = SearchAttributeKey.forBoolean("isOrderFailed");
-
-    ...
-
-    Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueUnset());
+Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueUnset());
 ```
+<!--SNIPEND-->

@@ -3,7 +3,7 @@ id: operator
 title: Temporal CLI operator command reference
 sidebar_label: operator
 description: Operator commands in Temporal allow actions on Namespaces, Search Attributes, Clusters and Nexus Endpoints using specific subcommands. Execute with "temporal operator [command] [subcommand] [options]".
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - Temporal CLI
 ---

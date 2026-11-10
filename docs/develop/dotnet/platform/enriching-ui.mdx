@@ -19,23 +19,34 @@ This helps users identify and understand Workflows and their operations.
 
 When starting a Workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
-```csharp
+<!--SNIPSTART dotnet-enriching-ui-start-workflow-->
+[dotnet-sandbox/platform/EnrichingUi/StartWorkflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/EnrichingUi/StartWorkflow.cs)
+```cs
 using Temporalio.Client;
+using TemporalioDocs.Platform.EnrichingUi.CurrentDetails;
 
-// Create client
-var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
-
-// Start a Workflow with static summary and details
-var handle = await client.StartWorkflowAsync(
-    (YourWorkflow wf) => wf.RunAsync("Workflow input"),
-    new WorkflowOptions
+public static class StartWorkflow
+{
+    public static async Task<WorkflowHandle<YourWorkflow, string>> RunAsync()
     {
-        Id = "your-workflow-id",
-        TaskQueue = "your-task-queue",
-        StaticSummary = "Order processing for customer #12345",
-        StaticDetails = "Processing premium order with expedited shipping"
-    });
+        // Create client
+        var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+
+        // Start a Workflow with static summary and details
+        var handle = await client.StartWorkflowAsync(
+            (YourWorkflow wf) => wf.RunAsync("Workflow input"),
+            new WorkflowOptions
+            {
+                Id = "your-workflow-id",
+                TaskQueue = "your-task-queue",
+                StaticSummary = "Order processing for customer #12345",
+                StaticDetails = "Processing premium order with expedited shipping"
+            });
+        return handle;
+    }
+}
 ```
+<!--SNIPEND-->
 
 `StaticSummary` is a single-line description that appears in the Workflow list view, limited to 200 bytes.
 `StaticDetails` can be multi-line and provides more comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
@@ -44,7 +55,9 @@ The input format is standard Markdown excluding images, HTML, and scripts.
 
 You can also use the `ExecuteWorkflowAsync` method with the same parameters:
 
-```csharp
+<!--SNIPSTART dotnet-enriching-ui-execute-workflow {"enable_code_dedenting": true}-->
+[dotnet-sandbox/platform/EnrichingUi/ExecuteWorkflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/EnrichingUi/ExecuteWorkflow.cs)
+```cs
 var result = await client.ExecuteWorkflowAsync(
     (YourWorkflow wf) => wf.RunAsync("Workflow input"),
     new WorkflowOptions
@@ -55,6 +68,7 @@ var result = await client.ExecuteWorkflowAsync(
         StaticDetails = "Processing premium order with expedited shipping"
     });
 ```
+<!--SNIPEND-->
 
 ### Inside the Workflow
 
@@ -62,7 +76,12 @@ Within a Workflow, you can get and set the _current Workflow details_.
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
 Current Workflow details also takes Markdown format (excluding images, HTML, and scripts) and can span multiple lines.
 
-```csharp
+<!--SNIPSTART dotnet-enriching-ui-current-details-->
+[dotnet-sandbox/platform/EnrichingUi/CurrentDetails/YourWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/EnrichingUi/CurrentDetails/YourWorkflow.workflow.cs)
+```cs
+namespace TemporalioDocs.Platform.EnrichingUi.CurrentDetails;
+
+using Microsoft.Extensions.Logging;
 using Temporalio.Workflows;
 
 [Workflow]
@@ -73,22 +92,26 @@ public class YourWorkflow
     {
         // Get the current details
         var currentDetails = Workflow.CurrentDetails;
-        Workflow.Logger.LogInformation($"Current details: {currentDetails}");
-        
+        Workflow.Logger.LogInformation("Current details: {CurrentDetails}", currentDetails);
+
         // Set/update the current details
         Workflow.CurrentDetails = "Updated Workflow details with new status";
-        
+
         return "Workflow completed";
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Adding Summary to Activities and Timers
 
 You can attach a metadata parameter `Summary` to Activities when starting them from within a Workflow:
 
-```csharp
-using Temporalio.Activities;
+<!--SNIPSTART dotnet-enriching-ui-activity-summary-->
+[dotnet-sandbox/platform/EnrichingUi/ActivitySummary/YourWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/EnrichingUi/ActivitySummary/YourWorkflow.workflow.cs)
+```cs
+namespace TemporalioDocs.Platform.EnrichingUi.ActivitySummary;
+
 using Temporalio.Workflows;
 
 [Workflow]
@@ -105,15 +128,20 @@ public class YourWorkflow
                 StartToCloseTimeout = TimeSpan.FromSeconds(10),
                 Summary = "Processing user data"
             });
-        
+
         return result;
     }
 }
 ```
+<!--SNIPEND-->
 
 Similarly, you can attach a `Summary` to timers within a Workflow:
 
-```csharp
+<!--SNIPSTART dotnet-enriching-ui-timer-summary-->
+[dotnet-sandbox/platform/EnrichingUi/TimerSummary/YourWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/EnrichingUi/TimerSummary/YourWorkflow.workflow.cs)
+```cs
+namespace TemporalioDocs.Platform.EnrichingUi.TimerSummary;
+
 using Temporalio.Workflows;
 
 [Workflow]
@@ -127,11 +155,12 @@ public class YourWorkflow
         {
             Summary = "Waiting for payment confirmation"
         });
-        
+
         return "Timer completed";
     }
 }
 ```
+<!--SNIPEND-->
 
 The input format for `Summary` is a string, and limited to 200 bytes.
 

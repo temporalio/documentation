@@ -1,7 +1,7 @@
 ---
 id: activity-dependency-injection
 title: "Activity Dependency Injection"
-description: "Injects external dependencies into Activities at Worker startup, keeping Workflow code deterministic and Activities testable."
+description: "Injects external dependencies into Activities at Worker startup, keeping Workflow Definitions deterministic and Activities testable."
 tags:
   - Design Patterns
   - Workers
@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 ## Overview
 
 The Activity Dependency Injection pattern separates the creation of external dependencies (database connections, API clients, configuration) from Activity business logic by injecting them at Worker startup.
-This approach keeps Workflow code deterministic, makes Activities testable in isolation, and ensures expensive resources are initialized once per Worker process rather than once per Activity execution.
+This approach keeps Workflow Definitions deterministic, makes Activities testable in isolation, and ensures expensive resources are initialized once per Worker process rather than once per Activity execution.
 
 ## Problem
 
@@ -764,7 +764,7 @@ The trade-off is that all Activity executions on a given Worker share the same d
 
 - **Keep dependencies thread-safe.** Multiple Activity executions run concurrently on the same Worker. Use connection pools rather than single connections, and avoid mutable shared state.
 - **Define dependencies as interfaces.** In Go, Python, and Java, using interfaces (or protocols in Python) for dependencies makes it possible to swap implementations for testing or different environments.
-- **Do not inject dependencies into Workflows.** Workflow code must remain deterministic. If a Workflow needs configuration, retrieve it through a Local Activity so the value gets recorded in the Event History.
+- **Do not inject dependencies into Workflows.** A Workflow Definition must remain deterministic. If a Workflow needs configuration, retrieve it through a Local Activity so the value gets recorded in the Event History.
 - **Initialize dependencies before Worker startup.** Create and validate all connections before calling `worker.Run()` or its equivalent. This ensures that the Worker does not start accepting tasks until all dependencies are ready.
 - **Group related Activities on a single struct or class.** Activities that share the same dependencies belong together. If two groups of Activities have different dependencies, use separate structs or classes for each group.
 

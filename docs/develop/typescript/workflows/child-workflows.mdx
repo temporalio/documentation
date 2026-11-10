@@ -24,30 +24,34 @@ If you start a Child Workflow from a non-main context (for example, a Signal or 
 
 To start a Child Workflow Execution and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle/) to it, use [startChild](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 
+<!--SNIPSTART typescript-child-workflows-start-child-->
+[typescript-sandbox/src/workflows/child-workflows/start-child.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/child-workflows/start-child.ts)
 ```ts
 import { startChild } from '@temporalio/workflow';
 
-export async function parentWorkflow(names: string[]) {
+export async function parentWorkflow(name: string): Promise<string> {
   const childHandle = await startChild(childWorkflow, {
     args: [name],
     // workflowId, // add business-meaningful workflow id here
     // // regular workflow options apply here, with two additions (defaults shown):
     // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-    // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+    // parentClosePolicy: ParentClosePolicy.TERMINATE
   });
   // you can use childHandle to signal or get result here
-  await childHandle.signal('anySignal');
-  const result = childHandle.result();
+  await childHandle.signal(anySignal);
+  const result = await childHandle.result();
   // you can use childHandle to signal, query, cancel, terminate, or get result here
+  return result;
 }
 ```
+<!--SNIPEND-->
 
 To start a Child Workflow Execution and await its completion, use [executeChild](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
 
 By default, a child is scheduled on the same Task Queue as the parent.
 
-<!--SNIPSTART typescript-child-workflow -->
-[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/child-workflows/src/workflows.ts)
+<!--SNIPSTART typescript-child-workflows-execute-child-->
+[typescript-sandbox/src/workflows/child-workflows/execute-child.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/child-workflows/execute-child.ts)
 ```ts
 import { executeChild } from '@temporalio/workflow';
 
@@ -59,7 +63,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
         // workflowId, // add business-meaningful workflow id here
         // // regular workflow options apply here, with two additions (defaults shown):
         // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+        // parentClosePolicy: ParentClosePolicy.TERMINATE
       }),
     ),
   );
@@ -70,15 +74,17 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
 
 To control any running Workflow from inside a Workflow, use [getExternalWorkflowHandle(workflowId)](https://typescript.temporal.io/api/namespaces/workflow/#getexternalworkflowhandle).
 
+<!--SNIPSTART typescript-child-workflows-external-handle-->
+[typescript-sandbox/src/workflows/child-workflows/external-handle.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/child-workflows/external-handle.ts)
 ```ts
-import { getExternalWorkflowHandle, workflowInfo } from '@temporalio/workflow';
+import { getExternalWorkflowHandle } from '@temporalio/workflow';
 
-export async function terminateWorkflow() {
-  const { workflowId } = workflowInfo(); // no await needed
+export async function cancelWorkflow(workflowId: string): Promise<void> {
   const handle = getExternalWorkflowHandle(workflowId); // sync function, not async
   await handle.cancel();
 }
 ```
+<!--SNIPEND-->
 
 If the Child Workflow options aren't explicitly set, they inherit their values from the Parent Workflow options.
 Two advanced options are unique to Child Workflows:
@@ -97,8 +103,8 @@ The default Parent Close Policy option is set to terminate the Child Workflow Ex
 
 To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) option.
 
-<!--SNIPSTART typescript-child-workflow -->
-[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/child-workflows/src/workflows.ts)
+<!--SNIPSTART typescript-child-workflows-execute-child-->
+[typescript-sandbox/src/workflows/child-workflows/execute-child.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/child-workflows/execute-child.ts)
 ```ts
 import { executeChild } from '@temporalio/workflow';
 
@@ -110,7 +116,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
         // workflowId, // add business-meaningful workflow id here
         // // regular workflow options apply here, with two additions (defaults shown):
         // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+        // parentClosePolicy: ParentClosePolicy.TERMINATE
       }),
     ),
   );

@@ -20,12 +20,14 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 The library ships as the `io.temporal:temporal-workflowstreams` contrib module. Enable streaming by constructing a `WorkflowStream` once via `WorkflowStream.newInstance()`, preferably in a [`@WorkflowInit`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/WorkflowInit.html) constructor. The factory registers the stream's handlers on the current Workflow, and a `@WorkflowInit` constructor runs before any handler dispatch, so polls and offset Queries arriving with the first Workflow Task (for example, from Update-With-Start) are accepted rather than rejected.
 
+<!--SNIPSTART java-workflow-streams-enable-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/enable/OrderWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/enable/OrderWorkflowImpl.java)
 ```java
 import io.temporal.workflow.WorkflowInit;
 import io.temporal.workflowstreams.WorkflowStream;
 import io.temporal.workflowstreams.WorkflowStreamState;
 
-public class OrderInput {
+class OrderInput {
   public String orderId;
   public WorkflowStreamState streamState;
 }
@@ -44,6 +46,7 @@ public class OrderWorkflowImpl implements OrderWorkflow {
   }
 }
 ```
+<!--SNIPEND-->
 
 `WorkflowStream.newInstance` creates the in-memory event log and registers the publish Signal, subscribe Update, and offset Query handlers on the current Workflow. The `priorState` argument may be `null` and is only needed for Continue-As-New rollovers. Pass `null` or call the no-argument overload on a fresh start, and the carried `WorkflowStreamState` after a rollover. See [Stream from long-running Workflows](#continue-as-new) for more details.
 
@@ -53,6 +56,8 @@ Constructing the stream at the top of the Workflow method also works. Signals re
 
 Bind a [topic name](/workflow-streams#topics) with `stream.topic(name)`, then call `publish()` on the returned `WorkflowTopicHandle` to append events. Repeated calls with the same name return the same handle.
 
+<!--SNIPSTART java-workflow-streams-publish-from-workflow-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/OrderWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/OrderWorkflowImpl.java)
 ```java
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
@@ -61,7 +66,7 @@ import io.temporal.workflowstreams.WorkflowStream;
 import io.temporal.workflowstreams.WorkflowTopicHandle;
 import java.time.Duration;
 
-public class StatusEvent {
+class StatusEvent {
   public String state;
   public int progress;
   public String detail;
@@ -105,6 +110,7 @@ public class OrderWorkflowImpl implements OrderWorkflow {
   }
 }
 ```
+<!--SNIPEND-->
 
 `publish()` runs the payload converter to encode each value. The codec chain (encryption, compression, etc.) runs once on the Signal or Update envelope that carries the batch, never per item, so encryption and compression are applied exactly once each direction.
 
@@ -126,6 +132,8 @@ Then use it the same way you would the Workflow-side handle: bind a topic, publi
 
 When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream. It processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [How events are delivered](/workflow-streams#how-events-are-delivered).
 
+<!--SNIPSTART java-workflow-streams-publish-from-client-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/StatusPublisher.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/StatusPublisher.java)
 ```java
 import io.temporal.client.WorkflowClient;
 import io.temporal.workflowstreams.TopicHandle;
@@ -133,43 +141,63 @@ import io.temporal.workflowstreams.WorkflowStreamClient;
 import io.temporal.workflowstreams.WorkflowStreamClientOptions;
 import java.time.Duration;
 
-public void publishStatus(WorkflowClient workflowClient, String workflowId) {
-  WorkflowStreamClientOptions options =
-      WorkflowStreamClientOptions.newBuilder()
-          .setBatchInterval(Duration.ofMillis(200))
-          .build();
-  try (WorkflowStreamClient streamClient =
-      WorkflowStreamClient.newInstance(workflowClient, workflowId, options)) {
-    TopicHandle status = streamClient.topic("status");
-    status.publish(new StatusEvent("started", 0, ""));
-    // ...
-    // Buffer is flushed automatically on close().
+public class StatusPublisher {
+  public void publishStatus(WorkflowClient workflowClient, String workflowId) {
+    WorkflowStreamClientOptions options =
+        WorkflowStreamClientOptions.newBuilder()
+            .setBatchInterval(Duration.ofMillis(200))
+            .build();
+    try (WorkflowStreamClient streamClient =
+        WorkflowStreamClient.newInstance(workflowClient, workflowId, options)) {
+      TopicHandle status = streamClient.topic("status");
+      status.publish(new StatusEvent("started", 0, ""));
+      // ...
+      // Buffer is flushed automatically on close().
+    }
   }
 }
 ```
+<!--SNIPEND-->
 
 Inside an Activity scheduled by a Workflow, `WorkflowStreamClient.fromActivity()` infers the Temporal Client and the parent Workflow Id from the Activity context, so you don't have to thread them through the Activity's input:
 
+<!--SNIPSTART java-workflow-streams-publish-from-activity-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/DeltaActivitiesImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/DeltaActivitiesImpl.java)
 ```java
 import io.temporal.activity.Activity;
 import io.temporal.workflowstreams.TopicHandle;
 import io.temporal.workflowstreams.WorkflowStreamClient;
+import java.util.List;
 
-public class Delta {
+class Delta {
   public String text;
+
+  public Delta() {}
+
+  public Delta(String text) {
+    this.text = text;
+  }
 }
 
-public void streamDeltas(String orderId) {
-  try (WorkflowStreamClient streamClient = WorkflowStreamClient.fromActivity()) {
-    TopicHandle deltas = streamClient.topic("delta");
-    for (Delta delta : generateDeltas(orderId)) {
-      deltas.publish(delta);
-      Activity.getExecutionContext().heartbeat(null);
+public class DeltaActivitiesImpl implements DeltaActivities {
+  @Override
+  public void streamDeltas(String orderId) {
+    try (WorkflowStreamClient streamClient = WorkflowStreamClient.fromActivity()) {
+      TopicHandle deltas = streamClient.topic("delta");
+      for (Delta delta : generateDeltas(orderId)) {
+        deltas.publish(delta);
+        Activity.getExecutionContext().heartbeat(null);
+      }
+      // Buffer is flushed automatically on close().
     }
-    // Buffer is flushed automatically on close().
+  }
+
+  private List<Delta> generateDeltas(String orderId) {
+    return List.of(new Delta("order "), new Delta(orderId), new Delta(" is ready"));
   }
 }
 ```
+<!--SNIPEND-->
 
 For a [standalone Activity](/develop/java/activities/standalone-activities), there is no parent Workflow context to infer, so `fromActivity()` throws an `IllegalStateException`. Fall back to the general pattern with `Activity.getExecutionContext().getWorkflowClient()` and the target Workflow Id threaded through the Activity's input.
 
@@ -177,14 +205,19 @@ Two operations give the application explicit control over when batches ship: the
 
 Pass `true` as the `forceFlush` argument on a publish to wake the background flusher so the current buffer ships without waiting for the next interval. The flusher only runs while the client is open (between construction and `close()`). The call returns immediately after appending to the buffer and signaling the flusher. It doesn't wait for delivery to the Workflow or to subscribers:
 
+<!--SNIPSTART java-workflow-streams-force-flush {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/PhasedPublisher.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/PhasedPublisher.java)
 ```java
 deltas.publish(delta, /* forceFlush */ true);
 ```
+<!--SNIPEND-->
 
 Use it for latency-sensitive events: the first delta of a response so the user sees something fast, or punctuated events like `RETRY` and `STATUS_CHANGE`. See [Tuning](/workflow-streams#tuning) for the trade-off against history pressure.
 
 Use `client.flush()` when you need a mid-stream barrier. Successful completion of the flush is proof that the Temporal server has received all prior publications, so subsequent work that depends on those events being durable can proceed. The client stays open for further publishing afterward. `close()` already flushes on its way out, so the explicit call is only for barriers in the middle:
 
+<!--SNIPSTART java-workflow-streams-flush-barrier {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/PhasedPublisher.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/PhasedPublisher.java)
 ```java
 try (WorkflowStreamClient streamClient =
     WorkflowStreamClient.newInstance(workflowClient, workflowId)) {
@@ -202,6 +235,7 @@ try (WorkflowStreamClient streamClient =
   }
 }
 ```
+<!--SNIPEND-->
 
 Batches also ship early once the buffer reaches `maxBatchSize`, if you set one on `WorkflowStreamClientOptions`; by default only the interval, `forceFlush`, `flush()`, and `close()` trigger a flush.
 
@@ -225,6 +259,8 @@ Items carry the raw `io.temporal.api.common.v1.Payload` in `item.getPayload()`; 
 
 `client.subscribe(options)` without a listener returns a `WorkflowStreamSubscription`. A blocking, single-use subscription the consuming thread iterates with a for-each loop. The thread blocks waiting for items while polling still runs on the shared executor.
 
+<!--SNIPSTART java-workflow-streams-subscribe-iterator-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/OrderWatcher.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/OrderWatcher.java)
 ```java
 import io.temporal.client.WorkflowClient;
 import io.temporal.common.converter.DefaultDataConverter;
@@ -233,22 +269,25 @@ import io.temporal.workflowstreams.WorkflowStreamClient;
 import io.temporal.workflowstreams.WorkflowStreamItem;
 import io.temporal.workflowstreams.WorkflowStreamSubscription;
 
-public void watchOrder(WorkflowClient workflowClient, String orderId) {
-  SubscribeOptions options = SubscribeOptions.newBuilder().setTopics("status").build();
-  try (WorkflowStreamClient stream = WorkflowStreamClient.newInstance(workflowClient, orderId);
-      WorkflowStreamSubscription subscription = stream.subscribe(options)) {
-    for (WorkflowStreamItem item : subscription) {
-      StatusEvent evt =
-          DefaultDataConverter.STANDARD_INSTANCE.fromPayload(
-              item.getPayload(), StatusEvent.class, StatusEvent.class);
-      System.out.printf("[%3d%%] %s: %s%n", evt.progress, evt.state, evt.detail);
-      if (evt.state.equals("completed")) {
-        break;
+public class OrderWatcher {
+  public void watchOrder(WorkflowClient workflowClient, String orderId) {
+    SubscribeOptions options = SubscribeOptions.newBuilder().setTopics("status").build();
+    try (WorkflowStreamClient stream = WorkflowStreamClient.newInstance(workflowClient, orderId);
+        WorkflowStreamSubscription subscription = stream.subscribe(options)) {
+      for (WorkflowStreamItem item : subscription) {
+        StatusEvent evt =
+            DefaultDataConverter.STANDARD_INSTANCE.fromPayload(
+                item.getPayload(), StatusEvent.class, StatusEvent.class);
+        System.out.printf("[%3d%%] %s: %s%n", evt.progress, evt.state, evt.detail);
+        if (evt.state.equals("completed")) {
+          break;
+        }
       }
     }
   }
 }
 ```
+<!--SNIPEND-->
 
 `SubscribeOptions` controls the subscription: `setTopics` filters by name (unset means all topics), `setFromOffset` resumes from a stored global offset (zero means the beginning), and `setPollCooldown` sets the minimum interval between polls (default 100 milliseconds). A single-topic convenience method, `streamClient.topic("status").subscribe(fromOffset)`, is equivalent to passing one name in `setTopics`.
 
@@ -260,38 +299,46 @@ Unique to the Java SDK, the second subscriber API inverts control. Instead of pa
 
 Callbacks are serialized and are never invoked concurrently and must not block. The `CompletionStage` returned by `onNext` is the backpressure boundary. Return `null` or an already-completed stage to receive the next item immediately, or a pending stage to defer both further delivery and the next poll until it completes. A stage that completes exceptionally or an exception thrown directly from `onNext` stops the subscription and is reported to `onError`.
 
+<!--SNIPSTART java-workflow-streams-subscribe-listener-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/OrderListener.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/OrderListener.java)
 ```java
 import io.temporal.common.converter.DefaultDataConverter;
 import io.temporal.workflowstreams.SubscribeOptions;
+import io.temporal.workflowstreams.WorkflowStreamClient;
 import io.temporal.workflowstreams.WorkflowStreamItem;
 import io.temporal.workflowstreams.WorkflowStreamListener;
 import io.temporal.workflowstreams.WorkflowStreamSubscriptionHandle;
 import java.util.concurrent.CompletionStage;
 
-SubscribeOptions options = SubscribeOptions.newBuilder().setTopics("status").build();
-WorkflowStreamSubscriptionHandle handle =
-    streamClient.subscribe(
-        options,
-        new WorkflowStreamListener() {
-          @Override
-          public CompletionStage<Void> onNext(WorkflowStreamItem item) {
-            StatusEvent evt =
-                DefaultDataConverter.STANDARD_INSTANCE.fromPayload(
-                    item.getPayload(), StatusEvent.class, StatusEvent.class);
-            System.out.printf(
-                "offset=%d topic=%s state=%s%n", item.getOffset(), item.getTopic(), evt.state);
-            return null; // or a pending stage to apply backpressure
-          }
+public class OrderListener {
+  public void listen(WorkflowStreamClient streamClient) {
+    SubscribeOptions options = SubscribeOptions.newBuilder().setTopics("status").build();
+    WorkflowStreamSubscriptionHandle handle =
+        streamClient.subscribe(
+            options,
+            new WorkflowStreamListener() {
+              @Override
+              public CompletionStage<Void> onNext(WorkflowStreamItem item) {
+                StatusEvent evt =
+                    DefaultDataConverter.STANDARD_INSTANCE.fromPayload(
+                        item.getPayload(), StatusEvent.class, StatusEvent.class);
+                System.out.printf(
+                    "offset=%d topic=%s state=%s%n", item.getOffset(), item.getTopic(), evt.state);
+                return null; // or a pending stage to apply backpressure
+              }
 
-          @Override
-          public void onCompleted() {
-            System.out.println("stream ended");
-          }
-        });
+              @Override
+              public void onCompleted() {
+                System.out.println("stream ended");
+              }
+            });
 
-// The calling thread is free; wait on the handle when you need to.
-handle.getDoneFuture().join();
+    // The calling thread is free; wait on the handle when you need to.
+    handle.getDoneFuture().join();
+  }
+}
 ```
+<!--SNIPEND-->
 
 `onCompleted` fires once when the stream ends cleanly because the Workflow reached a terminal state. `onError` fires once on an unrecoverable failure, including a failure from `onNext`. Its default implementation logs at warn level. `handle.close()` stops the subscription before the next poll without calling `onCompleted`. `handle.getDoneFuture()` completes normally when the stream ends cleanly or the subscription is closed, and exceptionally with the failure passed to `onError`. A single-topic convenience, `streamClient.topic("status").subscribe(fromOffset, listener)`, is also available.
 
@@ -301,6 +348,8 @@ To hand work off a callback without blocking the executor, return a stage that c
 
 Every item arrives as a raw `Payload` in `item.getPayload()`, so a single subscription naturally consumes multiple topics whose payload types differ. Pass the topic names to `SubscribeOptions.Builder.setTopics` (or leave it unset for every topic on the stream), dispatch on `item.getTopic()`, and decode into the matching type:
 
+<!--SNIPSTART java-workflow-streams-heterogeneous-topics {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/MultiTopicWatcher.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/orders/MultiTopicWatcher.java)
 ```java
 SubscribeOptions options =
     SubscribeOptions.newBuilder().setTopics("status", "progress").build();
@@ -323,6 +372,7 @@ try (WorkflowStreamSubscription subscription = stream.subscribe(options)) {
   }
 }
 ```
+<!--SNIPEND-->
 
 A single subscription over multiple topics also avoids the cancellation race that two concurrent subscribers would create. Because `item.getPayload()` is the raw payload, it's also the right shape when you want to forward the bytes through to another system without decoding them.
 
@@ -335,36 +385,50 @@ A subscriber's loop or listener doesn't know when the publisher is done. How you
 
 There are two ways to provide that overlap.
 
-- [Fixed sleep](/workflow-streams#fixed-sleep). Sleep between the terminator and the return so any in-flight poll has time to fetch the terminator before the Workflow exits:
+[Fixed sleep](/workflow-streams#fixed-sleep): sleep between the terminator and the return so any in-flight poll has time to fetch the terminator before the Workflow exits:
 
-  ```java
-  // at the end of the workflow method
-  status.publish(new StatusEvent("completed", 100, ""));
-  Workflow.sleep(Duration.ofSeconds(30));
-  return result;
-  ```
+<!--SNIPSTART java-workflow-streams-fixed-sleep {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/closing/FixedSleepWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/closing/FixedSleepWorkflowImpl.java)
+```java
+// at the end of the workflow method
+status.publish(new StatusEvent("completed", 100, ""));
+Workflow.sleep(Duration.ofSeconds(30));
+return result;
+```
+<!--SNIPEND-->
 
-- [Acknowledgment handshake](/workflow-streams#acknowledgment-handshake). The subscriber sends a Signal once it has the terminator; the Workflow waits up to a timeout, returning as soon as the ack arrives:
+[Acknowledgment handshake](/workflow-streams#acknowledgment-handshake): the subscriber sends a Signal once it has the terminator; the Workflow waits up to a timeout, returning as soon as the ack arrives:
 
-  ```java
-  public class ChatWorkflowImpl implements ChatWorkflow {
-    private boolean subscriberDone = false;
+<!--SNIPSTART java-workflow-streams-ack-handshake-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/closing/ChatWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/closing/ChatWorkflowImpl.java)
+```java
+public class ChatWorkflowImpl implements ChatWorkflow {
+  private final WorkflowTopicHandle status;
+  private boolean subscriberDone = false;
 
-    @Override // annotated with @SignalMethod on the workflow interface
-    public void subscriberAcknowledgedTerminator() {
-      subscriberDone = true;
-    }
-
-    @Override
-    public String complete(ChatInput input) {
-      // ... do work and publish events ...
-
-      // Returns true if the ack arrived, false on timeout. Either way, fall through.
-      Workflow.await(Duration.ofSeconds(30), () -> subscriberDone);
-      return result;
-    }
+  @WorkflowInit
+  public ChatWorkflowImpl(ChatInput input) {
+    status = WorkflowStream.newInstance(input.streamState).topic("status");
   }
-  ```
+
+  @Override // annotated with @SignalMethod on the workflow interface
+  public void subscriberAcknowledgedTerminator() {
+    subscriberDone = true;
+  }
+
+  @Override
+  public String complete(ChatInput input) {
+    // ... do work and publish events ...
+    String result = "done: " + input.prompt;
+    status.publish(new StatusEvent("completed", 100, ""));
+
+    // Returns true if the ack arrived, false on timeout. Either way, fall through.
+    Workflow.await(Duration.ofSeconds(30), () -> subscriberDone);
+    return result;
+  }
+}
+```
+<!--SNIPEND-->
 
 The full pattern is wired into the [Stream LLM output](#stream-llm-output) example below.
 
@@ -376,11 +440,25 @@ Workflows that run for hours or accumulate thousands of events need to periodica
 
 Add a `WorkflowStreamState` field to your Workflow input, pass it to `WorkflowStream.newInstance`, and call `stream.continueAsNew(buildArgs)` to invoke the rollover. The helper drains waiting subscribers, waits for in-flight handlers to finish, snapshots the stream state, then Continues-As-New with the arguments built by `buildArgs(postDrainState)`. It never returns:
 
+<!--SNIPSTART java-workflow-streams-continue-as-new-input-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/longrunning/WorkflowInput.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/longrunning/WorkflowInput.java)
 ```java
+import io.temporal.workflowstreams.WorkflowStreamState;
+
 public class WorkflowInput {
   public int itemsProcessed;
   public WorkflowStreamState streamState;
 }
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART java-workflow-streams-continue-as-new-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/longrunning/LongRunningWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/longrunning/LongRunningWorkflowImpl.java)
+```java
+import io.temporal.workflow.Workflow;
+import io.temporal.workflow.WorkflowInit;
+import io.temporal.workflowstreams.WorkflowStream;
+import java.time.Duration;
 
 public class LongRunningWorkflowImpl implements LongRunningWorkflow {
   private final WorkflowStream stream;
@@ -409,16 +487,23 @@ public class LongRunningWorkflowImpl implements LongRunningWorkflow {
       }
     }
   }
+
+  private void doOneIteration() {
+    stream.topic("items").publish(itemsProcessed);
+    Workflow.sleep(Duration.ofSeconds(1));
+  }
 }
 ```
+<!--SNIPEND-->
 
 The `streamState` field is `null` on a fresh start and a populated snapshot after a rollover. The `buildArgs` callback receives the post-detach `WorkflowStreamState` as its only argument, so the snapshot is guaranteed to happen *after* pollers detach.
 
-To pass other Continue-As-New parameters such as a different Task Queue, or to use a custom publisher TTL, use the explicit recipe instead. Drain the pollers, wait for handlers to finish, snapshot the state with your chosen TTL, then call `Workflow.continueAsNew` yourself:
+To pass other Continue-As-New parameters such as a different Task Queue, or to use a custom publisher TTL, use the explicit recipe instead. Drain the pollers, wait for handlers to finish, snapshot the state with your chosen TTL, then call `Workflow.continueAsNew` yourself.
+`ContinueAsNewOptions` is in the `io.temporal.workflow` package:
 
+<!--SNIPSTART java-workflow-streams-continue-as-new-explicit {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/longrunning/ExplicitContinueAsNewWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/longrunning/ExplicitContinueAsNewWorkflowImpl.java)
 ```java
-import io.temporal.workflow.ContinueAsNewOptions;
-
 stream.detachPollers();
 Workflow.await(() -> Workflow.isEveryHandlerFinished());
 WorkflowStreamState state = stream.getState(Duration.ofMinutes(30)); // custom publisher TTL
@@ -428,6 +513,7 @@ next.streamState = state;
 Workflow.continueAsNew(
     ContinueAsNewOptions.newBuilder().setTaskQueue("other-tq").build(), next);
 ```
+<!--SNIPEND-->
 
 The carried `WorkflowStreamState` includes the entire in-memory log of the previous run, so streams that carry large items can hit Temporal's per-payload size limit at the rollover. Offload the bytes via [External Storage](/external-storage) so each item is a small reference rather than the full payload, and combine that with `stream.truncate(upToOffset)` to keep the carried log itself small.
 
@@ -437,16 +523,21 @@ See [How events are delivered](/workflow-streams#how-events-are-delivered) for m
 
 There are two limits on the [deduplication window](/workflow-streams#deduplication-window) worth highlighting:
 
-- **Publisher TTL.** At each Continue-As-New, deduplication entries whose last-seen time is older than this are dropped. The last-seen time is updated on each *successful* publish (not on each retry attempt), so a publisher that retries through a long partition without success can still age out. A publisher that returns after a longer pause may produce a duplicate. `stream.continueAsNew(...)` snapshots with a 15-minute default; to tune it, use the explicit recipe above and pass your value to `getState(publisherTtl)`.
-- **`maxRetryDuration`.** A `WorkflowStreamClient` retries a failed batch for up to this long (default 10 minutes). If the duration elapses with the batch still pending, the client gives up, the pending batch is dropped, and a `FlushTimeoutException` is raised.
+**Publisher TTL.** At each Continue-As-New, deduplication entries whose last-seen time is older than this are dropped. The last-seen time is updated on each *successful* publish (not on each retry attempt), so a publisher that retries through a long partition without success can still age out. A publisher that returns after a longer pause may produce a duplicate. `stream.continueAsNew(...)` snapshots with a 15-minute default; to tune it, use the explicit recipe above and pass your value to `getState(publisherTtl)`.
 
-  ```java
-  WorkflowStreamClientOptions.newBuilder()
-      .setMaxRetryDuration(Duration.ofMinutes(10))
-      .build();
-  ```
+**`maxRetryDuration`.** A `WorkflowStreamClient` retries a failed batch for up to this long (default 10 minutes). If the duration elapses with the batch still pending, the client gives up, the pending batch is dropped, and a `FlushTimeoutException` is raised.
 
-  On timeout, the dropped batch is at-most-once: it may or may not have reached the Workflow. One operational caveat: the `FlushTimeoutException` is raised from inside the background flusher and terminates it. Until you call `client.flush()` or `client.close()` — which surface the deferred exception — subsequent publishes accumulate in the buffer with no flusher to ship them. `maxRetryDuration` must be less than the Workflow's publisher TTL to preserve exactly-once delivery.
+<!--SNIPSTART java-workflow-streams-max-retry-duration {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/longrunning/RetryDurationOptions.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/longrunning/RetryDurationOptions.java)
+```java
+WorkflowStreamClientOptions options =
+    WorkflowStreamClientOptions.newBuilder()
+        .setMaxRetryDuration(Duration.ofMinutes(10))
+        .build();
+```
+<!--SNIPEND-->
+
+On timeout, the dropped batch is at-most-once: it may or may not have reached the Workflow. One operational caveat: the `FlushTimeoutException` is raised from inside the background flusher and terminates it. Until you call `client.flush()` or `client.close()` — which surface the deferred exception — subsequent publishes accumulate in the buffer with no flusher to ship them. `maxRetryDuration` must be less than the Workflow's publisher TTL to preserve exactly-once delivery.
 
 ## Best practices
 
@@ -468,6 +559,8 @@ If your Activity can retry, the consumer side has to account for it. A retried a
 <Tabs>
 <TabItem value="activity" label="LlmActivitiesImpl.java">
 
+<!--SNIPSTART java-workflow-streams-llm-activity-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/llm/LlmActivitiesImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/llm/LlmActivitiesImpl.java)
 ```java
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
@@ -481,7 +574,7 @@ import io.temporal.workflowstreams.WorkflowStreamClientOptions;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TextDelta {
+class TextDelta {
   public String text;
 
   public TextDelta() {}
@@ -491,7 +584,7 @@ public class TextDelta {
   }
 }
 
-public class RetryEvent {
+class RetryEvent {
   public int attempt;
 
   public RetryEvent() {}
@@ -501,7 +594,10 @@ public class RetryEvent {
   }
 }
 
-public class CloseEvent {}
+// Jackson can't serialize a class with no properties, so give the sentinel one.
+class CloseEvent {
+  public boolean done = true;
+}
 
 public class LlmActivitiesImpl implements LlmActivities {
   @Override
@@ -551,19 +647,17 @@ public class LlmActivitiesImpl implements LlmActivities {
   }
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="workflow" label="ChatWorkflowImpl.java">
 
+<!--SNIPSTART java-workflow-streams-llm-workflow-interface-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/llm/ChatWorkflow.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/llm/ChatWorkflow.java)
 ```java
-import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.SignalMethod;
-import io.temporal.workflow.Workflow;
-import io.temporal.workflow.WorkflowInit;
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
-import io.temporal.workflowstreams.WorkflowStream;
-import java.time.Duration;
 
 @WorkflowInterface
 public interface ChatWorkflow {
@@ -573,6 +667,17 @@ public interface ChatWorkflow {
   @SignalMethod
   void subscriberAcknowledgedTerminator();
 }
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART java-workflow-streams-llm-workflow-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/llm/ChatWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/llm/ChatWorkflowImpl.java)
+```java
+import io.temporal.activity.ActivityOptions;
+import io.temporal.workflow.Workflow;
+import io.temporal.workflow.WorkflowInit;
+import io.temporal.workflowstreams.WorkflowStream;
+import java.time.Duration;
 
 public class ChatWorkflowImpl implements ChatWorkflow {
   private final LlmActivities activities =
@@ -604,10 +709,13 @@ public class ChatWorkflowImpl implements ChatWorkflow {
   }
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="consumer" label="Consumer.java">
 
+<!--SNIPSTART java-workflow-streams-llm-consumer-->
+[java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/llm/Consumer.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/workflow-streams/src/main/java/io/temporal/docs/workflows/workflowstreams/llm/Consumer.java)
 ```java
 import io.temporal.client.WorkflowClient;
 import io.temporal.common.converter.DefaultDataConverter;
@@ -616,45 +724,48 @@ import io.temporal.workflowstreams.WorkflowStreamClient;
 import io.temporal.workflowstreams.WorkflowStreamItem;
 import io.temporal.workflowstreams.WorkflowStreamSubscription;
 
-public String streamChat(WorkflowClient workflowClient, String chatId) {
-  StringBuilder output = new StringBuilder();
+public class Consumer {
+  public String streamChat(WorkflowClient workflowClient, String chatId) {
+    StringBuilder output = new StringBuilder();
 
-  Runnable render =
-      () -> {
-        // ... display the accumulated output (terminal redraw, UI update, etc.)
-      };
+    Runnable render =
+        () -> {
+          // ... display the accumulated output (terminal redraw, UI update, etc.)
+        };
 
-  SubscribeOptions options =
-      SubscribeOptions.newBuilder().setTopics("delta", "retry", "close").build();
-  try (WorkflowStreamClient stream = WorkflowStreamClient.newInstance(workflowClient, chatId);
-      WorkflowStreamSubscription subscription = stream.subscribe(options)) {
-    for (WorkflowStreamItem item : subscription) {
-      switch (item.getTopic()) {
-        case "retry":
-          // Earlier attempt's deltas are stale; drop what we've shown.
-          output.setLength(0);
-          render.run();
-          break;
-        case "delta":
-          TextDelta delta =
-              DefaultDataConverter.STANDARD_INSTANCE.fromPayload(
-                  item.getPayload(), TextDelta.class, TextDelta.class);
-          output.append(delta.text);
-          render.run();
-          break;
-        case "close":
-          // Acknowledge so the Workflow can return without waiting on the fallback timeout.
-          workflowClient
-              .newUntypedWorkflowStub(chatId)
-              .signal("subscriberAcknowledgedTerminator");
-          return output.toString();
+    SubscribeOptions options =
+        SubscribeOptions.newBuilder().setTopics("delta", "retry", "close").build();
+    try (WorkflowStreamClient stream = WorkflowStreamClient.newInstance(workflowClient, chatId);
+        WorkflowStreamSubscription subscription = stream.subscribe(options)) {
+      for (WorkflowStreamItem item : subscription) {
+        switch (item.getTopic()) {
+          case "retry":
+            // Earlier attempt's deltas are stale; drop what we've shown.
+            output.setLength(0);
+            render.run();
+            break;
+          case "delta":
+            TextDelta delta =
+                DefaultDataConverter.STANDARD_INSTANCE.fromPayload(
+                    item.getPayload(), TextDelta.class, TextDelta.class);
+            output.append(delta.text);
+            render.run();
+            break;
+          case "close":
+            // Acknowledge so the Workflow can return without waiting on the fallback timeout.
+            workflowClient
+                .newUntypedWorkflowStub(chatId)
+                .signal("subscriberAcknowledgedTerminator");
+            return output.toString();
+        }
       }
     }
-  }
 
-  return output.toString();
+    return output.toString();
+  }
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>

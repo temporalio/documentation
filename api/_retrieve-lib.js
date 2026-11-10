@@ -2,12 +2,21 @@
 // unit tested without Kapa or Vercel. The leading underscore keeps Vercel from
 // deploying this file as its own function.
 
+const crypto = require('crypto');
 const { followRedirects } = require('../bin/redirect-utils');
 
 const DOCS_HOST = 'docs.temporal.io';
 const ENDPOINT = `https://${DOCS_HOST}/api/retrieve`;
 
 const LIMITS = { q: 500, jtb: 300, src: 32, agent: 64 };
+
+// The src values our own checks send. The log report leaves them out, and Kapa
+// counts them as one user.
+const TEST_SRC = ['manual-test', 'link-check', 'healthcheck'];
+const TEST_CLIENT_ID = 'internal-check';
+
+// Placeholders copied from the usage text instead of a real value.
+const PLACEHOLDER = /^<?\s*(your[-_ ]?name|question|job[-_ ]to[-_ ]be[-_ ]done|agent|name)\s*>?$/i;
 
 const USAGE =
   `GET ${ENDPOINT}?q=<question>&jtb=<job-to-be-done>&src=<surface>&agent=<your-name>. ` +
@@ -107,6 +116,45 @@ function isAllowed(sourceUrl, allowlist) {
   );
 }
 
+// Whether a Kapa result may be returned. Kapa gives custom Q&A answers, which
+// the team writes in the Kapa dashboard, an empty source_url, so they have no
+// URL to check against the allowlist. They're returned without a link. Every
+// other source Kapa indexes has a URL, so an empty one can't stand in for a
+// private page; a future source without URLs would need the same review.
+function isAllowedResult(result, allowlist) {
+  if (result.source_url === '') return true;
+  return isAllowed(result.source_url, allowlist);
+}
+
+// Where a dropped result came from, for the log: the host, plus the owner and
+// repository for github.com, where every repository shares one host. That's
+// enough to see which sources outrank the docs without logging page paths.
+function sourceLabel(sourceUrl) {
+  let url;
+  try {
+    url = new URL(sourceUrl);
+  } catch {
+    return '(invalid URL)';
+  }
+  const host = url.hostname.toLowerCase();
+  if (host === 'github.com') {
+    const [owner, repo] = url.pathname.split('/').filter(Boolean);
+    if (owner && repo) return `${host}/${owner}/${repo}`.toLowerCase();
+  }
+  return host;
+}
+
+// How many valid results the allowlist dropped, per sourceLabel.
+function droppedSources(results, allowlist) {
+  const counts = {};
+  for (const result of results) {
+    if (isAllowedResult(result, allowlist)) continue;
+    const label = sourceLabel(result.source_url);
+    counts[label] = (counts[label] || 0) + 1;
+  }
+  return counts;
+}
+
 // Kapa results that can be filtered and shaped: objects with a string `content`
 // and `source_url`. Anything else is dropped rather than passed to the caller.
 function validResults(results) {
@@ -123,16 +171,67 @@ function parseList(value) {
     .filter(Boolean);
 }
 
+// Groups the ways an agent might write its name: case, spaces, underscores,
+// surrounding quotes, and a trailing version ("Cursor/0.42", "codex@1.2").
+function normalizeAgent(agent) {
+  const value = String(agent ?? '')
+    .trim()
+    .replace(/^["'`]+|["'`]+$/g, '')
+    .trim();
+  if (value === '') return '(missing)';
+  if (PLACEHOLDER.test(value)) return '(placeholder)';
+  return value
+    .toLowerCase()
+    .replace(/[/@ ]v?\d[\w.-]*$/, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// The `user` and `mcp_client_meta` fields for the Kapa request, so Kapa
+// analytics count callers instead of showing one user for the integration.
+//
+// The user ID is a salted hash of the caller's IP and agent name, so Kapa can
+// group repeat callers without learning the IP. It's derived with a different
+// prefix from the log's ip_hash, so the two values don't match. Our own checks
+// share one ID, since the health check sends a new agent name on every run.
+// Without an IP there's nothing to group by, so no user is sent.
+function kapaIdentity({ ip, agent, src, salt }) {
+  if (TEST_SRC.includes(src)) {
+    return { user: { unique_client_id: TEST_CLIENT_ID }, mcp_client_meta: { name: src } };
+  }
+  const normalized = normalizeAgent(agent);
+  const name = normalized.startsWith('(') ? null : normalized;
+  const identity = {};
+  if (ip && salt) {
+    const id = crypto
+      .createHash('sha256')
+      .update(`${salt}:kapa:${ip}:${name || '-'}`)
+      .digest('hex')
+      .slice(0, 32);
+    identity.user = { unique_client_id: id };
+  }
+  if (name) identity.mcp_client_meta = { name };
+  return identity;
+}
+
 module.exports = {
   DOCS_HOST,
   ENDPOINT,
   LIMITS,
+  PLACEHOLDER,
+  TEST_SRC,
   USAGE,
+  droppedSources,
   isAllowed,
+  isAllowedResult,
+  kapaIdentity,
+  normalizeAgent,
   parseAllowlist,
   parseList,
   parseParams,
   toMarkdownUrl,
   shapeResults,
+  sourceLabel,
   validResults,
 };

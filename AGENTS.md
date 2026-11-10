@@ -17,6 +17,7 @@ repository.
 | Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
 | Agent search endpoint (`/api/retrieve`) | [AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md)           |
 | Feedback endpoint (`/api/feedback`) | [FEEDBACK.md](./readme/FEEDBACK.md)                           |
+| 404 suggested pages          | [NOT-FOUND-SUGGESTIONS.md](./readme/NOT-FOUND-SUGGESTIONS.md)        |
 
 ## Repository overview
 
@@ -50,6 +51,18 @@ In body prose, use **Temporal Service**, not **Cluster** or **Temporal Cluster**
 - Incorrect: "The Worker polls the Cluster for tasks."
 
 Exceptions: **Multi-Cluster Replication**, code/config identifiers, and CLI command names.
+
+### Determinism applies to the Workflow Definition
+
+A [Workflow Definition](/workflow-definition) must be deterministic. Don't say "the Workflow" or "Workflow code" must be
+deterministic: "Workflow code" is ambiguous with Activity code, which can be non-deterministic.
+
+- Correct: "A Workflow Definition must be deterministic."
+- Incorrect: "Workflow code must be deterministic."
+
+"Workflow code" is fine when the sentence isn't about determinism, for example "Don't do I/O in Workflow code."
+The advisory Vale rule `Temporal.DeterminismScope` flags the incorrect phrasings. See
+`vale/styles/Temporal/DeterminismScope.yml`.
 
 ### Identifier abbreviation
 
@@ -197,6 +210,8 @@ yarn check:redirects     # vercel.json redirect rules that can't work as written
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
 yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
 yarn check:retrieve-links # /api/retrieve results whose docs links don't return 200; advisory, see AGENT-RETRIEVE.md
+yarn check:retrieve-health # /api/retrieve is up and returns custom Q&A and GitHub results; runs daily, see AGENT-RETRIEVE.md
+yarn report:retrieve-log  # summarize the /api/retrieve request log; needs BLOB_READ_WRITE_TOKEN, see AGENT-RETRIEVE.md
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
