@@ -22,9 +22,9 @@ model and routes each model call to an Activity. The integration also provides W
 tools, MCP servers, and streamed model responses.
 
 Code snippets on this page come from the
-[Google ADK samples directory](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents).
+[Google ADK samples directory](https://github.com/temporalio/samples-typescript/tree/main/google-adk).
 
-<ReleaseNoteHeader type="prerelease" />
+<ReleaseNoteHeader type="publicPreview" />
 
 ## Prerequisites
 
@@ -35,19 +35,25 @@ Code snippets on this page come from the
 - Set up your local development environment by following
   [Set up a local development environment with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript). Leave the Temporal
   development server running to run the samples locally.
-- Install Node.js 22 or later.
+- Use Node.js, Temporal SDK, and Google ADK versions that satisfy the integration's
+  [package requirements](https://github.com/temporalio/ai-integrations/blob/main/typescript/google-adk/package.json).
 
 ## Install the Google ADK integration
 
-Install the [`@temporalio/google-adk-agents`](https://www.npmjs.com/package/@temporalio/google-adk-agents) package. Keep
-all `@temporalio/*` packages in your application on the same version.
+Install the standalone [`@temporalio/google-adk`](https://www.npmjs.com/package/@temporalio/google-adk) package. It is
+versioned separately from the Temporal TypeScript SDK.
 
 ```bash
-npm install @temporalio/google-adk-agents
+npm install @temporalio/google-adk
 ```
 
-Version 1.23.0 of the integration supports `@google/adk` 1.5.x. The upper bound is required because the Workflow bundle
-uses compatibility shims for that ADK line. Newer ADK versions can fail while bundling the Workflow.
+Keep `@google/adk` within the package's supported peer dependency range. The Workflow bundle uses compatibility shims
+for that range. Install `@modelcontextprotocol/sdk` if you use `TemporalMCPToolset`.
+
+When migrating from `@temporalio/google-adk-agents`, follow the
+[upgrade guidance](https://github.com/temporalio/ai-integrations/tree/main/typescript/google-adk#upgrading-from-adk-15).
+Complete existing Workflow Executions before switching, or keep them on separate Task Queues. The standalone integration
+cannot replay Workflow histories created with `@temporalio/google-adk-agents`.
 
 The Worker reads Gemini credentials from `GOOGLE_GENAI_API_KEY` or `GEMINI_API_KEY`. Credentials remain in the Worker
 process. Model requests and responses are Activity inputs and results, so they are stored in Event History. Use a
@@ -63,7 +69,7 @@ Workflow Updates and can query the conversation history.
 Create the agent and runner in Workflow code:
 
 <!--SNIPSTART typescript-google-adk-agent-chat-workflow -->
-[google-adk-agents/src/agent-chat/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/google-adk-agents/src/agent-chat/workflows.ts)
+[google-adk/src/agent-chat/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/google-adk/src/agent-chat/workflows.ts)
 ```ts
 const agent = new LlmAgent({
   name: 'assistant',
@@ -77,7 +83,7 @@ const runner = new InMemoryRunner({ agent, appName: 'agent-chat' });
 Register `GoogleAdkPlugin` on the Worker to install the model Activities and Workflow bundler configuration:
 
 <!--SNIPSTART typescript-google-adk-agent-chat-worker -->
-[google-adk-agents/src/agent-chat/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/google-adk-agents/src/agent-chat/worker.ts)
+[google-adk/src/agent-chat/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/google-adk/src/agent-chat/worker.ts)
 ```ts
 const worker = await Worker.create({
   connection,
@@ -97,16 +103,16 @@ Use each API from its package entry point:
 
 | Entry point | APIs |
 | --- | --- |
-| `@temporalio/google-adk-agents` | `GoogleAdkPlugin` for Worker code |
-| `@temporalio/google-adk-agents/workflow` | `TemporalModel`, `TemporalMCPToolset`, and `activityAsTool` for Workflow code |
-| `@temporalio/google-adk-agents/testing` | `fakeModelProvider` and `mockMCPToolset` for tests |
+| `@temporalio/google-adk` | `GoogleAdkPlugin` for Worker code |
+| `@temporalio/google-adk/workflow` | `TemporalModel`, `TemporalMCPToolset`, and `activityAsTool` for Workflow code |
+| `@temporalio/google-adk/testing` | `fakeModelProvider` and `mockMCPToolset` for tests |
 
-The [agent chat sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/agent-chat)
+The [agent chat sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/agent-chat)
 shows this Workflow, Worker, and Client together, including its Update, Query, and Continue-As-New behavior.
 
 An agent graph can delegate work among multiple `LlmAgent` instances. The agents and their transfers remain in the
 Workflow, while each `TemporalModel` call runs as an Activity. The
-[multi-agent sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/multi-agent)
+[multi-agent sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/multi-agent)
 shows a coordinator transferring a request to a researcher and then a writer.
 
 ## Configure model calls
@@ -119,7 +125,7 @@ Set `heartbeatTimeout` to detect a dead Worker and deliver cancellation to a lon
 a timer, so a Heartbeat Timeout doesn't detect a stalled call; `startToCloseTimeout` bounds a stalled call.
 
 Use ADK's `outputSchema` to constrain a model response, then validate the result in the Workflow before returning it.
-The [structured-output sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/structured-output)
+The [structured-output sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/structured-output)
 shows this pattern for an incident summary.
 
 ## Add tools and MCP servers
@@ -130,12 +136,12 @@ performs other I/O must run outside the Workflow.
 
 Use `activityAsTool` to expose an existing Activity to an agent. Its `name` must match an Activity registered in the
 Worker's `activities` option. The model's arguments object becomes the Activity's single argument, and the `activity`
-option controls its timeouts and retries. The [tools sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/tools)
+option controls its timeouts and retries. The [tools sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/tools)
 shows the Workflow and Worker configuration together.
 
 An ADK `LongRunningFunctionTool` can wait in Workflow code for external input. A Signal can release the tool
 asynchronously, while an Update can release it and return an accepted result to the caller. The
-[human-in-the-loop sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/human-in-the-loop)
+[human-in-the-loop sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/human-in-the-loop)
 shows both forms of approval.
 
 For MCP, register a named factory with `mcpToolsets: { <name>: factory }` in the Worker plugin, then create a
@@ -143,7 +149,7 @@ For MCP, register a named factory with `mcpToolsets: { <name>: factory }` in the
 operation opens a new MCP session, so session state doesn't carry between operations unless the factory returns a
 long-lived toolset. MCP failures often have no status and are retryable, so set `activity.retry.maximumAttempts` on the
 `TemporalMCPToolset` when retries must be bounded. See the complete Worker and Workflow pair in the
-[MCP sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/mcp).
+[MCP sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/mcp).
 
 ## Stream model responses
 
@@ -156,7 +162,7 @@ The model Activity publishes chunks to the topic and returns the complete respon
 is the deterministic value used during replay. Stream delivery is at-least-once, and a retried Activity publishes its
 chunks again from the beginning.
 
-The [streaming sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/streaming)
+The [streaming sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/streaming)
 shows how a Workflow publishes chunks and waits for a stream consumer to finish.
 
 ## Test and observe your agents
@@ -178,7 +184,7 @@ ADK span attributes can contain prompts and model responses. Send them only to a
 sensitive attributes in the span processor. `ADK_CAPTURE_MESSAGE_CONTENT_IN_SPANS` doesn't control this behavior in a
 Workflow because the Workflow sandbox doesn't expose Worker environment variables.
 
-The [observability sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents/src/observability)
+The [observability sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/observability)
 shows the plugin order and an OpenTelemetry span processor that records model usage.
 
 ## Reference and troubleshooting
@@ -203,7 +209,7 @@ first so that ADK's Workflow-side spans bind to its tracer provider. Register `G
 Client plugin isn't required.
 
 Custom payload and failure converter modules load before the plugin's polyfills. If either module imports `@google/adk`
-or `@google/genai`, import `@temporalio/google-adk-agents/workflow` first in that module.
+or `@google/genai`, import `@temporalio/google-adk/workflow` first in that module.
 
 ### Replay safety
 
@@ -265,15 +271,15 @@ after the Workflow or handler frame returns. To recover in an ADK `onModelErrorC
 `markModelFailureHandled` and return a substitute event created with ADK's `createEvent`. Cancellation can't be handled
 this way.
 
-If a model call fails with a sandbox error such as `fetch is not defined`, check that the agent uses
-`new TemporalModel(...)` instead of a raw model string. A raw model makes ADK attempt the network call inside the
-Workflow instead of routing it to an Activity.
+If a model call fails with a sandbox error such as `fetch is not defined`, use `new TemporalModel(...)` for a custom
+model instance that performs I/O. The plugin routes built-in Gemini and Apigee model strings through `TemporalModel`
+automatically; keep `autoRouteModels` enabled to use that behavior.
 
 ## Resources
 
-- [Google ADK integration package](https://www.npmjs.com/package/@temporalio/google-adk-agents)
-- [Google ADK integration source](https://github.com/temporalio/sdk-typescript/tree/main/contrib/google-adk-agents)
-- [Google ADK samples directory](https://github.com/temporalio/samples-typescript/tree/main/google-adk-agents)
+- [Google ADK integration package](https://www.npmjs.com/package/@temporalio/google-adk)
+- [Google ADK integration source](https://github.com/temporalio/ai-integrations/tree/main/typescript/google-adk)
+- [Google ADK samples directory](https://github.com/temporalio/samples-typescript/tree/main/google-adk)
 - [Google ADK source](https://github.com/google/adk-js)
 - [Google ADK documentation](https://google.github.io/adk-docs/)
 - [Temporal TypeScript SDK documentation](/develop/typescript)

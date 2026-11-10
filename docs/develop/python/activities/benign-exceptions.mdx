@@ -22,7 +22,9 @@ Benign errors:
 - Do not emit Activity failure metrics
 - Do not set the OpenTelemetry failure status to ERROR
 
-```python
+<!--SNIPSTART python-benign-exceptions-activity-->
+[python-sandbox/activities/benign_exceptions/activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/benign_exceptions/activities.py)
+```py
 from temporalio import activity
 from temporalio.exceptions import ApplicationError, ApplicationErrorCategory
 
@@ -37,5 +39,6 @@ async def my_activity() -> str:
             category=ApplicationErrorCategory.BENIGN,
         )
 ```
+<!--SNIPEND-->
 
 Use benign exceptions for Activity errors that occur regularly as part of normal operations, such as polling an external service that isn't ready yet, or handling expected transient failures that will be retried.

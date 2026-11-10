@@ -37,7 +37,7 @@ This page covers the following:
 
 :::note
 
-This documentation uses source code from the [hello_standalone_activity](https://github.com/temporalio/samples-python/tree/main/hello_standalone_activity) sample.
+This documentation uses source code from the [hello_standalone_activity](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/python-sandbox/activities/hello_standalone_activity) sample.
 
 :::
 
@@ -61,7 +61,9 @@ Use
 [`client.start_activity()`](https://python.temporal.io/temporalio.client.Client.html#start_activity)
 to start your Standalone Activity and get a handle:
 
-```python
+<!--SNIPSTART python-standalone-activity-start-->
+[python-sandbox/activities/hello_standalone_activity/start_activity.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/hello_standalone_activity/start_activity.py)
+```py
 activity_handle = await client.start_activity(
     compose_greeting,
     args=[ComposeGreetingInput("Hello", "World")],
@@ -70,11 +72,12 @@ activity_handle = await client.start_activity(
     start_to_close_timeout=timedelta(seconds=10),
 )
 ```
+<!--SNIPEND-->
 
-With the Temporal Server and Worker running, open a new terminal in the `samples-python` directory and run:
+With the Temporal Server and Worker running, open a new terminal in the `python-sandbox/activities` directory and run:
 
 ```bash
-uv run hello_standalone_activity/start_activity.py
+uv run --no-project --with "temporalio>=1.33.0" python -m hello_standalone_activity.start_activity
 ```
 
 Or use the Temporal CLI:
@@ -92,12 +95,15 @@ temporal activity start \
 
 You can also use `client.get_activity_handle()` to create a handle to a previously started Standalone Activity:
 
-```python
+<!--SNIPSTART python-standalone-activity-get-handle-->
+[python-sandbox/activities/hello_standalone_activity/get_activity_handle.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/hello_standalone_activity/get_activity_handle.py)
+```py
 activity_handle = client.get_activity_handle(
     activity_id="my-standalone-activity-id",
-    run_id="the-run-id",
+    run_id=run_id,
 )
 ```
+<!--SNIPEND-->
 
 You can now use the handle to wait for the result, describe, cancel, or terminate the Activity.
 
@@ -108,9 +114,12 @@ Under the hood, calling `client.execute_activity()` is the same as calling
 to durably enqueue the Standalone Activity, and then calling  `await activity_handle.result()` to
 wait for the activity to be executed and fetch the result:
 
-```python
+<!--SNIPSTART python-standalone-activity-result-->
+[python-sandbox/activities/hello_standalone_activity/start_activity.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/hello_standalone_activity/start_activity.py)
+```py
 activity_result = await activity_handle.result()
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI to wait for a result by Activity ID:
 
@@ -127,9 +136,9 @@ an async iterator that yields ActivityExecution entries.
 
 These APIs return only Standalone Activity Executions. Activities running inside Workflows are not included.
 
-[hello_standalone_activity/list_activities.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/list_activities.py)
-
-```python
+<!--SNIPSTART python-standalone-activity-list-->
+[python-sandbox/activities/hello_standalone_activity/list_activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/hello_standalone_activity/list_activities.py)
+```py
 import asyncio
 
 from temporalio.client import Client
@@ -154,11 +163,12 @@ async def my_application():
 if __name__ == "__main__":
     asyncio.run(my_application())
 ```
+<!--SNIPEND-->
 
 Run it:
 
 ```bash
-uv run hello_standalone_activity/list_activities.py
+uv run --no-project --with "temporalio>=1.33.0" python -m hello_standalone_activity.list_activities
 ```
 
 Or use the Temporal CLI:
@@ -178,9 +188,9 @@ Standalone Activity Executions that match a [List Filter](/list-filter) query. T
 count of executions (running, completed, failed, etc.) - not the number of queued tasks. It works the
 same way as counting Workflow Executions.
 
-[hello_standalone_activity/count_activities.py](https://github.com/temporalio/samples-python/blob/main/hello_standalone_activity/count_activities.py)
-
-```python
+<!--SNIPSTART python-standalone-activity-count-->
+[python-sandbox/activities/hello_standalone_activity/count_activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/activities/hello_standalone_activity/count_activities.py)
+```py
 import asyncio
 
 from temporalio.client import Client
@@ -205,11 +215,12 @@ async def my_application():
 if __name__ == "__main__":
     asyncio.run(my_application())
 ```
+<!--SNIPEND-->
 
 Run it:
 
 ```bash
-uv run hello_standalone_activity/count_activities.py
+uv run --no-project --with "temporalio>=1.33.0" python -m hello_standalone_activity.count_activities
 ```
 
 Or use the Temporal CLI:

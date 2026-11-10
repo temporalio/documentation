@@ -6,12 +6,30 @@ const path = require('path');
 // will build each file to. Keeping this in one place means the two plugins
 // can't silently drift apart on what counts as a routed doc page.
 
-function walkDir(dir) {
+// Mirrors docs.exclude in docusaurus.config.js: '**/_*.{js,jsx,ts,tsx,md,mdx}',
+// '**/_*/**', '**/clusters/**'. (ai-cookbook is a separate docs plugin
+// instance rooted outside docs/, so it never appears in a walk of docs/.)
+// `relativePath` is relative to the docs dir being walked.
+function isExcludedDocPath(relativePath) {
+  const segments = relativePath.split(/[\\/]/);
+  const basename = segments[segments.length - 1];
+
+  if (/^_[^.]/.test(basename) && /\.(mdx?|md)$/.test(basename)) return true;
+  if (segments.slice(0, -1).some((segment) => segment.startsWith('_'))) return true;
+  if (segments.includes('clusters')) return true;
+
+  return false;
+}
+
+// Every .md/.mdx file under `dir` that Docusaurus routes as a page. Partials
+// and other excluded files are skipped, so callers don't emit a page (or an
+// OG image) for a file that's only ever imported into another page.
+function walkDir(dir, root = dir) {
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir).flatMap((name) => {
     const full = path.join(dir, name);
-    if (fs.statSync(full).isDirectory()) return walkDir(full);
-    if (/\.(md|mdx)$/i.test(name)) return [full];
+    if (fs.statSync(full).isDirectory()) return walkDir(full, root);
+    if (/\.(md|mdx)$/i.test(name) && !isExcludedDocPath(path.relative(root, full))) return [full];
     return [];
   });
 }
@@ -55,4 +73,4 @@ function resolveUrlPath(docsDir, filePath, frontmatter, routeBasePath) {
   return prefixed(`${dir}/${id}`);
 }
 
-module.exports = { walkDir, resolveUrlPath };
+module.exports = { walkDir, resolveUrlPath, isExcludedDocPath };
