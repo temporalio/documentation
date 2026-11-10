@@ -32,9 +32,12 @@ Build the Worker as you would any long-running Ruby Worker, then pass `deploymen
 
 The following Worker reads its connection settings and Task Queue from the environment, so the same image can run against any Namespace:
 
-```ruby
+<!--SNIPSTART ruby-cloud-run-worker-->
+[ruby-sandbox/workers/cloud-run/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/cloud-run/worker.rb)
+```rb
 require 'temporalio/client'
 require 'temporalio/worker'
+require_relative 'greeting_workflow'
 
 client = Temporalio::Client.connect(
   ENV.fetch('TEMPORAL_ADDRESS'),
@@ -60,6 +63,7 @@ worker = Temporalio::Worker.new(
 
 worker.run
 ```
+<!--SNIPEND-->
 
 `deployment_name` and `build_id` together identify the Worker Deployment Version. Both values must match the version you create with `temporal worker deployment create-version` in the deployment guide, or the Worker polls under a version the WCI does not manage.
 
@@ -67,7 +71,9 @@ Every Workflow needs a [versioning behavior](/worker-versioning#versioning-behav
 Setting `default_versioning_behavior` as shown above covers every Workflow on the Worker.
 To set the behavior per Workflow instead, call `workflow_versioning_behavior` in the Workflow class:
 
-```ruby
+<!--SNIPSTART ruby-cloud-run-workflow-versioning-behavior {"enable_code_dedenting": true}-->
+[ruby-sandbox/workers/cloud-run/per_workflow_behavior.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/cloud-run/per_workflow_behavior.rb)
+```rb
 class GreetingWorkflow < Temporalio::Workflow::Definition
   workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED
 
@@ -76,6 +82,7 @@ class GreetingWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 If versioning is on and neither is set, the Worker raises an error at startup rather than polling.
 
@@ -92,15 +99,18 @@ For the shared configuration format that other Temporal tools read, see [Environ
 
 The Ruby SDK ships precompiled gems per platform, so install it in the image rather than building the native extension from source:
 
-```dockerfile
+<!--SNIPSTART ruby-cloud-run-dockerfile-->
+[ruby-sandbox/workers/cloud-run/Dockerfile](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/cloud-run/Dockerfile)
+```Dockerfile
 FROM ruby:3.3-slim
 
 WORKDIR /app
 RUN gem install temporalio --no-document
-COPY worker.rb ./
+COPY *.rb ./
 
 CMD ["ruby", "worker.rb"]
 ```
+<!--SNIPEND-->
 
 Installing through Bundler in a container can select the source gem instead of the precompiled one, which then fails to build without a Rust toolchain. If you use Bundler, add the target platform to the lockfile with `bundle lock --add-platform x86_64-linux`.
 
@@ -111,10 +121,16 @@ An instance running a long Activity can be stopped mid-execution.
 
 Use [Activity Heartbeats](/develop/ruby/activities/timeouts#activity-heartbeats) so a retry resumes from the last recorded progress instead of starting over:
 
-```ruby
-class Process < Temporalio::Activity::Definition
+<!--SNIPSTART ruby-cloud-run-heartbeat-->
+[ruby-sandbox/workers/cloud-run/process_items_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/cloud-run/process_items_activity.rb)
+```rb
+class ProcessItems < Temporalio::Activity::Definition
   def execute(items)
+    # Resume from the item the last attempt was working on
+    start = Temporalio::Activity::Context.current.info.heartbeat_details.first || 0
     items.each_with_index do |item, i|
+      next if i < start
+
       Temporalio::Activity::Context.current.heartbeat(i)
       # ... process item
     end
@@ -122,6 +138,7 @@ class Process < Temporalio::Activity::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 For how scale-in decisions are made, see [Serverless Workers on GCP Cloud Run](/serverless-workers/cloud-run#lifecycle).
 
