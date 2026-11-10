@@ -25,22 +25,15 @@ to set up External Storage with Amazon S3 and how to implement a custom storage 
 
 For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
 
-:::note Rust API availability
-
-The Rust API requires the `experimental` Cargo feature. The examples on this page target
-[Rust SDK revision `5100971`](https://github.com/temporalio/sdk-rust/tree/51009718748275da9ece33041d4ace08049cc41e),
-from [S3 driver PR #1721](https://github.com/temporalio/sdk-rust/pull/1721). This PR has not merged, and the
-`temporalio-aws-s3driver` crate is not yet released. Use the pinned dependencies in the
+External Storage requires Rust SDK 1.2.0 or later with the `experimental` Cargo feature. The SDK-provided S3 driver
+is available in the `temporalio-aws-s3driver` crate starting with version 0.1.0. The
 [example project](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/rust-sdk-s3-driver/rust-sandbox/external-storage)
-to try this implementation. See [Current limitations](#current-limitations) before using it.
-
-:::
+uses these published crates. See [Current limitations](#current-limitations) before using External Storage.
 
 ## Store and retrieve large payloads with Amazon S3
 
 Use the SDK-provided `S3StorageDriver` from the `temporalio-aws-s3driver` crate. Its default `aws-sdk` feature
-includes `AwsSdkS3StorageDriverClient`, which connects the driver to the official AWS SDK for Rust. The examples
-pin this crate and the other Temporal crates to the same revision of the unmerged SDK PR.
+includes `AwsSdkS3StorageDriverClient`, which connects the driver to the official AWS SDK for Rust.
 
 ### Prerequisites
 
@@ -49,7 +42,8 @@ pin this crate and the other Temporal crates to the same revision of the unmerge
   The driver checks for existing objects before uploading; without `s3:ListBucket`, S3 can return 403 for a missing
   object instead of 404. Processes that only retrieve payloads need `s3:GetObject`.
 - AWS credentials and a Region configured for the AWS SDK for Rust, for example through an IAM role and `AWS_REGION`.
-- The example project's pinned dependencies, with its `s3` feature enabled. The project enables
+- Add `temporalio-aws-s3driver = "0.1.0"` to your dependencies. The example project includes this dependency behind
+  its `s3` feature, which you enable with `--features s3`. The project enables
   [`aws-config`'s `credentials-login` feature](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credentials.html)
   so it can use credentials from `aws login`.
 
@@ -303,7 +297,7 @@ pub fn migration_storage(
 
 ## Current limitations
 
-The pinned Rust implementation has these limitations:
+Rust SDK 1.2.0 has these limitations:
 
 - Up to eight payload fields per message are stored or retrieved at once. Storage requests are not otherwise limited.
   Bound requests in a custom driver if needed.
@@ -315,4 +309,4 @@ The pinned Rust implementation has these limitations:
 - Fetching a Workflow's Event History returns stored reference tokens, rather than resolving them to original payloads.
 
 These limitations are documented on the SDK's
-[`ExternalStorage` type](https://github.com/temporalio/sdk-rust/blob/51009718748275da9ece33041d4ace08049cc41e/crates/common-wasm/src/external_storage.rs).
+[`ExternalStorage` type](https://github.com/temporalio/sdk-rust/blob/v1.2.0/crates/common-wasm/src/external_storage.rs).
