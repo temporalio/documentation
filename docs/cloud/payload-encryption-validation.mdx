@@ -11,6 +11,8 @@ tags:
   - Namespaces
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="payloadEncryptionValidation">
@@ -115,7 +117,8 @@ Fields that are not checked:
 
 A [Namespace Admin](/cloud/manage-access/users#namespace-level-permissions) can configure payload encryption validation on a Namespace.
 
-### Use the Temporal Cloud UI
+<Tabs groupID="encryption-validation">
+  <TabItem value="cloud-ui" label="Cloud UI">
 
 1. Open your Namespace in Temporal Cloud.
 2. Open the Namespace settings and select **Encryption Validation**.
@@ -125,7 +128,8 @@ A [Namespace Admin](/cloud/manage-access/users#namespace-level-permissions) can 
 
 Header and Failure inspection are disabled by default.
 
-### Use the Cloud Ops API
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
 
 For CreateNamespace, include `encryption_validation` in the Namespace spec. The JSON below is a spec fragment, not a complete request.
 
@@ -145,7 +149,38 @@ For UpdateNamespace, first call GetNamespace, preserve the complete returned spe
 
 The API `mode` value is the enum name: `ENCRYPTION_VALIDATION_MODE_DISABLED`, `ENCRYPTION_VALIDATION_MODE_WARN`, or `ENCRYPTION_VALIDATION_MODE_DENY`. The CLI and Terraform use `disabled`, `warn`, and `deny`.
 
-### Use the Temporal Cloud CLI
+  </TabItem>
+  <TabItem value="terraform" label="Terraform">
+
+Use a provider release (v1.11.0+) that includes `encryption_validation`.
+
+The example below enables validation in `warn` mode. It accepts Payloads whose metadata matches `encoding = binary/encrypted` or `encoding = binary/aes256`. Header and Failure checks are skipped.
+
+```hcl
+resource "temporalcloud_namespace" "payments" {
+  name           = "payments"
+  regions        = ["aws-us-west-2"]
+  retention_days = 30
+  api_key_auth   = true
+
+  encryption_validation = {
+    mode            = "warn"
+    metadata_key    = "encoding"
+    metadata_values = ["binary/encrypted", "binary/aes256"]
+    inspect_header  = false
+    inspect_failure = false
+  }
+}
+```
+
+`mode` must be `disabled`, `warn`, or `deny`. To leave a Namespace unconfigured, omit `encryption_validation` or set it to `{}`. Once configured, you cannot remove the attribute. Set `mode = "disabled"` to turn validation off.
+
+If you set `metadata_key` or `metadata_values`, you must also set `mode`. If you omit them, the key defaults to `encoding` and the accepted value defaults to `binary/encrypted`.
+
+The `encryption_validation` block is read-only on the Namespace data source. The [Terraform Registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace) is the schema reference.
+
+  </TabItem>
+  <TabItem value="cli" label="CLI">
 
 These commands are experimental and are part of the `temporal cloud` CLI. `tcld` does not have them. The Namespace argument is `namespace.account`.
 
@@ -202,34 +237,8 @@ temporal cloud namespace create \
   --encryption-validation-metadata-value binary/encrypted
 ```
 
-### Use Terraform
-
-Use a provider release (v1.11.0+) that includes `encryption_validation`.
-
-The example below enables validation in `warn` mode. It accepts Payloads whose metadata matches `encoding = binary/encrypted` or `encoding = binary/aes256`. Header and Failure checks are skipped.
-
-```hcl
-resource "temporalcloud_namespace" "payments" {
-  name           = "payments"
-  regions        = ["aws-us-west-2"]
-  retention_days = 30
-  api_key_auth   = true
-
-  encryption_validation = {
-    mode            = "warn"
-    metadata_key    = "encoding"
-    metadata_values = ["binary/encrypted", "binary/aes256"]
-    inspect_header  = false
-    inspect_failure = false
-  }
-}
-```
-
-`mode` must be `disabled`, `warn`, or `deny`. To leave a Namespace unconfigured, omit `encryption_validation` or set it to `{}`. Once configured, you cannot remove the attribute. Set `mode = "disabled"` to turn validation off.
-
-If you set `metadata_key` or `metadata_values`, you must also set `mode`. If you omit them, the key defaults to `encoding` and the accepted value defaults to `binary/encrypted`.
-
-The `encryption_validation` block is read-only on the Namespace data source. The [Terraform Registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace) is the schema reference.
+  </TabItem>
+</Tabs>
 
 ## Review coverage and exclusions {/* #review-coverage-and-exclusions */}
 
