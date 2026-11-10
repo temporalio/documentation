@@ -22,7 +22,9 @@ write to primary only, secondary only, or to both primary and secondary stores.
 Set the secondary store with the `secondaryVisibilityStore` configuration key in your Persistence configuration, and
 then define the secondary Visibility store configuration under `datastores`.
 
-You can configure any of the [supported databases](/self-hosted-guide/visibility) as your secondary store.
+You can configure any of the [supported databases](/self-hosted-guide/visibility) as your secondary store, as long as
+it's the same kind of store as your primary. Both stores must be SQL or both must be Elasticsearch. The Temporal Service
+rejects a configuration that pairs a SQL store with an Elasticsearch store.
 
 Examples:
 

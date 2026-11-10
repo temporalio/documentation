@@ -33,6 +33,16 @@ The following combinations are allowed in a Dual Visibility setting.
 | Advanced (SQL)              | Advanced (SQL)                  |
 | Advanced (Elasticsearch)    | Advanced (Elasticsearch)        |
 
+:::caution
+
+You can't pair a SQL Visibility store with an Elasticsearch Visibility store.
+The primary and secondary stores must both be SQL or both be Elasticsearch, and the Temporal Service rejects a configuration that sets one of each.
+
+Older Temporal Server versions allowed standard Visibility (Cassandra or SQL) as the primary store with Elasticsearch as the secondary.
+Standard Visibility was removed in Temporal Server v1.24, so that combination is no longer available.
+
+:::
+
 With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Service to write to primary only, secondary only, or to both primary and secondary Visibility stores.
 When migrating from one Visibility store database to another, set up the database you want to migrate to as your secondary Visibility store.
 
