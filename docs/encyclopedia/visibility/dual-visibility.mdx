@@ -16,7 +16,7 @@ This page discusses [Dual Visibility](#dual-visibility).
 Dual Visibility is a feature that lets you set a secondary Visibility store in addition to a primary store in your Temporal Service.
 Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/self-hosted-guide/visibility/migrate) or create a backup Visibility store.
 
-For example, if you have Cassandra configured as your Visibility database, you can set up a supported SQL database as your secondary Visibility store and gradually migrate your data to the secondary store before deprecating your primary one.
+For example, to move your Visibility data to a new SQL database, you can set up the new database as your secondary Visibility store and gradually migrate your data to it before retiring your primary store.
 
 A Dual Visibility setup requires two Visibility store configurations:
 
@@ -27,11 +27,10 @@ For configuration details, see [Dual Visibility setup](/self-hosted-guide/visibi
 
 The following combinations are allowed in a Dual Visibility setting.
 
-| Primary                     | Secondary                       |
-| --------------------------- | ------------------------------- |
-| Standard (Cassandra or SQL) | Advanced (SQL or Elasticsearch) |
-| Advanced (SQL)              | Advanced (SQL)                  |
-| Advanced (Elasticsearch)    | Advanced (Elasticsearch)        |
+| Primary       | Secondary     |
+| ------------- | ------------- |
+| SQL           | SQL           |
+| Elasticsearch | Elasticsearch |
 
 :::caution
 
