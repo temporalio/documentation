@@ -28,7 +28,7 @@ For a conceptual overview of External Storage and its use cases, see [External S
 External Storage requires Rust SDK 1.2.0 or later. The SDK-provided S3 driver is available in the
 `temporalio-aws-s3driver` crate starting with version 0.1.0. The
 [example project](https://github.com/temporalio/documentation-sdk-code-examples/tree/docs/rust-sdk-s3-driver/rust-sandbox/external-storage)
-uses these published crates. See [Current limitations](#current-limitations) before using External Storage.
+uses these published crates.
 
 ## Store and retrieve large payloads with Amazon S3
 
@@ -50,6 +50,10 @@ includes `AwsSdkS3StorageDriverClient`, which connects the driver to the officia
 Keep stored payloads available for the entire Workflow lifetime, including retries, replay, and retention.
 See [Lifecycle management](/external-storage#lifecycle) and
 [Durable External Storage](/external-storage#durable-external-storage) when planning retention and regional recovery.
+
+Plan for storage requests during Workflow replay. Rust SDK 1.2.0 stores payloads again during replay. The S3 driver
+uses content-addressed keys scoped to the execution context and checks for existing objects before uploading,
+so repeated storage within the same context can reuse an object.
 
 ### Create the storage driver
 
@@ -106,6 +110,12 @@ let mut worker = Worker::new(&runtime, client.clone(), worker_options)?;
 Configure compatible drivers on every Client and Worker process that can send or receive an offloaded payload,
 including Clients that fetch Workflow results. Drivers run outside Workflow Definitions.
 
+Retrieve Workflow results through the Client to resolve references automatically. Fetching Event History in Rust
+SDK 1.2.0 returns the stored reference tokens without retrieving their payloads.
+
+Before sharing externally stored payloads with other SDKs, verify that their reference tokens are not encoded by a
+Payload Codec. Rust SDK 1.2.0 does not recognize reference tokens that another SDK has encoded with a Payload Codec.
+
 The complete example registers a Workflow and an echo Activity, starts a Worker, and sends a 3 MiB string through
 Workflow input, Activity input and result, and Workflow result. Run it against a local Temporal Service:
 
@@ -132,14 +142,21 @@ and implement four methods:
 Both storage methods return `BoxFuture<'static, Result<...>>`. Clone the state needed by the future before entering
 `async move`, rather than borrowing `self` or the context in the returned future.
 
+Bound concurrent storage requests in your driver if needed. Rust SDK 1.2.0 processes up to eight payload fields per
+message concurrently, but does not otherwise limit storage requests. Acquire a permit from `context.limiter` for each
+request and hold it until that request completes. The local-disk example issues its requests sequentially within
+each call. See the
+SDK's [`ExternalStorage` type](https://github.com/temporalio/sdk-rust/blob/v1.2.0/crates/common-wasm/src/external_storage.rs)
+for details.
+
 ### Store payloads and return claims
 
 Serialize the entire protobuf `Payload`, including its metadata, with `prost::Message::encode_to_vec`.
 The SDK has already applied the Payload Converter and any Payload Codec before handing the payload to your driver.
 
 Return a `StorageDriverClaim::new(HashMap<String, String>)` with enough information to locate that payload later.
-Claim data is stored in Event History without encryption in this Rust implementation. Do not include credentials
-or other secrets in claims.
+Do not include credentials or other secrets in claims. Rust SDK 1.2.0 does not pass reference tokens through Payload
+Codecs, so claim data is stored in Event History without encryption.
 
 `StorageDriverStoreContext::target` provides Workflow or Standalone Activity identity when available. You can use it
 to organize storage keys, but handle `None`. Retrieval receives no target: a claim and the driver's configuration
@@ -150,10 +167,6 @@ must be sufficient to retrieve a payload.
 Read the stored bytes, validate their integrity, and reconstruct the original message with `Payload::decode`.
 Return an error for a missing object, invalid claim, failed download, or corrupt payload. The SDK then applies the
 Payload Codec and Payload Converter to recover the application value.
-
-Acquire a permit from `context.limiter` for each storage request and hold it until that request completes.
-The current implementation does not enforce driver request limits, but custom drivers should use the limiter interface.
-The local-disk example issues its requests sequentially within each call.
 
 ### Use local disk for development
 
@@ -294,19 +307,3 @@ pub fn migration_storage(
 }
 ```
 <!--SNIPEND-->
-
-## Current limitations
-
-Rust SDK 1.2.0 has these limitations:
-
-- Up to eight payload fields per message are stored or retrieved at once. Storage requests are not otherwise limited.
-  Bound requests in a custom driver if needed.
-- Reference tokens do not pass through Payload Codecs. Claim data is written to Event History unencrypted,
-  and Rust does not recognize a reference token that another SDK has encoded with a Payload Codec.
-- Workflow replay stores payloads again. Plan for repeated writes and their storage costs. Content-addressed keys,
-  as used in the local-disk example, reuse object keys for identical payloads. The SDK S3 driver also checks for
-  existing objects before uploading, with keys scoped to the execution context.
-- Fetching a Workflow's Event History returns stored reference tokens, rather than resolving them to original payloads.
-
-These limitations are documented on the SDK's
-[`ExternalStorage` type](https://github.com/temporalio/sdk-rust/blob/v1.2.0/crates/common-wasm/src/external_storage.rs).
