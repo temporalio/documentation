@@ -343,26 +343,10 @@ You can keep up to 4 accepted values during the migration. Both values must be v
 
 ## Frequently asked questions
 
-### Does payload encryption validation encrypt data?
-
-No. Configure a Payload Codec or encryption proxy to perform application-layer encryption. Payload encryption validation checks the metadata that implementation produces.
-
-### Does passing validation prove a Payload is encrypted?
-
-No. It confirms that the Payload metadata matches the configured metadata key and one of the accepted values. The check does not verify ciphertext or detect a forged metadata value.
-
-### Does warn prevent non-compliant data from being stored?
-
-No. `warn` allows requests to proceed. Use it to identify and remediate gaps before you evaluate `deny`.
-
-### Does payload encryption validation scan or repair existing Event History?
-
-No. It validates new incoming requests on supported paths. It does not scan or modify previously persisted data.
-
 ### Is payload encryption validation available for self-hosted Temporal Server?
 
 This feature is specific to Temporal Cloud.
 
 ### Does payload encryption validation guarantee regulatory compliance?
 
-No. It is one control that can support your organization's encryption governance. Consider its metadata trust model and coverage exclusions alongside your other security controls.
+No. It is one control that can support your organization's encryption governance. Consider its metadata trust model and [coverage exclusions](#review-coverage-and-exclusions) alongside your other security controls.
