@@ -33,7 +33,7 @@ Build `WorkerOptions` with the Task Queue to poll, register the Workflows and Ac
 
 <!--SNIPSTART rust-worker-process-run-worker-->
 [rust-sandbox/workers/worker-process/src/bin/worker.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/worker-process/src/bin/worker.rs)
-```rust
+```rs
 use std::str::FromStr;
 
 use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, Url};
@@ -76,7 +76,7 @@ Register each Workflow with `register_workflow::<T>()` and each Activity impleme
 
 <!--SNIPSTART rust-worker-process-register {"enable_code_dedenting": true}-->
 [rust-sandbox/workers/worker-process/src/registration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/worker-process/src/registration.rs)
-```rust
+```rs
 let worker_options = WorkerOptions::new("my-task-queue")
     .register_workflow::<GreetingWorkflow>()?
     .register_workflow::<OrderWorkflow>()?
@@ -106,7 +106,7 @@ Set a Worker Deployment Version and enable versioning in `deployment_options`, t
 
 <!--SNIPSTART rust-worker-process-versioned-->
 [rust-sandbox/workers/worker-process/src/versioned.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/worker-process/src/versioned.rs)
-```rust
+```rs
 use temporalio_common::worker::{
     VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
 };
@@ -146,7 +146,7 @@ Calling the handle it returns initiates shutdown, which stops polling for new Ta
 
 <!--SNIPSTART rust-worker-process-shutdown {"enable_code_dedenting": true}-->
 [rust-sandbox/workers/worker-process/src/shutdown.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/worker-process/src/shutdown.rs)
-```rust
+```rs
 let mut worker = Worker::new(&runtime, client, worker_options)?;
 let shutdown = worker.shutdown_handle();
 

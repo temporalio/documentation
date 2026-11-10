@@ -33,7 +33,7 @@ Inside your Workflow, call `ctx.continue_as_new()` and propagate its result:
 
 <!--SNIPSTART rust-continue-as-new-basic-->
 [rust-sandbox/workflows/continue-as-new/src/basic.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/continue-as-new/src/basic.rs)
-```rust
+```rs
 use std::time::Duration;
 
 use temporalio_macros::{workflow, workflow_methods};
@@ -86,7 +86,7 @@ This sample takes a `max_history_length` input that a test can set to a small va
 
 <!--SNIPSTART rust-continue-as-new-test-hook-->
 [rust-sandbox/workflows/continue-as-new/src/test_hook.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/continue-as-new/src/test_hook.rs)
-```rust
+```rs
 use std::time::Duration;
 
 use serde::{Deserialize, Serialize};
