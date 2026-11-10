@@ -299,7 +299,8 @@ global:
 ## persistence
 
 The `persistence` section configures the data stores for the Temporal Service.
-The following example configures a password-protected Cassandra data store, with Elasticsearch as a secondary Visibility store:
+The following example configures a password-protected Cassandra data store, with Elasticsearch as a secondary Visibility store.
+Pairing a Cassandra Visibility store with a secondary Visibility store, as this example does, works only on Temporal Server v1.21 through v1.23:
 
 ```yaml
 persistence:

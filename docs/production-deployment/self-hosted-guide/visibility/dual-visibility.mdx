@@ -28,7 +28,8 @@ rejects a configuration that pairs a SQL store with an Elasticsearch store.
 
 Examples:
 
-To configure MySQL as a secondary store with Cassandra as your primary store, do the following.
+The following Cassandra example applies only to Temporal Server v1.21 through v1.23. Temporal Server v1.21 added
+`secondaryVisibilityStore`, and v1.24 removed Cassandra as a Visibility store. To configure MySQL as a secondary store with Cassandra as your primary store, do the following.
 
 ```yaml
 persistence:
@@ -78,7 +79,8 @@ The database schema and setup for a secondary store depends on the database you 
 - [SQLite](/self-hosted-guide/visibility/sqlite)
 - [Elasticsearch](/self-hosted-guide/visibility/elasticsearch)
 
-For the Cassandra and MySQL configuration in the previous example, an example setup script would be as follows.
+For the Cassandra and MySQL configuration in the previous example (Temporal Server v1.21 through v1.23), an example
+setup script would be as follows.
 
 ```bash
 #...
