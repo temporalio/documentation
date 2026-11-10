@@ -23,22 +23,33 @@ There are three steps to follow:
 
 To mark an Activity as completing asynchronously, do the following inside the Activity.
 
-```ruby
+<!--SNIPSTART ruby-async-activity-complete-async {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/asynchronous-activity/my_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/asynchronous-activity/my_activity.rb)
+```rb
 # Capture token for later completion
 captured_token = Temporalio::Activity::Context.current.info.task_token
+# Give the token to the external system that will complete the Activity
+@external_system << captured_token
 
 # Raise a special exception that says an activity will be completed somewhere else
 raise Temporalio::Activity::CompleteAsyncError
 ```
+<!--SNIPEND-->
 
 To update an Activity outside the Activity, use the [async_activity_handle](https://ruby.temporal.io/Temporalio/Client.html#async_activity_handle-instance_method) method on the client to get the handle of the Activity.
 
-```ruby
+<!--SNIPSTART ruby-async-activity-get-handle {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/asynchronous-activity/complete_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/asynchronous-activity/complete_activity.rb)
+```rb
 handle = my_client.async_activity_handle(captured_token)
 ```
+<!--SNIPEND-->
 
 Then, on that handle, you can use `heartbeat`, `complete`, `fail`, or `report_cancellation` methods to update the Activity.
 
-```ruby
+<!--SNIPSTART ruby-async-activity-complete {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/asynchronous-activity/complete_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/asynchronous-activity/complete_activity.rb)
+```rb
 handle.complete('completion value')
 ```
+<!--SNIPEND-->
