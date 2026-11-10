@@ -84,7 +84,7 @@ That is the metadata the [encryption samples](/payload-codec#encryption) set. Ad
 
 One key and multiple values lets you roll out a new metadata value while `deny` stays on. You can set up to 4 accepted values. Each key and value must be non-blank and at most 255 bytes.
 
-To migrate a codec, add the new value, deploy the new codec, wait until metrics show no traffic on the old value, then remove the old value. Stay in `deny` through that change. See [Migrate accepted metadata values](#migrate-accepted-metadata-values).
+To migrate a codec, add the new value and deploy the updated codec. The metric cannot distinguish traffic by accepted metadata value, so traffic using the old value can still appear as `pass`. Before removing the old value while in `deny` mode, verify the migration through your application's instrumentation or by confirming that all sending Clients and Workers have been updated. See [Migrate accepted metadata values](#migrate-accepted-metadata-values).
 
 ### Reject reserved metadata matches
 
