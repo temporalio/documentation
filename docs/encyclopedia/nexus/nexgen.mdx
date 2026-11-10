@@ -2,7 +2,7 @@
 id: nexgen
 title: NexGen
 sidebar_label: NexGen
-description: NexGen turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, and TypeScript.
+description: NexGen turns one schema into typed models, runtime validators, and Nexus Service definitions for Go, Java, Python, TypeScript, and .NET.
 toc_max_heading_level: 4
 slug: /nexus/nexgen
 tags:
@@ -12,7 +12,7 @@ tags:
 
 import { ReleaseNoteHeader } from '@site/src/components';
 
-<ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript"]} guidePath="nexus/feature-guide">
+<ReleaseNoteHeader type="prerelease" languages={["Go", "Java", "Python", "TypeScript", ".NET"]} guidePath="nexus/feature-guide">
   APIs are experimental and may be subject to backwards-incompatible changes.
 </ReleaseNoteHeader>
 
@@ -25,7 +25,7 @@ For setup instructions, see the [NexGen GitHub project](https://github.com/tempo
 A [Nexus Service](/nexus/services) is called across a team boundary, often by a caller written in a different language than the handler implementation and deployed on its own schedule.
 When each side hand-writes its own request and response types, the two copies drift, and nothing catches it until a call fails.
 
-[`nexgen`](https://github.com/temporalio/nexgen) generates client code for Go, Java, Python, and TypeScript from a schema file that defines the contract. The schema's types are modeled with [JSON Schema 2020-12](https://json-schema.org).
+[`nexgen`](https://github.com/temporalio/nexgen) generates client code for Go, Java, Python, TypeScript and .NET from a schema file that defines the contract. The schema's types are modeled with [JSON Schema 2020-12](https://json-schema.org).
 Both sides can then use code generated from the same file, which gives data validation and type safety across the languages and helps prevent drift.
 
 For each type it emits:
@@ -37,7 +37,7 @@ For each type it emits:
 ## How it works
 
 You write the contract once, as a JSON or YAML definition file, and run `nexgen` against it.
-The generator emits contract code in Go, Java, Python, or TypeScript as requested.
+The generator emits contract code in Go, Java, Python, TypeScript or .NET as requested.
 
 Both sides use that generated code: the handler implements the Service, and the caller invokes its Operations.
 Because both were generated from the same file, they agree on the contract by construction, and the generated validators enforce it at runtime on every payload.
