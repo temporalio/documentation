@@ -83,7 +83,7 @@
     "@temporalio-web/consent-banner": "^1.0.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vercel/blob": "2.8.1",
+    "@vercel/blob": "2.8.2",
     "@vercel/functions": "^3.9.11",
     "algoliasearch": "^5.60.0",
     "chart.js": "^4.4.1",
