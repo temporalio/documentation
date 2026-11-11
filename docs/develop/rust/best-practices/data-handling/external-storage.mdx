@@ -54,14 +54,6 @@ The example project groups its S3 dependencies under the `s3` feature, which you
 It also enables [`aws-config`'s `credentials-login` feature](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credentials.html)
 so it can use credentials from `aws login`.
 
-Keep stored payloads available for the entire Workflow lifetime, including retries, replay, and retention.
-See [Lifecycle management](/external-storage#lifecycle) and
-[Durable External Storage](/external-storage#durable-external-storage) when planning retention and regional recovery.
-
-Plan for storage requests during Workflow replay. Rust SDK 1.2.0 stores payloads again during replay. The S3 driver
-uses content-addressed keys scoped to the execution context and checks for existing objects before uploading,
-so repeated storage within the same context can reuse an object.
-
 ### Create the storage driver
 
 Load your AWS configuration with `aws_config::load_defaults` and create an `aws_sdk_s3::Client`. Wrap the client in
@@ -116,6 +108,18 @@ let mut worker = Worker::new(&runtime, client.clone(), worker_options)?;
 
 Configure compatible drivers on every Client and Worker process that can send or receive an offloaded payload,
 including Clients that fetch Workflow results. Drivers run outside Workflow Definitions.
+
+:::note Payload retention and replay
+
+Keep stored payloads available for the entire Workflow lifetime, including retries, replay, and retention.
+See [Lifecycle management](/external-storage#lifecycle) and
+[Durable External Storage](/external-storage#durable-external-storage) when planning retention and regional recovery.
+
+Plan for storage requests during Workflow replay. Rust SDK 1.2.0 stores payloads again during replay. The S3 driver
+uses content-addressed keys scoped to the execution context and checks for existing objects before uploading,
+so repeated storage within the same context can reuse an object.
+
+:::
 
 :::caution Payload Codec compatibility
 
