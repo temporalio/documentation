@@ -209,7 +209,8 @@ A Workflow Definition must be deterministic to support replay. To handle non-det
 
 For example, you can change:
 
-- The input parameters, return values, and execution timeouts of Child Workflows and Activities
+- The input parameters, return values, and execution timeouts of Child Workflows and Activities, and the Retry Policy
+  of an Activity. See [Changing Activity arguments and options](#activity-arguments-and-options).
   - However, it is not safe to change the types or IDs of Child Workflows or Activities
 - The input parameters used to Signal an external Workflow
 - The duration of Timers (although changing them to 0 is not safe in all SDKs)
@@ -246,6 +247,24 @@ The following are the two reasons why a Command might be generated out of sequen
 
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
+
+#### Changing Activity arguments and options {/* #activity-arguments-and-options */}
+
+Replay matches a scheduled Activity by its Activity Type and Activity ID. It doesn't compare the Activity's arguments,
+its result, or its options, such as timeouts and the Retry Policy. Changing the arguments that a Workflow Definition
+passes to an Activity doesn't cause a non-determinism error in Workflow Executions that are already running.
+
+The change applies only to Activities scheduled after you deploy it:
+
+- **An Activity that already completed** doesn't run again during replay. The Workflow gets the result recorded in
+  Event History.
+- **An Activity that's already scheduled**, including one that's retrying, uses the arguments and options recorded
+  when it was scheduled, on every attempt.
+- **An Activity that isn't scheduled yet** gets the new arguments and options.
+
+If the new value also changes which Commands the Workflow produces, for example because a condition in the Workflow
+Definition depends on it, the change can cause a non-determinism error. Use [Versioning](#workflow-versioning) for that
+change, and test it with [replay](/workflow-execution#replay) before you deploy.
 
 ### Code changes can cause non-deterministic behavior {/* #non-deterministic-change */}
 
