@@ -584,16 +584,31 @@ temporal operator cluster list --address 127.0.0.1:8233
 
 ### Disable or remove a connection
 
-Disable a connection without removing it, or remove it entirely. Run each command on both Temporal Services.
+Disable a connection without removing it, or remove it entirely. Run the commands against both Temporal Services, using
+`--address` to select the local one and naming the other as the peer.
 
 ```shell
-# Disable the connection
+# Disable clusterB's registration on clusterA
 temporal operator cluster upsert \
+  --address 127.0.0.1:7233 \
   --frontend-address 127.0.0.1:8233 \
   --enable-connection=false
 
-# Remove the registered Temporal Service
-temporal operator cluster remove --name clusterB
+# Disable clusterA's registration on clusterB
+temporal operator cluster upsert \
+  --address 127.0.0.1:8233 \
+  --frontend-address 127.0.0.1:7233 \
+  --enable-connection=false
+
+# Remove clusterB from clusterA
+temporal operator cluster remove \
+  --address 127.0.0.1:7233 \
+  --name clusterB
+
+# Remove clusterA from clusterB
+temporal operator cluster remove \
+  --address 127.0.0.1:8233 \
+  --name clusterA
 ```
 
 ### Set up Multi-Cluster Replication before v1.14
