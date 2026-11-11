@@ -91,12 +91,13 @@ You should generally finish running all handlers before the Workflow run complet
 
 If you don’t need to ensure that your handlers complete, you may specify your handler’s Handler Unfinished Policy as Abandon to turn off the warnings. However, note that clients waiting for Updates will get Not Found errors if they're waiting for Updates that never complete before the Workflow run completes.
 
-A Signal that arrives while the Workflow is closing isn't lost. If the Temporal Service receives a Signal while the
-Worker is completing the Workflow Task that would complete, fail, or Continue-As-New the Workflow, it rejects that
+The Temporal Service doesn't drop a Signal that arrives while the Workflow is closing. If it receives a Signal while
+the Worker is completing the Workflow Task that would complete, fail, or Continue-As-New the Workflow, it rejects that
 completion with an [Unhandled Command](/references/workflow-task-errors#unhandled-command) error. The Worker then gets a
-new Workflow Task that includes the Signal, so the Workflow runs the Signal's handler before it can close. An Update
-that arrives at that point gets the same treatment, with an
-[Unhandled Update](/references/workflow-task-errors#cause-unhandled-update) error.
+new Workflow Task that includes the Signal, which gives the Workflow a chance to process it before closing. In SDKs that
+register a Signal handler, the handler runs in that Workflow Task. In the Go SDK, the Signal goes to the Signal Channel,
+and the Workflow must drain the channel before it returns or the Signal is lost. An Update that arrives at that point
+gets the same treatment, with an [Unhandled Update](/references/workflow-task-errors#cause-unhandled-update) error.
 
 If the main Workflow processes Signals from a queue or channel, check that it's empty in the same Workflow Task that
 closes the Workflow. Don't wait on anything, such as a Timer or an Activity, between that check and the return. A Signal
