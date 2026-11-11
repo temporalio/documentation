@@ -29,7 +29,7 @@ To start a Child Workflow in Rust, use `ctx.start_child_workflow()`:
 
 <!--SNIPSTART rust-child-workflows-start-->
 [rust-sandbox/workflows/child-workflows/src/start.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/child-workflows/src/start.rs)
-```rust
+```rs
 use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::{ChildWorkflowOptions, WorkflowContext, WorkflowContextView, WorkflowResult};
 
@@ -96,7 +96,7 @@ You can start multiple Child Workflows and wait for all of them:
 
 <!--SNIPSTART rust-child-workflows-parallel {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/child-workflows/src/parallel.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/child-workflows/src/parallel.rs)
-```rust
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<Vec<Option<String>>> {
     let name = ctx.state(|s| s.name.clone());
@@ -138,7 +138,7 @@ Set Parent Close Policy using the [`parent_close_policy`](https://docs.rs/tempor
 
 <!--SNIPSTART rust-child-workflows-parent-close-policy {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/child-workflows/src/parent_close.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/child-workflows/src/parent_close.rs)
-```rust
+```rs
 let es_greeting_child = ctx
     .start_child_workflow(
         ComposeEsGreetingWorkflow::run,
