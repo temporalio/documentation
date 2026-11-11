@@ -25,11 +25,6 @@ to set up External Storage with Amazon S3 and how to implement a custom storage 
 
 For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
 
-External Storage requires Rust SDK 1.2.0 or later. The SDK-provided S3 driver is available in the
-`temporalio-aws-s3driver` crate starting with version 0.1.0. The
-[example project](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/rust-sandbox/external-storage)
-uses these published crates.
-
 ## Store and retrieve large payloads with Amazon S3
 
 Use the SDK-provided `S3StorageDriver` from the `temporalio-aws-s3driver` crate. Its default `aws-sdk` feature
