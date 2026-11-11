@@ -131,6 +131,8 @@ If this timeout is reached, the following actions occur:
 - If a Retry Policy dictates a retry, the Temporal Service schedules another Activity Task.
   - For a Workflow Activity, the attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
+- The Activity code that's running on the Worker isn't stopped. See
+  [What happens to an attempt that times out](#timed-out-attempt).
 
 ## Schedule-To-Close Timeout {/* #schedule-to-close-timeout */}
 
@@ -280,6 +282,8 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
     title="Heartbeat Timeout periods" />
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/encyclopedia/retry-policies) dictates it.
+The Activity code that's running on the Worker isn't stopped until its next Heartbeat. See
+[What happens to an attempt that times out](#timed-out-attempt).
 
 #### What a Heartbeat Timeout of `0s` means {/* #heartbeat-timeout-zero */}
 
@@ -288,3 +292,27 @@ If this timeout is reached, the Activity Task fails and a retry occurs if a [Ret
 `0s` is also the normalized value the Temporal Service stores when you leave the Heartbeat Timeout unset. An unset Heartbeat Timeout and an explicit `0s` are therefore indistinguishable once the Activity is scheduled: both are reported as `0s` and both behave as disabled.
 
 The Heartbeat Timeout is also capped at the [Start-To-Close Timeout](#start-to-close-timeout). Setting a Heartbeat Timeout longer than the Start-To-Close Timeout stores the Start-To-Close Timeout instead.
+
+## What happens to an attempt that times out {/* #timed-out-attempt */}
+
+When a Start-To-Close, Schedule-To-Close, or Heartbeat Timeout fires, the Temporal Service records the timeout and
+schedules the next attempt if the [Retry Policy](/encyclopedia/retry-policies) allows one. The Temporal Service doesn't
+stop the Activity code that's already running on the Worker:
+
+- **The attempt keeps running.** The Worker keeps executing the timed-out attempt, and the attempt holds its Activity
+  Task slot until it returns.
+- **The Activity finds out on its next Heartbeat.** The Temporal Service rejects the Heartbeat, and the SDK reports
+  the timeout to the Activity as a cancellation or an error, depending on the SDK. An Activity that doesn't Heartbeat
+  isn't told and runs until it returns.
+- **In the Go SDK, the Activity context also has a deadline.** The deadline is the earlier of the Start-To-Close and
+  Schedule-To-Close Timeouts, so code that checks the context stops then even without a Heartbeat. A Heartbeat Timeout
+  cancels the context only after the next Heartbeat.
+- **A result reported after the timeout is discarded.** The Temporal Service answers the completion with
+  [`NOT_FOUND`](/troubleshooting/request-failures#not_found-on-respond-operations) and doesn't record the result.
+- **The next attempt can run at the same time.** A retry can start on any Worker while the timed-out attempt is still
+  running. Make Activities [idempotent](/activity-definition#idempotency) so that two attempts running at once don't
+  repeat side effects.
+
+To keep timed-out attempts from holding Task slots, Heartbeat from long-running Activities, and give calls to
+downstream services their own timeouts, shorter than the Start-To-Close Timeout. If Activity Task slots run out, see
+[Depletion of Activity Task slots](/troubleshooting/performance-bottlenecks#depletion-of-temporal_worker_task_slots_available-for-activityworker).
