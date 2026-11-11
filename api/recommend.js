@@ -23,6 +23,10 @@ try {
   console.error('recommend: api/_content-manifest.json is missing. Run bin/write-content-manifest.js.');
 }
 
+// Blog and Learn titles and descriptions, committed and refreshed weekly by
+// .github/workflows/update-external-content.yml.
+const external = require('./_external-content.json');
+
 const UPSTREAM_TIMEOUT_MS = 10_000;
 
 // Open to any origin for now, so the Cloud UI can call it from the browser. The
@@ -169,7 +173,7 @@ module.exports = async (request, response) => {
   }
 
   try {
-    const { cards, skipped } = toCards(results, { allowlist, manifest, compiledRedirects, limit: parsed.params.limit });
+    const { cards, skipped } = toCards(results, { allowlist, manifest, external, compiledRedirects, limit: parsed.params.limit });
     record.fetched_count = results.length;
     record.skipped_count = skipped;
     record.card_count = cards.length;

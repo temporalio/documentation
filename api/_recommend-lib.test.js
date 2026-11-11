@@ -2,10 +2,10 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { parseAllowlist } = require('./_retrieve-lib');
-const { DEFAULT_LIMIT, MAX_LIMIT, parseParams, toCards, typeForPath } = require('./_recommend-lib');
+const { DEFAULT_LIMIT, MAX_LIMIT, parseParams, toCards, typeForPath, typeForUrl } = require('./_recommend-lib');
 
 const DOCS = 'https://docs.temporal.io';
-const allowlist = parseAllowlist(['docs.temporal.io', 'temporal.io/blog']);
+const allowlist = parseAllowlist(['docs.temporal.io', 'temporal.io/blog', 'learn.temporal.io']);
 const manifest = {
   '/guides/route-specialized-workloads': { title: 'Route GPU Activities', description: 'Give GPU Activities their own Task Queues.' },
   '/develop/python/workflows/versioning': { title: 'Versioning - Python SDK', description: 'Patch Workflows.' },
@@ -13,10 +13,22 @@ const manifest = {
   '/references/errors': { title: 'Errors', description: 'Error reference.' },
   '/workflows': { title: 'Workflows', description: 'What a Workflow is.' },
 };
+const external = {
+  'https://learn.temporal.io/tutorials/python/build-a-data-pipeline': {
+    title: 'Build a data pipeline with Python',
+    description: 'Orchestrate pipeline steps.',
+    url: 'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/',
+  },
+  'https://temporal.io/blog/trading-airflow-emr-temporal-bauplan-mediaset': {
+    title: 'Trading Airflow + EMR for Temporal + Bauplan',
+    description: 'How Mediaset moved its data stack.',
+    url: 'https://temporal.io/blog/trading-airflow-emr-temporal-bauplan-mediaset',
+  },
+};
 const compiledRedirects = compileRedirects([{ source: '/old-versioning', destination: '/develop/python/workflows/versioning' }]);
 
 const hit = (url, content = 'passage') => ({ content, source_url: url });
-const cards = (results, limit = 10) => toCards(results, { allowlist, manifest, compiledRedirects, limit });
+const cards = (results, limit = 10) => toCards(results, { allowlist, manifest, external, compiledRedirects, limit });
 
 describe('parseParams', () => {
   const parse = (query) => parseParams(new URLSearchParams(query));
@@ -71,6 +83,25 @@ describe('typeForPath', () => {
   });
 });
 
+describe('typeForUrl', () => {
+  const type = (value) => typeForUrl(new URL(value));
+
+  it('shows every Learn page as a Tutorial', () => {
+    assert.deepStrictEqual(type('https://learn.temporal.io/courses/appdatasec'), { type: 'tutorial', type_label: 'Tutorial' });
+  });
+
+  it('shows blog posts as Blog, and no other temporal.io page', () => {
+    assert.deepStrictEqual(type('https://temporal.io/blog/some-post'), { type: 'blog', type_label: 'Blog' });
+    assert.strictEqual(type('https://temporal.io/pricing'), null);
+    assert.strictEqual(type('https://temporal.io/blog'), null);
+  });
+
+  it('uses the path rules for docs and has no type for other hosts', () => {
+    assert.strictEqual(type(`${DOCS}/guides/x`).type, 'guide');
+    assert.strictEqual(type('https://example.com/guides/x'), null);
+  });
+});
+
 describe('toCards', () => {
   it('builds a card from the manifest and keeps Kapa order', () => {
     const { cards: out } = cards([hit(`${DOCS}/workflows`), hit(`${DOCS}/guides/route-specialized-workloads`)]);
@@ -105,6 +136,36 @@ describe('toCards', () => {
   it('honors the limit', () => {
     const { cards: out } = cards([hit(`${DOCS}/workflows`), hit(`${DOCS}/quickstarts`), hit(`${DOCS}/references/errors`)], 2);
     assert.strictEqual(out.length, 2);
+  });
+
+  it('builds Learn and blog cards from the external snapshot, ignoring anchors and slashes', () => {
+    const { cards: out } = cards([
+      hit('https://learn.temporal.io/tutorials/python/build-a-data-pipeline/#develop-activities'),
+      hit('https://learn.temporal.io/tutorials/python/build-a-data-pipeline'),
+      hit('https://temporal.io/blog/trading-airflow-emr-temporal-bauplan-mediaset#x'),
+    ]);
+    assert.deepStrictEqual(out, [
+      {
+        title: 'Build a data pipeline with Python',
+        description: 'Orchestrate pipeline steps.',
+        type: 'tutorial',
+        type_label: 'Tutorial',
+        url: 'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/',
+      },
+      {
+        title: 'Trading Airflow + EMR for Temporal + Bauplan',
+        description: 'How Mediaset moved its data stack.',
+        type: 'blog',
+        type_label: 'Blog',
+        url: 'https://temporal.io/blog/trading-airflow-emr-temporal-bauplan-mediaset',
+      },
+    ]);
+  });
+
+  it('skips Learn and blog pages that are not in the snapshot', () => {
+    const { cards: out, skipped } = cards([hit('https://learn.temporal.io/tutorials/go/new'), hit('https://temporal.io/blog/new-post')]);
+    assert.deepStrictEqual(out, []);
+    assert.strictEqual(skipped, 2);
   });
 
   it('skips pages missing from the manifest, other hosts, and custom Q&A answers', () => {

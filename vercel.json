@@ -9,7 +9,7 @@
     },
     "api/recommend.js": {
       "maxDuration": 15,
-      "includeFiles": "api/_content-manifest.json"
+      "includeFiles": "api/_{content-manifest,external-content}.json"
     },
     "api/not-found.js": {
       "maxDuration": 10

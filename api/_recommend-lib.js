@@ -5,6 +5,8 @@
 const { DOCS_HOST, LIMITS: RETRIEVE_LIMITS, isAllowedResult, toMarkdownUrl, validResults } = require('./_retrieve-lib');
 
 const ENDPOINT = `https://${DOCS_HOST}/api/recommend`;
+const LEARN_HOST = 'learn.temporal.io';
+const BLOG_HOST = 'temporal.io';
 
 const LIMITS = { q: RETRIEVE_LIMITS.q, src: RETRIEVE_LIMITS.src, agent: RETRIEVE_LIMITS.agent };
 const DEFAULT_LIMIT = 6;
@@ -18,8 +20,9 @@ const USAGE =
   `GET ${ENDPOINT}?q=<topics>&limit=<1-${MAX_LIMIT}>&src=<surface>&agent=<name>. ` +
   `q is required (at most ${LIMITS.q} characters). limit defaults to ${DEFAULT_LIMIT}.`;
 
-// First matching prefix wins, so list the more specific paths first. Learn and
-// the blog aren't here yet: they need a source for titles and descriptions.
+// Docs pages: the first matching prefix wins, so list the more specific paths
+// first. Learn and the blog aren't docs pages. Their type comes from the host,
+// in typeForUrl.
 const TYPE_RULES = [
   { prefix: '/guides', type: 'guide', label: 'Guide' },
   { prefix: '/quickstarts', type: 'tutorial', label: 'Tutorial' },
@@ -58,15 +61,31 @@ function typeForPath(pathname) {
   return rule ? { type: rule.type, type_label: rule.label } : { type: DEFAULT_TYPE.type, type_label: DEFAULT_TYPE.label };
 }
 
+// Every Learn page is shown as a Tutorial, and every temporal.io/blog post as a
+// Blog. Docs pages go by path. Returns null for a host that has no card type.
+function typeForUrl(url) {
+  if (url.hostname === DOCS_HOST) return typeForPath(url.pathname);
+  if (url.hostname === LEARN_HOST) return { type: 'tutorial', type_label: 'Tutorial' };
+  if (url.hostname === BLOG_HOST && url.pathname.startsWith('/blog/')) return { type: 'blog', type_label: 'Blog' };
+  return null;
+}
+
+// Same key as bin/write-external-content.js: no anchor, query, or trailing slash.
+function externalKey(url) {
+  const pathname = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, '') : url.pathname;
+  return `${url.protocol}//${url.hostname.toLowerCase()}${pathname}`;
+}
+
 // Turns Kapa results into at most `limit` cards, one per page, in Kapa's order.
-// A result becomes a card only when it's a docs page with an entry in the
-// manifest, so every card has a title and description that came from the page's
-// own frontmatter. Everything else is counted in `skipped`, not returned.
+// A result becomes a card only when its page has a title and description on
+// record: docs pages in `manifest` (bin/write-content-manifest.js), and blog and
+// Learn pages in `external` (bin/write-external-content.js). Everything else is
+// counted in `skipped`, not returned.
 //
-// Kapa may have indexed a page under an old URL, so the path goes through the
-// vercel.json redirects (via toMarkdownUrl) before the manifest lookup. Anchors
-// are dropped: a card links to the page, not to the passage that matched.
-function toCards(results, { allowlist, manifest, compiledRedirects, limit }) {
+// Kapa may have indexed a docs page under an old URL, so its path goes through
+// the vercel.json redirects (via toMarkdownUrl) before the lookup. Anchors are
+// dropped: a card links to the page, not to the passage that matched.
+function toCards(results, { allowlist, manifest, external = {}, compiledRedirects, limit }) {
   const cards = [];
   const seen = new Set();
   let skipped = 0;
@@ -84,21 +103,18 @@ function toCards(results, { allowlist, manifest, compiledRedirects, limit }) {
       skipped++;
       continue;
     }
-    const entry = url.hostname === DOCS_HOST ? manifest[url.pathname] : undefined;
+    const kind = typeForUrl(url);
+    const isDocs = url.hostname === DOCS_HOST;
+    const entry = kind && (isDocs ? manifest[url.pathname] : external[externalKey(url)]);
     if (!entry) {
       skipped++;
       continue;
     }
-    const pageKey = url.pathname;
-    if (seen.has(pageKey)) continue;
-    seen.add(pageKey);
+    const cardUrl = isDocs ? `https://${DOCS_HOST}${url.pathname}` : entry.url;
+    if (seen.has(cardUrl)) continue;
+    seen.add(cardUrl);
 
-    cards.push({
-      title: entry.title,
-      description: entry.description,
-      ...typeForPath(url.pathname),
-      url: `https://${DOCS_HOST}${url.pathname}`,
-    });
+    cards.push({ title: entry.title, description: entry.description, ...kind, url: cardUrl });
     if (cards.length === limit) break;
   }
   return { cards, skipped };
@@ -114,4 +130,5 @@ module.exports = {
   parseParams,
   toCards,
   typeForPath,
+  typeForUrl,
 };

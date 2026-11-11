@@ -15,7 +15,7 @@ const BASE_ENV = {
   KAPA_API_KEY: 'key',
   KAPA_PROJECT_ID: 'project',
   KAPA_RECOMMEND_INTEGRATION_ID: 'recommend-integration',
-  RETRIEVE_URL_ALLOWLIST: 'docs.temporal.io,temporal.io/blog',
+  RETRIEVE_URL_ALLOWLIST: 'docs.temporal.io,temporal.io/blog,learn.temporal.io',
   RETRIEVE_LOG_SALT: 'salt',
   BLOB_READ_WRITE_TOKEN: 'token',
 };
@@ -25,6 +25,14 @@ const MANIFEST = {
   '/workflows': { title: 'Workflows', description: 'What a Workflow is.' },
   '/guides/route-specialized-workloads': { title: 'Route GPU Activities', description: 'Task Queues for GPUs.' },
   '/quickstarts': { title: 'Quickstarts', description: 'Start here.' },
+};
+
+const EXTERNAL = {
+  'https://learn.temporal.io/tutorials/python/build-a-data-pipeline': {
+    title: 'Build a data pipeline with Python',
+    description: 'Orchestrate pipeline steps.',
+    url: 'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/',
+  },
 };
 
 const originalLoad = Module._load;
@@ -55,6 +63,7 @@ beforeEach(() => {
       if (!manifestPresent) throw new Error('Cannot find module');
       return MANIFEST;
     }
+    if (request === './_external-content.json') return EXTERNAL;
     return originalLoad.call(this, request, ...rest);
   };
 
@@ -160,12 +169,18 @@ describe('cards', () => {
       { content: 'a', source_url: `${DOCS}/guides/route-specialized-workloads#x` },
       { content: 'b', source_url: `${DOCS}/guides/route-specialized-workloads#y` },
       { content: 'c', source_url: 'https://temporal.io/blog/post' },
+      { content: 'e', source_url: 'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/#step-1' },
       { content: 'd', source_url: `${DOCS}/workflows` },
     ]);
     const res = await call('?q=python+data+pipelines&limit=3&agent=cloud-ui', { headers: { origin: 'https://cloud.temporal.io' } });
 
     assert.strictEqual(res.statusCode, 200);
-    assert.deepStrictEqual(res.body.map((card) => card.url), [`${DOCS}/guides/route-specialized-workloads`, `${DOCS}/workflows`]);
+    assert.deepStrictEqual(res.body.map((card) => card.url), [
+      `${DOCS}/guides/route-specialized-workloads`,
+      'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/',
+      `${DOCS}/workflows`,
+    ]);
+    assert.deepStrictEqual(res.body.map((card) => card.type), ['guide', 'tutorial', 'docs']);
     assert.deepStrictEqual(Object.keys(res.body[0]).sort(), ['description', 'title', 'type', 'type_label', 'url']);
     assert.strictEqual(res.headers['cache-control'], 'public, s-maxage=300, stale-while-revalidate=60');
 
