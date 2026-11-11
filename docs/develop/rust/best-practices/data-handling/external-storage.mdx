@@ -80,6 +80,18 @@ let driver = S3StorageDriver::new(
 ```
 <!--SNIPEND-->
 
+:::note Payload retention and replay
+
+Keep stored payloads available for the entire Workflow lifetime, including retries, replay, and retention.
+See [Lifecycle management](/external-storage#lifecycle) and
+[Durable External Storage](/external-storage#durable-external-storage) when planning retention and regional recovery.
+
+Plan for storage requests during Workflow replay. Rust SDK 1.2.0 stores payloads again during replay. The S3 driver
+uses content-addressed keys scoped to the execution context and checks for existing objects before uploading,
+so repeated storage within the same context can reuse an object.
+
+:::
+
 ### Configure the Client and Worker
 
 Wrap the driver in `Arc<dyn StorageDriver>`, create `ExternalStorage`, and attach it to the Data Converter.
@@ -109,17 +121,6 @@ let mut worker = Worker::new(&runtime, client.clone(), worker_options)?;
 Configure compatible drivers on every Client and Worker process that can send or receive an offloaded payload,
 including Clients that fetch Workflow results. Drivers run outside Workflow Definitions.
 
-:::note Payload retention and replay
-
-Keep stored payloads available for the entire Workflow lifetime, including retries, replay, and retention.
-See [Lifecycle management](/external-storage#lifecycle) and
-[Durable External Storage](/external-storage#durable-external-storage) when planning retention and regional recovery.
-
-Plan for storage requests during Workflow replay. Rust SDK 1.2.0 stores payloads again during replay. The S3 driver
-uses content-addressed keys scoped to the execution context and checks for existing objects before uploading,
-so repeated storage within the same context can reuse an object.
-
-:::
 
 :::caution Payload Codec compatibility
 
