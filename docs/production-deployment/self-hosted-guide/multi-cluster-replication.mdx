@@ -562,13 +562,13 @@ You must run the command on both sides.
 temporal operator cluster upsert \
   --address 127.0.0.1:7233 \
   --frontend-address 127.0.0.1:8233 \
-  --enable-connection true
+  --enable-connection
 
 # Register clusterA on clusterB
 temporal operator cluster upsert \
   --address 127.0.0.1:8233 \
   --frontend-address 127.0.0.1:7233 \
-  --enable-connection true
+  --enable-connection
 ```
 
 See [`temporal operator cluster upsert`](/cli/command-reference/operator#upsert) for all options, including `--enable-replication`.
@@ -590,7 +590,7 @@ Disable a connection without removing it, or remove it entirely. Run each comman
 # Disable the connection
 temporal operator cluster upsert \
   --frontend-address 127.0.0.1:8233 \
-  --enable-connection false
+  --enable-connection=false
 
 # Remove the registered Temporal Service
 temporal operator cluster remove --name clusterB
