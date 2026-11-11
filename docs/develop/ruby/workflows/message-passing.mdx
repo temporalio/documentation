@@ -137,7 +137,7 @@ end
   - Use validators to reject an Update before it is written to History.
     Validators are always optional.
     If you don't need to reject Updates, you can skip them.
-  - Define an Update validator with the [`workflow_update_validator`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_update-class_method) class method invoked before defining the method.
+  - Define an Update validator with the [`workflow_update_validator`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_update_validator-class_method) class method invoked before defining the method.
     The first parameter when declaring the validator is the name of the Update handler method.
     The validator must accept the same argument types as the handler and should not return a value.
 

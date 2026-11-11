@@ -32,46 +32,69 @@ Follow these guidelines when writing your message handlers:
 
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
-```rust
-// workflows.rs
-use std::collections::HashMap;
+<!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["1-23", "35-93", "162"]}-->
+[rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
+```rs
+use std::{collections::HashMap, time::Duration};
 
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{WorkflowContext, WorkflowContextView, WorkflowResult};
+use temporalio_sdk::{
+    ActivityOptions, SyncWorkflowContext, WorkflowContext, WorkflowContextView, WorkflowResult,
+};
+
+use crate::activities::GreetingActivities;
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Language {
+    Arabic,
     Chinese,
     English,
     French,
+    Hindi,
+    Spanish,
 }
 
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct GetLanguagesInput {
     pub include_unsupported: bool,
 }
-
+// ...
 #[workflow]
 pub struct GreetingsWorkflow {
-    pub greetings: HashMap<Language, String>,
+    greetings: HashMap<Language, String>,
+    language: Language,
+    approved_for_release: bool,
+    approver_name: Option<String>,
+    greeting_service_busy: bool,
 }
-
 
 #[workflow_methods]
 impl GreetingsWorkflow {
     #[init]
     fn new(_ctx: &WorkflowContextView) -> Self {
-        let mut greetings = HashMap::new();
-        greetings.insert(Language::Chinese, "你好，世界".to_string());
-        greetings.insert(Language::English, "Hello, world".to_string());
-        
-        Self { greetings }
+        let greetings = HashMap::from([
+            (Language::Chinese, "你好，世界".to_string()),
+            (Language::English, "Hello, world".to_string()),
+        ]);
+
+        Self {
+            greetings,
+            language: Language::English,
+            approved_for_release: false,
+            approver_name: None,
+            greeting_service_busy: false,
+        }
     }
 
-    #[run(name = "greetings-workflow-10")]
+    #[run]
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
-        let name = ctx.state(|s| s.greetings.clone());
-        Ok(format!("Hola: {:?}", name))
+        // Wait for the approve Signal.
+        ctx.wait_condition(|s| s.approved_for_release).await?;
+
+        // Wait for running Signal and Update handlers to finish.
+        ctx.wait_condition(|_| ctx.all_handlers_finished()).await?;
+
+        Ok(ctx.state(|s| s.greetings[&s.language].clone()))
     }
 
     #[query]
@@ -81,16 +104,28 @@ impl GreetingsWorkflow {
         input: GetLanguagesInput,
     ) -> Vec<Language> {
         if input.include_unsupported {
-            vec![Language::Chinese, Language::English, Language::French]
+            vec![
+                Language::Arabic,
+                Language::Chinese,
+                Language::English,
+                Language::French,
+                Language::Hindi,
+                Language::Spanish,
+            ]
         } else {
-            self.greetings.keys().copied().collect()
+            let mut languages: Vec<Language> = self.greetings.keys().copied().collect();
+            languages.sort_by_key(|language| format!("{language:?}"));
+            languages
         }
     }
+// ...
 }
 ```
+<!--SNIPEND-->
 
-```rust
-// main.rs
+<!--SNIPSTART rust-message-passing-start {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
 let wf_handle = client
     .start_workflow(
         GreetingsWorkflow::run,
@@ -98,17 +133,21 @@ let wf_handle = client
         WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
     )
     .await?;
+```
+<!--SNIPEND-->
 
+<!--SNIPSTART rust-message-passing-send-query {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
 let supported_languages = wf_handle
     .query(
         GreetingsWorkflow::get_languages,
-        GetLanguagesInput {
-            include_unsupported: true,
-        },
+        GetLanguagesInput { include_unsupported: true },
         WorkflowQueryOptions::default(),
     )
     .await?;
 ```
+<!--SNIPEND-->
 
 - Query handlers can't mutate Workflow state.
 - Query handlers can't perform async operations, like executing Activities.
@@ -117,65 +156,61 @@ let supported_languages = wf_handle
 
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
-```rust
+<!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["25-28", "44-45", "95-99", "162"]}-->
+[rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
+```rs
+// ...
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct ApproveInput {
     pub name: String,
 }
-
-// Other structs
-...
-
+// ...
 #[workflow_methods]
 impl GreetingsWorkflow {
-    // Other Workflow logic
-    ...
-
+// ...
     #[signal]
     pub fn approve(&mut self, _ctx: &mut SyncWorkflowContext<Self>, input: ApproveInput) {
         self.approved_for_release = true;
         self.approver_name = Some(input.name);
     }
+// ...
 }
 ```
+<!--SNIPEND-->
 
 
-```rust
-// main.rs
+<!--SNIPSTART rust-message-passing-send-signal {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
 wf_handle
     .signal(
         GreetingsWorkflow::approve,
-        ApproveInput {
-            name: "Ziggy".to_string(),
-        },
+        ApproveInput { name: "Ziggy".to_string() },
         WorkflowSignalOptions::default(),
     )
     .await?;
 ```
+<!--SNIPEND-->
 
-* Signal handlers do not return values.
-* They can trigger async work (Activities, timers) depending on SDK capabilities.
+- Signal handlers do not return values.
+- Signal handlers can be `async fn` and use Activities, Timers, and Child Workflows. See [Async handlers](#async-handlers).
 
 ### Update handlers and validators {/* #updates */}
 
 An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution. It can change the Workflow state, control its flow, and return a result. The sender must wait until the Worker accepts or rejects the Update. The sender may wait further to receive a returned value or an exception if something goes wrong:
 
-```rust
-// workflows.rs
-...
-
+<!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["30-33", "44-45", "101-124", "162"]}-->
+[rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
+```rs
+// ...
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct SetLanguageInput {
     pub language: Language,
 }
-
-...
-
+// ...
 #[workflow_methods]
 impl GreetingsWorkflow {
-    // Other Workflow logic
-    ...
-
+// ...
     #[update]
     pub fn set_language(
         &mut self,
@@ -184,7 +219,7 @@ impl GreetingsWorkflow {
     ) -> Language {
         let previous_language = self.language;
         self.language = input.language;
-        
+
         previous_language
     }
 
@@ -200,43 +235,53 @@ impl GreetingsWorkflow {
             Ok(())
         }
     }
+// ...
 }
 ```
+<!--SNIPEND-->
 
 - About validators:
     - Use validators to reject an Update before it is written to History. Validators are always optional. If you don't need to reject Updates, you can skip them.
     - If you choose to create validators for your Updates, they will reject Updates before they're applied.
 - Accepting and rejecting Updates with validators:
-    - To reject an Update, raise an exception of any type in the validator.
+    - To reject an Update, return an `Err` from the validator.
     - Without a validator, Updates are always accepted.
 - Validators and Event History:
     - The `WorkflowExecutionUpdateAccepted` event is written into the History whether the acceptance was automatic or programmatic.
-    - When a Validator raises an error, the Update is rejected and `WorkflowExecutionUpdateAccepted` won't be added to the Event History. The caller receives an "Update failed" error.
+    - When a validator returns an error, the Update is rejected and `WorkflowExecutionUpdateAccepted` won't be added to the Event History. The caller receives the error.
 - Update and Signal handlers can be async, letting you use Activities, Child Workflows, and more. See [Async handlers](#async-handlers) for safe usage guidelines.
 
 ## Send messages {/* #send-messages */}
 
 To send Queries, Signals, or Updates, use a Workflow handle from the client:
 
-```rust
-let client = Client::new(connection, ClientOptions::new("default").build())?;
-
-let wf_handle = client.start_workflow(
-    GreetingsWorkflow::run, 
-    (), 
-    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build()
-).await?;
+<!--SNIPSTART rust-message-passing-start {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
+let wf_handle = client
+    .start_workflow(
+        GreetingsWorkflow::run,
+        (),
+        WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
 ### Send a Query {/* #send-query */}
 
-```rust
-let supported_languages = wf_handle.query(
-    GreetingsWorkflow::get_languages, 
-    GetLanguagesInput { include_unsupported: true }, 
-    WorkflowQueryOptions::default()
-).await?;
+<!--SNIPSTART rust-message-passing-send-query {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
+let supported_languages = wf_handle
+    .query(
+        GreetingsWorkflow::get_languages,
+        GetLanguagesInput { include_unsupported: true },
+        WorkflowQueryOptions::default(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
 - Sending a Query doesn’t add events to a Workflow's Event History.
 - You can send Queries to closed Workflow Executions within a Namespace's Workflow retention period. This includes Workflows that have completed, failed, or timed out. Querying terminated Workflows is not safe and, therefore, not supported.
@@ -248,20 +293,28 @@ You can send a Signal to a Workflow Execution from a Temporal Client or from ano
 
 #### From a Client
 
-```rust
-wf_handle.signal(
-    GreetingsWorkflow::approve, 
-    ApproveInput { name: "Ziggy".to_string() }, 
-    WorkflowSignalOptions::default()
-).await?;
+<!--SNIPSTART rust-message-passing-send-signal {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
+wf_handle
+    .signal(
+        GreetingsWorkflow::approve,
+        ApproveInput { name: "Ziggy".to_string() },
+        WorkflowSignalOptions::default(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
 - The call returns when the server accepts the Signal; it does not wait for the Signal to be delivered to the Workflow Execution.
 
 #### From a Workflow
 
-```rust
-ctx.external_workflow("workflow-id-1", Some("run-id-1".into()))
+<!--SNIPSTART rust-message-passing-signal-from-workflow {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/approver.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/approver.rs)
+```rs
+// Pass a Run ID instead of None to target a specific run.
+ctx.external_workflow(workflow_id, None)
     .signal(
         GreetingsWorkflow::approve,
         ApproveInput { name: "Ziggy".to_string() },
@@ -269,20 +322,24 @@ ctx.external_workflow("workflow-id-1", Some("run-id-1".into()))
     )
     .await?;
 ```
+<!--SNIPEND-->
 
 ### Signal-With-Start {/* #signal-with-start */}
 
-```rust
-let wf_handle = client.signal_with_start_workflow(
-    GreetingsWorkflow::run,
-    (),
-    GreetingsWorkflow::approve,
-    ApproveInput {
-        name: "Ziggy".to_string(),
-    },
-    WorkflowStartOptions::new("my-task-queue", "greetings-workflow-10").build(),
-).await?;
+<!--SNIPSTART rust-message-passing-signal-with-start {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
+let wf_handle = client
+    .signal_with_start_workflow(
+        GreetingsWorkflow::run,
+        (),
+        GreetingsWorkflow::approve,
+        ApproveInput { name: "Ziggy".to_string() },
+        WorkflowStartOptions::new("my-task-queue", "greetings-workflow-11").build(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
 ### Send an Update {/* #send-update-from-client */}
 
@@ -297,15 +354,20 @@ To send an Update to a Workflow Execution, you can call `execute_update` and wai
 
 This code fetches an Update result:
 
-```rust
-let previous_language = wf_handle.execute_update(
-    GreetingsWorkflow::set_language,
-    SetLanguageInput { language: Language::French },
-    WorkflowExecuteUpdateOptions::default()
-).await?;
+<!--SNIPSTART rust-message-passing-execute-update {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
+let previous_language = wf_handle
+    .execute_update(
+        GreetingsWorkflow::set_language,
+        SetLanguageInput { language: Language::Chinese },
+        WorkflowExecuteUpdateOptions::default(),
+    )
+    .await?;
 ```
+<!--SNIPEND-->
 
-#### Update-With-Start
+#### Start an Update
 
 You can also send `start_update` to receive an `UpdateHandle` as soon as the Update is accepted.
 
@@ -315,16 +377,51 @@ You can also send `start_update` to receive an `UpdateHandle` as soon as the Upd
 
 For example:
 
-```rust
-let update_handle = main_wf_handle.start_update(
-    GreetingsWorkflow::set_language, 
-    SetLanguageInput { language: Language::French }, 
-    WorkflowStartUpdateOptions::default()
-).await?;
+<!--SNIPSTART rust-message-passing-start-update {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
+let update_handle = wf_handle
+    .start_update(
+        GreetingsWorkflow::set_language_activity,
+        SetLanguageInput { language: Language::French },
+        WorkflowStartUpdateOptions::default(),
+    )
+    .await?;
+
+// Wait for the Update's Activity to finish and fetch the result.
+let previous_language_from_activity_update =
+    update_handle.get_result(RpcOptions::default()).await?;
 ```
+<!--SNIPEND-->
 
 - Updates are synchronous and return results.
 - Worker must accept the Update before it proceeds.
+
+#### Update-With-Start
+
+Use `execute_update_with_start_workflow` to start a Workflow and send it an Update in one call.
+You must choose a Workflow ID conflict policy.
+With `WorkflowIdConflictPolicy::UseExisting`, the Update goes to the running Workflow if one already has this Workflow ID:
+
+<!--SNIPSTART rust-message-passing-update-with-start {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
+```rs
+let previous_language = client
+    .execute_update_with_start_workflow(
+        GreetingsWorkflow::run,
+        (),
+        GreetingsWorkflow::set_language,
+        SetLanguageInput { language: Language::Chinese },
+        WorkflowUpdateWithStartOptions::new(
+            "my-task-queue",
+            "greetings-workflow-12",
+            WorkflowIdConflictPolicy::UseExisting,
+        )
+        .build(),
+    )
+    .await?;
+```
+<!--SNIPEND-->
 
 ## Message handler patterns {/* #message-handler-patterns */}
 
@@ -336,23 +433,26 @@ To use `async fn` handlers safely, understand what can go wrong. See [Workflow m
 
 The following code executes an Activity that makes a network call to a remote service:
 
-```rust
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum Language {
-    Arabic,
-    Chinese,
-    English,
-    French,
-    Hindi,
-    Spanish,
-}
+<!--SNIPSTART rust-message-passing-activity-->
+[rust-sandbox/workflows/message-passing/src/activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/activities.rs)
+```rs
+use std::{collections::HashMap, time::Duration};
+
+use temporalio_macros::activities;
+use temporalio_sdk::activities::{ActivityContext, ActivityError};
+use tokio::time::sleep;
+
+use crate::workflows::Language;
 
 pub struct GreetingActivities;
 
 #[activities]
 impl GreetingActivities {
     #[activity]
-    pub async fn call_greeting_service(_ctx: ActivityContext, to_language: Language) -> Result<Option<String>, ActivityError> {
+    pub async fn call_greeting_service(
+        _ctx: ActivityContext,
+        to_language: Language,
+    ) -> Result<Option<String>, ActivityError> {
         // Pretend that we are calling a remote service.
         sleep(Duration::from_millis(200)).await;
 
@@ -369,54 +469,58 @@ impl GreetingActivities {
     }
 }
 ```
+<!--SNIPEND-->
 
 After updating the code to use an `async fn`, your Update handler can schedule an Activity and await the result. Although an `async fn` Signal handler can also execute an Activity, using an Update handler allows the client to receive a result or error once the Activity completes.
 
-This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, and so on. Here's how you could start that Activity from within your Workflow:
+This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, and so on. Here's how you could start that Activity from within your Workflow. The `greeting_service_busy` flag lets one handler call the greeting service at a time:
 
-```rust
-#[update]
-async fn set_language_activity(
-    ctx: &mut WorkflowContext<Self>,
-    language: Language,
-) -> Result<Language, Box<dyn std::error::Error + Send + Sync>> {
-    let needs_greeting = ctx.state(|s| !s.greetings.contains_key(&language));
+<!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["44-45", "126-162"]}-->
+[rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
+```rs
+// ...
+#[workflow_methods]
+impl GreetingsWorkflow {
+// ...
+    #[update]
+    pub async fn set_language_activity(
+        ctx: &mut WorkflowContext<Self>,
+        input: SetLanguageInput,
+    ) -> Result<Language, Box<dyn std::error::Error + Send + Sync>> {
+        let language = input.language;
+        let needs_greeting = ctx.state(|s| !s.greetings.contains_key(&language));
 
-    if needs_greeting {
-        ctx.wait_condition(|s| !s.approved_for_release).await?;
-        ctx.state_mut(|s| {
-            s.approved_for_release = true;
-        });
+        if needs_greeting {
+            // Let one handler call the greeting service at a time.
+            ctx.wait_condition(|s| !s.greeting_service_busy).await?;
+            ctx.state_mut(|s| s.greeting_service_busy = true);
 
-        let greeting = ctx
-            .execute_activity(
-                GreetingActivities::call_greeting_service,
-                Language::French,
-                ActivityOptions::start_to_close_timeout(Duration::from_secs(10)),
-            )
-            .await;
+            let greeting = ctx
+                .execute_activity(
+                    GreetingActivities::call_greeting_service,
+                    language,
+                    ActivityOptions::start_to_close_timeout(Duration::from_secs(10)),
+                )
+                .await;
 
-        ctx.state_mut(|s| {
-            s.approved_for_release = false;
-        });
+            ctx.state_mut(|s| s.greeting_service_busy = false);
 
-        let greeting = greeting?;
-        if let Some(greeting) = greeting {
+            let Some(greeting) = greeting? else {
+                return Err("The greeting service doesn't support this language".into());
+            };
             ctx.state_mut(|s| {
                 s.greetings.insert(language, greeting);
             });
         }
+
+        let previous_language = ctx.state(|s| s.language);
+        ctx.state_mut(|s| s.language = language);
+
+        Ok(previous_language)
     }
-
-    let previous_language = ctx.state(|s| s.language);
-
-    ctx.state_mut(|s| {
-        s.language = language;
-    });
-
-    Ok(previous_language)
 }
 ```
+<!--SNIPEND-->
 
 ### Add wait conditions to block
 
@@ -428,22 +532,33 @@ Here are three important use cases for `ctx.wait_condition`:
 - Wait in a handler until it's appropriate to continue.
 - Wait in the main Workflow until all active handlers have finished.
 
-It's common to use `ctx.wait_condition` to wait for a particular Signal or Update to be sent by a client. In your Workflow, you will have something like:
+It's common to use `ctx.wait_condition` to wait for a particular Signal or Update to be sent by a client. This Workflow waits for the `approve` Signal:
 
-```rust
-#[run]
-pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
-    let name = ctx.state(|s| s.greetings.clone());
+<!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["44-45", "62-71", "162"]}-->
+[rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
+```rs
+// ...
+#[workflow_methods]
+impl GreetingsWorkflow {
+// ...
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        // Wait for the approve Signal.
+        ctx.wait_condition(|s| s.approved_for_release).await?;
 
-    ctx.wait_condition(|s| !s.approved_for_release).await?;
+        // Wait for running Signal and Update handlers to finish.
+        ctx.wait_condition(|_| ctx.all_handlers_finished()).await?;
 
-    // Other Workflow logic
-    ...
+        Ok(ctx.state(|s| s.greetings[&s.language].clone()))
+    }
+// ...
 }
 ```
+<!--SNIPEND-->
 
 ### Ensure handlers finish before completion
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes. When your Workflow uses async Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
 
-The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying retrieve Update results. Use `ctx.wait_condition` to address this problem and allow your Workflow to end smoothly.
+The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying retrieve Update results. Use `ctx.wait_condition` with `ctx.all_handlers_finished()` to address this problem and allow your Workflow to end smoothly.
+The `run` method in the previous example does this before it returns.
