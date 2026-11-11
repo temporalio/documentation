@@ -42,6 +42,8 @@ Multi-Region Replication between Northern Virginia (`us-east4`) and Oregon (`us-
 Jakarta (`asia-southeast2`) does not support High Availability features.
 To add a replica in a restricted GCP region using Multi-Region Replication or Multi-Cloud Replication, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
 In restricted regions, an approved exception enables self-service creation of single-region GCP Namespaces only; adding a GCP replica still requires assistance from Temporal Dev Success.
+Include the full Namespace ID (`<namespace>.<account>`) and destination region for each Namespace in your ticket.
+Temporal Dev Success coordinates with the High Availability team to add approved replicas manually.
 You can still add an AWS replica to an existing GCP Namespace without an exception, where that replication option is [supported](#gcp-service-regions).
 See [Enable and manage High Availability](/cloud/high-availability/enable) for instructions.
 
