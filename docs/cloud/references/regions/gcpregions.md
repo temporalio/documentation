@@ -8,6 +8,7 @@
   - `gcp-us-west1`
   - `gcp-us-east4`
 - **Multi-Cloud Replication**:
+  - `azure-centralus`
   - `aws-ca-central-1`
   - `aws-us-east-1`
   - `aws-us-east-2`
@@ -23,6 +24,7 @@
   - `gcp-us-central1`
   - `gcp-us-east4`
 - **Multi-Cloud Replication**:
+  - `azure-centralus`
   - `aws-ca-central-1`
   - `aws-us-east-1`
   - `aws-us-east-2`
@@ -38,6 +40,7 @@
   - `gcp-us-central1`
   - `gcp-us-west1`
 - **Multi-Cloud Replication**:
+  - `azure-centralus`
   - `aws-ca-central-1`
   - `aws-us-east-1`
   - `aws-us-east-2`

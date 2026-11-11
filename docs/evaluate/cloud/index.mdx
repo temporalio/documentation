@@ -2,11 +2,13 @@
 id: index
 title: Overview
 slug: /evaluate/cloud
-description: Managed Durable Execution on AWS and GCP, with cell-based isolation, three-zone replication, consumption-based pricing, and migration from self-hosted.
+description: Temporal Cloud provides managed Durable Execution on AWS, GCP, and Azure, with cell-based isolation, consumption pricing, and self-hosted migration.
 toc_max_heading_level: 4
 tags:
   - Temporal Cloud
 ---
+
+import { ReleaseNoteHeader } from '@site/src/components';
 
 import CloudRegionCount from '@site/src/components/elements/CloudRegionCount';
 import PatternCards from '@site/src/components/PatternCards';
@@ -59,13 +61,18 @@ The control plane runs those steps on Temporal itself.
 
 ### Multi-cloud availability
 
-Temporal Cloud runs on both AWS and GCP:
+Temporal Cloud runs on AWS, GCP, and Azure:
 
 - <strong><CloudRegionCount provider="aws" /> AWS regions</strong> spanning North America, Europe, Asia Pacific, and South America
 - <strong><CloudRegionCount provider="gcp" /> GCP regions</strong> in North America, Europe, and Asia Pacific
+- <strong><CloudRegionCount provider="azure" /> Azure regions</strong> in Central US and Australia East
 
 You can create Namespaces in any supported AWS region. New Namespaces in some GCP regions are temporarily restricted; see [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction).
-For disaster recovery, replicate across regions within a cloud provider or across the two providers.
+For disaster recovery, replicate across supported regions within a cloud provider or across cloud providers.
+
+<ReleaseNoteHeader featureName="azure">
+  Azure is available with [rolling access](/evaluate/cloud/regions#azure-service-regions).
+</ReleaseNoteHeader>
 
 See [Service regions](/evaluate/cloud/regions) for the complete list.
 
@@ -85,7 +92,7 @@ For workloads that need stronger guarantees, Temporal Cloud offers three replica
 |------------|-------------|----------|
 | **Same-region** | Replicate across isolated cells within one region | Single-region applications needing cell-level isolation |
 | **Multi-region** | Replicate across regions within one cloud provider | Geographic redundancy and compliance requirements |
-| **Multi-cloud** | Replicate across cloud providers (AWS ↔️ GCP) | Resilience to a provider-wide outage |
+| **Multi-cloud** | Replicate across cloud providers (AWS, GCP, and Azure, for supported region pairs) | Resilience to a provider-wide outage |
 
 High Availability Namespaces include:
 
@@ -114,7 +121,7 @@ Deploy a [Codec Server](/production-deployment/data-encryption) to decrypt data 
 
 - **mTLS authentication**: Per-Namespace certificate-based authentication for gRPC endpoints
 - **API key authentication**: Alternative to certificates for simpler key management
-- **Private connectivity**: AWS PrivateLink and GCP Private Service Connect for traffic that never traverses the public internet
+- **Private connectivity**: AWS PrivateLink, GCP Private Service Connect, and [Azure Private Link](/cloud/connectivity/azure-connectivity) for traffic that never traverses the public internet
 
 ### Compliance
 
@@ -211,7 +218,7 @@ To move existing self-hosted workloads, see [Migration](/cloud/migrate).
   {
     href: "/evaluate/cloud/regions",
     title: "Service regions",
-    description: "The AWS and GCP regions where you can create a Temporal Cloud Namespace.",
+    description: "The AWS, GCP, and Azure regions where you can create a Temporal Cloud Namespace.",
   },
   {
     href: "/evaluate/cloud/support",
