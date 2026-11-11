@@ -543,7 +543,7 @@ clusterMetadata:
 
 :::note Why `masterClusterName` and `clusterInformation` differ between the two files
 
-This is not a typo. Each Temporal Service starts knowing only about itself, so each file names its own Temporal Service.
+Each Temporal Service starts knowing only about itself, so each file names its own Temporal Service.
 You add the other Temporal Service in Step 3 with `temporal operator cluster upsert`, not in the configuration file.
 
 :::
