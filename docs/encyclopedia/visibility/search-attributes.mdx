@@ -240,7 +240,7 @@ Default total maximum number of Search Attribute **keys** per Temporal Service i
 
 {/* TODO - [How to configure total Search Attribute size limit](#) */}
 
-- Self-hosted with MySQL or PostgreSQL visibility: Keyword values are limited to 255 characters by the database column width. This does not apply to Temporal Cloud, SQLite or Elasticsearch.
+- Self-hosted MySQL or PostgreSQL visibility only: Keyword values are limited to 255 characters by the database column width.
 
 {/* temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
