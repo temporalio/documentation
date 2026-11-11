@@ -77,7 +77,7 @@ Load the configuration and connect with the `prod` profile as follows:
 
 <!--SNIPSTART rust-temporal-client-connect-profile-->
 [rust-sandbox/client/temporal-client/src/bin/connect_prod_profile.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/connect_prod_profile.rs)
-```rust
+```rs
 use temporalio_client::{
     Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
 };
@@ -108,7 +108,7 @@ You can also configure the Temporal Client with environment variables using `env
 
 <!--SNIPSTART rust-temporal-client-worker-env-->
 [rust-sandbox/client/temporal-client/src/bin/worker.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/worker.rs)
-```rust
+```rs
 use temporal_client::{activities::GreetingActivities, workflows::HelloWorldWorkflow};
 use temporalio_client::{
     Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
@@ -145,7 +145,7 @@ You can also specify connection options directly in code. This is convenient for
 
 <!--SNIPSTART rust-temporal-client-connect-code-->
 [rust-sandbox/client/temporal-client/src/bin/start_workflow.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/start_workflow.rs)
-```rust
+```rs
 use std::str::FromStr;
 
 use temporal_client::workflows::GreetingsWorkflow;
@@ -221,7 +221,7 @@ Then load the profile and connect:
 
 <!--SNIPSTART rust-temporal-client-cloud-profile-->
 [rust-sandbox/client/temporal-client/src/bin/connect_api_profile.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/connect_api_profile.rs)
-```rust
+```rs
 use temporalio_client::{
     Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
 };
@@ -260,7 +260,7 @@ After setting the environment variables, load the configuration and connect:
 
 <!--SNIPSTART rust-temporal-client-worker-env-->
 [rust-sandbox/client/temporal-client/src/bin/worker.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/worker.rs)
-```rust
+```rs
 use temporal_client::{activities::GreetingActivities, workflows::HelloWorldWorkflow};
 use temporalio_client::{
     Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
@@ -297,7 +297,7 @@ You can also specify connection options directly in code for Temporal Cloud.
 
 <!--SNIPSTART rust-temporal-client-cloud-code-->
 [rust-sandbox/client/temporal-client/src/bin/connect_cloud_api_key.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/bin/connect_cloud_api_key.rs)
-```rust
+```rs
 use std::str::FromStr;
 
 use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions, Url};
@@ -346,7 +346,7 @@ In Rust, use `start_workflow()` to start a Workflow and return a handle.
 
 <!--SNIPSTART rust-temporal-client-start-workflow {"enable_code_dedenting": true, "selectedLines": ["1-7"]}-->
 [rust-sandbox/client/temporal-client/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/client.rs)
-```rust
+```rs
 let handle = client
     .start_workflow(
         GreetingsWorkflow::run,
@@ -367,7 +367,7 @@ In Rust, set the Task Queue in `WorkflowStartOptions`:
 
 <!--SNIPSTART rust-temporal-client-start-workflow {"enable_code_dedenting": true, "selectedLines": ["1-7"]}-->
 [rust-sandbox/client/temporal-client/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/client.rs)
-```rust
+```rs
 let handle = client
     .start_workflow(
         GreetingsWorkflow::run,
@@ -389,7 +389,7 @@ In Rust, set the Workflow Id in `WorkflowStartOptions`:
 
 <!--SNIPSTART rust-temporal-client-start-workflow {"enable_code_dedenting": true, "selectedLines": ["1-7"]}-->
 [rust-sandbox/client/temporal-client/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/client.rs)
-```rust
+```rs
 let handle = client
     .start_workflow(
         GreetingsWorkflow::run,
@@ -409,7 +409,7 @@ To get the result of a newly started Workflow:
 
 <!--SNIPSTART rust-temporal-client-start-workflow {"enable_code_dedenting": true}-->
 [rust-sandbox/client/temporal-client/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/client/temporal-client/src/client.rs)
-```rust
+```rs
 let handle = client
     .start_workflow(
         GreetingsWorkflow::run,
