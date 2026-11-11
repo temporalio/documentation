@@ -317,6 +317,8 @@ The Temporal Service fails the Workflow Task and schedules a new one that includ
 This error is common when a Workflow receives many [Signals](/sending-messages#sending-signals).
 Before the Workflow completes, process every pending Signal.
 In the Go SDK, drain the Signal Channel with `ReceiveAsync`.
+The Signal isn't lost, and the retried Workflow Task runs its handler.
+See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers).
 
 ### Cause Unhandled Update {/* #cause-unhandled-update */}
 
