@@ -232,7 +232,7 @@ Size limits for a custom Search Attribute:
 _This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
 Default total maximum number of Search Attribute **keys** per Temporal Service is 100. */}
 
-- The default single Search Attribute **value** size limit is 2 KB.
+- The default single Search Attribute value size limit is 2 KB (2048 bytes of the JSON-encoded value).
 
 {/* TODO - [How to configure Search Attribute value size limit](#) */}
 
@@ -240,7 +240,7 @@ Default total maximum number of Search Attribute **keys** per Temporal Service i
 
 {/* TODO - [How to configure total Search Attribute size limit](#) */}
 
-- The maximum total characters per Search Attribute value is 255.
+- Self-hosted with MySQL or PostgreSQL visibility: Keyword values are limited to 255 characters by the database column width. This does not apply to Temporal Cloud, SQLite or Elasticsearch.
 
 {/* temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
