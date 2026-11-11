@@ -596,10 +596,10 @@ tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clus
 
 ```shell
 # Add a cluster
-temporal operator cluster upsert --frontend_address="127.0.2.1:8233"
+temporal operator cluster upsert --frontend-address="127.0.2.1:8233" --enable-connection
 
 # Disable connections
-temporal operator cluster upsert --frontend_address="localhost:8233" --enable_connection false
+temporal operator cluster upsert --frontend-address="localhost:8233" --enable-connection=false
 
 # Delete connections
 temporal operator cluster remove --name="someClusterName"
