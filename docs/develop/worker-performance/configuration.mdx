@@ -46,7 +46,7 @@ After Poller Autoscaling is enabled for your Namespace, Workers on a supported S
 Poller Autoscaling replaces the SDK's fixed default poller counts for those poller types, with no configuration change required.
 The change takes effect the next time each Worker starts. Workers that are already running keep their current polling behavior until they restart.
 
-To check whether a Worker uses Poller Autoscaling, select the Worker on the Workers tab in the Temporal UI, or call the [DescribeWorker](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.WorkflowService.DescribeWorker) API.
+To check whether a Worker uses Poller Autoscaling, select the Worker on the Workers tab in the Temporal UI, or call the [DescribeWorker](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.WorkflowService.DescribeWorker) API and check the `IsAutoscaling` field for each task type..
 
 The following SDK versions use Poller Autoscaling by default when it's enabled for the Namespace:
 
@@ -62,7 +62,7 @@ The following SDK versions use Poller Autoscaling by default when it's enabled f
 The TypeScript SDK release that uses Poller Autoscaling by default is not yet available.
 To use Poller Autoscaling with the currently released TypeScript SDK, [enable it explicitly](#enable-poller-autoscaling-explicitly).
 
-Explicit poller settings are preserved, including a poller count explicitly set to the SDK's default value.
+Workers with a specific fixed poller count explicitly configured will not have poller autoscaling automatically enabled.
 Temporal applies the default separately to Workflow, Activity, and Nexus Task pollers.
 For example, if you configure a fixed Workflow Task poller count, Workflow Task pollers stay fixed, while Activity and Nexus Task pollers with unset options use Poller Autoscaling.
 
@@ -70,17 +70,22 @@ For example, if you configure a fixed Workflow Task poller count, Workflow Task 
 
 You can enable Poller Autoscaling in your Worker by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`.
 Names vary by SDK; see the [SDK examples](#sdk-examples) below.
-Use this approach when Poller Autoscaling isn't yet enabled for your Namespace, when your SDK version doesn't use it by default, or when you connect to a self-hosted Temporal Service that supports Poller Autoscaling.
+Use this approach when:
+
+- Poller Autoscaling isn't yet enabled for your Namespace.
+- When your SDK version doesn't use it by default.
+- When you connect to a self-hosted Temporal Service that supports Poller Autoscaling.
+- If you need to configure the Poller Autoscaling settings (min, initial, max pollers). Auto-enrollment uses the default settings.
+
+Poller Autoscaling also provides minimum, maximum, and initial poller counts.
+In every SDK, the defaults are a minimum of 1, an initial count of 5, and a maximum of 100 pollers for each poller type.
+Temporal recommends using these default bounds for most workloads rather than manually tuning them.
 
 ### Retain fixed poller settings {/* #manual-configuration */}
 
 To keep fixed poller counts after Poller Autoscaling is enabled for your Namespace, explicitly configure a fixed poller count or a fixed poller behavior for each poller type you want to keep fixed, then restart your Workers.
 The fixed behavior is named `PollerBehaviorSimpleMaximum` or `PollerBehavior.SimpleMaximum` in most SDKs, and uses `type: 'simple-maximum'` in TypeScript.
 Refer to your SDK's API reference in the [SDK examples](#sdk-examples) below for its configuration options.
-
-Poller Autoscaling also provides minimum, maximum, and initial poller counts.
-In every SDK, the defaults are a minimum of 1, an initial count of 5, and a maximum of 100 pollers for each poller type.
-Temporal recommends using these default bounds for most workloads rather than manually tuning them.
 
 ### SDK examples
 
