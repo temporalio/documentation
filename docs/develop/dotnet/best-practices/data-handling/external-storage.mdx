@@ -55,9 +55,9 @@ Create an `AmazonS3Client`, wrap it in `AwsSdkS3StorageDriverClient`, and pass t
 `S3StorageDriver`. `AmazonS3Client` loads credentials and Region settings through the AWS SDK's default configuration
 chain. Set `bucket` to your bucket name before running this snippet.
 
-<!--SNIPSTART dotnet-external-storage-s3-create {"highlightedLines": "1-4"}-->
+<!--SNIPSTART dotnet-external-storage-s3-create-->
 [dotnet-sandbox/bestpractices/ExternalStorage/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/Program.cs)
-```cs {1-4}
+```cs
 using var s3Client = new AmazonS3Client();
 var driver = new S3StorageDriver(
     new AwsSdkS3StorageDriverClient(s3Client),
