@@ -17,7 +17,7 @@ Create a `Temporalio::Worker` with a [Temporal Client](/develop/ruby/client/temp
 Call `run` to start polling.
 
 <!--SNIPSTART ruby-create-worker-->
-[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.rb)
+[ruby-sandbox/workers/run-worker-process/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/run-worker-process/worker.rb)
 ```rb
 worker = Temporalio::Worker.new(
   client: client,
@@ -71,7 +71,7 @@ To tune these values against real load, see [Worker performance](/develop/worker
 Set a Worker Deployment Version and enable versioning in `deployment_options`, then set a versioning behavior on each Workflow.
 
 <!--SNIPSTART ruby-versioned-worker-->
-[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.rb)
+[ruby-sandbox/workers/run-worker-process/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/run-worker-process/worker.rb)
 ```rb
 worker = Temporalio::Worker.new(
   client: client,
@@ -102,7 +102,7 @@ Pass the signals that should stop the Worker to `run`.
 The Worker stops polling for new Tasks and waits for in-flight Tasks to finish.
 
 <!--SNIPSTART ruby-worker-graceful-shutdown-->
-[features/snippets/worker/worker.rb](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.rb)
+[ruby-sandbox/workers/run-worker-process/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/run-worker-process/worker.rb)
 ```rb
 worker.run(shutdown_signals: %w[SIGINT SIGTERM])
 ```

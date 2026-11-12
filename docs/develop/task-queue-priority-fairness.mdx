@@ -79,25 +79,25 @@ WorkflowOptions options = WorkflowOptions.newBuilder()
 WorkflowClient client = WorkflowClient.newInstance(service); MyWorkflow workflow =
 client.newWorkflowStub(MyWorkflow.class, options); workflow.run();
 
-````
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
 await client.start_workflow(
   MyWorkflow.run,
-  args="hello",
+  "hello",
   id="my-workflow-id",
   task_queue="my-task-queue",
   priority=Priority(priority_key=1),
 )
-````
+```
 
 </SdkTabs.Python>
 <SdkTabs.DotNet>
 ```csharp
 var handle = await Client.StartWorkflowAsync(
   (MyWorkflow wf) => wf.RunAsync("hello"),
-  new StartWorkflowOptions(
+  new Temporalio.Client.WorkflowOptions(
     id: "my-workflow-id",
     taskQueue: "my-task-queue"
   )
@@ -113,12 +113,14 @@ You can set priority keys for an Activity within the SDK like so:
 
 <SdkTabs>
 <SdkTabs.Go>
+In the Go Activity and Child Workflow examples, `ctx` is the Workflow function's existing context parameter.
+
 ```go
 ao := workflow.ActivityOptions{
   StartToCloseTimeout: time.Minute,
   Priority:            temporal.Priority{PriorityKey: 3},
 }
-ctx := workflow.WithActivityOptions(ctx, ao)
+ctx = workflow.WithActivityOptions(ctx, ao)
 err := workflow.ExecuteActivity(ctx, MyActivity).Get(ctx, nil)
 ```
 </SdkTabs.Go>
@@ -131,7 +133,7 @@ ActivityOptions options = ActivityOptions.newBuilder()
 
 MyActivity activity = Workflow.newActivityStub(MyActivity.class, options); activity.perform();
 
-````
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -141,7 +143,7 @@ await workflow.execute_activity(
   priority=Priority(priority_key=3),
   start_to_close_timeout=timedelta(seconds=5),
 )
-````
+```
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
@@ -170,7 +172,7 @@ cwo := workflow.ChildWorkflowOptions{
   TaskQueue:  "child-task-queue",
   Priority:   temporal.Priority{PriorityKey: 1},
 }
-ctx := workflow.WithChildOptions(ctx, cwo)
+ctx = workflow.WithChildOptions(ctx, cwo)
 err := workflow.ExecuteChildWorkflow(ctx, MyChildWorkflow).Get(ctx, nil)
 ```
 </SdkTabs.Go>
@@ -184,16 +186,16 @@ ChildWorkflowOptions childOptions = ChildWorkflowOptions.newBuilder()
 
 MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, childOptions); child.run();
 
-````
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
 await workflow.execute_child_workflow(
   MyChildWorkflow.run,
-  args="hello child",
+  "hello child",
   priority=Priority(priority_key=1),
 )
-````
+```
 
 </SdkTabs.Python>
 <SdkTabs.DotNet>
@@ -331,7 +333,7 @@ WorkflowOptions options = WorkflowOptions.newBuilder()
   .setPriority(Priority.newBuilder()
       .setPriorityKey(5)
       .setFairnessKey("a-key")
-      .setFairnessWeight(3.14)
+      .setFairnessWeight(3.14f)
       .build())
   .build();
 WorkflowClient client = WorkflowClient.newInstance(service);
@@ -366,7 +368,7 @@ workflow.run();
 ```python
 await client.start_workflow(
   MyWorkflow.run,
-  args="hello",
+  "hello",
   id="my-workflow-id",
   task_queue="my-task-queue",
   priority=Priority(
@@ -416,30 +418,34 @@ client.start_workflow(
 </AnnotatedCode>
 </SdkTabs.Ruby>
 <SdkTabs.TypeScript>
+Use an initialized Client and your Workflow definitions.
+
 <AnnotatedCode
   annotations={[
     {
       label: 'Priority key',
       description:
         'Priority key in the range [1, 5]. Lower values run first. If unset, Tasks default to priority 3.',
-      lines: [4],
+      lines: [6],
     },
     {
       label: 'Fairness key',
       description:
         'Groups Tasks into a virtual queue (for example, by tenant or workload type) so no single group monopolizes the Task Queue.',
-      lines: [5],
+      lines: [7],
     },
     {
       label: 'Fairness weight',
       description:
         'Relative dispatch weight for this fairness key. Default is 1.0. Higher weights get a larger share of dispatches.',
-      lines: [6],
+      lines: [8],
     },
   ]}
 >
 ```ts
-const handle = await startWorkflow(workflows.priorityWorkflow, {
+const handle = await client.workflow.start(workflows.priorityWorkflow, {
+  workflowId: 'my-workflow-id',
+  taskQueue: 'my-task-queue',
   args: [false, 1],
   priority: {
     priorityKey: 3,
@@ -457,26 +463,26 @@ const handle = await startWorkflow(workflows.priorityWorkflow, {
       label: 'Priority key',
       description:
         'Priority key in the range [1, 5]. Lower values run first. If unset, Tasks default to priority 3.',
-      lines: [8],
+      lines: [9],
     },
     {
       label: 'Fairness key',
       description:
         'Groups Tasks into a virtual queue (for example, by tenant or workload type) so no single group monopolizes the Task Queue.',
-      lines: [9],
+      lines: [10],
     },
     {
       label: 'Fairness weight',
       description:
         'Relative dispatch weight for this fairness key. Default is 1.0. Higher weights get a larger share of dispatches.',
-      lines: [10],
+      lines: [11],
     },
   ]}
 >
 ```csharp
 var handle = await Client.StartWorkflowAsync(
   (MyWorkflow wf) => wf.RunAsync("hello"),
-  new StartWorkflowOptions(
+  new Temporalio.Client.WorkflowOptions(
     id: "my-workflow-id",
     taskQueue: "my-task-queue"
   )
@@ -484,7 +490,7 @@ var handle = await Client.StartWorkflowAsync(
     Priority = new Priority(
       priorityKey: 3,
       fairnessKey: "a-key",
-      fairnessWeight: 3.14
+      fairnessWeight: 3.14f
     )
   }
 );
@@ -506,19 +512,19 @@ ao := workflow.ActivityOptions{
     FairnessWeight: 3.14,
   },
 }
-ctx := workflow.WithActivityOptions(ctx, ao)
+ctx = workflow.WithActivityOptions(ctx, ao)
 err := workflow.ExecuteActivity(ctx, MyActivity).Get(ctx, nil)
-````
+```
 </SdkTabs.Go>
 <SdkTabs.Java>
 ```java
 ActivityOptions options = ActivityOptions.newBuilder()
   .setStartToCloseTimeout(Duration.ofMinutes(1))
-  .setPriority(Priority.newBuilder().setPriorityKey(3).setFairnessKey("a-key").setFairnessWeight(3.14).build())
+  .setPriority(Priority.newBuilder().setPriorityKey(3).setFairnessKey("a-key").setFairnessWeight(3.14f).build())
   .build();
 MyActivity activity = Workflow.newActivityStub(MyActivity.class, options);
 activity.perform();
-````
+```
 
 </SdkTabs.Java>
 <SdkTabs.Python>
@@ -532,11 +538,15 @@ await workflow.execute_activity(
 ```
 </SdkTabs.Python>
 <SdkTabs.Ruby>
+This example starts a standalone Activity from a client.
+Set `start_to_close_timeout` or `schedule_to_close_timeout`.
+
 ```ruby
 client.start_activity(
   MyActivity, "input-arg",
   id: "my-workflow-id",
   task_queue: "my-task-queue",
+  start_to_close_timeout: 5,
   priority: Temporalio::Priority.new(
     priority_key: 3,
     fairness_key: "a-key",
@@ -546,27 +556,31 @@ client.start_activity(
 ```
 </SdkTabs.Ruby>
 <SdkTabs.TypeScript>
+This example assumes that `./activities` exports a `sayHello(name: string)` Activity.
+
 ```ts
-const handle = await startWorkflow(workflows.priorityWorkflow, {
-  args: [false, 1],
+import { proxyActivities } from '@temporalio/workflow';
+import type * as activities from './activities';
+
+const { sayHello } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '5 seconds',
   priority: { priorityKey: 3, fairnessKey: 'a-key', fairnessWeight: 3.14 },
 });
+await sayHello('hi');
 ```
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
 ```csharp
-var handle = await Client.StartWorkflowAsync(
-  (MyWorkflow wf) => wf.RunAsync("hello"),
-  new StartWorkflowOptions(
-    id: "my-workflow-id",
-    taskQueue: "my-task-queue"
-  )
+await Workflow.ExecuteActivityAsync(
+  () => SayHello("hi"),
+  new ActivityOptions
   {
+    StartToCloseTimeout = TimeSpan.FromSeconds(5),
     Priority = new Priority(
       priorityKey: 3,
       fairnessKey: "a-key",
-      fairnessWeight: 3.14
-    )
+      fairnessWeight: 3.14f
+    ),
   }
 );
 ```
@@ -587,7 +601,7 @@ cwo := workflow.ChildWorkflowOptions{
     FairnessWeight: 3.14,
   },
 }
-ctx := workflow.WithChildOptions(ctx, cwo)
+ctx = workflow.WithChildOptions(ctx, cwo)
 err := workflow.ExecuteChildWorkflow(ctx, MyChildWorkflow).Get(ctx, nil)
 ```
 </SdkTabs.Go>
@@ -596,7 +610,7 @@ err := workflow.ExecuteChildWorkflow(ctx, MyChildWorkflow).Get(ctx, nil)
 ChildWorkflowOptions childOptions = ChildWorkflowOptions.newBuilder()
   .setTaskQueue("child-task-queue")
   .setWorkflowId("child-workflow-id")
-  .setPriority(Priority.newBuilder().setPriorityKey(1).setFairnessKey("a-key").setFairnessWeight(3.14).build())
+  .setPriority(Priority.newBuilder().setPriorityKey(1).setFairnessKey("a-key").setFairnessWeight(3.14f).build())
   .build();
 MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, childOptions);
 child.run();
@@ -606,14 +620,16 @@ child.run();
 ```python
 await workflow.execute_child_workflow(
   MyChildWorkflow.run,
-  args="hello child",
+  "hello child",
   priority=Priority(priority_key=3, fairness_key="a-key", fairness_weight=3.14),
 )
 ```
 </SdkTabs.Python>
 <SdkTabs.Ruby>
+Run this example inside a Workflow Definition.
+
 ```ruby
-client.start_child_workflow(
+Temporalio::Workflow.start_child_workflow(
   MyChildWorkflow, "input-arg",
   id: "my-child-workflow-id",
   task_queue: "my-task-queue",
@@ -627,7 +643,9 @@ client.start_child_workflow(
 </SdkTabs.Ruby>
 <SdkTabs.TypeScript>
 ```ts
-const handle = await startChildWorkflow(workflows.priorityWorkflow, {
+import { startChild } from '@temporalio/workflow';
+
+const handle = await startChild(workflows.priorityWorkflow, {
   args: [false, 1],
   priority: { priorityKey: 3, fairnessKey: 'a-key', fairnessWeight: 3.14 },
 });
@@ -635,18 +653,15 @@ const handle = await startChildWorkflow(workflows.priorityWorkflow, {
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
 ```csharp
-var handle = await Client.StartWorkflowAsync(
-  (MyWorkflow wf) => wf.RunAsync("hello"),
-  new StartWorkflowOptions(
-    id: "my-workflow-id",
-    taskQueue: "my-task-queue"
-  )
+await Workflow.ExecuteChildWorkflowAsync(
+  (MyChildWorkflow wf) => wf.RunAsync("hello child"),
+  new ChildWorkflowOptions
   {
     Priority = new Priority(
       priorityKey: 3,
       fairnessKey: "a-key",
-      fairnessWeight: 3.14
-    )
+      fairnessWeight: 3.14f
+    ),
   }
 );
 ```
