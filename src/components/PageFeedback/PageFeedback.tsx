@@ -20,36 +20,24 @@ type Stage =
   | { name: 'error' };
 
 // The values match REASONS in api/_feedback-lib.js.
-const REASONS: Record<Rating, { legend: string; options: { value: string; label: string; description?: string }[] }> = {
+const REASONS: Record<Rating, { legend: string; options: { value: string; label: string }[] }> = {
   down: {
     legend: 'What went wrong?',
     options: [
-      { value: 'inaccurate', label: 'Inaccurate', description: "Doesn't accurately describe the product or feature." },
-      {
-        value: 'not_found',
-        label: "Couldn't find what I was looking for",
-        description: 'Missing important information.',
-      },
-      { value: 'hard_to_understand', label: 'Hard to understand', description: 'Too complicated or unclear.' },
-      {
-        value: 'code_sample_errors',
-        label: 'Code sample errors',
-        description: 'One or more code samples are incorrect.',
-      },
+      { value: 'inaccurate', label: 'Inaccurate' },
+      { value: 'not_found', label: "Couldn't find what I was looking for" },
+      { value: 'hard_to_understand', label: 'Hard to understand' },
+      { value: 'code_sample_errors', label: 'Code sample errors' },
       { value: 'other', label: 'Another reason' },
     ],
   },
   up: {
     legend: 'What did you like?',
     options: [
-      { value: 'accurate', label: 'Accurate', description: 'Accurately describes the product or feature.' },
-      { value: 'solved_problem', label: 'Solved my problem', description: 'Helped me resolve an issue.' },
-      { value: 'easy_to_understand', label: 'Easy to understand', description: 'Easy to follow and comprehend.' },
-      {
-        value: 'helped_decide',
-        label: 'Helped me decide to use the product',
-        description: 'Convinced me to adopt the product or feature.',
-      },
+      { value: 'accurate', label: 'Accurate' },
+      { value: 'solved_problem', label: 'Solved my problem' },
+      { value: 'easy_to_understand', label: 'Easy to understand' },
+      { value: 'helped_decide', label: 'Helped me decide to use the product' },
       { value: 'other', label: 'Another reason' },
     ],
   },
@@ -188,10 +176,7 @@ export default function PageFeedback({ pathname }: { pathname: string }): JSX.El
                   checked={reason === option.value}
                   onChange={() => setReason(option.value)}
                 />
-                <span>
-                  <span className={styles.optionLabel}>{option.label}</span>
-                  {option.description && <span className={styles.optionDescription}>{option.description}</span>}
-                </span>
+                <span>{option.label}</span>
               </label>
             ))}
           </fieldset>

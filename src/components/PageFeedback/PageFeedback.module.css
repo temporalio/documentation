@@ -49,24 +49,14 @@
 
 .option {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.5rem;
   padding: 0.25rem 0;
   cursor: pointer;
 }
 
 .option input {
-  margin-top: 0.3rem;
-}
-
-.optionLabel {
-  display: block;
-}
-
-.optionDescription {
-  display: block;
-  font-size: 0.875rem;
-  color: var(--ifm-color-emphasis-700);
+  margin: 0;
 }
 
 .commentBlock {
