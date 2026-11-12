@@ -147,7 +147,7 @@ If you're on Temporal Server v1.20 and later, specify the Namespace from which y
 example,
 
 ```
-temporal search-attribute list --namespace="yournamespace"
+temporal operator search-attribute list --namespace="yournamespace"
 ```
 
 Note that if you use [SQL databases](/self-hosted-guide/visibility) with Temporal Server v1.20 and later, a new custom

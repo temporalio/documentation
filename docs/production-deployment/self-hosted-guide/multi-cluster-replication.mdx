@@ -489,73 +489,41 @@ Task processing logic will verify both the Event Id and version of the Task agai
 
 ## How to set up Multi-Cluster Replication {/* #set-up-multi-cluster-replication */}
 
-The [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+[Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) asynchronously replicates Workflow Execution
+Event Histories from active Temporal Services to passive Temporal Services. Each Temporal Service needs the following
+values in the `clusterMetadata` section of its configuration file:
 
-1. `enableGlobalNamespace` must be set to `true`.
-2. `failoverVersionIncrement` has to be equal across connected Clusters.
-3. `initialFailoverVersion` in each Cluster has to assign a different value.
-   No equal value is allowed across connected Clusters.
+1. `enableGlobalNamespace` must be `true`.
+2. `failoverVersionIncrement` must be the same across connected Temporal Services.
+3. `initialFailoverVersion` must be different for each Temporal Service. No two connected Temporal Services can share a value.
 
-After the above conditions are satisfied, you can start to configure a multi-cluster setup.
+These steps apply to Temporal Server v1.14 and later, which registers remote Temporal Services with the Temporal CLI
+instead of the static configuration file. They use two Temporal Services named `clusterA` and `clusterB`.
 
-#### Set up Multi-Cluster Replication prior to v1.14
+:::note
 
-You can set this up with [`clusterMetadata` configuration](/references/service-configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
-
-:::tip
-
-If you need help when setting up, please reach out to our [community Slack](https://temporalio.slack.com).
-Good places to start include the **\#support-community** channel, searching through previous conversations, and asking our unusually excellent Temporal-trained large language model (visit **\#ask-ai**).
-
-Need a Slack invitation?
-Here's an [invitation link](https://temporal.io/slack).
+Looking for guidance on setting up Multi-Cluster Replication prior to v1.14? See
+[Set up Multi-Cluster Replication before v1.14](/self-hosted-guide/multi-cluster-replication-before-v1-14).
 
 :::
 
-For example:
+:::tip
+
+If you need help when setting up, reach out in the [community Slack](https://temporalio.slack.com).
+Good places to start include the **\#support-community** channel, searching through previous conversations, and asking the Temporal-trained large language model in **\#ask-ai**.
+
+Need a Slack invitation? Here's an [invitation link](https://temporal.io/slack).
+
+:::
+
+### Step 1: Configure each Temporal Service with only itself
+
+In each Temporal Service's static configuration, list only that Temporal Service in
+[`clusterInformation`](/references/service-configuration#clustermetadata). Set `currentClusterName` and
+`masterClusterName` to that Temporal Service's own name. The value of `masterClusterName` is different in each file.
 
 ```yaml
-# cluster A
-clusterMetadata:
-  enableGlobalNamespace: true
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterA"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-
-# cluster B
-clusterMetadata:
-  enableGlobalNamespace: true
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterB"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-```
-
-#### Set up Multi-Cluster Replication in v1.14 and later
-
-You still need to set up local cluster [`clusterMetadata` configuration](/references/service-configuration#clustermetadata)
-
-For example:
-
-```yaml
-# cluster A
+# clusterA
 clusterMetadata:
   enableGlobalNamespace: true
   failoverVersionIncrement: 100
@@ -567,7 +535,7 @@ clusterMetadata:
       initialFailoverVersion: 1
       rpcAddress: "127.0.0.1:7233"
 
-# cluster B
+# clusterB
 clusterMetadata:
   enableGlobalNamespace: true
   failoverVersionIncrement: 100
@@ -580,27 +548,72 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:8233"
 ```
 
-Then you can use the Temporal CLI tool to add cluster connections. All operations should be executed in both Clusters.
+:::note Why `masterClusterName` and `clusterInformation` differ between the two files
 
-{/* tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" */}
+Each Temporal Service starts knowing only about itself, so each file names its own Temporal Service.
+You add the other Temporal Service in Step 3 with `temporal operator cluster upsert`, not in the configuration file.
 
-{/* tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" */}
+:::
 
-{/* tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
-tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false */}
+### Step 2: Start both Temporal Services
 
-{/* tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
-tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA" */}
+Start both Temporal Services with their own configuration file.
 
-{/* THIS MUST BE CHECKED FOR ACCURACY */}
+### Step 3: Register each Temporal Service with the other
+
+Run `temporal operator cluster upsert` against each Temporal Service, and point `--frontend-address` at the other one.
+You must run the command on both sides.
 
 ```shell
-# Add a cluster
-temporal operator cluster upsert --frontend_address="127.0.2.1:8233"
+# Register clusterB on clusterA
+temporal operator cluster upsert \
+  --address 127.0.0.1:7233 \
+  --frontend-address 127.0.0.1:8233 \
+  --enable-connection
 
-# Disable connections
-temporal operator cluster upsert --frontend_address="localhost:8233" --enable_connection false
+# Register clusterA on clusterB
+temporal operator cluster upsert \
+  --address 127.0.0.1:8233 \
+  --frontend-address 127.0.0.1:7233 \
+  --enable-connection
+```
 
-# Delete connections
-temporal operator cluster remove --name="someClusterName"
+See [`temporal operator cluster upsert`](/cli/command-reference/operator#upsert) for all options, including `--enable-replication`.
+
+### Step 4: Verify the connection
+
+List the registered Temporal Services on each side. Each should show the other:
+
+```shell
+temporal operator cluster list --address 127.0.0.1:7233
+temporal operator cluster list --address 127.0.0.1:8233
+```
+
+### Disable or remove a connection
+
+Disable a connection without removing it, or remove it entirely. Run the commands against both Temporal Services, using
+`--address` to select the local one and naming the other as the peer.
+
+```shell
+# Disable clusterB's registration on clusterA
+temporal operator cluster upsert \
+  --address 127.0.0.1:7233 \
+  --frontend-address 127.0.0.1:8233 \
+  --enable-connection=false
+
+# Disable clusterA's registration on clusterB
+temporal operator cluster upsert \
+  --address 127.0.0.1:8233 \
+  --frontend-address 127.0.0.1:7233 \
+  --enable-connection=false
+
+# Remove clusterB from clusterA
+temporal operator cluster remove \
+  --address 127.0.0.1:7233 \
+  --name clusterB
+
+# Remove clusterA from clusterB
+temporal operator cluster remove \
+  --address 127.0.0.1:8233 \
+  --name clusterA
 ```
