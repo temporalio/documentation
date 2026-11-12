@@ -1009,6 +1009,23 @@ const developRustCategory = {
           'develop/rust/nexus/feature-guide'
         ],
       },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/rust/best-practices/index',
+        },
+        items: [
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            items: ['develop/rust/best-practices/data-handling/external-storage'],
+          },
+        ],
+      },
     ],
 };
 const developTypeScriptCategory = {

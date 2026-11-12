@@ -82,6 +82,11 @@
   ],
   "redirects": [
     {
+      "source": "/develop/rust/data-handling/external-storage",
+      "destination": "/develop/rust/best-practices/data-handling/external-storage",
+      "permanent": true
+    },
+    {
       "source": "/:path*/null",
       "destination": "/:path*",
       "permanent": true
