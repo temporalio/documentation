@@ -497,8 +497,15 @@ values in the `clusterMetadata` section of its configuration file:
 2. `failoverVersionIncrement` must be the same across connected Temporal Services.
 3. `initialFailoverVersion` must be different for each Temporal Service. No two connected Temporal Services can share a value.
 
-Temporal Server v1.14 and later registers remote Temporal Services with the Temporal CLI instead of the static
-configuration file. The steps below use two Temporal Services named `clusterA` and `clusterB`.
+These steps apply to Temporal Server v1.14 and later, which registers remote Temporal Services with the Temporal CLI
+instead of the static configuration file. They use two Temporal Services named `clusterA` and `clusterB`.
+
+:::note
+
+Looking for guidance on setting up Multi-Cluster Replication prior to v1.14? See
+[Set up Multi-Cluster Replication before v1.14](/self-hosted-guide/multi-cluster-replication-before-v1-14).
+
+:::
 
 :::tip
 
@@ -609,47 +616,4 @@ temporal operator cluster remove \
 temporal operator cluster remove \
   --address 127.0.0.1:8233 \
   --name clusterA
-```
-
-### Set up Multi-Cluster Replication before v1.14
-
-Before v1.14, you list every Temporal Service in the static configuration of each Temporal Service and set the same
-`masterClusterName` everywhere. Registration with the CLI isn't available.
-
-In this older layout, `masterClusterName` is `clusterA` in both files, including clusterB's. Every Temporal Service
-lists every other one, so they all agree on one primary. In the v1.14 and later layout above, each file lists only its
-own Temporal Service, so `masterClusterName` differs.
-
-```yaml
-# clusterA
-clusterMetadata:
-  enableGlobalNamespace: true
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterA"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-
-# clusterB
-clusterMetadata:
-  enableGlobalNamespace: true
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterB"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
 ```
