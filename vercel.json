@@ -66,7 +66,7 @@
       "headers": [
         {
           "key": "Link",
-          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\", </assets/fonts/Aeonik-Light-c944de5d59061b5eca77f8b08852df3b.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Aeonik-Regular-5daa2b042642b01633b5ba8273b0d396.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin"
+          "value": "<https://docs.temporal.io/sitemap.xml>; rel=\"sitemap\", <https://docs.temporal.io/llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\", <https://temporal.io/.well-known/ard.json>; rel=\"ard\"; type=\"application/json\", </assets/fonts/Aeonik-Light-c944de5d59061b5eca77f8b08852df3b.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Aeonik-Regular-5daa2b042642b01633b5ba8273b0d396.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin"
         }
       ]
     },
@@ -2742,7 +2742,7 @@
     },
     {
       "source": "/mcp",
-      "destination": "/with-ai#temporal-knowledge-base-mcp-server",
+      "destination": "/with-ai#temporal-docs-mcp-server",
       "permanent": true
     },
     {
