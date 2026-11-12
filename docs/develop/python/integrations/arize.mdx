@@ -55,7 +55,7 @@ Install the Temporal Python SDK with the OpenTelemetry extra, an OTLP/HTTP expor
 conventions, and the OpenInference instrumentation for the LLM SDK you call from Activities.
 
 ```bash
-uv add "temporalio[opentelemetry]>=1.33.0" opentelemetry-exporter-otlp-proto-http \
+uv add "temporalio[opentelemetry]>=1.36.0" opentelemetry-exporter-otlp-proto-http \
   openinference-semantic-conventions openinference-instrumentation-openai
 ```
 
@@ -170,10 +170,8 @@ config.setdefault("target_host", "localhost:7233")
 # add_temporal_spans=True emits spans for Temporal operations (StartWorkflow,
 # RunWorkflow, RunActivity, HandleUpdate, ...) in addition to propagating
 # trace context across the client/workflow/activity boundaries.
-client = await Client.connect(
-    **config,
-    plugins=[OpenTelemetryPlugin(add_temporal_spans=True)],
-)
+config["plugins"] = [OpenTelemetryPlugin(add_temporal_spans=True)]
+client = await Client.connect(**config)
 
 worker = Worker(
     client,
@@ -649,14 +647,12 @@ span nests under the previous run's span in the same trace. A reset or a retried
 context, so its `RunWorkflow` span appears as a second child of the same `StartWorkflow` span with its own
 `temporalRunID`. Because the session is the Workflow Id, all of these stay together in one Arize session.
 
-A reset that reapplies an Update or Signal has one known defect. The reset run keeps the original run's random seed
-until the SDK reseeds it at the reset point, and the reapplied handler runs before that reseed, so its `HandleUpdate`
-or `HandleSignal` span receives the first span identifier the original run drew, which is the original `RunWorkflow`
-span's. Phoenix deduplicates by span identifier and drops the reapplied handler's span. Arize AX keeps both, so the
-original run's Activity subtree appears twice and the original `RunWorkflow` node is labeled with the handler's name.
-Every other span of the reset run has a fresh identifier. The sample's verifier reports the dropped span as a
-warning. The fix belongs in the Python SDK and is tracked as
-[temporalio/sdk-python#2070](https://github.com/temporalio/sdk-python/issues/2070).
+A reset that reapplies an Update or Signal needs `temporalio` 1.36.0 or later. Earlier releases ran the reapplied
+handler before reseeding the reset run's random generator, so its `HandleUpdate` or `HandleSignal` span received the
+first span identifier the original run drew, which is the original `RunWorkflow` span's; Phoenix dropped the
+duplicate and Arize AX showed the original run's Activity subtree twice. Since 1.36.0 every job in a Workflow Task
+is applied before handlers run ([temporalio/sdk-python#2081](https://github.com/temporalio/sdk-python/pull/2081)),
+so every span of the reset run has a fresh identifier.
 
 ## Resources
 
