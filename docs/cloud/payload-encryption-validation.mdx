@@ -221,11 +221,12 @@ temporal cloud namespace encryption-validation set \
   --mode deny
 ```
 
-Turn validation off. The metadata key, accepted values, and inspect settings are kept.
+Turn validation off. Omitted flags keep the saved metadata key, accepted values, and inspect settings.
 
 ```bash
-temporal cloud namespace encryption-validation disable \
-  --namespace my-namespace.my-account
+temporal cloud namespace encryption-validation set \
+  --namespace my-namespace.my-account \
+  --mode disabled
 ```
 
 Set it when creating a Namespace. If any `--encryption-validation-*` flag is present, `--encryption-validation-mode` is required.
