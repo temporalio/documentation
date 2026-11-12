@@ -23,11 +23,11 @@ only send `GET`, so both write a report.
 POST https://docs.temporal.io/api/feedback
 Content-Type: application/json
 
-{"title": "...", "message": "...", "category": "documentation", "page_url": "https://docs.temporal.io/cli/workflow.md"}
+{"title": "<summary>", "message": "<what-happened>", "category": "documentation", "page_url": "https://docs.temporal.io/cli/workflow.md"}
 ```
 
 ```
-GET https://docs.temporal.io/api/feedback?title=...&message=...&category=product&agent=claude-code
+GET https://docs.temporal.io/api/feedback?title=<summary>&message=<what-happened>&category=product&agent=<your-name>
 ```
 
 | Field | Required | Limit | Purpose |
@@ -47,7 +47,8 @@ The categories and severities match the Temporal Docs MCP server's `give_feedbac
 read together.
 
 A `GET` without a `title` and `message` returns 400 and writes nothing, so a crawler or link prefetcher that follows
-the bare URL doesn't create a record.
+the bare URL doesn't create a record. A `title` or `message` with no letters or digits, such as `...`, or one that is
+only a placeholder copied from an example, such as `<summary>`, also returns 400.
 
 `page_url` is normalized so reports about one page group together, however the sender reached it:
 
@@ -137,7 +138,9 @@ lost, so the sender is told when that happens.
 The message has:
 
 - **Agent reports by category,** with product reports first so they can be forwarded. Reports with the same page and
-  title, ignoring case and spacing, are shown once with a count and the agents that sent them.
+  title, ignoring case and spacing, are shown once with a count, the number of senders (by IP hash), the agents that
+  sent them, and up to three of their different messages. "Reported 6 times from 1 sender" is usually one caller
+  retrying, not six people hitting the problem.
 - **Page ratings by page,** as Yes and No counts with a breakdown by reason, and comments listed under their reason.
   Each rating is merged with its amendments, and the latest amendment wins.
 - **A seven-day rollup on Mondays,** listing the 10 pages with the most No ratings and docs reports.
