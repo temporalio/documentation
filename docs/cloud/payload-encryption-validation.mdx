@@ -90,12 +90,15 @@ To migrate a codec, add the new value and deploy the updated codec. The metric c
 
 ### Reject reserved metadata matches
 
-Temporal Cloud rejects a configuration that contains either of these exact metadata matches:
+Temporal Cloud rejects a configuration that includes any of these accepted values. The metadata key does not change the rejection. It applies when the key is `encoding`, when the key is omitted, and when the key is a custom key.
 
-- key `encoding`, value `json/plain`
-- key `encoding`, value `json/protobuf`
+- `binary/null`
+- `binary/plain`
+- `json/plain`
+- `json/protobuf`
+- `binary/protobuf`
 
-An unencrypted Payload already carries these matches. Omitting the metadata key uses `encoding`, so an accepted value of `json/plain` or `json/protobuf` is the same match and is rejected.
+An unencrypted Payload already carries one of these values on `encoding`.
 
 ## Review what is checked
 
