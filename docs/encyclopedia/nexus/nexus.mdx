@@ -73,7 +73,7 @@ For example, the payments team creates a `PaymentService` that lists everything 
 
 The checkout team reaches the payments team through an Endpoint named something like `payments-endpoint`. The checkout team just uses the name. They don't know what Namespace the payments team uses, what language they wrote it in, or how their Workers are set up. The Registry is a central directory where all Endpoints are listed.
 
-The checkout team looks up `payments-endpoint` in the Registry and starts calling it without building a custom connection from scratch. Now the checkout team finds `payments-endpoint` in the Registry, calls it by name (Endpoint), requests `processPayment` (Operation), which belongs to `PaymentService` (Service).
+The checkout team finds `payments-endpoint` in the Registry, calls it by name (Endpoint), and requests `processPayment` (Operation), which belongs to `PaymentService` (Service), without building a custom connection from scratch.
 
 <CaptionedImage
     src="/diagrams/nexus-caller-handler.svg"
@@ -82,7 +82,7 @@ The checkout team looks up `payments-endpoint` in the Registry and starts callin
     alt="The checkout team, the caller, knows the contract: the Endpoint name payments-endpoint, the PaymentService Service, the processPayment Operation, and its input and output types. The Endpoint accepts calls only from Namespaces on its allowlist. The payments team, the handler, owns its Namespace, Task Queue, Workers, language, and the Workflow, Activity, or other code behind the Operation, and can change them while the contract stays the same."
 />
 
-## Caller vs Handler
+## Caller vs handler
 
 In Temporal Nexus, the caller is the application or Workflow that wants to use a capability, and the handler is the code on the other team's Worker that provides that capability. The caller starts a Nexus Operation through an Endpoint with the Service defining what's available.
 
