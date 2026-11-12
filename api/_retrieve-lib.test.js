@@ -1,17 +1,21 @@
 const { describe, it } = require('node:test');
 const assert = require('node:assert');
+const crypto = require('crypto');
 
 const { compileRedirects } = require('../bin/redirect-utils');
 const {
   LIMITS,
   isAllowed,
+  droppedSources,
   isAllowedResult,
+  kapaIdentity,
   parseAllowlist,
   parseList,
   parseParams,
   toMarkdownUrl,
   shapeResults,
   validResults,
+  sourceLabel,
 } = require('./_retrieve-lib');
 
 const compiled = compileRedirects([
@@ -191,5 +195,88 @@ describe('isAllowedResult', () => {
     assert.strictEqual(isAllowedResult({ content: 'x', source_url: 'https://docs.temporal.io/workflows' }, allowlist), true);
     assert.strictEqual(isAllowedResult({ content: 'x', source_url: 'https://temporalio.slack.com/archives/C1/p1' }, allowlist), false);
     assert.strictEqual(isAllowedResult({ content: 'x', source_url: '  ' }, allowlist), false);
+  });
+});
+
+describe('sourceLabel', () => {
+  it('uses the host for most sources', () => {
+    assert.strictEqual(sourceLabel('https://Community.Temporal.io/t/some-topic/123'), 'community.temporal.io');
+  });
+
+  it('keeps the owner and repository for github.com', () => {
+    assert.strictEqual(
+      sourceLabel('https://github.com/temporalio/sdk-python/blob/main/README.md'),
+      'github.com/temporalio/sdk-python'
+    );
+    assert.strictEqual(sourceLabel('https://github.com/temporalio'), 'github.com');
+  });
+
+  it('labels a URL it cannot parse', () => {
+    assert.strictEqual(sourceLabel('not a url'), '(invalid URL)');
+  });
+});
+
+describe('droppedSources', () => {
+  it('counts only the results the allowlist drops', () => {
+    const allowlist = parseAllowlist(['docs.temporal.io']);
+    const results = [
+      { content: 'a', source_url: 'https://docs.temporal.io/workflows' },
+      { content: 'b', source_url: 'https://community.temporal.io/t/x/1' },
+      { content: 'c', source_url: 'https://community.temporal.io/t/y/2' },
+      { content: 'd', source_url: '' },
+      { content: 'e', source_url: 'https://github.com/temporalio/edu-101/blob/main/x.md' },
+    ];
+    assert.deepStrictEqual(droppedSources(results, allowlist), {
+      'community.temporal.io': 2,
+      'github.com/temporalio/edu-101': 1,
+    });
+  });
+});
+
+describe('kapaIdentity', () => {
+  const base = { ip: '203.0.113.7', agent: 'Claude Code', src: 'md-page', salt: 'salt' };
+  const id = (overrides) => kapaIdentity({ ...base, ...overrides }).user?.unique_client_id;
+
+  it('sends a hashed user ID and the normalized agent name', () => {
+    const identity = kapaIdentity(base);
+    assert.match(identity.user.unique_client_id, /^[0-9a-f]{32}$/);
+    assert.deepStrictEqual(identity.mcp_client_meta, { name: 'claude-code' });
+    assert.ok(!JSON.stringify(identity).includes('203.0.113.7'));
+  });
+
+  it('gives the same caller the same ID, however it writes its name', () => {
+    assert.strictEqual(id({ agent: 'claude_code/1.2' }), id());
+    assert.strictEqual(id({ src: 'llms' }), id());
+  });
+
+  it('gives a different ID for another IP, agent, or salt', () => {
+    const ids = [id(), id({ ip: '203.0.113.8' }), id({ agent: 'cursor' }), id({ salt: 'other' })];
+    assert.strictEqual(new Set(ids).size, ids.length);
+  });
+
+  it("doesn't match the log's ip_hash", () => {
+    const logHash = crypto.createHash('sha256').update('salt:203.0.113.7').digest('hex');
+    assert.ok(!logHash.startsWith(id({ agent: null })));
+  });
+
+  it('treats a missing or placeholder agent as no agent', () => {
+    assert.strictEqual(id({ agent: '<your-name>' }), id({ agent: null }));
+    assert.strictEqual(kapaIdentity({ ...base, agent: '<your-name>' }).mcp_client_meta, undefined);
+    assert.match(id({ agent: '' }), /^[0-9a-f]{32}$/);
+  });
+
+  it('sends no user without an IP or salt, but still sends the agent name', () => {
+    assert.deepStrictEqual(kapaIdentity({ ...base, ip: null }), { mcp_client_meta: { name: 'claude-code' } });
+    assert.deepStrictEqual(kapaIdentity({ ...base, salt: undefined }), { mcp_client_meta: { name: 'claude-code' } });
+    assert.deepStrictEqual(kapaIdentity({ ...base, ip: null, agent: null }), {});
+  });
+
+  it('counts our own checks as one user, whatever agent they send', () => {
+    for (const src of ['healthcheck', 'link-check', 'manual-test']) {
+      assert.deepStrictEqual(kapaIdentity({ ...base, src, agent: `healthcheck-${Math.random()}` }), {
+        user: { unique_client_id: 'internal-check' },
+        mcp_client_meta: { name: src },
+      });
+    }
   });
 });

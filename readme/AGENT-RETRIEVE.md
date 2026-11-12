@@ -70,7 +70,7 @@ These are Vercel project environment variables, set for Production and Preview:
 | `KAPA_PROJECT_ID` | The production Kapa project |
 | `KAPA_INTEGRATION_ID` | The `docs-agent-retrieve-experiment` HTTP API integration, which keeps this traffic separate in Kapa analytics |
 | `RETRIEVE_URL_ALLOWLIST` | **Required.** Comma-separated `host` or `host/path-prefix` entries. Results whose URL isn't covered are dropped before the response is built, except custom Q&A answers, which have no URL. A prefix matches whole path segments, so `github.com/temporalio/sdk-go/releases` covers `/releases/tag/v1.30.0` but not the private `github.com/temporalio/edu-*` course repos. When it's unset the endpoint returns 500 instead of searching, so a missing variable can't expose results from private sources |
-| `RETRIEVE_LOG_SALT` | **Required.** A random string used to hash caller IPs in the log. When it's unset the endpoint returns 500, so no request is logged without a hash |
+| `RETRIEVE_LOG_SALT` | **Required.** A random string used to hash caller IPs in the log and the user ID sent to Kapa. When it's unset the endpoint returns 500, so no request is logged without a hash. Changing it gives every caller a new ID, which resets the user counts in Kapa |
 | `BLOB_READ_WRITE_TOKEN` | Added by Vercel when the private Blob store is connected to the project |
 
 To revoke access, rotate or delete the key in Kapa and update `KAPA_API_KEY`. The endpoint then returns 502 until a
@@ -86,6 +86,23 @@ The endpoint sends Kapa no source filter, and `RETRIEVE_URL_ALLOWLIST` does all 
 
 A 502 that starts when nothing was deployed most likely comes from a change on the Kapa side. The runtime log line
 `retrieve: Kapa returned <status>: <body>` gives Kapa's reason.
+
+## Users in Kapa analytics
+
+Each request tells Kapa who's calling, so the integration's user count in Kapa reflects distinct callers instead of
+showing one user:
+
+| Field | Value |
+| --- | --- |
+| `user.unique_client_id` | The first 32 hex characters of SHA-256 of the salt, the caller's IP, and the normalized `agent`. It uses a different prefix from the log's `ip_hash`, so the two don't match. Not sent when the request has no IP |
+| `mcp_client_meta.name` | The normalized `agent`, such as `claude-code` or `cursor`, so Kapa can break the traffic down by agent. Not sent when `agent` is missing or a placeholder |
+
+Requests with a test `src` (`manual-test`, `link-check`, `healthcheck`) all send the user ID `internal-check` and the
+`src` as the agent name, since the health check sends a new `agent` on every run.
+
+Read Kapa's user count as distinct callers, not people. Hosted agents that fetch from a provider's servers share a few
+IPs, so many people count as a few users. People behind one corporate network merge the same way, and a caller whose
+IP changes counts more than once. A cache hit never reaches Kapa, so it isn't counted either.
 
 ## Health check
 
@@ -129,7 +146,8 @@ with the date, so a day's records can be listed or deleted with `--prefix retrie
 ## Retention and privacy
 
 The log holds free-text questions, user agents, countries, and hashed IPs from the public, in the Blob store and in the
-runtime logs. Delete `retrieve-log/` within 30 days of the experiment ending, and don't copy records out of the store
+runtime logs. Kapa receives each question with a hashed user ID and the agent name, never the IP, and Kapa's retention
+applies to them. Delete `retrieve-log/` within 30 days of the experiment ending, and don't copy records out of the store
 except as aggregate counts. Duncan Mackenzie owns the store and the deletion. Whoever owns the docs privacy policy must
 confirm that it covers this log before a follow-up change advertises the endpoint.
 
@@ -149,6 +167,7 @@ sent, and a failed write never fails the request.
 | `deployment` | `production`, `preview`, or `development` |
 | `fetched_count` | Results Kapa returned |
 | `dropped_count` | Results Kapa returned that were malformed or that `RETRIEVE_URL_ALLOWLIST` dropped |
+| `dropped_sources` | Results the allowlist dropped, counted by source: the host, or `github.com/<owner>/<repo>` for GitHub. For example, `{ "community.temporal.io": 4 }`. Malformed results aren't included. Records written before 2026-11-06 don't have it |
 | `status`, `upstream_status` | Status returned to the caller, and Kapa's status |
 | `result_count` | Number of results returned. Kapa returns at most 15 and the endpoint doesn't ask for more, because Kapa's Retrieval endpoint rejects a `top_k` above 15, so the allowlist can shrink an answer. `0` with `dropped_count` at `0` points at a content gap. `0` with `fetched_count` above `0` means every hit was outside the allowlist |
 | `latency_ms` | Time spent in the function |
@@ -204,8 +223,9 @@ The report has a section for each experiment question:
   question was sent word for word, questions per topic, and the most common questions.
 - **Gaps:** Kapa returns results for almost any question, so a gap shows up as an answer left thin after the
   allowlist. The section shows how many results each answered call got, the share of Kapa's results the allowlist
-  dropped, and the low-yield questions (two or fewer results) with their dropped share. A high dropped share means
-  other sources outranked the docs for that question.
+  dropped, which sources those dropped results came from, and the low-yield questions (two or fewer results) with
+  their dropped share and the source dropped most for each. A high dropped share means other sources outranked the
+  docs for that question.
 - **Intent:** how often `jtb` is filled in, and a sample of values.
 - **Health:** status codes, why requests got a 400 (missing `q` or `q` over the length limit), how many sent a
   placeholder such as `<question>` as the question, and p50 and p95 latency for 200s.

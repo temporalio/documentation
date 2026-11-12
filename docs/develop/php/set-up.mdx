@@ -162,13 +162,17 @@ installation methods.
 <CodeSnippet language="yml">
   {`version: "3"
 
-rpc: listen: tcp://127.0.0.1:6001
+rpc:
+  listen: tcp://127.0.0.1:6001
 
-server: command: "php worker.php"
+server:
+  command: "php worker.php"
 
-temporal: address: "127.0.0.1:7233"
+temporal:
+  address: "127.0.0.1:7233"
 
-logs: level: info `}
+logs:
+  level: info`}
 
 </CodeSnippet>
 </>
@@ -180,7 +184,7 @@ Create a simple configuration file named `.rr.yaml` with the following content:
 
 <SetupStep code={
 <>
-<Tabs>
+<Tabs groupId="os" queryString>
 <TabItem value="macos" label="macOS" default>
 
         <p>Install the Temporal CLI using Homebrew:</p>
@@ -387,7 +391,7 @@ $worker->registerActivity(\App\GreetingActivity::class);
 $factory->run();
 ```
 
-#### Run the Worker
+### 4. Run the Worker
 
 Previously, we created a Worker that executes Workflow and Activity tasks.
 

@@ -7,10 +7,25 @@
     "api/retrieve.js": {
       "maxDuration": 15
     },
+    "api/not-found.js": {
+      "maxDuration": 10
+    },
+    "api/markdown-not-found.js": {
+      "maxDuration": 10
+    },
     "api/feedback.js": {
       "maxDuration": 10
+    },
+    "api/feedback-digest.js": {
+      "maxDuration": 60
     }
   },
+  "crons": [
+    {
+      "path": "/api/feedback-digest",
+      "schedule": "0 15 * * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/img/og/:path*",
@@ -30,6 +45,10 @@
         }
       ],
       "destination": "/api/markdown-not-found"
+    },
+    {
+      "source": "/:path((?!api/)[^.]*)",
+      "destination": "/api/not-found"
     }
   ],
   "headers": [

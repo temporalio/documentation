@@ -63,7 +63,7 @@ err = namespaceClient.Register(ctx, &workflowservice.RegisterNamespaceRequest{
 <!--SNIPEND-->
 
 The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
-The minimum value you can set for this period is 1 day.
+The minimum value is 1 hour for a local Namespace and 1 day for a global Namespace that replicates across clusters.
 
 Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
 See [how to set Namespace in a Client in Go](/develop/go/client/temporal-client#connect-to-temporal-cloud) for details.

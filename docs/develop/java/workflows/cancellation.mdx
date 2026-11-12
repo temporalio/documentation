@@ -38,10 +38,13 @@ To cancel a Workflow Execution in Java, use the
 [cancel()](<https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#cancel()>)
 function on the WorkflowStub.
 
+<!--SNIPSTART java-cancellation-cancel-workflow {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/cancellation/src/main/java/io/temporal/docs/workflows/cancellation/InterruptWorkflowExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/cancellation/src/main/java/io/temporal/docs/workflows/cancellation/InterruptWorkflowExample.java)
 ```java
 WorkflowStub workflowStub = WorkflowStub.fromTyped(workflow);
 workflowStub.cancel();
 ```
+<!--SNIPEND-->
 
 ## Cancellation scopes {/* #cancellation-scopes */}
 
@@ -101,57 +104,86 @@ To cancel an Activity from a Workflow Execution, call the
 [cancel()](<https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/CancellationScope.html#cancel()>)
 method on the CancellationScope that the activity was started in.
 
+<!--SNIPSTART java-cancellation-cancel-activity {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/cancellation/src/main/java/io/temporal/docs/workflows/cancellation/HelloCancellationScope.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/cancellation/src/main/java/io/temporal/docs/workflows/cancellation/HelloCancellationScope.java)
 ```java
-public class GreetingWorkflowImpl implements GreetingWorkflow {
-    @Override
-    public String getGreeting(String name) {
-      List<Promise<String>> results = new ArrayList<>(greetings.length);
+public static class GreetingWorkflowImpl implements GreetingWorkflow {
 
-      /*
-       * Create our CancellationScope. Within this scope we call the workflow activity
-       * composeGreeting method asynchronously for each of our defined greetings in different
-       * languages.
-       */
-      CancellationScope scope =
-          Workflow.newCancellationScope(
-              () -> {
-                for (String greeting : greetings) {
-                  results.add(Async.function(activities::composeGreeting, greeting, name));
-                }
-              });
+  private static final int ACTIVITY_MAX_SLEEP_SECONDS = 30;
+  private static final int ACTIVITY_MAX_CLEANUP_SECONDS = 5;
+  private static final int ACTIVITY_START_TO_CLOSE_TIMEOUT =
+      ACTIVITY_MAX_SLEEP_SECONDS + ACTIVITY_MAX_CLEANUP_SECONDS + 10;
 
-      /*
-       * Execute all activities within the CancellationScope. Note that this execution is
-       * non-blocking as the code inside our cancellation scope is also non-blocking.
-       */
-      scope.run();
+  private static final String[] greetings =
+      new String[] {"Hello", "Bye", "Hola", "Привет", "Oi", "Hallo"};
 
-      // We use "anyOf" here to wait for one of the activity invocations to return
-      String result = Promise.anyOf(results).get();
+  /*
+   * The Activities must heartbeat to receive cancellation, so set a Heartbeat Timeout.
+   * WAIT_CANCELLATION_COMPLETED makes the Workflow wait for each canceled Activity to finish
+   * its cleanup before the Activity's Promise fails with a CanceledFailure.
+   */
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder()
+              // if heartbeat timeout is not set, activity heartbeats will be throttled to one
+              // every 30 seconds
+              // which is too rare for the cancellations to be delivered in this example.
+              .setHeartbeatTimeout(Duration.ofSeconds(5))
+              .setStartToCloseTimeout(Duration.ofSeconds(ACTIVITY_START_TO_CLOSE_TIMEOUT))
+              .setCancellationType(ActivityCancellationType.WAIT_CANCELLATION_COMPLETED)
+              .build());
 
-      // Trigger cancellation of all uncompleted activity invocations within the cancellation scope
-      scope.cancel();
+  @Override
+  public String getGreeting(String name) {
+    List<Promise<String>> results = new ArrayList<>(greetings.length);
 
-      /*
-       *  Wait for all activities to perform cleanup if needed.
-       *  For the sake of the example we ignore cancellations and
-       *  get all the results so that we can print them in the end.
-       *
-       *  Note that we cannot use "allOf" here as that fails on any Promise failures
-       */
-      for (Promise<String> activityResult : results) {
-        try {
-          activityResult.get();
-        } catch (ActivityFailure e) {
-          if (!(e.getCause() instanceof CanceledFailure)) {
-            throw e;
-          }
+    /*
+     * Create our CancellationScope. Within this scope we call the workflow activity
+     * composeGreeting method asynchronously for each of our defined greetings in different
+     * languages.
+     */
+    CancellationScope scope =
+        Workflow.newCancellationScope(
+            () -> {
+              for (String greeting : greetings) {
+                results.add(Async.function(activities::composeGreeting, greeting, name));
+              }
+            });
+
+    /*
+     * Execute all activities within the CancellationScope. Note that this execution is
+     * non-blocking as the code inside our cancellation scope is also non-blocking.
+     */
+    scope.run();
+
+    // We use "anyOf" here to wait for one of the activity invocations to return
+    String result = Promise.anyOf(results).get();
+
+    // Trigger cancellation of all uncompleted activity invocations within the cancellation scope
+    scope.cancel();
+
+    /*
+     *  Wait for all activities to perform cleanup if needed.
+     *  For the sake of the example we ignore cancellations and
+     *  get all the results so that we can print them in the end.
+     *
+     *  Note that we cannot use "allOf" here as that fails on any Promise failures
+     */
+    for (Promise<String> activityResult : results) {
+      try {
+        activityResult.get();
+      } catch (ActivityFailure e) {
+        if (!(e.getCause() instanceof CanceledFailure)) {
+          throw e;
         }
       }
-      return result;
     }
+    return result;
+  }
 }
 ```
+<!--SNIPEND-->
 
 ## Terminate a Workflow Execution {/* #termination */}
 
@@ -166,10 +198,13 @@ To terminate a Workflow Execution in Java, use the
 [terminate()](<https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#terminate(java.lang.String,java.lang.Object...)>)
 function on the WorkflowStub.
 
+<!--SNIPSTART java-cancellation-terminate-workflow {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/cancellation/src/main/java/io/temporal/docs/workflows/cancellation/InterruptWorkflowExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/cancellation/src/main/java/io/temporal/docs/workflows/cancellation/InterruptWorkflowExample.java)
 ```java
 WorkflowStub untyped = WorkflowStub.fromTyped(myWorkflowStub);
 untyped.terminate("Sample reason");
 ```
+<!--SNIPEND-->
 
 ## Reset a Workflow Execution {/* #reset */}
 

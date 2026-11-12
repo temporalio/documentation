@@ -165,6 +165,10 @@ describe('results', () => {
       { content: 'page', source_url: `${DOCS}/workflows.md`, page_url: `${DOCS}/workflows#x` },
     ]);
     assert.strictEqual(record().dropped_count, 2);
+    assert.deepStrictEqual(record().dropped_sources, {
+      'temporalio.slack.com': 1,
+      'github.com/temporalio/edu-101-python-content': 1,
+    });
     assert.strictEqual(record().result_count, 1);
     assert.deepStrictEqual(record().top_pages, [`${DOCS}/workflows#x`]);
   });
@@ -191,6 +195,8 @@ describe('results', () => {
     assert.strictEqual(res.statusCode, 200);
     assert.strictEqual(res.body.length, 1);
     assert.strictEqual(record().dropped_count, 3);
+    // Malformed results have no URL to label, so they're only in dropped_count.
+    assert.deepStrictEqual(record().dropped_sources, {});
   });
 
   it('sends the question and keys to Kapa', async () => {
@@ -227,6 +233,34 @@ describe('results', () => {
     assert.ok(!('source_ids_include' in kapaCalls[0].body));
     assert.ok(!('source_group_ids_include' in kapaCalls[0].body));
     assert.ok(!('source_ids_sent' in record()));
+  });
+});
+
+describe('Kapa identity', () => {
+  it('sends a hashed user ID and the agent name, never the IP', async () => {
+    await call('?q=x&src=md-page&agent=Cursor', { headers: { 'x-real-ip': '203.0.113.7' } });
+    const { user, mcp_client_meta } = kapaCalls[0].body;
+    assert.match(user.unique_client_id, /^[0-9a-f]{32}$/);
+    assert.deepStrictEqual(mcp_client_meta, { name: 'cursor' });
+    assert.ok(!JSON.stringify(kapaCalls[0].body).includes('203.0.113.7'));
+  });
+
+  it('sends the same ID for the same caller', async () => {
+    const headers = { 'x-forwarded-for': '203.0.113.7, 10.0.0.1' };
+    await call('?q=a&agent=Cursor', { headers });
+    await call('?q=b&agent=cursor/0.42', { headers });
+    assert.strictEqual(kapaCalls[0].body.user.unique_client_id, kapaCalls[1].body.user.unique_client_id);
+  });
+
+  it('sends no user without an IP', async () => {
+    await call('?q=x');
+    assert.ok(!('user' in kapaCalls[0].body));
+    assert.ok(!('mcp_client_meta' in kapaCalls[0].body));
+  });
+
+  it('counts the health check as one internal user', async () => {
+    await call('?q=x&src=healthcheck&agent=healthcheck-123', { headers: { 'x-real-ip': '203.0.113.7' } });
+    assert.deepStrictEqual(kapaCalls[0].body.user, { unique_client_id: 'internal-check' });
   });
 });
 

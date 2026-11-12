@@ -3,7 +3,7 @@ id: workflow
 title: Temporal CLI workflow command reference
 sidebar_label: workflow
 description: Temporal Workflow commands enable operations on Workflow Executions, such as cancel, count, delete, describe, execute, list, update-options, query, reset, reset-batch, show, signal, stack, start, terminate, trace, and update, enhancing efficiency and control.
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - Temporal CLI
   - Workflows
