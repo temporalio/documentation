@@ -111,6 +111,22 @@ describe('groupRecords', () => {
     assert.strictEqual(reports[0], merged, 'higher severity sorts first');
   });
 
+  it('counts senders and keeps the different messages of a grouped report', () => {
+    const { reports } = groupRecords([
+      report({ ip_hash: 'a' }),
+      report({ ip_hash: 'a', message: '  the page says --FOO; the CLI has --bar. ' }),
+      report({ ip_hash: 'a', message: 'Second message' }),
+      report({ ip_hash: 'b', message: 'Third message' }),
+    ]);
+    assert.strictEqual(reports.length, 1);
+    assert.deepStrictEqual(reports[0].senders, ['a', 'b']);
+    assert.deepStrictEqual(reports[0].messages, [
+      'The page says --foo; the CLI has --bar.',
+      'Second message',
+      'Third message',
+    ]);
+  });
+
   it('merges a rating with its latest amendment', () => {
     const { ratings } = groupRecords([
       rating('a'),
@@ -168,6 +184,20 @@ describe('formatDigest', () => {
     const text = allText(formatDigest('2026-11-03', grouped, { knownPaths: new Set() }));
     assert.match(text, /`https:\/\/evil\.example\/x`/);
     assert.ok(!text.includes('<https://evil'));
+  });
+
+  it('shows the sender count and up to three messages for a grouped report', () => {
+    const records = ['a', 'b', 'c', 'd'].map((m) => report({ ip_hash: 'x', message: `Message ${m}` }));
+    const text = allText(formatDigest('2026-11-03', groupRecords(records), { knownPaths: new Set(['/cli']) }));
+    assert.match(text, /reported 4 times from 1 sender/);
+    assert.match(text, /`Message a`[\s\S]*`Message b`[\s\S]*`Message c`/);
+    assert.ok(!text.includes('Message d'));
+    assert.match(text, /and 1 more message in the Blob store/);
+  });
+
+  it('leaves out the sender count when records have no IP hash', () => {
+    const text = allText(formatDigest('2026-11-03', groupRecords([report(), report()]), { knownPaths: new Set() }));
+    assert.match(text, /reported 2 times ·/);
   });
 
   it('neutralizes mentions in free text', () => {

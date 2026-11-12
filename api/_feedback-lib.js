@@ -48,12 +48,18 @@ const AMEND_WINDOW_MS = 30 * 60 * 1000;
 
 const USAGE =
   `Report a problem with the Temporal docs or with Temporal itself. ` +
-  `POST ${ENDPOINT} with a JSON body, or GET ${ENDPOINT}?title=...&message=... with the same fields as query parameters. ` +
+  `POST ${ENDPOINT} with a JSON body, or GET ${ENDPOINT}?title=<summary>&message=<what-happened> with the same fields as query parameters. ` +
   `Required: title (at most ${LIMITS.title} characters) and message (at most ${LIMITS.message}): what happened. ` +
   `Optional: expected (what the docs said or what you expected), context (what you were trying to do), ` +
   `category (${CATEGORIES.join(', ')}; pick by what you saw, not what you think caused it), ` +
   `severity (high: blocked, medium: found a workaround, low: annoyance), page_url, product_version, ` +
   `agent (your name), src. Don't include personal data, credentials, or confidential information.`;
+
+// Text with no letters or digits, such as "...", or a placeholder copied from
+// an example as is, such as "<summary>". Agents have sent both.
+function isPlaceholder(text) {
+  return !/[\p{L}\p{N}]/u.test(text) || /^<[^<>]*>$/.test(text);
+}
 
 // The value of one field as a trimmed string, '' when it's absent, or null
 // when it's present but not a string.
@@ -172,6 +178,11 @@ function parseSubmission(input, { method, compiledRedirects }) {
   // writes nothing.
   if (!fields.title) return { error: 'title is required.' };
   if (!fields.message) return { error: 'message is required.' };
+  for (const name of ['title', 'message']) {
+    if (isPlaceholder(fields[name])) {
+      return { error: `${name} is a placeholder. Replace it with a description of the problem you hit.` };
+    }
+  }
 
   fields.category = fields.category ? fields.category.toLowerCase() : 'other';
   fields.severity = fields.severity ? fields.severity.toLowerCase() : 'medium';
