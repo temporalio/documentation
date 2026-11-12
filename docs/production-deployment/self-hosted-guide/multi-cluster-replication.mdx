@@ -616,6 +616,10 @@ temporal operator cluster remove \
 Before v1.14, you list every Temporal Service in the static configuration of each Temporal Service and set the same
 `masterClusterName` everywhere. Registration with the CLI isn't available.
 
+In this older layout, `masterClusterName` is `clusterA` in both files, including clusterB's. Every Temporal Service
+lists every other one, so they all agree on one primary. In the v1.14 and later layout above, each file lists only its
+own Temporal Service, so `masterClusterName` differs.
+
 ```yaml
 # clusterA
 clusterMetadata:
