@@ -196,6 +196,14 @@ spans while a Workflow replays, so Worker restarts and cache evictions never pro
 open when a Worker stops is exported once, when the Workflow finishes it on another Worker. Each Activity attempt
 produces its own `RunActivity` span, so retries stay visible.
 
+A failed Workflow Task is the exception. The Worker re-executes the Workflow code since the last completed Workflow
+Task, and spans that already ended inside the failed task are exported again with the same span identifiers. Whether
+they appear twice depends on the backend: one that deduplicates by span identifier keeps a single copy.
+
+A reset that reapplies an Update or Signal needs `temporalio` 1.36.0 or later. On earlier versions, the reapplied
+handler's span reuses the span identifier of the original run's `RunWorkflow` span
+([temporalio/sdk-python#2081](https://github.com/temporalio/sdk-python/pull/2081)).
+
 :::caution
 
 `OpenTelemetryPlugin` and `create_tracer_provider()` are experimental and may change in future versions.
