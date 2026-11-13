@@ -85,13 +85,13 @@ Activities with Heartbeat can detect that an interruption was caused by Reset ra
 Cancellation. A Reset Activity is retried from attempt 1. A Cancelled Activity isn't. Your Activity code may need to
 handle these cases differently, for example saving partial progress on Reset while discarding it on Cancellation.
 
-| SDK        | How to detect Reset                                                                |
-| ---------- | ---------------------------------------------------------------------------------- |
-| Go         | `activity.GetCancellationDetails(ctx).Cause()` returns `activity.ErrActivityReset` |
-| Java       | Catch `ActivityResetException`                                                     |
-| TypeScript | Catch `ApplicationFailure` with `error.type === "ActivityReset"`                   |
-| Python     | Check `cancellation_details().reset` on `asyncio.CancelledError`                   |
-| .NET       | Check `CancellationDetails.IsReset` on `OperationCanceledException`                |
+| SDK        | How to detect Reset                                                 |
+| ---------- | ------------------------------------------------------------------- |
+| Go         | `context.Cause(ctx)` returns `activity.ErrActivityReset`            |
+| Java       | Catch `ActivityResetException`                                      |
+| TypeScript | Catch `ApplicationFailure` with `error.type === "ActivityReset"`    |
+| Python     | Check `cancellation_details().reset` on `asyncio.CancelledError`    |
+| .NET       | Check `CancellationDetails.IsReset` on `OperationCanceledException` |
 
 ## Important considerations
 
