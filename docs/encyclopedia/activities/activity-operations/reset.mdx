@@ -89,7 +89,7 @@ handle these cases differently, for example saving partial progress on Reset whi
 | ---------- | ---------------------------------------------------------------------------------- |
 | Go         | `activity.GetCancellationDetails(ctx).Cause()` returns `activity.ErrActivityReset` |
 | Java       | Catch `ActivityResetException`                                                     |
-| TypeScript | Catch `ApplicationFailure` with `error.type === "ActivityReset"`                   |
+| TypeScript | Check `cancellationDetails.reset === true`                                         |
 | Python     | Check `cancellation_details().reset` on `asyncio.CancelledError`                   |
 | .NET       | Check `CancellationDetails.IsReset` on `OperationCanceledException`                |
 
