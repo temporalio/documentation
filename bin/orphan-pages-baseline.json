@@ -18,32 +18,12 @@
       "note": "Pending triage. Same situation as awsregions.md above."
     },
     {
-      "path": "docs/develop/go/worker-versioning-legacy.mdx",
-      "note": "Pending triage. Reachable only via an inline prose link from develop/go/workflows/versioning.mdx ('you can still refer to the Worker Versioning Legacy docs'), not from any sidebar."
-    },
-    {
-      "path": "docs/develop/java/worker-versioning-legacy.mdx",
-      "note": "Pending triage. Same situation as the Go SDK's version — prose-linked from develop/java/workflows/versioning.mdx only."
-    },
-    {
-      "path": "docs/develop/python/workflows/worker-versioning-legacy.mdx",
-      "note": "Pending triage. Same situation as the Go SDK's version — prose-linked from develop/python/workflows/versioning.mdx only."
-    },
-    {
       "path": "docs/develop/run-a-development-server.mdx",
       "note": "Pending triage. Reachable only via an inline prose link from develop/go/nexus/feature-guide.mdx, not from any sidebar."
     },
     {
       "path": "docs/develop/typescript/install-typescript-sdk.mdx",
       "note": "Pending triage. No inbound links found anywhere in docs/ or vercel.json redirects. Added in the SDK-content reorg (#4377); looks like a genuine leftover worth deleting rather than keeping excepted."
-    },
-    {
-      "path": "docs/develop/typescript/worker-versioning-legacy.mdx",
-      "note": "Pending triage. Same situation as the Go SDK's version — prose-linked from develop/typescript/workflows/versioning.mdx only."
-    },
-    {
-      "path": "docs/encyclopedia/worker-versioning-legacy.mdx",
-      "note": "Pending triage. Unlike the per-SDK worker-versioning-legacy pages above, no inbound links were found anywhere for this one either — looks like a genuine leftover."
     },
     {
       "path": "docs/evaluate/features/cloud-vs-self-hosted.mdx",
