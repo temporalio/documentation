@@ -66,6 +66,7 @@ module.exports = async function createConfigAsync() {
       './src/client/remote-amplitude-analytics.js',
       './src/client/scrollSidebarToActivePage.ts',
       './src/client/detectOs.js',
+      './src/client/botid.ts',
     ],
     themeConfig: {
       colorMode: {
@@ -96,13 +97,6 @@ module.exports = async function createConfigAsync() {
       //   textColor: "#ffffff",
       //   isCloseable: true,
       // },
-      //      announcementBar: {
-      //        id: "new_feedback_widget",
-      //        content: "<b>How are we doing? Try our new on-page feedback.</b>",
-      //        backgroundColor: "#312e81",
-      //        textColor: "#ffffff",
-      //        isCloseable: true,
-      //      },
       navbar: {
         hideOnScroll: false,
         logo: {
@@ -365,16 +359,6 @@ module.exports = async function createConfigAsync() {
             aws: 'docs/cloud/references/regions/awsregions.md',
             gcp: 'docs/cloud/references/regions/gcpregions.md',
           },
-        },
-      ],
-      [
-        'docusaurus-pushfeedback',
-        {
-          project: '6c1ptrxbky',
-          privacyPolicyText: 'false',
-          buttonPosition: 'center-right',
-          modalPosition: 'sidebar-right',
-          modalTitle: 'Feedback',
         },
       ],
       [

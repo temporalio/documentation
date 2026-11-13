@@ -22,11 +22,13 @@ const originalEnv = Object.fromEntries(ENV_KEYS.map((key) => [key, process.env[k
 
 let blobPuts;
 let blobFails;
+let botResult;
 let logged;
 
 beforeEach(() => {
   blobPuts = [];
   blobFails = false;
+  botResult = { isHuman: true, isBot: false, isVerifiedBot: false, bypassed: false };
   logged = [];
 
   Module._load = function load(request, ...rest) {
@@ -35,6 +37,14 @@ beforeEach(() => {
         put: async (pathname, body, options) => {
           if (blobFails) throw new Error('blob down');
           blobPuts.push({ pathname, body: JSON.parse(body), options });
+        },
+      };
+    }
+    if (request === 'botid/server') {
+      return {
+        checkBotId: async () => {
+          if (botResult instanceof Error) throw botResult;
+          return botResult;
         },
       };
     }
@@ -185,7 +195,36 @@ describe('widget', () => {
     assert.strictEqual(res.statusCode, 202);
     assert.match(res.body.amend_token, /^[0-9a-f]{32}$/);
     assert.strictEqual(blobPuts[0].body.kind, 'rating');
-    assert.strictEqual(blobPuts[0].body.bot_verdict, 'unchecked');
+    assert.strictEqual(blobPuts[0].body.bot_verdict, 'human');
+    assert.strictEqual(line().bot_verdict, 'human');
+  });
+
+  it('refuses a rating BotID classifies as a bot', async () => {
+    botResult = { isHuman: false, isBot: true, isVerifiedBot: false, bypassed: false };
+    const res = await call({ body: { channel: 'widget', page_url: '/workflows', rating: 'up' } });
+    assert.strictEqual(res.statusCode, 403);
+    assert.strictEqual(blobPuts.length, 0);
+    assert.strictEqual(line().bot_verdict, 'bot');
+  });
+
+  it('keeps a rating when the BotID check fails', async () => {
+    botResult = new Error('OIDC token missing');
+    const res = await call({ body: { channel: 'widget', page_url: '/workflows', rating: 'up' } });
+    assert.strictEqual(res.statusCode, 202);
+    assert.strictEqual(blobPuts[0].body.bot_verdict, 'error');
+  });
+
+  it('records a bypassed check outside production', async () => {
+    botResult = { isHuman: true, isBot: false, isVerifiedBot: false, bypassed: true };
+    await call({ body: { channel: 'widget', page_url: '/workflows', rating: 'up' } });
+    assert.strictEqual(blobPuts[0].body.bot_verdict, 'bypassed');
+  });
+
+  it("doesn't bot-check agent reports", async () => {
+    botResult = { isHuman: false, isBot: true, isVerifiedBot: false, bypassed: false };
+    const res = await call({ body: report });
+    assert.strictEqual(res.statusCode, 202);
+    assert.strictEqual(blobPuts[0].body.bot_verdict, undefined);
   });
 
   it('stores an amendment next to the rating', async () => {
