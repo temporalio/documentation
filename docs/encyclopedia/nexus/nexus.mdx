@@ -1,7 +1,7 @@
 ---
 id: nexus
 title: Temporal Nexus
-description: Nexus lets one team's Workflows call another team's durable Operations across Namespaces, regions, and clouds, while each team keeps its own code.
+description: Temporal Nexus connects Temporal Applications across isolated Namespaces with clean service contracts, built-in durability, observability, and security.
 toc_max_heading_level: 4
 slug: /nexus
 tags:
@@ -25,13 +25,17 @@ Put simply, it's a durable communication layer for your application's infrastruc
 
 ## Why use Temporal Nexus?
 
-Nexus gives teams a standard way to connect their Temporal applications durably, without building custom routing, retries, and access controls for every pair of teams.
+Nexus makes the connections between Temporal applications durable without requiring you to rebuild that infrastructure for every pair of teams. 
 
-Let's say Payments, Fraud and Shipping need to talk to each other constantly. Most companies connect them with custom code: bespoke gateways, HTTP clients, webhooks, retry logic and auth, and it is being rebuilt for every pair of teams. It can work but sometimes it can be like stringing tin cans between desks. It works until someone moves their desk.
+Let's say Payments, Fraud, and Shipping need to talk to each other constantly. Teams often connect them in different ways: custom gateways, HTTP clients, webhooks; or it could be using Child Workflows and Activity wrappers with Temporal. 
 
-And when a call crashes halfway through, you often lose data or have to start over. Temporal can make each individual service durable internally, but the connections between them are only as reliable as whatever you built yourself without Nexus.
+Each approach has gaps: Child Workflows require everyone in the same namespace, Activity Wrappers need per-target mTLS clients and boilerplate retry logic, and custom gateways aren't durable by default. It's infrastructure being rebuilt or worked around for every pair of teams.
 
-Nexus gives separate teams one shared way to connect. Each team stays in its own world, with its own code, security and release schedule, and shares only the specific things other teams can call. If something crashes halfway through, the work waits and picks up when the team is back.
+It can work but sometimes it can be like stringing tin cans between desks. It works until someone moves their desk.
+
+Temporal can make each individual service durable internally, but the connections between them are only as reliable as whatever you built yourself without Nexus and the approach you decide to stitch together. 
+
+Nexus gives separate teams one shared way to connect. It extends the same durability you already rely on if you're using Temporal to the space between teams. Each team stays in its own world, with its own code, security and release schedule, and shares only the specific things other teams can call. If something crashes halfway through, the work waits and picks up when the team is back.
 
 <CaptionedImage
     src="/diagrams/nexus-share-only-what-you-choose.svg"
@@ -102,7 +106,9 @@ Underneath, Nexus handles automatic retries and at-least-once execution across e
 
 ## Nexus as durable microservices
 
-Nexus gives you durable microservices. Each team owns a service with a clear contract, runs it in its own Namespace, and lets other teams call it through an Endpoint.
+Nexus gives you durable microservices. It extends Temporal's durability to the connections between applications, not just within them.
+
+Each team owns a service with a clear contract, runs it in its own Namespace, and lets other teams call it through an Endpoint.
 
 Giving each team its own Namespace improves modularity, security, debugging and fault isolation. The difference from ordinary microservices is what happens when a call goes wrong. A normal network call is something the caller has to make reliable on its own, while Nexus gives the caller a durable handoff.
 
