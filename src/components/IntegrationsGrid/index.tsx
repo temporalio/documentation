@@ -15,7 +15,17 @@ import GridCard from "../elements/GridCard/GridCard";
 import { useQueryStringFilters } from "../hooks/useQueryStringFilters";
 import styles from "./IntegrationsGrid.module.css";
 
-const ALL_SDKS: SDK[] = ["Go", "Java", "Python", "Ruby", "TypeScript"];
+const ALL_SDKS: SDK[] = [".NET", "Go", "Java", "Python", "Ruby", "TypeScript"];
+// SDK_BLOCK_NAMES is keyed by identifier (`Dotnet`); the grid's SDK values are
+// display labels (`.NET`), so map them here instead of widening the shared union.
+const SDK_ICONS: Record<SDK, string> = {
+  ".NET": SDK_BLOCK_NAMES.Dotnet,
+  Go: SDK_BLOCK_NAMES.Go,
+  Java: SDK_BLOCK_NAMES.Java,
+  Python: SDK_BLOCK_NAMES.Python,
+  Ruby: SDK_BLOCK_NAMES.Ruby,
+  TypeScript: SDK_BLOCK_NAMES.TypeScript,
+};
 const LANGUAGE_AGNOSTIC = "Language-agnostic";
 type SdkFilter = SDK | typeof LANGUAGE_AGNOSTIC;
 const ALL_SDK_FILTERS: SdkFilter[] = [...ALL_SDKS, LANGUAGE_AGNOSTIC];
@@ -50,7 +60,7 @@ function IntegrationCard({ item }: { item: Integration }) {
       description={item.description}
       href={item.href}
       tags={item.tags}
-      icon={item.sdk ? <SdkSvg name={SDK_BLOCK_NAMES[item.sdk]} /> : undefined}
+      icon={item.sdk ? <SdkSvg name={SDK_ICONS[item.sdk]} /> : undefined}
       analyticsId={`integrations-card-${item.name}`}
     />
   );

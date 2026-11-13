@@ -187,7 +187,7 @@ For example, the Python SDK integrations page pre-filters to Python:
 <IntegrationsGrid defaultSdks={["Python"]} />
 ```
 
-Valid SDK values are `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
+Valid SDK values are `".NET"`, `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
 
 ### Filter behavior
 
@@ -203,6 +203,8 @@ For example, selecting the "Python" SDK pill and the "Observability" tag pill sh
 ### Where the component is used
 
 - `/integrations` (top-level page, no default filters)
+- `/develop/dotnet/integrations` (pre-filtered to .NET)
+- `/develop/go/integrations` (pre-filtered to Go)
 - `/develop/java/integrations` (pre-filtered to Java)
 - `/develop/python/integrations` (pre-filtered to Python)
 - `/develop/ruby/integrations` (pre-filtered to Ruby)
@@ -210,16 +212,17 @@ For example, selecting the "Python" SDK pill and the "Observability" tag pill sh
 
 ### Adding a new integration
 
-Integration data lives in `src/components/IntegrationsGrid/integrations-data.ts`.
-Add a new entry to the `integrations` array with the following shape:
+Integration data lives in `src/components/IntegrationsGrid/integrations-data.json`
+(`integrations-data.ts` only types and re-exports it).
+Add a new entry to the JSON array with the following shape:
 
-```ts
+```json
 {
-  name: "Partner Name",
-  description: "One sentence describing what this integration does with Temporal.",
-  tags: ["Agent framework"],
-  sdk: "Python",
-  href: "/develop/python/integrations/partner-name",
+  "name": "Partner Name",
+  "description": "One sentence describing what this integration does with Temporal.",
+  "tags": ["Agent framework"],
+  "sdk": "Python",
+  "href": "/develop/python/integrations/partner-name"
 }
 ```
 
