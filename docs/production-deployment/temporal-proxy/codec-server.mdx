@@ -185,8 +185,33 @@ go tool pprof -http=: heap.pb.gz
 without `auth`, open a tunnel first, such as `ssh -L 8080:localhost:8080 <host>`, then run the same command against
 `localhost`.
 
+## Check the HTTP listener's health {/* #http-health-check */}
+
+Whenever a route group is enabled, the HTTP listener answers `GET /healthz` with `200 OK` and the body `ok`. Point a load
+balancer's health check at it when the balancer sits in front of the codec server and holds no credential for it.
+`/healthz` never requires authentication, whatever a route group's `auth` says. `HEAD` gets the same answer without a
+body, and any other method gets `405`.
+
+A `200` means only that the HTTP listener accepted the connection and served the request. It doesn't check the gateway,
+which reports through the gRPC health service on its own port, or your encryption keys and KMS, so losing a dependency
+can't take every replica out of rotation at once.
+
+Off loopback the listener serves TLS, so the health check must use HTTPS. A listener with `http.tls.ca` set requires a
+client certificate from every caller, including the health check.
+
+`/healthz` keeps answering `200` until the listener closes. On shutdown the proxy closes the listener before draining
+in-flight requests, so a health check never sees a failing status, only a refused connection. To take a replica out of
+rotation before it stops accepting requests, keep it running while the balancer deregisters it, for example with a
+Kubernetes `preStop` sleep.
+
+:::note Version note
+
+`/healthz` is new in v1.2.0.
+
+:::
+
 ## Monitor the codec server
 
 The codec server reports `codec_server_requests_total` and `codec_server_request_duration_seconds`, by matched route.
-Payloads it decodes and encodes also count toward the `encryption` metrics. See
+Payloads it decodes and encodes also count toward the `encryption` and `compression` metrics. See
 [Observability](/production-deployment/temporal-proxy#observability).
