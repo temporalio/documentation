@@ -204,7 +204,7 @@
       "Agent framework"
     ],
     "sdk": "Python",
-    "href": "/develop/python/integrations/agent-framework"
+    "href": "/develop/python/integrations/microsoft-agent-framework"
   },
   {
     "name": "Model Context Protocol (MCP)",

@@ -1,5 +1,5 @@
 ---
-id: agent-framework
+id: microsoft-agent-framework
 title: Microsoft Agent Framework integration
 sidebar_label: Microsoft Agent Framework
 toc_max_heading_level: 2
@@ -25,8 +25,8 @@ completed Activity instead of starting over.
 <ReleaseNoteHeader type="prerelease" />
 
 Code snippets in this guide are taken from the
-[Agent Framework plugin samples](https://github.com/temporalio/samples-python/tree/main/agent_framework_plugin). Refer to
-the samples for the complete code.
+[Agent Framework plugin samples](https://github.com/temporalio/samples-python/tree/main/microsoft_agent_framework_plugin).
+Refer to the samples for the complete code.
 
 ## Get started
 
@@ -48,26 +48,26 @@ Install the plugin, then run one agent inside a Workflow.
 
 ### Install the plugin
 
-Install the `temporalio-agent-framework` package together with the Agent Framework provider package you use. The
-samples use OpenAI:
+Install the `temporalio-microsoft-agent-framework` package together with the Agent Framework provider package you use.
+The samples use OpenAI:
 
 ```bash
-uv add temporalio-agent-framework agent-framework-openai
+uv add temporalio-microsoft-agent-framework agent-framework-openai
 ```
 
 or with pip:
 
 ```bash
-pip install temporalio-agent-framework agent-framework-openai
+pip install temporalio-microsoft-agent-framework agent-framework-openai
 ```
 
 The package depends on `agent-framework-core`, not the `agent-framework` meta package, so it does not install every
 provider. MCP support is an extra; [Connect to MCP servers](#connect-to-mcp-servers) installs it. Refer to the
-[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/agent_framework/pyproject.toml) for
-the supported Python, Temporal SDK and Agent Framework versions.
+[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/microsoft_agent_framework/pyproject.toml)
+for the supported Python, Temporal SDK and Agent Framework versions.
 
-Import `AgentFrameworkPlugin`, `TemporalChatClient` and `TemporalMCPToolProvider` from `temporalio.agent_framework`, and
-`activity_as_tool` from `temporalio.agent_framework.workflow`.
+Import `MicrosoftAgentFrameworkPlugin`, `TemporalChatClient` and `TemporalMCPToolProvider` from
+`temporalio.microsoft_agent_framework`, and `activity_as_tool` from `temporalio.microsoft_agent_framework.workflow`.
 
 ### Run an agent with Durable Execution
 
@@ -77,43 +77,44 @@ nothing else; the Worker maps that name to a real chat client.
 **1. Define the Workflow**
 
 Build the `Agent` over a `TemporalChatClient` instead of a provider client. Each round trip to the model runs as the
-`agent_framework.invoke_model` Activity with the Activity options you pass to the client. The sample sets a 60-second
-`start_to_close_timeout`. The defaults are a 5-minute `start_to_close_timeout` and a 10-second `heartbeat_timeout`; the
-Activity heartbeats on its own every 5 seconds, so the Temporal Service marks the Activity timed out within 10 seconds
-of a Worker dying mid-call and schedules the retry.
+`microsoft_agent_framework.invoke_model` Activity with the Activity options you pass to the client. The sample sets a
+60-second `start_to_close_timeout`. The defaults are a 5-minute `start_to_close_timeout` and a 10-second
+`heartbeat_timeout`; the Activity heartbeats on its own every 5 seconds, so the Temporal Service marks the Activity
+timed out within 10 seconds of a Worker dying mid-call and schedules the retry.
 
-<!--SNIPSTART python-agent-framework-hello-world-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-hello-world-workflow-->
 <!--SNIPEND-->
 
 **2. Start a Worker**
 
-`AgentFrameworkPlugin(chat_clients=...)` maps each model name to a factory that builds the provider's chat client. The
-factory runs on the Worker on first use and its client is cached for the Worker's lifetime, so `OPENAI_API_KEY` and the
-connection stay on the Worker. Temporal retries the model Activity, so turn the OpenAI SDK's own retries off with
-`AsyncOpenAI(max_retries=0)`; `OpenAIChatClient` has no `max_retries` setting of its own. A client that still retries
-gets one warning in the Worker log the first time it runs.
+`MicrosoftAgentFrameworkPlugin(chat_clients=...)` maps each model name to a factory that builds the provider's chat
+client. The factory runs on the Worker on first use and its client is cached for the Worker's lifetime, so
+`OPENAI_API_KEY` and the connection stay on the Worker. Temporal retries the model Activity, so turn the OpenAI SDK's
+own retries off with `AsyncOpenAI(max_retries=0)`; `OpenAIChatClient` has no `max_retries` setting of its own. A client
+that still retries gets one warning in the Worker log the first time it runs.
 
 Add the plugin to `Client.connect(...)` or to the `Worker`, not both. A Worker inherits the plugins of the Client it is
 built from, and a second copy registers the model Activities twice, which the Worker rejects with a `ValueError`. The
-plugin registers the `agent_framework.invoke_model` and `agent_framework.invoke_model_streaming` Activities, sets the
-Pydantic data converter, and configures the Workflow sandbox for Agent Framework, so the Worker needs no other wiring.
+plugin registers the `microsoft_agent_framework.invoke_model` and `microsoft_agent_framework.invoke_model_streaming`
+Activities, sets the Pydantic data converter, and configures the Workflow sandbox for Agent Framework, so the Worker
+needs no other wiring.
 
-<!--SNIPSTART python-agent-framework-hello-world-worker-->
+<!--SNIPSTART python-microsoft-agent-framework-hello-world-worker-->
 <!--SNIPEND-->
 
 **3. Run the Workflow**
 
 Start the Workflow from a separate script:
 
-<!--SNIPSTART python-agent-framework-hello-world-run-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-hello-world-run-workflow-->
 <!--SNIPEND-->
 
-The Workflow's Event History shows one `agent_framework.invoke_model` Activity. Its summary is the model name, so the
-Web UI shows which model each call used.
+The Workflow's Event History shows one `microsoft_agent_framework.invoke_model` Activity. Its summary is the model name,
+so the Web UI shows which model each call used.
 
-To run the sample from a `samples-python` checkout: `uv sync --group agent-framework`, then
-`uv run agent_framework_plugin/hello_world/run_worker.py` and, in a second terminal,
-`uv run agent_framework_plugin/hello_world/run_workflow.py`.
+To run the sample from a `samples-python` checkout: `uv sync --group microsoft-agent-framework`, then
+`uv run microsoft_agent_framework_plugin/hello_world/run_worker.py` and, in a second terminal,
+`uv run microsoft_agent_framework_plugin/hello_world/run_workflow.py`.
 
 ## Build the agent
 
@@ -127,12 +128,12 @@ pass it to the agent through `activity_as_tool`. The plugin cannot tell the two 
 
 The sample has one of each. `letter_counter` counts characters and runs in the Workflow:
 
-<!--SNIPSTART python-agent-framework-tools-tool-->
+<!--SNIPSTART python-microsoft-agent-framework-tools-tool-->
 <!--SNIPEND-->
 
 `fetch_weather` stands in for an HTTP call and runs as an Activity:
 
-<!--SNIPSTART python-agent-framework-tools-activity-->
+<!--SNIPSTART python-microsoft-agent-framework-tools-activity-->
 <!--SNIPEND-->
 
 `activity_as_tool` takes the same Activity options as `workflow.execute_activity`; the sample gives the tool a 30-second
@@ -141,12 +142,12 @@ description from the docstring, so `Annotated` parameters work as they do on `@t
 that ran out of retries, raises its failure cause from the tool, and Agent Framework turns that into an error result for
 the model.
 
-<!--SNIPSTART python-agent-framework-tools-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-tools-workflow-->
 <!--SNIPEND-->
 
 Register the Activity on the Worker next to the Workflow:
 
-<!--SNIPSTART python-agent-framework-tools-worker-->
+<!--SNIPSTART python-microsoft-agent-framework-tools-worker-->
 <!--SNIPEND-->
 
 A synchronous `def` tool runs on the Workflow's event loop. Agent Framework would run it on a thread, which the Workflow
@@ -160,14 +161,14 @@ extra, which adds `temporalio-mcp`, `mcp` 2.2 or later and `mcp-types`; a projec
 install it:
 
 ```bash
-uv add "temporalio-agent-framework[mcp]"
+uv add "temporalio-microsoft-agent-framework[mcp]"
 ```
 
-`AgentFrameworkPlugin(mcp_clients=...)` maps a server name to a factory that returns an `mcp.Client`, the same shape
-as `chat_clients`. For each server the plugin registers the `temporalio.mcp.<server>.list-tools` and
-`temporalio.mcp.<server>.call-tool` Activities, plus `temporalio-mcp`'s prompt and resource operations
-(`list-prompts`, `get-prompt`, `list-resources`, `list-resource-templates`, `read-resource`). The connection lives on
-the Worker: the plugin connects on the first MCP Activity and closes the connection after 5 minutes of idleness
+`MicrosoftAgentFrameworkPlugin(mcp_clients=...)` maps a server name to a factory that returns an `mcp.Client`, the same
+shape as `chat_clients`. For each server the plugin registers the `temporalio.mcp.<server>.list-tools` and
+`temporalio.mcp.<server>.call-tool` Activities, plus `temporalio-mcp`'s prompt and resource operations (`list-prompts`,
+`get-prompt`, `list-resources`, `list-resource-templates`, `read-resource`). The connection lives on the Worker: the
+plugin connects on the first MCP Activity and closes the connection after 5 minutes of idleness
 (`mcp_connection_idle_timeout`; `None` keeps it until shutdown, `timedelta(0)` closes it after every Activity).
 
 In the Workflow, `TemporalMCPToolProvider("echo")` is an Agent Framework context provider. Before each `agent.run` it
@@ -177,25 +178,25 @@ Pass it in `context_providers`, not `tools`. Agent Framework's `MCPStdioTool`, `
 `MCPWebsocketTool` hold a live connection, which cannot exist in a Workflow, so they cannot be used in `tools=`; the
 provider replaces them.
 
-<!--SNIPSTART python-agent-framework-mcp-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-mcp-workflow-->
 <!--SNIPEND-->
 
 Register the server factory on the Worker. The sample starts a one-tool echo server over stdio; swap in any MCP server
 by changing the factory. The sample is its own uv project because it needs MCP Python SDK 2, so its imports are flat:
 
-<!--SNIPSTART python-agent-framework-mcp-worker-->
+<!--SNIPSTART python-microsoft-agent-framework-mcp-worker-->
 <!--SNIPEND-->
 
 The Activity options on the provider apply to its list and call Activities. The sample sets a 30-second
 `start_to_close_timeout`; without one, `temporalio-mcp`'s one-minute default applies. The default Retry Policy retries
 without limit, so a run waits while its server is down; bound it with `retry_policy` or `schedule_to_close_timeout`.
 An exhausted `call-tool` then becomes an error result for the model, and an exhausted `list-tools` raises from
-`agent.run`. MCP Activities do not heartbeat. `tool_name_prefix`, `allowed_tools` and `approval_mode` work as they do on Agent
-Framework's `MCPTool`. A server tool whose name the agent already has fails the Workflow with
-`AgentFrameworkWorkflowError` before the model call; give that provider a `tool_name_prefix` or an `allowed_tools` list.
-Tools passed to `agent.run(tools=...)` are merged after context providers run, so a collision with one of those raises
-Agent Framework's own `ValueError` instead; put such tools on the `Agent`. Do not register the same server name through
-`MCPPlugin` on the same Worker: the Activity names clash.
+`agent.run`. MCP Activities do not heartbeat. `tool_name_prefix`, `allowed_tools` and `approval_mode` work as they do on
+Agent Framework's `MCPTool`. A server tool whose name the agent already has fails the Workflow with
+`MicrosoftAgentFrameworkWorkflowError` before the model call; give that provider a `tool_name_prefix` or an
+`allowed_tools` list. Tools passed to `agent.run(tools=...)` are merged after context providers run, so a collision with
+one of those raises Agent Framework's own `ValueError` instead; put such tools on the `Agent`. Do not register the same
+server name through `MCPPlugin` on the same Worker: the Activity names clash.
 
 ### Add middleware
 
@@ -206,10 +207,10 @@ middleware that refuses `delete_file` calls outside that prefix by setting `cont
 `call_next()`, so the tool never runs and the model reads the refusal. `AppendReminder` is chat middleware that appends
 `REMINDER` to the instructions of every model call before the request leaves for the Activity.
 
-<!--SNIPSTART python-agent-framework-middleware-middleware-->
+<!--SNIPSTART python-microsoft-agent-framework-middleware-middleware-->
 <!--SNIPEND-->
 
-<!--SNIPSTART python-agent-framework-middleware-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-middleware-workflow-->
 <!--SNIPEND-->
 
 :::caution
@@ -224,8 +225,9 @@ of it. Do not read the clock, do I/O or draw random numbers in middleware. Middl
 Agents compose inside the Workflow too. `Agent.as_tool()` turns a sub-agent into a tool of a coordinator; every agent
 runs in the Workflow and every agent's model calls are Activities, so the whole tree is durable with no per-agent
 wiring. A
-sub-agent called through `as_tool()` runs streaming, so its calls are `agent_framework.invoke_model_streaming`
-Activities. The [multi-agent sample](https://github.com/temporalio/samples-python/tree/main/agent_framework_plugin/multi_agent)
+sub-agent called through `as_tool()` runs streaming, so its calls are `microsoft_agent_framework.invoke_model_streaming`
+Activities. The
+[multi-agent sample](https://github.com/temporalio/samples-python/tree/main/microsoft_agent_framework_plugin/multi_agent)
 gives each agent its own `TemporalChatClient` with a `summary`, so the Activities read `coordinator`, `researcher` and
 `writer` in the Web UI.
 
@@ -239,7 +241,7 @@ the same session. In a Workflow the wait is durable. The sample publishes the pe
 the request's identifier and the verdict, and runs the agent again with the decisions. Only an approved call runs the
 tool; a rejected call sends the model Agent Framework's rejection result.
 
-<!--SNIPSTART python-agent-framework-human-in-the-loop-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-human-in-the-loop-workflow-->
 <!--SNIPEND-->
 
 Agent Framework keys the approval by the request's `id` and binds the response to the request recorded in the
@@ -257,38 +259,39 @@ identifier cannot answer a later request.
 Pass a Pydantic class as `response_format` in the run options. Its JSON schema crosses to the model Activity and the
 Workflow parses the reply into `response.value`:
 
-<!--SNIPSTART python-agent-framework-structured-output-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-structured-output-workflow-->
 <!--SNIPEND-->
 
 The Workflow returns the model itself. The plugin sets the
 [Pydantic data converter](/develop/python/data-handling/data-conversion#use-pydantic-models) unless your Client already
-has a payload converter of its own, so the typed value crosses the Workflow boundary. Add `AgentFrameworkPlugin()` to the
-starter's Client as well, as the sample does, so the starter decodes the result with the same converter; the starter is
-a separate process, so this is not a second copy on the Worker.
+has a payload converter of its own, so the typed value crosses the Workflow boundary. Add
+`MicrosoftAgentFrameworkPlugin()` to the starter's Client as well, as the sample does, so the starter decodes the result
+with the same converter; the starter is a separate process, so this is not a second copy on the Worker.
 
 ## Stream agent output
 
-`agent.run(prompt, stream=True)` works as it does natively: the `agent_framework.invoke_model_streaming` Activity
-consumes the provider's stream and the Workflow receives the updates once the Activity completes. To forward updates to a
-consumer outside the Workflow while the call runs, host a [Workflow Stream](/develop/python/workflows/workflow-streams)
-on the Workflow and pass `streaming_topic` to `TemporalChatClient`. The Activity publishes each `ChatResponseUpdate`, in
-its `to_dict()` form, to that topic, batched every 100 milliseconds (`streaming_batch_interval`). Each batch is one
-Signal to the Workflow, so it adds an Event to Event History and counts toward the 10,000 Signals a Workflow Execution
-can receive. Without `stream=True` the call runs as the plain model Activity and publishes nothing.
+`agent.run(prompt, stream=True)` works as it does natively: the `microsoft_agent_framework.invoke_model_streaming`
+Activity consumes the provider's stream and the Workflow receives the updates once the Activity completes. To forward
+updates to a consumer outside the Workflow while the call runs, host a
+[Workflow Stream](/develop/python/workflows/workflow-streams) on the Workflow and pass `streaming_topic` to
+`TemporalChatClient`. The Activity publishes each `ChatResponseUpdate`, in its `to_dict()` form, to that topic, batched
+every 100 milliseconds (`streaming_batch_interval`). Each batch is one Signal to the Workflow, so it adds an Event to
+Event History and counts toward the 10,000 Signals a Workflow Execution can receive. Without `stream=True` the call runs
+as the plain model Activity and publishes nothing.
 
-<!--SNIPSTART python-agent-framework-streaming-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-streaming-workflow-->
 <!--SNIPEND-->
 
 Any client can subscribe to the topic by Workflow ID and decode each item with `ChatResponseUpdate.from_dict`:
 
-<!--SNIPSTART python-agent-framework-streaming-client-->
+<!--SNIPSTART python-microsoft-agent-framework-streaming-client-->
 <!--SNIPEND-->
 
 The durable result is the same as without streaming. The Activity result is one payload, which has to stay under the
 2 MiB payload limit, so the Activity does not record one entry per token. It records one entry per run of
 text, one entry per streamed tool call with its argument deltas merged (a provider's final full-arguments update stays
 its own entry), and one entry per usage or finish update; the topic still receives every update. If the updates cannot
-all be published, the Activity fails with an `ApplicationError` of type `agent_framework.StreamError`. It is
+all be published, the Activity fails with an `ApplicationError` of type `microsoft_agent_framework.StreamError`. It is
 non-retryable when a retry would fail the same way, such as a batch over the 2 MiB payload limit or one past the run's
 10,000-Signal limit; other publish failures are retried. A retry calls the model again and publishes from its first
 update again, so a subscriber sees the earlier attempt's updates followed by the whole retry; a consumer that must not
@@ -316,7 +319,7 @@ messages from the in-memory history provider's entry in `session.state`. The `ru
 Temporal suggests Continue-As-New, lets in-flight Updates finish with `workflow.all_handlers_finished`, and continues
 as new with the serialized session:
 
-<!--SNIPSTART python-agent-framework-continue-as-new-workflow-->
+<!--SNIPSTART python-microsoft-agent-framework-continue-as-new-workflow-->
 <!--SNIPEND-->
 
 To let the provider keep the conversation instead, pass `store=True` in the agent's `default_options` or a run's
@@ -325,7 +328,7 @@ only the new turn crosses the Activity boundary.
 
 ## Compose with an observability plugin
 
-`OpenTelemetryPlugin` composes with `AgentFrameworkPlugin` on the same Client, and the Worker inherits both in
+`OpenTelemetryPlugin` composes with `MicrosoftAgentFrameworkPlugin` on the same Client, and the Worker inherits both in
 registration order. The sample passes `add_temporal_spans=True`, which adds the `StartWorkflow`, `RunWorkflow`,
 `StartActivity` and `RunActivity` spans; the default `OpenTelemetryPlugin()` does not emit them.
 
@@ -349,13 +352,13 @@ provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter("http://localhos
 opentelemetry.trace.set_tracer_provider(provider)
 ```
 
-<!--SNIPSTART python-agent-framework-open-telemetry-worker-->
+<!--SNIPSTART python-microsoft-agent-framework-open-telemetry-worker-->
 <!--SNIPEND-->
 
 One trace then runs from the starter's root span through `StartWorkflow:TracedWorkflow`, `RunWorkflow:TracedWorkflow`,
-`invoke_agent assistant`, `StartActivity:agent_framework.invoke_model` and `RunActivity:agent_framework.invoke_model` to
-the OpenAI client's `chat gpt-4o-mini` span. See [Set up tracing](/develop/python/platform/observability#tracing) for
-the plugin's options.
+`invoke_agent assistant`, `StartActivity:microsoft_agent_framework.invoke_model` and
+`RunActivity:microsoft_agent_framework.invoke_model` to the OpenAI client's `chat gpt-4o-mini` span. See
+[Set up tracing](/develop/python/platform/observability#tracing) for the plugin's options.
 
 ## Runtime behavior and limitations
 
@@ -366,22 +369,22 @@ the plugin's options.
   `ApplicationError` with `type` set to the provider SDK's exception class name, such as `RateLimitError` or
   `AuthenticationError`. Match on `type`, not on the message.
 - **Credentials and clients stay on the Worker.** The Workflow carries a model name. A name the Worker that runs the
-  Activity does not know fails it with a non-retryable `ApplicationError` of type `AgentFrameworkUnknownChatClient`, so
-  during a rolling deployment add a new name to every Worker before Workflows use it. Calling a `TemporalChatClient` outside a
-  Workflow raises `RuntimeError`.
+  Activity does not know fails it with a non-retryable `ApplicationError` of type
+  `MicrosoftAgentFrameworkUnknownChatClient`, so during a rolling deployment add a new name to every Worker before
+  Workflows use it. Calling a `TemporalChatClient` outside a Workflow raises `RuntimeError`.
 - **What crosses the Activity boundary.** Messages and chat options cross in their `to_dict()` form, tools as their
   JSON schema specs, and the `ChatResponse` comes back the same way; provider SDK objects never enter Event History. A
   run's `client_kwargs`, such as `extra_headers`, reach the provider client when they are JSON-compatible. Hosted tools
   passed as mappings, such as a provider's web search, run on the provider's side. A tool object the plugin cannot send
-  to the model fails the Workflow with `AgentFrameworkWorkflowError`.
+  to the model fails the Workflow with `MicrosoftAgentFrameworkWorkflowError`.
 - **Sandbox and clocks.** The plugin passes `agent_framework`, `pydantic_core`, `annotated_types`, `msgspec`,
   `typing_inspection`, `opentelemetry`, `dotenv`, `mcp` and `mcp_types` through the Workflow sandbox, and installs
   Workflow-aware stand-ins for the clock and identifier reads in Agent Framework's agent code (default agent and session
   identifiers, the loop's time budget, span durations) so they replay deterministically. Workers and Replayers both get them. A
   Worker fails at start, naming the seam and the installed version, if an Agent Framework release moves one of them.
 - **Framework exceptions fail the Workflow.** Agent Framework's own exceptions raised in Workflow code, such as
-  `MiddlewareFailure`, and `AgentFrameworkWorkflowError` are registered as Workflow failure types, because retrying the
-  Workflow Task cannot change a deterministic failure.
+  `MiddlewareFailure`, and `MicrosoftAgentFrameworkWorkflowError` are registered as Workflow failure types, because
+  retrying the Workflow Task cannot change a deterministic failure.
 - **File-backed persistence does not work in a Workflow.** `FileHistoryProvider`, `FileSessionStore` and
   `SessionStore` read and write files on a thread, which the Workflow event loop does not provide, so the first run
   fails. Use the default in-memory history and carry `session.to_dict()` across Continue-As-New, or pass `store=True`
@@ -399,9 +402,10 @@ the plugin's options.
 
 ## Samples
 
-The [Agent Framework plugin samples](https://github.com/temporalio/samples-python/tree/main/agent_framework_plugin)
+The
+[Agent Framework plugin samples](https://github.com/temporalio/samples-python/tree/main/microsoft_agent_framework_plugin)
 cover the ten scenarios on this page: hello world, tools, MCP, human in the loop, middleware, multi-agent, structured
 output, streaming, Continue-As-New and OpenTelemetry. The repository's tests run each one against the plugin's scripted
 chat client, with no API key. The MCP sample is its own uv project because it needs MCP Python SDK 2. The plugin's
 source and README are in the
-[`temporalio/ai-integrations` repository](https://github.com/temporalio/ai-integrations/tree/main/python/agent_framework).
+[`temporalio/ai-integrations` repository](https://github.com/temporalio/ai-integrations/tree/main/python/microsoft_agent_framework).
