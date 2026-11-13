@@ -83,17 +83,20 @@ Activity timed out within 10 seconds of a Worker dying mid-call and schedules th
 
 `MicrosoftAgentFrameworkPluginOptions.ChatClients` maps each model name to a factory that builds the provider's
 `IChatClient`. The factory runs on the Worker on the first model call that names it, and its client is reused for the
-Worker's lifetime, so `OPENAI_API_KEY` and the connection stay on the Worker. A factory that throws, for example when
-`OPENAI_API_KEY` is unset, fails the Activity with `MicrosoftAgentFrameworkConfigurationError` and no retry; the failure
-carries the factory's message, and the Workflow fails unless it catches the `ActivityFailureException`. The sample also
-checks the key before the Worker starts and exits with a message when it is missing. Temporal retries the model
-Activity, so turn the OpenAI client's own retries off with
+Worker's lifetime, so `OPENAI_API_KEY` and the connection stay on the Worker. A name without a factory, or a factory
+that returns null, fails the Activity with `MicrosoftAgentFrameworkConfigurationError` and no retry. A factory that
+throws, for example when `OPENAI_API_KEY` is unset, fails the attempt with the same error type, logs the exception on
+the Worker, and is retried under the Activity's Retry Policy, so a Worker fixed in place picks the run up; set
+`MaximumAttempts` or a `ScheduleToCloseTimeout` when you want the run to fail instead. The sample checks the key before
+the Worker starts and exits with a message when it is missing. Temporal retries the model Activity, so turn the OpenAI
+client's own retries off with
 `new OpenAIClientOptions { RetryPolicy = new ClientRetryPolicy(maxRetries: 0) }`;
 for Azure OpenAI, set the same `RetryPolicy` on `AzureOpenAIClientOptions`. Any `ChatClientBuilder` pipeline works in
 the factory (`UseOpenTelemetry`, `UseLogging`, caching) except one that adds `FunctionInvokingChatClient`: the plugin
 rejects that client with `MicrosoftAgentFrameworkConfigurationError`, because it would run tools inside the model
 Activity instead of in the Workflow. The sample reads its connection options with `ClientEnvConfig` and falls back to
-`localhost:7233`; its factory throws the configuration type itself, which a plain exception would also get.
+`localhost:7233`; its factory throws the configuration type itself, and the plugin wraps any factory exception the same
+way and retries it, which is why the sample checks the key before the Worker starts.
 
 Add the plugin to `TemporalClientConnectOptions.Plugins` or to `TemporalWorkerOptions.Plugins`, not both. A Worker
 inherits the plugins of the Client it is built from; if the same instance reaches the Worker twice, its second
@@ -190,12 +193,14 @@ server by changing the factory:
 Activity and 60 seconds for the call Activity, and the sample sets 30 seconds on both. MCP Activities do not heartbeat,
 so a hung server call waits for that timeout. The default Retry Policy retries without limit, so a run waits while its
 server is down; bound it with a `RetryPolicy` or a `ScheduleToCloseTimeout`. A transport that cannot connect retries
-under that policy; a transport factory that throws fails the Activity with `MicrosoftAgentFrameworkConfigurationError`
-and no retry. A result with `isError`, an unknown tool or bad arguments fails the Activity with error type
-`MicrosoftAgentFrameworkMcpError` and no retry, and the model is told the tool failed. `AllowedTools` limits the list.
-`ToolNamePrefix` separates two servers that share a tool name; calls reach the server under the original name. The
-prefix is prepended as is, with no separator, so pass `docs_` to get `docs_read_file`. Names in `ChatOptions.Tools`
-must be unique; when two servers or a server and a local tool share a name, the first match runs.
+under that policy, and so does a transport factory that throws, logged on the Worker with error type
+`MicrosoftAgentFrameworkConfigurationError`; a factory that returns null fails with the same type and no retry. A result
+with `isError`, an unknown tool or bad arguments fails the Activity with error type `MicrosoftAgentFrameworkMcpError`
+and no retry, and the model is told the tool failed. `AllowedTools` limits the list. `ToolNamePrefix` separates two
+servers that share a tool name; calls reach the server under the original name. The names the model sees follow Agent
+Framework's MCP rule: characters outside `A-Za-z0-9_.-` become `-`, and the prefix is joined with one `_`, so `docs`
+and `docs_` both give `docs_read_file`. Names in `ChatOptions.Tools` must be unique; when two servers or a server and a
+local tool share a name, the first match runs.
 `CacheTools = true` lets the Worker answer the list Activity from the list it fetched earlier on the same connection;
 the Activity still runs, so replay does not depend on Worker state. To pin a catalog instead of discovering it, build
 `TemporalMcpTool` yourself from a `ToolDeclaration` with the schema you expect, and wrap tools that need a human in
@@ -351,7 +356,12 @@ the whole retry; key your display on `ResponseId` or clear it when a new attempt
 Temporal owns the conversation. `agent.CreateSessionAsync()` returns a `TemporalAgentSession`, and the default
 `InMemoryChatHistoryProvider` keeps the transcript in the session's state bag, which lives in Workflow state and is
 rebuilt from Event History on replay; nothing is stored anywhere else, and the whole transcript is the input of every
-model call. Service-managed conversations (`ConversationId`) are not used.
+model call. The plugin never sets a conversation identifier or `previous_response_id`. A Chat Completions client stores
+nothing on OpenAI's side; a Responses client stores every response there unless told otherwise, and the plugin never
+reads those copies. That switch is the OpenAI SDK's own, so turn storage off in the Worker factory with a wrapper whose
+`ChatOptions.RawRepresentationFactory` returns `CreateResponseOptions { StoredOutputEnabled = false }`; the
+[plugin README](https://github.com/temporalio/ai-integrations/tree/main/dotnet/microsoft-agent-framework#chat-clients-and-credentials)
+shows it and the reasoning-model caveat. A `RawRepresentationFactory` set in Workflow code is dropped with a warning.
 
 Every turn adds Events, and a streamed turn adds a Signal and its Workflow Task per published batch, up to 10 batches a
 second at the default interval, so a chat that streams has to Continue-As-New sooner. When
@@ -423,16 +433,21 @@ shows the tracer provider and exporter setup.
 - **Provider errors are classified by HTTP status, never by message.** 408, 409, 429 and 5xx fail the Activity with
   error type `MicrosoftAgentFrameworkModelError` and are retried; every other 4xx fails with the same type and
   `NonRetryable = true`, the rule the Python plugin uses. A provider `x-should-retry` header of `true` or `false`
-  overrides the status rule, and `retry-after-ms` or `Retry-After` (seconds or an HTTP date) becomes the next retry
-  delay. Exceptions without a status, such as a provider SDK's own exception types, propagate unchanged and retry. The
-  failure reaches the Workflow as an `ActivityFailureException` whose cause is an `ApplicationFailureException`; match
-  on `ErrorType`, not on the message.
+  overrides the status rule, and `retry-after-ms`, or else `Retry-After` as seconds (a fraction included) or an HTTP
+  date, becomes the next retry delay, capped at 60 seconds; a value the plugin cannot read is skipped. Exceptions
+  without a status, such as a provider SDK's own exception types, propagate unchanged and retry. The failure reaches the
+  Workflow as an `ActivityFailureException` whose cause is an `ApplicationFailureException`; match on `ErrorType`, not
+  on the message.
 - **Credentials and clients stay on the Worker.** The Workflow carries a model name. A name the Worker that runs the
-  Activity does not know, or a chat client or MCP transport factory that throws, fails it with a non-retryable
-  `ApplicationFailureException` of type `MicrosoftAgentFrameworkConfigurationError`, so during a rolling deployment add
-  a new name to every Worker before Workflows use it. The headers of a hosted MCP server tool follow the same rule: set
-  them on the Worker in `MicrosoftAgentFrameworkPluginOptions.HostedMcpServerHeaders`, keyed by the tool's
-  `ServerName`, and the model Activity adds them when it rebuilds the tool; a server without an entry gets no headers.
+  Activity does not know, or a factory that returns null, fails it with a non-retryable `ApplicationFailureException`
+  of type `MicrosoftAgentFrameworkConfigurationError`; a chat client or MCP transport factory that throws fails the
+  attempt with the same type and is retried. During a rolling deployment, add a new name to every Worker before
+  Workflows use it. `ChatOptions.AdditionalProperties` and `AgentRunOptions.AdditionalProperties` are recorded in Event
+  History with the model Activity's input, so an entry named `authorization`, `x-api-key` or `api-key`, at the top
+  level or inside a nested headers dictionary, fails the run with `MicrosoftAgentFrameworkWorkflowError` before any
+  Activity is scheduled. The headers of a hosted MCP server tool follow the same rule: set them on the Worker in
+  `MicrosoftAgentFrameworkPluginOptions.HostedMcpServerHeaders`, keyed by the tool's `ServerName`, and the model
+  Activity adds them when it rebuilds the tool; a server without an entry gets no headers.
 - **Register the plugin once.** On `TemporalClientConnectOptions.Plugins` or `TemporalWorkerOptions.Plugins`, not both;
   a Worker inherits the Client's plugins, and the same instance reaching a Worker twice registers its Activities once.
   Two instances on one Worker, or two of your own Activities with one name, fail the Worker with the SDK's duplicate
@@ -471,10 +486,10 @@ shows the tracer provider and exporter setup.
   `MicrosoftAgentFrameworkWorkflowError` before any Activity is scheduled, because the Activity input is recorded in
   Event History; register the headers on the Worker in `MicrosoftAgentFrameworkPluginOptions.HostedMcpServerHeaders`,
   keyed by the tool's `ServerName`. Nothing else on a hosted tool is treated as a secret. Any other `AITool` type fails
-  the run. Values in `AdditionalProperties` cross as JSON: primitives in `ChatOptions.AdditionalProperties` come back as
-  `bool`, `long`, `double` and `string`; nested objects, and the `AdditionalProperties` of messages and responses,
-  arrive as `JsonElement`. Only the `AIContent` types Microsoft.Extensions.AI declares serialize; a custom `AIContent`
-  subclass fails at the boundary.
+  the run. Values in `AdditionalProperties` cross as JSON and are recorded in Event History, with the credential-name
+  rule above: primitives in `ChatOptions.AdditionalProperties` come back as `bool`, `long`, `double` and `string`;
+  nested objects, and the `AdditionalProperties` of messages and responses, arrive as `JsonElement`. Only the
+  `AIContent` types Microsoft.Extensions.AI declares serialize; a custom `AIContent` subclass fails at the boundary.
 - **Background responses are not supported.** `AgentRunOptions.AllowBackgroundResponses`, `ContinuationToken` and
   `ChatClientAgentRunOptions.ChatClientFactory` fail the run with `MicrosoftAgentFrameworkWorkflowError`;
   `ChatOptions.RawRepresentationFactory` and `ContinuationToken` do not cross the Activity boundary and are dropped
