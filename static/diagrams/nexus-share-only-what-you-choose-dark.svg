@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 792 304" width="792" height="304" role="img" aria-label="Another team reaches only the Charge a customer Operation through Nexus. The payments team's customer records and internal systems stay private.">
+  <defs>
+    <marker id="arrow-dark" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#a5b4fc"/>
+    </marker>
+    <filter id="glow" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1000" height="500"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#818cf8" flood-opacity="0.35"/></filter><filter id="glow-soft" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1000" height="500"><feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#a5b4fc" flood-opacity="0.4"/></filter>
+    <style>
+      text { font-family: Inter, 'Helvetica Neue', Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Caller team -->
+  <circle cx="100" cy="98" r="38" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <g fill="none" stroke="#a5b4fc" stroke-width="2" stroke-linecap="round" filter="url(#glow-soft)">
+    <circle cx="93" cy="90" r="7"/>
+    <path d="M79,114 a14,12 0 0 1 28,0"/>
+    <circle cx="110" cy="92" r="5.5"/>
+    <path d="M112,104 a11,10 0 0 1 11,10"/>
+  </g>
+  <text x="100" y="164" text-anchor="middle" fill="#f3f4f6" font-size="15" font-weight="600">Another team</text>
+  <text x="100" y="184" text-anchor="middle" fill="#9ca3af" font-size="13">Needs a payment</text>
+
+  <!-- Handler team -->
+  <rect x="340" y="16" width="404" height="240" fill="#25252b" stroke="#4b5563" stroke-width="1"/>
+  <text x="360" y="46" fill="#f3f4f6" font-size="15" font-weight="600">Payments team</text>
+
+  <!-- Shared Operation -->
+  <rect x="360" y="70" width="364" height="56" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <polyline points="379,98 385,104 396,91" fill="none" stroke="#a5b4fc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow-soft)"/>
+  <text x="414" y="94" fill="#f3f4f6" font-size="14" font-weight="600">Charge a customer</text>
+  <text x="414" y="113" fill="#c7d2fe" font-size="12.5">Shared through Nexus</text>
+
+  <!-- Private -->
+  <rect x="360" y="134" width="364" height="52" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 4"/>
+  <g fill="none" stroke="#9ca3af" stroke-width="1.6" stroke-linecap="round">
+    <rect x="380" y="158" width="14" height="11"/>
+    <path d="M383,158 v-3 a4,4 0 0 1 8,0 v3"/>
+  </g>
+  <text x="414" y="156" fill="#9ca3af" font-size="14" font-weight="600">Customer records</text>
+  <text x="414" y="174" fill="#9ca3af" font-size="12.5">Private</text>
+
+  <rect x="360" y="194" width="364" height="52" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 4"/>
+  <g fill="none" stroke="#9ca3af" stroke-width="1.6" stroke-linecap="round">
+    <rect x="380" y="218" width="14" height="11"/>
+    <path d="M383,218 v-3 a4,4 0 0 1 8,0 v3"/>
+  </g>
+  <text x="414" y="216" fill="#9ca3af" font-size="14" font-weight="600">Internal systems</text>
+  <text x="414" y="234" fill="#9ca3af" font-size="12.5">Private</text>
+  <!-- Arrow -->
+  <line x1="146" y1="98" x2="356" y2="98" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arrow-dark)" filter="url(#glow-soft)"/>
+  <text x="251" y="88" text-anchor="middle" fill="#9ca3af" font-size="13" font-weight="600">Through Nexus</text>
+</svg>
