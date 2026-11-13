@@ -25,6 +25,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
 - [Using SdkGuideLinks](#using-sdkguidelinks)
+- [Using SdkOnly, SdkTerm, and SdkScope](#using-sdkonly-sdkterm-and-sdkscope)
 - [Using AnnotatedCode](#using-annotatedcode)
 - [Using ReleaseNoteHeader](#using-release-note-header)
 - [Using ForOs](#using-foros)
@@ -475,6 +476,64 @@ Valid `name` values for the block icons: `goLangBlock`, `javaBlock`, `dotnetBloc
 ### Where the component is used
 
 - `/temporal-client` — links to the Temporal Client feature guide for each SDK
+
+## Using SdkOnly, SdkTerm, and SdkScope
+
+Role: Let one shared partial render the right text for each SDK. A partial under `docs/develop/_shared/` is imported
+into every SDK's page for a topic. These components vary small parts of it by SDK, so the shared text doesn't have to be
+copied into 8 pages.
+
+How to import (in the partial):
+
+```
+import { SdkOnly, SdkTerm } from '@site/src/components';
+```
+
+### Usage
+
+```mdx
+{/* docs/develop/_shared/continue-as-new/state.mdx */}
+import { SdkOnly, SdkTerm } from '@site/src/components';
+
+This state is typically set to <SdkTerm name="null" /> for the original caller.
+
+<SdkOnly sdks="java">
+
+A paragraph only the Java page shows.
+
+</SdkOnly>
+
+Pass the state<SdkOnly not="go"> as a single argument</SdkOnly>.
+```
+
+```mdx
+{/* docs/develop/go/workflows/continue-as-new.mdx */}
+import State from '@site/docs/develop/_shared/continue-as-new/state.mdx';
+
+## Use Continue-As-New with the Go SDK {/* #how */}
+
+<State />
+```
+
+- **`<SdkOnly sdks="go java">`** shows its children only for the listed SDKs. **`<SdkOnly not="python">`** shows them for
+  every SDK except the listed ones. Use it inline in a sentence, or as a block with the tags on their own lines and blank
+  lines around the content. Don't nest one `<SdkOnly>` inside another.
+- **`<SdkTerm name="..." />`** writes the current SDK's value for a term, such as `null` (`nil` for Go, `None` for
+  Python). Terms are defined in `SDK_TERMS` in `src/constants/sdkData.js`, which must give a value for every SDK. `label`
+  ("Go") and `sdkName` ("Go SDK") are always available.
+- **`<SdkScope sdk="go">`** renders its children for one SDK, for example to reuse a partial on a cross-language page.
+  An `<SdkTabs>` slot already does this for its own SDK.
+
+The current SDK comes from the page's folder (`docs/develop/<id>/`), from an enclosing `<SdkScope>`, or from an
+`<SdkTabs>` slot. `<SdkOnly>` or `<SdkTerm>` anywhere else, an unknown SDK id, or an unknown term fails the build.
+
+Keep headings and anchors in the page, not in a partial or inside `<SdkOnly>`, so every SDK's page has the same table of
+contents. If more than about a third of a partial's lines are inside `<SdkOnly>`, put that text back in the pages.
+
+### LLM markdown
+
+The pipeline resolves these components with the same rules (`src/utils/sdkContent.js`), so each SDK's `.md` file
+contains only its own text. See [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md).
 
 ## Using AnnotatedCode
 

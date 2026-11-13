@@ -1,8 +1,7 @@
 // ⚠️  LLM MARKDOWN PIPELINE: the generated .md output renders this grid via
 // scripts/component-handlers/sdk-overview-cards.mjs, which reads the same
-// src/data/sdk-versions.json and mirrors each SDK's label and
-// apiReferenceHref from src/constants/sdks.js. If you change the SDK list,
-// labels, or API reference links there, update that handler too. See
+// src/data/sdk-versions.json and the same SDK list (src/constants/sdkData.js).
+// If you change what a card shows, update that handler too. See
 // MARKDOWN_PIPELINE.md.
 import React from 'react';
 import Link from '@docusaurus/Link';
