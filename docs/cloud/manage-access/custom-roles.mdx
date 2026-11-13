@@ -52,34 +52,6 @@ grants:
 - `cloud.namespace.list`, scoped to the Cloud Account
 - `cloud.namespace.get`, scoped to all Namespace resources
 
-## Follow best practices
-
-`cloud.namespace.list` and `cloud.namespace.get` do different jobs. `cloud.namespace.list` authorizes the
-[GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces) call.
-Each Namespace is included in the response only when the caller has `cloud.namespace.get` on that Namespace.
-Grant both when a principal needs to see Namespaces they do not already have a predefined Namespace role on.
-
-### Show every Namespace in the Cloud UI and CLI
-
-To show every Namespace, grant:
-
-- `cloud.namespace.list`, scoped to the Cloud Account
-- `cloud.namespace.get`, scoped to all Namespace resources
-
-This is the `NamespaceGlobalReadOnly` example above. The same pair applies to the Cloud UI Namespace list and to
-`temporal cloud namespace list`.
-
-### Grant list without widening the Namespace list
-
-An Account Developer who receives only `cloud.namespace.list` can call `GetNamespaces`. The response still contains
-only the Namespaces where that user already has the Read, Write, or Admin role.
-
-### Read who has access to a Namespace
-
-`cloud.namespace.getUserNamespaceAssignments`, scoped to all Namespaces, lets the caller read which principals have
-access to each Namespace. It does not add those Namespaces to the list. Pair it with `cloud.namespace.get` on the
-Namespaces that should appear.
-
 ## Delegating Custom Roles
 
 Custom role administration defaults to the Account Owner, but can be delegated. Account Owners are the primary
@@ -426,3 +398,31 @@ temporal cloud custom-role delete --role-id my-role-id
 
 For more information about the limits of Custom Roles, such as the maximum number of custom roles per Account, see
 [Custom Roles limits](/evaluate/cloud/limits#custom-role-limits).
+
+## Follow best practices
+
+`cloud.namespace.list` and `cloud.namespace.get` do different jobs. `cloud.namespace.list` authorizes the
+[GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces) call.
+Each Namespace is included in the response only when the caller has `cloud.namespace.get` on that Namespace.
+Grant both when a principal needs to see Namespaces they do not already have a predefined Namespace role on.
+
+### Show every Namespace in the Cloud UI and CLI
+
+To show every Namespace, grant:
+
+- `cloud.namespace.list`, scoped to the Cloud Account
+- `cloud.namespace.get`, scoped to all Namespace resources
+
+This is the `NamespaceGlobalReadOnly` example in [Defining Custom Roles](#defining-custom-roles). The same pair applies
+to the Cloud UI Namespace list and to `temporal cloud namespace list`.
+
+### Grant list without widening the Namespace list
+
+An Account Developer who receives only `cloud.namespace.list` can call `GetNamespaces`. The response still contains
+only the Namespaces where that user already has the Read, Write, or Admin role.
+
+### Read who has access to a Namespace
+
+`cloud.namespace.getUserNamespaceAssignments`, scoped to all Namespaces, lets the caller read which principals have
+access to each Namespace. It does not add those Namespaces to the list. Pair it with `cloud.namespace.get` on the
+Namespaces that should appear.
