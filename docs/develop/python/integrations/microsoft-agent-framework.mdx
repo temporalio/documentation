@@ -170,7 +170,7 @@ final answer. Set them on `TemporalChatClient(function_invocation_configuration=
 ### Connect to MCP servers
 
 MCP support runs on [`temporalio-mcp`](/develop/python/integrations/mcp) and MCP Python SDK 2. Install the `mcp`
-extra, which adds `temporalio-mcp`, `mcp` 2.2 or later and `mcp-types`; a project that still pins MCP SDK 1 cannot
+extra, which adds `temporalio-mcp` 0.4, `mcp` 2.2 or later and `mcp-types`; a project that still pins MCP SDK 1 cannot
 install it:
 
 ```bash
@@ -207,7 +207,11 @@ The Activity options on the provider apply to its list and call Activities. The 
 `start_to_close_timeout`; without one, `temporalio-mcp`'s one-minute default applies. The default Retry Policy retries
 without limit, so a run waits while its server is down; bound it with `retry_policy` or `schedule_to_close_timeout`.
 An exhausted `call-tool` then becomes an error result for the model, and an exhausted `list-tools` raises from
-`agent.run`. The provider sets no `heartbeat_timeout`; `temporalio-mcp` 0.3 does not heartbeat its Activities.
+`agent.run`. MCP Activities heartbeat at half the `heartbeat_timeout` while they run, and `temporalio-mcp` defaults it to
+10 seconds when the provider leaves it unset, so a cancel reaches a request already running on a Worker and a lost Worker
+is noticed within 10 seconds instead of at the start-to-close timeout; in Temporal Cloud each heartbeat that reaches the
+Temporal Service is an Action, at most one every 8 seconds of a running request. Pass `heartbeat_timeout=` on
+`TemporalMCPToolProvider` to change it, or `None` to turn heartbeats off.
 `tool_name_prefix`, `allowed_tools` and `approval_mode` work as they do on Agent Framework's `MCPTool`, and tool names
 are normalized the same way: a character outside `A-Za-z0-9_.-` becomes `-` and the separators between the prefix and
 the name are trimmed, so `files/read` reaches the model as `files-read` and prefix `gh_` gives `gh_files-read`.
