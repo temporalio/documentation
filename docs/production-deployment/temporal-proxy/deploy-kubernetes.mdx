@@ -116,6 +116,11 @@ Keep upstream `name` values DNS-safe, meaning lowercase alphanumeric characters 
 name from them. To manage certificate files yourself instead, skip `secretName` and mount them with the chart's generic
 `volumes` and `volumeMounts` values.
 
+The chart mounts each Secret as a directory, so when cert-manager or anything else updates the Secret, Kubernetes
+updates the files in the pod and the proxy picks them up without a restart. See
+[Rotate certificates](/production-deployment/temporal-proxy/configure#rotate-certificates). If you mount certificate
+files yourself, don't use `subPath`, because Kubernetes doesn't update `subPath` mounts when the Secret changes.
+
 ## Probe the gateway
 
 The gateway serves the standard gRPC health service, so a Kubernetes gRPC probe can read it directly. The chart passes
@@ -143,6 +148,11 @@ completes a handshake, which the internal check deliberately skips.
 
 Kubernetes gRPC probes connect in plaintext, so they cannot reach a gateway that terminates TLS. When `config.tls` is
 set, probe the proxy some other way, such as an exec probe running a client that presents the right certificate.
+
+When you expose the [codec server](/production-deployment/temporal-proxy/codec-server) through an Ingress or load
+balancer, point its health check at the HTTP listener's
+[`/healthz`](/production-deployment/temporal-proxy/codec-server#http-health-check) route, which needs no credential.
+Beyond loopback the listener serves TLS, so set `scheme: HTTPS` on an `httpGet` check.
 
 ## Shut down cleanly
 
