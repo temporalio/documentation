@@ -55,6 +55,8 @@ See [API contract requirements](#api-contract-specifications).
 
 Decoded payloads can then be displayed in the Workflow Execution Event History on the Web UI. When you use a Codec Server, the decoded payloads are decoded and returned on the client side only. Payloads on the Temporal Service (whether on Temporal Cloud or self-hosted) remain encrypted.
 
+Configuring a Codec Server endpoint for the Web UI or CLI does not encrypt Payloads sent by your Workers and Clients. Temporal Cloud provides [Payload encryption validation](/cloud/payload-encryption-validation) to check that Payloads sent to Temporal Cloud carry the encryption metadata you configured for the Namespace, and can reject requests that do not.
+
 Because you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
 
 - When you register a Codec Server endpoint with your Web UI, expect the Codec Server to receive multiple requests per Workflow Execution.
