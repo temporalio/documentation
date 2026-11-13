@@ -88,12 +88,13 @@ Set Workflow timeouts and Retry Policies in your language:
 
 Activity timeouts tell the caller — a Workflow, or the Client for a [Standalone Activity](/standalone-activity) — which kind of Activity failure occurred, and the Activity's [Retry Policy](/encyclopedia/retry-policies) decides what happens next.
 
-- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**: the maximum time an [Activity Task](/tasks#activity-task) can sit in the Task Queue before a Worker picks it up. The default is infinite, and this timeout never triggers a retry, because a retry would return the Activity Task to the same Task Queue.
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**: the maximum time an [Activity Task](/tasks#activity-task) can sit in the Task Queue before a Worker picks it up. It has no default of its own, and this timeout never triggers a retry, because a retry would return the Activity Task to the same Task Queue.
 - **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**: the maximum time for a single [Activity Task Execution](/tasks#activity-task-execution). It has no default of its own. If you set only a Schedule-To-Close Timeout, Start-To-Close uses that value.
-- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)**: the maximum time for the whole [Activity Execution](/activity-execution), from the first Activity Task being scheduled to the last one closing. The default is infinite.
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)**: the maximum time for the whole [Activity Execution](/activity-execution), from the first Activity Task being scheduled to the last one closing. It has no default of its own.
 - **[Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout)**: the maximum time between [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat), the pings a Worker sends to report that an Activity Execution is still making progress.
 
 Every Activity Execution needs either a Start-To-Close or a Schedule-To-Close Timeout.
+The Temporal Service fills in whichever timeouts you leave unset and caps the rest against each other, so the values it stores can differ from the ones you passed. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
 Set Start-To-Close: the [Temporal Service](/temporal-service) can't tell when a Worker crashes or loses contact, so it relies on this timeout to retry the Activity.
 Long-running Activities should also Heartbeat and set a Heartbeat Timeout, which detects a lost Worker sooner than a long Start-To-Close Timeout can.
 
