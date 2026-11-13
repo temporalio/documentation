@@ -86,10 +86,11 @@ Validate Connection reports one of the following failure modes:
 
   If the version was recently created, the Worker may still be starting up. Wait a moment and retry.
 
-You can also check Task Queue bindings from the CLI:
+You can also check Task Queue bindings with [Temporal CLI](/cli) v1.10.0 or later. The
+`worker deployment version` commands are Experimental:
 
 ```bash
-temporal worker deployment describe-version \
+temporal worker deployment version describe \
   --namespace <NAMESPACE> \
   --deployment-name <DEPLOYMENT_NAME> \
   --build-id <BUILD_ID> \
