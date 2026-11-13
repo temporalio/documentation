@@ -1340,7 +1340,6 @@ module.exports = {
             'cloud/get-started/certificates'
           ],
         },
-        'cloud/deprecation-policy',
         {
           type: 'category',
           label: 'Account access',
@@ -1531,6 +1530,7 @@ module.exports = {
         },
         'cloud/capacity-modes',
         'cloud/operation-api',
+        'cloud/deprecation-policy',
         'cloud/rpo-rto',
         'cloud/projects',
         'cloud/terraform-provider',
