@@ -27,15 +27,15 @@ Put simply, it's a durable communication layer for your application's infrastruc
 
 Nexus makes the connections between Temporal applications durable without requiring you to rebuild that infrastructure for every pair of teams. 
 
-Let's say Payments, Fraud, and Shipping need to talk to each other constantly. Teams often connect them in different ways: custom gateways, HTTP clients, webhooks; or it could be using Child Workflows and Activity wrappers with Temporal. 
+Let's say Payments, Fraud, and Shipping need to talk to each other constantly. Teams often connect them in different ways: custom gateways, HTTP clients, and webhooks, or Child Workflows and Activity wrappers with Temporal.
 
-Each approach has gaps: Child Workflows require everyone in the same namespace, Activity Wrappers need per-target mTLS clients and boilerplate retry logic, and custom gateways aren't durable by default. It's infrastructure being rebuilt or worked around for every pair of teams.
+Each approach has gaps: Child Workflows require everyone in the same Namespace, Activity wrappers need per-target mTLS clients and boilerplate retry logic, and custom gateways aren't durable by default.
 
 It can work but sometimes it can be like stringing tin cans between desks. It works until someone moves their desk.
 
-Temporal can make each individual service durable internally, but the connections between them are only as reliable as whatever you built yourself without Nexus and the approach you decide to stitch together. 
+The connections between applications are only as reliable as whatever you built yourself without Nexus, and the approach you decided to stitch together.
 
-Nexus gives separate teams one shared way to connect. It extends the same durability you already rely on if you're using Temporal to the space between teams. Each team stays in its own world, with its own code, security and release schedule, and shares only the specific things other teams can call. If something crashes halfway through, the work waits and picks up when the team is back.
+Nexus gives separate teams one shared way to connect. It extends the durability you already rely on to the space between teams. Each team stays in its own world, with its own code, security and release schedule, and shares only the specific things other teams can call. If something crashes halfway through, the work waits and picks up when the team is back.
 
 <CaptionedImage
     src="/diagrams/nexus-share-only-what-you-choose.svg"
@@ -55,7 +55,7 @@ Every boundary between systems is a place where things can break. Nexus works ac
 - **Cross-Project (Temporal Cloud):** In Temporal Cloud, Namespaces are grouped into Projects. A caller Namespace in one Project can invoke a Nexus Endpoint owned by another Project, as long as it's on the Endpoint's allowlist.
 - **Cross-SDK:** The team making the call and the team receiving it don't have to write code in the same programming language. One team can use Go, another Java, another Python. Nexus is available in the Go, Java, Python, TypeScript, .NET, and Rust SDKs.
 
-The same reliability holds across all of them. Work doesn't get lost, and one team's failure doesn't cascade into another team's system.
+The same reliability holds across all of them.
 
 <CaptionedImage
     src="/diagrams/nexus-connection-boundaries.svg"
