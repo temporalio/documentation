@@ -53,7 +53,7 @@ scrape_configs:
 ```
 
 In this example, Prometheus is configured to scrape at 10-second intervals and to listen for Temporal Service metrics on `host.docker.internal:8000` and SDK metrics on two targets, `host.docker.internal:8077` and `host.docker.internal:8078`.
-The `8077` and `8078` ports must be set on `WorkflowServiceStubs` in your application code with your preferred SDK -- there is an example of this in the next section.
+The `8077` and `8078` ports must be set on `WorkflowServiceStubs` in your application code with your preferred SDK. See [SDK metrics setup](#sdk-metrics-setup).
 You can set up as many targets as required.
 
 :::info
@@ -65,7 +65,7 @@ For further Prometheus configuration options, refer to the [Prometheus documenta
 You can use Docker to run the official Prometheus image with this configuration:
 
 ```bash
-docker run -p 9090:9090 -v /path/to/prometheus.yml /etc/prometheus/prometheus.yml prom/prometheus
+docker run -p 9090:9090 -v /path/to/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 ```
 
 Next, launch your Temporal dev server from the CLI with an additional `--metrics-port 8000` parameter:
@@ -105,6 +105,8 @@ For end-to-end examples of how to expose metrics from each SDK, see the metrics 
 - [.NET SDK Sample](https://github.com/temporalio/samples-dotnet/tree/main/src/OpenTelemetry)
 
 Some of these may require you to set different metrics port numbers based on the Prometheus example here, which is configured to scrape port `8077` and `8078` by default.
+For example, the Go sample serves metrics on port `9090`, the same host port as the Prometheus container, and the Python sample uses ports `9000` and `9001`.
+Change the sample's listen port to one of the scrape targets, or add its port to `prometheus.yml`.
 Follow the instructions from each of the samples to run Workflows and begin emitting metrics.
 This will allow you to populate a dashboard in the next section and understand how to further customize Temporal observability for your needs.
 
@@ -115,7 +117,7 @@ Once your Workflows are running and emitting metrics, you can visit [http://loca
 ![Prometheus scrape targets](/img/observability/prometheus-targets.png)
 
 This example shows a response from the server metrics endpoint, provided by the Temporal dev server, and two SDK metrics endpoints, as defined in the Prometheus configuration.
-To create this example, we used the Go and Python metrics samples, running on port 8077 and 8088 respectively.
+To create this example, we used the Go and Python metrics samples, changed to serve metrics on ports 8077 and 8078 respectively.
 If you are not pushing data to exactly 3 metrics endpoints, your environment may be different.
 
 Next, you can visit the [local Prometheus query endpoint](http://localhost:9090/query) to manually run [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/) queries on your exported metrics, or proceed to the next section to configure Grafana to generate dashboards from those metrics.
@@ -191,6 +193,7 @@ service {
     interval = "10s"
     timeout  = "2s"
   }
+}
 ```
 
 or like this for gRPC (requires Consul ≥ `1.0.5`):
@@ -203,6 +206,7 @@ service {
     interval     = "10s"
     timeout      = "2s"
   }
+}
 ```
 
 ## Installing via Helm chart
