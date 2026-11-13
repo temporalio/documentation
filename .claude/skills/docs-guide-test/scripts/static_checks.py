@@ -475,9 +475,9 @@ def run(src_dir: Path, enabled: list[str], exclude: set[str]) -> dict:
     parsed: list[tuple[str, ast.Module]] = []
 
     for path in sorted(src_dir.rglob("*.py")):
-        if path.name in exclude:
-            continue
         rel = str(path.relative_to(src_dir))
+        if path.name in exclude or rel in exclude:  # match basename or full relpath
+            continue
         try:
             tree = ast.parse(path.read_text(encoding="utf-8"), filename=rel)
         except SyntaxError as exc:

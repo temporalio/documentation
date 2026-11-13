@@ -5,6 +5,13 @@ Temporal guides under docs/guides/ show their code as fenced blocks, one file at
 time, with the file's name as a comment on the first line (for example `# worker.py`).
 This script pulls those blocks back out into real files so the guide can be run.
 
+A filename may carry a subdirectory (`# activities/payment.py`): the path is
+preserved, so a guide that splits its code into subpackages reconstructs its real
+layout instead of being flattened to bare filenames (which would break imports
+like `from activities.payment import charge`). For Python, an empty `__init__.py`
+is created in each reconstructed subdirectory that holds a `.py` file but doesn't
+already ship one, so those packages import.
+
 Default mode ("concat-header"): the Code Sandwich convention the guides are moving to,
 where one file is shown as a `# name.ext` header block followed by many header-less
 continuation blocks interleaved with prose. A `# name.ext` header starts (or switches)
@@ -41,7 +48,7 @@ import argparse
 import json
 import re
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 # A filename header comment: "# models.py", "// client.ts", "# sub/dir/file.go".
 # The name must have an extension so prose comments aren't mistaken for filenames.
@@ -92,6 +99,66 @@ def _name_from_comment_header(block: list[str]) -> str | None:
     return m.group(1) if m else None
 
 
+def _safe_relpath(name: str) -> str | None:
+    """Normalize a header/prose filename to a safe relative path under out_dir.
+
+    Preserves subdirectories so a multi-package guide keeps its layout, but
+    refuses anything that would write outside out_dir: an absolute path, or one
+    that climbs out with `..`. Returns a POSIX-style relative path, or None if the
+    name is unusable.
+    """
+    p = PurePosixPath(name.strip().replace("\\", "/"))
+    if p.is_absolute():
+        return None
+    parts: list[str] = []
+    for part in p.parts:
+        if part in ("", "."):
+            continue
+        if part == "..":
+            return None  # don't let a header escape the output directory
+        parts.append(part)
+    return str(PurePosixPath(*parts)) if parts else None
+
+
+def _is_excluded(rel: str, exclude: set[str]) -> bool:
+    """True if `rel` (a relative path) matches an exclude entry.
+
+    Matches either the full relative path (`activities/payment.py`) or the bare
+    filename (`payment.py`), so manifests can keep listing basenames.
+    """
+    return rel in exclude or PurePosixPath(rel).name in exclude
+
+
+def _create_packages(out_dir: Path, written: list[str]) -> list[str]:
+    """Add an empty `__init__.py` to each reconstructed subdirectory of .py files.
+
+    A guide that splits code into subpackages (`activities/`, `workflows/`) needs
+    those directories to be importable. Walk every written `.py` path up to the
+    output root and create an `__init__.py` in each directory that doesn't already
+    have one (the guide may ship its own). Returns the paths created.
+    """
+    existing = set(written)
+    dirs: set[PurePosixPath] = set()
+    for w in written:
+        if not w.endswith(".py"):
+            continue
+        parent = PurePosixPath(w).parent
+        while parent != PurePosixPath("."):  # stop at the output root itself
+            dirs.add(parent)
+            parent = parent.parent
+
+    created: list[str] = []
+    for d in sorted(dirs):
+        init_rel = str(d / "__init__.py")
+        if init_rel in existing:
+            continue
+        dest = out_dir / init_rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text("", encoding="utf-8")
+        created.append(init_rel)
+    return created
+
+
 def _append_block(lines: list[str], block: list[str]) -> None:
     """Append a block to a file's accumulating lines, with a blank separator."""
     if lines:
@@ -140,14 +207,16 @@ def extract(guide: Path, out_dir: Path, lang: str, exclude: set[str], mode: str 
                 continue
             header = _name_from_comment_header(block)
             if header:
-                base = Path(header).name
-                current = base
-                current_excluded = base in exclude
-                if current_excluded:
-                    if base not in excluded:
-                        excluded.append(base)
+                rel = _safe_relpath(header)
+                if rel is None:  # unusable/escaping header: don't start a file
                     continue
-                _append_block(files.setdefault(base, []), block)
+                current = rel
+                current_excluded = _is_excluded(rel, exclude)
+                if current_excluded:
+                    if rel not in excluded:
+                        excluded.append(rel)
+                    continue
+                _append_block(files.setdefault(rel, []), block)
             elif current is not None and not current_excluded:
                 _append_block(files[current], block)
     else:
@@ -160,20 +229,26 @@ def extract(guide: Path, out_dir: Path, lang: str, exclude: set[str], mode: str 
                 name = _name_from_comment_header(block)
             if not name:
                 continue
-            base = Path(name).name  # flatten any path in the header to a bare filename
-            if base in exclude:
-                if base not in excluded:
-                    excluded.append(base)
+            rel = _safe_relpath(name)  # preserve any subdirectory in the name
+            if rel is None:
                 continue
-            if base in files:  # first block per filename wins
-                skipped_duplicate.append(base)
+            if _is_excluded(rel, exclude):
+                if rel not in excluded:
+                    excluded.append(rel)
                 continue
-            files[base] = list(block)
+            if rel in files:  # first block per filename wins
+                skipped_duplicate.append(rel)
+                continue
+            files[rel] = list(block)
 
     written: list[str] = []
-    for base, lines in files.items():
-        (out_dir / base).write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
-        written.append(base)
+    for rel, lines in files.items():
+        dest = out_dir / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+        written.append(rel)
+
+    packages = _create_packages(out_dir, written) if lang == "python" else []
 
     return {
         "guide": str(guide),
@@ -181,6 +256,7 @@ def extract(guide: Path, out_dir: Path, lang: str, exclude: set[str], mode: str 
         "lang": lang,
         "mode": mode,
         "written": written,
+        "packages": packages,
         "skipped_duplicate": skipped_duplicate,
         "excluded": excluded,
     }

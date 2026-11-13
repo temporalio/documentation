@@ -157,6 +157,22 @@ module-level function and breaks the file. An excluded file's continuation block
 After a `concat-header` run, spot-check the reconstruction (`--keep`, or extract on its own) before trusting a red
 result: a failure can mean the blocks don't assemble that way, not that the code is broken.
 
+### Multi-package guides (subdirectories in the filename)
+
+A filename header can carry a subdirectory — `# activities/payment.py`, `# workflows/order.py`. The extractor
+preserves that path instead of flattening it to a bare filename, so a guide that splits its code into subpackages
+reconstructs its real layout and imports like `from activities.payment import charge` resolve. This works in every mode
+(`comment-header`, `prose-filename`, `concat-header`); `exclude` entries match either the bare filename (`payment.py`)
+or the full relative path (`workflows/order.py`). A header that would write outside the output directory (an absolute
+path, or one with `..`) is refused.
+
+For Python, the extractor also drops an empty `__init__.py` into each reconstructed subdirectory that holds a `.py`
+file and doesn't already ship one, so the packages import; those paths are listed under `packages` in the extract
+summary. The runner adds the reconstructed source directory to `PYTHONPATH` (on top of running from it), so a guide
+imports the same whether its entrypoint sits at the root (`python worker.py`), runs as a module (`python -m
+pkg.worker`), or lives in a subdirectory. A flat guide — every file at the top level — is unaffected: no subdirectories
+means no `packages` created, and the file list is identical to before.
+
 ## Runnable manifests that currently fail
 
 A runnable manifest whose guide is genuinely broken should stay runnable and go red — that red is the finding the skill

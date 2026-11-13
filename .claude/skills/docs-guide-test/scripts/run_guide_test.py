@@ -127,6 +127,19 @@ def run_setup_steps(steps: list[str], verbose: bool) -> bool:
     return True
 
 
+def run_env(src_dir: Path) -> dict:
+    """Environment for the worker and driver.
+
+    Prepends the reconstructed source dir to PYTHONPATH so a guide split into
+    subpackages imports cleanly however it's launched — `python -m pkg.worker`,
+    or a script inside a subdirectory — not just when the entrypoint sits at the
+    project root. `cwd` is already `src_dir`; this covers the rest.
+    """
+    existing = os.environ.get("PYTHONPATH", "")
+    pythonpath = str(src_dir) + (os.pathsep + existing if existing else "")
+    return {**os.environ, "PYTHONUNBUFFERED": "1", "PYTHONPATH": pythonpath}
+
+
 def tail(path: Path, n: int = 40) -> str:
     if not path.is_file():
         return "(no output)"
@@ -271,6 +284,9 @@ def run(manifest_arg: str, keep: bool, verbose: bool, auto_install: bool) -> int
             return 1
         extracted = json.loads(res.stdout)
         log(f"extracted {len(extracted['written'])} files: {', '.join(extracted['written'])}")
+        packages = extracted.get("packages", [])
+        if packages:
+            log(f"created {len(packages)} package marker(s): {', '.join(packages)}")
 
         # 1b. Static checks over the reconstructed source (unused imports,
         # unhandled failure paths). These need no server or execution, so run
@@ -325,7 +341,7 @@ def run(manifest_arg: str, keep: bool, verbose: bool, auto_install: bool) -> int
                 stdout=wlog,
                 stderr=subprocess.STDOUT,
                 start_new_session=True,
-                env={**os.environ, "PYTHONUNBUFFERED": "1"},
+                env=run_env(src_dir),
             )
         time.sleep(float(manifest.get("startup_wait_seconds", 4)))
         if worker_proc.poll() is not None:
@@ -342,7 +358,7 @@ def run(manifest_arg: str, keep: bool, verbose: bool, auto_install: bool) -> int
             capture_output=True,
             text=True,
             timeout=int(manifest.get("driver_timeout_seconds", 120)),
-            env={**os.environ, "PYTHONUNBUFFERED": "1"},
+            env=run_env(src_dir),
         )
         driver_out = driver.stdout + driver.stderr
         if verbose:
