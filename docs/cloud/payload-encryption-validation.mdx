@@ -134,6 +134,8 @@ Header and Failure inspection are disabled by default.
   </TabItem>
   <TabItem value="cloud-api" label="Cloud Operations API">
 
+Use the latest Cloud Operations API version. See [API versioning and deprecation](/ops#api-versioning-and-deprecation).
+
 For CreateNamespace, include `encryption_validation` in the Namespace spec. The JSON below is a spec fragment, not a complete request.
 
 For UpdateNamespace, first call GetNamespace, preserve the complete returned spec and resource version, and change only `spec.encryption_validation`. Submit the complete updated spec with that resource version because UpdateNamespace replaces the entire spec. See the [Cloud Ops API update example](/cloud/high-availability/enable#set-forwarding-curl).
@@ -155,7 +157,7 @@ The API `mode` value is the enum name: `ENCRYPTION_VALIDATION_MODE_DISABLED`, `E
   </TabItem>
   <TabItem value="terraform" label="Terraform">
 
-Use a provider release (v1.11.0+) that includes `encryption_validation`.
+Use Terraform provider v1.12.0 or later. That release includes `encryption_validation`.
 
 The example below enables validation in `warn` mode. It accepts Payloads whose metadata matches `encoding = binary/encrypted` or `encoding = binary/aes256`. Header and Failure checks are skipped.
 
@@ -185,7 +187,7 @@ The `encryption_validation` block is read-only on the Namespace data source. The
   </TabItem>
   <TabItem value="cli" label="CLI">
 
-These commands are experimental and are part of the `temporal cloud` CLI. `tcld` does not have them. The Namespace argument is `namespace.account`.
+These commands require Temporal Cloud CLI v0.2.3 or later. They are experimental and are part of the `temporal cloud` CLI. `tcld` does not have them. The Namespace argument is `namespace.account`.
 
 Read the current setting. If the metadata key or values are empty, the response shows the server defaults that apply: `encoding` and `binary/encrypted`.
 
