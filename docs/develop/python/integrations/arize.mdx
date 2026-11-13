@@ -18,7 +18,7 @@ Temporal's OpenTelemetry plugin sends Workflow, Activity, and LLM spans to [Ariz
 open-source [Arize Phoenix](https://arize.com/docs/phoenix) or the [Arize AX](https://arize.com/docs/ax) platform, as
 one trace per Workflow interaction. Arize reads the [OpenInference](https://github.com/Arize-ai/openinference)
 semantic conventions, so LLM calls appear with their model, token usage, and messages, and traces group into
-sessions by Workflow Id.
+sessions by Workflow ID.
 
 Temporal gives your agent code [Durable Execution](/temporal#durable-execution). Arize adds the observability side:
 inspect LLM inputs and outputs, follow a request from the Client through the Workflow to the model, evaluate
@@ -114,8 +114,7 @@ def setup_tracing(service_name: str) -> None:
 <!--SNIPEND-->
 
 Phoenix and Arize AX both ingest OTLP over HTTP. One exporter helper covers both: Phoenix by default, Arize AX when a
-space ID and API key are present. This guide and the sample were validated against Phoenix, and Arize validated them
-against an Arize AX space. The Arize AX settings follow
+space ID and API key are present. The Arize AX settings follow
 [Arize's Temporal guide](https://arize.com/docs/ax/integrations/python-agent-frameworks/temporal/temporal-tracing).
 
 <!--SNIPSTART python-arize-tracing-exporter-->
@@ -330,6 +329,13 @@ class TicketTriageWorkflow:
 
 ### Trace agents built with the OpenAI Agents SDK
 
+:::caution
+
+The OpenTelemetry bridge in the `temporalio-openai-agents` package is Public Preview and may change before general
+availability.
+
+:::
+
 If your Workflow runs an agent through the [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents),
 enable the plugin's OpenTelemetry bridge instead of instrumenting the OpenAI client. The bridge converts the Agents SDK
 trace into OpenInference spans (AGENT, LLM, and TOOL, plus CHAIN spans for the Temporal operations) on the same
@@ -429,15 +435,11 @@ finally:
 ```
 <!--SNIPEND-->
 
-The bridge ships in the `temporalio-openai-agents` package and is Public Preview; it may change before general
-availability.
-
-
 ## Add OpenInference attributes
 
 Arize lists a trace by the `input.value` and `output.value` of its root span, groups traces into sessions by
 `session.id`, and filters by `user.id`, `metadata`, and `tag.tags`. Set them on a root span in the starter, and use
-the Workflow Id as the session so every interaction with one Workflow Execution lands in one session. Setting
+the Workflow ID as the session so every interaction with one Workflow Execution lands in one session. Setting
 `session.id` and `user.id` as OpenTelemetry baggage as well lets Temporal carry them into the Workflow and Activity
 contexts through its trace-context header.
 
@@ -504,7 +506,7 @@ finally:
 
 Temporal's own spans have no OpenInference kind, so Phoenix and Arize AX show them as unknown. A small span processor
 gives them a kind, copies the Temporal identifiers into OpenInference `metadata`, sets the session from the Workflow
-Id, records the Activity attempt number, and applies the baggage to every span, LLM spans included.
+ID, records the Activity attempt number, and applies the baggage to every span, LLM spans included.
 
 <!--SNIPSTART python-arize-tracing-enrichment-processor-->
 [arize_tracing/telemetry.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/telemetry.py)
@@ -561,7 +563,7 @@ class OpenInferenceEnrichmentProcessor(SpanProcessor):
 With the pieces above, one ticket-triage interaction produces this trace. The kinds are what Arize renders.
 
 ```
-ticket-triage                                    CHAIN  (root: session = Workflow Id, user, input, output, tags)
+ticket-triage                                    CHAIN  (root: session = Workflow ID, user, input, output, tags)
 ├─ StartWorkflow:TicketTriageWorkflow            CHAIN
 │  └─ RunWorkflow:TicketTriageWorkflow           CHAIN
 │     ├─ triage                                  CHAIN  (custom span from Workflow code)
@@ -584,7 +586,7 @@ The Temporal Web UI and Arize answer different questions about the same executio
 
 | Temporal Web UI | Arize |
 | --- | --- |
-| Workflow Execution (one Workflow Id, one or more runs) | Session (`session.id` = Workflow Id) |
+| Workflow Execution (one Workflow ID, one or more runs) | Session (`session.id` = Workflow ID) |
 | Run (`RunWorkflow` with `temporalRunID`) | One `RunWorkflow` span per run in the trace |
 | Event History and Timeline | The trace waterfall, in the same order |
 | Pending Activities: attempt count and last failure | One `RunActivity` span per attempt, failed attempts with error status and `temporal.activity.attempt` |
@@ -609,8 +611,9 @@ dies while a Workflow waits, the `RunWorkflow` span is exported once, when the W
 and its duration covers the outage. The stopping Worker logs `Failed to detach context` with a traceback and then
 `Shutdown called, ignoring Span`: the open span was attached in a Workflow Task that no longer exists, and the trace is
 unaffected. If a Worker dies in the middle of an Activity attempt, that attempt's span was never ended and does not
-appear; the next attempt does, with the next attempt number. Spans that ended less than about half a second before
-a Worker process died can also be lost from the export buffer. Event History remains the source of truth.
+appear; the next attempt does, with the next attempt number. Spans still waiting in the `BatchSpanProcessor` buffer
+when a Worker process dies are also lost: up to `schedule_delay_millis` of spans, which is 500 ms in the sample and
+5 seconds by default. Event History remains the source of truth.
 
 ### Workflow Task failures
 
@@ -619,19 +622,17 @@ the failed task are exported again with the same span identifiers, because the i
 Phoenix, which deduplicates spans by span identifier, keeps the first copy. The `WorkflowTaskFailed` event in the Temporal Web UI is where the failure
 is visible.
 
-### Continue-As-New, resets, and retries
+### Continue-As-New, resets, and Workflow retries
 
 A Workflow that continues as new writes its current trace context into the new run, so the new run's `RunWorkflow`
 span nests under the previous run's span in the same trace. A reset or a retried Workflow reuses the original start
 context, so its `RunWorkflow` span appears as a second child of the same `StartWorkflow` span with its own
-`temporalRunID`. Because the session is the Workflow Id, all of these stay together in one Arize session.
+`temporalRunID`. Because the session is the Workflow ID, all of these stay together in one Arize session.
 
-A reset that reapplies an Update or Signal needs `temporalio` 1.36.0 or later. Earlier releases ran the reapplied
-handler before reseeding the reset run's random generator, so its `HandleUpdate` or `HandleSignal` span received the
-first span identifier the original run drew, which is the original `RunWorkflow` span's; Phoenix dropped the
-duplicate and Arize AX showed the original run's Activity subtree twice. Since 1.36.0 every job in a Workflow Task
-is applied before handlers run ([temporalio/sdk-python#2081](https://github.com/temporalio/sdk-python/pull/2081)),
-so every span of the reset run has a fresh identifier.
+A reset that reapplies an Update or Signal needs `temporalio` 1.36.0 or later. On earlier versions, the reapplied
+handler's span reuses the original `RunWorkflow` span's identifier, so Phoenix drops it and Arize AX shows the
+original run's Activities twice
+([temporalio/sdk-python#2081](https://github.com/temporalio/sdk-python/pull/2081)).
 
 ## Resources
 
