@@ -37,9 +37,7 @@ This page covers the following:
 
 :::note
 
-This documentation uses source code from the
-[standalone_activity](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity)
-sample.
+This documentation uses source code from the [standalone-activity](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/ruby-sandbox/activities/standalone-activity) sample.
 
 :::
 
@@ -62,9 +60,9 @@ your Activity job, without waiting for it to be executed by your Worker.
 Use [`Temporalio::Client#start_activity`](https://ruby.temporal.io/Temporalio/Client.html#start_activity-instance_method) to start a
 Standalone Activity and get a handle without waiting for the result:
 
-[start_activity.rb](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity/start_activity.rb)
-
-```ruby
+<!--SNIPSTART ruby-standalone-activity-start-->
+[ruby-sandbox/activities/standalone-activity/start_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/start_activity.rb)
+```rb
 handle = client.start_activity(
   StandaloneActivity::MyActivities::ComposeGreeting,
   'Hello', 'World',
@@ -77,12 +75,13 @@ puts "Started Activity with id=#{handle.id} run_id=#{handle.run_id}"
 # Wait for the result later
 puts "Activity result: #{handle.result}"
 ```
+<!--SNIPEND-->
 
-With the Temporal Server and Worker running, open a new terminal in the `samples-ruby` directory and
+With the Temporal Server and Worker running, open a new terminal in the `ruby-sandbox` directory and
 run:
 
 ```bash
-bundle exec ruby standalone_activity/start_activity.rb
+bundle exec ruby activities/standalone-activity/start_activity.rb
 ```
 
 Or use the Temporal CLI:
@@ -101,20 +100,26 @@ temporal activity start \
 
 Use [`Temporalio::Client#activity_handle`](https://ruby.temporal.io/Temporalio/Client.html#activity_handle-instance_method) to create an [`ActivityHandle`](https://ruby.temporal.io/Temporalio/Client/ActivityHandle.html) for a previously started Standalone Activity:
 
-```ruby
+<!--SNIPSTART ruby-standalone-activity-get-handle {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/standalone-activity/activity_handle.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/activity_handle.rb)
+```rb
 handle = client.activity_handle('standalone-activity-id')
 ```
+<!--SNIPEND-->
 
 Pass no run ID (the default) to target the latest run of the given Activity ID, or pass
 `activity_run_id:` to target a specific run. You can then use the handle to wait for the result,
 describe, cancel, or terminate the Activity:
 
-```ruby
+<!--SNIPSTART ruby-standalone-activity-handle-operations {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/standalone-activity/activity_handle.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/activity_handle.rb)
+```rb
 handle.result      # block until the activity completes; returns the result
 handle.describe    # fetch metadata (status, timestamps, attempt, last failure, etc.)
 handle.cancel      # request cancellation
 handle.terminate   # force-close the activity
 ```
+<!--SNIPEND-->
 
 ## Wait for the result of a Standalone Activity {/* #get-activity-result */}
 
@@ -122,9 +127,12 @@ Under the hood, calling `client.execute_activity` is the same as calling `client
 durably enqueue the Standalone Activity, and then calling `handle.result` to block until the
 Activity completes and return the result:
 
-```ruby
+<!--SNIPSTART ruby-standalone-activity-result {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/standalone-activity/activity_handle.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/activity_handle.rb)
+```rb
 result = handle.result
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI to wait for a result by Activity ID:
 
@@ -142,18 +150,19 @@ enumerator is consumed.
 These APIs return only Standalone Activity Executions. Activities running inside Workflows are not
 included.
 
-[list_activities.rb](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity/list_activities.rb)
-
-```ruby
+<!--SNIPSTART ruby-standalone-activity-list-->
+[ruby-sandbox/activities/standalone-activity/list_activities.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/list_activities.rb)
+```rb
 client.list_activities("TaskQueue = 'standalone-activity-sample'").each do |execution|
   puts "#{execution.activity_id} #{execution.activity_type} #{execution.status}"
 end
 ```
+<!--SNIPEND-->
 
 Run it:
 
 ```bash
-bundle exec ruby standalone_activity/list_activities.rb
+bundle exec ruby activities/standalone-activity/list_activities.rb
 ```
 
 Or use the Temporal CLI:
@@ -172,20 +181,21 @@ Standalone Activity Executions that match a [List Filter](/list-filter) query. T
 total count of executions (running, completed, failed, etc.) — not the number of queued tasks. It
 works the same way as counting Workflow Executions.
 
-[count_activities.rb](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity/count_activities.rb)
-
-```ruby
+<!--SNIPSTART ruby-standalone-activity-count-->
+[ruby-sandbox/activities/standalone-activity/count_activities.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/count_activities.rb)
+```rb
 result = client.count_activities("TaskQueue = 'standalone-activity-sample'")
 puts "Total: #{result.count}"
 result.groups.each do |group|
   puts "  #{group.group_values.join(',')} => #{group.count}"
 end
 ```
+<!--SNIPEND-->
 
 Run it:
 
 ```bash
-bundle exec ruby standalone_activity/count_activities.rb
+bundle exec ruby activities/standalone-activity/count_activities.rb
 ```
 
 Or use the Temporal CLI:

@@ -98,6 +98,11 @@ To run Worker fleets in both regions that rely on this forwarding, see [Active/A
 
 To keep passive-region Workers on standby until failover by disabling this forwarding, see [Active/Hot-Passive](/cloud/high-availability/architecture-patterns#active-hot).
 
+## How to configure AWS Direct Connect for High Availability
+
+If your Workers or applications run in your data center and reach Temporal Cloud through AWS Direct Connect, configure Direct Connect routes to both your Namespace's primary and secondary regions.
+After a failover, the Namespace Endpoint resolves to the newly active region, so your network must be able to reach that region.
+
 ## How to use PrivateLink with High Availability features
 
 :::tip
