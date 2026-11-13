@@ -350,9 +350,12 @@ The example uses the Cloud Run ID plugin to identify each Worker as `<instance-i
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
 
-```ruby
+<!--SNIPSTART ruby-cloud-run-worker-->
+[ruby-sandbox/workers/cloud-run/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/cloud-run/worker.rb)
+```rb
 require 'temporalio/client'
 require 'temporalio/worker'
+require_relative 'greeting_workflow'
 
 client = Temporalio::Client.connect(
   ENV.fetch('TEMPORAL_ADDRESS'),
@@ -364,8 +367,8 @@ client = Temporalio::Client.connect(
 worker = Temporalio::Worker.new(
   client:,
   task_queue: ENV.fetch('TEMPORAL_TASK_QUEUE'),
-  workflows: [MyWorkflow],
-  activities: [Greet],
+  workflows: [GreetingWorkflow],
+  activities: [SayHello],
   deployment_options: Temporalio::Worker::DeploymentOptions.new(
     version: Temporalio::WorkerDeploymentVersion.new(
       deployment_name: 'my-app',
@@ -378,6 +381,7 @@ worker = Temporalio::Worker.new(
 
 worker.run
 ```
+<!--SNIPEND-->
 
 Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or
 `AUTO_UPGRADE`. Set it per Workflow by calling `workflow_versioning_behavior` in the Workflow class, or set a
@@ -593,15 +597,18 @@ CMD ["dotnet", "MyWorker.dll"]
 
 Install the precompiled gem rather than building the native extension from source:
 
-```dockerfile
+<!--SNIPSTART ruby-cloud-run-dockerfile-->
+[ruby-sandbox/workers/cloud-run/Dockerfile](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/cloud-run/Dockerfile)
+```Dockerfile
 FROM ruby:3.3-slim
 
 WORKDIR /app
 RUN gem install temporalio --no-document
-COPY worker.rb ./
+COPY *.rb ./
 
 CMD ["ruby", "worker.rb"]
 ```
+<!--SNIPEND-->
 
 Installing through Bundler in a container can select the source gem, which then fails to build without a Rust
 toolchain. If you use Bundler, add the target platform to the lockfile with `bundle lock --add-platform x86_64-linux`.

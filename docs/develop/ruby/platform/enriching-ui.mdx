@@ -19,11 +19,13 @@ This helps users identify and understand Workflows and their operations.
 
 When starting a Workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
-```ruby
+<!--SNIPSTART ruby-enriching-ui-start-workflow-->
+[ruby-sandbox/platform/enriching-ui/start_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/enriching-ui/start_workflow.rb)
+```rb
 require 'temporalio/client'
 
 # Create client
-client = Temporalio::Client.connect('localhost:7233')
+client = Temporalio::Client.connect('localhost:7233', 'default')
 
 # Start a workflow with static summary and details
 handle = client.start_workflow(
@@ -35,6 +37,7 @@ handle = client.start_workflow(
   static_details: 'Processing premium order with expedited shipping'
 )
 ```
+<!--SNIPEND-->
 
 `static_summary:` is a single-line description that appears in the Workflow list view, limited to 200 bytes.
 `static_details:` can be multi-line and provides more comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
@@ -43,7 +46,9 @@ The input format is standard Markdown excluding images, HTML, and scripts.
 
 You can also use `execute_workflow` for synchronous execution:
 
-```ruby
+<!--SNIPSTART ruby-enriching-ui-execute-workflow {"enable_code_dedenting": true}-->
+[ruby-sandbox/platform/enriching-ui/execute_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/enriching-ui/execute_workflow.rb)
+```rb
 # Execute workflow synchronously
 result = client.execute_workflow(
   'YourWorkflow',
@@ -54,6 +59,7 @@ result = client.execute_workflow(
   static_details: 'Processing premium order with expedited shipping'
 )
 ```
+<!--SNIPEND-->
 
 ### Inside the Workflow
 
@@ -61,29 +67,34 @@ Within a Workflow, you can get and set the _current workflow details_.
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
 Current Workflow details also takes Markdown format (excluding images, HTML, and scripts) and can span multiple lines.
 
-```ruby
-require 'temporalio'
+<!--SNIPSTART ruby-enriching-ui-current-details-->
+[ruby-sandbox/platform/enriching-ui/current_details_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/enriching-ui/current_details_workflow.rb)
+```rb
+require 'temporalio/workflow'
 
 class YourWorkflow < Temporalio::Workflow::Definition
   def execute(input)
     # Get the current details
     current_details = Temporalio::Workflow.current_details
     Temporalio::Workflow.logger.info("Current details: #{current_details}")
-    
+
     # Set/update the current details
     Temporalio::Workflow.current_details = 'Updated workflow details with new status'
-    
+
     'Workflow completed'
   end
 end
 ```
+<!--SNIPEND-->
 
 ### Adding Summary to Activities and Timers
 
 You can attach a `summary:` to activities when starting them from within a Workflow:
 
-```ruby
-require 'temporalio'
+<!--SNIPSTART ruby-enriching-ui-activity-summary-->
+[ruby-sandbox/platform/enriching-ui/activity_summary_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/enriching-ui/activity_summary_workflow.rb)
+```rb
+require 'temporalio/workflow'
 
 class YourWorkflow < Temporalio::Workflow::Definition
   def execute(input)
@@ -94,26 +105,30 @@ class YourWorkflow < Temporalio::Workflow::Definition
       start_to_close_timeout: 10,
       summary: 'Processing user data'
     )
-    
+
     result
   end
 end
 ```
+<!--SNIPEND-->
 
 Similarly, you can attach a `summary:` to timers within a Workflow:
 
-```ruby
-require 'temporalio'
+<!--SNIPSTART ruby-enriching-ui-timer-summary-->
+[ruby-sandbox/platform/enriching-ui/timer_summary_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/enriching-ui/timer_summary_workflow.rb)
+```rb
+require 'temporalio/workflow'
 
 class YourWorkflow < Temporalio::Workflow::Definition
   def execute(input)
     # Create a timer with a summary
     Temporalio::Workflow.sleep(300, summary: 'Waiting for payment confirmation')
-    
+
     'Timer completed'
   end
 end
 ```
+<!--SNIPEND-->
 
 The input format for `summary:` is a string, and limited to 200 bytes.
 
