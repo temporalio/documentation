@@ -62,7 +62,7 @@ pip install temporalio-agent-framework agent-framework-openai
 ```
 
 The package depends on `agent-framework-core`, not the `agent-framework` meta package, so it does not install every
-provider. MCP support is an extra, installed in [Connect to MCP servers](#connect-to-mcp-servers). Refer to the
+provider. MCP support is an extra; [Connect to MCP servers](#connect-to-mcp-servers) installs it. Refer to the
 [package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/agent_framework/pyproject.toml) for
 the supported Python, Temporal SDK and Agent Framework versions.
 
@@ -110,6 +110,10 @@ Start the Workflow from a separate script:
 
 The Workflow's Event History shows one `agent_framework.invoke_model` Activity. Its summary is the model name, so the
 Web UI shows which model each call used.
+
+To run the sample from a `samples-python` checkout: `uv sync --group agent-framework`, then
+`uv run agent_framework_plugin/hello_world/run_worker.py` and, in a second terminal,
+`uv run agent_framework_plugin/hello_world/run_workflow.py`.
 
 ## Build the agent
 
@@ -177,7 +181,7 @@ provider replaces them.
 <!--SNIPEND-->
 
 Register the server factory on the Worker. The sample starts a one-tool echo server over stdio; swap in any MCP server
-by changing the factory:
+by changing the factory. The sample is its own uv project because it needs MCP Python SDK 2, so its imports are flat:
 
 <!--SNIPSTART python-agent-framework-mcp-worker-->
 <!--SNIPEND-->
@@ -185,9 +189,13 @@ by changing the factory:
 The Activity options on the provider apply to its list and call Activities. The sample sets a 30-second
 `start_to_close_timeout`; without one, `temporalio-mcp`'s one-minute default applies. The default Retry Policy retries
 without limit, so a run waits while its server is down; bound it with `retry_policy` or `schedule_to_close_timeout`.
-MCP Activities do not heartbeat. `tool_name_prefix`, `allowed_tools` and `approval_mode` work as they do on Agent
+An exhausted `call-tool` then becomes an error result for the model, and an exhausted `list-tools` raises from
+`agent.run`. MCP Activities do not heartbeat. `tool_name_prefix`, `allowed_tools` and `approval_mode` work as they do on Agent
 Framework's `MCPTool`. A server tool whose name the agent already has fails the Workflow with
 `AgentFrameworkWorkflowError` before the model call; give that provider a `tool_name_prefix` or an `allowed_tools` list.
+Tools passed to `agent.run(tools=...)` are merged after context providers run, so a collision with one of those raises
+Agent Framework's own `ValueError` instead; put such tools on the `Agent`. Do not register the same server name through
+`MCPPlugin` on the same Worker: the Activity names clash.
 
 ### Add middleware
 
@@ -213,8 +221,9 @@ of it. Do not read the clock, do I/O or draw random numbers in middleware. Middl
 
 :::
 
-Agents compose the same way. `Agent.as_tool()` turns a sub-agent into a tool of a coordinator; every agent runs in the
-Workflow and every agent's model calls are Activities, so the whole tree is durable with no per-agent wiring. A
+Agents compose inside the Workflow too. `Agent.as_tool()` turns a sub-agent into a tool of a coordinator; every agent
+runs in the Workflow and every agent's model calls are Activities, so the whole tree is durable with no per-agent
+wiring. A
 sub-agent called through `as_tool()` runs streaming, so its calls are `agent_framework.invoke_model_streaming`
 Activities. The [multi-agent sample](https://github.com/temporalio/samples-python/tree/main/agent_framework_plugin/multi_agent)
 gives each agent its own `TemporalChatClient` with a `summary`, so the Activities read `coordinator`, `researcher` and
@@ -263,8 +272,9 @@ a separate process, so this is not a second copy on the Worker.
 consumes the provider's stream and the Workflow receives the updates once the Activity completes. To forward updates to a
 consumer outside the Workflow while the call runs, host a [Workflow Stream](/develop/python/workflows/workflow-streams)
 on the Workflow and pass `streaming_topic` to `TemporalChatClient`. The Activity publishes each `ChatResponseUpdate`, in
-its `to_dict()` form, to that topic, batched every 100 milliseconds (`streaming_batch_interval`). Without `stream=True`
-the call runs as the plain model Activity and publishes nothing.
+its `to_dict()` form, to that topic, batched every 100 milliseconds (`streaming_batch_interval`). Each batch is one
+Signal to the Workflow, so it adds an Event to Event History and counts toward the 10,000 Signals a Workflow Execution
+can receive. Without `stream=True` the call runs as the plain model Activity and publishes nothing.
 
 <!--SNIPSTART python-agent-framework-streaming-workflow-->
 <!--SNIPEND-->
@@ -279,26 +289,32 @@ The durable result is the same as without streaming. The Activity result is one 
 text, one entry per streamed tool call with its argument deltas merged (a provider's final full-arguments update stays
 its own entry), and one entry per usage or finish update; the topic still receives every update. If the updates cannot
 all be published, the Activity fails with an `ApplicationError` of type `agent_framework.StreamError`. It is
-non-retryable when a retry would fail the same way, such as a batch over the 2 MiB payload limit; other publish failures
-are retried. A retry calls the model again and publishes from its first update again, so a subscriber sees the earlier
-attempt's updates followed by the whole retry; a consumer that must not repeat output keys on `response_id` (a new
-provider response carries a new one) or on each call's `call_id`.
+non-retryable when a retry would fail the same way, such as a batch over the 2 MiB payload limit or one past the run's
+10,000-Signal limit; other publish failures are retried. A retry calls the model again and publishes from its first
+update again, so a subscriber sees the earlier attempt's updates followed by the whole retry; a consumer that must not
+repeat output keys on `response_id` (a new provider response carries a new one) or on each call's `call_id`.
 
 ## Keep long conversations under the history limit
 
 Temporal owns the conversation by default. `TemporalChatClient` does not store conversations on the provider's side, so
-Agent Framework keeps the transcript in the session's in-memory history and resends it on every call. Event History is
-the durable record and replay rebuilds the session.
+when you pass a session, Agent Framework keeps the transcript in its in-memory history and resends it on every call.
+Event History is the durable record and replay rebuilds the session.
 
-Every turn adds events. When `workflow.info().is_continue_as_new_suggested()` turns `True`, serialize the session with
+Every turn adds Events, and a streamed turn adds one per published batch, so a chat that streams has to Continue-As-New
+sooner. When `workflow.info().is_continue_as_new_suggested()` turns `True`, serialize the session with
 `session.to_dict()` and hand it to a fresh run with [Continue-As-New](/develop/python/workflows/continue-as-new); the new
 run restores it with `AgentSession.from_dict`. The dict carries the transcript, pending approval state and the
 provider's conversation identifier (`session.service_session_id`). The `Agent` object, provider connections and spans
 do not cross; build the agent again in the new run.
 
-In the sample each user turn is an Update, so the caller gets the reply from the same call. The `run` method waits until
-the chat ends or Temporal suggests Continue-As-New, lets in-flight Updates finish with
-`workflow.all_handlers_finished`, and continues as new with the serialized session:
+Compaction strategies (`TruncationStrategy`, `SummarizationStrategy(client=TemporalChatClient(...))`) run in the
+Workflow and bound what each call resends; the summary call is an Activity. They do not shrink Event History.
+
+In the sample each user turn is an Update, so the caller gets the reply from the same call; a lock runs one turn at a
+time so the session's history stays in order, an `end_chat` Signal ends the chat, and a `transcript` Query reads the
+messages from the in-memory history provider's entry in `session.state`. The `run` method waits until the chat ends or
+Temporal suggests Continue-As-New, lets in-flight Updates finish with `workflow.all_handlers_finished`, and continues
+as new with the serialized session:
 
 <!--SNIPSTART python-agent-framework-continue-as-new-workflow-->
 <!--SNIPEND-->
@@ -320,7 +336,7 @@ the plugin warns at Worker and Replayer start. Agent Framework records tool metr
 provider in `ReplaySafeMeterProvider`. The provider client's own `chat` span runs inside the Activity with real timings.
 
 The sample's `install_tracer_provider`, which the Worker calls before `Client.connect`, is these lines plus a service
-name on the resource:
+name on the resource and the endpoint read from `OTEL_EXPORTER_OTLP_ENDPOINT`:
 
 ```python
 import opentelemetry.trace
@@ -349,9 +365,9 @@ the plugin's options.
   such as connection failures, stay retryable. The failure reaches the Workflow as an `ActivityError` whose cause is an
   `ApplicationError` with `type` set to the provider SDK's exception class name, such as `RateLimitError` or
   `AuthenticationError`. Match on `type`, not on the message.
-- **Credentials and clients stay on the Worker.** The Workflow carries a model name. A name no Worker on the Task Queue
-  knows fails the Activity with a non-retryable `ApplicationError` of type `AgentFrameworkUnknownChatClient`, so during a
-  rolling deployment add a new name to every Worker before Workflows use it. Calling a `TemporalChatClient` outside a
+- **Credentials and clients stay on the Worker.** The Workflow carries a model name. A name the Worker that runs the
+  Activity does not know fails it with a non-retryable `ApplicationError` of type `AgentFrameworkUnknownChatClient`, so
+  during a rolling deployment add a new name to every Worker before Workflows use it. Calling a `TemporalChatClient` outside a
   Workflow raises `RuntimeError`.
 - **What crosses the Activity boundary.** Messages and chat options cross in their `to_dict()` form, tools as their
   JSON schema specs, and the `ChatResponse` comes back the same way; provider SDK objects never enter Event History. A
@@ -370,8 +386,12 @@ the plugin's options.
   `SessionStore` read and write files on a thread, which the Workflow event loop does not provide, so the first run
   fails. Use the default in-memory history and carry `session.to_dict()` across Continue-As-New, or pass `store=True`
   to let the provider keep the conversation.
+- **MCP tool classes do not work in `tools=`.** `MCPStdioTool`, `MCPStreamableHTTPTool` and `MCPWebsocketTool` hold a
+  live connection; use `TemporalMCPToolProvider` in `context_providers`.
+- **Global OpenTelemetry providers must be replay-safe.** Agent Framework emits agent spans and tool metrics from
+  Workflow code; use `create_tracer_provider()` and `ReplaySafeMeterProvider`, or every replay re-emits them.
 - **Synchronous tools block the Workflow Task** while they run. Keep them quick or make them Activities.
-- **Not in this release.** The Agent Framework Workflows pillar (`WorkflowBuilder`, executors, checkpoints,
+- **Out of scope.** The Agent Framework Workflows pillar (`WorkflowBuilder`, executors, checkpoints,
   `agent-framework-orchestrations`), the harness, skills, evaluations, DevUI, declarative agents, hosting, memory and
   vector providers, and the experimental agent hooks are out of scope. Compose agents with Temporal Workflow code
   instead: `Agent.as_tool()`, Signals, Timers and Child Workflows. OpenAI background responses (`continuation_token`)
