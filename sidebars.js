@@ -744,6 +744,7 @@ const developPythonCategory = {
           id: 'develop/python/integrations/index',
         },
         items: [
+          'develop/python/integrations/agent-framework',
           'develop/python/integrations/baseten',
           'develop/python/integrations/claude-agent-sdk',
           'develop/python/integrations/deepagents',
