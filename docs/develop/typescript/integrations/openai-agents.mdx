@@ -139,10 +139,10 @@ on the Client's plugin or in the runner's `defaultModelParams`.
 
 Agents name their model with a string, or leave it out to use the provider's default, and the Worker's model provider
 resolves it inside the Activity. A model object can't cross into an Activity, so an agent that has one fails the run. To
-run every agent in one run on the same model, set `runConfig.model` to that model's name. Structured output through an
-agent's `outputType` works as in the OpenAI Agents SDK, and the
-[basic sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/basic) shows it along with
-run context and a per-run model override.
+pick the model for one run, set `runConfig.model` to that model's name: as in the OpenAI Agents SDK, it applies to the
+agents that set no model of their own. Structured output through an agent's `outputType` works as in the OpenAI Agents
+SDK, and the [basic sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/basic) shows it
+along with run context and a per-run model override.
 
 Any OpenAI Agents SDK `ModelProvider` works on the Worker. The
 [model providers sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/model-providers)
@@ -154,8 +154,8 @@ entries in `result.newItems`. The
 takes a different route and calls the `openai` package directly from its own Activity, outside the agent loop.
 
 The rest of the agent loop runs in the Workflow, including handoffs, guardrails, and `instructions` functions, so that
-code must be deterministic. The `context` you pass to `run()` reaches that code and `tool()` functions, but not
-`activityAsTool` Activities or `agentAsTool` nested runs.
+code must be deterministic. The `context` you pass to `run()` reaches that code, `tool()` functions, and
+`agent.asTool()` nested runs, but not `activityAsTool` Activities.
 
 Each model call is its own Activity, so agents you run together with `Promise.all` make their model calls in parallel.
 The [handoffs](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/handoffs),
@@ -215,11 +215,9 @@ definition, a tool definition shaped like `activityAsTool`'s, and options with t
 Workflow runs the Operation and returns its result to the agent, as in the
 [Nexus tools sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/nexus-tools).
 
-To call another agent as a tool, use the integration's `agentAsTool` rather than the SDK's `agent.asTool()`, so the
-nested agent's model calls run as Activities too. The nested run gets only the parent run's `runConfig.sandbox`, so the
-parent's other run settings, such as `traceIncludeSensitiveData` and its `runConfig` guardrails, don't apply inside it,
-and `agentAsTool` has no option to set them. The agent patterns sample uses `agentAsTool` for an orchestrator that asks
-a specialist.
+To call another agent as a tool, use the OpenAI Agents SDK's `agent.asTool()`. The nested run happens in the Workflow,
+and its model calls run as model Activities with the runner's Activity options. The agent patterns sample uses
+`agent.asTool()` for an orchestrator that asks a specialist.
 
 MCP servers run on the Worker, and Workflow code refers to them by name. Register a provider for each server in the
 plugin's `mcpServerProviders`, then add a handle with the same name to the agent's `mcpServers`:
@@ -454,7 +452,7 @@ processor, OpenAI's exporter, and OpenTelemetry.
 | Function tools | Supported | `tool()` runs in the Workflow and must be deterministic. |
 | Activities as tools | Supported | `activityAsTool()`. The Activity doesn't receive the run's `context`. |
 | Nexus Operations as tools | Supported | `nexusOperationAsTool()`. |
-| Agents as tools | Supported | `agentAsTool()`. |
+| Agents as tools | Supported | `agent.asTool()`. |
 | Hosted tools | Supported | The model provider runs them during the model Activity. |
 | Hosted MCP tools | Supported | `onApproval` runs in the Workflow. |
 | Stateless MCP servers | Supported | One connection per tool listing or tool call. |
@@ -466,9 +464,10 @@ processor, OpenAI's exporter, and OpenTelemetry.
 | Sessions | Supported | `WorkflowSafeMemorySession`. The SDK's `MemorySession` is rejected. |
 | Run state and approvals | Supported | Serialize `RunState` to resume across Continue-As-New. |
 | Guardrails | Supported | Run in the Workflow. Without `stream: true`, a tripwire arrives as the `cause` of an `AgentsWorkflowError`. |
+| Agent lifecycle hooks | Supported | `agent.on(...)` listeners run in the Workflow and must be deterministic. |
 | Structured output | Supported | `outputType` on the agent. |
-| Run context | Supported | Visible to code in the Workflow, not to Activity tools or `agentAsTool` nested runs. |
-| Per-run model override | Supported | `runConfig.model` takes a model name. |
+| Run context | Supported | Visible to code in the Workflow, including `agent.asTool()` nested runs, but not to Activity tools. |
+| Per-run model override | Supported | `runConfig.model` takes a model name, for agents that set none. |
 | Model objects on agents | Not supported | Name the model with a string. |
 | Custom model providers | Supported | Any `ModelProvider`, called in the model Activity. |
 | Local Activities for model calls | Supported | `useLocalActivity: true` in the Client's `modelParams` or the runner's `defaultModelParams`. |
@@ -501,8 +500,8 @@ providers that use `TemporalIdGenerator`.
 
 These run in the Workflow and must be deterministic: the agent loop, agent `instructions` functions, `tool()` `execute`
 functions, guardrails, handoff input filters, `callModelInputFilter`, hosted MCP `onApproval` callbacks,
-`WorkflowSafeMemorySession`, a `ModelSummaryProvider`, and `agentAsTool`'s `customOutputExtractor`. They can use
-Workflow APIs such as Signals, `condition()`, and `proxyActivities`.
+`WorkflowSafeMemorySession`, a `ModelSummaryProvider`, and `agent.asTool()` callbacks such as `customOutputExtractor`.
+They can use Workflow APIs such as Signals, `condition()`, and `proxyActivities`.
 
 These run in Activities on the Worker: model calls through the model provider, `hostedToolCredentials`, Activities
 wrapped with `activityAsTool`, MCP server operations, and sandbox operations. `nexusOperationAsTool` runs a Nexus
@@ -526,7 +525,7 @@ carry over to the new run and to child Workflows.
 | Entry point | Use from | APIs |
 | --- | --- | --- |
 | `@temporalio/openai-agents` | Worker and Client code | `OpenAIAgentsPlugin`, `StatelessMCPServerProvider`, `StatefulMCPServerProvider`, `SandboxClientProvider`, `OpenAIAgentsTraceClientInterceptor` for wiring a Client by hand, `DEDICATED_WORKER_FAILURE_TYPE`, and option types |
-| `@temporalio/openai-agents/workflow` | Workflow code | `TemporalOpenAIRunner`, `activityAsTool`, `nexusOperationAsTool`, `agentAsTool`, `statelessMcpServer`, `statefulMcpServer`, `WorkflowSafeMemorySession`, `temporalSandboxClient`, `workerEnvValue`, `ToolSerializationError`, and `DEDICATED_WORKER_FAILURE_TYPE` |
+| `@temporalio/openai-agents/workflow` | Workflow code | `TemporalOpenAIRunner`, `activityAsTool`, `nexusOperationAsTool`, `statelessMcpServer`, `statefulMcpServer`, `WorkflowSafeMemorySession`, `temporalSandboxClient`, `workerEnvValue`, `ToolSerializationError`, and `DEDICATED_WORKER_FAILURE_TYPE` |
 | `@temporalio/openai-agents/otel` | Worker and Client code | `createTracerProvider`, `TemporalIdGenerator`, `markReplaySafeTracerProvider`, and `isReplaySafeTracerProvider`. Requires `@opentelemetry/sdk-trace-base`. |
 | `@temporalio/openai-agents/workflow-interceptor` | Worker bundling | The Workflow interceptor module, for listing by hand in `interceptors.workflowModules` on `Worker.create`, or in `workflowInterceptorModules` for `bundleWorkflowCode` |
 
@@ -585,19 +584,16 @@ Model Activity options, in the Client's `modelParams` or the runner's `defaultMo
 
 | API | Option | Default | Behavior |
 | --- | --- | --- | --- |
-| Constructor | `defaultModelParams` | None | Model Activity options set in Workflow code, which also reach Workflows started without the plugin, such as by a Schedule or the Temporal CLI. The Client's `modelParams` take precedence for each field they set. They don't reach `agentAsTool` nested runs, which use only the Client's `modelParams` and the plugin's defaults. |
+| Constructor | `defaultModelParams` | None | Model Activity options set in Workflow code, which also reach Workflows started without the plugin, such as by a Schedule or the Temporal CLI. The Client's `modelParams` take precedence for each field they set. `agent.asTool()` nested runs use the same options. |
 | `run()` | `context`, `maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, `tracing` | SDK defaults | As in the SDK's run options. `session` can't be the SDK's `MemorySession`. Other SDK run options, such as `signal`, `errorHandlers`, `toolErrorFormatter`, and `toolExecution`, aren't accepted. |
 | `run()` | `stream` | `false` | Streams model events over a Workflow Stream. Experimental. |
-| `run()` | `runConfig.model` | Each agent's model | A model name used by every agent in the run. |
+| `run()` | `runConfig.model` | Each agent's model | A model name for the agents in the run that set none, nested `agent.asTool()` runs included. An agent's own model wins, as in the SDK. |
 | `run()` | `runConfig.modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`, `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, `traceMetadata` | SDK defaults | As in the SDK's run config. Guardrails and filters run in the Workflow. |
-| `run()` | `runConfig.sandbox` | None | Required when a `SandboxAgent` is reachable from the agent through handoffs or an `agentAsTool` tool. `client` must come from `temporalSandboxClient()`. Experimental. See the notes below this table. |
+| `run()` | `runConfig.sandbox` | None | Required when a `SandboxAgent` is reachable from the agent through handoffs or an `agent.asTool()` tool. `client` must come from `temporalSandboxClient()`. Experimental. See the notes below this table. |
 
 Notes on `runConfig.sandbox`:
 
-- It's passed on to `agentAsTool` nested runs.
-- With a `SandboxAgent` reached only through an `agentAsTool` tool, a missing `runConfig.sandbox` on the parent run isn't
-  caught up front. The nested run raises `SandboxConfigurationError` when the tool is called, which ends the parent run
-  with an `AgentsWorkflowError` that carries it on `cause.error`.
+- The OpenAI Agents SDK passes it on to `agent.asTool()` nested runs.
 - `client` is required even with `session`.
 - The other fields, `options`, `manifest`, `snapshot`, `session`, `sessionState`, `concurrencyLimits`, and
   `archiveLimits`, go to the OpenAI Agents SDK unchanged, as described in
@@ -614,9 +610,6 @@ Tool, MCP, session, and sandbox APIs:
 | `activityAsTool`, `nexusOperationAsTool` | `strict` | `true` | Strict schema mode for the tool's arguments. The schema is sent as written, so with `strict: true`, list every property in `required` and set `additionalProperties: false`, or OpenAI's API rejects the request and the model Activity fails with `ModelInvocationError.BadRequest`. |
 | `nexusOperationAsTool(operation, definition, options)` | `service`, `endpoint` | Required | The Nexus service definition and the Nexus Endpoint name. `definition` takes the same fields as `activityAsTool`'s. |
 | `nexusOperationAsTool` | `scheduleToCloseTimeout` | None | The Operation's Schedule-To-Close Timeout. |
-| `agentAsTool(agent, options)` | `toolName` | Required | The tool's name. The tool takes one string argument, `input`. The nested run gets only the parent's `runConfig.sandbox`. See the notes below this table. |
-| `agentAsTool` | `toolDescription` | `''` | The tool's description. |
-| `agentAsTool` | `customOutputExtractor` | The final output, as JSON if it isn't a string | Turns the nested run's result into the tool's output. |
 | `statelessMcpServer(name, options)` | `startToCloseTimeout`, `heartbeatTimeout`, `taskQueue`, `retryPolicy` | `startToCloseTimeout: '1 minute'` | Activity options for listing and calling tools. |
 | `statelessMcpServer`, `statefulMcpServer` | `cacheToolsList` | `true` | Reuses the server's tool list after the first listing. Set it to `false` if the tools can change during a run. |
 | `statelessMcpServer`, `statefulMcpServer` | `factoryArgument` | None | Passed to the provider's factory on the Worker. |
@@ -630,16 +623,21 @@ Tool, MCP, session, and sandbox APIs:
 | `temporalSandboxClient(name, options)` | `options` | `{ startToCloseTimeout: '5 minutes' }` | Activity options for every sandbox operation. They replace the default instead of merging with it. |
 | `workerEnvValue(name)` | Arguments | Required | A manifest environment value that the Worker reads from its environment variable `name`. |
 
-Notes on `agentAsTool` nested runs:
+Notes on `agent.asTool()` nested runs:
 
-- The nested run is started with the parent's `runConfig.sandbox` and nothing else from the parent's `run()` call.
-- It doesn't get the parent's `context`, the parent's other run options (`maxTurns`, `previousResponseId`,
-  `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, and `tracing`), or any other `runConfig`
-  field (`model`, `modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`,
-  `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, and `traceMetadata`). These all take their SDK
-  defaults, and `agentAsTool` has no option to pass them.
-- Its model Activities use the Client's `modelParams` but not the parent runner's `defaultModelParams`, so a field the
-  Client didn't set takes the plugin's default, a 60-second Start-To-Close Timeout on a regular Activity.
+- As in the OpenAI Agents SDK, the nested run gets the parent's `context`, `runConfig.model` for agents that set no
+  model, and `runConfig.modelSettings` without `toolChoice` and `parallelToolCalls`. Other `runConfig` fields, such as
+  guardrails, `handoffInputFilter`, and `traceIncludeSensitiveData`, don't reach it.
+- Its model Activities use the parent runner's options: the Client's `modelParams` and the runner's
+  `defaultModelParams`.
+- A nested tool that needs approval pauses the parent run, and the approval appears in the parent's
+  `result.interruptions`.
+- Create `agent.asTool()` tools in Workflow code and pass them as they are. The plugin records each tool's agent when
+  the tool is made, and checks the nested agents and the tool's options before the run. It rejects a nested agent with a
+  model object, a tool whose `runConfig` sets `modelProvider` or a model object as `model`, a `runConfig.sandbox` or
+  `runOptions.sandbox` client not from `temporalSandboxClient()`, a `MemorySession` as `runOptions.session`, and a tool
+  it can't trace to its agent, such as a copy.
+- A `ModelSummaryProvider` gets `undefined` as the agent for nested model calls.
 
 Providers are matched to Workflow handles by name, and each provider on a plugin needs a unique name. The plugin adds a
 `-stateful` suffix to a stateful MCP provider's name, so a stateless and a stateful MCP provider can share a name.
@@ -648,21 +646,21 @@ Providers are matched to Workflow handles by name, and each provider on a plugin
 
 Which error reaches your Workflow depends on where the failure starts. A failed model call, MCP tool listing, or sandbox
 session operation, such as creating or resuming the session, reaches the Workflow as an `ActivityFailure` with the
-Activity's error as its cause, once its Activity stops retrying. A failed `activityAsTool`, `nexusOperationAsTool`, or
-`agentAsTool` call ends the run with an `AgentsWorkflowError`, as described next. Failures that the table below lists as
-raised in the Workflow reach it as they are when they occur outside a tool call.
+Activity's error as its cause, once its Activity stops retrying. A failed `activityAsTool` or `nexusOperationAsTool`
+call ends the run with an `AgentsWorkflowError`, as described next. Failures that the table below lists as raised in the
+Workflow reach it as they are when they occur outside a tool call.
 
-A failed `activityAsTool` or `agentAsTool` call ends the run, and so does a failed `nexusOperationAsTool` call, which
-builds its tool the same way. In a run without `stream: true`, the failure reaches the Workflow as a non-retryable
-`AgentsWorkflowError` whose `cause` is the OpenAI Agents SDK's `ToolCallError`. The original failure is on that
-`ToolCallError`'s `error` property, not on the cause chain, so read it from `cause.error`. It's the `ActivityFailure`
-once an `activityAsTool` Activity stops retrying, the `NexusOperationFailure` from `nexusOperationAsTool`, or, from
-`agentAsTool`, the nested run's own failure, such as a `NestedAgentInterruption`, `SandboxConfigurationError`, or
-`AgentsWorkflowError`. The Workflow failure recorded in Event History keeps only the message text, so an
-`activityAsTool` Activity's own error appears only in that Activity's failure event.
+A failed `activityAsTool` call ends the run, and so does a failed `nexusOperationAsTool` call, which builds its tool the
+same way. In a run without `stream: true`, the failure reaches the Workflow as a non-retryable `AgentsWorkflowError`
+whose `cause` is the OpenAI Agents SDK's `ToolCallError`. The original failure is on that `ToolCallError`'s `error`
+property, not on the cause chain, so read it from `cause.error`. It's the `ActivityFailure` once an `activityAsTool`
+Activity stops retrying, or the `NexusOperationFailure` from `nexusOperationAsTool`. The Workflow failure recorded in
+Event History keeps only the message text, so an `activityAsTool` Activity's own error appears only in that Activity's
+failure event.
 
-A failure inside an MCP tool call or a sandbox tool, such as `exec_command`, `write_stdin`, `view_image`, or
-`apply_patch`, doesn't reach the Workflow. The OpenAI Agents SDK returns it to the model as the tool's output, such as
+A failure inside an MCP tool call, an `agent.asTool()` nested run, or a sandbox tool, such as `exec_command`,
+`write_stdin`, `view_image`, or `apply_patch`, doesn't reach the Workflow. The OpenAI Agents SDK returns it to the model
+as the tool's output, such as
 `An error occurred while running the tool. Please try again. Error: ActivityFailure: Activity task failed`, without the
 underlying error, and the run continues. That includes the `DedicatedWorkerFailure`, `StatefulMCPServerNotFound`, and
 `SandboxOperationUnsupported` errors below when an MCP or sandbox tool call raises them.
@@ -670,24 +668,23 @@ underlying error, and the run continues. That includes the `DedicatedWorkerFailu
 | Failure type | Raised in | Meaning |
 | --- | --- | --- |
 | `ModelInvocationError`, and `ModelInvocationError.RateLimit`, `.Authentication`, `.BadRequest`, `.Timeout`, `.Conflict`, or `.ServerError` | Model Activity | The model call failed. HTTP 408, 409, 429, and 5xx responses are retryable, and other statuses aren't. An `x-should-retry` header overrides that, and `retry-after-ms` or `retry-after` sets the next retry delay. An `openai` `APIError` without an HTTP status, such as `APIConnectionError`, is non-retryable. Other errors are retryable. |
-| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool`, `nexusOperationAsTool`, or `agentAsTool` call in such a run also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. In a streaming run, an error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
-| `UnsafeSessionError` | Workflow | Non-retryable. `run()` received the SDK's `MemorySession`. |
+| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, an `agent.asTool()` tool sets `runConfig.modelProvider` or a model object as `runConfig.model` or can't be traced to its agent, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call in such a run also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. In a streaming run, an error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
+| `UnsafeSessionError` | Workflow | Non-retryable. `run()`, or an `agent.asTool()` tool's `runOptions.session`, received the SDK's `MemorySession`. |
 | `StreamingTopicNotConfigured` | Workflow | Non-retryable. A streaming run has no `streamingTopic`. |
 | `StreamingLocalActivityUnsupported` | Workflow | Non-retryable. A streaming run has `useLocalActivity: true`. |
-| `NestedAgentInterruption` | Workflow | Non-retryable. An `agentAsTool` nested run paused for approval. It ends the parent run and reaches the Workflow on `cause.error` of an `AgentsWorkflowError`. |
 | `DedicatedWorkerFailure`, exported as `DEDICATED_WORKER_FAILURE_TYPE` | Workflow | Retryable. A stateful MCP operation wasn't picked up within its Schedule-To-Start Timeout or missed a heartbeat, so the run's dedicated Worker isn't polling. |
 | `StatefulMCPServerAlreadyRunning` | Server session Activity | Non-retryable. Two stateful handles with the same name connected in one Workflow run. |
 | `StatefulMCPServerNotFound` | Dedicated Worker | Non-retryable. A tool operation reached a Worker that doesn't hold the server. |
-| `SandboxConfigurationError` | Workflow | Non-retryable. A `SandboxAgent` is reachable but `runConfig.sandbox` is missing, or its `client` didn't come from `temporalSandboxClient()`. It's also raised when a manifest environment value uses a resolver function, directly or through `resolve`, or is an `EnvValueReference` that can't be serialized, since neither can travel in a sandbox Activity's input. Use `workerEnvValue()` for a value the Worker supplies. |
+| `SandboxConfigurationError` | Workflow | Non-retryable. A `SandboxAgent` is reachable but `runConfig.sandbox` is missing, or its `client`, or the `client` of an `agent.asTool()` tool's `runConfig.sandbox` or `runOptions.sandbox`, didn't come from `temporalSandboxClient()`. It's also raised when a manifest environment value uses a resolver function, directly or through `resolve`, or is an `EnvValueReference` that can't be serialized, since neither can travel in a sandbox Activity's input. Use `workerEnvValue()` for a value the Worker supplies. |
 | `SandboxOperationUnsupported` | Sandbox Activity | Non-retryable. The backend lacks the operation. A Worker that doesn't hold the session calls `resume()` before handling one of its operations, and every paused-run resume calls it too, so on a backend without `resume()`, the `run()` call that resumes a paused sandbox run fails. |
 | `WorkerEnvValueError` | Sandbox Activity | Non-retryable. A `workerEnvValue()` names a variable that isn't in `resolvableWorkerEnvVars`. |
 | `SandboxSessionStateInvalid` | Workflow | Non-retryable. Sandbox session state being resumed wasn't produced by a Temporal sandbox client. |
 | The sandbox error's `code` | Sandbox Activity | Non-retryable. The OpenAI Agents SDK marked the sandbox error as not retryable. Other sandbox errors are retried. |
 
 The OpenAI Agents SDK parses a tool call's arguments before the tool runs, so `ToolSerializationError` isn't thrown
-during a run. When the arguments for an `activityAsTool`, `nexusOperationAsTool`, or `agentAsTool` tool aren't valid
-JSON, the run pauses as if the tool needed approval: `run()` returns with that call in `result.interruptions` and no
-`finalOutput`. Approving it sends the model a parse error instead of running the tool.
+during a run. When the arguments for an `activityAsTool` or `nexusOperationAsTool` tool aren't valid JSON, the run
+pauses as if the tool needed approval: `run()` returns with that call in `result.interruptions` and no `finalOutput`.
+Approving it sends the model a parse error instead of running the tool.
 
 Calling a stateful MCP handle's tools before `connect()` throws an `ApplicationFailure` that fails the Workflow. The
 plugin constructor throws if two of its providers share a name, if `useOtelInstrumentation` is set without a
