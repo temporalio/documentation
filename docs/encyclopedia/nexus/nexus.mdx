@@ -102,7 +102,7 @@ The handler is the implementation registered with the other team's Worker. It re
 
 The caller knows the contract. The handler owns the implementation. Nexus keeps them cleanly separated so both teams can evolve independently.
 
-Underneath, Nexus handles automatic retries and at-least-once execution across every team, region and cloud. Overall, Workflows or clients call Nexus Operations, Nexus routes the request to the right team's Worker through an Endpoint, and Temporal handles the execution - whether that's a Workflow or a Standalone Activity.
+Underneath, Nexus handles automatic retries and at-least-once execution across every team, region and cloud. Workflows or clients call Nexus Operations, Nexus routes the request to the right team's Worker through an Endpoint, and Temporal handles the execution - whether that's a Workflow or a Standalone Activity.
 
 ## Nexus as durable microservices
 
@@ -112,7 +112,7 @@ Each team owns a service with a clear contract, runs it in its own Namespace, an
 
 Giving each team its own Namespace improves modularity, security, debugging and fault isolation. The difference from ordinary microservices is what happens when a call goes wrong. A normal network call is something the caller has to make reliable on its own, while Nexus gives the caller a durable handoff.
 
-If the other team's service is down, the request waits and runs when it's back. And a call isn't limited to a quick request and response. Nexus supports Operations that go far beyond a traditional RPC where async Operations can run for up to 60 days, while sync Operations complete within seconds. Overall, Nexus brings microservice-style modularity to Temporal where each team owns its Namespace and exposes a service contract, but unlike ordinary microservices, cross-team calls are durable by default.
+If the other team's service is down, the request waits and runs when it's back. And a call isn't limited to a quick request and response. Nexus supports Operations that go far beyond a traditional RPC where async Operations can run for up to 60 days, while sync Operations complete within seconds. Nexus brings microservice-style modularity to Temporal where each team owns its Namespace and exposes a service contract, but unlike ordinary microservices, cross-team calls are durable by default.
 
 :::tip NEXT STEPS
 
