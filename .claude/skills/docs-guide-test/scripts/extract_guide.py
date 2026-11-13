@@ -19,7 +19,9 @@ the current file, and every following header-less block in the target language i
 appended to it until the next header. It only works when a guide presents each file's
 blocks contiguously and at the right indentation (method blocks shown indented under
 their class, not dedented to column 0). Excluded files and their continuation blocks are
-skipped together.
+skipped together. A header for a file already opened earlier is treated as a restatement
+(an "Assemble the complete file" block) and skipped along with its continuation blocks,
+so it doesn't duplicate the file the incremental snippets already assembled.
 
 Alternate mode ("comment-header"): a fenced block in the target language whose first
 non-empty line is a `# name.ext` (or `// name.ext`) comment is treated as a complete
@@ -202,6 +204,7 @@ def extract(guide: Path, out_dir: Path, lang: str, exclude: set[str], mode: str 
     if mode == "concat-header":
         current: str | None = None  # file the current run of blocks belongs to
         current_excluded = False
+        current_restated = False  # current run restates a file already built; skip it
         for info, block, _ in _iter_code_blocks(text):
             if info != lang:
                 continue
@@ -212,12 +215,26 @@ def extract(guide: Path, out_dir: Path, lang: str, exclude: set[str], mode: str 
                     continue
                 current = rel
                 current_excluded = _is_excluded(rel, exclude)
+                current_restated = False
                 if current_excluded:
                     if rel not in excluded:
                         excluded.append(rel)
                     continue
+                if rel in files:
+                    # The header for this file already opened it earlier. By Code
+                    # Sandwich convention the file-path comment appears once and a
+                    # file's snippets are contiguous, so a second header is the guide
+                    # restating the whole file (an "Assemble the complete file" block),
+                    # not resuming the build. Appending it would duplicate every line,
+                    # so skip the restatement and its continuation blocks. The file
+                    # stays as the incremental snippets assembled it — and if the two
+                    # diverge, the run fails, which is a real finding about the guide.
+                    current_restated = True
+                    if rel not in skipped_duplicate:
+                        skipped_duplicate.append(rel)
+                    continue
                 _append_block(files.setdefault(rel, []), block)
-            elif current is not None and not current_excluded:
+            elif current is not None and not current_excluded and not current_restated:
                 _append_block(files[current], block)
     else:
         for info, block, open_index in _iter_code_blocks(text):

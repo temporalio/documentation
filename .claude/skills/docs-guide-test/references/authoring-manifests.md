@@ -154,6 +154,16 @@ header-less block in the target language is appended to it, so the file is conca
 block. It relies on the guide presenting each file's blocks contiguously and at the right indentation — method blocks
 shown indented under their class, not dedented to column 0 — so a block that pastes a method at column 0 reconstructs a
 module-level function and breaks the file. An excluded file's continuation blocks are skipped along with its header.
+
+A guide sometimes restates a whole file at the end of a step ("Assemble the complete file"). The Code Sandwich
+convention puts the `# name.ext` header only on a file's *first* snippet, so a header that reappears for a file already
+opened is read as that restatement, not a resumption: the restated block and its continuations are skipped (and listed
+under `skipped_duplicate`) rather than appended, which would otherwise duplicate every line. The file stays as the
+incremental snippets assembled it — the build-it-up path a reader follows — so if the complete-file block and the
+snippets disagree, the run goes red, which is a real finding about the guide. (A guide that restates the complete file
+*without* its header can't be told apart from a continuation and would still duplicate; keep the header on a complete-file
+block, or pin `comment-header`.)
+
 After a `concat-header` run, spot-check the reconstruction (`--keep`, or extract on its own) before trusting a red
 result: a failure can mean the blocks don't assemble that way, not that the code is broken.
 
