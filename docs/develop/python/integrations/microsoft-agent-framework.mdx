@@ -136,11 +136,12 @@ The sample has one of each. `letter_counter` counts characters and runs in the W
 <!--SNIPSTART python-microsoft-agent-framework-tools-activity-->
 <!--SNIPEND-->
 
-`activity_as_tool` takes the same Activity options as `workflow.execute_activity`; the sample gives the tool a 30-second
-`start_to_close_timeout`. Agent Framework reads the tool's parameter schema from the Activity's signature and its
-description from the docstring, so `Annotated` parameters work as they do on `@tool`. A failed Activity, including one
-that ran out of retries, raises its failure cause from the tool, and Agent Framework turns that into an error result for
-the model.
+`activity_as_tool` takes the same Activity options as `workflow.execute_activity`, and like it needs a
+`start_to_close_timeout` or a `schedule_to_close_timeout`; without either it raises `ValueError` when the tool is built,
+not when the model calls it. The sample gives the tool a 30-second `start_to_close_timeout`. Agent Framework reads the
+tool's parameter schema from the Activity's signature and its description from the docstring, so `Annotated` parameters
+work as they do on `@tool`. A failed Activity, including one that ran out of retries, raises its failure cause from the
+tool, and Agent Framework turns that into an error result for the model.
 
 <!--SNIPSTART python-microsoft-agent-framework-tools-workflow-->
 <!--SNIPEND-->
@@ -150,9 +151,16 @@ Register the Activity on the Worker next to the Workflow:
 <!--SNIPSTART python-microsoft-agent-framework-tools-worker-->
 <!--SNIPEND-->
 
-A synchronous `def` tool runs on the Workflow's event loop. Agent Framework would run it on a thread, which the Workflow
-event loop does not provide, so the plugin sets Agent Framework's own switch for running it inline for the duration of
-the call. A sync tool that blocks for long blocks the Workflow Task, so keep sync tools quick or make them Activities.
+A synchronous `def` tool runs on the Workflow's event loop. Agent Framework hands it to `asyncio.to_thread`, which the
+Workflow event loop does not implement, so the plugin's Worker runtime rebinds that name in the framework's tool module
+to a stand-in that calls the function directly inside a Workflow and still uses a thread anywhere else. The tool object
+itself is not changed, so one shared with an Activity or a plain agent in the same process keeps its normal behavior
+there. A sync tool that blocks for long blocks the Workflow Task, so keep sync tools quick or make them Activities.
+
+Agent Framework's loop settings apply unchanged: tool calls of one response run concurrently by default
+(`allow_concurrent_invocation=True`), a run makes at most `max_iterations` (40) model calls before one last call with
+`tool_choice="none"`, and after three consecutive rounds of failing tools the loop stops calling tools and asks for a
+final answer. Set them on `TemporalChatClient(function_invocation_configuration={...})`.
 
 ### Connect to MCP servers
 
@@ -165,11 +173,13 @@ uv add "temporalio-microsoft-agent-framework[mcp]"
 ```
 
 `MicrosoftAgentFrameworkPlugin(mcp_clients=...)` maps a server name to a factory that returns an `mcp.Client`, the same
-shape as `chat_clients`. For each server the plugin registers the `temporalio.mcp.<server>.list-tools` and
-`temporalio.mcp.<server>.call-tool` Activities, plus `temporalio-mcp`'s prompt and resource operations (`list-prompts`,
-`get-prompt`, `list-resources`, `list-resource-templates`, `read-resource`). The connection lives on the Worker: the
-plugin connects on the first MCP Activity and closes the connection after 5 minutes of idleness
-(`mcp_connection_idle_timeout`; `None` keeps it until shutdown, `timedelta(0)` closes it after every Activity).
+shape as `chat_clients`. A factory that raises, or returns something other than an `mcp.Client`, fails the Activity once,
+with a non-retryable `ApplicationError` of type `MicrosoftAgentFrameworkMCPClientFactoryError`. For each server the
+plugin registers the `temporalio.mcp.<server>.list-tools` and `temporalio.mcp.<server>.call-tool` Activities, plus
+`temporalio-mcp`'s prompt and resource operations (`list-prompts`, `get-prompt`, `list-resources`,
+`list-resource-templates`, `read-resource`). The connection lives on the Worker: the plugin connects on the first MCP
+Activity and closes the connection after 5 minutes of idleness (`mcp_connection_idle_timeout`; `None` keeps it until
+shutdown, `timedelta(0)` closes it after every Activity).
 
 In the Workflow, `TemporalMCPToolProvider("echo")` is an Agent Framework context provider. Before each `agent.run` it
 lists the server's tools through the `list-tools` Activity and adds one tool per entry, with the server's input schema;
@@ -191,12 +201,15 @@ The Activity options on the provider apply to its list and call Activities. The 
 `start_to_close_timeout`; without one, `temporalio-mcp`'s one-minute default applies. The default Retry Policy retries
 without limit, so a run waits while its server is down; bound it with `retry_policy` or `schedule_to_close_timeout`.
 An exhausted `call-tool` then becomes an error result for the model, and an exhausted `list-tools` raises from
-`agent.run`. MCP Activities do not heartbeat. `tool_name_prefix`, `allowed_tools` and `approval_mode` work as they do on
+`agent.run`. The provider sets no `heartbeat_timeout`: `temporalio-mcp` 0.3 does not heartbeat its Activities, and its
+next release gives them a 10-second default. `tool_name_prefix`, `allowed_tools` and `approval_mode` work as they do on
 Agent Framework's `MCPTool`. A server tool whose name the agent already has fails the Workflow with
 `MicrosoftAgentFrameworkWorkflowError` before the model call; give that provider a `tool_name_prefix` or an
 `allowed_tools` list. Tools passed to `agent.run(tools=...)` are merged after context providers run, so a collision with
 one of those raises Agent Framework's own `ValueError` instead; put such tools on the `Agent`. Do not register the same
-server name through `MCPPlugin` on the same Worker: the Activity names clash.
+server name through `MCPPlugin` on the same Worker: the Activity names clash. A server name that no Worker registered has
+no Activity to run, so the attempt fails with a retryable `NotFoundError` and the run waits until a Worker with that name
+polls the Task Queue.
 
 ### Add middleware
 
@@ -239,7 +252,10 @@ the same session. In a Workflow the wait is durable. The sample publishes the pe
 [Query](/develop/python/workflows/message-passing#queries), waits in `workflow.wait_condition` until a `decide`
 [Update](/develop/python/workflows/message-passing#updates) has answered each of them with a `Decision` that carries
 the request's identifier and the verdict, and runs the agent again with the decisions. Only an approved call runs the
-tool; a rejected call sends the model Agent Framework's rejection result.
+tool; a rejected call sends the model Agent Framework's rejection result. Agent Framework decides what happens to a
+request you do not answer: a response whose `id` matches no pending request is ignored with a log line and the request
+stays pending, and a run that brings a new message without answering drops the pending call from the transcript. Check
+`response.user_input_requests` before the next run if a dropped request matters.
 
 <!--SNIPSTART python-microsoft-agent-framework-human-in-the-loop-workflow-->
 <!--SNIPEND-->
@@ -274,10 +290,12 @@ with the same converter; the starter is a separate process, so this is not a sec
 Activity consumes the provider's stream and the Workflow receives the updates once the Activity completes. To forward
 updates to a consumer outside the Workflow while the call runs, host a
 [Workflow Stream](/develop/python/workflows/workflow-streams) on the Workflow and pass `streaming_topic` to
-`TemporalChatClient`. The Activity publishes each `ChatResponseUpdate`, in its `to_dict()` form, to that topic, batched
-every 100 milliseconds (`streaming_batch_interval`). Each batch is one Signal to the Workflow, so it adds an Event to
-Event History and counts toward the 10,000 Signals a Workflow Execution can receive. Without `stream=True` the call runs
-as the plain model Activity and publishes nothing.
+`TemporalChatClient`. With a topic set, every model call of that client runs as the streaming Activity, with or without
+`stream=True`, and publishes each `ChatResponseUpdate`, in its `to_dict()` form, to the topic; a run without
+`stream=True` gets its response assembled from the same updates. A batch goes out every 100 milliseconds
+(`streaming_batch_interval`) or at 256 updates, whichever comes first. Each batch is one Signal to the Workflow, so it
+adds an Event to Event History and counts toward the 10,000 Signals a Workflow Execution can receive. A client without a
+topic runs `agent.run(prompt)` as the plain model Activity and publishes nothing.
 
 <!--SNIPSTART python-microsoft-agent-framework-streaming-workflow-->
 <!--SNIPEND-->
@@ -364,19 +382,26 @@ One trace then runs from the starter's root span through `StartWorkflow:TracedWo
 
 - **Temporal owns retries.** Model calls retry under the `retry_policy` on `TemporalChatClient`; Activity tools and
   MCP providers take their own. Provider errors are classified by HTTP status: 408, 409, 429 and 5xx stay retryable and
-  honor `retry-after` headers through the next retry delay, other 4xx are non-retryable, and errors without a status,
+  honor `retry-after-ms` and `retry-after` headers, as seconds or an HTTP date, through the next retry delay, other 4xx
+  are non-retryable, and errors without a status,
   such as connection failures, stay retryable. The failure reaches the Workflow as an `ActivityError` whose cause is an
   `ApplicationError` with `type` set to the provider SDK's exception class name, such as `RateLimitError` or
   `AuthenticationError`. Match on `type`, not on the message.
 - **Credentials and clients stay on the Worker.** The Workflow carries a model name. A name the Worker that runs the
   Activity does not know fails it with a non-retryable `ApplicationError` of type
   `MicrosoftAgentFrameworkUnknownChatClient`, so during a rolling deployment add a new name to every Worker before
-  Workflows use it. Calling a `TemporalChatClient` outside a Workflow raises `RuntimeError`.
+  Workflows use it. A factory that raises (an `OpenAIChatClient` without `OPENAI_API_KEY` on the Worker, for example) or
+  returns `None` fails the Activity the same way, with type `MicrosoftAgentFrameworkChatClientFactoryError`; fix the
+  Worker and start the Workflow again. Calling a `TemporalChatClient` outside a Workflow raises `RuntimeError`.
 - **What crosses the Activity boundary.** Messages and chat options cross in their `to_dict()` form, tools as their
   JSON schema specs, and the `ChatResponse` comes back the same way; provider SDK objects never enter Event History. A
   run's `client_kwargs`, such as `extra_headers`, reach the provider client when they are JSON-compatible. Hosted tools
-  passed as mappings, such as a provider's web search, run on the provider's side. A tool object the plugin cannot send
-  to the model fails the Workflow with `MicrosoftAgentFrameworkWorkflowError`.
+  passed as mappings, such as a provider's web search, run on the provider's side. A hosted MCP tool must not carry
+  `headers` or `authorization` in Workflow code, because the tool mapping is recorded in Event History; the run fails
+  with `MicrosoftAgentFrameworkWorkflowError`. Register the headers on the Worker with
+  `MicrosoftAgentFrameworkPlugin(hosted_mcp_headers={...})`, keyed by the server label or URL, and the Activity adds them
+  before the provider call. A tool object the plugin cannot send to the model fails the Workflow with
+  `MicrosoftAgentFrameworkWorkflowError`.
 - **Sandbox and clocks.** The plugin passes `agent_framework`, `pydantic_core`, `annotated_types`, `msgspec`,
   `typing_inspection`, `opentelemetry`, `dotenv`, `mcp` and `mcp_types` through the Workflow sandbox, and installs
   Workflow-aware stand-ins for the clock and identifier reads in Agent Framework's agent code (default agent and session
