@@ -118,13 +118,16 @@ A dropped start means the Workflow never runs.
 A dropped Signal or Update means a running Workflow never receives input it is waiting on, and may stall indefinitely.
 Log these failures in your application code so you can backfill starts and Signals afterward.
 
-The Temporal Service throttles these operations last.
-Seeing RESOURCE_EXHAUSTED here means throttling is already severe and widespread.
+The Temporal Service throttles these operations last, so a rate limit, overload, or circuit-breaker cause here means throttling is already severe and widespread.
+A busy Workflow cause is different.
+It can mean a request timed out waiting for a Workflow Execution's lock, the [most common cause](/cloud/service-health#workflow-lock-contention-busyworkflow) of RESOURCE_EXHAUSTED on these operations.
+The Temporal Service also returns this cause when it rejects a Signal while retrying a Workflow Task that closes the Workflow; retry that Signal with backoff.
 
 **Triage.**
 
-1. **Find out which limit you hit.** A Namespace rate limit, a concurrency limit, system-wide overload, and an open circuit breaker are four different problems with four different fixes. On the Go SDK, group [`temporal_request_resource_exhausted`](/references/sdk-metrics#request_resource_exhausted) by its `cause` tag and it will tell you directly. On other SDKs, work through the steps below.
+1. **Find out which limit you hit.** A Namespace rate limit, a concurrency limit, contention on one Workflow Execution, system-wide overload, and an open circuit breaker are five different problems with five different fixes. On the Go SDK, group [`temporal_request_resource_exhausted`](/references/sdk-metrics#request_resource_exhausted) by its `cause` tag and it will tell you directly. On other SDKs, work through the steps below.
 1. **Check your traffic against your Namespace limits.** For a rate limit cause (`RESOURCE_EXHAUSTED_CAUSE_RPS_LIMIT` or `RESOURCE_EXHAUSTED_CAUSE_APS_LIMIT`), compare current throughput against your Namespace's [service limits](/evaluate/cloud/limits) on Temporal Cloud, and open a support request if you need them raised.
+1. **Respond to a busy Workflow cause based on its source.** For sustained lock contention, requests time out waiting for one Workflow Execution's lock, so raising Namespace limits won't help. Batch Signals, cap in-flight Updates, or spread the work across more Workflow Executions. If the Service rejects a Signal while retrying a Workflow Task that closes the Workflow, retry the Signal with backoff instead. See [Workflow lock contention](/cloud/service-health#workflow-lock-contention-busyworkflow) for per-operation guidance.
 1. **Treat overload and circuit-breaker causes as capacity problems.** `RESOURCE_EXHAUSTED_CAUSE_SYSTEM_OVERLOADED` and `RESOURCE_EXHAUSTED_CAUSE_CIRCUIT_BREAKER_OPEN` mean the Temporal Service is shedding load to protect itself. A higher limit will not help; the Service needs capacity, or your workload needs to slow down.
 1. **Add backoff in your application.** If throttling is expected during traffic peaks, ensure calling code retries with backoff rather than tight-looping, which amplifies the pressure.
 
