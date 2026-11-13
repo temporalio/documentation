@@ -16,7 +16,7 @@ tags:
 Create a `Temporalio::Worker` with a [Temporal Client](/develop/ruby/client/temporal-client), the Task Queue to poll, and the Workflows and Activities it can execute.
 Call `run` to start polling.
 
-<!--SNIPSTART ruby-create-worker-->
+<!--SNIPSTART ruby-create-worker {"enable_code_dedenting": true}-->
 [ruby-sandbox/workers/run-worker-process/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/run-worker-process/worker.rb)
 ```rb
 worker = Temporalio::Worker.new(
@@ -42,7 +42,9 @@ A Worker that receives a Task for a type it did not register fails that Task.
 Pass Workflow classes in `workflows` and Activities in `activities`.
 For Activities you can pass either the class or an instance:
 
-```ruby
+<!--SNIPSTART ruby-worker-register-types {"enable_code_dedenting": true}-->
+[ruby-sandbox/workers/run-worker-process/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/run-worker-process/worker.rb)
+```rb
 worker = Temporalio::Worker.new(
   client:,
   task_queue: 'my-task-queue',
@@ -50,6 +52,7 @@ worker = Temporalio::Worker.new(
   activities: [SayHello, ChargeCard.new(payment_client)]
 )
 ```
+<!--SNIPEND-->
 
 Passing a class makes the Worker instantiate it for each Activity Execution.
 Passing an instance reuses that object for every execution, which is how Activities share state such as a database client. A shared instance must be thread-safe.
@@ -70,7 +73,7 @@ To tune these values against real load, see [Worker performance](/develop/worker
 
 Set a Worker Deployment Version and enable versioning in `deployment_options`, then set a versioning behavior on each Workflow.
 
-<!--SNIPSTART ruby-versioned-worker-->
+<!--SNIPSTART ruby-versioned-worker {"enable_code_dedenting": true}-->
 [ruby-sandbox/workers/run-worker-process/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/run-worker-process/worker.rb)
 ```rb
 worker = Temporalio::Worker.new(
@@ -101,7 +104,7 @@ See [Worker Versioning](/worker-versioning) for the available versioning behavio
 Pass the signals that should stop the Worker to `run`.
 The Worker stops polling for new Tasks and waits for in-flight Tasks to finish.
 
-<!--SNIPSTART ruby-worker-graceful-shutdown-->
+<!--SNIPSTART ruby-worker-graceful-shutdown {"enable_code_dedenting": true}-->
 [ruby-sandbox/workers/run-worker-process/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/run-worker-process/worker.rb)
 ```rb
 worker.run(shutdown_signals: %w[SIGINT SIGTERM])
