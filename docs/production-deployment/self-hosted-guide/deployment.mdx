@@ -43,7 +43,7 @@ You can run a Temporal Service in [Docker](https://docs.docker.com/engine/instal
 
 ### Procedure
 
-1. Clone the [temporalio/samples-server](https://github.com/temporalio/samples-server) repository. The [docker-compose.yml example](https://github.com/temporalio/samples-server/blob/main/compose/docker-compose.yml) uses the `temporalio/server:${TEMPORAL_VERSION}` image. This is what you need to use in your production environments and you can find a thorough list of configs [here](https://github.com/temporalio/temporal/blob/main/docker/config_template.yaml). 
+1. Clone the [temporalio/samples-server](https://github.com/temporalio/samples-server) repository. The [docker-compose.yml example](https://github.com/temporalio/samples-server/blob/main/compose/docker-compose.yml) uses the `temporalio/server:${TEMPORAL_VERSION}` image, which is the same image you run in production. For the environment variables the image accepts, see its [configuration template](https://github.com/temporalio/temporal/blob/main/docker/config_template.yaml).
 
 2. Change into the `compose` directory.
 
@@ -52,7 +52,8 @@ You can run a Temporal Service in [Docker](https://docs.docker.com/engine/instal
    ```
 
 3. Run the `docker compose up` command. This uses the default configuration from the `docker-compose.yaml` file, which
-   includes a PostgreSQL database, an Elasticsearch instance, and exposes the Temporal gRPC Frontend on port 7233.
+   includes a PostgreSQL database, an Elasticsearch instance, and exposes the Temporal gRPC Frontend on port 7233. The
+   `temporal` container runs all four Temporal Server services in one process.
 
    ```
    docker compose up
@@ -63,7 +64,9 @@ You can run a Temporal Service in [Docker](https://docs.docker.com/engine/instal
 4. (Optional) Review
    [the additional configuration options](https://github.com/temporalio/samples-server/tree/main/compose#other-configuration-files)
    available in the samples-server repository and use `docker compose up` with the corresponding configuration file to
-   try them out. The configurations include different databases, visibility stores, and TLS settings.
+   try them out. The configurations include different databases, visibility stores, and TLS settings. For a small
+   deployment, `docker-compose-postgres.yml` uses PostgreSQL for both persistence and Visibility, with no
+   Elasticsearch. See [Run a small self-hosted Temporal Service](/self-hosted-guide/small-deployment).
 
 When you use the `temporalio/server` image, you have to manually manage schema updates using the `temporalio/admin-tools` image or by building the tools from the matching release tag.
 
