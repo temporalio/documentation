@@ -1340,6 +1340,7 @@ module.exports = {
             'cloud/get-started/certificates'
           ],
         },
+        'cloud/deprecation-policy',
         {
           type: 'category',
           label: 'Account access',
