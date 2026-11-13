@@ -111,8 +111,8 @@ Start the Workflow from the program's `workflow` verb:
 <!--SNIPSTART dotnet-microsoft-agent-framework-hello-world-client-->
 <!--SNIPEND-->
 
-The Workflow's Event History shows one `MicrosoftAgentFramework.InvokeModel` Activity with the summary
-`microsoft-agent-framework model call: gpt-4o-mini`, so the Web UI shows which model each call used.
+The Workflow's Event History shows one `MicrosoftAgentFramework.InvokeModel` Activity whose summary is the model
+name, `gpt-4o-mini`, so the Web UI shows which model each call used.
 
 To run the sample from a `samples-dotnet` checkout: `cd src/MicrosoftAgentFramework/HelloWorld`, then
 `dotnet run worker` and, in a second terminal, `dotnet run workflow`.
@@ -167,8 +167,9 @@ same time through `Workflow.WhenAllAsync`, with results in call order; the defau
 `MicrosoftAgentFrameworkPluginOptions.McpServers` maps a server name to a factory that returns the server's
 `IClientTransport`, the same shape as `ChatClients`. The connection lives on the Worker: the plugin opens one
 `McpClient` per server on the first MCP Activity, shares it across Activities and across every Worker that runs with
-the same plugin instance, closes it after `McpConnectionIdleTimeout` (default 5 minutes) without a call, and closes
-everything when the last of those Workers stops.
+the same plugin instance, closes it after `McpConnectionIdleTimeout` (default 5 minutes; set it longer than the Worker
+runs to keep the connection open, zero and negative values are rejected) without a call, and closes everything when the
+last of those Workers stops.
 
 In the Workflow, `TemporalMcpServer.ListToolsAsync("echo", options)` runs one `MicrosoftAgentFramework.McpListTools`
 Activity and returns one `TemporalMcpTool` per server tool, with the server's input schema, so the model sees the
@@ -192,7 +193,9 @@ server is down; bound it with a `RetryPolicy` or a `ScheduleToCloseTimeout`. A t
 under that policy; a transport factory that throws fails the Activity with `MicrosoftAgentFrameworkConfigurationError`
 and no retry. A result with `isError`, an unknown tool or bad arguments fails the Activity with error type
 `MicrosoftAgentFrameworkMcpError` and no retry, and the model is told the tool failed. `AllowedTools` limits the list.
-`ToolNamePrefix` separates two servers that share a tool name; calls reach the server under the original name.
+`ToolNamePrefix` separates two servers that share a tool name; calls reach the server under the original name. The
+prefix is prepended as is, with no separator, so pass `docs_` to get `docs_read_file`. Names in `ChatOptions.Tools`
+must be unique; when two servers or a server and a local tool share a name, the first match runs.
 `CacheTools = true` lets the Worker answer the list Activity from the list it fetched earlier on the same connection;
 the Activity still runs, so replay does not depend on Worker state. To pin a catalog instead of discovering it, build
 `TemporalMcpTool` yourself from a `ToolDeclaration` with the schema you expect, and wrap tools that need a human in
@@ -337,9 +340,11 @@ agent with tools it also marks the next round's call):
 <!--SNIPEND-->
 
 The durable result is the same as without streaming: the Workflow receives the whole response once the Activity
-completes. A model Activity that retries starts a new publisher and publishes from its first update again, so a
-subscriber sees the earlier attempt's updates followed by the whole retry; key your display on `ResponseId` or clear it
-when a new attempt begins. `Temporalio.Extensions.WorkflowStreams` is experimental and its wire format may change.
+completes. A batch that cannot be published, for example one larger than the 2 MiB payload limit, fails the Activity
+with the exception's own type and is retried under the Activity's Retry Policy. A model Activity that retries starts a
+new publisher and publishes from its first update again, so a subscriber sees the earlier attempt's updates followed by
+the whole retry; key your display on `ResponseId` or clear it when a new attempt begins.
+`Temporalio.Extensions.WorkflowStreams` is experimental and its wire format may change.
 
 ## Keep long conversations under the history limit
 
@@ -415,20 +420,19 @@ shows the tracer provider and exporter setup.
   client's own retries off in the factory, as the samples do with `ClientRetryPolicy(maxRetries: 0)`, so that one
   Activity attempt is one provider call: a client that retries inside the Activity hides the failures from Temporal and
   spends the attempt's start-to-close timeout on them.
-- **Provider errors are classified by HTTP status, never by message.** 400, 401, 403, 404 and 422 fail the Activity with
-  error type `MicrosoftAgentFrameworkModelError` and `NonRetryable = true`; every other status, including 408, 429 and
-  5xx, fails with the same type and is retried, and a `Retry-After` header becomes the next retry delay. Exceptions
-  without a status, such as a provider SDK's own exception types, propagate unchanged and retry. The failure reaches the
-  Workflow as an `ActivityFailureException` whose cause is an `ApplicationFailureException`; match on `ErrorType`, not
-  on the message.
+- **Provider errors are classified by HTTP status, never by message.** 408, 409, 429 and 5xx fail the Activity with
+  error type `MicrosoftAgentFrameworkModelError` and are retried; every other 4xx fails with the same type and
+  `NonRetryable = true`, the rule the Python plugin uses. A provider `x-should-retry` header of `true` or `false`
+  overrides the status rule, and `retry-after-ms` or `Retry-After` (seconds or an HTTP date) becomes the next retry
+  delay. Exceptions without a status, such as a provider SDK's own exception types, propagate unchanged and retry. The
+  failure reaches the Workflow as an `ActivityFailureException` whose cause is an `ApplicationFailureException`; match
+  on `ErrorType`, not on the message.
 - **Credentials and clients stay on the Worker.** The Workflow carries a model name. A name the Worker that runs the
   Activity does not know, or a chat client or MCP transport factory that throws, fails it with a non-retryable
   `ApplicationFailureException` of type `MicrosoftAgentFrameworkConfigurationError`, so during a rolling deployment add
   a new name to every Worker before Workflows use it. The headers of a hosted MCP server tool follow the same rule: set
   them on the Worker in `MicrosoftAgentFrameworkPluginOptions.HostedMcpServerHeaders`, keyed by the tool's
-  `ServerName`, and the model Activity adds them when it rebuilds the tool. A `HostedMcpServerTool` whose `Headers` are
-  set in the Workflow fails the run with `MicrosoftAgentFrameworkWorkflowError` before any Activity is scheduled,
-  because the Activity input is recorded in Event History; a server without an entry gets no headers.
+  `ServerName`, and the model Activity adds them when it rebuilds the tool; a server without an entry gets no headers.
 - **Register the plugin once.** On `TemporalClientConnectOptions.Plugins` or `TemporalWorkerOptions.Plugins`, not both;
   a Worker inherits the Client's plugins, and the same instance reaching a Worker twice registers its Activities once.
   Two instances on one Worker, or two of your own Activities with one name, fail the Worker with the SDK's duplicate
@@ -462,12 +466,15 @@ shows the tracer provider and exporter setup.
   session before the 2 MiB payload limit is near, and put a tool result of several megabytes in a blob store with a
   reference in the result. `ChatOptions.Tools` may hold `AIFunction`s, `ActivityAsTool` and `TemporalMcpTool` wrappers,
   `ApprovalRequiredAIFunction` and the hosted tool types (`HostedWebSearchTool`, `HostedCodeInterpreterTool`,
-  `HostedFileSearchTool`, `HostedMcpServerTool`), which run on the provider's side and cross by kind and options, with
-  the header rule above; nothing else on a hosted tool is treated as a secret. Any other `AITool` type fails the run.
-  Values in `AdditionalProperties` cross as JSON: primitives in `ChatOptions.AdditionalProperties` come back as `bool`,
-  `long`, `double` and `string`; nested objects, and the `AdditionalProperties` of messages and responses, arrive as
-  `JsonElement`. Only the `AIContent` types Microsoft.Extensions.AI declares serialize; a custom `AIContent` subclass
-  fails at the boundary.
+  `HostedFileSearchTool`, `HostedMcpServerTool`), which run on the provider's side and cross by kind and options. The
+  exception is `HostedMcpServerTool.Headers`: a header set on the tool in the Workflow fails the run with
+  `MicrosoftAgentFrameworkWorkflowError` before any Activity is scheduled, because the Activity input is recorded in
+  Event History; register the headers on the Worker in `MicrosoftAgentFrameworkPluginOptions.HostedMcpServerHeaders`,
+  keyed by the tool's `ServerName`. Nothing else on a hosted tool is treated as a secret. Any other `AITool` type fails
+  the run. Values in `AdditionalProperties` cross as JSON: primitives in `ChatOptions.AdditionalProperties` come back as
+  `bool`, `long`, `double` and `string`; nested objects, and the `AdditionalProperties` of messages and responses,
+  arrive as `JsonElement`. Only the `AIContent` types Microsoft.Extensions.AI declares serialize; a custom `AIContent`
+  subclass fails at the boundary.
 - **Background responses are not supported.** `AgentRunOptions.AllowBackgroundResponses`, `ContinuationToken` and
   `ChatClientAgentRunOptions.ChatClientFactory` fail the run with `MicrosoftAgentFrameworkWorkflowError`;
   `ChatOptions.RawRepresentationFactory` and `ContinuationToken` do not cross the Activity boundary and are dropped
