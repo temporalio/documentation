@@ -25,13 +25,16 @@ You can develop an Activity Definition by creating a class that extends `Tempora
 To register a class as an Activity with a custom name, use the `activity_name` class method in the class definition.
 Otherwise, the activity name is the unqualified class name.
 
-```ruby
+<!--SNIPSTART ruby-activity-basics-define-->
+[ruby-sandbox/activities/basics/my_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/basics/my_activity.rb)
+```rb
 class MyActivity < Temporalio::Activity::Definition
   def execute(input)
     "#{input['greeting']}, #{input['name']}!"
   end
 end
 ```
+<!--SNIPEND-->
 
 Activity implementation code should be _idempotent_. Learn more about [idempotency](/activity-definition#idempotency).
 

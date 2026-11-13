@@ -36,7 +36,9 @@ When you want to make substantive code changes that may affect existing Workflow
 
 Suppose you have an initial Workflow that runs `PrePatchActivity`:
 
-```ruby
+<!--SNIPSTART ruby-versioning-pre-patch-->
+[ruby-sandbox/workflows/versioning/pre_patch_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/versioning/pre_patch_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
   def execute
     result = Temporalio::Workflow.execute_activity(
@@ -45,13 +47,17 @@ class MyWorkflow < Temporalio::Workflow::Definition
     )
 
     # ...
+    result
   end
 end
 ```
+<!--SNIPEND-->
 
 Now, you want to update your code to run `PostPatchActivity` instead. This represents your desired end state.
 
-```ruby
+<!--SNIPSTART ruby-versioning-post-patch-->
+[ruby-sandbox/workflows/versioning/post_patch_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/versioning/post_patch_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
   def execute
     result = Temporalio::Workflow.execute_activity(
@@ -60,9 +66,11 @@ class MyWorkflow < Temporalio::Workflow::Definition
     )
 
     # ...
+    result
   end
 end
 ```
+<!--SNIPEND-->
 
 The problem is that you cannot deploy this new revision directly until you're certain there are no more running Workflows created using the `PrePatchActivity` code, otherwise you are likely to cause a nondeterminism error.
 Instead, you'll need to use the [`patched`](https://ruby.temporal.io/Temporalio/Workflow.html#patched-class_method) function to check which version of the code should be executed.
@@ -80,7 +88,9 @@ Using `patched` inserts a marker into the Event History.
 During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case `my-patch`).
 This ensures you can safely deploy new code paths alongside the original branch.
 
-```ruby
+<!--SNIPSTART ruby-versioning-patched-->
+[ruby-sandbox/workflows/versioning/patched_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/versioning/patched_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
   def execute
     if Temporalio::Workflow.patched('my-patch')
@@ -96,9 +106,11 @@ class MyWorkflow < Temporalio::Workflow::Definition
     end
 
     # ...
+    result
   end
 end
 ```
+<!--SNIPEND-->
 
 ### Deprecating patches {/* #deprecated-patches */}
 
@@ -110,7 +122,9 @@ The `deprecate_patch()` function works similarly to the `patched()` function by 
 This marker does not fail replay when Workflow code does not emit it.
 Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Event history.
 
-```ruby
+<!--SNIPSTART ruby-versioning-deprecate-patch-->
+[ruby-sandbox/workflows/versioning/deprecated_patch_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/versioning/deprecated_patch_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
   def execute
     Temporalio::Workflow.deprecate_patch('my-patch')
@@ -120,9 +134,11 @@ class MyWorkflow < Temporalio::Workflow::Definition
     )
 
     # ...
+    result
   end
 end
 ```
+<!--SNIPEND-->
 
 ### Removing a patch {/* #deploy-new-code */}
 
@@ -140,7 +156,9 @@ To do this, you can copy the Workflow Definition function, giving it a different
 
 For example, you would duplicate `MyWorkflow` as `MyWorkflowV2`:
 
-```ruby
+<!--SNIPSTART ruby-versioning-cutover-workflows-->
+[ruby-sandbox/workflows/versioning/cutover_workflows.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/versioning/cutover_workflows.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
   def execute
     # ...
@@ -153,10 +171,13 @@ class MyWorkflowV2 < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 You would then need to update the Worker configuration, and any other identifier strings, to register both Workflow Types:
 
-```ruby
+<!--SNIPSTART ruby-versioning-cutover-worker {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/versioning/cutover_worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/versioning/cutover_worker.rb)
+```rb
 client = Temporalio::Client.connect('localhost:7233', 'default')
 
 worker = Temporalio::Worker.new(
@@ -165,6 +186,7 @@ worker = Temporalio::Worker.new(
   workflows: [MyWorkflow, MyWorkflowV2]
 )
 ```
+<!--SNIPEND-->
 
 The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow.
 This can become impractical over time.
