@@ -1,0 +1,169 @@
+---
+id: compress-payloads
+title: Compress payloads with Temporal Proxy
+sidebar_label: Compress payloads
+description:
+  Configure lz4, snappy, or zstd payload compression in Temporal Proxy, with per-Namespace overrides, ordering with
+  encryption, and compression metrics.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
+  the definitive configuration schema.
+</ReleaseNoteHeader>
+
+The proxy can compress Payloads before forwarding them to an upstream and restore them on the way back, set under the
+top-level `compression` block. It is off by default. Like [encryption](/production-deployment/temporal-proxy/encrypt-payloads),
+compression is transparent: Workers and Clients send and receive uncompressed Payloads and need no Data Converter or
+codec changes.
+
+Compression reduces the bandwidth to the upstream and the size of the data stored in Event History. Because the
+Temporal Service sees the compressed bytes, it can also bring large Payloads, or requests that carry many of them, back
+under the [Payload and gRPC message size limits](/troubleshooting/blob-size-limit-error).
+
+Compression and encryption work independently, so you can turn on either one without the other. With both on, the proxy
+compresses before it encrypts, because encrypted bytes don't compress. On responses it decrypts first, then
+decompresses.
+
+:::note Version note
+
+Payload compression is new in v1.2.0. Upgrade every proxy instance that serves a Namespace before you turn compression
+on for it. An earlier release passes compressed Payloads through without restoring them, so a Worker reading through an
+older instance receives Payloads it can't decode.
+
+:::
+
+## Turn on compression
+
+```yaml
+compression:
+  enabled: true # Compress new payloads. Optional; defaults to false.
+  default: # Settings for every Namespace without an override. Required when enabled.
+    algorithm: zstd # Required when enabled: lz4, snappy, or zstd. There is no default.
+    level: 3 # zstd effort, 1-22. Defaults to 3. Ignored by lz4 and snappy.
+    minBytes: 1024 # Payloads with less data than this pass through uncompressed. Defaults to 1024.
+  overrides: # Per-Namespace settings, keyed by local (pre-translation) Namespace.
+    staging:
+      algorithm: lz4 # Inherits level and minBytes from default.
+    archive:
+      level: 9 # Inherits algorithm and minBytes from default.
+    media:
+      enabled: false # Turn compression off for this Namespace only.
+```
+
+| Key                       | Default | Meaning                                                                                                 |
+| ------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| `compression.enabled`     | `false` | Compress new Payloads in every Namespace without an override that says otherwise.                       |
+| `compression.default`     | none    | Settings for any Namespace without an override. Required when `enabled` is `true`.                      |
+| `default.algorithm`       | none    | `lz4`, `snappy`, or `zstd`. Required when `enabled` is `true`. An unknown value fails at startup.       |
+| `default.level`           | `3`     | zstd compression effort, from 1 to 22. Ignored by `lz4` and `snappy`.                                   |
+| `default.minBytes`        | `1024`  | Payloads whose data is smaller than this pass through uncompressed. Must be 0 or more.                  |
+| `compression.overrides`   | none    | Per-Namespace settings. Each can set `enabled`, `algorithm`, `level`, and `minBytes`.                   |
+
+The proxy reads compression configuration at startup and refuses to start when it's invalid, so restart it after a
+change.
+
+### Override settings for a Namespace
+
+Key each override by the local Namespace name, the one the Worker sends, not the name it's translated to upstream. This
+is the same key [encryption overrides](/production-deployment/temporal-proxy/encrypt-payloads) use.
+
+An override is merged over `default` one field at a time, so whatever it leaves out comes from `default`. This differs
+from encryption, where an override replaces the default policy as a whole.
+
+`enabled` is allowed only in an override, where it takes precedence over `compression.enabled` for that Namespace.
+Use `enabled: false` to turn compression off for a Namespace whose Payloads are already compressed or don't compress,
+or `enabled: true` to turn it on for one Namespace while `compression.enabled` stays `false`, for a staged rollout. An
+override that turns compression on needs an `algorithm`, either its own or from `default`.
+
+### Choose an algorithm
+
+| Algorithm | Speed                  | Compression ratio                        |
+| --------- | ---------------------- | ---------------------------------------- |
+| `lz4`     | Fastest                | Lowest of the three                      |
+| `snappy`  | Similar to `lz4`       | Similar to `lz4`, usually a little lower |
+| `zstd`    | Slower, set by `level` | Highest, and rises with `level`          |
+
+Use `zstd` when storage and bandwidth savings matter most; level 3 is a reasonable starting point. Use `lz4` or `snappy`
+when proxy CPU or added latency matters more. Results depend on your Payloads, so measure the
+[compression ratio](#monitor-compression) on your own traffic.
+
+zstd maps `level` onto a small number of internal effort tiers, so neighboring levels can produce identical output.
+
+## How the proxy compresses Payloads
+
+For each outbound Payload, the proxy looks up the settings for the request's local Namespace. It compresses the Payload
+only when compression is on for that Namespace and the Payload's data is at least `minBytes`. It leaves the Payload
+unchanged when:
+
+- it's already compressed, for example by an earlier proxy in a chain.
+- its encoding is listed in [`encryption.skipEncodings`](/production-deployment/temporal-proxy/encrypt-payloads#skip-encodings).
+- the compressed result is no smaller than the original. The proxy forwards the original instead.
+
+The proxy compresses the whole Payload, including its metadata, and replaces it with a Payload whose `encoding` is
+`binary/compressed` and whose `compression-algorithm` metadata names the algorithm. On the way back, it restores the
+original Payload, metadata included.
+
+Search Attributes are never compressed, so the Temporal Service can still index them.
+
+### Decompression doesn't depend on configuration
+
+The proxy restores every Payload marked `binary/compressed` that passes through it, whatever `compression` says and
+whichever algorithm the Payload names. Turning compression off, or changing the algorithm or level, affects only new
+Payloads, and existing ones stay readable.
+
+The proxy refuses to restore a Payload that would decompress to more than 4 MiB.
+
+### Read compressed data outside the proxy
+
+Anything that reads Event History straight from the Temporal Service, such as the Web UI or `temporal workflow show`,
+sees the compressed bytes. A [codec server](/production-deployment/temporal-proxy/codec-server) run by the proxy
+restores compressed Payloads, and decrypts them too when encryption is on, so point those clients at it.
+
+## Monitor compression {/* #monitor-compression */}
+
+The `compression` metrics report even when compression is off, since the proxy always restores compressed Payloads.
+They count Payloads, not requests. See [Observability](/production-deployment/temporal-proxy#observability) for the full
+list of proxy metrics.
+
+| Metric                   | Labels                                          | Reports                                                    |
+| ------------------------ | ----------------------------------------------- | ---------------------------------------------------------- |
+| `ops_total`              | `operation`, `algorithm`, `result`, `namespace` | Payloads compressed and decompressed                       |
+| `ops_duration_seconds`   | `operation`, `algorithm`, `namespace`           | Time per compress or decompress                            |
+| `payload_bytes`          | `stage`, `algorithm`, `namespace`               | Size at `stage="pre_compress"` and `stage="post_compress"` |
+| `payloads_skipped_total` | `reason`, `algorithm`, `namespace`              | Payloads forwarded uncompressed while compression is on    |
+
+`ops_total` reports `result="too_large"` for a Payload that would decompress past 4 MiB, and
+`result="unknown_algorithm"` for one that names an algorithm the proxy can't restore. On decompression, `algorithm`
+comes from the Payload, which anyone who can write to the Namespace controls, so a name the proxy doesn't know is
+reported as `unknown`.
+
+`payloads_skipped_total` reports a `reason` of `below_min_bytes`, `already_compressed`, `skipped_encoding`, or
+`not_smaller`. A Namespace whose `not_smaller` count is close to its `ops_total` is spending CPU without saving space.
+Turn compression off for it with an override.
+
+`payload_bytes` includes Payloads that came out no smaller and were forwarded uncompressed, so the ratio of its two
+stages is what compression actually saves. With the default metric prefix, the ratio for each Namespace is:
+
+```promql
+sum by (namespace) (rate(tmprl_proxy_compression_payload_bytes_sum{stage="pre_compress"}[5m]))
+/
+sum by (namespace) (rate(tmprl_proxy_compression_payload_bytes_sum{stage="post_compress"}[5m]))
+```
+
+A ratio of 2 means compressed Payloads are half their original size. The `namespace` label reports a value only when
+`metrics.labels.namespace` is on.
+
+To see how much CPU compression uses, sum `ops_duration_seconds`, which reads as the number of cores busy compressing:
+
+```promql
+sum by (operation, algorithm) (rate(tmprl_proxy_compression_ops_duration_seconds_sum[5m]))
+```

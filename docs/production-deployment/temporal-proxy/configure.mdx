@@ -230,12 +230,20 @@ Upstreams with a static `hostPort` connect eagerly at startup; templated ones co
 Temporal Cloud takes a fully qualified `<name>.<account-id>`, so the proxy checks the names a Cloud upstream's rules
 produce:
 
-- `suffix` must be `.<account-id>`.
+- `suffix` must be `[<name-suffix>].<account-id>`. It can carry the end of the Namespace name before the account
+  identifier, so `-dev.acct` turns `payments` into `payments-dev.acct`.
 - Each override's `remote` must be a complete Cloud Namespace identifier.
 
 A Namespace name runs 2 to 39 characters, starts with a letter, ends with a letter or number, and holds only lowercase
 letters, numbers, and `-`. An account identifier runs 5 to 20 characters. Both are checked at startup, so rules that
-cannot produce a valid Cloud name fail before the proxy serves anything.
+cannot produce a valid Cloud name fail before the proxy serves anything. A suffix is checked against the shortest valid
+name, so a long local name can still produce a remote name over the 39-character limit.
+
+:::note Version note
+
+Before v1.1.1, a Cloud `suffix` had to be exactly `.<account-id>`.
+
+:::
 
 The proxy recognizes Cloud from the address: any `.tmprl.cloud` host, templated ones included. A `tls.serverName` on the
 Cloud domain counts too, since a private-link upstream reaches Cloud through a per-VPC hostname but still pins Cloud's
@@ -263,16 +271,18 @@ there. Cloud also refuses every `OperatorService` call made with a customer cred
 The proxy answers these calls from Cloud's control plane, or answers them itself, and converts the reply into the
 response the caller expected. That is what lets the open source Temporal Web UI run against Cloud through the proxy:
 
-| Method                                 | Answered with                                                 |
-| -------------------------------------- | ------------------------------------------------------------- |
-| `WorkflowService/ListNamespaces`       | `CloudService.GetNamespaces`                                  |
-| `WorkflowService/GetClusterInfo`       | An empty reply from the proxy, calling no upstream            |
-| `OperatorService/ListSearchAttributes` | `CloudService.GetNamespace`, with custom Search Attributes only |
-| `OperatorService/ListNexusEndpoints`   | `CloudService.GetNexusEndpoints`                              |
-| `OperatorService/GetNexusEndpoint`     | `CloudService.GetNexusEndpoint`                               |
+| Method                                 | Answered with                                                                           |
+| -------------------------------------- | --------------------------------------------------------------------------------------- |
+| `WorkflowService/ListNamespaces`       | `CloudService.GetNamespaces`                                                            |
+| `WorkflowService/GetClusterInfo`       | An empty reply from the proxy, calling no upstream                                      |
+| `OperatorService/ListSearchAttributes` | `CloudService.GetNamespace` for custom Search Attributes, plus Temporal's built-in ones |
+| `OperatorService/ListNexusEndpoints`   | `CloudService.GetNexusEndpoints`                                                        |
+| `OperatorService/GetNexusEndpoint`     | `CloudService.GetNexusEndpoint`                                                         |
 
-Cloud reports neither a server version nor system Search Attributes, so the proxy does not invent them. Web UI features
-gated on a server version stay off, and the UI's filters list only the Namespace's custom Search Attributes.
+Cloud reports neither a server version nor system Search Attributes. The proxy doesn't invent a server version, so Web
+UI features gated on one stay off. It does supply the built-in Search Attributes, such as `ExecutionStatus`,
+`WorkflowType`, and `StartTime`, from a list generated from a Temporal Server release, so the UI's filters list the same
+set they would against a self-hosted Temporal Service, alongside the Namespace's custom Search Attributes.
 
 This needs no configuration. It follows from an upstream already being Temporal Cloud, and the control plane is reached
 at `saas-api.tmprl.cloud:443` with that upstream's own credentials, since one Temporal Cloud API key authorizes both.
@@ -289,6 +299,7 @@ a Temporal Service that serves them.
 :::note Version note
 
 Before v0.8.0, the proxy translated only `ListNamespaces`, and only on the upstream serving Namespace-less requests.
+Before v1.1.0, `ListSearchAttributes` on a Cloud upstream returned custom Search Attributes only.
 
 :::
 
@@ -346,6 +357,26 @@ auth:
 ```
 
 `token` (for `staticToken`) and `url` (for `jwks`) are required; the remaining fields are optional.
+
+`scheme` defaults to `Bearer` when omitted or blank. Set it to `none` when the header carries the bare token with no
+prefix, such as the `x-goog-iap-jwt-assertion` header Google Cloud Identity-Aware Proxy (IAP) forwards. With `none`, the
+proxy reads the header's whole value as the token, so a value that starts with `Bearer ` is rejected.
+
+```yaml
+auth:
+  jwks:
+    url: https://www.gstatic.com/iap/verify/public_key-jwk
+    audiences:
+      - /projects/123456789/global/backendServices/987654321
+    header: x-goog-iap-jwt-assertion
+    scheme: none # The header carries a bare JWT.
+```
+
+:::note Version note
+
+`scheme: none` is new in v1.1.0.
+
+:::
 
 ### Delegate the decision to an extension server
 
@@ -430,7 +461,7 @@ upstreams:
       static:
         apiKey: ${TEMPORAL_API_KEY} # Required.
         header: authorization # Optional header override.
-        scheme: Bearer # Optional scheme override.
+        scheme: Bearer # Optional scheme override. Set none to send the bare key.
 ```
 
 Credentials require TLS to the upstream. The proxy dials over TLS by default, so this is only an issue when you also set
@@ -533,6 +564,28 @@ rather than silently picking one. The same rules govern every outbound hop, so a
 v0.6.0 made TLS the default for everything the proxy dials. Before it, an upstream with no `tls` block connected in
 plaintext. A `tls: {}` block still means what it always did, so configurations that declared one keep working, but an
 upstream that relied on the old plaintext default now needs `insecure: true`.
+
+:::
+
+### Rotate certificates
+
+The proxy re-reads every file a `tls` block references once a minute, on the gateway, the HTTP listener, each upstream,
+the Cloud API, and each extension server. Replace the files in place and new handshakes pick up the new material
+without a restart. Existing connections keep their current session until they reconnect.
+
+If a file fails to parse, or the certificate and key don't match because one was replaced before the other, the proxy
+keeps the previous material, logs an error, and retries every minute. The reload checks that the material is well
+formed, not that it's correct: a certificate missing a SAN your Clients dial reaches every instance within about a
+minute. Alert on certificate expiry and on failed reloads:
+
+```promql
+tmprl_proxy_tls_cert_expiry_timestamp_seconds - time() < 7 * 86400
+increase(tmprl_proxy_tls_reloads_total{result="failure"}[10m]) > 0
+```
+
+:::note Version note
+
+Certificate reloading is new in v1.1.0. Earlier releases read TLS files once at startup.
 
 :::
 

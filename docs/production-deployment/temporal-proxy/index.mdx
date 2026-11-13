@@ -22,7 +22,7 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 The Temporal Proxy is a gRPC proxy that sits between your Temporal SDK Clients, Workers, and the Temporal Web UI on one
 side and one or more upstream Temporal Services on the other. It handles Namespace translation, TLS termination, and
-optional payload encryption so your applications can target a single local endpoint while the proxy routes each request
+optional payload encryption and compression so your applications can target a single local endpoint while the proxy routes each request
 to the right upstream, whether that is a local development Service, a self-hosted Service, or Temporal Cloud.
 
 Temporal Proxy's encryption code and security model have been vetted by security teams at global banks and independent
@@ -85,11 +85,13 @@ and credentials, forwards to the Temporal Service, and translates the Namespace 
 encryption is enabled, it also seals codec-capable Payloads on the way out and opens them on the way back. New Payloads
 sent through the proxy reach the upstream as ciphertext. See
 [Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the scope and limits of this fail-closed
-behavior.
+behavior. When payload compression is enabled, it compresses Payloads before encrypting them and restores them on
+responses. See [Compress payloads](/production-deployment/temporal-proxy/compress-payloads).
 
 The proxy reads only the Namespace and the fields it translates, so it needs no knowledge of your Data Converter or
-codec, and payload data passes through untouched unless encryption is configured. The gateway accepts gzip-compressed
-requests, so a Client with gRPC compression turned on works through it.
+codec. Payload data passes through untouched unless you configure encryption or compression. Payload compression is
+separate from gRPC transport compression: the gateway also accepts gzip-compressed requests, so a Client with gRPC
+compression turned on works through it.
 
 :::note Version note
 
@@ -187,12 +189,13 @@ the standard gRPC health service, with an entry for every allowed service, which
 liveness probe reads. See [Report health](/production-deployment/temporal-proxy/configure#health-checks) for what it
 reports.
 
-`proxy serve` takes two flags, each with an environment variable equivalent:
+`proxy serve` takes three flags, each with an environment variable equivalent:
 
-| Flag             | Environment variable | Default | Sets                                         |
-| ---------------- | -------------------- | ------- | -------------------------------------------- |
-| `--config`, `-c` | `PROXY_CONFIG`       | none    | Path to the configuration file. Required.    |
-| `--level`        | `LOG_LEVEL`          | `info`  | Log level: `debug`, `info`, `warn`, `error`. |
+| Flag                   | Environment variable       | Default | Sets                                                                                                                       |
+| ---------------------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `--config`, `-c`       | `PROXY_CONFIG`             | none    | Path to the configuration file. Required.                                                                                  |
+| `--level`              | `LOG_LEVEL`                | `info`  | Log level: `debug`, `info`, `warn`, `error`.                                                                               |
+| `--require-encryption` | `PROXY_REQUIRE_ENCRYPTION` | `false` | Refuse to start without an encryption key. See [Require an encryption key](/production-deployment/temporal-proxy/encrypt-payloads#require-encryption). |
 
 Everything else about metrics comes from the `metrics` block in the configuration file:
 
@@ -237,30 +240,36 @@ request-scoped series, so an unbounded header causes unbounded metric cardinalit
 :::
 
 Metric names are `<namespace>_<subsystem>_<name>`, so with the default namespace the routing counter is
-`tmprl_proxy_router_decisions_total`. There are four subsystems:
+`tmprl_proxy_router_decisions_total`. There are six subsystems:
 
-| Subsystem      | Metric                             | Labels                               | Reports                                                  |
-| -------------- | ---------------------------------- | ------------------------------------ | -------------------------------------------------------- |
-| `server`       | `requests_total`                   | `method`, `code`                     | RPCs served, by gRPC status code                         |
-| `server`       | `request_duration_seconds`         | `method`                             | End-to-end time serving an RPC                           |
-| `server`       | `panics_total`                     | `method`                             | Panics the server recovered from while serving an RPC    |
-| `router`       | `decisions_total`                  | `upstream`, `outcome`                | Routing decisions, by chosen upstream                    |
-| `router`       | `forwarding_errors_total`          | `upstream`, `reason`                 | Forwarding failures the router originated                |
-| `encryption`   | `vault_ops_total`                  | `operation`, `result`, `namespace`   | Envelope operations, sealing and opening payloads        |
-| `encryption`   | `vault_ops_duration_seconds`       | `operation`, `namespace`             | Time per envelope operation, end to end                  |
-| `encryption`   | `payloads_skipped_total`           | `operation`, `encoding`, `namespace` | Payloads passed through under `skipEncodings`            |
-| `encryption`   | `vault_unbound_opens_total`        | `namespace`                          | Payloads with no Namespace binding handed to decrypt     |
-| `encryption`   | `vault_namespace_mismatches_total` | `namespace`                          | Payloads bound to another Namespace handed to decrypt    |
-| `encryption`   | `dek_ops_total`                    | `operation`, `result`                | Outcome of the AES-256-GCM step alone                    |
-| `encryption`   | `dek_ops_duration_seconds`         | `operation`                          | Time in the AES-256-GCM step alone                       |
-| `encryption`   | `kek_ops_total`                    | `provider`, `operation`, `result`    | DEK wrap and unwrap calls to your KMS                    |
-| `encryption`   | `kek_ops_duration_seconds`         | `provider`, `operation`              | Time spent wrapping and unwrapping DEKs                  |
-| `encryption`   | `dek_rotations_total`              | `reason`                             | DEK rotations, by why the DEK was replaced               |
-| `encryption`   | `dek_cache_hits_total`             | none                                 | Reads served from the decrypted-DEK cache                |
-| `encryption`   | `dek_cache_misses_total`           | none                                 | Reads that required a KMS unwrap                         |
-| `encryption`   | `dek_cache_size`                   | none                                 | Current entries in the decrypted-DEK cache               |
-| `codec_server` | `requests_total`                   | `route`, `code`                      | Codec server requests, by HTTP status code               |
-| `codec_server` | `request_duration_seconds`         | `route`                              | Time serving a codec server request                      |
+| Subsystem      | Metric                             | Labels                                          | Reports                                                 |
+| -------------- | ---------------------------------- | ----------------------------------------------- | ------------------------------------------------------- |
+| `server`       | `requests_total`                   | `method`, `code`                                | RPCs served, by gRPC status code                        |
+| `server`       | `request_duration_seconds`         | `method`                                        | End-to-end time serving an RPC                          |
+| `server`       | `panics_total`                     | `method`                                        | Panics the server recovered from while serving an RPC   |
+| `router`       | `decisions_total`                  | `upstream`, `outcome`                           | Routing decisions, by chosen upstream                   |
+| `router`       | `forwarding_errors_total`          | `upstream`, `reason`                            | Forwarding failures the router originated               |
+| `encryption`   | `vault_ops_total`                  | `operation`, `result`, `namespace`              | Envelope operations, sealing and opening payloads       |
+| `encryption`   | `vault_ops_duration_seconds`       | `operation`, `namespace`                        | Time per envelope operation, end to end                 |
+| `encryption`   | `payloads_skipped_total`           | `operation`, `encoding`, `namespace`            | Payloads passed through under `skipEncodings`           |
+| `encryption`   | `vault_unbound_opens_total`        | `namespace`                                     | Payloads with no Namespace binding handed to decrypt    |
+| `encryption`   | `vault_namespace_mismatches_total` | `namespace`                                     | Payloads bound to another Namespace handed to decrypt   |
+| `encryption`   | `dek_ops_total`                    | `operation`, `result`                           | Outcome of the AES-256-GCM step alone                   |
+| `encryption`   | `dek_ops_duration_seconds`         | `operation`                                     | Time in the AES-256-GCM step alone                      |
+| `encryption`   | `kek_ops_total`                    | `provider`, `operation`, `result`               | DEK wrap and unwrap calls to your KMS                   |
+| `encryption`   | `kek_ops_duration_seconds`         | `provider`, `operation`                         | Time spent wrapping and unwrapping DEKs                 |
+| `encryption`   | `dek_rotations_total`              | `reason`                                        | DEK rotations, by why the DEK was replaced              |
+| `encryption`   | `dek_cache_hits_total`             | none                                            | Reads served from the decrypted-DEK cache               |
+| `encryption`   | `dek_cache_misses_total`           | none                                            | Reads that required a KMS unwrap                        |
+| `encryption`   | `dek_cache_size`                   | none                                            | Current entries in the decrypted-DEK cache              |
+| `compression`  | `ops_total`                        | `operation`, `algorithm`, `result`, `namespace` | Payloads compressed and decompressed                    |
+| `compression`  | `ops_duration_seconds`             | `operation`, `algorithm`, `namespace`           | Time per compress or decompress                         |
+| `compression`  | `payload_bytes`                    | `stage`, `algorithm`, `namespace`               | Payload size before and after compression               |
+| `compression`  | `payloads_skipped_total`           | `reason`, `algorithm`, `namespace`              | Payloads forwarded uncompressed while compression is on |
+| `codec_server` | `requests_total`                   | `route`, `code`                                 | Codec server requests, by HTTP status code              |
+| `codec_server` | `request_duration_seconds`         | `route`                                         | Time serving a codec server request                     |
+| `tls`          | `reloads_total`                    | `credential`, `result`                          | Certificate reload attempts                             |
+| `tls`          | `cert_expiry_timestamp_seconds`    | `credential`, `file`                            | When the certificate in use expires, as a Unix time     |
 
 :::note Version note
 
@@ -294,6 +303,22 @@ The `codec_server` metrics only move when the [codec server](/production-deploym
 enabled. Their `route` label is the matched pattern, such as `/decode`, never the request path, and the subsystem has
 no Namespace label, so a Namespace in the path cannot grow the series count.
 
+The `compression` metrics count payloads, not requests, and report even with compression turned off, since the proxy
+always restores compressed payloads. See
+[Monitor compression](/production-deployment/temporal-proxy/compress-payloads#monitor-compression) for the `result` and
+`reason` values and how to read the compression ratio.
+
+The `tls` metrics cover every `tls` block the proxy loads. Their `credential` label is `gateway`, `http`,
+`upstream/<name>`, `cloud_api`, or `extension/<name>`. Files shared by several of these report once, labeled with the
+sorted names joined by commas, such as `gateway,http`, so match with a regular expression such as
+`credential=~".*gateway.*"`. See [Rotate certificates](/production-deployment/temporal-proxy/configure#rotate-certificates).
+
+:::note Version note
+
+The `tls` subsystem is new in v1.1.0, and the `compression` subsystem in v1.2.0.
+
+:::
+
 `dek_rotations_total` splits by `reason`: `initial` for a Namespace's first DEK, `scheduled` for the `renewBefore`
 pre-rotation, and `on_demand` for a DEK replaced at request time because no fresh one was ready. A rising `on_demand`
 rate means rotation is falling behind, so raise `renewBefore`. Compare the cache counters against `cacheSize` to see
@@ -301,13 +326,14 @@ whether the cache is absorbing read traffic.
 
 ## Versions and support
 
-The following support policy applies to Temporal Proxy v1.0 and later. Support for Temporal customers includes
-troubleshooting through Temporal Support and maintenance releases with critical fixes for security, data loss, and
-reliability issues.
+Temporal Proxy is in Public Preview and suitable for production use from v1.0. Breaking changes between minor releases
+are possible but kept to a minimum. Support for Temporal customers includes troubleshooting through Temporal Support and
+maintenance releases with critical fixes for security, data loss, and reliability issues.
 
-Temporal supports the current minor release and at least the three preceding minor releases, when available. Versions
-earlier than v1.0 are excluded from this support window. For example, when v1.4 is current, the supported minor releases
-include v1.1, v1.2, v1.3, and v1.4; when v1.1 is current, they include v1.0 and v1.1.
+Temporal applies critical fixes and patches to the current minor release and the two minor releases before it. For
+example, when v1.0 is current, v1.0, v0.10, and v0.9 receive critical fixes; when v1.2 is current, v1.2, v1.1, and v1.0
+do. Minor bug fixes generally go to the
+current release only.
 
 Each major version receives support for at least 12 months after its general availability release. Temporal provides at
 least six months' notice before ending support for a major version.
@@ -323,6 +349,7 @@ Temporal publishes CVE advisories when a fix is available. Report vulnerabilitie
 
 - [Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance)
 - [Run a codec server](/production-deployment/temporal-proxy/codec-server)
+- [Compress payloads](/production-deployment/temporal-proxy/compress-payloads)
 - [Temporal Proxy repository](https://github.com/temporalio/temporal-proxy)
 - [Temporal Proxy Helm chart](https://github.com/temporalio/helm-charts/tree/main/charts/temporal-proxy)
 - [Temporal Cloud example](https://github.com/temporalio/temporal-proxy/tree/main/examples/cloud)
