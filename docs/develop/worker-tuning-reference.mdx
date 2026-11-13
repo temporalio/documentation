@@ -125,9 +125,21 @@ IO settings control the number of pollers and rate limits for Task Queue interac
 | **Python** | 5 | 5 | - | - |
 | **.NET** | 5 | 5 | - | - |
 
+The poller counts in this table are fixed defaults.
+On Temporal Cloud Namespaces with Poller Autoscaling enabled, supported SDK versions use Poller Autoscaling instead of these fixed counts for any poller type you leave unconfigured.
+See [Poller Autoscaling by default in Temporal Cloud](/develop/worker-performance/configuration#poller-autoscaling-by-default-in-temporal-cloud).
+
 ### Poller autoscaling
 
-Use poller autoscaling to automatically adjust the number of concurrent polls based on workload.
+Use Poller Autoscaling to automatically adjust the number of concurrent polls based on workload.
+Each poller type scales within its own bounds. The defaults are the same in every SDK:
+
+| Bound | Default |
+|-------|---------|
+| Minimum pollers | 1 |
+| Initial pollers | 5 |
+| Maximum pollers | 100 |
+
 For configuration details, see [Configuring poller options](/develop/worker-performance/configuration#configuring-poller-options).
 
 ## Metrics reference by resource type

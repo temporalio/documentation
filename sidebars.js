@@ -871,19 +871,6 @@ const developRubyCategory = {
       },
       {
         type: 'category',
-        label: 'Integrations',
-        className: 'sidebar-integrations',
-        collapsed: true,
-        link: {
-          type: 'doc',
-          id: 'develop/ruby/integrations/index',
-        },
-        items: [
-          'develop/ruby/integrations/rails-integration'
-        ],
-      },
-      {
-        type: 'category',
         label: 'Best practices',
         collapsed: true,
         link: {
@@ -907,6 +894,19 @@ const developRubyCategory = {
               'develop/ruby/best-practices/data-handling/data-encryption',
             ],
           },
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/integrations/index',
+        },
+        items: [
+          'develop/ruby/integrations/rails-integration'
         ],
       },
     ],
@@ -1008,6 +1008,23 @@ const developRustCategory = {
         },
         items: [
           'develop/rust/nexus/feature-guide'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/rust/best-practices/index',
+        },
+        items: [
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            items: ['develop/rust/best-practices/data-handling/external-storage'],
+          },
         ],
       },
     ],
