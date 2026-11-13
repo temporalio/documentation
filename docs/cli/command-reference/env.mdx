@@ -104,13 +104,7 @@ The following options can be used with any command.
 
 | Flag | Required | Description | Default |
 |------|----------|-------------|--------|
-| `--address` | No | **string** Temporal Service gRPC endpoint. | `localhost:7233` |
-| `--api-key` | No | **string** API key for request. |  |
-| `--client-authority` | No | **string** Temporal gRPC client :authority pseudoheader. |  |
 | `--client-connect-timeout` | No | **duration** Client connection timeout. |  |
-| `--codec-auth` | No | **string** Authorization header for Codec Server requests. |  |
-| `--codec-endpoint` | No | **string** Remote Codec Server endpoint. |  |
-| `--codec-header` | No | **string[]** HTTP headers for codec server (KEY=VALUE, repeatable). |  |
 | `--color` | No | **string-enum** Output coloring. Accepted values: always, never, auto. | `auto` |
 | `--command-timeout` | No | **duration** Command execution timeout. |  |
 | `--config-file` | No | **string** TOML config file path. |  |
@@ -118,22 +112,10 @@ The following options can be used with any command.
 | `--disable-config-file` | No | **bool** Disable loading config from file. |  |
 | `--env` | No | **string** Active environment name (`ENV`). | `default` |
 | `--env-file` | No | **string** Path to environment settings file. |  |
-| `--grpc-meta` | No | **string[]** HTTP headers for requests (KEY=VALUE, repeatable). |  |
-| `--identity` | No | **string** Identity of the client submitting requests. |  |
 | `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
 | `--log-level` | No | **string-enum** Log level. Default is "never" for most commands and "warn" for "server start-dev". Accepted values: debug, info, warn, error, never. | `never` |
-| `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
 | `--profile` | No | **string** Configuration profile to use. Overrides the TEMPORAL_PROFILE environment variable and defaults to "default". |  |
 | `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
-| `--tls` | No | **bool** Enable base TLS encryption. Auto-enabled when api-key or TLS options are set. |  |
-| `--tls-ca-data` | No | **string** Inline server CA certificate data. |  |
-| `--tls-ca-path` | No | **string** Path to server CA certificate. |  |
-| `--tls-cert-data` | No | **string** Inline x509 certificate data. |  |
-| `--tls-cert-path` | No | **string** Path to x509 certificate. |  |
-| `--tls-disable-host-verification` | No | **bool** Disable TLS host-name verification. |  |
-| `--tls-key-data` | No | **string** Inline x509 private key data. |  |
-| `--tls-key-path` | No | **string** Path to x509 private key. |  |
-| `--tls-server-name` | No | **string** Override target TLS server name. |  |
 
