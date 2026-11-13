@@ -2,7 +2,7 @@
 id: unpause
 title: Unpause an Activity
 sidebar_label: Unpause
-description: Resume a Paused Activity Execution so its next attempt starts immediately, with options to reset retry state as it resumes.
+description: Unpausing reschedules an Activity immediately and discards retry backoff, but keeps its attempt count, Heartbeat details, and timeouts.
 slug: /activity-operations/unpause
 toc_max_heading_level: 4
 tags:
