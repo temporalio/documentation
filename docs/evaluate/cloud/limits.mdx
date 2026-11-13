@@ -208,6 +208,7 @@ Temporal Cloud limits each Namespace to 20,000 Activity pollers and 20,000 Workf
 
 Each SDK offers a way to configure Workers for per-Worker maximum Activity and Workflow Task pollers.
 Those values do not affect the global Namespace limit.
+With [Poller Autoscaling](/develop/worker-performance/configuration#configuring-poller-options), each Worker can use up to 100 pollers per poller type by default.
 
 ### Default Retention Period
 

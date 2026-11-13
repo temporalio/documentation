@@ -25,10 +25,13 @@ Worker.
 To add a Timer in a Workflow, use `Temporalio::Workflow.sleep`. _Technically_ `Kernel#sleep` works, but the workflow
 form allows one to set a summary to view in the UI.
 
-```ruby
+<!--SNIPSTART ruby-timers-sleep {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/timers/timer_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/timers/timer_workflow.rb)
+```rb
 # Sleep for 72 hours
 Temporalio::Workflow.sleep(72 * 60 * 60, summary: 'my timer')
 ```
+<!--SNIPEND-->
 
 There is also a `Temporalio::Workflow.timeout` method that accepts a block and works like standard Ruby
 `Timeout.timeout` if needing the ability to timeout a set of code.

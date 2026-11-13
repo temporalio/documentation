@@ -10,8 +10,6 @@ tags:
   - continue-as-new
 ---
 
-This page describes how to Continue-As-New using the Temporal Ruby SDK.
-
 [Continue-As-New](/workflow-execution/continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
 The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 
@@ -35,9 +33,12 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 To Continue-As-New in Ruby, raise a `Temporalio::Workflow::ContinueAsNewError` from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
 
-```ruby
+<!--SNIPSTART ruby-continue-as-new {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/continue-as-new/continue_as_new_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/continue-as-new/continue_as_new_workflow.rb)
+```rb
 raise Temporalio::Workflow::ContinueAsNewError.new('my-new-arg')
 ```
+<!--SNIPEND-->
 
 :::warning Using Continue-as-New and Updates
 
