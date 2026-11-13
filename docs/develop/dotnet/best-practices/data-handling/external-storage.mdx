@@ -56,7 +56,7 @@ Create an `AmazonS3Client`, wrap it in `AwsSdkS3StorageDriverClient`, and pass t
 chain. Set `bucket` to your bucket name before running this snippet.
 
 <!--SNIPSTART dotnet-external-storage-s3-create-->
-[dotnet-sandbox/bestpractices/ExternalStorage/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/dotnet-external-storage-review/dotnet-sandbox/bestpractices/ExternalStorage/Program.cs)
+[dotnet-sandbox/bestpractices/ExternalStorage/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/Program.cs)
 ```cs
 using var s3Client = new AmazonS3Client();
 var driver = new S3StorageDriver(
@@ -79,7 +79,7 @@ Create `ExternalStorage` with the driver and assign it to `DataConverter.Externa
 `TemporalClientConnectOptions` before calling `TemporalClient.ConnectAsync`.
 
 <!--SNIPSTART dotnet-external-storage-client-setup {"highlightedLines": "3,7"}-->
-[dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/dotnet-external-storage-review/dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs)
+[dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs)
 ```cs {3,7}
 var dataConverter = DataConverter.Default with
 {
@@ -96,7 +96,7 @@ Pass the Client to `TemporalWorker` and register your Workflow and Activities wi
 The Worker uses the Client's Data Converter.
 
 <!--SNIPSTART dotnet-external-storage-worker-setup-->
-[dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/dotnet-external-storage-review/dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs)
+[dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs)
 ```cs
 using var worker = new TemporalWorker(
     client,
@@ -158,7 +158,7 @@ files and publishes new files with a move after writing completes, so readers do
 It does not provide production storage durability.
 
 <!--SNIPSTART dotnet-external-storage-local-driver-->
-[dotnet-sandbox/bestpractices/ExternalStorage/LocalDiskStorageDriver.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/dotnet-external-storage-review/dotnet-sandbox/bestpractices/ExternalStorage/LocalDiskStorageDriver.cs)
+[dotnet-sandbox/bestpractices/ExternalStorage/LocalDiskStorageDriver.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/LocalDiskStorageDriver.cs)
 ```cs
 // For local development only. All Clients and Workers must share this directory.
 public sealed class LocalDiskStorageDriver(string directory) : IStorageDriver
@@ -241,7 +241,7 @@ is measured after any Payload Codec has run. Smaller payloads stay inline in Eve
 Set `ExternalStorage.PayloadSizeThreshold` to change the threshold, or set it to `0` to offload every payload.
 
 <!--SNIPSTART dotnet-external-storage-threshold {"highlightedLines": "5"}-->
-[dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/dotnet-external-storage-review/dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs)
+[dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs)
 ```cs {5}
 var dataConverter = DataConverter.Default with
 {
@@ -264,7 +264,7 @@ drivers, set a distinct `Name` in the object initializer on at least one of them
 backing stores for as long as existing references can be read, including during replay.
 
 <!--SNIPSTART dotnet-external-storage-multiple-drivers-->
-[dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/docs/dotnet-external-storage-review/dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs)
+[dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs)
 ```cs
 var storage = new ExternalStorage(
     new IStorageDriver[] { preferred, legacy },
