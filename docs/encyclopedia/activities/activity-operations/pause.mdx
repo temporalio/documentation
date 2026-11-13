@@ -65,7 +65,7 @@ cases differently, for example releasing held resources on Pause while preservin
 
 | SDK        | Version  | How to detect Pause                                                  |
 | ---------- | -------- | -------------------------------------------------------------------- |
-| Go         | v1.34.0+ | Catch `activity.ErrActivityPaused`                                   |
+| Go         | v1.34.0+ | `context.Cause(ctx)` returns `activity.ErrActivityPaused`            |
 | Java       | v1.29.0+ | Catch `ActivityPausedException`                                      |
 | TypeScript | v1.12.3+ | Check `cancellationDetails.paused === true`                          |
 | Python     | v1.12.0+ | Check `cancellation_details().paused` on `asyncio.CancelledError`    |
