@@ -1,0 +1,4 @@
+{
+  "guide": "docs/guides/durable-agent-on-agentcore.mdx",
+  "skip": "Cloud- and AWS-bound. Deploys a Strands agent as a Temporal Serverless Worker on Amazon Bedrock AgentCore Runtime and requires Temporal Cloud access (Pre-release). Out of scope: needs Cloud plus an AWS account and Bedrock, not a local dev server."
+}

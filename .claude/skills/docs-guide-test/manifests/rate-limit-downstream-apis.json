@@ -1,0 +1,4 @@
+{
+  "guide": "docs/guides/rate-limit-downstream-apis.mdx",
+  "skip": "External-dependency. Activities call live third-party APIs (Stripe, OpenAI, Twilio, SendGrid) to demonstrate per-API rate limiting; needs credentials or a mock layer before it can run locally."
+}
