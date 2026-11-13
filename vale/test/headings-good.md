@@ -52,6 +52,12 @@
 
 ## Worker Versioning and Patching
 
+## Store and retrieve large payloads with Amazon S3
+
+## Create a Saved View
+
+## Run Hello World: Test your installation
+
 ## Run against Vertex AI
 
 ## Call a Gemini model from a Workflow
