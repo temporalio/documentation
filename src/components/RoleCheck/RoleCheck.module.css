@@ -1,0 +1,17 @@
+/**
+ * Visually hidden but present in the DOM text and the accessibility tree.
+ * Same clip-rect pattern as AgentDirective.module.css: not `display: none`,
+ * which screen readers and some scrapers skip.
+ */
+.hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
