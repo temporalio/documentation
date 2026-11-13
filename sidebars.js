@@ -146,6 +146,7 @@ const developDotnetCategory = {
             items: [
               'develop/dotnet/best-practices/data-handling/data-conversion',
               'develop/dotnet/best-practices/data-handling/data-encryption',
+              'develop/dotnet/best-practices/data-handling/external-storage',
             ],
           },
         ],
