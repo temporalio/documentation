@@ -1530,6 +1530,7 @@ module.exports = {
         },
         'cloud/capacity-modes',
         'cloud/operation-api',
+        'cloud/deprecation-policy',
         'cloud/rpo-rto',
         'cloud/projects',
         'cloud/terraform-provider',
