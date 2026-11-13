@@ -199,13 +199,19 @@ function buildTree({ title, description, footerText = DEFAULT_FOOTER_TEXT }, { l
   };
 }
 
-async function renderCard({ title, description, footerText = DEFAULT_FOOTER_TEXT }) {
+// Exposed separately from renderCard so tests can inspect satori's layout
+// (element positions in the SVG) without going through PNG/JPEG encoding.
+async function renderSvg({ title, description, footerText = DEFAULT_FOOTER_TEXT }) {
   const { fonts, logo, background } = await loadAssets();
-  const svg = await satori(buildTree({ title, description, footerText }, { logo, background }), {
+  return satori(buildTree({ title, description, footerText }, { logo, background }), {
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     fonts,
   });
+}
+
+async function renderCard({ title, description, footerText = DEFAULT_FOOTER_TEXT }) {
+  const svg = await renderSvg({ title, description, footerText });
   const resvg = new Resvg(svg, {
     fitTo: { mode: 'width', value: CARD_WIDTH },
   });
@@ -221,4 +227,4 @@ async function renderCard({ title, description, footerText = DEFAULT_FOOTER_TEXT
   return sharp(png).jpeg({ quality: 80 }).toBuffer();
 }
 
-module.exports = { renderCard, TEMPLATE_VERSION, CARD_WIDTH, CARD_HEIGHT, IMAGE_EXTENSION };
+module.exports = { renderCard, renderSvg, TEMPLATE_VERSION, CARD_WIDTH, CARD_HEIGHT, IMAGE_EXTENSION };
