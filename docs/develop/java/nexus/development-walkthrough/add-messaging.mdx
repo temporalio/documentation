@@ -144,6 +144,16 @@ Send the Query through the Client and return its answer as a synchronous result.
 
 A Worker answers the Query, so the Operation fails if no Worker is polling the approval's Task Queue.
 
+:::note[Query availability]
+
+Querying a Workflow from an Operation handler is available in Temporal Cloud, and on a self-hosted Temporal Service from Server v1.33.0.
+Before v1.33.0 it's available as a pre-release.
+To run this step on a local development server, install the [v1.8.3-server-1.32.0-162.0 Temporal CLI pre-release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0), which bundles a Server build with Nexus Query support.
+Use it in place of the CLI 1.9.1 or later that [Check your CLI version](/develop/java/nexus/development-walkthrough#check-your-cli-version) asks for, even though its version number is lower. It includes the `temporal nexus operation` commands this walkthrough uses.
+The Signal and Update steps don't need this build.
+
+:::
+
 <!--SNIPSTART java-nexus-walkthrough-get-approval-status {"enable_code_dedenting": true}-->
 [java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java)
 ```java

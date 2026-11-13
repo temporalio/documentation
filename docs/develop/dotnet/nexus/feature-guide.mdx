@@ -166,6 +166,16 @@ public class HelloService
 
 ### Use the Temporal Client for Signals, Queries, and Updates
 
+:::note[Query availability]
+
+Querying a Workflow from an Operation handler is available in Temporal Cloud, and on a self-hosted Temporal Service from Server v1.33.0.
+Before v1.33.0 it's available as a pre-release.
+To try it on a local development server, install the [v1.8.3-server-1.32.0-162.0 Temporal CLI pre-release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0), which bundles a Server build with Nexus Query support.
+Use it in place of the CLI version in the prerequisites, even though its version number is lower.
+Signals, Signal-with-Start, and Updates don't need this build.
+
+:::
+
 A common pattern is to reach a Workflow that is already running. Query it or Signal it from a synchronous Operation, or
 use Signal-With-Start to make sure the Workflow exists before the Signal arrives. Those calls complete during the
 handler call, so they have to finish inside the
