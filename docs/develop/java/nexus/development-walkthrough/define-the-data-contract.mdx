@@ -62,7 +62,7 @@ Contracts are modeled with JSON Schema 2020-12. Each definition file is one of t
 
 A file is one or the other. A contract can span several files, with a Nexus document pulling in types from pure-schema files through `$ref`.
 
-The approval contract declares a Service, so its entry file is a Nexus document with two sections. `services` declares the Service and its Operations, each naming its input and output by reference. `$defs` declares the types those references point at, in ordinary JSON Schema with nothing Nexus-specific, which is what lets the same types generate into four languages.
+The approval contract declares a Service, so its entry file is a Nexus document with two sections. `services` declares the Service and its Operations, each naming its input and output by reference. `$defs` declares the types those references point at, in ordinary JSON Schema with nothing Nexus-specific, so the same types can be generated in all five languages.
 
 :::note How to write a contract of your own
 
@@ -74,8 +74,8 @@ the complete rules the generator enforces.
 
 Here is the approval contract in full. In [step 2](/develop/java/nexus/development-walkthrough/generate-code) you pass this file to `nexgen` to generate the Java code:
 
-<!--SNIPSTART samples-java-nexus-walkthrough-contract-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/approval.nexusrpc.yaml)
+<!--SNIPSTART java-nexus-walkthrough-contract {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/approval.nexusrpc.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/approval.nexusrpc.yaml)
 ```yaml
 nexusrpc: "1.0.0"
 $schema: https://json-schema.org/draft/2020-12/schema

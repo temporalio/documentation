@@ -57,12 +57,12 @@ using the same options for both the transport and the SDK call.
 
 <!--SNIPSTART python-claude-agent-sdk-structured-output-transport-->
 [claude_agent_sdk_plugin/structured_output/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/structured_output/workflow.py)
-```python
-                transport = TemporalTransport(options)
-                async with ClaudeSDKClient(
-                    options=options, transport=transport
-                ) as client:
-                    await client.query(query_prompt)
+```py
+transport = TemporalTransport(options)
+async with ClaudeSDKClient(
+    options=options, transport=transport
+) as client:
+    await client.query(query_prompt)
 ```
 <!--SNIPEND-->
 
@@ -77,14 +77,14 @@ Register `ClaudeAgentSDKPlugin` on the Worker. The plugin registers the Activiti
 
 <!--SNIPSTART python-claude-agent-sdk-tools-worker-->
 [claude_agent_sdk_plugin/tools/run_worker.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/run_worker.py)
-```python
-        worker = Worker(
-            client,
-            task_queue="claude-agent-sdk-tools",
-            workflows=[ToolsWorkflow],
-            activities=[fetch_weather],
-            plugins=[ClaudeAgentSDKPlugin()],
-        )
+```py
+worker = Worker(
+    client,
+    task_queue="claude-agent-sdk-tools",
+    workflows=[ToolsWorkflow],
+    activities=[fetch_weather],
+    plugins=[ClaudeAgentSDKPlugin()],
+)
 ```
 <!--SNIPEND-->
 
@@ -168,10 +168,10 @@ The Workflow continues to use `TemporalTransport` as before, while you pass your
 
 <!--SNIPSTART python-claude-agent-sdk-custom-connector-worker-->
 [claude_agent_sdk_plugin/plugin_with_custom_transport/run_worker.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/plugin_with_custom_transport/run_worker.py)
-```python
-        plugin = ClaudeAgentSDKPlugin(
-            connector=SandboxConnector(uploads={PLUGIN_DIR: LOCAL_PLUGIN_DIR})
-        )
+```py
+plugin = ClaudeAgentSDKPlugin(
+    connector=SandboxConnector(uploads={PLUGIN_DIR: LOCAL_PLUGIN_DIR})
+)
 ```
 <!--SNIPEND-->
 
@@ -207,6 +207,61 @@ On a lost connection, create a new client with these options to resume the same 
 arrived, resume at the prompt and send `Continue from where you left off.` Otherwise, resume at the last reply and send
 the prompt again. See the
 [agent chat sample](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/agent_chat/workflow.py).
+
+The sample sets these options in `ClaudeAgentOptions`.
+
+<!--SNIPSTART python-claude-agent-sdk-session-options-->
+[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
+```py
+extra_args={"replay-user-messages": None},
+resume=session_id if prompt_id else None,
+resume_session_at=prompt_id,
+```
+<!--SNIPEND-->
+
+The following loop uses those options to resume the session after a lost connection.
+
+<!--SNIPSTART python-claude-agent-sdk-tools-ask-->
+[claude_agent_sdk_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/claude_agent_sdk_plugin/tools/workflow.py)
+```py
+async def ask(self, prompt: str) -> str:
+    """Answer the prompt, redoing the turn if the connection is lost."""
+    CONTINUE = "Continue from where you left off."
+    session_id = None  # Claude Code's, once it started
+    prompt_id = None  # The prompt's, once Claude Code saved it
+
+    while True:
+        try:
+            options = self.options(session_id, prompt_id)
+            transport = TemporalTransport(options)
+            async with ClaudeSDKClient(
+                options=options, transport=transport
+            ) as client:
+                await client.query(CONTINUE if prompt_id else prompt)
+
+                async for message in client.receive_response():
+                    if (
+                        isinstance(message, SystemMessage)
+                        and message.subtype == "init"
+                    ):
+                        session_id = message.data["session_id"]
+                    elif (
+                        isinstance(message, UserMessage)
+                        and message.uuid
+                        and not prompt_id
+                    ):
+                        prompt_id = message.uuid
+                    elif isinstance(message, ResultMessage):
+                        return message.result or "\n".join(message.errors or [])
+
+            raise RuntimeError("Claude Code ended the turn without a result")
+
+        except CLIConnectionError:
+            # Redo the turn from the prompt if Claude Code saved it, or start again.
+            pass
+
+```
+<!--SNIPEND-->
 
 :::note
 

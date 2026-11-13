@@ -117,6 +117,8 @@ Admin, or Developer Account Role.
 
 For more detailed examples on how to manage Namespaces via Terraform, check the [Terraform Registry documentation for Namespaces](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace).
 
+Provider v1.12.0 and later accepts `encryption_validation` on `temporalcloud_namespace`. See [Payload encryption validation](/cloud/payload-encryption-validation). The Terraform Registry remains the schema reference.
+
 **How do I create a Namespace with Terraform?**
 
 1. Create a Terraform configuration file (`terraform.tf`) to define a Namespace.
@@ -818,6 +820,10 @@ From the example in the [Terraform Registry](https://registry.terraform.io/provi
    ```text
    temporalcloud_apikey.global_apikey: Creation complete after 1s [id=kayBf38JIWkMPmnfr59iEIaEk2L7uqR4]
    ```
+
+   `Creation complete` doesn't mean a Namespace endpoint accepts the key yet. Retry Namespace requests with backoff
+   before you start Workers with the new key. See
+   [Allow time for API key changes to propagate](/cloud/api-keys#api-key-propagation).
 
 1. Access the API Key Token securely. You'll notice that if you view the state for the API Key resource, the token value
    is not displayed.

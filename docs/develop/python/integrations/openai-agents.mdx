@@ -766,8 +766,11 @@ model calls, tools, and orchestration land in the same backend as the rest of yo
 Install the additional dependencies:
 
 ```bash
-uv add "temporalio-openai-agents[openinference]" opentelemetry-exporter-otlp
+uv add "temporalio-openai-agents[openinference]>=1.1.0" opentelemetry-exporter-otlp
 ```
+
+Use version 1.1.0 or later. Earlier versions attach `temporal:startActivity` spans to the wrong parent when one Worker
+runs both the Workflow and its Activities.
 
 Then set a global replay-safe tracer provider before connecting the Client, and turn on instrumentation in the plugin:
 

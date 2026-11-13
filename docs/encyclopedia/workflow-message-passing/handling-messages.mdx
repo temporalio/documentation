@@ -45,8 +45,11 @@ The message handler runs first in several scenarios, such as:
 - When your Worker experiences delays, such as when the Task Queue it polls gets backlogged.
 - When messages arrive immediately after a Workflow continues as new but before it resumes.
 
-For all languages except Go and TypeScript, use your constructor to set up state.
+For all languages except Go, Rust, and TypeScript, use your constructor to set up state.
 Annotate your constructor as a Workflow Initializer and take the same arguments as your Workflow's main method.
+
+In Rust, the Workflow input is passed to either the `#[init]` method or `#[run]`, not both.
+If `#[init]` takes an input parameter, don't declare one on `#[run]`.
 
 Note that you can't make blocking calls from your constructor.
 If you need to block, make your Signal or Update handler [wait](#waiting) for an initialization flag.

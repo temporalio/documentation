@@ -206,7 +206,7 @@ A Retention Period applies to all closed Workflow Executions within a [Namespace
 
 The Temporal Service triggers a Timer task at the end of the Retention Period that cleans up the data associated with the closed Workflow Execution on that Namespace.
 
-The minimum Retention Period is 1 day.
+The minimum Retention Period is 1 hour for a local Namespace and 1 day for a global Namespace that replicates across clusters.
 On Temporal Service version 1.18 and later, the maximum Retention Period value for Namespaces can be set to anything over the minimum requirement of 1 day. Ensure that your Persistence store has enough capacity for the storage.
 On Temporal Service versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
