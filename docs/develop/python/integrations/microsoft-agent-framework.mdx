@@ -61,8 +61,9 @@ or with pip:
 pip install temporalio-microsoft-agent-framework agent-framework-openai
 ```
 
-The package depends on `agent-framework-core` (1.23.0 or newer, below 2; tested with 1.23.0 through 1.26.0), not the
-`agent-framework` meta package, so it does not install every provider. MCP support is an extra;
+The package depends on `agent-framework-core` (1.23.0 or newer, below 2), not the `agent-framework` meta package, so it
+does not install every provider. The tested range, 1.23.0 through 1.24.0, runs from the floor the plugin was first
+tested on through the version its lock pins, which CI runs on every change. MCP support is an extra;
 [Connect to MCP servers](#connect-to-mcp-servers) installs it. Refer to the
 [package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/microsoft_agent_framework/pyproject.toml)
 for the supported Python, Temporal SDK and Agent Framework versions.
@@ -427,13 +428,15 @@ One trace then runs from the starter's root span through `StartWorkflow:TracedWo
   with `MicrosoftAgentFrameworkWorkflowError`. Register the headers on the Worker with
   `MicrosoftAgentFrameworkPlugin(hosted_mcp_headers={...})`, keyed by the server label or URL, and the Activity adds them
   before the provider call; for an OpenAI connector (a mapping with `connector_id`), an `authorization` entry lands in
-  the tool's `authorization` field. A tool object the plugin cannot send to the model fails the Workflow with
+  the tool's `authorization` field as the bare token, because the Responses API takes a connector's OAuth token there,
+  so a leading `Bearer ` is dropped from that one entry, and the other entries stay headers and are passed as written. A
+  tool object the plugin cannot send to the model fails the Workflow with
   `MicrosoftAgentFrameworkWorkflowError`.
 - **Sandbox and clocks.** The plugin passes `agent_framework`, `pydantic_core`, `annotated_types`, `msgspec`,
   `typing_inspection`, `opentelemetry`, `dotenv`, `mcp` and `mcp_types` through the Workflow sandbox, and installs
   Workflow-aware stand-ins for the clock and identifier reads in Agent Framework's agent code (default agent and session
   identifiers, the loop's time budget, span durations) so they replay deterministically. Workers and Replayers both get them. A
-  Worker fails at start, naming the seam and the tested range (1.23.0 through 1.26.0), if an Agent Framework release
+  Worker fails at start, naming the seam and the tested range (1.23.0 through 1.24.0), if an Agent Framework release
   moves one of them.
 - **Framework exceptions fail the Workflow.** Agent Framework's own exceptions raised in Workflow code, such as
   `MiddlewareFailure`, and `MicrosoftAgentFrameworkWorkflowError` are registered as Workflow failure types, because
