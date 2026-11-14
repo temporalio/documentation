@@ -49,8 +49,7 @@ Install the package, then run one agent inside a Workflow.
 **Install the package**
 
 Install the `Temporalio.Extensions.MicrosoftAgentFramework` package together with the provider client you use. The
-samples use
-OpenAI through `Microsoft.Extensions.AI.OpenAI`; any `IChatClient` works:
+samples use OpenAI through `Microsoft.Extensions.AI.OpenAI`; any `IChatClient` works:
 
 ```bash
 dotnet add package Temporalio.Extensions.MicrosoftAgentFramework --prerelease
@@ -489,9 +488,10 @@ shows the tracer provider and exporter setup.
   the one the response carries. An unanswered request on the session, or a response for a request the session never
   surfaced, fails the next run with `MicrosoftAgentFrameworkWorkflowError`, and the approval contents never reach the
   provider.
-- **Streamed batches are bounded and republished on retry.** The model Activity flushes a batch every
-  `StreamingBatchInterval` (default 100 milliseconds) or at 256 updates, and each batch is one Signal. A retried
-  Activity publishes from its first update again. `Temporalio.Extensions.WorkflowStreams` is experimental.
+- **The stream is flushed at 256 updates and republished on retry.** The model Activity flushes its buffer every
+  `StreamingBatchInterval` (default 100 milliseconds) or once 256 updates have gathered, taking the whole buffer each
+  time, and each flush is one Signal. A retried Activity publishes from its first update again.
+  `Temporalio.Extensions.WorkflowStreams` is experimental.
 - **What crosses the Activity boundary.** The whole conversation is the input of every model Activity, and tool
   arguments and results travel inside it, so a long transcript costs payload size on every call. Continue-As-New bounds
   Event History, not that payload: the restored session resends the same transcript. Trim or summarize old turns in the
