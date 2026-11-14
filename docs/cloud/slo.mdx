@@ -3,7 +3,7 @@ id: slo
 title: Uptime, latency, and SLOs
 sidebar_label: Uptime, latency, and SLOs
 slug: /cloud/slo
-description: Temporal Cloud's 99.99% uptime objective, the 200ms p99 latency SLO, Visibility availability, and measured latency for starting and signaling Workflows.
+description: Temporal Cloud's 99.99% uptime objective, the 200ms p99 latency SLO, Visibility availability, and measured monthly uptime and latency.
 toc_max_heading_level: 3
 tags:
   - Temporal Cloud
@@ -45,6 +45,24 @@ Namespaces using High Availability have a higher SLA than standard single-region
 Temporal Cloud runs a cell architecture.
 Each cell holds the software and services needed to host a Namespace, and the components in a cell are distributed across at least three availability zones per region.
 For how Temporal Cloud handles each type of outage, see [Outages and Recovery Objectives](/cloud/rpo-rto).
+
+### Measured uptime {/* #historical-uptime-data */}
+
+Measured monthly availability across all Temporal Cloud Namespaces was as follows:
+
+| Month          | Mean across Namespaces | Met or exceeded by 99% of Namespaces |
+| :------------- | ---------------------: | -----------------------------------: |
+| October 2026   |              99.99998% |                            99.99989% |
+| September 2026 |              99.99997% |                            99.99976% |
+| August 2026    |              99.99997% |                            99.99984% |
+| July 2026      |              99.99998% |                            99.99982% |
+| June 2026      |              99.99997% |                            99.99988% |
+| May 2026       |              99.99993% |                            99.99949% |
+
+These measurements use the calculation in the [Temporal Cloud SLA](https://temporal.io/sla): availability is calculated for each five-minute interval from `StartWorkflowExecution`, `SignalWorkflowExecution`, and `SignalWithStartWorkflowExecution` requests, and the monthly value is the mean of those intervals.
+They include Namespaces with and without [High Availability](/cloud/high-availability).
+Values are truncated, not rounded, to five decimal places.
+This data is updated quarterly.
 
 ## Latency {/* #latency */}
 
