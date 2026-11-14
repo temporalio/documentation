@@ -41,26 +41,28 @@ Install the package, then run one agent inside a Workflow.
 - Set up your local development environment by following
   [Set up your local development environment](/develop/dotnet/set-up-your-local-dotnet). Leave the Temporal development
   server running if you want to test your code locally.
-- Use the .NET 10 SDK. The package targets `net10.0` only; .NET 8 and 9 left support on 2026-11-10. It needs
-  `Temporalio` 1.22.0 or later and `Microsoft.Agents.AI` from 1.26.0 up to, and not including, 2.0.0.
+- Use .NET 8 or later. The package targets `net8.0`, so it runs on .NET 8, 9 and 10; the samples build with the .NET 10
+  SDK. It needs `Temporalio` 1.20.0 or later and `Microsoft.Agents.AI` from 1.26.0 up to, and not including, 2.0.0.
 - Export `OPENAI_API_KEY` in the Worker's environment. The samples use OpenAI's `gpt-4o-mini`; the Workflow never sees
   the key.
 
 **Install the package**
 
-Install the `Temporalio.MicrosoftAgentFramework` package together with the provider client you use. The samples use
+Install the `Temporalio.Extensions.MicrosoftAgentFramework` package together with the provider client you use. The
+samples use
 OpenAI through `Microsoft.Extensions.AI.OpenAI`; any `IChatClient` works:
 
 ```bash
-dotnet add package Temporalio.MicrosoftAgentFramework --prerelease
+dotnet add package Temporalio.Extensions.MicrosoftAgentFramework --prerelease
 dotnet add package Microsoft.Extensions.AI.OpenAI
 ```
 
 MCP support is built in: the package depends on `ModelContextProtocol.Core`, so there is nothing extra to install.
 `MicrosoftAgentFrameworkPlugin`, `MicrosoftAgentFrameworkPluginOptions`, `TemporalAgent`, `TemporalAgentOptions`,
 `TemporalChatClient` (the `IChatClient` behind `TemporalAgent`, usable on its own) and `ActivityAsTool` are in the
-`Temporalio.MicrosoftAgentFramework` namespace; `TemporalMcpServer`, `TemporalMcpTool` and `McpToolOptions` are in
-`Temporalio.MicrosoftAgentFramework.Mcp`, and `ToolDeclaration` in `Temporalio.MicrosoftAgentFramework.Activities`.
+`Temporalio.Extensions.MicrosoftAgentFramework` namespace; `TemporalMcpServer`, `TemporalMcpTool` and `McpToolOptions`
+are in `Temporalio.Extensions.MicrosoftAgentFramework.Mcp`, and `ToolDeclaration` in
+`Temporalio.Extensions.MicrosoftAgentFramework.Activities`.
 
 ### Run an agent with Durable Execution
 
@@ -513,10 +515,10 @@ shows the tracer provider and exporter setup.
 - **Agent identity is stable across replay.** `AIAgent` generates a random identifier on construction and
   `TemporalAgent` never reads it: `Id` is `TemporalAgentOptions.Id`, then `Name`, then `temporal-agent`, so
   `AgentResponse.AgentId` is the same on every replay.
-- **Versions and release stage.** The package targets `net10.0` only and needs `Temporalio` 1.22.0 or later and
-  `Microsoft.Agents.AI` from 1.26.0 up to, and not including, 2.0.0. It calls Agent Framework members marked
-  experimental (`MAAI001`), the `InvokingContext` and `InvokedContext` constructors of `ChatHistoryProvider` and
-  `AIContextProvider`, so constructing the plugin checks that they are present and fails with
+- **Versions and release stage.** The package targets `net8.0`, so it runs on .NET 8, 9 and 10, and needs `Temporalio`
+  1.20.0 or later and `Microsoft.Agents.AI` from 1.26.0 up to, and not including, 2.0.0. It calls Agent Framework
+  members marked experimental (`MAAI001`), the `InvokingContext` and `InvokedContext` constructors of
+  `ChatHistoryProvider` and `AIContextProvider`, so constructing the plugin checks that they are present and fails with
   `MicrosoftAgentFrameworkConfigurationError` naming the tested version, 1.26.0, if a release changed them. The plugin
   is Pre-release: the package and its interfaces may change before General Availability.
 - **Out of scope.** The Agent Framework Workflows pillar (`Microsoft.Agents.AI.Workflows`: `WorkflowBuilder`, executors,
@@ -531,5 +533,5 @@ streaming and Continue-As-New. Each is one console project with a `worker` verb;
 streaming, any other arguments are the prompt), or `send-message` and `end-chat` for the chat. The repository's tests
 run each one against the plugin's `FakeChatClient` and a local dev server, with no API key and with replay on every
 Workflow Task; the package ships `FakeChatClient`, `ScriptedResponse` and `InMemoryMcpServer` in
-`Temporalio.MicrosoftAgentFramework.Testing` for your own tests. The plugin's source and README are in the
+`Temporalio.Extensions.MicrosoftAgentFramework.Testing` for your own tests. The plugin's source and README are in the
 [`temporalio/ai-integrations` repository](https://github.com/temporalio/ai-integrations/tree/main/dotnet/microsoft-agent-framework).
