@@ -99,6 +99,7 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 - [LangGraph integration](/develop/python/integrations/langgraph)
 - [LangSmith integration](/develop/python/integrations/langsmith)
 - [MCP integration](/develop/python/integrations/mcp)
+- [Microsoft Agent Framework integration](/develop/python/integrations/microsoft-agent-framework)
 - [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents)
 - [OpenBox integration](https://docs.openbox.ai/getting-started/temporal)
 - [OpenRouter integration](/develop/python/integrations/openrouter)
