@@ -46,7 +46,9 @@ that effectively serves as a cancellation token. This is the cancellation that i
 the workflow as well (for example, Timers, Activities, etc) and therefore cancellation is propagated to them to be handled and
 bubble out.
 
-```ruby
+<!--SNIPSTART ruby-cancellation-handle-in-workflow {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/cancellation/handle_cancellation_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/cancellation/handle_cancellation_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
   def execute
     # Whether this workflow waits on the activity to handle the cancellation or not is
@@ -70,6 +72,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 ## Handle Cancellation in an Activity {/* #handle-cancellation-in-an-activity */}
 
@@ -78,7 +81,9 @@ Cancellation request and stop execution. Also make sure that the
 [Heartbeat Timeout](/develop/ruby/activities/timeouts#heartbeat-timeout) is set on the Activity Options when calling from
 the Workflow. An Activity Cancellation Request raises a `Temporalio::Error::CanceledError` in the Activity.
 
-```ruby
+<!--SNIPSTART ruby-cancellation-activity-->
+[ruby-sandbox/workflows/cancellation/my_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/cancellation/my_activity.rb)
+```rb
 class MyActivity < Temporalio::Activity::Definition
   def execute
     # This is a naive loop simulating work, but similar heartbeat/cancellation logic
@@ -94,12 +99,15 @@ class MyActivity < Temporalio::Activity::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 ## Request Cancellation {/* #request-cancellation */}
 
 Use `cancel` on the `WorkflowHandle` to cancel a Workflow Execution.
 
-```ruby
+<!--SNIPSTART ruby-cancellation-cancel-workflow {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/cancellation/client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/cancellation/client.rb)
+```rb
 # Get a workflow handle by its workflow ID. This could be made specific to a run by
 # passing run ID. This could also just be a handle that is returned from
 # start_workflow instead.
@@ -109,11 +117,14 @@ handle = my_client.workflow_handle('my-workflow-id')
 # the handle's result to wait for cancellation to be applied.
 handle.cancel
 ```
+<!--SNIPEND-->
 
 By default, Activities are automatically cancelled when the Workflow is cancelled since the workflow cancellation is
 used by activities by default. To issue a cancellation explicitly, a new cancellation token can be created.
 
-```ruby
+<!--SNIPSTART ruby-cancellation-cancel-activity {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/cancellation/cancel_activity_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/cancellation/cancel_activity_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
   def execute
     # Create a new cancellation linked to the workflow one, so that it inherits
@@ -127,7 +138,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
     # to handle the cancellation or not is dependent upon the cancellation_type
     # parameter. We leave the default here which sends the cancellation but does not wait
     # on it to be handled.
-    future = Temporalio::Future.new do
+    future = Temporalio::Workflow::Future.new do
       Temporalio::Workflow.execute_activity(
         MyActivity,
         start_to_close_timeout: 100,
@@ -145,12 +156,15 @@ class MyWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 ## Termination {/* #termination */}
 
 To Terminate a Workflow Execution in Ruby, use the `terminate` method on the Workflow handle.
 
-```ruby
+<!--SNIPSTART ruby-cancellation-terminate-workflow {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/cancellation/client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/cancellation/client.rb)
+```rb
 # Get a workflow handle by its workflow ID. This could be made specific to a run by
 # passing run ID. This could also just be a handle that is returned from
 # start_workflow instead.
@@ -159,6 +173,7 @@ handle = my_client.workflow_handle('my-workflow-id')
 # Terminate
 handle.terminate
 ```
+<!--SNIPEND-->
 
 Workflow Executions can also be Terminated directly from the WebUI. In this case, a custom note can be logged from the
 UI when that happens.

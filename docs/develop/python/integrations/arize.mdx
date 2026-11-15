@@ -1,0 +1,650 @@
+---
+id: arize
+title: Arize integration
+sidebar_label: Arize
+toc_max_heading_level: 2
+tags:
+  - Arize
+  - Python SDK
+  - Temporal SDKs
+description:
+  Send OpenInference traces from Temporal Workflows to Arize Phoenix or Arize AX with the Python OpenTelemetry
+  plugin, without duplicate spans on replay.
+---
+
+import { CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
+
+Temporal's OpenTelemetry plugin sends Workflow, Activity, and LLM spans to [Arize](https://arize.com/), either the
+open-source [Arize Phoenix](https://arize.com/docs/phoenix) or the [Arize AX](https://arize.com/docs/ax) platform, as
+one trace per Workflow interaction. Arize reads the [OpenInference](https://github.com/Arize-ai/openinference)
+semantic conventions, so LLM calls appear with their model, token usage, and messages, and traces group into
+sessions by Workflow ID.
+
+Temporal gives your agent code [Durable Execution](/temporal#durable-execution). Arize adds the observability side:
+inspect LLM inputs and outputs, follow a request from the Client through the Workflow to the model, evaluate
+outputs, and compare runs over time.
+
+This guide configures the existing
+[`OpenTelemetryPlugin`](https://python.temporal.io/temporalio.contrib.opentelemetry.OpenTelemetryPlugin.html) for
+Arize. There is no Arize-specific Temporal plugin and no Arize SDK is required. Arize maintains a matching guide on
+its side: [Temporal tracing in Arize AX](https://arize.com/docs/ax/integrations/python-agent-frameworks/temporal/temporal-tracing).
+
+<ReleaseNoteHeader type="publicPreview" />
+
+All code snippets in this guide are taken from the
+[Arize tracing sample](https://github.com/temporalio/samples-python/tree/main/arize_tracing). Refer to the sample
+for complete code, including a one-container Phoenix setup, a second scenario built on the OpenAI Agents SDK, and a
+script that verifies traces through the Phoenix API.
+
+## Prerequisites
+
+- This guide assumes you are already familiar with Arize. If you aren't, refer to the
+  [Phoenix documentation](https://arize.com/docs/phoenix) or the [Arize AX documentation](https://arize.com/docs/ax)
+  for more details.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local development environment](/develop/python/set-up-your-local-python) guide. When you're done, leave
+  the Temporal Development Server running if you want to test your code locally.
+- A place to send traces: a local Phoenix (`docker run -p 6006:6006 arizephoenix/phoenix:version-20.16.0`, or
+  `uvx --from "arize-phoenix==20.16.0" phoenix serve`), or an Arize AX space ID and API key.
+
+## Install
+
+Install the Temporal Python SDK with the OpenTelemetry extra, an OTLP/HTTP exporter, the OpenInference semantic
+conventions, and the OpenInference instrumentation for the LLM SDK you call from Activities.
+
+```bash
+uv add "temporalio[opentelemetry]>=1.36.0" opentelemetry-exporter-otlp-proto-http \
+  openinference-semantic-conventions openinference-instrumentation-openai
+```
+
+For the OpenAI Agents SDK variant, also add the standalone plugin package with its OpenInference extra:
+
+```bash
+uv add "temporalio-openai-agents[openinference]>=1.1.0"
+```
+
+Use version 1.1.0 or later: earlier versions mis-parent the `temporal:startActivity` spans when one Worker runs both
+the Workflow and its Activities. If you used the earlier `temporalio[openai-agents]` extra, replace it with
+`temporalio-openai-agents` and change imports from `temporalio.contrib.openai_agents` to `temporalio.openai_agents`.
+The [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents) guide has the details.
+
+## Configure the tracer provider and exporter
+
+The plugin requires the replay-safe tracer provider from
+[`create_tracer_provider()`](https://python.temporal.io/temporalio.contrib.opentelemetry.html#create_tracer_provider),
+installed as the global provider before you connect the Client, in every process that traces. The provider generates
+span identifiers deterministically from Workflow state and does not export spans while a Workflow replays, which is
+what keeps Arize free of duplicates.
+
+The `openinference.project.name` resource attribute selects the Phoenix or Arize AX project that receives the spans.
+
+<!--SNIPSTART python-arize-tracing-setup-->
+[arize_tracing/telemetry.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/telemetry.py)
+```py
+def setup_tracing(service_name: str) -> None:
+    """Install the replay-safe tracer provider that exports to Phoenix or Arize AX.
+
+    Call once per process, before connecting the Temporal client. With
+    ``OTEL_SDK_DISABLED=true`` the provider is still installed (the Temporal
+    plugin needs it) but nothing is exported.
+    """
+    provider = create_tracer_provider(
+        resource=Resource.create(
+            # The project name selects the Phoenix / Arize AX project.
+            {
+                SERVICE_NAME: service_name,
+                ResourceAttributes.PROJECT_NAME: project_name(),
+            }
+        )
+    )
+    provider.add_span_processor(OpenInferenceEnrichmentProcessor())
+    if os.environ.get("OTEL_SDK_DISABLED", "").lower() == "true":
+        logger.info("OTEL_SDK_DISABLED=true: spans will not be exported")
+    else:
+        # A short delay so demo spans show up quickly; force_flush() before exit.
+        provider.add_span_processor(
+            BatchSpanProcessor(_exporter(), schedule_delay_millis=500)
+        )
+    trace.set_tracer_provider(provider)
+
+
+```
+<!--SNIPEND-->
+
+Phoenix and Arize AX both ingest OTLP over HTTP. One exporter helper covers both: Phoenix by default, Arize AX when a
+space ID and API key are present. The Arize AX settings follow
+[Arize's Temporal guide](https://arize.com/docs/ax/integrations/python-agent-frameworks/temporal/temporal-tracing).
+
+<!--SNIPSTART python-arize-tracing-exporter-->
+[arize_tracing/telemetry.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/telemetry.py)
+```py
+def phoenix_base_url() -> str:
+    """Phoenix base URL; the UI, REST API, and OTLP/HTTP collector share it."""
+    return os.environ.get("PHOENIX_COLLECTOR_ENDPOINT", "http://localhost:6006").rstrip(
+        "/"
+    )
+
+
+def phoenix_headers() -> dict[str, str]:
+    """Authorization header for Phoenix when PHOENIX_API_KEY is set."""
+    api_key = os.environ.get("PHOENIX_API_KEY")
+    return {"Authorization": f"Bearer {api_key}"} if api_key else {}
+
+
+def _exporter() -> OTLPSpanExporter:
+    """OTLP/HTTP exporter: Arize AX when its credentials are set, else Phoenix."""
+    space_id = os.environ.get("ARIZE_SPACE_ID")
+    api_key = os.environ.get("ARIZE_API_KEY")
+    if space_id and api_key:
+        # EU region: ARIZE_OTLP_ENDPOINT=https://otlp.eu-west-1a.arize.com/v1/traces
+        return OTLPSpanExporter(
+            endpoint=os.environ.get(
+                "ARIZE_OTLP_ENDPOINT", "https://otlp.arize.com/v1/traces"
+            ),
+            headers={"space_id": space_id, "api_key": api_key},
+            timeout=10,
+        )
+    base = phoenix_base_url()
+    endpoint = base if base.endswith("/v1/traces") else f"{base}/v1/traces"
+    return OTLPSpanExporter(endpoint=endpoint, headers=phoenix_headers(), timeout=10)
+
+
+```
+<!--SNIPEND-->
+
+Short-lived processes must flush. The sample's starter and Worker call `force_flush()` on the provider before they
+exit so the last spans are not dropped.
+
+## Configure the Client and Worker
+
+Register the plugin on the Client. Workers created from that Client inherit it, so the same registration covers the
+starter and the Worker. `add_temporal_spans=True` creates spans for the Temporal operations themselves
+(`StartWorkflow`, `RunWorkflow`, `StartActivity`, `RunActivity`, Update handlers, and so on) in addition to
+propagating trace context; the default `False` propagates context only.
+
+<!--SNIPSTART python-arize-tracing-worker-->
+[arize_tracing/ticket_triage/worker.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/ticket_triage/worker.py)
+```py
+setup_tracing("ticket-triage-worker")
+# Every OpenAI call made from an activity emits an OpenInference LLM span.
+OpenAIInstrumentor().instrument()
+
+config = ClientConfig.load_client_connect_config()
+config.setdefault("target_host", "localhost:7233")
+# add_temporal_spans=True emits spans for Temporal operations (StartWorkflow,
+# RunWorkflow, RunActivity, HandleUpdate, ...) besides propagating context.
+config["plugins"] = [OpenTelemetryPlugin(add_temporal_spans=True)]
+client = await Client.connect(**config)
+
+worker = Worker(  # workers inherit the client's plugins
+    client,
+    task_queue=TASK_QUEUE,
+    workflows=[TicketTriageWorkflow],
+    activities=[classify_ticket, lookup_account, draft_reply],
+    max_cached_workflows=0 if args.replay_stress else 1000,
+)
+```
+<!--SNIPEND-->
+
+The starter uses the same `setup_tracing()` and plugin registration, then wraps the whole interaction in a root span
+as shown in [Add OpenInference attributes](#add-openinference-attributes).
+
+## Trace LLM calls in Activities
+
+Model calls are network I/O, so they belong in Activities, not in Workflow code. That also makes them easy to trace:
+instrument the LLM SDK once in the Worker process, and every call made from an Activity produces an OpenInference LLM
+span nested under that Activity's span, with the model name, token counts, and messages that Arize renders.
+
+Disable the LLM client's own retries and let the Activity retry policy own them. Each attempt then appears as its own
+`RunActivity` span, which is how Arize shows a retry. If the Activity has a heartbeat timeout, keep heartbeating while
+the model call is in flight, as the sample's `_heartbeating` helper does. Otherwise a slow response looks like a dead
+Worker, and Temporal retries the Activity while the first request is still running.
+
+<!--SNIPSTART python-arize-tracing-activity-->
+[arize_tracing/ticket_triage/activities.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/ticket_triage/activities.py)
+```py
+T = TypeVar("T")
+
+
+async def _heartbeating(awaitable: Awaitable[T], every: float = 2.0) -> T:
+    """Await ``awaitable`` while heartbeating every ``every`` seconds.
+
+    ``classify_ticket`` runs with a 10-second heartbeat timeout so a worker
+    that dies mid-attempt is noticed quickly; a slow LLM call must keep
+    heartbeating or it would be retried while still in flight.
+    """
+    task = asyncio.ensure_future(awaitable)
+    try:
+        while True:
+            done, _ = await asyncio.wait({task}, timeout=every)
+            if done:
+                return task.result()
+            activity.heartbeat()
+    except asyncio.CancelledError:
+        task.cancel()
+        raise
+
+
+@activity.defn
+async def classify_ticket(ticket: Ticket) -> Classification:
+    if FAIL_FIRST_ATTEMPT and activity.info().attempt == 1:
+        # Demo: a transient failure on the first attempt. Temporal retries the
+        # activity; Arize shows one RunActivity span per attempt, the first
+        # with an error status.
+        raise ApplicationError(
+            "Simulated transient LLM failure on attempt 1", type="SimulatedFailure"
+        )
+    if SLOW_CLASSIFY_SECONDS:
+        # Demo: a slow attempt you can kill the worker during. The heartbeats
+        # stop with the worker, so Temporal retries after the heartbeat timeout.
+        await _heartbeating(asyncio.sleep(SLOW_CLASSIFY_SECONDS))
+    response = await _heartbeating(
+        _openai_client().chat.completions.create(
+            model=os.environ.get("MODEL_CLASSIFY", "gpt-4o-mini"),
+            messages=[
+                {"role": "system", "content": CLASSIFY_PROMPT},
+                {"role": "user", "content": f"{ticket.subject}\n\n{ticket.body}"},
+            ],
+            timeout=30,
+        )
+    )
+    return parse_classification(response.choices[0].message.content or "")
+
+
+```
+<!--SNIPEND-->
+
+Workflow code can create spans too. Under the plugin, the standard OpenTelemetry API is replay-safe inside a
+Workflow, and the plugin allows the `opentelemetry` module through the Workflow sandbox. Set an OpenInference span
+kind on spans you create so Arize does not show them as unknown.
+
+<!--SNIPSTART python-arize-tracing-workflow-->
+[arize_tracing/ticket_triage/workflows.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/ticket_triage/workflows.py)
+```py
+@workflow.defn
+class TicketTriageWorkflow:
+    def __init__(self) -> None:
+        self._approval: Optional[ApprovalDecision] = None
+
+    @workflow.run
+    async def run(self, ticket: Ticket) -> TriageResult:
+        # A custom span grouping the two triage activities; replay-safe under
+        # the plugin. The OpenInference kind tells Arize how to render it.
+        with trace.get_tracer(__name__).start_as_current_span(
+            "triage",
+            attributes={
+                SpanAttributes.OPENINFERENCE_SPAN_KIND: OpenInferenceSpanKindValues.CHAIN.value
+            },
+        ) as span:
+            classification: Classification = await workflow.execute_activity(
+                classify_ticket,
+                ticket,
+                start_to_close_timeout=timedelta(seconds=60),
+                # Heartbeats let Temporal notice a worker that died mid-attempt.
+                heartbeat_timeout=timedelta(seconds=10),
+                retry_policy=LLM_RETRY_POLICY,
+            )
+            account = await workflow.execute_activity(
+                lookup_account,
+                ticket.customer_email,
+                start_to_close_timeout=timedelta(seconds=10),
+            )
+            span.set_attribute("triage.category", classification.category)
+            span.set_attribute("triage.priority", classification.priority)
+
+        # Wait for a human approval, delivered as a workflow update.
+        await workflow.wait_condition(lambda: self._approval is not None)
+        approval = self._approval
+        assert approval is not None
+        if not approval.approved:
+            return TriageResult(status="declined", classification=classification)
+
+        reply = await workflow.execute_activity(
+            draft_reply,
+            DraftReplyInput(
+                ticket=ticket, classification=classification, account=account
+            ),
+            start_to_close_timeout=timedelta(seconds=60),
+            retry_policy=LLM_RETRY_POLICY,
+        )
+        return TriageResult(
+            status="replied", classification=classification, reply=reply
+        )
+
+    @workflow.update
+    async def approve(self, decision: ApprovalDecision) -> str:
+        self._approval = decision
+        return "approved" if decision.approved else "declined"
+
+    @approve.validator
+    def approve_validator(self, decision: ApprovalDecision) -> None:
+        if decision.approved and not decision.reviewer:
+            raise ValueError("approval requires a reviewer")
+
+
+```
+<!--SNIPEND-->
+
+### Trace agents built with the OpenAI Agents SDK
+
+:::caution
+
+The OpenTelemetry bridge in the `temporalio-openai-agents` package is Public Preview and may change before general
+availability.
+
+:::
+
+If your Workflow runs an agent through the [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents),
+enable the plugin's OpenTelemetry bridge instead of instrumenting the OpenAI client. The bridge converts the Agents SDK
+trace into OpenInference spans (AGENT, LLM, and TOOL, plus CHAIN spans for the Temporal operations) on the same
+replay-safe provider. Construct the plugin after `setup_tracing()`, because it checks that the global provider is the
+replay-safe one, and do not add `OpenTelemetryPlugin` as well: the two would produce overlapping spans.
+
+<!--SNIPSTART python-arize-tracing-agents-plugin-->
+[arize_tracing/ticket_triage_agents/plugin.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/ticket_triage_agents/plugin.py)
+```py
+def agents_plugin() -> OpenAIAgentsPlugin:
+    """The OpenAI Agents plugin, bridging Agents SDK tracing to OpenTelemetry.
+
+    Construct it after ``setup_tracing()``: the plugin checks that the global
+    tracer provider is Temporal's replay-safe one. ``add_temporal_spans=True``
+    adds CHAIN spans for the Temporal operations around the AGENT, LLM, and
+    TOOL spans.
+    """
+    return OpenAIAgentsPlugin(
+        use_otel_instrumentation=True,
+        add_temporal_spans=True,
+        model_params=ModelActivityParameters(
+            start_to_close_timeout=timedelta(seconds=60),
+            retry_policy=RetryPolicy(
+                maximum_attempts=3, initial_interval=timedelta(seconds=1)
+            ),
+        ),
+    )
+
+
+```
+<!--SNIPEND-->
+
+The Agents SDK trace opened by the starter becomes the root AGENT span of the Arize trace, so the OpenInference
+trace-level attributes go onto it directly. Set the output before the trace ends, because ending the trace ends the
+span.
+
+<!--SNIPSTART python-arize-tracing-agents-starter-->
+[arize_tracing/ticket_triage_agents/starter.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/ticket_triage_agents/starter.py)
+```py
+# Starting an Agents SDK trace outside a worker needs the plugin's tracing
+# context. The trace becomes the root AGENT span and the current
+# OpenTelemetry span, so the trace-level attributes are set on it directly.
+try:
+    with plugin.tracing_context():
+        with agents_trace("Ticket triage agents", group_id=workflow_id):
+            root = trace.get_current_span()
+            root.set_attributes(
+                {
+                    SpanAttributes.SESSION_ID: workflow_id,
+                    SpanAttributes.USER_ID: args.user,
+                    SpanAttributes.INPUT_VALUE: json.dumps(
+                        dataclasses.asdict(ticket)
+                    ),
+                    SpanAttributes.INPUT_MIME_TYPE: OpenInferenceMimeTypeValues.JSON.value,
+                    SpanAttributes.METADATA: json.dumps(
+                        {
+                            "temporal.workflow_id": workflow_id,
+                            "temporal.task_queue": TASK_QUEUE,
+                            "temporal.namespace": client.namespace,
+                        }
+                    ),
+                    SpanAttributes.TAG_TAGS: [
+                        "temporal",
+                        "ticket-triage",
+                        "openai-agents",
+                    ],
+                }
+            )
+            trace_id = format(root.get_span_context().trace_id, "032x")
+
+            handle = await client.start_workflow(
+                TicketTriageAgentsWorkflow.run,
+                request,
+                id=workflow_id,
+                task_queue=TASK_QUEUE,
+            )
+            print(f"Started workflow: {workflow_id}")
+            if args.pause_before_approval:
+                print(f"Pausing {args.pause_before_approval}s before approving ...")
+                await asyncio.sleep(args.pause_before_approval)
+            update_result = await handle.execute_update(
+                TicketTriageAgentsWorkflow.approve,
+                ApprovalDecision(approved=approved, reviewer="demo-reviewer"),
+            )
+            print(f"Approval update: {update_result}")
+            result = await handle.result()
+            # Set before the Agents SDK trace ends; ending it ends the span.
+            root.set_attribute(
+                SpanAttributes.OUTPUT_VALUE, json.dumps(dataclasses.asdict(result))
+            )
+            root.set_attribute(
+                SpanAttributes.OUTPUT_MIME_TYPE,
+                OpenInferenceMimeTypeValues.JSON.value,
+            )
+finally:
+    force_flush()
+```
+<!--SNIPEND-->
+
+## Add OpenInference attributes
+
+Arize lists a trace by the `input.value` and `output.value` of its root span, groups traces into sessions by
+`session.id`, and filters by `user.id`, `metadata`, and `tag.tags`. Set them on a root span in the starter, and use
+the Workflow ID as the session so every interaction with one Workflow Execution lands in one session. Setting
+`session.id` and `user.id` as OpenTelemetry baggage as well lets Temporal carry them into the Workflow and Activity
+contexts through its trace-context header.
+
+<!--SNIPSTART python-arize-tracing-root-span-->
+[arize_tracing/ticket_triage/starter.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/ticket_triage/starter.py)
+```py
+# session.id / user.id as baggage: Temporal carries it in its trace-context
+# header, so the enrichment processor stamps both onto worker spans too.
+ctx = baggage.set_baggage(SpanAttributes.SESSION_ID, workflow_id)
+ctx = baggage.set_baggage(SpanAttributes.USER_ID, args.user, context=ctx)
+token = context.attach(ctx)
+tracer = trace.get_tracer(__name__)
+try:
+    with tracer.start_as_current_span(
+        "ticket-triage",
+        attributes={
+            # Arize reads these trace-level attributes from the root span.
+            SpanAttributes.OPENINFERENCE_SPAN_KIND: OpenInferenceSpanKindValues.CHAIN.value,
+            SpanAttributes.SESSION_ID: workflow_id,
+            SpanAttributes.USER_ID: args.user,
+            SpanAttributes.INPUT_VALUE: json.dumps(dataclasses.asdict(ticket)),
+            SpanAttributes.INPUT_MIME_TYPE: OpenInferenceMimeTypeValues.JSON.value,
+            SpanAttributes.METADATA: json.dumps(
+                {
+                    "temporal.workflow_id": workflow_id,
+                    "temporal.task_queue": TASK_QUEUE,
+                    "temporal.namespace": client.namespace,
+                }
+            ),
+            SpanAttributes.TAG_TAGS: ["temporal", "ticket-triage"],
+        },
+    ) as root:
+        trace_id = format(root.get_span_context().trace_id, "032x")
+        handle = await client.start_workflow(
+            TicketTriageWorkflow.run,
+            ticket,
+            id=workflow_id,
+            task_queue=TASK_QUEUE,
+        )
+        print(f"Started workflow: {workflow_id}")
+
+        if args.pause_before_approval:
+            print(f"Pausing {args.pause_before_approval}s before approving ...")
+            await asyncio.sleep(args.pause_before_approval)
+
+        update_result = await handle.execute_update(
+            TicketTriageWorkflow.approve,
+            ApprovalDecision(approved=approved, reviewer="demo-reviewer"),
+        )
+        print(f"Approval update: {update_result}")
+
+        result = await handle.result()
+        root.set_attribute(
+            SpanAttributes.OUTPUT_VALUE, json.dumps(dataclasses.asdict(result))
+        )
+        root.set_attribute(
+            SpanAttributes.OUTPUT_MIME_TYPE, OpenInferenceMimeTypeValues.JSON.value
+        )
+finally:
+    context.detach(token)
+    force_flush()  # the starter is short-lived; do not drop its spans
+```
+<!--SNIPEND-->
+
+Temporal's own spans have no OpenInference kind, so Phoenix and Arize AX show them as unknown. A small span processor
+gives them a kind, copies the Temporal identifiers into OpenInference `metadata`, sets the session from the Workflow
+ID, records the Activity attempt number, and applies the baggage to every span, LLM spans included.
+
+<!--SNIPSTART python-arize-tracing-enrichment-processor-->
+[arize_tracing/telemetry.py](https://github.com/temporalio/samples-python/blob/main/arize_tracing/telemetry.py)
+```py
+class OpenInferenceEnrichmentProcessor(SpanProcessor):
+    """Make Temporal's spans first-class in Arize.
+
+    When a span from Temporal's ``OpenTelemetryPlugin`` starts: mark it
+    ``openinference.span.kind=CHAIN`` (Arize shows UNKNOWN otherwise), copy the
+    Temporal identifiers into OpenInference ``metadata``, set ``session.id`` to
+    the Workflow Id so one Workflow Execution's traces form one Arize session,
+    and record the attempt number on ``RunActivity`` spans. Any span missing
+    ``session.id`` / ``user.id`` gets them from OpenTelemetry baggage, which
+    Temporal carries in its trace-context header. Only attributes are set, so
+    replay stays silent: spans re-created during replay are never exported.
+    """
+
+    def on_start(self, span: Span, parent_context: Optional[Context] = None) -> None:
+        attributes = dict(span.attributes or {})
+        scope = span.instrumentation_scope.name if span.instrumentation_scope else ""
+        if scope.startswith(TEMPORAL_SCOPE_PREFIX):
+            span.set_attribute(
+                SpanAttributes.OPENINFERENCE_SPAN_KIND,
+                OpenInferenceSpanKindValues.CHAIN.value,
+            )
+            metadata: dict[str, Any] = {
+                k: v for k, v in attributes.items() if k.startswith("temporal")
+            }
+            if activity.in_activity():
+                attempt = activity.info().attempt
+                span.set_attribute(ACTIVITY_ATTEMPT_ATTRIBUTE, attempt)
+                metadata["temporalActivityAttempt"] = attempt
+            if metadata:
+                span.set_attribute(
+                    SpanAttributes.METADATA,
+                    json.dumps(metadata, sort_keys=True, default=str),
+                )
+            workflow_id = attributes.get("temporalWorkflowID")
+            if workflow_id and SpanAttributes.SESSION_ID not in attributes:
+                span.set_attribute(SpanAttributes.SESSION_ID, str(workflow_id))
+                attributes[SpanAttributes.SESSION_ID] = workflow_id
+        for key in (SpanAttributes.SESSION_ID, SpanAttributes.USER_ID):
+            if key not in attributes:
+                value = baggage.get_baggage(key, parent_context)
+                if value is not None:
+                    span.set_attribute(key, str(value))
+
+
+```
+<!--SNIPEND-->
+
+## Read Temporal traces in Arize
+
+With the pieces above, one ticket-triage interaction produces this trace. The kinds are what Arize renders.
+
+```
+ticket-triage                                    CHAIN  (root: session = Workflow ID, user, input, output, tags)
+├─ StartWorkflow:TicketTriageWorkflow            CHAIN
+│  └─ RunWorkflow:TicketTriageWorkflow           CHAIN
+│     ├─ triage                                  CHAIN  (custom span from Workflow code)
+│     │  ├─ StartActivity:classify_ticket → RunActivity:classify_ticket   CHAIN, attempt 1
+│     │  │  └─ ChatCompletion                    LLM    (model, tokens, messages)
+│     │  └─ StartActivity:lookup_account  → RunActivity:lookup_account
+│     └─ StartActivity:draft_reply → RunActivity:draft_reply
+│        └─ ChatCompletion                       LLM
+└─ StartWorkflowUpdate:approve                   CHAIN
+   ├─ ValidateUpdate:approve                     CHAIN
+   └─ HandleUpdate:approve                       CHAIN
+```
+
+<CaptionedImage
+    src="/img/develop/python/arize-phoenix-ticket-triage.png"
+    title="The ticket-triage trace in Phoenix"
+/>
+
+The Temporal Web UI and Arize answer different questions about the same execution. This table maps the concepts.
+
+| Temporal Web UI | Arize |
+| --- | --- |
+| Workflow Execution (one Workflow ID, one or more runs) | Session (`session.id` = Workflow ID) |
+| Run (`RunWorkflow` with `temporalRunID`) | One `RunWorkflow` span per run in the trace |
+| Event History and Timeline | The trace waterfall, in the same order |
+| Pending Activities: attempt count and last failure | One `RunActivity` span per attempt, failed attempts with error status and `temporal.activity.attempt` |
+| Update, Signal, and Query handlers | `HandleUpdate`, `HandleSignal`, `HandleQuery` spans under the Client's span |
+| Input and result | `input.value` and `output.value` on the root span |
+| Workers tab (which Worker ran what) | Not recorded; Activity spans carry no Worker identity |
+
+### Workflow replay
+
+Durable Execution re-runs Workflow code on Worker restarts and cache evictions to rebuild state. Event History records
+nothing for a replay, and neither does Arize: spans re-created during replay have the same deterministic identifiers
+as before and are never exported again, so a Workflow that replays ten times still produces one clean trace. You can
+confirm this with the sample's `--replay-stress` Worker flag, which disables the Workflow cache so every Workflow
+Task replays from the start of history.
+
+### Activity retries and Worker crashes
+
+Retries are real re-executions and stay visible: one `StartActivity` span with one `RunActivity` child per attempt,
+failed attempts carrying an error status and the exception. Arize AX lists a trace that contains a failed attempt as an
+error, even though the Workflow completed, so a view filtered on errors includes every retried Workflow. If a Worker
+dies while a Workflow waits, the `RunWorkflow` span is exported once, when the Workflow finishes on another Worker,
+and its duration covers the outage. The stopping Worker logs `Failed to detach context` with a traceback and then
+`Shutdown called, ignoring Span`: the open span was attached in a Workflow Task that no longer exists, and the trace is
+unaffected. If a Worker dies in the middle of an Activity attempt, that attempt's span was never ended and does not
+appear; the next attempt does, with the next attempt number. Spans still waiting in the `BatchSpanProcessor` buffer
+when a Worker process dies are also lost: up to `schedule_delay_millis` of spans, which is 500 ms in the sample and
+5 seconds by default. Event History remains the source of truth.
+
+### Workflow Task failures
+
+A failed Workflow Task re-executes the code since the last completed Workflow Task. Spans that already ended inside
+the failed task are exported again with the same span identifiers, because the identifiers are deterministic, and
+Phoenix, which deduplicates spans by span identifier, keeps the first copy. The `WorkflowTaskFailed` event in the Temporal Web UI is where the failure
+is visible.
+
+### Continue-As-New, resets, and Workflow retries
+
+A Workflow that continues as new writes its current trace context into the new run, so the new run's `RunWorkflow`
+span nests under the previous run's span in the same trace. A reset or a retried Workflow reuses the original start
+context, so its `RunWorkflow` span appears as a second child of the same `StartWorkflow` span with its own
+`temporalRunID`. Because the session is the Workflow ID, all of these stay together in one Arize session.
+
+A reset that reapplies an Update or Signal needs `temporalio` 1.36.0 or later. On earlier versions, the reapplied
+handler's span reuses the original `RunWorkflow` span's identifier, so Phoenix drops it and Arize AX shows the
+original run's Activities twice
+([temporalio/sdk-python#2081](https://github.com/temporalio/sdk-python/pull/2081)).
+
+## Resources
+
+- [Arize tracing sample](https://github.com/temporalio/samples-python/tree/main/arize_tracing): both scenarios, the
+  Phoenix setup, the verification script, and a runbook that reproduces every case in this guide.
+- [Temporal tracing in Arize AX](https://arize.com/docs/ax/integrations/python-agent-frameworks/temporal/temporal-tracing):
+  Arize's guide to the same integration.
+- [OpenInference semantic conventions](https://github.com/Arize-ai/openinference/blob/main/spec/semantic_conventions.md):
+  the attributes Arize reads.
+- [Agent evaluation](https://arize.com/ai-agents/agent-evaluation/): Arize's guide to evaluating agents
+  from the traces you send.
+- [LLM evaluation](https://arize.com/resources/llm-evaluation/): Arize's overview of evaluation methods and metrics.
+- [Set up tracing](/develop/python/platform/observability#tracing): the Python SDK's OpenTelemetry options.
+- [OpenAI Agents SDK integration](/develop/python/integrations/openai-agents): the plugin behind the agents scenario.
+- [Temporal Plugins guide](/develop/plugins-guide): the Plugin system the OpenTelemetry plugin is built on.
