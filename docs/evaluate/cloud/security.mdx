@@ -40,6 +40,8 @@ forwarding them to Temporal Cloud, without changing Worker or Client code. The p
 and your KMS; Temporal Cloud receives encrypted payloads. See the proxy's
 [encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for configuration and coverage limits.
 
+Temporal Cloud provides [Payload encryption validation](/cloud/payload-encryption-validation) to check that Payloads sent to Temporal Cloud carry the encryption metadata you configured for the Namespace, and can reject requests that do not.
+
 ## The platform {/* #the-platform */}
 
 ### Namespace isolation
