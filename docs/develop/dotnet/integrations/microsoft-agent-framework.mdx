@@ -150,10 +150,16 @@ schema comes from the Activity's signature and its `[Description]` attributes, a
 so the `GetWeather` Activity in Event History is the tool the model sees. A trailing `CancellationToken` parameter with
 a default value stays out of the schema and the call, and the Activity reads cancellation from
 `ActivityExecutionContext.Current.CancellationToken`; a token parameter anywhere else is rejected when the tool is
-built. A call that leaves out a required argument fails before any Activity is scheduled, with the message
-`AIFunctionFactory` gives, so the model reads `Error: Function failed.` and can call again. An `AIFunction`'s
-`AdditionalProperties`, such as `strict`, cross with its schema, and a tool result crosses as the JSON the provider
-client would have sent. A tool that throws, including an Activity that ran out of retries, gives the model the result
+built, because a token cannot cross the Activity boundary. A token you pass to `RunAsync` that is cancelled while a
+tool runs cancels its Activity, and the cancellation surfaces to the caller. A call that leaves out a required argument
+fails before any Activity is scheduled, with the message `AIFunctionFactory` gives, so the model reads
+`Error: Function failed.` and can call again. An `AIFunction`'s `AdditionalProperties`, such as `strict`, cross with
+its schema, and a tool result crosses as the JSON the provider client would have sent. A result the Workflow serialized
+from an `AIContent` also carries `AdditionalProperties["MicrosoftAgentFramework.SerializedContent"] = true`, the note
+that tells the Worker to turn that JSON back into content; only such results are rebuilt, so a plain JSON result with a
+`$type` key reaches the model unchanged. The note stays in the response messages, the session and Event History, and
+the Worker removes it from its copy before the provider client sees the message. A tool that throws, including an
+Activity that ran out of retries, gives the model the result
 `Error: Function failed.`; three consecutive failing rounds are tolerated and the fourth fails the run with
 `MicrosoftAgentFrameworkWorkflowError`. `MaximumIterationsPerRun` (default 40) caps the model calls of one run; at the
 cap the agent makes one more call without function tools and returns that answer.
