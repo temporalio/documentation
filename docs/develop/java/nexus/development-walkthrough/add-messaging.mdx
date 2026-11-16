@@ -146,8 +146,7 @@ A Worker answers the Query, so the Operation fails if no Worker is polling the a
 
 :::note[Query availability]
 
-Querying a Workflow from an Operation handler is available in Temporal Cloud, and on a self-hosted Temporal Service from Server v1.33.0.
-Before v1.33.0 it's available as a pre-release.
+Querying a Workflow from an Operation handler is available in Temporal Cloud, and as a pre-release on a self-hosted Temporal Service in Server v1.33.0.
 To run this step on a local development server, use the [v1.8.3-server-1.32.0-162.0 Temporal CLI pre-release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0), which bundles a Server build with Nexus Query support.
 Select it before [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server) starts the server, and use it in place of CLI 1.9.1 or later for the walkthrough. Despite its lower version number, it includes the `temporal nexus operation` commands this walkthrough uses. See [Check your CLI version](/develop/java/nexus/development-walkthrough#check-your-cli-version).
 The Signal and Update steps don't need this build.
