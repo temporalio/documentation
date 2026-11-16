@@ -49,7 +49,7 @@ If everything is configured correctly, you will see a `Success` status indicatin
 
 ## Consume an audit log
 
-GCP Pub/Sub and AWS Kinesis sinks deliver the same newline-separated JSON format with `snake_case` field names.
+The GCP Pub/Sub sink delivers newline-separated JSON objects with `snake_case` field names.
 Each message can contain multiple events; parse each line as a separate JSON object.
 See [Audit log format](/cloud/audit-logs#audit-log-format) for the public protobuf schema, JSON encoding rules, and an example.
 

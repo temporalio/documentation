@@ -59,7 +59,7 @@ If everything is configured correctly, you will see a `Success` status indicatin
 After you create an Audit Log sink, wait for the logs to flow into the Kinesis stream.
 You will see the first logs within 10 minutes after you configure the sink.
 
-Kinesis and GCP Pub/Sub sinks deliver the same newline-separated JSON format with `snake_case` field names.
+The Kinesis sink delivers newline-separated JSON objects with `snake_case` field names.
 See [Audit log format](/cloud/audit-logs#audit-log-format) for the public protobuf schema and JSON encoding rules.
 
 :::note
