@@ -35,18 +35,21 @@ Available timeouts are:
 - `withWorkflowRunTimeout()`
 - `withWorkflowTaskTimeout()`
 
+<!--SNIPSTART php-workflow-timeouts-execution-timeout {"enable_code_dedenting": true}-->
+[php-sandbox/workflows/timeouts/WorkflowStarter.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/timeouts/WorkflowStarter.php)
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
-    DynamicSleepWorkflowInterface::class,
+    MyWorkflowInterface::class,
     WorkflowOptions::new()
-        ->withWorkflowId(DynamicSleepWorkflow::WORKFLOW_ID)
-        ->withWorkflowIdReusePolicy(WorkflowIdReusePolicy::WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE)
+        ->withWorkflowId('my-workflow-id')
+        ->withWorkflowIdReusePolicy(IdReusePolicy::AllowDuplicate)
         // Set Workflow Timeout duration
         ->withWorkflowExecutionTimeout(CarbonInterval::minutes(2))
-        // ->withWorkflowRunTimeout(CarbonInterval::minute(2))
-        // ->withWorkflowTaskTimeout(CarbonInterval::minute(2))
+        // ->withWorkflowRunTimeout(CarbonInterval::minutes(2))
+        // ->withWorkflowTaskTimeout(CarbonInterval::minutes(2))
 );
 ```
+<!--SNIPEND-->
 
 ## Workflow retries {/* #workflow-retries */}
 
@@ -59,11 +62,14 @@ Workflow Executions do not retry by default, and Retry Policies should be used w
 A Retry Policy can be configured with an instance of the `RetryOptions` object.
 To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions` for Child Workflows or via `WorkflowOptions` for top-level Workflows.
 
+<!--SNIPSTART php-workflow-timeouts-retry-policy {"enable_code_dedenting": true}-->
+[php-sandbox/workflows/timeouts/WorkflowStarter.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/timeouts/WorkflowStarter.php)
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
-      CronWorkflowInterface::class,
-      WorkflowOptions::new()->withRetryOptions(
+    MyWorkflowInterface::class,
+    WorkflowOptions::new()->withRetryOptions(
         RetryOptions::new()->withInitialInterval(120)
-      )
+    )
 );
 ```
+<!--SNIPEND-->
