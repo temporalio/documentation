@@ -55,7 +55,7 @@ If you use a Codec for encryption, it also encrypts Nexus payloads.
 Caller and handler Workers must have compatible Data Converters.
 Payloads are encrypted by the sender (caller encrypts input, handler encrypts result).
 
-### Nexus Serialization Context {/* #nexus-serialization-context */}
+### Nexus serialization context {/* #nexus-serialization-context */}
 
 When the Data Converter encodes or decodes a Nexus payload, it receives a Nexus serialization context with the Nexus Endpoint name, Service name, and Operation name.
 A Payload Codec, Payload Converter, or Failure Converter that supports serialization context can use these values, for example to select an encryption key for each Endpoint.
