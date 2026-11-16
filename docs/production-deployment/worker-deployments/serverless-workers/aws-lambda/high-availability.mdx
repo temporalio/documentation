@@ -130,9 +130,17 @@ prove that the replica function served the work. Include Workflows pinned to old
 
 ## Recover from a Lambda outage {/* #recover-from-lambda-outage */}
 
-Check [Lambda invocation errors](/troubleshooting/serverless-workers/aws-lambda) and Task Queue backlog. If Lambda is
-unavailable in the active region, verify the replica function and its dependencies, then
-[manually fail over the Namespace](/cloud/high-availability/failovers#manual-failover) to select that region's function.
+Automatic Namespace failover monitors Temporal Cloud health. It does not respond to an outage limited to Lambda, and
+Serverless Workers do not automatically switch functions when Lambda is unavailable.
 
-A Lambda-only outage does not automatically trigger Temporal Cloud failover. Namespace failover affects all workloads
-in the Namespace, so include your other Workers and Clients in the recovery procedure.
+You have three recovery options:
+
+- **Restore the existing function or wait for Lambda to recover.** Check
+  [Lambda invocation errors](/troubleshooting/serverless-workers/aws-lambda) and monitor Task Queue backlog.
+- **Change the compute target without moving the Namespace.** Update the active region's scaling group to point to a
+  healthy function running the same Worker build in another AWS region, with the required invocation role settings.
+  Keep `--region-id` set to the Namespace's active region, and verify access to application dependencies.
+- **Manually fail over the Namespace.** Verify the replica function and its dependencies, then
+  [trigger Namespace failover](/cloud/high-availability/failovers#manual-failover) to select the replica region's
+  compute configuration. This affects all workloads in the Namespace, so include your other Workers and Clients in the
+  recovery procedure.

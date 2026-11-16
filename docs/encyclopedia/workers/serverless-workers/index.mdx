@@ -261,8 +261,8 @@ How existing compute stops depends on the provider:
 
 ### Namespace and compute outages
 
-Serverless Workers follow Namespace failover and cannot fail over independently. Temporal Cloud's automatic failover
-monitors Temporal Cloud health. A failure limited to Lambda, Cloud Run, or your application does not automatically
+Serverless Workers follow Namespace failover; there is no separate Worker failover operation. Temporal Cloud's
+automatic failover monitors Temporal Cloud health. A failure limited to Lambda, Cloud Run, or your application does not automatically
 trigger Namespace failover. You can [manually fail over the Namespace](/cloud/high-availability/failovers#manual-failover)
 to select recovery compute, after verifying that compute and its dependencies are available.
 

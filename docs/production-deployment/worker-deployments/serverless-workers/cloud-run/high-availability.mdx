@@ -132,9 +132,18 @@ this test.
 
 ## Recover from a Cloud Run outage {/* #recover-from-cloud-run-outage */}
 
-Check [Worker Pool scaling errors](/troubleshooting/serverless-workers/cloud-run) and Task Queue backlog. If Cloud Run
-is unavailable in the active region, verify the replica pool and its dependencies, then
-[manually fail over the Namespace](/cloud/high-availability/failovers#manual-failover) to select that region's pool.
+Automatic Namespace failover monitors Temporal Cloud health. It does not respond to an outage limited to Cloud Run, and
+Serverless Workers do not automatically switch Worker Pools when Cloud Run is unavailable.
 
-A Cloud Run-only outage does not automatically trigger Temporal Cloud failover. Namespace failover affects all
-workloads in the Namespace, so include your other Workers and Clients in the recovery procedure.
+You have three recovery options:
+
+- **Restore the existing pool or wait for Cloud Run to recover.** Check
+  [Worker Pool scaling errors](/troubleshooting/serverless-workers/cloud-run) and monitor Task Queue backlog.
+- **Change the compute target without moving the Namespace.** Deploy a replacement pool running the same Worker build
+  in another GCP region, separate from pools used by other scaling groups. Update the active region's group to target
+  that pool, with the required invoker service account. Keep `--region-id` set to the Namespace's active region, and
+  verify access to application dependencies.
+- **Manually fail over the Namespace.** Verify the replica pool and its dependencies, then
+  [trigger Namespace failover](/cloud/high-availability/failovers#manual-failover) to select the replica region's
+  compute configuration. This affects all workloads in the Namespace, so include your other Workers and Clients in the
+  recovery procedure.

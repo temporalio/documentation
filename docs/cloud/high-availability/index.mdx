@@ -158,8 +158,8 @@ For Multi-region Replication within the same cloud provider, regional compute co
 follow Namespace failover. Configure compute for both regions on each Worker Deployment Version that must continue
 serving work. A default configuration without regional mappings keeps targeting its original resource.
 
-Serverless Workers cannot fail over independently of the Namespace. Existing Workers can continue processing if they
-can reach the active Namespace and their application dependencies. See
+Automatic Serverless Worker failover follows Namespace failover. Existing Workers can continue processing if they can
+reach the active Namespace and their application dependencies. See
 [Serverless Workers and High Availability](/serverless-workers#high-availability) for compute selection and failover
 behavior, with links to provider setup guides.
 
