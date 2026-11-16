@@ -19,7 +19,11 @@ This helps users identify and understand Workflows and their operations.
 
 When starting a Workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
+<!--SNIPSTART php-enriching-ui-start-workflow-->
+[php-sandbox/platform/enriching-ui/start-workflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/enriching-ui/start-workflow.php)
 ```php
+<?php
+use App\Platform\EnrichingUi\TimerSummary\YourWorkflow;
 use Temporal\Client\WorkflowClient;
 use Temporal\Client\WorkflowOptions;
 
@@ -38,6 +42,7 @@ $workflow = $workflowClient->newWorkflowStub(
 
 $result = $workflow->yourWorkflowMethod('workflow input');
 ```
+<!--SNIPEND-->
 
 `withStaticSummary()` sets a single-line description that appears in the Workflow list view, limited to 200 bytes.
 `withStaticDetails()` sets multi-line comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
@@ -46,24 +51,38 @@ The input format is standard Markdown excluding images, HTML, and scripts.
 
 You can also start a Workflow asynchronously:
 
+<!--SNIPSTART php-enriching-ui-start-async {"enable_code_dedenting": true}-->
+[php-sandbox/platform/enriching-ui/AsyncStart.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/enriching-ui/AsyncStart.php)
 ```php
 // Start workflow asynchronously
 $workflowClient->start($workflow, 'workflow input');
 ```
+<!--SNIPEND-->
 
 ### Adding Summary to Activities and Timers
 
 You can attach a `summary` to timers within a workflow:
 
+<!--SNIPSTART php-enriching-ui-timer-summary-->
+[php-sandbox/platform/enriching-ui/TimerSummaryWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/enriching-ui/TimerSummaryWorkflow.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Platform\EnrichingUi\TimerSummary;
+
 use Temporal\Workflow;
+use Temporal\Workflow\ReturnType;
 use Temporal\Workflow\TimerOptions;
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
 
 #[WorkflowInterface]
 interface YourWorkflow
 {
     #[WorkflowMethod]
-    public function yourWorkflowMethod(string $input): string;
+    #[ReturnType('string')]
+    public function yourWorkflowMethod(string $input);
 }
 
 class YourWorkflowImpl implements YourWorkflow
@@ -80,16 +99,26 @@ class YourWorkflowImpl implements YourWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 For Activities, you can set a summary using Activity options:
 
+<!--SNIPSTART php-enriching-ui-activity-summary-->
+[php-sandbox/platform/enriching-ui/ActivitySummaryWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/enriching-ui/ActivitySummaryWorkflow.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Platform\EnrichingUi\ActivitySummary;
+
+use App\Platform\EnrichingUi\TimerSummary\YourWorkflow;
 use Temporal\Activity\ActivityOptions;
 use Temporal\Workflow;
 
 class YourWorkflowImpl implements YourWorkflow
 {
-    private YourActivitiesInterface $activities;
+    /** @var YourActivitiesInterface */
+    private $activities;
     
     public function __construct()
     {
@@ -110,6 +139,7 @@ class YourWorkflowImpl implements YourWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 The input format for `summary` is a string, and limited to 200 bytes.
 
