@@ -31,6 +31,8 @@ const REASON_LABELS = {
 const MAX_BLOCKS = 46;
 const MAX_SECTION_CHARS = 2800;
 const WEEKLY_TOP = 10;
+// Different messages shown under one grouped report.
+const MESSAGES_SHOWN = 3;
 
 function isDay(value) {
   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value));
@@ -80,18 +82,24 @@ function groupRecords(records, { includePreview = false } = {}) {
   const skipped = records.length - kept.length;
 
   // Reports with the same page and title, ignoring case and spacing, are one
-  // problem reported more than once.
+  // problem reported more than once. The senders (by IP hash) and the
+  // different messages are kept, so a reader can tell one caller retrying
+  // from several callers hitting the same problem.
   const reportsByKey = new Map();
+  const norm = (text) => (text || '').toLowerCase().replace(/\s+/g, ' ').trim();
   for (const r of kept.filter((r) => r.kind === 'report')) {
-    const key = `${r.page_url || ''}\n${(r.title || '').toLowerCase().replace(/\s+/g, ' ').trim()}`;
-    const existing = reportsByKey.get(key);
-    if (existing) {
-      existing.count++;
-      if (r.agent && !existing.agents.includes(r.agent)) existing.agents.push(r.agent);
-      if (SEVERITY_ORDER[r.severity] < SEVERITY_ORDER[existing.severity]) existing.severity = r.severity;
+    const key = `${r.page_url || ''}\n${norm(r.title)}`;
+    let group = reportsByKey.get(key);
+    if (group) {
+      group.count++;
+      if (r.agent && !group.agents.includes(r.agent)) group.agents.push(r.agent);
+      if (SEVERITY_ORDER[r.severity] < SEVERITY_ORDER[group.severity]) group.severity = r.severity;
     } else {
-      reportsByKey.set(key, { ...r, count: 1, agents: r.agent ? [r.agent] : [] });
+      group = { ...r, count: 1, agents: r.agent ? [r.agent] : [], senders: [], messages: [] };
+      reportsByKey.set(key, group);
     }
+    if (r.ip_hash && !group.senders.includes(r.ip_hash)) group.senders.push(r.ip_hash);
+    if (r.message && !group.messages.some((m) => norm(m) === norm(r.message))) group.messages.push(r.message);
   }
   const reports = [...reportsByKey.values()].sort(
     (a, b) => (SEVERITY_ORDER[a.severity] ?? 1) - (SEVERITY_ORDER[b.severity] ?? 1) || b.count - a.count
@@ -173,15 +181,29 @@ function pageRef(pageUrl, knownPaths) {
   return knownPaths && !knownPaths.has(path) ? `${link} (not in sitemap)` : link;
 }
 
+// How many times a grouped report was sent, and by how many senders when
+// that's known: "reported 6 times from 1 sender".
+function timesSent(report) {
+  if (report.count < 2) return null;
+  const senders = report.senders || [];
+  if (!senders.length) return `reported ${report.count} times`;
+  return `reported ${report.count} times from ${senders.length} ${senders.length === 1 ? 'sender' : 'senders'}`;
+}
+
 function reportLines(report, knownPaths) {
   const meta = [
     report.severity,
-    report.count > 1 ? `reported ${report.count} times` : null,
+    timesSent(report),
     report.agents.length ? report.agents.map((a) => code(a, 40)).join(', ') : null,
     report.product_version ? code(report.product_version, 40) : null,
   ].filter(Boolean);
   const lines = [`• *${code(report.title, 120)}* · ${meta.join(' · ')} · ${pageRef(report.page_url, knownPaths)}`];
-  if (report.message) lines.push(`    ${code(report.message, 300)}`);
+  const messages = report.messages && report.messages.length ? report.messages : [report.message].filter(Boolean);
+  for (const message of messages.slice(0, MESSAGES_SHOWN)) lines.push(`    ${code(message, 300)}`);
+  if (messages.length > MESSAGES_SHOWN) {
+    const more = messages.length - MESSAGES_SHOWN;
+    lines.push(`    _and ${more} more ${more === 1 ? 'message' : 'messages'} in the Blob store_`);
+  }
   if (report.expected) lines.push(`    Expected: ${code(report.expected, 200)}`);
   return lines.join('\n');
 }
