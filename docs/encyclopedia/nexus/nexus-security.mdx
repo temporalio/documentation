@@ -60,6 +60,12 @@ Payloads are encrypted by the sender (caller encrypts input, handler encrypts re
 When the Data Converter encodes or decodes a Nexus payload, it receives a Nexus serialization context with the Nexus Endpoint name, Service name, and Operation name.
 A Payload Codec, Payload Converter, or Failure Converter that supports serialization context can use these values, for example to select an encryption key for each Endpoint.
 
+:::info Server version requirement
+
+Nexus serialization context requires Temporal Server version 1.33.0 or later.
+
+:::
+
 The context covers the Operation's own payloads and the payloads that the handler's Workflows, Updates, and Standalone Activities return to the caller:
 
 | Payload | Serialization context |
