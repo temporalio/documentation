@@ -133,6 +133,12 @@ Create a private connectivity rule (GCP):
 temporal cloud connectivity private create --connection-id "1234567890" --region "gcp-us-central1" --gcp-project-id "my-project-123"
 ```
 
+Create a private connectivity rule (Azure):
+
+```bash
+temporal cloud connectivity private create --azure-pe-resource-id "<azure-private-endpoint-resource-id>" --region "azure-centralus"
+```
+
 Create a public Connectivity Rule once for the Project. Each Project allows 1 public Connectivity Rule. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules):
 
 ```bash
