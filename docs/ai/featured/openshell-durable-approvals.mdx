@@ -12,8 +12,8 @@ tags:
 # diff it against source_commit, update the page, then bump both fields.
 source_repo: https://github.com/temporalio/ai-cookbook
 source_path: agents/openshell_durable_approvals_python/README.md
-source_commit: d3bf50583eba613a016f45e068df27565f5894cc
-source_synced: 2026-11-07
+source_commit: ce29d6e985d4334ffdf043dc4929e15a31638e45
+source_synced: 2026-11-16
 ---
 
 import { ViewSourceCodeNotice } from '@site/src/components';
@@ -84,17 +84,19 @@ git clone https://github.com/temporalio/ai-cookbook.git
 cd ai-cookbook/agents/openshell_durable_approvals_python
 uv sync
 export NVIDIA_API_KEY=nvapi-...                # build.nvidia.com
+export SANDBOX_BACKEND=fake                    # no OpenShell: directories, no isolation
 temporal server start-dev                      # terminal 1
-uv run python -m worker                        # terminal 2
-uv run python -m start_workflow                # terminal 3: prints the workflow id
-uv run python -m grant <workflow-id> approved
-uv run python -m delete_sandbox <workflow-id> exec
-uv run python -m review <workflow-id> approve
-uv run python -m bundle <workflow-id>
+uv run worker.py                               # terminal 2
+uv run start_workflow.py                       # terminal 3: prints the Workflow Id
+uv run grant.py <workflow-id> approved
+uv run delete_sandbox.py <workflow-id> exec
+uv run review.py <workflow-id> approve
+uv run bundle.py <workflow-id>
 ```
 
-Without OpenShell installed, a fake backend reproduces the control flow in plain directories, with no isolation. With
-OpenShell on the `PATH`, the same commands create real sandboxes from `python:3.12-slim`.
+With `SANDBOX_BACKEND=fake`, a fake backend reproduces the control flow in plain directories, with no isolation. With
+OpenShell on the `PATH` and that variable unset, the same commands create real sandboxes from `python:3.12-slim`; the
+Worker refuses to start with neither.
 
 ## Learn more
 
