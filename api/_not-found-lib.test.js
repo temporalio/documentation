@@ -5,6 +5,7 @@ const {
   injectIntoHtml,
   pageHost,
   pathToQuery,
+  pathToSearch,
   pickSuggestions,
   searchSuggestions,
   toHtmlBlock,
@@ -36,6 +37,39 @@ describe('pathToQuery', () => {
     const q = pathToQuery('/' + Array.from({ length: 30 }, (_, i) => `word${String.fromCharCode(97 + (i % 26))}x${i}`).join('/'));
     assert.strictEqual(q.split(' ').length, 8);
     assert.ok(q.length <= 100);
+  });
+});
+
+describe('pathToSearch', () => {
+  it('moves an SDK path segment into a filter and makes parent segments optional', () => {
+    assert.deepStrictEqual(pathToSearch('/develop/php/basics'), {
+      query: 'develop basics',
+      sdkLanguage: 'php',
+      optionalWords: ['develop'],
+    });
+    assert.deepStrictEqual(pathToSearch('/develop/dotnet/workflows/timers.md'), {
+      query: 'develop workflows timers',
+      sdkLanguage: 'dotnet',
+      optionalWords: ['develop', 'workflows'],
+    });
+  });
+  it('requires the words of the last segment only', () => {
+    assert.deepStrictEqual(pathToSearch('/best-practices/managing-aps-limits'), {
+      query: 'best practices managing aps limits',
+      sdkLanguage: null,
+      optionalWords: ['best', 'practices'],
+    });
+  });
+  it('makes nothing optional for a single segment, or when the SDK is the last segment', () => {
+    assert.deepStrictEqual(pathToSearch('/durable-timer'), { query: 'durable timer', sdkLanguage: null, optionalWords: [] });
+    assert.deepStrictEqual(pathToSearch('/develop/php'), { query: 'develop', sdkLanguage: 'php', optionalWords: [] });
+  });
+  it('ignores a language word that is only part of a segment', () => {
+    assert.deepStrictEqual(pathToSearch('/go-to-market'), { query: 'go to market', sdkLanguage: null, optionalWords: [] });
+    assert.strictEqual(pathToSearch('/develop/java-script').sdkLanguage, null);
+  });
+  it('searches for the language when nothing else is left', () => {
+    assert.deepStrictEqual(pathToSearch('/php'), { query: 'php', sdkLanguage: null, optionalWords: [] });
   });
 });
 
@@ -127,6 +161,21 @@ describe('pickSuggestions', () => {
     assert.strictEqual(picked[0].url, `${D}/a`);
   });
 
+  it('names the SDK on SDK pages, unless the title already does', () => {
+    const picked = pickSuggestions(
+      [
+        { url: `${D}/develop/php/workflows/basics`, sdk_language: 'php', section_title: 'PHP SDK', hierarchy: { lvl0: 'Workflows', lvl1: 'Workflow basics' } },
+        { url: `${D}/develop/php`, sdk_language: 'php', section_title: 'PHP SDK', hierarchy: { lvl0: 'PHP SDK', lvl1: 'PHP SDK developer guide' } },
+        { url: `${D}/workflows`, hierarchy: { lvl0: 'Concepts', lvl1: 'Workflows' } },
+      ],
+      '/x',
+    );
+    assert.deepStrictEqual(
+      picked.map((s) => s.title),
+      ['PHP SDK: Workflow basics', 'PHP SDK developer guide', 'Concepts: Workflows'],
+    );
+  });
+
   it('tolerates a missing hits array', () => {
     assert.deepStrictEqual(pickSuggestions(undefined, '/x'), []);
   });
@@ -193,7 +242,20 @@ describe('searchSuggestions', () => {
     const result = await searchSuggestions('/workflow-defn', { fetchImpl });
     assert.strictEqual(body.query, 'workflow defn');
     assert.deepStrictEqual(body.restrictSearchableAttributes, ['hierarchy.lvl1', 'hierarchy.lvl2']);
+    assert.strictEqual(body.facetFilters, undefined);
     assert.deepStrictEqual(result, [{ url: `${D}/workflows`, title: 'Workflows' }]);
+  });
+
+  it('filters to the SDK named in the path', async () => {
+    let body;
+    const fetchImpl = async (_url, init) => {
+      body = JSON.parse(init.body);
+      return { ok: true, json: async () => ({ hits: [] }) };
+    };
+    await searchSuggestions('/develop/php/basics', { fetchImpl });
+    assert.strictEqual(body.query, 'develop basics');
+    assert.deepStrictEqual(body.facetFilters, ['sdk_language:php']);
+    assert.deepStrictEqual(body.optionalWords, ['develop']);
   });
 
   it('returns nothing for an unsearchable path without calling Algolia', async () => {

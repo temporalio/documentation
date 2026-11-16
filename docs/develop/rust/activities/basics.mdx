@@ -26,7 +26,7 @@ Here's an example of an Activity:
 
 <!--SNIPSTART rust-activity-basics-definition-->
 [rust-sandbox/activities/basics/src/definition.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/definition.rs)
-```rust
+```rs
 use temporalio_macros::activities;
 use temporalio_sdk::activities::{ActivityContext, ActivityError};
 
@@ -74,7 +74,7 @@ Activities can also take `Arc<Self>` and be registered using an instance. Here's
 
 <!--SNIPSTART rust-activity-basics-arc-->
 [rust-sandbox/activities/basics/src/arc_instance.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/arc_instance.rs)
-```rust
+```rs
 pub struct SleeperActivities {
     pub acts_started: Arc<Semaphore>,
     pub acts_done: Arc<Semaphore>,
@@ -102,7 +102,7 @@ Activity parameters should be serializable and deserializable using serde. Use `
 
 <!--SNIPSTART rust-activity-basics-parameters-->
 [rust-sandbox/activities/basics/src/parameters.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/parameters.rs)
-```rust
+```rs
 use serde::{Deserialize, Serialize};
 use temporalio_macros::activities;
 use temporalio_sdk::activities::{ActivityContext, ActivityError};
@@ -138,7 +138,7 @@ The return type of an Activity is `Result<T, ActivityError>`. The `T` type must 
 
 <!--SNIPSTART rust-activity-basics-return-values-->
 [rust-sandbox/activities/basics/src/return_values.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/return_values.rs)
-```rust
+```rs
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ProcessedData {
     pub processed: String,
@@ -182,7 +182,7 @@ By default, the Activity name is the `impl` type name and the method name joined
 
 <!--SNIPSTART rust-activity-basics-activity-type-->
 [rust-sandbox/activities/basics/src/activity_type.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/basics/src/activity_type.rs)
-```rust
+```rs
 #[activities]
 impl GreetingActivities {
     #[activity(name = "compose_greeting")]

@@ -28,6 +28,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile --ignore-scripts
 
+      # Also covers the Markdown 404 handler in api/, which follows these rules.
+      - name: Test redirect checks
+        run: node --test bin/validate-redirects.test.js
+
       - name: Validate redirect rules
         run: node bin/validate-redirects.js
 

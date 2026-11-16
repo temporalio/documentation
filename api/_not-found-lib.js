@@ -12,6 +12,10 @@ const MAX_QUERY_LENGTH = 100;
 const MAX_SUGGESTIONS = 4;
 const SEARCH_TIMEOUT_MS = 2000;
 
+// The values of the index's `sdk_language` facet, which is also the URL segment
+// of an SDK's pages (/develop/php/...).
+const SDK_LANGUAGES = ['python', 'typescript', 'java', 'go', 'dotnet', 'ruby', 'php', 'rust'];
+
 // utm_term is left out on purpose: it would copy the search string derived from
 // the requested path into every analytics URL.
 const UTM = {
@@ -43,6 +47,36 @@ function pathToQuery(pathname) {
   return words.join(' ').slice(0, MAX_QUERY_LENGTH).trim();
 }
 
+// Builds the Algolia search for a missing path.
+// - The last path segment is the page name, so its words are required. Words
+//   from the segments above it ("develop", "workflows") are optional: they
+//   rarely appear in a title, and as required words they outvote a misspelled
+//   page name.
+// - When a whole segment names an SDK (/develop/php/basics), that language
+//   becomes a filter and leaves the text query, so "php" can't be dropped as an
+//   unmatched word and the results stay in that SDK. Only whole segments count,
+//   so a word like "go" inside a longer slug doesn't.
+function pathToSearch(pathname) {
+  const segments = String(pathname || '')
+    .toLowerCase()
+    .split('/')
+    .map((segment) => segment.replace(/\.(md|html?)$/, ''))
+    .filter(Boolean);
+  const language = SDK_LANGUAGES.find((candidate) => segments.includes(candidate));
+
+  let words = pathToQuery(pathname).split(' ').filter(Boolean);
+  // Nothing else to search for ("/php"), so search for the language itself.
+  const sdkLanguage = language && words.some((word) => word !== language) ? language : null;
+  if (sdkLanguage) words = words.filter((word) => word !== sdkLanguage);
+
+  const pageSegment = segments.filter((segment) => segment !== sdkLanguage).pop() || '';
+  const pageWords = new Set(pathToQuery(`/${pageSegment}`).split(' '));
+  const optionalWords = words.filter((word) => !pageWords.has(word));
+
+  // With every word optional, Algolia would match any one of them.
+  return { query: words.join(' '), sdkLanguage, optionalWords: optionalWords.length < words.length ? optionalWords : [] };
+}
+
 // Drops query string and anchor, and a trailing slash, so the same page found
 // through two sections of the index counts once.
 function pageUrl(url) {
@@ -72,7 +106,8 @@ function titleOf(hierarchy) {
       : '';
   const lvl0 = clean(hierarchy && hierarchy.lvl0);
   const lvl1 = clean(hierarchy && hierarchy.lvl1);
-  if (lvl0 && lvl1 && lvl0 !== lvl1) return `${lvl0}: ${lvl1}`;
+  // "PHP SDK" above "PHP SDK developer guide" says the same thing twice.
+  if (lvl0 && lvl1 && !lvl1.toLowerCase().includes(lvl0.toLowerCase())) return `${lvl0}: ${lvl1}`;
   return lvl1 || lvl0;
 }
 
@@ -99,7 +134,15 @@ function pickSuggestions(hits, requestedPath, limit = MAX_SUGGESTIONS) {
     const hierarchy = (hit && hit.hierarchy) || {};
     const h2 = titleOf({ lvl1: hierarchy.lvl2 });
     const h2Only = Boolean(h2) && matched(hit, 'lvl2') && !matched(hit, 'lvl1');
-    const title = h2Only ? `${titleOf({ lvl1: hierarchy.lvl1 })}: ${h2}` : titleOf(hierarchy);
+    const page = titleOf({ lvl1: hierarchy.lvl1 });
+    let title = h2Only ? `${page}: ${h2}` : titleOf(hierarchy);
+    // An SDK page's title doesn't say which SDK ("Workflow basics"), so lead
+    // with the index's section name ("PHP SDK") in place of the generic
+    // section, unless the title already names it.
+    const sdk = hit && hit.sdk_language && titleOf({ lvl1: hit.section_title });
+    if (sdk && page && !page.toLowerCase().includes(sdk.toLowerCase())) {
+      title = h2Only ? `${sdk}: ${page}: ${h2}` : `${sdk}: ${page}`;
+    }
     if (!title) continue;
 
     let target = url;
@@ -126,7 +169,7 @@ function withUtm(url, rank) {
 // Any failure, including a timeout, returns no suggestions so the 404 page is
 // never worse than it was.
 async function searchSuggestions(pathname, { fetchImpl = fetch } = {}) {
-  const query = pathToQuery(pathname);
+  const { query, sdkLanguage, optionalWords } = pathToSearch(pathname);
   if (!query) return [];
 
   try {
@@ -139,11 +182,15 @@ async function searchSuggestions(pathname, { fetchImpl = fetch } = {}) {
       },
       body: JSON.stringify({
         query,
-        hitsPerPage: 20,
+        // Room for hits from other sites in the index (the courses site), which
+        // are dropped afterwards.
+        hitsPerPage: 30,
+        ...(optionalWords.length ? { optionalWords } : {}),
+        ...(sdkLanguage ? { facetFilters: [`sdk_language:${sdkLanguage}`] } : {}),
         // Match page titles (H1) and H2 headings only. Body text and deeper
         // headings matched too loosely: "durable timer" suggested Schedules.
         restrictSearchableAttributes: ['hierarchy.lvl1', 'hierarchy.lvl2'],
-        attributesToRetrieve: ['url', 'url_without_anchor', 'anchor', 'hierarchy'],
+        attributesToRetrieve: ['url', 'url_without_anchor', 'anchor', 'hierarchy', 'section_title', 'sdk_language'],
         attributesToHighlight: ['hierarchy.lvl1', 'hierarchy.lvl2'],
         attributesToSnippet: [],
       }),
@@ -207,4 +254,4 @@ function injectIntoHtml(html, block) {
   return index === -1 ? html + block : html.slice(0, index) + block + html.slice(index);
 }
 
-module.exports = { injectIntoHtml, pageHost, pathToQuery, pickSuggestions, searchSuggestions, toHtmlBlock, toMarkdownList, withUtm };
+module.exports = { injectIntoHtml, pageHost, pathToQuery, pathToSearch, pickSuggestions, searchSuggestions, toHtmlBlock, toMarkdownList, withUtm };

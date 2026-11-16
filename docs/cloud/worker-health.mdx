@@ -95,7 +95,8 @@ Metrics to monitor:
 
 The Schedule To Start metric represents how long Tasks are staying unprocessed in the Task Queues.
 It is the time between when a Task is enqueued and when it is started by a Worker.
-This time being long (likely) means that your Workers can't keep up - either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
+This time being long (likely) means that your Workers can't keep up - either increase the number of Workers (if the host load is already high) or, if your Workers use fixed poller counts, increase the number of pollers per Worker.
+Workers that use [Poller Autoscaling](/develop/worker-performance/configuration#configuring-poller-options) adjust their poller count automatically.
 
 If your Schedule To Start latency alert triggers or is high, check the [Sync Match Rate](#sync-match-rate) to decide if you need to adjust your Worker or fleet, or contact Temporal Cloud support.
 If your Sync Match Rate is low, contact [Temporal Cloud support](/evaluate/cloud/support#support-ticket).
@@ -186,7 +187,7 @@ Consider
 
 - Increasing either the number of available workers
 - Verifying that your worker hosts are appropriately resourced
-- Increasing the worker configuration value for concurrent pollers for workers/task executions (if your worker resources can accommodate the increased load)
+- Increasing the Worker's concurrent poller count, if your Workers use fixed poller counts and your Worker resources can accommodate the increased load
 - Doing some combination of these
 
 #### High Schedule-To-Start latency and low sync match rate
@@ -226,7 +227,7 @@ temporal_cloud_v1_approximate_backlog_count{temporal_namespace=~"$namespace", te
   - Check the system CPU usage against `task_slots` and adjust `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` settings as necessary.
   - Check the system memory usage against `sticky_cache_size` and adjust sticky cache size as necessary.
   - For a detailed explanation of settings, see the [Worker Performance](/develop/worker-performance/task-queues#task-queues-processing-tuning) section.
-- Increase the Worker config for concurrent pollers for Workflow or Activity `task_slots`, if your Worker resources can accommodate the increased load.
+- If your Workers use fixed poller counts, increase the concurrent poller count for Workflow or Activity Tasks, if your Worker resources can accommodate the increased load. Workers that use Poller Autoscaling adjust this count automatically.
   - Reference [Worker Performance > Poller Count](/develop/worker-performance/task-queues#poller-count).
 - Increase the number of available Workers.
 
@@ -278,7 +279,7 @@ If you see all of the following at the same time then you might have too many Wo
 Consider sizing down your Workers by either:
 
 - Reducing the number of Workers polling the impacted Task Queue, OR
-- Reducing the concurrent pollers per Worker, OR
+- Reducing the concurrent pollers per Worker (with fixed poller counts) or the maximum poller count (with Poller Autoscaling), OR
 - Both of the above
 
 ## Detect misconfigured Workers {/* #detect-misconfigured-workers */}

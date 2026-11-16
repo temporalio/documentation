@@ -19,6 +19,7 @@ This page discusses the following:
 - [Idempotency](#idempotency)
 - [Parameters](#activity-parameters)
 - [Activity Type](#activity-type)
+- [Call an Activity implemented in another SDK](#cross-language-activities)
 
 An Activity Definition is a normal function or method that executes a single, well-defined action.
 The same Activity Definition can be started as a [step in a Workflow](/workflow-activity) or as a background job using a [Standalone Activity](/standalone-activity) once it's been [registered with a Worker](#worker-registration).
@@ -243,6 +244,33 @@ When called from a Workflow, the parameter values and return value are recorded 
 
 An Activity Type is a name given to an Activity Definition.
 When starting an Activity, you can identify it by the name (Activity Type), or by a reference to its function/method/class (Activity Definition)
+
+## Call an Activity implemented in another SDK {/* #cross-language-activities */}
+
+A Workflow Definition is written with one SDK, but the Activities it calls don't have to be. A Go Workflow can call an
+Activity implemented in Python, for example. The Temporal Service routes an Activity by its Activity Type and Task Queue
+and passes its arguments and result as payloads, so it doesn't matter which SDK each side uses.
+
+To call an Activity across SDKs:
+
+- **Run a Worker in each language, each on its own Task Queue.** Every Worker that polls a Task Queue must register the
+  same [Workflow Types and Activity Types](/task-queue), so give each language's Workers their own Task Queue. A Worker
+  that only runs Activities doesn't need to register any Workflows.
+- **Set the Task Queue in the Activity options.** The Workflow schedules the Activity on the Task Queue that the other
+  language's Worker polls.
+- **Call the Activity by its Activity Type.** The Workflow can't import the other SDK's Activity Definition, so it calls
+  the Activity by name, or through a stub in the Workflow's language that has the same name. Check the exact name the
+  other SDK registers: default names differ between SDKs. For example, the Java SDK
+  [capitalizes the first letter](/develop/java/activities/basics#activity-type) of the method name.
+- **Pass arguments and results that both SDKs can convert.** The [default Data Converter](/default-custom-data-converters)
+  encodes most values as JSON, so strings, numbers, lists, and objects with plain fields work across SDKs. Arguments
+  are positional in every SDK. A single object argument is easier to change later, because you can add a field without
+  changing the call in either language.
+
+For working examples, see a Go Workflow that calls
+[a Python Activity](https://github.com/temporalio/samples-python/tree/main/activity_worker) and
+[a Ruby Activity](https://github.com/temporalio/samples-ruby/tree/main/activity_worker), and the
+[temporal-polyglot](https://github.com/temporalio/temporal-polyglot) repository.
 
 ## Register the Activity with a Worker {/* #worker-registration */}
 

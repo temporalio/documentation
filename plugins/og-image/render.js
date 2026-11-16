@@ -116,6 +116,7 @@ function buildTree({ title, description, footerText = DEFAULT_FOOTER_TEXT }, { l
               flexDirection: 'column',
               justifyContent: 'space-between',
               padding: '64px',
+              boxSizing: 'border-box',
               fontFamily: 'Inter',
             },
             children: [

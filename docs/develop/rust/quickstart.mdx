@@ -181,7 +181,7 @@ Create a `/src/activities.rs` file with the Activity definition:
 
 <!--SNIPSTART rust-quickstart-activities-->
 [rust-sandbox/quickstart/src/activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/activities.rs)
-```rust
+```rs
 use temporalio_macros::activities;
 use temporalio_sdk::activities::{ActivityContext, ActivityError};
 
@@ -203,7 +203,7 @@ Create a `/src/workflows.rs` file with the Workflow definition:
 
 <!--SNIPSTART rust-quickstart-workflows-->
 [rust-sandbox/quickstart/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/workflows.rs)
-```rust
+```rs
 use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::{ActivityOptions, WorkflowContext, WorkflowContextView, WorkflowResult};
 use std::time::Duration;
@@ -248,7 +248,7 @@ Update your `/src/main.rs` file with the following:
 
 <!--SNIPSTART rust-quickstart-main-->
 [rust-sandbox/quickstart/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/main.rs)
-```rust
+```rs
 use temporalio_client::{
     Client, ClientOptions, Connection,
     envconfig::LoadClientConfigProfileOptions,

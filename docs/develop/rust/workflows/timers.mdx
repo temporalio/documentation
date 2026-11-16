@@ -20,7 +20,7 @@ To set a Timer in Rust, call `ctx.timer()` and await it. Pass a `Duration` direc
 
 <!--SNIPSTART rust-timers-timer {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/timers/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/timers/src/workflows.rs)
-```rust
+```rs
 ctx.timer(
     TimerOptions::builder(Duration::from_secs(60))
         .summary("important timer".to_owned())
