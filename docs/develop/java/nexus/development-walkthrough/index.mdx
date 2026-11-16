@@ -70,9 +70,7 @@ the handler from any other sample."
 
 Three kinds of code block appear in this walkthrough. Hover over a block to get a copy icon.
 
-**A terminal window is a command to run.** Run this one now to check your [Temporal CLI](/cli) version.
-Use 1.9.1 or later, unless you plan to run step 7's Query on a local development server; for that,
-use the [Query-capable pre-release CLI](#check-your-cli-version) before starting the server.
+**A terminal window is a command to run.** Run this one now to check your [Temporal CLI](/cli) version against [Check your CLI version](#check-your-cli-version):
 
 <RunThis>
 
@@ -122,16 +120,11 @@ The sample is the finished Service. Each step shows the code it introduces and t
 
 ### 2. Check your CLI version {/* #check-your-cli-version */}
 
-Use [Temporal CLI](/cli) 1.9.1 or later for this walkthrough. If you plan to run the Query in
-[step 7](/develop/java/nexus/development-walkthrough/add-messaging#query) on a local development
-server, use the [v1.8.3-server-1.32.0-162.0 pre-release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0)
-instead. It bundles a Server build with Nexus Query support and includes the `temporal nexus operation`
-commands, despite its lower version number. Select this CLI before [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server)
-starts the development server. Use it in place of CLI 1.9.1 or later for the walkthrough.
+This walkthrough needs [Temporal CLI](/cli) 1.9.1 or later and its development server. Each step
+runs an Operation from the command line with `temporal nexus operation`, so check that your CLI has
+those commands before you start. If `temporal nexus --help` doesn't list `operation`, upgrade.
 
-Each step runs an Operation from the command line with `temporal nexus operation`, so check that your
-CLI has those commands before you start. If `temporal nexus --help` doesn't list `operation`, use CLI
-1.9.1 or later, or the Query-capable pre-release above when running the Query on a local server.
+To run the Query in [step 7](/develop/java/nexus/development-walkthrough/add-messaging#query), install the [v1.8.3-server-1.32.0-162.0 pre-release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0) instead, before [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server) starts the development server.
 
 The development server also needs two dynamic config values that are off by default.
 [Step 4](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server)
