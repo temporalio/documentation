@@ -10,6 +10,9 @@ tags:
   - GCP Cloud Run
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Deploy a Cloud Run Worker Pool in each of your Temporal Cloud Namespace's regions, then configure both pools on the same
 Worker Deployment Version. After Namespace failover, Temporal can scale the pool configured for the replica region.
 
@@ -38,6 +41,11 @@ used by a live version. Retain replica pools for older versions while pinned Wor
 
 ## Configure regional compute {/* #configure-regional-compute */}
 
+Use the Temporal Cloud UI or the Temporal CLI to update the existing Worker Deployment Version.
+
+<Tabs groupId="create-version-approach">
+<TabItem value="ui" label="Temporal Cloud UI">
+
 1. In the Temporal Cloud UI, open your Namespace and select **Workers** > **Deployments**.
 2. Select your Worker Deployment, then edit the compute configuration for the version.
 3. Enable **Serverless** for both Namespace regions.
@@ -46,6 +54,61 @@ used by a live version. Retain replica pools for older versions while pinned Wor
 5. Under **Scaling and Lifecycle**, set the instance limits and scaling settings for each pool. Check that the replica
    pool has enough quota and capacity for the workload, then click **Save**.
 6. Confirm that the version shows compute coverage for both regions.
+
+</TabItem>
+<TabItem value="cli" label="Temporal CLI">
+
+Describe the existing version's compute configuration to find its scaling group names:
+
+```bash
+temporal worker deployment version compute-config describe \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1
+```
+
+The following commands use `default` for the existing primary group. If your group has a different name, use that name
+for `--scaling-group`. Replace the Namespace regions with your own.
+
+Scope the primary group to `gcp-us-central1`. Passing only `--region-id` keeps the group's provider and scaling
+settings:
+
+```bash
+temporal worker deployment version compute-config gcp-cloud-run update \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1 \
+  --scaling-group default \
+  --region-id gcp-us-central1
+```
+
+Add a group for the replica region, using the Worker Pool you deployed there:
+
+```bash
+temporal worker deployment version compute-config gcp-cloud-run update \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1 \
+  --scaling-group gcp-us-west1 \
+  --region-id gcp-us-west1 \
+  --project <REPLICA_GCP_PROJECT> \
+  --worker-pool-region us-west1 \
+  --worker-pool <REPLICA_WORKER_POOL> \
+  --service-account <REPLICA_INVOKER_SERVICE_ACCOUNT>
+```
+
+`--scaling-group` names the configuration entry to add or update.
+`--region-id` is the Temporal Namespace region where the group applies, such as `gcp-us-west1`.
+`--worker-pool-region` is the GCP location of the pool, such as `us-west1`.
+
+The new group uses the default Cloud Run scaling settings unless you pass scaler flags. To customize them, pass all
+seven together: `--min-instances`, `--max-instances`, `--initial-instances`, `--utilization-target`,
+`--scale-down-stabilization-ms`, `--scale-up-cooldown-ms`, and `--scale-down-cooldown-ms`.
+
+Run `compute-config describe` again and confirm that both groups have the expected region and provider.
+
+</TabItem>
+</Tabs>
 
 Use pools in separate GCP regions. Assigning two compute configurations to different Namespace regions does not
 protect against a regional outage if both target pools in the same GCP region.
