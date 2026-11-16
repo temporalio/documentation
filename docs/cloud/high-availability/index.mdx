@@ -154,16 +154,15 @@ A few other Temporal features interact with High Availability in ways worth unde
 from the same cloud provider where the Namespace is currently active. After a failover to a different cloud provider,
 Serverless Workers can no longer be invoked. This is a temporary restriction during Public Preview.
 
-You can use Serverless Workers with a Namespace that has Multi-region Replication within the same cloud provider,
-but without manual intervention, the workloads that failed over to the new region will keep invoking Workers in the old
-region. If the compute provider's region is experiencing degraded performance, this may impact your workloads even
-though your Temporal Cloud Namespace has failed over successfully.
+For Multi-region Replication within the same cloud provider, configure regional compute for each Worker Deployment
+Version. After Namespace failover, the [Worker Controller Instance](/serverless-workers#worker-controller-instance)
+selects the compute configuration for the newly active region. A default configuration without regional mappings keeps
+targeting its original compute resource, which can remain unavailable even after the Namespace has recovered.
 
-This is because each compute provider configuration (for example, a Lambda ARN) is scoped to a single region. The
-[Worker Controller Instance](/serverless-workers#worker-controller-instance) has no mechanism to detect a failover or
-redirect invocations to a Worker in the new active region. To keep processing Workflows after a failover, you must
-manually reconfigure the Worker Deployment Version's compute provider to point at a Worker in the new region. See
-[Constraints - Serverless Workers](/serverless-workers#constraints).
+Serverless Workers follow Namespace failover; they cannot fail over independently. Workers already running in the
+original region can continue processing if they can reach the active Namespace and their application dependencies.
+See [Configure high availability for Serverless Workers](/production-deployment/worker-deployments/serverless-workers/high-availability)
+for setup and failover testing.
 
 ### External Storage
 

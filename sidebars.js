@@ -1665,6 +1665,7 @@ module.exports = {
                     'production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup',
                   ],
                 },
+                'production-deployment/worker-deployments/serverless-workers/high-availability',
               ],
             },
           ],
