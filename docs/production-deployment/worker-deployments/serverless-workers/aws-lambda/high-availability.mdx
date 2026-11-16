@@ -1,0 +1,77 @@
+---
+id: high-availability
+title: Configure high availability for Serverless Workers on AWS Lambda
+sidebar_label: High availability
+description: Deploy matching Lambda functions in two AWS regions, configure regional Worker compute, and verify recovery after Temporal Cloud Namespace failover.
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+  - AWS Lambda
+---
+
+Deploy a Lambda function in each of your Temporal Cloud Namespace's regions, then configure both functions on the same
+Worker Deployment Version. After Namespace failover, Temporal can invoke the function configured for the recovery
+region.
+
+For how compute selection and existing Workers behave during failover, see
+[Serverless Workers and High Availability](/serverless-workers#high-availability).
+
+## Before you begin
+
+- Use a Temporal Cloud Namespace with [Multi-region Replication](/cloud/high-availability/enable) between two AWS regions.
+- Complete [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda).
+- Make credentials, databases, external storage, and any Codec Server or network proxy available to Workers in both
+  regions. Check that both functions can reach the Namespace after failover.
+
+## Deploy the recovery function
+
+1. Deploy the same Worker build to a Lambda function in the recovery region. Use the same Worker Deployment name,
+   Build ID, and Task Queues as the original function.
+2. [Publish a Lambda function version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#publish-lambda-version)
+   and record its qualified ARN. Each function must point to an immutable copy of the same Worker build; its Lambda
+   version number can differ between regions.
+3. [Grant Temporal invocation access](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
+   to the recovery function. Check that the invocation role's permissions include the recovery function and its
+   published versions.
+
+Repeat for every Worker Deployment Version that must serve work after failover, including older versions serving
+pinned Workflows. Keep their recovery functions available while those versions serve work.
+
+## Configure both functions
+
+1. In the Temporal Cloud UI, open your Namespace and go to **Workers**.
+2. Open the Worker Deployment Version and edit its compute configuration.
+3. Enable **Serverless** for both Namespace regions.
+4. For each region, enter the qualified ARN of the function deployed there, the invocation role ARN, and the external
+   identifier required by that role.
+5. Review access and scaling settings for both regions. Replace any suggested function ARN that does not match the
+   function you deployed, then save.
+6. Confirm that the version shows compute coverage for both regions.
+
+Use functions in separate AWS regions. Assigning two compute configurations to different Namespace regions does not
+protect against a regional outage if both function ARNs point to the same AWS region.
+
+## Test failover and failback
+
+Use a staging Namespace to verify the configuration:
+
+1. Run a Workflow and confirm in the function logs that the original function processes its Tasks.
+2. [Manually fail over the Namespace](/cloud/high-availability/failovers/manage#trigger-failover).
+3. Let existing invocations of the original function finish. Submit more work and confirm from the function ARN and logs
+   that Temporal invokes the recovery function and Workflows make progress.
+4. Verify that the application can run without the original region's compute or dependencies.
+5. Fail the Namespace back, let remaining recovery-region invocations finish, and submit more work. Confirm that
+   Temporal invokes the original function again.
+
+Healthy invocations in the original region can keep taking Tasks until they exit. Workflow completion alone does not
+prove that the recovery function served the work. Include Workflows pinned to older versions in the test.
+
+## Recover from a Lambda outage
+
+Check [Lambda invocation errors](/troubleshooting/serverless-workers/aws-lambda) and Task Queue backlog. If Lambda is
+unavailable in the active region, verify the recovery function and its dependencies, then
+[manually fail over the Namespace](/cloud/high-availability/failovers#manual-failover) to select that region's function.
+
+A Lambda-only outage does not automatically trigger Temporal Cloud failover. Namespace failover affects all workloads
+in the Namespace, so include your other Workers and Clients in the recovery procedure.

@@ -154,15 +154,14 @@ A few other Temporal features interact with High Availability in ways worth unde
 from the same cloud provider where the Namespace is currently active. After a failover to a different cloud provider,
 Serverless Workers can no longer be invoked. This is a temporary restriction during Public Preview.
 
-For Multi-region Replication within the same cloud provider, configure regional compute for each Worker Deployment
-Version. After Namespace failover, the [Worker Controller Instance](/serverless-workers#worker-controller-instance)
-selects the compute configuration for the newly active region. A default configuration without regional mappings keeps
-targeting its original compute resource, which can remain unavailable even after the Namespace has recovered.
+For Multi-region Replication within the same cloud provider, regional compute configurations let Serverless Workers
+follow Namespace failover. Configure compute for both regions on each Worker Deployment Version that must continue
+serving work. A default configuration without regional mappings keeps targeting its original resource.
 
-Serverless Workers follow Namespace failover; they cannot fail over independently. Workers already running in the
-original region can continue processing if they can reach the active Namespace and their application dependencies.
-See [Configure high availability for Serverless Workers](/production-deployment/worker-deployments/serverless-workers/high-availability)
-for setup and failover testing.
+Serverless Workers cannot fail over independently of the Namespace. Existing Workers can continue processing if they
+can reach the active Namespace and their application dependencies. See
+[Serverless Workers and High Availability](/serverless-workers#high-availability) for compute selection and failover
+behavior, with links to provider setup guides.
 
 ### External Storage
 

@@ -137,6 +137,19 @@ For step-by-step instructions on publishing Lambda versions and configuring the 
 see
 [Publish a Lambda function version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#publish-lambda-version).
 
+## High Availability {/* #high-availability */}
+
+With [regional compute configurations](/serverless-workers#high-availability), each region's Lambda function serves the
+same Worker Deployment Version. After Namespace failover, the WCI invokes the function selected for the newly active
+region. Each function uses a qualified ARN pointing at an immutable copy of the same Worker build.
+
+The WCI does not stop invocations already running in the original region. Healthy invocations can continue polling and
+processing Tasks until they exit, subject to Lambda's 15-minute invocation limit. This overlap can let original-region
+Workers satisfy demand before new invocations are needed in the recovery region.
+
+For setup and a test that verifies which function serves the work, see
+[Configure high availability on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda/high-availability).
+
 ## Lifecycle {/* #lifecycle */}
 
 A single Serverless Worker invocation has three phases: init, work, and shutdown.

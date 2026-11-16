@@ -1,0 +1,77 @@
+---
+id: high-availability
+title: Configure high availability for Serverless Workers on GCP Cloud Run
+sidebar_label: High availability
+description: Deploy matching Cloud Run Worker Pools in two GCP regions, configure regional Worker compute, and test Temporal Cloud Namespace failover.
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+  - GCP Cloud Run
+---
+
+Deploy a Cloud Run Worker Pool in each of your Temporal Cloud Namespace's regions, then configure both pools on the same
+Worker Deployment Version. After Namespace failover, Temporal can scale the pool configured for the recovery region.
+
+For how compute selection and existing Workers behave during failover, see
+[Serverless Workers and High Availability](/serverless-workers#high-availability).
+
+## Before you begin
+
+- Use a Temporal Cloud Namespace with [Multi-region Replication](/cloud/high-availability/enable) between two GCP regions.
+- Complete [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run).
+- Make credentials, databases, external storage, and any Codec Server or network proxy available to Workers in both
+  regions. Check that both pools can reach the Namespace after failover. If you use private connectivity, review
+  [GCP Private Service Connect failover requirements](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect).
+
+## Deploy the recovery Worker Pool
+
+1. [Create a Worker Pool](/production-deployment/worker-deployments/serverless-workers/cloud-run#create-worker-pool)
+   in the recovery region using the same Worker image as the original pool. Use the same Worker Deployment name, Build
+   ID, and Task Queues in both pools.
+2. Configure the recovery pool's runner service account and access to application dependencies.
+3. [Grant Temporal permission to manage the recovery pool](/production-deployment/worker-deployments/serverless-workers/cloud-run#configure-iam).
+   Check that Temporal can impersonate the invoker service account and read and resize the recovery pool.
+
+Keep a separate pool for each Worker Deployment Version in each region. Do not deploy a new Worker build into a pool
+used by a live version. Retain recovery pools for older versions while pinned Workflows still use them.
+
+## Configure both pools
+
+1. In the Temporal Cloud UI, open your Namespace and go to **Workers**.
+2. Open the Worker Deployment Version and edit its compute configuration.
+3. Enable **Serverless** for both Namespace regions.
+4. For each region, enter the project, Worker Pool region and name, and the service account Temporal uses to manage
+   that pool.
+5. Set the instance limits and scaling settings for each pool. Check that the recovery pool has enough quota and
+   capacity for the workload, then save.
+6. Confirm that the version shows compute coverage for both regions.
+
+Use pools in separate GCP regions. Assigning two compute configurations to different Namespace regions does not
+protect against a regional outage if both target pools in the same GCP region.
+
+## Test failover and failback
+
+Use a staging Namespace to verify the configuration:
+
+1. Run a Workflow and confirm in the pool's logs that the original pool processes its Tasks.
+2. [Manually fail over the Namespace](/cloud/high-availability/failovers/manage#trigger-failover).
+3. Confirm that Temporal scales the original pool to zero. Submit more work and verify that Temporal scales up the
+   recovery pool, its Workers start polling, and Workflows make progress.
+4. Check the serving pool's region in Cloud Run logs. Verify that the application can run without the original region's
+   compute or dependencies.
+5. Fail the Namespace back. Confirm that the recovery pool scales to zero and new demand causes Workers in the original
+   pool to process Tasks.
+
+Scaling changes are not immediate, so allow time for controller metrics polls and Cloud Run operations. Workflow
+completion alone does not prove that the recovery pool served the work. Include Workflows pinned to older versions in
+this test.
+
+## Recover from a Cloud Run outage
+
+Check [Worker Pool scaling errors](/troubleshooting/serverless-workers/cloud-run) and Task Queue backlog. If Cloud Run
+is unavailable in the active region, verify the recovery pool and its dependencies, then
+[manually fail over the Namespace](/cloud/high-availability/failovers#manual-failover) to select that region's pool.
+
+A Cloud Run-only outage does not automatically trigger Temporal Cloud failover. Namespace failover affects all
+workloads in the Namespace, so include your other Workers and Clients in the recovery procedure.

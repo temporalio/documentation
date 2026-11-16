@@ -1639,6 +1639,7 @@ module.exports = {
                   items: [
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/local-development',
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
+                    'production-deployment/worker-deployments/serverless-workers/aws-lambda/high-availability',
                   ],
                 },
                 {
@@ -1663,9 +1664,9 @@ module.exports = {
                   },
                   items: [
                     'production-deployment/worker-deployments/serverless-workers/cloud-run/self-hosted-setup',
+                    'production-deployment/worker-deployments/serverless-workers/cloud-run/high-availability',
                   ],
                 },
-                'production-deployment/worker-deployments/serverless-workers/high-availability',
               ],
             },
           ],
