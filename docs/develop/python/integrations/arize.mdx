@@ -55,7 +55,7 @@ Install the Temporal Python SDK with the OpenTelemetry extra, an OTLP/HTTP expor
 conventions, and the OpenInference instrumentation for the LLM SDK you call from Activities.
 
 ```bash
-uv add "temporalio[opentelemetry]>=1.36.0" opentelemetry-exporter-otlp-proto-http \
+uv add "temporalio[opentelemetry]==1.36.0" opentelemetry-exporter-otlp-proto-http \
   openinference-semantic-conventions openinference-instrumentation-openai
 ```
 
@@ -629,10 +629,8 @@ span nests under the previous run's span in the same trace. A reset or a retried
 context, so its `RunWorkflow` span appears as a second child of the same `StartWorkflow` span with its own
 `temporalRunID`. Because the session is the Workflow ID, all of these stay together in one Arize session.
 
-A reset that reapplies an Update or Signal needs `temporalio` 1.36.0 or later. On earlier versions, the reapplied
-handler's span reuses the original `RunWorkflow` span's identifier, so Phoenix drops it and Arize AX shows the
-original run's Activities twice
-([temporalio/sdk-python#2081](https://github.com/temporalio/sdk-python/pull/2081)).
+A reset that reapplies an Update or Signal needs `temporalio` 1.36.0 exactly (as in the install command earlier on
+this page).
 
 ## Resources
 
