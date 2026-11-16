@@ -38,6 +38,8 @@ You maintain all the encryption keys, and the Temporal Server sees only encrypte
 
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control. For details, see [Securing your data](/production-deployment/data-encryption).
 
+Temporal Cloud provides [Payload encryption validation](/cloud/payload-encryption-validation) to check that Payloads sent to Temporal Cloud carry the encryption metadata you configured for the Namespace, and can reject requests that do not.
+
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)

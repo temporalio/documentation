@@ -109,6 +109,7 @@ Workers run in your environment and connect to Temporal Cloud over encrypted cha
 
 The [Data Converter](/dataconversion) encrypts Payloads before they leave your Workers, so Temporal Cloud stores ciphertext and the data stays encrypted even if the service is compromised.
 Deploy a [Codec Server](/production-deployment/data-encryption) to decrypt data in the Web UI without sharing keys with Temporal.
+Temporal Cloud provides [Payload encryption validation](/cloud/payload-encryption-validation) to check that Payloads sent to Temporal Cloud carry the encryption metadata you configured for the Namespace, and can reject requests that do not.
 
 ### Network isolation
 
