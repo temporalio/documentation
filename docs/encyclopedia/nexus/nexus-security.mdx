@@ -2,7 +2,7 @@
 id: nexus-security
 title: Security in Temporal Nexus
 sidebar_label: Nexus Security
-description: Explore the security aspects of Temporal Nexus, including managing Nexus Endpoints, runtime access control, secure routing, and payload encryption to ensure safe and reliable cross-namespace operations.
+description: Nexus Endpoint access controls, mTLS between Namespaces, and payload encryption with per-Endpoint keys selected from the Nexus serialization context.
 toc_max_heading_level: 4
 slug: /nexus/security
 tags:
@@ -55,47 +55,71 @@ If you use a Codec for encryption, it also encrypts Nexus payloads.
 Caller and handler Workers must have compatible Data Converters.
 Payloads are encrypted by the sender (caller encrypts input, handler encrypts result).
 
+### Nexus Serialization Context {/* #nexus-serialization-context */}
+
+When the Data Converter encodes or decodes a Nexus payload, it receives a Nexus serialization context with the Nexus Endpoint name, Service name, and Operation name.
+A Payload Codec, Payload Converter, or Failure Converter that supports serialization context can use these values, for example to select an encryption key for each Endpoint.
+
+The context covers the Operation's own payloads and the payloads that the handler's Workflows, Updates, and Standalone Activities return to the caller:
+
+| Payload | Serialization context |
+| --- | --- |
+| Operation input, synchronous result, and failure | Nexus |
+| Result and closing failure of a Workflow started by the handler | Nexus |
+| Input, Memo, Signals, and Queries of a Workflow started by the handler | Workflow |
+| Result, failure, and rejection of an Update sent by the handler | Nexus |
+| Arguments of an Update sent by the handler | Workflow |
+| Result, failures, and Heartbeat details of a Standalone Activity started by the handler | Nexus |
+| Input of a Standalone Activity started by the handler | Activity |
+
+The Temporal Service stores the context with the Workflow Execution, Update, Standalone Activity, or Standalone Nexus Operation, and returns it to Clients that read results later.
+A handle you get by ID decodes the result with the same context the caller uses.
+
+To complete a Standalone Activity started by a Nexus handler [asynchronously](/activity-execution#asynchronous-activity-completion), read the Nexus serialization context from the Activity info and pass it to the Client that completes the Activity.
+The completing Client only has the Task Token, so it can't get the context any other way.
+
+:::warning Don't share IDs across Endpoints with `USE_EXISTING`
+
+If a Nexus handler uses the `USE_EXISTING` conflict policy and an execution (Workflow or Standalone Activity) with that ID is already running, the handler attaches to it instead of starting a new one.
+The result keeps the context of whatever started that execution.
+If a different Endpoint started it, or it didn't start from a Nexus handler at all, the caller's codec can pick the wrong key and fail to decode the result.
+
+To avoid this, use Workflow IDs and Activity IDs that are unique to each Endpoint, and don't start executions with those IDs outside the handler.
+Standalone Nexus Operations started with `USE_EXISTING` behave the same way.
+
+:::
+
+### Choose a cross-Namespace encryption approach {/* #choose-encryption-approach */}
+
 Three common approaches for cross-Namespace payload encryption:
 
-### Option 1: Same encryption key {/* #same-encryption-key */}
+#### Option 1: Same encryption key {/* #same-encryption-key */}
 
 Both Namespaces share the same encryption key.
-Simplest approach - no additional configuration needed.
+This approach needs no additional configuration.
 
-### Option 2: Pass KMS key ID in payload metadata {/* #kms-key-id-metadata */}
+#### Option 2: Pass KMS key ID in payload metadata {/* #kms-key-id-metadata */}
 
 Each Namespace uses its own encryption key, with the KMS key ID passed in Temporal payload metadata.
 The receiver reads the key ID from metadata and decrypts using KMS IAM permissions.
 
-Works bi-directionally: caller encrypts input with the caller's key, handler decrypts using the key ID from metadata, then encrypts the result with the handler's key.
+This works in both directions: the caller encrypts input with the caller's key, and the handler decrypts using the key ID from metadata, then encrypts the result with the handler's key.
 The Codec Server needs KMS decrypt permissions for all relevant keys.
 
 See the [encryption sample](https://github.com/temporalio/samples-go/blob/main/encryption/data_converter.go) and the [reference-app-orders-go data converter](https://github.com/temporalio/reference-app-orders-go/blob/main/app/temporalutil/data_converter.go).
 
-### Option 3: Wrapper types for endpoint-specific encryption keys {/* #endpoint-specific-keys */}
+#### Option 3: Endpoint-specific encryption keys {/* #endpoint-specific-keys */}
 
-Use wrapper types (for example, `EndpointValue`) so the Data Converter selects an Endpoint-specific encryption key.
-This encrypts only Nexus traffic with a dedicated key, without sharing Namespace keys across teams.
+Use the [Nexus serialization context](#nexus-serialization-context) to select an encryption key for each Nexus Endpoint in your Payload Codec.
+This encrypts Nexus traffic with a dedicated key, without sharing Namespace keys across teams.
+Because Workflows, Updates, and Standalone Activities started by the handler encode their results with the same context, the caller can decode them with the Endpoint's key.
 
-:::warning Limited to string-based operation names
+Record the key ID in payload metadata as well, so the codec can decode payloads that were encoded without context, such as payloads from executions that started before the Temporal Service supported it.
 
-When calling `ExecuteOperation` with a non-string operation (for example, an operation definition or reference), the wrapper changes the input type and `ExecuteOperation` fails type-checking:
+#### Compare the approaches {/* #compare-encryption-approaches */}
 
-```
-cannot assign argument of type "<WrapperType>" to type "<ActualInputType>"
-```
-
-This approach only works when the operation is passed as a string name.
-For typed operations, pass the Nexus endpoint info through the Workflow context instead of the wrapped input.
-
-:::
-
-See the [draft endpoint-based encryption sample](https://github.com/temporalio/samples-go/compare/main...bergundy:samples-go:nexus-encryption-by-endpoint).
-
-### Choosing an approach
-
-Options 1 and 2, where both sides share the same key or flow the KMS key ID in payload metadata, work with the standard Data Converter.
-Option 3 is more advanced and is intended for teams that don't want to share their Namespace encryption keys with other teams.
+Options 1 and 2 work with the standard Data Converter.
+Option 3 needs a Payload Codec that uses serialization context, and is intended for teams that don't want to share their Namespace encryption keys with other teams.
 
 ## Nexus Registry security {/* #managing-nexus-endpoints */}
 
