@@ -7,6 +7,14 @@ same topic again unless its volume roughly doubles. Never put user questions, na
 Signals in this repo's runs also include a "certain but hedged" scan: answers Kapa marked certain whose text still
 hedges ("can't tell with certainty", "recommend reaching out"). Kapa's uncertain flag and Coverage Gaps miss these.
 
+## Server upgrade guide disagrees with the Server team's upgrade playbook
+
+- Decided: 2026-11-16, documented
+- Signal: follow-up to the patch-version topic below; the Server team pointed to its upgrade playbook as current guidance
+- Change: docs/production-deployment/self-hosted-guide/upgrade-server.mdx, PR #5738
+- Why: the guide gave the wrong reason for upgrading one minor at a time, made schema updates conditional, and didn't
+  cover rollback, Multi-Cluster upgrade order, or the PostgreSQL v1.30/v1.31 Visibility rebuild
+
 ## Upgrade guide and production checklist disagree on skipping patch versions
 
 - Decided: 2026-11-12, documented
