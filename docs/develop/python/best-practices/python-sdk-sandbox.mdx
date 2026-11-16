@@ -94,8 +94,8 @@ The `SandboxedWorkflowRunner` init accepts a `restrictions` keyword argument tha
 The [`SandboxRestrictions`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html) dataclass is immutable and contains four fields that can be customized, but only three have notable values.
 
 - [`passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#passthrough_modules)
-- [`invalid_modules_members`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#invalid_module_members)
-- [`import_notification_policy`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#import_notificaton_policy)
+- [`invalid_module_members`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#invalid_module_members)
+- [`import_notification_policy`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html)
 
 ### Passthrough modules
 

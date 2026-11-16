@@ -521,7 +521,7 @@ Either way, the Worker needs the current Event History for this Workflow Executi
 
 <WalkthroughStep title="Replay re-executes the code" kind="replay" phase="History Replay" lines="3-6,8-12">
 
-The Worker begins re-executing the code with the same input, which was stored in the WorkflowExecutionStarted Event. Because the Workflow Definition is deterministic, the state of every variable encountered so far is identical to what it was before the crash. For example, totalPrice holds the same value.
+The Worker begins re-executing the code with the same input, which was stored in the WorkflowExecutionStarted Event. Because the Workflow Definition is deterministic, the state of every variable encountered so far is identical to what it was before the crash. For example, `totalPrice` holds the same value.
 
 </WalkthroughStep>
 
@@ -549,7 +549,7 @@ The Worker reaches the request to start a Timer and creates a StartTimer Command
 
 <WalkthroughStep title="State is restored to the point of the crash" kind="replay" phase="History Replay" lines="27-31">
 
-The Worker has reached the point where the crash occurred, and replaying the code has completely restored the state of the Workflow Execution. Every variable, including totalPrice, holds the value it held before the crash.
+The Worker has reached the point where the crash occurred, and replaying the code has completely restored the state of the Workflow Execution. Every variable, including `totalPrice`, holds the value it held before the crash.
 
 </WalkthroughStep>
 

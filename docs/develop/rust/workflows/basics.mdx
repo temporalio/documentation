@@ -23,9 +23,11 @@ A Workflow is defined by:
 3. An optional `#[init]` method that initializes the Workflow
 4. Optional `#[signal]`, `#[query]`, and `#[update]` methods for external interaction
 
-```rust
+<!--SNIPSTART rust-workflow-basics-definition-->
+[rust-sandbox/workflows/basics/src/definition.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/definition.rs)
+```rs
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{WorkflowResult, WorkflowContextView, WorkflowContext};
+use temporalio_sdk::{WorkflowContext, WorkflowContextView, WorkflowResult};
 
 #[workflow]
 pub struct GreetingWorkflow {
@@ -46,39 +48,48 @@ impl GreetingWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 The `#[workflow]` macro marks the struct as a Workflow. The `#[workflow_methods]` macro is applied to the `impl` block containing the Workflow methods.
 
 ### Workflow struct {/* #workflow-struct */}
 
-The Workflow struct holds the state of your Workflow Execution. This state is persisted and recovered during replays. All fields in a Workflow struct should be serializable.
+The Workflow struct holds the state of your Workflow Execution. The Temporal Service doesn't store this struct. When a Worker needs to rebuild the state, for example after a restart, the SDK creates the struct again and replays the Workflow's Event History against it. Fields don't need to be serializable.
 
 ### Workflow initialization {/* #init-method */}
 
-The `#[init]` method is optional and is called when the Workflow first starts. It receives the initial Workflow input parameters and initializes the Workflow struct:
+The `#[init]` method is optional and is called when the Workflow first starts. It receives the Workflow input and initializes the Workflow struct. Pass several values as one struct:
 
-```rust
+<!--SNIPSTART rust-workflow-basics-init {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/basics/src/init.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/init.rs)
+```rs
 #[init]
-fn new(ctx: &WorkflowContextView, name: String, age: u32) -> Self {
+fn new(ctx: &WorkflowContextView, input: PersonInput) -> Self {
     Self {
-        name,
-        age,
+        name: input.name,
+        age: input.age,
         started_at: ctx.start_time(),
     }
 }
 ```
+<!--SNIPEND-->
 
 The `#[init]` method receives a `WorkflowContextView`, which provides read-only access to Workflow execution information.
 
 #### Use Workflow constructors
 
-Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers). Normally, your Workflows constructor won't have any parameters. However, if you use the `#[init]` annotation on your constructor, you can give it the same [Workflow parameters](/develop/rust/workflows/basics#workflow-parameters) as your `#[run]`.
+Workflow constructors are useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers).
 
-The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/rust/client/temporal-client#start-workflow-execution). The Workflow input arguments are also passed to your `#[run]` method. That always happens, whether or not you use the `#[init]` annotation.
+The SDK passes the Workflow input that the [Client sent](/develop/rust/client/temporal-client#start-workflow-execution) to exactly one method:
 
-Here's an example. Notice that the constructor and `get_greeting` must have the same parameters:
+- If the `#[init]` method takes an input parameter, the SDK passes the input to `#[init]`. Store the values your Workflow needs in the struct, and don't declare an input parameter on `#[run]`. A `#[run]` method that also declares the input fails the Workflow Task.
+- Otherwise, the SDK passes the input to `#[run]`. Without an `#[init]` method, the Workflow struct must implement `Default`.
 
-```rust
+Here's an example. The constructor stores the input in the struct, so the `check_title_validity` Update handler can read it even if the Update arrives before `get_greeting` starts:
+
+<!--SNIPSTART rust-workflow-basics-constructor-->
+[rust-sandbox/workflows/basics/src/constructor.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/constructor.rs)
+```rs
 #[workflow_methods]
 impl WorkflowRunSeesWorkflowInitWorkflow {
     #[init]
@@ -90,18 +101,23 @@ impl WorkflowRunSeesWorkflowInitWorkflow {
     }
 
     #[run]
-    pub async fn get_greeting(
-        ctx: &mut WorkflowContext<Self>,
-        _workflow_input: MyWorkflowInput,
-    ) -> WorkflowResult<String> {
-        ctx.wait_condition(|state| state.title_has_been_checked)
-            .await?;
+    pub async fn get_greeting(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        ctx.wait_condition(|state| state.title_has_been_checked).await?;
 
         let name_with_title = ctx.state(|state| state.name_with_title.clone());
         Ok(format!("Hello, {}", name_with_title))
     }
+
+    #[update]
+    pub fn check_title_validity(&mut self, _ctx: &mut SyncWorkflowContext<Self>) -> bool {
+        // The Update handler reads state that the #[init] method set,
+        // even if the Update arrives before #[run] starts.
+        self.title_has_been_checked = true;
+        self.name_with_title.starts_with("Knight ")
+    }
 }
 ```
+<!--SNIPEND-->
 
 ### Run method {/* #run-method */}
 
@@ -113,10 +129,14 @@ The `#[run]` method is required and contains the main Workflow logic. It:
 - Returns `WorkflowResult<T>` where T is the Workflow return type
 - Executes exactly once per Workflow execution
 
-```rust
+<!--SNIPSTART rust-workflow-basics-run-method {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/basics/src/run_method.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/run_method.rs)
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
-    // Execute activities, timers, child workflows, etc.
+    let name = ctx.state(|s| s.name.clone());
+
+    // Execute Activities, Timers, Child Workflows, and so on.
     let result = ctx
         .execute_activity(
             MyActivities::greet,
@@ -128,14 +148,17 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     Ok(result)
 }
 ```
+<!--SNIPEND-->
 
 ## Define Workflow parameters {/* #workflow-parameters */}
 
-Temporal Workflows may have any number of custom parameters. However, we strongly recommend that structs are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable. For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
+A Rust Workflow takes one input value, which the SDK passes to `#[init]` or `#[run]` after the context parameter. Use a struct as that value, so that you can add fields later without breaking the signature of the Workflow. The input must be serializable. For more reasons, see [Workflow parameters](/workflow-definition#workflow-parameters).
 
-A method annotated with `#[init]` can have any number of parameters. We recommend passing a single struct that contains all the input fields:
+This Workflow takes a single struct that contains all the input fields:
 
-```rust
+<!--SNIPSTART rust-workflow-basics-parameters-->
+[rust-sandbox/workflows/basics/src/parameters.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/parameters.rs)
+```rs
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
@@ -167,6 +190,7 @@ impl ProcessingWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 All Workflow input should be serializable by `serde`.
 
@@ -176,9 +200,11 @@ Workflow return values must also be serializable. Returning results, returning e
 
 The return type of a Workflow is `WorkflowResult<T>` where `T` implements `Serialize`. Success is represented by `Ok(value)` and failure by `Err(...)`:
 
-```rust
+<!--SNIPSTART rust-workflow-basics-return-values {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/basics/src/return_values.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/return_values.rs)
+```rs
 #[run]
-async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult> {
+pub async fn run(_ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult> {
     // Can return a complex result type
     let result = ProcessingResult {
         status: "completed".to_string(),
@@ -188,12 +214,15 @@ async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult
     Ok(result)
 }
 ```
+<!--SNIPEND-->
 
 ## Customize your Workflow Type {/* #workflow-type */}
 
 Workflows have a Type that is referred to as the Workflow name. By default, the Workflow type is the name of the Workflow struct. You can customize it by providing a `name` parameter to the `#[run]` macro:
 
-```rust
+<!--SNIPSTART rust-workflow-basics-custom-type-->
+[rust-sandbox/workflows/basics/src/custom_type.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/custom_type.rs)
+```rs
 #[workflow]
 pub struct GreetingWorkflow {
     name: String,
@@ -201,21 +230,31 @@ pub struct GreetingWorkflow {
 
 #[workflow_methods]
 impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
     #[run(name = "my-custom-workflow")]
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         Ok(ctx.state(|s| format!("Hello, {}!", s.name)))
     }
 }
 ```
+<!--SNIPEND-->
 
 The Workflow Type defaults to the struct name if not specified. For example, this Workflow would have the type `GreetingWorkflow`:
 
-```rust
+<!--SNIPSTART rust-workflow-basics-definition {"selectedLines": ["4-7"]}-->
+[rust-sandbox/workflows/basics/src/definition.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/definition.rs)
+```rs
+// ...
 #[workflow]
 pub struct GreetingWorkflow {
-    // ...
+    name: String,
 }
 ```
+<!--SNIPEND-->
 
 ## Workflow logic requirements {/* #workflow-logic-requirements */}
 
@@ -248,9 +287,9 @@ The Rust SDK provides:
 - `ctx.start_child_workflow()` - Start Child Workflows
 - `ctx.cancelled()` - Wait for Workflow cancellation
 
-```rust
-use std::time::Duration;
-
+<!--SNIPSTART rust-workflow-basics-determinism {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/basics/src/determinism.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/determinism.rs)
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Good - deterministic timer
@@ -273,23 +312,27 @@ pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     Ok("Done".to_string())
 }
 ```
+<!--SNIPEND-->
 
 ## Access Workflow State {/* #workflow-state */}
 
-Use `ctx.state()` for read-only access and `ctx.state_mut()` for mutable access to your Workflow state:
+Use `ctx.state()` for read-only access and `ctx.state_mut()` for mutable access to your Workflow state. Both take a closure that receives a reference to the Workflow struct:
 
-```rust
+<!--SNIPSTART rust-workflow-basics-state {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/basics/src/state.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/state.rs)
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Read-only access
     let name = ctx.state(|s| s.name.clone());
 
-    // Mutable access (for signal handlers or update handlers)
-    // Available in sync methods
+    // Mutable access
+    ctx.state_mut(|s| s.name = format!("{name} (greeted)"));
 
-    Ok(name)
+    Ok(ctx.state(|s| s.name.clone()))
 }
 ```
+<!--SNIPEND-->
 
 In synchronous [`Signal`](/develop/rust/workflows/message-passing#signals) and [`Update`](/develop/rust/workflows/message-passing#updates) handlers, you can mutate state directly via `&mut self`.
 
@@ -297,19 +340,23 @@ In synchronous [`Signal`](/develop/rust/workflows/message-passing#signals) and [
 
 The `#[run]` method must return `WorkflowResult<T>`. This is a type alias for `Result<T, WorkflowTermination>`.
 
-For application failures, construct an `ApplicationFailure` and convert it into `WorkflowTermination`:
+For application failures, construct an `ApplicationFailure` and convert it into `WorkflowTermination` with `.into()`:
 
-```rust
-use temporalio_sdk::ApplicationFailure;
-
+<!--SNIPSTART rust-workflow-basics-failure {"enable_code_dedenting": true}-->
+[rust-sandbox/workflows/basics/src/failure.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/failure.rs)
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
-    if some_validation_fails {
-        return Err(ApplicationFailure::new("validation_failed: Input is invalid").into());
+    let input_is_empty = ctx.state(|s| s.input.is_empty());
+    if input_is_empty {
+        return Err(
+            temporalio_sdk::ApplicationFailure::new("validation_failed: Input is invalid").into(),
+        );
     }
 
     Ok("Success".to_string())
 }
 ```
+<!--SNIPEND-->
 
 Workflow errors will cause the Workflow Execution to fail and the error details will be available to clients.

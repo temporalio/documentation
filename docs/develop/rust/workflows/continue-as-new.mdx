@@ -2,7 +2,7 @@
 id: continue-as-new
 title: Continue-As-New
 sidebar_label: Continue-As-New
-description: Use Temporal's Continue-As-New in Rust to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
+description: Use Temporal's Continue-As-New in Rust to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow ID and fresh parameters.
 toc_max_heading_level: 2
 tags:
   - Workflows
@@ -21,17 +21,19 @@ This page covers the following for Rust developers:
 
 [Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow execution close successfully and creates a new Workflow execution. You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
 
-The new Workflow execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+The new Workflow execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow ID but gets a new Run Id and a fresh Event History.
 It also receives your Workflow's usual parameters.
 
-## Use Continue-As-New with the Rust SDK {/* #how */}
+## Use Continue-As-New {/* #how */}
 
 First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
 This state is typically passed as a parameter or stored in the Workflow struct.
 
 Inside your Workflow, call `ctx.continue_as_new()` and propagate its result:
 
-```rust
+<!--SNIPSTART rust-continue-as-new-basic-->
+[rust-sandbox/workflows/continue-as-new/src/basic.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/continue-as-new/src/basic.rs)
+```rs
 use std::time::Duration;
 
 use temporalio_macros::{workflow, workflow_methods};
@@ -55,18 +57,20 @@ impl GreetingWorkflow {
             )
             .await?;
 
-        println!("{}", greeting);
-
         if name == "Ziggy" {
             Ok(greeting)
         } else {
-            ctx.continue_as_new("New Name".to_string(), ContinueAsNewOptions::default())?;
+            // continue_as_new() always returns an error that ends this run.
+            // Propagate it with `?`. The empty match tells the compiler that
+            // nothing runs after it.
+            match ctx.continue_as_new("Ziggy".to_string(), ContinueAsNewOptions::default())? {}
         }
     }
 }
 ```
+<!--SNIPEND-->
 
-The `ctx.continue_as_new()` method accepts the input to pass to the next Workflow Run.
+The `ctx.continue_as_new()` method accepts the input to pass to the next Workflow Run. It returns `Result<Infallible, WorkflowTermination>` and always returns the `Err` variant, which ends the current run. Propagate it with `?` inside an empty `match`, so the compiler knows the branch doesn't continue.
 
 ## When is it right to Continue-As-New with the Rust SDK? {/* #when */}
 
@@ -78,39 +82,64 @@ Temporal tracks your Workflow's progress against these limits to let you know wh
 
 Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive. Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
 
-For example, if you have an internal value like `test_continue_as_new == True`, this sample takes a variable called `max_history_length` and that can be set to a small value. A helper method in the Workflow impl checks it each time it considers using Continue-as-New:
+This sample takes a `max_history_length` input that a test can set to a small value. A helper method in the Workflow `impl` checks it each time the Workflow considers Continue-as-New. When the Workflow continues, it passes the number of greetings left to the next run:
 
-```rust
+<!--SNIPSTART rust-continue-as-new-test-hook-->
+[rust-sandbox/workflows/continue-as-new/src/test_hook.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/continue-as-new/src/test_hook.rs)
+```rs
+use std::time::Duration;
+
 use serde::{Deserialize, Serialize};
 use temporalio_macros::{workflow, workflow_methods};
-use temporalio_sdk::{WorkflowContext, WorkflowResult};
+use temporalio_sdk::{ActivityOptions, ContinueAsNewOptions, WorkflowContext, WorkflowResult};
+
+use crate::activities::MyActivities;
 
 #[derive(Serialize, Deserialize)]
 pub struct GreetingInput {
     pub name: String,
+    pub greetings_remaining: u32,
     pub max_history_length: u32,
 }
 
-...
+#[workflow]
+#[derive(Default)]
+pub struct RepeatGreetingWorkflow;
 
 #[workflow_methods]
-impl GreetingWorkflow {
+impl RepeatGreetingWorkflow {
     #[run]
     pub async fn run(
         ctx: &mut WorkflowContext<Self>,
         input: GreetingInput,
     ) -> WorkflowResult<String> {
-        // your Workflow code here
+        let mut greetings_remaining = input.greetings_remaining;
 
-        if Self::should_continue_as_new(ctx, input.max_history_length) {
-            // Continue as new
+        while greetings_remaining > 0 {
+            ctx.execute_activity(
+                MyActivities::greet,
+                input.name.clone(),
+                ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+            )
+            .await?;
+            greetings_remaining -= 1;
+
+            if greetings_remaining > 0
+                && Self::should_continue_as_new(ctx, input.max_history_length)
+            {
+                // Pass the state the next run needs.
+                let next_input = GreetingInput {
+                    greetings_remaining,
+                    ..input
+                };
+                match ctx.continue_as_new(next_input, ContinueAsNewOptions::default())? {}
+            }
         }
+
+        Ok(format!("Sent all greetings to {}", input.name))
     }
 
-    fn should_continue_as_new(
-        ctx: &WorkflowContext<Self>,
-        max_history_length: u32,
-    ) -> bool {
+    fn should_continue_as_new(ctx: &WorkflowContext<Self>, max_history_length: u32) -> bool {
         if ctx.continue_as_new_suggested() {
             return true;
         }
@@ -124,6 +153,7 @@ impl GreetingWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 ## Best practices {/* #best-practices */}
 

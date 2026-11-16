@@ -26,7 +26,9 @@ Otherwise, no additional limitations exist on Activity implementations.
 
 To spawn an Activity Execution, use the `execute_activity` operation from within your Workflow Definition.
 
-```ruby
+<!--SNIPSTART ruby-activity-execution-execute-->
+[ruby-sandbox/activities/execution/my_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/execution/my_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
   # Customize the name
   workflow_name :MyDifferentWorkflowName
@@ -40,6 +42,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).

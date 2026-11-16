@@ -17,6 +17,7 @@ repository.
 | Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
 | Agent search endpoint (`/api/retrieve`) | [AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md)           |
 | Feedback endpoint (`/api/feedback`) | [FEEDBACK.md](./readme/FEEDBACK.md)                           |
+| 404 suggested pages          | [NOT-FOUND-SUGGESTIONS.md](./readme/NOT-FOUND-SUGGESTIONS.md)        |
 
 ## Repository overview
 

@@ -28,12 +28,21 @@ To spawn an Activity Execution, use the Workflow context’s Activity execution 
 
 In Rust, Activities are typically executed using `ctx.execute_activity(...)`, which returns a `Future` that can be awaited.
 
-```rust
+<!--SNIPSTART rust-quickstart-workflows {"selectedLines": ["12-35"]}-->
+[rust-sandbox/quickstart/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/workflows.rs)
+```rs
+// ...
 #[workflow_methods]
 impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
     #[run]
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
+
         // Execute an activity
         let greeting = ctx
             .execute_activity(
@@ -44,11 +53,11 @@ impl GreetingWorkflow {
             .await?;
 
         println!("{}", greeting);
-
         Ok(greeting)
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Set the required Activity Timeouts {/* #required-timeout */}
 
@@ -64,7 +73,9 @@ These are configured as part of the Activity options when scheduling the Activit
 - `with_start_to_close_timeout`
 - `with_schedule_to_close_timeout`
 
-```rust
+<!--SNIPSTART rust-activity-execution-schedule-to-close-->
+[rust-sandbox/activities/execution/src/schedule_to_close.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/execution/src/schedule_to_close.rs)
+```rs
 #[workflow_methods]
 impl GreetingWorkflow {
     #[init]
@@ -89,6 +100,7 @@ impl GreetingWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Get the results of an Activity Execution {/* #get-activity-results */}
 
@@ -103,12 +115,21 @@ In Rust, calling `.await` on the Activity invocation returns the result. If you 
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
-```rust
+<!--SNIPSTART rust-quickstart-workflows {"selectedLines": ["12-35"]}-->
+[rust-sandbox/quickstart/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/workflows.rs)
+```rs
+// ...
 #[workflow_methods]
 impl GreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
+
     #[run]
     pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
         let name = ctx.state(|s| s.name.clone());
+
         // Execute an activity
         let greeting = ctx
             .execute_activity(
@@ -123,33 +144,56 @@ impl GreetingWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 For concurrent execution:
 
-```rust
+<!--SNIPSTART rust-activity-execution-concurrent-->
+[rust-sandbox/activities/execution/src/concurrent.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/execution/src/concurrent.rs)
+```rs
+use std::time::Duration;
+
+use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::workflows::join;
+use temporalio_sdk::{ActivityOptions, WorkflowContext, WorkflowContextView, WorkflowResult};
 
-#[run]
-pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
-    let name = ctx.state(|s| s.name.clone());
-    // Execute an activity
-    let greeting = ctx.execute_activity(
-        MyActivities::greet,
-        name,
-        ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
-    );
+use crate::activities::{ActivityLanguages, MyActivities};
 
-    let language = ctx.execute_activity(
-        MyActivities::call_greeting_service,
-        ActivityLanguages::English,
-        ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
-    );
+#[workflow]
+pub struct ConcurrentGreetingWorkflow {
+    name: String,
+}
 
-    // Run in parallel
-    let (greeting_res, language_res) = join!(greeting, language);
+#[workflow_methods]
+impl ConcurrentGreetingWorkflow {
+    #[init]
+    fn new(_ctx: &WorkflowContextView, name: String) -> Self {
+        Self { name }
+    }
 
-    Ok(format!("{} ({})", greeting_res?, language_res?))
+    #[run]
+    pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
+        let name = ctx.state(|s| s.name.clone());
+        // Start both Activities without awaiting them yet
+        let greeting = ctx.execute_activity(
+            MyActivities::greet,
+            name,
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+        );
+
+        let language = ctx.execute_activity(
+            MyActivities::call_greeting_service,
+            ActivityLanguages::English,
+            ActivityOptions::start_to_close_timeout(Duration::from_secs(30)),
+        );
+
+        // Run in parallel
+        let (greeting_res, language_res) = join!(greeting, language);
+
+        Ok(format!("{} ({})", greeting_res?, language_res?))
+    }
 }
 ```
+<!--SNIPEND-->
 
 Use direct `.await` in most cases. More advanced patterns, like parallel execution or cancellation, can be built using Rust’s async primitives.

@@ -31,11 +31,14 @@ tokio = { version = "1", features = ["full"] }
 A Worker needs a `Runtime` and a connected [Temporal Client](/develop/rust/client/temporal-client).
 Build `WorkerOptions` with the Task Queue to poll, register the Workflows and Activities the Worker can execute, then call `run()`:
 
-```rust
+<!--SNIPSTART rust-worker-process-run-worker-->
+[rust-sandbox/workers/worker-process/src/bin/worker.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/worker-process/src/bin/worker.rs)
+```rs
 use std::str::FromStr;
 
 use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, Url};
 use temporalio_sdk::{Runtime, Worker, WorkerOptions};
+use worker_process::{activities::GreetingActivities, workflows::GreetingWorkflow};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -57,6 +60,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 `run()` polls until the Worker shuts down.
 `ClientOptions::new()` takes the Namespace, and `Connection::connect()` takes the server address.
@@ -70,13 +74,16 @@ A Worker that receives a Task for a type it did not register fails that Task.
 Register each Workflow with `register_workflow::<T>()` and each Activity implementer with `register_activities()`.
 `register_workflow` returns a `Result`, so it needs `?` or other error handling:
 
-```rust
+<!--SNIPSTART rust-worker-process-register {"enable_code_dedenting": true}-->
+[rust-sandbox/workers/worker-process/src/registration.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/worker-process/src/registration.rs)
+```rs
 let worker_options = WorkerOptions::new("my-task-queue")
     .register_workflow::<GreetingWorkflow>()?
     .register_workflow::<OrderWorkflow>()?
     .register_activities(GreetingActivities)
     .build();
 ```
+<!--SNIPEND-->
 
 `register_activities()` takes an instance, so Activities can share state such as a database client through the fields of that value.
 
@@ -97,30 +104,38 @@ To tune these values against real load, see [Worker performance](/develop/worker
 
 Set a Worker Deployment Version and enable versioning in `deployment_options`, then set the default versioning behavior for the Workflows on the Worker.
 
-```rust
+<!--SNIPSTART rust-worker-process-versioned-->
+[rust-sandbox/workers/worker-process/src/versioned.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/worker-process/src/versioned.rs)
+```rs
 use temporalio_common::worker::{
     VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
 };
 
-let worker_options = WorkerOptions::new("my-task-queue")
-    .deployment_options(
-        WorkerDeploymentOptions::new(
-            WorkerDeploymentVersion::builder()
-                .deployment_name("my-app")
-                .build_id("1.0")
-                .build(),
+/// Worker options for a versioned Worker that pins its Workflows to Build ID 1.0.
+pub fn versioned_worker_options() -> Result<WorkerOptions, Box<dyn Error>> {
+    let worker_options = WorkerOptions::new("my-task-queue")
+        .deployment_options(
+            WorkerDeploymentOptions::new(
+                WorkerDeploymentVersion::builder()
+                    .deployment_name("my-app")
+                    .build_id("1.0")
+                    .build(),
+            )
+            .use_worker_versioning(true)
+            .default_versioning_behavior(VersioningBehavior::Pinned)
+            .build(),
         )
-        .use_worker_versioning(true)
-        .default_versioning_behavior(VersioningBehavior::Pinned)
-        .build(),
-    )
-    .register_workflow::<GreetingWorkflow>()?
-    .register_activities(GreetingActivities)
-    .build();
+        .register_workflow::<GreetingWorkflow>()?
+        .register_activities(GreetingActivities)
+        .build();
+
+    Ok(worker_options)
+}
 ```
+<!--SNIPEND-->
 
 The Rust SDK sets the versioning behavior on the Worker, not per Workflow, so `default_versioning_behavior` covers every Workflow the Worker registers.
-Setting it to `VersioningBehavior::Unspecified` is an error at startup.
+If you set `default_versioning_behavior` without `use_worker_versioning(true)`, `Worker::new()` returns an error.
 
 See [Worker Versioning](/worker-versioning) for the available versioning behaviors and how new versions roll out.
 
@@ -129,16 +144,21 @@ See [Worker Versioning](/worker-versioning) for the available versioning behavio
 `run()` borrows the Worker mutably, so call `shutdown_handle()` before starting the Worker.
 Calling the handle it returns initiates shutdown, which stops polling for new Tasks and lets in-flight Tasks finish.
 
-```rust
+<!--SNIPSTART rust-worker-process-shutdown {"enable_code_dedenting": true}-->
+[rust-sandbox/workers/worker-process/src/shutdown.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/worker-process/src/shutdown.rs)
+```rs
 let mut worker = Worker::new(&runtime, client, worker_options)?;
 let shutdown = worker.shutdown_handle();
 
 tokio::spawn(async move {
-    tokio::signal::ctrl_c().await.expect("failed to listen for ctrl-c");
+    tokio::signal::ctrl_c()
+        .await
+        .expect("failed to listen for ctrl-c");
     shutdown();
 });
 
 worker.run().await?;
 ```
+<!--SNIPEND-->
 
 See [Worker shutdown](/encyclopedia/workers/worker-shutdown) for what happens to in-flight Workflow Tasks and Activities.

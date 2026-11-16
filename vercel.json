@@ -7,6 +7,12 @@
     "api/retrieve.js": {
       "maxDuration": 15
     },
+    "api/not-found.js": {
+      "maxDuration": 10
+    },
+    "api/markdown-not-found.js": {
+      "maxDuration": 10
+    },
     "api/feedback.js": {
       "maxDuration": 10
     },
@@ -39,6 +45,10 @@
         }
       ],
       "destination": "/api/markdown-not-found"
+    },
+    {
+      "source": "/:path((?!api/)[^.]*)",
+      "destination": "/api/not-found"
     }
   ],
   "headers": [
@@ -71,6 +81,11 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/develop/rust/data-handling/external-storage",
+      "destination": "/develop/rust/best-practices/data-handling/external-storage",
+      "permanent": true
+    },
     {
       "source": "/:path*/null",
       "destination": "/:path*",

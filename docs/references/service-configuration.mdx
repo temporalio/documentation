@@ -442,6 +442,10 @@ clusterMetadata:
   Only the primary cluster can register or update Namespaces. Any cluster can fail over a Namespace.
 - `clusterInformation`: A map of cluster names to cluster definitions.
   The local cluster's name must match `currentClusterName`.
+  In Temporal Server v1.14 and later, list only the local cluster here.
+  Register remote clusters with [`temporal operator cluster upsert`](/cli/command-reference/operator#upsert).
+  Because each cluster lists only itself, `masterClusterName` can differ between clusters.
+  See [How to set up Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#set-up-multi-cluster-replication).
   Each definition supports the following settings:
   - `enabled`: Boolean. Enables replication with this cluster.
   - `initialFailoverVersion`: The cluster's starting failover version.
