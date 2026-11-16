@@ -4304,10 +4304,10 @@
     xdg-app-paths "5"
     zod "4.1.11"
 
-"@vercel/cli-config@0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@vercel/cli-config/-/cli-config-0.3.4.tgz#3e3a85193c6795c3cdd26657eac2375a37779a66"
-  integrity sha512-lkAn8NEC2I1EKN/Ni0M8b/VwWVMzZEcaF7lzT/B5NF51+5vPUx8bEkZGYqWmMUCVO2HFUyWCcX2pZlRDPrUsKQ==
+"@vercel/cli-config@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@vercel/cli-config/-/cli-config-0.3.5.tgz#28f0852cd49e4ca31fe025cac078f4d39c4608cb"
+  integrity sha512-O7y3EFzHENSLtE/3fjM3vIRqDpFFhZor2dMcZaND4G1d88gQk9u8yBcZhRR9CKnBowgzXdl0qcXkuINI05I72w==
   dependencies:
     xdg-app-paths "5"
     zod "4.1.11"
@@ -4319,19 +4319,19 @@
   dependencies:
     execa "5.1.1"
 
-"@vercel/functions@^3.10.4":
-  version "3.10.4"
-  resolved "https://registry.yarnpkg.com/@vercel/functions/-/functions-3.10.4.tgz#de4fb0505e3d2d728ac16e93bbaa8958671177be"
-  integrity sha512-4L74Vs/EYrEfLUKeAmKnlDFTvqqxb2KKKB15zIbc947DdFkq0j+wHxz3I5dHvlrhqfe2/n6U5A93ZTDNbmNVUA==
+"@vercel/functions@^3.10.5":
+  version "3.10.5"
+  resolved "https://registry.yarnpkg.com/@vercel/functions/-/functions-3.10.5.tgz#7dd4426cf0de5ad21148782a9a0e3970a5cda962"
+  integrity sha512-IDqsDlIbVjWk5zoV63N41vKSShH3LgJ8Y5gAQc+dq7HEkHRrVh3naJ/klZxit4B8G+8WEK7ezb/tkOU2g3UViw==
   dependencies:
-    "@vercel/oidc" "4.0.4"
+    "@vercel/oidc" "4.0.5"
 
-"@vercel/oidc@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@vercel/oidc/-/oidc-4.0.4.tgz#5c12603c055ad8d4cbd68a83f0f8f2b1811f33cb"
-  integrity sha512-cWw+jlAXo7vFHU338hbmPdKOsU0SZflRr1+yfPkar8COC9VEm1qyBWxmfxpbuyhAytp0P2OIa5qUzeWGQ4PvkA==
+"@vercel/oidc@4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@vercel/oidc/-/oidc-4.0.5.tgz#b7e19b9194059946d9044189545973f04a4133ab"
+  integrity sha512-E+duTxv0W8r3qNCGUYxTLt0V0BlLUlrEqxYOu2OoFubIbxwGjwm4wofache+YgU6Sr0MwoAA/vsSrrNrrWjimw==
   dependencies:
-    "@vercel/cli-config" "0.3.4"
+    "@vercel/cli-config" "0.3.5"
     "@vercel/cli-exec" "1.0.1"
     jose "^5.9.6"
 
