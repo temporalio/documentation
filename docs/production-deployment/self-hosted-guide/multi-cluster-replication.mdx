@@ -620,5 +620,5 @@ temporal operator cluster remove \
 
 ## How to upgrade Temporal Server with Multi-Cluster Replication
 
-Upgrade the passive Temporal Service before the active one, and don't fail over a Global Namespace while an upgrade is
-in progress. See [Upgrade with Multi-Cluster Replication](/self-hosted-guide/upgrade-server#upgrade-with-multi-cluster-replication).
+When one Temporal Service is active for every Global Namespace, upgrade the passive Temporal Service before the active
+one. Don't fail over a Global Namespace while an upgrade is in progress. See [Upgrade with Multi-Cluster Replication](/self-hosted-guide/upgrade-server#upgrade-with-multi-cluster-replication).

@@ -247,17 +247,18 @@ your MySQL version first, and then run `temporal-sql-tool` with the `mysql8` plu
 ### Verify the upgrade
 
 After each service's rollout, and again when the upgrade is complete, confirm that these
-[Temporal Service metrics](/references/service-metrics) settle:
+[Temporal Service metrics](/references/service-metrics) settle. For counters, check the recent rate of increase, not
+the cumulative value, which stays above zero after a recovery.
 
-| Metric                                                                  | Healthy after the rollout                                                         |
-| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `numshards_gauge`                                                       | Back to the full Shard count and steady                                           |
-| `service_errors_shard_ownership_lost`                                   | A brief spike during the rollout, then near zero                                  |
-| [`service_latency`](/references/service-metrics#service_latency)       | Back to the pre-upgrade baseline                                                  |
-| `service_errors_resource_exhausted`                                     | Near zero. A rise means the Temporal Service is throttling requests.                             |
-| [`persistence_errors`](/references/service-metrics#persistence_errors) | Near zero                                                                         |
-| `task_schedule_to_start_latency`                                        | Back to the pre-upgrade baseline                                                  |
-| [`no_poller_tasks`](/references/service-metrics#no_poller_tasks)       | Zero on active Task Queues. A nonzero value means Workers haven't reconnected.    |
+| Metric                                                                  | Type      | Healthy after the rollout                                                       |
+| ----------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------- |
+| `numshards_gauge`                                                       | Gauge     | Back to the full Shard count and steady                                         |
+| `service_errors_shard_ownership_lost`                                   | Counter   | Rate spikes briefly during the rollout, then drops to near zero                 |
+| [`service_latency`](/references/service-metrics#service_latency)       | Histogram | Back to the pre-upgrade baseline                                                |
+| `service_errors_resource_exhausted`                                     | Counter   | Rate near zero. A rising rate means the Temporal Service is throttling requests. |
+| [`persistence_errors`](/references/service-metrics#persistence_errors) | Counter   | Rate near zero                                                                  |
+| `task_schedule_to_start_latency`                                        | Histogram | Back to the pre-upgrade baseline                                                |
+| [`no_poller_tasks`](/references/service-metrics#no_poller_tasks)       | Counter   | Rate zero on active Task Queues. A rising rate means Workers haven't reconnected. |
 
 If any of these stays high, pause the rollout and investigate before you restart more instances. Don't start the
 next version on your path until they settle.
@@ -282,6 +283,10 @@ older version doesn't recognize and drops, so keep the receiver at least as new 
 1. Upgrade the passive Temporal Service: schemas, then binary.
 2. Wait for replication lag to return to normal.
 3. Upgrade the active Temporal Service: schemas, then binary.
+
+This order assumes one Temporal Service is active for every Global Namespace. Active and passive are set per Global
+Namespace, so if your Global Namespaces are active on different Temporal Services, replication runs in both directions
+and neither order keeps every receiver at least as new as its sender.
 
 The Temporal Server doesn't enforce this order. Don't fail over or hand over a Global Namespace while an upgrade is in
 progress.
