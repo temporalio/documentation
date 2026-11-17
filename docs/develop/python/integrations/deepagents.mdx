@@ -89,8 +89,6 @@ class HelloWorldAgent:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -194,8 +192,6 @@ async def get_weather(city: str) -> str:
     """Return the current weather for a city."""
     # A real implementation would call a weather API here; this is a stand-in.
     return f"It is sunny and 22C in {city}."
-
-
 ```
 <!--SNIPEND-->
 
@@ -237,8 +233,6 @@ class ReactAgent:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -288,8 +282,6 @@ class FilesystemAgent:
             {"messages": [{"role": "user", "content": instruction}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -330,8 +322,6 @@ class SubagentsWorkflow:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -421,8 +411,6 @@ class HumanInTheLoopAgent:
         # `Command(resume=...)` are allowed.
         if decision not in ("approve", "reject"):
             raise ValueError('decision must be "approve" or "reject"')
-
-
 ```
 <!--SNIPEND-->
 
@@ -479,8 +467,6 @@ class LongResearchAgent:
             state_snapshot=state_snapshot,
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -520,8 +506,6 @@ class StreamingWorkflow:
         async for chunk in model.astream([HumanMessage(content=prompt)]):
             parts.append(str(chunk.content))
         return "".join(parts)
-
-
 ```
 <!--SNIPEND-->
 
@@ -552,8 +536,6 @@ class TracedAgent:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 

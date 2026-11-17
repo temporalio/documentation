@@ -9,7 +9,7 @@ tags:
   - High Availability
 ---
 
-import { ToolTipTerm, CaptionedImage } from '@site/src/components';
+import { ToolTipTerm, CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
 Temporal keeps your Workflows running even when a Worker crashes. But what happens when a whole data center crashes? Or a region?
 
@@ -21,15 +21,6 @@ This extra availability comes with an enhanced [SLA](https://temporal.io/sla).
 :::tip White paper
 
 For an in-depth guide covering everything from why you need High Availability to setting it up in production and advanced options, read the [High Availability White Paper](https://temporal.io/pages/high-availability-white-paper).
-
-:::
-
-:::caution GCP capacity restriction
-
-Before creating a GCP Namespace or adding a GCP replica, check [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for regional availability and exception requirements.
-
-Replicas in restricted GCP regions must be added manually by Temporal, even with an approved account exception.
-See [Enable and manage High Availability](/cloud/high-availability/enable) for how to request a replica.
 
 :::
 

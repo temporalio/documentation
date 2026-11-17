@@ -146,6 +146,7 @@ const developDotnetCategory = {
             items: [
               'develop/dotnet/best-practices/data-handling/data-conversion',
               'develop/dotnet/best-practices/data-handling/data-encryption',
+              'develop/dotnet/best-practices/data-handling/external-storage',
             ],
           },
         ],
@@ -1424,6 +1425,7 @@ module.exports = {
           items: [
             'cloud/connectivity/aws-connectivity',
             'cloud/connectivity/gcp-connectivity',
+            'cloud/connectivity/azure-connectivity',
             'cloud/connectivity/ip-addresses',
           ],
         },
@@ -1531,6 +1533,7 @@ module.exports = {
         },
         'cloud/capacity-modes',
         'cloud/operation-api',
+        'cloud/deprecation-policy',
         'cloud/rpo-rto',
         'cloud/projects',
         'cloud/payload-encryption-validation',

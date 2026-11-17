@@ -99,6 +99,15 @@
     "href": "/develop/python/integrations/deepagents"
   },
   {
+    "name": "Future AGI",
+    "description": "Trace Temporal Workflows, Activity retries, and the LLM and tool calls inside them with Future AGI.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "https://docs.futureagi.com/docs/integrations/frameworks/temporal/"
+  },
+  {
     "name": "Google ADK",
     "description": "Run Google ADK agents as durable Temporal Workflows.",
     "tags": [

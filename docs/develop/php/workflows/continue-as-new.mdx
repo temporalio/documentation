@@ -11,8 +11,6 @@ tags:
   - Temporal SDKs
 ---
 
-import { ViewSourceCodeNotice } from '@site/src/components';
-
 This page covers the following for PHP developers:
 
 - [What is Continue-As-New?](#what)
@@ -28,40 +26,76 @@ You can think of it as a checkpoint when your Workflow gets too long or approach
 The new Workflow Execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
 It also receives your Workflow's usual parameters.
 
-## Use Continue-As-New with the PHP SDK {/* #how */}
+## Use Continue-As-New {/* #how */}
 
 First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
-This state is typically set to `None` for the original caller of the Workflow.
+This state is typically set to `null` for the original caller of the Workflow.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/samples-php/blob/master/app/src/SafeMessageHandlers/MessageHandlerWorkflowInterface.php" />
+<!--SNIPSTART php-continue-as-new-input-->
+[php-sandbox/workflows/continue-as-new/ClusterManagerInput.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/continue-as-new/ClusterManagerInput.php)
 ```php
-final class ClusterManagerInput {
+<?php
+declare(strict_types=1);
+
+namespace App\Workflows\ContinueAsNew;
+
+final class ClusterManagerInput
+{
     public function __construct(
         public ?ClusterManagerState $state = null,
         public bool $testContinueAsNew = false,
     ) {}
 }
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART php-continue-as-new-interface-->
+[php-sandbox/workflows/continue-as-new/MessageHandlerWorkflowInterface.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/continue-as-new/MessageHandlerWorkflowInterface.php)
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Workflows\ContinueAsNew;
+
+use Temporal\Workflow;
 
 #[Workflow\WorkflowInterface]
 interface MessageHandlerWorkflowInterface
 {
-#[Workflow\WorkflowMethod]
-public function run(ClusterManagerInput $input);
-}
+    #[Workflow\WorkflowMethod]
+    #[Workflow\ReturnType('int')]
+    public function run(ClusterManagerInput $input);
 
-````
+    #[Workflow\SignalMethod]
+    public function startCluster(): void;
+
+    #[Workflow\SignalMethod]
+    public function shutdownCluster(): void;
+
+    #[Workflow\UpdateMethod]
+    public function assignNodesToJob(string $jobName, int $numNodes);
+
+    #[Workflow\QueryMethod]
+    public function getState(): ClusterManagerState;
+}
+```
+<!--SNIPEND-->
+
 The test hook in the above snippet is covered [below](#how-to-test).
 
-Inside your Workflow, call the [`continueAsNew()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_continueAsNew) function with the same type.
+Inside your Workflow, call the [`continueAsNew()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_continueAsNew) function with the same type, and `return yield` its result.
 This stops the Workflow right away and starts a new one.
+Without `return yield`, the Workflow method keeps running after the call.
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/samples-php/blob/master/app/src/SafeMessageHandlers/MessageHandlerWorkflow.php" />
+<!--SNIPSTART php-continue-as-new-call {"enable_code_dedenting": true}-->
+[php-sandbox/workflows/continue-as-new/MessageHandlerWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/continue-as-new/MessageHandlerWorkflow.php)
 ```php
-Workflow::continueAsNew(
+return yield Workflow::continueAsNew(
     Workflow::getInfo()->type->name,
     [new ClusterManagerInput($this->state, $input->testContinueAsNew)],
 );
-````
+```
+<!--SNIPEND-->
 
 ### Considerations for Workflows with message handlers {/* #with-message-handlers */}
 
@@ -84,8 +118,8 @@ Instead, add a test hook to check your Workflow's Continue-as-New behavior faste
 For example, when `testContinueAsNew == true`, this sample creates a test-only variable called `$this->maxHistoryLength` and sets it to a small value.
 A helper method in the Workflow checks it each time it considers using Continue-as-New:
 
-<ViewSourceCodeNotice href="https://github.com/temporalio/samples-php/blob/master/app/src/SafeMessageHandlers/MessageHandlerWorkflow.php" />
-
+<!--SNIPSTART php-continue-as-new-should-continue-as-new {"enable_code_dedenting": true}-->
+[php-sandbox/workflows/continue-as-new/MessageHandlerWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/continue-as-new/MessageHandlerWorkflow.php)
 ```php
 private function shouldContinueAsNew(): bool
 {
@@ -101,3 +135,4 @@ private function shouldContinueAsNew(): bool
     return false;
 }
 ```
+<!--SNIPEND-->
