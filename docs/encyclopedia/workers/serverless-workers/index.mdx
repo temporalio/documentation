@@ -61,12 +61,15 @@ agent the knowledge to write, package, deploy, and troubleshoot Serverless Worke
 ### Worker Deployment Versions {/* #worker-deployment-versions */}
 
 A **Worker Deployment Version** represents one build of your Workers within a Worker Deployment. The Worker Deployment
-name and Build ID identify the version within a Namespace. Multiple Workers can use the same version and poll multiple
-Task Queues, including from different compute regions, while running the same Worker build.
+name and Build ID identify the version within a Namespace.
+
+Configure each Worker with its Task Queue, Worker Deployment name, and Build ID. When the Worker polls, Temporal
+associates that Task Queue with the Worker Deployment Version. Other Workers using the same version can poll the same
+queue or additional queues. All Workers in the version run the same Worker build.
 
 Temporal tracks information associated with each version:
 
-- **Task Queues:** the queues its Workers poll.
+- **Task Queues:** the queues registered when its Workers poll.
 - **Rollout status:** whether it is the Current or Ramping Version and its ramp percentage.
 - **Drainage status:** whether open pinned Workflows still need the version.
 - **Metadata and timestamps:** user-provided information, creation time, and routing changes.
