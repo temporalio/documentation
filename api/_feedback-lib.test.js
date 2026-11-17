@@ -77,6 +77,19 @@ describe('agent reports', () => {
     assert.match(parse({}, 'GET').error, /title/);
   });
 
+  it('rejects a title or message that is only a placeholder', () => {
+    assert.match(parse({ title: '...', message: 'Real text' }, 'GET').error, /title is a placeholder/);
+    assert.match(parse({ title: 'Real text', message: '…' }).error, /message is a placeholder/);
+    assert.match(parse({ title: '<summary>', message: 'Real text' }).error, /title is a placeholder/);
+    assert.match(parse({ title: 'Real text', message: '<what-happened>' }).error, /message is a placeholder/);
+    assert.match(parse({ title: '- - -', message: 'Real text' }).error, /title is a placeholder/);
+  });
+
+  it('accepts short text with a letter or digit, in any script', () => {
+    assert.strictEqual(parse({ title: '404', message: 'x' }).kind, 'report');
+    assert.strictEqual(parse({ title: 'ドキュメント', message: '<b>bold</b> renders as text' }).kind, 'report');
+  });
+
   it('rejects text over its limit instead of cutting it', () => {
     assert.match(parse({ title: 't', message: 'm'.repeat(2001) }).error, /message is 2001 characters/);
   });

@@ -266,7 +266,8 @@ To get started, focus on these key Worker options:
   overhead but consume more memory. Refer to [Workflow Cache Tuning](/develop/worker-performance/workflow-cache)
   for more details.
 - **Poller counts**: Controls the number of pollers for Tasks. We recommend you use the Poller Autoscaling feature to
-  automatically adjust the number of pollers based on your workload. Refer to
+  automatically adjust the number of pollers based on your workload. Temporal Cloud is enabling Poller Autoscaling by
+  default for Workers on supported SDK versions that leave their poller options unset. Refer to
   [Configuring Poller Options](/develop/worker-performance/configuration#configuring-poller-options) for more details.
 
 Use the metrics listed in [Interpret metrics as a whole](#interpret-metrics-as-a-whole) to guide your tuning decisions.
@@ -291,8 +292,9 @@ metrics:
   It's also possible your Workers are blocked on Activities. Refer to
   [Troubleshooting - Depletion of Activity Task Slots](/troubleshooting/performance-bottlenecks#depletion-of-temporal_worker_task_slots_available-for-activityworker)
   for guidance.
-- High Schedule-to-Start latency and low CPU/memory: Workers are underutilized. Increase the number of pollers, executor
-  slots, or both. If this is accompanied by high `temporal_long_request_latency` or `temporal_long_request_failure`,
+- High Schedule-to-Start latency and low CPU/memory: Workers are underutilized. Increase executor slots. If your Workers
+  use fixed poller counts, also increase the number of pollers. If they use Poller Autoscaling, check for a Task Queue
+  rate limit, which additional pollers can't get past. If this is accompanied by high `temporal_long_request_latency` or `temporal_long_request_failure`,
   your Workers are struggling to reach the Temporal Service. Refer to
   [Troubleshooting - Long Request Latency](/troubleshooting/performance-bottlenecks#high-temporal_long_request_failure)
   for guidance.
