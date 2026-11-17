@@ -27,14 +27,14 @@ For the regions you can run in, see [Service regions](/evaluate/cloud/regions); 
 | Measure                                                 | Applies to                                                                                                                                      | Target                                                | Type            |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | --------------- |
 | [Availability](https://temporal.io/sla)                 | Covered APIs, per Namespace                                                                                                                     | See the [Temporal Cloud SLA](https://temporal.io/sla) | Contractual SLA |
-| [Availability](#uptime)                                 | All Namespaces                                                                                                                                  | 99.99%                                                | SLO             |
+| [Availability](#availability)                           | All Namespaces                                                                                                                                  | 99.99%                                                | SLO             |
 | [Latency](#latency)                                     | Worker requests, p99 per region                                                                                                                 | 200ms                                                 | SLO             |
 | [Visibility API availability](#visibility-availability) | List and Count requests, rolling 30-day window                                                                                                  | 99.5%                                                 | SLO             |
 | [Cloud Ops API availability](/ops#availability)         | HTTP and gRPC requests, monthly                                                                                                                 | 99.99%                                                | SLO             |
 | [Recovery Time Objective (RTO)](/cloud/rpo-rto)         | Namespaces using High Availability with automatic failover, for the [outage types their replication covers](/cloud/rpo-rto#rto-and-rpo-summary) | Under 20 minutes                                      | Objective       |
 | [Recovery Point Objective (RPO)](/cloud/rpo-rto)        | Namespaces using High Availability with automatic failover, for the [outage types their replication covers](/cloud/rpo-rto#rto-and-rpo-summary) | Under 1 minute                                        | Objective       |
 
-## Availability {/* #uptime */}
+## Availability {/* #availability */}
 
 Temporal Cloud operates every Namespace to a 99.99% [service availability](https://en.wikipedia.org/wiki/Reliability,_availability_and_serviceability) objective, whether or not the Namespace uses [High Availability](/cloud/high-availability).
 
@@ -46,7 +46,7 @@ Temporal Cloud runs a cell architecture.
 Each cell holds the software and services needed to host a Namespace, and the components in a cell are distributed across at least three availability zones per region.
 For how Temporal Cloud handles each type of outage, see [Outages and Recovery Objectives](/cloud/rpo-rto).
 
-### Measured availability {/* #historical-uptime-data */}
+### Measured availability {/* #measured-availability */}
 
 Measured monthly availability across all Temporal Cloud Namespaces was as follows:
 
