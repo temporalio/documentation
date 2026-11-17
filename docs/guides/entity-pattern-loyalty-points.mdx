@@ -43,8 +43,8 @@ This guide requires Python, a Temporal Worker, and either a local development se
 
 ### Required software and infrastructure
 
-- Python 3.9 or later
-- Temporal Python SDK (`temporalio`) version 1.7.0 or later (required for `@workflow.init`, `workflow.all_handlers_finished`, and Workflow Updates)
+- Python 3.10 or later
+- Temporal Python SDK (`temporalio`) version 1.7.0 or later (required for `@workflow.init`, `workflow.all_handlers_finished`, and Workflow Updates). The optional Worker Versioning step needs version 1.11.0 or later.
 - A running Temporal Server, either via the [Temporal CLI](/cli) for local development or [Temporal Cloud](https://temporal.io/cloud) for production
 - `pip` or `uv` for Python dependency management
 
@@ -66,7 +66,7 @@ You should be familiar with the following before proceeding:
 
 Before implementing this pattern, keep the following constraints in mind:
 
-**Event History limits.** Temporal enforces a hard limit of 51,200 Events and 50 MB per Workflow Execution, with warnings starting around 10,000 Events. Each Signal generates approximately 4 Events; each Activity execution approximately 11. A loyalty entity processing 100 point accruals per day (each triggering one Activity) generates roughly 1,500 Events per day — plan your Continue-As-New threshold accordingly.
+**Event History limits.** Temporal enforces a hard limit of 51,200 Events and 50 MB per Workflow Execution, with warnings starting around 10,000 Events. Each Signal adds about 4 Events, counting the Workflow Task that handles it, and each Activity adds about 6. A loyalty entity processing 100 point accruals per day (each triggering one Activity) adds roughly 1,000 Events per day — plan your Continue-As-New threshold accordingly.
 
 **Payload size limits.** Individual payloads for Workflow and Activity inputs and outputs are limited to 2 MB. If the serialized entity state approaches this limit, store large data externally and reference it by identifier.
 
@@ -669,7 +669,7 @@ After that is the subtraction that deducts the redeemed points. The Update then 
 
 The Update deducts the points before it calls `record_redemption`, which reserves them. The handler waits while the Activity runs, and another redemption can start in that time. Because the balance is already lower, the second redemption's balance check can't spend the same points. The Update also adds the event ID to `_redemptions_in_flight` before the Activity starts and removes it when the Activity finishes, whether it succeeds or fails. If `record_redemption` fails after all its retries, the Update adds the points back and raises a `RedemptionNotRecorded` error to the caller. The event ID isn't added to the processed list, so the caller can retry the redemption with the same `event_id`.
 
-The `redeem_points` Update calls the `record_redemption` Activity directly via `await` rather than enqueuing it for the main loop. The Python and TypeScript SDKs support `async` Update handlers, making this safe. The trade-off keeps redemption logic self-contained and returns the confirmed result to the caller in a single round trip. It is safe here because `record_redemption` is idempotent — a replay detects the duplicate `event_id` and returns without creating a second record. If you are using the Java SDK, Update handlers cannot be `async`; enqueue the work for the main loop instead.
+The `redeem_points` Update calls the `record_redemption` Activity directly with `await` rather than enqueuing it for the main loop. Python Update handlers can be `async` and wait on Activities, so the redemption logic stays self-contained and the caller gets the confirmed result in a single round trip. `record_redemption` must be idempotent because Temporal may retry it: a retry with the same `event_id` doesn't create a second record.
 
 Next, add an [Update Validator](/handling-messages#update-validators) to the class to handle errors:
 
@@ -814,7 +814,7 @@ Next, add the methods that evaluate the tier to the class:
 
 The `_evaluate_tier` function uses `_calculate_tier` to determine whether the user's tier has changed. If it has, it uses the `send_tier_change_notification` Activity to send the notification. Retries can send a duplicate notification, so pass an idempotency key to the notification service if duplicates matter. In addition, this Activity is non-essential, so it's wrapped in a `try` block. If the notification fails repeatedly, the Workflow logs the error and continues, rather than failing.
 
-The `_calculate_tier` function is a pure logic function: it takes the number of points, and returns a tier value. There are no side effects associated with the function. Again, that means the function is deterministic. The point thresholds for each tier are hard-coded here; depending on your needs, you may want to set those values elsewhere. As long as the function only calculates the tier based on set values, it remains deterministic.
+The `_calculate_tier` function is a pure logic function: it takes the number of points, and returns a tier value. There are no side effects associated with the function. That means the function is deterministic. The point thresholds for each tier are hard-coded here; depending on your needs, you may want to set those values elsewhere. As long as the function only calculates the tier based on set values, it remains deterministic.
 
 Add one more helper method to the class to limit the number of event IDs stored:
 
@@ -1179,7 +1179,9 @@ Entity Workflows are the hardest case for code evolution: a loyalty account can 
 | Behavior | Guarantee | When to use |
 |----------|-----------|-------------|
 | `PINNED` | Each execution completes on the version where it started | Long-lived entities; no patching needed within a run |
-| `AUTO_UPGRADE` | Moves to the latest version automatically | Short Workflows that complete before the next deploy |
+| `AUTO_UPGRADE` | Moves to the latest version automatically | Workflows that span deploys and don't use Continue-As-New; requires patching |
+
+For the full set of recommendations, see the Worker Versioning [decision guide](/production-deployment/worker-deployments/worker-versioning#decision-guide).
 
 ### Annotate the Workflow
 
@@ -1277,7 +1279,7 @@ temporal worker deployment describe-version \
 
 ### Upgrading at the Continue-As-New boundary
 
-Because `LoyaltyEntityWorkflow` already calls `workflow.continue_as_new()` to manage Event History, you can upgrade long-running Executions to a new build at that boundary — without patching.
+Because `LoyaltyEntityWorkflow` already calls `workflow.continue_as_new()` to manage Event History, you can upgrade long-running Executions to a new build at that boundary — without patching. Upgrading on Continue-As-New is in [Public Preview](/evaluate/product-release-stages#public-preview). For details, see [Upgrade on Continue-as-New](/production-deployment/worker-deployments/worker-versioning/upgrade-on-continue-as-new).
 
 In `_do_continue_as_new`, check `is_target_worker_deployment_version_changed()` before transitioning:
 
