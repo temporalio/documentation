@@ -334,6 +334,7 @@ exceptions:
   - Microsoft Entra
   - Multi-Region Access Points
   - Pod Identity
+  - Private Link
   - Private Service Connect
   - Cloud Ops API
   - Terraform
@@ -371,11 +372,16 @@ exceptions:
   - NOT_FOUND
   # AI vendor and model-platform proper nouns
   - AI
+  - Arize
   - Baseten
   - Fireworks
   - Together
   - Google
   - Gemini
+  - OpenAI
+  - OpenInference
+  - OTLP
+  - Phoenix
   - Vertex
   - Claude Code
   - Claude Desktop

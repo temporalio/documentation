@@ -64,7 +64,9 @@ overrides the option set in the configuration file.
 For example, the following TOML configuration file defines two profiles: `default` and `prod`. Each profile has its own
 set of connection options.
 
-```toml title="config.toml"
+<!--SNIPSTART ruby-client-config-file-->
+[ruby-sandbox/client/temporal-client/config.toml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/config.toml)
+```toml
 # Default profile for local development
 [profile.default]
 address = "localhost:7233"
@@ -93,12 +95,15 @@ client_key_path  = "/etc/temporal/certs/client.key"
 environment     = "production"
 service-version = "v1.2.3"
 ```
+<!--SNIPEND-->
 
 You can create a Temporal Client using a profile from the configuration file using the
 `ClientConfig.load_client_connect_options` function as follows. In this example, you load the `default` profile for
 local development:
 
-```ruby
+<!--SNIPSTART ruby-client-load-from-file-->
+[ruby-sandbox/client/temporal-client/load_from_file.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/load_from_file.rb)
+```rb
 require 'temporalio/client'
 require 'temporalio/env_config'
 
@@ -136,6 +141,7 @@ end
 
 main if $PROGRAM_NAME == __FILE__
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -162,7 +168,9 @@ export TEMPORAL_ADDRESS="localhost:7233"
 
 After setting the environment variables, you can create a Temporal Client as follows:
 
-```ruby {9}
+<!--SNIPSTART ruby-client-load-from-env {"highlightedLines": "9"}-->
+[ruby-sandbox/client/temporal-client/load_from_env.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/load_from_env.rb)
+```rb {9}
 require 'temporalio/client'
 require 'temporalio/env_config'
 
@@ -190,6 +198,7 @@ end
 
 main if $PROGRAM_NAME == __FILE__
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -202,9 +211,12 @@ variables or a configuration file, and then override specific options in code.
 Use the `connect` class method on the `Temporalio::Client` class to create and connect to a Temporal Client to the
 Temporal Service.
 
-```ruby
+<!--SNIPSTART ruby-client-connect-local {"enable_code_dedenting": true}-->
+[ruby-sandbox/client/temporal-client/connect.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/connect.rb)
+```rb
 client = Temporalio::Client.connect('localhost:7233', 'default')
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -255,6 +267,8 @@ overrides the option set in the configuration file.
 For example, the following TOML configuration file defines a `staging` profile with the necessary connection options to
 connect to Temporal Cloud via an API key:
 
+<!--SNIPSTART ruby-client-cloud-api-key-config-->
+[ruby-sandbox/client/temporal-client/cloud_api_key.toml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/cloud_api_key.toml)
 ```toml
 # Cloud profile for Temporal Cloud
 [profile.staging]
@@ -262,25 +276,33 @@ address = "your-namespace.a1b2c.tmprl.cloud:7233"
 namespace = "your-namespace"
 api_key = "your-api-key-here"
 ```
+<!--SNIPEND-->
 
 If you want to use mTLS authentication instead of an API key, replace the `api_key` field with your mTLS certificate and
 private key:
 
+<!--SNIPSTART ruby-client-cloud-mtls-config-->
+[ruby-sandbox/client/temporal-client/cloud_mtls.toml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/cloud_mtls.toml)
 ```toml
 # Cloud profile for Temporal Cloud
 [profile.staging]
 address = "your-namespace.a1b2c.tmprl.cloud:7233"
 namespace = "your-namespace"
-tls_client_cert_data = "your-tls-client-cert-data"
-tls_client_key_path = "your-tls-client-key-path"
+
+[profile.staging.tls]
+client_cert_data = "your-tls-client-cert-data"
+client_key_path = "your-tls-client-key-path"
 ```
+<!--SNIPEND-->
 
 With the connections options defined in the configuration file, use the
 [`Client.connect` method](https://ruby.temporal.io/Temporalio/Client.html#connect-class_method) to create a Temporal
 Client using the `staging` profile as follows. After loading the profile, you can also programmatically override
 specific connection options before creating the client.
 
-```ruby {8,14-16}
+<!--SNIPSTART ruby-client-load-profile {"highlightedLines": "8,14-16"}-->
+[ruby-sandbox/client/temporal-client/load_profile.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/load_profile.rb)
+```rb {8,14-16}
 require 'temporalio/client'
 require 'temporalio/env_config'
 
@@ -320,6 +342,7 @@ end
 
 main if $PROGRAM_NAME == __FILE__
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -350,14 +373,16 @@ variables will take precedence.
 
 After setting the environment variables, use the following code to create the Temporal Client:
 
-```ruby {9, 17}
+<!--SNIPSTART ruby-client-load-from-env {"highlightedLines": "9,17"}-->
+[ruby-sandbox/client/temporal-client/load_from_env.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/load_from_env.rb)
+```rb {9,17}
 require 'temporalio/client'
 require 'temporalio/env_config'
 
 def main
   # load_client_connect_options is a helper that loads a profile and prepares
   # the configuration for Client.connect. By default, it loads the
-  # "default" profile. It also reads from environment variables. The environment
+  # "default" profile and also reads from environment variables. The environment
   # variables take precedence over the config file.
   args, kwargs = Temporalio::EnvConfig::ClientConfig.load_client_connect_options()
 
@@ -378,6 +403,7 @@ end
 
 main if $PROGRAM_NAME == __FILE__
 ```
+<!--SNIPEND-->
 
 </TabItem>
 
@@ -386,7 +412,9 @@ main if $PROGRAM_NAME == __FILE__
 You can also specify connection options directly in code to connect to Temporal Cloud. To create an initial connection,
 provide the endpoint, Namespace and Account ID combination, and API key values to the `Client.connect` method.
 
-```ruby
+<!--SNIPSTART ruby-client-connect-cloud-api-key {"enable_code_dedenting": true}-->
+[ruby-sandbox/client/temporal-client/connect.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/connect.rb)
+```rb
 client = Temporalio::Client.connect(
   '<endpoint>', # Endpoint
   '<namespace_id>.<account_id>', # Namespace
@@ -394,10 +422,13 @@ client = Temporalio::Client.connect(
   tls: true
 )
 ```
+<!--SNIPEND-->
 
 To connect using mTLS instead of an API key, provide the mTLS certificate and private key as follows:
 
-```ruby
+<!--SNIPSTART ruby-client-connect-cloud-mtls {"enable_code_dedenting": true}-->
+[ruby-sandbox/client/temporal-client/connect.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/connect.rb)
+```rb
 client = Temporalio::Client.connect(
   '<endpoint>', # Endpoint
   '<namespace_id>.<account_id>', # Namespace
@@ -407,6 +438,7 @@ client = Temporalio::Client.connect(
   )
 )
 ```
+<!--SNIPEND-->
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
 [Temporal Customization Samples](https://github.com/temporalio/samples-server).
@@ -415,7 +447,9 @@ For more information about configuring TLS to secure inter- and intra-network co
 an mTLS client certificate without restarting your Worker, connect a new client with the new certificate, then assign
 it to the running `Worker`'s `client`:
 
-```ruby
+<!--SNIPSTART ruby-client-rotate-certificate {"enable_code_dedenting": true}-->
+[ruby-sandbox/client/temporal-client/connect.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/connect.rb)
+```rb
 new_client = Temporalio::Client.connect(
   '<endpoint>', # Endpoint
   '<namespace_id>.<account_id>', # Namespace
@@ -428,6 +462,7 @@ new_client = Temporalio::Client.connect(
 # my_worker is the Worker instance already running against the old client
 my_worker.client = new_client
 ```
+<!--SNIPEND-->
 
 The Worker starts using `new_client` for subsequent calls to the Temporal Service; calls already in flight on the old
 client finish normally.
@@ -449,13 +484,16 @@ To start a Workflow Execution in Ruby, use either the `start_workflow` or `execu
 must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) and [Task Queue](/task-queue) in the
 parameters given to the method.
 
-```ruby
+<!--SNIPSTART ruby-client-execute-workflow {"enable_code_dedenting": true}-->
+[ruby-sandbox/client/temporal-client/start_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/start_workflow.rb)
+```rb
 result = my_client.execute_workflow(
   MyWorkflow, 'some-input',
   id: 'my-workflow-id', task_queue: 'my-task-queue'
 )
 puts "Result: #{result}"
 ```
+<!--SNIPEND-->
 
 ### Set a Workflow's Task Queue {/* #set-task-queue */}
 
@@ -466,12 +504,15 @@ Queue name.
 
 To set a Task Queue in Ruby, specify the `task_queue` keyword argument on `start_workflow` or `execute_workflow`.
 
-```ruby
+<!--SNIPSTART ruby-client-workflow-options {"enable_code_dedenting": true}-->
+[ruby-sandbox/client/temporal-client/start_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/start_workflow.rb)
+```rb
 result = my_client.execute_workflow(
   MyWorkflow, 'some-input',
   id: 'my-workflow-id', task_queue: 'my-task-queue'
 )
 ```
+<!--SNIPEND-->
 
 ### Set a Workflow Id {/* #workflow-id */}
 
@@ -482,12 +523,15 @@ order identifier or customer identifier.
 
 To set a Workflow Id in Ruby, specify the `id` keyword argument on `start_workflow` or `execute_workflow`.
 
-```ruby
+<!--SNIPSTART ruby-client-workflow-options {"enable_code_dedenting": true}-->
+[ruby-sandbox/client/temporal-client/start_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/start_workflow.rb)
+```rb
 result = my_client.execute_workflow(
   MyWorkflow, 'some-input',
   id: 'my-workflow-id', task_queue: 'my-task-queue'
 )
 ```
+<!--SNIPEND-->
 
 ## Get Workflow results {/* #get-workflow-results */}
 
@@ -500,8 +544,11 @@ You can also use Queries to access Workflow state and results while the Workflow
 Use `start_workflow` or `workflow_handle` on the Client to return a Workflow handle. Then use the `result` method to
 await on the result of the Workflow.
 
-```ruby
+<!--SNIPSTART ruby-client-get-result {"enable_code_dedenting": true}-->
+[ruby-sandbox/client/temporal-client/start_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/client/temporal-client/start_workflow.rb)
+```rb
 handle = my_client.workflow_handle('my-workflow-id')
 result = handle.result
 puts "Result: #{result}"
 ```
+<!--SNIPEND-->

@@ -87,8 +87,6 @@ class HelloWorldWorkflow:
     async def run(self, prompt: str) -> str:
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -233,8 +231,6 @@ async def fetch_weather(city: str) -> dict:
         "temperature_f": 72,
         "conditions": "sunny",
     }
-
-
 ```
 <!--SNIPEND-->
 
@@ -265,8 +261,6 @@ class ToolsWorkflow:
     async def run(self, prompt: str) -> str:
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -334,8 +328,6 @@ Workflow context (deterministic), while `persist_tool_call` runs as an Activity 
 async def persist_tool_call(tool_name: str) -> None:
     # In production, write to a database / S3 / your audit pipeline.
     activity.logger.info(f"audit: tool {tool_name} completed")
-
-
 ```
 <!--SNIPEND-->
 
@@ -359,8 +351,6 @@ class AuditHook(HookProvider):
 
     def _record(self, event: AfterToolCallEvent) -> None:
         self.fired.append(event.tool_use["name"])
-
-
 ```
 <!--SNIPEND-->
 
@@ -412,8 +402,6 @@ class MCPWorkflow:
     async def run(self, prompt: str) -> str:
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -503,8 +491,6 @@ class ApprovalHook(HookProvider):
         )
         if approval != "approve":
             event.cancel_tool = "denied"
-
-
 ```
 <!--SNIPEND-->
 
@@ -548,8 +534,6 @@ class HumanInTheLoopWorkflow:
             ]
             result = await self.agent.invoke_async(responses)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -590,8 +574,6 @@ async def delete_thing(name: str) -> str:
             )
         )
     return f"deleted {name}"
-
-
 ```
 <!--SNIPEND-->
 
@@ -678,8 +660,6 @@ class StructuredOutputWorkflow:
         result = await self.agent.invoke_async(prompt)
         assert isinstance(result.structured_output, PersonInfo)
         return result.structured_output
-
-
 ```
 <!--SNIPEND-->
 
@@ -717,8 +697,6 @@ class StreamingWorkflow:
     async def run(self, prompt: str) -> str:
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -867,8 +845,6 @@ class ChatWorkflow:
 
         if not self._done:
             workflow.continue_as_new(ChatInput(messages=self._agent.messages))
-
-
 ```
 <!--SNIPEND-->
 

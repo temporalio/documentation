@@ -25,6 +25,7 @@ the Event History instead. This is called the
 
 For SDK-specific usage guides, see:
 
+- [.NET SDK: Large payload storage](/develop/dotnet/best-practices/data-handling/external-storage)
 - [Go SDK: Large payload storage](/develop/go/data-handling/external-storage)
 - [Java SDK: Large payload storage](/develop/java/data-handling/external-storage)
 - [Python SDK: Large payload storage](/develop/python/data-handling/external-storage)
@@ -59,6 +60,7 @@ External Storage addresses several common scenarios:
 
 For SDK-specific usage guides, see:
 
+- [.NET SDK: Large payload storage](/develop/dotnet/best-practices/data-handling/external-storage)
 - [Go SDK: Large payload storage](/develop/go/data-handling/external-storage)
 - [Java SDK: Large payload storage](/develop/java/data-handling/external-storage)
 - [Python SDK: Large payload storage](/develop/python/data-handling/external-storage)
@@ -112,7 +114,7 @@ Start with an object store such as Amazon S3, Google Cloud Storage, or Azure Blo
 reason to use a different system, such as lower latency or existing infrastructure constraints.
 
 - **Amazon S3, Google Cloud Storage, Azure Blob Storage:** Default choice for durable payload storage. We provide a
-  first-party S3 storage driver for the [Go](/develop/go/data-handling/external-storage#store-and-retrieve-large-payloads), [Java](/develop/java/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3), [Python](/develop/python/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3), [Rust](/develop/rust/best-practices/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3), and [TypeScript](/develop/typescript/best-practices/data-handling/external-storage#store-and-retrieve-large-payloads) SDKs,
+  first-party S3 storage driver for the [.NET](/develop/dotnet/best-practices/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3), [Go](/develop/go/data-handling/external-storage#store-and-retrieve-large-payloads), [Java](/develop/java/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3), [Python](/develop/python/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3), [Rust](/develop/rust/best-practices/data-handling/external-storage#store-and-retrieve-large-payloads-with-amazon-s3), and [TypeScript](/develop/typescript/best-practices/data-handling/external-storage#store-and-retrieve-large-payloads) SDKs,
   and a first-party Google Cloud Storage driver for the [Go](/develop/go/data-handling/external-storage#store-and-retrieve-large-payloads) and [TypeScript](/develop/typescript/best-practices/data-handling/external-storage#store-and-retrieve-large-payloads) SDKs.
 - **Google Cloud Bigtable:** Low-latency reads on Google Cloud, but payloads must fit within Bigtable's cell and row size limits.
 - **Redis:** Suitable when configured for durability (such as with AOF persistence), not as an evicting cache. Refer to the [Python Redis storage driver sample](https://github.com/temporalio/samples-python/tree/main/external_storage_redis) for an example implementation. 
@@ -137,6 +139,7 @@ as hot and cold storage tiers.
 If the built-in drivers don't support your storage backend, you can implement a custom driver. For SDK-specific
 examples, see:
 
+- [.NET SDK: Implement a custom storage driver](/develop/dotnet/best-practices/data-handling/external-storage#implement-a-custom-storage-driver)
 - [Go SDK: Implement a custom storage driver](/develop/go/data-handling/external-storage#implement-a-custom-storage-driver)
 - [Java SDK: Implement a custom storage driver](/develop/java/data-handling/external-storage#implement-a-custom-storage-driver)
 - [Python SDK: Implement a custom storage driver](/develop/python/data-handling/external-storage#implement-a-custom-storage-driver)
