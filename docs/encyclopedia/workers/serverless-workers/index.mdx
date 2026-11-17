@@ -86,28 +86,42 @@ Workers require it. Traditional long-lived Workers can use Worker Deployment Ver
 because you start and manage those Worker processes yourself.
 
 The compute configuration contains one or more named **scaling groups**. Each group describes a compute target and its
-scaling settings. For example, one version can have a group for a Lambda function in the primary region and another
-for a function running the same Worker build in the replica region.
+scaling settings.
 
 #### Scaling groups {/* #scaling-groups */}
 
-The [Worker Controller Instance (WCI)](#worker-controller-instance) uses each scaling group's settings to manage compute:
+The standard single-region setup creates one group named `default`, pointing at your Lambda function or Cloud Run
+Worker Pool. The compute resource has a region: the AWS region in the function ARN, or the GCP region of the pool.
+That compute region can differ from the Namespace's active region within the same cloud provider.
+
+The group itself has no Namespace-region restriction unless you configure one. With only this unscoped group, the
+[Worker Controller Instance (WCI)](#worker-controller-instance) uses its compute target regardless of which region in
+the same cloud provider is active for the Namespace. The group does not inherit a restriction from the Namespace's
+current region.
+
+For example, a Namespace active in `aws-us-east-1` can use a `default` group pointing at a Lambda in `us-east-1`. If the
+Namespace fails over to `aws-us-west-2`, the WCI keeps invoking that same Lambda in `us-east-1`. The unscoped group
+continues to apply, but its function remains in its original region.
+
+Each group has these settings:
 
 | Setting | Purpose |
 | --- | --- |
 | Compute provider | Identifies the function or Worker Pool and the credentials Temporal uses to invoke or scale it. |
 | Scaling settings | Tune provider-specific behavior, such as Lambda invocation cooldowns or Cloud Run instance limits and utilization targets. |
-| Region scope (optional) | Identifies the Temporal Namespace regions where this group applies. Without region scope, the group is a regional fallback. |
+| Region scope (optional) | Restricts the group to specific active Namespace regions. Omitting it leaves the group without a Namespace-region restriction. |
 
 The compute provider determines the autoscaling algorithm. You tune that algorithm's behavior through the provider's
 scaling settings. See [Autoscaling](#autoscaling) for the behavior of each provider.
 
-A single-region setup usually has one group named `default`. Each group has its own compute target and scaling settings.
-The same WCI manages all groups in a Worker Deployment Version; adding a group does not create another version or WCI.
+For regional failover, add a group whose region scope matches the Namespace's replica region and whose compute target
+is deployed there. When that region becomes active, the WCI uses the matching group instead of the unscoped
+group. See [High Availability](#high-availability) for selection rules and setup guides.
 
-The CLI's `--scaling-group` flag selects an entry by name. The name does not control where compute runs. A group named
-`default` can be scoped to one region; whether it is a regional fallback depends on its region scope, not its name.
-See [High Availability](#high-availability) for regional selection and fallback behavior.
+The CLI's `--scaling-group` flag selects an entry by name. A group named `default` can also have an explicit region
+scope; the name does not determine its scope or the compute resource's location.
+
+The same WCI manages all groups in a Worker Deployment Version; adding a group does not create another version or WCI.
 
 ### Compute providers {/* #compute-providers */}
 
@@ -283,11 +297,11 @@ For the configurations in the provider setup guides, regional selection works as
 | Configuration | Behavior |
 | --- | --- |
 | A scaling group matches the active region. | The WCI uses that region's group. |
-| No regional group matches, but a default group without `region_ids` exists. | The WCI uses the default group's compute target, even if that target is in another region. |
-| Neither a matching group nor a default exists. | The WCI starts no compute for that region. Tasks wait for Workers that can serve the version. |
+| No regional group matches, but an unscoped group exists. | The WCI uses the unscoped group's compute target, even if that target is in another region. |
+| Neither a matching group nor an unscoped group exists. | The WCI starts no compute for that region. Tasks wait for Workers that can serve the version. |
 
-Existing single-region configurations remain defaults until changed. They can keep serving work after a Namespace-only
-failover if their compute remains healthy, but do not protect against losing the compute region.
+Existing single-region groups remain unscoped until you configure a region scope. They can keep serving work after a
+Namespace-only failover if their compute remains healthy, but do not protect against losing the compute region.
 
 Regional selection also supports traditional Workers in the primary region and Serverless Workers only in the recovery
 region. Both use the same Worker Deployment Version; a group scoped only to the recovery region starts Serverless
