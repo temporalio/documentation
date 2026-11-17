@@ -103,7 +103,7 @@ temporal worker deployment version compute-config aws-lambda update \
 `--region-id` is the Temporal Namespace region where the group applies. The function's AWS region comes from its ARN.
 Use a qualified function ARN with a version suffix.
 
-The new group uses the default Lambda scaling settings unless you pass scaler flags. If you customized the primary
+The new group uses the default Lambda scaling settings unless you pass scaling options. If you customized the primary
 configuration, apply the required settings to the replica group as well.
 
 Run `compute-config describe` again and confirm that both groups have the expected region and provider.

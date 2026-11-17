@@ -102,7 +102,7 @@ temporal worker deployment version compute-config gcp-cloud-run update \
 `--region-id` is the Temporal Namespace region where the group applies, such as `gcp-us-west1`.
 `--worker-pool-region` is the GCP location of the pool, such as `us-west1`.
 
-The new group uses the default Cloud Run scaling settings unless you pass scaler flags. To customize them, pass all
+The new group uses the default Cloud Run scaling settings unless you pass scaling options. To customize them, pass all
 seven together: `--min-instances`, `--max-instances`, `--initial-instances`, `--utilization-target`,
 `--scale-down-stabilization-ms`, `--scale-up-cooldown-ms`, and `--scale-down-cooldown-ms`.
 

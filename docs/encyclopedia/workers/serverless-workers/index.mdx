@@ -96,18 +96,18 @@ The [Worker Controller Instance (WCI)](#worker-controller-instance) uses each sc
 | Setting | Purpose |
 | --- | --- |
 | Compute provider | Identifies the function or Worker Pool and the credentials Temporal uses to invoke or scale it. |
-| Scaler | Defines when to add compute and, for pool providers, how to size and scale in the pool. |
+| Scaling settings | Tune provider-specific behavior, such as Lambda invocation cooldowns or Cloud Run instance limits and utilization targets. |
 | Region scope (optional) | Identifies the Temporal Namespace regions where this group applies. Without region scope, the group is a regional fallback. |
 
-A single-region setup usually has one group named `default`. Each group has its own provider and scaler settings.
+The compute provider determines the autoscaling algorithm. You tune that algorithm's behavior through the provider's
+scaling settings. See [Autoscaling](#autoscaling) for the behavior of each provider.
+
+A single-region setup usually has one group named `default`. Each group has its own compute target and scaling settings.
 The same WCI manages all groups in a Worker Deployment Version; adding a group does not create another version or WCI.
 
 The CLI's `--scaling-group` flag selects an entry by name. The name does not control where compute runs. A group named
 `default` can be scoped to one region; whether it is a regional fallback depends on its region scope, not its name.
 See [High Availability](#high-availability) for regional selection and fallback behavior.
-
-The API can also scope groups to Task Queue types, such as Workflow Tasks and Activity Tasks. The CLI and UI configure
-groups that serve all Task Queue types for their region.
 
 ### Compute providers {/* #compute-providers */}
 
@@ -278,7 +278,7 @@ retain a dependency on that region.
 
 ### Regional and default compute configurations
 
-For groups that serve all Task Queue types, regional selection works as follows:
+For the configurations in the provider setup guides, regional selection works as follows:
 
 | Configuration | Behavior |
 | --- | --- |
