@@ -111,7 +111,7 @@ converter or interceptor, so the Worker needs no other wiring; `MicrosoftAgentFr
 
 **3. Run the Workflow**
 
-Start the Workflow from the program's `workflow` verb:
+Start the Workflow from the program's `workflow` command:
 
 <!--SNIPSTART dotnet-microsoft-agent-framework-hello-world-client-->
 <!--SNIPEND-->
@@ -194,8 +194,8 @@ parameters. Pass the list as `ChatOptions.Tools`. Each call the model makes runs
 <!--SNIPEND-->
 
 Register the transport factory on the Worker and pass the dictionary as `McpServers` on the plugin options. The sample
-serves a one-tool echo server over stdio from its own `mcp-server` verb and starts that process itself; swap in any MCP
-server by changing the factory:
+serves a one-tool echo server over stdio from its own `mcp-server` command and starts that process itself; swap in any
+MCP server by changing the factory:
 
 <!--SNIPSTART dotnet-microsoft-agent-framework-mcp-worker-->
 <!--SNIPEND-->
@@ -305,8 +305,8 @@ The handler instead waits until the reply has been read, then fails the Update w
 for a request that is already decided or not pending, so a double submit or a wrong identifier cannot answer a later
 request.
 
-The starter polls the Query, sends the Update with the identifier the Query returned (`dotnet run workflow reject` sends
-a rejection), and prints the result:
+The starter polls the Query while the Workflow runs, answers each request once with the identifier the Query returned
+(`dotnet run workflow --reject` sends rejections), and prints the result:
 
 <!--SNIPSTART dotnet-microsoft-agent-framework-human-in-the-loop-client-->
 <!--SNIPEND-->
@@ -412,8 +412,8 @@ and continues as new with the serialized session:
 <!--SNIPEND-->
 
 The starter sends each turn with [Update-With-Start](/develop/dotnet/workflows/message-passing#update-with-start) on a
-fixed Workflow ID, so the first message starts the chat and later ones join it, and `end-chat` reads the Query, sends
-the Signal and waits for the result:
+fixed Workflow ID, so the first message starts the chat and later ones join it, and `end-chat` sends the Signal, waits
+for the result and then reads the transcript Query, which includes a turn that was still in flight:
 
 <!--SNIPSTART dotnet-microsoft-agent-framework-continue-as-new-client-->
 <!--SNIPEND-->
@@ -535,9 +535,9 @@ shows the tracer provider and exporter setup.
 
 The [Agent Framework plugin samples](https://github.com/temporalio/samples-dotnet/tree/main/src/MicrosoftAgentFramework)
 cover the eight scenarios on this page: hello world, tools, MCP, human in the loop, middleware, structured output,
-streaming and Continue-As-New. Each is one console project with a `worker` verb; the starter is `workflow` (for
-streaming, any other arguments are the prompt), or `send-message` and `end-chat` for the chat. The repository's tests
-run each one against the plugin's `FakeChatClient` and a local dev server, with no API key and with replay on every
-Workflow Task; the package ships `FakeChatClient`, `ScriptedResponse` and `InMemoryMcpServer` in
+streaming and Continue-As-New. Each is one console project with System.CommandLine commands: `worker`, and a starter
+that is `workflow` (for streaming, the words after it are the prompt), or `send-message` and `end-chat` for the chat.
+The repository's tests run each one against the plugin's `FakeChatClient` and a local dev server, with no API key and
+with replay on every Workflow Task; the package ships `FakeChatClient`, `ScriptedResponse` and `InMemoryMcpServer` in
 `Temporalio.Extensions.MicrosoftAgentFramework.Testing` for your own tests. The plugin's source and README are in the
 [`temporalio/ai-integrations` repository](https://github.com/temporalio/ai-integrations/tree/main/dotnet/microsoft-agent-framework).
