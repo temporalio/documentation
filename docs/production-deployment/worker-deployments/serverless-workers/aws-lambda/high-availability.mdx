@@ -133,11 +133,16 @@ prove that the replica function served the work. Include Workflows pinned to old
 Automatic Namespace failover monitors Temporal Cloud health. It does not respond to an outage limited to Lambda, and
 Serverless Workers do not automatically switch functions when Lambda is unavailable.
 
-You have two recovery options:
+For an outage limited to Lambda, consider these options before moving the Namespace:
 
 - **Restore the existing function or wait for Lambda to recover.** Check
   [Lambda invocation errors](/troubleshooting/serverless-workers/aws-lambda) and monitor Task Queue backlog.
-- **Manually fail over the Namespace.** Verify the replica function and its dependencies, then
-  [trigger Namespace failover](/cloud/high-availability/failovers#manual-failover) to select the replica region's
-  compute configuration. This affects all workloads in the Namespace, so include your other Workers and Clients in the
-  recovery procedure.
+- **Configure a replacement function in another AWS region.** Before changing the compute configuration, verify that
+  the function runs the same Worker build with the same Worker Deployment name and Build ID. Check invocation
+  permissions, connectivity to the Namespace, and access to application dependencies. Then update the existing
+  version's compute configuration to use the replacement function for the Namespace's active region. The Namespace
+  remains in its current region.
+
+If your recovery plan also calls for moving the Namespace, verify the replica function and its dependencies, then
+[manually trigger Namespace failover](/cloud/high-availability/failovers#manual-failover). This affects all workloads
+in the Namespace, so include your other Workers and Clients in the recovery procedure.

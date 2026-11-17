@@ -135,11 +135,9 @@ this test.
 Automatic Namespace failover monitors Temporal Cloud health. It does not respond to an outage limited to Cloud Run, and
 Serverless Workers do not automatically switch Worker Pools when Cloud Run is unavailable.
 
-You have two recovery options:
+First, check [Worker Pool scaling errors](/troubleshooting/serverless-workers/cloud-run) to determine whether you can
+restore the existing pool, or monitor Task Queue backlog while waiting for Cloud Run to recover.
 
-- **Restore the existing pool or wait for Cloud Run to recover.** Check
-  [Worker Pool scaling errors](/troubleshooting/serverless-workers/cloud-run) and monitor Task Queue backlog.
-- **Manually fail over the Namespace.** Verify the replica pool and its dependencies, then
-  [trigger Namespace failover](/cloud/high-availability/failovers#manual-failover) to select the replica region's
-  compute configuration. This affects all workloads in the Namespace, so include your other Workers and Clients in the
-  recovery procedure.
+If your recovery plan also calls for moving the Namespace, verify the replica pool and its dependencies, then
+[manually trigger Namespace failover](/cloud/high-availability/failovers#manual-failover). This affects all workloads
+in the Namespace, so include your other Workers and Clients in the recovery procedure.
