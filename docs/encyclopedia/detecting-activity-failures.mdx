@@ -201,7 +201,7 @@ Two results of these rules are easy to miss:
 
 Set both the Schedule-To-Close and Start-To-Close Timeouts explicitly to choose separate total and per-attempt limits. Both remain subject to the Workflow Run Timeout cap.
 
-[Update Options](/activity-operations/update-options) re-runs these rules after every change, so lowering one timeout on a running Activity can lower another.
+[Update Options](/activity-operations/update-options#timeouts-are-resolved-again-after-every-update) resolves the merged timeouts again, so lowering one timeout on a running Activity can lower another. Unlike scheduling, updates don't apply the Workflow Run Timeout cap or use it as the fallback for a cleared Schedule-To-Close Timeout.
 
 ## Activity Heartbeat {/* #activity-heartbeat */}
 
