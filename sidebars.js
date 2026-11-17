@@ -2121,6 +2121,7 @@ module.exports = {
                 'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
                 'encyclopedia/workers/serverless-workers/serverless-workers-agentcore',
                 'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
+                'encyclopedia/workers/serverless-workers/serverless-workers-high-availability',
               ],
             },
           ],

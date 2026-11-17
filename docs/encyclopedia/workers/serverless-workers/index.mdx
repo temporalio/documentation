@@ -28,7 +28,6 @@ This page covers the following:
 - [Scaling with long-lived Workers](#scaling-with-long-lived-workers)
 - [Worker lifecycle](#worker-lifecycle)
 - [Failure handling](#failure-handling)
-- [High Availability](#high-availability)
 - [Constraints](#constraints)
 - [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers)
 
@@ -117,7 +116,7 @@ scaling settings. See [Autoscaling](#autoscaling) for the behavior of each provi
 
 For regional failover, add a group whose region scope matches the Namespace's replica region and whose compute target
 is deployed there. When that region becomes active, the WCI uses the matching group instead of the unscoped
-group. See [High Availability](#high-availability) for selection rules and setup guides.
+group. See [High Availability for Serverless Workers](/serverless-workers/high-availability) for selection rules and setup guides.
 
 The CLI's `--scaling-group` flag selects an entry by name. A group named `default` can also have an explicit region
 scope; the name does not determine its scope or the compute resource's location.
@@ -277,68 +276,6 @@ To isolate Activities from each other:
 
 With single-slot configuration, each Activity gets a dedicated execution environment.
 
-## High Availability {/* #high-availability */}
-
-[Temporal Cloud High Availability](/cloud/high-availability) replicates a Namespace and manages its failover.
-Serverless Worker compute configuration determines where Temporal starts Workers after that failover. These are
-separate parts of recovery: a healthy Namespace still needs available compute and application dependencies to process
-work.
-
-The WCI runs where the Namespace is active. A [scaling group's](#scaling-groups) `region_ids` names the Temporal regions where
-that group applies. After Namespace failover, the WCI selects compute for the newly active region.
-
-The compute resource's location is configured separately, in a Lambda ARN or a Cloud Run Worker Pool's region. Assigning
-a group to a Namespace region does not deploy or move compute there. Two groups pointing at the same compute region
-retain a dependency on that region.
-
-### Regional and default compute configurations
-
-For the configurations in the provider setup guides, regional selection works as follows:
-
-| Configuration | Behavior |
-| --- | --- |
-| A scaling group matches the active region. | The WCI uses that region's group. |
-| No regional group matches, but an unscoped group exists. | The WCI uses the unscoped group's compute target, even if that target is in another region. |
-| Neither a matching group nor an unscoped group exists. | The WCI starts no compute for that region. Tasks wait for Workers that can serve the version. |
-
-Existing single-region groups remain unscoped until you configure a region scope. They can keep serving work after a
-Namespace-only failover if their compute remains healthy, but do not protect against losing the compute region.
-
-Regional selection also supports traditional Workers in the primary region and Serverless Workers only in the recovery
-region. Both use the same Worker Deployment Version; a group scoped only to the recovery region starts Serverless
-Workers when the Namespace becomes active there.
-
-### Existing Workers after failover
-
-Regional compute selection changes where new Workers start. It does not immediately prevent Workers already running
-in the original region from receiving Tasks. Healthy Workers can reach the new active Namespace through the Namespace
-Endpoint or [request forwarding](/cloud/high-availability#request-forwarding).
-
-Those Workers also need access to their application dependencies. A Worker might still reach Temporal Cloud while its
-regional database is unavailable. Regional Endpoints with
-[passive poller forwarding disabled](/cloud/high-availability/enable#change-forwarding-behavior) prevent new Tasks from
-being delivered through the passive replica. This setting does not terminate running Activities. Workers using the
-Namespace Endpoint can follow the active replica regardless of their compute location.
-
-How existing compute stops depends on the provider:
-
-- [AWS Lambda](/serverless-workers/aws-lambda#high-availability): existing invocations finish on their own.
-- [GCP Cloud Run](/serverless-workers/cloud-run#high-availability): the WCI scales pools that no longer serve the active
-  region to zero.
-
-### Namespace and compute outages
-
-Serverless Workers follow Namespace failover; there is no separate Worker failover operation. Temporal Cloud's
-automatic failover monitors Temporal Cloud health. A failure limited to Lambda, Cloud Run, or your application does not
-automatically trigger Namespace failover.
-
-Regional Serverless compute supports Active/Passive recovery. Configure each Worker Deployment Version that must
-continue serving work, including versions used by pinned Workflows. For setup, testing, and provider outage recovery,
-see the provider guide:
-
-- [Configure high availability on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda/high-availability)
-- [Configure high availability on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run/high-availability)
-
 ## Constraints {/* #constraints */}
 
 | Constraint        | Detail                                                                                                                                                                                                                                                          |
@@ -348,7 +285,7 @@ see the provider guide:
 | Worker code       | Depends on the compute provider. AWS Lambda uses a serverless Worker package for your SDK. Amazon Bedrock AgentCore Runtime and GCP Cloud Run run standard long-lived Temporal Workers inside provider-specific runtime infrastructure. |
 | Versioning        | [Worker Versioning](/worker-versioning) is required. Each Workflow must have an `AutoUpgrade` or `Pinned` behavior, set per-Workflow or as a Worker-level default. See [Worker Versioning](/worker-versioning) for rollout strategies such as ramping, and [Worker Versioning with Serverless Workers](#worker-versioning-with-serverless-workers) for how Worker Deployment Versions map to compute provider primitives. |
 | Multi-cloud Replication | Serverless Workers do not support [Multi-cloud Replication](/cloud/high-availability#multi-cloud-replication). They must be invoked from the same cloud provider where the Namespace is currently active. After a failover to a different cloud provider, Serverless Workers can no longer be invoked. This is a temporary restriction during Public Preview. |
-| Multi-region Replication | Regional compute configurations let Workers follow Namespace failover within the same cloud provider. Default configurations keep targeting their original compute resources. See [High Availability](#high-availability). |
+| Multi-region Replication | Regional compute configurations let Workers follow Namespace failover within the same cloud provider. Default configurations keep targeting their original compute resources. See [High Availability for Serverless Workers](/serverless-workers/high-availability). |
 
 ## Worker Versioning with Serverless Workers {/* #worker-versioning-with-serverless-workers */}
 

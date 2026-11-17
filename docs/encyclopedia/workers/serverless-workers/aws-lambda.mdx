@@ -140,7 +140,7 @@ see
 
 ## High Availability {/* #high-availability */}
 
-With [regional compute configurations](/serverless-workers#high-availability), each region's Lambda function serves the
+With [regional compute configurations](/serverless-workers/high-availability), each region's Lambda function serves the
 same Worker Deployment Version. After Namespace failover, the WCI invokes the function selected for the newly active
 region. Each function uses a qualified ARN pointing at an immutable copy of the same Worker build.
 
