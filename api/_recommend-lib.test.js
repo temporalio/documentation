@@ -30,7 +30,7 @@ const external = {
 const compiledRedirects = compileRedirects([{ source: '/old-versioning', destination: '/develop/python/workflows/versioning' }]);
 
 const hit = (url, content = 'passage') => ({ content, source_url: url });
-const cards = (results, limit = 10, sdk = null) => toCards(results, { allowlist, manifest, external, compiledRedirects, limit, sdk });
+const cards = (results, limit = 10, sdk = null, os = null) => toCards(results, { allowlist, manifest, external, compiledRedirects, limit, sdk, os });
 const utm = (url) => `${url}${url.includes('?') ? '&' : '?'}utm_source=${UTM_SOURCE}`;
 
 describe('parseParams', () => {
@@ -272,6 +272,38 @@ describe('toCards', () => {
     ]);
     assert.strictEqual(out.length, 3);
     for (const card of out) assert.strictEqual(new URL(card.url).searchParams.get('utm_source'), UTM_SOURCE, card.url);
+  });
+
+  it('adds language and os to docs cards when the caller sent them', () => {
+    const { cards: out } = cards([hit(`${DOCS}/guides/route-specialized-workloads`)], 10, 'python', 'macos');
+    const url = new URL(out[0].url);
+    assert.strictEqual(url.searchParams.get('language'), 'python');
+    assert.strictEqual(url.searchParams.get('os'), 'macos');
+    assert.strictEqual(url.searchParams.get('utm_source'), UTM_SOURCE);
+  });
+
+  it('adds only the parameters that were sent', () => {
+    const [onlySdk] = cards([hit(`${DOCS}/workflows`)], 10, 'go').cards;
+    assert.strictEqual(onlySdk.url, `${DOCS}/workflows?utm_source=${UTM_SOURCE}&language=go`);
+    const [onlyOs] = cards([hit(`${DOCS}/workflows`)], 10, null, 'linux').cards;
+    assert.strictEqual(onlyOs.url, `${DOCS}/workflows?utm_source=${UTM_SOURCE}&os=linux`);
+    const [neither] = cards([hit(`${DOCS}/workflows`)]).cards;
+    assert.strictEqual(neither.url, `${DOCS}/workflows?utm_source=${UTM_SOURCE}`);
+  });
+
+  it('keeps language and os off blog and Learn cards', () => {
+    const { cards: out } = cards(
+      [hit('https://learn.temporal.io/tutorials/python/build-a-data-pipeline/'), hit('https://temporal.io/blog/trading-airflow-emr-temporal-bauplan-mediaset')],
+      10,
+      'python',
+      'macos',
+    );
+    for (const card of out) {
+      const params = new URL(card.url).searchParams;
+      assert.strictEqual(params.get('utm_source'), UTM_SOURCE);
+      assert.strictEqual(params.has('language'), false, card.url);
+      assert.strictEqual(params.has('os'), false, card.url);
+    }
   });
 
   it('moves pages for another SDK after the rest, without dropping them', () => {

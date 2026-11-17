@@ -24,6 +24,13 @@ const USAGE =
 // Appended to every card URL so visits from the panel show up in analytics.
 const UTM_SOURCE = 'recommendation';
 
+// The docs site's language and OS tab groups (groupId="language" and "os") read
+// these query parameters and select that tab, so a docs card opens on the user's
+// SDK and operating system. Pages without those tabs ignore them. The sdk and os
+// values are already the tab values. Blog and Learn pages have no such tabs.
+const LANGUAGE_PARAM = 'language';
+const OS_PARAM = 'os';
+
 // The sdk values match the folder names under docs/develop. Anything else a
 // caller sends is mapped through SDK_ALIASES or ignored: these are hints, so an
 // unexpected value shouldn't fail the request.
@@ -139,7 +146,7 @@ function externalKey(url) {
 // Kapa may have indexed a docs page under an old URL, so its path goes through
 // the vercel.json redirects (via toMarkdownUrl) before the lookup. Anchors are
 // dropped: a card links to the page, not to the passage that matched.
-function toCards(results, { allowlist, manifest, external = {}, compiledRedirects, limit, sdk = null }) {
+function toCards(results, { allowlist, manifest, external = {}, compiledRedirects, limit, sdk = null, os = null }) {
   const cards = [];
   const otherSdk = new Set();
   const seen = new Set();
@@ -176,12 +183,18 @@ function toCards(results, { allowlist, manifest, external = {}, compiledRedirect
   }
 
   const ordered = otherSdk.size ? [...cards.filter((card) => !otherSdk.has(card)), ...cards.filter((card) => otherSdk.has(card))] : cards;
-  return { cards: ordered.slice(0, limit).map(withUtm), total: cards.length, skipped };
+  return { cards: ordered.slice(0, limit).map((card) => withParams(card, { sdk, os })), total: cards.length, skipped };
 }
 
-function withUtm(card) {
+// utm_source goes on every card. language and os go on docs cards only, and only
+// when the caller sent them.
+function withParams(card, { sdk, os }) {
   const url = new URL(card.url);
   url.searchParams.set('utm_source', UTM_SOURCE);
+  if (url.hostname === DOCS_HOST) {
+    if (sdk) url.searchParams.set(LANGUAGE_PARAM, sdk);
+    if (os) url.searchParams.set(OS_PARAM, os);
+  }
   return { ...card, url: url.toString() };
 }
 
@@ -192,6 +205,8 @@ module.exports = {
   LIMITS,
   MAX_LIMIT,
   USAGE,
+  LANGUAGE_PARAM,
+  OS_PARAM,
   UTM_SOURCE,
   buildQuery,
   parseParams,

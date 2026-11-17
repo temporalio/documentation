@@ -184,6 +184,7 @@ module.exports = async (request, response) => {
       compiledRedirects,
       limit: parsed.params.limit,
       sdk: parsed.params.sdk,
+      os: parsed.params.os,
     });
     record.fetched_count = results.length;
     record.skipped_count = skipped;

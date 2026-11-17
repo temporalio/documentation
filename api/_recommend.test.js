@@ -256,6 +256,18 @@ describe('user context', () => {
     assert.deepStrictEqual(res.body.cards.map((card) => card.title), ['Versioning - Python SDK', 'Versioning - Java SDK']);
   });
 
+  it('opens docs cards on the user\'s SDK and OS', async () => {
+    kapaResults([
+      { content: 'a', source_url: `${DOCS}/workflows` },
+      { content: 'b', source_url: 'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/' },
+    ]);
+    const res = await call('?q=workflows&sdk=python&os=windows');
+    assert.deepStrictEqual(res.body.cards.map((card) => card.url), [
+      `${DOCS}/workflows?utm_source=recommendation&language=python&os=windows`,
+      'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/?utm_source=recommendation',
+    ]);
+  });
+
   it('ignores values it does not know and still answers', async () => {
     kapaResults([{ content: 'a', source_url: `${DOCS}/workflows` }]);
     const res = await call('?q=workflows&sdk=cobol&os=beos');

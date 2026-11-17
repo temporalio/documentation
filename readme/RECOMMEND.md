@@ -50,7 +50,9 @@ most relevant first:
 - `count` is how many distinct pages Kapa found that have a card, before `limit` cut the list. Kapa returns at most 15
   passages, so `count` is at most 15. It isn't the number of pages in the docs that match the topics. Use it to tell
   whether a Refresh or "show more" has anything left to show.
-- Every `url` ends in `?utm_source=recommendation`, for docs, blog, and Learn pages. Strip the query string to get the
+- Every `url` has `utm_source=recommendation`, for docs, blog, and Learn pages. A docs `url` also has `language=<sdk>`
+  and `os=<os>` when the request sent a recognized `sdk` and `os`, so the page opens on the user's tabs (see
+  [Opening docs pages on the user's tabs](#opening-docs-pages-on-the-users-tabs)). Strip the query string to get the
   canonical page URL.
 - `cards` can hold fewer than `limit` cards, or none (`{ "count": 0, "cards": [] }`). Results that have no title and
   description on record are dropped.
@@ -73,6 +75,24 @@ blog post that uses Java.
 `sdk` and `os` accept common spellings (`.NET`, `golang`, `node`, `darwin`, `mac`) in any case. A value that isn't
 recognized is ignored and the request still succeeds, so a hint in an unexpected form never breaks the panel. The
 mapping is in `api/_recommend-lib.js`.
+
+### Opening docs pages on the user's tabs
+
+Many docs pages show a different code sample or command per SDK or operating system in a tab group. Docusaurus reads a
+group's selection from the URL when the group has `queryString` set, so a docs card's `url` carries the user's context:
+
+```
+https://docs.temporal.io/develop/python/set-up-your-local-python?utm_source=recommendation&language=python&os=macos
+```
+
+- `language` selects the tab in `groupId="language"` groups and `os` the tab in `groupId="os"` groups. Every tab in the
+  group on the page switches together. The values are the same `sdk` and `os` values the request accepts.
+- A page without such a group ignores the parameters. Blog and Learn pages don't get them.
+- The selection applies to that page view only. It isn't saved for later pages unless the user clicks a tab.
+- Hand-written language tabs are keyed on the SDK name (`python`, `typescript`, `go`, `java`, `dotnet`). Pages that use
+  `SdkTabs` are keyed on short codes (`py`, `ts`, `rb`, `rs`), so `SdkTabs` rewrites `language=python` to `language=py`
+  on load (`src/components/elements/Sdk/SdkTabs.js`). When a tab group is added with a new value, make it match the SDK
+  name.
 
 ### What the endpoint can't provide
 
