@@ -184,7 +184,9 @@ You also want to make sure you understand how your Activities are going to work 
 Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#activity-behavior-across-versions)
 for more details.
 
-If you run [Serverless Workers](/serverless-workers), each Worker Deployment Version's compute provider points at a
-specific Lambda function. In production, configure it with a qualified versioned ARN so Pinned Workflows remain truly
-pinned to the code they started against, regardless of whether your default behavior is Pinned or Auto-Upgrade. See
-[Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers).
+For [Serverless Workers on AWS Lambda](/serverless-workers/aws-lambda), configure each
+[scaling group's](/serverless-workers#scaling-groups) compute provider with a qualified versioned function ARN. All
+regional targets for a Worker Deployment Version must contain the same immutable Worker build, so Pinned Workflows
+keep running the code they started with. See
+[Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers) for other
+compute providers.

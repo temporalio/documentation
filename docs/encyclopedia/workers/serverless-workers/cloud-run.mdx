@@ -83,10 +83,11 @@ but the periodic re-sizing scales the pool up regardless.
 
 ## Worker Versioning {/* #worker-versioning */}
 
-Serverless Workers require [Worker Versioning](/worker-versioning). Create one Worker Pool for each Worker Deployment
-Version, and carry the Build ID in the pool name.
+Serverless Workers require [Worker Versioning](/worker-versioning). Create a separate Worker Pool for each Worker
+Deployment Version in each compute region, and carry the Build ID in the pool name. Regional pools for the same version
+must run the same Worker build.
 
-The compute configuration names a project, region, and Worker Pool. It does not name a
+Each [scaling group's](/serverless-workers#scaling-groups) compute provider names a project, region, and Worker Pool. It does not name a
 [revision](https://cloud.google.com/run/docs/managing/revisions), so Temporal runs whichever revision the pool serves at
 the time. That ties a pool to one build, and a new build needs a new pool.
 

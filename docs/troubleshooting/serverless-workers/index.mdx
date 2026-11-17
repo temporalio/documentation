@@ -33,6 +33,10 @@ Every provider follows the same overall shape:
    signals the WCI when a Task arrives with no Worker free to take it.
 5. Work arrives, the WCI starts compute, and the Worker processes Tasks.
 
+For regional compute configurations, also check the version's
+[scaling groups](/serverless-workers#scaling-groups). A group must match the Namespace's active region, or an unscoped
+default must apply. A running WCI does not by itself show that compute is configured for the active region.
+
 How the WCI starts compute is where providers differ, and so is most of the diagnosis. On AWS Lambda the WCI invokes a
 function per unit of work. On GCP Cloud Run it resizes a long-lived Worker Pool. Pick your provider:
 
