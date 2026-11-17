@@ -470,12 +470,15 @@ class LoyaltyEntityWorkflow:
         self._pending_signals: deque[PointsEvent] = deque(self._state.pending_events)
         self._state.pending_events = []
 
+        self._redemptions_in_flight: set[str] = set()
         self._shutdown_requested: bool = False
 ```
 
 The @workflow.init decorator ensures this runs before any Signal or Update handler, preventing race conditions with Signal-with-Start. If this is the first time the Workflow has run, the state is initialized with an empty string, and the value of `customer_id` is set in `workflow.run`. If not, the Workflow is initiated as a Continue-As-New, and the customer ID is persisted. 
 
 After the initial state, the Signal queue is handled. Any events carried over from before the Continue-As-New are loaded into the `_pending_signals` queue, and `pending_events` is cleared.
+
+`_redemptions_in_flight` holds the event IDs of redemptions that are still being recorded. It doesn't need to carry across a Continue-As-New, because the Workflow waits for all handlers to finish before it transitions.
 
 With the initialization handled, it's time to add the main loop of the Entity Workflow. This method, and the rest of the methods in this step, go inside the `LoyaltyEntityWorkflow` class, after `__init__`:
 
@@ -591,6 +594,13 @@ After the Queries, add the Update handler to the class. There's only one Update,
                 reward=request.reward,
             )
 
+        if request.event_id in self._redemptions_in_flight:
+            raise ApplicationError(
+                f"Redemption {request.event_id} is already in progress",
+                type="RedemptionInProgress",
+                non_retryable=True,
+            )
+
         if not self._state.is_active:
             raise ApplicationError(
                 "Cannot redeem points: account is inactive",
@@ -607,6 +617,7 @@ After the Queries, add the Update handler to the class. There's only one Update,
             )
 
         self._state.points_balance -= request.points
+        self._redemptions_in_flight.add(request.event_id)
 
         try:
             await workflow.execute_activity(
@@ -627,6 +638,8 @@ After the Queries, add the Update handler to the class. There's only one Update,
                 type="RedemptionNotRecorded",
                 non_retryable=True,
             ) from err
+        finally:
+            self._redemptions_in_flight.discard(request.event_id)
 
         self._state.processed_event_ids.append(request.event_id)
         self._trim_processed_ids()
@@ -648,11 +661,13 @@ After the Queries, add the Update handler to the class. There's only one Update,
 
 The Update starts with the idempotency check. If the `event_id` has already been processed, the Update returns a `RedemptionResult` with the current balance and doesn't process the redemption again. This check comes first so that a client retrying a redemption that already went through gets a result, not an `InsufficientPoints` error if the balance has since dropped below the requested amount.
 
+The second check rejects a redemption whose `event_id` is still being recorded. That happens when a client's `execute_update` call times out while `record_redemption` is still retrying, and the client sends the request again. The event ID isn't in the processed list yet, so without this check the second request would deduct the points a second time. Once the first request finishes, a retry with the same `event_id` gets the original result.
+
 Next, if the account is inactive or has insufficient points for the redemption, the Update raises an application error.
 
 After that is the subtraction that deducts the redeemed points. The Update then records the event, adds the event ID to the list of processed events, logs the event as processed, and returns the result.
 
-The Update deducts the points before it calls `record_redemption`, which reserves them. The handler waits while the Activity runs, and another redemption can start in that time. Because the balance is already lower, the second redemption's balance check can't spend the same points. If `record_redemption` fails after all its retries, the Update adds the points back and raises a `RedemptionNotRecorded` error to the caller. The event ID isn't added to the processed list, so the caller can retry the redemption with the same `event_id`.
+The Update deducts the points before it calls `record_redemption`, which reserves them. The handler waits while the Activity runs, and another redemption can start in that time. Because the balance is already lower, the second redemption's balance check can't spend the same points. The Update also adds the event ID to `_redemptions_in_flight` before the Activity starts and removes it when the Activity finishes, whether it succeeds or fails. If `record_redemption` fails after all its retries, the Update adds the points back and raises a `RedemptionNotRecorded` error to the caller. The event ID isn't added to the processed list, so the caller can retry the redemption with the same `event_id`.
 
 The `redeem_points` Update calls the `record_redemption` Activity directly via `await` rather than enqueuing it for the main loop. The Python and TypeScript SDKs support `async` Update handlers, making this safe. The trade-off keeps redemption logic self-contained and returns the confirmed result to the caller in a single round trip. It is safe here because `record_redemption` is idempotent — a replay detects the duplicate `event_id` and returns without creating a second record. If you are using the Java SDK, Update handlers cannot be `async`; enqueue the work for the main loop instead.
 
@@ -668,7 +683,7 @@ Next, add an [Update Validator](/handling-messages#update-validators) to the cla
             )
 ```
 
-The Validator runs before the Update is accepted into Event History. Rejection here (because the redemption amount is negative) writes no Event.
+The Validator runs before the Update is accepted into Event History. Rejection here (because the redemption amount isn't positive) writes no Event.
 
 Now add the method that processes the events to the class:
 
@@ -1086,10 +1101,11 @@ Continue-As-New lets this same Workflow run indefinitely without its Event Histo
 
 Continue-As-New allows an Entity Workflow to run for years without unbounded history. When `workflow.info().is_continue_as_new_suggested()` returns `True`, the history is approaching the suggested threshold (~4,096 Events).
 
-The `LoyaltyEntityWorkflow` checks this flag in two places:
+The `LoyaltyEntityWorkflow` checks this flag in three places:
 
-1. **In the main wait condition.** The Workflow wakes up even if no Signals are pending, handling the case where history has grown during idle periods.
+1. **In the main wait condition.** The Workflow wakes up even if no Signals are pending, handling the case where Updates have grown the history while the Signal queue was empty.
 2. **After processing each event.** Avoids processing an entire batch before detecting an oversized history.
+3. **After the queue loop ends.** If the flag is set, the Workflow calls `_do_continue_as_new` instead of waiting again.
 
 The `_do_continue_as_new` method handles the transition in three steps:
 
@@ -1268,23 +1284,27 @@ In `_do_continue_as_new`, check `is_target_worker_deployment_version_changed()` 
 ```python
 from temporalio.workflow import ContinueAsNewVersioningBehavior
 
-async def _do_continue_as_new(self) -> None:
-    MAX_PENDING_CARRY = 500
-    while len(self._pending_signals) > MAX_PENDING_CARRY:
-        event = self._pending_signals.popleft()
-        await self._process_points_event(event)
 
-    self._state.pending_events = list(self._pending_signals)
-    await workflow.wait_condition(workflow.all_handlers_finished)
+class LoyaltyEntityWorkflow:
+    ...
 
-    initial_versioning_behavior = None
-    if workflow.info().is_target_worker_deployment_version_changed():
-        # Newer build available — upgrade on this CaN boundary.
-        initial_versioning_behavior = ContinueAsNewVersioningBehavior.AUTO_UPGRADE
+    async def _do_continue_as_new(self) -> None:
+        MAX_PENDING_CARRY = 500
+        while len(self._pending_signals) > MAX_PENDING_CARRY:
+            event = self._pending_signals.popleft()
+            await self._process_points_event(event)
 
-    workflow.continue_as_new(
-        self._state, initial_versioning_behavior=initial_versioning_behavior
-    )
+        self._state.pending_events = list(self._pending_signals)
+        await workflow.wait_condition(workflow.all_handlers_finished)
+
+        initial_versioning_behavior = None
+        if workflow.info().is_target_worker_deployment_version_changed():
+            # Newer build available — upgrade on this CaN boundary.
+            initial_versioning_behavior = ContinueAsNewVersioningBehavior.AUTO_UPGRADE
+
+        workflow.continue_as_new(
+            self._state, initial_versioning_behavior=initial_versioning_behavior
+        )
 ```
 
 When `is_target_worker_deployment_version_changed()` is `False`, the CaN run stays on the same pinned build. This flag is refreshed after each Workflow Task, so upgrades are picked up on the next natural CaN boundary.
