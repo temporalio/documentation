@@ -30,7 +30,7 @@ For details on setting up metrics in your Temporal Service configuration, see th
 The [dashboards repository](https://github.com/temporalio/dashboards) contains community-driven Grafana dashboard templates that you can use as a starting point for monitoring the Temporal Service and SDK metrics.
 For any metrics that are missing in the dashboards, use [metric_defs.go](https://github.com/temporalio/temporal/blob/main/common/metrics/metric_defs.go) as a reference.
 
-In addition to the metrics the Temporal Service emits, monitor infrastructure metrics such as CPU, memory, and network for every host that runs a Temporal Service service.
+In addition to the metrics the Temporal Service emits, monitor infrastructure metrics such as CPU, memory, and network for every host that runs a Temporal Service.
 
 Each metric on this page lists its type:
 
