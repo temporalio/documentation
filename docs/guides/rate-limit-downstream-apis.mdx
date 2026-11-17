@@ -59,7 +59,7 @@ Task Queues in Temporal are dynamically created when first referenced. Rate limi
 
 The Python SDK provides three rate limiting controls:
 
-1. **max_task_queue_activities_per_second** (global): Limits how many Activity Tasks the Temporal Service dispatches per second across ALL Workers on this queue. Each retry attempt counts as a new dispatch. Best for API rate limits. Last value wins. It doesn't limit how many Activities run at once.
+1. **max_task_queue_activities_per_second** (global): Limits how many Activity Tasks the Temporal Service dispatches per second across ALL Workers on this queue. Each retry attempt counts as a new dispatch. Best for API rate limits. The last Worker value wins, unless an operator set the rate with `temporal task-queue config set` (see [CLI commands for operators](#cli-commands-for-operators)). It doesn't limit how many Activities run at once.
 
 2. **max_activities_per_second** (per-worker): Limits Activities per Worker. Can be combined with global limit for finer control.
 
