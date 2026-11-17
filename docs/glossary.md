@@ -348,7 +348,7 @@ passive Clusters, for backup and state reconstruction.
 
 #### [Multi-cloud Replication](/cloud/high-availability/enable)
 
-Multi-cloud Replication replicates Workflows and metadata to a different cloud provider (AWS or GCP). This is
+Multi-cloud Replication replicates Workflows and metadata to a different cloud provider. This is
 particularly beneficial for organizations required to be highly available across regions for compliance purposes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->

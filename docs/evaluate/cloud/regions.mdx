@@ -3,10 +3,12 @@ id: regions
 title: Service regions
 sidebar_label: Service regions
 toc_max_heading_level: 3
-description: Supported AWS and GCP regions for Temporal Cloud Namespaces, any current restrictions on creating them, and how region choice affects latency to your Workers.
+description: Supported AWS, GCP, and Azure regions for Temporal Cloud Namespaces, with access restrictions, replica options, and guidance on Worker latency.
 tags:
   - Temporal Cloud
 ---
+
+import { ReleaseNoteHeader } from '@site/src/components';
 
 You can reach Temporal Cloud from anywhere with Internet connectivity, wherever your Namespaces are located, and your applications can run in the cloud environment or data center of your choice.
 Create Namespaces in a region close to where you host your Workers to reduce latency.
@@ -73,3 +75,33 @@ See [GCP capacity restriction](#gcp-capacity-restriction).
 import GCPRegions from '@site/docs/cloud/references/regions/gcpregions.md';
 
 <GCPRegions />
+
+## Azure service regions
+
+<ReleaseNoteHeader featureName="azure">
+  Temporal Cloud on Azure is available with rolling access for production workloads.
+  The [Temporal Cloud SLA](https://temporal.io/sla) applies during Azure Public Preview.
+</ReleaseNoteHeader>
+
+To create Azure Namespaces or add Azure replicas, request access by [creating a support ticket](/evaluate/cloud/support#support-ticket) with Temporal Dev Success.
+Include your required regions, expected Actions per second (APS), number of Namespaces, and workload requirements.
+Temporal reviews your capacity needs before enabling Azure regions for your account.
+Azure regions do not appear in your account until access is enabled.
+Access and capacity increases are subject to available capacity.
+After access is enabled, create and manage Azure Namespaces in the Temporal Cloud Web UI, the [Temporal CLI Cloud extension](/cli/cloud), the [Cloud Ops API](/ops), or the [Terraform provider](/cloud/terraform-provider).
+[Pricing](/cloud/pricing) for Azure Namespaces is the same as for AWS and GCP.
+
+Azure Public Preview differs from the standard [Public Preview](/evaluate/product-release-stages#public-preview) stage in two ways:
+
+- **Access is gated.** Azure regions are enabled per account after a capacity review, rather than being available to everyone.
+- **The SLA applies.** The [Temporal Cloud SLA](https://temporal.io/sla) covers Azure Namespaces during Public Preview.
+
+### Azure functionality differences
+
+- **CLI:** `tcld` does not support Azure Namespace management. Use the [Temporal CLI Cloud extension](/cli/cloud) instead.
+- **Private Link service aliases:** Aliases are account-specific and provided by Temporal Dev Success. They are not published and cannot be retrieved programmatically through the Cloud Ops API, Temporal CLI, or Terraform. See [Azure Private Link](/cloud/connectivity/azure-connectivity).
+- **Audit Logs:** An Azure-native streaming sink is not available. Audit events for Azure are included in the overall audit log, and can be accessed via the [Web UI](/cloud/audit-logs), [Cloud Ops API](/ops), or streamed to your existing [AWS Kinesis or GCP Pub/Sub sink](/cloud/audit-logs#configure-audit-logs).
+
+import AzureRegions from '@site/docs/cloud/references/regions/azureregions.md';
+
+<AzureRegions />
