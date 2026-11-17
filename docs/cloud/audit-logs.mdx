@@ -200,6 +200,8 @@ Temporal provides the caller IP address in that format to allow customers to ide
 ## How to configure an audit log integration {/* #configure-audit-logs */}
 
 Audit Logs can be configured in AWS Kinesis or GCP Pub/Sub.
+All Azure audit events are included in existing Audit Logs, including AWS Kinesis and GCP Pub/Sub sinks.
+An Azure-native streaming sink is not available during the [Azure public preview](/evaluate/cloud/regions#azure-service-regions).
 
 - [AWS Kinesis Instructions](/cloud/audit-logs-aws)
 - [GCP Pub/Sub Instructions](/cloud/audit-logs-gcp)
