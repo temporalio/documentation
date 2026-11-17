@@ -9,4 +9,5 @@ export const FEATURE_RELEASE_TYPES = {
   serverlessWorkersCloudRun: "publicPreview",
   externalStorage: "publicPreview",
   projects: "prerelease",
+  payloadEncryptionValidation: "prerelease",
 };
