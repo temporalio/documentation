@@ -48,11 +48,10 @@ For how Temporal Cloud handles each type of outage, see [Outages and Recovery Ob
 
 ## Historical recovery time achieved in past incidents
 
-From September 1 through October 14, 2026, five publicly reported incidents involved
+From September 1 through October 14, 2026, three outages triggered an
 [automatic failover](/cloud/high-availability/failovers#automatic-failover) of High Availability Namespaces.
-The median of the reported average recovery times was 3 minutes 15 seconds, excluding incidents marked N/A.
-The worst recovery time was 18 minutes, below the 20-minute RTO.
-Three incidents had no operational impact to those Namespaces, including one where proactive failover prevented impact.
+The median recovery time was 3 minutes 15 seconds, and the worst recovery time was 18 minutes.
+In these outages, all eligible Namespaces achieved a recovery time below Temporal's 20-minute RTO.
 See [incident details and measurement methodology](/cloud/rpo-rto#recovery-time-achieved-from-automatic-failover-in-past-incidents).
 
 ## Latency {/* #latency */}
