@@ -93,10 +93,13 @@ function parseParams(searchParams) {
   };
 }
 
-// The text sent to Kapa: the topics first, then what we know about the user as
-// plain words, because Kapa matches by meaning. The context only nudges results.
-function buildQuery({ q, usecase = null, sdk = null, os = null }) {
-  return [q, usecase && `for ${usecase}`, sdk && `using the ${SDK_NAMES[sdk]} SDK`, os && `on ${OS_NAMES[os]}`].filter(Boolean).join(' ');
+// The text sent to Kapa: the topics first, then the user's SDK in parentheses.
+// Kapa matches by meaning, so "using the Python SDK" swamps the topic with
+// SDK setup pages, while a parenthetical keeps the topic and adds SDK pages. os
+// is left out for the same reason (it pulls in "Set up a local environment"
+// pages). It's still parsed and logged. The context only nudges results.
+function buildQuery({ q, usecase = null, sdk = null }) {
+  return [q, usecase && `for ${usecase}`, sdk && `(${SDK_NAMES[sdk]})`].filter(Boolean).join(' ');
 }
 
 // The SDK a docs page belongs to, from /develop/<sdk>/..., or null.

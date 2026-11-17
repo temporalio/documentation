@@ -112,16 +112,18 @@ describe('buildQuery', () => {
     assert.strictEqual(buildQuery({ q: 'data pipelines' }), 'data pipelines');
   });
 
-  it('adds the context as words after the topics', () => {
-    assert.strictEqual(
-      buildQuery({ q: 'data pipelines', usecase: 'data pipeline', sdk: 'dotnet', os: 'macos' }),
-      'data pipelines for data pipeline using the .NET SDK on macOS',
-    );
+  it('adds the use case, then the SDK in parentheses', () => {
+    assert.strictEqual(buildQuery({ q: 'data pipelines', usecase: 'data pipeline', sdk: 'dotnet' }), 'data pipelines for data pipeline (.NET)');
   });
 
   it('skips the parts that are missing', () => {
-    assert.strictEqual(buildQuery({ q: 'x', sdk: 'python' }), 'x using the Python SDK');
-    assert.strictEqual(buildQuery({ q: 'x', os: 'linux' }), 'x on Linux');
+    assert.strictEqual(buildQuery({ q: 'x', sdk: 'python' }), 'x (Python)');
+    assert.strictEqual(buildQuery({ q: 'x', usecase: 'SDLC' }), 'x for SDLC');
+  });
+
+  it('leaves os out of the query', () => {
+    assert.strictEqual(buildQuery({ q: 'x', sdk: 'go', os: 'windows' }), 'x (Go)');
+    assert.strictEqual(buildQuery({ q: 'x', os: 'linux' }), 'x');
   });
 });
 

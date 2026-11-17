@@ -231,10 +231,10 @@ describe('cards', () => {
 });
 
 describe('user context', () => {
-  it('adds sdk, usecase, and os to the Kapa query', async () => {
+  it('adds the use case and SDK to the Kapa query, not os', async () => {
     kapaResults([]);
     await call('?q=data+pipelines&sdk=python&usecase=data+pipeline&os=macos');
-    assert.strictEqual(kapaCalls[0].body.query, 'data pipelines for data pipeline using the Python SDK on macOS');
+    assert.strictEqual(kapaCalls[0].body.query, 'data pipelines for data pipeline (Python)');
   });
 
   it('logs the context and keeps the clean URL in top_pages', async () => {

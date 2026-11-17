@@ -20,7 +20,7 @@ GET https://docs.temporal.io/api/recommend?q=<topics>&sdk=<sdk>&usecase=<text>&o
 | `q` | Yes | 500 characters (400 if longer) | The topics as text, such as `Python data pipelines getting started`. Kapa searches by meaning, so the caller joins its topic chips into one string |
 | `sdk` | No | One of `python`, `ruby`, `rust`, `dotnet`, `java`, `typescript`, `php`, `go` (ignored otherwise) | The SDK the user works in. A hint, not a filter. See [How the user context is used](#how-the-user-context-is-used) |
 | `usecase` | No | 100 characters (cut) | What the user is building, in plain words, such as `data pipeline`, `AI agent`, or `SDLC`. The list isn't fixed |
-| `os` | No | `windows`, `linux`, or `macos` (ignored otherwise) | The user's operating system. A hint, not a filter |
+| `os` | No | `windows`, `linux`, or `macos` (ignored otherwise) | The user's operating system. Logged only for now, because adding it to the search text made results worse |
 | `limit` | No | Whole number from 1 to 10, default 6 (400 otherwise) | The most cards to return. Ask for more than the panel shows, so a dismissed card can be replaced without another request |
 | `src` | No | 32 characters (cut) | Which surface called. Defaults to `cloud-ui`. Logged only |
 | `agent` | No | 64 characters (cut) | The caller's name. Logged and sent to Kapa as the client name |
@@ -62,11 +62,13 @@ most relevant first:
 `sdk`, `usecase`, and `os` are hints. They don't filter anything, so a Python user can still get a design pattern or a
 blog post that uses Java.
 
-1. They are added to the text sent to Kapa after the topics, as plain words. `q=data pipelines`, `usecase=data pipeline`,
-   `sdk=dotnet`, and `os=macos` search for `data pipelines for data pipeline using the .NET SDK on macOS`.
+1. `usecase` and `sdk` are added to the text sent to Kapa after the topics. `q=data pipelines`, `usecase=data pipeline`,
+   and `sdk=dotnet` search for `data pipelines for data pipeline (.NET)`. The SDK goes in parentheses because phrasing
+   such as "using the Python SDK" made Kapa return SDK setup pages and lose the topic. `os` is not added to the query,
+   for the same reason: it pulled in "Set up a local development environment" pages. It's parsed and logged only.
 1. When `sdk` is set, docs pages under `/develop/<another-sdk>/` move after the other cards. Blog posts, Learn pages,
-   guides, references, and the requested SDK's pages keep Kapa's order, and nothing is dropped. `usecase` and `os` change
-   only the search text.
+   guides, references, and the requested SDK's pages keep Kapa's order, and nothing is dropped. `usecase` changes only the
+   search text, and `os` changes nothing yet.
 
 `sdk` and `os` accept common spellings (`.NET`, `golang`, `node`, `darwin`, `mac`) in any case. A value that isn't
 recognized is ignored and the request still succeeds, so a hint in an unexpected form never breaks the panel. The
