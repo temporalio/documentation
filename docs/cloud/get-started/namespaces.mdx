@@ -215,6 +215,14 @@ To create a Namespace in Temporal Cloud, gather the following information:
   [Securing your data](/production-deployment/data-encryption).
 - [Permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) for each user.
 
+<ReleaseNoteHeader featureName="azure">
+
+Before creating an Azure Namespace, [request account access](/evaluate/cloud/regions#azure-service-regions) through Temporal Dev Success.
+For API and CLI requests, use `azure-centralus` or `azure-australiaeast` as the region identifier.
+Use the [Temporal CLI Cloud extension](/cli/cloud) for Azure Namespace management; `tcld` is not supported.
+
+</ReleaseNoteHeader>
+
 :::caution GCP capacity restriction
 
 You can create GCP Namespaces in Mumbai (`asia-south1`), Jakarta (`asia-southeast2`), Northern Virginia (`us-east4`), and Oregon (`us-west1`) without an account exception.
