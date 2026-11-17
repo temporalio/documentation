@@ -94,7 +94,7 @@ The standard single-region setup creates one group named `default`, pointing at 
 Worker Pool. The compute resource has a region: the AWS region in the function ARN, or the GCP region of the pool.
 That compute region can differ from the Namespace's active region within the same cloud provider.
 
-By default, the single-region UI and CLI setup leave the group's region scope unset. With only this unscoped group, the
+By default, a single-region setup leaves the group's region scope unset. With only this unscoped group, the
 [Worker Controller Instance (WCI)](#worker-controller-instance) uses its compute target regardless of which region in
 the same cloud provider is active for the Namespace. The group does not inherit a restriction from the Namespace's
 current region.
@@ -117,9 +117,6 @@ scaling settings. See [Autoscaling](#autoscaling) for the behavior of each provi
 For regional failover, add a group whose region scope matches the Namespace's replica region and whose compute target
 is deployed there. When that region becomes active, the WCI uses the matching group instead of the unscoped
 group. See [High Availability](#high-availability) for selection rules and setup guides.
-
-In the Temporal Cloud UI, configuring compute under the replica's region card supplies that region association for
-you. In the CLI, use `--region-id` to specify it.
 
 The CLI's `--scaling-group` flag selects an entry by name. A group named `default` can also have an explicit region
 scope; the name does not determine its scope or the compute resource's location.
