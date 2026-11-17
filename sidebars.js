@@ -1425,6 +1425,7 @@ module.exports = {
           items: [
             'cloud/connectivity/aws-connectivity',
             'cloud/connectivity/gcp-connectivity',
+            'cloud/connectivity/azure-connectivity',
             'cloud/connectivity/ip-addresses',
           ],
         },
