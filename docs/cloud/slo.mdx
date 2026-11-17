@@ -31,7 +31,7 @@ For the regions you can run in, see [Service regions](/evaluate/cloud/regions); 
 | [Latency](#latency)                                     | Worker requests, p99 per region                                                                                                                 | 200ms                                                 | SLO             |
 | [Visibility API availability](#visibility-availability) | List and Count requests, rolling 30-day window                                                                                                  | 99.5%                                                 | SLO             |
 | [Cloud Ops API availability](/ops#availability)         | HTTP and gRPC requests, monthly                                                                                                                 | 99.99%                                                | SLO             |
-| [Recovery Time Objective (RTO)](/cloud/rpo-rto)         | Namespaces using High Availability with automatic failover, for the [outage types their replication covers](/cloud/rpo-rto#rto-and-rpo-summary) | Under 20 minutes                                      | Objective       |
+| [Recovery Time Objective (RTO)](#historical-recovery-time-achieved-in-past-incidents) | Namespaces using High Availability with automatic failover, for the [outage types their replication covers](/cloud/rpo-rto#rto-and-rpo-summary) | Under 20 minutes                                      | Objective       |
 | [Recovery Point Objective (RPO)](/cloud/rpo-rto)        | Namespaces using High Availability with automatic failover, for the [outage types their replication covers](/cloud/rpo-rto#rto-and-rpo-summary) | Under 1 minute                                        | Objective       |
 
 ## Uptime {/* #uptime */}
@@ -46,7 +46,7 @@ Temporal Cloud runs a cell architecture.
 Each cell holds the software and services needed to host a Namespace, and the components in a cell are distributed across at least three availability zones per region.
 For how Temporal Cloud handles each type of outage, see [Outages and Recovery Objectives](/cloud/rpo-rto).
 
-### Automatic failover performance
+## Historical recovery time achieved in past incidents
 
 From September 1 through October 14, 2026, five publicly reported incidents involved
 [automatic failover](/cloud/high-availability/failovers#automatic-failover) of High Availability Namespaces.
