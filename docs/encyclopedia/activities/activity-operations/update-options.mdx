@@ -30,7 +30,9 @@ Update Options changes an Activity's runtime configuration without restarting it
 
 You can change [timeouts](/encyclopedia/detecting-activity-failures) (Schedule-To-Close, Start-To-Close,
 Schedule-To-Start, Heartbeat), Retry Policy (initial interval, maximum interval, backoff coefficient, maximum attempts),
-and Task Queue.
+Task Queue, and [Priority](/develop/task-queue-priority-fairness) (priority key, fairness key, fairness weight). For a
+Standalone Activity that hasn't dispatched its first Activity Task yet, you can also change the
+[Start Delay](/standalone-activity#start-delay). The CLI doesn't have flags for Priority, so change it through the API.
 
 The request carries a field mask naming the fields to change. Fields the mask names are assigned the value in the
 request, and fields it doesn't name are left alone. A field the mask names but leaves empty is cleared, not skipped.
@@ -56,7 +58,7 @@ Once the new values are merged in, the Service re-runs the
 timeout can therefore change another.
 
 The Activity's timeouts were already resolved when it was first scheduled, so none of them is unset by the time you
-update. Changing the Schedule-To-Close Timeout therefore works in one direction only:
+update. Changing the Schedule-To-Close Timeout works in one direction only:
 
 - **Lowering it pulls the others down with it.** Reduce the Schedule-To-Close Timeout to one hour and a two-hour
   Start-To-Close Timeout is reduced to one hour as well.
