@@ -36,8 +36,10 @@ Standalone Activity that hasn't dispatched its first Activity Task yet, you can 
 
 The request carries a field mask naming the fields to change. Fields the mask names are assigned the value in the
 request, and fields it doesn't name are left alone. A field the mask names but leaves empty is cleared, not skipped.
-`temporal activity update-options` builds the mask from the flags you actually pass, so a flag you omit can't clear
-anything. A client that builds the mask itself can.
+`temporal activity update-options` adds a field to the mask only for the flags you pass, so omitting a flag never changes
+that option. To clear a timeout from the CLI, pass `0s`. A cleared timeout doesn't stay empty: the Service derives it
+again from the other timeouts. See
+[Timeouts are resolved again after every update](#timeouts-are-resolved-again-after-every-update).
 
 - **If the Activity is waiting for retry (scheduled),** the new options take effect immediately. Any pending retry timer
   is regenerated with the updated configuration.

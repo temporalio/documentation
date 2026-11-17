@@ -165,7 +165,7 @@ Example Schedule-To-Close Timeout period for an Activity Execution that has a ch
     title="Schedule-To-Close Timeout period with a retry" />
 
 **The Schedule-To-Close Timeout has no default value of its own.**
-If you set only the [Start-To-Close Timeout](#start-to-close-timeout), a Workflow Activity takes the Workflow Run Timeout as its Schedule-To-Close Timeout, and a [Standalone Activity](/standalone-activity) is left unbounded.
+If you set only the [Start-To-Close Timeout](#start-to-close-timeout), a Workflow Activity takes the Workflow Run Timeout as its Schedule-To-Close Timeout, or no limit if the Workflow has none. A [Standalone Activity](/standalone-activity) is left unbounded.
 See [How the Temporal Service resolves Activity timeouts](#timeout-resolution).
 
 An Activity Execution must have either this timeout (Schedule-To-Close) or [Start-To-Close](#start-to-close-timeout) set.
@@ -184,19 +184,19 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 
 The Temporal Service doesn't store Activity timeouts exactly as you set them.
 When it schedules an Activity, it fills in the timeouts you left unset, then caps the rest against each other.
-The values recorded on the `ActivityTaskScheduled` event, and reported by `temporal activity describe`, are the resolved ones.
+The resolved values are the ones recorded on a Workflow Activity's `ActivityTaskScheduled` event, and the ones `temporal activity describe` reports for a Standalone Activity.
 
 The Service applies these rules in order:
 
 1. **If you set the Schedule-To-Close Timeout,** an unset Schedule-To-Start or Start-To-Close Timeout takes the same value, and either one that's longer than the Schedule-To-Close Timeout is reduced to it.
-2. **If you set only the Start-To-Close Timeout,** the Schedule-To-Close Timeout becomes the Workflow Run Timeout, and an unset Schedule-To-Start Timeout does too. For [Standalone Activities](/standalone-activity) there's no Workflow Run Timeout, so both stay unbounded.
+2. **If you set only the Start-To-Close Timeout,** the Schedule-To-Close Timeout becomes the Workflow Run Timeout, and an unset Schedule-To-Start Timeout does too. If the Workflow has no Run Timeout, or the Activity is a [Standalone Activity](/standalone-activity), both stay unbounded.
 3. **If you set neither,** the Service rejects the Activity. For a Workflow Activity, the Workflow Task fails with a [Bad Schedule Activity Attributes](/references/workflow-task-errors#bad-schedule-activity-attributes) error.
-4. **When the Workflow carries a Run Timeout,** no Activity timeout is allowed to exceed it. Any that does is reduced to the Run Timeout.
+4. **When the Workflow carries a Run Timeout,** no Activity timeout is allowed to exceed it. Any that does is reduced to the Run Timeout. A Workflow that sets only a [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) uses it as the Run Timeout, so the cap applies there too.
 5. **The Heartbeat Timeout is capped at the Start-To-Close Timeout.** See [What a Heartbeat Timeout of `0s` means](#heartbeat-timeout-zero).
 
 Two results of these rules are easy to miss:
 
-- Set a Schedule-To-Close Timeout of 24 hours and nothing else, and `describe` reports a Schedule-To-Start and a Start-To-Close Timeout of 24 hours each. A single attempt may now run for a full day before the Service treats it as lost.
+- Set a Schedule-To-Close Timeout of 24 hours and nothing else, and the Activity is stored with a Schedule-To-Start and a Start-To-Close Timeout of 24 hours each. A single attempt may now run for a full day before the Service treats it as lost.
 - Ask for a 10-minute Start-To-Close Timeout inside a Workflow with a 5-minute Run Timeout, and the Activity is stored with a 5-minute Start-To-Close Timeout. Rule 4 overrides the value you set.
 
 Set both the Schedule-To-Close and Start-To-Close Timeouts explicitly to choose separate total and per-attempt limits. Both remain subject to the Workflow Run Timeout cap.
