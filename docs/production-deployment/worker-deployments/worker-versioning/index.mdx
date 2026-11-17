@@ -62,8 +62,10 @@ To get started with Worker Versioning, you should understand some concepts aroun
 
 - A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deployment, more than two
   active Deployment Versions can run at once.
-- A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers polling on
-  multiple Task Queues, but they all run the same build.
+- A **Worker Deployment Version** represents one build of the Workers in a deployment or service. It can have multiple
+  Workers polling on multiple Task Queues, but they all run the same build. Temporal tracks its Task Queues, rollout and
+  drainage status, and user-provided metadata. For Serverless Workers, it also has a
+  [compute configuration](/serverless-workers#compute-configuration) that tells Temporal how to start and scale compute.
 - A **Build ID**, in combination with a Worker Deployment name, identifies a single Worker Deployment Version.
 - When a versioned worker polls on a task queue, that task queue becomes part of that Worker's version. That version's
   Worker Deployment controls how the task queue matches Workflow Tasks with Workers.

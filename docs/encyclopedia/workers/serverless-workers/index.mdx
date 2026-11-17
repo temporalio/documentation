@@ -45,7 +45,7 @@ Bedrock AgentCore Runtime runs sessions with idle and maximum-lifetime limits, a
 long-lived instances. See [Worker lifecycle](#worker-lifecycle).
 
 Serverless Workers require [Worker Versioning](/worker-versioning). Each Serverless Worker must be associated with a
-[Worker Deployment Version](/worker-versioning#deployment-versions) that has a compute provider configured.
+[Worker Deployment Version](#worker-deployment-versions) that has a [compute configuration](#compute-configuration).
 
 To deploy a Serverless Worker, see
 [Deploy a Serverless Worker](/production-deployment/worker-deployments/serverless-workers).
@@ -58,10 +58,37 @@ agent the knowledge to write, package, deploy, and troubleshoot Serverless Worke
 
 :::
 
-### Compute configuration and scaling groups {/* #scaling-groups */}
+### Worker Deployment Versions {/* #worker-deployment-versions */}
 
-A Worker Deployment Version's **compute configuration** contains one or more **scaling groups**. A scaling group is a
-named configuration entry that tells the WCI which compute to manage and how to scale it.
+A **Worker Deployment Version** represents one build of your Workers within a Worker Deployment. The Worker Deployment
+name and Build ID identify the version within a Namespace. Multiple Workers can use the same version and poll multiple
+Task Queues, including from different compute regions, while running the same Worker build.
+
+Temporal tracks information associated with each version:
+
+- **Task Queues:** the queues its Workers poll.
+- **Rollout status:** whether it is the Current or Ramping Version and its ramp percentage.
+- **Drainage status:** whether open pinned Workflows still need the version.
+- **Metadata and timestamps:** user-provided information, creation time, and routing changes.
+- **Compute configuration (optional):** how Temporal starts and scales Serverless Workers for the version.
+
+A version identifies the Worker build; you deploy that build to your compute provider. Keep the build fixed for the
+version even when changing its compute configuration. For rollout and pinning behavior, see
+[Worker Versioning](/worker-versioning).
+
+### Compute configuration {/* #compute-configuration */}
+
+A **compute configuration** tells Temporal how to start and scale Workers for a Worker Deployment Version. Serverless
+Workers require it. Traditional long-lived Workers can use Worker Deployment Versions without compute configuration
+because you start and manage those Worker processes yourself.
+
+The compute configuration contains one or more named **scaling groups**. Each group describes a compute target and its
+scaling settings. For example, one version can have a group for a Lambda function in the primary region and another
+for a function running the same Worker build in the replica region.
+
+#### Scaling groups {/* #scaling-groups */}
+
+The [Worker Controller Instance (WCI)](#worker-controller-instance) uses each scaling group's settings to manage compute:
 
 | Setting | Purpose |
 | --- | --- |
@@ -69,9 +96,8 @@ named configuration entry that tells the WCI which compute to manage and how to 
 | Scaler | Defines when to add compute and, for pool providers, how to size and scale in the pool. |
 | Region scope (optional) | Identifies the Temporal Namespace regions where this group applies. Without region scope, the group is a regional fallback. |
 
-A single-region setup usually has one group named `default`. For regional failover, a version can have separate groups
-pointing at compute in each region. Each group has its own provider and scaler settings. The same WCI manages all the
-groups in a Worker Deployment Version; adding a group does not create another version or WCI.
+A single-region setup usually has one group named `default`. Each group has its own provider and scaler settings.
+The same WCI manages all groups in a Worker Deployment Version; adding a group does not create another version or WCI.
 
 The CLI's `--scaling-group` flag selects an entry by name. The name does not control where compute runs. A group named
 `default` can be scoped to one region; whether it is a regional fallback depends on its region scope, not its name.
