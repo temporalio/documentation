@@ -220,12 +220,12 @@ When using Multi-cloud Replication for automatic failover:
 Even though the RPO target is under 1 minute, data is virtually never "lost" thanks to Temporal's built-in Recovery and
 Conflict Resolution process, which reconciles state between the active and replica when a failover occurs.
 
-## Automatic failover performance in past incidents
+## Recovery time achieved from automatic failover in past incidents
 
-The following table shows automatic failover performance for each incident since September 1, 2026 in which the
-[Temporal Status Page](https://status.temporal.io/) reported that Temporal failed over Namespaces.
-Recovery time is the window during which Namespaces with High Availability experienced operational impact that a
-failover could have avoided. For details, see [Recovery time methodology](#recovery-time-methodology).
+The following table shows the Recovery Time that Temporal achieved via
+[automatic failover](/cloud/high-availability/failovers#automatic-failover) for each incident since September 1, 2026.
+Recovery time is the window during which Namespaces with [High Availability](/cloud/high-availability) experienced
+operational impact.
 
 | Date | Average recovery time | Worst recovery time | Region | Incident type | Temporal Status Page |
 | --- | --- | --- | --- | --- | --- |
@@ -237,6 +237,9 @@ failover could have avoided. For details, see [Recovery time methodology](#recov
 
 ### Recovery time methodology
 
+The table includes incidents in which the [Temporal Status Page](https://status.temporal.io/) reported that Temporal
+failed over Namespaces. Recovery time includes only operational impact that a failover could have avoided.
+
 For each Namespace, recovery time is measured from when operational impact is first observable in Temporal's metrics
 to when the Namespace has completed failover and is operationally available in its secondary region.
 A lower recovery time is better. A recovery time of **0 minutes** means failover completed before operational impact
@@ -244,14 +247,16 @@ began, preventing disruption to Namespace availability. **N/A** means there was 
 in the incident.
 
 Operational impact means Workers and gRPC Clients could not reliably use the Namespace to process Workflows and run
-applications. It includes abnormally high error rates, request latency above the service-level objective (SLO), or
-full Namespace unavailability. Disruptions to Temporal Cloud metrics or the Cloud Ops API do not count as operational
-impact because they do not directly affect Namespace performance.
+applications. It includes abnormally high error rates, request latency above the
+[service-level objective (SLO)](/cloud/slo#latency), or full Namespace unavailability. Disruptions to Temporal Cloud
+metrics or the [Cloud Ops API](/ops) do not count as operational impact because they do not directly affect Namespace
+performance.
 
 Temporal Cloud has a 20-minute RTO, so the goal is a recovery time of less than 20 minutes for each incident.
 Because some Namespaces take longer to fail over than others, the table includes the average and worst recovery times
-across all Namespaces that were automatically failed over. User-triggered (manual) failovers and Namespaces with
-automatic failover disabled are excluded.
+across all Namespaces that were automatically failed over.
+[User-triggered (manual) failovers](/cloud/high-availability/failovers#manual-failover) and Namespaces with
+[automatic failover disabled](/cloud/high-availability/enable#automatic-failovers) are excluded.
 
 ## How RTO and RPO are measured {/* #how-rto-and-rpo-are-measured */}
 
