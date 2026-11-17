@@ -199,7 +199,7 @@ Two results of these rules are easy to miss:
 - Set a Schedule-To-Close Timeout of 24 hours and nothing else, and `describe` reports a Schedule-To-Start and a Start-To-Close Timeout of 24 hours each. A single attempt may now run for a full day before the Service treats it as lost.
 - Ask for a 10-minute Start-To-Close Timeout inside a Workflow with a 5-minute Run Timeout, and the Activity is stored with a 5-minute Start-To-Close Timeout. Rule 4 overrides the value you set.
 
-Setting both the Schedule-To-Close and Start-To-Close Timeouts explicitly avoids both surprises.
+Set both the Schedule-To-Close and Start-To-Close Timeouts explicitly to choose separate total and per-attempt limits. Both remain subject to the Workflow Run Timeout cap.
 
 [Update Options](/activity-operations/update-options) re-runs these rules after every change, so lowering one timeout on a running Activity can lower another.
 
