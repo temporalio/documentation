@@ -1,7 +1,7 @@
 ---
 id: nexus
 title: Temporal Nexus
-description: Temporal Nexus connects Temporal Applications across isolated Namespaces with clean service contracts, built-in durability, observability, and security.
+description: Nexus lets teams call each other's Temporal Applications by Endpoint name, with durable calls across Namespaces and clouds and no exposed internals.
 toc_max_heading_level: 4
 slug: /nexus
 tags:
@@ -50,8 +50,8 @@ Every boundary between systems is a place where things can break. Nexus works ac
 
 - **Cross-Namespace:** Each team gets their own isolated environment with their own code, security, and infrastructure. Nexus connects them without either team having to expose their internals to the other.
 - **Cross-Team:** Each team owns what they build and shares only the specific things they choose to make available to others. You expose only what you choose to share through a service contract.
-- **Cross-Region (Temporal Cloud):** A team running infrastructure in one geographic region can call a team running in a completely different region all over a secure, encrypted connection managed by Temporal.
-- **Cross-Cloud:** Temporal Cloud supports AWS and GCP, so your infrastructure choices don't limit how teams work together. A team on AWS can call a team on GCP.
+- **Cross-Region (Temporal Cloud):** A team running infrastructure in one geographic region can call a team running in a different region over a secure, encrypted connection.
+- **Cross-Cloud:** Temporal Cloud supports multiple cloud providers, so your infrastructure choices don't limit how teams work together. A team on AWS can call a team on GCP.
 - **Cross-Project (Temporal Cloud):** In Temporal Cloud, Namespaces are grouped into Projects. A caller Namespace in one Project can invoke a Nexus Endpoint owned by another Project, as long as it's on the Endpoint's allowlist.
 - **Cross-SDK:** The team making the call and the team receiving it don't have to write code in the same programming language. One team can use Go, another Java, another Python. Nexus is available in the Go, Java, Python, TypeScript, .NET, and Rust SDKs.
 
@@ -60,7 +60,6 @@ The same reliability holds across all of them.
 <CaptionedImage
     src="/diagrams/nexus-connection-boundaries.svg"
     srcDark="/diagrams/nexus-connection-boundaries-dark.svg"
-    title="Boundaries Nexus connects across"
     alt="Nexus connects a caller and a handler across Namespaces, teams, regions, clouds, Projects, and SDKs. Cross-Region, Cross-Cloud, and Cross-Project are Temporal Cloud features."
 />
 
@@ -68,7 +67,7 @@ The same reliability holds across all of them.
 
 There are four main parts of Temporal Nexus:
 
-- **[Service](/nexus/services):** A team's list of what a team offers to other teams. For example, a payments team offers a service to process payments.
+- **[Service](/nexus/services):** A team's list of what they offer to other teams. For example, a payments team offers a service to process payments.
 - **[Operation](/nexus/operations):** A specific task or functionality another team can request. Some finish in seconds (sync, within a 10-second deadline). Others run for days, up to 60 days (async).
 - **[Endpoint](/nexus/endpoints):** The name you use to reach another team's Service. You don't need to know where the team lives, how it built its system or what language it uses.
 - **[Registry](/nexus/registry):** The Registry is where teams find available Endpoints. For example, a checkout team can find the existing payments service instead of building a new connection from scratch.
@@ -82,7 +81,6 @@ The checkout team finds `payments-endpoint` in the Registry, calls it by name (E
 <CaptionedImage
     src="/diagrams/nexus-caller-handler.svg"
     srcDark="/diagrams/nexus-caller-handler-dark.svg"
-    title="The caller knows the contract. The handler owns the implementation."
     alt="The checkout team, the caller, knows the contract: the Endpoint name payments-endpoint, the PaymentService Service, the processPayment Operation, and its input and output types. The Endpoint accepts calls only from Namespaces on its allowlist. The payments team, the handler, owns its Namespace, Task Queue, Workers, language, and the Workflow, Activity, or other code behind the Operation, and can change them while the contract stays the same."
 />
 
