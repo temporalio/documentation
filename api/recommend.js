@@ -4,7 +4,7 @@ const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
 const { clientIp, header, ipHash, putRecord } = require('./_log');
 const { kapaIdentity, parseAllowlist, parseList } = require('./_retrieve-lib');
-const { LIMITS, USAGE, parseParams, toCards } = require('./_recommend-lib');
+const { LIMITS, USAGE, buildQuery, parseParams, toCards } = require('./_recommend-lib');
 
 // Topic search over Temporal's docs for the Temporal Cloud "Recommended for you"
 // panel. Like api/retrieve.js it proxies Kapa's Retrieval API with a server-side
@@ -97,6 +97,9 @@ module.exports = async (request, response) => {
     limit: parsed.params?.limit ?? null,
     src: parsed.params ? parsed.params.src : raw('src'),
     agent: parsed.params ? parsed.params.agent : raw('agent'),
+    sdk: parsed.params?.sdk ?? null,
+    usecase: parsed.params ? parsed.params.usecase : raw('usecase'),
+    os: parsed.params?.os ?? null,
     ua: header(request, 'user-agent'),
     origin: header(request, 'origin'),
     country: header(request, 'x-vercel-ip-country'),
@@ -107,6 +110,7 @@ module.exports = async (request, response) => {
     status: null,
     upstream_status: null,
     card_count: null,
+    total_count: null,
     latency_ms: null,
     top_pages: [],
   };
@@ -144,7 +148,7 @@ module.exports = async (request, response) => {
   });
   let upstream;
   try {
-    upstream = await queryKapa(parsed.params.q, identity);
+    upstream = await queryKapa(buildQuery(parsed.params), identity);
   } catch (error) {
     const timedOut = error.name === 'TimeoutError';
     console.error(`recommend: Kapa request failed: ${error.message}`);
@@ -173,12 +177,20 @@ module.exports = async (request, response) => {
   }
 
   try {
-    const { cards, skipped } = toCards(results, { allowlist, manifest, external, compiledRedirects, limit: parsed.params.limit });
+    const { cards, total, skipped } = toCards(results, {
+      allowlist,
+      manifest,
+      external,
+      compiledRedirects,
+      limit: parsed.params.limit,
+      sdk: parsed.params.sdk,
+    });
     record.fetched_count = results.length;
     record.skipped_count = skipped;
     record.card_count = cards.length;
-    record.top_pages = cards.slice(0, 3).map((card) => card.url);
-    finish(200, cards);
+    record.total_count = total;
+    record.top_pages = cards.slice(0, 3).map((card) => card.url.split('?')[0]);
+    finish(200, { count: total, cards });
   } catch (error) {
     console.error(`recommend: could not build cards: ${error.message}`);
     finish(502, { error: 'Search is unavailable. Try again later.' });

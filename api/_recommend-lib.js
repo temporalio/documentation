@@ -8,7 +8,7 @@ const ENDPOINT = `https://${DOCS_HOST}/api/recommend`;
 const LEARN_HOST = 'learn.temporal.io';
 const BLOG_HOST = 'temporal.io';
 
-const LIMITS = { q: RETRIEVE_LIMITS.q, src: RETRIEVE_LIMITS.src, agent: RETRIEVE_LIMITS.agent };
+const LIMITS = { q: RETRIEVE_LIMITS.q, src: RETRIEVE_LIMITS.src, agent: RETRIEVE_LIMITS.agent, usecase: 100 };
 const DEFAULT_LIMIT = 6;
 const MAX_LIMIT = 10;
 
@@ -17,8 +17,30 @@ const MAX_LIMIT = 10;
 const DEFAULT_SRC = 'cloud-ui';
 
 const USAGE =
-  `GET ${ENDPOINT}?q=<topics>&limit=<1-${MAX_LIMIT}>&src=<surface>&agent=<name>. ` +
-  `q is required (at most ${LIMITS.q} characters). limit defaults to ${DEFAULT_LIMIT}.`;
+  `GET ${ENDPOINT}?q=<topics>&limit=<1-${MAX_LIMIT}>&sdk=<sdk>&usecase=<text>&os=<os>&src=<surface>&agent=<name>. ` +
+  `q is required (at most ${LIMITS.q} characters). limit defaults to ${DEFAULT_LIMIT}. ` +
+  'sdk, usecase, and os describe the user. They are optional hints, not filters.';
+
+// Appended to every card URL so visits from the panel show up in analytics.
+const UTM_SOURCE = 'recommendation';
+
+// The sdk values match the folder names under docs/develop. Anything else a
+// caller sends is mapped through SDK_ALIASES or ignored: these are hints, so an
+// unexpected value shouldn't fail the request.
+const SDK_NAMES = {
+  python: 'Python',
+  ruby: 'Ruby',
+  rust: 'Rust',
+  dotnet: '.NET',
+  java: 'Java',
+  typescript: 'TypeScript',
+  php: 'PHP',
+  go: 'Go',
+};
+const SDK_ALIASES = { '.net': 'dotnet', csharp: 'dotnet', 'c#': 'dotnet', node: 'typescript', nodejs: 'typescript', ts: 'typescript', javascript: 'typescript', js: 'typescript', golang: 'go', py: 'python' };
+
+const OS_NAMES = { windows: 'Windows', linux: 'Linux', macos: 'macOS' };
+const OS_ALIASES = { mac: 'macos', osx: 'macos', darwin: 'macos', win: 'windows', win32: 'windows' };
 
 // Docs pages: the first matching prefix wins, so list the more specific paths
 // first. Learn and the blog aren't docs pages. Their type comes from the host,
@@ -32,7 +54,7 @@ const TYPE_RULES = [
 ];
 const DEFAULT_TYPE = { type: 'docs', label: 'Docs' };
 
-// Returns { q, limit, src, agent } or { error } for a 400. A limit that isn't a
+// Returns { q, limit, src, agent, sdk, usecase, os } or { error } for a 400. A limit that isn't a
 // whole number from 1 to MAX_LIMIT is rejected, not clamped, so a typo shows up.
 function parseParams(searchParams) {
   const get = (name) => (searchParams.get(name) || '').trim();
@@ -53,7 +75,34 @@ function parseParams(searchParams) {
   }
 
   const optional = (name) => get(name).slice(0, LIMITS[name]) || null;
-  return { params: { q, limit, src: optional('src') || DEFAULT_SRC, agent: optional('agent') } };
+  const known = (name, names, aliases) => {
+    const value = get(name).toLowerCase();
+    const key = aliases[value] || value;
+    return Object.hasOwn(names, key) ? key : null;
+  };
+  return {
+    params: {
+      q,
+      limit,
+      src: optional('src') || DEFAULT_SRC,
+      agent: optional('agent'),
+      sdk: known('sdk', SDK_NAMES, SDK_ALIASES),
+      usecase: optional('usecase'),
+      os: known('os', OS_NAMES, OS_ALIASES),
+    },
+  };
+}
+
+// The text sent to Kapa: the topics first, then what we know about the user as
+// plain words, because Kapa matches by meaning. The context only nudges results.
+function buildQuery({ q, usecase = null, sdk = null, os = null }) {
+  return [q, usecase && `for ${usecase}`, sdk && `using the ${SDK_NAMES[sdk]} SDK`, os && `on ${OS_NAMES[os]}`].filter(Boolean).join(' ');
+}
+
+// The SDK a docs page belongs to, from /develop/<sdk>/..., or null.
+function sdkForPath(pathname) {
+  const [, section, folder] = pathname.split('/');
+  return section === 'develop' && Object.hasOwn(SDK_NAMES, folder) ? folder : null;
 }
 
 function typeForPath(pathname) {
@@ -77,6 +126,8 @@ function externalKey(url) {
 }
 
 // Turns Kapa results into at most `limit` cards, one per page, in Kapa's order.
+// `total` is how many cards there were before the limit. With an `sdk`, docs
+// pages for a different SDK move after the rest, never out of the list.
 // A result becomes a card only when its page has a title and description on
 // record: docs pages in `manifest` (bin/write-content-manifest.js), and blog and
 // Learn pages in `external` (bin/write-external-content.js). Everything else is
@@ -85,8 +136,9 @@ function externalKey(url) {
 // Kapa may have indexed a docs page under an old URL, so its path goes through
 // the vercel.json redirects (via toMarkdownUrl) before the lookup. Anchors are
 // dropped: a card links to the page, not to the passage that matched.
-function toCards(results, { allowlist, manifest, external = {}, compiledRedirects, limit }) {
+function toCards(results, { allowlist, manifest, external = {}, compiledRedirects, limit, sdk = null }) {
   const cards = [];
+  const otherSdk = new Set();
   const seen = new Set();
   let skipped = 0;
 
@@ -114,10 +166,20 @@ function toCards(results, { allowlist, manifest, external = {}, compiledRedirect
     if (seen.has(cardUrl)) continue;
     seen.add(cardUrl);
 
-    cards.push({ title: entry.title, description: entry.description, ...kind, url: cardUrl });
-    if (cards.length === limit) break;
+    const card = { title: entry.title, description: entry.description, ...kind, url: cardUrl };
+    cards.push(card);
+    const cardSdk = isDocs ? sdkForPath(url.pathname) : null;
+    if (sdk && cardSdk && cardSdk !== sdk) otherSdk.add(card);
   }
-  return { cards, skipped };
+
+  const ordered = otherSdk.size ? [...cards.filter((card) => !otherSdk.has(card)), ...cards.filter((card) => otherSdk.has(card))] : cards;
+  return { cards: ordered.slice(0, limit).map(withUtm), total: cards.length, skipped };
+}
+
+function withUtm(card) {
+  const url = new URL(card.url);
+  url.searchParams.set('utm_source', UTM_SOURCE);
+  return { ...card, url: url.toString() };
 }
 
 module.exports = {
@@ -127,7 +189,10 @@ module.exports = {
   LIMITS,
   MAX_LIMIT,
   USAGE,
+  UTM_SOURCE,
+  buildQuery,
   parseParams,
+  sdkForPath,
   toCards,
   typeForPath,
   typeForUrl,

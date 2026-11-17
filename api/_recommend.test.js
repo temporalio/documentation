@@ -22,6 +22,8 @@ const BASE_ENV = {
 const ENV_KEYS = Object.keys(BASE_ENV);
 
 const MANIFEST = {
+  '/develop/java/workflows/versioning': { title: 'Versioning - Java SDK', description: 'Patch Workflows in Java.' },
+  '/develop/python/workflows/versioning': { title: 'Versioning - Python SDK', description: 'Patch Workflows in Python.' },
   '/workflows': { title: 'Workflows', description: 'What a Workflow is.' },
   '/guides/route-specialized-workloads': { title: 'Route GPU Activities', description: 'Task Queues for GPUs.' },
   '/quickstarts': { title: 'Quickstarts', description: 'Start here.' },
@@ -175,13 +177,14 @@ describe('cards', () => {
     const res = await call('?q=python+data+pipelines&limit=3&agent=cloud-ui', { headers: { origin: 'https://cloud.temporal.io' } });
 
     assert.strictEqual(res.statusCode, 200);
-    assert.deepStrictEqual(res.body.map((card) => card.url), [
-      `${DOCS}/guides/route-specialized-workloads`,
-      'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/',
-      `${DOCS}/workflows`,
+    assert.deepStrictEqual(Object.keys(res.body).sort(), ['cards', 'count']);
+    assert.deepStrictEqual(res.body.cards.map((card) => card.url), [
+      `${DOCS}/guides/route-specialized-workloads?utm_source=recommendation`,
+      'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/?utm_source=recommendation',
+      `${DOCS}/workflows?utm_source=recommendation`,
     ]);
-    assert.deepStrictEqual(res.body.map((card) => card.type), ['guide', 'tutorial', 'docs']);
-    assert.deepStrictEqual(Object.keys(res.body[0]).sort(), ['description', 'title', 'type', 'type_label', 'url']);
+    assert.deepStrictEqual(res.body.cards.map((card) => card.type), ['guide', 'tutorial', 'docs']);
+    assert.deepStrictEqual(Object.keys(res.body.cards[0]).sort(), ['description', 'title', 'type', 'type_label', 'url']);
     assert.strictEqual(res.headers['cache-control'], 'public, s-maxage=300, stale-while-revalidate=60');
 
     assert.strictEqual(kapaCalls[0].body.integration_id, 'recommend-integration');
@@ -210,7 +213,54 @@ describe('cards', () => {
     kapaResults([{ content: 'a', source_url: 'https://temporal.io/blog/post' }]);
     const res = await call('?q=blog');
     assert.strictEqual(res.statusCode, 200);
-    assert.deepStrictEqual(res.body, []);
+    assert.deepStrictEqual(res.body, { count: 0, cards: [] });
+  });
+
+  it('counts every card Kapa found, even when limit shows fewer', async () => {
+    kapaResults([
+      { content: 'a', source_url: `${DOCS}/workflows` },
+      { content: 'b', source_url: `${DOCS}/quickstarts` },
+      { content: 'c', source_url: `${DOCS}/guides/route-specialized-workloads` },
+    ]);
+    const res = await call('?q=workflows&limit=2');
+    assert.strictEqual(res.body.cards.length, 2);
+    assert.strictEqual(res.body.count, 3);
+    assert.strictEqual(record().total_count, 3);
+    assert.strictEqual(record().card_count, 2);
+  });
+});
+
+describe('user context', () => {
+  it('adds sdk, usecase, and os to the Kapa query', async () => {
+    kapaResults([]);
+    await call('?q=data+pipelines&sdk=python&usecase=data+pipeline&os=macos');
+    assert.strictEqual(kapaCalls[0].body.query, 'data pipelines for data pipeline using the Python SDK on macOS');
+  });
+
+  it('logs the context and keeps the clean URL in top_pages', async () => {
+    kapaResults([{ content: 'a', source_url: `${DOCS}/workflows` }]);
+    await call('?q=workflows&sdk=Go&usecase=SDLC&os=linux');
+    const entry = record();
+    assert.strictEqual(entry.sdk, 'go');
+    assert.strictEqual(entry.usecase, 'SDLC');
+    assert.strictEqual(entry.os, 'linux');
+    assert.deepStrictEqual(entry.top_pages, [`${DOCS}/workflows`]);
+  });
+
+  it('puts the requested SDK first but still returns other SDKs', async () => {
+    kapaResults([
+      { content: 'a', source_url: `${DOCS}/develop/java/workflows/versioning` },
+      { content: 'b', source_url: `${DOCS}/develop/python/workflows/versioning` },
+    ]);
+    const res = await call('?q=versioning&sdk=python');
+    assert.deepStrictEqual(res.body.cards.map((card) => card.title), ['Versioning - Python SDK', 'Versioning - Java SDK']);
+  });
+
+  it('ignores values it does not know and still answers', async () => {
+    kapaResults([{ content: 'a', source_url: `${DOCS}/workflows` }]);
+    const res = await call('?q=workflows&sdk=cobol&os=beos');
+    assert.strictEqual(res.statusCode, 200);
+    assert.strictEqual(kapaCalls[0].body.query, 'workflows');
   });
 });
 

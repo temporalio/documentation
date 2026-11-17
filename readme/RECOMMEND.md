@@ -12,38 +12,65 @@ traffic stay apart in Kapa analytics and the log. It isn't advertised in `llms.t
 ## Request and response
 
 ```
-GET https://docs.temporal.io/api/recommend?q=<topics>&limit=<1-10>&src=<surface>&agent=<name>
+GET https://docs.temporal.io/api/recommend?q=<topics>&sdk=<sdk>&usecase=<text>&os=<os>&limit=<1-10>&src=<surface>&agent=<name>
 ```
 
 | Parameter | Required | Limit | Purpose |
 | --- | --- | --- | --- |
 | `q` | Yes | 500 characters (400 if longer) | The topics as text, such as `Python data pipelines getting started`. Kapa searches by meaning, so the caller joins its topic chips into one string |
+| `sdk` | No | One of `python`, `ruby`, `rust`, `dotnet`, `java`, `typescript`, `php`, `go` (ignored otherwise) | The SDK the user works in. A hint, not a filter. See [How the user context is used](#how-the-user-context-is-used) |
+| `usecase` | No | 100 characters (cut) | What the user is building, in plain words, such as `data pipeline`, `AI agent`, or `SDLC`. The list isn't fixed |
+| `os` | No | `windows`, `linux`, or `macos` (ignored otherwise) | The user's operating system. A hint, not a filter |
 | `limit` | No | Whole number from 1 to 10, default 6 (400 otherwise) | The most cards to return. Ask for more than the panel shows, so a dismissed card can be replaced without another request |
 | `src` | No | 32 characters (cut) | Which surface called. Defaults to `cloud-ui`. Logged only |
 | `agent` | No | 64 characters (cut) | The caller's name. Logged and sent to Kapa as the client name |
 
-The response is a JSON array, most relevant first:
+The response is a JSON object. `count` is the number of cards available, and `cards` holds the first `limit` of them,
+most relevant first:
 
 ```json
-[
-  {
-    "title": "Route GPU and high-memory Activities to dedicated Workers",
-    "description": "Give GPU, high-memory, and CPU Activities their own Task Queues so each runs only on Workers with the right hardware.",
-    "type": "guide",
-    "type_label": "Guide",
-    "url": "https://docs.temporal.io/guides/route-specialized-workloads"
-  }
-]
+{
+  "count": 9,
+  "cards": [
+    {
+      "title": "Route GPU and high-memory Activities to dedicated Workers",
+      "description": "Give GPU, high-memory, and CPU Activities their own Task Queues so each runs only on Workers with the right hardware.",
+      "type": "guide",
+      "type_label": "Guide",
+      "url": "https://docs.temporal.io/guides/route-specialized-workloads?utm_source=recommendation"
+    }
+  ]
+}
 ```
 
 - One card per page. Several passages from the same page count once.
 - For a docs page, `title` is the frontmatter title, with the folder's `section_title` appended on SDK pages
   ("Versioning - Python SDK"), the same as the browser tab title, and `description` is the frontmatter description. For
   a blog or Learn page, they're the page's `og:title` (without Learn's " | Learn Temporal" suffix) and `og:description`.
-- The array can hold fewer than `limit` cards, or none. Kapa returns at most 15 passages, and results that have no
-  title and description on record are dropped.
-- The array never contains passage text. A card links to the page, not to the passage that matched.
+- `count` is how many distinct pages Kapa found that have a card, before `limit` cut the list. Kapa returns at most 15
+  passages, so `count` is at most 15. It isn't the number of pages in the docs that match the topics. Use it to tell
+  whether a Refresh or "show more" has anything left to show.
+- Every `url` ends in `?utm_source=recommendation`, for docs, blog, and Learn pages. Strip the query string to get the
+  canonical page URL.
+- `cards` can hold fewer than `limit` cards, or none (`{ "count": 0, "cards": [] }`). Results that have no title and
+  description on record are dropped.
+- The response never contains passage text. A card links to the page, not to the passage that matched.
 - Errors are JSON `{ error }`. A 400 or 405 also includes a `usage` string.
+
+### How the user context is used
+
+`sdk`, `usecase`, and `os` are hints. They don't filter anything, so a Python user can still get a design pattern or a
+blog post that uses Java.
+
+1. They are added to the text sent to Kapa after the topics, as plain words. `q=data pipelines`, `usecase=data pipeline`,
+   `sdk=dotnet`, and `os=macos` search for `data pipelines for data pipeline using the .NET SDK on macOS`.
+1. When `sdk` is set, docs pages under `/develop/<another-sdk>/` move after the other cards. Blog posts, Learn pages,
+   guides, references, and the requested SDK's pages keep Kapa's order, and nothing is dropped. `usecase` and `os` change
+   only the search text.
+
+`sdk` and `os` accept common spellings (`.NET`, `golang`, `node`, `darwin`, `mac`) in any case. A value that isn't
+recognized is ignored and the request still succeeds, so a hint in an unexpected form never breaks the panel. The
+mapping is in `api/_recommend-lib.js`.
 
 ### What the endpoint can't provide
 
@@ -158,17 +185,19 @@ sent, and a failed write never fails the request.
 | --- | --- |
 | `ts` | Request time (ISO 8601) |
 | `q`, `limit`, `src`, `agent` | The parameters as parsed |
+| `sdk`, `usecase`, `os` | The user context, with `sdk` and `os` after mapping (`null` when absent or not recognized) |
 | `ua`, `origin`, `country` | `User-Agent`, `Origin`, and `x-vercel-ip-country` headers. The origin is logged, not enforced |
 | `ip_hash` | First 16 hex characters of SHA-256 of the salt and IP. Raw IPs aren't stored |
 | `deployment` | `production`, `preview`, or `development` |
 | `fetched_count` | Results Kapa returned |
 | `skipped_count` | Results that didn't become a card: outside the allowlist, not a docs page, or not in the manifest. Repeats of a page already carded aren't counted |
 | `card_count` | Cards returned |
+| `total_count` | The response's `count`: cards available before `limit` |
 | `status`, `upstream_status` | Status returned to the caller, and Kapa's status |
 | `latency_ms` | Time spent in the function |
-| `top_pages` | `url` of the first three cards |
+| `top_pages` | `url` of the first three cards, without the `utm_source` parameter |
 
-`q` holds the topics a signed-in Cloud user chose or typed. Treat the store as sensitive, as for `/api/retrieve`. Whoever
+`q` and `usecase` hold text a signed-in Cloud user chose or typed. Treat the store as sensitive, as for `/api/retrieve`. Whoever
 owns the docs privacy policy must confirm it covers this log before the endpoint goes live. Kapa receives each query with a
 hashed user ID and the `agent` name, never the IP.
 

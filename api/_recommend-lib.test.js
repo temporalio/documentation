@@ -2,7 +2,7 @@ const { describe, it } = require('node:test');
 const assert = require('node:assert');
 const { compileRedirects } = require('../bin/redirect-utils');
 const { parseAllowlist } = require('./_retrieve-lib');
-const { DEFAULT_LIMIT, MAX_LIMIT, parseParams, toCards, typeForPath, typeForUrl } = require('./_recommend-lib');
+const { DEFAULT_LIMIT, MAX_LIMIT, UTM_SOURCE, buildQuery, parseParams, sdkForPath, toCards, typeForPath, typeForUrl } = require('./_recommend-lib');
 
 const DOCS = 'https://docs.temporal.io';
 const allowlist = parseAllowlist(['docs.temporal.io', 'temporal.io/blog', 'learn.temporal.io']);
@@ -12,6 +12,8 @@ const manifest = {
   '/quickstarts': { title: 'Quickstarts', description: 'Start here.' },
   '/references/errors': { title: 'Errors', description: 'Error reference.' },
   '/workflows': { title: 'Workflows', description: 'What a Workflow is.' },
+  '/develop/java/workflows/versioning': { title: 'Versioning - Java SDK', description: 'Patch Workflows in Java.' },
+  '/develop/go/workflows/versioning': { title: 'Versioning - Go SDK', description: 'Patch Workflows in Go.' },
 };
 const external = {
   'https://learn.temporal.io/tutorials/python/build-a-data-pipeline': {
@@ -28,7 +30,8 @@ const external = {
 const compiledRedirects = compileRedirects([{ source: '/old-versioning', destination: '/develop/python/workflows/versioning' }]);
 
 const hit = (url, content = 'passage') => ({ content, source_url: url });
-const cards = (results, limit = 10) => toCards(results, { allowlist, manifest, external, compiledRedirects, limit });
+const cards = (results, limit = 10, sdk = null) => toCards(results, { allowlist, manifest, external, compiledRedirects, limit, sdk });
+const utm = (url) => `${url}${url.includes('?') ? '&' : '?'}utm_source=${UTM_SOURCE}`;
 
 describe('parseParams', () => {
   const parse = (query) => parseParams(new URLSearchParams(query));
@@ -43,7 +46,15 @@ describe('parseParams', () => {
   });
 
   it('defaults limit and src', () => {
-    assert.deepStrictEqual(parse('q=python').params, { q: 'python', limit: DEFAULT_LIMIT, src: 'cloud-ui', agent: null });
+    assert.deepStrictEqual(parse('q=python').params, {
+      q: 'python',
+      limit: DEFAULT_LIMIT,
+      src: 'cloud-ui',
+      agent: null,
+      sdk: null,
+      usecase: null,
+      os: null,
+    });
   });
 
   it('accepts a whole-number limit from 1 to the maximum', () => {
@@ -61,6 +72,69 @@ describe('parseParams', () => {
     const { params } = parse(`q=x&src=${'s'.repeat(40)}&agent=${'a'.repeat(80)}`);
     assert.strictEqual(params.src.length, 32);
     assert.strictEqual(params.agent.length, 64);
+  });
+});
+
+describe('parseParams user context', () => {
+  const parse = (query) => parseParams(new URLSearchParams(query)).params;
+
+  it('accepts the supported sdk and os values in any case', () => {
+    for (const sdk of ['python', 'ruby', 'rust', 'dotnet', 'java', 'typescript', 'php', 'go']) {
+      assert.strictEqual(parse(`q=x&sdk=${sdk.toUpperCase()}`).sdk, sdk);
+    }
+    for (const os of ['windows', 'linux', 'macos']) assert.strictEqual(parse(`q=x&os=${os}`).os, os);
+  });
+
+  it('maps common spellings', () => {
+    assert.strictEqual(parse('q=x&sdk=.NET').sdk, 'dotnet');
+    assert.strictEqual(parse('q=x&sdk=golang').sdk, 'go');
+    assert.strictEqual(parse('q=x&sdk=node').sdk, 'typescript');
+    assert.strictEqual(parse('q=x&os=darwin').os, 'macos');
+    assert.strictEqual(parse('q=x&os=Mac').os, 'macos');
+  });
+
+  it('ignores a value it does not know instead of rejecting the request', () => {
+    const result = parseParams(new URLSearchParams('q=x&sdk=cobol&os=beos&usecase='));
+    assert.strictEqual(result.error, undefined);
+    assert.strictEqual(result.params.sdk, null);
+    assert.strictEqual(result.params.os, null);
+    assert.strictEqual(result.params.usecase, null);
+  });
+
+  it('keeps usecase as free text and cuts it to 100 characters', () => {
+    assert.strictEqual(parse('q=x&usecase=AI%20agent').usecase, 'AI agent');
+    assert.strictEqual(parse(`q=x&usecase=${'u'.repeat(150)}`).usecase.length, 100);
+  });
+});
+
+describe('buildQuery', () => {
+  it('sends only the topics when there is no context', () => {
+    assert.strictEqual(buildQuery({ q: 'data pipelines' }), 'data pipelines');
+  });
+
+  it('adds the context as words after the topics', () => {
+    assert.strictEqual(
+      buildQuery({ q: 'data pipelines', usecase: 'data pipeline', sdk: 'dotnet', os: 'macos' }),
+      'data pipelines for data pipeline using the .NET SDK on macOS',
+    );
+  });
+
+  it('skips the parts that are missing', () => {
+    assert.strictEqual(buildQuery({ q: 'x', sdk: 'python' }), 'x using the Python SDK');
+    assert.strictEqual(buildQuery({ q: 'x', os: 'linux' }), 'x on Linux');
+  });
+});
+
+describe('sdkForPath', () => {
+  it('reads the SDK from /develop/<sdk>', () => {
+    assert.strictEqual(sdkForPath('/develop/python/workflows'), 'python');
+    assert.strictEqual(sdkForPath('/develop/go'), 'go');
+  });
+
+  it('returns null for everything else', () => {
+    assert.strictEqual(sdkForPath('/develop/worker-tuning-reference'), null);
+    assert.strictEqual(sdkForPath('/guides/python'), null);
+    assert.strictEqual(sdkForPath('/workflows'), null);
   });
 });
 
@@ -106,13 +180,13 @@ describe('toCards', () => {
   it('builds a card from the manifest and keeps Kapa order', () => {
     const { cards: out } = cards([hit(`${DOCS}/workflows`), hit(`${DOCS}/guides/route-specialized-workloads`)]);
     assert.deepStrictEqual(out, [
-      { title: 'Workflows', description: 'What a Workflow is.', type: 'docs', type_label: 'Docs', url: `${DOCS}/workflows` },
+      { title: 'Workflows', description: 'What a Workflow is.', type: 'docs', type_label: 'Docs', url: utm(`${DOCS}/workflows`) },
       {
         title: 'Route GPU Activities',
         description: 'Give GPU Activities their own Task Queues.',
         type: 'guide',
         type_label: 'Guide',
-        url: `${DOCS}/guides/route-specialized-workloads`,
+        url: utm(`${DOCS}/guides/route-specialized-workloads`),
       },
     ]);
   });
@@ -124,13 +198,13 @@ describe('toCards', () => {
       hit(`${DOCS}/workflows`),
     ]);
     assert.strictEqual(out.length, 1);
-    assert.strictEqual(out[0].url, `${DOCS}/workflows`);
+    assert.strictEqual(out[0].url, utm(`${DOCS}/workflows`));
     assert.strictEqual(skipped, 0);
   });
 
   it('follows redirects before the manifest lookup', () => {
     const { cards: out } = cards([hit(`${DOCS}/old-versioning#patching`)]);
-    assert.strictEqual(out[0].url, `${DOCS}/develop/python/workflows/versioning`);
+    assert.strictEqual(out[0].url, utm(`${DOCS}/develop/python/workflows/versioning`));
   });
 
   it('honors the limit', () => {
@@ -150,14 +224,14 @@ describe('toCards', () => {
         description: 'Orchestrate pipeline steps.',
         type: 'tutorial',
         type_label: 'Tutorial',
-        url: 'https://learn.temporal.io/tutorials/python/build-a-data-pipeline/',
+        url: utm('https://learn.temporal.io/tutorials/python/build-a-data-pipeline/'),
       },
       {
         title: 'Trading Airflow + EMR for Temporal + Bauplan',
         description: 'How Mediaset moved its data stack.',
         type: 'blog',
         type_label: 'Blog',
-        url: 'https://temporal.io/blog/trading-airflow-emr-temporal-bauplan-mediaset',
+        url: utm('https://temporal.io/blog/trading-airflow-emr-temporal-bauplan-mediaset'),
       },
     ]);
   });
@@ -177,8 +251,54 @@ describe('toCards', () => {
       hit('https://example.com/x'),
       hit(`${DOCS}/workflows`),
     ]);
-    assert.deepStrictEqual(out.map((card) => card.url), [`${DOCS}/workflows`]);
+    assert.deepStrictEqual(out.map((card) => card.url), [utm(`${DOCS}/workflows`)]);
     assert.strictEqual(skipped, 5);
+  });
+
+  it('reports how many cards there were before the limit', () => {
+    const results = [hit(`${DOCS}/workflows`), hit(`${DOCS}/workflows#a`), hit(`${DOCS}/quickstarts`), hit(`${DOCS}/references/errors`)];
+    const { cards: out, total } = cards(results, 2);
+    assert.strictEqual(out.length, 2);
+    assert.strictEqual(total, 3);
+  });
+
+  it('adds utm_source to every card, docs, Learn, and blog', () => {
+    const { cards: out } = cards([
+      hit(`${DOCS}/workflows`),
+      hit('https://learn.temporal.io/tutorials/python/build-a-data-pipeline/'),
+      hit('https://temporal.io/blog/trading-airflow-emr-temporal-bauplan-mediaset'),
+    ]);
+    assert.strictEqual(out.length, 3);
+    for (const card of out) assert.strictEqual(new URL(card.url).searchParams.get('utm_source'), UTM_SOURCE, card.url);
+  });
+
+  it('moves pages for another SDK after the rest, without dropping them', () => {
+    const results = [
+      hit(`${DOCS}/develop/java/workflows/versioning`),
+      hit(`${DOCS}/develop/python/workflows/versioning`),
+      hit(`${DOCS}/develop/go/workflows/versioning`),
+      hit('https://learn.temporal.io/tutorials/python/build-a-data-pipeline/'),
+      hit(`${DOCS}/guides/route-specialized-workloads`),
+    ];
+    const { cards: out, total } = cards(results, 10, 'python');
+    assert.deepStrictEqual(out.map((card) => card.title), [
+      'Versioning - Python SDK',
+      'Build a data pipeline with Python',
+      'Route GPU Activities',
+      'Versioning - Java SDK',
+      'Versioning - Go SDK',
+    ]);
+    assert.strictEqual(total, 5);
+  });
+
+  it('keeps Kapa order when no sdk is given', () => {
+    const { cards: out } = cards([hit(`${DOCS}/develop/java/workflows/versioning`), hit(`${DOCS}/develop/python/workflows/versioning`)]);
+    assert.deepStrictEqual(out.map((card) => card.title), ['Versioning - Java SDK', 'Versioning - Python SDK']);
+  });
+
+  it('applies the limit after the SDK ordering', () => {
+    const results = [hit(`${DOCS}/develop/java/workflows/versioning`), hit(`${DOCS}/develop/python/workflows/versioning`)];
+    assert.deepStrictEqual(cards(results, 1, 'python').cards.map((card) => card.title), ['Versioning - Python SDK']);
   });
 
   it('ignores malformed results', () => {
