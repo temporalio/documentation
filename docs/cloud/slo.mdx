@@ -46,6 +46,13 @@ Temporal Cloud runs a cell architecture.
 Each cell holds the software and services needed to host a Namespace, and the components in a cell are distributed across at least three availability zones per region.
 For how Temporal Cloud handles each type of outage, see [Outages and Recovery Objectives](/cloud/rpo-rto).
 
+### Automatic failover performance
+
+From September 1 through October 14, 2026, five publicly reported incidents involved automatic failover of High Availability Namespaces.
+The worst recovery time was 18 minutes, below the 20-minute RTO.
+Three incidents had no operational impact to those Namespaces, including one where proactive failover prevented impact.
+See [incident details and measurement methodology](/cloud/rpo-rto#automatic-failover-performance-in-past-incidents).
+
 ## Latency {/* #latency */}
 
 Temporal Cloud has a p99 latency SLO of 200ms per region.
