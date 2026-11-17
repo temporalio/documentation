@@ -85,10 +85,11 @@ A **compute configuration** tells Temporal how to start and scale Workers for a 
 Workers require it. Traditional long-lived Workers can use Worker Deployment Versions without compute configuration
 because you start and manage those Worker processes yourself.
 
-The compute configuration contains one or more named **scaling groups**. Each group describes a compute target and its
-scaling settings.
-
 #### Scaling groups {/* #scaling-groups */}
+
+A **scaling group** is a named entry in a Worker Deployment Version's compute configuration that tells Temporal which
+compute target to invoke or scale and which scaling settings to apply. A compute configuration contains one or more
+scaling groups.
 
 The standard single-region setup creates one group named `default`, pointing at your Lambda function or Cloud Run
 Worker Pool. The compute resource has a region: the AWS region in the function ARN, or the GCP region of the pool.
