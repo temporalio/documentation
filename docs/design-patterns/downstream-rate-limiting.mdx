@@ -259,7 +259,7 @@ You must size the Worker pool so that slot availability does not become the bott
 
 | Approach | Limits | Enforcement point | Works across Workers | Runtime adjustable | Complexity |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `MaxTaskQueueActivitiesPerSecond` | Start rate | Temporal matching service (server-side) | Yes | No (requires redeploy) | Low |
+| `MaxTaskQueueActivitiesPerSecond` | Start rate | Temporal matching service (server-side) | Yes | Yes, with [`temporal task-queue config set --queue-rps-limit`](/cli/command-reference/task-queue#set) | Low |
 | `MaxWorkerActivitiesPerSecond` | Start rate | Worker SDK poller (worker-side) | No — per-worker only | No (requires redeploy) | Low |
 | Concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkflowTaskExecutionSize`, `MaxConcurrentLocalActivityExecutionSize`) | Concurrent executions | Worker executor | No — per-worker only | No (requires redeploy) | Low |
 | Sleep-based throttle in Workflow | Start rate | Workflow scheduler | No | Via signal | Low |
@@ -281,7 +281,7 @@ To cap how many Activities run at once across all Workers, put the Activity on a
 ## Common pitfalls
 
 - **Forgetting to override the task queue in Activity options.** If the Workflow does not explicitly specify `task_queue` in the Activity options, the Activity runs on the Workflow's default queue and bypasses the rate-limited Worker entirely.
-- **Setting conflicting MaxTaskQueueActivitiesPerSecond limits in workers.** This setting is set in Workers and sent to the Task Queue when a Worker polls. If you have multiple Workers with conflicting settings, the Workers will overwrite each other as they poll.
+- **Setting conflicting MaxTaskQueueActivitiesPerSecond limits in workers.** This setting is set in Workers and sent to the Task Queue when a Worker polls. If you have multiple Workers with conflicting settings, the Workers will overwrite each other as they poll. A rate set with `temporal task-queue config set --queue-rps-limit` overrides the Worker values until you unset it with `--queue-rps-limit default`.
 - **Confusing throughput limits with concurrency limits.** `MaxTaskQueueActivitiesPerSecond` limits how many Activity Tasks start each second, and every retry attempt is a new task that counts against it. It doesn't limit how many Activities are running. If the downstream service limits concurrent connections, cap concurrency with Worker slots as described in [Comparison with alternatives](#comparison-with-alternatives).
 - **Setting the cap far below actual demand.** A cap much lower than actual submission rate causes the queue to grow unboundedly. Monitor queue depth and raise the cap or add more Workers when throughput requirements grow.
 - **Expecting a perfectly even per-second rate.** The limit is enforced across the queue's partitions, default four. The server maintains the configured rate as an average over time but can dispatch a short burst above it, up to roughly the rate divided across partitions. If the downstream service rejects any momentary overshoot, set the cap below the hard limit to leave headroom, or reduce the partition count for the queue.
