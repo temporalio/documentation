@@ -22,11 +22,16 @@ For details about compute selection and Worker behavior during failover, see
 
 ## Prerequisites {/* #prerequisites */}
 
+Prepare the Namespace and the resources your Workers need in both AWS regions.
+
 - A Temporal Cloud Namespace with [Multi-region Replication](/cloud/high-availability/enable) between two AWS regions.
 - Credentials, databases, external storage, and any Codec Server or network proxy available to Workers in both
   regions. Check that both functions can reach the Namespace after failover.
 
 ## Create a highly available Serverless Worker Deployment {/* #create */}
+
+Configure the first Worker Deployment Version with one Lambda function for each Namespace region so Temporal can
+start Workers in either region after failover.
 
 ### Publish both functions
 
@@ -36,6 +41,8 @@ Worker Deployment name, Build ID, and Task Queues. Have the qualified Lambda ARN
 region ready before creating the Worker Deployment.
 
 ### Create the deployment with regional compute
+
+Configure both regional functions before routing new work to the version.
 
 <Tabs groupId="create-version-approach">
 <TabItem value="ui" label="Temporal Cloud UI">
@@ -93,6 +100,9 @@ so it receives new work.
 
 ## Add high availability to an existing Serverless Worker Deployment {/* #upgrade */}
 
+Add replica compute to each Worker Deployment Version that must serve work after failover, including older versions
+that still serve pinned Workflows.
+
 ### Publish the replica Lambda function {/* #deploy-replica-function */}
 
 Follow [Deploy Lambda function](/production-deployment/worker-deployments/serverless-workers/aws-lambda#deploy-lambda-function)
@@ -101,6 +111,8 @@ Queues as the primary function. [Configure invocation access](/production-deploy
 for the replica function and record its qualified ARN.
 
 ### Update the version's regional compute {/* #configure-regional-compute */}
+
+Configure the replica region to use the Lambda function you published there.
 
 <Tabs groupId="create-version-approach">
 <TabItem value="ui" label="Temporal Cloud UI">
@@ -160,8 +172,7 @@ Run `compute-config describe` again and confirm that both groups have the expect
 </TabItem>
 </Tabs>
 
-Publish and configure a replica function for each Worker Deployment Version that must serve work after failover.
-Keep those functions available while their versions serve work, including pinned Workflows.
+Keep the replica functions available while their versions serve work.
 
 ## Verify failover and failback {/* #verify-failover-and-failback */}
 
