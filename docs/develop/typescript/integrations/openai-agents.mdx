@@ -38,6 +38,7 @@ Before you start:
 - Set up your local environment by following
   [Set up a local development environment with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript),
   and leave the Temporal development server running to try your code locally.
+- Use Node.js 22.12 or later.
 
 Install the [`@temporalio/openai-agents`](https://www.npmjs.com/package/@temporalio/openai-agents) package along with
 the OpenAI Agents SDK packages it uses as peer dependencies,
@@ -50,8 +51,8 @@ npm install @temporalio/openai-agents @openai/agents-core @openai/agents-openai 
 ```
 
 The integration supports a single minor version of the OpenAI Agents SDK packages, so install them in the same command
-and npm picks versions that match. Keep every `@temporalio/*` package in your application on the same version, since the
-integration depends on exact versions of them.
+and npm picks versions that match. Keep every `@temporalio/*` package in your application on the same version. The
+integration works with any 1.x release from 1.24.0 on.
 
 Import Worker and Client APIs from `@temporalio/openai-agents`, and Workflow APIs from
 `@temporalio/openai-agents/workflow`, which is safe to load in the Workflow sandbox. [Configuration](#configuration)
@@ -388,9 +389,10 @@ Workflow, iterate the result to drive the run to completion. That iteration yiel
 call finishes, so subscribe from outside the Workflow to see them live. A retried model call publishes its events again
 from the start, so a subscriber can see a call's events more than once.
 
-Catch errors from iterating the result and from awaiting `result.completed`, since the OpenAI Agents SDK's errors
-arrive there as its own errors rather than as `AgentsWorkflowError`. An uncaught one doesn't fail the Workflow but fails
-the Workflow Task, which retries.
+Catch errors from iterating the result and from awaiting `result.completed`, since the OpenAI Agents SDK's errors arrive
+there as its own errors rather than as `AgentsWorkflowError`. An uncaught one doesn't fail the Workflow but fails the
+Workflow Task, which retries. A tool or guardrail whose Activity or Nexus Operation failed is the exception: it arrives
+as an `AgentsWorkflowError`, which fails the Workflow if uncaught.
 
 Subscribe with `WorkflowStreamClient`, as described in
 [Subscribe](/develop/typescript/workflows/workflow-streams#subscribe), and keep the Workflow open until the subscriber
@@ -420,9 +422,9 @@ To export OpenAI Agents SDK spans through OpenTelemetry, install the optional pe
 [`@opentelemetry/sdk-trace-base`](https://www.npmjs.com/package/@opentelemetry/sdk-trace-base), then do the following
 in both the Worker and the Client process:
 
-1. Create a tracer provider with `createTracerProvider()` from `@temporalio/openai-agents/otel`, and add your
-   exporter's span processor to it with `addSpanProcessor()`. The provider starts with no span processor, so it exports
-   nothing until you add one.
+1. Create a tracer provider with `createTracerProvider({ spanProcessors: [...] })` from
+   `@temporalio/openai-agents/otel`, passing your exporter's span processor. Without a span processor, the provider
+   exports nothing.
 2. Before constructing the plugin, register the provider with `trace.setGlobalTracerProvider()`.
 3. Set `useOtelInstrumentation: true` in the plugin's `interceptorOptions`.
 
@@ -574,7 +576,7 @@ Model Activity options, in the Client's `modelParams` or the runner's `defaultMo
 
 | Option | Default | Behavior |
 | --- | --- | --- |
-| `ActivityOptions` fields, such as `startToCloseTimeout`, `scheduleToCloseTimeout`, `retry`, `taskQueue`, and `heartbeatTimeout` | `startToCloseTimeout: '60s'` | Apply to every model Activity. With a `heartbeatTimeout`, the model Activity heartbeats on a timer at half that interval, which detects a lost Worker but not a stalled call. |
+| `ActivityOptions` fields, such as `startToCloseTimeout`, `scheduleToCloseTimeout`, `retry`, `taskQueue`, and `heartbeatTimeout` | `startToCloseTimeout: '60s'`, `heartbeatTimeout: '10s'` | Apply to every model Activity. Set `heartbeatTimeout: 0` to turn heartbeats off. With a `heartbeatTimeout`, the model Activity heartbeats on a timer at half that interval, which detects a lost Worker but not a stalled call. |
 | `useLocalActivity` | `false` | Runs model calls as [Local Activities](/local-activity). Only `startToCloseTimeout`, `scheduleToCloseTimeout`, `retry`, `cancellationType`, and `summary` apply then. |
 | `summary` | None | The Activity summary shown in the Temporal UI. A string works anywhere. A `ModelSummaryProvider`, whose `provide(agent, instructions, input)` runs in the Workflow and must be deterministic, works only in `defaultModelParams`. |
 | `streamingTopic` | None | The Workflow Stream topic for streaming runs. Required with `{ stream: true }`. Experimental. |
@@ -585,7 +587,7 @@ Model Activity options, in the Client's `modelParams` or the runner's `defaultMo
 | API | Option | Default | Behavior |
 | --- | --- | --- | --- |
 | Constructor | `defaultModelParams` | None | Model Activity options set in Workflow code, which also reach Workflows started without the plugin, such as by a Schedule or the Temporal CLI. The Client's `modelParams` take precedence for each field they set. `agent.asTool()` nested runs use the same options. |
-| `run()` | `context`, `maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, `tracing` | SDK defaults | As in the SDK's run options. `session` can't be the SDK's `MemorySession`. Other SDK run options, such as `signal`, `errorHandlers`, `toolErrorFormatter`, and `toolExecution`, aren't accepted. |
+| `run()` | `context`, `maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, `tracing` | SDK defaults | As in the SDK's run options, except that `tracing: { apiKey }` throws. Resolve a per-run tracing key on the Worker with the plugin's `tracingApiKey` option. `session` can't be the SDK's `MemorySession`. Other SDK run options, such as `signal`, `errorHandlers`, `toolErrorFormatter`, and `toolExecution`, aren't accepted. |
 | `run()` | `stream` | `false` | Streams model events over a Workflow Stream. Experimental. |
 | `run()` | `runConfig.model` | Each agent's model | A model name for the agents in the run that set none, nested `agent.asTool()` runs included. An agent's own model wins, as in the SDK. |
 | `run()` | `runConfig.modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`, `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, `traceMetadata` | SDK defaults | As in the SDK's run config. Guardrails and filters run in the Workflow. |
@@ -651,12 +653,10 @@ call ends the run with an `AgentsWorkflowError`, as described next. Failures tha
 Workflow reach it as they are when they occur outside a tool call.
 
 A failed `activityAsTool` call ends the run, and so does a failed `nexusOperationAsTool` call, which builds its tool the
-same way. In a run without `stream: true`, the failure reaches the Workflow as a non-retryable `AgentsWorkflowError`
-whose `cause` is the OpenAI Agents SDK's `ToolCallError`. The original failure is on that `ToolCallError`'s `error`
-property, not on the cause chain, so read it from `cause.error`. It's the `ActivityFailure` once an `activityAsTool`
-Activity stops retrying, or the `NexusOperationFailure` from `nexusOperationAsTool`. The Workflow failure recorded in
-Event History keeps only the message text, so an `activityAsTool` Activity's own error appears only in that Activity's
-failure event.
+same way. The failure reaches the Workflow as an `AgentsWorkflowError` whose `cause` is the Temporal failure: the
+`ActivityFailure` once an `activityAsTool` Activity stops retrying, or the `NexusOperationFailure` from
+`nexusOperationAsTool`. The `AgentsWorkflowError` is retryable unless that failure is a non-retryable
+`ApplicationFailure`. In a run with `stream: true`, iterating the result or awaiting `result.completed` throws it.
 
 A failure inside an MCP tool call, an `agent.asTool()` nested run, or a sandbox tool, such as `exec_command`,
 `write_stdin`, `view_image`, or `apply_patch`, doesn't reach the Workflow. The OpenAI Agents SDK returns it to the model
@@ -668,7 +668,7 @@ underlying error, and the run continues. That includes the `DedicatedWorkerFailu
 | Failure type | Raised in | Meaning |
 | --- | --- | --- |
 | `ModelInvocationError`, and `ModelInvocationError.RateLimit`, `.Authentication`, `.BadRequest`, `.Timeout`, `.Conflict`, or `.ServerError` | Model Activity | The model call failed. HTTP 408, 409, 429, and 5xx responses are retryable, and other statuses aren't. An `x-should-retry` header overrides that, and `retry-after-ms` or `retry-after` sets the next retry delay. An `openai` `APIError` without an HTTP status, such as `APIConnectionError`, is non-retryable. Other errors are retryable. |
-| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, an `agent.asTool()` tool sets `runConfig.modelProvider` or a model object as `runConfig.model` or can't be traced to its agent, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call in such a run also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. In a streaming run, an error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
+| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, an `agent.asTool()` tool sets `runConfig.modelProvider` or a model object as `runConfig.model` or can't be traced to its agent, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call, in any run, also arrives this way, with the `ActivityFailure` or `NexusOperationFailure` as the `cause`, and is retryable unless that failure is a non-retryable `ApplicationFailure`. In a streaming run, any other error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
 | `UnsafeSessionError` | Workflow | Non-retryable. `run()`, or an `agent.asTool()` tool's `runOptions.session`, received the SDK's `MemorySession`. |
 | `StreamingTopicNotConfigured` | Workflow | Non-retryable. A streaming run has no `streamingTopic`. |
 | `StreamingLocalActivityUnsupported` | Workflow | Non-retryable. A streaming run has `useLocalActivity: true`. |
