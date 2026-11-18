@@ -145,8 +145,18 @@ supports only a single Archival URI, but each Namespace can use a different URI.
 between `enabled` and `disabled` states as long as Archival is enabled at the Temporal Service level.
 
 Archival is supported in [Global Namespaces](/global-namespace) (Namespaces that span multiple clusters). When Archival
-is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before
-archiving, a history check is done to see what has been previously archived.
+is running in a Global Namespace, each Temporal Service independently creates and processes Archival tasks. When all
+participating Temporal Services use the same Archival URI, the first one writes the history blob and the others check
+that it already exists. This produces one stored copy, but every Temporal Service sends requests to the Archival
+backend.
+
+Monitor `history_archiver_blob_exists`, `history_archiver_archive_transient_error`, and
+`visibility_archiver_archive_transient_error` on every Temporal Service. If a shared backend is throttled, use
+`history.archivalBackendMaxRPS` to limit request rates or `history.archivalProcessorArchiveDelay` to spread Archival
+tasks over a longer period. These are dynamic configuration settings and do not require a restart.
+
+Do not try to disable Archival only on a passive Temporal Service. Archival configuration is part of the Namespace
+metadata and replicates to the other Temporal Services.
 
 #### Test your Archival setup {/* #test-your-archival-setup */}
 
