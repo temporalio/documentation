@@ -33,7 +33,7 @@ Prepare the Namespace and the resources your Workers need in both AWS regions.
 Configure a Worker Deployment Version with one Lambda function for each Namespace region so Temporal can start
 Workers in the newly active region after failover.
 
-### Publish both functions
+### Publish a Lambda function in each region
 
 Follow [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda)
 through **Configure IAM for Temporal invocation**. Publish the same Worker build in both Namespace regions with the same
