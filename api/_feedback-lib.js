@@ -43,17 +43,27 @@ const REASONS = {
   down: ['inaccurate', 'not_found', 'hard_to_understand', 'code_sample_errors', 'other'],
 };
 
+// A message shorter than this can't say what happened. Scanners send one-word
+// messages such as "m" or "rl-0" to test the endpoint.
+const MESSAGE_MIN = 20;
+
 // How long after the rating the widget can add a reason or comment.
 const AMEND_WINDOW_MS = 30 * 60 * 1000;
 
 const USAGE =
   `Report a problem with the Temporal docs or with Temporal itself. ` +
-  `POST ${ENDPOINT} with a JSON body, or GET ${ENDPOINT}?title=...&message=... with the same fields as query parameters. ` +
-  `Required: title (at most ${LIMITS.title} characters) and message (at most ${LIMITS.message}): what happened. ` +
+  `POST ${ENDPOINT} with a JSON body, or GET ${ENDPOINT}?title=<summary>&message=<what-happened> with the same fields as query parameters. ` +
+  `Required: title (at most ${LIMITS.title} characters) and message (${MESSAGE_MIN} to ${LIMITS.message}): what happened. ` +
   `Optional: expected (what the docs said or what you expected), context (what you were trying to do), ` +
   `category (${CATEGORIES.join(', ')}; pick by what you saw, not what you think caused it), ` +
   `severity (high: blocked, medium: found a workaround, low: annoyance), page_url, product_version, ` +
   `agent (your name), src. Don't include personal data, credentials, or confidential information.`;
+
+// Text with no letters or digits, such as "...", or a placeholder copied from
+// an example as is, such as "<summary>". Agents have sent both.
+function isPlaceholder(text) {
+  return !/[\p{L}\p{N}]/u.test(text) || /^<[^<>]*>$/.test(text);
+}
 
 // The value of one field as a trimmed string, '' when it's absent, or null
 // when it's present but not a string.
@@ -172,6 +182,18 @@ function parseSubmission(input, { method, compiledRedirects }) {
   // writes nothing.
   if (!fields.title) return { error: 'title is required.' };
   if (!fields.message) return { error: 'message is required.' };
+  for (const name of ['title', 'message']) {
+    if (isPlaceholder(fields[name])) {
+      return { error: `${name} is a placeholder. Replace it with a description of the problem you hit.` };
+    }
+  }
+  if (fields.message.length < MESSAGE_MIN) {
+    return {
+      error:
+        `message is ${fields.message.length} characters, and needs at least ${MESSAGE_MIN}. ` +
+        'Say what you were doing, what the page or product did, and what you expected.',
+    };
+  }
 
   fields.category = fields.category ? fields.category.toLowerCase() : 'other';
   fields.severity = fields.severity ? fields.severity.toLowerCase() : 'medium';
@@ -240,6 +262,7 @@ module.exports = {
   CATEGORIES,
   ENDPOINT,
   LIMITS,
+  MESSAGE_MIN,
   REASONS,
   SEVERITIES,
   USAGE,

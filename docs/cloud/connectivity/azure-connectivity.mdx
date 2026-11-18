@@ -1,0 +1,238 @@
+---
+id: azure-connectivity
+title: Azure Private Link connectivity
+sidebar_label: Azure Private Link
+slug: /cloud/connectivity/azure-connectivity
+description: Connect Azure Workers to Temporal Cloud through Private Link, approve Private Endpoints with Connectivity Rules, and configure private DNS.
+tags:
+  - Connectivity
+  - Production
+  - Temporal Cloud
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+Azure Private Link connects your Workers and Clients to Azure Temporal Cloud Namespaces through a Private Endpoint in your Azure Virtual Network (VNet).
+Use it to guarantee that a Namespace accepts traffic only from your private network and that traffic between Workers and the Namespace stays on Azure's private backbone.
+Namespace access still requires API key or mTLS authentication.
+
+<ReleaseNoteHeader featureName="azure">
+  Azure Private Link is available during Azure Public Preview.
+  To create an Azure Namespace, [request access](/evaluate/cloud/regions#azure-service-regions).
+</ReleaseNoteHeader>
+
+Setting up Azure Private Link takes four steps:
+
+1. [Request your service aliases](#request-your-service-aliases) from Temporal Dev Success.
+1. [Create a Private Endpoint](#create-the-endpoint) and [approve it with a Connectivity Rule](#approve-the-endpoint-with-a-connectivity-rule).
+1. [Configure private DNS](#configure-private-dns) so Clients reach the endpoint.
+1. [Attach the Connectivity Rule to Namespaces](#attach-the-rule-to-a-namespace) to restrict access to Private Link.
+
+Private Endpoints and Namespaces have a many-to-many relationship.
+One Private Endpoint can reach any Namespace in its Temporal Cloud region, and one Namespace can accept traffic from many Private Endpoints.
+
+## Request your service aliases
+
+[Create a support ticket](/evaluate/cloud/support#support-ticket) with Temporal Dev Success to request your account's Azure Private Link service aliases.
+Include the Azure regions containing your Namespaces or replicas.
+
+Azure service aliases are account-specific and are not published in documentation.
+Azure limits the number of connections to each Private Link service, so Temporal assigns each account its own set of aliases instead of publishing a shared list like the AWS PrivateLink and GCP Private Service Connect service names.
+During Public Preview, Temporal Dev Success is the only way to get your aliases. They cannot be retrieved through the Cloud Ops API, the Temporal CLI, or Terraform.
+
+The service alias must match the region of your Namespace or its Azure replica.
+Your Private Endpoint can be in a different Azure region, although keeping Workers, Clients, and the endpoint in the same region as the Namespace reduces latency.
+Workers and Clients must be able to route to the endpoint, either from the same VNet or from VNets connected through peering, VPN, or ExpressRoute.
+
+## Create the endpoint
+
+1. In the Azure portal, create a **Private Endpoint** in your subscription and resource group.
+2. Under **Resource**, choose the option to connect using a resource alias. Enter the service alias provided by Temporal Dev Success for the Namespace's region.
+3. Choose the VNet and subnet that will host the endpoint, then create it.
+4. Wait for the endpoint to reach this state:
+   - **Provisioning state:** Succeeded
+   - **Connection status:** Pending
+   - **Request/Response:** Awaiting Approval
+5. Copy the endpoint's full Azure Resource Manager resource ID from **Settings > Properties > Resource ID**, or with the Azure CLI:
+
+   ```shell
+   az network private-endpoint show \
+     --name <private-endpoint-name> \
+     --resource-group <resource-group> \
+     --query id \
+     --output tsv
+   ```
+
+   The ID has this format: `/subscriptions/{subscription}/resourceGroups/{resource-group}/providers/Microsoft.Network/privateEndpoints/{endpoint-name}`.
+
+## Approve the endpoint with a Connectivity Rule
+
+Create the Connectivity Rule within 24 hours of creating the Private Endpoint.
+Otherwise, Temporal rejects the endpoint and you must create a new one.
+
+Creating the rule requires credentials with permission to create Connectivity Rules.
+Those credentials are used only for the create operation; disabling the API key later does not affect the rule.
+
+Use the [Temporal CLI Cloud extension](/cli/cloud):
+
+```shell
+temporal cloud connectivity private create \
+  --azure-pe-resource-id "<azure-private-endpoint-resource-id>" \
+  --region azure-centralus
+```
+
+Or use the [Cloud Ops API](/ops):
+
+```shell
+curl -X POST "https://saas-api.tmprl.cloud/cloud/connectivity-rules" \
+  --header "Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "spec": {
+      "privateRule": {
+        "azurePeResourceId": "<azure-private-endpoint-resource-id>",
+        "region": "azure-centralus"
+      }
+    }
+  }'
+```
+
+Set `region` to the region of the Namespace and service alias, such as `azure-centralus` or `azure-australiaeast`.
+This can differ from the region of the Private Endpoint.
+The [Terraform provider](/cloud/terraform-provider) also supports Connectivity Rules.
+
+Save the returned Connectivity Rule ID. If you lose it, list your account's rules with `temporal cloud connectivity list`.
+
+Temporal Cloud finds the pending connection on its Private Link service and approves it.
+Wait for the Private Endpoint connection status to become **Approved**, then record its private IP address from the Azure portal or with the Azure CLI:
+
+```shell
+az network private-endpoint show \
+  --name <private-endpoint-name> \
+  --resource-group <resource-group> \
+  --query 'customDnsConfigs[0].ipAddresses[0]' \
+  --output tsv
+```
+
+Creating a Connectivity Rule approves the endpoint but does not change who can reach your Namespaces. Attaching the rule to a Namespace restricts its allowed network paths.
+
+## Configure private DNS
+
+Without private DNS, Workers resolve the Namespace Endpoint through public DNS and connect over the internet.
+Private DNS lets Clients keep using standard Temporal Cloud hostnames, avoids TLS server name overrides, and lets you replace a Private Endpoint by changing DNS instead of application configuration.
+
+For a single-region Namespace:
+
+1. Create an Azure Private DNS zone for `<account-id>.tmprl.cloud`, or use an existing one:
+
+   ```shell
+   az network private-dns zone create \
+     --resource-group <dns-resource-group> \
+     --name <account-id>.tmprl.cloud
+   ```
+
+2. Add an A record for each Namespace pointing to the Private Endpoint's private IP address:
+
+   ```shell
+   az network private-dns record-set a add-record \
+     --resource-group <dns-resource-group> \
+     --zone-name <account-id>.tmprl.cloud \
+     --record-set-name <namespace-name> \
+     --ipv4-address <private-endpoint-ip>
+   ```
+
+   For example, in the zone `abcde.tmprl.cloud`, the record `payments` resolves `payments.abcde.tmprl.cloud` to the endpoint's private IP address.
+
+3. Link the zone to each VNet containing Workers or Clients that need the connection:
+
+   ```shell
+   az network private-dns link vnet create \
+     --resource-group <dns-resource-group> \
+     --zone-name <account-id>.tmprl.cloud \
+     --name <link-name> \
+     --virtual-network <vnet-resource-id> \
+     --registration-enabled false
+   ```
+
+4. From a VM, container, or Worker inside a linked VNet, verify that `nslookup <namespace-name>.<account-id>.tmprl.cloud` returns the Private Endpoint's private IP address.
+
+Workers and Clients can then use the standard Namespace Endpoint with their existing authentication configuration.
+
+If Clients connect through the Regional Endpoint instead, such as `centralus.azure.api.temporal.io`, create a Private DNS zone for that hostname with an apex (`@`) A record pointing to the Private Endpoint's private IP address, and link it to the same VNets.
+See the [Azure service regions](/evaluate/cloud/regions#azure-service-regions) for each region's Regional Endpoint.
+
+Without private DNS, point Clients at the Private Endpoint IP address and set the TLS server name to the Namespace Endpoint, as described in [Update DNS or Clients to use private connectivity](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
+
+A fixed Namespace A record does not follow the active replica after a High Availability failover.
+For a Namespace using Multi-cloud Replication, plan connectivity to both replicas and review the DNS and routing configuration with Temporal Dev Success before relying on private connectivity for failover.
+
+## Attach the rule to a Namespace
+
+:::caution Preserve public access during migration
+
+Attaching only private Connectivity Rules blocks authenticated requests arriving over the public internet.
+If Workers currently use public connectivity, attach the public Connectivity Rule alongside the Azure private rule, move and verify Worker traffic over Private Link, and then detach the public rule.
+
+:::
+
+Use the saved Connectivity Rule ID and your full Namespace ID:
+
+```shell
+temporal cloud namespace connectivity attach \
+  --namespace payments.abcde \
+  --connectivity-rule-id "<connectivity-rule-id>"
+```
+
+Repeat `--connectivity-rule-id` to attach more than one rule in one call.
+To remove a rule, use `temporal cloud namespace connectivity detach` with the same flags.
+
+Confirm the attached rules:
+
+```shell
+temporal cloud namespace connectivity list --namespace payments.abcde
+```
+
+You can also attach rules with the Cloud Ops API `UpdateNamespace` call or the Terraform provider.
+`UpdateNamespace` replaces the full Namespace spec, so build the request from a `GetNamespace` response and append the rule ID to `connectivityRuleIds`.
+
+A Namespace with only private rules accepts traffic only from the specified private connections.
+A Namespace with private and public rules also accepts authenticated internet traffic.
+The [Temporal Cloud Web UI is not subject to Connectivity Rule enforcement](/cloud/connectivity#connectivity-rules).
+
+## Verify private access
+
+From inside your private network, such as a VM in the Private Endpoint's VNet, run an authenticated request against the Namespace Endpoint:
+
+```shell
+temporal workflow list \
+  --address <namespace-id>.tmprl.cloud:7233 \
+  --namespace <namespace-id> \
+  --api-key <api-key>
+```
+
+The command succeeds even if it returns no Workflows. For mTLS Namespaces, replace `--api-key` with your mTLS flags.
+
+Without private DNS, target the Private Endpoint IP address directly:
+
+```shell
+temporal workflow list \
+  --address <private-endpoint-ip>:7233 \
+  --namespace <namespace-id> \
+  --api-key <api-key> \
+  --tls \
+  --tls-server-name <namespace-id>.tmprl.cloud
+```
+
+If the Namespace has only private rules attached, run the first command from outside your private network. It should fail with `Request unauthorized`.
+
+## Troubleshoot a pending endpoint
+
+If the Private Endpoint remains **Pending**, check that:
+
+- A Connectivity Rule exists for the endpoint. List your rules and look for one with the endpoint's `azurePeResourceId`.
+- The resource ID in the rule matches the endpoint exactly.
+- The endpoint targets the service alias assigned to your account for the Namespace or replica region.
+- You created the rule within 24 hours of creating the endpoint.
+
+If the resource ID or service alias is wrong, rule creation fails with `private endpoint connection not found — ensure the PE exists and is in Pending state`.
+If the endpoint was rejected, create a new endpoint and a matching Connectivity Rule.

@@ -98,6 +98,19 @@ describe('groupRecords', () => {
     assert.strictEqual(groupRecords([report({ deployment: 'preview' })], { includePreview: true }).reports.length, 1);
   });
 
+  it('leaves out scanner probes and counts them', () => {
+    const grouped = groupRecords([
+      report(),
+      report({ title: '<script src=//x.oast.pro/t1></script>' }),
+      report({ title: 'rl-0', message: 'rl-0' }),
+      report({ title: 'a{{7*7}}', deployment: 'preview' }),
+    ]);
+    assert.strictEqual(grouped.reports.length, 1);
+    assert.strictEqual(grouped.probes, 2);
+    assert.strictEqual(grouped.skipped, 1, 'a preview record counts as preview, not as a probe');
+    assert.match(allText(formatDigest('2026-11-13', grouped, { knownPaths: new Set() })), /2 scanner probes left out/);
+  });
+
   it('collapses reports with the same page and title', () => {
     const { reports } = groupRecords([
       report(),
@@ -109,6 +122,22 @@ describe('groupRecords', () => {
     assert.deepStrictEqual(merged.agents, ['claude-code', 'codex']);
     assert.strictEqual(merged.severity, 'high');
     assert.strictEqual(reports[0], merged, 'higher severity sorts first');
+  });
+
+  it('counts senders and keeps the different messages of a grouped report', () => {
+    const { reports } = groupRecords([
+      report({ ip_hash: 'a' }),
+      report({ ip_hash: 'a', message: '  the page says --FOO; the CLI has --bar. ' }),
+      report({ ip_hash: 'a', message: 'Second message about the flag' }),
+      report({ ip_hash: 'b', message: 'Third message about the flag' }),
+    ]);
+    assert.strictEqual(reports.length, 1);
+    assert.deepStrictEqual(reports[0].senders, ['a', 'b']);
+    assert.deepStrictEqual(reports[0].messages, [
+      'The page says --foo; the CLI has --bar.',
+      'Second message about the flag',
+      'Third message about the flag',
+    ]);
   });
 
   it('merges a rating with its latest amendment', () => {
@@ -170,8 +199,22 @@ describe('formatDigest', () => {
     assert.ok(!text.includes('<https://evil'));
   });
 
+  it('shows the sender count and up to three messages for a grouped report', () => {
+    const records = ['a', 'b', 'c', 'd'].map((m) => report({ ip_hash: 'x', message: `Message ${m} about the wrong flag` }));
+    const text = allText(formatDigest('2026-11-03', groupRecords(records), { knownPaths: new Set(['/cli']) }));
+    assert.match(text, /reported 4 times from 1 sender/);
+    assert.match(text, /`Message a about the wrong flag`[\s\S]*`Message b about the wrong flag`[\s\S]*`Message c about the wrong flag`/);
+    assert.ok(!text.includes('Message d'));
+    assert.match(text, /and 1 more message in the Blob store/);
+  });
+
+  it('leaves out the sender count when records have no IP hash', () => {
+    const text = allText(formatDigest('2026-11-03', groupRecords([report(), report()]), { knownPaths: new Set() }));
+    assert.match(text, /reported 2 times ·/);
+  });
+
   it('neutralizes mentions in free text', () => {
-    const grouped = groupRecords([report({ title: '<!channel> read this', message: '<!here>' })]);
+    const grouped = groupRecords([report({ title: '<!channel> read this', message: '<!here> the CLI flag on this page is wrong' })]);
     const text = allText(formatDigest('2026-11-03', grouped, { knownPaths: new Set() }));
     assert.ok(!text.includes('<!channel>'));
     assert.ok(!text.includes('<!here>'));

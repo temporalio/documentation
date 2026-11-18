@@ -33,6 +33,8 @@ Available timeouts are:
 - withStartToCloseTimeout()
 - withScheduleToStartTimeout()
 
+<!--SNIPSTART php-activity-timeouts-schedule-to-close {"enable_code_dedenting": true}-->
+[php-sandbox/activities/timeouts/TimeoutWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/timeouts/TimeoutWorkflow.php)
 ```php
 $this->greetingActivity = Workflow::newActivityStub(
     GreetingActivityInterface::class,
@@ -43,6 +45,7 @@ $this->greetingActivity = Workflow::newActivityStub(
         // ->withScheduleToStartTimeout(CarbonInterval::seconds(10))
 );
 ```
+<!--SNIPEND-->
 
 ### Set an Activity Retry Policy {/* #activity-retries */}
 
@@ -53,6 +56,8 @@ Activity Executions are automatically associated with a default [Retry Policy](/
 To set an Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
 The follow example creates a new Activity with the given options.
 
+<!--SNIPSTART php-activity-timeouts-retry-policy {"enable_code_dedenting": true}-->
+[php-sandbox/activities/timeouts/RetryPolicyWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/timeouts/RetryPolicyWorkflow.php)
 ```php
 $this->greetingActivity = Workflow::newActivityStub(
     GreetingActivityInterface::class,
@@ -65,8 +70,8 @@ $this->greetingActivity = Workflow::newActivityStub(
                 ->withNonRetryableExceptions([\InvalidArgumentException::class])
         )
 );
-}
 ```
+<!--SNIPEND-->
 
 For an executable code sample, see [ActivityRetry sample](https://github.com/temporalio/samples-php/tree/master/app/src/ActivityRetry) in the PHP samples repository.
 
@@ -83,6 +88,8 @@ This value will replace and override whatever the retry interval would be on the
 
 For example, if in an Activity, you want to base the interval on the number of attempts, you might do:
 
+<!--SNIPSTART php-activity-timeouts-next-retry-delay {"enable_code_dedenting": true}-->
+[php-sandbox/activities/timeouts/RetryDelayActivity.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/timeouts/RetryDelayActivity.php)
 ```php
 $attempt = \Temporal\Activity::getInfo()->attempt;
 
@@ -93,6 +100,7 @@ throw new \Temporal\Exception\Failure\ApplicationFailure(
     nextRetryDelay: \DateInterval::createFromDateString(\sprintf('%d seconds', $attempt * 3)),
 );
 ```
+<!--SNIPEND-->
 
 ## Heartbeat an Activity {/* #activity-heartbeats */}
 
@@ -118,19 +126,29 @@ Then the Workflow can pass the details to the next Activity invocation.
 Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
 When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
 
+<!--SNIPSTART php-activity-timeouts-heartbeat-->
+[php-sandbox/activities/timeouts/FileProcessingActivitiesImpl.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/timeouts/FileProcessingActivitiesImpl.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Activities\Timeouts;
+
 use Temporal\Activity;
 
 class FileProcessingActivitiesImpl implements FileProcessingActivities
 {
-    // ...
+    public function __construct(
+        private readonly Downloader $downloader,
+    ) {}
+
     public function download(
         string $bucketName,
         string $remoteName,
         string $localName
     ): void
     {
-        $this->dowloader->downloadWithProgress(
+        $this->downloader->downloadWithProgress(
             $bucketName,
             $remoteName,
             $localName,
@@ -141,13 +159,10 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
         );
 
         Activity::heartbeat(100); // download complete
-
-        // ...
     }
-
-    // ...
 }
 ```
+<!--SNIPEND-->
 
 ### Set a Heartbeat Timeout {/* #heartbeat-timeout */}
 
@@ -163,19 +178,29 @@ Then the Workflow can pass the details to the next Activity invocation.
 Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
 When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
 
+<!--SNIPSTART php-activity-timeouts-heartbeat-->
+[php-sandbox/activities/timeouts/FileProcessingActivitiesImpl.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/timeouts/FileProcessingActivitiesImpl.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Activities\Timeouts;
+
 use Temporal\Activity;
 
 class FileProcessingActivitiesImpl implements FileProcessingActivities
 {
-    // ...
+    public function __construct(
+        private readonly Downloader $downloader,
+    ) {}
+
     public function download(
         string $bucketName,
         string $remoteName,
         string $localName
     ): void
     {
-        $this->dowloader->downloadWithProgress(
+        $this->downloader->downloadWithProgress(
             $bucketName,
             $remoteName,
             $localName,
@@ -186,10 +211,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
         );
 
         Activity::heartbeat(100); // download complete
-
-        // ...
     }
-
-    // ...
 }
 ```
+<!--SNIPEND-->

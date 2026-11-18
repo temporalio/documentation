@@ -134,7 +134,6 @@ public TemporalOperationResult<Void> remindApprover(
       .remindApprover();
   return TemporalOperationResult.sync(null);
 }
-
 ```
 <!--SNIPEND-->
 
@@ -143,6 +142,13 @@ public TemporalOperationResult<Void> remindApprover(
 Send the Query through the Client and return its answer as a synchronous result. Like the Signal, the Operation completes during the handler call. Unlike the Signal, it returns the approval's progress: whether a decision is pending, and how many reminders and notes it has.
 
 A Worker answers the Query, so the Operation fails if no Worker is polling the approval's Task Queue.
+
+:::note[Query availability]
+
+Querying a Workflow from an Operation handler is available in Temporal Cloud, and as a pre-release on a self-hosted Temporal Service in Server v1.33.0.
+To run this step locally, start the server from the [Query-capable pre-release CLI](/develop/java/nexus/development-walkthrough#check-your-cli-version).
+
+:::
 
 <!--SNIPSTART java-nexus-walkthrough-get-approval-status {"enable_code_dedenting": true}-->
 [java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java)
@@ -156,7 +162,6 @@ public TemporalOperationResult<GetApprovalStatusOutput> getApprovalStatus(
           .newWorkflowStub(ApprovalWorkflow.class, ApprovalWorkflowId.forItem(input.getItemId()))
           .getApprovalStatus());
 }
-
 ```
 <!--SNIPEND-->
 
@@ -196,7 +201,6 @@ public TemporalOperationResult<SubmitDecisionOutput> submitDecision(
           .setWaitForStage(WorkflowUpdateStage.ACCEPTED)
           .build());
 }
-
 ```
 <!--SNIPEND-->
 

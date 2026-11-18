@@ -438,6 +438,12 @@ Task Queues support the following versioning rules and policies:
   Redirect rules require that a target Build ID is fully compatible with
   the source Build ID.
 
+Use the following options to change the behavior of this command and all of its subcommands. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--task-queue`, `-t` | Yes | **string** Task queue name. |
+
 ### add-redirect-rule
 
 ```

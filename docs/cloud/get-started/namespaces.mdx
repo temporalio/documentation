@@ -14,7 +14,7 @@ tags:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import { CaptionedImage, EnlargeImage } from '@site/src/components';
+import { CaptionedImage, EnlargeImage, ReleaseNoteHeader } from '@site/src/components';
 
 :::info Temporal Cloud
 This page covers namespace operations in **Temporal Cloud**.
@@ -184,14 +184,6 @@ different gRPC endpoint types and how to access them.
 
 ## How to create a Namespace in Temporal Cloud {/* #create-a-namespace */}
 
-:::caution GCP capacity restriction
-
-You can create GCP Namespaces in Mumbai (`asia-south1`), Jakarta (`asia-southeast2`), Northern Virginia (`us-east4`), and Oregon (`us-west1`) without an account exception.
-New Namespaces in Iowa (`us-central1`) and Frankfurt (`europe-west3`) require an approved account exception.
-See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for details and how to request an exception through Temporal Dev Success.
-
-:::
-
 :::info
 
 The user who creates a [Namespace](/namespaces) is automatically granted
@@ -212,7 +204,7 @@ By default, each account starts with 10 Namespaces. This limit increases automat
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- [Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name), region, and Cloud Provider
+- [Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name), region, and Cloud Provider. Azure regions are available after [access is enabled](/evaluate/cloud/regions#azure-service-regions) for your account.
 - Optional [Namespace description](#describe-a-namespace)
 - [Retention Period](/temporal-service/temporal-server#retention-period) for the
   [Event History](/workflow-execution/event#event-history) of closed [Workflow Executions](/workflow-execution).
@@ -222,6 +214,14 @@ To create a Namespace in Temporal Cloud, gather the following information:
   show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see
   [Securing your data](/production-deployment/data-encryption).
 - [Permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) for each user.
+
+<ReleaseNoteHeader featureName="azure">
+
+Before creating an Azure Namespace, [request account access](/evaluate/cloud/regions#azure-service-regions) through Temporal Dev Success.
+For API and CLI requests, use `azure-centralus` or `azure-australiaeast` as the region identifier.
+Use the [Temporal CLI Cloud extension](/cli/cloud) for Azure Namespace management; `tcld` is not supported.
+
+</ReleaseNoteHeader>
 
 <Tabs>
 

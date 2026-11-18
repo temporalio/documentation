@@ -144,8 +144,6 @@ class StrandsAgentWorkflow:
         # Workflow sandbox blocks.
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -175,8 +173,6 @@ def execute_code(
     return interpreter.execute_code(
         ExecuteCodeAction(type="executeCode", code=code, language=language)
     )
-
-
 ```
 <!--SNIPEND-->
 
