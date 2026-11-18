@@ -39,7 +39,7 @@ Existing single-region groups remain unscoped until you configure a region scope
 Namespace-only failover if their compute remains healthy, but do not protect against losing the compute region.
 
 Regional selection also supports traditional Workers in the primary region and Serverless Workers only in the recovery
-region. Both use the same Worker Deployment Version; a group scoped only to the recovery region starts Serverless
+region. Both use the same Worker Deployment Version. A group scoped only to the recovery region starts Serverless
 Workers when the Namespace becomes active there.
 
 ## Existing Workers after failover
@@ -62,9 +62,9 @@ How existing compute stops depends on the provider:
 
 ## Namespace and compute outages
 
-Serverless Workers follow Namespace failover; there is no separate Worker failover operation. Temporal Cloud's
-automatic failover monitors Temporal Cloud health. A failure limited to Lambda, Cloud Run, or your application does not
-automatically trigger Namespace failover.
+Temporal selects regional Serverless Worker compute as part of Namespace failover. Temporal Cloud's automatic failover
+monitors Temporal Cloud health. A failure limited to Lambda, Cloud Run, or your application does not automatically
+trigger Namespace failover.
 
 Regional Serverless compute supports Active/Passive recovery. Configure each Worker Deployment Version that must
 continue serving work, including versions used by pinned Workflows. For setup, testing, and provider outage recovery,

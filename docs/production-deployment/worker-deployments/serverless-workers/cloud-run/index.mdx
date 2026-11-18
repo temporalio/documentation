@@ -787,8 +787,8 @@ Create a [Worker Deployment Version](/production-deployment/worker-deployments/w
 configuration points at your Worker Pool. The [compute configuration](/serverless-workers#scaling-groups) tells
 Temporal where the pool lives and which service account to impersonate to manage it. The single-region setup creates
 one scaling group named `default` without a Namespace-region restriction. The pool's region determines where the Workers
-run; changing the Namespace's active region does not change that target. The deployment name and Build ID must match the
-values in your Worker code.
+run, regardless of the Namespace's active region. The deployment name and Build ID must match the values in your
+Worker code.
 
 A Namespace runs at most 100 Worker Deployment Versions with a compute configuration by default. Creating a version
 past that limit fails with `reached maximum worker controller instances in namespace`. See

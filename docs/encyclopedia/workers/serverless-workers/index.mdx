@@ -74,8 +74,8 @@ Temporal tracks information associated with each version:
 - **Metadata and timestamps:** user-provided information, creation time, and routing changes.
 - **Compute configuration (optional):** how Temporal starts and scales Serverless Workers for the version.
 
-A version identifies the Worker build; you deploy that build to your compute provider. Keep the build fixed for the
-version even when changing its compute configuration. For rollout and pinning behavior, see
+A version identifies the Worker build that you deploy to your compute provider. Keep that build fixed even when
+changing the version's compute configuration. For rollout and pinning behavior, see
 [Worker Versioning](/worker-versioning).
 
 ### Compute configuration {/* #compute-configuration */}
@@ -118,10 +118,10 @@ For regional failover, add a group whose region scope matches the Namespace's re
 is deployed there. When that region becomes active, the WCI uses the matching group instead of the unscoped
 group. See [High Availability for Serverless Workers](/serverless-workers/high-availability) for selection rules and setup guides.
 
-The CLI's `--scaling-group` flag selects an entry by name. A group named `default` can also have an explicit region
-scope; the name does not determine its scope or the compute resource's location.
+The CLI's `--scaling-group` flag selects an entry by name. You can set an explicit region scope for any group,
+including `default`. The group's compute target specifies the resource and its location.
 
-The same WCI manages all groups in a Worker Deployment Version; adding a group does not create another version or WCI.
+One WCI manages all groups in a Worker Deployment Version, including groups you add later.
 
 ### Compute providers {/* #compute-providers */}
 

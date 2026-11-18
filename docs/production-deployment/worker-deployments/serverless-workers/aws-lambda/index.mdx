@@ -765,8 +765,8 @@ Create a [Worker Deployment Version](/production-deployment/worker-deployments/w
 provider that points to your Lambda function. The [compute configuration](/serverless-workers#scaling-groups) tells
 Temporal how to invoke your Worker: the provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume.
 The single-region setup creates one scaling group named `default` without a Namespace-region restriction. The function
-ARN determines where the Worker runs; changing the Namespace's active region does not change that target. The deployment
-name and Build ID must match the values in your Worker code.
+ARN determines where the Worker runs, regardless of the Namespace's active region. The deployment name and Build ID
+must match the values in your Worker code.
 
 A Namespace runs at most 100 Worker Deployment Versions with a compute configuration by default. Creating a version
 past that limit fails with `reached maximum worker controller instances in namespace`. See
