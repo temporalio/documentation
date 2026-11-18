@@ -30,8 +30,8 @@ Prepare the Namespace and the resources your Workers need in both AWS regions.
 
 ## Create a highly available Serverless Worker Deployment {/* #create */}
 
-Configure the first Worker Deployment Version with one Lambda function for each Namespace region so Temporal can
-start Workers in either region after failover.
+Configure a Worker Deployment Version with one Lambda function for each Namespace region so Temporal can start
+Workers in the newly active region after failover.
 
 ### Publish both functions
 
@@ -59,7 +59,7 @@ Configure both regional functions before routing new work to the version.
 </TabItem>
 <TabItem value="cli" label="Temporal CLI">
 
-Create the deployment, then create its first version with a [scaling group](/serverless-workers#scaling-groups) for the
+Create the deployment, then create a version with a [scaling group](/serverless-workers#scaling-groups) for the
 primary region. Add a scaling group for the replica before setting the version as current. Replace the example region
 IDs with your Namespace's region IDs.
 
