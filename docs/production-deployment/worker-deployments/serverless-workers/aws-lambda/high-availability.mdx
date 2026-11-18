@@ -59,41 +59,54 @@ Configure both regional functions before routing new work to the version.
 </TabItem>
 <TabItem value="cli" label="Temporal CLI">
 
-Create the deployment, then create a version with a [scaling group](/serverless-workers#scaling-groups) for the
-primary region. Add a scaling group for the replica before setting the version as current. Replace the example region
-IDs with your Namespace's region IDs.
+Replace the example region IDs with your Namespace's region IDs. `--region-id` identifies the Namespace region
+where the scaling group applies. The region in the qualified function ARN identifies where the Lambda function runs.
 
-```bash
-temporal worker deployment create \
-  --namespace <YOUR_NAMESPACE> \
-  --name my-app
+1. Create the Worker Deployment.
 
-temporal worker deployment version compute-config aws-lambda create \
-  --namespace <YOUR_NAMESPACE> \
-  --deployment-name my-app \
-  --build-id build-1 \
-  --scaling-group aws-us-east-1 \
-  --region-id aws-us-east-1 \
-  --function-arn <PRIMARY_FUNCTION_VERSION_ARN> \
-  --assume-role-arn <PRIMARY_INVOCATION_ROLE_ARN> \
-  --assume-role-external-id <PRIMARY_EXTERNAL_ID>
+   ```bash
+   temporal worker deployment create \
+     --namespace <YOUR_NAMESPACE> \
+     --name my-app
+   ```
 
-temporal worker deployment version compute-config aws-lambda update \
-  --namespace <YOUR_NAMESPACE> \
-  --deployment-name my-app \
-  --build-id build-1 \
-  --scaling-group aws-us-west-2 \
-  --region-id aws-us-west-2 \
-  --function-arn <REPLICA_FUNCTION_VERSION_ARN> \
-  --assume-role-arn <REPLICA_INVOCATION_ROLE_ARN> \
-  --assume-role-external-id <REPLICA_EXTERNAL_ID>
-```
+2. Create a Worker Deployment Version with a [scaling group](/serverless-workers#scaling-groups) for the primary
+   region.
 
-`--region-id` identifies the Namespace region where the scaling group applies. The region in the qualified function
-ARN identifies where the Lambda function runs.
+   ```bash
+   temporal worker deployment version compute-config aws-lambda create \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1 \
+     --scaling-group aws-us-east-1 \
+     --region-id aws-us-east-1 \
+     --function-arn <PRIMARY_FUNCTION_VERSION_ARN> \
+     --assume-role-arn <PRIMARY_INVOCATION_ROLE_ARN> \
+     --assume-role-external-id <PRIMARY_EXTERNAL_ID>
+   ```
 
-[Set the version as current](/production-deployment/worker-deployments/serverless-workers/aws-lambda#set-current-version)
-so it receives new work.
+3. Add a scaling group for the replica region to the same version.
+
+   ```bash
+   temporal worker deployment version compute-config aws-lambda update \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1 \
+     --scaling-group aws-us-west-2 \
+     --region-id aws-us-west-2 \
+     --function-arn <REPLICA_FUNCTION_VERSION_ARN> \
+     --assume-role-arn <REPLICA_INVOCATION_ROLE_ARN> \
+     --assume-role-external-id <REPLICA_EXTERNAL_ID>
+   ```
+
+4. Set the version as current so it receives new work.
+
+   ```bash
+   temporal worker deployment set-current-version \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1
+   ```
 
 </TabItem>
 </Tabs>
@@ -127,47 +140,54 @@ Configure the replica region to use the Lambda function you published there.
 </TabItem>
 <TabItem value="cli" label="Temporal CLI">
 
-Describe the existing version's compute configuration to find its [scaling group](/serverless-workers#scaling-groups)
-names:
+Replace the example region IDs with your Namespace's region IDs.
 
-```bash
-temporal worker deployment version compute-config describe \
-  --namespace <YOUR_NAMESPACE> \
-  --deployment-name my-app \
-  --build-id build-1
-```
+1. Describe the existing version's compute configuration to find its [scaling group](/serverless-workers#scaling-groups)
+   names.
 
-Add a group for the replica region using the function you published there. Replace the example region IDs with your
-Namespace's region IDs.
+   ```bash
+   temporal worker deployment version compute-config describe \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1
+   ```
 
-```bash
-temporal worker deployment version compute-config aws-lambda update \
-  --namespace <YOUR_NAMESPACE> \
-  --deployment-name my-app \
-  --build-id build-1 \
-  --scaling-group aws-us-west-2 \
-  --region-id aws-us-west-2 \
-  --function-arn <REPLICA_FUNCTION_VERSION_ARN> \
-  --assume-role-arn <REPLICA_INVOCATION_ROLE_ARN> \
-  --assume-role-external-id <REPLICA_EXTERNAL_ID>
-```
+2. Add a scaling group for the replica region using the function you published there. The group uses the default
+   Lambda scaling settings unless you pass scaling options. If you customized the primary configuration, apply the
+   required settings to the replica group as well.
 
-The new group uses the default Lambda scaling settings unless you pass scaling options. If you customized the primary
-configuration, apply the required settings to the replica group as well.
+   ```bash
+   temporal worker deployment version compute-config aws-lambda update \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1 \
+     --scaling-group aws-us-west-2 \
+     --region-id aws-us-west-2 \
+     --function-arn <REPLICA_FUNCTION_VERSION_ARN> \
+     --assume-role-arn <REPLICA_INVOCATION_ROLE_ARN> \
+     --assume-role-external-id <REPLICA_EXTERNAL_ID>
+   ```
 
-Then scope the existing group to the primary region. Passing only `--region-id` preserves its provider and scaling
-settings. Replace `default` with your existing group name if it differs.
+3. Scope the existing group to the primary region. Passing only `--region-id` preserves its provider and scaling
+   settings. Replace `default` with your existing group name if it differs.
 
-```bash
-temporal worker deployment version compute-config aws-lambda update \
-  --namespace <YOUR_NAMESPACE> \
-  --deployment-name my-app \
-  --build-id build-1 \
-  --scaling-group default \
-  --region-id aws-us-east-1
-```
+   ```bash
+   temporal worker deployment version compute-config aws-lambda update \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1 \
+     --scaling-group default \
+     --region-id aws-us-east-1
+   ```
 
-Run `compute-config describe` again and confirm that both groups have the expected region and provider.
+4. Describe the compute configuration again and confirm that both groups show the expected region and provider.
+
+   ```bash
+   temporal worker deployment version compute-config describe \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1
+   ```
 
 </TabItem>
 </Tabs>
