@@ -82,7 +82,7 @@ Every Temporal Cloud Namespace includes baseline high availability:
 
 - **Three-zone replication**: Workflow state replicates synchronously across three availability zones before a write is acknowledged
 - **Automatic failover**: If one zone becomes unavailable, operations continue on the remaining zones
-- **Contractual SLA**: Uptime commitment for standard Namespaces, defined in the [Temporal Cloud SLA](https://temporal.io/sla)
+- **Contractual SLA**: Availability commitment for standard Namespaces, defined in the [Temporal Cloud SLA](https://temporal.io/sla)
 
 ### High Availability features
 
@@ -96,7 +96,7 @@ For workloads that need stronger guarantees, Temporal Cloud offers three replica
 
 High Availability Namespaces include:
 
-- **Higher contractual SLA**: Uptime commitment defined in the [Temporal Cloud SLA](https://temporal.io/sla)
+- **Higher contractual SLA**: Availability commitment defined in the [Temporal Cloud SLA](https://temporal.io/sla)
 - **Sub-1-minute RPO**: Recovery Point Objective for data loss
 - **20-minute RTO**: Recovery Time Objective for failover completion
 - **Automatic or manual failover**: Choose the failover strategy per Namespace
@@ -203,13 +203,13 @@ To move existing self-hosted workloads, see [Migration](/cloud/migrate).
   },
   {
     href: "/cloud/slo",
-    title: "Uptime, latency, and SLOs",
-    description: "Published objectives for uptime, latency, and Visibility availability, and measured latency for common operations.",
+    title: "Availability, latency, and SLOs",
+    description: "Published objectives for availability, latency, and Visibility, with measured availability and latency for common operations.",
   },
   {
     href: "https://temporal.io/sla",
     title: "SLA",
-    description: "The contractual uptime commitment: covered APIs, how availability is calculated, exclusions, and service credits.",
+    description: "The contractual availability commitment: covered APIs, how availability is calculated, exclusions, and service credits.",
   },
   {
     href: "/evaluate/cloud/security",
