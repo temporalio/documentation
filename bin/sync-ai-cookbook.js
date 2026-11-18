@@ -21,6 +21,7 @@ const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.svg', '.web
 // When source files link to renamed recipes, this ensures the links resolve correctly.
 const SLUG_ALIASES = new Map([
   ['tool-calling-python', 'tool-call-openai-python'],
+  ['openshell-durable-approvals-python', 'durable-simulation-agent-nvidia-python'],
   // Add more aliases as recipes are renamed: ['old-slug', 'new-slug']
 ]);
 

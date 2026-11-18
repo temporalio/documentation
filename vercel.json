@@ -317,6 +317,16 @@
       "permanent": true
     },
     {
+      "source": "/ai/cookbook/openshell-durable-approvals-python",
+      "destination": "/ai/cookbook/durable-simulation-agent-nvidia-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai/cookbook/openshell-durable-approvals-python.md",
+      "destination": "/ai/cookbook/durable-simulation-agent-nvidia-python.md",
+      "permanent": true
+    },
+    {
       "source": "/ai-cookbook",
       "destination": "/ai/cookbook",
       "permanent": true
