@@ -125,6 +125,228 @@ Use the following options to change the behavior of this command. You can also u
 | `--spec` | Yes | **string** Namespace configuration in JSON format. Provide inline JSON directly, or use '@path/to/file.json' to load from a file. |
 | `--verbose-diff` | No | **bool** Show detailed differences between the current and desired namespace configurations when changes are detected. |
 
+## caller-rate-limit
+
+Commands for managing caller rate limits on Temporal Cloud namespaces.
+
+A caller rate limit caps the requests per second that callers, such as
+other namespaces, can send to a target namespace. A namespace can have a
+default rule for caller namespaces and rules for specific caller namespaces.
+
+### caller-rate-limit apply
+
+Apply a list of caller rate limit rules to a Temporal Cloud namespace.
+Each rule in the specification is created if it doesn't exist, or updated
+if it differs from the existing rule. Rules that already match and are
+active are skipped. Shows a diff of the changed rules and asks for
+confirmation before applying.
+
+Apply is additive: existing rules that are not in the specification are left
+untouched. Use 'temporal cloud namespace caller-rate-limit delete' to remove
+a rule.
+
+The specification is a JSON array of caller rate limit specs. It can be
+provided as inline JSON or loaded from a file by prefixing the path with '@'.
+An rps of 0 blocks all traffic from the matched callers.
+
+Example file (limits.json) with the default rule for caller namespaces and
+a rule for a specific caller namespace:
+
+```
+[
+  {"namespaceDefault": {"rps": 100}},
+  {"namespaceLimit": {"namespaceId": "caller-ns.my-account", "rps": 50}}
+]
+```
+
+Example:
+
+```
+temporal cloud namespace caller-rate-limit apply --namespace my-namespace.my-account \
+    --spec @limits.json
+```
+
+Changed rules are applied one at a time. Apply stops at the first failure
+and reports which rules were already applied. Rerunning skips rules that
+were already applied and retries rules whose last update failed. A rule
+that matches but is not active, including one whose operation is still in
+progress, is updated again, so wait for in-progress operations (for example
+after --async) to finish before rerunning.
+
+--async-operation-id and --resource-version can only be used when apply
+changes a single rule.
+
+With --async, operations are submitted without waiting; fail-fast then only
+covers submission errors, so check each printed operation. With -o json, each
+operation prints its own JSON document.
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--spec` | Yes | **string** Caller rate limit specifications as a JSON array. Provide inline JSON directly, or use '@path/to/file.json' to load from a file. |
+| `--verbose-diff` | No | **bool** Show detailed differences between the current and desired namespace configurations when changes are detected. |
+
+### caller-rate-limit delete
+
+Delete a caller rate limit rule on a Temporal Cloud namespace: either the
+default rule for caller namespaces or the rule for a specific caller namespace.
+
+Exactly one of --caller-namespace-default or --caller-namespace is required.
+
+Example (default rule for caller namespaces):
+
+```
+temporal cloud namespace caller-rate-limit delete --namespace my-namespace.my-account \
+    --caller-namespace-default
+```
+
+Example (rule for a specific caller namespace):
+
+```
+temporal cloud namespace caller-rate-limit delete --namespace my-namespace.my-account \
+    --caller-namespace caller-ns.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--caller-namespace` | No | **string** The fully qualified caller namespace name in the format 'namespace.account' (e.g., 'caller-ns.my-account'). |
+| `--caller-namespace-default` | No | **bool** Target the default rule, which applies to caller namespaces without a specific rule. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### caller-rate-limit get
+
+Retrieve a caller rate limit rule on a Temporal Cloud namespace: either the
+default rule for caller namespaces or the rule for a specific caller namespace.
+
+Exactly one of --caller-namespace-default or --caller-namespace is required.
+
+Example (default rule for caller namespaces):
+
+```
+temporal cloud namespace caller-rate-limit get --namespace my-namespace.my-account \
+    --caller-namespace-default
+```
+
+Example (rule for a specific caller namespace):
+
+```
+temporal cloud namespace caller-rate-limit get --namespace my-namespace.my-account \
+    --caller-namespace caller-ns.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--caller-namespace` | No | **string** The fully qualified caller namespace name in the format 'namespace.account' (e.g., 'caller-ns.my-account'). |
+| `--caller-namespace-default` | No | **bool** Target the default rule, which applies to caller namespaces without a specific rule. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### caller-rate-limit list
+
+List the caller rate limit rules on a Temporal Cloud namespace. With no
+filter flags, all rules are listed (paginated). Use --type,
+--caller-namespace-default, or --caller-namespace to filter the results.
+
+Example (all rules):
+
+```
+temporal cloud namespace caller-rate-limit list --namespace my-namespace.my-account
+```
+
+Example (default rule for caller namespaces):
+
+```
+temporal cloud namespace caller-rate-limit list --namespace my-namespace.my-account \
+    --caller-namespace-default
+```
+
+Example (rule for a specific caller namespace):
+
+```
+temporal cloud namespace caller-rate-limit list --namespace my-namespace.my-account \
+    --caller-namespace caller-ns.my-account
+```
+
+Example (default rule and a specific caller's rule, for comparison):
+
+```
+temporal cloud namespace caller-rate-limit list --namespace my-namespace.my-account \
+    --caller-namespace-default --caller-namespace caller-ns.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--caller-namespace` | No | **string** The fully qualified caller namespace name in the format 'namespace.account' (e.g., 'caller-ns.my-account'). |
+| `--caller-namespace-default` | No | **bool** Target the default rule, which applies to caller namespaces without a specific rule. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--page-size` | No | **int** Number of caller rate limits to return per page. Use for paginated results. |
+| `--page-token` | No | **string** Token for retrieving the next page of results in a paginated list. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--type` | No | **string-enum** Only list rules for this caller type. More caller types may be added in the future. Defaults to 'namespace' when --caller-namespace-default or --caller-namespace is set. Accepted values: namespace. |
+
+### caller-rate-limit set
+
+Set a caller rate limit rule on a Temporal Cloud namespace: either the
+default rule for caller namespaces or the rule for a specific caller namespace.
+Creates the rule if it doesn't exist, otherwise updates it. Shows a diff
+and asks for confirmation before applying.
+
+Exactly one of --caller-namespace-default or --caller-namespace is required.
+
+Example (default rule for caller namespaces):
+
+```
+temporal cloud namespace caller-rate-limit set --namespace my-namespace.my-account \
+    --caller-namespace-default --rps 100
+```
+
+Example (rule for a specific caller namespace):
+
+```
+temporal cloud namespace caller-rate-limit set --namespace my-namespace.my-account \
+    --caller-namespace caller-ns.my-account --rps 50
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--caller-namespace` | No | **string** The fully qualified caller namespace name in the format 'namespace.account' (e.g., 'caller-ns.my-account'). |
+| `--caller-namespace-default` | No | **bool** Target the default rule, which applies to caller namespaces without a specific rule. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--rps` | Yes | **float** The maximum requests per second allowed from the matched callers. 0 blocks all traffic from the matched callers. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
 ## capacity
 
 Commands for managing the capacity of Temporal Cloud namespaces.
@@ -365,6 +587,11 @@ Use the following options to change the behavior of this command. You can also u
 | `--description` | No | **string** The description is a human-readable description of the namespace. Must be at most 255 printable ASCII characters plus whitespace. Optional, default is empty. |
 | `--enable-delete-protection` | No | **bool** Prevent accidental deletion of this namespace. |
 | `--enable-task-queue-fairness` | No | **bool** Enable task queue fairness for the namespace. |
+| `--encryption-validation-inspect-failure` | No | **bool** [Experimental] Inspect Failure payloads for encryption validation. Default is false. |
+| `--encryption-validation-inspect-header` | No | **bool** [Experimental] Inspect workflow headers for encryption validation. Default is false. |
+| `--encryption-validation-metadata-key` | No | **string** [Experimental] Payload metadata key used to identify encrypted payloads. If omitted, the server default (encoding) applies. |
+| `--encryption-validation-metadata-value` | No | **string[]** [Experimental] Payload metadata value used to identify encrypted payloads. Repeat to add additional values. If omitted, the server default (binary/encrypted) applies. |
+| `--encryption-validation-mode` | No | **string** [Experimental] Payload encryption validation mode. Valid values: disabled, warn, deny. When any encryption-validation flag is set, this field is required. |
 | `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
 | `--mtls-auth-enabled` | No | **bool** Enable mTLS authentication for the namespace. |
 | `--name`, `-n` | Yes | **string** The name for the new namespace (becomes part of the namespace ID). |
@@ -479,6 +706,92 @@ Use the following options to change the behavior of this command. You can also u
 | `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 | `--verbose-diff` | No | **bool** Show detailed differences between the current and desired namespace configurations when changes are detected. |
+
+## encryption-validation
+
+Commands for managing payload encryption validation configuration of Temporal Cloud namespaces.
+
+### encryption-validation disable
+
+Disable payload encryption validation for a Temporal Cloud namespace.
+Existing metadata and inspect settings are kept. To turn validation back
+on, use `set --mode warn` or `set --mode deny`. If validation is not
+configured or is already disabled, the command errors unless
+--idempotent is set.
+
+Example:
+
+```
+temporal cloud namespace encryption-validation disable --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### encryption-validation get
+
+Retrieve the current payload encryption validation configuration for a Temporal Cloud namespace.
+If the metadata key or values are not set, the server defaults that apply are shown
+(metadata-key=encoding, metadata-values=[binary/encrypted]).
+
+Example:
+
+```
+temporal cloud namespace encryption-validation get --namespace my-namespace.my-account
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### encryption-validation set
+
+Configure payload encryption validation for a Temporal Cloud namespace.
+Use this command to turn validation on (--mode warn or --mode deny) and to
+change its settings. At least one flag must be set. Omitted flags keep the
+existing values. An empty metadata key means the server default applies
+(metadata-key=encoding); omit --metadata-value to keep the existing values,
+which default to [binary/encrypted]. If nothing would change, the command
+errors unless --idempotent is set.
+
+Examples:
+
+```
+temporal cloud namespace encryption-validation set --namespace my-namespace.my-account --mode warn
+temporal cloud namespace encryption-validation set --namespace my-namespace.my-account --mode deny --metadata-key encoding --metadata-value binary/encrypted
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--idempotent` | No | **bool** Succeed silently if the resource already exists or matches the specification. Without this flag, the command errors when no changes are needed. |
+| `--inspect-failure` | No | **bool** Inspect Failure payloads for encryption validation. If omitted, the existing value is kept. |
+| `--inspect-header` | No | **bool** Inspect workflow headers for encryption validation. If omitted, the existing value is kept. |
+| `--metadata-key` | No | **string** Payload metadata key used to identify encrypted payloads. If omitted, the existing key is kept. |
+| `--metadata-value` | No | **string[]** Payload metadata value used to identify encrypted payloads. Repeat to add additional values. Replaces the existing values. Values cannot be blank. If omitted, the existing values are kept. |
+| `--mode` | No | **string** Payload encryption validation mode. Valid values: disabled, warn, deny. If omitted, the existing mode is kept. Required when encryption validation is not configured yet. |
+| `--namespace`, `-n` | Yes | **string** The fully qualified namespace name in the format 'namespace.account' (e.g., 'my-namespace.my-account'). |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
 
 ## export
 
