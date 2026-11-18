@@ -86,6 +86,7 @@
   - `aws-ap-south-2`
   - `aws-ap-southeast-1`
 - **Multi-Cloud Replication**:
+  - `azure-australiaeast`
   - `gcp-asia-south1`
 
 ### Europe - Frankfurt (`eu-central-1`)
@@ -135,6 +136,7 @@
   - `aws-us-east-2`
   - `aws-us-west-2`
 - **Multi-Cloud Replication**:
+  - `azure-centralus`
   - `gcp-us-central1`
   - `gcp-us-west1`
   - `gcp-us-east4`
@@ -150,6 +152,7 @@
   - `aws-us-east-2`
   - `aws-us-west-2`
 - **Multi-Cloud Replication**:
+  - `azure-centralus`
   - `gcp-us-central1`
   - `gcp-us-west1`
   - `gcp-us-east4`
@@ -165,6 +168,7 @@
   - `aws-us-east-1`
   - `aws-us-west-2`
 - **Multi-Cloud Replication**:
+  - `azure-centralus`
   - `gcp-us-central1`
   - `gcp-us-west1`
   - `gcp-us-east4`
@@ -180,6 +184,7 @@
   - `aws-us-east-1`
   - `aws-us-east-2`
 - **Multi-Cloud Replication**:
+  - `azure-centralus`
   - `gcp-us-central1`
   - `gcp-us-west1`
   - `gcp-us-east4`

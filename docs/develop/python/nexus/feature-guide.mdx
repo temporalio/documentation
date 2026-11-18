@@ -48,6 +48,9 @@ Prerequisites:
 
 - [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/python/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli)
   (`v1.9.2` or higher recommended)
+- To run the Query example on a local development server, install the
+  [v1.8.3-server-1.32.0-162.0 Temporal CLI pre-release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0)
+  instead; it bundles a Server build with Nexus Query support.
 - [Install the latest Temporal Python SDK](https://learn.temporal.io/getting_started/python/dev_environment/#add-temporal-python-sdk-dependencies)
   (`v1.33.0` or higher recommended)
 
@@ -160,6 +163,13 @@ class MyNexusServiceHandler:
 <!--SNIPEND-->
 
 ### Use the Temporal Client for Signals, Queries, and Updates
+
+:::note[Query availability]
+
+Querying a Workflow from an Operation handler is available in Temporal Cloud, and as a pre-release on a self-hosted Temporal Service in Server v1.33.0.
+To try it on a local development server, use the CLI pre-release listed in the prerequisites, which bundles a Server build with Nexus Query support.
+
+:::
 
 A common pattern is to reach a Workflow that is already running. Query it or Signal it from a synchronous Operation, or
 use Signal-With-Start to make sure the Workflow exists before the Signal arrives. Those calls complete during the

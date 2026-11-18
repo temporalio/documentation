@@ -83,8 +83,6 @@ class HelloWorldWorkflow:
             contents=prompt,
         )
         return response.text or ""
-
-
 ```
 {/* SNIPEND */}
 
@@ -212,8 +210,6 @@ class ToolsWorkflow:
         if "sunny" in weather.lower():
             return "Go for a hike."
         return "Visit a museum."
-
-
 ```
 {/* SNIPEND */}
 
@@ -254,8 +250,6 @@ class ChatWorkflow:
             response = await chat.send_message(prompt)
             replies.append(response.text or "")
         return replies
-
-
 ```
 {/* SNIPEND */}
 
@@ -300,8 +294,6 @@ class StructuredOutputWorkflow:
                 non_retryable=True,
             )
         return recipe
-
-
 ```
 {/* SNIPEND */}
 
@@ -362,8 +354,6 @@ class McpWorkflow:
             config=types.GenerateContentConfig(tools=[session]),
         )
         return response.text or ""
-
-
 ```
 {/* SNIPEND */}
 
@@ -414,8 +404,6 @@ class StreamingWorkflow:
     @workflow.signal
     def finish(self) -> None:
         self._done = True
-
-
 ```
 {/* SNIPEND */}
 
@@ -480,8 +468,6 @@ class FilesWorkflow:
             contents=contents,
         )
         return response.text or ""
-
-
 ```
 {/* SNIPEND */}
 
@@ -512,8 +498,6 @@ class InteractionsWorkflow:
         await client.interactions.delete(interaction.id)
 
         return {"id": interaction.id, "status": str(fetched.status)}
-
-
 ```
 {/* SNIPEND */}
 
@@ -549,8 +533,6 @@ class VertexAIWorkflow:
             contents=prompt,
         )
         return response.text or ""
-
-
 ```
 {/* SNIPEND */}
 
