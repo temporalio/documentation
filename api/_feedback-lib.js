@@ -43,13 +43,17 @@ const REASONS = {
   down: ['inaccurate', 'not_found', 'hard_to_understand', 'code_sample_errors', 'other'],
 };
 
+// A message shorter than this can't say what happened. Scanners send one-word
+// messages such as "m" or "rl-0" to test the endpoint.
+const MESSAGE_MIN = 20;
+
 // How long after the rating the widget can add a reason or comment.
 const AMEND_WINDOW_MS = 30 * 60 * 1000;
 
 const USAGE =
   `Report a problem with the Temporal docs or with Temporal itself. ` +
   `POST ${ENDPOINT} with a JSON body, or GET ${ENDPOINT}?title=<summary>&message=<what-happened> with the same fields as query parameters. ` +
-  `Required: title (at most ${LIMITS.title} characters) and message (at most ${LIMITS.message}): what happened. ` +
+  `Required: title (at most ${LIMITS.title} characters) and message (${MESSAGE_MIN} to ${LIMITS.message}): what happened. ` +
   `Optional: expected (what the docs said or what you expected), context (what you were trying to do), ` +
   `category (${CATEGORIES.join(', ')}; pick by what you saw, not what you think caused it), ` +
   `severity (high: blocked, medium: found a workaround, low: annoyance), page_url, product_version, ` +
@@ -183,6 +187,13 @@ function parseSubmission(input, { method, compiledRedirects }) {
       return { error: `${name} is a placeholder. Replace it with a description of the problem you hit.` };
     }
   }
+  if (fields.message.length < MESSAGE_MIN) {
+    return {
+      error:
+        `message is ${fields.message.length} characters, and needs at least ${MESSAGE_MIN}. ` +
+        'Say what you were doing, what the page or product did, and what you expected.',
+    };
+  }
 
   fields.category = fields.category ? fields.category.toLowerCase() : 'other';
   fields.severity = fields.severity ? fields.severity.toLowerCase() : 'medium';
@@ -251,6 +262,7 @@ module.exports = {
   CATEGORIES,
   ENDPOINT,
   LIMITS,
+  MESSAGE_MIN,
   REASONS,
   SEVERITIES,
   USAGE,
