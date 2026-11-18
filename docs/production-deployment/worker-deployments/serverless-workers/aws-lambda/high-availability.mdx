@@ -49,7 +49,7 @@ Configure both regional functions before routing new work to the version.
 
 1. In your Namespace, go to **Workers** > **Deployments** and select **Create Worker Deployment**.
 2. Enter the name and Build ID that match your Worker code, then select **AWS Lambda** as the compute provider.
-3. For the primary region, enter the qualified **Lambda ARN**, **IAM Role ARN**, and **External ID**.
+3. Under **Regions**, for the primary region, enter the qualified **Lambda ARN**, **IAM Role ARN**, and **External ID**.
 4. Turn on **Serverless** for the replica region and enter its qualified **Lambda ARN**. The UI suggests an ARN based
    on the primary function. Replace it if it differs from the ARN of your published replica function.
 5. The replica inherits the primary's **Access** and **Scaling and Lifecycle** settings. Select **Customize** if the
