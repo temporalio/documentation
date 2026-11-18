@@ -27,7 +27,7 @@ A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch
 List Filters support the following operators:
 
 - **`=, !=, >, >=, <, <=`**
-- **`AND, OR, ()`**
+- **`AND, OR, NOT, ()`**
 - **`BETWEEN ... AND`**
 - **`IN`**
 - **STARTS_WITH**
@@ -199,7 +199,7 @@ For Search Attributes of type `Keyword` like `WorkflowId`, perform partial strin
   - `BETWEEN value AND value`
   - `STARTS_WITH string`
   - `IS NULL`, `IS NOT NULL`
-  - `expr AND expr`, `expr OR expr`, `( expr )`
+  - `expr AND expr`, `expr OR expr`, `NOT expr`, `( expr )`
 - Array: `( comma-separated-values )`
 
 **Please note**
