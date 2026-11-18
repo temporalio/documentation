@@ -1,0 +1,41 @@
+name: 'Retrieve health check'
+
+# Asks the production /api/retrieve agent search endpoint two fixed questions
+# and fails when it's down or its results lose custom Q&A answers or GitHub
+# repository files. Both have happened after a change on the Kapa side, with no
+# deploy here, so no pull request check would catch them. A failed scheduled run
+# posts to Slack through notify-automation-failures.yml.
+#
+# Daily rather than hourly, because each run spends two Kapa queries. It also
+# runs on demand, and on PRs that change the checker itself.
+on:
+  schedule:
+    # Daily at 14:00 UTC.
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'bin/check-retrieve-health.js'
+      - 'bin/check-retrieve-health.test.js'
+      - '.github/workflows/check-retrieve-health.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: 'Check the /api/retrieve endpoint'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - name: Check /api/retrieve
+        run: node bin/check-retrieve-health.js

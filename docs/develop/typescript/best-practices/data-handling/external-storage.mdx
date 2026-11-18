@@ -1,6 +1,6 @@
 ---
 id: external-storage
-title: External Storage - TypeScript SDK
+title: External Storage
 sidebar_label: External Storage
 toc_max_heading_level: 3
 tags:
@@ -71,8 +71,8 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
 
    The AWS SDK reads environment variables, an IAM role, or your AWS config file.
 
-   <!--SNIPSTART typescript-s3-driver-create-->
-   [features/snippets/external_storage/s3_setup/s3_driver_create.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_driver_create.ts)
+   <!--SNIPSTART typescript-best-practices-external-storage-s3-driver-create-->
+   [typescript-sandbox/src/best-practices/data-handling/external-storage/s3-driver.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/s3-driver.ts)
    ```ts
    import { S3Client } from '@aws-sdk/client-s3';
    import { S3StorageDriver } from '@temporalio/external-storage-s3';
@@ -92,8 +92,8 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
 
    The Google Cloud SDK reads Application Default Credentials.
 
-   <!--SNIPSTART typescript-gcs-driver-create-->
-   [features/snippets/external_storage/gcs_setup/gcs_driver_create.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/gcs_setup/gcs_driver_create.ts)
+   <!--SNIPSTART typescript-best-practices-external-storage-gcs-driver-create-->
+   [typescript-sandbox/src/best-practices/data-handling/external-storage/gcs-driver.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/gcs-driver.ts)
    ```ts
    import { Storage } from '@google-cloud/storage';
    import { GcsStorageDriver } from '@temporalio/external-storage-gcs';
@@ -119,14 +119,14 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
    you can pass the driver object directly rather than referencing it by path the way a custom Payload Converter
    requires:
 
-   <!--SNIPSTART typescript-s3-external-storage-setup-->
-   [features/snippets/external_storage/s3_setup/s3_external_storage_setup.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/s3_setup/s3_external_storage_setup.ts)
+   <!--SNIPSTART typescript-best-practices-external-storage-setup-->
+   [typescript-sandbox/src/best-practices/data-handling/external-storage/external-storage-setup.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/external-storage-setup.ts)
    ```ts
    import { Client, Connection } from '@temporalio/client';
    import { ExternalStorage } from '@temporalio/common';
    import { Worker } from '@temporalio/worker';
 
-   async function createClientAndWorker() {
+   export async function createClientAndWorker() {
      const dataConverter = {
        externalStorage: new ExternalStorage({ drivers: [driver] }),
      };
@@ -139,6 +139,8 @@ tabs that follow. Only the driver setup differs between the two. Everything afte
        taskQueue: 'my-task-queue',
        dataConverter,
      });
+
+     return { client, worker };
    }
    ```
    <!--SNIPEND-->
@@ -162,7 +164,7 @@ Refer to [Choose a storage system](/external-storage#choose-storage) for guidanc
 A shared filesystem works for local development and for Workers that mount the same volume. For anything else, use a
 storage system that every Client and Worker can reach.
 
-The following sections walk through the key parts of a custom driver.
+The following sections walk through the key parts of a custom driver. The [FileSystemStorageDriver](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/file-system-storage-driver.ts) sample implements each of them.
 
 ### 1. Implement the StorageDriver interface
 
@@ -205,7 +207,8 @@ Pass your driver to an `ExternalStorage` instance on the Data Converter, and use
 Client and Worker. Both sides need it: a Client without External Storage configured cannot read an offloaded result. You
 can also package your driver as a [plugin](/develop/plugins-guide) for easier reuse across services:
 
-<!--SNIPSTART typescript-custom-driver-data-converter -->
+<!--SNIPSTART typescript-best-practices-external-storage-custom-driver-data-converter-->
+[typescript-sandbox/src/best-practices/data-handling/external-storage/data-converter.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/data-converter.ts)
 ```ts
 export function createDataConverter(rootDir: string = STORAGE_ROOT): DataConverter {
   return {
@@ -234,8 +237,8 @@ are offloaded to external storage. You can adjust this with the `payloadSizeThre
 externalize all payloads regardless of size. Payloads smaller than the threshold stay inline in Event History. The size
 compared against the threshold is that of the serialized Payload, which includes its metadata, not just your data.
 
-<!--SNIPSTART typescript-external-storage-threshold-->
-[features/snippets/external_storage/threshold/threshold_config.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.ts)
+<!--SNIPSTART typescript-best-practices-external-storage-threshold {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/best-practices/data-handling/external-storage/threshold.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/threshold.ts)
 ```ts
 const dataConverter = {
   externalStorage: new ExternalStorage({
@@ -268,8 +271,8 @@ registering two S3 drivers requires setting the `driverName` option on at least 
 The following example registers two drivers but always selects `preferredDriver` for new payloads. The `legacyDriver`
 is only registered so the Worker can retrieve payloads that were previously stored with it:
 
-<!--SNIPSTART typescript-external-storage-multiple-drivers-->
-[features/snippets/external_storage/multiple_drivers/multiple_drivers.ts](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/multiple_drivers/multiple_drivers.ts)
+<!--SNIPSTART typescript-best-practices-external-storage-multiple-drivers {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/best-practices/data-handling/external-storage/multiple-drivers.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/multiple-drivers.ts)
 ```ts
 const preferredDriver = new S3StorageDriver({
   client: new AwsSdkS3StorageDriverClient(s3Client),
@@ -302,18 +305,24 @@ npm install @aws-sdk/signature-v4a
 Import the signer once during application startup. The import registers the signer with the AWS SDK, so you do not
 reference it directly:
 
+<!--SNIPSTART typescript-best-practices-external-storage-sigv4a-import-->
+[typescript-sandbox/src/best-practices/data-handling/external-storage/mrap-driver.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/mrap-driver.ts)
 ```ts
 import '@aws-sdk/signature-v4a';
 ```
+<!--SNIPEND-->
 
 `@aws-sdk/signature-v4-crt` is an alternative implementation backed by the AWS Common Runtime. When both are installed,
 the AWS SDK prefers the CRT implementation.
 
 With the signer registered, the only remaining change is the value you pass as `bucket`:
 
+<!--SNIPSTART typescript-best-practices-external-storage-mrap-driver-->
+[typescript-sandbox/src/best-practices/data-handling/external-storage/mrap-driver.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/data-handling/external-storage/mrap-driver.ts)
 ```ts
 const driver = new S3StorageDriver({
   client: new AwsSdkS3StorageDriverClient(s3Client),
   bucket: 'arn:aws:s3::123456789012:accesspoint/mfzwi23gnjvgw.mrap',
 });
 ```
+<!--SNIPEND-->

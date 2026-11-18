@@ -27,9 +27,10 @@ The high-level end-to-end rotation process is:
 
 1. **Generate new credentials**: Create new certificates or API keys in Temporal Cloud before the current ones expire
 2. **Support dual credentials**: Update Temporal Cloud to support both old and new credentials
-3. **Migrate Workers**: Transition Worker applications from old credentials to new credentials
-4. **Validate connectivity**: Confirm all Workers can authenticate, and business processes operate normally with new credentials
-5. **Remove old credentials**: Remove old certificates and API keys from your secrets provider after confirming successful migration 
+3. **Confirm the new credentials work**: Authenticate to the Namespace with the new credentials before you migrate any Workers. A new API key can take a short time to work on a Namespace endpoint. See [Allow time for API key changes to propagate](/cloud/api-keys#api-key-propagation).
+4. **Migrate Workers**: Transition Worker applications from old credentials to new credentials
+5. **Validate connectivity**: Confirm all Workers can authenticate, and business processes operate normally with new credentials
+6. **Remove old credentials**: Remove old certificates and API keys from your secrets provider after confirming successful migration 
 
 This approach ensures near-zero-downtime rotation and prevents authentication failures that could impact running workflows. For specific guidance to rotate mTLS certificates and API keys, see:
 - [How to add, update, and remove certificates in a Temporal Cloud Namespace](/cloud/certificates#manage-certificates)
@@ -97,7 +98,7 @@ For more on topology tradeoffs, see [Namespace best practices](/best-practices/m
 Use the following sequence when rotating credentials:
 
 1. Create the replacement credential before the existing one expires.
-2. For API keys, create the new valid key while the old key still works, then roll your Workers and clients to use the new key.
+2. For API keys, create the new valid key while the old key still works. Confirm that the new key authenticates to the Namespace, then roll your Workers and clients to use it. See [Allow time for API key changes to propagate](/cloud/api-keys#api-key-propagation).
 3. For client certificates, stage the new certificate before removing the old one when your deployment process supports that transition.
 4. Validate connectivity and normal Workflow execution using the new credential.
 5. Remove the old credential only after all clients and Workers have switched.

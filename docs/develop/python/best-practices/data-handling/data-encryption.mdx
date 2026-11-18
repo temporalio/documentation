@@ -1,6 +1,6 @@
 ---
 id: data-encryption
-title: Payload encryption - Python SDK
+title: Payload encryption
 sidebar_label: Payload encryption
 slug: /develop/python/data-handling/data-encryption
 toc_max_heading_level: 2
@@ -26,7 +26,11 @@ These should loop through all of a Workflow's payloads, perform your marshaling,
 In this example, the `encode` method compresses a payload using Python's [cramjam](https://github.com/milesgranger/cramjam) library to provide `snappy` compression.
 The `decode()` function implements the `encode()` logic in reverse:
 
-```python
+<!--SNIPSTART python-data-encryption-codec-->
+[python-sandbox/best_practices/data_encryption/codec.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/data_encryption/codec.py)
+```py
+from typing import Iterable, List
+
 import cramjam
 from temporalio.api.common.v1 import Payload
 from temporalio.converter import PayloadCodec
@@ -52,21 +56,31 @@ class CompressionCodec(PayloadCodec):
             ret.append(Payload.FromString(bytes(cramjam.snappy.decompress(p.data))))
         return ret
 ```
+<!--SNIPEND-->
 
 ## Configure the codec on the Data Converter
 
 Add a `data_converter` parameter to your `Client.connect()` options that overrides the default converter with your Payload Codec:
 
-```python
-from codec import CompressionCodec
+<!--SNIPSTART python-data-encryption-client-->
+[python-sandbox/best_practices/data_encryption/client.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/data_encryption/client.py)
+```py
+import dataclasses
 
-client = await Client.connect(
-    "localhost:7233",
-    data_converter=dataclasses.replace(
-        temporalio.converter.default(), payload_codec=CompressionCodec()
-    ),
-)
+import temporalio.converter
+from temporalio.client import Client
+
+from data_encryption.codec import CompressionCodec
+
+async def connect() -> Client:
+    client = await Client.connect(
+        "localhost:7233",
+        data_converter=dataclasses.replace(
+            temporalio.converter.default(), payload_codec=CompressionCodec()
+        ),
+    )
 ```
+<!--SNIPEND-->
 
 For reference, see the [Encryption](https://github.com/temporalio/samples-python/tree/main/encryption) sample.
 

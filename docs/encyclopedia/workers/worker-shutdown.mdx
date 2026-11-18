@@ -7,8 +7,6 @@ tags:
   - Workers
 ---
 
-# Worker shutdown behavior
-
 When a Worker shuts down, it stops polling for new tasks and begins the shutdown sequence.
 In the case of in-flight Workflow Tasks, shutdown may cause them to fail if they aren’t completed in time, after exhausting Retry Policy attempts.
 
@@ -24,6 +22,9 @@ An Activity is able to determine that the Worker it’s running on is being shut
 > Go - `WorkerStopTimeout`
 
 > Java - `shutdown()` followed by `awaitTermination(timeout, unit)`
+
+In the Java SDK, Activities can't Heartbeat during graceful shutdown by default. `heartbeat()` throws `ActivityWorkerShutdownException` instead.
+See [Heartbeat during shutdown](/develop/java/workers/run-worker-process#heartbeat-during-shutdown) to change this.
 
 ### Workflow tasks
 

@@ -48,7 +48,7 @@ that:
 Temporal is not a no-code Workflow engine. You write Workflows in your own language, editor, and
 version control, and you keep the control flow of a normal program.
 
-Workflow code must be deterministic because Temporal reruns it to rebuild state after a failure.
+A Workflow Definition must be deterministic because Temporal reruns it to rebuild state after a failure.
 Anything that talks to the outside world belongs in an Activity. See
 [deterministic constraints](/workflow-definition#deterministic-constraints) for the rules.
 

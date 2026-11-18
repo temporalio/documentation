@@ -1,6 +1,6 @@
 ---
 id: execution
-title: Activity Execution - TypeScript SDK
+title: Activity Execution
 description: Call an Activity from a TypeScript Workflow through proxyActivities, set the required Timeout, and keep Activity inputs and results small.
 sidebar_label: Activity Execution
 slug: /develop/typescript/activities/execution
@@ -19,7 +19,9 @@ pass in the _types_ of your Activities and Activity options to the `proxyActivit
 _Activity Handle_, a type-safe proxy object with the same function names and signatures as your real activities. From
 the Activity Handle, you can call your Activities as if they were normal async functions.
 
-```typescript
+<!--SNIPSTART typescript-activity-execution-proxy-activities-->
+[typescript-sandbox/src/activities/execution/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/execution/workflows.ts)
+```ts
 import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types, not the functions themselves
 import type * as activities from './activities';
@@ -37,6 +39,7 @@ export async function example(name: string): Promise<string> {
   return await greet(name);
 }
 ```
+<!--SNIPEND-->
 
 When you call a proxied function, the Workflow does not execute the Activity code directly. Instead, it schedules an
 Activity Task. After the Activity Task is scheduled, it becomes available for a Worker to pick up and execute. This
@@ -76,18 +79,24 @@ progressing, making use of the result when it becomes available.
 Since Activities are referenced by their string name, you can reference them dynamically to get the result of an
 Activity Execution.
 
-```typescript
-export async function DynamicWorkflow(activityName, ...args) {
-  const acts = proxyActivities(/* activityOptions */);
+<!--SNIPSTART typescript-activity-basics-dynamic-reference-->
+[typescript-sandbox/src/activities/basics/dynamic-activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/basics/dynamic-activities.ts)
+```ts
+export async function dynamicWorkflow(activityName: string, ...args: unknown[]): Promise<unknown> {
+  const acts = proxyActivities<Record<string, (...args: unknown[]) => Promise<unknown>>>({
+    startToCloseTimeout: '30 seconds', // activityOptions
+  });
 
   // these are equivalent
   await acts.activity1();
   await acts['activity1']();
 
-  let result = await acts[activityName](...args);
+  // dynamic reference to activities using activityName
+  const result = await acts[activityName](...args);
   return result;
 }
 ```
+<!--SNIPEND-->
 
 The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references
 the Activity using the Activity name, then it returns the results.

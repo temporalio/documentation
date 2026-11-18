@@ -15,7 +15,7 @@ tags:
 
 **by Cecil Phillip**
 
-### Problem statement
+## Problem statement
 
 Many Workflows require multiple Activities to execute on the same Worker to maintain data locality. Common scenarios include:
 
@@ -29,7 +29,7 @@ Without Worker affinity, Temporal distributes Activities across available Worker
 - Duplicate resource initialization: ML models loaded multiple times across Workers
 - Increased latency: Each Activity pays setup costs instead of reusing resources
 
-### Solution
+## Solution
 
 Use Worker-specific Task Queues to ensure all Activities in a Workflow execute on the same Worker. To achieve this:
 
@@ -38,7 +38,7 @@ Use Worker-specific Task Queues to ensure all Activities in a Workflow execute o
 3. The Workflow routes all subsequent Activities to that Worker's unique queue
 4. All Activities execute on the same Worker, maintaining data locality
 
-### Outcomes
+## Outcomes
 
 - **Data locality:** Files downloaded in one Activity are immediately available to subsequent Activities on the same Worker
 - **Performance:** Eliminate repeated re-downloads from remote storage (multi-GB transfers)

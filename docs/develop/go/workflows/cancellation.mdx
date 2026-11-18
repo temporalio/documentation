@@ -1,6 +1,6 @@
 ---
 id: cancellation
-title: Cancel a Workflow - Go SDK
+title: Cancel a Workflow
 sidebar_label: Cancellation
 description:
   Handle Cancellations in Temporal Workflows and Activities, set Activity Heartbeat Timeouts, and send Cancellation
@@ -31,91 +31,101 @@ Activities are skipped then the Workflow status will be Complete. It is complete
 process and your use case which determines whether you want to return the Cancellation error to show a Canceled status
 or Complete status regardless of whether a Cancellation has propagated to and/or skipped Activities.
 
-```go {7-23,28,31,34}
-const WorkflowId = "example-cancellation-workflow"
+<!--SNIPSTART go-cancellation-workflow {"highlightedLines": "7-24,29,32,35"}-->
+[go-sandbox/workflows/cancellation/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/cancellation/workflow.go)
+```go {7-24,29,32,35}
+const WorkflowID = "example-cancellation-workflow"
 const TaskQueueName = "cancellation"
 
 func YourWorkflow(ctx workflow.Context) error {
-    logger := workflow.GetLogger(ctx)
-    var a *Activities
-    activityOptions := workflow.ActivityOptions{
-        StartToCloseTimeout: 30 * time.Minute,
-        HeartbeatTimeout:    5 * time.Second,
-        WaitForCancellation: true,
-    }
-    defer func() {
-        if !errors.Is(ctx.Err(), workflow.ErrCanceled) {
-            return
-        }
+	logger := workflow.GetLogger(ctx)
+	var a *Activities
+	activityOptions := workflow.ActivityOptions{
+		StartToCloseTimeout: 30 * time.Minute,
+		HeartbeatTimeout:    5 * time.Second,
+		WaitForCancellation: true,
+	}
+	defer func() {
+		if !errors.Is(ctx.Err(), workflow.ErrCanceled) {
+			return
+		}
 
-        newCtx, _ := workflow.NewDisconnectedContext(ctx)
+		// A disconnected Context isn't canceled, so the cleanup Activity can still run.
+		newCtx, _ := workflow.NewDisconnectedContext(ctx)
 
-        err := workflow.ExecuteActivity(newCtx, a.CleanupActivity).Get(ctx, nil)
-        if err != nil {
-            logger.Error("CleanupActivity failed", "Error", err)
-        }
-    }()
+		err := workflow.ExecuteActivity(newCtx, a.CleanupActivity).Get(newCtx, nil)
+		if err != nil {
+			logger.Error("CleanupActivity failed", "Error", err)
+		}
+	}()
 
-    ctx = workflow.WithActivityOptions(ctx, activityOptions)
-    var result string
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+	var result string
 
-    err := workflow.ExecuteActivity(ctx, a.ActivityToBeCanceled).Get(ctx, &result)
-    logger.Info(fmt.Sprintf("ActivityToBeCanceled returns %v, %v", result, err))
+	err := workflow.ExecuteActivity(ctx, a.ActivityToBeCanceled).Get(ctx, &result)
+	logger.Info(fmt.Sprintf("ActivityToBeCanceled returns %v, %v", result, err))
 
-    err = workflow.ExecuteActivity(ctx, a.ActivityToBeSkipped).Get(ctx, nil)
-    logger.Error("Error from ActivityToBeSkipped", "Error", err)
+	err = workflow.ExecuteActivity(ctx, a.ActivityToBeSkipped).Get(ctx, nil)
+	logger.Error("Error from ActivityToBeSkipped", "Error", err)
 
-    return err
+	return err
 }
 ```
+<!--SNIPEND-->
 
 ## Handle Cancellation in an Activity {/* #handle-cancellation-in-an-activity */}
 
 Ensure that the Activity is Heartbeating to receive the Cancellation request and stop execution.
 
+<!--SNIPSTART go-cancellation-activity-->
+[go-sandbox/workflows/cancellation/activities.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/cancellation/activities.go)
 ```go
 func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
-    logger := activity.GetLogger(ctx)
-    logger.Info("Activity started, to cancel the Workflow Execution and this Activity, use 'go run cancel/cancel/main.go " +
-        "-w <WorkflowID>' or use the CLI: 'temporal workflow cancel --workflow-id <WorkflowID>'")
-    // A for select statement is a common approach to listening for a Cancellation is an Activity
-    for {
-        select {
-        case <-time.After(1 * time.Second):
-            logger.Info("Heartbeating...")
-            activity.RecordHeartbeat(ctx, "")
-        // Listen for ctx.Done() to know if a Cancellation Request has propagated to the Activity.
-        case <-ctx.Done():
-            logger.Info("This Activity is canceled!")
-            return "I am canceled by Done", nil
-        }
-    }
+	logger := activity.GetLogger(ctx)
+	logger.Info("Activity started, to cancel the Workflow Execution and this Activity, use 'go run ./workflows/cancellation/cancel' " +
+		"or use the CLI: 'temporal workflow cancel --workflow-id <WorkflowID>'")
+	// A for select statement is a common approach to listening for a Cancellation in an Activity
+	for {
+		select {
+		case <-time.After(1 * time.Second):
+			logger.Info("Heartbeating...")
+			activity.RecordHeartbeat(ctx, "")
+		// Listen for ctx.Done() to know if a Cancellation Request has propagated to the Activity.
+		case <-ctx.Done():
+			logger.Info("This Activity is canceled!")
+			return "I am canceled by Done", nil
+		}
+	}
 }
 ```
+<!--SNIPEND-->
 
 ## Request Cancellation {/* #request-cancellation */}
 
-Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
+Use the `CancelWorkflow` API to cancel a Workflow Execution using its Workflow ID.
 
+<!--SNIPSTART go-cancellation-request-->
+[go-sandbox/workflows/cancellation/cancel/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/cancellation/cancel/main.go)
 ```go
 func main() {
-    temporalClient, err := client.Dial(client.Options{
-        HostPort: client.DefaultHostPort,
-    })
-    if err != nil {
-        log.Fatalln("Unable to create client", err)
-    }
-    defer temporalClient.Close()
-    // Call the CancelWorkflow API to cancel a Workflow
-    // In this call we are relying on the Workflow Id only.
-    // But a Run Id can also be supplied to ensure the correct Workflow is Canceled.
-    err = temporalClient.CancelWorkflow(context.Background(), cancellation.WorkflowId, "")
-    if err != nil {
-        log.Fatalln("Unable to cancel Workflow Execution", err)
-    }
-    log.Println("Workflow Execution cancelled", "WorkflowID", cancellation.WorkflowId)
+	temporalClient, err := client.Dial(client.Options{
+		HostPort: client.DefaultHostPort,
+	})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+	// Call the CancelWorkflow API to cancel a Workflow
+	// In this call we are relying on the Workflow ID only.
+	// But a Run ID can also be supplied to ensure the correct Workflow is Canceled.
+	err = temporalClient.CancelWorkflow(context.Background(), cancellation.WorkflowID, "")
+	if err != nil {
+		log.Fatalln("Unable to cancel Workflow Execution", err)
+	}
+	log.Println("Workflow Execution cancelled", "WorkflowID", cancellation.WorkflowID)
 }
 ```
+<!--SNIPEND-->
 
 ## Heartbeating after a Cancellation
 

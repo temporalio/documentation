@@ -233,8 +233,6 @@ async def invoke(payload: dict) -> dict:
     _worker = asyncio.create_task(_run_until_idle(task_id))
 
     return {"message": "worker starting", "task_queue": TASK_QUEUE}
-
-
 ```
 <!--SNIPEND-->
 

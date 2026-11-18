@@ -16,7 +16,8 @@ Cancellation and Termination both stop a [Workflow Execution](/workflow-executio
 differ in whether your Workflow code gets a say.
 
 Cancellation is cooperative. The Temporal Service delivers the request to the Workflow, and the Workflow decides what to
-do with it, which means it can release resources, compensate for completed steps, and choose its own closing status.
+do with it, which means it can release resources, compensate for completed steps, and, in most SDKs, choose its own closing
+status.
 Termination is forceful. The Workflow Execution is closed immediately and Workflow code never sees the request, so no
 cleanup runs.
 
@@ -46,9 +47,10 @@ Both operations are also available through the Web UI, the SDK Clients, and the 
 - The closing status depends on what the Workflow does next.
 
 Because Cancellation is delivered as a failure, unhandled Cancellation closes the Workflow Execution as **Canceled**
-rather than Failed, recording a [WorkflowExecutionCanceled](/references/events#workflowexecutioncanceled) Event. A
-Workflow that handles the request and returns normally closes as **Completed**. Both are valid outcomes; which one you
-want is a business decision, not a technical one.
+rather than Failed, recording a [WorkflowExecutionCanceled](/references/events#workflowexecutioncanceled) Event. Outside
+Java, a Workflow that handles the request and returns normally closes as **Completed**. In Java, the SDK still closes the
+Workflow Execution as **Canceled** and discards the return value. The outcome depends on the SDK and how the Workflow
+handles the request.
 
 Cleanup that calls Activities has to run outside the canceled scope, because a canceled scope can't schedule new work.
 Each SDK provides a mechanism for this, such as `workflow.NewDisconnectedContext` in Go. See the SDK guides below.
@@ -94,7 +96,7 @@ Cancellation doesn't take effect.
 | ---------------------------- | ----------------------------------------------- | ---------------------------------- |
 | **Workflow code notified?**  | Yes, as a Cancelled Failure                     | No                                 |
 | **Cleanup and compensation** | Runs, if the Workflow implements it             | Doesn't run                        |
-| **Closing status**           | Canceled, or Completed if the Workflow handles it and returns normally | Terminated    |
+| **Closing status**           | Canceled, or Completed if handled and returned normally (Java closes as Canceled) | Terminated    |
 | **Closing Event**            | WorkflowExecutionCanceled                       | WorkflowExecutionTerminated        |
 | **Takes effect**             | On the next Workflow Task                       | Immediately                        |
 | **Works on a stuck Workflow** | No, the Workflow has to process the request     | Yes                                |

@@ -194,7 +194,7 @@ Take for instance the call to execute an Activity. When a Workflow invokes it, t
 
 The Temporal Service persists Workflow Execution Event History, so that if there is a failure, the SDK Worker is able to Replay the execution and resume where it left off.
 
-This is where the deterministic constraints of the Workflow code comes into play, requiring the use of Activities to create side effects and interact with the outside world.
+This is where the deterministic constraints of the Workflow Definition come into play, requiring the use of Activities to create side effects and interact with the outside world.
 
 Activities perform work outside the Workflow, for example, calling an external API. Since the call can fail due to transient issues, you define it as an Activity and configure retry options in your SDK.
 

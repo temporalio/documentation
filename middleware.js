@@ -15,6 +15,6 @@ export default function middleware(request) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|assets|img|scripts|favicon\\.ico|llms|.*\\.md$).*)',
+    '/((?!_next/static|_next/image|api/|assets|img|scripts|favicon\\.ico|llms|.*\\.md$).*)',
   ],
 };

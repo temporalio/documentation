@@ -6,7 +6,7 @@
 // Bump this whenever the card layout/design changes (including the encoding
 // step in render.js) so cached images invalidate even though the underlying
 // page content didn't change.
-const TEMPLATE_VERSION = 8;
+const TEMPLATE_VERSION = 9;
 
 const IMAGE_EXTENSION = 'jpg';
 

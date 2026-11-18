@@ -1,0 +1,282 @@
+const { describe, it } = require('node:test');
+const assert = require('node:assert');
+const crypto = require('crypto');
+
+const { compileRedirects } = require('../bin/redirect-utils');
+const {
+  LIMITS,
+  isAllowed,
+  droppedSources,
+  isAllowedResult,
+  kapaIdentity,
+  parseAllowlist,
+  parseList,
+  parseParams,
+  toMarkdownUrl,
+  shapeResults,
+  validResults,
+  sourceLabel,
+} = require('./_retrieve-lib');
+
+const compiled = compileRedirects([
+  { source: '/old-page', destination: '/develop/python/workflows/versioning' },
+  { source: '/hop-1', destination: '/hop-2' },
+  { source: '/hop-2', destination: '/cloud/monitor' },
+  { source: '/leadership', destination: 'https://temporal.io/about' },
+  { source: '/to-file', destination: '/sitemap.xml' },
+]);
+
+describe('toMarkdownUrl', () => {
+  const D = 'https://docs.temporal.io';
+  const cases = [
+    ['plain page', `${D}/develop/python/workflows/versioning`, `${D}/develop/python/workflows/versioning.md`, `${D}/develop/python/workflows/versioning`],
+    ['anchor stays on page_url only', `${D}/develop/python/workflows/versioning#patching`, `${D}/develop/python/workflows/versioning.md`, `${D}/develop/python/workflows/versioning#patching`],
+    ['trailing slash', `${D}/develop/python/`, `${D}/develop/python.md`, `${D}/develop/python`],
+    ['site root', `${D}/`, `${D}/index.md`, `${D}/`],
+    ['site root without slash', D, `${D}/index.md`, `${D}/`],
+    ['section index', `${D}/develop`, `${D}/develop.md`, `${D}/develop`],
+    ['query string dropped', `${D}/workflows?utm_source=x`, `${D}/workflows.md`, `${D}/workflows`],
+    ['http upgraded to https', 'http://docs.temporal.io/workflows', `${D}/workflows.md`, `${D}/workflows`],
+    ['redirected page', `${D}/old-page#patching`, `${D}/develop/python/workflows/versioning.md`, `${D}/develop/python/workflows/versioning#patching`],
+    ['redirect chain', `${D}/hop-1`, `${D}/cloud/monitor.md`, `${D}/cloud/monitor`],
+  ];
+
+  for (const [name, input, sourceUrl, pageUrl] of cases) {
+    it(name, () => {
+      assert.deepStrictEqual(toMarkdownUrl(input, compiled), { source_url: sourceUrl, page_url: pageUrl });
+    });
+  }
+
+  const unchanged = [
+    ['redirect to another site', `${D}/leadership`],
+    ['redirect to a file', `${D}/to-file`],
+    ['file', `${D}/sitemap.xml`],
+    ['tag page', `${D}/tags/python-sdk`],
+    ['tag index', `${D}/tags`],
+    ['another host', 'https://python.temporal.io/temporalio.workflow.html#patched'],
+    ['a subdomain of temporal.io', 'https://learn.temporal.io/getting_started/'],
+    ['not a URL', 'community-slack-thread-123'],
+  ];
+
+  for (const [name, input] of unchanged) {
+    it(`leaves ${name} unchanged`, () => {
+      assert.deepStrictEqual(toMarkdownUrl(input, compiled), { source_url: input, page_url: input });
+    });
+  }
+});
+
+describe('shapeResults', () => {
+  it('keeps order and content and adds page_url', () => {
+    const shaped = shapeResults(
+      [
+        { content: 'a', source_url: 'https://docs.temporal.io/workflows' },
+        { content: 'b', source_url: 'https://github.com/temporalio/sdk-python' },
+      ],
+      compiled
+    );
+    assert.deepStrictEqual(shaped, [
+      { content: 'a', source_url: 'https://docs.temporal.io/workflows.md', page_url: 'https://docs.temporal.io/workflows' },
+      { content: 'b', source_url: 'https://github.com/temporalio/sdk-python', page_url: 'https://github.com/temporalio/sdk-python' },
+    ]);
+  });
+});
+
+describe('parseParams', () => {
+  const parse = (query) => parseParams(new URLSearchParams(query));
+
+  it('returns all four parameters', () => {
+    assert.deepStrictEqual(parse('q=How+do+I+patch%3F&jtb=Fix+a+bug&src=llms&agent=claude-code'), {
+      params: { q: 'How do I patch?', jtb: 'Fix a bug', src: 'llms', agent: 'claude-code' },
+    });
+  });
+
+  it('sets missing optional parameters to null', () => {
+    assert.deepStrictEqual(parse('q=x'), { params: { q: 'x', jtb: null, src: null, agent: null } });
+  });
+
+  it('rejects a missing q', () => {
+    assert.ok(parse('src=llms').error);
+  });
+
+  it('rejects a whitespace-only q', () => {
+    assert.ok(parse('q=%20%20').error);
+  });
+
+  it('rejects a q over the limit', () => {
+    assert.ok(parse(`q=${'a'.repeat(LIMITS.q + 1)}`).error);
+    assert.ok(parse(`q=${'a'.repeat(LIMITS.q)}`).params);
+  });
+
+  it('keeps an unrecognized src', () => {
+    assert.strictEqual(parse('q=x&src=somewhere-else').params.src, 'somewhere-else');
+  });
+
+  it('cuts optional parameters to their limits', () => {
+    const { params } = parse(`q=x&jtb=${'j'.repeat(400)}&agent=${'a'.repeat(100)}`);
+    assert.strictEqual(params.jtb.length, LIMITS.jtb);
+    assert.strictEqual(params.agent.length, LIMITS.agent);
+  });
+});
+
+describe('parseList', () => {
+  it('splits, trims, and drops empty entries', () => {
+    assert.deepStrictEqual(parseList(' a, b ,,c '), ['a', 'b', 'c']);
+  });
+
+  it('returns an empty list when unset', () => {
+    assert.deepStrictEqual(parseList(undefined), []);
+    assert.deepStrictEqual(parseList(''), []);
+  });
+});
+
+describe('isAllowed', () => {
+  const allowlist = parseAllowlist([
+    'docs.temporal.io',
+    'temporal.io/blog',
+    'github.com/temporalio/sdk-go/releases/',
+    'PKG.go.dev/go.temporal.io',
+  ]);
+
+  const allowed = [
+    'https://docs.temporal.io/workflows',
+    'https://docs.temporal.io/',
+    'https://temporal.io/blog',
+    'https://temporal.io/blog/workers-in-production#upgrading',
+    'https://github.com/temporalio/sdk-go/releases',
+    'https://github.com/temporalio/sdk-go/releases/tag/v1.30.0',
+    'https://pkg.go.dev/go.temporal.io/sdk/workflow',
+  ];
+  for (const url of allowed) {
+    it(`allows ${url}`, () => assert.strictEqual(isAllowed(url, allowlist), true));
+  }
+
+  const blocked = [
+    'https://temporal.io/pricing',
+    'https://temporal.io/blogs',
+    'https://github.com/temporalio/edu-101-python-content/blob/main/x.md',
+    'https://github.com/temporalio/sdk-go/releases-old',
+    'https://github.com/temporalio/sdk-go',
+    'https://temporalio.slack.com/archives/CTT84RS0P/p1727763207532399',
+    'https://evil.docs.temporal.io/workflows',
+    'not a url',
+  ];
+  for (const url of blocked) {
+    it(`blocks ${url}`, () => assert.strictEqual(isAllowed(url, allowlist), false));
+  }
+});
+
+describe('validResults', () => {
+  const good = { content: 'a', source_url: 'https://docs.temporal.io/workflows' };
+
+  it('keeps well-formed results in order', () => {
+    assert.deepStrictEqual(validResults([good, { ...good, content: 'b' }]), [good, { ...good, content: 'b' }]);
+  });
+
+  const malformed = [
+    ['null', null],
+    ['a string', 'text'],
+    ['no source_url', { content: 'a' }],
+    ['non-string source_url', { content: 'a', source_url: 7 }],
+    ['non-string content', { content: null, source_url: good.source_url }],
+  ];
+  for (const [name, item] of malformed) {
+    it(`drops ${name}`, () => assert.deepStrictEqual(validResults([good, item]), [good]));
+  }
+});
+
+describe('isAllowedResult', () => {
+  const allowlist = parseAllowlist(['docs.temporal.io']);
+
+  it('allows custom Q&A answers, which Kapa returns with an empty source_url', () => {
+    assert.strictEqual(isAllowedResult({ content: 'Q: ... A: ...', source_url: '' }, allowlist), true);
+  });
+
+  it('checks every other result against the allowlist', () => {
+    assert.strictEqual(isAllowedResult({ content: 'x', source_url: 'https://docs.temporal.io/workflows' }, allowlist), true);
+    assert.strictEqual(isAllowedResult({ content: 'x', source_url: 'https://temporalio.slack.com/archives/C1/p1' }, allowlist), false);
+    assert.strictEqual(isAllowedResult({ content: 'x', source_url: '  ' }, allowlist), false);
+  });
+});
+
+describe('sourceLabel', () => {
+  it('uses the host for most sources', () => {
+    assert.strictEqual(sourceLabel('https://Community.Temporal.io/t/some-topic/123'), 'community.temporal.io');
+  });
+
+  it('keeps the owner and repository for github.com', () => {
+    assert.strictEqual(
+      sourceLabel('https://github.com/temporalio/sdk-python/blob/main/README.md'),
+      'github.com/temporalio/sdk-python'
+    );
+    assert.strictEqual(sourceLabel('https://github.com/temporalio'), 'github.com');
+  });
+
+  it('labels a URL it cannot parse', () => {
+    assert.strictEqual(sourceLabel('not a url'), '(invalid URL)');
+  });
+});
+
+describe('droppedSources', () => {
+  it('counts only the results the allowlist drops', () => {
+    const allowlist = parseAllowlist(['docs.temporal.io']);
+    const results = [
+      { content: 'a', source_url: 'https://docs.temporal.io/workflows' },
+      { content: 'b', source_url: 'https://community.temporal.io/t/x/1' },
+      { content: 'c', source_url: 'https://community.temporal.io/t/y/2' },
+      { content: 'd', source_url: '' },
+      { content: 'e', source_url: 'https://github.com/temporalio/edu-101/blob/main/x.md' },
+    ];
+    assert.deepStrictEqual(droppedSources(results, allowlist), {
+      'community.temporal.io': 2,
+      'github.com/temporalio/edu-101': 1,
+    });
+  });
+});
+
+describe('kapaIdentity', () => {
+  const base = { ip: '203.0.113.7', agent: 'Claude Code', src: 'md-page', salt: 'salt' };
+  const id = (overrides) => kapaIdentity({ ...base, ...overrides }).user?.unique_client_id;
+
+  it('sends a hashed user ID and the normalized agent name', () => {
+    const identity = kapaIdentity(base);
+    assert.match(identity.user.unique_client_id, /^[0-9a-f]{32}$/);
+    assert.deepStrictEqual(identity.mcp_client_meta, { name: 'claude-code' });
+    assert.ok(!JSON.stringify(identity).includes('203.0.113.7'));
+  });
+
+  it('gives the same caller the same ID, however it writes its name', () => {
+    assert.strictEqual(id({ agent: 'claude_code/1.2' }), id());
+    assert.strictEqual(id({ src: 'llms' }), id());
+  });
+
+  it('gives a different ID for another IP, agent, or salt', () => {
+    const ids = [id(), id({ ip: '203.0.113.8' }), id({ agent: 'cursor' }), id({ salt: 'other' })];
+    assert.strictEqual(new Set(ids).size, ids.length);
+  });
+
+  it("doesn't match the log's ip_hash", () => {
+    const logHash = crypto.createHash('sha256').update('salt:203.0.113.7').digest('hex');
+    assert.ok(!logHash.startsWith(id({ agent: null })));
+  });
+
+  it('treats a missing or placeholder agent as no agent', () => {
+    assert.strictEqual(id({ agent: '<your-name>' }), id({ agent: null }));
+    assert.strictEqual(kapaIdentity({ ...base, agent: '<your-name>' }).mcp_client_meta, undefined);
+    assert.match(id({ agent: '' }), /^[0-9a-f]{32}$/);
+  });
+
+  it('sends no user without an IP or salt, but still sends the agent name', () => {
+    assert.deepStrictEqual(kapaIdentity({ ...base, ip: null }), { mcp_client_meta: { name: 'claude-code' } });
+    assert.deepStrictEqual(kapaIdentity({ ...base, salt: undefined }), { mcp_client_meta: { name: 'claude-code' } });
+    assert.deepStrictEqual(kapaIdentity({ ...base, ip: null, agent: null }), {});
+  });
+
+  it('counts our own checks as one user, whatever agent they send', () => {
+    for (const src of ['healthcheck', 'link-check', 'manual-test']) {
+      assert.deepStrictEqual(kapaIdentity({ ...base, src, agent: `healthcheck-${Math.random()}` }), {
+        user: { unique_client_id: 'internal-check' },
+        mcp_client_meta: { name: src },
+      });
+    }
+  });
+});

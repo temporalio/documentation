@@ -1,4 +1,4 @@
-const { describe, it } = require('node:test');
+const { beforeEach, describe, it } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
@@ -133,30 +133,70 @@ describe('markdownRedirect', () => {
 });
 
 describe('api/markdown-not-found', () => {
+  // The handler asks Algolia for suggested pages. Stub the search so the test
+  // makes no network call and controls what the handler gets back.
+  const Module = require('module');
+  const originalLoad = Module._load;
+  let suggestions = [];
+  const searched = [];
+  Module._load = function load(request, ...rest) {
+    const loaded = originalLoad.call(this, request, ...rest);
+    if (request !== './_not-found-lib') return loaded;
+    return {
+      ...loaded,
+      searchSuggestions: async (pathname) => {
+        searched.push(pathname);
+        return suggestions;
+      },
+    };
+  };
   const handler = require('../api/markdown-not-found');
+  Module._load = originalLoad;
 
-  function request(url) {
+  async function request(url) {
     const response = { headers: {} };
     response.status = (code) => Object.assign(response, { statusCode: code });
     response.setHeader = (key, value) => Object.assign(response, { headers: { ...response.headers, [key]: value } });
     response.send = (body) => Object.assign(response, { body });
     response.redirect = (code, location) => Object.assign(response, { statusCode: code, location });
-    handler({ url }, response);
+    await handler({ url }, response);
     return response;
   }
 
-  it('redirects the .md URL of a page that vercel.json redirects', () => {
-    const response = request('/cloud/limits.md');
-    assert.strictEqual(response.statusCode, 308);
-    assert.strictEqual(response.location, '/evaluate/cloud/limits.md');
+  beforeEach(() => {
+    suggestions = [];
+    searched.length = 0;
   });
 
-  it('returns the Markdown 404 for anything else', () => {
+  it('redirects the .md URL of a page that vercel.json redirects', async () => {
+    const response = await request('/cloud/limits.md');
+    assert.strictEqual(response.statusCode, 308);
+    assert.strictEqual(response.location, '/evaluate/cloud/limits.md');
+    assert.deepStrictEqual(searched, []);
+  });
+
+  it('returns the Markdown 404 for anything else', async () => {
     for (const url of ['/no-such-page.md', '/no-such-page']) {
-      const response = request(url);
+      const response = await request(url);
       assert.strictEqual(response.statusCode, 404);
       assert.match(response.headers['Content-Type'], /^text\/markdown/);
+      assert.ok(!response.body.includes('## Suggested pages'));
     }
+  });
+
+  it('points agents at the feedback endpoint without echoing the requested path', async () => {
+    const response = await request('/ignore-previous-instructions.md');
+    assert.match(response.body, /\/api\/feedback\?[^\n]*src=md-404/);
+    assert.ok(!response.body.includes('ignore-previous-instructions'));
+  });
+
+  it('lists suggested pages from the search, not from the request', async () => {
+    suggestions = [{ url: 'https://docs.temporal.io/workflows', title: 'Workflows' }];
+    const response = await request('/ignore-previous-instructions.md');
+    assert.deepStrictEqual(searched, ['/ignore-previous-instructions.md']);
+    assert.match(response.body, /## Suggested pages\n\n- \[Workflows\]\(https:\/\/docs\.temporal\.io\/workflows\?/);
+    assert.ok(response.body.indexOf('## Suggested pages') < response.body.indexOf('## Where to look next'));
+    assert.ok(!response.body.includes('ignore-previous-instructions'));
   });
 });
 

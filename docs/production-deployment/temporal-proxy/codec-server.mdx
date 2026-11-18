@@ -1,0 +1,192 @@
+---
+id: codec-server
+title: Run a codec server with Temporal Proxy
+sidebar_label: Codec server
+description:
+  Serve codec server endpoints from Temporal Proxy so the Temporal CLI and Web UI can decode encrypted payloads, and
+  expose pprof profiling routes.
+toc_max_heading_level: 4
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  Temporal Proxy is under active development and evolving quickly. Behavior and configuration can change between
+  releases. See the [temporal-proxy repository](https://github.com/temporalio/temporal-proxy) for the current status and
+  the definitive configuration schema.
+</ReleaseNoteHeader>
+
+With [payload encryption](/production-deployment/temporal-proxy/encrypt-payloads) on, anything that reads Event History
+without passing through the gateway sees only ciphertext. That includes the Temporal Web UI and `temporal workflow show`
+pointed at the Temporal Service directly. The proxy can serve the [codec server](/production-deployment/data-encryption)
+HTTP contract with the same keys the gateway uses, so those clients can decode and encode payloads themselves.
+
+The codec server answers `POST /encode`, `POST /decode`, and `POST /download`. Each route is also served under a
+Namespace path segment, such as `/{namespace}/decode`, for the CLI's `--codec-endpoint` templating. An unknown path
+answers `404`, and a known path called with any method but `POST` answers `405`.
+
+## Configure the HTTP listener
+
+The codec server runs on the proxy's HTTP listener, on its own port separate from the gateway. Configure the listener
+under the top-level `http` block and the codec server under `http.codecServer`. Nothing binds unless a route group,
+the codec server or the [profiling routes](#profile-the-proxy), is enabled.
+
+This configuration, from the proxy's
+[codec server example](https://github.com/temporalio/temporal-proxy/tree/main/examples/codecserver), serves the codec
+server on loopback for a local development Service whose Web UI runs on port 8233:
+
+```yaml
+http:
+  hostPort: 127.0.0.1:8081
+  insecure: true # Plaintext, accepted only on a loopback bind.
+  codecServer:
+    enabled: true
+    cors:
+      origins: # The Web UI's origin is whichever host was typed, so list both.
+        - http://localhost:8233
+        - http://127.0.0.1:8233
+```
+
+| Key                                 | Default | Meaning                                                                                       |
+| ----------------------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `http.hostPort`                     | none    | Address the HTTP listener binds. Required when a route group is enabled.                      |
+| `http.insecure`                     | `false` | Serve plaintext. Can't be set together with `http.tls`.                                       |
+| `http.tls`                          | none    | `cert` and `key` to terminate TLS with. Add `ca` to require client certificates.              |
+| `http.codecServer.enabled`          | `false` | Turns the codec server on.                                                                    |
+| `http.codecServer.cors.origins`     | none    | Origins a browser-based caller may reach the codec server from. `*` is rejected.              |
+| `http.codecServer.cors.credentials` | `false` | Lets a browser send cookies and `Authorization` from an allowed origin. Requires `origins`.   |
+| `http.codecServer.auth`             | none    | Caller authentication, with the same keys as the gateway's [`auth`](/production-deployment/temporal-proxy/configure#authenticate-and-authorize-inbound-requests) block. |
+
+:::note Version note
+
+v0.8.0 configured the codec server in a top-level `codecServer` block. v0.9.0 moved it to `http.codecServer`, with
+`hostPort`, `insecure`, and `tls` set on `http` itself. A configuration that still has the top-level block fails at
+startup rather than running with the codec server off.
+
+:::
+
+## Secure the codec server
+
+A codec server holds the same KMS unwrap permission the proxy does, so anyone who can reach it can decrypt anything your
+keys protect. The proxy enforces that:
+
+- When `http.hostPort` binds anything other than loopback (`127.0.0.1`, `::1`, or `localhost`), every enabled route
+  group requires `auth`, and the listener requires `tls`.
+- A loopback bind runs without authentication by default, for local development where the caller is on the same host.
+  The proxy logs a warning when it does.
+
+```yaml
+http:
+  hostPort: 0.0.0.0:8081
+  tls:
+    cert: /etc/temporal-proxy/certs/http/tls.crt
+    key: /etc/temporal-proxy/certs/http/tls.key
+  codecServer:
+    enabled: true
+    cors:
+      origins:
+        - https://cloud.temporal.io
+    auth:
+      jwks:
+        url: https://issuer.example.com/.well-known/jwks.json
+        audiences:
+          - temporal-codec
+```
+
+`auth` verifies who is calling, not which Namespace they may decrypt. A token that passes it authorizes every
+Namespace's payloads. If a per-Namespace decision matters, scope a JWKS token narrowly at the issuer, or point
+`auth.external` at an
+[extension server](/production-deployment/temporal-proxy/configure#delegate-the-decision-to-an-extension-server), which
+receives the Namespace the request names.
+
+On Kubernetes, the Helm chart declares only the gateway port. To reach the codec server from outside the Pod, add a
+Service for the `http.hostPort` port, for example through the chart's `extraObjects`.
+
+## Name the Namespace {/* #name-the-namespace */}
+
+The codec server compares every payload it opens with the Namespace the request names, using the same
+[Namespace binding](/production-deployment/temporal-proxy/encrypt-payloads#namespace-binding) rules as the gateway.
+Under `strict`, it requires a Namespace on every request.
+
+Name the Namespace as the Temporal Service knows it, such as `orders.acct` on Temporal Cloud, not the local name a
+Worker uses through the gateway. Payloads are labeled with that name, and the codec server maps it to the local name
+itself to pick keys. The codec server ignores an upstream's `bindingLabelsFrom`, so during a
+[migration between upstreams](/production-deployment/temporal-proxy/encrypt-payloads#move-namespaces-between-upstreams)
+a client that names the on-premises Namespace can't open payloads labeled with the Cloud name under `strict`.
+
+The Temporal CLI sends the Namespace for you, so either endpoint form works:
+
+```bash
+# The CLI sends an X-Namespace header from --namespace or your profile.
+temporal workflow show --namespace orders.acct --workflow-id wf-1 \
+  --codec-endpoint https://codec.example.com
+
+# Or name it in the path; the CLI expands {namespace}.
+temporal workflow show --namespace orders.acct --workflow-id wf-1 \
+  --codec-endpoint 'https://codec.example.com/{namespace}'
+```
+
+Add `--codec-auth "Bearer $TOKEN"` when the codec server requires a token. A client that sends neither the header nor
+the path segment can add the header itself, for example with `--codec-header X-Namespace=orders.acct`. The proxy's
+documentation records this behavior against Temporal CLI 1.9.1.
+
+Under `strict`, a request that names no Namespace answers `400`, and `/decode` refuses a payload labeled for a
+different Namespace with the same `400`. That includes the results of Nexus Operations handled in another Namespace,
+which the Web UI therefore shows as encrypted. Under `permissive`, those payloads decode and count toward
+`vault_namespace_mismatches_total`.
+
+## Use it from the Web UI
+
+Set the codec server endpoint in the Web UI's codec server settings, or start a local development Service with
+`temporal server start-dev --ui-codec-endpoint <address>`. The browser fetches encrypted Event History from the Temporal
+Service and posts each payload to `/decode`, so the Web UI's origin must be listed under
+`http.codecServer.cors.origins`.
+
+When `/decode` answers with a `4xx`, the Web UI shows no error. It renders the payload it already had, so a rejected
+token, a missing CORS origin, or a malformed request looks the same as ciphertext the UI hasn't decoded yet: a payload
+with the `binary/encrypted` encoding. If payloads stay encrypted, check the browser console. A missing origin is the
+usual cause: the codec server answers the preflight without an `Access-Control-Allow-Origin` header, so the browser
+never sends the request.
+
+## Profile the proxy
+
+The HTTP listener can also serve the Go runtime's standard pprof endpoints under `/debug/pprof/`. They are off by
+default:
+
+```yaml
+http:
+  hostPort: 127.0.0.1:8080
+  insecure: true
+  pprof:
+    enabled: true
+```
+
+| Key                  | Default | Meaning                                                                                       |
+| -------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `http.pprof.enabled` | `false` | Turns the pprof routes on.                                                                    |
+| `http.pprof.auth`    | none    | Caller authentication, with the same keys as `http.codecServer.auth`. Required off loopback. |
+
+Profiles name hot code paths in the proxy, so the same rule applies as for the codec server: off loopback, the routes
+require `auth` and the listener requires `tls`.
+
+Pull a profile with `curl` and read it with `go tool pprof`:
+
+```bash
+curl -s -H "Authorization: Bearer $TOKEN" -o heap.pb.gz http://127.0.0.1:8080/debug/pprof/heap
+go tool pprof -http=: heap.pb.gz
+```
+
+`go tool pprof` can also read from a running proxy directly:
+`go tool pprof -http=: http://127.0.0.1:8080/debug/pprof/heap`. To profile a remote proxy whose routes are on loopback
+without `auth`, open a tunnel first, such as `ssh -L 8080:localhost:8080 <host>`, then run the same command against
+`localhost`.
+
+## Monitor the codec server
+
+The codec server reports `codec_server_requests_total` and `codec_server_request_duration_seconds`, by matched route.
+Payloads it decodes and encodes also count toward the `encryption` metrics. See
+[Observability](/production-deployment/temporal-proxy#observability).

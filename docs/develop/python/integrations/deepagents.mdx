@@ -31,7 +31,6 @@ samples for the complete code.
 
 ## Prerequisites
 
-- Python 3.11 or newer.
 - This guide assumes you are already familiar with Deep Agents. If you aren't, refer to the
   [Deep Agents documentation](https://github.com/langchain-ai/deepagents) for more details.
 - If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
@@ -42,19 +41,23 @@ samples for the complete code.
 
 ## Install the plugin
 
-Install the Temporal Python SDK with Deep Agents support:
+Install the standalone `temporalio-deepagents` package:
 
 ```bash
-uv add "temporalio[deepagents]>=1.32.0"
+uv add temporalio-deepagents
 ```
 
 or with pip:
 
 ```bash
-pip install "temporalio[deepagents]>=1.32.0"
+pip install temporalio-deepagents
 ```
 
-Requires Python 3.11 or newer, the same floor that `deepagents` sets.
+The package installs the Temporal Python SDK and Deep Agents dependencies. Refer to the
+[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/deepagents/pyproject.toml)
+for supported Python and dependency versions.
+
+Import `DeepAgentsPlugin`, `TemporalBackend`, and other integration helpers from `temporalio.deepagents`.
 
 ## Hello world
 
@@ -86,8 +89,6 @@ class HelloWorldAgent:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -102,7 +103,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.deepagents import DeepAgentsPlugin
+from temporalio.deepagents import DeepAgentsPlugin
 from temporalio.worker import Worker
 
 from deepagents_plugin.hello_world.workflow import HelloWorldAgent
@@ -191,8 +192,6 @@ async def get_weather(city: str) -> str:
     """Return the current weather for a city."""
     # A real implementation would call a weather API here; this is a stand-in.
     return f"It is sunny and 22C in {city}."
-
-
 ```
 <!--SNIPEND-->
 
@@ -234,8 +233,6 @@ class ReactAgent:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -257,7 +254,7 @@ from datetime import timedelta
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 from temporalio import workflow
-from temporalio.contrib.deepagents import TemporalBackend
+from temporalio.deepagents import TemporalBackend
 
 
 @workflow.defn
@@ -285,8 +282,6 @@ class FilesystemAgent:
             {"messages": [{"role": "user", "content": instruction}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -327,8 +322,6 @@ class SubagentsWorkflow:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -355,7 +348,7 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
 from temporalio import workflow
-from temporalio.contrib.deepagents import tool_as_activity
+from temporalio.deepagents import tool_as_activity
 
 
 @workflow.defn
@@ -418,8 +411,6 @@ class HumanInTheLoopAgent:
         # `Command(resume=...)` are allowed.
         if decision not in ("approve", "reject"):
             raise ValueError('decision must be "approve" or "reject"')
-
-
 ```
 <!--SNIPEND-->
 
@@ -447,7 +438,7 @@ from typing import Any
 
 from deepagents import create_deep_agent
 from temporalio import workflow
-from temporalio.contrib.deepagents import run_deep_agent
+from temporalio.deepagents import run_deep_agent
 
 
 @workflow.defn
@@ -476,8 +467,6 @@ class LongResearchAgent:
             state_snapshot=state_snapshot,
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 
@@ -497,8 +486,8 @@ so external subscribers can attach by Workflow ID.
 ```py
 from langchain_core.messages import HumanMessage
 from temporalio import workflow
-from temporalio.contrib.deepagents import TemporalModel
 from temporalio.contrib.workflow_streams import WorkflowStream
+from temporalio.deepagents import TemporalModel
 
 STREAMING_TOPIC = "model-chunks"
 
@@ -517,15 +506,13 @@ class StreamingWorkflow:
         async for chunk in model.astream([HumanMessage(content=prompt)]):
             parts.append(str(chunk.content))
         return "".join(parts)
-
-
 ```
 <!--SNIPEND-->
 
 ## Compose with an observability plugin
 
 This plugin carries no tracing context of its own. For observability, compose it with an observability plugin such as
-[`temporalio.contrib.langsmith`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/langsmith) or
+[`temporalio.langsmith`](/develop/python/integrations/langsmith) or
 `temporalio.contrib.opentelemetry`. Registration order of the two plugins does not matter; the observability plugin
 captures the LLM calls that `DeepAgentsPlugin` runs as Activities. The Workflow itself is an ordinary Deep Agent — the tracing
 comes entirely from composing the plugins on the Client.
@@ -549,8 +536,6 @@ class TracedAgent:
             {"messages": [{"role": "user", "content": question}]}
         )
         return result["messages"][-1].content
-
-
 ```
 <!--SNIPEND-->
 

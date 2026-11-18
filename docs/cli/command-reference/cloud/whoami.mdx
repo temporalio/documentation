@@ -3,7 +3,7 @@ id: whoami
 title: Temporal CLI cloud whoami command reference
 sidebar_label: whoami
 description: Who Am I
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - authentication
 ---

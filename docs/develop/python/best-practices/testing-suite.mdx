@@ -1,6 +1,6 @@
 ---
 id: testing-suite
-title: Testing - Python SDK
+title: Testing
 sidebar_label: Testing
 description: The Temporal Application Testing guide covers Frameworks facilitating Workflow and integration testing, including end-to-end, integration, and unit tests. Use mocked Activities, skip time in tests, and replay Workflow Executions.
 toc_max_heading_level: 3
@@ -54,7 +54,9 @@ When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in y
 To test a Heartbeat in an Activity, use the [`on_heartbeat()`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html#on_heartbeat) property of the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class.
 This property sets a custom function that is called every time the `activity.heartbeat()` function is called within the Activity.
 
-```python
+<!--SNIPSTART python-testing-heartbeats-->
+[python-sandbox/best_practices/test_testing_suite.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/test_testing_suite.py)
+```py
 @activity.defn
 async def activity_with_heartbeats(param: str):
     activity.heartbeat(f"param: {param}")
@@ -69,12 +71,15 @@ await env.run(activity_with_heartbeats, "test")
 # Verify that the expected Heartbeats are received by the callback function.
 assert heartbeats == ["param: test", "second heartbeat"]
 ```
+<!--SNIPEND-->
 
 ## Testing Workflows {/* #test-workflows */}
 
 The simplest test case we can write is to have the test environment execute the Workflow and then evaluate the results. `WorkflowEnvironment.start_local` configures a local environment for running and testing Workflows:
 
-```python
+<!--SNIPSTART python-testing-workflow-->
+[python-sandbox/test_workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/test_workflows.py)
+```py
 import uuid
 
 import pytest
@@ -105,6 +110,7 @@ async def test_say_hello_workflow():
             )
             assert result == "Hello Temporal"
 ```
+<!--SNIPEND-->
 
 You can also pass `ui=True` to `start_local` to see the UI.
 
@@ -112,40 +118,34 @@ You can also pass `ui=True` to `start_local` to see the UI.
 
 When running unit tests on Workflows, many times you want to test the Workflow logic in isolation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 
-```python
-import uuid
-from temporalio.client import Client
-from temporalio.worker import Worker
+<!--SNIPSTART python-testing-mock-activity-->
+[python-sandbox/test_workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/test_workflows.py)
+```py
+@pytest.mark.asyncio
+async def test_say_hello_workflow_with_mocked_activity():
+    """Run the workflow with the greet activity mocked out."""
 
-# Import your Activity Definition and real implementation
-from hello.hello_activity import (
-    ComposeGreetingInput,
-    GreetingWorkflow,
-    compose_greeting,
-)
+    @activity.defn(name="greet")
+    async def greet_mocked(name: str) -> str:
+        return "mocked greeting"
 
-# Define your mocked Activity implementation
-@activity.defn(name="compose_greeting")
-async def compose_greeting_mocked(input: ComposeGreetingInput) -> str:
-    return f"{input.greeting}, {input.name} from mocked activity!"
-
-async def test_mock_activity(client: Client):
     task_queue_name = str(uuid.uuid4())
-    # Provide the mocked Activity implementation to the Worker
-    async with Worker(
-        client,
-        task_queue=task_queue_name,
-        workflows=[GreetingWorkflow],
-        activities=[compose_greeting_mocked],
-    ):
-        # Execute your Workflow as usual
-        assert "Hello, World from mocked activity!" == await client.execute_workflow(
-            GreetingWorkflow.run,
-            "World",
-            id=str(uuid.uuid4()),
+    async with await WorkflowEnvironment.start_local() as env:
+        async with Worker(
+            env.client,
             task_queue=task_queue_name,
-        )
+            workflows=[SayHelloWorkflow],
+            activities=[greet_mocked],
+        ):
+            result = await env.client.execute_workflow(
+                SayHelloWorkflow.run,
+                "Temporal",
+                id=str(uuid.uuid4()),
+                task_queue=task_queue_name,
+            )
+            assert result == "mocked greeting"
 ```
+<!--SNIPEND-->
 
 The mocked Activity implementation should have the same signature as the real implementation (including the input and output types) and the same name.
 When the Workflow invokes the Activity, it invokes the mocked implementation instead of the real one, allowing you to test your Workflow isolated.
@@ -175,16 +175,17 @@ Use the [`from_client()`](https://python.temporal.io/temporalio.testing.Workflow
 
 To implement time skipping manually, use the [`sleep`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#sleep) method inside the `WorkflowEnvironment`. This will manually advance time by the duration you specify.
 
-```python
-from temporalio.testing import WorkflowEnvironment
-
+<!--SNIPSTART python-testing-manual-time-skipping-->
+[python-sandbox/best_practices/test_testing_suite.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/test_testing_suite.py)
+```py
 async def test_manual_time_skipping():
     async with await WorkflowEnvironment.start_time_skipping() as env:
-        # Your code here
+        start = await env.get_current_time()
         # You can use the env.sleep(seconds) method to manually advance time
         await env.sleep(3) # This will advance time by 3 seconds
-        # Your code here
+        assert await env.get_current_time() - start >= timedelta(seconds=3)
 ```
+<!--SNIPEND-->
 
 ## How to Replay a Workflow Execution {/* #replay */}
 
@@ -207,21 +208,27 @@ To replay Workflow Executions, use the [`replay_workflows`](https://python.tempo
 In the following example (which, as of server v1.18, requires Advanced Visibility to be enabled), Event Histories are downloaded from the server and then replayed.
 If any replay fails, the code raises an exception.
 
-```python
-workflows = client.list_workflows(f"TaskQueue=foo and StartTime > '2022-01-01T12:00:00'")
+<!--SNIPSTART python-testing-replay-from-server-->
+[python-sandbox/best_practices/test_testing_suite.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/test_testing_suite.py)
+```py
+workflows = client.list_workflows("TaskQueue='foo' and StartTime > '2022-01-01T12:00:00Z'")
 histories = workflows.map_histories()
 replayer = Replayer(
     workflows=[MyWorkflowA, MyWorkflowB, MyWorkflowC]
 )
 await replayer.replay_workflows(histories)
 ```
+<!--SNIPEND-->
 
 In the next example, a single history is loaded from a JSON string:
 
-```python
+<!--SNIPSTART python-testing-replay-from-json-->
+[python-sandbox/best_practices/test_testing_suite.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/test_testing_suite.py)
+```py
 replayer = Replayer(workflows=[YourWorkflow])
-await replayer.replay_workflow(WorkflowHistory.from_json(history_json_str))
+await replayer.replay_workflow(WorkflowHistory.from_json(workflow_id, history_json_str))
 ```
+<!--SNIPEND-->
 
 In both examples, if Event History is non-deterministic, an error is thrown.
 You can choose to wait until all histories have been replayed with `replay_workflows` by setting the `fail_fast` option to `false`.

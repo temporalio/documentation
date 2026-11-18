@@ -1,6 +1,6 @@
 ---
 id: timeouts
-title: Workflow Timeouts - Go SDK
+title: Workflow Timeouts
 sidebar_label: Timeouts
 description: Optimize Workflow Execution with Temporal Go SDK - Set Workflow Timeouts and Retry Policies efficiently.
 toc_max_heading_level: 4
@@ -35,20 +35,23 @@ Available timeouts are:
 - `WorkflowRunTimeout`
 - `WorkflowTaskTimeout`
 
+<!--SNIPSTART go-workflow-timeouts-set-->
+[go-sandbox/workflows/timeouts/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/timeouts/start.go)
 ```go
 workflowOptions := client.StartWorkflowOptions{
-  // ...
-  // Set Workflow Timeout duration
-  WorkflowExecutionTimeout: 24 * 365 * 10 * time.Hour,
-  // WorkflowRunTimeout: 24 * 365 * 10 * time.Hour,
-  // WorkflowTaskTimeout: 10 * time.Second,
-  // ...
+	ID:        "your-workflow-id",
+	TaskQueue: TaskQueueName,
+	// Set Workflow Timeout duration
+	WorkflowExecutionTimeout: 24 * 365 * 10 * time.Hour,
+	// WorkflowRunTimeout: 24 * 365 * 10 * time.Hour,
+	// WorkflowTaskTimeout: 10 * time.Second,
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->
 
 ## Workflow retries {/* #workflow-retries */}
 
@@ -63,18 +66,22 @@ Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/te
 - Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default: None
 
+<!--SNIPSTART go-workflow-retry-policy-->
+[go-sandbox/workflows/timeouts/start.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workflows/timeouts/start.go)
 ```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100,
+retryPolicy := &temporal.RetryPolicy{
+	InitialInterval:    time.Second,
+	BackoffCoefficient: 2.0,
+	MaximumInterval:    time.Second * 100,
 }
 workflowOptions := client.StartWorkflowOptions{
-  RetryPolicy: retrypolicy,
-  // ...
+	ID:          "your-workflow-id",
+	TaskQueue:   TaskQueueName,
+	RetryPolicy: retryPolicy,
 }
 workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 if err != nil {
-  // ...
+	return nil, err
 }
 ```
+<!--SNIPEND-->

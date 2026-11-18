@@ -747,12 +747,27 @@ terraform output role_arn
 
 Use this role ARN in your Worker Deployment Version's compute configuration.
 
+:::caution AWS Organizations resource control policies
+
+If your AWS account belongs to an AWS Organization, a
+[resource control policy (RCP)](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_rcps.html)
+can block Temporal from assuming the role even when the trust policy allows it. The failure looks like an ordinary
+AssumeRole access-denied error. Before you create the Worker Deployment Version, ask your AWS Organizations
+administrator to confirm that no RCP denies `sts:AssumeRole` to the Temporal principals in the trust policy. See
+[Troubleshoot Serverless Workers on AWS Lambda](/troubleshooting/serverless-workers/aws-lambda#validate-connection).
+
+:::
+
 ## 4. Create Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute
 provider that points to your Lambda function. The compute configuration tells Temporal how to invoke your Worker: the
 provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume. The deployment name and build ID must
 match the values in your Worker code.
+
+A Namespace runs at most 100 Worker Deployment Versions with a compute configuration by default. Creating a version
+past that limit fails with `reached maximum worker controller instances in namespace`. See
+[Max Worker Controller Instances limits](/evaluate/cloud/limits#max-worker-controller-instances-limits).
 
 You can create the version using the Temporal UI or the Temporal CLI.
 

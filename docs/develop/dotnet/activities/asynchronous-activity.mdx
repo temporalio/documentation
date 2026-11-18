@@ -1,7 +1,7 @@
 ---
 id: asynchronous-activity
-title: Asynchronous Activity completion - .NET SDK
-sidebar_label: Asynchronous Activity completion
+title: Asynchronous Activity Completion
+sidebar_label: Asynchronous Activity Completion
 description: Asynchronously complete an Activity in Temporal. Follow simple steps to allow an Activity Function to return without the Activity Execution completing.
 toc_max_heading_level: 4
 tags:
@@ -21,22 +21,31 @@ There are three steps to follow:
 
 To mark an Activity as completing asynchronously, do the following inside the Activity.
 
-```csharp
+<!--SNIPSTART dotnet-async-activity-completion-capture-token-->
+[dotnet-sandbox/activities/AsyncActivityCompletion/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/AsyncActivityCompletion/MyActivities.cs)
+```cs
 // Capture token for later completion
 capturedToken = ActivityExecutionContext.Current.Info.TaskToken;
 
 // Throw special exception that says an activity will be completed somewhere else
 throw new CompleteAsyncException();
 ```
+<!--SNIPEND-->
 
 To update an Activity outside the Activity, use the [GetAsyncActivityHandle()](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_GetAsyncActivityHandle_System_Byte___) method to get the handle of the Activity.
 
-```csharp
+<!--SNIPSTART dotnet-async-activity-completion-get-handle-->
+[dotnet-sandbox/activities/AsyncActivityCompletion/ExternalCompleter.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/AsyncActivityCompletion/ExternalCompleter.cs)
+```cs
 var handle = myClient.GetAsyncActivityHandle(capturedToken);
 ```
+<!--SNIPEND-->
 
 Then, on that handle, you can call the results of the Activity, `HeartbeatAsync`, `CompleteAsync`, `FailAsync`, or `ReportCancellationAsync` method to update the Activity.
 
-```csharp
+<!--SNIPSTART dotnet-async-activity-completion-complete-->
+[dotnet-sandbox/activities/AsyncActivityCompletion/ExternalCompleter.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/AsyncActivityCompletion/ExternalCompleter.cs)
+```cs
 await handle.CompleteAsync("Completion value.");
 ```
+<!--SNIPEND-->

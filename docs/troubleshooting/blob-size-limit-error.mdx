@@ -42,9 +42,16 @@ include:
 
 The behavior when a payload exceeds the size limit depends on the SDK version.
 
-**Python SDK 1.23.0+ and Go SDK 1.43.0+:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
+**Newer SDK versions:** The SDK fails the Workflow Task with cause `WORKFLOW_TASK_FAILED_CAUSE_PAYLOADS_TOO_LARGE`. The
 Workflow is not terminated and remains open, so you can deploy a fix and allow the Workflow to continue. For Activities,
-the Activity Task fails with an explicit error instead of timing out silently.
+the Activity Task fails with an explicit error instead of timing out silently. These SDK versions have this behavior:
+
+- Go SDK 1.43.0+
+- Python SDK 1.23.0+
+- TypeScript SDK 1.21.0+
+- .NET SDK 1.18.0+
+- Ruby SDK 1.7.0+
+- Rust SDK 0.6.0+
 
 **All other SDK versions:** The behavior depends on whether the oversized payload is an input or a result:
 

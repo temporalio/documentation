@@ -1,6 +1,6 @@
 ---
 id: aws-lambda
-title: Serverless Workers on AWS Lambda - TypeScript SDK
+title: Serverless Workers on AWS Lambda
 sidebar_label: AWS Lambda
 description: Write a Temporal Worker that runs on AWS Lambda using the TypeScript SDK @temporalio/lambda-worker package.
 slug: /develop/typescript/workers/serverless-workers/aws-lambda
@@ -28,8 +28,8 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Use the `runWorker` function to create a Lambda handler that runs a Temporal Worker.
 Pass a deployment version and a configure callback that sets up your Workflows and Activities.
 
-<!--SNIPSTART typescript-lambda-worker {"selectedLines": ["1", "3-11", "13"], "highlightedLines": "6"}-->
-[lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/main/lambda-worker/src/index.ts)
+<!--SNIPSTART typescript-aws-lambda-worker {"selectedLines": ["1", "3-11", "13"], "highlightedLines": "6"}-->
+[typescript-sandbox/src/workers/serverless-workers/aws-lambda/index.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/serverless-workers/aws-lambda/index.ts)
 ```ts {6}
 import { runWorker } from '@temporalio/lambda-worker';
 // ...
@@ -59,15 +59,21 @@ Pre-bundling avoids webpack bundling overhead on every Lambda cold start.
 
 Build the bundle as a separate build step:
 
-```typescript
+<!--SNIPSTART typescript-aws-lambda-bundle-->
+[typescript-sandbox/src/workers/serverless-workers/aws-lambda/scripts/build-workflow-bundle.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/serverless-workers/aws-lambda/scripts/build-workflow-bundle.ts)
+```ts
 import { bundleWorkflowCode } from '@temporalio/worker';
 import { writeFile } from 'fs/promises';
+import path from 'path';
 
-const { code } = await bundleWorkflowCode({
-  workflowsPath: require.resolve('./workflows'),
-});
-await writeFile('./workflow-bundle.js', code);
+export async function bundle(): Promise<void> {
+  const { code } = await bundleWorkflowCode({
+    workflowsPath: require.resolve('../workflows'),
+  });
+  await writeFile(path.join(__dirname, '../workflow-bundle.js'), code);
+}
 ```
+<!--SNIPEND-->
 
 Then reference the bundle in your handler with `workflowBundle: { codePath: require.resolve('./workflow-bundle.js') }`.
 
@@ -120,8 +126,8 @@ With this enabled, the Worker emits SDK metrics and distributed traces for Workf
 The underlying metrics and traces are the same ones the TypeScript SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - TypeScript SDK](/develop/typescript/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
-<!--SNIPSTART typescript-lambda-worker {"highlightedLines": "2, 12"}-->
-[lambda-worker/src/index.ts](https://github.com/temporalio/samples-typescript/blob/main/lambda-worker/src/index.ts)
+<!--SNIPSTART typescript-aws-lambda-worker {"highlightedLines": "2, 12"}-->
+[typescript-sandbox/src/workers/serverless-workers/aws-lambda/index.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/serverless-workers/aws-lambda/index.ts)
 ```ts {2, 12}
 import { runWorker } from '@temporalio/lambda-worker';
 import { applyDefaults } from '@temporalio/lambda-worker/otel';
@@ -151,8 +157,8 @@ The default Collector configuration does not route OTLP data to the traces pipel
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
-<!--SNIPSTART typescript-lambda-worker-otel-collector-config-->
-[lambda-worker/otel-collector-config.yaml](https://github.com/temporalio/samples-typescript/blob/main/lambda-worker/otel-collector-config.yaml)
+<!--SNIPSTART typescript-aws-lambda-otel-collector-config-->
+[typescript-sandbox/src/workers/serverless-workers/aws-lambda/otel-collector-config.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/serverless-workers/aws-lambda/otel-collector-config.yaml)
 ```yaml
 receivers:
   otlp:
@@ -210,13 +216,21 @@ Without these permissions, the Collector fails silently and no telemetry appears
 
 When pre-bundling Workflow code, pass the plugin from `makeOtelPlugin()` so that Workflow interceptor modules are included in the bundle:
 
-```typescript
+<!--SNIPSTART typescript-aws-lambda-bundle-otel-->
+[typescript-sandbox/src/workers/serverless-workers/aws-lambda/scripts/build-workflow-bundle-otel.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/serverless-workers/aws-lambda/scripts/build-workflow-bundle-otel.ts)
+```ts
 import { bundleWorkflowCode } from '@temporalio/worker';
 import { makeOtelPlugin } from '@temporalio/lambda-worker/otel';
+import { writeFile } from 'fs/promises';
+import path from 'path';
 
-const { plugin } = makeOtelPlugin();
-const { code } = await bundleWorkflowCode({
-  workflowsPath: require.resolve('./workflows'),
-  plugins: [plugin],
-});
+export async function bundle(): Promise<void> {
+  const { plugin } = makeOtelPlugin();
+  const { code } = await bundleWorkflowCode({
+    workflowsPath: require.resolve('../workflows'),
+    plugins: [plugin],
+  });
+  await writeFile(path.join(__dirname, '../workflow-bundle.js'), code);
+}
 ```
+<!--SNIPEND-->

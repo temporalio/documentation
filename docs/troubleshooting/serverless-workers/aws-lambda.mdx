@@ -74,6 +74,14 @@ Validate Connection reports one of the following failure modes:
   [CloudFormation template](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
   and that the External ID matches the value in the Worker Deployment Version configuration.
 
+  If the ARNs, trust policy, and External ID are all correct, check whether your AWS Organization applies a
+  [resource control policy (RCP)](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_rcps.html)
+  to the account that owns the invocation role. An RCP can deny `sts:AssumeRole` to principals outside your
+  organization, including Temporal's, even when the role's trust policy allows them. The failure is an ordinary
+  AssumeRole access-denied error, so it looks like a trust policy problem. Ask your AWS Organizations administrator to
+  review the RCPs attached to the account, its organizational units, and the organization root, and to allow the
+  Temporal principals listed in the role's trust policy.
+
 - **Task Queue not registered.** The Lambda invokes successfully but the Worker errors before registering its Task Queue. Check the Lambda function's CloudWatch logs for configuration or runtime errors (missing environment variables, incorrect TLS configuration, missing dependencies). The server binds a Task Queue to a Worker Deployment Version when a Worker successfully connects and polls. Without a successful poll, the binding is never created and the WCI cannot route Tasks to the version.
 
   If the version was recently created, the Worker may still be starting up. Wait a moment and retry.

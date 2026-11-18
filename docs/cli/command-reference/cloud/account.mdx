@@ -3,7 +3,7 @@ id: account
 title: Temporal CLI cloud account command reference
 sidebar_label: account
 description: Account Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - account
 ---
@@ -298,7 +298,7 @@ Use the following options to change the behavior of this command. You can also u
 |------|----------|-------------|
 | `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
-| `--service-account-email` | Yes | **string** The email of the GCP service account that Temporal Cloud impersonates for writing records to the customer's PubSub topic (for example my-sa@my-project.iam.gserviceaccount.com). The service account ID and GCP project ID are parsed from this email. |
+| `--service-account-email` | Yes | **string** The email of the GCP service account that Temporal Cloud impersonates for writing records to the customer's PubSub topic (e.g. my-sa@my-project.iam.gserviceaccount.com). The service account ID and GCP project ID are parsed from this email. |
 | `--topic-name` | Yes | **string** The destination PubSub topic name where audit logs will be sent. |
 
 ## Global Flags

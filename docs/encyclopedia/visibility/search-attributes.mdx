@@ -107,6 +107,7 @@ These Search Attributes are created when the initial index is created.
   `Paused` is the status of an Activity that an operator has paused with [Pause](/activity-operations). Query it with `ExecutionStatus = 'Paused'`.
 
 - StartTime, CloseTime, and ExecutionTime are stored as dates but are supported by queries that use either EpochTime in nanoseconds or a string in [RFC3339Nano format](https://pkg.go.dev/time#pkg-constants) (such as "2006-01-02T15:04:05.999999999Z07:00").
+  Datetime Search Attributes also accept [relative time](/list-filter#relative-time), such as `StartTime > NOW() - '24h'`.
 
 - ExecutionDuration is stored in nanoseconds but is supported by queries that use integers in nanoseconds, [Golang duration format](https://pkg.go.dev/time#ParseDuration), or "hh:mm:ss" format.
 

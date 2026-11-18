@@ -3,7 +3,7 @@ id: batch
 title: Temporal CLI batch command reference
 sidebar_label: batch
 description: Use Temporal CLI to manage multiple Workflow or Standalone Activity Executions with Batch Jobs. Filter and monitor Batch Jobs effectively.
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - Temporal CLI
 ---

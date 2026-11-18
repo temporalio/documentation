@@ -1,6 +1,6 @@
 ---
 id: sessions
-title: Worker Sessions - Go SDK
+title: Worker Sessions
 sidebar_label: Sessions
 toc_max_heading_level: 4
 tags:
@@ -28,31 +28,34 @@ A Worker Session is a feature that provides a straightforward API for [Task Rout
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
+<!--SNIPSTART go-session-worker {"highlightedLines": "12,15-19"}-->
+[go-sandbox/workers/sessions/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/sessions/worker/main.go)
 ```go {12,15-19}
 func main() {
-    // The client and worker are heavyweight objects that should be created once per process.
-    temporalClient, err := client.Dial(client.Options{
-        HostPort: client.DefaultHostPort,
-    })
-    if err != nil {
-        log.Fatalln("Unable to create client", err)
-    }
-    defer temporalClient.Close()
-    
-    workerOptions := worker.Options{
-        EnableSessionWorker: true,
-        MaxConcurrentSessionExecutionSize: 1000,
-    }
-    w := worker.New(temporalClient, "fileprocessing", workerOptions)
-    w.RegisterWorkflow(sessions.SomeFileProcessingWorkflow)
-    w.RegisterActivity(&sessions.FileActivities{})
+	// The client and worker are heavyweight objects that should be created once per process.
+	temporalClient, err := client.Dial(client.Options{
+		HostPort: client.DefaultHostPort,
+	})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
 
-    err = w.Run(worker.InterruptCh())
-    if err != nil {
-        log.Fatalln("Unable to start worker", err)
-    }
+	workerOptions := worker.Options{
+		EnableSessionWorker:               true,
+		MaxConcurrentSessionExecutionSize: 1000,
+	}
+	w := worker.New(temporalClient, "fileprocessing", workerOptions)
+	w.RegisterWorkflow(sessions.SomeFileProcessingWorkflow)
+	w.RegisterActivity(&sessions.FileActivities{})
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
 }
 ```
+<!--SNIPEND-->
 
 ### Change the maximum concurrent Sessions of a Worker {/* #max-concurrent-sessions */}
 
@@ -62,17 +65,21 @@ To limit the number of concurrent Sessions running on a Worker, set the `MaxConc
 By default, this field is set to a very large value, so there's no need to manually set it if no limitation is needed.
 
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
-If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
+If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error.
 
+<!--SNIPSTART go-session-worker {"highlightedLines": "5", "selectedLines": ["1", "11-14", "23"]}-->
+[go-sandbox/workers/sessions/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/sessions/worker/main.go)
 ```go {5}
 func main() {
-    // ...
-    workerOptions := worker.Options{
-        EnableSessionWorker: true,
-        MaxConcurrentSessionExecutionSize: 1000,
-    }
+// ...
+	workerOptions := worker.Options{
+		EnableSessionWorker:               true,
+		MaxConcurrentSessionExecutionSize: 1000,
+	}
+// ...
 }
 ```
+<!--SNIPEND-->
 
 ## Create a Worker Session {/* #create-a-session */}
 
@@ -92,7 +99,7 @@ The failure of Activity Executions won't affect the state of the Session, so you
 
 If the context passed in already contains an open Session, `CreateSession()` returns an error.
 If all the Workers are currently busy and unable to handle a new Session, the framework keeps retrying until the `CreationTimeout` period you specified in `SessionOptions` has passed before returning an error.
-(For more details, check the "Concurrent Session Limitation" section.)
+(For more details, see [Change the maximum concurrent Sessions of a Worker](#max-concurrent-sessions).)
 
 `CompleteSession()` releases the resources reserved on the Worker, so it's important to call it as soon as you no longer need the Session.
 It cancels the session context and therefore all the Activity Executions using that Session Context.
@@ -101,66 +108,69 @@ It is safe to call `CompleteSession()` on a failed Session, meaning that you can
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
 If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
+<!--SNIPSTART go-session-workflow {"highlightedLines": "13-17,23-28,37,44,50"}-->
+[go-sandbox/workers/sessions/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/sessions/workflow.go)
 ```go {13-17,23-28,37,44,50}
 package sessions
 
 import (
-    "time"
+	"time"
 
-    "go.temporal.io/sdk/workflow"
+	"go.temporal.io/sdk/workflow"
 )
 
 type FileProcessingWFParam struct {
-    CloudFileLocation string
+	CloudFileLocation string
 }
 
 func SomeFileProcessingWorkflow(ctx workflow.Context, param FileProcessingWFParam) error {
-    activityOptions := workflow.ActivityOptions{
-        StartToCloseTimeout: time.Minute,
-    }
-    ctx = workflow.WithActivityOptions(ctx, activityOptions)
-    err := processFile(ctx, param)
-    return err
+	activityOptions := workflow.ActivityOptions{
+		StartToCloseTimeout: time.Minute,
+	}
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+	err := processFile(ctx, param)
+	return err
 }
 
 func processFile(ctx workflow.Context, param FileProcessingWFParam) error {
-    sessionOptions := &workflow.SessionOptions{
-        CreationTimeout:  time.Minute,
-        ExecutionTimeout: time.Minute,
-    }
+	sessionOptions := &workflow.SessionOptions{
+		CreationTimeout:  time.Minute,
+		ExecutionTimeout: time.Minute,
+	}
 
-    sessionCtx, err := workflow.CreateSession(ctx, sessionOptions)
-    if err != nil {
-        return err
-    }
-    defer workflow.CompleteSession(sessionCtx)
+	sessionCtx, err := workflow.CreateSession(ctx, sessionOptions)
+	if err != nil {
+		return err
+	}
+	defer workflow.CompleteSession(sessionCtx)
 
-    var a *FileActivities
-    var downloadResult FileActivityResult
+	var a *FileActivities
+	var downloadResult FileActivityResult
 
-    err = workflow.ExecuteActivity(sessionCtx, a.DownloadFile, param).Get(sessionCtx, &downloadResult)
-    if err != nil {
-        return err
-    }
+	err = workflow.ExecuteActivity(sessionCtx, a.DownloadFile, param).Get(sessionCtx, &downloadResult)
+	if err != nil {
+		return err
+	}
 
-    processParam := FileActivityParam(downloadResult)
-    var processResult FileActivityResult
-    err = workflow.ExecuteActivity(sessionCtx, a.ProcessFile, processParam).Get(sessionCtx, &processResult)
-    if err != nil {
-        return err
-    }
+	processParam := FileActivityParam(downloadResult)
+	var processResult FileActivityResult
+	err = workflow.ExecuteActivity(sessionCtx, a.ProcessFile, processParam).Get(sessionCtx, &processResult)
+	if err != nil {
+		return err
+	}
 
-    uploadParam := FileActivityParam(processResult)
-    err = workflow.ExecuteActivity(sessionCtx, a.UploadFile, uploadParam).Get(sessionCtx, nil)
-    return err
+	uploadParam := FileActivityParam(processResult)
+	err = workflow.ExecuteActivity(sessionCtx, a.UploadFile, uploadParam).Get(sessionCtx, nil)
+	return err
 }
 ```
+<!--SNIPEND-->
 
 ## Additional Session usage information {/* #session-metadata */}
 
 ```go
 type SessionInfo struct {
- // A unique Id for the session
+ // A unique ID for the session
  SessionID         string
  // The hostname of the worker that is executing the session
  HostName          string
@@ -185,9 +195,12 @@ func RecreateSession(ctx Context, recreateToken []byte, sessionOptions *SessionO
 Its usage is the same as `CreateSession()` except that it also takes in a `recreateToken`, which is needed to create a new Session on the same Worker as the previous one.
 You can get the token by calling the `GetRecreateToken()` method of the `SessionInfo` object.
 
+<!--SNIPSTART go-session-recreate-token-->
+[go-sandbox/workers/sessions/recreate.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/sessions/recreate.go)
 ```go
 token := workflow.GetSessionInfo(sessionCtx).GetRecreateToken()
 ```
+<!--SNIPEND-->
 
 **Is there a complete example?**
 

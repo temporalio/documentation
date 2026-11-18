@@ -3,7 +3,7 @@ id: nexus
 title: Temporal CLI cloud nexus command reference
 sidebar_label: nexus
 description: Nexus Operations Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - nexus
 ---
@@ -173,6 +173,40 @@ Use the following options to change the behavior of this command. You can also u
 | `--page-token` | No | **string** Token for retrieving the next page of results. Initial value is empty string. |
 | `--project-id` | No | **string** Filter Nexus Endpoints by project ID. |
 | `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+
+### endpoint move-to-project
+
+Move a Nexus Endpoint to a different project within the same account.
+Specify either `--name` or `--id` (exactly one is required).
+
+The endpoint keeps its ID, name, target, allowed caller namespaces, and
+routing, so Nexus calls through it are unaffected. Only the project that
+governs access to it changes: access granted through the source project
+is lost, and access granted through the destination project applies.
+
+Example:
+
+```
+temporal cloud nexus endpoint move-to-project \
+  --name my-endpoint \
+  --destination-project-id my-destination-project \
+  --source-project-id my-source-project
+```
+
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--api-key` | No | **string** API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. |
+| `--async` | No | **bool** Return immediately after initiating the operation instead of waiting for completion. Use the returned operation ID to check status later. |
+| `--async-operation-id` | No | **string** Custom identifier for tracking this async operation. If not provided, a unique ID is generated automatically. |
+| `--destination-project-id` | Yes | **string** The ID of the project to move the Nexus Endpoint to. |
+| `--id` | No | **string** The ID of the Nexus Endpoint to move. |
+| `--name` | No | **string** The name of the Nexus Endpoint to move. |
+| `--poll-interval` | No | **duration** Time to wait between status checks when waiting for operation completion. Cannot be greater than 10 minutes. Supports minutes (m) and seconds (s). |
+| `--resource-version`, `-v` | No | **string** Resource version for optimistic concurrency control. If not provided, the current version is fetched automatically. |
+| `--server` | No | **string** Override the Temporal Cloud API server address. Used for connecting to non-production environments. |
+| `--source-project-id` | Yes | **string** The ID of the project the Nexus Endpoint is expected to currently belong to. The move fails if the endpoint has since moved elsewhere. |
 
 ### endpoint update
 

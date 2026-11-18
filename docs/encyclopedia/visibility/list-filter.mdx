@@ -42,6 +42,61 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 :::
 
+### Relative time {/* #relative-time */}
+
+`NOW()` resolves to the current time when the Temporal Service runs the List Filter.
+Use it in place of a timestamp for any Datetime Search Attribute, such as `StartTime`, `CloseTime`, `ExecutionTime`, or a custom Datetime attribute.
+
+Add or subtract a duration in single quotes to offset from `NOW()`:
+
+```sql
+StartTime > NOW() - '24h'
+```
+
+```sql
+ExecutionStatus = 'Failed' and CloseTime > NOW() - '5m'
+```
+
+```sql
+StartTime between NOW() - '1h' and NOW()
+```
+
+```sql
+CustomDatetimeField < NOW()
+```
+
+A duration uses the following units:
+
+| Unit         | Meaning                 |
+| ------------ | ----------------------- |
+| `ns`         | Nanoseconds             |
+| `us` or `µs` | Microseconds            |
+| `ms`         | Milliseconds            |
+| `s`          | Seconds                 |
+| `m`          | Minutes                 |
+| `h`          | Hours                   |
+| `d`          | Days (exactly 24 hours) |
+
+Combine units in one duration, such as `'1h30m'` or `'2d12h'`.
+Decimal values such as `'1.5h'` are supported.
+An integer without quotes is a duration in nanoseconds: `NOW() - 300000000000` is 5 minutes.
+
+The following rules apply:
+
+- `NOW()` is case-insensitive. Duration units are lowercase: `'5h'` is valid and `'5H'` is not.
+- Only `+` and `-` are supported with `NOW()`.
+- Quote the duration. `NOW() - 5h` is rejected.
+- `NOW()` inside a quoted string is literal text. `WorkflowType = 'NOW()'` matches a Workflow Type named `NOW()`.
+
+`NOW()` resolves once, when the first page of results is fetched.
+Every later page of the same List Filter uses that same time, so results do not shift between pages.
+
+:::info Server Version Requirement
+
+Relative time in List Filters requires Temporal Server version 1.33 and greater.
+
+:::
+
 ### Partial string match
 
 There are different options for partial string matching when the type of the Search Attribute is [Text](#text) versus [Keyword](#keyword).

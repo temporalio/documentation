@@ -3,7 +3,7 @@ id: user
 title: Temporal CLI cloud user command reference
 sidebar_label: user
 description: User Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - users
 ---

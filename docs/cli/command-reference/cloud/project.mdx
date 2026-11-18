@@ -3,7 +3,7 @@ id: project
 title: Temporal CLI cloud project command reference
 sidebar_label: project
 description: Project Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - projects
 ---

@@ -1,6 +1,6 @@
 ---
 id: benign-exceptions
-title: Benign exceptions - Go SDK
+title: Benign exceptions
 sidebar_label: Benign exceptions
 description: Mark expected or non-severe Activity errors as benign in Go to reduce noise in logs, metrics, and OpenTelemetry traces.
 toc_max_heading_level: 2
@@ -22,9 +22,12 @@ Benign errors:
 - Do not emit Activity failure metrics
 - Do not set the OpenTelemetry failure status to ERROR
 
+<!--SNIPSTART go-benign-activity-error-->
+[go-sandbox/activities/benign/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/benign/activity.go)
 ```go
 import (
-	"go.temporal.io/sdk/activity"
+	"context"
+
 	"go.temporal.io/sdk/temporal"
 )
 
@@ -43,5 +46,6 @@ func MyActivity(ctx context.Context) (string, error) {
 	return result, nil
 }
 ```
+<!--SNIPEND-->
 
 Use benign exceptions for Activity errors that occur regularly as part of normal operations, such as polling an external service that isn't ready yet, or handling expected transient failures that will be retried.

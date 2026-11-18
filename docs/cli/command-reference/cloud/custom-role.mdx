@@ -3,7 +3,7 @@ id: custom-role
 title: Temporal CLI cloud custom-role command reference
 sidebar_label: custom-role
 description: Custom Role Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - custom-roles
 ---
