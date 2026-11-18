@@ -192,9 +192,9 @@ balancer's health check at it when the balancer sits in front of the codec serve
 `/healthz` never requires authentication, whatever a route group's `auth` says. `HEAD` gets the same answer without a
 body, and any other method gets `405`.
 
-A `200` means only that the HTTP listener accepted the connection and served the request. It doesn't check the gateway,
-which reports through the gRPC health service on its own port, or your encryption keys and KMS, so losing a dependency
-can't take every replica out of rotation at once.
+A `200` means only that the HTTP listener accepted the connection and served the request. Don't rely on `/healthz` to
+detect a gateway or KMS failure. It checks neither on purpose, so one failing dependency can't fail every replica's
+health check at once. The gateway reports through the gRPC health service on its own port.
 
 Off loopback the listener serves TLS, so the health check must use HTTPS. A listener with `http.tls.ca` set requires a
 client certificate from every caller, including the health check.

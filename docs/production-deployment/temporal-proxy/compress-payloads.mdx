@@ -26,8 +26,9 @@ compression is transparent: Workers and Clients send and receive uncompressed Pa
 codec changes.
 
 Compression reduces the bandwidth to the upstream and the size of the data stored in Event History. Because the
-Temporal Service sees the compressed bytes, it can also bring large Payloads, or requests that carry many of them, back
-under the [Payload and gRPC message size limits](/troubleshooting/blob-size-limit-error).
+Temporal Service stores the compressed bytes, compression can bring a large Payload back under the
+[Payload size limit](/troubleshooting/blob-size-limit-error). It can't help a request larger than the proxy's 4 MiB
+receive limit, because Workers send uncompressed requests to the proxy.
 
 Compression and encryption work independently, so you can turn on either one without the other. With both on, the proxy
 compresses before it encrypts, because encrypted bytes don't compress. On responses it decrypts first, then
@@ -57,16 +58,18 @@ compression:
       level: 9 # Inherits algorithm and minBytes from default.
     media:
       enabled: false # Turn compression off for this Namespace only.
+  maxDecodedInFlight: 512MiB # Bytes restored Payloads may hold at once. Defaults to 512MiB.
 ```
 
-| Key                       | Default | Meaning                                                                                                 |
-| ------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
-| `compression.enabled`     | `false` | Compress new Payloads in every Namespace without an override that says otherwise.                       |
-| `compression.default`     | none    | Settings for any Namespace without an override. Required when `enabled` is `true`.                      |
-| `default.algorithm`       | none    | `lz4`, `snappy`, or `zstd`. Required when `enabled` is `true`. An unknown value fails at startup.       |
-| `default.level`           | `3`     | zstd compression effort, from 1 to 22. Ignored by `lz4` and `snappy`.                                   |
-| `default.minBytes`        | `1024`  | Payloads whose data is smaller than this pass through uncompressed. Must be 0 or more.                  |
-| `compression.overrides`   | none    | Per-Namespace settings. Each can set `enabled`, `algorithm`, `level`, and `minBytes`.                   |
+| Key                              | Default  | Meaning                                                                                            |
+| -------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| `compression.enabled`            | `false`  | Compress new Payloads in every Namespace without an override that says otherwise.                  |
+| `compression.default`            | none     | Settings for any Namespace without an override. Required when `enabled` is `true`.                 |
+| `default.algorithm`              | none     | `lz4`, `snappy`, or `zstd`. Required when `enabled` is `true`. An unknown value fails at startup.  |
+| `default.level`                  | `3`      | zstd compression effort, from 1 to 22. Ignored by `lz4` and `snappy`.                              |
+| `default.minBytes`               | `1024`   | Payloads whose data is smaller than this pass through uncompressed. Must be 0 or more.             |
+| `compression.overrides`          | none     | Per-Namespace settings. Each can set `enabled`, `algorithm`, `level`, and `minBytes`.              |
+| `compression.maxDecodedInFlight` | `512MiB` | Total bytes restored Payloads may hold at once. See [Decompression limits](#decompression-limits). |
 
 The proxy reads compression configuration at startup and refuses to start when it's invalid, so restart it after a
 change.
@@ -120,7 +123,27 @@ The proxy restores every Payload marked `binary/compressed` that passes through 
 whichever algorithm the Payload names. Turning compression off, or changing the algorithm or level, affects only new
 Payloads, and existing ones stay readable.
 
-The proxy refuses to restore a Payload that would decompress to more than 4 MiB.
+### Decompression limits {/* #decompression-limits */}
+
+Since the proxy restores every compressed Payload it receives, it bounds how much those Payloads can decompress to:
+
+- A single Payload can't decompress to more than 4 MiB.
+- All restored Payloads in one response can't decompress to more than that upstream's
+  [`maxResponseSize`](/production-deployment/temporal-proxy/configure#tune-upstream-connections), the most the SDK accepts
+  from it anyway.
+- All restored Payloads across every response and codec server request in flight can't hold more than
+  `compression.maxDecodedInFlight`, 512 MiB by default.
+
+A response that would pass a limit fails with `ResourceExhausted`, the same code a response over `maxResponseSize`
+already gets. Set `maxDecodedInFlight` to at least your largest upstream `maxResponseSize`, or the proxy refuses to
+start.
+
+:::note Version note
+
+The response and in-flight limits, and `compression.maxDecodedInFlight`, are new in v1.2.1. In v1.2.0, only the 4 MiB
+per-Payload limit applies.
+
+:::
 
 ### Read compressed data outside the proxy
 
@@ -141,7 +164,8 @@ list of proxy metrics.
 | `payload_bytes`          | `stage`, `algorithm`, `namespace`               | Size at `stage="pre_compress"` and `stage="post_compress"` |
 | `payloads_skipped_total` | `reason`, `algorithm`, `namespace`              | Payloads forwarded uncompressed while compression is on    |
 
-`ops_total` reports `result="too_large"` for a Payload that would decompress past 4 MiB, and
+`ops_total` reports `result="too_large"` for a Payload that would pass a
+[decompression limit](#decompression-limits), and
 `result="unknown_algorithm"` for one that names an algorithm the proxy can't restore. On decompression, `algorithm`
 comes from the Payload, which anyone who can write to the Namespace controls, so a name the proxy doesn't know is
 reported as `unknown`.
@@ -150,8 +174,11 @@ reported as `unknown`.
 `not_smaller`. A Namespace whose `not_smaller` count is close to its `ops_total` is spending CPU without saving space.
 Turn compression off for it with an override.
 
-`payload_bytes` includes Payloads that came out no smaller and were forwarded uncompressed, so the ratio of its two
-stages is what compression actually saves. With the default metric prefix, the ratio for each Namespace is:
+`payload_bytes` records the size of each Payload the proxy runs through the algorithm, before and after. The ratio of its
+two stages is the algorithm's compression ratio on your traffic, not the exact bytes saved. It counts a `not_smaller`
+Payload at its compressed size even though the proxy forwards the original, it leaves out the metadata the proxy adds to
+each compressed Payload, and it leaves out Payloads skipped before compression, such as those under `minBytes`. With the
+default metric prefix, the ratio for each Namespace is:
 
 ```promql
 sum by (namespace) (rate(tmprl_proxy_compression_payload_bytes_sum{stage="pre_compress"}[5m]))
@@ -159,11 +186,15 @@ sum by (namespace) (rate(tmprl_proxy_compression_payload_bytes_sum{stage="pre_co
 sum by (namespace) (rate(tmprl_proxy_compression_payload_bytes_sum{stage="post_compress"}[5m]))
 ```
 
-A ratio of 2 means compressed Payloads are half their original size. The `namespace` label reports a value only when
-`metrics.labels.namespace` is on.
+A ratio of 2 means compressed Payloads are about half their original size. The `namespace` label reports a value only
+when `metrics.labels.namespace` is on.
 
-To see how much CPU compression uses, sum `ops_duration_seconds`, which reads as the number of cores busy compressing:
+`ops_duration_seconds` measures elapsed time, so the rate of its sum is the time spent compressing and decompressing per
+second. That is roughly the number of cores in use, but scheduling delays can inflate it:
 
 ```promql
 sum by (operation, algorithm) (rate(tmprl_proxy_compression_ops_duration_seconds_sum[5m]))
 ```
+
+For the proxy's total CPU use, see the `process_cpu_seconds_total` query in
+[Sizing and performance](/production-deployment/temporal-proxy/sizing-and-performance#measure-your-workload).

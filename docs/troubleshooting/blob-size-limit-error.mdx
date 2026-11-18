@@ -83,8 +83,10 @@ the Activity Task fails with an explicit error instead of timing out silently. T
    help.
   </ReleaseNoteHeader>
 
-1. Use compression with a [custom Payload Codec](/payload-codec) for large payloads. This may address the immediate
-   issue, but if payload sizes continue to grow, the problem can arise again.
+1. Use compression with a [custom Payload Codec](/payload-codec) for large payloads, or turn on
+   [payload compression in Temporal Proxy](/production-deployment/temporal-proxy/compress-payloads), which needs no
+   Worker changes. This may address the immediate issue, but if payload sizes continue to grow, the problem can arise
+   again.
 
 ## gRPC message size limit
 

@@ -139,9 +139,9 @@ sum(rate(process_cpu_seconds_total{job="temporal-proxy"}[5m]))
   / (sum(rate(tmprl_proxy_server_requests_total{job="temporal-proxy"}[5m])) / 1000)
 ```
 
-Run the test with your production request mix, payload sizes, encryption, and resource limits. Increase concurrency
-until throughput stops rising, recording CPU, RSS, request errors, and latency. Exclude long-poll methods when measuring
-short-request latency, since long polls can wait about 60 seconds.
+Run the test with your production request mix, payload sizes, encryption, compression, and resource limits. Increase
+concurrency until throughput stops rising, recording CPU, RSS, request errors, and latency. Exclude long-poll methods
+when measuring short-request latency, since long polls can wait about 60 seconds.
 
 Finally, test the full fleet through pod loss, a rollout, and Client reconnects. Check recovery time and per-replica
 load, not only aggregate throughput, before relying on the calculated capacity.
