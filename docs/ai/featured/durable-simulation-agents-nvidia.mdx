@@ -1,0 +1,127 @@
+---
+id: durable-simulation-agents-nvidia
+title: Durable, controlled simulation agents with NVIDIA OpenShell, Omniverse and NeMo Relay
+sidebar_label: Durable simulation agents with NVIDIA
+description: A reference architecture for agents that author and check a simulation scene, with Temporal as the durable loop, NVIDIA OpenShell sandboxes you can delete and rebuild, OpenUSD layers as checkpoints, Isaac Sim as the judge, and NeMo Relay traces that survive a Worker restart.
+slug: /ai/featured/durable-simulation-agents-nvidia
+tags:
+  - Workflows
+  - Activities
+  - Updates
+# Tracks the README this page was built from. When the source repo changes,
+# diff it against source_commit, update the page, then bump both fields.
+source_repo: https://github.com/temporalio/ai-cookbook
+source_path: agents/durable_simulation_agent_nvidia_python/README.md
+source_commit: c79ed64069a82e791944d73cdefab9db2bf9439f
+source_synced: 2026-11-18
+---
+
+import { ViewSourceCodeNotice } from '@site/src/components';
+
+<ViewSourceCodeNotice href="https://github.com/temporalio/ai-cookbook/tree/main/agents/durable_simulation_agent_nvidia_python" />
+
+A simulation agent runs for hours, burns GPU time, executes code a model wrote, and needs a person to approve things
+along the way. The hard parts are not the model calls. They are state, retries, human gates, trust boundaries and
+provenance. This reference architecture, built with NVIDIA, puts Temporal under the NVIDIA agent stack: the agent loop
+is a Workflow, so a killed Worker, a deleted sandbox and a day-long review are ordinary events in the Event History
+rather than lost work.
+
+The [full demo](https://github.com/temporalio/openshell-omniverse-demo) runs the loop against Isaac Sim on a GPU host. The companion recipe in the
+[AI Cookbook](https://github.com/temporalio/ai-cookbook/tree/main/agents/durable_simulation_agent_nvidia_python) runs
+the same loop on a laptop, with CPU stand-ins where the demo uses the GPU: the denied request and the operator's grant,
+a Worker killed mid model call, a sandbox deleted mid-run and rebuilt with the same grant and layers, a review that
+holds no sandbox, a revision in a new generation, and the four records at the end.
+
+## Who does what
+
+- **Temporal remembers.** The agent loop is a Workflow. Every model call, sandbox operation, render and lane check is
+  an Activity with retries and heartbeats, on one of two Task Queues: the agent's, and a `gpu` queue for the Worker next
+  to the renderer. Human decisions are Workflow Updates with validators, recorded in the Event History.
+- **NVIDIA OpenShell contains.** The code the model wrote runs in an *exec* sandbox whose policy has no network rules.
+  The agent's tools run in a *tools* sandbox that reaches the network only through grants an operator approves. Every
+  sandbox generation is built from the base policy plus the grants in the Workflow's state.
+- **NVIDIA Omniverse simulates and judges.** The agent authors the scene as one OpenUSD sublayer per step through a
+  small helper API. A lint checks every layer before anything else opens it, and a judge compares it against the
+  trusted site layer. Isaac Sim renders previews and drives a Nova Carter autonomous mobile robot (AMR) through the
+  lane; without a GPU, a plan view and a geometry check stand in.
+- **NVIDIA Nemotron thinks, NeMo Relay records.** Nemotron answers through NVIDIA NIM (NVIDIA Inference
+  Microservices), which serves the OpenAI chat-completions API, so the model provider is an endpoint address and a key.
+  Every Activity and every model call is a span in a NeMo Relay trajectory that continues across a Worker restart. The
+  trajectory carries marks for the retry, and for the fallback model that answered when the primary failed.
+
+## One approval, end to end
+
+1. The agent's search tool calls the asset catalog from the tools sandbox, whose policy has no rule for that host.
+2. OpenShell denies the connection at the socket. The tool returns `denied` instead of raising, so the agent loop keeps
+   control.
+3. The Workflow publishes a grant request and waits on a durable condition. Nothing runs on its behalf while it waits,
+   so the Workers can scale to zero.
+4. The operator's decision arrives as a Workflow Update. A validator checks the host and that no decision was already
+   made before anything reaches the Event History.
+5. An Activity applies the grant to the running sandbox with `openshell policy update … --wait`, and the retried search
+   goes through.
+6. The grant is Workflow state. Every later sandbox generation starts with it.
+
+```python
+@workflow.update
+async def grant(self, decision: GrantDecision) -> str:
+    self.ctx.grant_decision = decision
+    return decision.decision
+
+@grant.validator
+def _validate_grant(self, decision: GrantDecision) -> None:
+    pending = self.ctx.pending_grant if self.ctx else None
+    if not pending or decision.host != pending["host"] or self.ctx.grant_decision is not None:
+        raise ValueError(f"no grant pending for {decision.host!r}")
+```
+
+## Layers as checkpoints
+
+Each `apply_usd_code` call runs the model's Python inside the exec sandbox and leaves one OpenUSD sublayer for the
+step. The Activity copies the layer out, lints it, judges it against the site layer, and records its hash in the
+Workflow's state. Delete a sandbox while the agent works, and the next tool call fails with `SandboxLost`. The Workflow
+creates both sandboxes again, with every approved grant in the tools policy and every recorded layer uploaded back and
+recomposed; the layer stack hash the sandbox reports has to match the Workflow's record. Before each human review the
+Workflow exports the sandboxes' gateway logs and deletes them. A review that takes a day costs a day of history
+storage, not a day of sandbox time.
+
+## Four records, one ID
+
+A finished run leaves the Temporal Event History, the OpenShell gateway logs, the NeMo Relay trajectories, and the
+OpenUSD layers with their stack hash, joined by the Workflow Id. The recipe's `bundle.py` collects them into one
+directory with the renders, the lane checks, and the manifest.
+
+## Run it
+
+```sh
+git clone https://github.com/temporalio/ai-cookbook.git
+cd ai-cookbook/agents/durable_simulation_agent_nvidia_python
+uv sync
+export NVIDIA_API_KEY=nvapi-...                # build.nvidia.com
+export SANDBOX_BACKEND=fake                    # no OpenShell: directories, no isolation
+temporal server start-dev                      # terminal 1
+uv run worker.py                               # terminal 2: both Task Queues in one process
+uv run start_workflow.py                       # terminal 3: prints the Workflow Id
+uv run grant.py <workflow-id> approved
+uv run kill_worker.py <workflow-id>
+uv run delete_sandbox.py <workflow-id> exec
+uv run review.py <workflow-id> revise --notes "move the pallet staging 1 m further from lane L2"
+uv run review.py <workflow-id> approve
+uv run bundle.py <workflow-id>
+```
+
+With `SANDBOX_BACKEND=fake`, a fake backend reproduces the control flow in plain directories, with no isolation. With
+OpenShell on the `PATH` and that variable unset, the same commands create real sandboxes from the recipe's sandbox
+image; the Worker refuses to start with neither. With `RENDERER_URL` pointing at the demo's Isaac Sim renderer service,
+the previews and lane checks on the `gpu` Task Queue become Isaac Sim jobs.
+
+## Learn more
+
+- [The recipe and its source](https://github.com/temporalio/ai-cookbook/tree/main/agents/durable_simulation_agent_nvidia_python) in the AI Cookbook
+- [The full demo](https://github.com/temporalio/openshell-omniverse-demo): the Isaac Sim renderer service, the GPU
+  deployment, the recorded runs, and how the Relay trace feeds back into the agent loop
+- [NVIDIA OpenShell documentation](https://docs.nvidia.com/openshell) and
+  [repository](https://github.com/NVIDIA/OpenShell)
+- [NVIDIA NeMo Relay](https://github.com/NVIDIA/NeMo-Relay), [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim)
+  and [OpenUSD](https://openusd.org)
+- [Human-in-the-loop recipe](/ai/cookbook/human-in-the-loop-python) and the [Approval pattern](/design-patterns/approval)

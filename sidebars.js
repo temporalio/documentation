@@ -1877,7 +1877,7 @@ module.exports = {
         { type: 'link', label: 'AI Cookbook', href: '/ai/cookbook' },
         'ai/featured/memory-state-stripe',
         'ai/featured/agent-gateway-nexus',
-        'ai/featured/openshell-durable-approvals',
+        'ai/featured/durable-simulation-agents-nvidia',
       ],
     },
     {
