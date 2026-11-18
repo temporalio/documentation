@@ -31,7 +31,7 @@ For the regions you can run in, see [Service regions](/evaluate/cloud/regions); 
 | [Latency](#latency)                                     | Worker requests, p99 per region                                                                                                                 | 200ms                                                 | SLO             |
 | [Visibility API availability](#visibility-availability) | List and Count requests, rolling 30-day window                                                                                                  | 99.5%                                                 | SLO             |
 | [Cloud Ops API availability](/ops#availability)         | HTTP and gRPC requests, monthly                                                                                                                 | 99.99%                                                | SLO             |
-| [Recovery Time Objective (RTO)](/cloud/rpo-rto)         | Namespaces using High Availability with automatic failover, for the [outage types their replication covers](/cloud/rpo-rto#rto-and-rpo-summary) | Under 20 minutes                                      | Objective       |
+| [Recovery Time Objective (RTO)](#historical-recovery-time-achieved-in-past-incidents) | Namespaces using High Availability with automatic failover, for the [outage types their replication covers](/cloud/rpo-rto#rto-and-rpo-summary) | Under 20 minutes                                      | Objective       |
 | [Recovery Point Objective (RPO)](/cloud/rpo-rto)        | Namespaces using High Availability with automatic failover, for the [outage types their replication covers](/cloud/rpo-rto#rto-and-rpo-summary) | Under 1 minute                                        | Objective       |
 
 ## Availability {/* #availability */}
@@ -45,6 +45,15 @@ Namespaces using High Availability have a higher SLA than standard single-region
 Temporal Cloud runs a cell architecture.
 Each cell holds the software and services needed to host a Namespace, and the components in a cell are distributed across at least three availability zones per region.
 For how Temporal Cloud handles each type of outage, see [Outages and Recovery Objectives](/cloud/rpo-rto).
+
+### Historical recovery time achieved in past incidents
+
+In September and October 2026, five tracked incidents involved an
+[automatic failover](/cloud/high-availability/failovers#automatic-failover) of High Availability Namespaces.
+Among the three incidents with numeric recovery-time values, the median of the incident averages was 3 minutes 15 seconds.
+The worst Namespace recovery time was 18 minutes.
+In these outages, all eligible Namespaces achieved a recovery time below Temporal's 20-minute RTO.
+See [incident details and measurement methodology](/cloud/rpo-rto#recovery-time-achieved-from-automatic-failover-in-past-incidents).
 
 ### Measured availability {/* #measured-availability */}
 
