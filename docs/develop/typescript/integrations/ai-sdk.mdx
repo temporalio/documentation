@@ -215,7 +215,7 @@ export async function toolsAgent(question: string): Promise<string> {
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open standard that lets AI applications connect
 to external tools and data sources. Calls to MCP servers, being calls to external APIs, are non-deterministic and would
 usually need to be implemented as Activities. The Temporal AI SDK integration handles this for you and provides a
-built-in implementation of a stateless MCP client that you can use inside Workflows.
+built-in MCP client that you can use inside Workflows.
 
 Follow the steps below to integrate your agent with an MCP server.
 
@@ -237,9 +237,9 @@ Follow the steps below to integrate your agent with an MCP server.
    };
    ```
 
-   The example uses `StdioClientTransport` as the transport mechanisms for client-server communication. Each time the
-   Worker processes a Task that requires communication with the MCP server, it will start the server process and connect
-   to it as required by the Task.
+   The example uses `StdioClientTransport` as the transport mechanisms for client-server communication. The Worker
+   reuses each connection across `listTools` and `callTool` Activities and closes it after 5 minutes idle. Set the
+   plugin's `mcpConnectionIdleTimeout` to change that, or to `0` to open a new connection for each call.
 
 2. Configure the Worker to use the MCP client factories.
 
