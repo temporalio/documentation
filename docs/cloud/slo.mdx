@@ -3,7 +3,7 @@ id: slo
 title: Availability, latency, and SLOs
 sidebar_label: Availability, latency, and SLOs
 slug: /cloud/slo
-description: Temporal Cloud's 99.99% availability objective, the 200ms p99 latency SLO, Visibility availability, and measured monthly availability and latency.
+description: Temporal Cloud's 99.99% availability objective and 200ms p99 latency SLO, with measured monthly availability and latency, plus the Visibility SLO.
 toc_max_heading_level: 3
 tags:
   - Temporal Cloud
@@ -59,8 +59,8 @@ Measured monthly availability across all Temporal Cloud Namespaces was as follow
 | June 2026      |              99.99997% |                            99.99988% |
 | May 2026       |              99.99993% |                            99.99949% |
 
-These measurements use the calculation in the [Temporal Cloud SLA](https://temporal.io/sla): availability is calculated for each five-minute interval from `StartWorkflowExecution`, `SignalWorkflowExecution`, and `SignalWithStartWorkflowExecution` requests, and the monthly value is the mean of those intervals.
-They include Namespaces with and without [High Availability](/cloud/high-availability).
+Each Namespace's monthly availability uses the calculation in the [Temporal Cloud SLA](https://temporal.io/sla): the mean of five-minute intervals, where each interval's availability is the share of `StartWorkflowExecution`, `SignalWorkflowExecution`, and `SignalWithStartWorkflowExecution` requests that did not return an error attributable to Temporal Cloud.
+The table summarizes those per-Namespace values across Namespaces with and without [High Availability](/cloud/high-availability).
 Values are truncated, not rounded, to five decimal places.
 This data is updated quarterly.
 
