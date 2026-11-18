@@ -26,6 +26,7 @@ Everything else is optional.
 - `allowedServices` narrows which gRPC services the proxy forwards
 - `tls` and `auth` secure and admit inbound connections
 - `encryption` seals payloads
+- `compression` [compresses payloads](/production-deployment/temporal-proxy/compress-payloads)
 - `extensionServers` declares the servers `auth` and `encryption` delegate to
 - `health` tunes the liveness check
 - `metrics` configures the Prometheus endpoint
@@ -222,6 +223,18 @@ Namespaces. Available variables:
 - `{{ .LocalNamespace }}`: the Namespace before translation.
 - `{{ .RemoteNamespace }}`: the Namespace after translation.
 - `{{ .Metadata.<key> }}` or `{{ index .Metadata "<key>" }}`: a request metadata value.
+
+A templated host must end in a literal domain, such as `{{ .RemoteNamespace }}.tmprl.cloud:7233`, so a template only
+chooses labels within a domain you configured. The port can still be templated. The same rule applies to a templated
+`tls.serverName`. The proxy checks this at startup. At request time, it rejects a rendered host that isn't a plain
+hostname or IP address with an optional port, and a rendered server name that isn't a plain hostname, before it opens a
+connection.
+
+:::note Version note
+
+Before v1.2.1, a template could supply the whole host, such as `{{ index .Metadata "x-upstream" }}:7233`.
+
+:::
 
 Upstreams with a static `hostPort` connect eagerly at startup; templated ones connect lazily on first use.
 
@@ -493,7 +506,8 @@ upstreams:
 | `keepAlive.timeout` | `15s`    | Positive.                                                                                                     |
 
 - `maxResponseSize` is the largest response a Worker gets from that upstream, including any growth from decrypting
-  payloads on the way back. A response over the limit fails with `ResourceExhausted`, which a Workflow Task with a long
+  or [decompressing](/production-deployment/temporal-proxy/compress-payloads#decompression-limits) payloads on the way
+  back. A response over the limit fails with `ResourceExhausted`, which a Workflow Task with a long
   Event History can hit.
 - `maxConnections` spreads calls round-robin across that many connections. Each SDK long poll holds an HTTP/2 stream
   for up to a minute, and a connection carries a limited number of streams, so too few connections stall calls behind
