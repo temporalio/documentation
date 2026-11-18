@@ -23,39 +23,94 @@ For details about compute selection and Worker behavior during failover, see
 ## Prerequisites {/* #prerequisites */}
 
 - A Temporal Cloud Namespace with [Multi-region Replication](/cloud/high-availability/enable) between two AWS regions.
-- A Serverless Worker deployed by following [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda).
 - Credentials, databases, external storage, and any Codec Server or network proxy available to Workers in both
   regions. Check that both functions can reach the Namespace after failover.
 
-## Deploy the replica function {/* #deploy-replica-function */}
+## Create a highly available Serverless Worker Deployment {/* #create */}
 
-1. Deploy the same Worker build to a Lambda function in the replica region. Use the same Worker Deployment name,
-   Build ID, and Task Queues as the primary function.
-2. [Publish a Lambda function version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#publish-lambda-version)
-   and record its qualified ARN. Each function must point to an immutable copy of the same Worker build; its Lambda
-   version number can differ between regions.
-3. [Grant Temporal invocation access](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
-   to the replica function. Check that the invocation role's permissions include the replica function and its
-   published versions.
+### Publish both functions
 
-Repeat for every Worker Deployment Version that must serve work after failover, including older versions serving
-pinned Workflows. Keep their replica functions available while those versions serve work.
+Follow [Deploy a Serverless Worker on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda)
+through **Configure IAM for Temporal invocation**. Publish the same Worker build in both Namespace regions with the same
+Worker Deployment name, Build ID, and Task Queues. Have the qualified Lambda ARN and invocation role settings for each
+region ready before creating the Worker Deployment.
 
-## Configure regional compute {/* #configure-regional-compute */}
-
-Use the Temporal Cloud UI or the Temporal CLI to update the existing Worker Deployment Version.
+### Create the deployment with regional compute
 
 <Tabs groupId="create-version-approach">
 <TabItem value="ui" label="Temporal Cloud UI">
 
-1. In the Temporal Cloud UI, open your Namespace and select **Workers** > **Deployments**.
-2. Select your Worker Deployment, then edit the compute configuration for the version.
-3. Enable **Serverless** for both Namespace regions.
-4. For each region, enter the qualified ARN of the function deployed there as **Lambda ARN**. Set **IAM Role ARN**
-   to the invocation role ARN and **External ID** to the value configured in its trust policy.
-5. Review **Access** and **Scaling and Lifecycle** settings for both regions. Replace any suggested function ARN that
-   does not match the function you deployed, then click **Save**.
-6. Confirm that the version shows compute coverage for both regions.
+1. In your Namespace, go to **Workers** > **Deployments** and select **Create Worker Deployment**.
+2. Enter the name and Build ID that match your Worker code, then select **AWS Lambda** as the compute provider.
+3. For the primary region, enter the qualified **Lambda ARN**, **IAM Role ARN**, and **External ID**.
+4. Turn on **Serverless** for the replica region and enter its qualified **Lambda ARN**. The UI suggests an ARN based
+   on the primary function. Replace it if it differs from the ARN of your published replica function.
+5. The replica inherits the primary's **Access** and **Scaling and Lifecycle** settings. Select **Customize** if the
+   replica needs different settings.
+6. Select **Create**. The UI sets the version as current.
+
+</TabItem>
+<TabItem value="cli" label="Temporal CLI">
+
+Create the deployment, then create its first version with a [scaling group](/serverless-workers#scaling-groups) for the
+primary region. Add a scaling group for the replica before setting the version as current. Replace the example region
+IDs with your Namespace's region IDs.
+
+```bash
+temporal worker deployment create \
+  --namespace <YOUR_NAMESPACE> \
+  --name my-app
+
+temporal worker deployment version compute-config aws-lambda create \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1 \
+  --scaling-group aws-us-east-1 \
+  --region-id aws-us-east-1 \
+  --function-arn <PRIMARY_FUNCTION_VERSION_ARN> \
+  --assume-role-arn <PRIMARY_INVOCATION_ROLE_ARN> \
+  --assume-role-external-id <PRIMARY_EXTERNAL_ID>
+
+temporal worker deployment version compute-config aws-lambda update \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1 \
+  --scaling-group aws-us-west-2 \
+  --region-id aws-us-west-2 \
+  --function-arn <REPLICA_FUNCTION_VERSION_ARN> \
+  --assume-role-arn <REPLICA_INVOCATION_ROLE_ARN> \
+  --assume-role-external-id <REPLICA_EXTERNAL_ID>
+```
+
+`--region-id` identifies the Namespace region where the scaling group applies. The region in the qualified function
+ARN identifies where the Lambda function runs.
+
+[Set the version as current](/production-deployment/worker-deployments/serverless-workers/aws-lambda#set-current-version)
+so it receives new work.
+
+</TabItem>
+</Tabs>
+
+## Add high availability to an existing Serverless Worker Deployment {/* #upgrade */}
+
+### Publish the replica Lambda function {/* #deploy-replica-function */}
+
+Follow [Deploy Lambda function](/production-deployment/worker-deployments/serverless-workers/aws-lambda#deploy-lambda-function)
+to publish the existing Worker build in the replica region. Use the same Worker Deployment name, Build ID, and Task
+Queues as the primary function. [Configure invocation access](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
+for the replica function and record its qualified ARN.
+
+### Update the version's regional compute {/* #configure-regional-compute */}
+
+<Tabs groupId="create-version-approach">
+<TabItem value="ui" label="Temporal Cloud UI">
+
+1. In your Namespace, go to **Workers** > **Deployments** and select your deployment.
+2. Open the version's **Actions** menu and select **Edit**.
+3. Turn on **Serverless** for the replica region and enter its qualified **Lambda ARN**. Check that each region uses
+   the function you published there.
+4. The replica inherits the primary's **Access** and **Scaling and Lifecycle** settings. Select **Customize** if the
+   replica needs different settings, then select **Save**.
 
 </TabItem>
 <TabItem value="cli" label="Temporal CLI">
@@ -70,22 +125,8 @@ temporal worker deployment version compute-config describe \
   --build-id build-1
 ```
 
-The following commands use `default` for the existing primary group. If your group has a different name, use that name
-for `--scaling-group`. Replace the Namespace regions with your own.
-
-Scope the primary group to `aws-us-east-1`. Passing only `--region-id` keeps the group's provider and scaling
-settings:
-
-```bash
-temporal worker deployment version compute-config aws-lambda update \
-  --namespace <YOUR_NAMESPACE> \
-  --deployment-name my-app \
-  --build-id build-1 \
-  --scaling-group default \
-  --region-id aws-us-east-1
-```
-
-Add a group for the replica region, using the function you deployed there:
+Add a group for the replica region using the function you published there. Replace the example region IDs with your
+Namespace's region IDs.
 
 ```bash
 temporal worker deployment version compute-config aws-lambda update \
@@ -96,23 +137,31 @@ temporal worker deployment version compute-config aws-lambda update \
   --region-id aws-us-west-2 \
   --function-arn <REPLICA_FUNCTION_VERSION_ARN> \
   --assume-role-arn <REPLICA_INVOCATION_ROLE_ARN> \
-  --assume-role-external-id <EXTERNAL_ID>
+  --assume-role-external-id <REPLICA_EXTERNAL_ID>
 ```
-
-`--scaling-group` names the configuration entry to add or update.
-`--region-id` is the Temporal Namespace region where the group applies. The function's AWS region comes from its ARN.
-Use a qualified function ARN with a version suffix.
 
 The new group uses the default Lambda scaling settings unless you pass scaling options. If you customized the primary
 configuration, apply the required settings to the replica group as well.
+
+Then scope the existing group to the primary region. Passing only `--region-id` preserves its provider and scaling
+settings. Replace `default` with your existing group name if it differs.
+
+```bash
+temporal worker deployment version compute-config aws-lambda update \
+  --namespace <YOUR_NAMESPACE> \
+  --deployment-name my-app \
+  --build-id build-1 \
+  --scaling-group default \
+  --region-id aws-us-east-1
+```
 
 Run `compute-config describe` again and confirm that both groups have the expected region and provider.
 
 </TabItem>
 </Tabs>
 
-Use functions in separate AWS regions. Assigning two compute configurations to different Namespace regions does not
-protect against a regional outage if both function ARNs point to the same AWS region.
+Publish and configure a replica function for each Worker Deployment Version that must serve work after failover.
+Keep those functions available while their versions serve work, including pinned Workflows.
 
 ## Verify failover and failback {/* #verify-failover-and-failback */}
 
