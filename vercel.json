@@ -2517,12 +2517,12 @@
     },
     {
       "source": "/cloud/sla",
-      "destination": "/cloud/slo#uptime",
+      "destination": "/cloud/slo#availability",
       "permanent": true
     },
     {
       "source": "/evaluate/cloud/sla",
-      "destination": "/cloud/slo#uptime",
+      "destination": "/cloud/slo#availability",
       "permanent": true
     },
     {

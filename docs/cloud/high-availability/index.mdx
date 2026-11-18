@@ -2,14 +2,14 @@
 id: index
 title: High Availability
 slug: /cloud/high-availability
-description: Temporal Cloud's Namespace with High Availability features offers automatic failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and a higher uptime SLA.
+description: Temporal Cloud's Namespace with High Availability features offers automatic failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and a higher availability SLA.
 tags:
   - Temporal Cloud
   - Production
   - High Availability
 ---
 
-import { ToolTipTerm, CaptionedImage } from '@site/src/components';
+import { ToolTipTerm, CaptionedImage, ReleaseNoteHeader } from '@site/src/components';
 
 Temporal keeps your Workflows running even when a Worker crashes. But what happens when a whole data center crashes? Or a region?
 
@@ -21,15 +21,6 @@ This extra availability comes with an enhanced [SLA](https://temporal.io/sla).
 :::tip White paper
 
 For an in-depth guide covering everything from why you need High Availability to setting it up in production and advanced options, read the [High Availability White Paper](https://temporal.io/pages/high-availability-white-paper).
-
-:::
-
-:::caution GCP capacity restriction
-
-Before creating a GCP Namespace or adding a GCP replica, check [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for regional availability and exception requirements.
-
-Replicas in restricted GCP regions must be added manually by Temporal, even with an approved account exception.
-See [Enable and manage High Availability](/cloud/high-availability/enable) for how to request a replica.
 
 :::
 
@@ -115,10 +106,10 @@ To keep passive-region Workers on standby until failover by disabling this forwa
 
 ## Service levels and recovery objectives
 
-Namespaces using High Availability have a higher [uptime SLA](https://temporal.io/sla), with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
+Namespaces using High Availability have a higher [availability SLA](https://temporal.io/sla), with sub-1-minute [RPO](/cloud/rpo-rto) and 20-minute [RTO](/cloud/rpo-rto). For detailed information:
 
 - [Temporal Cloud Service Level Agreement (SLA)](https://temporal.io/sla)
-- [Uptime, latency, and SLOs](/cloud/slo)
+- [Availability, latency, and SLOs](/cloud/slo)
 - [Recovery Point Objective (RPO) and Recovery Time Objective (RTO)](/cloud/rpo-rto)
 
 ## Failover

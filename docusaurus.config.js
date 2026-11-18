@@ -364,6 +364,7 @@ module.exports = async function createConfigAsync() {
           regionFiles: {
             aws: 'docs/cloud/references/regions/awsregions.md',
             gcp: 'docs/cloud/references/regions/gcpregions.md',
+            azure: 'docs/cloud/references/regions/azureregions.md',
           },
         },
       ],

@@ -361,6 +361,21 @@ BuildId. Do not use Workflow IDs, run IDs, or event IDs with this command.
 Visit https://docs.temporal.io/visibility to read more about Search
 Attributes and Query creation.
 
+Use the following options to change the behavior of this command and all of its subcommands. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | No | **string** A Build ID. Use only with the BuildId `--type`. Resets the first Workflow task processed by this ID. By default, this reset may be in a prior run, earlier than a Continue as New point. |
+| `--event-id`, `-e` | No | **int** Event ID to reset to. Event must occur after `WorkflowTaskStarted`. `WorkflowTaskCompleted`, `WorkflowTaskFailed`, etc. are valid. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
+| `--reapply-exclude` | No | **string-enum[]** Exclude these event types from re-application. Accepted values: All, Signal, Update. |
+| `--reapply-type` | No | **string-enum** Types of events to re-apply after reset point. Accepted values: All, Signal, None. |
+| `--reason` | Yes | **string** Reason for reset. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--type`, `-t` | No | **string-enum** The event type for the reset. Accepted values: FirstWorkflowTask, LastWorkflowTask, LastContinuedAsNew, BuildId. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. Required for non-batch reset operations. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. Only allowed when `--query` is present. |
+
 ### with-workflow-update-options
 
 Run Workflow Update Options atomically after the Workflow is reset.
