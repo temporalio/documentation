@@ -11,9 +11,9 @@ tags:
 ---
 
 [Temporal Cloud High Availability](/cloud/high-availability) replicates a Namespace and manages its failover.
-Serverless Worker compute configuration determines where Temporal starts Workers after that failover. These are
-separate parts of recovery: a healthy Namespace still needs available compute and application dependencies to process
-work.
+By default, when a Namespace fails over to another region in the same cloud provider, Temporal still uses your original
+Serverless Worker compute. To let Serverless Workers follow Namespace failover, configure compute in both regions.
+After failover, Temporal starts new Workers using the compute configured for the newly active region.
 
 ## Compute selection after failover
 
