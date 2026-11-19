@@ -191,6 +191,8 @@ The user who creates a [Namespace](/namespaces) is automatically granted
 
 To create a Namespace, a user must have the Developer, Account Owner, or Global Admin account-level
 [Role](/cloud/manage-access/roles-and-permissions#account-level-roles).
+If [Projects](/cloud/projects) are enabled on your Account, a user with the Project Admin, Project Write, or Project Contribute
+[Project role](/cloud/projects#project-roles) can also create Namespaces in that Project.
 
 :::
 
@@ -205,6 +207,8 @@ By default, each account starts with 10 Namespaces. This limit increases automat
 To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name), region, and Cloud Provider. Azure regions are available after [access is enabled](/evaluate/cloud/regions#azure-service-regions) for your account.
+- The [Project](/cloud/projects#add-resources-to-a-project) to create the Namespace in, if Projects are enabled on your Account. Open that Project first when using the Web UI. If you don't
+  choose a Project, the Namespace goes in the Default Project.
 - Optional [Namespace description](#describe-a-namespace)
 - [Retention Period](/temporal-service/temporal-server#retention-period) for the
   [Event History](/workflow-execution/event#event-history) of closed [Workflow Executions](/workflow-execution).
@@ -296,6 +300,9 @@ See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command referen
 For guidance on how many Namespaces to create, how to split workloads across services or domains, and when to isolate
 tenants or teams, see [Namespace best practices](/best-practices/managing-namespace).
 
+To group related Namespaces by team, environment, or business unit and manage access to them together, use
+[Projects](/cloud/projects).
+
 This page focuses on Temporal Cloud Namespace mechanics such as naming rules, provisioning, authentication, tagging,
 description, and accessing Namespace endpoints.
 
@@ -371,6 +378,9 @@ For enhanced protection:
     - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
 
 ## How to manage Namespaces in Temporal Cloud {/* #manage-namespaces */}
+
+If [Projects](/cloud/projects) are enabled on your Account, each Namespace belongs to a Project. To change which
+Project contains a Namespace, see [Move a Namespace to another Project](/cloud/projects#move-a-namespace).
 
 {/* How to manage Namespaces in Temporal Cloud using Temporal Cloud UI */}
 

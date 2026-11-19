@@ -55,6 +55,10 @@ Namespace that shipped last month without a tag can be tagged today and have its
 retroactively. This solves the most common early mistake: forgetting to tag a Namespace before it starts accruing
 spend.
 
+If [Projects](/cloud/projects) are enabled on your Account, the Billing API also adds a `$tmprl_project` tag that holds
+the Project ID of each Namespace. If you group each team's Namespaces into its own Project, you can roll up cost by team
+without adding a separate tag to every Namespace.
+
 ```json
 {
   "$tmprl_project": ["claims-platform"],
@@ -74,6 +78,8 @@ attribution and budget tracking.
 - Namespace-per-tenant-per-environment as the attribution boundary. Namespace is the finest-grained unit the Billing
   API attributes cost to.
 - A required tagging convention enforced at Namespace creation time. At minimum: team, env, and workload or product.
+  If each team's Namespaces are in their own [Project](/cloud/projects), the `$tmprl_project` tag already identifies
+  the team.
 - A daily pull of the Billing API report, joined on tags, feeding the internal FinOps or budget system so each tenant
   sees its own line item.
 

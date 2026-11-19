@@ -35,6 +35,8 @@ Integrate Temporal Cloud with your organization's identity provider via SAML 2.0
 
 Temporal Cloud provides [preconfigured account-level roles](/cloud/manage-access/users) (Account Owner, Finance Admin, Global Admin, Developer, Read-Only) and Namespace-level permissions. Assign users the lowest level of access they need. For example, give developers access only to the Namespaces they work on, and use read-only roles for auditors or reviewers. Regularly review user roles and remove or downgrade accounts that are no longer needed
 
+If you group Namespaces into [Projects](/cloud/projects), assign [Project roles](/cloud/projects#project-roles) to give a team access only to its own Project's Namespaces. Use [Project-scoped Service Accounts](/cloud/manage-access/service-accounts#project-scoped-service-accounts) for automation that only needs access to one Project.
+
 ### Use SCIM or automated user provisioning
 
 When applicable, use [SCIM](/cloud/manage-access/scim) or the Temporal Cloud user management API to automate adding and removing user accounts. This ensures timely removal of access when people change roles or leave the organization.
@@ -134,6 +136,8 @@ Temporal Cloud supports private connectivity options such as [AWS PrivateLink](/
 Use [Temporal Namespaces](/best-practices/managing-namespace#naming-conventions) to isolate workflows for different environments or teams (for example, development, staging, production). Each Namespace is logically segregated and cannot interact with others by default, providing a security boundary. 
 
 Ensure that your production Namespace uses stricter network controls (for example, only accessible from the prod network) and that credentials for it are separate from non-prod Namespaces. This limits the impact of any compromise in a lower environment, and as workflow data is only visible to users with access to that Namespace, separating environments by Namespace also enforces data-visibility boundaries.
+
+To manage access to environments as a group, place production and non-production Namespaces in separate [Projects](/cloud/projects). A role on the non-production Project then grants no access to production Namespaces.
 
 ## Data protection and encryption
 

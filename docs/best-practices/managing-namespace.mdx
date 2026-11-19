@@ -92,6 +92,11 @@ Use the following decision table as a starting point:
 As a default, start with one Namespace per use case and environment. Split later when APS pressure, security
 requirements, ownership boundaries, or troubleshooting needs justify the extra operational cost.
 
+In Temporal Cloud, [Projects](/cloud/projects) add a grouping layer above Namespaces. Use Namespaces for the isolation
+boundaries in the preceding table, and use Projects to group the resulting Namespaces by team, business unit, or
+environment. Project roles and Project-scoped Service Accounts let you grant a team access to all of its Namespaces at
+once, instead of assigning permissions Namespace by Namespace.
+
 ### Pattern 1: Namespace per use case and environment
 
 For simple configurations without multiple services or team boundaries.
@@ -209,6 +214,10 @@ This is separate from [Temporal Cloud deletion protection](/cloud/namespaces#del
 
 Tags complement your naming convention by adding metadata that doesn't fit in the Namespace name.
 While the name captures use case, domain, and environment, tags can capture additional dimensions like team ownership, data sensitivity, or business criticality.
+
+Tags are metadata only and don't affect access.
+If you need to control who can access a group of Namespaces, put them in the same [Project](/cloud/projects) and assign [Project roles](/cloud/projects#project-roles).
+The [Billing API](/cloud/billing-api) reports both tags and the Project of each Namespace, so you can attribute cost by either one.
 
 ### Recommended tag categories
 
