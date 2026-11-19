@@ -47,6 +47,7 @@ Workflow is not terminated and remains open, so you can deploy a fix and allow t
 the Activity Task fails with an explicit error instead of timing out silently. These SDK versions have this behavior:
 
 - Go SDK 1.43.0+
+- Java SDK 1.41.0+
 - Python SDK 1.23.0+
 - TypeScript SDK 1.21.0+
 - .NET SDK 1.18.0+
