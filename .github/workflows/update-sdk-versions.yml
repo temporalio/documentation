@@ -2,7 +2,7 @@ name: 'Update SDK Versions'
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '15 */2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
 
       - name: Setup Node
-        uses: actions/setup-node@v7.0.0
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: '20'
 

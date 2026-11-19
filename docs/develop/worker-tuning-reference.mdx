@@ -44,6 +44,10 @@ When a Worker crashes or experiences a host outage:
 3. The new Worker replays the Event History to reconstruct state
 4. Execution continues from where it left off
 
+Step 2 needs another Worker polling the same Task Queue. With only one Worker, the Task waits until that Worker restarts.
+Run at least two Workers per Task Queue, as described in
+[Run at least two Workers per Task Queue](/best-practices/worker#run-at-least-two-workers-per-task-queue).
+
 For more details on Worker architecture, see [What is a Temporal Worker?](/workers)
 
 ## Compute settings
@@ -109,7 +113,7 @@ IO settings control the number of pollers and rate limits for Task Queue interac
 | `MaxConcurrentWorkflowTaskPollers` | Number of concurrent Workflow pollers |
 | `MaxConcurrentActivityTaskPollers` | Number of concurrent Activity pollers |
 | `Namespace APS` | Actions per second limit for Namespace |
-| `TaskQueueActivitiesPerSecond` | Activity rate limit per Task Queue |
+| `TaskQueueActivitiesPerSecond` | Activity Tasks dispatched per second from the Task Queue, across all Workers. Not a concurrency limit. |
 
 ### IO defaults by SDK
 
@@ -121,9 +125,21 @@ IO settings control the number of pollers and rate limits for Task Queue interac
 | **Python** | 5 | 5 | - | - |
 | **.NET** | 5 | 5 | - | - |
 
+The poller counts in this table are fixed defaults.
+On Temporal Cloud Namespaces with Poller Autoscaling enabled, supported SDK versions use Poller Autoscaling instead of these fixed counts for any poller type you leave unconfigured.
+See [Poller Autoscaling by default in Temporal Cloud](/develop/worker-performance/configuration#poller-autoscaling-by-default-in-temporal-cloud).
+
 ### Poller autoscaling
 
-Use poller autoscaling to automatically adjust the number of concurrent polls based on workload.
+Use Poller Autoscaling to automatically adjust the number of concurrent polls based on workload.
+Each poller type scales within its own bounds. The defaults are the same in every SDK:
+
+| Bound | Default |
+|-------|---------|
+| Minimum pollers | 1 |
+| Initial pollers | 5 |
+| Maximum pollers | 100 |
+
 For configuration details, see [Configuring poller options](/develop/worker-performance/configuration#configuring-poller-options).
 
 ## Metrics reference by resource type
@@ -203,6 +219,7 @@ For detailed tuning guidance, see:
 
 - [What is a Temporal Worker?](/workers) - Conceptual overview
 - [Worker performance](/develop/worker-performance) - Comprehensive tuning guide
+- [Worker tuning simulator](/demos/worker-tuning-simulator) - Interactive demo of Pollers, Slots, and cache limits
 - [Worker deployment and performance](/best-practices/worker) - Best practices
 - [SDK metrics reference](/references/sdk-metrics) - Complete metrics documentation
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) - Safe deployments

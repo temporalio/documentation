@@ -28,13 +28,13 @@ For a full end-to-end deployment guide covering AWS IAM setup, compute configura
 Use the `RunWorker` function to start a Lambda-based Worker.
 Pass a `WorkerDeploymentVersion` and a callback that registers your Workflows and Activities.
 
-<!--SNIPSTART go-lambda-worker {"selectedLines": ["1-6", "8-18", "22-30"], "highlightedLines": "13-17"}-->
-[lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/main/lambda-worker/worker/main.go)
+<!--SNIPSTART go-serverless-lambda-worker {"selectedLines": ["1-6", "8-18", "22-30"], "highlightedLines": "13-17"}-->
+[go-sandbox/workers/lambda/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/lambda/worker/main.go)
 ```go {13-17}
 package main
 
 import (
-	greeting "github.com/temporalio/samples-go/lambda-worker/greeting"
+	greeting "my-org/quickstart/workers/lambda/greeting"
 
 	lambdaworker "go.temporal.io/sdk/contrib/aws/lambdaworker"
 // ...
@@ -122,13 +122,13 @@ The ADOT Lambda layer collects this telemetry and can forward traces to AWS X-Ra
 The underlying metrics and traces are the same ones the Go SDK emits in any environment.
 For general observability concepts and the full list of available metrics, see [Observability - Go SDK](/develop/go/platform/observability) and the [SDK metrics reference](/references/sdk-metrics).
 
-<!--SNIPSTART go-lambda-worker {"highlightedLines": "7, 19-21"}-->
-[lambda-worker/worker/main.go](https://github.com/temporalio/samples-go/blob/main/lambda-worker/worker/main.go)
+<!--SNIPSTART go-serverless-lambda-worker {"highlightedLines": "7, 19-21"}-->
+[go-sandbox/workers/lambda/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/lambda/worker/main.go)
 ```go {7, 19-21}
 package main
 
 import (
-	greeting "github.com/temporalio/samples-go/lambda-worker/greeting"
+	greeting "my-org/quickstart/workers/lambda/greeting"
 
 	lambdaworker "go.temporal.io/sdk/contrib/aws/lambdaworker"
 	otel "go.temporal.io/sdk/contrib/aws/lambdaworker/otel"
@@ -169,8 +169,8 @@ The default Collector configuration does not route OpenTelemetry Protocol (OTLP)
 You must provide a custom Collector configuration that wires the OTLP receiver to both the traces and metrics pipelines.
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
-<!--SNIPSTART go-lambda-worker-otel-collector-config-->
-[lambda-worker/otel-collector-config.yaml](https://github.com/temporalio/samples-go/blob/main/lambda-worker/otel-collector-config.yaml)
+<!--SNIPSTART go-serverless-lambda-otel-config-->
+[go-sandbox/workers/lambda/otel-collector-config.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/workers/lambda/otel-collector-config.yaml)
 ```yaml
 receivers:
     otlp:

@@ -36,7 +36,9 @@ Metrics in Ruby are configured on the `metrics` argument of the `telemetry` argu
 
 The following example exposes a Prometheus endpoint on port `9000`.
 
-```ruby
+<!--SNIPSTART ruby-observability-prometheus {"enable_code_dedenting": true}-->
+[ruby-sandbox/platform/observability/prometheus_metrics.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/observability/prometheus_metrics.rb)
+```rb
 Temporalio::Runtime.default = Temporalio::Runtime.new(
   telemetry: Temporalio::Runtime::TelemetryOptions.new(
     metrics: Temporalio::Runtime::MetricsOptions.new(
@@ -47,6 +49,7 @@ Temporalio::Runtime.default = Temporalio::Runtime.new(
   )
 )
 ```
+<!--SNIPEND-->
 
 ### Custom metric handling
 
@@ -60,7 +63,9 @@ Global tags add your organization's information next to them, so a dashboard can
 
 Set [`global_tags`](https://ruby.temporal.io/Temporalio/Runtime/MetricsOptions.html#global_tags-instance_method) on the `MetricsOptions` to add the same key-value pairs to every metric the runtime emits, from both the Client and the Worker.
 
-```ruby
+<!--SNIPSTART ruby-observability-global-tags {"enable_code_dedenting": true}-->
+[ruby-sandbox/telemetry-global-tags.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/telemetry-global-tags.rb)
+```rb
 Temporalio::Runtime.default = Temporalio::Runtime.new(
   telemetry: Temporalio::Runtime::TelemetryOptions.new(
     metrics: Temporalio::Runtime::MetricsOptions.new(
@@ -78,6 +83,7 @@ Temporalio::Runtime.default = Temporalio::Runtime.new(
   )
 )
 ```
+<!--SNIPEND-->
 
 ### Choose a tag set
 
@@ -119,8 +125,10 @@ Tracing enables observability into the sequence of calls across your application
 
 OpenTelemetry tracing for clients, activities, and workflows can be enabled using the `Temporalio::Contrib::OpenTelemetry::TracingInterceptor`. Specifically, when creating a client, set the interceptor like so:
 
-```ruby
-require 'opentelemetry/api'
+<!--SNIPSTART ruby-observability-tracing-->
+[ruby-sandbox/platform/observability/tracing_client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/observability/tracing_client.rb)
+```rb
+require 'opentelemetry-api'
 require 'opentelemetry/sdk'
 require 'temporalio/client'
 require 'temporalio/contrib/open_telemetry'
@@ -133,6 +141,7 @@ my_client = Temporalio::Client.connect(
   interceptors: [Temporalio::Contrib::OpenTelemetry::TracingInterceptor.new(my_tracer)]
 )
 ```
+<!--SNIPEND-->
 
 When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
 Spans are created and serialized through the server to give one trace for a Workflow Execution.
@@ -146,7 +155,9 @@ Logging uses the Ruby standard logging APIs. You can find the log levels support
 The `logger` can be set when connecting a client.
 The following example shows logging on the console and sets the level to `INFO`.
 
-```ruby
+<!--SNIPSTART ruby-observability-client-logger-->
+[ruby-sandbox/platform/observability/logging_client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/observability/logging_client.rb)
+```rb
 require 'logger'
 require 'temporalio/client'
 
@@ -155,19 +166,26 @@ my_client = Temporalio::Client.connect(
   logger: Logger.new($stdout, level: Logger::INFO)
 )
 ```
+<!--SNIPEND-->
 
 You can log from a Workflow using `Temporalio::Workflow.logger` which is a special instance of Ruby's `Logger` that
 appends workflow details to every log and does not log during replay.
 
-```ruby
+<!--SNIPSTART ruby-observability-workflow-logger {"enable_code_dedenting": true}-->
+[ruby-sandbox/platform/observability/logging_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/observability/logging_workflow.rb)
+```rb
 Temporalio::Workflow.logger.info("Some log #{some_value}")
 ```
+<!--SNIPEND-->
 
 There's also one for use in activities that appends Activity details to every log:
 
-```ruby
+<!--SNIPSTART ruby-observability-activity-logger {"enable_code_dedenting": true}-->
+[ruby-sandbox/platform/observability/logging_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/observability/logging_workflow.rb)
+```rb
 Temporalio::Activity::Context.current.logger.info("Some log #{some_value}")
 ```
+<!--SNIPEND-->
 
 ## Use Visibility APIs {/* #visibility */}
 
@@ -208,11 +226,14 @@ The steps to using custom Search Attributes are:
 Use the [list_workflows](https://ruby.temporal.io/Temporalio/Client.html#list_workflows-instance_method) method on the Client and pass a [List Filter](/list-filter) as an argument to filter the listed Workflows.
 The result is a lazy enumerator/enumerable.
 
-```ruby
+<!--SNIPSTART ruby-observability-list-workflows {"enable_code_dedenting": true}-->
+[ruby-sandbox/platform/observability/list_workflows.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/observability/list_workflows.rb)
+```rb
 my_client.list_workflows("WorkflowType='GreetingWorkflow'").each do |wf|
   puts "Workflow: #{wf.id}"
 end
 ```
+<!--SNIPEND-->
 
 ### Set Custom Search Attributes {/* #custom-search-attributes */}
 
@@ -221,7 +242,9 @@ After you've created custom Search Attributes in your Temporal Service (using `t
 To set custom Search Attributes, use the `search_attributes` parameter for `start_workflow` or `execute_workflow`.
 Keys should be predefined for reuse.
 
-```ruby
+<!--SNIPSTART ruby-observability-start-with-search-attributes-->
+[ruby-sandbox/platform/observability/start_with_search_attributes.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/observability/start_with_search_attributes.rb)
+```rb
 # Predefined search attribute key, usually a global somewhere
 MY_KEYWORD_KEY = Temporalio::SearchAttributes::Key.new(
   'my-keyword',
@@ -237,6 +260,7 @@ handle = my_client.start_workflow(
   search_attributes: Temporalio::SearchAttributes.new({ MY_KEYWORD_KEY => 'some-value' })
 )
 ```
+<!--SNIPEND-->
 
 ### Upsert Search Attributes {/* #upsert-search-attributes */}
 
@@ -245,7 +269,9 @@ You can upsert Search Attributes to add, update, or remove Search Attributes fro
 To upsert custom Search Attributes, use the [`upsert_search_attributes`](https://ruby.temporal.io/Temporalio/Workflow.html#upsert_search_attributes-class_method) method with a set of updates.
 Keys should be predefined for reuse.
 
-```ruby
+<!--SNIPSTART ruby-observability-upsert-search-attributes-->
+[ruby-sandbox/platform/observability/upsert_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/platform/observability/upsert_workflow.rb)
+```rb
 # Predefined search attribute key, usually a global somewhere
 MY_KEYWORD_KEY = Temporalio::SearchAttributes::Key.new(
   'my-keyword',
@@ -264,3 +290,4 @@ class MyWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->

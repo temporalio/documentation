@@ -19,8 +19,8 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 Create a Worker with `Worker.create()`, passing a connection, the Task Queue to poll, and the Workflows and Activities it can execute.
 Call `run()` to start polling.
 
-<!--SNIPSTART typescript-hello-worker-->
-[hello-world/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/worker.ts)
+<!--SNIPSTART typescript-quickstart-worker-->
+[typescript-sandbox/src/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/worker.ts)
 ```ts
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
@@ -77,14 +77,17 @@ A Worker that receives a Task for a type it did not register fails that Task.
 
 In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath):
 
-<!--SNIPSTART typescript-worker-create -->
-[snippets/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/worker.ts)
+<!--SNIPSTART typescript-run-worker-create-->
+[typescript-sandbox/src/workers/run-worker/worker-create.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/run-worker/worker-create.ts)
 ```ts
-import { Worker } from '@temporalio/worker';
+import { NativeConnection, Worker } from '@temporalio/worker';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
 import * as activities from './activities';
 
 async function run() {
+  const connection = await NativeConnection.connect(loadClientConnectConfig().connectionOptions);
   const worker = await Worker.create({
+    connection,
     workflowsPath: require.resolve('./workflows'),
     taskQueue: 'snippets',
     activities,
@@ -99,18 +102,18 @@ In this snippet, the Worker bundles the Workflow code at runtime.
 
 In production, you can improve your Worker's startup time by bundling in advance. As part of your production build, call `bundleWorkflowCode`:
 
-<!--SNIPSTART typescript-bundle-workflow -->
-[production/src/scripts/build-workflow-bundle.ts](https://github.com/temporalio/samples-typescript/blob/main/production/src/scripts/build-workflow-bundle.ts)
+<!--SNIPSTART typescript-run-worker-bundle-workflow-->
+[typescript-sandbox/src/workers/run-worker/scripts/build-workflow-bundle.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/run-worker/scripts/build-workflow-bundle.ts)
 ```ts
 import { bundleWorkflowCode } from '@temporalio/worker';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 
-async function bundle() {
+export async function bundle() {
   const { code } = await bundleWorkflowCode({
     workflowsPath: require.resolve('../workflows'),
   });
-  const codePath = path.join(__dirname, '../../workflow-bundle.js');
+  const codePath = path.join(__dirname, '../workflow-bundle.js');
 
   await writeFile(codePath, code);
   console.log(`Bundle written to ${codePath}`);
@@ -120,20 +123,22 @@ async function bundle() {
 
 Then pass the bundle to the Worker:
 
-<!--SNIPSTART typescript-production-worker-->
-[production/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/production/src/worker.ts)
+<!--SNIPSTART typescript-run-worker-production-->
+[typescript-sandbox/src/workers/run-worker/production-worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/run-worker/production-worker.ts)
 ```ts
 const workflowOption = () =>
   process.env.NODE_ENV === 'production'
     ? {
         workflowBundle: {
-          codePath: require.resolve('../workflow-bundle.js'),
+          codePath: require.resolve('./workflow-bundle.js'),
         },
       }
     : { workflowsPath: require.resolve('./workflows') };
 
 async function run() {
+  const connection = await NativeConnection.connect(loadClientConnectConfig().connectionOptions);
   const worker = await Worker.create({
+    connection,
     ...workflowOption(),
     activities,
     taskQueue: 'production-sample',
@@ -161,13 +166,14 @@ To tune these values against real load, see [Worker performance](/develop/worker
 Set a Worker Deployment Version and enable versioning in `workerDeploymentOptions`.
 When `useWorkerVersioning` is `true`, `defaultVersioningBehavior` is required.
 
-<!--SNIPSTART typescript-versioned-worker-->
-[features/snippets/worker/worker.ts](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.ts)
+<!--SNIPSTART typescript-run-worker-versioned {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workers/run-worker/versioned-worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/run-worker/versioned-worker.ts)
 ```ts
 const worker = await Worker.create({
   connection,
   taskQueue: 'my-task-queue',
   workflowsPath: require.resolve('./workflows'),
+  activities,
   workerDeploymentOptions: {
     version: { deploymentName: 'my-app', buildId: '1.0' },
     useWorkerVersioning: true,
@@ -193,13 +199,14 @@ In development, shut down Workers with `Ctrl+C` (`SIGINT`) or
 (`SIGUSR2`). In production, give Workers time to finish in-progress Activities by setting
 [shutdownGraceTime](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#shutdowngracetime):
 
-<!--SNIPSTART typescript-worker-graceful-shutdown-->
-[features/snippets/worker/worker.ts](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.ts)
+<!--SNIPSTART typescript-run-worker-graceful-shutdown {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workers/run-worker/graceful-worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workers/run-worker/graceful-worker.ts)
 ```ts
 const worker = await Worker.create({
   connection,
   taskQueue: 'my-task-queue',
   workflowsPath: require.resolve('./workflows'),
+  activities,
   shutdownGraceTime: '30s',
 });
 
@@ -255,10 +262,10 @@ Workers based on the TypeScript SDK can be deployed and run as Docker containers
 Use an LTS Node.js release such as 18, 20, 22, or 24. Both `amd64` and `arm64` architectures are supported. A
 glibc-based image is required; musl-based images are _not_ supported (see below).
 
-The most direct way to deploy a TypeScript SDK Worker on Docker is to start with the `node:20-bullseye` image. For example:
+The most direct way to deploy a TypeScript SDK Worker on Docker is to start with the `node:20-bookworm` image. For example:
 
 ```dockerfile
-FROM node:20-bullseye
+FROM node:20-bookworm
 
 # For better cache utilization, copy package.json and lock file first and install the dependencies before copying the
 # rest of the application and building.
@@ -273,7 +280,7 @@ CMD ["npm", "start"]
 ```
 
 For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like
-`node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian11`) with the
+`node:20-bookworm-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian12`) with the
 following caveats.
 
 ### Using `node:slim` images
@@ -285,7 +292,7 @@ The requirement holds even when you connect to a local Temporal Service, and whe
 TLS. Install the package when you build the image:
 
 ```dockerfile
-FROM node:20-bullseye-slim
+FROM node:20-bookworm-slim
 
 RUN apt-get update \
     && apt-get install -y ca-certificates \
@@ -311,7 +318,7 @@ Use a multi-step Dockerfile instead:
 ```dockerfile
 # -- BUILD STEP --
 
-FROM node:20-bullseye AS builder
+FROM node:20-bookworm AS builder
 
 COPY . /app
 WORKDIR /app
@@ -321,7 +328,7 @@ RUN npm install --only=production \
 
 # -- RESULTING IMAGE --
 
-FROM gcr.io/distroless/nodejs20-debian11
+FROM gcr.io/distroless/nodejs20-debian12
 
 COPY --from=builder /app /app
 WORKDIR /app

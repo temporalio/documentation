@@ -144,7 +144,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 |---|---|---|
 | `Tabs` / `TabItem` | `tabs` / `tabitem` | All tabs flattened, each under a **bold label** header |
 | `SdkTabs` / `SdkTabs.<Lang>` | `sdk-tabs` | Same, with language labels (`DotNet` → **.NET**) |
-| `CodeSnippet` | `code-snippet` | Fenced code block using the `language` prop |
+| `CodeSnippet` | `code-snippet` | Fenced code block using the `language` prop; a Snipsync body passes through as Markdown |
 | `CaptionedImage`, `EnlargeImage`, `Components.CaptionedImage` | `captioned-image` | `![alt or caption or title](src)` |
 | YouTube/`<iframe>` embeds (often in a styled `<div>`) | strip | Removed; keep a markdown Watch link in surrounding tip/prose for LLMs |
 | `CallToAction` | `call-to-action` | `- [h3 title](href): p description` |
@@ -152,7 +152,8 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `RelatedReadContainer` / `RelatedReadItem` | `related-read-container` / `related-read-item` | `**Related:**` Markdown link list |
 | `RelatedReadList` | `related-read` | Link list from the `readList` prop |
 | `ToolTipTerm` | `tooltip-term` | Inline: replaced with the bare `term` text |
-| `SetupSteps` / `SetupStep` | `setup-steps` / `setup-step` | Prose children plus code extracted from the `code={…}` JSX prop |
+| `ForOs` | `for-os` | Every OS variant kept. Block: a `**Windows:**` label line before the children. Inline: adjacent variants grouped as `(**Windows:** PowerShell; **macOS and Linux:** terminal)` |
+| `SetupSteps` / `SetupStep` | `setup-steps` / `setup-step` | Prose children plus code extracted from the `code={…}` JSX prop or `<CodeSnippet>` children |
 | `JsonTable` | `json-table` | Markdown table resolved from the referenced `static/json/*.json` |
 | `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
 | `SdkOverviewCards` | `sdk-overview-cards` | Markdown list — one bullet per SDK with its version (from `src/data/sdk-versions.json`), developer guide link, and API reference link |
@@ -166,8 +167,11 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 
 **Transclusion.** Components imported from a Markdown file
 (`import AWSRegions from '@site/docs/.../awsregions.md'`) are inlined: when `<AWSRegions />` is
-encountered, the referenced file is read and transformed in place. These show as `transclude`
-in the audit.
+encountered on a line of its own, the referenced file is read and transformed in place. That
+works at the top level and inside nested bodies (tab items, `<details>`, release notes), which
+inherit the page's imports. These show as `transclude` in the audit. Underscore-prefixed files
+and folders (`_partial.mdx`, `docs/develop/_shared/**`) are partials: like Docusaurus, the
+plugin doesn't publish them as pages of their own (`plugins/shared/docsRouting.js`).
 
 **Audit false positives.** `scripts/audit-components.mjs` may list non-components (type
 generics in code examples like `SayHelloWorkflow`, CLI placeholders like `<ID>`). The
@@ -252,6 +256,38 @@ reader output and `data-nosnippet` to stay out of search result snippets.
 **Algolia:** the DocSearch crawler config is managed in the Algolia Crawler dashboard, not in
 this repo. If directive text ever shows up in search results, add `.agentDirective` to the
 crawler's `excludeSelectors` (or narrow the `recordExtractor` content selectors) and recrawl.
+
+### Search endpoint
+
+Three of these channels also advertise the `/api/retrieve` search endpoint, as part of an
+experiment in whether agents find and use it. Each carries a different `src` value, so the
+endpoint's request log shows which channel a caller found the URL on:
+
+| Channel | `src` | Where it lives |
+| --- | --- | --- |
+| `## Agent instructions for querying Temporal documentation` in `/llms.txt` | `llms` | `llmsTxt.rootContent` in `docusaurus.config.js` |
+| Visually hidden body text | `docs-page` | `AgentDirective.tsx` |
+| Blockquote under the H1 | `md-page` | `withAgentDirective()` in the `markdown-pages` plugin |
+
+Don't change this copy mid-experiment unless it's broken, so results from before and after a
+change stay comparable. See [AGENT-RETRIEVE.md](./AGENT-RETRIEVE.md) for the endpoint and its log.
+
+### Feedback endpoint
+
+The same three channels, plus the `.md` 404 page, tell agents how to report a problem to
+`/api/feedback`. Each carries its own `src` value, which is stored with the report:
+
+| Channel | `src` | Where it lives |
+| --- | --- | --- |
+| `## Reporting problems` in `/llms.txt` | `llms` | `llmsTxt.rootContent` in `docusaurus.config.js` |
+| Visually hidden body text | `docs-page` | `AgentDirective.tsx`, with `page_url` filled in |
+| Blockquote under the H1 | `md-page` | `withAgentDirective()` in the `markdown-pages` plugin, with `page_url` filled in |
+| Body of a `.md` URL that doesn't exist | `md-404` | `api/markdown-not-found.js` |
+
+The `/llms.txt` copy also points from the search endpoint section to `category=docs_search`, for
+a question that gets no useful results. The 404 body is static and never repeats the requested
+path, so a crafted URL can't put its own text in front of an agent. See
+[FEEDBACK.md](./FEEDBACK.md) for the endpoint and the daily digest.
 
 ## Page actions (the buttons)
 

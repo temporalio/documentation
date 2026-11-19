@@ -39,17 +39,24 @@ Install the plugin, then run a minimal Strands agent inside a Temporal Workflow.
 
 ### Install the plugin
 
-Install the Temporal Python SDK with Strands Agents support (requires `temporalio` 1.28.0 or later):
+Install the standalone `temporalio-strands-agents` package:
 
 ```bash
-uv add "temporalio[strands-agents]"
+uv add temporalio-strands-agents
 ```
 
 or with pip:
 
 ```bash
-pip install "temporalio[strands-agents]"
+pip install temporalio-strands-agents
 ```
+
+The package installs the Temporal Python SDK and Strands Agents dependencies. Refer to the
+[package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/strands_agents/pyproject.toml)
+for supported Python and dependency versions.
+
+Import `StrandsPlugin`, `TemporalAgent`, and `TemporalMCPClient` from `temporalio.strands_agents`. Import Workflow helpers
+such as `activity_as_tool` and `activity_as_hook` from `temporalio.strands_agents.workflow`.
 
 ### Run a Strands agent with Durable Execution
 
@@ -68,7 +75,7 @@ maximum time each model call Activity can run:
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent
+from temporalio.strands_agents import TemporalAgent
 
 
 @workflow.defn
@@ -80,8 +87,6 @@ class HelloWorldWorkflow:
     async def run(self, prompt: str) -> str:
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -104,7 +109,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 
 from strands_plugin.hello_world.workflow import HelloWorldWorkflow
@@ -226,8 +231,6 @@ async def fetch_weather(city: str) -> dict:
         "temperature_f": 72,
         "conditions": "sunny",
     }
-
-
 ```
 <!--SNIPEND-->
 
@@ -258,8 +261,6 @@ class ToolsWorkflow:
     async def run(self, prompt: str) -> str:
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -272,7 +273,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 
 from strands_plugin.tools.workflow import (
@@ -327,8 +328,6 @@ Workflow context (deterministic), while `persist_tool_call` runs as an Activity 
 async def persist_tool_call(tool_name: str) -> None:
     # In production, write to a database / S3 / your audit pipeline.
     activity.logger.info(f"audit: tool {tool_name} completed")
-
-
 ```
 <!--SNIPEND-->
 
@@ -352,8 +351,6 @@ class AuditHook(HookProvider):
 
     def _record(self, event: AfterToolCallEvent) -> None:
         self.fired.append(event.tool_use["name"])
-
-
 ```
 <!--SNIPEND-->
 
@@ -386,7 +383,7 @@ Define the Workflow with a `TemporalMCPClient`:
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent, TemporalMCPClient
+from temporalio.strands_agents import TemporalAgent, TemporalMCPClient
 
 
 @workflow.defn
@@ -405,8 +402,6 @@ class MCPWorkflow:
     async def run(self, prompt: str) -> str:
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -419,7 +414,7 @@ Register the MCP client factory on the Worker:
 from mcp import StdioServerParameters, stdio_client
 from strands.tools.mcp.mcp_client import MCPClient
 from temporalio.client import Client
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 # ...
 def _make_echo_client() -> MCPClient:
@@ -496,8 +491,6 @@ class ApprovalHook(HookProvider):
         )
         if approval != "approve":
             event.cancel_tool = "denied"
-
-
 ```
 <!--SNIPEND-->
 
@@ -541,8 +534,6 @@ class HumanInTheLoopWorkflow:
             ]
             result = await self.agent.invoke_async(responses)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -583,8 +574,6 @@ async def delete_thing(name: str) -> str:
             )
         )
     return f"deleted {name}"
-
-
 ```
 <!--SNIPEND-->
 
@@ -604,7 +593,7 @@ import asyncio
 import os
 
 from temporalio.client import Client
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 
 from strands_plugin.activity_interrupt.workflow import (
@@ -649,7 +638,7 @@ from datetime import timedelta
 
 from pydantic import BaseModel, Field
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent
+from temporalio.strands_agents import TemporalAgent
 
 
 class PersonInfo(BaseModel):
@@ -671,8 +660,6 @@ class StructuredOutputWorkflow:
         result = await self.agent.invoke_async(prompt)
         assert isinstance(result.structured_output, PersonInfo)
         return result.structured_output
-
-
 ```
 <!--SNIPEND-->
 
@@ -693,8 +680,8 @@ Define the Workflow with a `WorkflowStream` and a streaming topic:
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent
 from temporalio.contrib.workflow_streams import WorkflowStream
+from temporalio.strands_agents import TemporalAgent
 
 
 @workflow.defn
@@ -710,8 +697,6 @@ class StreamingWorkflow:
     async def run(self, prompt: str) -> str:
         result = await self.agent.invoke_async(prompt)
         return str(result)
-
-
 ```
 <!--SNIPEND-->
 
@@ -814,7 +799,7 @@ from datetime import timedelta
 
 from strands.types.content import Messages
 from temporalio import workflow
-from temporalio.contrib.strands import TemporalAgent
+from temporalio.strands_agents import TemporalAgent
 
 
 @dataclass
@@ -860,8 +845,6 @@ class ChatWorkflow:
 
         if not self._done:
             workflow.continue_as_new(ChatInput(messages=self._agent.messages))
-
-
 ```
 <!--SNIPEND-->
 
@@ -875,7 +858,7 @@ To get distributed traces across model, tool, and MCP Activities, combine `Stran
 import opentelemetry.trace
 from temporalio.client import Client
 from temporalio.contrib.opentelemetry import OpenTelemetryPlugin, create_tracer_provider
-from temporalio.contrib.strands import StrandsPlugin
+from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 
 

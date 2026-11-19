@@ -1,7 +1,7 @@
 ---
 id: asynchronous-activity
-title: Asynchronous Activity
-sidebar_label: Asynchronous Activity
+title: Asynchronous Activity Completion
+sidebar_label: Asynchronous Activity Completion
 slug: /develop/typescript/activities/asynchronous-activity
 toc_max_heading_level: 2
 tags:
@@ -24,23 +24,30 @@ There are three steps to follow:
 
 To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
 
-<!--SNIPSTART typescript-activity-complete-async -->
-[activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/activities/async-completion.ts)
+<!--SNIPSTART typescript-async-activity-complete-->
+[typescript-sandbox/src/activities/async-completion/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/async-completion/activities.ts)
 ```ts
 import { CompleteAsyncError, activityInfo } from '@temporalio/activity';
-import { Client } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
 
 export async function doSomethingAsync(): Promise<string> {
   const taskToken = activityInfo().taskToken;
-  setTimeout(() => doSomeWork(taskToken), 1000);
+  setTimeout(() => void doSomeWork(taskToken), 1000);
   throw new CompleteAsyncError();
 }
 
 // this work could be done in a different process or on a different machine
 async function doSomeWork(taskToken: Uint8Array): Promise<void> {
-  const client = new Client();
-  // does some work...
-  await client.activity.complete(taskToken, "Job's done!");
+  const config = loadClientConnectConfig();
+  const connection = await Connection.connect(config.connectionOptions);
+  try {
+    const client = new Client({ connection, namespace: config.namespace });
+    // does some work...
+    await client.activity.complete(taskToken, "Job's done!");
+  } finally {
+    await connection.close();
+  }
 }
 ```
 <!--SNIPEND-->
@@ -49,17 +56,22 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 
 To call [Local Activities](/local-activity) in TypeScript, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
 
+<!--SNIPSTART typescript-local-activities-proxy-->
+[typescript-sandbox/src/activities/local-activities/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/local-activities/workflows.ts)
 ```ts
 import * as workflow from '@temporalio/workflow';
+import type * as activities from './activities';
 
-const { getEnvVar } = workflow.proxyLocalActivities({
+const { getEnvVar } = workflow.proxyLocalActivities<typeof activities>({
   startToCloseTimeout: '2 seconds',
 });
 
-export async function yourWorkflow(): Promise<void> {
+export async function yourWorkflow(): Promise<string | undefined> {
   const someSetting = await getEnvVar('SOME_SETTING');
   // ...
+  return someSetting;
 }
 ```
+<!--SNIPEND-->
 
 Local Activities must be registered with the Worker the same way non-local Activities are.

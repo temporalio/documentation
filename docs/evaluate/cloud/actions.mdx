@@ -50,6 +50,14 @@ Usage and billing data carry the most complete Actions data, while Event History
 _estimates_. [History Event Types](/workflow-execution/event) are listed for transparency, but they do not always map
 1:1 to Action Types. The following sections list each category, its Action types, and where each one is available.
 
+## Compare Action metrics with metering {/* #compare-action-metrics-with-metering */}
+
+Action metrics are estimates and can differ by up to 5% from the absolute Action counts recorded by Temporal Cloud
+metering. Use the [Usage dashboard](/cloud/actions-usage#usage) or [Billing API](/cloud/billing-api) for metered usage when
+you need exact totals. Some billable Action types are not included in the
+[Billable Action Count metric](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_billable_action_count), so
+its total might also differ from the total across all Action types.
+
 ## Workflow {/* #workflow */}
 
 - **Workflow started**
@@ -208,7 +216,7 @@ A [Schedule](/schedule) starts a Workflow at a particular time. Each execution o
 [Workflow History Export](/cloud/export) enables you to export closed Workflow Histories to a cloud storage sink of your
 choice.
 
-- **Workflow exported**. Each Workflow exported accrues a single action.
+- **Workflow exported**. Each Workflow Execution exported accrues a single Action. Duplicate exports of the same Workflow Execution do not incur additional Action charges.
 - Excluded from APS calculations.
 
 | Usage Name              | Metric Name | History Event Type |

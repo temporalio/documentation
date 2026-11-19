@@ -108,11 +108,14 @@ Some common examples that will **not** work in the Workflow isolate:
 
 :::danger Antipattern
 
+<!--SNIPSTART typescript-debugging-antipattern-fs-->
+[typescript-sandbox/src/best-practices/debugging/antipattern-fs.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/debugging/antipattern-fs.ts)
 ```ts
 import fs from 'fs';
 
 const config = fs.readFileSync('config.json', 'utf8');
 ```
+<!--SNIPEND-->
 
 :::
 
@@ -137,6 +140,8 @@ You'll typically see an error in this form in the Webpack output:
 
 :::danger Antipattern
 
+<!--SNIPSTART typescript-debugging-antipattern-direct-activity-->
+[typescript-sandbox/src/best-practices/debugging/antipattern-direct-activity.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/debugging/antipattern-direct-activity.ts)
 ```ts
 import { makeHTTPRequest } from './activities';
 
@@ -144,6 +149,7 @@ export async function yourWorkflow(): Promise<string> {
   return await makeHTTPRequest('https://temporal.io');
 }
 ```
+<!--SNIPEND-->
 
 :::
 
@@ -169,16 +175,21 @@ You'll typically see an error in this form in the Webpack output:
 
 To properly call your Activities from Workflow code use `proxyActivities` and make sure to only import the Activity types.
 
+<!--SNIPSTART typescript-debugging-proxy-activities-->
+[typescript-sandbox/src/best-practices/debugging/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/best-practices/debugging/workflows.ts)
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
 
 import type * as activities from './activities';
-const { makeHTTPRequest } = proxyActivities<typeof activities>();
+const { makeHTTPRequest } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
 
 export async function yourWorkflow(): Promise<string> {
   return await makeHTTPRequest('https://temporal.io');
 }
 ```
+<!--SNIPEND-->
 
 </details>
 

@@ -19,9 +19,87 @@ Activity is executed, the Activity Execution should send Heartbeats and set a
 [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) to ensure that the server knows it is
 still working.
 
-When an Activity is canceled, an error is raised in the Activity at the next available opportunity. If cleanup logic
-needs to be performed, it can be done in a `finally` clause or inside a caught cancel error. However, for the Activity
-to appear canceled the exception needs to be re-raised.
+To cancel an Activity from a Workflow, start the Activity inside `Workflow::async()` and call `cancel()` on the
+returned cancellation scope. Set the cancellation type to `ActivityCancellationType::WaitCancellationCompleted` and
+wait on the Activity's promise to have the Workflow wait until the Activity finishes its cleanup. A canceled Activity
+rejects its promise with an `ActivityFailure` whose previous exception is a `CanceledFailure`.
+
+<!--SNIPSTART php-cancellation-cancel-activity {"enable_code_dedenting": true}-->
+[php-sandbox/workflows/cancellation/CancelActivityWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/cancellation/CancelActivityWorkflow.php)
+```php
+$activity = Workflow::newActivityStub(
+    MyActivityInterface::class,
+    ActivityOptions::new()
+        ->withStartToCloseTimeout('1 minute')
+        // The Activity must heartbeat within this timeout to receive cancellation.
+        ->withHeartbeatTimeout('5 seconds')
+        // Wait for the Activity to finish its cleanup before the Workflow continues.
+        ->withCancellationType(ActivityCancellationType::WaitCancellationCompleted),
+);
+
+// Start the Activity in its own cancellation scope.
+$scope = Workflow::async(function () use ($activity, &$promise) {
+    $promise = $activity->processItems(60);
+    return yield $promise;
+});
+
+// Let the Activity run for a while, then cancel it.
+yield Workflow::timer(3);
+$scope->cancel();
+
+try {
+    // Wait on the Activity itself, not the scope. The scope rejects as soon as
+    // it's canceled, but the Activity's promise waits for the Activity to
+    // finish its cleanup.
+    return yield $promise;
+} catch (ActivityFailure $e) {
+    if (!$e->getPrevious() instanceof CanceledFailure) {
+        throw $e;
+    }
+    return 'Activity canceled';
+}
+```
+<!--SNIPEND-->
+
+When an Activity is canceled, `Activity::heartbeat()` throws an `ActivityCanceledException` the next time the Activity
+heartbeats. If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel
+error. However, for the Activity to appear canceled the exception needs to be re-thrown.
+
+<!--SNIPSTART php-cancellation-activity-->
+[php-sandbox/workflows/cancellation/MyActivity.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/cancellation/MyActivity.php)
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Workflows\Cancellation;
+
+use Temporal\Activity;
+use Temporal\Exception\Client\ActivityCanceledException;
+
+class MyActivity implements MyActivityInterface
+{
+    public function processItems(int $count): string
+    {
+        for ($i = 0; $i < $count; $i++) {
+            // Simulate one unit of work.
+            \sleep(1);
+
+            try {
+                // Heartbeat after each item. This is where the Activity learns that
+                // it has been canceled.
+                Activity::heartbeat($i);
+            } catch (ActivityCanceledException $e) {
+                // Clean up, then rethrow so that the Activity appears canceled.
+                \error_log("processItems canceled after {$i} items, cleaning up");
+                throw $e;
+            }
+        }
+
+        return "Processed {$count} items";
+    }
+}
+```
+<!--SNIPEND-->
 
 :::note
 

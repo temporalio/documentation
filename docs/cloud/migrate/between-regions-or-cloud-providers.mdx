@@ -18,7 +18,8 @@ Temporal Cloud's [High Availability features](/cloud/high-availability) allow yo
 ## Preparing to migrate
 
 Namespaces using Export will need to stop Export and migrate the region configuration to the new region for Export jobs to continue after migration. 
-See [failover scenarios](/cloud/export#failover-scenarios) for details.
+Workflow Executions that close while Export is disabled are not guaranteed to be exported after you re-enable it.
+See [timing and delivery guarantees](/cloud/export#timing-and-delivery-guarantees) for backfill and delivery behavior, and [failover scenarios](/cloud/export#failover-scenarios) for regional export behavior.
 
 [Using High Availability features affects pricing](/cloud/pricing#high-availability-features).
 
@@ -29,14 +30,6 @@ If the Namespace uses Private Connectivity, the steps below need additional DNS 
 :::
 
 ## Steps to migrate
-
-:::caution GCP capacity restriction
-
-To add a replica in a GCP region, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
-An approved exception covers only the creation of new single-region GCP Namespaces.
-See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction).
-
-:::
 
 1. Add a Namespace replica in the region you want to migrate to. See [regions](/evaluate/cloud/regions) for a list of available regions and supported multi-region and multi-cloud configurations.
 

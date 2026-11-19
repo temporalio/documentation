@@ -47,17 +47,19 @@ LangSmith, add the `LangSmithPlugin` to your Worker.
 
 Follow the steps below to configure your Worker.
 
-1. Install the Temporal Python SDK with the LangSmith extra.
+1. Install the standalone `temporalio-langsmith` package. It installs the Temporal Python SDK and LangSmith dependencies.
+   Refer to the [package requirements](https://github.com/temporalio/ai-integrations/blob/main/python/langsmith/pyproject.toml)
+   for supported Python and dependency versions.
 
    ```bash
-   uv add "temporalio[langsmith]>=1.26.0"
+   uv add temporalio-langsmith
    ```
 
 2. Add the `LangSmithPlugin` to your Worker. Set `project_name` to the LangSmith project where you want traces to
    appear.
 
    ```python
-   from temporalio.contrib.langsmith import LangSmithPlugin
+   from temporalio.langsmith import LangSmithPlugin
    from temporalio.worker import Worker
 
    worker = Worker(
@@ -86,7 +88,7 @@ Workflows they trigger.
 
 ```python
 from temporalio.client import Client
-from temporalio.contrib.langsmith import LangSmithPlugin
+from temporalio.langsmith import LangSmithPlugin
 
 client = await Client.connect(
     "localhost:7233",

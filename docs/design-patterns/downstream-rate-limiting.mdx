@@ -16,7 +16,8 @@ Used to **rate limit outbound requests to a downstream service**. Use this to li
 
 ## Overview
 
-The Downstream Rate Limiting pattern, also known as Task Queue rate limiting, caps how many Activities execute per second against a downstream service.
+The Downstream Rate Limiting pattern, also known as Task Queue rate limiting, caps how many Activities start per second against a downstream service.
+It limits the start rate, not how many Activities run at the same time.
 You place throttled Activities on a dedicated Task Queue backed by Workers configured with `MaxTaskQueueActivitiesPerSecond`.
 The Temporal matching service enforces this limit before dispatching tasks, so the downstream service receives a controlled request rate regardless of how many Worker instances or Workflow executions are running concurrently.
 
@@ -256,30 +257,32 @@ You must size the Worker pool so that slot availability does not become the bott
 
 ## Comparison with alternatives
 
-| Approach | Enforcement point | Works across Workers | Runtime adjustable | Complexity |
-| :--- | :--- | :--- | :--- | :--- |
-| `MaxTaskQueueActivitiesPerSecond` | Temporal matching service (server-side) | Yes | No (requires redeploy) | Low |
-| `MaxWorkerActivitiesPerSecond` | Worker SDK poller (worker-side) | No — per-worker only | No (requires redeploy) | Low |
-| Concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkflowTaskExecutionSize`, `MaxConcurrentLocalActivityExecutionSize`) | Worker executor | No — per-worker only | No (requires redeploy) | Low |
-| Sleep-based throttle in Workflow | Workflow scheduler | No | Via signal | Low |
-| Client-side token bucket in Activity | Activity execution | Per-worker only | No | Medium |
-| API gateway rate limiting | Network layer | Yes | Yes | High |
+| Approach | Limits | Enforcement point | Works across Workers | Runtime adjustable | Complexity |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `MaxTaskQueueActivitiesPerSecond` | Start rate | Temporal matching service (server-side) | Yes | Yes, with [`temporal task-queue config set --queue-rps-limit`](/cli/command-reference/task-queue#set) | Low |
+| `MaxWorkerActivitiesPerSecond` | Start rate | Worker SDK poller (worker-side) | No — per-worker only | No (requires redeploy) | Low |
+| Concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkflowTaskExecutionSize`, `MaxConcurrentLocalActivityExecutionSize`) | Concurrent executions | Worker executor | No — per-worker only | No (requires redeploy) | Low |
+| Sleep-based throttle in Workflow | Start rate | Workflow scheduler | No | Via signal | Low |
+| Client-side token bucket in Activity | Request rate | Activity execution | Per-worker only | No | Medium |
+| API gateway rate limiting | Request rate | Network layer | Yes | Yes | High |
 
 Three distinct layers of worker-side control exist alongside the server-side queue limit. `MaxWorkerActivitiesPerSecond` instructs the SDK to self-throttle its polling — the Worker will not request a new Activity task if doing so would push it over this rate. Because the limit is per-process, multiple Workers on the same queue each apply it independently, so the effective queue throughput is the per-worker cap multiplied by Worker count. By contrast, `MaxTaskQueueActivitiesPerSecond` is a server-side instruction: the Temporal matching service slows dispatch for the entire queue regardless of how many Workers are polling, making it the correct tool for protecting a shared downstream service.
 
-The concurrency slots (`MaxConcurrentActivityExecutionSize`, `MaxConcurrentWorkflowTaskExecutionSize`, `MaxConcurrentLocalActivityExecutionSize`) are not throughput limits but define the number of execution slots available on a Worker. A Worker will not accept more tasks than it has open slots, so a low slot count acts as an indirect throughput ceiling. 
+`MaxTaskQueueActivitiesPerSecond` limits how often Activities start, not how many run at the same time. At 5 per second, Activities that each take 60 seconds can reach about 300 running at once. Temporal has no Task Queue-wide concurrency limit.
+
+To cap how many Activities run at once across all Workers, put the Activity on a dedicated Task Queue, set `MaxConcurrentActivityExecutionSize` on each Worker that polls it, and control how many Workers you run. A Worker doesn't accept more tasks than it has open [slots](/develop/worker-performance#slots), so the cap for the queue is the slot count multiplied by the Worker count. If the downstream service limits both its request rate and its concurrent connections, set both options.
 
 ## Best practices
 
 - **Use a separate Task Queue for each rate limit.** `MaxTaskQueueActivitiesPerSecond` applies to every Activity on the queue. Mixing rate-limited and unrestricted Activities on the same queue will throttle the unrestricted ones too.
-- **Run at least two Worker processes per queue for availability.** A single Worker process is a single point of failure. Because `MaxTaskQueueActivitiesPerSecond` is a server-side per-queue limit rather than a per-worker one, set the same value on every Worker that polls the queue. Set each Worker to the target RPS — for example, 5 on each of two Workers yields a combined queue limit of 5, not 10. If Workers report different values, the server applies the value from the last Worker that polled.
+- **[Run at least two Worker processes per queue](/best-practices/worker#run-at-least-two-workers-per-task-queue) for availability.** A single Worker process is a single point of failure. Because `MaxTaskQueueActivitiesPerSecond` is a server-side per-queue limit rather than a per-worker one, set the same value on every Worker that polls the queue. Set each Worker to the target RPS — for example, 5 on each of two Workers yields a combined queue limit of 5, not 10. If Workers report different values and no rate was set with `temporal task-queue config set`, the server applies the value from the last Worker that polled.
 - **Monitor queue depth and schedule latency.** Track the `temporal_activity_schedule_to_start_latency` metric on the rate-limited queue; sustained growth signals that demand consistently exceeds the configured cap. You can also query the Task Queue's `ApproximateBacklogCount` via the `DescribeTaskQueue` API — a steadily growing backlog count is a direct indicator that the configured RPS cap is too low for the current submission rate.
 
 ## Common pitfalls
 
 - **Forgetting to override the task queue in Activity options.** If the Workflow does not explicitly specify `task_queue` in the Activity options, the Activity runs on the Workflow's default queue and bypasses the rate-limited Worker entirely.
-- **Setting conflicting MaxTaskQueueActivitiesPerSecond limits in workers.** This setting is set in Workers and sent to the Task Queue when a Worker polls. If you have multiple Workers with conflicting settings, the Workers will overwrite each other as they poll.
-- **Confusing throughput limits with concurrency limits.** `MaxTaskQueueActivitiesPerSecond` controls starts per second; `MaxConcurrentActivityExecutionSize` controls simultaneous executions. Long-running Activities that hold slots for minutes may exhaust concurrency before the RPS cap applies.
+- **Setting conflicting MaxTaskQueueActivitiesPerSecond limits in workers.** This setting is set in Workers and sent to the Task Queue when a Worker polls. If you have multiple Workers with conflicting settings, the Workers will overwrite each other as they poll. A rate set with `temporal task-queue config set --queue-rps-limit` overrides the Worker values until you unset it with `--queue-rps-limit default`.
+- **Confusing throughput limits with concurrency limits.** `MaxTaskQueueActivitiesPerSecond` limits how many Activity Tasks start each second, and every retry attempt is a new task that counts against it. It doesn't limit how many Activities are running. If the downstream service limits concurrent connections, cap concurrency with Worker slots as described in [Comparison with alternatives](#comparison-with-alternatives).
 - **Setting the cap far below actual demand.** A cap much lower than actual submission rate causes the queue to grow unboundedly. Monitor queue depth and raise the cap or add more Workers when throughput requirements grow.
 - **Expecting a perfectly even per-second rate.** The limit is enforced across the queue's partitions, default four. The server maintains the configured rate as an average over time but can dispatch a short burst above it, up to roughly the rate divided across partitions. If the downstream service rejects any momentary overshoot, set the cap below the hard limit to leave headroom, or reduce the partition count for the queue.
 - **Eager Activity execution bypassing the rate-limited queue.** [Eager Activity Start](/develop/worker-performance#eager-activity-start) lets the server hand an Activity straight back to the Worker that just completed the scheduling Workflow Task, skipping the Task Queue and its rate limit. It applies only when the Activity is scheduled on its Workflow's own Task Queue, and every SDK disables it on a Worker that sets `MaxTaskQueueActivitiesPerSecond`. A dedicated rate-limited queue is never bypassed this way. On a queue that also hosts the Workflows, set the limit on every Worker that polls it.
