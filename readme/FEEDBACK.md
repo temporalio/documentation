@@ -48,7 +48,9 @@ read together.
 
 A `GET` without a `title` and `message` returns 400 and writes nothing, so a crawler or link prefetcher that follows
 the bare URL doesn't create a record. A `title` or `message` with no letters or digits, such as `...`, or one that is
-only a placeholder copied from an example, such as `<summary>`, also returns 400.
+only a placeholder copied from an example, such as `<summary>`, also returns 400, and so does a `message` under 20
+characters. Scanners send one-word messages such as `m` or `rl-0` to test the endpoint, and a real report needs more
+than that to say what happened.
 
 `page_url` is normalized so reports about one page group together, however the sender reached it:
 
@@ -148,7 +150,9 @@ The message has:
   Each rating is merged with its amendments, and the latest amendment wins.
 - **A seven-day rollup on Mondays,** listing the 10 pages with the most No ratings and docs reports.
 
-Only records with `deployment: production` are counted, since preview deployments write to the same store. Docs pages
+Only records with `deployment: production` are counted, since preview deployments write to the same store. Records that
+match a [scanner probe rule](#scanner-probes), or reports with a message under 20 characters, are left out and counted
+in a note. The endpoint drops both before they're stored now, but older records are still in the store. Docs pages
 link to the site, and a page that isn't in the sitemap is marked `(not in sitemap)`. Everything a sender wrote,
 including a `page_url` on another host, is shown as inline code with Slack's `<`, `>`, and `&` escaped, so it can't
 mention a channel or render as a link.
@@ -187,6 +191,7 @@ curl -sS -H "Authorization: Bearer $CRON_SECRET" \
 | --- | --- |
 | `api/feedback.js` | The Vercel Function: reading the request, the amendment check, the Blob write |
 | `api/_feedback-lib.js` | Parsing, `page_url` normalization, entry IDs, and amend tokens, with no I/O. Tested in `api/_feedback-lib.test.js` |
+| `api/_feedback-probe.js` | The scanner probe rules, with no I/O. Tested in `api/_feedback-probe.test.js` |
 | `api/_log.js` | `header()`, `ipHash()`, and `putRecord()`, shared with `api/retrieve.js` |
 | `api/_feedback.test.js` | Handler tests with Blob and BotID stubbed |
 | `api/feedback-digest.js` | The daily digest: reading the day's records, the sitemap check, the Slack post |
@@ -221,8 +226,33 @@ with `bot_verdict: 'error'`.
   gets a 429 with `x-vercel-mitigated: deny`, and the request never reaches the function, so it isn't logged. The rule
   is set in the Vercel dashboard, not in this repository, so update this line when you change it.
 - **Field and body limits.** Text fields over their limit return 400, and a body over 8 KB returns 413.
+- **Scanner probes.** See [Scanner probes](#scanner-probes).
 - **No CORS headers.** Agents call from a server or a tool, and the widget posts from the same origin.
 - **Nothing is cached.** Every response is `Cache-Control: no-store`, because a `GET` writes a record too.
+
+### Scanner probes
+
+Security scanners send the endpoint XSS, template injection, SQL injection, and SSRF payloads, and the 2026-11-13 digest
+was all probes. `api/_feedback-probe.js` checks every field a sender controls against a short list of rules:
+
+| Rule | Matches |
+| --- | --- |
+| `markup` | HTML tags that run script or load a resource, such as `<script>`, `<img>`, `<iframe>`, and `<svg>`; event handlers such as `onerror=`; and `javascript:` URLs |
+| `callback-host` | Hosts that record a callback, such as `*.oast.pro`, `*.oast.online`, `oastify.com`, `interact.sh`, and `webhook.site` |
+| `template-injection` | Arithmetic in template syntax, such as `{{7*7}}` and `${7*7}`. Helm's `{{ .Values.x }}` doesn't match |
+| `sql-injection` | `' OR 1=1`, a word followed by `'--` at the end, `UNION SELECT`, and time-based payloads |
+| `header-injection` | A line break followed by a header in `title`, `agent`, `src`, `product_version`, or `page_url` |
+| `scanner-marker` | The words `xss`, `ssrf`, `sqli`, `ssti`, `lfi`, or `rce` in `title`, `message`, `agent`, or `src` |
+| `path-traversal` | `../../`, `/etc/passwd`, and `win.ini` |
+| `private-address` | A `page_url` on `localhost`, a private or link-local IP address, or a cloud metadata host |
+
+A submission that matches gets the same 202 response as a real report, so the scanner can't tell it was filtered, but
+nothing is stored. The runtime log line has `dropped` set to the rule's name, and none of the submitted text. To see how
+often a rule fires, search the function's logs for `"dropped"`.
+
+The rules are narrow on purpose, since a dropped report is lost. Some plain-text probes, such as `baseline body plain
+text`, still get through and appear in the digest. When a new kind of probe shows up, add a rule and a test case built
+from the real payload to `api/_feedback-probe.test.js`, along with a real report it must not match.
 
 ## Storage
 

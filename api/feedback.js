@@ -3,6 +3,7 @@ const { compileRedirects } = require('../bin/redirect-utils');
 const { redirects } = require('../vercel.json');
 const { header, ipHash, putRecord } = require('./_log');
 const { USAGE, amendToken, checkAmendment, entryPath, newId, parseSubmission } = require('./_feedback-lib');
+const { probeReason } = require('./_feedback-probe');
 
 // Public, no-auth feedback intake for agents and for the page feedback widget.
 // Each accepted submission is stored as one private Blob, and a daily digest
@@ -168,14 +169,22 @@ module.exports = async (request, response) => {
   }
   line.id = id;
 
-  // Feedback that isn't stored is lost, so the write finishes before the
-  // response, and a failure is reported to the sender.
-  try {
-    await putRecord(pathname, record, { token: blobToken });
-  } catch (error) {
-    console.error(`feedback: Blob write failed: ${error.message}`);
-    finish(503, { error: "Feedback couldn't be saved. Try again later." });
-    return;
+  // A security scanner's probe gets the same response as a real report, so
+  // the scanner learns nothing from it, but it isn't stored. The log line
+  // names the rule it matched, and nothing it sent.
+  const probe = probeReason(record);
+  if (probe) {
+    line.dropped = probe;
+  } else {
+    // Feedback that isn't stored is lost, so the write finishes before the
+    // response, and a failure is reported to the sender.
+    try {
+      await putRecord(pathname, record, { token: blobToken });
+    } catch (error) {
+      console.error(`feedback: Blob write failed: ${error.message}`);
+      finish(503, { error: "Feedback couldn't be saved. Try again later." });
+      return;
+    }
   }
 
   if (kind === 'report') {
