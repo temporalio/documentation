@@ -727,11 +727,13 @@ Add `children` for more detailed messaging.
 </ReleaseNoteHeader>
 ```
 
-Show the supported languages by using the `languages` prop.
+Show the supported SDKs by using the `languages` prop. They appear as chips below the text. Add `guidePath` to link
+each chip to `/develop/<sdk>/<guidePath>`.
 ```js
 <ReleaseNoteHeader
   type="prerelease"
   languages={["Go", "TypeScript", "Java", ".NET", "Python"]}
+  guidePath="nexus/feature-guide"
 />
 ```
 

@@ -13,7 +13,7 @@ import { WaitForDocusaurusHydration } from './utils';
 // Visual Comparison workflow reports these tests as missing snapshots.
 
 const FIXTURE_PATH = '/internal/callouts';
-const ADMONITION_COUNT = 16;
+const ADMONITION_COUNT = 17;
 const RELEASE_NOTE_HEADER_COUNT = 6;
 
 const stylesheetPath = path.resolve('visuals/screenshot.css');

@@ -122,9 +122,9 @@ Counts are source-level: an admonition in a partial counts once, however many pa
 code blocks and comments aren't counted. Pages under `docs/internal/` aren't counted either, because they exist to
 show how callouts render. Update them by hand when a migration changes callout syntax.
 
-The report reads only `docs/`. Two components in `src/` render admonition markup themselves and need checking by hand
-when admonition styles change: `src/components/elements/Tables/JsonTable.js` hard-codes the admonition classes, and
-`src/components/Demos/ServerlessWorker/ServerlessWorkerDemo.js` uses `<Admonition>` directly.
+The report reads only `docs/`. Two components in `src/` render admonitions through `<Admonition>` and need checking by
+hand when admonition styles change:
+`src/components/elements/Tables/JsonTable.js` and `src/components/Demos/ServerlessWorker/ServerlessWorkerDemo.js`.
 
 ```bash
 yarn report:callouts                                         # the working tree
