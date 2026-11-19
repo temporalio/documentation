@@ -82,13 +82,11 @@ How existing compute stops depends on the provider:
 
 ## Namespace and compute outages
 
-Temporal selects regional Serverless Worker compute as part of Namespace failover. Temporal Cloud's automatic failover
-monitors Temporal Cloud health. A failure limited to Lambda, Cloud Run, or your application does not automatically
-trigger Namespace failover.
+An outage limited to Lambda, Cloud Run, or your application does not trigger automatic Namespace failover. Temporal
+Cloud monitors its own health to decide when to fail over a Namespace. When the Namespace fails over, Temporal selects
+compute for new Serverless Workers based on the newly active region.
 
-Regional Serverless compute supports Active/Passive recovery. Configure each Worker Deployment Version that must
-continue serving work, including versions used by pinned Workflows. For setup, testing, and provider outage recovery,
-see the provider guide:
+For recovery options during a compute provider outage, use the provider guide.
 
-- [Configure high availability on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda/high-availability)
-- [Configure high availability on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run/high-availability)
+- [Recover from a Lambda outage](/production-deployment/worker-deployments/serverless-workers/aws-lambda/high-availability#recover-from-lambda-outage)
+- [Recover from a Cloud Run outage](/production-deployment/worker-deployments/serverless-workers/cloud-run/high-availability#recover-from-cloud-run-outage)
