@@ -617,3 +617,8 @@ temporal operator cluster remove \
   --address 127.0.0.1:8233 \
   --name clusterA
 ```
+
+## How to upgrade Temporal Server with Multi-Cluster Replication
+
+When one Temporal Service is active for every Global Namespace, upgrade the passive Temporal Service before the active
+one. Don't fail over a Global Namespace while an upgrade is in progress. See [Upgrade with Multi-Cluster Replication](/self-hosted-guide/upgrade-server#upgrade-with-multi-cluster-replication).
