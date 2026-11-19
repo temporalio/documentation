@@ -2,7 +2,7 @@
 id: cloud-access-control
 title: Managing Temporal Cloud access control
 sidebar_label: Managing Cloud access control
-description: Best practices for managing access control, permissions, and user management in Temporal Cloud.
+description: Choose between mTLS certificates and API keys for Worker authentication, scope access to Namespaces, and rotate credentials without downtime.
 toc_max_heading_level: 4
 tags:
   - Best Practices

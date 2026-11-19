@@ -47,6 +47,12 @@ If everything is configured correctly, you will see a `Success` status indicatin
 
 ![Temporal Cloud UI Setup for Audit Logs with GCP Pub/Sub](/img/cloud/gcp/audit-logging-pub-sub-gcp.png)
 
+## Consume an audit log
+
+The GCP Pub/Sub sink delivers newline-separated JSON objects with `snake_case` field names.
+Each message can contain multiple events; parse each line as a separate JSON object.
+See [Audit log format](/cloud/audit-logs#audit-log-format) for the public protobuf schema, JSON encoding rules, and an example.
+
 :::info MORE INFORMATION
 
 For more details, refer to [Audit Logs with Temporal Cloud](/cloud/audit-logs).
