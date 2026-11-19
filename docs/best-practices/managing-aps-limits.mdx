@@ -170,7 +170,7 @@ But sometimes you need more capacity than the on-demand model provides, especial
 
 Temporal Cloud offers two [Capacity Modes](/cloud/capacity-modes):
 
-- **On-Demand mode** (default): Your Namespace automatically scales based on your trailing 7-day usage. This works well for steady, predictable workloads.
+- **On-Demand mode** (default): Your Namespace automatically scales up based on your trailing 1-day usage and down on your trailing 7-day usage. This works well for steady, predictable workloads.
 - **Provisioned mode**: You reserve capacity by adding Temporal Resource Units (TRUs), giving you guaranteed headroom for traffic spikes.
 
 See [Capacity Modes](/cloud/capacity-modes) for complete details on TRUs, available increments, and how to manage capacity via UI, CLI, or API.
@@ -185,10 +185,10 @@ Use Provisioned capacity when the on-demand model can't respond quickly enough:
 | **Unplanned spikes** | Sudden traffic surges, viral events | React instantly via UI/CLI/API when you see throttling |
 | **Load testing** | Validating new services at scale | Provision TRUs for the test, deprovision after |
 | **Batch jobs** | Scheduled high-throughput jobs | Automate TRU scaling via API around job schedules |
-| **Migrations** | Onboarding a new workload faster than on-demand adjusts | Bridge with TRUs for approximately 7 days while the on-demand envelope catches up |
+| **Migrations** | Onboarding a new workload faster than on-demand adjusts | Bridge with TRUs for approximately 1 day while the on-demand envelope catches up |
 
 :::note
-When switching back to on-demand mode, your APS limit resets to the running average from the last 7 days.
+When switching back to on-demand mode, your APS limit resets based on the running average from the last 7 days.
 If Temporal Support has set a custom limit for your Namespace, that limit is preserved across the switch.
 Plan for this if your workload is sensitive to the transition.
 :::
