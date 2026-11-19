@@ -59,6 +59,10 @@ temporal-consent-banner:not(:defined) {
    --ifm-color-primary-lighter: #BFDBFE; */
   /* --ifm-color-primary-lightest: #cae3fb; */
   --ifm-code-font-size: 95%;
+  /* Square corners across the theme chrome, to match the page feedback widget and callouts. Most Infima
+     radius variables derive from --ifm-global-radius; breadcrumbs set their own. */
+  --ifm-global-radius: 0;
+  --ifm-breadcrumb-border-radius: 0;
   /* --doc-sidebar-width: 275px !important;
    --ifm-link-hover-decoration: none;
    --ifm-link-hover-color: inherit; */
@@ -185,9 +189,18 @@ a:hover {
    apply only to <details>. :where() keeps them at single-class specificity, so per-page rules such as
    .sdk-walkthrough-details still override them. */
 :where(details).alert {
-  border-radius: 3px !important;
+  border-radius: 0 !important;
   border-width: 1px;
   border-style: solid;
+}
+
+/* Infima hard-codes these radii instead of reading --ifm-global-radius. */
+.menu__link,
+.menu__caret,
+.menu__list-item-collapsible,
+.dropdown__link,
+kbd {
+  border-radius: 0;
 }
 
 :where(details).alert--info {
