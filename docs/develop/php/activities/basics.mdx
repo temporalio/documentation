@@ -21,7 +21,17 @@ Activities are defined as methods of a plain PHP interface annotated with `#[Act
 
 Following is an example of an interface that defines four Activities:
 
+<!--SNIPSTART php-activity-basics-define-->
+[php-sandbox/activities/basics/define/FileProcessingActivities.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/basics/define/FileProcessingActivities.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Activities\Basics\Define;
+
+use Temporal\Activity\ActivityInterface;
+use Temporal\Activity\ActivityMethod;
+
 #[ActivityInterface]
 // Defining an interface for the activities.
 interface FileProcessingActivities
@@ -36,6 +46,7 @@ interface FileProcessingActivities
     public function deleteLocalFile(string $fileName): void;
 }
 ```
+<!--SNIPEND-->
 
 ### Define Activity parameters {/* #activity-parameters */}
 
@@ -70,6 +81,8 @@ Return values must be serializable to a byte array using the provided [DataConve
 The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
 Thus, you can return both primitive types:
 
+<!--SNIPSTART php-activity-basics-return-primitive-->
+[php-sandbox/activities/basics/return-primitive/GreetingActivity.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/basics/return-primitive/GreetingActivity.php)
 ```php
 class GreetingActivity implements GreetingActivityInterface
 {
@@ -79,9 +92,12 @@ class GreetingActivity implements GreetingActivityInterface
     }
 }
 ```
+<!--SNIPEND-->
 
 And objects:
 
+<!--SNIPSTART php-activity-basics-return-object-->
+[php-sandbox/activities/basics/return-object/GreetingActivity.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/basics/return-object/GreetingActivity.php)
 ```php
 class GreetingActivity implements GreetingActivityInterface
 {
@@ -91,6 +107,7 @@ class GreetingActivity implements GreetingActivityInterface
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Customize your Activity Type {/* #activity-type */}
 
@@ -102,7 +119,17 @@ An optional `#[ActivityMethod]` attribute can be used to override a default Acti
 You can define your own prefix for all Activity names by adding the `prefix` option to the `ActivityInterface` attribute.
 (The default prefix is empty.)
 
+<!--SNIPSTART php-activity-basics-custom-name-->
+[php-sandbox/activities/basics/custom-name/FileProcessingActivities.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/basics/custom-name/FileProcessingActivities.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Activities\Basics\CustomName;
+
+use Temporal\Activity\ActivityInterface;
+use Temporal\Activity\ActivityMethod;
+
 #[ActivityInterface("file_activities.")]
 interface FileProcessingActivities
 {
@@ -116,5 +143,6 @@ interface FileProcessingActivities
     public function deleteLocalFile(string $fileName);
 }
 ```
+<!--SNIPEND-->
 
 The `#[ActivityInterface("file_activities.")]` is an attribute that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.

@@ -79,8 +79,6 @@ class HelloWorldAgent:
 
         result = await Runner.run(agent, input=prompt)
         return result.final_output
-
-
 ```
 <!--SNIPEND-->
 
@@ -179,8 +177,6 @@ async def get_weather(city: str) -> Weather:
     Get the weather for a given city.
     """
     return Weather(city=city, temperature_range="14-20C", conditions="Sunny with wind.")
-
-
 ```
 <!--SNIPEND-->
 
@@ -205,8 +201,6 @@ class ToolsWorkflow:
 
         result = await Runner.run(agent, input=question)
         return result.final_output
-
-
 ```
 <!--SNIPEND-->
 
@@ -241,8 +235,6 @@ class WebSearchWorkflow:
 
         result = await Runner.run(agent, question)
         return result.final_output
-
-
 ```
 <!--SNIPEND-->
 
@@ -313,8 +305,6 @@ def orchestrator_agent() -> Agent:
         ],
     )
     return orchestrator_agent
-
-
 ```
 <!--SNIPEND-->
 
@@ -439,8 +429,6 @@ class SimpleMCPWorkflow:
 
         result = await Runner.run(agent, question)
         return result.final_output
-
-
 ```
 <!--SNIPEND-->
 
@@ -493,7 +481,6 @@ async def run(
             input_items=self.input_items,
         )
     )
-
 ```
 <!--SNIPEND-->
 
@@ -517,8 +504,6 @@ def approval_callback(request: MCPToolApprovalRequest) -> MCPToolApprovalFunctio
 
     result: MCPToolApprovalFunctionResult = {"approve": True}
     return result
-
-
 ```
 <!--SNIPEND-->
 
@@ -592,8 +577,6 @@ class LocalSandboxWorkflow:
             ),
         )
         return result.final_output_as(str, raise_if_incorrect_type=True)
-
-
 ```
 <!--SNIPEND-->
 
@@ -667,8 +650,6 @@ class StreamTextWorkflow:
         # message output, so assert the str this signature promises rather
         # than letting a None through.
         return result.final_output_as(str, raise_if_incorrect_type=True)
-
-
 ```
 <!--SNIPEND-->
 
