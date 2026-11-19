@@ -67,8 +67,6 @@ temporal-consent-banner:not(:defined) {
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
   --tag-text-color-dark: #ddd;
-  --feedback-primary-color: #000000;
-  --feedback-white-color: #fff;
   --space-black: #141414;
   --indigo-100: #cacbf9;
   --off-white: #f8fafc;
