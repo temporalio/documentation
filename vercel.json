@@ -82,6 +82,11 @@
   ],
   "redirects": [
     {
+      "source": "/develop/rust/data-handling/external-storage",
+      "destination": "/develop/rust/best-practices/data-handling/external-storage",
+      "permanent": true
+    },
+    {
       "source": "/:path*/null",
       "destination": "/:path*",
       "permanent": true
@@ -2512,12 +2517,12 @@
     },
     {
       "source": "/cloud/sla",
-      "destination": "/cloud/slo#uptime",
+      "destination": "/cloud/slo#availability",
       "permanent": true
     },
     {
       "source": "/evaluate/cloud/sla",
-      "destination": "/cloud/slo#uptime",
+      "destination": "/cloud/slo#availability",
       "permanent": true
     },
     {

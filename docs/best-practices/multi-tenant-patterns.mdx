@@ -234,8 +234,8 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 | Workflow Task Queues per customer | 1 |
 | Activity Task Queues per customer | 1 |
 | Max Task Queue pollers per Namespace | 20,000 (per [Cloud limits](/evaluate/cloud/limits)) |
-| SDK concurrent Workflow task pollers | 5 |
-| SDK concurrent Activity task pollers | 5 |
+| SDK concurrent Workflow task pollers | 5 (fixed) |
+| SDK concurrent Activity task pollers | 5 (fixed) |
 | Max concurrent Workflow executions | 200 |
 | Max concurrent Activity executions | 200 |
 
@@ -244,6 +244,9 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 **[Task Queue](/task-queue) poller limits:**
 - Each [Worker](/workers) uses 10 pollers per tenant (5 Workflow + 5 Activity)
 - Maximum Workers in [Namespace](/namespaces): 20,000 pollers ÷ 10 = **2,000 Workers**
+- With [Poller Autoscaling](/develop/worker-performance/configuration#configuring-poller-options), which Temporal Cloud enables by default, each poller type can grow to 100 pollers per Worker.
+  At that maximum, the Namespace limit of 20,000 pollers per Task type is reached at 200 Workers.
+  To plan around the fixed counts in this example, configure fixed poller counts or lower the autoscaling maximum.
 
 **Worker capacity:**
 - Each Worker can theoretically handle 200 [Workflows](/workflows) and 200 [Activities](/activities) concurrently

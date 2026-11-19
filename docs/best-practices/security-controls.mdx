@@ -169,7 +169,7 @@ Temporal Cloud’s platform is engineered for fault-tolerance out of the box, bu
 | **Multi-Region Replication** | **If a disruption of your workflow will cause loss of revenue, poor end-user experience, or issues with regulatory compliance.** | ≤ 20 minutes | Near-zero (≈ seconds) |
 | **Multi-Cloud Replication** | **If you need the highest level of disaster tolerance, protecting against outages of an entire cloud provider (for example, AWS or GCP)** | ≤ 20 minutes | Near-zero (≈ seconds) |
 
-For the contractual uptime commitment for each deployment type, see the [Temporal Cloud SLA](https://temporal.io/sla).
+For the contractual availability commitment for each deployment type, see the [Temporal Cloud SLA](https://temporal.io/sla).
 
 ### Identify availability-sensitive Namespaces
 
