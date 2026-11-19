@@ -88,10 +88,13 @@ The amendment is stored as its own Blob next to the entry, not as an overwrite. 
 entry back first, and Blob's cache can return a stale copy for up to 60 seconds. Readers merge an entry with its
 amendments by `id`, and the latest amendment wins, so a reader can change their rating after a misclick.
 
-The widget appears above the footer of every docs page. After a reader rates a page, a `localStorage` flag shows them
-a thank-you line instead of the question on that page. Amplitude gets a `Docs Page Feedback` event with `rating` and
-`url` on the click, and `Docs Page Feedback Reason` with `rating`, `reason`, and `url` on submit, both only with
-analytics consent. Comments go only to `/api/feedback`.
+The widget shares a row with the "View this page on GitHub" link in the footer of every docs page
+(`src/theme/EditMetaRow`). After a rating, a panel under the buttons offers the reasons and a comment box, and **Skip**
+closes it without sending anything more. A `localStorage` entry, `docs-page-feedback:<path>`, then shows the reader a
+thank-you line instead of the question on that page. The entry holds `{ "rating", "at" }`, where `at` is when they rated
+the page. The thank-you line doesn't expire. Amplitude gets a `Docs Page Feedback` event with `rating` and `url` on the
+click, and `Docs Page Feedback Reason` with `rating`, `reason`, and `url` on submit, both only with analytics consent.
+Comments go only to `/api/feedback`.
 
 ### Bot check
 
@@ -190,7 +193,8 @@ curl -sS -H "Authorization: Bearer $CRON_SECRET" \
 | `api/_feedback-digest-lib.js` | Grouping records and formatting the Slack message, with no I/O. Tested in `api/_feedback-digest-lib.test.js` |
 | `api/_feedback-digest.test.js` | Digest handler tests with Blob, the sitemap, and Slack stubbed |
 | `src/components/PageFeedback/` | The "Was this page helpful?" widget |
-| `src/theme/DocItem/Footer/index.tsx` | Wraps the doc footer to put the widget above it |
+| `src/theme/EditMetaRow/` | Ejected doc footer row that puts the widget and the GitHub link on one line |
+| `src/theme/EditThisPage/` | The "View this page on GitHub" link |
 | `src/client/botid.ts` | Starts the BotID client for the widget's `POST` |
 
 The `Test API Functions` workflow (`.github/workflows/test-api.yml`) runs `node --test 'api/*.test.js'` on pull
