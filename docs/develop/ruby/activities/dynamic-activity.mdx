@@ -20,7 +20,9 @@ Only one Dynamic Activity can be present on a Worker.
 Often, dynamic is used in conjunction with `activity_raw_args` which does not convert arguments but instead passes them
 through as a splatted array of `Temporalio::Converters::RawValue` instances.
 
-```ruby
+<!--SNIPSTART ruby-dynamic-activity-->
+[ruby-sandbox/activities/dynamic-activity/my_dynamic_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/dynamic-activity/my_dynamic_activity.rb)
+```rb
 class MyDynamicActivity < Temporalio::Activity::Definition
   # Make this the dynamic activity and accept raw args
   activity_dynamic
@@ -35,3 +37,4 @@ class MyDynamicActivity < Temporalio::Activity::Definition
   end
 end
 ```
+<!--SNIPEND-->

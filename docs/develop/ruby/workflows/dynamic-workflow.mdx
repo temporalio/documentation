@@ -20,7 +20,9 @@ Only one Dynamic Workflow can be present on a Worker.
 Often, dynamic is used in conjunction with `workflow_raw_args` which does not convert arguments but instead passes them
 through as a splatted array of `Temporalio::Converters::RawValue` instances.
 
-```ruby
+<!--SNIPSTART ruby-dynamic-workflow-->
+[ruby-sandbox/workflows/dynamic-workflow/my_dynamic_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/dynamic-workflow/my_dynamic_workflow.rb)
+```rb
 class MyDynamicWorkflow < Temporalio::Workflow::Definition
   # Make this the dynamic workflow and accept raw args
   workflow_dynamic
@@ -40,3 +42,4 @@ class MyDynamicWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->

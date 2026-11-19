@@ -101,8 +101,6 @@ class HelloWorldAgentWorkflow:
                             final_text = part.text
 
         return final_text
-
-
 ```
 {/* SNIPEND */}
 

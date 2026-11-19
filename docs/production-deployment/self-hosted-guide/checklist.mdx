@@ -93,7 +93,7 @@ Self-hosted Temporal doesn't support role-based access control (RBAC) or audit l
 Temporal recommends keeping up-to-date and not falling behind on your server versions.
 
 Temporal Server is proactively updated, and releases as often as every two weeks.
-Temporal recommends [upgrading sequentially](/self-hosted-guide/upgrade-server), not skipping any minor versions, although you can skip patch versions.
+[Upgrade sequentially](/self-hosted-guide/upgrade-server), one minor version at a time. Before moving to the next minor version, upgrade to the latest patch release of your current minor version.
 Temporal does not guarantee support for Temporal Server, but old servers will be hard for even the community to support, so we encourage you to keep up to date.
 You must create and maintain the infrastructure to host and run your self-hosted Temporal installation, such as Kubernetes, and data stores for persistence.
 
