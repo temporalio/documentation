@@ -92,7 +92,7 @@ The following limits apply at the Namespace level.
 ### Actions per second
 
 - Scope: Namespace
-- Default limit: 500 actions per second (APS). With On-Demand Capacity, the default limit is the floor your APS limit automatically scales above based on the last 7 days of usage; your limit never falls below the default limit. With Provisioned Capacity, your limit is set by the Temporal Resource Units you provision.
+- Default limit: 500 actions per second (APS). With On-Demand Capacity, the default limit is the floor your APS limit automatically scales above based on the last 1 day of usage when scaling up and the last 7 days of usage when scaling down; your limit never falls below the default limit. With Provisioned Capacity, your limit is set by the Temporal Resource Units you provision.
 - See your current limit: View it in the Temporal Cloud UI under the Namespace overview, retrieve it with the [Temporal CLI](/cli/command-reference/cloud/namespace#capacity) (`temporal cloud namespace capacity get`), or track the `temporal_cloud_v1_action_limit` metric. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
 - How to increase: See [Capacity Modes](/cloud/capacity-modes) or [contact support](/evaluate/cloud/support#support-ticket).
 - What happens when you exceed the limit: See [Throttling behavior](#throttling-behavior) below.
