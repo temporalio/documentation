@@ -190,8 +190,8 @@ in your Temporal Service to facilitate migrating your Visibility data from one d
 
 #### [Durable Execution](/durable-execution)
 
-Durable Execution lets you write code as though failures don't exist. It preserves the state and progress of a Workflow
-Execution so that, after a failure, execution resumes where it left off and continues until it completes.
+Durable Execution preserves the state and progress of a Workflow Execution across transient failures.
+Permanent failures require intervention; the Workflow can keep its progress while waiting for a fix.
 
 <!-- _Tags: [temporal](/tags/temporal), [durable-execution](/tags/durable-execution), [term](/tags/term)_ -->
 

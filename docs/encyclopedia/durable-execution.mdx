@@ -88,10 +88,11 @@ Once an intervention clears the failure, the operation resumes where it left off
 
 How that works in Temporal depends on where the failure happens:
 
-- **A bug in Workflow code.** An unhandled exception, a panic, or a non-determinism error fails the Workflow Task, not
-  the Workflow Execution. The Temporal Service retries the Workflow Task, and the Workflow Execution stays open with its
-  state intact. Deploy a fix, and the next attempt replays the Event History and
-  continues. See [Workflow Task failures vs Workflow Execution failures](/encyclopedia/application-failures#task-vs-execution).
+- **A bug in Workflow code.** By default, non-Temporal exceptions, Go panics, and non-determinism errors fail the
+  Workflow Task, leaving the Workflow Execution open while the Temporal Service retries the Task.
+  Deploy a fix, and the next attempt replays the Event History and continues. Uncaught Temporal failures, errors returned
+  from a Go Workflow, and configured failure exception types can instead close the Workflow Execution. See
+  [Workflow Task failures vs Workflow Execution failures](/encyclopedia/application-failures#task-vs-execution).
 - **A bug in Activity code.** Errors thrown from an Activity are retryable unless you mark them non-retryable, so the
   Activity keeps retrying under its Retry Policy. Deploy a fix, and the next attempt runs the fixed code.
 - **Bad input data.** Raise a non-retryable Application Failure from the Activity so it stops retrying. The Workflow can
@@ -103,7 +104,8 @@ How that works in Temporal depends on where the failure happens:
 - **Steps that already ran with a bug.** [Reset](/workflow-execution/event#reset) the Workflow Execution to a point
   before the bug affected it. The new run continues from that point with the fixed code.
 
-Durable Execution preserves progress only while the Workflow Execution stays open.
+A Workflow Execution must stay open to continue in the same run.
+After it closes, Temporal retains its Event History for the Namespace's [Retention Period](/temporal-service/temporal-server#retention-period).
 If Workflow code throws an Application Failure, or a Workflow timeout expires, the Workflow Execution closes, and
 recovering means resetting it or starting a new one.
 Decide which failures should end the Workflow Execution and which should wait for a fix.
