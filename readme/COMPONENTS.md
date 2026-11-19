@@ -744,6 +744,9 @@ Use the `href` prop to make the `children` content a link.
   Sign up for updates to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
 ```
+
+To see each variant that docs pages use, open the unlisted page at `/internal/callouts` (`docs/internal/callouts.mdx`).
+
 ## Using ForOs
 
 Role: Show OS-specific wording outside a tab set, such as "open PowerShell" on Windows and "open a terminal" on macOS
