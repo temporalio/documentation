@@ -157,10 +157,14 @@ installation methods.
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="yml">
-  {`version: "3"
+<SetupStep>
+
+<CodeSnippet title=".rr.yaml">
+
+<!--SNIPSTART php-quickstart-rr-yaml-->
+[php-sandbox/.rr.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/.rr.yaml)
+```yaml
+version: "3"
 
 rpc:
   listen: tcp://127.0.0.1:6001
@@ -172,13 +176,15 @@ temporal:
   address: "127.0.0.1:7233"
 
 logs:
-  level: info`}
+  level: info
+```
+<!--SNIPEND-->
 
 </CodeSnippet>
-</>
-}>
 
-Create a simple configuration file named `.rr.yaml` with the following content:
+## Configure RoadRunner
+
+Create a configuration file named `.rr.yaml` with the following content.
 
 </SetupStep>
 
@@ -306,6 +312,8 @@ This test will confirm that:
 
 Create an Activity file (`src/GreetingActivity.php`):
 
+<!--SNIPSTART php-quickstart-activity-->
+[php-sandbox/src/GreetingActivity.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/src/GreetingActivity.php)
 ```php
 <?php
 declare(strict_types=1);
@@ -325,6 +333,7 @@ class GreetingActivity
     }
 }
 ```
+<!--SNIPEND-->
 
 An Activity is a method that executes a single, well-defined action (either short or long-running), which often involves
 interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling
@@ -338,6 +347,8 @@ Each method used in workflow classes should be annotated with `Temporal\Activity
 
 Create a Workflow file (`src/SayHelloWorkflow.php`):
 
+<!--SNIPSTART php-quickstart-workflow-->
+[php-sandbox/src/SayHelloWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/src/SayHelloWorkflow.php)
 ```php
 <?php
 declare(strict_types=1);
@@ -365,11 +376,14 @@ class SayHelloWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 ### 3. Create a Worker file
 
 Create a Worker file (`worker.php`, under project root directory):
 
+<!--SNIPSTART php-quickstart-worker-->
+[php-sandbox/worker.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/worker.php)
 ```php
 <?php
 declare(strict_types=1);
@@ -390,6 +404,7 @@ $worker->registerActivity(\App\GreetingActivity::class);
 
 $factory->run();
 ```
+<!--SNIPEND-->
 
 ### 4. Run the Worker
 
@@ -409,7 +424,7 @@ Workers are a crucial part of your Temporal application as they're what actually
 Workflows and Activities. For more information on Workers, see
 [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-### 5. Execute the Workflow
+### 4. Execute the Workflow
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
@@ -417,6 +432,8 @@ This final step will validate that everything is working correctly with your fil
 
 Create a separate file called `client.php`:
 
+<!--SNIPSTART php-quickstart-client-->
+[php-sandbox/client.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/client.php)
 ```php
 <?php
 declare(strict_types=1);
@@ -436,6 +453,7 @@ $result = $workflowStub->sayHello('Temporal');
 
 echo "Result: {$result}\n";
 ```
+<!--SNIPEND-->
 
 While your Worker is still running, open a new terminal and run:
 

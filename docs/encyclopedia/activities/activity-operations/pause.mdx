@@ -31,8 +31,9 @@ Pause stops the Temporal Service from scheduling new retries of an [Activity Exe
   Workflow can't detect or react to it. See [Observability](/activity-operations#observability).
 - **[Heartbeating](/encyclopedia/detecting-activity-failures#activity-heartbeat) determines whether the in-flight
   execution is interrupted:**
-  - **Activities with Heartbeat** are interrupted on their next Heartbeat. The SDK raises a Pause-specific error, and
-    the Activity can catch this to clean up resources before exiting.
+  - **Activities with Heartbeat** are interrupted on their next Heartbeat. Depending on the SDK, this surfaces as an
+    exception or as context cancellation, and the Activity can detect it to clean up resources before exiting. See
+    [Detect Pause in Activity code](#detect-pause-in-activity-code).
   - **Activities without Heartbeat** continue running to completion. If the execution succeeds, the result is delivered
     to the Workflow normally. If it fails, no retry is scheduled. Pause takes effect after the in-flight execution ends.
 - **Pause is idempotent.** Pausing an already-Paused Activity has no effect. Pausing a completed Activity returns an
@@ -65,7 +66,7 @@ cases differently, for example releasing held resources on Pause while preservin
 
 | SDK        | Version  | How to detect Pause                                                  |
 | ---------- | -------- | -------------------------------------------------------------------- |
-| Go         | v1.34.0+ | Catch `activity.ErrActivityPaused`                                   |
+| Go         | v1.34.0+ | `context.Cause(ctx)` returns `activity.ErrActivityPaused`            |
 | Java       | v1.29.0+ | Catch `ActivityPausedException`                                      |
 | TypeScript | v1.12.3+ | Check `cancellationDetails.paused === true`                          |
 | Python     | v1.12.0+ | Check `cancellation_details().paused` on `asyncio.CancelledError`    |

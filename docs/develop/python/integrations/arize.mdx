@@ -108,8 +108,6 @@ def setup_tracing(service_name: str) -> None:
             BatchSpanProcessor(_exporter(), schedule_delay_millis=500)
         )
     trace.set_tracer_provider(provider)
-
-
 ```
 <!--SNIPEND-->
 
@@ -149,8 +147,6 @@ def _exporter() -> OTLPSpanExporter:
     base = phoenix_base_url()
     endpoint = base if base.endswith("/v1/traces") else f"{base}/v1/traces"
     return OTLPSpanExporter(endpoint=endpoint, headers=phoenix_headers(), timeout=10)
-
-
 ```
 <!--SNIPEND-->
 
@@ -251,8 +247,6 @@ async def classify_ticket(ticket: Ticket) -> Classification:
         )
     )
     return parse_classification(response.choices[0].message.content or "")
-
-
 ```
 <!--SNIPEND-->
 
@@ -322,8 +316,6 @@ class TicketTriageWorkflow:
     def approve_validator(self, decision: ApprovalDecision) -> None:
         if decision.approved and not decision.reviewer:
             raise ValueError("approval requires a reviewer")
-
-
 ```
 <!--SNIPEND-->
 
@@ -363,8 +355,6 @@ def agents_plugin() -> OpenAIAgentsPlugin:
             ),
         ),
     )
-
-
 ```
 <!--SNIPEND-->
 
@@ -553,8 +543,6 @@ class OpenInferenceEnrichmentProcessor(SpanProcessor):
                 value = baggage.get_baggage(key, parent_context)
                 if value is not None:
                     span.set_attribute(key, str(value))
-
-
 ```
 <!--SNIPEND-->
 

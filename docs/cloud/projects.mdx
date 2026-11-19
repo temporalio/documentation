@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 import { ReleaseNoteHeader, CaptionedImage } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="projects">
-Features in pre-release are experimental. While Project-specific APIs and functionality may evolve, enabling Projects is designed to be backward compatible with existing resources, permissions, and workflows through the Default Project.
+Project-specific APIs and functionality may evolve during Public Preview. Enabling Projects is designed to be backward compatible with existing resources, permissions, and workflows through the Default Project.
 </ReleaseNoteHeader>
 
 Projects are an organizational layer within a Temporal Cloud Account that groups related resources into a single operational boundary. With Projects, you can organize [Namespaces](/cloud/namespaces), [Nexus endpoints](/nexus/endpoints), and [Connectivity Rules](/cloud/connectivity#connectivity-rules) around how your organization operates: by team, environment, service, or business unit.
@@ -35,7 +35,8 @@ They also don't restrict which Namespaces can call a Nexus Endpoint. See [Use Ne
 
 ## Enable Projects on your Account
 
-While Projects are in pre-release, they are not enabled by default. [Contact Support](/evaluate/cloud/support#support-ticket) to request enabling Projects for your account.
+Projects are enabled by default for new Accounts. No action is required.
+For existing Accounts, [contact Support](/evaluate/cloud/support#support-ticket) to request enabling Projects for your Account.
 
 Once Projects are enabled, existing Accounts receive a Default Project, and new Accounts are created with one automatically. For existing Accounts, all existing resources are automatically placed in the Default Project. Existing role assignments and effective permissions remain unchanged. For new Accounts, the Default Project is created automatically. New resources are automatically placed in the Default Project unless you specify otherwise.
 
@@ -47,6 +48,8 @@ Every Temporal Cloud Account includes a Default Project. The Default Project is 
 If you don't need the organizational boundaries offered by Projects, continue to use the Default Project for all your resources. You can always create a new Project later if you need it.
 
 Every Project has a unique, immutable `Project ID` and an editable `display name`. The Project ID is used by the Cloud Ops API, CLI, and Terraform to identify the Project when creating and managing Project-scoped resources.
+
+To manage Projects from the Temporal CLI, install the [Temporal Cloud extension](/cli/setup-cli#install-the-temporal-cloud-extension).
 
 You can move an existing Namespace to another Project. See [Move a Namespace to another Project](#move-a-namespace). You can also create a new Project and place a new Namespace in that Project.
 
@@ -67,6 +70,11 @@ To create a Project using the Temporal Cloud UI:
 2. Click the **Create Project** button to create a new Project.
 3. On the **Create Project** page that appears, give the Project a name (limited to 64 characters) and an optional description (limited to 255 characters).
 4. Click **Create**.
+
+  </TabItem>
+  <TabItem value="cli" label="Temporal CLI">
+
+Use [`temporal cloud project create`](/cli/command-reference/cloud/project#create) with `--display-name` to create a Project. Use `--description` to add an optional description.
 
   </TabItem>
   <TabItem value="cloud-api" label="Cloud Operations API">
@@ -456,6 +464,11 @@ The Cloud UI removes redundant Namespace roles when you upgrade an Account role.
 To modify an existing Project, click **Project Settings** in the left navigation. The Project Settings page appears, with the General tab selected by default. Here, you can change the name or description of your Project. You can also access your Project's unique ID. You can copy the ID, but you can't change it.
 
   </TabItem>
+  <TabItem value="cli" label="Temporal CLI">
+
+Use [`temporal cloud project update`](/cli/command-reference/cloud/project#update) with `--project-id` to select the Project. Use `--display-name` or `--description` to change its name or description.
+
+  </TabItem>
   <TabItem value="cloud-api" label="Cloud Operations API">
 
 Use the
@@ -497,6 +510,11 @@ An Account must always contain at least one Project. If the Account contains two
 To delete a Project, click **Project Settings** in the left navigation and then click the **Delete Project** tab. Click the **Delete** button to permanently delete the Project.
 
 Use the **Deletion Prevention** slider to set the Deletion Protection flag for this Project. Once set, the Project can't be deleted unless the flag is deliberately disabled.
+
+  </TabItem>
+  <TabItem value="cli" label="Temporal CLI">
+
+Use [`temporal cloud project delete`](/cli/command-reference/cloud/project#delete) with `--project-id` to delete an empty Project that has deletion protection disabled.
 
   </TabItem>
   <TabItem value="cloud-api" label="Cloud Operations API">

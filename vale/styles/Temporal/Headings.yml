@@ -334,6 +334,7 @@ exceptions:
   - Microsoft Entra
   - Multi-Region Access Points
   - Pod Identity
+  - Private Link
   - Private Service Connect
   - Cloud Ops API
   - Terraform

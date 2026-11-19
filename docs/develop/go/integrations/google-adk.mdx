@@ -170,7 +170,6 @@ func AgentWorkflow(ctx workflow.Context, question string) (string, error) {
 	}
 	return answer, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -183,7 +182,6 @@ The tool itself is an ordinary Temporal Activity — register it on the worker a
 func GetWeather(ctx context.Context, in GetWeatherInput) (GetWeatherOutput, error) {
 	return GetWeatherOutput{City: in.City, Conditions: "sunny, 72°F"}, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -310,7 +308,6 @@ func MultiAgentWorkflow(ctx workflow.Context, question string) (string, error) {
 	}
 	return answer, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -411,7 +408,6 @@ func ApprovalWorkflow(ctx workflow.Context, request string) (Result, error) {
 		msg = googleadk.ConfirmationResponse(decision)
 	}
 }
-
 ```
 <!--SNIPEND-->
 
@@ -529,7 +525,6 @@ func ChatWorkflow(ctx workflow.Context, in ChatInput) error {
 		MaxTurns: in.MaxTurns,
 	})
 }
-
 ```
 <!--SNIPEND-->
 
