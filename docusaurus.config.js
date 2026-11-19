@@ -305,7 +305,7 @@ module.exports = async function createConfigAsync() {
             // // below remark plugin disabled until we can figure out why it is not transpiling to ESNext properly - swyx
             // // original PR https://github.com/temporalio/documentation/pull/496/files
             admonitions: {
-              keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency'],
+              keywords: ['note', 'tip', 'info', 'caution', 'danger'],
             },
             remarkPlugins: [require('./plugins/og-image/remarkPlugin')],
           },

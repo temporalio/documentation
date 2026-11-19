@@ -87,8 +87,16 @@ html[data-theme='dark']:root {
   --ifm-preview-text: #f9fafb;
   --ifm-link-color: #f9fafb;
   --ifm-link-hover-color: var(--ifm-color-primary);
-  --alert--competency-background: #00474a;
-  --alert--info-background: #353536;
+  /* Callouts: admonitions (src/theme/Admonition) and ReleaseNoteHeader */
+  --callout-hairline: #2e2e2e;
+  --callout-note-accent: #93c5fd;
+  --callout-tip-accent: #6ee7b7;
+  --callout-caution-accent: #fcd34d;
+  --callout-caution-border: #854d0e;
+  --callout-caution-background: #261c06;
+  --callout-warning-accent: #fca5a5;
+  --callout-warning-border: #991b1b;
+  --callout-warning-background: #2a1111;
   --feedback-primary-color: #fff; /* submit button, accents */
   --feedback-light-color: #2a2a2a; /* canvas/tool backgrounds */
   --feedback-dark-color: #1a1a1a; /* modal background */
@@ -134,8 +142,16 @@ html[data-theme='light']:root {
   --ifm-link-color: #111827;
   --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-preview-text: #141414;
-  --alert--competency-background: #a8fcff;
-  --alert--info-background: #ebeded;
+  /* Callouts: admonitions (src/theme/Admonition) and ReleaseNoteHeader */
+  --callout-hairline: #e5e7eb;
+  --callout-note-accent: #1d4ed8;
+  --callout-tip-accent: #047857;
+  --callout-caution-accent: #b45309;
+  --callout-caution-border: #fcd34d;
+  --callout-caution-background: #fffbeb;
+  --callout-warning-accent: #b91c1c;
+  --callout-warning-border: #fca5a5;
+  --callout-warning-background: #fef2f2;
   --last-updated-color: #465a78;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary);
@@ -163,20 +179,6 @@ a,
 a:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
-}
-
-.alert {
-  border-radius: 3px !important;
-  border-width: 1px;
-  border-style: solid;
-}
-
-.alert--competency {
-  background-color: var(--alert--competency-background);
-}
-
-.alert--info {
-  background-color: var(--alert--info-background);
 }
 
 /* If we scope things with .tailwindcss we can attach to the tailwind styles on only the intro page */

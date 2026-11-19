@@ -1,125 +1,125 @@
+/* Stage colors. --callout-hairline comes from src/css/custom.css, shared with admonitions. */
 :root {
-  /* Pre-release */
-  --release-prerelease-bg: #fef3c7;
-  --release-prerelease-border: #f59e0b;
-  --release-prerelease-text: #111827;
+  --release-public-preview-accent: #6d28d9;
+  --release-public-preview-border: #c4b5fd;
+  --release-public-preview-background: #f5f3ff;
 
-  /* Public Preview */
-  --release-public-preview-bg: #eff6ff;
-  --release-public-preview-border: #8b5cf6;
-  --release-public-preview-text: #111827;
+  --release-prerelease-accent: #0e7490;
+  --release-prerelease-border: #67e8f9;
+  --release-prerelease-background: #ecfeff;
 }
 
-[data-theme="dark"] {
-  /* Pre-release */
-  --release-prerelease-bg: #422006;
-  --release-prerelease-border: #fbbf24;
-  --release-prerelease-text: #e6f6e6;
+[data-theme='dark'] {
+  --release-public-preview-accent: #c4b5fd;
+  --release-public-preview-border: #5b21b6;
+  --release-public-preview-background: #1c1433;
 
-  /* Public Preview */
-  --release-public-preview-bg: #2e1065;
-  --release-public-preview-border: #a78bfa;
-  --release-public-preview-text: #e6f6e6;
+  --release-prerelease-accent: #67e8f9;
+  --release-prerelease-border: #155e75;
+  --release-prerelease-background: #062a30;
 }
 
 .releaseNoteHeader {
-  display: flex;
-  gap: 0.875rem;
+  --release-accent: var(--release-public-preview-accent);
+  --release-border: var(--release-public-preview-border);
+  --release-background: var(--release-public-preview-background);
   margin: 0 0 1.5rem;
-  padding: 1rem;
-  border: 1px solid var(--release-note-border);
-  background: var(--release-note-background);
-  color: var(--release-note-text);
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--release-border);
+  border-radius: 0;
+  color: var(--ifm-font-color-base);
+  font-size: 0.9375rem;
+  line-height: 1.6;
 }
 
-.accent {
-  width: 0.25rem;
-  border-radius: 999px;
-  background: var(--release-note-border);
+.releaseNoteHeader[data-release-type='prerelease'] {
+  --release-accent: var(--release-prerelease-accent);
+  --release-border: var(--release-prerelease-border);
+  --release-background: var(--release-prerelease-background);
 }
 
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.pill {
-  font-weight: 700;
-  font-size: 0.8rem;
+/* The stage tag sits on its own line. The negative margin equals its padding, so the tag's text lines up
+   with the body text below it. */
+.stage {
+  display: inline-block;
+  margin: 0 0 0.5rem -0.5rem;
+  padding: 0.125rem 0.5rem;
+  background: var(--release-background);
+  color: var(--release-accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
   text-transform: uppercase;
 }
 
-.text {
-  margin: 0.35rem 0 0;
+.stage:hover {
+  color: var(--release-accent);
 }
 
 .text > p {
-  margin: unset;
+  margin: 0;
 }
 
-.headerRow {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: flex-start;
+.text > p + p {
+  margin-top: 0.5rem;
 }
 
-.languages {
+.link {
+  color: inherit;
+}
+
+.sdks {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.375rem;
+  align-items: center;
+  gap: 0.375rem 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--callout-hairline);
+}
+
+.sdksLabel {
+  margin-right: 0.25rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.sdkList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.sdk {
+  display: inline-flex;
   align-items: center;
+  min-height: 1.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--callout-hairline);
+  color: var(--ifm-font-color-base);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
 }
 
-.languageIcon svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+a.sdk:hover {
+  border-color: var(--release-accent);
+  color: var(--release-accent);
+  text-decoration: none;
 }
 
-.language {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-top: 10px;
-}
-
-.languageLink {
-  display: flex;
-  line-height: 0;
-  border-radius: 4px;
-  transition: opacity 0.15s ease;
-}
-
-.languageLink:hover {
-  opacity: 0.85;
-}
-
-.languageLink:focus-visible {
-  outline: 2px solid var(--release-note-border);
+a.sdk:focus-visible {
+  outline: 2px solid var(--release-accent);
   outline-offset: 2px;
 }
 
-.languageStatic {
-  display: flex;
-  line-height: 0;
-  pointer-events: none;
-  cursor: default;
-}
-
-.supportedLanguages {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-@media (max-width: 640px) {
-  .headerRow {
-    flex-direction: column;
-  }
+.sdkArrow {
+  margin-left: 0.3rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.7rem;
 }
