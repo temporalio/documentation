@@ -166,13 +166,6 @@
   margin-top: 0.75rem;
 }
 
-.commentLabel {
-  display: block;
-  margin-bottom: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
 .comment {
   display: block;
   width: 100%;
@@ -184,6 +177,12 @@
   font: inherit;
   font-size: 0.875rem;
   resize: vertical;
+}
+
+/* Browser default placeholder grey can fall below 4.5:1 contrast. */
+.comment::placeholder {
+  color: var(--ifm-color-emphasis-700);
+  opacity: 1;
 }
 
 .hint {

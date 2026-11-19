@@ -244,12 +244,12 @@ export default function PageFeedback({ pathname, children }: Props): ReactNode {
           </fieldset>
           {reason && (
             <div className={styles.commentBlock}>
-              <label htmlFor="page-feedback-comment" className={styles.commentLabel}>
-                Anything else?
-              </label>
+              {/* No visible label, as on Stripe's docs. The placeholder disappears
+                  while typing, so aria-label names the field. */}
               <textarea
-                id="page-feedback-comment"
                 className={styles.comment}
+                aria-label="Any more information you'd like to add"
+                placeholder="Any more information you'd like to add…"
                 value={comment}
                 maxLength={COMMENT_MAX}
                 rows={2}
