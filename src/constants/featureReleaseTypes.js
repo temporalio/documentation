@@ -8,6 +8,6 @@ export const FEATURE_RELEASE_TYPES = {
   serverlessWorkersLambda: "publicPreview",
   serverlessWorkersCloudRun: "publicPreview",
   externalStorage: "publicPreview",
-  projects: "prerelease",
+  projects: "publicPreview",
   payloadEncryptionValidation: "prerelease",
 };

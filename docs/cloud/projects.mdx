@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 import { ReleaseNoteHeader, CaptionedImage } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="projects">
-Features in pre-release are experimental. While Project-specific APIs and functionality may evolve, enabling Projects is designed to be backward compatible with existing resources, permissions, and workflows through the Default Project.
+Project-specific APIs and functionality may evolve during Public Preview. Enabling Projects is designed to be backward compatible with existing resources, permissions, and workflows through the Default Project.
 </ReleaseNoteHeader>
 
 Projects are an organizational layer within a Temporal Cloud Account that groups related resources into a single operational boundary. With Projects, you can organize [Namespaces](/cloud/namespaces), [Nexus endpoints](/nexus/endpoints), and [Connectivity Rules](/cloud/connectivity#connectivity-rules) around how your organization operates: by team, environment, service, or business unit.
@@ -35,7 +35,8 @@ They also don't restrict which Namespaces can call a Nexus Endpoint. See [Use Ne
 
 ## Enable Projects on your Account
 
-While Projects are in pre-release, they are not enabled by default. [Contact Support](/evaluate/cloud/support#support-ticket) to request enabling Projects for your account.
+Projects are enabled by default for new Accounts. No action is required.
+For existing Accounts, [contact Support](/evaluate/cloud/support#support-ticket) to request enabling Projects for your Account.
 
 Once Projects are enabled, existing Accounts receive a Default Project, and new Accounts are created with one automatically. For existing Accounts, all existing resources are automatically placed in the Default Project. Existing role assignments and effective permissions remain unchanged. For new Accounts, the Default Project is created automatically. New resources are automatically placed in the Default Project unless you specify otherwise.
 
