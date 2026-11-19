@@ -2,7 +2,7 @@
 id: sidekiq-to-standalone-activity
 title: Migrate a Sidekiq job queue to a Temporal Standalone Activity
 sidebar_label: Migrate from Sidekiq
-description: Migrate Sidekiq background jobs to a Temporal Standalone Activity for reliability and durable execution.
+description: Convert a Sidekiq job into a Ruby Activity, replace perform_async with start_activity, map retries to a Retry Policy, and return job results.
 tags:
   - Migration
   - Sidekiq
@@ -338,24 +338,20 @@ result = client.execute_activity(
 puts "Result: #{result}"
 ```
 
-Here, `max_attempts: 6` matches Sidekiq's `retry: 5`, and `max_interval` (in seconds) caps the backoff between attempts. The `non_retryable_error_types` list names errors that should fail immediately without retrying — useful for permanent failures such as a missing record, where retrying cannot help. To raise such an error from the Activity, use `Temporalio::Error::ApplicationError` with `non_retryable: true` in `my_activity.rb`:
+Here, `max_attempts: 6` matches Sidekiq's `retry: 5`, and `max_interval` (in seconds) caps the backoff between attempts. The `non_retryable_error_types` list names errors that should fail immediately without retrying — useful for permanent failures such as a missing record, where retrying cannot help. To raise such an error, add `require "temporalio/error"` to `my_activity.rb` and raise `Temporalio::Error::ApplicationError` with `non_retryable: true`. For example, if your real `get_user` returns `nil` for an unknown user, add this check to `execute` before the call to `deliver_email`:
 
 ```ruby
 # my_activity.rb (excerpt)
-require "temporalio/error"
-
-def execute(input)
-  user = get_user(input["user_id"])
-  raise Temporalio::Error::ApplicationError.new(
-    "No such user", type: "InvalidUserError", non_retryable: true
-  ) if user.nil?
-
-  deliver_email(user.email, "Welcome!")
-  "sent to #{user.email}"
-end
+# ...
+  def execute(input)
+    user = get_user(input["user_id"])
+    raise Temporalio::Error::ApplicationError.new(
+      "No such user", type: "InvalidUserError", non_retryable: true
+    ) if user.nil?
+    # ...
 ```
 
-Because the mock `deliver_email` in this tutorial never fails, the happy path completes on the first attempt. To watch a retry happen, make `deliver_email` raise an exception on its first call or two; Temporal will re-run the Activity automatically according to the policy above. The same `retry_policy:` argument works on `start_activity` as well.
+The mock `get_user` in this tutorial always returns a user, so you don't need this check to follow along. Because the mock `deliver_email` in this tutorial never fails, the happy path completes on the first attempt. To watch a retry happen, make `deliver_email` raise an exception on its first call or two; Temporal will re-run the Activity automatically according to the policy above. The same `retry_policy:` argument works on `start_activity` as well.
 
 ## Step 9: Inspect Activities in place of the Sidekiq Web UI
 
@@ -407,7 +403,7 @@ A rule of thumb: migrate a job to a Standalone Activity when it stands on its ow
 
 ## Conclusion
 
-In this tutorial, you migrated a Sidekiq job to a Temporal Standalone Activity. You converted the job into an Activity, ran a Worker to execute it, started it fire-and-forget in place of `perform_async`, retrieved a return value that Sidekiq could never give you, replaced `sidekiq_options retry:` with a Retry Policy, and inspected your Activities in place of the Sidekiq Web UI — all without writing a single Workflow. Your jobs now survive Worker crashes, retry on well-defined policies, and remain queryable through the client and Web UI.
+Your Sidekiq job now runs as a Temporal Standalone Activity with no Workflow code. It survives Worker crashes, retries according to a Retry Policy you set, can return a result to its caller, and is queryable from the client, the CLI, and the Web UI.
 
 Because Standalone Activities are in Public Preview, review the Temporal [Standalone Activity overview](/standalone-activity) for the latest API details before relying on them in production. Useful next topics include:
 
