@@ -1,13 +1,14 @@
 ---
 id: roles-and-permissions
 title: Roles and permissions
-description: Temporal Cloud RBAC gives every access principal an account-level role, with Namespace-level permissions and optional Custom Roles for granular access.
+description: Temporal Cloud RBAC gives every access principal an account-level role, with optional Project roles, Namespace-level permissions, and Custom Roles.
 toc_max_heading_level: 4
 ---
 
 Temporal Cloud uses role-based access control (RBAC) to manage access to resources. Access is governed both on the
 account-level and within a Namespace. At the account-level, each access principal is assigned one [account-level role](#account-level-roles). At the Namespace-level, each access principal can be assigned one [Namespace-level permissions](#namespace-level-permissions). 
 Some account-level roles, such as Account Owner and Global Admin, automatically have Namespace Admin permissions on all Namespaces in the account. 
+If [Projects](/cloud/projects) are enabled on your Account, you can also assign [Project-level roles](#project-level-roles) that grant access to the Namespaces and other resources in a Project.
 
 Each access principal, including users, groups, and Service Accounts, must have a predefined account-level role. For more granular access control, you can also use [Custom Roles](/cloud/manage-access/custom-roles) to define specific permissions for specific Temporal Cloud resources and assign them to any principal.
 
@@ -64,6 +65,18 @@ We strongly recommend the following precautions when assigning the Account Owner
 
 This latter rule is useful for anyone on your team who may need to be contacted urgently, regardless of their Account
 role.
+
+## Project-level roles {/* #project-level-roles */}
+
+If [Projects](/cloud/projects) are enabled on your Account, you can assign users, groups, and Account-scoped Service
+Accounts a role on a Project. Depending on the role, a Project role grants access to the Namespaces and other resources
+in that Project. For example, Project Admin includes Namespace Admin on every Namespace in the Project.
+
+Project roles are additive. They don't reduce access that comes from an account-level role or a Namespace-level
+permission. Account Owner and Global Admin already include Project Admin on every Project.
+
+For the list of Project roles, see [Project roles](/cloud/projects#project-roles). For which roles you can assign when
+a principal already has a broader role, see [Role precedence](/cloud/projects#role-precedence).
 
 ## Namespace-level permissions {/* #namespace-level-permissions */}
 

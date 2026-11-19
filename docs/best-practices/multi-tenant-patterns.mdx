@@ -286,7 +286,8 @@ Your multi-tenant architecture also determines how much isolation you get from N
 - **Shared Namespace with Fairness or per-tenant Task Queues**: Best for scale and operational simplicity, but tenant isolation is
   mostly enforced by your application and worker routing logic rather than by Temporal credentials.
 - **Separate Namespaces for domains or services**: Useful when teams need separate credentials, dashboards, APS
-  envelopes, or on-call boundaries.
+  envelopes, or on-call boundaries. In Temporal Cloud, you can group each team's Namespaces into a
+  [Project](/cloud/projects) and grant access to them together.
 - **Namespace per tenant**: Strongest isolation, but highest provisioning and credential-management overhead.
 
 If tenants, teams, or regulated workloads need different credentials or RBAC boundaries, decide that together with your

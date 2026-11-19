@@ -89,6 +89,10 @@ The way you partition Namespaces should usually match the way you partition mach
   should usually have separate Service Accounts and API keys as well.
 - If you use Namespace-per-tenant isolation, expect your credential model and RBAC model to become correspondingly more
   granular.
+- If a team owns several Namespaces, group them into a [Project](/cloud/projects). Assign the team a
+  [Project role](/cloud/projects#project-roles) instead of a role on each Namespace, and use a
+  [Project-scoped Service Account](/cloud/manage-access/service-accounts#project-scoped-service-accounts) for
+  automation that needs access to every Namespace in the Project.
 
 For more on topology tradeoffs, see [Namespace best practices](/best-practices/managing-namespace) and
 [Multi-tenant application patterns](/best-practices/multi-tenant-patterns).
