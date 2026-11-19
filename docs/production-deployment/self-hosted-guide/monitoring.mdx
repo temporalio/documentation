@@ -105,8 +105,8 @@ For end-to-end examples of how to expose metrics from each SDK, see the metrics 
 - [.NET SDK Sample](https://github.com/temporalio/samples-dotnet/tree/main/src/OpenTelemetry)
 
 Some of these may require you to set different metrics port numbers based on the Prometheus example here, which is configured to scrape port `8077` and `8078` by default.
-For example, the Go sample serves metrics on port `9090`, the same host port as the Prometheus container, and the Python sample uses ports `9000` and `9001`.
-Change the sample's listen port to one of the scrape targets, or add its port to `prometheus.yml`.
+For example, the Go sample serves metrics on port `9090`, which the Prometheus container already uses, so change the Go sample's listen port to `8077` or `8078`.
+The Python sample uses ports `9000` and `9001`. Change them to the scrape targets, or add them to the targets in `prometheus.yml`.
 Follow the instructions from each of the samples to run Workflows and begin emitting metrics.
 This will allow you to populate a dashboard in the next section and understand how to further customize Temporal observability for your needs.
 
