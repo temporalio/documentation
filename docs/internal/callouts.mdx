@@ -87,6 +87,15 @@ Temporal Service in Server v1.33.0.
 
 :::
 
+A title can hold inline code:
+
+:::note Why `masterClusterName` and `clusterInformation` differ between the two files
+
+Each Temporal Service starts knowing only about itself, so each file names its own Temporal Service. You add the other
+Temporal Service in Step 3 with `temporal operator cluster upsert`, not in the configuration file.
+
+:::
+
 A title can also follow the keyword after a space:
 
 :::tip Prerequisites
@@ -185,3 +194,17 @@ A header with `languages` and no `guidePath` shows the SDKs without links:
 <ReleaseNoteHeader type="publicPreview" languages={['Go', 'Java', 'Python', '.NET']}>
   Eager Workflow Start is enabled for all Temporal Cloud users and self-hosted Temporal Server 1.29.0+.
 </ReleaseNoteHeader>
+
+## Expandable details
+
+Docusaurus renders `<details>` with the same Infima classes admonitions used to have, so it's here to catch style
+changes that leak into it.
+
+<details>
+<summary>More on memory, state, and authority</summary>
+
+- **Roles, not storage types.** The same data can play more than one role. An order row is domain state, owned by your
+  database. Once the agent looks it up, it is part of working memory, and a summary the agent keeps of it is long-term
+  memory. When they disagree, the order row still wins.
+
+</details>

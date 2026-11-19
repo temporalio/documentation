@@ -1,6 +1,6 @@
-import { describe, it } from 'node:test';
-import assert from 'node:assert';
-import { ADMONITION_KINDS, ADMONITION_KEYWORD_KINDS, resolveAdmonitionKind } from '../src/theme/Admonition/types.js';
+const { describe, it } = require('node:test');
+const assert = require('node:assert');
+const { ADMONITION_KINDS, ADMONITION_KEYWORD_KINDS, resolveAdmonitionKind } = require('./admonitionKinds');
 
 describe('resolveAdmonitionKind', () => {
   it('renders note, info, and important as Note', () => {

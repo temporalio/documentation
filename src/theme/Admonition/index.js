@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ThemeClassNames } from '@docusaurus/theme-common';
+import { ThemeClassNames, processAdmonitionProps } from '@docusaurus/theme-common';
 import Translate from '@docusaurus/Translate';
-import { resolveAdmonitionKind } from './types';
+import { resolveAdmonitionKind } from '@site/src/utils/admonitionKinds';
 import styles from './styles.module.css';
 
 // Stroke icons drawn on a 24-unit grid. They take the label's color through currentColor.
@@ -99,31 +99,9 @@ const KIND_CONFIGS = {
   },
 };
 
-// Workaround because it's difficult in MDX v1 to provide a MDX title as props
-// See https://github.com/facebook/docusaurus/pull/7152#issuecomment-1145779682
-function extractMDXAdmonitionTitle(children) {
-  const items = React.Children.toArray(children);
-  const mdxAdmonitionTitle = items.find(
-    (item) => React.isValidElement(item) && item.props?.mdxType === 'mdxAdmonitionTitle'
-  );
-  const rest = <>{items.filter((item) => item !== mdxAdmonitionTitle)}</>;
-  return {
-    mdxAdmonitionTitle,
-    rest,
-  };
-}
-
-function processAdmonitionProps(props) {
-  const { mdxAdmonitionTitle, rest } = extractMDXAdmonitionTitle(props.children);
-  return {
-    ...props,
-    title: props.title ?? mdxAdmonitionTitle,
-    children: rest,
-  };
-}
-
 export default function Admonition(props) {
-  const { children, type, title, icon: iconProp } = processAdmonitionProps(props);
+  // processAdmonitionProps moves an MDX title that holds markup (inline code, links) out of the children.
+  const { children, type, title, icon: iconProp, className, id } = processAdmonitionProps(props);
   const { kind, known } = resolveAdmonitionKind(type);
   if (!known) {
     console.warn(`No admonition config found for admonition type "${type}". Using Note as fallback.`);
@@ -136,14 +114,16 @@ export default function Admonition(props) {
         ThemeClassNames.common.admonition,
         ThemeClassNames.common.admonitionType(type),
         styles.admonition,
-        styles[kind]
+        styles[kind],
+        className
       )}
+      id={id}
     >
       <div className={styles.admonitionHeading}>
         <span className={styles.admonitionIcon}>{icon}</span>
-        {title ?? label}
+        <span>{title ?? label}</span>
       </div>
-      <div className={styles.admonitionContent}>{children}</div>
+      {children ? <div className={styles.admonitionContent}>{children}</div> : null}
     </div>
   );
 }

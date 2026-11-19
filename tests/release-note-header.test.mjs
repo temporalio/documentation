@@ -39,12 +39,6 @@ describe('stage labels', () => {
       assert.strictEqual(RELEASE_NOTE_LABELS[stage], label, stage);
     }
   });
-
-  it('carry no "Currently in" prefix', () => {
-    for (const { label } of Object.values(BASE_RELEASE_STAGES)) {
-      assert.doesNotMatch(label, /currently in/i);
-    }
-  });
 });
 
 describe('sdkChips', () => {

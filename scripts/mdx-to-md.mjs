@@ -162,7 +162,11 @@ export const RELEASE_NOTE_LABELS = {
   deprecated: "Deprecated",
 };
 
-/** Mirrors resolveReleaseStage in ReleaseNoteHeader/releaseStage.js — featureName lookup, then type, then default. */
+/**
+ * Same order as resolveReleaseStage in ReleaseNoteHeader/releaseStage.js: featureName lookup, then type, then
+ * default. Unlike the component, which renders an unknown type as Public Preview, this keeps the type so
+ * releaseNoteLabelFromType can label it.
+ */
 function resolveReleaseNoteType(featureName, type) {
   return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
 }

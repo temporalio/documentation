@@ -3,8 +3,6 @@ import Link from '@docusaurus/Link';
 import styles from './ReleaseNoteHeader.module.css';
 import { BASE_RELEASE_STAGES, resolveReleaseStage, sdkChips } from './releaseStage';
 
-export { BASE_RELEASE_STAGES };
-
 export default function ReleaseNoteHeader({
   // type can be "prerelease" or "publicPreview"
   type = 'publicPreview',
@@ -45,7 +43,7 @@ export default function ReleaseNoteHeader({
           <span className={styles.sdksLabel}>SDKs</span>
           <ul className={styles.sdkList} aria-label="Supported SDKs">
             {chips.map(({ language, href: guideHref }) => (
-              <li key={language}>
+              <li key={language} className={styles.sdkItem}>
                 {guideHref ? (
                   <Link to={guideHref} className={styles.sdk} aria-label={`${language} guide`}>
                     {language}

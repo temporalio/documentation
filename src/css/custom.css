@@ -97,6 +97,7 @@ html[data-theme='dark']:root {
   --callout-warning-accent: #fca5a5;
   --callout-warning-border: #991b1b;
   --callout-warning-background: #2a1111;
+  --details-background: #353536;
   --feedback-primary-color: #fff; /* submit button, accents */
   --feedback-light-color: #2a2a2a; /* canvas/tool backgrounds */
   --feedback-dark-color: #1a1a1a; /* modal background */
@@ -152,6 +153,7 @@ html[data-theme='light']:root {
   --callout-warning-accent: #b91c1c;
   --callout-warning-border: #fca5a5;
   --callout-warning-background: #fef2f2;
+  --details-background: #ebeded;
   --last-updated-color: #465a78;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary);
@@ -179,6 +181,18 @@ a,
 a:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* Docusaurus renders <details> with Infima's alert classes. Admonitions no longer use them, so these rules
+   apply only to <details>. */
+details.alert {
+  border-radius: 3px !important;
+  border-width: 1px;
+  border-style: solid;
+}
+
+details.alert--info {
+  background-color: var(--details-background);
 }
 
 /* If we scope things with .tailwindcss we can attach to the tailwind styles on only the intro page */
