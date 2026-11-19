@@ -208,3 +208,13 @@ changes that leak into it.
   memory. When they disagree, the order row still wins.
 
 </details>
+
+A page can restyle its own `<details>`. This one uses the class from the Temporal SDKs page, which has no box:
+
+<details className="sdk-walkthrough-details">
+<summary>How do the Temporal SDKs work with the Temporal Service?</summary>
+
+The Temporal Service functions more as a choreographer than a conductor. Rather than directly assigning tasks to
+Workers, the Temporal Service arranges the Tasks into a Task Queue while Workers poll the Task Queue.
+
+</details>

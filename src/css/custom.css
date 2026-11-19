@@ -184,14 +184,15 @@ a:hover {
 }
 
 /* Docusaurus renders <details> with Infima's alert classes. Admonitions no longer use them, so these rules
-   apply only to <details>. */
-details.alert {
+   apply only to <details>. :where() keeps them at single-class specificity, so per-page rules such as
+   .sdk-walkthrough-details still override them. */
+:where(details).alert {
   border-radius: 3px !important;
   border-width: 1px;
   border-style: solid;
 }
 
-details.alert--info {
+:where(details).alert--info {
   background-color: var(--details-background);
 }
 
