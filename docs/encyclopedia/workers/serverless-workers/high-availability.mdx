@@ -21,9 +21,43 @@ The [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-ins
 active. A [scaling group's](/serverless-workers#scaling-groups) `region_ids` names the Temporal regions where that group
 applies. After Namespace failover, the WCI selects compute for the newly active region.
 
-The compute resource's location is configured separately, in a Lambda ARN or a Cloud Run Worker Pool's region. Assigning
-a group to a Namespace region does not deploy or move compute there. Two groups pointing at the same compute region
-retain a dependency on that region.
+The compute target specifies where the resource runs, through the region in the Lambda ARN or the Cloud Run Worker
+Pool's region setting.
+
+### Example of regional compute selection
+
+A Worker Deployment Version has two scaling groups. Each group points to a Lambda function running the same Worker
+build. While the Namespace is active in `aws-us-east-1`, the WCI invokes the function in `us-east-1`. After the
+Namespace fails over to `aws-us-west-2`, the WCI invokes the function in `us-west-2` to start new Workers.
+
+```mermaid
+flowchart LR
+    accTitle: Lambda selection before and after Namespace failover
+    accDescr: The WCI matches the active Namespace region to a scaling group and invokes that group's function for new Workers.
+
+    subgraph Before["Before failover"]
+        direction TB
+        EastNamespace["Active Namespace region<br/>aws-us-east-1"]
+        EastGroup["Scaling group<br/>region_ids<br/>[aws-us-east-1]"]
+        EastLambda["AWS Lambda in us-east-1<br/>orders-worker:3"]
+        EastNamespace -->|WCI matches| EastGroup
+        EastGroup -->|WCI invokes| EastLambda
+    end
+
+    subgraph After["After failover"]
+        direction TB
+        WestNamespace["Active Namespace region<br/>aws-us-west-2"]
+        WestGroup["Scaling group<br/>region_ids<br/>[aws-us-west-2]"]
+        WestLambda["AWS Lambda in us-west-2<br/>orders-worker:7"]
+        WestNamespace -->|WCI matches| WestGroup
+        WestGroup -->|WCI invokes| WestLambda
+    end
+
+    Before ~~~ After
+```
+
+If the `aws-us-west-2` scaling group instead points to a Lambda ARN in `us-east-1`, the WCI selects the `aws-us-west-2`
+group after failover and still invokes a function in `us-east-1`.
 
 ## Regional and default compute configurations
 
