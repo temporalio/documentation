@@ -34,7 +34,7 @@ A [Query](/sending-messages#sending-queries) is a synchronous operation that ret
 
 <!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["1-23", "35-93", "162"]}-->
 [rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
-```rust
+```rs
 use std::{collections::HashMap, time::Duration};
 
 use temporalio_macros::{workflow, workflow_methods};
@@ -125,7 +125,7 @@ impl GreetingsWorkflow {
 
 <!--SNIPSTART rust-message-passing-start {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 let wf_handle = client
     .start_workflow(
         GreetingsWorkflow::run,
@@ -138,7 +138,7 @@ let wf_handle = client
 
 <!--SNIPSTART rust-message-passing-send-query {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 let supported_languages = wf_handle
     .query(
         GreetingsWorkflow::get_languages,
@@ -158,7 +158,7 @@ A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to
 
 <!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["25-28", "44-45", "95-99", "162"]}-->
 [rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
-```rust
+```rs
 // ...
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct ApproveInput {
@@ -181,7 +181,7 @@ impl GreetingsWorkflow {
 
 <!--SNIPSTART rust-message-passing-send-signal {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 wf_handle
     .signal(
         GreetingsWorkflow::approve,
@@ -201,7 +201,7 @@ An [Update](/sending-messages#sending-updates) is a trackable synchronous reques
 
 <!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["30-33", "44-45", "101-124", "162"]}-->
 [rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
-```rust
+```rs
 // ...
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct SetLanguageInput {
@@ -257,7 +257,7 @@ To send Queries, Signals, or Updates, use a Workflow handle from the client:
 
 <!--SNIPSTART rust-message-passing-start {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 let wf_handle = client
     .start_workflow(
         GreetingsWorkflow::run,
@@ -272,7 +272,7 @@ let wf_handle = client
 
 <!--SNIPSTART rust-message-passing-send-query {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 let supported_languages = wf_handle
     .query(
         GreetingsWorkflow::get_languages,
@@ -295,7 +295,7 @@ You can send a Signal to a Workflow Execution from a Temporal Client or from ano
 
 <!--SNIPSTART rust-message-passing-send-signal {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 wf_handle
     .signal(
         GreetingsWorkflow::approve,
@@ -312,7 +312,7 @@ wf_handle
 
 <!--SNIPSTART rust-message-passing-signal-from-workflow {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/approver.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/approver.rs)
-```rust
+```rs
 // Pass a Run ID instead of None to target a specific run.
 ctx.external_workflow(workflow_id, None)
     .signal(
@@ -328,7 +328,7 @@ ctx.external_workflow(workflow_id, None)
 
 <!--SNIPSTART rust-message-passing-signal-with-start {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 let wf_handle = client
     .signal_with_start_workflow(
         GreetingsWorkflow::run,
@@ -356,7 +356,7 @@ This code fetches an Update result:
 
 <!--SNIPSTART rust-message-passing-execute-update {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 let previous_language = wf_handle
     .execute_update(
         GreetingsWorkflow::set_language,
@@ -379,7 +379,7 @@ For example:
 
 <!--SNIPSTART rust-message-passing-start-update {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 let update_handle = wf_handle
     .start_update(
         GreetingsWorkflow::set_language_activity,
@@ -405,7 +405,7 @@ With `WorkflowIdConflictPolicy::UseExisting`, the Update goes to the running Wor
 
 <!--SNIPSTART rust-message-passing-update-with-start {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/message-passing/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/client.rs)
-```rust
+```rs
 let previous_language = client
     .execute_update_with_start_workflow(
         GreetingsWorkflow::run,
@@ -435,7 +435,7 @@ The following code executes an Activity that makes a network call to a remote se
 
 <!--SNIPSTART rust-message-passing-activity-->
 [rust-sandbox/workflows/message-passing/src/activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/activities.rs)
-```rust
+```rs
 use std::{collections::HashMap, time::Duration};
 
 use temporalio_macros::activities;
@@ -477,7 +477,7 @@ This lets your client track the progress of asynchronous work performed by the U
 
 <!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["44-45", "126-162"]}-->
 [rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
-```rust
+```rs
 // ...
 #[workflow_methods]
 impl GreetingsWorkflow {
@@ -536,7 +536,7 @@ It's common to use `ctx.wait_condition` to wait for a particular Signal or Updat
 
 <!--SNIPSTART rust-message-passing-workflow {"selectedLines": ["44-45", "62-71", "162"]}-->
 [rust-sandbox/workflows/message-passing/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/message-passing/src/workflows.rs)
-```rust
+```rs
 // ...
 #[workflow_methods]
 impl GreetingsWorkflow {

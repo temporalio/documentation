@@ -259,7 +259,6 @@ async def ask(self, prompt: str) -> str:
         except CLIConnectionError:
             # Redo the turn from the prompt if Claude Code saved it, or start again.
             pass
-
 ```
 <!--SNIPEND-->
 

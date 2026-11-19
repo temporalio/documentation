@@ -35,7 +35,7 @@ Available timeout fields include:
 
 <!--SNIPSTART rust-activity-timeouts-start-to-close {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/timeouts/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/workflows.rs)
-```rust
+```rs
 let greeting = ctx
     .execute_activity(
         MyActivities::greet,
@@ -54,7 +54,7 @@ In Rust, configure the Retry Policy as part of the Activity options when schedul
 
 <!--SNIPSTART rust-activity-timeouts-retry-policy {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/timeouts/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/workflows.rs)
-```rust
+```rs
 let language = ctx
     .execute_activity(
         MyActivities::call_greeting_service,
@@ -83,7 +83,7 @@ For example, you can increase the delay linearly with each attempt instead of us
 
 <!--SNIPSTART rust-activity-timeouts-next-retry-delay-->
 [rust-sandbox/activities/timeouts/src/retry_delay.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/retry_delay.rs)
-```rust
+```rs
 use std::time::Duration;
 
 use temporalio_macros::activities;
@@ -124,7 +124,7 @@ To heartbeat an Activity in Rust, call the heartbeat API from inside the Activit
 
 <!--SNIPSTART rust-activity-timeouts-heartbeat {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/timeouts/src/heartbeat.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/heartbeat.rs)
-```rust
+```rs
 #[activity]
 pub async fn greet(ctx: ActivityContext, name: String) -> Result<String, ActivityError> {
     ctx.record_heartbeat("greet activity started".to_string())
@@ -145,7 +145,7 @@ A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeou
 
 <!--SNIPSTART rust-activity-timeouts-heartbeat-timeout {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/timeouts/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/timeouts/src/workflows.rs)
-```rust
+```rs
 let language = ctx.execute_activity(
     MyActivities::call_greeting_service,
     ActivityLanguages::English,

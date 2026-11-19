@@ -40,7 +40,7 @@ To cancel a Workflow Execution in Rust, use the `cancel` method on the Workflow 
 
 <!--SNIPSTART rust-cancellation-cancel {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/cancellation/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/cancellation/src/client.rs)
-```rust
+```rs
 let handle = client
     .start_workflow(
         CancellationWorkflow::run,
@@ -71,7 +71,7 @@ Example of a cancellable Activity in Rust:
 
 <!--SNIPSTART rust-cancellation-activities-->
 [rust-sandbox/workflows/cancellation/src/activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/cancellation/src/activities.rs)
-```rust
+```rs
 use std::time::Duration;
 
 use temporalio_macros::activities;
@@ -108,7 +108,7 @@ Canceling the Workflow cancels its running Activity. By default, an Activity use
 
 <!--SNIPSTART rust-cancellation-workflow-->
 [rust-sandbox/workflows/cancellation/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/cancellation/src/workflows.rs)
-```rust
+```rs
 use std::time::Duration;
 
 use temporalio_macros::{workflow, workflow_methods};
@@ -182,7 +182,7 @@ To terminate a Workflow Execution in Rust, use the `terminate` method on the Wor
 
 <!--SNIPSTART rust-cancellation-terminate {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/cancellation/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/cancellation/src/client.rs)
-```rust
+```rs
 let handle = client
     .start_workflow(
         CancellationWorkflow::run,

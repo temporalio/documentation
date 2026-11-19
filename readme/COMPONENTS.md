@@ -24,6 +24,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using DocsTable](#using-docstable)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
+- [Using RoleCheck](#using-rolecheck)
 - [Using SdkGuideLinks](#using-sdkguidelinks)
 - [Using AnnotatedCode](#using-annotatedcode)
 - [Using ReleaseNoteHeader](#using-release-note-header)
@@ -417,6 +418,26 @@ Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
 <Components.ToolTipTerm term="your term" tooltip="any custom content you want to add" />
 ```
 
+## Using RoleCheck
+
+Role: Mark a cell in a role or permission grid, such as the tables in
+[`permissions-reference.mdx`](../docs/cloud/manage-access/permissions-reference.mdx).
+
+Usage:
+
+```
+import { RoleCheck } from '@site/src/components';
+
+| Permission          | Finance Admin                      |
+| ------------------- | :--------------------------------: |
+| CreateBillingReport | <RoleCheck role="Finance Admin" /> |
+```
+
+It renders a ✅ with the role name as visually hidden text. Screen readers read the role name instead of "check
+mark", and a scraper that splits a long table into chunks keeps the role name with each row. Without it, Kapa answered
+a question about `CreateBillingReport` with "the table's columns are flattened, so I can't tell with certainty which
+two" roles have it. In the Markdown pipeline it becomes `✅ Finance Admin`. Set `role` to the column header.
+
 ## Using SdkGuideLinks
 
 Role: Render a vertical list of SDK guide links, each with a colored block icon and label, linking readers to the relevant SDK-specific page.
@@ -706,11 +727,13 @@ Add `children` for more detailed messaging.
 </ReleaseNoteHeader>
 ```
 
-Show the supported languages by using the `languages` prop.
+Show the supported SDKs by using the `languages` prop. They appear as chips below the text. Add `guidePath` to link
+each chip to `/develop/<sdk>/<guidePath>`.
 ```js
 <ReleaseNoteHeader
   type="prerelease"
   languages={["Go", "TypeScript", "Java", ".NET", "Python"]}
+  guidePath="nexus/feature-guide"
 />
 ```
 
@@ -723,6 +746,9 @@ Use the `href` prop to make the `children` content a link.
   Sign up for updates to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
 ```
+
+To see each variant that docs pages use, open the unlisted page at `/internal/callouts` (`docs/internal/callouts.mdx`).
+
 ## Using ForOs
 
 Role: Show OS-specific wording outside a tab set, such as "open PowerShell" on Windows and "open a terminal" on macOS

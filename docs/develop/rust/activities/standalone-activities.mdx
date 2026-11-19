@@ -65,7 +65,7 @@ to start a Standalone Activity and get a handle without waiting for the result:
 
 <!--SNIPSTART rust-standalone-activities-start {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/standalone-quickstart/src/bin/start_activity.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/start_activity.rs)
-```rust
+```rs
 let options = ActivityStartOptions::with_start_to_close_timeout(
     "standalone-activities",
     "standalone-activity-id",
@@ -133,7 +133,7 @@ for a previously started Standalone Activity:
 
 <!--SNIPSTART rust-standalone-activities-get-handle {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/standalone-quickstart/src/bin/get_activity_handle.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/get_activity_handle.rs)
-```rust
+```rs
 // Passing `None` for the run ID targets the latest run with this activity ID.
 let handle = client.get_activity_handle(
     GreetingActivities::compose_greeting,
@@ -155,7 +155,7 @@ You can then use the handle to wait for the result, describe, cancel, or termina
 
 <!--SNIPSTART rust-standalone-activities-handle-operations {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/standalone-quickstart/src/handle_operations.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/handle_operations.rs)
-```rust
+```rs
 handle.result().await?;                            // block until the activity completes
 handle.describe(Default::default()).await?;        // status, timestamps, attempt, ...
 handle.cancel(Default::default()).await?;          // request cancellation
@@ -172,7 +172,7 @@ them on only when you need them:
 
 <!--SNIPSTART rust-standalone-activities-describe {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/standalone-quickstart/src/bin/get_activity_handle.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/get_activity_handle.rs)
-```rust
+```rs
 let description = handle
     .describe(
         ActivityDescribeOptions::builder()
@@ -213,7 +213,7 @@ to block until it completes and return the result:
 
 <!--SNIPSTART rust-standalone-activities-quickstart-execute {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/standalone-quickstart/src/bin/execute_activity.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/execute_activity.rs)
-```rust
+```rs
 let options = ActivityStartOptions::with_start_to_close_timeout(
     "standalone-activities",
     "standalone-activity-id",
@@ -264,7 +264,7 @@ included.
 
 <!--SNIPSTART rust-standalone-activities-list-->
 [rust-sandbox/activities/standalone-quickstart/src/bin/list_activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/list_activities.rs)
-```rust
+```rs
 use futures::StreamExt;
 use temporalio_client::{
     ActivityExecutionInfoLike, Client, ClientOptions, Connection,
@@ -325,7 +325,7 @@ It works the same way as counting Workflow Executions.
 
 <!--SNIPSTART rust-standalone-activities-count {"enable_code_dedenting": true}-->
 [rust-sandbox/activities/standalone-quickstart/src/bin/count_activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/count_activities.rs)
-```rust
+```rs
 let count = client
     .count_activities("TaskQueue = 'standalone-activities'", Default::default())
     .await?;

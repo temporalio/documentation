@@ -39,7 +39,7 @@ Available fields:
 
 <!--SNIPSTART rust-workflow-timeouts-timeouts {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/timeouts/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/timeouts/src/client.rs)
-```rust
+```rs
 let wf_handle = client
     .start_workflow(
         GreetingsWorkflow::run,
@@ -65,7 +65,7 @@ To enable retries, configure a [Retry Policy](/encyclopedia/retry-policies) when
 
 <!--SNIPSTART rust-workflow-timeouts-retry-policy {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/timeouts/src/client.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/timeouts/src/client.rs)
-```rust
+```rs
 let wf_handle = client
     .start_workflow(
         GreetingsWorkflow::run,

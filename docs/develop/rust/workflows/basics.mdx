@@ -25,7 +25,7 @@ A Workflow is defined by:
 
 <!--SNIPSTART rust-workflow-basics-definition-->
 [rust-sandbox/workflows/basics/src/definition.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/definition.rs)
-```rust
+```rs
 use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::{WorkflowContext, WorkflowContextView, WorkflowResult};
 
@@ -62,7 +62,7 @@ The `#[init]` method is optional and is called when the Workflow first starts. I
 
 <!--SNIPSTART rust-workflow-basics-init {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/basics/src/init.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/init.rs)
-```rust
+```rs
 #[init]
 fn new(ctx: &WorkflowContextView, input: PersonInput) -> Self {
     Self {
@@ -89,7 +89,7 @@ Here's an example. The constructor stores the input in the struct, so the `check
 
 <!--SNIPSTART rust-workflow-basics-constructor-->
 [rust-sandbox/workflows/basics/src/constructor.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/constructor.rs)
-```rust
+```rs
 #[workflow_methods]
 impl WorkflowRunSeesWorkflowInitWorkflow {
     #[init]
@@ -131,7 +131,7 @@ The `#[run]` method is required and contains the main Workflow logic. It:
 
 <!--SNIPSTART rust-workflow-basics-run-method {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/basics/src/run_method.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/run_method.rs)
-```rust
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let name = ctx.state(|s| s.name.clone());
@@ -158,7 +158,7 @@ This Workflow takes a single struct that contains all the input fields:
 
 <!--SNIPSTART rust-workflow-basics-parameters-->
 [rust-sandbox/workflows/basics/src/parameters.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/parameters.rs)
-```rust
+```rs
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
@@ -202,7 +202,7 @@ The return type of a Workflow is `WorkflowResult<T>` where `T` implements `Seria
 
 <!--SNIPSTART rust-workflow-basics-return-values {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/basics/src/return_values.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/return_values.rs)
-```rust
+```rs
 #[run]
 pub async fn run(_ctx: &mut WorkflowContext<Self>) -> WorkflowResult<ProcessingResult> {
     // Can return a complex result type
@@ -222,7 +222,7 @@ Workflows have a Type that is referred to as the Workflow name. By default, the 
 
 <!--SNIPSTART rust-workflow-basics-custom-type-->
 [rust-sandbox/workflows/basics/src/custom_type.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/custom_type.rs)
-```rust
+```rs
 #[workflow]
 pub struct GreetingWorkflow {
     name: String,
@@ -247,7 +247,7 @@ The Workflow Type defaults to the struct name if not specified. For example, thi
 
 <!--SNIPSTART rust-workflow-basics-definition {"selectedLines": ["4-7"]}-->
 [rust-sandbox/workflows/basics/src/definition.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/definition.rs)
-```rust
+```rs
 // ...
 #[workflow]
 pub struct GreetingWorkflow {
@@ -289,7 +289,7 @@ The Rust SDK provides:
 
 <!--SNIPSTART rust-workflow-basics-determinism {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/basics/src/determinism.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/determinism.rs)
-```rust
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Good - deterministic timer
@@ -320,7 +320,7 @@ Use `ctx.state()` for read-only access and `ctx.state_mut()` for mutable access 
 
 <!--SNIPSTART rust-workflow-basics-state {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/basics/src/state.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/state.rs)
-```rust
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     // Read-only access
@@ -344,7 +344,7 @@ For application failures, construct an `ApplicationFailure` and convert it into 
 
 <!--SNIPSTART rust-workflow-basics-failure {"enable_code_dedenting": true}-->
 [rust-sandbox/workflows/basics/src/failure.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workflows/basics/src/failure.rs)
-```rust
+```rs
 #[run]
 pub async fn run(ctx: &mut WorkflowContext<Self>) -> WorkflowResult<String> {
     let input_is_empty = ctx.state(|s| s.input.is_empty());

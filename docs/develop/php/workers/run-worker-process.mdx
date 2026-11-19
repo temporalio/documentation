@@ -3,7 +3,6 @@ id: run-worker-process
 title: Run a Worker
 description: Shows how to run Worker processes with the PHP SDK
 sidebar_label: Run a Worker
-slug: /develop/php/workers/run-worker-process
 toc_max_heading_level: 3
 tags:
   - PHP SDK
@@ -34,15 +33,24 @@ Workers poll the _Temporal Service_ for tasks, perform those tasks, and communic
 Worker code is developed, deployed, and operated by Temporal customers.
 To create a worker use `Temporal\WorkerFactory`:
 
+<!--SNIPSTART php-run-worker-process-->
+[php-sandbox/workers/run-worker-process/worker.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workers/run-worker-process/worker.php)
 ```php
 <?php
 
 declare(strict_types=1);
 
+use App\Workers\RunWorkerProcess\Container;
+use App\Workers\RunWorkerProcess\DemoActivity;
+use App\Workers\RunWorkerProcess\DemoActivityWithDependencies;
+use App\Workers\RunWorkerProcess\DemoWorkflow;
 use Temporal\WorkerFactory;
 
 ini_set('display_errors', 'stderr');
 include "vendor/autoload.php";
+
+// Your dependency injection container.
+$container = new Container();
 
 // factory initiates and runs task queue specific activity and workflow workers
 $factory = WorkerFactory::create();
@@ -51,43 +59,52 @@ $factory = WorkerFactory::create();
 $worker = $factory->newWorker();
 
 // Workflows are stateful. So you need a type to create instances.
-$worker->registerWorkflowTypes(App\DemoWorkflow::class);
+$worker->registerWorkflowTypes(DemoWorkflow::class);
 
 // Activities are stateless and thread safe. So a shared instance is used.
-$worker->registerActivity(App\DemoActivity::class);
+$worker->registerActivity(DemoActivity::class);
 
 // In case an activity class requires some external dependencies provide a callback - factory
 // that creates or builds a new activity instance. The factory should be a callable which accepts
 // an instance of ReflectionClass with an activity class which should be created.
-$worker->registerActivity(App\DemoActivity::class, fn(ReflectionClass $class) => $container->create($class->getName()));
+$worker->registerActivity(DemoActivityWithDependencies::class, fn(ReflectionClass $class) => $container->create($class->getName()));
 
 // start primary loop
 $factory->run();
 ```
+<!--SNIPEND-->
 
 You can configure task queue name using first argument of `WorkerFactory`->`newWorker`:
 
+<!--SNIPSTART php-run-worker-task-queue {"enable_code_dedenting": true}-->
+[php-sandbox/workers/run-worker-process/WorkerExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workers/run-worker-process/WorkerExamples.php)
 ```php
 $worker = $factory->newWorker('your-task-queue');
 ```
+<!--SNIPEND-->
 
 As mentioned preceding, you can create as many Task Queue connections inside a single Worker Process as you need.
 
 To configure additional WorkerOptions use `Temporal\Worker\WorkerOptions`:
 
+<!--SNIPSTART php-run-worker-options {"enable_code_dedenting": true}-->
+[php-sandbox/workers/run-worker-process/WorkerExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workers/run-worker-process/WorkerExamples.php)
 ```php
-use Temporal\Worker\WorkerOptions;
-
 $worker = $factory->newWorker(
     'your-task-queue',
     WorkerOptions::new()
         ->withMaxConcurrentWorkflowTaskPollers(10)
 );
 ```
+<!--SNIPEND-->
 
 Make sure to point the Worker file in application server configuration:
 
+<!--SNIPSTART php-run-worker-rr-yaml-->
+[php-sandbox/workers/run-worker-process/.rr.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workers/run-worker-process/.rr.yaml)
 ```yaml
+version: "3"
+
 rpc:
   listen: tcp://127.0.0.1:6001
 
@@ -99,18 +116,20 @@ temporal:
   activities:
     num_workers: 10
 ```
+<!--SNIPEND-->
 
 > You can serve HTTP endpoints using the same server setup.
 
 To provide the [API key](/cloud/api-keys) to RoadRunner use a `ServiceCredentials` DTO when creating the WorkerFactory:
 
+<!--SNIPSTART php-run-worker-api-key {"enable_code_dedenting": true}-->
+[php-sandbox/workers/run-worker-process/WorkerExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workers/run-worker-process/WorkerExamples.php)
 ```php
-use Temporal\Worker\ServiceCredentials;
-
 $workerFactory = \Temporal\WorkerFactory::create(
     credentials: ServiceCredentials::create()->withApiKey('your-api-key'),
 );
 ```
+<!--SNIPEND-->
 
 [How to configure connection to a Temporal Cloud](/develop/php/client/temporal-client#connect-to-temporal-cloud)
 
@@ -123,27 +142,36 @@ However, the failure of the Task does not cause the associated Workflow Executio
 
 Worker listens on a Task Queue and hosts both Workflow and Activity implementations:
 
+<!--SNIPSTART php-run-worker-register-types {"enable_code_dedenting": true}-->
+[php-sandbox/workers/run-worker-process/WorkerExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workers/run-worker-process/WorkerExamples.php)
 ```php
 // Workflows are stateful. So you need a type to create instances:
-$worker->registerWorkflowTypes(App\DemoWorkflow::class);
+$worker->registerWorkflowTypes(DemoWorkflow::class);
 // Activities are stateless and thread safe:
-$worker->registerActivity(App\DemoActivity::class);
+$worker->registerActivity(DemoActivity::class);
 ```
+<!--SNIPEND-->
 
 In case an activity class requires some external dependencies provide a callback - factory
 that creates or builds a new activity instance. The factory should be a callable which accepts
 an instance of ReflectionClass with an activity class which should be created.
 
+<!--SNIPSTART php-run-worker-activity-factory {"enable_code_dedenting": true}-->
+[php-sandbox/workers/run-worker-process/WorkerExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workers/run-worker-process/WorkerExamples.php)
 ```php
 $worker->registerActivity(
-    App\DemoActivity::class,
-    fn(ReflectionClass $class) => $container->create($class->getName())
+    DemoActivityWithDependencies::class,
+    fn(\ReflectionClass $class) => $container->create($class->getName())
 );
 ```
+<!--SNIPEND-->
 
 If you want to clean up some resources after activity is done, you may register a finalizer. This callback is called
 after each activity invocation:
 
+<!--SNIPSTART php-run-worker-finalizer {"enable_code_dedenting": true}-->
+[php-sandbox/workers/run-worker-process/WorkerExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workers/run-worker-process/WorkerExamples.php)
 ```php
 $worker->registerActivityFinalizer(fn() => $kernel->shutdown());
 ```
+<!--SNIPEND-->

@@ -30,7 +30,7 @@ In Rust, Activities are typically executed using `ctx.execute_activity(...)`, wh
 
 <!--SNIPSTART rust-quickstart-workflows {"selectedLines": ["12-35"]}-->
 [rust-sandbox/quickstart/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/workflows.rs)
-```rust
+```rs
 // ...
 #[workflow_methods]
 impl GreetingWorkflow {
@@ -75,7 +75,7 @@ These are configured as part of the Activity options when scheduling the Activit
 
 <!--SNIPSTART rust-activity-execution-schedule-to-close-->
 [rust-sandbox/activities/execution/src/schedule_to_close.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/execution/src/schedule_to_close.rs)
-```rust
+```rs
 #[workflow_methods]
 impl GreetingWorkflow {
     #[init]
@@ -117,7 +117,7 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 <!--SNIPSTART rust-quickstart-workflows {"selectedLines": ["12-35"]}-->
 [rust-sandbox/quickstart/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/workflows.rs)
-```rust
+```rs
 // ...
 #[workflow_methods]
 impl GreetingWorkflow {
@@ -150,7 +150,7 @@ For concurrent execution:
 
 <!--SNIPSTART rust-activity-execution-concurrent-->
 [rust-sandbox/activities/execution/src/concurrent.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/execution/src/concurrent.rs)
-```rust
+```rs
 use std::time::Duration;
 
 use temporalio_macros::{workflow, workflow_methods};

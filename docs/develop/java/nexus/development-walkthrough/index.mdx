@@ -40,7 +40,7 @@ Each of those needs a different Nexus capability, introduced one step at a time.
 
 ## One contract, every language
 
-**This walkthrough builds the Service in Java.** [NexGen](/nexus/nexgen) generates code from the same contract in Go, Python, and TypeScript, and the reasoning at each step is the same in all of them.
+**This walkthrough builds the Service in Java.** [NexGen](/nexus/nexgen) generates code from the same contract in Go, Python, TypeScript, and .NET, and the reasoning at each step is the same in all of them.
 
 The Java sample is [development-walkthrough](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/java-sandbox/nexus/development-walkthrough).
 
@@ -59,6 +59,7 @@ restoring this means putting the table back, not just uncommenting it.
 | Go | TODO |
 | Python | TODO |
 | TypeScript | TODO |
+| .NET | TODO |
 
 Original note that went with it: "Sample repos for each language will land once
 the docs settle. The idea is that you can run the client from any sample against
@@ -69,7 +70,7 @@ the handler from any other sample."
 
 Three kinds of code block appear in this walkthrough. Hover over a block to get a copy icon.
 
-**A terminal window is a command to run.** Run this one now to confirm you have [Temporal CLI](/cli) 1.9.1 or later:
+**A terminal window is a command to run.** Run this one now to check your [Temporal CLI](/cli) version against [Check your CLI version](#check-your-cli-version):
 
 <RunThis>
 
@@ -122,6 +123,8 @@ The sample is the finished Service. Each step shows the code it introduces and t
 This walkthrough needs [Temporal CLI](/cli) 1.9.1 or later and its development server. Each step
 runs an Operation from the command line with `temporal nexus operation`, so check that your CLI has
 those commands before you start. If `temporal nexus --help` doesn't list `operation`, upgrade.
+
+To run the Query in [step 7](/develop/java/nexus/development-walkthrough/add-messaging#query), install the [v1.8.3-server-1.32.0-162.0 pre-release](https://github.com/temporalio/cli/releases/tag/v1.8.3-server-1.32.0-162.0) instead, before [step 4](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server) starts the development server.
 
 The development server also needs two dynamic config values that are off by default.
 [Step 4](/develop/java/nexus/development-walkthrough/implement-the-service#start-the-development-server)

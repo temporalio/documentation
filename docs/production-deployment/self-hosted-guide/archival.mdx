@@ -161,7 +161,7 @@ Then register a new Namespace with Archival enabled.
 {/* ./tctl --ns samples-namespace namespace register --gd false --history_archival_state enabled --retention 3 */}
 
 ```bash
-./temporal operator namespace create --namespace="my-namespace" --global false --history-archival-state="enabled" --retention="4d"
+./temporal operator namespace create --namespace="my-namespace" --global=false --history-archival-state="enabled" --retention="4d"
 ```
 
 :::note
