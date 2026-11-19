@@ -57,8 +57,8 @@ Payloads are encrypted by the sender (caller encrypts input, handler encrypts re
 
 ### Nexus serialization context {/* #nexus-serialization-context */}
 
-When the Data Converter encodes or decodes a Nexus payload, it receives a Nexus serialization context with the Nexus Endpoint name, Service name, and Operation name.
-A Payload Codec, Payload Converter, or Failure Converter that supports serialization context can use these values, for example to select an encryption key for each Endpoint.
+When the [Data Converter](/dataconversion) encodes or decodes a Nexus payload, it receives a Nexus serialization context with the Nexus Endpoint name, Service name, and Operation name.
+A [Payload Codec](/payload-codec), [Payload Converter](/payload-converter), or [Failure Converter](/failure-converter) that supports serialization context can use these values, for example to select an encryption key for each Endpoint.
 
 :::info Server version requirement
 
@@ -86,9 +86,9 @@ The completing Client only has the Task Token, so it can't get the context any o
 
 :::warning Don't share IDs across Endpoints with `USE_EXISTING`
 
-If a Nexus handler uses the `USE_EXISTING` conflict policy and an execution (Workflow or Standalone Activity) with that ID is already running, the handler attaches to it instead of starting a new one.
-The result keeps the context of whatever started that execution.
-If a different Endpoint started it, or it didn't start from a Nexus handler at all, the caller's codec can pick the wrong key and fail to decode the result.
+With `USE_EXISTING`, a Nexus handler reuses a running Workflow or Standalone Activity if one has the requested ID.
+The existing execution uses its original serialization context to encode the result, or no context if it didn't start from a Nexus handler.
+Calling through a different Endpoint doesn't change that context, so the caller's codec can pick the wrong key and fail to decode the result.
 
 To avoid this, use Workflow IDs and Activity IDs that are unique to each Endpoint, and don't start executions with those IDs outside the handler.
 Standalone Nexus Operations started with `USE_EXISTING` behave the same way.
