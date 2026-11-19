@@ -10,6 +10,8 @@ tags:
   - Serverless
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 [Temporal Cloud High Availability](/cloud/high-availability) replicates a Namespace and manages its failover.
 By default, when a Namespace fails over to another region in the same cloud provider, Temporal still uses your original
 Serverless Worker compute. To let Serverless Workers follow Namespace failover, configure compute in both regions.
@@ -30,31 +32,12 @@ A Worker Deployment Version has two scaling groups. Each group points to a Lambd
 build. While the Namespace is active in `aws-us-east-1`, the WCI invokes the function in `us-east-1`. After the
 Namespace fails over to `aws-us-west-2`, the WCI invokes the function in `us-west-2` to start new Workers.
 
-```mermaid
-flowchart LR
-    accTitle: Lambda selection before and after Namespace failover
-    accDescr: The WCI matches the active Namespace region to a scaling group and invokes that group's function for new Workers.
-
-    subgraph Before["Before failover"]
-        direction TB
-        EastNamespace["Active Namespace region<br/>aws-us-east-1"]
-        EastGroup["Scaling group<br/>region_ids<br/>[aws-us-east-1]"]
-        EastLambda["AWS Lambda in us-east-1<br/>orders-worker:3"]
-        EastNamespace -->|WCI matches| EastGroup
-        EastGroup -->|WCI invokes| EastLambda
-    end
-
-    subgraph After["After failover"]
-        direction TB
-        WestNamespace["Active Namespace region<br/>aws-us-west-2"]
-        WestGroup["Scaling group<br/>region_ids<br/>[aws-us-west-2]"]
-        WestLambda["AWS Lambda in us-west-2<br/>orders-worker:7"]
-        WestNamespace -->|WCI matches| WestGroup
-        WestGroup -->|WCI invokes| WestLambda
-    end
-
-    Before ~~~ After
-```
+<CaptionedImage
+  src="/diagrams/serverless-worker-regional-failover.svg"
+  srcDark="/diagrams/serverless-worker-regional-failover-dark.svg"
+  alt="One Worker Deployment Version maps aws-us-east-1 to orders-worker:3 in us-east-1 and aws-us-west-2 to orders-worker:7 in us-west-2. The WCI invokes the east function for new Workers before failover and the west function afterward. An X marks the other invocation path in each state."
+  title="The saved configuration maps each Namespace region to a Lambda function. The X marks the inactive path for new Workers."
+/>
 
 If the `aws-us-west-2` scaling group instead points to a Lambda ARN in `us-east-1`, the WCI selects the `aws-us-west-2`
 group after failover and still invokes a function in `us-east-1`.

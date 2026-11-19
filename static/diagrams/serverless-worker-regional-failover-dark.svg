@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="559" viewBox="0 0 720 559" role="img" aria-labelledby="diagram-title diagram-description">
+  <title id="diagram-title">How regional Lambda configuration takes effect during failover</title>
+  <desc id="diagram-description">One Worker Deployment Version maps aws-us-east-1 to the Lambda function orders-worker:3 in us-east-1 and aws-us-west-2 to orders-worker:7 in us-west-2. Before failover, the active Namespace region is aws-us-east-1 and the Worker Controller Instance invokes the east function for new Workers. The west invocation path has an X. After failover to aws-us-west-2, the west path becomes active and the east path has an X.</desc>
+  <defs>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #F1F5FD; }
+      .heading { font-size: 21px; font-weight: 700; }
+      .label { font-size: 17px; font-weight: 600; }
+      .muted { fill: #BBC8DD; }
+      .code { font-family: ui-monospace, Menlo, monospace; font-size: 17px; }
+      .caption { font-size: 16px; font-weight: 650; }
+      .active-label { fill: #BBD5FF; }
+      .inactive-label { fill: #FFABB1; }
+      .active-path { fill: none; stroke: #91B8FF; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+      .inactive-path { fill: none; stroke: #AAB9D0; stroke-width: 2.5; stroke-dasharray: 6 6; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+    <marker id="config-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#AAB9D0"/>
+    </marker>
+    <marker id="active-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#91B8FF"/>
+    </marker>
+    <marker id="inactive-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#AAB9D0"/>
+    </marker>
+    <g id="inactive-mark">
+      <circle r="11" fill="#3B2434" stroke="#FFABB1" stroke-width="1.5"/>
+      <path d="M -4 -4 L 4 4 M 4 -4 L -4 4" fill="none" stroke="#FFABB1" stroke-width="2.4" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <g aria-label="Saved compute configuration">
+    <rect x="10" y="10" width="700" height="180" rx="14" fill="#202B3E" stroke="#41516B"/>
+    <text x="30" y="43" class="heading">Saved compute configuration</text>
+    <text x="31" y="72" class="label muted">Scaling group <tspan class="code">region_ids</tspan></text>
+    <text x="369" y="72" class="label muted">AWS Lambda target</text>
+
+    <rect x="28" y="83" width="302" height="41" rx="7" fill="#171E2B" stroke="#41516B"/>
+    <rect x="366" y="83" width="326" height="41" rx="7" fill="#171E2B" stroke="#41516B"/>
+    <path d="M 336 103.5 H 358" fill="none" stroke="#AAB9D0" stroke-width="2" marker-end="url(#config-arrow)"/>
+    <text x="42" y="109" class="code">["aws-us-east-1"]</text>
+    <text x="380" y="109" class="code">us-east-1 · orders-worker:3</text>
+
+    <rect x="28" y="133" width="302" height="41" rx="7" fill="#171E2B" stroke="#41516B"/>
+    <rect x="366" y="133" width="326" height="41" rx="7" fill="#171E2B" stroke="#41516B"/>
+    <path d="M 336 153.5 H 358" fill="none" stroke="#AAB9D0" stroke-width="2" marker-end="url(#config-arrow)"/>
+    <text x="42" y="159" class="code">["aws-us-west-2"]</text>
+    <text x="380" y="159" class="code">us-west-2 · orders-worker:7</text>
+  </g>
+
+  <g aria-label="Worker invocations before failover">
+    <rect x="10" y="206" width="342" height="343" rx="14" fill="#171E2B" stroke="#41516B"/>
+    <text x="30" y="241" class="heading">Before failover</text>
+    <rect x="28" y="255" width="306" height="74" rx="9" fill="#1D355F" stroke="#5D87CE"/>
+    <text x="181" y="282" text-anchor="middle" class="label active-label">Active Namespace region</text>
+    <text x="181" y="308" text-anchor="middle" class="code">aws-us-east-1</text>
+
+    <path d="M 181 329 V 364 H 260 V 439" class="inactive-path" marker-end="url(#inactive-arrow)"/>
+    <path d="M 181 329 V 364 H 102 V 439" class="active-path" marker-end="url(#active-arrow)"/>
+    <text x="114" y="409" class="caption active-label">WCI invokes</text>
+    <use href="#inactive-mark" x="260" y="411"/>
+
+    <rect x="28" y="445" width="148" height="86" rx="9" fill="#1D355F" stroke="#5D87CE"/>
+    <text x="102" y="472" text-anchor="middle" class="label">East Lambda</text>
+    <text x="102" y="498" text-anchor="middle" class="code">us-east-1</text>
+    <text x="102" y="519" text-anchor="middle" class="caption active-label">New Workers</text>
+
+    <rect x="186" y="445" width="148" height="86" rx="9" fill="#232E40" stroke="#41516B"/>
+    <text x="260" y="472" text-anchor="middle" class="label">West Lambda</text>
+    <text x="260" y="498" text-anchor="middle" class="code">us-west-2</text>
+    <text x="260" y="519" text-anchor="middle" class="caption inactive-label">Inactive path</text>
+  </g>
+
+  <g aria-label="Worker invocations after failover">
+    <rect x="368" y="206" width="342" height="343" rx="14" fill="#171E2B" stroke="#41516B"/>
+    <text x="388" y="241" class="heading">After failover</text>
+    <rect x="386" y="255" width="306" height="74" rx="9" fill="#1D355F" stroke="#5D87CE"/>
+    <text x="539" y="282" text-anchor="middle" class="label active-label">Active Namespace region</text>
+    <text x="539" y="308" text-anchor="middle" class="code">aws-us-west-2</text>
+
+    <path d="M 539 329 V 364 H 460 V 439" class="inactive-path" marker-end="url(#inactive-arrow)"/>
+    <path d="M 539 329 V 364 H 618 V 439" class="active-path" marker-end="url(#active-arrow)"/>
+    <text x="606" y="409" text-anchor="end" class="caption active-label">WCI invokes</text>
+    <use href="#inactive-mark" x="460" y="411"/>
+
+    <rect x="386" y="445" width="148" height="86" rx="9" fill="#232E40" stroke="#41516B"/>
+    <text x="460" y="472" text-anchor="middle" class="label">East Lambda</text>
+    <text x="460" y="498" text-anchor="middle" class="code">us-east-1</text>
+    <text x="460" y="519" text-anchor="middle" class="caption inactive-label">Inactive path</text>
+
+    <rect x="544" y="445" width="148" height="86" rx="9" fill="#1D355F" stroke="#5D87CE"/>
+    <text x="618" y="472" text-anchor="middle" class="label">West Lambda</text>
+    <text x="618" y="498" text-anchor="middle" class="code">us-west-2</text>
+    <text x="618" y="519" text-anchor="middle" class="caption active-label">New Workers</text>
+  </g>
+</svg>
