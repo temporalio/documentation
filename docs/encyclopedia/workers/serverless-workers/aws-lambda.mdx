@@ -46,6 +46,40 @@ backlog overshoot. The WCI can scale from zero with low latency.
 For AgentCore Runtime startup and session behavior, see
 [Lifecycle](/serverless-workers/agentcore#lifecycle).
 
+#### Configure scale-up for rate-limited Task Queues {/* #rate-limited-task-queues */}
+
+If your Lambda Workers poll a [rate-limited Task Queue](/design-patterns/downstream-rate-limiting), set
+`scale_up_dispatch_rate_epsilon` to `0.05` in the scaling group. Once dispatch reaches the Task Queue's rate limit,
+starting more Workers adds invocations without increasing throughput.
+
+The setting defines how much the observed dispatch rate can vary and still count as flat. While Tasks are backlogged,
+the WCI pauses scale-up for the affected Task Queue type when its dispatch rate stays within that band for the
+confirmation period (90 seconds by default). The WCI clears the pause when the backlog clears or the dispatch rate
+moves outside the band. Workers can still start during the pause when `--max-worker-lifetime-ms` elapses.
+
+| Value | Effect |
+| --- | --- |
+| `0` | Default. Disables the pause. |
+| `0.05` | Recommended for rate-limited Task Queues. Treats variations within 5% of the reference dispatch rate as flat. |
+| `0.1` | Maximum. Treats variations within 10% of the reference dispatch rate as flat. |
+
+A flat dispatch rate can also occur when the Worker pool stops growing before it reaches the Task Queue rate limit.
+In that case, pausing scale-up can make the backlog take longer to drain.
+
+To enable the setting on an existing Worker Deployment Version, run the following command with Temporal CLI v1.10.0
+or later. Add `--scaling-group <SCALING_GROUP>` if you use a group other than `default`.
+
+```bash
+temporal worker deployment version compute-config aws-lambda update \
+  --namespace <NAMESPACE> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --build-id <BUILD_ID> \
+  --scale-up-dispatch-rate-epsilon 0.05
+```
+
+Include any other scaler flags you want to keep. The update replaces the group's scaler settings, so omitted scaler
+flags revert to their defaults. See the [compute configuration command reference](/cli/command-reference/worker#compute-config).
+
 ### Scale-in {/* #scale-in */}
 
 The WCI does not maintain a target number of Workers or actively remove capacity. The provider and Worker lifecycle
