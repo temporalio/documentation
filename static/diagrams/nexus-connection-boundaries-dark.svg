@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 792 270" width="792" height="270" role="img" aria-label="Temporal Nexus connects teams across Namespaces, teams, regions, clouds, Projects, and SDKs. Regions, clouds, and Projects are Temporal Cloud features.">
+  <defs><style>text { font-family: Inter, 'Helvetica Neue', Arial, sans-serif; }</style><filter id="glow" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1000" height="500"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#818cf8" flood-opacity="0.35"/></filter><filter id="glow-soft" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1000" height="500"><feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#a5b4fc" flood-opacity="0.4"/></filter></defs>
+  
+  <circle cx="64.16666666666666" cy="40" r="32" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <g filter="url(#glow-soft)" transform="translate(50.36666666666666,26.200000000000003) scale(1.15)" fill="none" stroke="#a5b4fc" stroke-width="1.7391304347826089" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="12" height="12"/><rect x="9" y="9" width="12" height="12"/></g>
+  <text x="64.16666666666666" y="98" text-anchor="middle" fill="#f3f4f6" font-size="14" font-weight="600">Namespaces</text>
+  <text x="64.16666666666666" y="117" text-anchor="middle" fill="#9ca3af" font-size="11">Namespace A → B</text>
+  <line x1="64.16666666666666" y1="146" x2="64.16666666666666" y2="170" stroke="#a5b4fc" stroke-width="2" filter="url(#glow-soft)"/>
+  <circle cx="190.5" cy="40" r="32" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <g filter="url(#glow-soft)" transform="translate(176.7,26.200000000000003) scale(1.15)" fill="none" stroke="#a5b4fc" stroke-width="1.7391304347826089" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5,20 a6.5,6 0 0 1 13,0"/><circle cx="17" cy="9" r="2.8"/><path d="M17.5,14 a5,5 0 0 1 4.5,6"/></g>
+  <text x="190.5" y="98" text-anchor="middle" fill="#f3f4f6" font-size="14" font-weight="600">Teams</text>
+  <text x="190.5" y="117" text-anchor="middle" fill="#9ca3af" font-size="11">Checkout → Payments</text>
+  <line x1="190.5" y1="146" x2="190.5" y2="170" stroke="#a5b4fc" stroke-width="2" filter="url(#glow-soft)"/>
+  <circle cx="316.8333333333333" cy="40" r="32" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <g filter="url(#glow-soft)" transform="translate(303.0333333333333,26.200000000000003) scale(1.15)" fill="none" stroke="#a5b4fc" stroke-width="1.7391304347826089" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4" ry="9.5"/><line x1="2.5" y1="12" x2="21.5" y2="12"/></g>
+  <text x="316.8333333333333" y="98" text-anchor="middle" fill="#f3f4f6" font-size="14" font-weight="600">Regions</text>
+  <text x="316.8333333333333" y="117" text-anchor="middle" fill="#9ca3af" font-size="11">Region A → B</text>
+  <text x="316.8333333333333" y="135" text-anchor="middle" fill="#a5b4fc" font-size="10.5" font-weight="600">Temporal Cloud</text>
+  <line x1="316.8333333333333" y1="146" x2="316.8333333333333" y2="170" stroke="#a5b4fc" stroke-width="2" filter="url(#glow-soft)"/>
+  <circle cx="443.1666666666667" cy="40" r="32" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <g filter="url(#glow-soft)" transform="translate(429.3666666666667,26.200000000000003) scale(1.15)" fill="none" stroke="#a5b4fc" stroke-width="1.7391304347826089" stroke-linecap="round" stroke-linejoin="round"><path d="M7,19 h10.5 a4.5,4.5 0 0 0 0.5,-9 a6.5,6.5 0 0 0 -12.5,1.5 a3.8,3.8 0 0 0 1.5,7.5 z"/></g>
+  <text x="443.1666666666667" y="98" text-anchor="middle" fill="#f3f4f6" font-size="14" font-weight="600">Clouds</text>
+  <text x="443.1666666666667" y="117" text-anchor="middle" fill="#9ca3af" font-size="11">AWS → GCP</text>
+  <text x="443.1666666666667" y="135" text-anchor="middle" fill="#a5b4fc" font-size="10.5" font-weight="600">Temporal Cloud</text>
+  <line x1="443.1666666666667" y1="146" x2="443.1666666666667" y2="170" stroke="#a5b4fc" stroke-width="2" filter="url(#glow-soft)"/>
+  <circle cx="569.5" cy="40" r="32" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <g filter="url(#glow-soft)" transform="translate(555.7,26.200000000000003) scale(1.15)" fill="none" stroke="#a5b4fc" stroke-width="1.7391304347826089" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5,5.5 h7 l2,2.5 h10 v12 h-19 z"/></g>
+  <text x="569.5" y="98" text-anchor="middle" fill="#f3f4f6" font-size="14" font-weight="600">Projects</text>
+  <text x="569.5" y="117" text-anchor="middle" fill="#9ca3af" font-size="11">Project A → B</text>
+  <text x="569.5" y="135" text-anchor="middle" fill="#a5b4fc" font-size="10.5" font-weight="600">Temporal Cloud</text>
+  <line x1="569.5" y1="146" x2="569.5" y2="170" stroke="#a5b4fc" stroke-width="2" filter="url(#glow-soft)"/>
+  <circle cx="695.8333333333333" cy="40" r="32" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <g filter="url(#glow-soft)" transform="translate(682.0333333333333,26.200000000000003) scale(1.15)" fill="none" stroke="#a5b4fc" stroke-width="1.7391304347826089" stroke-linecap="round" stroke-linejoin="round"><polyline points="8,6.5 2.5,12 8,17.5"/><polyline points="16,6.5 21.5,12 16,17.5"/><line x1="13.5" y1="4.5" x2="10.5" y2="19.5"/></g>
+  <text x="695.8333333333333" y="98" text-anchor="middle" fill="#f3f4f6" font-size="14" font-weight="600">SDKs</text>
+  <text x="695.8333333333333" y="117" text-anchor="middle" fill="#9ca3af" font-size="11">Go → Java</text>
+  <line x1="695.8333333333333" y1="146" x2="695.8333333333333" y2="170" stroke="#a5b4fc" stroke-width="2" filter="url(#glow-soft)"/>
+  <rect x="1" y="170" width="758" height="66" fill="#4f46e5" filter="url(#glow)"/>
+  <rect x="20" y="183" width="40" height="40" fill="#3730a3" stroke="#c7d2fe" stroke-width="1.5"/>
+  <g transform="translate(27.4,190.4) scale(1.05)" fill="none" stroke="#ffffff" stroke-width="2.2857142857142856" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="3.34" y1="7" x2="20.66" y2="17"/><line x1="3.34" y1="17" x2="20.66" y2="7"/></g>
+  <text x="70" y="199" fill="#ffffff" font-size="18" font-weight="700">Temporal Nexus</text>
+  <text x="70" y="219" fill="#c7d2fe" font-size="13">One way to connect them all</text>
+</svg>
