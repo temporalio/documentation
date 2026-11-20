@@ -27,7 +27,6 @@ Prepare the Namespace and the resources your Workers need in both GCP regions.
 - Credentials, databases, external storage, and any Codec Server or network proxy available to Workers in both
   regions. Check that both pools can reach the Namespace after failover. If you use private connectivity, review
   [GCP Private Service Connect failover requirements](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect).
-- Enough Cloud Run quota in each region for the Workers you expect to run after failover.
 
 ## Create a highly available Serverless Worker Deployment {/* #create */}
 
