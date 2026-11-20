@@ -80,7 +80,7 @@ How existing compute stops depends on the provider:
 - [GCP Cloud Run](/serverless-workers/cloud-run#high-availability): the WCI scales pools that no longer serve the active
   region to zero.
 
-## Namespace and compute outages
+## Compute-only outages
 
 An outage limited to Lambda, Cloud Run, or your application does not trigger automatic Namespace failover. Temporal
 Cloud monitors its own health to decide when to fail over a Namespace. When the Namespace fails over, Temporal selects
