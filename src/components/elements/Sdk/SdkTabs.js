@@ -2,6 +2,7 @@ import React from 'react';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { SDK_LANGUAGES, LANGUAGE_TAB_GROUP } from '@site/src/constants/sdkLanguages';
+import { SdkScope } from './SdkContent';
 
 // Named components for language-specific slots
 export const Go = ({ children }) => children;
@@ -47,9 +48,10 @@ const SdkTabs = ({ children, hideUnsupportedLanguages = false }) => {
 
   return (
     <Tabs groupId={LANGUAGE_TAB_GROUP}>
-      {tabLanguages.map(({ key, icon: Icon, label }) => (
+      {tabLanguages.map(({ id, key, icon: Icon, label }) => (
         <TabItem key={key} value={key} label={<Icon title={label} />}>
-          {contentMap[key] || (
+          {/* Each slot is an SDK context, so <SdkOnly>/<SdkTerm> in a slot (or in a partial it imports) resolve for that SDK. */}
+          {contentMap[key] ? <SdkScope sdk={id}>{contentMap[key]}</SdkScope> : (
             // Setting the text color to black for better readability on light yellow background in dark mode
             <div style={{ backgroundColor: '#ffffcc', color: '#000', padding: '1rem', borderRadius: '6px' }}>
               <strong>{label}</strong> example coming soon.
