@@ -1,0 +1,247 @@
+/* Square corners throughout, to match temporal.io. Buttons are at least 44px
+   high, the minimum touch target size. */
+
+.feedback {
+  font-size: 0.875rem;
+}
+
+/* One line holding the "View this page on GitHub" link and the question. It
+   wraps on narrow screens. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.375rem 0.375rem 0.375rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.lead {
+  min-width: 0;
+}
+
+/* The question and the thank-you line share a height, that of the rating
+   buttons, so swapping one for the other doesn't move the page. */
+.question,
+.status {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin-left: auto;
+}
+
+.question {
+  gap: 0.25rem;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.prompt,
+.thanks,
+.recorded {
+  margin: 0;
+}
+
+.prompt,
+.thanks {
+  font-weight: 600;
+}
+
+.prompt {
+  margin-right: 0.25rem;
+}
+
+.status {
+  gap: 0.5rem;
+  padding-right: 0.625rem;
+}
+
+.check {
+  width: 1rem;
+  height: 1rem;
+  color: var(--ifm-color-success-dark);
+}
+
+.thanks:focus,
+.reasons:focus,
+.error:focus {
+  outline: none;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.rate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ifm-color-emphasis-800);
+  cursor: pointer;
+}
+
+.rate svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.rate:hover:not(:disabled) {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.rate:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* The answer the reader picked stays visible while they pick a reason. */
+.pressed,
+.pressed:disabled {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-primary);
+  opacity: 1;
+}
+
+.rate:focus-visible,
+.submit:focus-visible,
+.skip:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* The reasons open under the rating buttons. */
+.panel {
+  width: min(100%, 22rem);
+  margin: 0.5rem 0 0 auto;
+  padding: 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  box-shadow: var(--ifm-global-shadow-lw);
+  font-size: 0.9375rem;
+}
+
+.recorded {
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.reasons {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: 0.25rem;
+  padding: 0;
+  font-weight: 700;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.25rem;
+  cursor: pointer;
+}
+
+.option input {
+  margin: 0;
+  accent-color: var(--ifm-color-primary);
+}
+
+.commentBlock {
+  margin-top: 0.75rem;
+}
+
+.comment {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 0;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+}
+
+/* Browser default placeholder grey can fall below 4.5:1 contrast. */
+.comment::placeholder {
+  color: var(--ifm-color-emphasis-700);
+  opacity: 1;
+}
+
+.hint {
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.submit,
+.skip {
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: 0;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit {
+  border: 1px solid var(--ifm-color-primary);
+  background: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+}
+
+.skip {
+  padding: 0 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--ifm-color-emphasis-800);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.submit:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+.submit:disabled,
+.skip:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.error {
+  margin: 0.75rem 0 0;
+  color: var(--ifm-color-danger-dark);
+}
+
+/* Under the rating buttons it refers to. */
+.rateError {
+  text-align: right;
+}
