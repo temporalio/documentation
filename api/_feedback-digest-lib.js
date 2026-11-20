@@ -1,6 +1,9 @@
 // Grouping and Slack formatting for the daily feedback digest
 // (api/feedback-digest.js), with no I/O. See readme/FEEDBACK.md.
 
+const { MESSAGE_MIN } = require('./_feedback-lib');
+const { probeReason } = require('./_feedback-probe');
+
 const DOCS_ORIGIN = 'https://docs.temporal.io';
 
 // The order agent report categories appear in. Product reports come first,
@@ -74,12 +77,22 @@ function docsPath(pageUrl) {
   return pageUrl.slice(DOCS_ORIGIN.length).replace(/\/$/, '') || '/';
 }
 
+function isProbe(record) {
+  if (probeReason(record)) return true;
+  return record.kind === 'report' && typeof record.message === 'string' && record.message.length < MESSAGE_MIN;
+}
+
 // Collapses one day's (or week's) records into agent reports and per-page
 // widget ratings. Preview and development records are left out unless
-// `includePreview` is set, because previews write to the same store.
+// `includePreview` is set, because previews write to the same store. Scanner
+// probes are left out too, along with reports whose message is too short to
+// say what happened. The endpoint now rejects both before they're stored, but
+// records from before a rule existed are still in the store.
 function groupRecords(records, { includePreview = false } = {}) {
-  const kept = records.filter((r) => r && (includePreview || r.deployment === 'production'));
-  const skipped = records.length - kept.length;
+  const deployed = records.filter((r) => r && (includePreview || r.deployment === 'production'));
+  const skipped = records.length - deployed.length;
+  const kept = deployed.filter((r) => !isProbe(r));
+  const probes = deployed.length - kept.length;
 
   // Reports with the same page and title, ignoring case and spacing, are one
   // problem reported more than once. The senders (by IP hash) and the
@@ -137,7 +150,7 @@ function groupRecords(records, { includePreview = false } = {}) {
     (a, b) => b.down.count - a.down.count || b.up.count + b.down.count - (a.up.count + a.down.count)
   );
 
-  return { reports, ratings, skipped };
+  return { reports, ratings, skipped, probes };
 }
 
 // The pages with the most problems over a week: No ratings plus agent
@@ -246,7 +259,7 @@ function sectionBlocks(title, note, items) {
 // The Slack message for one day: { text, blocks }. `weekly`, when given, is
 // topProblemPages() output for the seven days ending on `day`.
 function formatDigest(day, grouped, { knownPaths = null, weekly = null, unreadable = 0 } = {}) {
-  const { reports, ratings, skipped } = grouped;
+  const { reports, ratings, skipped, probes = 0 } = grouped;
   const reportCount = reports.reduce((n, r) => n + r.count, 0);
   const up = ratings.reduce((n, p) => n + p.up.count, 0);
   const down = ratings.reduce((n, p) => n + p.down.count, 0);
@@ -259,6 +272,7 @@ function formatDigest(day, grouped, { knownPaths = null, weekly = null, unreadab
       : 'No feedback.';
   const notes = [
     skipped ? `${skipped} preview or development ${skipped === 1 ? 'record' : 'records'} left out.` : null,
+    probes ? `${probes} scanner ${probes === 1 ? 'probe' : 'probes'} left out.` : null,
     unreadable ? `${unreadable} ${unreadable === 1 ? 'record' : 'records'} couldn't be read.` : null,
     knownPaths ? null : "The sitemap couldn't be fetched, so pages aren't checked against it.",
   ].filter(Boolean);

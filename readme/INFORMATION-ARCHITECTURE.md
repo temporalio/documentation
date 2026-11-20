@@ -129,6 +129,14 @@ This document describes the purpose, audience, and content type for each top-lev
 - **Content type:** How-to
 - **Description:** Covers how to leverage AI to develop Temporal applications and deploy Temporal workloads.
 
+## Internal
+
+- **Audience:** Docs maintainers.
+- **Content type:** Rendering fixtures, such as `docs/internal/callouts.mdx`, which shows every callout type for visual
+  tests.
+- **Description:** Pages here are `unlisted: true` and set `llm_exclude`, so they're kept out of the sidebar, the
+  sitemap, and `llms.txt`. Don't put reader-facing content here.
+
 ---
 
 # Section details

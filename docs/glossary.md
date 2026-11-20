@@ -108,7 +108,7 @@ receives information about the API call, along with the role and permission clai
 
 An availability zone is a part of the Temporal system where tasks or operations are handled and executed. This design
 helps manage workloads and ensure tasks are completed. Temporal Cloud Namespaces are automatically distributed across
-three availability zones, which is the basis of the uptime commitment in the Temporal Cloud [SLA](https://temporal.io/sla).
+three availability zones, which is the basis of the availability commitment in the Temporal Cloud [SLA](https://temporal.io/sla).
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -188,10 +188,10 @@ in your Temporal Service to facilitate migrating your Visibility data from one d
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_ -->
 
-#### [Durable Execution](/temporal#durable-execution)
+#### [Durable Execution](/durable-execution)
 
-Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and
-progress even in the face of failures, crashes, or server outages.
+Durable Execution preserves the state and progress of a Workflow Execution across transient failures.
+Permanent failures require intervention; the Workflow can keep its progress while waiting for a fix.
 
 <!-- _Tags: [temporal](/tags/temporal), [durable-execution](/tags/durable-execution), [term](/tags/term)_ -->
 
@@ -348,7 +348,7 @@ passive Clusters, for backup and state reconstruction.
 
 #### [Multi-cloud Replication](/cloud/high-availability/enable)
 
-Multi-cloud Replication replicates Workflows and metadata to a different cloud provider (AWS or GCP). This is
+Multi-cloud Replication replicates Workflows and metadata to a different cloud provider. This is
 particularly beneficial for organizations required to be highly available across regions for compliance purposes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
