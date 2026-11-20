@@ -87,7 +87,7 @@ Namespace service disruption means Workers and gRPC Clients could not reliably u
 applications. It includes abnormally high error rates, request latency above the
 [service-level objective (SLO)](/cloud/slo#latency), or full Namespace unavailability. Recovery time includes only
 Namespace service disruption that a failover could have avoided. Disruptions to Temporal Cloud metrics or the
-[Cloud Ops API](/ops) do not count as Namespace service disruption because they do not directly affect Namespace performance.
+[Cloud Ops API](/ops) do not count as Namespace service disruption because they do not directly affect the Namespace or its Workflows.
 **N/A** means there was no Namespace service disruption in the incident.
 
 Because some Namespaces take longer to fail over than others, the table includes the average and worst recovery times
