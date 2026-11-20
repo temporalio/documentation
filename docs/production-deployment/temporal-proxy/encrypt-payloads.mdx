@@ -506,8 +506,7 @@ validation defaults. Configure validation on each upstream Temporal Cloud Namesp
 [Namespace translation](/production-deployment/temporal-proxy/configure#translate-namespaces). Validation is configured
 in Cloud, separately from the proxy's `encryption` block.
 
-1. Request access through your Temporal account team or
-   [Temporal Support](/evaluate/cloud/support#support-ticket).
+1. Ensure your account has access to [Payload encryption validation](/cloud/payload-encryption-validation).
 2. Follow [Configure a Namespace](/cloud/payload-encryption-validation#configure-a-namespace) to start in `warn` mode
    with metadata key `encoding` and accepted value `binary/encrypted`. If you use `skipEncodings` to pass through
    Payloads encrypted by an SDK codec, also accept the metadata values that codec uses for encrypted Payloads.
