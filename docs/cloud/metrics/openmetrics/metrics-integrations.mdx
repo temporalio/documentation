@@ -126,6 +126,12 @@ For SigNoz-side details, see the [SigNoz integration page](https://signoz.io/doc
 Parseable uses an OpenTelemetry Collector to scrape Temporal Cloud's OpenMetrics endpoint and export metrics to Parseable over OTLP/HTTP.
 Follow the [Parseable Temporal Cloud metrics guide](https://www.parseable.com/docs/ingest-data/ai-agents/temporal?tab=temporal-cloud-metrics) to configure the Collector and verify that metrics appear in Parseable.
 
+### Axiom
+
+Axiom uses an OpenTelemetry Collector to scrape the OpenMetrics endpoint and export metrics to an Axiom Metrics dataset over OTLP/HTTP.
+Follow the [Axiom Temporal guide](https://axiom.co/docs/send-data/temporal#send-temporal-cloud-metrics) to configure the Collector and query the metrics in Axiom.
+The same guide covers sending traces from TypeScript and Python Workers.
+
 ### Prometheus \+ Grafana {/* #prometheus-grafana */}
 
 Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.
