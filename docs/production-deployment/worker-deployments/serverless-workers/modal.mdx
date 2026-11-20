@@ -1,0 +1,222 @@
+---
+id: modal
+title: Deploy a Serverless Worker on Modal
+sidebar_label: Modal
+description: Package a Python Worker as a Modal function, configure credentials in both directions, and connect it to a Temporal Worker Deployment Version.
+slug: /production-deployment/worker-deployments/serverless-workers/modal
+draft: true
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+---
+
+Deploy your Worker code as a Modal function and configure Temporal to invoke that function when Tasks need capacity.
+The function starts a Worker that connects back to Temporal and polls its Task Queue. Modal builds and runs the
+container image from your Python image definition; you do not need a separate image registry.
+
+This guide uses the [Python Modal integration](/develop/python/workers/serverless-workers/modal).
+For the invocation lifecycle and scaling controls, see [Serverless Workers on Modal](/serverless-workers/modal).
+
+## Prerequisites
+
+- A Temporal Namespace with the Modal compute provider enabled, and permission to configure Worker Deployments
+  and start Workflow Executions in that Namespace.
+- Authorization for Temporal to invoke functions in your Modal workspace. This is separate from the credentials
+  your Worker uses to connect to Temporal.
+- Access to deploy apps and create secrets in a Modal workspace and environment.
+- Python 3.12 and [uv](https://docs.astral.sh/uv/) for the example.
+- A Temporal CLI build that provides `temporal worker deployment version compute-config modal-function`.
+  Check that this command's `--help` works before continuing.
+- A configured [Temporal CLI connection](/cli/cloud#connect-to-temporal-cloud). Use the same Namespace for every
+  Temporal command in this guide.
+
+The Python integration is experimental. Availability of its package does not establish availability of the Modal
+compute provider in your Temporal environment. Confirm access with your administrator before deploying.
+
+## Prepare the Worker code
+
+Follow the [Python integration guide](/develop/python/workers/serverless-workers/modal) to install the integration
+and create `activities.py`, `workflows.py`, and `worker.py`. The complete example uses these values:
+
+| Setting | Value |
+| --- | --- |
+| Temporal Worker Deployment name | `my-app` |
+| Temporal Build ID | `build-1` |
+| Temporal Task Queue | `my-task-queue` |
+| Workflow Type | `GreetingWorkflow` |
+| Modal app name | `temporal-worker` |
+| Modal function name | `temporal_worker` |
+| Modal secret name | `temporal` |
+
+The Modal function must be callable without arguments. Temporal starts it as a Worker, rather than passing the
+Workflow input to the function. The Worker retrieves Workflow and Activity Tasks from Temporal.
+
+When adapting the example, declare a versioning behavior for each Workflow and keep the Modal and integration
+timeouts equal.
+
+## Configure the Worker's Temporal credentials
+
+In the [Modal dashboard](https://modal.com/), select the workspace and environment where the Worker will run.
+Create a secret named `temporal` containing:
+
+| Key | Value |
+| --- | --- |
+| `TEMPORAL_ADDRESS` | Your Namespace's gRPC endpoint, from its connection settings. |
+| `TEMPORAL_NAMESPACE` | Your Namespace name. |
+| `TEMPORAL_API_KEY` | An API key authorized to access the Namespace. |
+
+The Worker example explicitly enables TLS and attaches this secret through
+`secrets=[modal.Secret.from_name("temporal")]`. Secrets are scoped to Modal environments. Create the secret in the
+same environment as the function, unless you explicitly configure a cross-environment lookup.
+
+For the Client configuration options, see [Configure the Temporal connection](/develop/python/workers/serverless-workers/modal#configure-the-temporal-connection).
+For secret management, see [Modal secrets](https://modal.com/docs/guide/secrets).
+
+## Deploy the app
+
+Authenticate the Modal CLI to the intended workspace if you have not already done so:
+
+```bash
+uv run modal setup
+```
+
+Select an existing Modal environment for the deployment. Replace `temporal-workers` with its name:
+
+```bash
+export MODAL_ENVIRONMENT=temporal-workers
+uv run modal deploy --env "$MODAL_ENVIRONMENT" worker.py
+```
+
+Modal builds the image, installs the dependencies, includes the local source modules, and deploys the function.
+Confirm that `temporal-worker` contains a function named `temporal_worker` in the intended environment.
+
+In the app's Deployment History, record the numeric version for this deployment. Set it for the commands below,
+replacing `1` with that version:
+
+```bash
+export MODAL_APP_VERSION=1
+```
+
+A Modal deployment tag is separate from the numeric app version. Use the numeric version when configuring Temporal.
+See [Modal deployments](https://modal.com/docs/guide/managing-deployments).
+
+## Authorize Temporal to invoke Modal
+
+Have your Temporal administrator confirm that the Namespace's account has an authorized connection to the Modal
+workspace containing your function. Record the connected workspace identifier as `MODAL_WORKSPACE_ID` for the next step.
+Creating a Modal secret with a Temporal API key does not grant this invocation permission.
+
+Replace the placeholder with the connected workspace identifier:
+
+```bash
+export MODAL_WORKSPACE_ID="<connected-workspace-id>"
+```
+
+{/* Publication blocker: insert the verified customer OAuth connection procedure when the Cloud UI and rollout
+are confirmed. Do not substitute the hard-coded test-cell credentials or an IAM flow. */}
+
+The compute provider selects a connected workspace through `--workspace-id` when Temporal uses per-workspace OAuth
+credentials. A server configured to use a single Modal API key uses a different credential mode and omits this flag.
+Use the mode configured by your administrator; do not omit the workspace identifier to work around an authorization error.
+
+## Configure the Worker Deployment Version
+
+Create the Worker Deployment if it does not already exist:
+
+```bash
+temporal worker deployment create --name my-app
+```
+
+Create a new Worker Deployment Version with Modal compute configuration:
+
+```bash
+temporal worker deployment version compute-config modal-function create \
+  --deployment-name my-app \
+  --build-id build-1 \
+  --app-name temporal-worker \
+  --function-name temporal_worker \
+  --environment "$MODAL_ENVIRONMENT" \
+  --workspace-id "$MODAL_WORKSPACE_ID" \
+  --app-version "$MODAL_APP_VERSION"
+```
+
+The deployment name and Build ID must match the values in `worker.py`. The app, function, environment, and app version
+must identify the code you deployed to Modal. Pinning the app version prevents a later app deployment from changing
+the code used by this Worker Deployment Version.
+
+For an existing version, use `modal-function update` instead of `create`. Provider details are replaced as a whole:
+pass all provider fields, including the workspace identifier and app version, when changing them. Updating provider
+details also resets scaler settings that are not supplied. See the [CLI reference](/cli/command-reference/worker#modal-function).
+
+Inspect the saved configuration:
+
+```bash
+temporal worker deployment version compute-config describe \
+  --deployment-name my-app \
+  --build-id build-1
+```
+
+## Set the version as Current
+
+Creating a version with compute configuration requests an initial Modal invocation to register the Worker's Task
+Queues. You do not need to start a Workflow or manually invoke the function for this registration.
+
+Confirm that the Worker has registered the expected Task Queue before directing new Workflows to it:
+
+```bash
+temporal worker deployment version describe \
+  --deployment-name my-app \
+  --build-id build-1
+```
+
+If `my-task-queue` is missing, follow [Troubleshoot Serverless Workers on Modal](/troubleshooting/serverless-workers/modal)
+to check invocation and Worker startup. Do not bypass the missing-Task-Queue check.
+
+Set `build-1` as the Current Version for this Worker Deployment:
+
+```bash
+temporal worker deployment set-current-version \
+  --deployment-name my-app \
+  --build-id build-1
+```
+
+## Verify automatic invocation
+
+After the initial Worker invocation exits, confirm that no Workers are polling the example Task Queue.
+Start a Workflow to check that Temporal requests a new Modal invocation:
+
+```bash
+temporal workflow start \
+  --workflow-id modal-greeting-test-1 \
+  --type GreetingWorkflow \
+  --task-queue my-task-queue \
+  --input '"World"' \
+  --execution-timeout 5m
+```
+
+Use a new Workflow ID for each test. Check the result:
+
+```bash
+temporal workflow show --workflow-id modal-greeting-test-1
+```
+
+The Workflow should complete with `"Hello, World!"`. In Modal, check the function's invocation history and logs for a
+corresponding Worker invocation. In Temporal, verify the Task Queue and Worker Deployment Version that processed it.
+Starting a Workflow submits work to Temporal; you do not need to invoke Modal separately for every Workflow.
+
+A connected provider status alone does not prove the deployed Worker contains your Workflow and Activity definitions.
+Verify both invocation and successful Task processing. The Worker can keep polling after this Workflow completes,
+until its invocation budget ends.
+
+## Update or remove the deployment
+
+For a new Worker build, change the Build ID in `worker.py`, deploy the app, and record its new numeric app version.
+Create a new Worker Deployment Version pointing to that app version, then use
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) to roll it out.
+Keep older app versions available while pinned Workflow Executions still depend on them.
+
+Before deleting the Modal app or its credentials, remove its compute configuration in Temporal after dependent
+Workflows have finished or moved to another version. Otherwise, Temporal can continue requesting invocations of a
+function that no longer exists. Delete or revoke the Modal resources only after Temporal no longer needs them.
