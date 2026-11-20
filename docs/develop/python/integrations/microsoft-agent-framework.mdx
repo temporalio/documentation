@@ -494,12 +494,13 @@ polls the Task Queue.
 
 ### Add middleware
 
-Pass middleware to the `Agent` or to `TemporalChatClient` as you do natively. Agent middleware runs in the `Agent`;
-chat and function middleware run in `TemporalChatClient`'s layers. All of it runs in the Workflow, next to the agent's
-loop. In the sample, `delete_file` is a plain `@tool` and `ALLOWED_PREFIX` is `/tmp/`. `BlockOutsideTmp` is function
+Pass middleware to the `Agent` or to `TemporalChatClient` as you do natively. Agent middleware runs in the `Agent`; chat
+and function middleware run in `TemporalChatClient`'s layers. All of it runs in the Workflow, next to the agent's loop.
+In the sample, `delete_file` is a plain `@tool` and `ALLOWED_PREFIX` is `/tmp/`. `BlockOutsideTmp` is function
 middleware that refuses `delete_file` calls outside that prefix by setting `context.result` without calling
-`call_next()`, so the tool never runs and the model reads the refusal. `AppendReminder` is chat middleware that appends
-`REMINDER` to the instructions of every model call before the request leaves for the Activity.
+`call_next()`, so the tool never runs and the model reads the refusal. It normalizes the path with `posixpath.normpath`
+before the check, so `/tmp/../etc/passwd` is refused too. `AppendReminder` is chat middleware that appends `REMINDER` to
+the instructions of every model call before the request leaves for the Activity.
 
 <!--SNIPSTART python-microsoft-agent-framework-middleware-middleware-->
 [microsoft_agent_framework_plugin/middleware/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/middleware/workflow.py)
