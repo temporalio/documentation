@@ -40,6 +40,10 @@ through **Configure IAM for Temporal invocation**. Publish the same Worker build
 Worker Deployment name, Build ID, and Task Queues. Have the qualified Lambda ARN and invocation role settings for each
 region ready before creating the Worker Deployment.
 
+If you use the same invocation role for both functions, its policy must allow `lambda:InvokeFunction` and
+`lambda:GetFunction` on both qualified function ARNs. See
+[Configure IAM for Temporal invocation](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam).
+
 ### Create the deployment with regional compute
 
 Configure both regional functions before routing new work to the version.
@@ -123,6 +127,8 @@ to publish the existing Worker build in the replica region. Use the same Worker 
 Queues as the primary function. [Configure invocation access](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-iam)
 for the replica function and record its qualified ARN.
 
+If you reuse the primary function's invocation role, add the replica function's qualified ARN to that role's policy.
+
 ### Update the version's regional compute {/* #configure-regional-compute */}
 
 Configure the replica region to use the Lambda function you published there.
@@ -200,8 +206,10 @@ Use a staging Namespace to verify the configuration:
 
 1. Run a Workflow and confirm in AWS CloudWatch Logs that the primary function processes its Tasks.
 2. [Manually fail over the Namespace](/cloud/high-availability/failovers/manage#trigger-failover).
-3. Let existing invocations of the primary function finish. Submit more work and confirm from the function ARN and
-   AWS CloudWatch Logs that Temporal invokes the replica function and Workflows make progress.
+3. Let existing invocations of the primary function finish. Submit more work and verify that Workflows make progress
+   and AWS CloudWatch Logs show invocations of the replica function. To identify the Worker that completed a Workflow
+   Task, check the Worker Identity on its [`WorkflowTaskCompleted`](/references/events#workflowtaskcompleted) Event.
+   If the identity includes a Lambda ARN, confirm that it names the replica function.
 4. Verify that the application can run without the primary region's compute or dependencies.
 5. Fail the Namespace back, let remaining replica-region invocations finish, and submit more work. Confirm that
    Temporal invokes the primary function again.

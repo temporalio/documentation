@@ -90,14 +90,12 @@ A **scaling group** is a named entry in a Worker Deployment Version's compute co
 compute target to invoke or scale and which scaling settings to apply. A compute configuration contains one or more
 scaling groups.
 
-The standard single-region setup creates one group named `default`, pointing at your Lambda function or Cloud Run
-Worker Pool. The compute resource has a region: the AWS region in the function ARN, or the GCP region of the pool.
-That compute region can differ from the Namespace's active region within the same cloud provider.
+The standard setup creates one scaling group named `default` with no Namespace region scope. With only this group,
+the [Worker Controller Instance (WCI)](#worker-controller-instance) uses the same compute target whichever Namespace
+region is active within that cloud provider.
 
-By default, a single-region setup leaves the group's region scope unset. With only this unscoped group, the
-[Worker Controller Instance (WCI)](#worker-controller-instance) uses its compute target regardless of which region in
-the same cloud provider is active for the Namespace. The group does not inherit a restriction from the Namespace's
-current region.
+The compute target has its own region, set by the AWS region in the function ARN or the GCP region of the Cloud Run
+Worker Pool. That region can differ from the Namespace's active region.
 
 For example, a Namespace active in `aws-us-east-1` can use a `default` group pointing at a Lambda in `us-east-1`. If the
 Namespace fails over to `aws-us-west-2`, the WCI keeps invoking that same Lambda in `us-east-1`. The unscoped group
@@ -109,7 +107,7 @@ Each group has these settings:
 | --- | --- |
 | Compute provider | Identifies the function or Worker Pool and the credentials Temporal uses to invoke or scale it. |
 | Scaling settings | Tune provider-specific behavior, such as Lambda invocation cooldowns or Cloud Run instance limits and utilization targets. |
-| Region scope (optional) | Restricts the group to specific active Namespace regions. By default, a single-region setup leaves this unset, so the group continues to apply if the Namespace changes regions. |
+| Region scope (optional) | Restricts the group to specific active Namespace regions. The standard setup leaves this unset, so the `default` group still applies if the Namespace changes regions within the same cloud provider. |
 
 The compute provider determines the autoscaling algorithm. You tune that algorithm's behavior through the provider's
 scaling settings. See [Autoscaling](#autoscaling) for the behavior of each provider.

@@ -36,8 +36,9 @@ For the configurations in the provider setup guides, regional selection works as
 | No regional group matches, but an unscoped group exists. | The WCI uses the unscoped group's compute target, even if that target is in another region. |
 | Neither a matching group nor an unscoped group exists. | The WCI starts no compute for that region. Tasks wait for Workers that can serve the version. |
 
-Existing single-region groups remain unscoped until you configure a region scope. They can keep serving work after a
-Namespace-only failover if their compute remains healthy, but do not protect against losing the compute region.
+The standard setup creates one unscoped scaling group named `default`. If your version uses only that group, Temporal
+continues to use the same compute target after Namespace failover. An outage in the compute region can still make that
+target unavailable.
 
 Regional selection also supports traditional Workers in the primary region and Serverless Workers only in the recovery
 region. Both use the same Worker Deployment Version. A group scoped only to the recovery region starts Serverless
@@ -65,14 +66,15 @@ still invokes a function in `us-east-1`.
 ## Existing Workers after failover
 
 Regional compute selection changes where new Workers start. It does not immediately prevent Workers already running
-in the original region from receiving Tasks. Healthy Workers can reach the new active Namespace through the Namespace
-Endpoint or [request forwarding](/cloud/high-availability#request-forwarding).
+in the original region from receiving Tasks. A Worker using a Namespace Endpoint such as `payments.abcde.tmprl.cloud:7233`
+follows the active Namespace region. A Worker using a Regional Endpoint such as `aws-us-west-2.region.tmprl.cloud:7233`
+connects to the replica in that region. By default, the passive replica
+[forwards poll requests to the active replica](/cloud/high-availability#request-forwarding).
 
 Those Workers also need access to their application dependencies. A Worker might still reach Temporal Cloud while its
-regional database is unavailable. Regional Endpoints with
-[passive poller forwarding disabled](/cloud/high-availability/enable#change-forwarding-behavior) prevent new Tasks from
-being delivered through the passive replica. This setting does not terminate running Activities. Workers using the
-Namespace Endpoint can follow the active replica regardless of their compute location.
+regional database is unavailable. If you
+[disable passive poller forwarding](/cloud/high-availability/enable#change-forwarding-behavior), Workers connected through
+a passive region's Regional Endpoint stop receiving new Tasks through that replica. Running Activities can continue.
 
 How existing compute stops depends on the provider:
 
