@@ -179,6 +179,28 @@ identity (IRSA or Pod Identity on AWS, Workload Identity on Azure and GCP); off 
 from the host. Grant that identity only the permission to encrypt and decrypt with the specific key, as shown for each
 provider below.
 
+## Require an encryption key {/* #require-encryption */}
+
+Start the proxy with `--require-encryption`, or set `PROXY_REQUIRE_ENCRYPTION=true`, to keep a deployment from
+forwarding payloads unencrypted because its configuration lost its keys. The proxy then refuses to start unless
+`encryption.default` is set.
+
+```bash
+proxy serve -c config.yaml --require-encryption
+```
+
+The check looks for a key, not for `encryption.enabled`, so a decrypt-only proxy with `enabled: false` still starts. The
+setting is a flag rather than a configuration key so that editing the configuration file alone can't turn it off.
+
+With the Helm chart, set `requireEncryption: true` in your values. The chart then fails to render unless
+`config.encryption.default.uri` is set, and starts the proxy with `PROXY_REQUIRE_ENCRYPTION=true`.
+
+:::note Version note
+
+`--require-encryption` is new in v1.1.0.
+
+:::
+
 ## AWS KMS {/* #aws-kms */}
 
 Wrap DEKs with an AWS KMS symmetric key, referenced by ARN. The `awskms://` scheme uses a triple slash (`awskms:///`) so
@@ -467,6 +489,8 @@ encryption:
 ```
 
 Matching is exact on the Payload's `encoding` metadata. Each skipped Payload counts toward `payloads_skipped_total`.
+When [compression](/production-deployment/temporal-proxy/compress-payloads) is on, skipped Payloads aren't compressed
+either, since encrypted bytes don't compress.
 
 Listing `binary/encrypted`, the encoding the proxy itself writes, has a second effect: a response sealed under a KMS key
 this proxy doesn't hold comes back as it is rather than failing the call. That is what a chained proxy needs, since the
