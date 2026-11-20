@@ -71,30 +71,29 @@ operational impact.
 | --- | --- | --- | --- | --- | --- |
 | October 14, 2026 | 3 minutes 15 seconds | 4 minutes 30 seconds | GCP us-west1 | Elevated Temporal Cloud error rates and latency | [Incident details](https://status.temporal.io/incidents/wl12nmqsy9p6) |
 | October 9, 2026 | 15 minutes 30 seconds | 18 minutes | AWS us-east-1 | Elevated Temporal Cloud error rates and latency | [Incident details](https://status.temporal.io/incidents/vx437s5b5myq) |
-| October 8, 2026 | N/A (no operational impact) | N/A | GCP us-central1 | Proactive failover due to a [cloud-provider incident](https://status.cloud.google.com/incidents/mSFVt6PiP557bjRyYsut) | [Incident details](https://status.temporal.io/incidents/2sjs76m14wss) |
-| September 3, 2026 | N/A (no operational impact) | N/A | AWS us-west-2 | Proactive failover due to a [cloud-provider incident](https://health.aws.amazon.com/health/status?eventID=arn:aws:health:us-west-2::event/MULTIPLE_SERVICES/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE_926DB_F0036494EA4); a small percentage of Temporal Cloud metrics were affected | [Incident details](https://status.temporal.io/incidents/vn2t29t2xr5t) |
-| September 1, 2026 | 0 minutes (prevented operational impact) | 0 minutes (prevented operational impact) | GCP us-central1 | Partial [cloud-provider outage](https://status.cloud.google.com/incidents/J5ia5t9p3g9Q5Wi7r8Ev) | [Incident details](https://status.temporal.io/incidents/yj8d6hqcn0h4) |
+| October 8, 2026 | N/A (no operational impact) | N/A | GCP us-central1 | Proactive failover due to a [cloud provider incident](https://status.cloud.google.com/incidents/mSFVt6PiP557bjRyYsut) | [Incident details](https://status.temporal.io/incidents/2sjs76m14wss) |
+| September 3, 2026 | N/A (no operational impact) | N/A | AWS us-west-2 | Proactive failover due to a [cloud provider incident](https://health.aws.amazon.com/health/status?eventID=arn:aws:health:us-west-2::event/MULTIPLE_SERVICES/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE_926DB_F0036494EA4) | [Incident details](https://status.temporal.io/incidents/vn2t29t2xr5t) |
+| September 1, 2026 | 0 minutes (prevented operational impact) | 0 minutes (prevented operational impact) | GCP us-central1 | [Cloud provider outage](https://status.cloud.google.com/incidents/J5ia5t9p3g9Q5Wi7r8Ev) | [Incident details](https://status.temporal.io/incidents/yj8d6hqcn0h4) |
 
 ### Recovery time methodology
 
-The table includes incidents in which the [Temporal Status Page](https://status.temporal.io/) reported that Temporal
-failed over Namespaces. Recovery time includes only operational impact that a failover could have avoided.
-
 For each Namespace, recovery time is measured from when operational impact is first observable in Temporal's metrics
-to when the Namespace has completed failover and is operationally available in its secondary region.
+to when the Namespace has completed failover and is active on a healthy replica.
+Temporal Cloud has a 20-minute RTO, so the goal is a recovery time of less than 20 minutes for each incident.
 A lower recovery time is better. A recovery time of **0 minutes** means failover completed before operational impact
-began, preventing disruption to Namespace availability. **N/A** means there was no operational impact to Namespaces
-in the incident.
+began, preventing disruption to applications and Workflows that rely on the Namespaces.
 
 Operational impact means Workers and gRPC Clients could not reliably use the Namespace to process Workflows and run
 applications. It includes abnormally high error rates, request latency above the
-[service-level objective (SLO)](/cloud/slo#latency), or full Namespace unavailability. Disruptions to Temporal Cloud
-metrics or the [Cloud Ops API](/ops) do not count as operational impact because they do not directly affect Namespace
-performance.
+[service-level objective (SLO)](/cloud/slo#latency), or full Namespace unavailability. Recovery time includes only
+operational impact that a failover could have avoided. Disruptions to Temporal Cloud metrics or the
+[Cloud Ops API](/ops) do not count as operational impact because they do not directly affect Namespace performance.
+**N/A** means there was no operational impact to Namespaces in the incident.
 
-Temporal Cloud has a 20-minute RTO, so the goal is a recovery time of less than 20 minutes for each incident.
 Because some Namespaces take longer to fail over than others, the table includes the average and worst recovery times
 across all Namespaces that were automatically failed over.
+The table includes incidents in which the [Temporal Status Page](https://status.temporal.io/) reported that Temporal
+failed over Namespaces. The table is not a comprehensive list of all automatic failovers.
 [User-triggered (manual) failovers](/cloud/high-availability/failovers#manual-failover) and Namespaces with
 [automatic failover disabled](/cloud/high-availability/enable#automatic-failovers) are excluded.
 
