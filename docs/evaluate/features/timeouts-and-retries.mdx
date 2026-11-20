@@ -13,8 +13,8 @@ tags:
 
 import PatternCards from '@site/src/components/PatternCards';
 
-In Temporal, timeouts detect application failures.
-The system can then automatically mitigate these failures through retries.
+In Temporal, timeouts detect failures such as a crashed Worker or an unresponsive service.
+The system can then recover from these [transient failures](/durable-execution#transient-failures) automatically through retries.
 Both major application function primitives, **[Workflows](/workflows)** and **[Activities](/activities)**, have dedicated **timeout configurations** and can be configured with a **[Retry Policy](/encyclopedia/retry-policies)**.
 
 Follow one of our tutorials to [Get started](https://learn.temporal.io/getting_started/) exploring timeouts and Retry Policies.
