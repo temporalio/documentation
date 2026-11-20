@@ -111,9 +111,14 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
   // Applied only when writing the per-page .md files. llms-full.txt keeps the
   // undecorated markdown and carries the same pointer once in its own header,
   // rather than repeating it 720 times.
-  function withAgentDirective(markdown, siteUrl, urlPath) {
+  //
+  // `lastUpdated` (YYYY-MM-DD or null) leads the block so an agent can judge
+  // freshness before reading on. It's the page's last significant change, the
+  // same date as the sitemap's <lastmod>; see plugins/shared/lastModified.js.
+  function withAgentDirective(markdown, siteUrl, urlPath, lastUpdated) {
     const pagePath = urlPath === 'index' ? '/' : `/${urlPath}`;
     const directive =
+      (lastUpdated ? `> Last updated: ${lastUpdated}.\n` : '') +
       `> For the complete documentation index, see [llms.txt](${siteUrl}/llms.txt).\n` +
       '> Any documentation page is available as raw Markdown by appending `.md` to its URL.\n' +
       // Agent search endpoint experiment. src=md-page tells the request log
@@ -356,6 +361,9 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
         pathToFileURL(path.join(__dirname, '../../scripts/mdx-to-md.mjs')).href
       );
 
+      // Same date source as the sitemap and the JSON-LD dateModified.
+      const vcs = context.siteConfig.future.experimental_vcs;
+
       let generated = 0;
       let excluded = 0;
       let totalWarnings = 0;
@@ -395,7 +403,9 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
                 fs.copyFileSync(from, dest);
               },
             });
-            fs.writeFileSync(outputPath, withAgentDirective(withImages, siteUrl, urlPath) + '\n');
+            const lastUpdate = await vcs.getFileLastUpdateInfo(filePath);
+            const lastUpdated = lastUpdate ? new Date(lastUpdate.timestamp).toISOString().split('T')[0] : null;
+            fs.writeFileSync(outputPath, withAgentDirective(withImages, siteUrl, urlPath, lastUpdated) + '\n');
             totalWarnings += warnings.length;
             generated++;
 
