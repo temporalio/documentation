@@ -60,6 +60,8 @@ exceptions:
   - Application
   - Applications
   - Archival
+  - Cancel
+  - Cancellation
   - Cloud
   - Codec
   - Command
