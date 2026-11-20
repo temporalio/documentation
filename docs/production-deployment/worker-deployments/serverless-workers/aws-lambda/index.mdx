@@ -874,14 +874,8 @@ If the Workflow does not progress or the Lambda is not invoked, see
 ## Configure scale-up for rate-limited Task Queues {/* #configure-rate-limited-scaling */}
 
 If your Lambda Workers poll a rate-limited Task Queue, set `scale_up_dispatch_rate_epsilon` to `0.05` in the scaling
-group. This lets Temporal pause scale-up when Tasks are waiting and the dispatch rate stays flat. For details on when
-the pause applies, see [Scale-up pauses on AWS Lambda](/serverless-workers/aws-lambda#rate-limited-task-queues).
-
-| Value | Effect |
-| --- | --- |
-| `0` | Default. Disables the pause. |
-| `0.05` | Recommended for rate-limited Task Queues. Treats variations within 5% of the reference dispatch rate as flat. |
-| `0.1` | Maximum. Treats variations within 10% of the reference dispatch rate as flat. |
+group. For supported values and when the pause applies, see
+[Scale-up pauses on AWS Lambda](/serverless-workers/aws-lambda#rate-limited-task-queues).
 
 Run the following command with Temporal CLI v1.10.0 or later to update an existing Worker Deployment Version. Add
 `--scaling-group <SCALING_GROUP>` if the group's name differs from `default`.
