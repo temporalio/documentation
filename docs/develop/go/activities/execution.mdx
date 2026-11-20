@@ -161,7 +161,7 @@ To set a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#s
 This or `StartToCloseTimeout` must be set.
 
 - Type: `time.Duration`
-- Default: ∞ (infinity - no limit)
+- Default: None. If you set only `StartToCloseTimeout`, the Temporal Service uses the Workflow Run Timeout, or no limit if the Workflow has none. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
 
 <!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "35", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)
@@ -182,7 +182,7 @@ This or `StartToCloseTimeout` must be set.
 To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 - Type: `time.Duration`
-- Default: ∞ (infinity - no limit)
+- Default: None. The Temporal Service uses the `ScheduleToCloseTimeout` if it's set, otherwise the Workflow Run Timeout, or no limit if neither is set. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
 
 <!--SNIPSTART go-activities-execution-workflow {"selectedLines": ["28", "36", "37", "45"]}-->
 [go-sandbox/activities/basics/workflow.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/basics/workflow.go)

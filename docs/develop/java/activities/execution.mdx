@@ -322,7 +322,7 @@ To set a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#s
 This or `StartToCloseTimeout` must be set.
 
 - Type: `Duration`
-- Default: Unlimited.
+- Default: None. If you set only [`StartToCloseTimeout`](#starttoclosetimeout), the Temporal Service uses the Workflow Run Timeout, or no limit if the Workflow has none. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
   Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
 
 With `ActivityStub`:
@@ -361,7 +361,7 @@ WorkflowImplementationOptions options =
 To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout), use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `Duration`
-- Default: Unlimited. This timeout is non-retryable.
+- Default: None. The Temporal Service uses the [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) if it's set, otherwise the Workflow Run Timeout, or no limit if neither is set. This timeout is non-retryable. See [How the Temporal Service resolves Activity timeouts](/encyclopedia/detecting-activity-failures#timeout-resolution).
 
 With `ActivityStub`:
 
