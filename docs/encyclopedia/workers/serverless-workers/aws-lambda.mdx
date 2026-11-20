@@ -48,9 +48,10 @@ For AgentCore Runtime startup and session behavior, see
 
 #### Scale-up pauses on AWS Lambda {/* #rate-limited-task-queues */}
 
-When an AWS Lambda Worker's [Task Queue reaches its dispatch rate limit](/design-patterns/downstream-rate-limiting),
-starting more Workers adds invocations without increasing throughput. Lambda scaling groups can use
-`scale_up_dispatch_rate_epsilon` to pause scale-up when the dispatch rate stays flat. The setting is off by default.
+When a [Task Queue reaches its rate limit](/design-patterns/downstream-rate-limiting), it dispatches about the same
+number of Tasks per second even as Temporal invokes more Lambda Workers. The `scale_up_dispatch_rate_epsilon` setting
+lets Temporal pause scale-up when it observes a steady dispatch rate while Tasks are waiting. The setting is off by
+default.
 
 The setting defines how much the observed dispatch rate can vary and still count as flat. While Tasks are backlogged,
 the WCI pauses scale-up for the affected Task Queue type when its dispatch rate stays within that band for the
