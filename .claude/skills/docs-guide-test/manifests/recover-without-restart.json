@@ -1,0 +1,4 @@
+{
+  "guide": "docs/guides/recover-without-restart.mdx",
+  "skip": "TypeScript guide. The harness runs Python only today; add a TS runner (and a tsconfig/deps story) before this can run."
+}

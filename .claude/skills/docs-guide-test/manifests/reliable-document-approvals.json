@@ -1,0 +1,31 @@
+{
+  "guide": "docs/guides/reliable-document-approvals.mdx",
+  "language": "python",
+  "python": "3.12",
+  "pip": ["temporalio>=1.7.0"],
+  "extract": {
+    "mode": "prose-filename"
+  },
+  "setup": [
+    "temporal operator namespace create document-approval",
+    "temporal operator search-attribute create --namespace document-approval --name DocumentId --type Keyword",
+    "temporal operator search-attribute create --namespace document-approval --name SubmitterEmail --type Keyword",
+    "temporal operator search-attribute create --namespace document-approval --name ApprovalStatus --type Keyword"
+  ],
+  "worker": "python worker.py",
+  "driver": "python starter.py",
+  "startup_wait_seconds": 6,
+  "driver_timeout_seconds": 120,
+  "assert": {
+    "driver_exit_zero": true,
+    "stdout_contains": [
+      "Workflow started: approval-doc-2026-001",
+      "Approval Signal sent",
+      "'status': 'APPROVED'",
+      "'message': 'Document approved'",
+      "Audit trail (5 entries):",
+      "DECISION_APPROVED: Budget looks good. Approved."
+    ]
+  },
+  "_notes": "Self-contained: Activities only log. The worker and starter use a custom Namespace 'document-approval' (os.getenv default) and custom Search Attributes, so setup creates the Namespace and registers DocumentId/SubmitterEmail/ApprovalStatus on it. Files are named in prose ('Create a file named `models.py`:'), so extract.mode is prose-filename. Driver approves the document: expected end state status=APPROVED, message='Document approved', report_url reports://doc-2026-001/approval-summary, and a 5-entry audit trail (WORKFLOW_STARTED, DOCUMENT_STORED, APPROVAL_REQUESTED, DECISION_APPROVED, DOCUMENT_APPROVED). FINDING (currently FAILS - driver times out): the starter sends the approve Signal immediately after a get_status Query, so it is delivered before run() reaches _wait_for_decision. _wait_for_decision begins with `self._pending_decision = None`, which discards the already-received approval; the Workflow then waits out the 48h SLA and handle.result() never returns. Worker log confirms 'Decision received via Signal' lands before 'Approval process started'. This is a lost-signal race in the guide's code; a fix must not clear a decision that has already arrived (e.g. don't reset _pending_decision at the top of _wait_for_decision, or capture it first). A second latent bug waits behind it: ApprovalDecision.status is `class ApprovalStatus(str, enum.Enum)`, which does not round-trip through the default JSON converter (deserializes as a list of characters), so even if the Signal were not lost, `decision.status.value` in _handle_decision would raise - the same str-enum/dataclass issue as durable-gaming-sessions. The assertions above encode the intended green state for when the guide is fixed."
+}

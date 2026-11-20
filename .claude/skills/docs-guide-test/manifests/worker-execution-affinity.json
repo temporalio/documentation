@@ -1,0 +1,4 @@
+{
+  "guide": "docs/guides/worker-execution-affinity.mdx",
+  "skip": "Not runnable from the inline code. There is no starter and no Worker that registers the Workflow (the Worker registers only Activities), the download_file Activity fetches a real URL over httpx (external dependency), and the Worker's main() references ClientConfig without importing it. Block filenames also come from markdown '**File:**' labels rather than `# header` comments."
+}
