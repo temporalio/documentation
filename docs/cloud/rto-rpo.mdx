@@ -79,6 +79,8 @@ operational impact.
 
 For each Namespace, recovery time is measured from when operational impact is first observable in Temporal's metrics
 to when the Namespace has completed failover and is active on a healthy replica.
+Recovery time does not include DNS propagation. Temporal Cloud can forward requests to the active replica, restoring
+operations before DNS changes take effect, and DNS propagation time can vary with your architecture.
 Temporal Cloud has a 20-minute RTO, so the goal is a recovery time of less than 20 minutes for each incident.
 A lower recovery time is better. A recovery time of **0 minutes** means failover completed before operational impact
 began, preventing outage-related operational impact on Namespace availability.
