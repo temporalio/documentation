@@ -8,7 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { ReleaseNoteHeader } from '@site/src/components';
 
-Give your AI coding agent Temporal expertise with Skills, real-time documentation access with the Temporal Knowledge Base
+Give your AI coding agent Temporal expertise with Skills, real-time documentation access with the Temporal Docs
 MCP Server, read-only access to your Workflow Executions with the Temporal MCP server, or direct access to the docs as
 Markdown.
 
@@ -139,22 +139,22 @@ a sample app, and runs its first Workflow on Temporal Cloud.
 
 Trigger the skill with a slash command: `/temporal:temporal-cloud-setup`. */}
 
-## Temporal knowledge base MCP server
+## Temporal Docs MCP Server
 
 Connect Temporal expertise directly to your AI assistant for accurate, up-to-date answers about Temporal. The
-Temporal knowledge base MCP server gives AI tools real-time access to best practices compiled from our documentation, educational materials, community forum responses, and slack channels, so responses draw from current expertise
+Temporal Docs MCP Server gives AI tools real-time access to best practices compiled from our documentation, educational materials, community forum responses, and slack channels, so responses draw from current expertise
 rather than training data.
 
 :::info Authentication required
 
-The Temporal Knowledge Base MCP Server is publicly available, but requires a one-time login with a Google or GitHub account to enforce rate limits and prevent abuse.
+The Temporal Docs MCP Server is publicly available, but requires a one-time login with a Google or GitHub account to enforce rate limits and prevent abuse.
 Only an opaque user ID is used for rate limiting. Your name, email, repositories, and other personal data are not accessed or collected.
 
 :::
 
 ### Claude Code
 
-Add the Temporal knowledge base MCP server globally so it's available in all your projects:
+Add the Temporal Docs MCP Server globally so it's available in all your projects:
 
 1. Register the MCP server with Claude Code:
 
@@ -162,7 +162,7 @@ Add the Temporal knowledge base MCP server globally so it's available in all you
    claude mcp add --scope user --transport http temporal-docs https://temporal.mcp.kapa.ai
    ```
 
-2. Restart Claude Code and run `/mcp` to authenticate with your Google account.
+2. Restart Claude Code and run `/mcp` to authenticate with your Google or GitHub account.
 
 To add the server to a specific project only, omit the `--scope user` flag. This stores the configuration in the
 project's `.mcp.json` file:
@@ -179,7 +179,7 @@ claude mcp add --transport http temporal-docs https://temporal.mcp.kapa.ai
 
 ### Other MCP-compatible tools
 
-The Temporal Knowledge Base MCP Server URL is:
+The Temporal Docs MCP Server URL is:
 
 ```
 https://temporal.mcp.kapa.ai

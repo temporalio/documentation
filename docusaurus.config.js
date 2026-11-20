@@ -34,6 +34,17 @@ module.exports = async function createConfigAsync() {
         attributes: {},
         innerHTML: googleTagBootstrap,
       },
+      // Agentic Resource Discovery (ARD): points agents at the manifest of
+      // Temporal's MCP servers and skills, which temporal.io publishes for
+      // the whole domain. Vercel sends the same link as an HTTP Link header.
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'ard',
+          href: 'https://temporal.io/.well-known/ard.json',
+          type: 'application/json',
+        },
+      },
       {
         tagName: 'link',
         attributes: {
