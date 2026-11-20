@@ -53,7 +53,7 @@ scrape_configs:
 ```
 
 In this example, Prometheus is configured to scrape at 10-second intervals and to listen for Temporal Service metrics on `host.docker.internal:8000` and SDK metrics on two targets, `host.docker.internal:8077` and `host.docker.internal:8078`.
-The `8077` and `8078` ports must be set on `WorkflowServiceStubs` in your application code with your preferred SDK. See [SDK metrics setup](#sdk-metrics-setup).
+Your application must serve SDK metrics on ports `8077` and `8078`. Set the port where you configure your SDK's Prometheus exporter. See [SDK metrics setup](#sdk-metrics-setup).
 You can set up as many targets as required.
 
 :::info
