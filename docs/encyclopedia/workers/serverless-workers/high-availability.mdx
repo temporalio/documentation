@@ -26,25 +26,6 @@ contains the active Namespace region. The matching group's compute target determ
 The compute target specifies where the resource runs, through the region in the Lambda ARN or the Cloud Run Worker
 Pool's region setting.
 
-### Example of regional compute selection
-
-A Worker Deployment Version has two scaling groups, `east` and `west`, each pointing to a Lambda function that runs
-the same Worker build. While the Namespace is active in `aws-us-east-1`, the WCI selects `east` because its
-`region_ids` contains `aws-us-east-1`. After the Namespace fails over to `aws-us-west-2`, the WCI selects `west` and
-starts new Workers using the Lambda function configured for that group.
-
-<div style={{textAlign: 'center'}}>
-  <CaptionedImage
-    src="/diagrams/serverless-worker-regional-failover.svg"
-    srcDark="/diagrams/serverless-worker-regional-failover-dark.svg"
-    alt="The east scaling group matches aws-us-east-1 and points to a Lambda function in us-east-1. The west group matches aws-us-west-2 and points to a Lambda function in us-west-2. Before failover, the WCI selects east and invokes its Lambda. After failover, the WCI selects west and invokes its Lambda. An X marks the unmatched group in each state."
-    title="The WCI matches the active Namespace region to a scaling group and invokes that group's Lambda to start new Workers."
-  />
-</div>
-
-If the `aws-us-west-2` scaling group instead points to a Lambda ARN in `us-east-1`, the WCI selects the `aws-us-west-2`
-group after failover and still invokes a function in `us-east-1`.
-
 ## Regional and default compute configurations
 
 For the configurations in the provider setup guides, regional selection works as follows:
@@ -61,6 +42,25 @@ Namespace-only failover if their compute remains healthy, but do not protect aga
 Regional selection also supports traditional Workers in the primary region and Serverless Workers only in the recovery
 region. Both use the same Worker Deployment Version. A group scoped only to the recovery region starts Serverless
 Workers when the Namespace becomes active there.
+
+### Example of regional compute selection
+
+A Worker Deployment Version has two scaling groups, `east` and `west`, each pointing to a Lambda function that runs
+the same Worker build. While the Namespace is active in `aws-us-east-1`, the WCI selects `east` because its
+`region_ids` contains `aws-us-east-1`. After the Namespace fails over to `aws-us-west-2`, the WCI selects `west` and
+starts new Workers using the Lambda function configured for that group.
+
+<div style={{textAlign: 'center'}}>
+  <CaptionedImage
+    src="/diagrams/serverless-worker-regional-failover.svg"
+    srcDark="/diagrams/serverless-worker-regional-failover-dark.svg"
+    alt="The east scaling group matches aws-us-east-1 and points to a Lambda function in us-east-1. The west group matches aws-us-west-2 and points to a Lambda function in us-west-2. Before failover, the WCI selects east and invokes its Lambda. After failover, the WCI selects west and invokes its Lambda. An X marks the unmatched group in each state."
+    title="The WCI matches the active Namespace region to a scaling group and invokes that group's Lambda to start new Workers."
+  />
+</div>
+
+If the `west` scaling group instead points to a Lambda ARN in `us-east-1`, the WCI selects `west` after failover and
+still invokes a function in `us-east-1`.
 
 ## Existing Workers after failover
 
