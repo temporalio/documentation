@@ -81,7 +81,7 @@ For each Namespace, recovery time is measured from when operational impact is fi
 to when the Namespace has completed failover and is active on a healthy replica.
 Temporal Cloud has a 20-minute RTO, so the goal is a recovery time of less than 20 minutes for each incident.
 A lower recovery time is better. A recovery time of **0 minutes** means failover completed before operational impact
-began, preventing disruption to applications and Workflows that rely on the Namespaces.
+began, preventing outage-related operational impact on Namespace availability.
 
 Operational impact means Workers and gRPC Clients could not reliably use the Namespace to process Workflows and run
 applications. It includes abnormally high error rates, request latency above the
