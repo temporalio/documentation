@@ -85,6 +85,28 @@ Build the `Agent` over a `TemporalChatClient` instead of a provider client. Each
 timed out within 10 seconds of a Worker dying mid-call and schedules the retry.
 
 <!--SNIPSTART python-microsoft-agent-framework-hello-world-workflow-->
+[microsoft_agent_framework_plugin/hello_world/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/hello_world/workflow.py)
+```py
+from datetime import timedelta
+
+from agent_framework import Agent
+from temporalio import workflow
+from temporalio.microsoft_agent_framework import TemporalChatClient
+
+
+@workflow.defn
+class HelloWorldWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        agent = Agent(
+            client=TemporalChatClient(
+                "gpt-4o-mini", start_to_close_timeout=timedelta(seconds=60)
+            ),
+            instructions="You are a concise assistant.",
+        )
+        response = await agent.run(prompt)
+        return response.text
+```
 <!--SNIPEND-->
 
 **2. Start a Worker**
@@ -106,6 +128,52 @@ the sandbox loads the Workflow file for every run, and the OpenAI SDK's import t
 import in the Workflow file fails the Worker at start.
 
 <!--SNIPSTART python-microsoft-agent-framework-hello-world-worker-->
+[microsoft_agent_framework_plugin/hello_world/run_worker.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/hello_world/run_worker.py)
+```py
+import asyncio
+import os
+
+from agent_framework.openai import OpenAIChatClient
+from openai import AsyncOpenAI
+from temporalio.client import Client
+from temporalio.microsoft_agent_framework import MicrosoftAgentFrameworkPlugin
+from temporalio.worker import Worker
+
+from microsoft_agent_framework_plugin.hello_world.workflow import HelloWorldWorkflow
+
+
+def openai_chat_client() -> OpenAIChatClient:
+    # Runs on the Worker on first use; OPENAI_API_KEY never reaches the Workflow.
+    # Temporal retries the model Activity, so the OpenAI SDK's own retries are off.
+    return OpenAIChatClient(
+        model="gpt-4o-mini", async_client=AsyncOpenAI(max_retries=0)
+    )
+
+
+async def main() -> None:
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise SystemExit("Set OPENAI_API_KEY before starting the Worker.")
+
+    plugin = MicrosoftAgentFrameworkPlugin(
+        chat_clients={"gpt-4o-mini": openai_chat_client}
+    )
+    client = await Client.connect(
+        os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+        plugins=[plugin],
+    )
+
+    worker = Worker(
+        client,
+        task_queue="microsoft-agent-framework-hello-world",
+        workflows=[HelloWorldWorkflow],
+    )
+    print("Worker started. Ctrl+C to exit.")
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 <!--SNIPEND-->
 
 **3. Run the Workflow**
@@ -113,6 +181,32 @@ import in the Workflow file fails the Worker at start.
 Start the Workflow from a separate script:
 
 <!--SNIPSTART python-microsoft-agent-framework-hello-world-run-workflow-->
+[microsoft_agent_framework_plugin/hello_world/run_workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/hello_world/run_workflow.py)
+```py
+import asyncio
+import os
+
+from temporalio.client import Client
+
+from microsoft_agent_framework_plugin.hello_world.workflow import HelloWorldWorkflow
+
+
+async def main() -> None:
+    client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
+
+    result = await client.execute_workflow(
+        HelloWorldWorkflow.run,
+        "Write a haiku about durable execution.",
+        id="microsoft-agent-framework-hello-world",
+        task_queue="microsoft-agent-framework-hello-world",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 <!--SNIPEND-->
 
 The Workflow's Event History shows one `microsoft_agent_framework.invoke_model` Activity. Its summary is the model name,
@@ -135,11 +229,26 @@ pass it to the agent through `activity_as_tool`. The plugin cannot tell the two 
 The sample has one of each. `letter_counter` counts characters and runs in the Workflow:
 
 <!--SNIPSTART python-microsoft-agent-framework-tools-tool-->
+[microsoft_agent_framework_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/tools/workflow.py)
+```py
+@tool
+def letter_counter(word: str, letter: str) -> int:
+    """Count how many times a letter appears in a word, ignoring case."""
+    return word.lower().count(letter.lower())
+```
 <!--SNIPEND-->
 
 `fetch_weather` stands in for an HTTP call and runs as an Activity:
 
 <!--SNIPSTART python-microsoft-agent-framework-tools-activity-->
+[microsoft_agent_framework_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/tools/workflow.py)
+```py
+@activity.defn
+async def fetch_weather(city: str) -> dict[str, Any]:
+    """Look up the current weather for a city."""
+    # Stands in for an HTTP call. Anything that does I/O belongs in an Activity.
+    return {"city": city, "temperature_f": 72, "conditions": "sunny"}
+```
 <!--SNIPEND-->
 
 `activity_as_tool` takes the same Activity options as `workflow.execute_activity`, and like it needs a
@@ -150,11 +259,78 @@ work as they do on `@tool`. A failed Activity, including one that ran out of ret
 tool, and Agent Framework turns that into an error result for the model.
 
 <!--SNIPSTART python-microsoft-agent-framework-tools-workflow-->
+[microsoft_agent_framework_plugin/tools/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/tools/workflow.py)
+```py
+@workflow.defn
+class ToolsWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        agent = Agent(
+            client=TemporalChatClient(
+                "gpt-4o-mini", start_to_close_timeout=timedelta(seconds=60)
+            ),
+            instructions="Use the tools you are given and answer briefly.",
+            tools=[
+                letter_counter,
+                activity_as_tool(
+                    fetch_weather, start_to_close_timeout=timedelta(seconds=30)
+                ),
+            ],
+        )
+        response = await agent.run(prompt)
+        return response.text
+```
 <!--SNIPEND-->
 
 Register the Activity on the Worker next to the Workflow:
 
 <!--SNIPSTART python-microsoft-agent-framework-tools-worker-->
+[microsoft_agent_framework_plugin/tools/run_worker.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/tools/run_worker.py)
+```py
+import asyncio
+import os
+
+from agent_framework.openai import OpenAIChatClient
+from openai import AsyncOpenAI
+from temporalio.client import Client
+from temporalio.microsoft_agent_framework import MicrosoftAgentFrameworkPlugin
+from temporalio.worker import Worker
+
+from microsoft_agent_framework_plugin.tools.workflow import ToolsWorkflow, fetch_weather
+
+
+def openai_chat_client() -> OpenAIChatClient:
+    return OpenAIChatClient(
+        model="gpt-4o-mini", async_client=AsyncOpenAI(max_retries=0)
+    )
+
+
+async def main() -> None:
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise SystemExit("Set OPENAI_API_KEY before starting the Worker.")
+
+    plugin = MicrosoftAgentFrameworkPlugin(
+        chat_clients={"gpt-4o-mini": openai_chat_client}
+    )
+    client = await Client.connect(
+        os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+        plugins=[plugin],
+    )
+
+    worker = Worker(
+        client,
+        task_queue="microsoft-agent-framework-tools",
+        workflows=[ToolsWorkflow],
+        # The Activity behind the fetch_weather tool.
+        activities=[fetch_weather],
+    )
+    print("Worker started. Ctrl+C to exit.")
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 <!--SNIPEND-->
 
 A synchronous `def` tool runs on the Workflow's event loop. Agent Framework hands it to `asyncio.to_thread`, which the
@@ -196,12 +372,103 @@ Pass it in `context_providers`, not `tools`. Agent Framework's `MCPStdioTool`, `
 provider replaces them.
 
 <!--SNIPSTART python-microsoft-agent-framework-mcp-workflow-->
+[microsoft_agent_framework_plugin/mcp/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/mcp/workflow.py)
+```py
+from datetime import timedelta
+
+from agent_framework import Agent
+from temporalio import workflow
+from temporalio.microsoft_agent_framework import (
+    TemporalChatClient,
+    TemporalMCPToolProvider,
+)
+
+
+@workflow.defn
+class MCPWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        agent = Agent(
+            client=TemporalChatClient(
+                "gpt-4o-mini", start_to_close_timeout=timedelta(seconds=60)
+            ),
+            instructions="Use the echo tool when asked to echo something.",
+            context_providers=[
+                TemporalMCPToolProvider(
+                    "echo", start_to_close_timeout=timedelta(seconds=30)
+                )
+            ],
+        )
+        response = await agent.run(prompt)
+        return response.text
+```
 <!--SNIPEND-->
 
 Register the server factory on the Worker. The sample starts a one-tool echo server over stdio; swap in any MCP server
 by changing the factory. The sample is its own uv project because it needs MCP Python SDK 2, so its imports are flat:
 
 <!--SNIPSTART python-microsoft-agent-framework-mcp-worker-->
+[microsoft_agent_framework_plugin/mcp/run_worker.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/mcp/run_worker.py)
+```py
+import asyncio
+import os
+import sys
+from pathlib import Path
+
+from agent_framework.openai import OpenAIChatClient
+from mcp import Client as MCPClient
+from mcp import StdioServerParameters, stdio_client
+from openai import AsyncOpenAI
+from temporalio.client import Client
+from temporalio.microsoft_agent_framework import MicrosoftAgentFrameworkPlugin
+from temporalio.worker import Worker
+
+from workflow import MCPWorkflow
+
+ECHO_SERVER = Path(__file__).parent / "echo_mcp_server.py"
+
+
+def openai_chat_client() -> OpenAIChatClient:
+    return OpenAIChatClient(
+        model="gpt-4o-mini", async_client=AsyncOpenAI(max_retries=0)
+    )
+
+
+def echo_mcp_client() -> MCPClient:
+    # Runs on the Worker. The plugin connects on the first MCP Activity and
+    # keeps the connection for 5 minutes of idleness.
+    return MCPClient(
+        stdio_client(
+            StdioServerParameters(command=sys.executable, args=[str(ECHO_SERVER)])
+        )
+    )
+
+
+async def main() -> None:
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise SystemExit("Set OPENAI_API_KEY before starting the Worker.")
+
+    plugin = MicrosoftAgentFrameworkPlugin(
+        chat_clients={"gpt-4o-mini": openai_chat_client},
+        mcp_clients={"echo": echo_mcp_client},
+    )
+    client = await Client.connect(
+        os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+        plugins=[plugin],
+    )
+
+    worker = Worker(
+        client,
+        task_queue="microsoft-agent-framework-mcp",
+        workflows=[MCPWorkflow],
+    )
+    print("Worker started. Ctrl+C to exit.")
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 <!--SNIPEND-->
 
 The Activity options on the provider apply to its list and call Activities. The sample sets a 30-second
@@ -235,9 +502,68 @@ middleware that refuses `delete_file` calls outside that prefix by setting `cont
 `REMINDER` to the instructions of every model call before the request leaves for the Activity.
 
 <!--SNIPSTART python-microsoft-agent-framework-middleware-middleware-->
+[microsoft_agent_framework_plugin/middleware/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/middleware/workflow.py)
+```py
+ALLOWED_PREFIX = "/tmp/"
+REMINDER = "Answer in one short sentence."
+
+
+class BlockOutsideTmp(FunctionMiddleware):
+    """Refuses delete_file calls outside /tmp without running the tool."""
+
+    async def process(
+        self,
+        context: FunctionInvocationContext,
+        call_next: Callable[[], Awaitable[None]],
+    ) -> None:
+        if context.function.name == "delete_file":
+            arguments = context.arguments
+            raw_path = str(
+                arguments.get("path", "")
+                if isinstance(arguments, Mapping)
+                else getattr(arguments, "path", "")
+            )
+            # Normalize first, so "/tmp/../etc/passwd" does not pass as /tmp.
+            path = posixpath.normpath(raw_path)
+            if not path.startswith(ALLOWED_PREFIX):
+                # Not calling call_next() skips the tool; the model gets this result.
+                context.result = f"Refused: {raw_path} is outside {ALLOWED_PREFIX}"
+                return
+        await call_next()
+
+
+class AppendReminder(ChatMiddleware):
+    """Adds a reminder to the instructions of every model call."""
+
+    async def process(
+        self, context: ChatContext, call_next: Callable[[], Awaitable[None]]
+    ) -> None:
+        options = dict(context.options or {})
+        instructions = options.get("instructions") or ""
+        options["instructions"] = f"{instructions} {REMINDER}".strip()
+        context.options = options
+        await call_next()
+```
 <!--SNIPEND-->
 
 <!--SNIPSTART python-microsoft-agent-framework-middleware-workflow-->
+[microsoft_agent_framework_plugin/middleware/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/middleware/workflow.py)
+```py
+@workflow.defn
+class MiddlewareWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        agent = Agent(
+            client=TemporalChatClient(
+                "gpt-4o-mini", start_to_close_timeout=timedelta(seconds=60)
+            ),
+            instructions="You manage files. Use delete_file when asked to delete one.",
+            tools=[delete_file],
+            middleware=[BlockOutsideTmp(), AppendReminder()],
+        )
+        response = await agent.run(prompt)
+        return response.text
+```
 <!--SNIPEND-->
 
 :::caution
@@ -272,6 +598,123 @@ stays pending, and a run that brings a new message without answering drops the p
 `response.user_input_requests` before the next run if a dropped request matters.
 
 <!--SNIPSTART python-microsoft-agent-framework-human-in-the-loop-workflow-->
+[microsoft_agent_framework_plugin/human_in_the_loop/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/human_in_the_loop/workflow.py)
+```py
+from dataclasses import dataclass, field
+from datetime import timedelta
+from typing import Any
+
+from agent_framework import Agent, AgentResponse, AgentSession, Content, tool
+from temporalio import workflow
+from temporalio.exceptions import ApplicationError
+from temporalio.microsoft_agent_framework import TemporalChatClient
+
+
+@tool(approval_mode="always_require")
+def delete_file(path: str) -> str:
+    """Delete a file. Runs only after a person approves."""
+    return f"deleted {path}"
+
+
+@dataclass
+class ApprovalRequest:
+    request_id: str
+    tool_name: str
+    arguments: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class Decision:
+    request_id: str
+    approved: bool
+
+
+def approval_request(request: Content) -> ApprovalRequest:
+    call = request.function_call
+    return ApprovalRequest(
+        request_id=request.id or "",
+        tool_name=(call.name if call is not None else None) or "",
+        arguments=(call.parse_arguments() if call is not None else None) or {},
+    )
+
+
+@workflow.defn
+class HumanInTheLoopWorkflow:
+    def __init__(self) -> None:
+        self._pending: dict[str, ApprovalRequest] = {}
+        self._decisions: dict[str, bool] = {}
+        self._awaiting_reply = False
+
+    @workflow.query
+    def pending_approvals(self) -> list[ApprovalRequest]:
+        return list(self._pending.values())
+
+    @workflow.update
+    async def decide(self, decision: Decision) -> str:
+        # A decision can arrive in the same Workflow Task as the model's reply,
+        # before the loop in run has read the requests in that reply. Judge the
+        # id once the reply has been read.
+        await workflow.wait_condition(lambda: not self._awaiting_reply)
+        if decision.request_id in self._decisions:
+            raise ApplicationError(
+                f"approval request {decision.request_id!r} is already decided",
+                non_retryable=True,
+            )
+        if decision.request_id not in self._pending:
+            raise ApplicationError(
+                f"no pending approval request {decision.request_id!r}",
+                non_retryable=True,
+            )
+        self._decisions[decision.request_id] = decision.approved
+        return "approved" if decision.approved else "rejected"
+
+    @decide.validator
+    def validate_decide(self, decision: Decision) -> None:
+        # Validators run before the Workflow sees the model's reply, so this one
+        # checks the input and not the state. Bad input never enters history.
+        if not decision.request_id:
+            raise ValueError("request_id is required")
+
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        agent = Agent(
+            client=TemporalChatClient(
+                "gpt-4o-mini", start_to_close_timeout=timedelta(seconds=60)
+            ),
+            instructions="You manage files. Use delete_file when asked to delete one.",
+            tools=[delete_file],
+        )
+        # Approvals are keyed by the function call's id and resolved against
+        # the session, so every run uses the same session.
+        session = agent.create_session()
+        response = await self._reply(agent, prompt, session)
+        while response.user_input_requests:
+            requests = response.user_input_requests
+            self._pending = {
+                item.request_id: item for item in map(approval_request, requests)
+            }
+            await workflow.wait_condition(
+                lambda: all(
+                    request_id in self._decisions for request_id in self._pending
+                )
+            )
+            replies = [
+                request.to_function_approval_response(self._decisions[request.id or ""])
+                for request in requests
+            ]
+            self._pending = {}
+            response = await self._reply(agent, replies, session)
+        return response.text
+
+    async def _reply(
+        self, agent: Agent, messages: Any, session: AgentSession
+    ) -> AgentResponse:
+        self._awaiting_reply = True
+        try:
+            return await agent.run(messages, session=session)
+        finally:
+            self._awaiting_reply = False
+```
 <!--SNIPEND-->
 
 Agent Framework keys the approval by the request's `id` and binds the response to the request recorded in the
@@ -292,6 +735,42 @@ schema the OpenAI clients send natively for a class (`strict: true` under the cl
 `response.value`:
 
 <!--SNIPSTART python-microsoft-agent-framework-structured-output-workflow-->
+[microsoft_agent_framework_plugin/structured_output/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/structured_output/workflow.py)
+```py
+from datetime import timedelta
+
+from agent_framework import Agent
+from pydantic import BaseModel, Field
+from temporalio import workflow
+from temporalio.exceptions import ApplicationError
+from temporalio.microsoft_agent_framework import TemporalChatClient
+
+
+class PersonInfo(BaseModel):
+    name: str = Field(description="Name of the person")
+    age: int = Field(description="Age of the person")
+    occupation: str = Field(description="Occupation of the person")
+
+
+@workflow.defn
+class StructuredOutputWorkflow:
+    @workflow.run
+    async def run(self, prompt: str) -> PersonInfo:
+        agent = Agent(
+            client=TemporalChatClient(
+                "gpt-4o-mini", start_to_close_timeout=timedelta(seconds=60)
+            ),
+            instructions="Extract the person's details from the text.",
+        )
+        # The model's JSON schema crosses to the Activity; the Workflow parses the reply.
+        response = await agent.run(prompt, options={"response_format": PersonInfo})
+        person = response.value
+        if not isinstance(person, PersonInfo):
+            raise ApplicationError(
+                "The model did not return a PersonInfo", non_retryable=True
+            )
+        return person
+```
 <!--SNIPEND-->
 
 The Workflow returns the model itself. With the plugin on the Client, it sets the
@@ -316,11 +795,97 @@ adds an Event to Event History and counts toward the 10,000 Signals a Workflow E
 topic runs `agent.run(prompt)` as the plain model Activity and publishes nothing.
 
 <!--SNIPSTART python-microsoft-agent-framework-streaming-workflow-->
+[microsoft_agent_framework_plugin/streaming/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/streaming/workflow.py)
+```py
+from datetime import timedelta
+
+from agent_framework import Agent
+from temporalio import workflow
+from temporalio.contrib.workflow_streams import WorkflowStream
+from temporalio.microsoft_agent_framework import TemporalChatClient
+
+STREAMING_TOPIC = "events"
+
+
+@workflow.defn
+class StreamingWorkflow:
+    def __init__(self) -> None:
+        # Host the stream so the model Activity has somewhere to publish.
+        self._stream = WorkflowStream()
+
+    @workflow.run
+    async def run(self, prompt: str) -> str:
+        agent = Agent(
+            client=TemporalChatClient(
+                "gpt-4o-mini",
+                start_to_close_timeout=timedelta(seconds=60),
+                streaming_topic=STREAMING_TOPIC,
+            ),
+            instructions="You are a concise assistant.",
+        )
+        # With a topic set, this call runs as the streaming Activity and
+        # publishes its updates, with or without stream=True.
+        response = await agent.run(prompt)
+        return response.text
+```
 <!--SNIPEND-->
 
 Any client can subscribe to the topic by Workflow ID and decode each item with `ChatResponseUpdate.from_dict`:
 
 <!--SNIPSTART python-microsoft-agent-framework-streaming-client-->
+[microsoft_agent_framework_plugin/streaming/run_workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/streaming/run_workflow.py)
+```py
+import asyncio
+import os
+from datetime import timedelta
+
+from agent_framework import ChatResponseUpdate
+from temporalio.client import Client
+from temporalio.contrib.workflow_streams import WorkflowStreamClient
+
+from microsoft_agent_framework_plugin.streaming.workflow import (
+    STREAMING_TOPIC,
+    StreamingWorkflow,
+)
+
+
+async def main() -> None:
+    client = await Client.connect(os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"))
+    workflow_id = "microsoft-agent-framework-streaming"
+
+    handle = await client.start_workflow(
+        StreamingWorkflow.run,
+        "Count from 1 to 5, one number per sentence.",
+        id=workflow_id,
+        task_queue="microsoft-agent-framework-streaming",
+    )
+
+    async def consume() -> None:
+        # Each item is a ChatResponseUpdate in its dict form.
+        stream = WorkflowStreamClient.create(client, workflow_id)
+        async for item in stream.subscribe(
+            [STREAMING_TOPIC],
+            from_offset=0,
+            result_type=dict,
+            poll_cooldown=timedelta(milliseconds=50),
+        ):
+            update = ChatResponseUpdate.from_dict(item.data)
+            if update.text:
+                print(update.text, end="", flush=True)
+
+    consume_task = asyncio.create_task(consume())
+    result = await handle.result()
+    # Once the Workflow is complete, subscribe reads the rest of the stream
+    # and then ends, so this returns with every update printed.
+    await consume_task
+
+    print()
+    print(f"Final result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 <!--SNIPEND-->
 
 The durable result is the same as without streaming. The Activity result is one payload, which has to stay under the
@@ -358,6 +923,78 @@ Temporal suggests Continue-As-New, lets in-flight Updates finish with `workflow.
 as new with the serialized session:
 
 <!--SNIPSTART python-microsoft-agent-framework-continue-as-new-workflow-->
+[microsoft_agent_framework_plugin/continue_as_new/workflow.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/continue_as_new/workflow.py)
+```py
+import asyncio
+from dataclasses import dataclass
+from datetime import timedelta
+from typing import Any
+
+from agent_framework import Agent, AgentSession, InMemoryHistoryProvider
+from temporalio import workflow
+from temporalio.microsoft_agent_framework import TemporalChatClient
+
+
+@dataclass
+class ChatInput:
+    session: dict[str, Any] | None = None
+
+
+@workflow.defn
+class ChatWorkflow:
+    @workflow.init
+    def __init__(self, input: ChatInput) -> None:
+        # Runs before any handler, so a turn that arrives with the start finds
+        # the agent and the session ready.
+        self._done = False
+        self._lock = asyncio.Lock()
+        self._agent = Agent(
+            client=TemporalChatClient(
+                "gpt-4o-mini", start_to_close_timeout=timedelta(seconds=60)
+            ),
+            instructions="You are a helpful assistant. Keep replies short.",
+        )
+        self._session = (
+            AgentSession.from_dict(input.session)
+            if input.session
+            else self._agent.create_session()
+        )
+
+    @workflow.update
+    async def turn(self, prompt: str) -> str:
+        # One turn at a time, so the session's history stays in order.
+        async with self._lock:
+            response = await self._agent.run(prompt, session=self._session)
+            return response.text
+
+    @workflow.signal
+    def end_chat(self) -> None:
+        self._done = True
+
+    @workflow.query
+    def transcript(self) -> list[dict[str, str]]:
+        # Agent Framework's in-memory history provider keeps the messages here.
+        state = self._session.state.get(InMemoryHistoryProvider.DEFAULT_SOURCE_ID, {})
+        messages = state.get("messages", [])
+        return [
+            {
+                "role": str(getattr(message.role, "value", message.role)),
+                "text": message.text,
+            }
+            for message in messages
+        ]
+
+    @workflow.run
+    async def run(self, input: ChatInput) -> None:
+        await workflow.wait_condition(
+            lambda: self._done or workflow.info().is_continue_as_new_suggested()
+        )
+        # Let in-flight turns finish before the handoff.
+        await workflow.wait_condition(workflow.all_handlers_finished)
+
+        if not self._done:
+            workflow.continue_as_new(ChatInput(session=self._session.to_dict()))
+```
 <!--SNIPEND-->
 
 To let the provider keep the conversation instead, pass `store=True` in the agent's `default_options` or a run's
@@ -391,6 +1028,57 @@ opentelemetry.trace.set_tracer_provider(provider)
 ```
 
 <!--SNIPSTART python-microsoft-agent-framework-open-telemetry-worker-->
+[microsoft_agent_framework_plugin/open_telemetry/run_worker.py](https://github.com/temporalio/samples-python/blob/main/microsoft_agent_framework_plugin/open_telemetry/run_worker.py)
+```py
+import asyncio
+import os
+
+from agent_framework.openai import OpenAIChatClient
+from openai import AsyncOpenAI
+from temporalio.client import Client
+from temporalio.contrib.opentelemetry import OpenTelemetryPlugin
+from temporalio.microsoft_agent_framework import MicrosoftAgentFrameworkPlugin
+from temporalio.worker import Worker
+
+from microsoft_agent_framework_plugin.open_telemetry.telemetry import (
+    install_tracer_provider,
+)
+from microsoft_agent_framework_plugin.open_telemetry.workflow import TracedWorkflow
+
+
+def openai_chat_client() -> OpenAIChatClient:
+    return OpenAIChatClient(
+        model="gpt-4o-mini", async_client=AsyncOpenAI(max_retries=0)
+    )
+
+
+async def main() -> None:
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise SystemExit("Set OPENAI_API_KEY before starting the Worker.")
+
+    # Set the provider before connecting; the plugins read it at startup.
+    install_tracer_provider("microsoft-agent-framework-worker")
+    plugin = MicrosoftAgentFrameworkPlugin(
+        chat_clients={"gpt-4o-mini": openai_chat_client}
+    )
+    # The Worker inherits the Client's plugins in this order: tracing first.
+    client = await Client.connect(
+        os.environ.get("TEMPORAL_ADDRESS", "localhost:7233"),
+        plugins=[OpenTelemetryPlugin(add_temporal_spans=True), plugin],
+    )
+
+    worker = Worker(
+        client,
+        task_queue="microsoft-agent-framework-open-telemetry",
+        workflows=[TracedWorkflow],
+    )
+    print("Worker started. Ctrl+C to exit.")
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 <!--SNIPEND-->
 
 One trace then runs from the starter's root span through `StartWorkflow:TracedWorkflow`, `RunWorkflow:TracedWorkflow`,
