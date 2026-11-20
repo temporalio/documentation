@@ -437,6 +437,12 @@ Credentials require TLS to the upstream. The proxy dials over TLS by default, so
 `insecure: true`. Credentials on a plaintext hop fail the configuration at startup rather than putting the key on the
 wire in the clear.
 
+Keep upstream credentials with the proxy and restrict network paths when all application traffic must pass through it.
+For Temporal Cloud upstreams, also consider
+[Payload encryption validation](/cloud/payload-encryption-validation),
+a feature that can warn about or reject Payloads that bypassed encryption
+preventing requests from bypassing the proxy and going directly to Temporal Cloud.
+
 ## Tune upstream connections {/*#tune-upstream-connections*/}
 
 Each upstream takes an optional `connection` block. The defaults match the Temporal Go SDK, so a Worker gets the same
