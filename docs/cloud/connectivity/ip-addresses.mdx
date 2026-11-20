@@ -12,7 +12,7 @@ tags:
 
 By default, Temporal Cloud resources use dynamic IP addresses that may change at any time. These IP addresses may be any IPs within the IP ranges published by the relevant cloud provider.
 
-If you need to limit outbound access from your client network, we recommend using [AWS PrivateLink or GCP Private Services Connect](/cloud/connectivity#private-network-connectivity-for-namespaces). Alternatively, you can enable [Stable IPs](#stable-ip-addresses) for your Namespace.
+If you need to limit outbound access from your client network, we recommend using [AWS PrivateLink, GCP Private Service Connect, or Azure Private Link](/cloud/connectivity#private-network-connectivity-for-namespaces). Alternatively, you can enable [Stable IPs](#stable-ip-addresses) for your Namespace.
 
 :::warning Do not rely on default dynamic public IP addresses
 
@@ -37,13 +37,13 @@ Stable IPs is an optional Namespace setting that provides a fixed, published set
 
 ### When to use Stable IPs
 
-Use Stable IPs when your security requirements mandate IP-based allowlisting for egress traffic, and you cannot use AWS PrivateLink or GCP Private Services Connect.
+Use Stable IPs when your security requirements mandate IP-based allowlisting for egress traffic, and you cannot use AWS PrivateLink, GCP Private Service Connect, or Azure Private Link.
 
 **Recommended options for secure connectivity** (in order):
 
-1. **AWS PrivateLink or GCP Private Services Connect** - Keep traffic within your cloud provider's private network
+1. **AWS PrivateLink, GCP Private Service Connect, or Azure Private Link** - Keep traffic within your cloud provider's private network
 2. **Stable IPs** - Use published, stable IP ranges for firewall allowlisting
-3. **Cloud provider IP ranges** - Allowlist all AWS or GCP IP ranges (overly permissive)
+3. **Cloud provider IP ranges** - Allowlist all AWS, GCP, or Azure IP ranges (overly permissive)
 
 Stable IPs provide enterprise-grade compliance for organizations that require IP-based security controls but cannot use private network connectivity options.
 

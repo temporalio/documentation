@@ -33,9 +33,9 @@ Without proactive rate limiting when calling downstream services, users may expe
 
 Use separate Task Queues with rate limiting configuration to protect downstream APIs. Create one Task Queue per rate-limited API and configure:
 
-- `max_task_queue_activities_per_second`: Global rate limit across all Workers on the queue
+- `max_task_queue_activities_per_second`: How many Activities start per second across all Workers on the queue. It doesn't limit how many run at once.
 - `max_activities_per_second`: Per-Worker rate limit (optional, for additional control)
-- `max_concurrent_activities`: Limit concurrent executions when API has concurrency limits
+- `max_concurrent_activities`: How many Activities each Worker runs at once, when the API has concurrency limits
 
 This ensures Activities calling external APIs never exceed their rate limits, preventing 429 errors and account issues.
 
@@ -59,11 +59,11 @@ Task Queues in Temporal are dynamically created when first referenced. Rate limi
 
 The Python SDK provides three rate limiting controls:
 
-1. **max_task_queue_activities_per_second** (global): Limits Activity dispatch across ALL Workers on this queue. Enforced by Temporal Server. Best for API rate limits. Last value wins.
+1. **max_task_queue_activities_per_second** (global): Limits how many Activity Tasks the Temporal Service dispatches per second across ALL Workers on this queue. Each retry attempt counts as a new dispatch. Best for API rate limits. The last Worker value wins, unless an operator set the rate with `temporal task-queue config set` (see [CLI commands for operators](#cli-commands-for-operators)). It doesn't limit how many Activities run at once.
 
 2. **max_activities_per_second** (per-worker): Limits Activities per Worker. Can be combined with global limit for finer control.
 
-3. **max_concurrent_activities** (concurrency): Limits concurrent executions. Use when API has concurrent connection limits (for example, database pool size).
+3. **max_concurrent_activities** (concurrency): Limits concurrent executions on each Worker. Use when API has concurrent connection limits (for example, database pool size). Temporal has no queue-wide concurrency limit, so the total for the queue is this value multiplied by the number of Workers.
 
 **Important:** Eager Activity execution can bypass a Task Queue's rate limit. It applies only when an Activity is scheduled on the same Task Queue as its Workflow and the Worker running the Workflow has the Activity registered. The Temporal Service then returns the Activity Task directly to that Worker instead of dispatching it through the Task Queue. A Worker that sets `max_task_queue_activities_per_second` never requests eager execution, so set it on every Worker that polls a rate-limited queue. This guide schedules each API's Activities on a dedicated Task Queue, separate from the Workflow Task Queue, so its Activities never run eagerly.
 

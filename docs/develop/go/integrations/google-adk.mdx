@@ -11,7 +11,7 @@ description: Run Google ADK agents with durable execution using the Temporal Go 
 ---
 
 Temporal's integration with [Google ADK](https://google.github.io/adk-docs/) (`adk-go`) gives your agents
-[Durable Execution](/temporal#durable-execution): the agent's orchestration loop runs inside a Temporal Workflow, each
+[Durable Execution](/durable-execution): the agent's orchestration loop runs inside a Temporal Workflow, each
 LLM call becomes a durable Temporal Activity, and any tool that does I/O runs as an Activity too — so every step is
 retried, timed out, recorded in Workflow history, and replayable after crashes or restarts.
 
@@ -170,7 +170,6 @@ func AgentWorkflow(ctx workflow.Context, question string) (string, error) {
 	}
 	return answer, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -183,7 +182,6 @@ The tool itself is an ordinary Temporal Activity — register it on the worker a
 func GetWeather(ctx context.Context, in GetWeatherInput) (GetWeatherOutput, error) {
 	return GetWeatherOutput{City: in.City, Conditions: "sunny, 72°F"}, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -310,7 +308,6 @@ func MultiAgentWorkflow(ctx workflow.Context, question string) (string, error) {
 	}
 	return answer, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -411,7 +408,6 @@ func ApprovalWorkflow(ctx workflow.Context, request string) (Result, error) {
 		msg = googleadk.ConfirmationResponse(decision)
 	}
 }
-
 ```
 <!--SNIPEND-->
 
@@ -529,7 +525,6 @@ func ChatWorkflow(ctx workflow.Context, in ChatInput) error {
 		MaxTurns: in.MaxTurns,
 	})
 }
-
 ```
 <!--SNIPEND-->
 

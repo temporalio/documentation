@@ -134,7 +134,6 @@ public TemporalOperationResult<Void> remindApprover(
       .remindApprover();
   return TemporalOperationResult.sync(null);
 }
-
 ```
 <!--SNIPEND-->
 
@@ -163,7 +162,6 @@ public TemporalOperationResult<GetApprovalStatusOutput> getApprovalStatus(
           .newWorkflowStub(ApprovalWorkflow.class, ApprovalWorkflowId.forItem(input.getItemId()))
           .getApprovalStatus());
 }
-
 ```
 <!--SNIPEND-->
 
@@ -203,7 +201,6 @@ public TemporalOperationResult<SubmitDecisionOutput> submitDecision(
           .setWaitForStage(WorkflowUpdateStage.ACCEPTED)
           .build());
 }
-
 ```
 <!--SNIPEND-->
 

@@ -3,6 +3,7 @@
 // (the `filename` prop). If you change the data shape or filename convention
 // here, update that handler too. See readme/MARKDOWN_PIPELINE.md.
 import React, { useState, useEffect } from 'react';
+import Admonition from '@theme/Admonition';
 
 const JsonTable = ({ filename }) => {
   const [data, setData] = useState([]);
@@ -47,7 +48,7 @@ const JsonTable = ({ filename }) => {
   }
 
   if (error) {
-    return <div className='theme-admonition theme-admonition-warning alert alert--danger admonition_WoCw'>Please reload the page to see this table.</div>;
+    return <Admonition type="warning">Please reload the page to see this table.</Admonition>;
   }
 
   if (data.length === 0 || headers.length === 0) {

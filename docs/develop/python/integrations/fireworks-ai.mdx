@@ -122,8 +122,6 @@ class OpenAICompatibleModelProvider(ModelProvider):
         # Chat Completions is the API all of these providers serve. The Agents
         # SDK defaults to the Responses API, which not every provider offers.
         return OpenAIChatCompletionsModel(model=model, openai_client=client)
-
-
 ```
 <!--SNIPEND-->
 
@@ -219,8 +217,6 @@ class OpenAICompatibleAgentWorkflow:
 
         result = await Runner.run(agent, input.prompt)
         return result.final_output
-
-
 ```
 <!--SNIPEND-->
 
