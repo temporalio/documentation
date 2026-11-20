@@ -83,10 +83,11 @@ but the periodic re-sizing scales the pool up regardless.
 
 ## Worker Versioning {/* #worker-versioning */}
 
-Serverless Workers require [Worker Versioning](/worker-versioning). Create one Worker Pool for each Worker Deployment
-Version, and carry the Build ID in the pool name.
+Serverless Workers require [Worker Versioning](/worker-versioning). Create a separate Worker Pool for each Worker
+Deployment Version in each compute region, and carry the Build ID in the pool name. Regional pools for the same version
+must run the same Worker build.
 
-The compute configuration names a project, region, and Worker Pool. It does not name a
+Each [scaling group's](/serverless-workers#scaling-groups) compute provider names a project, region, and Worker Pool. It does not name a
 [revision](https://cloud.google.com/run/docs/managing/revisions), so Temporal runs whichever revision the pool serves at
 the time. That ties a pool to one build, and a new build needs a new pool.
 
@@ -103,6 +104,20 @@ replay-unsafe code this way causes non-determinism errors for in-flight Workflow
 
 For step-by-step instructions, see
 [Create the Worker Pool](/production-deployment/worker-deployments/serverless-workers/cloud-run#create-worker-pool).
+
+## High Availability {/* #high-availability */}
+
+With [regional compute configurations](/serverless-workers/high-availability), each region's Worker Pool serves the
+same Worker Deployment Version. After Namespace failover, the WCI scales the pool selected for the newly active region.
+Each version needs a separate pool in each compute region, with both pools serving the same Worker build.
+
+The WCI scales pools that no longer serve the active region to zero on a subsequent metrics poll. This cleanup happens
+even if the pool's normal minimum instance count is greater than zero. Existing instances can continue processing
+until Cloud Run stops them. Scale-down can interrupt Activities, so use Heartbeats for resumable work as described in
+[Lifecycle](#lifecycle).
+
+For setup and a test that verifies which pool serves the work, see
+[Configure high availability on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run/high-availability).
 
 ## Lifecycle {/* #lifecycle */}
 

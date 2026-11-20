@@ -85,11 +85,12 @@ immutable build for each Worker Deployment Version. With AWS Lambda, this means 
   specific Worker Deployment Version (Pinned) or moves between them on routing changes (Auto-Upgrade).
 - **AWS Lambda function versions** — immutable numbered snapshots of your Lambda function code (`1`, `2`, `3`, ...).
 
-A Worker Deployment Version is an immutable build identifier. For production workloads, keep the Lambda function code it
-invokes immutable as well: map each Worker Deployment Version to exactly one Lambda function version, and configure the
-compute provider with the qualified
-[versioned ARN](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) for that Lambda version (for
-example, `arn:aws:lambda:us-east-1:123:function:my-worker:5`).
+A Worker Deployment Version identifies one Worker build. For production workloads, configure each
+[scaling group's](/serverless-workers#scaling-groups) compute provider with the qualified
+[versioned ARN](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) of an immutable Lambda function
+version (for example, `arn:aws:lambda:us-east-1:123:function:my-worker:5`). A Worker Deployment Version can have multiple
+regional function targets, but all must contain the same Worker build. The following diagram shows a single-region
+configuration.
 
 ```mermaid
 flowchart LR
@@ -124,18 +125,31 @@ Pinned.
 ### How the versioning behavior changes rollout {/* #rollout-by-behavior */}
 
 The choice of Pinned or Auto-Upgrade controls how _Workflows_ move between Worker Deployment Versions in Temporal. It
-does not change how a Worker Deployment Version targets Lambda. Both behaviors expect a versioned ARN that points at one
-immutable Lambda function version.
+does not change how each scaling group targets Lambda. Both behaviors expect a qualified ARN for each target, with
+all regional targets containing the same immutable Worker build.
 The following table shows what happens to existing Workflows when you set a new Current Version, with and without versioned Lambda ARNs.
 
 | Versioning Behavior | With versioned Lambda ARN | Without versioned Lambda ARN |
 | ------------------- | ------------------------- | ---------------------------- |
-| **Pinned**          | Existing Workflows stay on their original Lambda function version until they complete. | Existing Workflows stay on their original Worker Deployment Version, but the underlying Lambda code has already changed since `$LATEST` updated at redeploy. The new code must be replay-compatible. |
-| **Auto-Upgrade**    | Existing Workflows move to the new Worker Deployment Version and its new Lambda function version at the next Workflow Task after you move the Current Version. | The Lambda redeploy already changed the code for all versions. Setting the Current Version only changes routing, not which code runs. |
+| **Pinned**          | Existing Workflows stay on their original Worker Deployment Version. All regional Lambda targets for that version run the same Worker build. | Existing Workflows stay on their original Worker Deployment Version, but the underlying Lambda code has already changed since `$LATEST` updated at redeploy. The new code must be replay-compatible. |
+| **Auto-Upgrade**    | Existing Workflows move to the new Worker Deployment Version and its Worker build at the next Workflow Task after you move the Current Version. | The Lambda redeploy already changed the code for all versions. Setting the Current Version only changes routing, not which code runs. |
 
 For step-by-step instructions on publishing Lambda versions and configuring the compute provider with a versioned ARN,
 see
 [Publish a Lambda function version](/production-deployment/worker-deployments/serverless-workers/aws-lambda#publish-lambda-version).
+
+## High Availability {/* #high-availability */}
+
+With [regional compute configurations](/serverless-workers/high-availability), each region's Lambda function serves the
+same Worker Deployment Version. After Namespace failover, the WCI invokes the function selected for the newly active
+region. Each function uses a qualified ARN pointing at an immutable copy of the same Worker build.
+
+The WCI does not stop invocations already running in the original region. Healthy invocations can continue polling and
+processing Tasks until they exit, subject to Lambda's 15-minute invocation limit. This overlap can let original-region
+Workers satisfy demand before new invocations are needed in the recovery region.
+
+For setup and a test that verifies which function serves the work, see
+[Configure high availability on AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda/high-availability).
 
 ## Lifecycle {/* #lifecycle */}
 
