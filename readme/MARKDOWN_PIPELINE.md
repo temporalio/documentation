@@ -272,6 +272,10 @@ endpoint's request log shows which channel a caller found the URL on:
 Don't change this copy mid-experiment unless it's broken, so results from before and after a
 change stay comparable. See [AGENT-RETRIEVE.md](./AGENT-RETRIEVE.md) for the endpoint and its log.
 
+On 2026-11-20 the `md-page` URL became a code span, with no change to the wording. As bare text,
+renderers that autolink URLs linked only `/api/retrieve?q=`, so requests with an empty `q` before
+that date likely came from crawlers following that link, not from agents.
+
 ### Feedback endpoint
 
 The same three channels, plus the `.md` 404 page, tell agents how to report a problem to
@@ -288,6 +292,11 @@ The `/llms.txt` copy also points from the search endpoint section to `category=d
 a question that gets no useful results. The 404 body is static and never repeats the requested
 path, so a crafted URL can't put its own text in front of an agent. See
 [FEEDBACK.md](./FEEDBACK.md) for the endpoint and the daily digest.
+
+Show an endpoint URL as code on every channel: a fenced block, a code span, or `<code>`. Never
+leave it as bare text. Markdown renderers that autolink URLs end the link at the first `<`, so a
+bare `/api/feedback?title=<summary>&...` becomes a link to `/api/feedback?title=`, and crawlers that
+follow it get a 400 for the empty `title`.
 
 ## Page actions (the buttons)
 
