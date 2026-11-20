@@ -3,10 +3,13 @@ name: 'Retrieve health check'
 # Asks the production /api/retrieve agent search endpoint two fixed questions
 # and fails when it's down or its results lose custom Q&A answers or GitHub
 # repository files. Both have happened after a change on the Kapa side, with no
-# deploy here, so no pull request check would catch them. A failed scheduled run
-# posts to Slack through notify-automation-failures.yml.
+# deploy here, so no pull request check would catch them. It then asks for the
+# newest temporal.io blog post and docs page at least three days old, and fails
+# when either is missing, which means a Kapa web crawl source stopped ingesting
+# new pages. A failed scheduled run posts to Slack through
+# notify-automation-failures.yml.
 #
-# Daily rather than hourly, because each run spends two Kapa queries. It also
+# Daily rather than hourly, because each run spends four Kapa queries. It also
 # runs on demand, and on PRs that change the checker itself.
 on:
   schedule:
@@ -31,6 +34,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # The docs freshness check reads git history to find the newest page.
+          # Blobless, because it needs commits and trees, not old file contents.
+          fetch-depth: 0
+          filter: blob:none
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
