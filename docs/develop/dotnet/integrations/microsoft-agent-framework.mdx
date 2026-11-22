@@ -431,8 +431,9 @@ public class McpWorkflow
 <!--SNIPEND-->
 
 Register the transport factory on the Worker and pass the dictionary as `McpServers` on the plugin options. The sample
-serves a one-tool echo server over stdio from its own `mcp-server` command and starts that process itself; swap in any
-MCP server by changing the factory:
+serves a one-tool echo server over stdio from its own `mcp-server` command and starts that process itself. Its
+`EchoServerCommand()` helper, outside the snippet, returns the command that starts this program under `dotnet run`, a
+publish or `dotnet <dll>`. Swap in any MCP server by changing the factory:
 
 <!--SNIPSTART dotnet-microsoft-agent-framework-mcp-worker-->
 [src/MicrosoftAgentFramework/Mcp/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/MicrosoftAgentFramework/Mcp/Program.cs)
@@ -483,7 +484,9 @@ run inside a Workflow; [Why the plugin owns the loop](#why-the-plugin-owns-the-l
 run in the Workflow, next to the agent's loop, are a `DelegatingAIFunction` around a tool and an `AIContextProvider` in
 `TemporalAgentOptions.AIContextProviders`. In the sample, `delete_file` is a plain `AIFunction` and `BlockOutsideTmp`
 wraps it: a path outside `/tmp/` gets a refusal as the result without a call to the inner function, so the tool never
-runs and the model reads the refusal.
+runs and the model reads the refusal. The wrapper resolves `.` and `..` segments in memory before the check, so
+`/tmp/../etc/passwd` is refused, and calls the tool with the normalized path, so the tool deletes the path that was
+checked; the model's own call keeps the path it sent.
 
 <!--SNIPSTART dotnet-microsoft-agent-framework-middleware-tool-->
 [src/MicrosoftAgentFramework/Middleware/BlockOutsideTmp.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/MicrosoftAgentFramework/Middleware/BlockOutsideTmp.cs)
@@ -1050,10 +1053,11 @@ back here and the reverse, but approvals in flight do not: the two keep pending 
 keys, so finish the approval round before handing a session across.
 
 In the sample each user turn is an Update, so the caller gets the reply from the same call; a Workflow `Semaphore` runs
-one turn at a time so the session's history stays in order, an `EndChat` Signal ends the chat, and a `Transcript` Query
-reads the messages from the in-memory history provider with `GetMessages(session)`. The `RunAsync` method waits until
-the chat ends or Temporal suggests Continue-As-New, lets in-flight Updates finish with `Workflow.AllHandlersFinished`,
-and continues as new with the serialized session:
+one turn at a time so the session's history stays in order, an Update validator rejects a blank prompt and a turn that
+arrives after the chat ended, an `EndChat` Signal ends the chat, and a `Transcript` Query reads the messages from the
+in-memory history provider with `GetMessages(session)`. The `RunAsync` method waits until the chat ends or Temporal
+suggests Continue-As-New, lets in-flight Updates finish with `Workflow.AllHandlersFinished`, and continues as new with
+the serialized session:
 
 <!--SNIPSTART dotnet-microsoft-agent-framework-continue-as-new-workflow-->
 [src/MicrosoftAgentFramework/ContinueAsNew/ChatWorkflow.workflow.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/MicrosoftAgentFramework/ContinueAsNew/ChatWorkflow.workflow.cs)
