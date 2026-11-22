@@ -123,8 +123,7 @@ for Azure OpenAI, set the same `RetryPolicy` on `AzureOpenAIClientOptions`. Any 
 the factory (`UseOpenTelemetry`, `UseLogging`, caching) except one that adds `FunctionInvokingChatClient`: the plugin
 rejects that client with `MicrosoftAgentFrameworkConfigurationError`, because it would run tools inside the model
 Activity instead of in the Workflow. The sample reads its connection options with `ClientEnvConfig` and falls back to
-`localhost:7233`; its factory throws the configuration type itself, and the plugin wraps any factory exception the same
-way and retries it, which is why the sample checks the key before the Worker starts.
+`localhost:7233`.
 
 Add the plugin to `TemporalClientConnectOptions.Plugins` or to `TemporalWorkerOptions.Plugins`, not both. A Worker
 inherits the plugins of the Client it is built from; if the same instance reaches the Worker twice, its second
@@ -485,8 +484,9 @@ run in the Workflow, next to the agent's loop, are a `DelegatingAIFunction` arou
 `TemporalAgentOptions.AIContextProviders`. In the sample, `delete_file` is a plain `AIFunction` and `BlockOutsideTmp`
 wraps it: a path outside `/tmp/` gets a refusal as the result without a call to the inner function, so the tool never
 runs and the model reads the refusal. The wrapper resolves `.` and `..` segments in memory before the check, so
-`/tmp/../etc/passwd` is refused, and calls the tool with the normalized path, so the tool deletes the path that was
-checked; the model's own call keeps the path it sent.
+`/tmp/../etc/passwd` is refused, and the wrapper passes the normalized path to the tool. The sample tool only returns
+`"deleted {path}"`; it does not delete a file. For real filesystem I/O, wrap an Activity with `ActivityAsTool.Create`.
+The model's own call keeps the path it sent.
 
 <!--SNIPSTART dotnet-microsoft-agent-framework-middleware-tool-->
 [src/MicrosoftAgentFramework/Middleware/BlockOutsideTmp.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/MicrosoftAgentFramework/Middleware/BlockOutsideTmp.cs)
