@@ -1436,6 +1436,7 @@ module.exports = {
           items: [
             'cloud/connectivity/aws-connectivity',
             'cloud/connectivity/gcp-connectivity',
+            'cloud/connectivity/azure-connectivity',
             'cloud/connectivity/ip-addresses',
           ],
         },
@@ -1543,6 +1544,7 @@ module.exports = {
         },
         'cloud/capacity-modes',
         'cloud/operation-api',
+        'cloud/deprecation-policy',
         'cloud/rpo-rto',
         'cloud/projects',
         'cloud/payload-encryption-validation',
@@ -2000,6 +2002,7 @@ module.exports = {
       },
       items: [
         'encyclopedia/temporal',
+        'encyclopedia/durable-execution',
         {
           type: 'category',
           label: 'Architecture',

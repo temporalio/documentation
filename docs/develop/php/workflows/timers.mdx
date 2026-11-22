@@ -26,8 +26,11 @@ To set a Timer in PHP, use `Workflow::timer()` and pass the number of seconds yo
 
 The following example yields a sleep method for 5 minutes.
 
+<!--SNIPSTART php-timers-sleep {"enable_code_dedenting": true}-->
+[php-sandbox/workflows/timers/TimerWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/timers/TimerWorkflow.php)
 ```php
 yield Workflow::timer(300); // sleep for 5 minutes
 ```
+<!--SNIPEND-->
 
 You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` methods.
