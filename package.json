@@ -91,7 +91,7 @@
     "chart.js": "^4.4.1",
     "clsx": "^2.1.1",
     "comlink": "^4.4.2",
-    "concurrently": "^10.0.6",
+    "concurrently": "^10.0.7",
     "gray-matter": "^4.0.3",
     "js-yaml": "^5.5.0",
     "react": "^19.3.0",
