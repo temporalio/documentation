@@ -1,7 +1,7 @@
 ---
 title: Cost governance on Temporal Cloud
 sidebar_label: Cost Governance
-description: A design framework for attributing Temporal Cloud spend to teams, forecasting budget burn rate, and detecting usage anomalies using the Billing API, Billing Center, Usage Dashboards, and OpenMetrics.
+description: Attribute Temporal Cloud spend to teams, forecast budget burn rate, and detect usage anomalies with the Billing API, Usage Dashboards, and Action metric.
 toc_max_heading_level: 4
 tags:
   - Best Practices
