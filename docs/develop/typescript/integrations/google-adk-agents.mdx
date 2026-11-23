@@ -237,7 +237,7 @@ Options under `activity` accept the standard TypeScript SDK `ActivityOptions` fi
 
 | API | Option | Default | Behavior |
 | --- | --- | --- | --- |
-| `TemporalMCPToolset` | `name` | Required | Selects the Worker-registered factory and names its Activity pair. |
+| `TemporalMCPToolset` | `name` | Required | Selects the Worker-registered factory and names its Activities. |
 | `TemporalMCPToolset` | `toolFilter` | All tools | Advertises only listed tool names, matched after applying `prefix`. ADK `ToolPredicate` filters aren't supported. |
 | `TemporalMCPToolset` | `prefix` | None | Advertises each tool as `<prefix>_<name>` without changing its MCP server name. |
 | `TemporalMCPToolset` | `activity` | `startToCloseTimeout: '1 minute'`, `heartbeatTimeout: '10s'` | Configures tool discovery and tool-call Activities. |
