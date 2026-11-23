@@ -97,7 +97,7 @@ Gradle directory structure.
 <dependency>
   <groupId>io.temporal</groupId>
   <artifactId>temporal-sdk</artifactId>
-  <version>1.33.0</version>
+  <version>1.40.0</version>
 </dependency>
 
   <dependency>
@@ -106,7 +106,7 @@ Gradle directory structure.
     -->
     <groupId>io.temporal</groupId>
     <artifactId>temporal-testing</artifactId>
-    <version>1.33.0</version>
+    <version>1.40.0</version>
     <scope>test</scope>
   </dependency>
 </dependencies>`}
@@ -123,8 +123,8 @@ Gradle directory structure.
 repositories { mavenCentral() }
 
 dependencies {
-    implementation 'io.temporal:temporal-sdk:1.33.0'
-    testImplementation 'io.temporal:temporal-testing:1.33.0'
+    implementation 'io.temporal:temporal-sdk:1.40.0'
+    testImplementation 'io.temporal:temporal-testing:1.40.0'
 }
 
 // Define the main class for the application
@@ -263,6 +263,8 @@ Create an Activity interface file (GreetActivities.java):
 
 _Note that all files for this quickstart will be created under src/main/java/helloworkflow._
 
+<!--SNIPSTART java-quickstart-activity-interface-->
+[java-sandbox/quickstart/src/main/java/helloworkflow/GreetActivities.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/quickstart/src/main/java/helloworkflow/GreetActivities.java)
 ```java
 package helloworkflow;
 
@@ -277,6 +279,7 @@ public interface GreetActivities {
 
 }
 ```
+<!--SNIPEND-->
 
 An Activity is a method that executes a single, well-defined action (either short or long running), which often involve
 interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling
@@ -288,6 +291,8 @@ You define Activities in Java as an annotated interface, and its implementation.
 
 Create an Activity implementation file (GreetActivitiesImpl.java):
 
+<!--SNIPSTART java-quickstart-activity-impl-->
+[java-sandbox/quickstart/src/main/java/helloworkflow/GreetActivitiesImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/quickstart/src/main/java/helloworkflow/GreetActivitiesImpl.java)
 ```java
 package helloworkflow;
 
@@ -300,11 +305,14 @@ public class GreetActivitiesImpl implements GreetActivities {
 
 }
 ```
+<!--SNIPEND-->
 
 ### 3. Create the Workflow
 
 Create a Workflow file (SayHelloWorkflow.java):
 
+<!--SNIPSTART java-quickstart-workflow-interface-->
+[java-sandbox/quickstart/src/main/java/helloworkflow/SayHelloWorkflow.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/quickstart/src/main/java/helloworkflow/SayHelloWorkflow.java)
 ```java
 package helloworkflow;
 
@@ -319,6 +327,7 @@ public interface SayHelloWorkflow {
 
 }
 ```
+<!--SNIPEND-->
 
 Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run and
 keep running for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will
@@ -330,6 +339,8 @@ You define Workflows in Java as an annotated interface, and its implementation.
 
 Create a Workflow implementation file (SayHelloWorkflowImpl.java):
 
+<!--SNIPSTART java-quickstart-workflow-impl-->
+[java-sandbox/quickstart/src/main/java/helloworkflow/SayHelloWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/quickstart/src/main/java/helloworkflow/SayHelloWorkflowImpl.java)
 ```java
 package helloworkflow;
 
@@ -354,11 +365,14 @@ public class SayHelloWorkflowImpl implements SayHelloWorkflow {
 
 }
 ```
+<!--SNIPEND-->
 
 ### 5. Create and Run the Worker
 
 Create a Worker file (SayHelloWorker.java):
 
+<!--SNIPSTART java-quickstart-worker-->
+[java-sandbox/quickstart/src/main/java/helloworkflow/SayHelloWorker.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/quickstart/src/main/java/helloworkflow/SayHelloWorker.java)
 ```java
 package helloworkflow;
 
@@ -387,6 +401,7 @@ public class SayHelloWorker {
 
 }
 ```
+<!--SNIPEND-->
 
 With your Activity and Workflow defined, you need a Worker to execute them.
 
@@ -425,6 +440,8 @@ This final step will validate that everything is working correctly with your fil
 
 Create a separate file called `Starter.java`:
 
+<!--SNIPSTART java-quickstart-starter-->
+[java-sandbox/quickstart/src/main/java/helloworkflow/Starter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/quickstart/src/main/java/helloworkflow/Starter.java)
 ```java
 package helloworkflow;
 
@@ -453,6 +470,7 @@ public class Starter {
     }
 }
 ```
+<!--SNIPEND-->
 
 While your worker is still running, open a new terminal and run:
 

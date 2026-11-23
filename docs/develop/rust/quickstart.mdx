@@ -179,7 +179,9 @@ This test will confirm that:
 
 Create a `/src/activities.rs` file with the Activity definition:
 
-```rust
+<!--SNIPSTART rust-quickstart-activities-->
+[rust-sandbox/quickstart/src/activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/activities.rs)
+```rs
 use temporalio_macros::activities;
 use temporalio_sdk::activities::{ActivityContext, ActivityError};
 
@@ -193,12 +195,15 @@ impl MyActivities {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### 2. Define your Workflow
 
 Create a `/src/workflows.rs` file with the Workflow definition:
 
-```rust
+<!--SNIPSTART rust-quickstart-workflows-->
+[rust-sandbox/quickstart/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/workflows.rs)
+```rs
 use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::{ActivityOptions, WorkflowContext, WorkflowContextView, WorkflowResult};
 use std::time::Duration;
@@ -235,12 +240,15 @@ impl GreetingWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### 3. Create and Run a Worker
 
 Update your `/src/main.rs` file with the following:
 
-```rust
+<!--SNIPSTART rust-quickstart-main-->
+[rust-sandbox/quickstart/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/main.rs)
+```rs
 use temporalio_client::{
     Client, ClientOptions, Connection,
     envconfig::LoadClientConfigProfileOptions,
@@ -276,6 +284,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 Open a new terminal and run the Worker with:
 

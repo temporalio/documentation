@@ -146,9 +146,21 @@ const developDotnetCategory = {
             items: [
               'develop/dotnet/best-practices/data-handling/data-conversion',
               'develop/dotnet/best-practices/data-handling/data-encryption',
+              'develop/dotnet/best-practices/data-handling/external-storage',
             ],
           },
         ],
+      },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/integrations/index',
+        },
+        items: ['develop/dotnet/integrations/microsoft-agent-framework'],
       },
     ],
 };
@@ -744,6 +756,7 @@ const developPythonCategory = {
           id: 'develop/python/integrations/index',
         },
         items: [
+          'develop/python/integrations/arize',
           'develop/python/integrations/baseten',
           'develop/python/integrations/claude-agent-sdk',
           'develop/python/integrations/deepagents',
@@ -870,19 +883,6 @@ const developRubyCategory = {
       },
       {
         type: 'category',
-        label: 'Integrations',
-        className: 'sidebar-integrations',
-        collapsed: true,
-        link: {
-          type: 'doc',
-          id: 'develop/ruby/integrations/index',
-        },
-        items: [
-          'develop/ruby/integrations/rails-integration'
-        ],
-      },
-      {
-        type: 'category',
         label: 'Best practices',
         collapsed: true,
         link: {
@@ -906,6 +906,19 @@ const developRubyCategory = {
               'develop/ruby/best-practices/data-handling/data-encryption',
             ],
           },
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/ruby/integrations/index',
+        },
+        items: [
+          'develop/ruby/integrations/rails-integration'
         ],
       },
     ],
@@ -1007,6 +1020,23 @@ const developRustCategory = {
         },
         items: [
           'develop/rust/nexus/feature-guide'
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Best practices',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/rust/best-practices/index',
+        },
+        items: [
+          {
+            type: 'category',
+            label: 'Data handling',
+            collapsed: true,
+            items: ['develop/rust/best-practices/data-handling/external-storage'],
+          },
         ],
       },
     ],
@@ -1406,6 +1436,7 @@ module.exports = {
           items: [
             'cloud/connectivity/aws-connectivity',
             'cloud/connectivity/gcp-connectivity',
+            'cloud/connectivity/azure-connectivity',
             'cloud/connectivity/ip-addresses',
           ],
         },
@@ -1513,8 +1544,10 @@ module.exports = {
         },
         'cloud/capacity-modes',
         'cloud/operation-api',
+        'cloud/deprecation-policy',
         'cloud/rpo-rto',
         'cloud/projects',
+        'cloud/payload-encryption-validation',
         'cloud/terraform-provider',
         'cloud/slo',
       ],
@@ -1969,6 +2002,7 @@ module.exports = {
       },
       items: [
         'encyclopedia/temporal',
+        'encyclopedia/durable-execution',
         {
           type: 'category',
           label: 'Architecture',

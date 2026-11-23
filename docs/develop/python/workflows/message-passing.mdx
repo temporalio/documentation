@@ -384,7 +384,7 @@ For open source server users, Temporal Server version [Temporal Server version 1
 - If the Workflow exists, the Update is processed.
 - If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
 
-Use [`execute_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start the Update and wait for the result in one go.
+Use [`execute_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#execute_update_with_start_workflow) to start the Update and wait for the result in one go.
 
 Alternatively, use [`start_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start the Update and receive a [`WorkflowUpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html), and then use `await update_handle.result()` to retrieve the result from the Update.
 

@@ -98,6 +98,11 @@ To run Worker fleets in both regions that rely on this forwarding, see [Active/A
 
 To keep passive-region Workers on standby until failover by disabling this forwarding, see [Active/Hot-Passive](/cloud/high-availability/architecture-patterns#active-hot).
 
+## How to configure AWS Direct Connect for High Availability
+
+If your Workers or applications run in your data center and reach Temporal Cloud through AWS Direct Connect, configure Direct Connect routes to both your Namespace's primary and secondary regions.
+After a failover, the Namespace Endpoint resolves to the newly active region, so your network must be able to reach that region.
+
 ## How to use PrivateLink with High Availability features
 
 :::tip
@@ -195,12 +200,6 @@ To reverse this change when you disable HA, [change private DNS back to the sing
 To move a Namespace to a new Temporal Cloud Region while keeping Private Connectivity in place, the recommended pattern is to use a **separate private hosted zone in each region**, each overriding the Namespace Endpoint to point at that region's own VPC Endpoint. Because a PHZ is scoped only to the VPCs it is associated with, Workers in each region resolve the Namespace Endpoint to their local VPC Endpoint and traffic stays in-region throughout the move.
 
 This is not the only way to handle a region change with Private Connectivity, but it is the most commonly used.
-
-:::caution GCP capacity restriction
-
-Before creating a GCP Namespace or adding a GCP replica, check [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for regional availability and exception requirements.
-
-:::
 
 Steps:
 
@@ -324,6 +323,10 @@ See [Available AWS regions, PrivateLink endpoints, and DNS record overrides](/cl
 ### GCP regions and Private Service Connect endpoints
 
 See [Available GCP regions, PSC endpoints, and DNS record overrides](/cloud/connectivity/gcp-connectivity#available-gcp-regions-psc-endpoints-and-dns-record-overrides).
+
+### Azure regions and Private Link endpoints
+
+See [Azure service regions](/evaluate/cloud/regions#azure-service-regions) and [Azure Private Link private DNS](/cloud/connectivity/azure-connectivity#configure-private-dns).
 
 When using a Namespace with High Availability features, the Namespace's DNS record `<ns>.<account>.tmprl.cloud` points to a regional DNS record in the format `<provider>-<region>.region.tmprl.cloud`, where `<provider>-<region>` is the currently active region for your Namespace.
 

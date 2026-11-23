@@ -2,7 +2,7 @@
 id: cloud
 title: Use with Temporal Cloud
 slug: /cli/cloud
-description: Use the Temporal CLI with Temporal Cloud to run Workflows, manage Namespaces, and administer your account.
+description: Connect the CLI to Temporal Cloud with an interactive or non-interactive login, then manage Namespaces, Users, API keys, and Nexus endpoints.
 ---
 
 import { ReleaseNoteHeader } from "@site/src/components";

@@ -6,6 +6,7 @@ const { clientIp, header, ipHash, putRecord } = require('./_log');
 const {
   LIMITS,
   USAGE,
+  droppedSources,
   isAllowedResult,
   kapaIdentity,
   parseAllowlist,
@@ -112,6 +113,7 @@ module.exports = async (request, response) => {
     deployment: process.env.VERCEL_ENV || 'development',
     fetched_count: null,
     dropped_count: null,
+    dropped_sources: null,
     status: null,
     upstream_status: null,
     result_count: null,
@@ -179,6 +181,7 @@ module.exports = async (request, response) => {
     const kept = valid.filter((result) => isAllowedResult(result, allowlist));
     record.fetched_count = results.length;
     record.dropped_count = results.length - kept.length;
+    record.dropped_sources = droppedSources(valid, allowlist);
     const shaped = shapeResults(kept, compiledRedirects);
     record.result_count = shaped.length;
     record.top_pages = shaped.slice(0, 3).map((result) => result.page_url);

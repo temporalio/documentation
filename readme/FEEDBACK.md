@@ -10,8 +10,9 @@
 Each accepted submission is stored as one Blob in a private Vercel Blob store used only for feedback. A daily digest posts a summary to Slack, where the
 docs team fixes docs problems and forwards product problems to the team that owns them.
 
-Status: the endpoint is live but not advertised. The widget, the digest, and the agent-facing copy in `llms.txt` and
-the `.md` pages ship in later pull requests.
+Status: the endpoint is live, and the [daily digest](#daily-digest) posts to Slack. Agents are told about it in
+`/llms.txt`, on every docs page and `.md` page, and on the `.md` 404 page (see [Where agents find it](#where-agents-find-it)).
+The widget sits at the bottom of every docs page.
 
 ## Agent reports
 
@@ -22,11 +23,11 @@ only send `GET`, so both write a report.
 POST https://docs.temporal.io/api/feedback
 Content-Type: application/json
 
-{"title": "...", "message": "...", "category": "documentation", "page_url": "https://docs.temporal.io/cli/workflow.md"}
+{"title": "<summary>", "message": "<what-happened>", "category": "documentation", "page_url": "https://docs.temporal.io/cli/workflow.md"}
 ```
 
 ```
-GET https://docs.temporal.io/api/feedback?title=...&message=...&category=product&agent=claude-code
+GET https://docs.temporal.io/api/feedback?title=<summary>&message=<what-happened>&category=product&agent=<your-name>
 ```
 
 | Field | Required | Limit | Purpose |
@@ -46,7 +47,10 @@ The categories and severities match the Temporal Docs MCP server's `give_feedbac
 read together.
 
 A `GET` without a `title` and `message` returns 400 and writes nothing, so a crawler or link prefetcher that follows
-the bare URL doesn't create a record.
+the bare URL doesn't create a record. A `title` or `message` with no letters or digits, such as `...`, or one that is
+only a placeholder copied from an example, such as `<summary>`, also returns 400, and so does a `message` under 20
+characters. Scanners send one-word messages such as `m` or `rl-0` to test the endpoint, and a real report needs more
+than that to say what happened.
 
 `page_url` is normalized so reports about one page group together, however the sender reached it:
 
@@ -56,6 +60,20 @@ the bare URL doesn't create a record.
 - A URL on another host, such as a GitHub issue, is kept as sent.
 
 A stored report returns `202 { id, message }`. The message tells the agent it doesn't need to send the report again.
+
+### Where agents find it
+
+| Surface | `src` | Where it lives |
+| --- | --- | --- |
+| `## Reporting problems` in `/llms.txt`, plus a pointer from its search endpoint section | `llms` | `llmsTxt.rootContent` in `docusaurus.config.js` |
+| Visually hidden text on every docs page | `docs-page` | `src/components/LLMActions/AgentDirective.tsx` |
+| Blockquote under the H1 of every `.md` page | `md-page` | `withAgentDirective()` in `plugins/markdown-pages/index.js` |
+| Body of a `.md` URL that doesn't exist | `md-404` | `api/markdown-not-found.js` |
+
+The page and `.md` copy fills in `page_url` with the page's own path. Every surface asks for a specific problem the
+agent hit, sent once, with no personal data or credentials, and none asks the agent to send a report when nothing went
+wrong. Count reports per `src` to see which surface agents use, the same way the `/api/retrieve` log does. See
+[MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md#feedback-endpoint).
 
 ## Widget submissions
 
@@ -71,6 +89,22 @@ goes on to pick a reason or write a comment. A reason or comment sent later belo
 The amendment is stored as its own Blob next to the entry, not as an overwrite. Overwriting would mean reading the
 entry back first, and Blob's cache can return a stale copy for up to 60 seconds. Readers merge an entry with its
 amendments by `id`, and the latest amendment wins, so a reader can change their rating after a misclick.
+
+The widget shares a row with the "View this page on GitHub" link in the footer of every docs page
+(`src/theme/EditMetaRow`). After a rating, a panel under the buttons offers the reasons and a comment box, and **Skip**
+closes it without sending anything more. A `localStorage` entry, `docs-page-feedback:<path>`, then shows the reader a
+thank-you line instead of the question on that page. The entry holds `{ "rating", "at" }`, where `at` is when they rated
+the page. The thank-you line doesn't expire. Amplitude gets a `Docs Page Feedback` event with `rating` and `url` on the
+click, and `Docs Page Feedback Reason` with `rating`, `reason`, and `url` on submit, both only with analytics consent.
+Comments go only to `/api/feedback`.
+
+### Bot check
+
+Vercel BotID classifies each rating. `src/client/botid.ts` runs `initBotId()` on every page, which adds a
+classification header to `POST /api/feedback`, and the function calls `checkBotId()` for ratings only. A rating
+classified as a bot returns 403 and isn't stored. If the check itself fails, the rating is stored with
+`bot_verdict: 'error'`, so a BotID outage doesn't lose readers' answers. Amendments aren't checked again, since they
+need the `amend_token` returned for a checked rating. Agent reports aren't checked: agents don't run the BotID client.
 
 `amend_token` is an HMAC of the entry `id`, keyed with `FEEDBACK_LOG_SALT`. An amendment needs it and has to arrive
 within 30 minutes of the rating, so no one else can change an entry. A wrong token or a late amendment returns 403.
@@ -92,7 +126,7 @@ Errors are JSON `{ error }`. A 400, 405, or 413 also includes a `usage` string.
 | Status | Meaning |
 | --- | --- |
 | 400 | A missing or invalid field, or a body that isn't JSON |
-| 403 | A widget amendment with the wrong `amend_token`, or after its 30-minute window |
+| 403 | A widget rating that BotID classifies as a bot, or an amendment with the wrong `amend_token` or after its 30-minute window |
 | 405 | A method other than `GET`, `POST`, or `OPTIONS` |
 | 413 | A body over 8 KB |
 | 500 | `FEEDBACK_LOG_SALT` or `FEEDBACK_BLOB_READ_WRITE_TOKEN` is unset. Nothing is stored |
@@ -101,14 +135,72 @@ Errors are JSON `{ error }`. A 400, 405, or 413 also includes a `usage` string.
 The Blob write finishes before the response is sent, unlike `/api/retrieve`'s log. Feedback that isn't stored is
 lost, so the sender is told when that happens.
 
+## Daily digest
+
+`api/feedback-digest.js` posts the previous UTC day's feedback to Slack every day at 15:00 UTC, through Vercel Cron
+(`crons` in `vercel.json`). Vercel Cron runs only on the production deployment.
+
+The message has:
+
+- **Agent reports by category,** with product reports first so they can be forwarded. Reports with the same page and
+  title, ignoring case and spacing, are shown once with a count, the number of senders (by IP hash), the agents that
+  sent them, and up to three of their different messages. "Reported 6 times from 1 sender" is usually one caller
+  retrying, not six people hitting the problem.
+- **Page ratings by page,** as Yes and No counts with a breakdown by reason, and comments listed under their reason.
+  Each rating is merged with its amendments, and the latest amendment wins.
+- **A seven-day rollup on Mondays,** listing the 10 pages with the most No ratings and docs reports.
+
+Only records with `deployment: production` are counted, since preview deployments write to the same store. Records that
+match a [scanner probe rule](#scanner-probes), or reports with a message under 20 characters, are left out and counted
+in a note. The endpoint drops both before they're stored now, but older records are still in the store. Docs pages
+link to the site, and a page that isn't in the sitemap is marked `(not in sitemap)`. Everything a sender wrote,
+including a `page_url` on another host, is shown as inline code with Slack's `<`, `>`, and `&` escaped, so it can't
+mention a channel or render as a link.
+
+A message is posted even on a day with no feedback. Vercel Cron failures don't reach
+`notify-automation-failures.yml`, so a missing message is the sign that the digest failed. Check the function's
+runtime logs in Vercel.
+
+### Triage
+
+Whoever reads the digest:
+
+- Opens a GitHub issue, or fixes the page, for a documentation or docs search problem.
+- Forwards a product report to the channel of the team that owns the feature.
+- Ignores spam. If spam keeps coming from one source, look up its `ip_hash` in the store and tighten the Firewall rule.
+
+### Running it by hand
+
+Call the function with the cron secret. `?dry_run=1` returns the Slack message as JSON instead of posting it:
+
+```
+curl -sS -H "Authorization: Bearer $CRON_SECRET" \
+  'https://docs.temporal.io/api/feedback-digest?date=2026-11-03&dry_run=1'
+```
+
+| Parameter | Effect |
+| --- | --- |
+| `date` | Digest that UTC day instead of yesterday |
+| `dry_run=1` | Return the message without posting it |
+| `include_preview=1` | Count preview and development records too, for testing on a preview deployment |
+| `weekly=1` | Add the seven-day rollup on any day |
+
 ## Code
 
 | File | What it does |
 | --- | --- |
 | `api/feedback.js` | The Vercel Function: reading the request, the amendment check, the Blob write |
 | `api/_feedback-lib.js` | Parsing, `page_url` normalization, entry IDs, and amend tokens, with no I/O. Tested in `api/_feedback-lib.test.js` |
+| `api/_feedback-probe.js` | The scanner probe rules, with no I/O. Tested in `api/_feedback-probe.test.js` |
 | `api/_log.js` | `header()`, `ipHash()`, and `putRecord()`, shared with `api/retrieve.js` |
-| `api/_feedback.test.js` | Handler tests with Blob stubbed |
+| `api/_feedback.test.js` | Handler tests with Blob and BotID stubbed |
+| `api/feedback-digest.js` | The daily digest: reading the day's records, the sitemap check, the Slack post |
+| `api/_feedback-digest-lib.js` | Grouping records and formatting the Slack message, with no I/O. Tested in `api/_feedback-digest-lib.test.js` |
+| `api/_feedback-digest.test.js` | Digest handler tests with Blob, the sitemap, and Slack stubbed |
+| `src/components/PageFeedback/` | The "Was this page helpful?" widget |
+| `src/theme/EditMetaRow/` | Ejected doc footer row that puts the widget and the GitHub link on one line |
+| `src/theme/EditThisPage/` | The "View this page on GitHub" link |
+| `src/client/botid.ts` | Starts the BotID client for the widget's `POST` |
 
 The `Test API Functions` workflow (`.github/workflows/test-api.yml`) runs `node --test 'api/*.test.js'` on pull
 requests that change `api/`, `vercel.json`, or `bin/redirect-utils.js`.
@@ -121,6 +213,12 @@ These are Vercel project environment variables, set for Production and Preview:
 | --- | --- |
 | `FEEDBACK_LOG_SALT` | **Required.** A random string used to hash caller IPs and to sign amend tokens. Use a different value from `RETRIEVE_LOG_SALT`. Rotating it invalidates amend tokens issued in the last 30 minutes |
 | `FEEDBACK_BLOB_READ_WRITE_TOKEN` | **Required.** Added by Vercel when the feedback Blob store is connected to the project with the `FEEDBACK` environment variable prefix. The function never falls back to `BLOB_READ_WRITE_TOKEN`, which belongs to the `/api/retrieve` log's store |
+| `CRON_SECRET` | **Required for the digest.** A random string. Vercel Cron sends it as `Authorization: Bearer <secret>`, and the digest refuses any request without it. Mark it Sensitive |
+| `SLACK_FEEDBACK_WEBHOOK` | **Required for the digest.** A Slack incoming webhook URL for the docs feedback channel. Mark it Sensitive |
+
+BotID also needs the project's Secure backend access with OIDC federation setting, because `checkBotId()`
+authenticates with the request's OIDC token. Without it, every rating is stored
+with `bot_verdict: 'error'`.
 
 ## Limits
 
@@ -128,8 +226,33 @@ These are Vercel project environment variables, set for Production and Preview:
   gets a 429 with `x-vercel-mitigated: deny`, and the request never reaches the function, so it isn't logged. The rule
   is set in the Vercel dashboard, not in this repository, so update this line when you change it.
 - **Field and body limits.** Text fields over their limit return 400, and a body over 8 KB returns 413.
+- **Scanner probes.** See [Scanner probes](#scanner-probes).
 - **No CORS headers.** Agents call from a server or a tool, and the widget posts from the same origin.
 - **Nothing is cached.** Every response is `Cache-Control: no-store`, because a `GET` writes a record too.
+
+### Scanner probes
+
+Security scanners send the endpoint XSS, template injection, SQL injection, and SSRF payloads, and the 2026-11-13 digest
+was all probes. `api/_feedback-probe.js` checks every field a sender controls against a short list of rules:
+
+| Rule | Matches |
+| --- | --- |
+| `markup` | HTML tags that run script or load a resource, such as `<script>`, `<img>`, `<iframe>`, and `<svg>`; event handlers such as `onerror=`; and `javascript:` URLs |
+| `callback-host` | Hosts that record a callback, such as `*.oast.pro`, `*.oast.online`, `oastify.com`, `interact.sh`, and `webhook.site` |
+| `template-injection` | Arithmetic in template syntax, such as `{{7*7}}` and `${7*7}`. Helm's `{{ .Values.x }}` doesn't match |
+| `sql-injection` | `' OR 1=1`, a word followed by `'--` at the end, `UNION SELECT`, and time-based payloads |
+| `header-injection` | A line break followed by a header in `title`, `agent`, `src`, `product_version`, or `page_url` |
+| `scanner-marker` | The words `xss`, `ssrf`, `sqli`, `ssti`, `lfi`, or `rce` in `title`, `message`, `agent`, or `src` |
+| `path-traversal` | `../../`, `/etc/passwd`, and `win.ini` |
+| `private-address` | A `page_url` on `localhost`, a private or link-local IP address, or a cloud metadata host |
+
+A submission that matches gets the same 202 response as a real report, so the scanner can't tell it was filtered, but
+nothing is stored. The runtime log line has `dropped` set to the rule's name, and none of the submitted text. To see how
+often a rule fires, search the function's logs for `"dropped"`.
+
+The rules are narrow on purpose, since a dropped report is lost. Some plain-text probes, such as `baseline body plain
+text`, still get through and appear in the digest. When a new kind of probe shows up, add a rule and a test case built
+from the real payload to `api/_feedback-probe.test.js`, along with a real report it must not match.
 
 ## Storage
 
@@ -151,10 +274,10 @@ in time order.
 | `ua`, `country` | All | `User-Agent` and `x-vercel-ip-country` |
 | `ip_hash` | All | First 16 hex characters of SHA-256 of the salt and IP. Raw IPs aren't stored |
 | `deployment` | All | `production`, `preview`, or `development` |
-| `bot_verdict` | Widget entries | `unchecked` until Vercel BotID is added |
+| `bot_verdict` | Widget ratings | `human`, `error` (the check failed), or `bypassed` (outside production, where BotID doesn't run). Ratings classified as bots aren't stored |
 
 Each request also writes one JSON line (`"event":"feedback"`) to the runtime logs, with the status, kind, channel,
-`id`, category, severity, agent, and `src`. Free text from the public goes only to the Blob store, never to the
+`id`, category, severity, agent, `src`, and, for ratings, `bot_verdict`. Free text from the public goes only to the Blob store, never to the
 runtime logs.
 
 To download the records, use the feedback store's Storage tab in the Vercel dashboard, or run

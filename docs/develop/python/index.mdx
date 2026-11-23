@@ -85,11 +85,13 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 
 ## [Integrations](/develop/python/integrations)
 
+- [Arize integration](/develop/python/integrations/arize)
 - [Baseten integration](/develop/python/integrations/baseten)
 - [Braintrust integration](https://www.braintrust.dev/docs/integrations/sdk-integrations/temporal#python)
 - [Claude Agent SDK integration](/develop/python/integrations/claude-agent-sdk)
 - [Deep Agents integration](/develop/python/integrations/deepagents)
 - [Fireworks AI integration](/develop/python/integrations/fireworks-ai)
+- [Future AGI integration](https://docs.futureagi.com/docs/integrations/frameworks/temporal/)
 - [Google ADK integration](/develop/python/integrations/google-adk)
 - [Google GenAI integration](/develop/python/integrations/google-genai)
 - [Laminar integration](https://laminar.sh/docs/integrations/temporal)

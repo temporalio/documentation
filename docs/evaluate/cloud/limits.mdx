@@ -92,7 +92,7 @@ The following limits apply at the Namespace level.
 ### Actions per second
 
 - Scope: Namespace
-- Default limit: 500 actions per second (APS). With On-Demand Capacity, the default limit is the floor your APS limit automatically scales above based on the last 7 days of usage; your limit never falls below the default limit. With Provisioned Capacity, your limit is set by the Temporal Resource Units you provision.
+- Default limit: 500 actions per second (APS). With On-Demand Capacity, the default limit is the floor your APS limit automatically scales above; scaling up uses the trailing 1-day usage window and scaling down uses the trailing 7-day usage window. Your limit never falls below the default limit. With Provisioned Capacity, your limit is set by the Temporal Resource Units you provision.
 - See your current limit: View it in the Temporal Cloud UI under the Namespace overview, retrieve it with the [Temporal CLI](/cli/command-reference/cloud/namespace#capacity) (`temporal cloud namespace capacity get`), or track the `temporal_cloud_v1_action_limit` metric. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
 - How to increase: See [Capacity Modes](/cloud/capacity-modes) or [contact support](/evaluate/cloud/support#support-ticket).
 - What happens when you exceed the limit: See [Throttling behavior](#throttling-behavior) below.
@@ -102,7 +102,7 @@ See the [Actions page](/evaluate/cloud/actions) for the list of actions.
 ### Requests per second
 
 - Scope: Namespace
-- Limit: Your requests per second (RPS) limit is dynamic and depends on your [capacity mode](/cloud/capacity-modes). With On-Demand Capacity it automatically increases (and decreases) based on the last 7 days of RPS usage and never falls below the On-Demand floor; with Provisioned Capacity it is set by the Temporal Resource Units you provision.
+- Limit: Your requests per second (RPS) limit is dynamic and depends on your [capacity mode](/cloud/capacity-modes). With On-Demand Capacity it scales up based on the trailing 1-day RPS usage window and scales down based on the trailing 7-day window; it never falls below the On-Demand floor. With Provisioned Capacity it is set by the Temporal Resource Units you provision.
 - See your current limit: Track the `temporal_cloud_v1_service_request_limit` metric. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
 - How to increase: See [Capacity Modes](/cloud/capacity-modes) or [contact support](/evaluate/cloud/support#support-ticket).
 
@@ -111,7 +111,7 @@ See the [glossary](/glossary#requests-per-second-rps) for more about RPS.
 ### Operations per second
 
 - Scope: Namespace
-- Limit: Your operations per second (OPS) limit is dynamic and depends on your [capacity mode](/cloud/capacity-modes). With On-Demand Capacity it automatically increases (and decreases) based on the last 7 days of OPS usage and never falls below the On-Demand floor; with Provisioned Capacity it is set by the Temporal Resource Units you provision.
+- Limit: Your operations per second (OPS) limit is dynamic and depends on your [capacity mode](/cloud/capacity-modes). With On-Demand Capacity it scales up based on the trailing 1-day OPS usage window and scales down based on the trailing 7-day window; it never falls below the On-Demand floor. With Provisioned Capacity it is set by the Temporal Resource Units you provision.
 - See your current limit: Track the `temporal_cloud_v1_operations_limit` metric. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
 - How to increase: See [Capacity Modes](/cloud/capacity-modes) or [contact support](/evaluate/cloud/support#support-ticket).
 
@@ -208,6 +208,7 @@ Temporal Cloud limits each Namespace to 20,000 Activity pollers and 20,000 Workf
 
 Each SDK offers a way to configure Workers for per-Worker maximum Activity and Workflow Task pollers.
 Those values do not affect the global Namespace limit.
+With [Poller Autoscaling](/develop/worker-performance/configuration#configuring-poller-options), each Worker can use up to 100 pollers per poller type by default.
 
 ### Default Retention Period
 
@@ -346,6 +347,11 @@ This reduces Workflow's Event History size and decreases the loading time in the
 
 A single Workflow Execution may receive up to 10,000 Signals.
 After that limit is reached, no more Signals will be processed for that Workflow Execution.
+
+For sustained traffic, aim for five or fewer Signals per second per Workflow Execution.
+Signals share a lock with other state changes, so throughput depends on persistence latency and the execution's workload.
+For higher volumes, batch events into each Signal or distribute them across more Workflow Executions.
+See [Workflow lock contention](/cloud/service-health#workflow-lock-contention-busyworkflow) to diagnose `BUSY_WORKFLOW` errors.
 
 ### Per Workflow Execution Update limits
 

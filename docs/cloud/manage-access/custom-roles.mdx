@@ -398,3 +398,20 @@ temporal cloud custom-role delete --role-id my-role-id
 
 For more information about the limits of Custom Roles, such as the maximum number of custom roles per Account, see
 [Custom Roles limits](/evaluate/cloud/limits#custom-role-limits).
+
+## Control which Namespaces appear in the list
+
+`cloud.namespace.list` authorizes the
+[GetNamespaces](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces) call. The response
+includes a Namespace only when the caller also has `cloud.namespace.get` on it. To show Namespaces where the caller has
+no Namespace-level permission, grant both, as in the `NamespaceGlobalReadOnly` example in
+[Defining Custom Roles](#defining-custom-roles). The same pair controls the Namespace list in the Cloud UI and in
+`temporal cloud namespace list`.
+
+Granting only `cloud.namespace.list` doesn't change what an Account Developer sees. The list still contains only the
+Namespaces where they have the Read, Write, or Namespace Admin permission.
+
+To read which users have access to each Namespace, grant `cloud.namespace.getUserNamespaceAssignments` and
+`cloud.namespace.get` on those Namespaces. The assignments permission alone doesn't add Namespaces to the list. For
+groups and service accounts, use `cloud.namespace.getUserGroupNamespaceAssignments` and
+`cloud.namespace.getServiceAccountNamespaceAssignments`.

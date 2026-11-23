@@ -104,6 +104,13 @@ version through the CLI, you need to
 
 You can verify the current version with `temporal worker deployment describe`.
 
+### Check whether autoscaling paused Worker starts {/* #check-scale-up-pause */}
+
+If Lambda invocations slow while Tasks are still queued, check the dispatch rate in the Task Queue stats. Run
+`temporal worker deployment version compute-config describe` with the Namespace, deployment name, and Build ID to check
+the scaling group's `scale_up_dispatch_rate_epsilon` setting. When enabled, it pauses scale-up if the dispatch rate stays flat.
+See [Scale-up pauses on AWS Lambda](/serverless-workers/aws-lambda#rate-limited-task-queues).
+
 ## Lambda is invoked but Tasks are not completing {/* #lambda-invoked-not-completing */}
 
 If CloudWatch shows Lambda invocations but Workflows are not progressing, the problem is in the Worker's execution

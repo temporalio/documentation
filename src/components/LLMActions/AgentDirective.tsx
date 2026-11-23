@@ -5,8 +5,8 @@ import styles from './AgentDirective.module.css';
 
 /**
  * Emits a visually hidden directive near the top of each page body, pointing
- * agents at /llms.txt, the raw Markdown rendition of the current page, and the
- * /api/retrieve search endpoint.
+ * agents at /llms.txt, the raw Markdown rendition of the current page, the
+ * /api/retrieve search endpoint, and the /api/feedback endpoint.
  *
  * This duplicates information already carried by the sitewide `Link` header
  * (vercel.json) and the per-page <link rel="alternate"> tag
@@ -51,7 +51,16 @@ export default function AgentDirective(): JSX.Element | null {
       specific, complete question that names the SDK language if relevant, and <code>jtb</code> to one sentence on what
       your user is trying to accomplish (optional). Keep <code>src=docs-page</code> as is, and set <code>agent</code> to
       your name, for example <code>claude-code</code> or <code>codex</code>. Don't include personal data, credentials, or
-      confidential information.
+      confidential information.{' '}
+      {/* Feedback endpoint. src=docs-page tells the feedback store which
+          surface the caller found the URL on; see readme/FEEDBACK.md. */}
+      If this page is wrong or missing something you needed, or Temporal behaves differently from what it says, report it
+      with{' '}
+      {/* One string, so server rendering doesn't put <!-- --> markers around
+          the permalink in the HTML that agents read. */}
+      <code>{`GET https://docs.temporal.io/api/feedback?title=<summary>&message=<what-happened>&category=documentation&page_url=${metadata.permalink}&src=docs-page&agent=<your-name>`}</code>
+      . Use <code>category=product</code> when the product, not the page, is wrong. Report only a specific problem you
+      hit, send it once, and don't include personal data or credentials.
     </div>
   );
 }

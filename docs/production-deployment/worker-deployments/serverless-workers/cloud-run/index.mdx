@@ -350,9 +350,12 @@ The example uses the Cloud Run ID plugin to identify each Worker as `<instance-i
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
 
-```ruby
+<!--SNIPSTART ruby-cloud-run-worker-->
+[ruby-sandbox/workers/cloud-run/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/cloud-run/worker.rb)
+```rb
 require 'temporalio/client'
 require 'temporalio/worker'
+require_relative 'greeting_workflow'
 
 client = Temporalio::Client.connect(
   ENV.fetch('TEMPORAL_ADDRESS'),
@@ -364,8 +367,8 @@ client = Temporalio::Client.connect(
 worker = Temporalio::Worker.new(
   client:,
   task_queue: ENV.fetch('TEMPORAL_TASK_QUEUE'),
-  workflows: [MyWorkflow],
-  activities: [Greet],
+  workflows: [GreetingWorkflow],
+  activities: [SayHello],
   deployment_options: Temporalio::Worker::DeploymentOptions.new(
     version: Temporalio::WorkerDeploymentVersion.new(
       deployment_name: 'my-app',
@@ -378,6 +381,7 @@ worker = Temporalio::Worker.new(
 
 worker.run
 ```
+<!--SNIPEND-->
 
 Each Workflow must have a [versioning behavior](/worker-versioning#versioning-behaviors), either `PINNED` or
 `AUTO_UPGRADE`. Set it per Workflow by calling `workflow_versioning_behavior` in the Workflow class, or set a
@@ -389,9 +393,12 @@ For more on the Ruby Worker setup, see
 </SdkTabs.Ruby>
 <SdkTabs.Rust>
 
-```rust
+<!--SNIPSTART rust-cloud-run-worker-->
+[rust-sandbox/workers/cloud-run/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/cloud-run/src/main.rs)
+```rs
 use std::str::FromStr;
 
+use my_worker::{activities::MyActivities, workflows::MyWorkflow};
 use temporalio_client::{Client, ClientOptions, Connection, ConnectionOptions, TlsOptions, Url};
 use temporalio_common::worker::{
     VersioningBehavior, WorkerDeploymentOptions, WorkerDeploymentVersion,
@@ -401,25 +408,26 @@ use temporalio_sdk::{Runtime, Worker, WorkerOptions};
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let address = std::env::var("TEMPORAL_ADDRESS")?;
+    let namespace = std::env::var("TEMPORAL_NAMESPACE")?;
+    let api_key = std::env::var("TEMPORAL_API_KEY")?;
 
     let runtime = Runtime::from_current_tokio(Default::default())?;
 
     let connection_options = ConnectionOptions::new(Url::from_str(&format!("https://{address}"))?)
-        .api_key(std::env::var("TEMPORAL_API_KEY")?)
+        .api_key(api_key)
         .tls_options(TlsOptions::default())
         .build();
     let connection = Connection::connect(connection_options).await?;
-    let client = Client::new(
-        connection,
-        ClientOptions::new(std::env::var("TEMPORAL_NAMESPACE")?).build(),
-    )?;
+    let client = Client::new(connection, ClientOptions::new(namespace).build())?;
 
     let worker_options = WorkerOptions::new(std::env::var("TEMPORAL_TASK_QUEUE")?)
         .deployment_options(
-            WorkerDeploymentOptions::new(WorkerDeploymentVersion {
-                deployment_name: "my-app".to_owned(),
-                build_id: "build-1".to_owned(),
-            })
+            WorkerDeploymentOptions::new(
+                WorkerDeploymentVersion::builder()
+                    .deployment_name("my-app")
+                    .build_id("build-1")
+                    .build(),
+            )
             .use_worker_versioning(true)
             .default_versioning_behavior(VersioningBehavior::Pinned)
             .build(),
@@ -434,10 +442,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 The Rust SDK sets the versioning behavior on the Worker rather than per Workflow, so `default_versioning_behavior`
-covers every Workflow the Worker registers. Setting it to `VersioningBehavior::Unspecified` is an error at
-startup.
+covers every Workflow the Worker registers. If you set `default_versioning_behavior` without
+`use_worker_versioning(true)`, `Worker::new()` returns an error.
 
 Setting `api_key` does not by itself apply TLS on this connection path, so set `tls_options` as well or the Worker
 fails with `Connecting to HTTPS without TLS enabled`.
@@ -588,15 +597,18 @@ CMD ["dotnet", "MyWorker.dll"]
 
 Install the precompiled gem rather than building the native extension from source:
 
-```dockerfile
+<!--SNIPSTART ruby-cloud-run-dockerfile-->
+[ruby-sandbox/workers/cloud-run/Dockerfile](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workers/cloud-run/Dockerfile)
+```Dockerfile
 FROM ruby:3.3-slim
 
 WORKDIR /app
 RUN gem install temporalio --no-document
-COPY worker.rb ./
+COPY *.rb ./
 
 CMD ["ruby", "worker.rb"]
 ```
+<!--SNIPEND-->
 
 Installing through Bundler in a container can select the source gem, which then fails to build without a Rust
 toolchain. If you use Bundler, add the target platform to the lockfile with `bundle lock --add-platform x86_64-linux`.
@@ -606,7 +618,9 @@ toolchain. If you use Bundler, add the target platform to the lockfile with `bun
 
 Compile the Worker in one stage and copy the binary into a runtime image:
 
-```dockerfile
+<!--SNIPSTART rust-cloud-run-dockerfile-->
+[rust-sandbox/workers/cloud-run/Dockerfile](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/workers/cloud-run/Dockerfile)
+```Dockerfile
 FROM rust:1.92-slim AS build
 
 RUN apt-get update \
@@ -628,6 +642,7 @@ WORKDIR /app
 COPY --from=build /src/target/release/my-worker /app/worker
 CMD ["/app/worker"]
 ```
+<!--SNIPEND-->
 
 The build stage needs `libprotobuf-dev` alongside `protobuf-compiler`, because the compiler package alone installs
 `protoc` without the well-known type definitions. The runtime stage needs `ca-certificates`, which

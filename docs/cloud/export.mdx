@@ -17,9 +17,21 @@ Workflow History Export allows users to export closed Workflow Histories from Te
 Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a Self-Hosted Temporal Server. 
 Archival is not supported in Temporal Cloud.
 
-Exports run hourly, beginning 10 minutes after the hour. 
-Allow up to 24 hours for a closed Workflow to appear in the exported file.
-Delivery is guaranteed at least once.
+## Timing and delivery guarantees {/* #timing-and-delivery-guarantees */}
+
+Enable Workflow History Export before Workflow Executions close to ensure they are exported.
+Export does not guarantee backfill of previously closed Workflow Executions, even if their Event Histories are still within the Namespace's retention period.
+A Workflow Execution that closed before you enabled export may still be included if the hourly batch for the hour in which it closed has not run yet.
+Do not rely on this behavior to export previously closed Workflow Executions.
+The same considerations apply when you re-enable export after disabling it.
+
+Exports run in hourly batches, beginning 10 minutes after the hour.
+Allow up to 24 hours for an eligible closed Workflow Execution to appear in an exported file.
+
+Workflow History Export guarantees at-least-once delivery of eligible Workflow Executions.
+The same Workflow Execution may be exported more than once, so duplicates are possible.
+Handle duplicate Workflow Executions when processing exported data.
+Duplicate exports of the same Workflow Execution do not incur additional [Action charges](/evaluate/cloud/actions#export).
 
 ## What's in the exported data {/* #exported-data */}
 
@@ -152,8 +164,9 @@ After Export has been configured, you can check that it's still working in sever
 
 1. **Object Storage**:
 
-   - File Delivery: After the initial hour of setting up, inspect your object storage.
-     You should see the exported Event History files.
+   - File Delivery: After enabling export and closing a Workflow Execution, inspect your object storage for exported Event History files.
+     Exports run in hourly batches, but allow up to 24 hours for the Workflow Execution to appear.
+     Workflow Executions that closed before export was enabled are not guaranteed to be exported.
    - Directory Structure: Your exported files will adhere to the following naming convention and path:
 
    ```bash

@@ -16,7 +16,9 @@ repository.
 | AI research sources for content review | [AI-KNOWLEDGE-SOURCES.md](./readme/AI-KNOWLEDGE-SOURCES.md)       |
 | Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
 | Agent search endpoint (`/api/retrieve`) | [AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md)           |
+| Recommendations endpoint (`/api/recommend`) | [RECOMMEND.md](./readme/RECOMMEND.md)                 |
 | Feedback endpoint (`/api/feedback`) | [FEEDBACK.md](./readme/FEEDBACK.md)                           |
+| 404 suggested pages          | [NOT-FOUND-SUGGESTIONS.md](./readme/NOT-FOUND-SUGGESTIONS.md)        |
 
 ## Repository overview
 
@@ -211,6 +213,7 @@ yarn check:ts-samples    # hand-written TypeScript samples against the published
 yarn check:retrieve-links # /api/retrieve results whose docs links don't return 200; advisory, see AGENT-RETRIEVE.md
 yarn check:retrieve-health # /api/retrieve is up and returns custom Q&A and GitHub results; runs daily, see AGENT-RETRIEVE.md
 yarn report:retrieve-log  # summarize the /api/retrieve request log; needs BLOB_READ_WRITE_TOKEN, see AGENT-RETRIEVE.md
+yarn report:callouts      # admonition and ReleaseNoteHeader usage in docs/; --where lists every match, see UTILITIES.md
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,

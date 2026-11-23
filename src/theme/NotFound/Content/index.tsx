@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { useLocation } from '@docusaurus/router';
 import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
@@ -42,10 +42,36 @@ async function serverKnowsThisUrl(): Promise<boolean> {
   return response.type === 'opaqueredirect' || response.ok;
 }
 
+type Suggestion = { title: string; url: string };
+
+// api/not-found.js adds suggested pages to the server-rendered 404 page as a
+// list plus a JSON copy. This shows the list inside the page layout and hides
+// the server's copy, which sits after the page body. It reads the data after
+// mount so the first client render matches the server HTML.
+function useServerSuggestions(): Suggestion[] {
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+
+  useEffect(() => {
+    try {
+      const data = document.getElementById('not-found-suggestions-data');
+      const parsed = data ? JSON.parse(data.textContent || '[]') : [];
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        document.getElementById('not-found-suggestions')?.setAttribute('hidden', '');
+        setSuggestions(parsed.filter((s) => typeof s?.title === 'string' && typeof s?.url === 'string'));
+      }
+    } catch {
+      // The server's list stays visible.
+    }
+  }, []);
+
+  return suggestions;
+}
+
 export default function NotFoundContentWrapper(props: Props): JSX.Element {
   // NotFound stays mounted when the reader moves between two unmatched URLs,
   // so probe again whenever the URL changes.
   const { pathname, search } = useLocation();
+  const suggestions = useServerSuggestions();
 
   useEffect(() => {
     let cancelled = false;
@@ -77,5 +103,25 @@ export default function NotFoundContentWrapper(props: Props): JSX.Element {
     };
   }, [pathname, search]);
 
-  return <NotFoundContent {...props} />;
+  return (
+    <>
+      <NotFoundContent {...props} />
+      {suggestions.length > 0 && (
+        <div className="container margin-bottom--xl">
+          <div className="row">
+            <div className="col col--6 col--offset-3">
+              <h2>Pages you might be looking for</h2>
+              <ul>
+                {suggestions.map((s) => (
+                  <li key={s.url}>
+                    <a href={s.url}>{s.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
