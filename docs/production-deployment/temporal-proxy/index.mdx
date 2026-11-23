@@ -30,10 +30,9 @@ penetration testing firms. See [Encrypt payloads](/production-deployment/tempora
 encryption design, configuration, and coverage limits.
 
 For Temporal Cloud upstreams, pair Proxy encryption with
-[Payload encryption validation](/cloud/payload-encryption-validation). It can warn
-about or reject supported incoming Payloads that lack the expected encryption metadata, including requests sent
-directly to Cloud that bypass Proxy encryption. Validation checks metadata; it does not prove a request passed through
-the proxy. See [Validate encryption in Temporal Cloud](/production-deployment/temporal-proxy/encrypt-payloads#validate-encryption-in-temporal-cloud).
+[Payload encryption validation](/cloud/payload-encryption-validation) to detect or reject Payloads sent directly to
+Cloud without encryption. See
+[Validate encryption in Temporal Cloud](/production-deployment/temporal-proxy/encrypt-payloads#validate-encryption-in-temporal-cloud).
 
 ## Why use it
 

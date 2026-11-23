@@ -1,7 +1,7 @@
 ---
 id: data-encryption
 title: Codecs and Encryption
-description: Encrypt data in Temporal Server to secure Workflow, Activity, and Worker information. Use custom Payload Codecs for encryption/decryption, set up Codec Servers for remote decoding, and ensure secure access.
+description: Encrypt Workflow and Activity Payloads with a Payload Codec or Temporal Proxy, then decode them in the Web UI and CLI with a Codec Server you host.
 slug: /production-deployment/data-encryption
 toc_max_heading_level: 4
 tags:
@@ -16,16 +16,6 @@ The Temporal Service persists data from your Workflow Executions, including inpu
 sensitive data, use a [Payload Codec](/payload-codec) to encrypt payloads before they reach the Temporal Service. With
 encryption enabled, data exists unencrypted only on the Client and the Worker process, on hosts that you control.
 
-Alternatively, use [Temporal Proxy](/production-deployment/temporal-proxy) to encrypt payloads before they reach the
-Temporal Service without changing Worker or Client code. You run the proxy in your environment, where it has access to
-plaintext payloads and your KMS. See the proxy's
-[encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for configuration and coverage limits.
-
-Temporal Cloud also provides [Payload encryption validation](/cloud/payload-encryption-validation), a Namespace-level control.
-It checks whether supported incoming Payloads carry the encryption metadata expected from your
-[Payload Codec](/payload-codec) or [encryption proxy](/production-deployment/temporal-proxy/encrypt-payloads),
-and warns or rejects them based on the mode you configure.
-
 The following data is persisted in the Event History and can be encrypted:
 
 - Inputs and outputs/results in your [Workflow](/workflow-execution), [Activity](/activity-execution), and [Child Workflow](/child-workflows)
@@ -38,9 +28,6 @@ The following data is persisted in the Event History and can be encrypted:
   Failure messages and call stacks are not encoded as codec-capable Payloads by default; you must explicitly enable
   encoding these common attributes on failures. For more details, see [Failure Converter](/failure-converter).
 
-To view encrypted data in the Web UI and CLI, set up a [Codec Server](/codec-server). The following sections cover how
-to set up a Codec Server and configure the Web UI and CLI to use it.
-
 For encryption implementation examples, see the following samples:
 
 - [Go](https://github.com/temporalio/samples-go/tree/main/encryption)
@@ -48,21 +35,36 @@ For encryption implementation examples, see the following samples:
 - [Python](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 - [.NET](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption)
+- [Ruby](https://github.com/temporalio/samples-ruby/tree/main/encryption)
+
+Alternatively, use [Temporal Proxy](/production-deployment/temporal-proxy)
+([Public Preview](/evaluate/product-release-stages#public-preview)) to encrypt payloads before they reach the Temporal
+Service without changing Worker or Client code. You run the proxy in your environment, where it has access to plaintext
+payloads and your KMS. See the proxy's [encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for
+configuration and coverage limits.
+
+On Temporal Cloud, [Payload encryption validation](/cloud/payload-encryption-validation)
+([Pre-release](/evaluate/product-release-stages#pre-release), invite-only) checks whether supported incoming Payloads
+carry the encryption metadata expected from your Payload Codec or encryption proxy. Depending on the mode you configure,
+it warns about or rejects Payloads that don't. It does not encrypt Payloads.
+
+To view encrypted data in the Web UI and CLI, set up a [Codec Server](/codec-server). The following sections cover how
+to set up a Codec Server and configure the Web UI and CLI to use it.
 
 ## Codec Server setup {/* #codec-server-setup */}
 
 Use a Codec Server to programmatically decode your encoded [payloads](/dataconversion#payload).
 
 A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
-The Codec Server is independent of the Temporal Service and decodes your encrypted payloads through predefined endpoints. You create, operate, and manage access to your Codec Server in your own environment.
+The Codec Server is independent of the Temporal Service and decodes your encrypted payloads through predefined endpoints.
 When you configure a Codec Server endpoint in the Web UI or CLI, the Web UI and CLI use the remote endpoint to send and receive payloads from the Codec Server.
 See [API contract requirements](#api-contract-specifications).
 
-Decoded payloads can then be displayed in the Workflow Execution Event History on the Web UI. When you use a Codec Server, the decoded payloads are decoded and returned on the client side only. Payloads on the Temporal Service (whether on Temporal Cloud or self-hosted) remain encrypted.
+The Web UI displays the decoded payloads in the Workflow Execution Event History. Payloads are decoded on the client side only. Payloads on the Temporal Service (whether on Temporal Cloud or self-hosted) remain encrypted.
 
-Configuring a Codec Server endpoint for the Web UI or CLI does not encrypt Payloads sent by your Workers and Clients. Temporal Cloud provides [Payload encryption validation](/cloud/payload-encryption-validation) to check that Payloads sent to Temporal Cloud carry the encryption metadata you configured for the Namespace, and can reject requests that do not.
+Configuring a Codec Server endpoint for the Web UI or CLI does not encrypt Payloads sent by your Workers and Clients.
 
-Because you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
+Because you create, operate, and manage access to your Codec Server in your own environment, ensure that you consider the following:
 
 - When you register a Codec Server endpoint with your Web UI, expect the Codec Server to receive multiple requests per Workflow Execution.
 - Ensure that you secure access to your Codec Server. For details, see [Authorization](#authorization). You might need some form of [Key management infrastructure](/key-management) for sharing your encryption keys between the Workers and your Codec Server.
@@ -85,13 +87,7 @@ The Web UI and CLI send POST requests to the following endpoints on your Codec S
   your Workers use External Storage. See [Codec Server with External Storage](/codec-server#external-storage) for
   details.
 
-For examples on how to create your Codec Server, see the following Codec Server implementation samples:
-
-- [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
-- [Java](https://github.com/temporalio/sdk-java/tree/main/temporal-remote-data-encoder)
-- [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
-- [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
-- [.NET](https://github.com/temporalio/samples-dotnet/blob/main/src/Encryption/CodecServer/Program.cs)
+For Codec Server implementations in each SDK, see [SDK Codec Server samples](/codec-server#sdk-codec-server-samples).
 
 You can also add a [verification step](#authorization) to check whether the incoming request has the required authorization to access the decode logic in your Payload Codec.
 
@@ -144,44 +140,34 @@ For example, for Temporal Cloud Web UI hosted at https://cloud.temporal.io, enab
 
 For details on what a sample request/response looks like from the Temporal Web UI, see [Sample Request/Response](#sample-requestresponse).
 If setting authorization, include `Authorization` in your `Access-Control-Allow-Headers`.
+If you enable **Include cross-origin credentials**, also return `Access-Control-Allow-Credentials: true` and set
+`Access-Control-Allow-Origin` to the Web UI's origin, not `*`. Otherwise the browser blocks the response.
 For details on setting up authorization, see [Authorization](#authorization).
 
 #### Authorization
 
-It is important to establish how you will provide access to your Codec Server.
-Because it is designed to decode potentially sensitive data with a single API call, access to a production Codec Server should be restricted.
+Restrict access to a production Codec Server, because it can decode sensitive data with a single API call.
 
-Depending on your infrastructure and risk levels, it might be sufficient to restrict HTTP ingress to your Codec Server (such as by using a VPN like [WireGuard](https://www.wireguard.com/)).
-The Temporal Web UI can communicate with a Codec Server that is only accessible on `localhost`, so this is a legitimate security pattern.
-However, if your Codec Server is exposed to the internet at all, you will likely need an authentication solution.
+- If the Codec Server is reachable only on `localhost` or behind a VPN such as [WireGuard](https://www.wireguard.com/),
+  network restrictions might be enough. The Web UI can communicate with a Codec Server that is only accessible on
+  `localhost`.
+- If the Codec Server is reachable beyond `localhost`, make it an HTTPS server and authenticate each request.
 
-If you are already using an organization-wide authentication provider, you should integrate it with your Codec Server. Remember, a Codec Server is just a standalone HTTP server, so you can use existing libraries for OAuth, [Auth0](https://auth0.com/), or any other protocol.
-[This repository](https://github.com/pvsone/codec-cors-credentials) contains an example of using Auth0 to handle browser-based auth to a Codec Server.
+The Web UI supports two ways to authenticate requests to your Codec Server. Turn them on in the Codec Server endpoint
+settings described in [Web UI](#web-ui).
 
-To enable authorization from the Web UI (for both a self-hosted Temporal Service and Temporal Cloud), your Codec Server must be an HTTPS Server.
+- **Include cross-origin credentials (recommended).** The browser sends cookies scoped to your Codec Server's domain,
+  so the Codec Server can use your organization's own authentication provider. The
+  [codec-cors-credentials sample](https://github.com/temporal-sa/codec-cors-credentials) shows this approach.
+- **Pass access token.** The Web UI sends a JWT in the `Authorization` header. On Temporal Cloud, verify its signature
+  against the [Temporal Cloud JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json). On a self-hosted Temporal
+  Service, the token comes from the auth provider you [configured for the Web UI](/references/web-ui-configuration#auth).
 
-**Temporal Cloud**
+Authentication tells you who the user is, not which Namespaces they can decode. Before you return decoded Payloads,
+check the Namespace in the `X-Namespace` header against the user's permissions.
 
-The Temporal Cloud UI provides an option to pass access tokens (JWT) to your Codec Server endpoints.
-Use the access tokens to validate access and then return decoded payloads from the Codec Server.
-
-You can enable this by selecting **Pass access token** in your Codec Server endpoint interface where you add your endpoint.
-Enabling this option in the Temporal Cloud UI adds an authorization header to each request sent to the Codec Server endpoint that you set.
-
-In your Codec Server implementation, verify the signature on this access token (in your authorization header) against [our JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json).
-
-{/* Commenting this for now. _/}
-{/_ If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io. */}
-
-The token provided from Temporal Cloud UI contains the email identifier of the person requesting access to the payloads.
-Based on the permissions you have provided to the user in your access control systems, set conditions in your Codec Server whether to return decoded payloads or just return the original encoded payloads.
-
-**Self-hosted Temporal Service**
-
-On a self-hosted Temporal Service, configure [authorization in the Web UI configuration](/references/web-ui-configuration#auth) in your Temporal Service setup.
-
-With this enabled, you can pass access tokens to your Codec Server and validate the requests from the Web UI to the Codec Server endpoints that you set.
-Note that with a self-hosted Temporal Service, you must explicitly configure authorization specifications for the Web UI and CLI.
+For how each option works, browser requirements, and the claims in the Temporal Cloud token, see
+[Securing a Codec Server](/codec-server#securing-a-codec-server).
 
 #### Sample request/response
 
@@ -273,8 +259,8 @@ To set a Codec Server endpoint on a Namespace, do the following.
 
 1. In the Web UI, go to Namespaces, select the Namespace where you want to configure the Codec Server endpoint, and click **Edit**.
 1. In the **Codec Server** section on the Namespace configuration page, enter your Codec Server endpoint and port number.
-1. Optional: If your Codec Server is configured to [authenticate requests](#authorization) from Temporal Web UI, enable **Pass access token** to send a JWT access token with the HTTPS requests.
-1. Optional: If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
+1. Optional: If your Codec Server [authenticates users](#authorization) with its own session cookies, enable **Include cross-origin credentials**.
+1. Optional: If your Codec Server [validates the Web UI access token](#authorization), enable **Pass access token** to send a JWT with each request.
 
 On Temporal Cloud, you must have [Namespace Admin privileges](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) to add a Codec Server endpoint on the Namespace. Setting a Codec Server endpoint on a Cloud Namespace enables it for all users on the Namespace.
 
@@ -299,8 +285,8 @@ To set a browser override for the Namespace-level endpoint, do the following.
    - **Use my browser setting and ignore Namespace-level setting.**
      Applies your browser-level setting by default, overriding the Namespace-level Codec Server endpoint.
 4. Enter your Codec Server endpoint and port number.
-5. Optional: If your Codec Server is configured to [authenticate requests](#authorization) from Temporal Web UI, enable **Pass access token** to send a JWT access token with the HTTPS requests.
-6. Optional: If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
+5. Optional: If your Codec Server [authenticates users](#authorization) with its own session cookies, enable **Include cross-origin credentials**.
+6. Optional: If your Codec Server [validates the Web UI access token](#authorization), enable **Pass access token** to send a JWT with each request.
 
 In a self-hosted Temporal Service with dedicated UI Server configuration, you can also set the codec endpoint in the UI server [configuration file](/references/web-ui-configuration#codec):
 
@@ -346,7 +332,7 @@ externally stored payloads. When External Storage is configured on your Codec Se
 and decode these payloads for viewing in the Web UI and CLI. See
 [Codec Server with External Storage](/codec-server#external-storage) for details.
 
-### Temporal Nexus
+## Temporal Nexus
 
 The Data Converter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
 Both the caller and handler Workers must use compatible Data Converters to pass operation inputs and results between them.
