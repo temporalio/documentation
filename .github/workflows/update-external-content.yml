@@ -1,0 +1,75 @@
+name: 'Update External Content Snapshot'
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: 'Refresh blog and Learn titles and open PR if they changed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.TEMPORAL_CICD_APP_ID }}
+          private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
+
+      - name: Checkout docs repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true
+          token: ${{ steps.generate_token.outputs.token }}
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+
+      - name: Fetch blog and Learn page metadata
+        run: node bin/write-external-content.js
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet api/_external-content.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push changes
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "temporal-cicd[bot]"
+          git config user.email "temporal-cicd[bot]@users.noreply.github.com"
+
+          branch_name="update-external-content/weekly-update"
+          git checkout -B "$branch_name"
+          git add api/_external-content.json
+          git commit -m "Update blog and Learn snapshot for /api/recommend"
+          git push --force origin "$branch_name"
+
+      - name: Create or update PR
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          branch_name="update-external-content/weekly-update"
+          existing_pr=$(gh pr list --head "$branch_name" --state open --json number --jq '.[0].number')
+
+          if [ -n "$existing_pr" ]; then
+            echo "PR #$existing_pr already exists — updated with latest push."
+          else
+            gh pr create \
+              --title "Update blog and Learn snapshot for /api/recommend" \
+              --body "Automated refresh of api/_external-content.json: the title and description of every temporal.io blog post and learn.temporal.io page, read from each page's og: tags. /api/recommend uses it to build cards for those sites." \
+              --head "$branch_name" \
+              --base "main"
+          fi

@@ -11,8 +11,6 @@ description:
   Add LangSmith tracing to Python Workflows using the Temporal Python SDK.
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
 Temporal's LangSmith integration lets you trace AI agent Workflows in [LangSmith](https://smith.langchain.com/)
 alongside every LLM call, tool execution, and Temporal operation.
 
@@ -23,8 +21,6 @@ request from the Client through to the model, and compare runs over time.
 The `LangSmithPlugin` is what connects the two. It propagates trace context across Temporal boundaries so that runs
 started on the Client nest correctly under Workflow and Activity runs on the Worker. It can also create LangSmith
 runs for Temporal operations themselves: Workflow executions, Activity executions, Signals, Updates, and Queries.
-
-<ReleaseNoteHeader type="publicPreview" />
 
 All code snippets in this guide are taken from the
 [LangSmith tracing sample](https://github.com/temporalio/samples-python/tree/main/langsmith_tracing). Refer to the
@@ -55,8 +51,8 @@ Follow the steps below to configure your Worker.
    uv add temporalio-langsmith
    ```
 
-2. Add the `LangSmithPlugin` to your Worker. Set `project_name` to the LangSmith project where you want traces to
-   appear.
+2. Add the `LangSmithPlugin` to your Worker. Set `project_name` to the LangSmith project for traces that start
+   without a parent. Runs under a parent go to the parent's project.
 
    ```python
    from temporalio.langsmith import LangSmithPlugin
@@ -105,8 +101,9 @@ Use the same `project_name` on both the Worker and the Client so their traces la
 :::note
 
 `@traceable` functions on the Client side run outside the plugin's interceptor scope, so they don't pick up
-`project_name` from the plugin. If you have a client-side `@traceable` that wraps a call into your Workflow, pass
-`project_name` to it explicitly so it lands in the same LangSmith project as the rest of the trace.
+`project_name` from the plugin. Runs under a client-side `@traceable`, including the Worker's runs, go to that run's
+project. Pass `project_name` to it explicitly, or the whole trace goes to the project LangSmith's settings pick,
+such as `LANGSMITH_PROJECT`.
 
 :::
 
@@ -204,13 +201,13 @@ class MyWorkflow:
 
     @workflow.update
     async def message_from_user(self, message: str) -> str:
-        async def _handle_message(self, message: str) -> str:
+        async def _handle_message(message: str) -> str:
             ...
         # Option 2: Use the traceable() function
         return await traceable(
             name=f"Update: {message[:60]}",
             run_type="chain",
-        )(self._handle_message)(message)
+        )(_handle_message)(message)
 ```
 
 :::
