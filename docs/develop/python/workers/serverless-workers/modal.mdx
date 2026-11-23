@@ -28,6 +28,8 @@ support your Python version.
 uv init --python 3.12 modal-worker
 cd modal-worker
 uv add temporalio-modal-function-worker==0.0.1
+mkdir -p modal_worker
+touch modal_worker/__init__.py
 ```
 
 The package installs the Temporal and Modal SDKs as dependencies. It is an
@@ -37,9 +39,11 @@ SDK-owned `temporalio` package.
 
 ## Define a Workflow and Activity
 
-Create `activities.py`:
+Create `modal_worker/activities.py`:
 
-```python
+<!--SNIPSTART python-modal-worker-activities-->
+[python-sandbox/workers/modal_worker/activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/activities.py)
+```py
 from temporalio import activity
 
 
@@ -48,18 +52,21 @@ async def greet(name: str) -> str:
     activity.logger.info("Processing greeting")
     return f"Hello, {name}!"
 ```
+<!--SNIPEND-->
 
-Create `workflows.py`. Serverless Workers require Worker Versioning, so declare a
+Create `modal_worker/workflows.py`. Serverless Workers require Worker Versioning, so declare a
 [versioning behavior](/worker-versioning#versioning-behaviors) for the Workflow:
 
-```python
+<!--SNIPSTART python-modal-worker-workflows-->
+[python-sandbox/workers/modal_worker/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/workflows.py)
+```py
 from datetime import timedelta
 
 from temporalio import workflow
 from temporalio.common import VersioningBehavior
 
 with workflow.unsafe.imports_passed_through():
-    from activities import greet
+    from modal_worker.activities import greet
 
 
 @workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
@@ -72,20 +79,23 @@ class GreetingWorkflow:
             start_to_close_timeout=timedelta(seconds=30),
         )
 ```
+<!--SNIPEND-->
 
 ## Create the Worker entry point
 
-Create `worker.py` alongside the other files:
+Create `modal_worker/worker.py` alongside the other files:
 
-```python
+<!--SNIPSTART python-modal-worker-worker-->
+[python-sandbox/workers/modal_worker/worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/worker.py)
+```py
 from datetime import timedelta
 
 import modal
 from temporalio.common import WorkerDeploymentVersion
 from temporalio.worker_integrations.modal.function import ModalWorkerConfig, run_worker
 
-from activities import greet
-from workflows import GreetingWorkflow
+from modal_worker.activities import greet
+from modal_worker.workflows import GreetingWorkflow
 
 FUNCTION_TIMEOUT = timedelta(minutes=5)
 VERSION = WorkerDeploymentVersion(deployment_name="my-app", build_id="build-1")
@@ -93,7 +103,7 @@ VERSION = WorkerDeploymentVersion(deployment_name="my-app", build_id="build-1")
 image = (
     modal.Image.debian_slim(python_version="3.12")
     .pip_install("temporalio-modal-function-worker==0.0.1")
-    .add_local_python_source("activities", "workflows")
+    .add_local_python_source("modal_worker")
 )
 app = modal.App("temporal-worker", image=image)
 
@@ -116,6 +126,7 @@ async def temporal_worker() -> None:
         modal_function_timeout=FUNCTION_TIMEOUT,
     )
 ```
+<!--SNIPEND-->
 
 Modal builds the image from this definition when you deploy the app. You do not need to build and push an image to
 a separate registry. Include both Workflow and Activity modules in the image.

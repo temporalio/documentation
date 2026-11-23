@@ -67,10 +67,13 @@ changes are proposed, so no redirects are required. New slugs are explicit.
 
 ## Samples and validation
 
-The Python draft contains complete handwritten files based on the released integration example. No existing
-Snipsync blocks were changed and no new marker claims a source that does not exist. Before publication, place the
-example in `temporalio/documentation-sdk-code-examples`, add meaningful CI coverage, and sync these blocks through
-Snipsync. This draft does not create or push any upstream changes.
+The Python guide uses Snipsync blocks generated from `python-sandbox/workers/modal_worker/` in the local
+`docs/modal-serverless-worker` branch of `temporalio/documentation-sdk-code-examples`. Merge the companion
+sample change before merging these docs so the source links and the regular Snipsync job can resolve the snippets
+from `main`.
+
+On November 23, the companion sample's pytest test passed against a local Temporal Service using the released
+integration. A second Snipsync run against the local sample branch left the generated blocks unchanged.
 
 Validation completed on November 20:
 

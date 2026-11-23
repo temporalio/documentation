@@ -37,7 +37,7 @@ compute provider in your Temporal environment. Confirm access with your administ
 ## Prepare the Worker code
 
 Follow the [Python integration guide](/develop/python/workers/serverless-workers/modal) to install the integration
-and create `activities.py`, `workflows.py`, and `worker.py`. The complete example uses these values:
+and create the `modal_worker` package. The complete example uses these values:
 
 | Setting | Value |
 | --- | --- |
@@ -85,7 +85,7 @@ Select an existing Modal environment for the deployment. Replace `temporal-worke
 
 ```bash
 export MODAL_ENVIRONMENT=temporal-workers
-uv run modal deploy --env "$MODAL_ENVIRONMENT" worker.py
+uv run modal deploy --env "$MODAL_ENVIRONMENT" -m modal_worker.worker
 ```
 
 Modal builds the image, installs the dependencies, includes the local source modules, and deploys the function.
@@ -141,7 +141,7 @@ temporal worker deployment version compute-config modal-function create \
   --app-version "$MODAL_APP_VERSION"
 ```
 
-The deployment name and Build ID must match the values in `worker.py`. The app, function, environment, and app version
+The deployment name and Build ID must match the values in `modal_worker/worker.py`. The app, function, environment, and app version
 must identify the code you deployed to Modal. Pinning the app version prevents a later app deployment from changing
 the code used by this Worker Deployment Version.
 
@@ -211,7 +211,7 @@ until its invocation budget ends.
 
 ## Update or remove the deployment
 
-For a new Worker build, change the Build ID in `worker.py`, deploy the app, and record its new numeric app version.
+For a new Worker build, change the Build ID in `modal_worker/worker.py`, deploy the app, and record its new numeric app version.
 Create a new Worker Deployment Version pointing to that app version, then use
 [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) to roll it out.
 Keep older app versions available while pinned Workflow Executions still depend on them.
