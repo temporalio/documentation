@@ -25,6 +25,7 @@ This page shows you how to do the following using the Python SDK with the Tempor
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Start a Workflow Execution](#start-workflow-execution)
 - [Get Workflow results](#get-workflow-results)
+- [Call the Temporal Client from synchronous code](#call-client-from-sync-code)
 
 A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a
 Temporal Client inside an Activity to communicate with a Temporal Service.
@@ -676,3 +677,103 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 <!--SNIPEND-->
+
+## Call the Temporal Client from synchronous code {/* #call-client-from-sync-code */}
+
+The Temporal Client's methods, including `Client.connect`, are coroutines. To call them from a function that isn't
+`async`, run them on an [asyncio](https://docs.python.org/3/library/asyncio.html) event loop.
+
+### Run a one-off call with `asyncio.run` {/* #asyncio-run */}
+
+For a script, a command-line tool, or other code that makes a few calls and exits, put the Client calls in an `async`
+function and pass it to [`asyncio.run()`](https://docs.python.org/3/library/asyncio-runner.html#asyncio.run).
+`asyncio.run()` creates an event loop, runs the coroutine to completion, and closes the loop.
+
+```py
+import asyncio
+
+from temporalio.client import Client
+
+from your_workflows import YourWorkflow
+
+
+async def start_your_workflow(name: str) -> str:
+    client = await Client.connect("localhost:7233")
+    handle = await client.start_workflow(
+        YourWorkflow.run,
+        name,
+        id=f"your-workflow-{name}",
+        task_queue="your-task-queue",
+    )
+    return handle.id
+
+
+def start_from_sync_code(name: str) -> None:
+    workflow_id = asyncio.run(start_your_workflow(name))
+    print(f"Started Workflow {workflow_id}")
+```
+
+Each call to `asyncio.run()` creates a new event loop, so connect the Client inside the coroutine you pass to it. Don't
+keep a Client and reuse it in a later `asyncio.run()` call: use a Client only on the event loop it was created on.
+Connecting on every call adds a connection round trip each time, which is fine for a script. For an application that
+calls the Client often, [reuse one Client](#reuse-client-from-sync-code) instead.
+
+`asyncio.run()` raises `RuntimeError: asyncio.run() cannot be called from a running event loop` when the current thread
+is already running an event loop. That happens when a synchronous function like `start_from_sync_code` is called from
+async code, such as an `async def` endpoint in FastAPI, an async Activity, or a Jupyter notebook cell. In async code,
+`await` the Client methods directly instead of going through a synchronous wrapper.
+
+### Reuse one Client in a long-running synchronous application {/* #reuse-client-from-sync-code */}
+
+A long-running synchronous application, such as a Flask or Django web server, should connect once and reuse the Client.
+Run one event loop in a background thread for the life of the process, connect the Client on that loop, and submit each
+call to it with
+[`asyncio.run_coroutine_threadsafe()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.run_coroutine_threadsafe).
+That function returns a `concurrent.futures.Future`, and its `result()` method blocks the calling thread until the call
+finishes. Any number of threads can submit calls this way.
+
+```py
+import asyncio
+import threading
+from typing import Any, Coroutine, TypeVar
+
+from temporalio.client import Client
+
+from your_workflows import YourWorkflow
+
+T = TypeVar("T")
+
+
+class TemporalClientThread:
+    """Runs a Temporal Client on an event loop in a background thread."""
+
+    def __init__(self, target_host: str) -> None:
+        self._loop = asyncio.new_event_loop()
+        threading.Thread(target=self._loop.run_forever, daemon=True).start()
+        # Connect on the background loop so that the Client belongs to it.
+        self.client = self.run(Client.connect(target_host))
+
+    def run(self, coro: Coroutine[Any, Any, T]) -> T:
+        """Runs a coroutine on the background loop and waits for its result."""
+        return asyncio.run_coroutine_threadsafe(coro, self._loop).result()
+
+
+temporal = TemporalClientThread("localhost:7233")
+
+
+def start_from_sync_code(name: str) -> str:
+    handle = temporal.run(
+        temporal.client.start_workflow(
+            YourWorkflow.run,
+            name,
+            id=f"your-workflow-{name}",
+            task_queue="your-task-queue",
+        )
+    )
+    return handle.id
+```
+
+Pass every Client call through `temporal.run()` so that it runs on the loop the Client was created on.
+
+A Client doesn't work across a process fork. If your server forks worker processes, as Gunicorn does, create the
+`TemporalClientThread` in each worker process after the fork, not at import time in the parent process.
