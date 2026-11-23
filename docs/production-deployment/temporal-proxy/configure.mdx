@@ -440,8 +440,8 @@ wire in the clear.
 Keep upstream credentials with the proxy and restrict network paths when all application traffic must pass through it.
 For Temporal Cloud upstreams, also consider
 [Payload encryption validation](/cloud/payload-encryption-validation),
-a feature that can warn about or reject Payloads that bypassed encryption
-preventing requests from bypassing the proxy and going directly to Temporal Cloud.
+a feature that can warn about or reject supported Payloads that lack the expected encryption metadata.
+It checks metadata, not whether a request passed through the proxy.
 
 ## Tune upstream connections {/*#tune-upstream-connections*/}
 
