@@ -680,8 +680,8 @@ if __name__ == "__main__":
 
 ## Call the Temporal Client from synchronous code {/* #call-client-from-sync-code */}
 
-The Temporal Client's methods, including `Client.connect`, are coroutines. To call them from a function that isn't
-`async`, run them on an [asyncio](https://docs.python.org/3/library/asyncio.html) event loop.
+Most Temporal Client methods, such as `Client.connect` and `start_workflow`, are coroutines. To call them from a function
+that isn't `async`, run them on an [asyncio](https://docs.python.org/3/library/asyncio.html) event loop.
 
 ### Run a one-off call with `asyncio.run` {/* #asyncio-run */}
 
@@ -784,8 +784,13 @@ def main() -> None:
 ```
 <!--SNIPEND-->
 
-Create one `TemporalClientThread` per process and share it with the code that calls Temporal. Pass every Client call
-through `temporal.run()` so that it runs on the loop the Client was created on.
+Create one `TemporalClientThread` per process and share it with the code that calls Temporal. Pass each Client
+coroutine, such as `start_workflow()` or `handle.result()`, to `temporal.run()` so that it runs on the loop the Client
+was created on. `temporal.run()` accepts only coroutines:
+
+- Call methods that aren't coroutines, such as `get_workflow_handle()`, directly.
+- To use an async iterator, such as the one `list_workflows()` returns, iterate over it in an `async` function and pass
+  that function's coroutine to `temporal.run()`.
 
 A Client doesn't work across a process fork. If your server forks worker processes, as Gunicorn does, create the
 `TemporalClientThread` in each worker process after the fork, not at import time in the parent process.
