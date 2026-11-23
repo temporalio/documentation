@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "moduleResolution": "node",          // keep in sync with webpack
+    "moduleResolution": "bundler",       // resolves package "exports" like webpack
     "jsx": "react-jsx",                  // fine
     "skipLibCheck": true,
     "strict": false,

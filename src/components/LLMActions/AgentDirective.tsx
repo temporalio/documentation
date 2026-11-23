@@ -28,7 +28,7 @@ export default function AgentDirective(): JSX.Element | null {
 
   // Pages with no Markdown counterpart still get the index pointer, just
   // without the .md claim, which would 404 for them.
-  const markdownPath = frontMatter.llm_exclude ? null : getMarkdownPath(metadata.permalink);
+  const markdownPath = (frontMatter as { llm_exclude?: string }).llm_exclude ? null : getMarkdownPath(metadata.permalink);
 
   return (
     <div className={styles.agentDirective} aria-hidden="true" data-nosnippet>
