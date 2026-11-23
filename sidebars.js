@@ -665,6 +665,7 @@ const developPythonCategory = {
             },
             items: [
               'develop/python/workers/serverless-workers/aws-lambda',
+              'develop/python/workers/serverless-workers/modal',
               'develop/python/workers/serverless-workers/agentcore',
               'develop/python/workers/serverless-workers/cloud-run',
             ],
@@ -1642,6 +1643,7 @@ module.exports = {
                     'production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup',
                   ],
                 },
+                'production-deployment/worker-deployments/serverless-workers/modal',
                 {
                   type: 'category',
                   label: 'Amazon Bedrock AgentCore',
@@ -1953,6 +1955,7 @@ module.exports = {
           },
           items: [
             'troubleshooting/serverless-workers/aws-lambda',
+            'troubleshooting/serverless-workers/modal',
             'troubleshooting/serverless-workers/cloud-run',
           ],
         },
@@ -2119,6 +2122,7 @@ module.exports = {
               link: { type: 'doc', id: 'encyclopedia/workers/serverless-workers/serverless-workers' },
               items: [
                 'encyclopedia/workers/serverless-workers/serverless-workers-aws-lambda',
+                'encyclopedia/workers/serverless-workers/serverless-workers-modal',
                 'encyclopedia/workers/serverless-workers/serverless-workers-agentcore',
                 'encyclopedia/workers/serverless-workers/serverless-workers-cloud-run',
               ],

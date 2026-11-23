@@ -12,8 +12,9 @@ These pages are drafts on `docs/modal-serverless-workers`, based on `origin/main
 | `docs/production-deployment/worker-deployments/serverless-workers/modal.mdx` | `aws-lambda/index.mdx` in the same folder | Deploy the code, configure credentials, register compute, and verify automatic invocation. |
 | `docs/troubleshooting/serverless-workers/modal.mdx` | `aws-lambda.mdx` in the same folder | Distinguish invocation, connection, routing, timeout, and container-capacity failures. |
 
-All four have `draft: true`. Published pages, navigation, release-stage constants, redirects, and shared components
-are unchanged. Do not remove the draft status or advertise Modal support until the publication blockers below clear.
+All four pages build normally and appear beside their Lambda counterparts in sidebar navigation so reviewers can
+read the full PR preview. Parent provider listings, release-stage constants, redirects, and shared components are
+unchanged. Keep the PR as a draft and do not merge it until the publication blockers below clear.
 
 ## Publication blockers
 
@@ -51,8 +52,8 @@ change that separate project. Its one-container limit was a smoke-test choice, n
 
 ## Navigation and related pages before publication
 
-Add each page beside its Lambda sibling in `sidebars.js`. Add Modal links and provider-specific behavior to these
-parent pages after availability is confirmed:
+Each page is listed beside its Lambda sibling in `sidebars.js`. Add Modal links and provider-specific behavior to
+these parent pages after availability is confirmed:
 
 - `docs/encyclopedia/workers/serverless-workers/index.mdx`: providers, lifecycle, autoscaling, and versioning links;
   recheck any same-cloud and high-availability statements before extending them to Modal.
@@ -74,7 +75,8 @@ Snipsync. This draft does not create or push any upstream changes.
 Validation completed on November 20:
 
 - CI-scoped Vale: all four pages passed with no results.
-- Direct MDX compilation: all four pages passed. A full production build was not run; it excludes these draft pages.
+- Direct MDX compilation: all four pages passed. The initial `draft: true` frontmatter excluded the pages from
+  production-mode PR previews. The pages now build normally and have sidebar entries for review.
 - Internal routes and anchors: 26 links checked against repository pages, including draft-to-draft links; all resolved.
 - Index-slug and orphan-page checks: passed.
 - Extracted all three Python files from the SDK page. The published integration ran the Workflow and Activity against
