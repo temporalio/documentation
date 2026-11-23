@@ -221,6 +221,15 @@
     "tags": [
       "Agent framework"
     ],
+    "sdk": ".NET",
+    "href": "/develop/dotnet/integrations/microsoft-agent-framework"
+  },
+  {
+    "name": "Microsoft Agent Framework",
+    "description": "Run Microsoft Agent Framework agents as durable Temporal Workflows.",
+    "tags": [
+      "Agent framework"
+    ],
     "sdk": "Python",
     "href": "/develop/python/integrations/microsoft-agent-framework"
   },
