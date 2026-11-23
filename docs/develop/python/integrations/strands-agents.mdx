@@ -10,14 +10,10 @@ tags:
 description: Run Strands Agents AI workflows with durable execution using the Temporal Python SDK and Strands plugin.
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
 Temporal's integration with [Strands Agents](https://strandsagents.com/) is an [SDK Plugin](/develop/plugins-guide) that
 gives your Strands agents [Durable Execution](/durable-execution) via the Temporal platform. The plugin routes
-model invocations, tool calls, MCP tool calls, and hooks through Temporal Activities, so every step your agent takes is
+model invocations, tool calls, and MCP tool calls through Temporal Activities, so every step your agent takes is
 recorded in Workflow history and can survive crashes, restarts, and infrastructure failures.
-
-<ReleaseNoteHeader type="publicPreview" />
 
 Code snippets in this guide are taken from the
 [Strands Agents plugin samples](https://github.com/temporalio/samples-python/tree/main/strands_plugin). Refer to the
@@ -49,6 +45,12 @@ or with pip:
 
 ```bash
 pip install temporalio-strands-agents
+```
+
+To use MCP tools, install the `mcp` extra, which adds the MCP Python SDK v2:
+
+```bash
+uv add "temporalio-strands-agents[mcp]"
 ```
 
 The package installs the Temporal Python SDK and Strands Agents dependencies. Refer to the
@@ -372,8 +374,8 @@ If your agent needs access to tools provided by an [MCP](https://modelcontextpro
 clients on the Worker and reference them by name in the Workflow.
 
 `StrandsPlugin(mcp_clients=...)` takes a mapping of `name` to `MCPClient` factory, mirroring the `models` pattern. The
-plugin registers a per-server Activity and connects at Worker startup to enumerate available tools. In the Workflow,
-`TemporalMCPClient(server="name")` is a handle that references the server by name and carries per-call Activity options.
+plugin registers a per-server Activity. In the Workflow, `TemporalMCPClient(server="name")` is a handle that references
+the server by name and carries per-call Activity options.
 
 Define the Workflow with a `TemporalMCPClient`:
 
@@ -449,9 +451,8 @@ Each factory returns a fully configured `MCPClient`, so you can pass options lik
 
 :::info
 
-The plugin connects to each MCP server once at Worker startup to enumerate tools. The schema is frozen for the Worker's
-lifetime. Restart Workers to pick up MCP server changes. If a server is unavailable at startup, the Worker fails to
-start.
+The agent lists each MCP server's tools before every model call, or only once per Workflow with `cache_tools=True` on
+`TemporalMCPClient`. If a server is unavailable, the listing Activity retries under its Retry Policy.
 
 :::
 
@@ -539,23 +540,25 @@ class HumanInTheLoopWorkflow:
 
 #### Interrupt from a tool
 
-A `@strands.tool` function can raise `InterruptException(Interrupt(...))` directly. The agent stops with the interrupt,
-and the Workflow handles the resume the same way as for hooks:
+A `@strands.tool(context=True)` function can call `tool_context.interrupt(name, reason=...)`. The agent stops with the
+interrupt, and the Workflow handles the resume the same way as for hooks. On resume, Strands runs the tool again, and the
+call returns the response instead of raising:
 
 ```python
 from strands import tool
-from strands.interrupt import Interrupt, InterruptException
+from strands.types.tools import ToolContext
 
 
-@tool
-def delete_thing(name: str) -> str:
-    raise InterruptException(
-        Interrupt(id=f"delete:{name}", name="approval", reason=f"delete {name}?")
-    )
+@tool(context=True)
+def delete_thing(name: str, tool_context: ToolContext) -> str:
+    if tool_context.interrupt("approval", reason=f"delete {name}?") != "approve":
+        return f"kept {name}"
+    return f"deleted {name}"
 ```
 
-The same approach works from an `activity_as_tool`-wrapped Activity. The plugin's failure converter preserves the
-`Interrupt` payload across the Activity boundary, so `AgentResult.interrupts` is populated the same way.
+An `activity_as_tool`-wrapped Activity has no `tool_context`, so it raises `InterruptException(Interrupt(...))` instead.
+The plugin's failure converter preserves the `Interrupt` payload across the Activity boundary, so
+`AgentResult.interrupts` is populated the same way.
 
 Define the Activity that raises the interrupt:
 
