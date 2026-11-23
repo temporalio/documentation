@@ -3,7 +3,7 @@ id: region
 title: Temporal CLI cloud region command reference
 sidebar_label: region
 description: Region Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - region
 ---

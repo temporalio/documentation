@@ -25,8 +25,8 @@ The last Operation, `notifyRequester`, tells the requester whether their approva
 
 The Activity is ordinary and has nothing Nexus-specific in it; a Workflow could call the same Activity unchanged. In this walkthrough it is a placeholder that sends no email. Real logic would call an email provider, push to a notification service, or write to an outbox.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-activities-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalActivities.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalActivities.java)
+<!--SNIPSTART java-nexus-walkthrough-activities {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalActivities.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalActivities.java)
 ```java
 public interface ApprovalActivities {
 
@@ -55,8 +55,8 @@ Write it as a `@TemporalOperation` method, but start an Activity on the [Client]
 
 The Activity provides retries, timeouts, and a record of every attempt. The Operation provides the contract, so other teams can trigger the notification without sharing your code or your Namespace.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-notify-requester-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/ApprovalServiceImpl.java)
+<!--SNIPSTART java-nexus-walkthrough-notify-requester {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/ApprovalServiceImpl.java)
 ```java
 @TemporalOperation
 public TemporalOperationResult<NotifyRequesterOutput> notifyRequester(
@@ -94,8 +94,8 @@ To make several Operations share one Activity Execution and all receive its resu
 
 Register the Activity implementation on the Worker that hosts the Nexus Service. An Activity-backed Operation needs no Workflow registration.
 
-<!--SNIPSTART samples-java-nexus-walkthrough-handler-worker-->
-[core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/HandlerWorker.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexuswalkthrough/handler/HandlerWorker.java)
+<!--SNIPSTART java-nexus-walkthrough-handler-worker {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/HandlerWorker.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/development-walkthrough/src/main/java/io/temporal/docs/nexus/developmentwalkthrough/handler/HandlerWorker.java)
 ```java
 public static void main(String[] args) {
   WorkflowClient client = ClientOptions.getWorkflowClient(args);

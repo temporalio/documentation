@@ -21,6 +21,11 @@ Temporal Service without changing Worker or Client code. You run the proxy in yo
 plaintext payloads and your KMS. See the proxy's
 [encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for configuration and coverage limits.
 
+Temporal Cloud also provides [Payload encryption validation](/cloud/payload-encryption-validation), a Namespace-level control.
+It checks whether supported incoming Payloads carry the encryption metadata expected from your
+[Payload Codec](/payload-codec) or [encryption proxy](/production-deployment/temporal-proxy/encrypt-payloads),
+and warns or rejects them based on the mode you configure.
+
 The following data is persisted in the Event History and can be encrypted:
 
 - Inputs and outputs/results in your [Workflow](/workflow-execution), [Activity](/activity-execution), and [Child Workflow](/child-workflows)
@@ -54,6 +59,8 @@ When you configure a Codec Server endpoint in the Web UI or CLI, the Web UI and 
 See [API contract requirements](#api-contract-specifications).
 
 Decoded payloads can then be displayed in the Workflow Execution Event History on the Web UI. When you use a Codec Server, the decoded payloads are decoded and returned on the client side only. Payloads on the Temporal Service (whether on Temporal Cloud or self-hosted) remain encrypted.
+
+Configuring a Codec Server endpoint for the Web UI or CLI does not encrypt Payloads sent by your Workers and Clients. Temporal Cloud provides [Payload encryption validation](/cloud/payload-encryption-validation) to check that Payloads sent to Temporal Cloud carry the encryption metadata you configured for the Namespace, and can reject requests that do not.
 
 Because you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
 

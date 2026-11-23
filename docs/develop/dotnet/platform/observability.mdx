@@ -37,42 +37,60 @@ Metrics in .NET are configured on the `Metrics` property of the `Telemetry` prop
 
 The following example exposes a Prometheus endpoint on port `9000`.
 
-```csharp
+<!--SNIPSTART dotnet-observability-prometheus-->
+[dotnet-sandbox/platform/Observability/PrometheusMetrics.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/Observability/PrometheusMetrics.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Runtime;
 
-var runtime = new TemporalRuntime(new()
+public static class PrometheusMetrics
 {
-    Telemetry = new() { Metrics = new() { Prometheus = new("0.0.0.0:9000") } },
-});
-var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Runtime = runtime });
+    public static async Task RunAsync()
+    {
+        var runtime = new TemporalRuntime(new()
+        {
+            Telemetry = new() { Metrics = new() { Prometheus = new("0.0.0.0:9000") } },
+        });
+        var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Runtime = runtime });
+    }
+}
 ```
+<!--SNIPEND-->
 
 ### Set a custom metric meter
 
 A custom metric meter can be set on the telemetry options to handle metrics programmatically.
 The [Temporalio.Extensions.DiagnosticSource](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.DiagnosticSource) extension provides a custom metric meter implementation that sends all metrics to a [System.Diagnostics.Metrics.Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) instance.
 
-```csharp
+<!--SNIPSTART dotnet-observability-custom-meter-->
+[dotnet-sandbox/platform/Observability/CustomMeterMetrics.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/Observability/CustomMeterMetrics.cs)
+```cs
 using System.Diagnostics.Metrics;
 using Temporalio.Client;
 using Temporalio.Extensions.DiagnosticSource;
 using Temporalio.Runtime;
 
-// Create .NET meter
-using var meter = new Meter("My.Meter");
-// Can create MeterListener or OTel meter provider here...
-
-// Create Temporal runtime with a custom metric meter for that meter
-var runtime = new TemporalRuntime(new()
+public static class CustomMeterMetrics
 {
-    Telemetry = new()
+    public static async Task RunAsync()
     {
-        Metrics = new() { CustomMetricMeter = new CustomMetricMeter(meter) },
-    },
-});
-var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Runtime = runtime });
+        // Create .NET meter
+        using var meter = new Meter("My.Meter");
+        // Can create MeterListener or OTel meter provider here...
+
+        // Create Temporal runtime with a custom metric meter for that meter
+        var runtime = new TemporalRuntime(new()
+        {
+            Telemetry = new()
+            {
+                Metrics = new() { CustomMetricMeter = new CustomMetricMeter(meter) },
+            },
+        });
+        var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Runtime = runtime });
+    }
+}
 ```
+<!--SNIPEND-->
 
 ### Attach global tags to metrics
 
@@ -81,29 +99,39 @@ Global tags add your organization's information next to them, so a dashboard can
 
 Set [`GlobalTags`](https://dotnet.temporal.io/api/Temporalio.Runtime.MetricsOptions.html#Temporalio_Runtime_MetricsOptions_GlobalTags) on the [`Metrics` telemetry options](https://dotnet.temporal.io/api/Temporalio.Runtime.MetricsOptions.html) to add the same key-value pairs to every metric the runtime emits, from both the Client and the Worker.
 
-```csharp
+<!--SNIPSTART dotnet-observability-global-tags-->
+[dotnet-sandbox/Worker/TelemetryGlobalTagsProgram.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/Worker/TelemetryGlobalTagsProgram.cs)
+```cs
 using Temporalio.Client;
 using Temporalio.Runtime;
 
-var runtime = new TemporalRuntime(new()
+public static class TelemetryGlobalTagsProgram
 {
-    Telemetry = new()
+    public static async Task RunAsync()
     {
-        Metrics = new()
+        var runtime = new TemporalRuntime(new()
         {
-            Prometheus = new("0.0.0.0:9000"),
-            GlobalTags = new Dictionary<string, string>
+            Telemetry = new()
             {
-                ["team"] = "content-platform",
-                ["service"] = "checkout",
-                ["cost_center"] = "cc-1042",
-                ["environment"] = "production",
+                Metrics = new()
+                {
+                    Prometheus = new("0.0.0.0:9000"),
+                    GlobalTags = new Dictionary<string, string>
+                    {
+                        ["team"] = "content-platform",
+                        ["service"] = "checkout",
+                        ["cost_center"] = "cc-1042",
+                        ["environment"] = "production",
+                    },
+                },
             },
-        },
-    },
-});
-var client = await TemporalClient.ConnectAsync(new("localhost:7233") { Runtime = runtime });
+        });
+        var client = await TemporalClient.ConnectAsync(
+            new("localhost:7233") { Runtime = runtime });
+    }
+}
 ```
+<!--SNIPEND-->
 
 #### Choose a tag set
 
@@ -164,7 +192,9 @@ Logging uses the .NET standard logging APIs. You can find the log levels support
 The `LoggerFactory` can be set in the client.
 The following example shows logging on the console and sets the level to `Information`.
 
-```csharp
+<!--SNIPSTART dotnet-observability-logger-factory {"enable_code_dedenting": true}-->
+[dotnet-sandbox/platform/Observability/ConsoleLogging.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/Observability/ConsoleLogging.cs)
+```cs
 var client = await TemporalClient.ConnectAsync(new("localhost:7233")
 {
     LoggerFactory = LoggerFactory.Create(builder =>
@@ -173,12 +203,16 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233")
             SetMinimumLevel(LogLevel.Information)),
 });
 ```
+<!--SNIPEND-->
 
 You can log from a Workflow using `Workflow.Logger` which is an instance of .NET's `ILogger`.
 
-```csharp
+<!--SNIPSTART dotnet-observability-workflow-logger {"enable_code_dedenting": true}-->
+[dotnet-sandbox/platform/Observability/GreetingWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/Observability/GreetingWorkflow.workflow.cs)
+```cs
 Workflow.Logger.LogInformation("Given name: {Name}", name);
 ```
+<!--SNIPEND-->
 
 ## Use Visibility APIs {/* #visibility */}
 
@@ -216,12 +250,15 @@ The steps to using custom Search Attributes are:
 Use the [ListWorkflowsAsync()](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_ListWorkflowsAsync_System_String_Temporalio_Client_WorkflowListOptions_) method on the Client and pass a [List Filter](/list-filter) as an argument to filter the listed Workflows.
 The result is an async enumerable.
 
-```csharp
+<!--SNIPSTART dotnet-observability-list-workflows {"enable_code_dedenting": true}-->
+[dotnet-sandbox/platform/Observability/Visibility.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/Observability/Visibility.cs)
+```cs
 await foreach (var wf in client.ListWorkflowsAsync("WorkflowType='GreetingWorkflow'"))
 {
     Console.WriteLine("Workflow: {0}", wf.Id);
 }
 ```
+<!--SNIPEND-->
 
 ### Set Custom Search Attributes {/* #custom-search-attributes */}
 
@@ -230,7 +267,9 @@ After you've created custom Search Attributes in your Temporal Service (using `t
 To set custom Search Attributes, use the `TypedSearchAttributes` property on `WorkflowOptions` for `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
 Typed search attributes are a `SearchAttributeCollection` created with a builder.
 
-```csharp
+<!--SNIPSTART dotnet-observability-set-search-attributes {"enable_code_dedenting": true}-->
+[dotnet-sandbox/platform/Observability/Visibility.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/Observability/Visibility.cs)
+```cs
 // This only needs to be created once, so it is common to make it a static readonly even though we
 // create inline here for demonstration
 var myKeywordAttributeKey = SearchAttributeKey.CreateKeyword("MyKeywordAttribute");
@@ -245,6 +284,7 @@ var handle = await client.StartWorkflowAsync(
             ToSearchAttributeCollection(),
     });
 ```
+<!--SNIPEND-->
 
 ### Upsert Search Attributes {/* #upsert-search-attributes */}
 
@@ -253,7 +293,9 @@ You can upsert Search Attributes to add, update, or remove Search Attributes fro
 To upsert custom Search Attributes, use the [`UpsertTypedSearchAttributes()`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_UpsertTypedSearchAttributes_Temporalio_Workflows_SearchAttributeUpdate___) method with a set of updates.
 Keys can be predefined for reuse.
 
-```csharp
+<!--SNIPSTART dotnet-observability-upsert-search-attributes {"enable_code_dedenting": true}-->
+[dotnet-sandbox/platform/Observability/MyWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/platform/Observability/MyWorkflow.workflow.cs)
+```cs
 // These only need to be created once, so it is common to make them static readonly even though we
 // create inline here for demonstration
 var myKeywordAttributeKey = SearchAttributeKey.CreateKeyword("MyKeywordAttribute");
@@ -264,3 +306,4 @@ Workflow.UpsertTypedSearchAttributes(
     myKeywordAttributeKey.ValueSet("SomeKeywordValue"),
     myTextAttributeKey.ValueUnset());
 ```
+<!--SNIPEND-->

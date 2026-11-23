@@ -65,7 +65,9 @@ See the next section on how to do this with ActiveModel objects.
 By default, ActiveModel objects do not natively support the `JSON` module.
 A mixin can be created to add this support for ActiveModel, for example:
 
-```ruby
+<!--SNIPSTART ruby-data-conversion-active-model-->
+[ruby-sandbox/best-practices/data-handling/data-conversion/active_model_json_support.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/best-practices/data-handling/data-conversion/active_model_json_support.rb)
+```rb
 module ActiveModelJSONSupport
   extend ActiveSupport::Concern
   include ActiveModel::Serializers::JSON
@@ -87,6 +89,7 @@ module ActiveModelJSONSupport
   end
 end
 ```
+<!--SNIPEND-->
 
 Now if `include ActiveModelJSONSupport` is present on any ActiveModel class, on serialization `to_json` will be used which will use `as_json` which calls the super `as_json` but also includes the fully qualified class name as the JSON
 `create_id` key.

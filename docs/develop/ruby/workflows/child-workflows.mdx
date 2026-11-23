@@ -34,9 +34,12 @@ This is useful if you want to do something after it has only started, or to get 
 
 :::
 
-```ruby
+<!--SNIPSTART ruby-child-workflows-execute {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/child-workflows/parent_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/child-workflows/parent_workflow.rb)
+```rb
 Temporalio::Workflow.execute_child_workflow(MyChildWorkflow, 'my-workflow-arg')
 ```
+<!--SNIPEND-->
 
 ## Set a Parent Close Policy {/* #parent-close-policy */}
 
@@ -46,10 +49,13 @@ The default Parent Close Policy option is set to terminate the Child Workflow Ex
 
 Set the `parent_close_policy` parameter for `execute_child_workflow` or `start_child_workflow` to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
-```ruby
+<!--SNIPSTART ruby-child-workflows-parent-close-policy {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/child-workflows/abandon_parent_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/child-workflows/abandon_parent_workflow.rb)
+```rb
 Temporalio::Workflow.execute_child_workflow(
   MyChildWorkflow,
   'my-workflow-arg',
   parent_close_policy: Temporalio::Workflow::ParentClosePolicy::ABANDON
 )
 ```
+<!--SNIPEND-->

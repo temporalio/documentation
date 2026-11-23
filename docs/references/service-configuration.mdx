@@ -370,7 +370,7 @@ Each definition must be one of `cassandra`, `sql`, `elasticsearch`, or `customDa
 - `user`: The username the `gocql` client authenticates with.
 - `password`: The password the `gocql` client authenticates with.
 - `datacenter`: The data center filter for Cassandra.
-- `maxConns`: The maximum number of connections to this data store for a single TLS configuration.
+- `maxConns`: The maximum number of connections to this data store for a single keyspace.
 - `tls`: TLS settings. See [tls](#tls-1).
 
 #### sql
@@ -442,6 +442,10 @@ clusterMetadata:
   Only the primary cluster can register or update Namespaces. Any cluster can fail over a Namespace.
 - `clusterInformation`: A map of cluster names to cluster definitions.
   The local cluster's name must match `currentClusterName`.
+  In Temporal Server v1.14 and later, list only the local cluster here.
+  Register remote clusters with [`temporal operator cluster upsert`](/cli/command-reference/operator#upsert).
+  Because each cluster lists only itself, `masterClusterName` can differ between clusters.
+  See [How to set up Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#set-up-multi-cluster-replication).
   Each definition supports the following settings:
   - `enabled`: Boolean. Enables replication with this cluster.
   - `initialFailoverVersion`: The cluster's starting failover version.
@@ -594,13 +598,35 @@ The `dcRedirectionPolicy` section configures whether the Frontend Service forwar
 - `policy`: Supported values are `noop`, `selected-apis-forwarding`, and `all-apis-forwarding`.
   - Default: `noop`.
   - `noop`: No forwarding.
-  - `selected-apis-forwarding`: Forwards the following APIs to the active cluster for the Namespace:
+  - `selected-apis-forwarding`: Forwards the following APIs to the active cluster for the Namespace.
+
+    Workflow APIs:
+
     - `StartWorkflowExecution`
     - `SignalWithStartWorkflowExecution`
     - `SignalWorkflowExecution`
     - `RequestCancelWorkflowExecution`
     - `TerminateWorkflowExecution`
+    - `DeleteWorkflowExecution`
     - `QueryWorkflow`
+
+    Standalone Activity APIs:
+
+    - `StartActivityExecution`
+    - `RequestCancelActivityExecution`
+    - `TerminateActivityExecution`
+    - `DeleteActivityExecution`
+    - `PauseActivityExecution`
+    - `UnpauseActivityExecution`
+    - `ResetActivityExecution`
+    - `UpdateActivityExecutionOptions`
+
+    Standalone Nexus Operation APIs:
+
+    - `StartNexusOperationExecution`
+    - `RequestCancelNexusOperationExecution`
+    - `TerminateNexusOperationExecution`
+    - `DeleteNexusOperationExecution`
   - `all-apis-forwarding`: Forwards all APIs for the Namespace to the active cluster.
 
 ```yaml

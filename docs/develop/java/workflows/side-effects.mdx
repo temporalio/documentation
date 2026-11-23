@@ -10,8 +10,6 @@ tags:
 description: Side Effects in a Workflow execute non-deterministic code like generating a UUID. The result is saved in Workflow Event History for consistent replays without re-execution.
 ---
 
-## Side Effects {/* #side-effects */}
-
 Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising determinism in the Workflow.
 This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflow-execution/event#event-history).
 
@@ -29,39 +27,47 @@ You shouldn't modify the Workflow state inside a Side Effect function, because i
 
 To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the non-deterministic code.
 
+<!--SNIPSTART java-side-effects-basic {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/side-effects/src/main/java/io/temporal/docs/workflows/sideeffects/SideEffectsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/side-effects/src/main/java/io/temporal/docs/workflows/sideeffects/SideEffectsExample.java)
 ```java
-int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
-if random < 50 {
-       ....
+int randomValue = Workflow.sideEffect(Integer.class, () -> new Random().nextInt(100));
+if (randomValue < 50) {
+    // ...
 } else {
-       ....
+    // ...
 }
 ```
+<!--SNIPEND-->
 
 Here's another example that uses `sideEffect()`.
 
+<!--SNIPSTART java-side-effects-secure-random {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/side-effects/src/main/java/io/temporal/docs/workflows/sideeffects/SideEffectsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/side-effects/src/main/java/io/temporal/docs/workflows/sideeffects/SideEffectsExample.java)
 ```java
 // implementation of the @WorkflowMethod
 public void execute() {
-    int randomInt = Workflow.sideEffect( int.class, () -> {
+    int randomInt = Workflow.sideEffect(int.class, () -> {
         Random random = new SecureRandom();
         return random.nextInt();
     });
 
     String userHome = Workflow.sideEffect(String.class, () -> System.getenv("USER_HOME"));
 
-    if(randomInt % 2 == 0) {
+    if (randomInt % 2 == 0) {
         // ...
     } else {
         // ...
     }
 }
 ```
+<!--SNIPEND-->
 
 Java also provides a deterministic method to generate random numbers or random UUIDs.
 
 To generate random numbers in a deterministic method, use [`newRandom()`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom).
 
+<!--SNIPSTART java-side-effects-new-random {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/side-effects/src/main/java/io/temporal/docs/workflows/sideeffects/SideEffectsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/side-effects/src/main/java/io/temporal/docs/workflows/sideeffects/SideEffectsExample.java)
 ```java
 // implementation of the @WorkflowMethod
 public void execute() {
@@ -69,9 +75,12 @@ public void execute() {
     // ...
 }
 ```
+<!--SNIPEND-->
 
-To generate a random UUID in a deterministic method, use [`randomUUID()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()).
+To generate a random UUID in a deterministic method, use [`randomUUID()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#randomUUID()).
 
+<!--SNIPSTART java-side-effects-random-uuid {"enable_code_dedenting": true}-->
+[java-sandbox/workflows/side-effects/src/main/java/io/temporal/docs/workflows/sideeffects/SideEffectsExample.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/workflows/side-effects/src/main/java/io/temporal/docs/workflows/sideeffects/SideEffectsExample.java)
 ```java
 // implementation of the @WorkflowMethod
 public void execute() {
@@ -79,3 +88,4 @@ public void execute() {
     // ...
 }
 ```
+<!--SNIPEND-->

@@ -22,7 +22,9 @@ Benign errors:
 - Do not emit Activity failure metrics
 - Do not set the OpenTelemetry failure status to ERROR
 
-```ruby
+<!--SNIPSTART ruby-benign-exceptions-->
+[ruby-sandbox/activities/benign-exceptions/my_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/benign-exceptions/my_activity.rb)
+```rb
 require 'temporalio/activity'
 
 class MyActivity < Temporalio::Activity::Definition
@@ -39,5 +41,6 @@ class MyActivity < Temporalio::Activity::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 Use benign exceptions for Activity errors that occur regularly as part of normal operations, such as polling an external service that isn't ready yet, or handling expected transient failures that will be retried.

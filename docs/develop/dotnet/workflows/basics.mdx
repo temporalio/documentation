@@ -20,7 +20,9 @@ Specify the `[Workflow]` attribute from the `Temporalio.Workflows` namespace on 
 
 Use the `[WorkflowRun]` attribute to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `[Workflow]`.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-basics-define-->
+[dotnet-sandbox/workflows/WorkflowBasics/MyWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/MyWorkflow.workflow.cs)
+```cs
 using Temporalio.Workflows;
 
 [Workflow]
@@ -29,13 +31,14 @@ public class MyWorkflow
     [WorkflowRun]
     public async Task<string> RunAsync(string name)
     {
-        var param = MyActivityParams("Hello", name);
+        var param = new MyActivityParams("Hello", name);
         return await Workflow.ExecuteActivityAsync(
             (MyActivities a) => a.MyActivity(param),
             new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Define Workflow parameters {/* #workflow-parameters */}
 
@@ -52,7 +55,9 @@ The SDK will then ensure that your constructor receives the Workflow input argum
 
 Here's an example. The constructor and `RunAsync` must have the same parameters with the same types:
 
-```csharp
+<!--SNIPSTART dotnet-workflow-basics-init-->
+[dotnet-sandbox/workflows/WorkflowBasics/WorkflowInitWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/WorkflowInitWorkflow.workflow.cs)
+```cs
 [Workflow]
 public class WorkflowInitWorkflow
 {
@@ -71,8 +76,17 @@ public class WorkflowInitWorkflow
         await Workflow.WaitConditionAsync(() => titleHasBeenChecked);
         return $"Hello, {nameWithTitle}";
     }
+
+    [WorkflowUpdate]
+    public async Task<bool> CheckTitleValidityAsync()
+    {
+        // The handler can read nameWithTitle because the constructor set it.
+        titleHasBeenChecked = true;
+        return nameWithTitle.StartsWith("Knight ", StringComparison.Ordinal);
+    }
 }
 ```
+<!--SNIPEND-->
 
 ## Workflow logic requirements {/* #workflow-logic-requirements */}
 
@@ -96,18 +110,12 @@ Use [`Workflow.Logger`](https://dotnet.temporal.io/api/Temporalio.Workflows.Work
 instead of `Console.WriteLine` or a logger you resolve yourself.
 The SDK logger appends Workflow details to every log and skips logging during replay:
 
-```csharp
-[Workflow]
-public class MyWorkflow
-{
-    [WorkflowRun]
-    public async Task<string> RunAsync(string name)
-    {
-        Workflow.Logger.LogInformation("Starting workflow for {Name}", name);
-        // ...
-    }
-}
+<!--SNIPSTART dotnet-workflow-basics-logger-->
+[dotnet-sandbox/workflows/WorkflowBasics/DeterministicApisWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/DeterministicApisWorkflow.workflow.cs)
+```cs
+Workflow.Logger.LogInformation("Starting workflow for {Name}", name);
 ```
+<!--SNIPEND-->
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/dotnet/platform/observability#logging).
 
@@ -118,10 +126,13 @@ to get a deterministic random instance seeded per Workflow Execution, and
 [`Workflow.NewGuid()`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_NewGuid)
 instead of `Guid.NewGuid()`:
 
-```csharp
+<!--SNIPSTART dotnet-workflow-basics-random-->
+[dotnet-sandbox/workflows/WorkflowBasics/DeterministicApisWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/DeterministicApisWorkflow.workflow.cs)
+```cs
 var value = Workflow.Random.Next(1, 100);
 var uniqueId = Workflow.NewGuid();
 ```
+<!--SNIPEND-->
 
 ### Current time
 
@@ -129,9 +140,12 @@ Use [`Workflow.UtcNow`](https://dotnet.temporal.io/api/Temporalio.Workflows.Work
 instead of `DateTime.Now` or `DateTime.UtcNow`. It returns the time of the last Workflow Task, which is consistent
 across replays:
 
-```csharp
+<!--SNIPSTART dotnet-workflow-basics-now-->
+[dotnet-sandbox/workflows/WorkflowBasics/DeterministicApisWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/DeterministicApisWorkflow.workflow.cs)
+```cs
 var currentTime = Workflow.UtcNow;
 ```
+<!--SNIPEND-->
 
 To wait, use `Workflow.DelayAsync` instead of `Task.Delay` or `Thread.Sleep`.
 
@@ -147,12 +161,15 @@ Never use this to affect Workflow business logic. Branching on replay status bre
 
 :::
 
-```csharp
+<!--SNIPSTART dotnet-workflow-basics-is-replaying-->
+[dotnet-sandbox/workflows/WorkflowBasics/DeterministicApisWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/DeterministicApisWorkflow.workflow.cs)
+```cs
 if (!Workflow.Unsafe.IsReplaying)
 {
     EmitMetric("workflow_started", 1);
 }
 ```
+<!--SNIPEND-->
 
 If your goal is to always take action when something new is happening, check that
 [`Workflow.Unsafe.IsReplayingHistoryEvents`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.Unsafe.html#Temporalio_Workflows_Workflow_Unsafe_IsReplayingHistoryEvents)
@@ -204,10 +221,13 @@ Here are the rules to disable:
 
 - [CA1024](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1024) - This encourages properties instead of methods that look like getters. However for reflection reasons we cannot use property getters for queries, so it is very normal to have
 
-  ```csharp
+  <!--SNIPSTART dotnet-workflow-basics-query-getter-->
+  [dotnet-sandbox/workflows/WorkflowBasics/QueryGetterWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/QueryGetterWorkflow.workflow.cs)
+  ```cs
   [WorkflowQuery]
   public string GetSomeThing() => someThing;
   ```
+  <!--SNIPEND-->
 
 - [CA1822](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1822) - This encourages static methods when methods don't access instance state. Workflows however use instance methods for run, Signals, Queries, or Updates even if they could be static.
 - [CA2007](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2007) - This encourages users to use `ConfigureAwait` instead of directly waiting on a task. But in Workflows, there is no benefit to this and it just adds noise (and if used, needs to be `ConfigureAwait(true)` not `ConfigureAwait(false)`).
@@ -218,7 +238,9 @@ Here are the rules to disable:
 
 Here is the `.editorconfig` snippet for the above which may frequently change as more analyzers need to be adjusted:
 
-```ini
+<!--SNIPSTART dotnet-workflow-basics-editorconfig-->
+[dotnet-sandbox/workflows/.editorconfig](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/.editorconfig)
+```editorconfig
 ##### Configuration specific for Temporal workflows #####
 [*.workflow.cs]
 
@@ -243,6 +265,7 @@ dotnet_diagnostic.CS1998.severity = none
 # Don't avoid, but rather encourage things using TaskScheduler.Current in workflows
 dotnet_diagnostic.VSTHRD105.severity = none
 ```
+<!--SNIPEND-->
 
 ### Customize Workflow Type {/* #workflow-type */}
 
@@ -252,18 +275,22 @@ The following examples demonstrate how to set a custom name for your Workflow Ty
 
 You can customize the Workflow name with a custom name in the attribute. For example, `[Workflow("my-workflow-name")]`. If the name parameter is not specified, the Workflow name defaults to the unqualified class name.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-basics-custom-type-->
+[dotnet-sandbox/workflows/WorkflowBasics/CustomNameWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/CustomNameWorkflow.workflow.cs)
+```cs
 using Temporalio.Workflows;
 
 [Workflow("MyDifferentWorkflowName")]
-public class MyWorkflow
+public class MyWorkflowWithCustomName
 {
+    [WorkflowRun]
     public async Task<string> RunAsync(string name)
     {
-        var param = MyActivityParams("Hello", name);
+        var param = new MyActivityParams("Hello", name);
         return await Workflow.ExecuteActivityAsync(
             (MyActivities a) => a.MyActivity(param),
             new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
     }
 }
 ```
+<!--SNIPEND-->

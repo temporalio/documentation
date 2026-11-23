@@ -13,6 +13,7 @@ const {
 } = require('./_feedback-lib');
 
 const DOCS = 'https://docs.temporal.io';
+const MSG = 'The page shows the wrong flag name.';
 const redirects = compileRedirects([
   { source: '/old-page', destination: '/new-page' },
   { source: '/gone', destination: 'https://temporal.io/elsewhere' },
@@ -66,15 +67,33 @@ describe('agent reports', () => {
   });
 
   it('accepts a GET with the same fields', () => {
-    const result = parse({ title: 't', message: 'm', category: 'Product', severity: 'HIGH' }, 'GET');
+    const result = parse({ title: 't', message: MSG, category: 'Product', severity: 'HIGH' }, 'GET');
     assert.strictEqual(result.fields.category, 'product');
     assert.strictEqual(result.fields.severity, 'high');
   });
 
   it('requires title and message', () => {
-    assert.match(parse({ message: 'm' }, 'GET').error, /title/);
+    assert.match(parse({ message: MSG }, 'GET').error, /title/);
     assert.match(parse({ title: 't' }, 'GET').error, /message/);
     assert.match(parse({}, 'GET').error, /title/);
+  });
+
+  it('rejects a title or message that is only a placeholder', () => {
+    assert.match(parse({ title: '...', message: 'Real text' }, 'GET').error, /title is a placeholder/);
+    assert.match(parse({ title: 'Real text', message: '…' }).error, /message is a placeholder/);
+    assert.match(parse({ title: '<summary>', message: 'Real text' }).error, /title is a placeholder/);
+    assert.match(parse({ title: 'Real text', message: '<what-happened>' }).error, /message is a placeholder/);
+    assert.match(parse({ title: '- - -', message: 'Real text' }).error, /title is a placeholder/);
+  });
+
+  it('rejects a message too short to say what happened', () => {
+    assert.match(parse({ title: 'rl-0', message: 'rl-0' }).error, /message is 4 characters, and needs at least 20/);
+    assert.strictEqual(parse({ title: 't', message: 'x'.repeat(20) }).kind, 'report');
+  });
+
+  it('accepts short text with a letter or digit, in any script', () => {
+    assert.strictEqual(parse({ title: '404', message: MSG }).kind, 'report');
+    assert.strictEqual(parse({ title: 'ドキュメント', message: '<b>bold</b> renders as text' }).kind, 'report');
   });
 
   it('rejects text over its limit instead of cutting it', () => {
@@ -82,14 +101,14 @@ describe('agent reports', () => {
   });
 
   it('cuts metadata over its limit', () => {
-    const result = parse({ title: 't', message: 'm', agent: 'a'.repeat(100), src: 's'.repeat(100) });
+    const result = parse({ title: 't', message: MSG, agent: 'a'.repeat(100), src: 's'.repeat(100) });
     assert.strictEqual(result.fields.agent.length, 64);
     assert.strictEqual(result.fields.src.length, 32);
   });
 
   it('rejects unknown categories and severities', () => {
-    assert.match(parse({ title: 't', message: 'm', category: 'bug' }).error, /category must be one of/);
-    assert.match(parse({ title: 't', message: 'm', severity: 'urgent' }).error, /severity must be one of/);
+    assert.match(parse({ title: 't', message: MSG, category: 'bug' }).error, /category must be one of/);
+    assert.match(parse({ title: 't', message: MSG, severity: 'urgent' }).error, /severity must be one of/);
   });
 
   it('rejects fields that are not strings', () => {
@@ -98,10 +117,10 @@ describe('agent reports', () => {
 
   it('normalizes page_url and rejects one that is not a URL', () => {
     assert.strictEqual(
-      parse({ title: 't', message: 'm', page_url: `${DOCS}/old-page.md` }).fields.page_url,
+      parse({ title: 't', message: MSG, page_url: `${DOCS}/old-page.md` }).fields.page_url,
       `${DOCS}/new-page`
     );
-    assert.match(parse({ title: 't', message: 'm', page_url: 'workflows' }).error, /page_url/);
+    assert.match(parse({ title: 't', message: MSG, page_url: 'workflows' }).error, /page_url/);
   });
 
   it('rejects input that is not an object', () => {
@@ -111,7 +130,7 @@ describe('agent reports', () => {
   });
 
   it('rejects an unknown channel', () => {
-    assert.match(parse({ channel: 'email', title: 't', message: 'm' }).error, /channel/);
+    assert.match(parse({ channel: 'email', title: 't', message: MSG }).error, /channel/);
   });
 });
 

@@ -19,7 +19,7 @@ See [Workflow message passing](/encyclopedia/workflow-message-passing) for a gen
 ## Write message handlers {/* #writing-message-handlers */}
 
 :::info
-The code that follows is part of a [working solution](https://github.com/temporalio/samples-ruby/tree/main/message_passing_simple).
+The code that follows is part of a [working solution](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/ruby-sandbox/workflows/message-passing).
 :::
 
 Follow these guidelines when writing your message handlers:
@@ -35,10 +35,11 @@ Follow these guidelines when writing your message handlers:
 A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution.
 Define as a method:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-greeting-workflow {"selectedLines": ["1", "23-31", "80"]}-->
+[ruby-sandbox/workflows/message-passing/greeting_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_workflow.rb)
+```rb
 class GreetingWorkflow < Temporalio::Workflow::Definition
-  # ...
-
+# ...
   workflow_query
   def languages(input)
     # A query handler returns a value: it can inspect but must not mutate the Workflow state.
@@ -48,14 +49,16 @@ class GreetingWorkflow < Temporalio::Workflow::Definition
       @greetings.keys.sort
     end
   end
-
-  # ...
+# ...
 end
 ```
+<!--SNIPEND-->
 
 Or as an attribute reader:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-greeting-workflow {"selectedLines": ["1-7", "80"]}-->
+[ruby-sandbox/workflows/message-passing/greeting_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_workflow.rb)
+```rb
 class GreetingWorkflow < Temporalio::Workflow::Definition
   # This is the equivalent of:
   #    workflow_query
@@ -63,10 +66,10 @@ class GreetingWorkflow < Temporalio::Workflow::Definition
   #      @language
   #    end
   workflow_query_attr_reader :language
-
-  # ...
+# ...
 end
 ```
+<!--SNIPEND-->
 
 - The `workflow_query` class method can accept arguments.
   See the API reference docs: [`workflow_query`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_query-class_method).
@@ -77,20 +80,21 @@ end
 
 A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-greeting-workflow {"selectedLines": ["1", "33-38", "80"]}-->
+[ruby-sandbox/workflows/message-passing/greeting_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_workflow.rb)
+```rb
 class GreetingWorkflow < Temporalio::Workflow::Definition
-  # ...
-
+# ...
   workflow_signal
   def approve(input)
     # A signal handler mutates the workflow state but cannot return a value.
     @approved_for_release = true
     @approver_name = input['name']
   end
-
-  # ...
+# ...
 end
 ```
+<!--SNIPEND-->
 
 - The `workflow_signal` class method can accept arguments.
   Refer to the API docs: [`workflow_signal`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_signal-class_method).
@@ -109,10 +113,11 @@ It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-greeting-workflow {"selectedLines": ["1", "40-52", "80"]}-->
+[ruby-sandbox/workflows/message-passing/greeting_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_workflow.rb)
+```rb
 class GreetingWorkflow < Temporalio::Workflow::Definition
-  # ...
-
+# ...
   workflow_update
   def set_language(new_language) # rubocop:disable Naming/AccessorMethodName
     # An update handler can mutate the workflow state and return a value.
@@ -126,10 +131,10 @@ class GreetingWorkflow < Temporalio::Workflow::Definition
     # In an update validator you raise any exception to reject the update.
     raise "#{new_language} is not supported" unless @greetings.include?(new_language.to_sym)
   end
-
-  # ...
+# ...
 end
 ```
+<!--SNIPEND-->
 
 - The `workflow_update` class method can take arguments as described in the API reference docs for [`workflow_update`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_update-class_method).
 
@@ -137,7 +142,7 @@ end
   - Use validators to reject an Update before it is written to History.
     Validators are always optional.
     If you don't need to reject Updates, you can skip them.
-  - Define an Update validator with the [`workflow_update_validator`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_update-class_method) class method invoked before defining the method.
+  - Define an Update validator with the [`workflow_update_validator`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_update_validator-class_method) class method invoked before defining the method.
     The first parameter when declaring the validator is the name of the Update handler method.
     The validator must accept the same argument types as the handler and should not return a value.
 
@@ -165,14 +170,17 @@ To obtain the Workflow handle, you can:
 
 For example:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-start-workflow {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/greeting_client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_client.rb)
+```rb
 client = Temporalio::Client.connect('localhost:7233', 'default')
 handle = client.start_workflow(
-  MessagePassingSimple::GreetingWorkflow,
+  GreetingWorkflow,
   id: 'message-passing-simple-sample-workflow-id',
   task_queue: 'message-passing-simple-sample'
 )
 ```
+<!--SNIPEND-->
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
 
@@ -188,9 +196,12 @@ To check the argument types required when sending messages -- and the return typ
 
 Call a Query method with [`WorkflowHandle#query`](https://ruby.temporal.io/Temporalio/Client/WorkflowHandle.html#query-instance_method):
 
-```ruby
-supported_languages = handle.query(MessagePassingSimple::GreetingWorkflow.languages, { include_unsupported: false })
+<!--SNIPSTART ruby-message-passing-send-query {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/greeting_client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_client.rb)
+```rb
+supported_languages = handle.query(GreetingWorkflow.languages, { include_unsupported: false })
 ```
+<!--SNIPEND-->
 
 - Sending a Query doesn’t add events to a Workflow's Event History.
 
@@ -209,9 +220,12 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 Use [`WorkflowHandle#signal`](https://ruby.temporal.io/Temporalio/Client/WorkflowHandle.html#signal-instance_method) from Client code to send a Signal:
 
-```ruby
-handle.signal(MessagePassingSimple::GreetingWorkflow.approve, { name: 'John Q. Approver' })
+<!--SNIPSTART ruby-message-passing-send-signal {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/greeting_client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_client.rb)
+```rb
+handle.signal(GreetingWorkflow.approve, { name: 'John Q. Approver' })
 ```
+<!--SNIPEND-->
 
 - The call returns when the server accepts the Signal; it does _not_ wait for the Signal to be delivered to the Workflow Execution.
 
@@ -223,7 +237,9 @@ A Workflow can send a Signal to another Workflow, known as an _External Signal_.
 In this case you need to obtain a Workflow handle for the external Workflow.
 Use `Temporalio::Workflow.external_workflow_handle`, passing a running Workflow Id, to retrieve a Workflow handle:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-signal-from-workflow-->
+[ruby-sandbox/workflows/message-passing/external_signal_workflows.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/external_signal_workflows.rb)
+```rb
 class WorkflowB < Temporalio::Workflow::Definition
   def execute
     handle = Temporalio::Workflow.external_workflow_handle('workflow-a-id')
@@ -231,6 +247,7 @@ class WorkflowB < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 When an External Signal is sent:
 
@@ -245,7 +262,9 @@ If there isn't, a new Workflow will be started and immediately signaled.
 
 To use Signal-With-Start, call `signal_with_start_workflow` with a `WithStartWorkflowOperation`:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-signal-with-start {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/with_start.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/with_start.rb)
+```rb
 client = Temporalio::Client.connect('localhost:7233', 'default')
 
 # Create start-workflow operation for use with signal-with-start
@@ -258,6 +277,7 @@ handle = client.signal_with_start_workflow(
   MyWorkflow.my_signal, 'signal-input', start_workflow_operation:
 )
 ```
+<!--SNIPEND-->
 
 ### Send an Update {/* #send-update-from-client */}
 
@@ -276,9 +296,12 @@ To send an Update to a Workflow Execution, you can:
 - Call the Update method with `execute_update` from the Workflow handle and wait for the Update to complete.
   This code fetches an Update result:
 
-  ```ruby
-  prev_language = handle.execute_update(MessagePassingSimple::GreetingWorkflow.set_language, :chinese)
+  <!--SNIPSTART ruby-message-passing-execute-update {"enable_code_dedenting": true}-->
+  [ruby-sandbox/workflows/message-passing/greeting_client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_client.rb)
+  ```rb
+  prev_language = handle.execute_update(GreetingWorkflow.set_language, :chinese)
   ```
+  <!--SNIPEND-->
 
 2. Use `start_update` to receive a handle as soon as the Update is accepted.
      It returns a `WorkflowUpdateHandle`
@@ -289,15 +312,18 @@ To send an Update to a Workflow Execution, you can:
 
   For example:
 
-  ```ruby
+  <!--SNIPSTART ruby-message-passing-start-update {"enable_code_dedenting": true}-->
+  [ruby-sandbox/workflows/message-passing/greeting_client.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_client.rb)
+  ```rb
   # Start an update and then wait for it to complete
   update_handle = handle.start_update(
-    MessagePassingSimple::GreetingWorkflow.apply_language_with_lookup,
+    GreetingWorkflow.apply_language_with_lookup,
     :arabic,
     wait_for_stage: Temporalio::Client::WorkflowUpdateWaitStage::ACCEPTED
   )
   prev_language = update_handle.result
   ```
+  <!--SNIPEND-->
 
   For more details, see the "Async handlers" section.
 
@@ -328,7 +354,9 @@ These calls return once the requested Update wait stage has been reached, or whe
 
 Here's an example:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-update-with-start {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/with_start.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/with_start.rb)
+```rb
 client = Temporalio::Client.connect('localhost:7233', 'default')
 
 # Create start-workflow operation for use with update-with-start
@@ -338,13 +366,14 @@ start_workflow_operation = Temporalio::Client::WithStartWorkflowOperation.new(
   id_conflict_policy: Temporalio::WorkflowIDConflictPolicy::USE_EXISTING
 )
 # Perform update-with-start and get update result
-update_result = client.execute_with_start_workflow(
+update_result = client.execute_update_with_start_workflow(
   MyWorkflow.my_update, 'update-input', start_workflow_operation:
 )
 # The workflow handle is on the start operation, here's an example of waiting on
 # workflow result
 workflow_result = start_workflow_operation.workflow_handle.result
 ```
+<!--SNIPEND-->
 
 ## Message handler patterns {/* #message-handler-patterns */}
 
@@ -368,7 +397,9 @@ See [Workflow message passing](/encyclopedia/workflow-message-passing) for guida
 
 The following code is an Activity that simulates a network call to a remote service:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-call-greeting-service-->
+[ruby-sandbox/workflows/message-passing/call_greeting_service.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/call_greeting_service.rb)
+```rb
 class CallGreetingService < Temporalio::Activity::Definition
   def execute(to_language)
     # Simulate a network call
@@ -390,13 +421,15 @@ class CallGreetingService < Temporalio::Activity::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 The following code is a Workflow Update for asynchronous use of the preceding Activity:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-greeting-workflow {"selectedLines": ["1", "54-80"]}-->
+[ruby-sandbox/workflows/message-passing/greeting_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/greeting_workflow.rb)
+```rb
 class GreetingWorkflow < Temporalio::Workflow::Definition
-  # ...
-
+# ...
   workflow_update
   def apply_language_with_lookup(new_language)
     # Call an activity if it's not there.
@@ -405,7 +438,7 @@ class GreetingWorkflow < Temporalio::Workflow::Definition
       # can schedule the activity only when the previously scheduled activity has
       # completed. This ensures that multiple calls to apply_language_with_lookup are
       # processed in order.
-      @apply_language_mutex ||= Mutex.new
+      @apply_language_mutex ||= Temporalio::Workflow::Mutex.new
       @apply_language_mutex.synchronize do
         greeting = Temporalio::Workflow.execute_activity(
           CallGreetingService, new_language, start_to_close_timeout: 10
@@ -425,6 +458,7 @@ class GreetingWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 After updating the code for asynchronous calls, your Update handler can schedule an Activity and await the result.
 Although an async Signal handler can initiate similar network tasks, using an Update handler allows the Client to receive a result or error once the Activity completes.
@@ -453,13 +487,16 @@ This is an important feature that helps you control your handler logic.
 Consider a `ready_for_update_to_execute` method that runs before your Update handler executes.
 The `wait_condition` call waits until your condition is met:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-wait-in-handler {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/wait_in_handler_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/wait_in_handler_workflow.rb)
+```rb
 workflow_update
 def my_update(my_update_input)
   Temporalio::Workflow.wait_condition { ready_for_update_to_execute(my_update_input) }
-  # ...
+  (@processed ||= []) << my_update_input
 end
 ```
+<!--SNIPEND-->
 
 Remember: Handlers can execute before the main Workflow method starts.
 
@@ -470,25 +507,33 @@ When your Workflow uses async Signal or Update handlers, your main Workflow meth
 The Workflow completing may interrupt the handler before it finishes crucial work and cause Client errors when trying retrieve Update results.
 Use `Temporalio::Workflow.all_handlers_finished?` to address this problem and allow your Workflow to end smoothly:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-wait-for-handlers {"selectedLines": ["1", "10", "13-16"]}-->
+[ruby-sandbox/workflows/message-passing/wait_for_handlers_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/wait_for_handlers_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
+# ...
   def execute
-    # ...
-
+# ...
     Temporalio::Workflow.wait_condition { Temporalio::Workflow.all_handlers_finished? }
     'workflow-result'
   end
 end
 ```
+<!--SNIPEND-->
 
 By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
 You can silence these warnings on a per-handler basis by passing the `unfinished_policy` argument to the [`workflow_signal`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_signal-class_method) / [`workflow_update`](https://ruby.temporal.io/Temporalio/Workflow/Definition.html#workflow_update-class_method) class methods:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-unfinished-policy {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/unfinished_policy_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/unfinished_policy_workflow.rb)
+```rb
 workflow_update unfinished_policy: Temporalio::Workflow::HandlerUnfinishedPolicy::ABANDON
 def my_update
-  # ...
+  @update_started = true
+  Temporalio::Workflow.wait_condition { false }
+end
 ```
+<!--SNIPEND-->
 
 See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
@@ -502,7 +547,9 @@ The Workflow input arguments are also passed to your `execute` method -- that al
 Here's an example.
 The constructor and `execute` must have the same parameters with the same types:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-workflow-init-->
+[ruby-sandbox/workflows/message-passing/workflow_init_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/workflow_init_workflow.rb)
+```rb
 class WorkflowInitWorkflow < Temporalio::Workflow::Definition
   workflow_init
   def initialize(input)
@@ -528,6 +575,7 @@ class WorkflowInitWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 ### Use locks to prevent concurrent handler execution {/* #control-handler-concurrency */}
 
@@ -535,10 +583,11 @@ Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-handler-concurrency {"selectedLines": ["1", "8-20", "37"]}-->
+[ruby-sandbox/workflows/message-passing/handler_concurrency_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/handler_concurrency_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
-  # ...
-
+# ...
   workflow_signal
   def bad_handler
     data = Temporalio::Workflow.execute_activity(
@@ -552,34 +601,37 @@ class MyWorkflow < Temporalio::Workflow::Definition
     Temporalio::Workflow.sleep(1)
     @y = data['y']
   end
+# ...
 end
 ```
+<!--SNIPEND-->
 
-Coordinating access with `Mutex`, a mutual exclusion lock, corrects this code.
+Coordinating access with `Temporalio::Workflow::Mutex`, a mutual exclusion lock, corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
-```ruby
+<!--SNIPSTART ruby-message-passing-handler-concurrency {"selectedLines": ["1", "22-37"]}-->
+[ruby-sandbox/workflows/message-passing/handler_concurrency_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/handler_concurrency_workflow.rb)
+```rb
 class MyWorkflow < Temporalio::Workflow::Definition
-  # ...
-
+# ...
   workflow_signal
   def safe_handler
-    @mutex ||= Mutex.new
+    @mutex ||= Temporalio::Workflow::Mutex.new
     @mutex.synchronize do
       data = Temporalio::Workflow.execute_activity(
         FetchDataActivity,
         start_to_close_timeout: 100
       )
       @x = data['x']
-      # 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
-      # there may be times when the Workflow has @x from one Activity execution and @y
-      # from another.
+      # The mutex makes each handler instance finish setting @x and @y before the next
+      # one starts, so @x and @y always come from the same Activity execution.
       Temporalio::Workflow.sleep(1)
       @y = data['y']
     end
   end
 end
 ```
+<!--SNIPEND-->
 
 For additional concurrency options, `wait_condition` can be used to do more advanced things such as using an integer
 attribute + `wait_condition` as a semaphore.
@@ -688,15 +740,18 @@ Only one Dynamic Query can be present on a Workflow.
 The Query Handler parameters must accept a string name as the first parameter. Often users set `raw_args` to `true` and set the second parameter as `*args` which will be an array of `Temporalio::Converters::RawValue`.
 The [Temporalio::Workflow.payload_converter](https://ruby.temporal.io/Temporalio/Workflow.html#payload_converter-class_method) property is used to convert the raw value instances to proper types.
 
-```ruby
+<!--SNIPSTART ruby-message-passing-dynamic-query {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/dynamic_handlers_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/dynamic_handlers_workflow.rb)
+```rb
 workflow_query dynamic: true, raw_args: true
 def dynamic_query(query_name, *args)
   first_param = Temporalio::Workflow.payload_converter.from_payload(
-    args.first || raise 'Missing first parameter'
+    (args.first || raise('Missing first parameter')).payload
   )
   "Got parameter #{first_param} for query #{query_name}"
 end
 ```
+<!--SNIPEND-->
 
 ### Dynamic Signal {/* #set-a-dynamic-signal */}
 
@@ -707,15 +762,18 @@ Only one Dynamic Signal can be present on a Workflow.
 The Signal Handler parameters must accept a string name as the first parameter. Often users set `raw_args` to `true` and set the second parameter as `*args` which will be an array of `Temporalio::Converters::RawValue`.
 The [Temporalio::Workflow.payload_converter](https://ruby.temporal.io/Temporalio/Workflow.html#payload_converter-class_method) property is used to convert the raw value instances to proper types.
 
-```ruby
+<!--SNIPSTART ruby-message-passing-dynamic-signal {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/dynamic_handlers_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/dynamic_handlers_workflow.rb)
+```rb
 workflow_signal dynamic: true, raw_args: true
 def dynamic_signal(signal_name, *args)
   first_param = Temporalio::Workflow.payload_converter.from_payload(
-    args.first || raise 'Missing first parameter'
+    (args.first || raise('Missing first parameter')).payload
   )
   @pending_things << "Got parameter #{first_param} for signal #{signal_name}"
 end
 ```
+<!--SNIPEND-->
 
 ### Dynamic Update {/* #set-a-dynamic-update */}
 
@@ -726,12 +784,15 @@ Only one Dynamic Update can be present on a Workflow.
 The Update Handler parameters must accept a string name as the first parameter. Often users set `raw_args` to `true` and set the second parameter as `*args` which will be an array of `Temporalio::Converters::RawValue`.
 The [Temporalio::Workflow.payload_converter](https://ruby.temporal.io/Temporalio/Workflow.html#payload_converter-class_method) property is used to convert the raw value instances to proper types.
 
-```ruby
+<!--SNIPSTART ruby-message-passing-dynamic-update {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/message-passing/dynamic_handlers_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/message-passing/dynamic_handlers_workflow.rb)
+```rb
 workflow_update dynamic: true, raw_args: true
 def dynamic_update(update_name, *args)
   first_param = Temporalio::Workflow.payload_converter.from_payload(
-    args.first || raise 'Missing first parameter'
+    (args.first || raise('Missing first parameter')).payload
   )
   @pending_things << "Got parameter #{first_param} for update #{update_name}"
 end
 ```
+<!--SNIPEND-->

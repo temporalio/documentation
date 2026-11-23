@@ -29,21 +29,25 @@ Otherwise, no additional limitations exist on Activity implementations.
 
 To spawn an Activity Execution, use the `ExecuteActivityAsync` operation from within your Workflow Definition.
 
-```csharp
+<!--SNIPSTART dotnet-workflow-basics-define-->
+[dotnet-sandbox/workflows/WorkflowBasics/MyWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/MyWorkflow.workflow.cs)
+```cs
 using Temporalio.Workflows;
 
 [Workflow]
 public class MyWorkflow
 {
+    [WorkflowRun]
     public async Task<string> RunAsync(string name)
     {
-        var param = MyActivityParams("Hello", name);
+        var param = new MyActivityParams("Hello", name);
         return await Workflow.ExecuteActivityAsync(
             (MyActivities a) => a.MyActivity(param),
             new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
     }
 }
 ```
+<!--SNIPEND-->
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).

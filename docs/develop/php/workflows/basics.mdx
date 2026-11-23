@@ -16,8 +16,16 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 
 In the Temporal PHP SDK programming model, Workflows are a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
 
+<!--SNIPSTART php-workflow-basics-define-->
+[php-sandbox/workflows/basics/define/FileProcessingWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/basics/define/FileProcessingWorkflow.php)
 ```php
-use Temporal\Workflow\YourWorkflowInterface;
+<?php
+declare(strict_types=1);
+
+namespace App\Workflows\Basics\Define;
+
+use App\Workflows\Basics\Argument;
+use Temporal\Workflow\WorkflowInterface;
 use Temporal\Workflow\WorkflowMethod;
 
 #[WorkflowInterface]
@@ -25,9 +33,9 @@ interface FileProcessingWorkflow
 {
     #[WorkflowMethod]
     public function processFile(Argument $args);
-
 }
 ```
+<!--SNIPEND-->
 
 ### Define Workflow parameters {/* #workflow-parameters */}
 
@@ -42,15 +50,25 @@ We recommend passing a single parameter that contains all the input fields to al
 
 Note that all inputs should be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
 The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
-You can create a custom object and pass it to the Workflow method, as shown in the following example:
+You can create a custom object, such as the following `Argument` class, and pass it to the Workflow method:
 
+<!--SNIPSTART php-workflow-basics-argument-->
+[php-sandbox/workflows/basics/Argument.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/basics/Argument.php)
 ```php
-#[WorkflowInterface]
-interface FileProcessingWorkflow {
-    #[WorkflowMethod]
-    public function processFile(Argument $args);
+<?php
+declare(strict_types=1);
+
+namespace App\Workflows\Basics;
+
+final class Argument
+{
+    public function __construct(
+        public string $sourceUrl = '',
+        public string $destinationUrl = '',
+    ) {}
 }
 ```
+<!--SNIPEND-->
 
 ### Define Workflow return parameters {/* #workflow-return-values */}
 
@@ -61,15 +79,28 @@ However, Temporal APIs that must be used to get the result of a Workflow Executi
 A Workflow method returns a Generator.
 To properly typecast the Workflow's return value in the client code, use the `#[ReturnType()]` attribute.
 
+<!--SNIPSTART php-workflow-basics-return-type-->
+[php-sandbox/workflows/basics/return-values/FileProcessingWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/basics/return-values/FileProcessingWorkflow.php)
 ```php
-#[WorkflowInterface]
-interface FileProcessingWorkflow {
+<?php
+declare(strict_types=1);
 
+namespace App\Workflows\Basics\ReturnValues;
+
+use App\Workflows\Basics\Argument;
+use Temporal\Workflow\ReturnType;
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
     #[WorkflowMethod]
     #[ReturnType("string")]
     public function processFile(Argument $args);
 }
 ```
+<!--SNIPEND-->
 
 ### Customize your Workflow Type {/* #workflow-type */}
 
@@ -77,15 +108,30 @@ Workflows have a Type that are referred to as the Workflow name.
 
 The following examples demonstrate how to set a custom name for your Workflow Type.
 
-To customize a Workflow Type, use the `WorkflowMethod` attribute to specify the name of Workflow.
+To customize a Workflow Type, pass a `name` to the `WorkflowMethod` attribute.
+The following attribute sets the Workflow Type to `FileProcessing`:
 
+<!--SNIPSTART php-workflow-basics-custom-name {"enable_code_dedenting": true}-->
+[php-sandbox/workflows/basics/custom-name/FileProcessingWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/basics/custom-name/FileProcessingWorkflow.php)
 ```php
-#[WorkflowMethod(name)]
+#[WorkflowMethod(name: "FileProcessing")]
 ```
+<!--SNIPEND-->
 
 If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `YourWorkflowDefinitionInterface` in this case.
 
+<!--SNIPSTART php-workflow-basics-default-name-->
+[php-sandbox/workflows/basics/default-name/YourWorkflowDefinitionInterface.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/basics/default-name/YourWorkflowDefinitionInterface.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Workflows\Basics\DefaultName;
+
+use App\Workflows\Basics\Argument;
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
 #[WorkflowInterface]
 interface YourWorkflowDefinitionInterface
 {
@@ -93,6 +139,7 @@ interface YourWorkflowDefinitionInterface
     public function processFile(Argument $args);
 }
 ```
+<!--SNIPEND-->
 
 ### Use Workflow constructors
 
@@ -103,7 +150,14 @@ The SDK will then ensure that your constructor receives the Workflow input argum
 Here's an example.
 Notice that the constructor and `getGreeting` must have the same parameters:
 
+<!--SNIPSTART php-workflow-basics-workflow-init-->
+[php-sandbox/workflows/basics/workflow-init/GreetingExample.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/workflows/basics/workflow-init/GreetingExample.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Workflows\Basics\WorkflowInit;
+
 use Temporal\Workflow;
 
 #[Workflow\WorkflowInterface]
@@ -128,6 +182,7 @@ class GreetingExample
     }
 }
 ```
+<!--SNIPEND-->
 
 ### Develop Workflow logic {/* #workflow-logic-requirements */}
 

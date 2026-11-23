@@ -42,9 +42,11 @@ method on the Client.
 Then pass the Schedule ID and the Schedule object to the method to create a Scheduled Workflow Execution.
 Set the Schedule's `action` member to an instance of `Temporalio::Client::Schedule::Action::StartWorkflow` to schedule a Workflow Execution.
 
-```ruby
+<!--SNIPSTART ruby-schedules-create {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 handle = my_client.create_schedule(
-  'my_schedule_id',
+  'my-schedule-id',
   Temporalio::Client::Schedule.new(
     action: Temporalio::Client::Schedule::Action::StartWorkflow.new(
       MyWorkflow, 'some-input',
@@ -60,6 +62,7 @@ handle = my_client.create_schedule(
   )
 )
 ```
+<!--SNIPEND-->
 
 :::tip Schedule Auto-Deletion
 
@@ -75,7 +78,9 @@ The backfill action executes Actions ahead of their specified time range. This c
 To backfill a Scheduled Workflow Execution in Ruby, use the [backfill](https://ruby.temporal.io/Temporalio/Client/ScheduleHandle.html#backfill-instance_method)
 method on the Schedule Handle.
 
-```ruby
+<!--SNIPSTART ruby-schedules-backfill {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 handle = my_client.schedule_handle('my-schedule-id')
 now = Time.now(in: 'UTC')
 handle.backfill(
@@ -86,6 +91,7 @@ handle.backfill(
   )
 )
 ```
+<!--SNIPEND-->
 
 ### Delete a Scheduled Workflow {/* #delete-a-scheduled-workflow */}
 
@@ -93,10 +99,13 @@ The delete action enables you to delete a Schedule. When you delete a Schedule, 
 
 To delete a Scheduled Workflow Execution in Ruby, use the [delete](https://ruby.temporal.io/Temporalio/Client/ScheduleHandle.html#delete-instance_method) method on the Schedule Handle.
 
-```ruby
+<!--SNIPSTART ruby-schedules-delete {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 handle = my_client.schedule_handle('my-schedule-id')
 handle.delete
 ```
+<!--SNIPEND-->
 
 ### Describe a Scheduled Workflow {/* #describe-a-scheduled-workflow */}
 
@@ -104,11 +113,14 @@ The describe action shows the current Schedule configuration, including informat
 
 To describe a Scheduled Workflow Execution in Ruby, use the [describe](https://ruby.temporal.io/Temporalio/Client/ScheduleHandle.html#describe-instance_method) method on the Schedule Handle.
 
-```ruby
+<!--SNIPSTART ruby-schedules-describe {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 handle = my_client.schedule_handle('my-schedule-id')
 desc = handle.describe
 puts "Schedule info: #{desc.info}"
 ```
+<!--SNIPEND-->
 
 ### List a Scheduled Workflow {/* #list-a-scheduled-workflow */}
 
@@ -118,11 +130,14 @@ To list all schedules, use the [list_schedules](https://ruby.temporal.io/Tempora
 This returns an enumerator/enumerable.
 If a schedule is added or deleted, it may not be available in the list immediately.
 
-```ruby
+<!--SNIPSTART ruby-schedules-list {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 my_client.list_schedules.each do |sched|
   puts "Schedule info: #{sched}"
 end
 ```
+<!--SNIPEND-->
 
 ### Pause a Scheduled Workflow {/* #pause-a-scheduled-workflow */}
 
@@ -131,10 +146,13 @@ The pause action enables you to pause and unpause a Schedule. When you pause a S
 To pause a Scheduled Workflow Execution in Ruby, use the [pause](https://ruby.temporal.io/Temporalio/Client/ScheduleHandle.html#pause-instance_method) method on the Schedule Handle.
 You can pass a note to the `pause` method to provide a reason for pausing the schedule.
 
-```ruby
+<!--SNIPSTART ruby-schedules-pause {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 handle = my_client.schedule_handle('my-schedule-id')
 handle.pause(note: 'Pausing the schedule for now')
 ```
+<!--SNIPEND-->
 
 ### Trigger a Scheduled Workflow {/* #trigger-a-scheduled-workflow */}
 
@@ -142,10 +160,13 @@ The trigger action triggers an immediate action with a given Schedule. By defaul
 
 To trigger a Scheduled Workflow Execution in Ruby, use the [trigger](https://ruby.temporal.io/Temporalio/Client/ScheduleHandle.html#trigger-instance_method) method on the Schedule Handle.
 
-```ruby
+<!--SNIPSTART ruby-schedules-trigger {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 handle = my_client.schedule_handle('my-schedule-id')
 handle.trigger
 ```
+<!--SNIPEND-->
 
 ### Update a Scheduled Workflow {/* #update-a-scheduled-workflow */}
 
@@ -155,7 +176,9 @@ To update a Scheduled Workflow Execution in Ruby, use the [update](https://ruby.
 This method accepts a block which itself accepts an update input object and is expected to return an update with a new
 schedule to update, or `nil` to not update.
 
-```ruby
+<!--SNIPSTART ruby-schedules-update {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 handle = my_client.schedule_handle('my-schedule-id')
 handle.update do |input|
   # Return a new schedule with the action updated
@@ -170,6 +193,7 @@ handle.update do |input|
   )
 end
 ```
+<!--SNIPEND-->
 
 ## Use Start Delay {/* #start-delay */}
 
@@ -177,10 +201,13 @@ Use the `start_delay` to schedule a Workflow Execution at a specific one-time fu
 
 Use the `start_delay` parameter on either the `start_workflow` or `execute_workflow` methods in the Client.
 
-```ruby
+<!--SNIPSTART ruby-schedules-start-delay {"enable_code_dedenting": true}-->
+[ruby-sandbox/workflows/schedules/schedules.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/workflows/schedules/schedules.rb)
+```rb
 handle = my_client.start_workflow(
   MyWorkflow, 'some-input',
   id: 'my-workflow-id', task_queue: 'my-task-queue',
   start_delay: 3 * 60 * 60 # 3 hours
 )
 ```
+<!--SNIPEND-->

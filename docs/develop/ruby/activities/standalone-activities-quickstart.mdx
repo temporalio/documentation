@@ -26,9 +26,7 @@ Activity directly from your Temporal Client.
 
 :::note
 
-This documentation uses source code from the
-[standalone_activity](https://github.com/temporalio/samples-ruby/tree/main/standalone_activity)
-sample.
+This documentation uses source code from the [standalone-activity](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/ruby-sandbox/activities/standalone-activity) sample.
 
 :::
 
@@ -73,32 +71,34 @@ Temporal Web UI will now be accessible at [http://localhost:8233](http://localho
 
 ## Clone the sample
 
-Clone the [samples-ruby](https://github.com/temporalio/samples-ruby) repository to follow along:
+Clone the [documentation-sdk-code-examples](https://github.com/temporalio/documentation-sdk-code-examples) repository, switch to the `ruby-sandbox` directory, and install the dependencies.
+Run every command on this page from that directory.
 
 ```bash
-git clone https://github.com/temporalio/samples-ruby.git
-cd samples-ruby
+git clone https://github.com/temporalio/documentation-sdk-code-examples.git
+cd documentation-sdk-code-examples/ruby-sandbox
 bundle install
 ```
 
-The sample consists of separate programs in the `standalone_activity` directory:
+The sample consists of separate programs in the `activities/standalone-activity` directory:
 
 ```
-standalone_activity/
+activities/standalone-activity/
 ├── my_activities.rb      # Activity definition
 ├── worker.rb             # Worker that processes activity tasks
-├── execute_activity.rb   # Starts an activity and waits for the result
-├── start_activity.rb     # Starts an activity without blocking
-├── list_activities.rb    # Lists activity executions
-└── count_activities.rb   # Counts activity executions
+└── execute_activity.rb   # Starts an activity and waits for the result
 ```
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="ruby" title="my_activities.rb">
-{`require 'temporalio/activity'
+<SetupStep>
+
+<CodeSnippet title="my_activities.rb">
+
+<!--SNIPSTART ruby-standalone-activity-quickstart-activity-->
+[ruby-sandbox/activities/standalone-activity/my_activities.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/my_activities.rb)
+```rb
+require 'temporalio/activity'
 
 module StandaloneActivity
   module MyActivities
@@ -108,10 +108,11 @@ module StandaloneActivity
       end
     end
   end
-end`}
+end
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-</>
-}>
 
 ## Define your Activity {/* #define-activity */}
 
@@ -120,19 +121,30 @@ implements an `execute` method. The way you define a Standalone Activity is iden
 define an Activity orchestrated by a Workflow. In fact, the same Activity can be executed both as a
 Standalone Activity and as a Workflow Activity.
 
-[my_activities.rb](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity/my_activities.rb)
+[activities/standalone-activity/my_activities.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/my_activities.rb)
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="ruby" title="worker.rb">
-{`args, kwargs = Temporalio::EnvConfig::ClientConfig.load_client_connect_options
+<SetupStep>
+
+<CodeSnippet title="worker.rb">
+
+<!--SNIPSTART ruby-standalone-activity-quickstart-worker-->
+[ruby-sandbox/activities/standalone-activity/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/worker.rb)
+```rb
+require 'temporalio/client'
+require 'temporalio/env_config'
+require 'temporalio/worker'
+require_relative 'my_activities'
+
+args, kwargs = Temporalio::EnvConfig::ClientConfig.load_client_connect_options
 args[0] ||= 'localhost:7233'
 args[1] ||= 'default'
 
 client = Temporalio::Client.connect(*args, **kwargs)
 
+# A Worker for Standalone Activities is configured the same way as one for
+# Workflow Activities. No Workflows are required.
 worker = Temporalio::Worker.new(
   client:,
   task_queue: 'standalone-activity-sample',
@@ -140,13 +152,15 @@ worker = Temporalio::Worker.new(
 )
 
 puts 'Starting worker (ctrl+c to exit)'
-worker.run(shutdown_signals: ['SIGINT'])`}
+worker.run(shutdown_signals: ['SIGINT'])
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
+
 <CodeSnippet language="bash">
-{`bundle exec ruby standalone_activity/worker.rb`}
+{`bundle exec ruby activities/standalone-activity/worker.rb`}
 </CodeSnippet>
-</>
-}>
 
 ## Run a Worker with the Activity registered {/* #run-worker */}
 
@@ -156,28 +170,47 @@ doesn't need to know whether the Activity will be invoked from a Workflow or as 
 Activity. See [Run a Worker](/develop/ruby/workers/run-worker-process) for more details on
 Worker setup and configuration options.
 
-[worker.rb](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity/worker.rb)
+[activities/standalone-activity/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/worker.rb)
 
-Open a new terminal, navigate to the `samples-ruby` directory, and run the Worker.
+Open a new terminal, switch to the `ruby-sandbox` directory, and run the Worker.
 Leave this terminal running — the Worker needs to stay up to process activities.
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="ruby" title="execute_activity.rb">
-{`result = client.execute_activity(
+<SetupStep>
+
+<CodeSnippet title="execute_activity.rb">
+
+<!--SNIPSTART ruby-standalone-activity-quickstart-execute-->
+[ruby-sandbox/activities/standalone-activity/execute_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/execute_activity.rb)
+```rb
+require 'temporalio/client'
+require 'temporalio/env_config'
+require_relative 'my_activities'
+
+args, kwargs = Temporalio::EnvConfig::ClientConfig.load_client_connect_options
+args[0] ||= 'localhost:7233'
+args[1] ||= 'default'
+
+client = Temporalio::Client.connect(*args, **kwargs)
+
+result = client.execute_activity(
   StandaloneActivity::MyActivities::ComposeGreeting,
   'Hello', 'World',
   id: 'standalone-activity-id',
   task_queue: 'standalone-activity-sample',
   start_to_close_timeout: 10
 )
-puts "Activity result: #{result}"`}
+puts "Activity result: #{result}"
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
+
 <CodeSnippet language="bash">
-{`bundle exec ruby standalone_activity/execute_activity.rb`}
+{`bundle exec ruby activities/standalone-activity/execute_activity.rb`}
 </CodeSnippet>
+
 <CodeSnippet language="bash">
 {`temporal activity execute \\
   --type ComposeGreeting \\
@@ -187,8 +220,6 @@ puts "Activity result: #{result}"`}
   --input '"Hello"' \\
   --input '"World"'`}
 </CodeSnippet>
-</>
-}>
 
 ## Execute a Standalone Activity {/* #execute-activity */}
 
@@ -197,7 +228,7 @@ Standalone Activity and block until it completes. Call this from your applicatio
 inside a Workflow Definition. This durably enqueues your Standalone Activity in the Temporal Server,
 waits for it to be executed on your Worker, and then returns the result.
 
-[execute_activity.rb](https://github.com/temporalio/samples-ruby/blob/main/standalone_activity/execute_activity.rb)
+[activities/standalone-activity/execute_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/standalone-activity/execute_activity.rb)
 
 The first argument is the Activity to run. It can be the [`Activity::Definition`](https://ruby.temporal.io/Temporalio/Activity/Definition.html) subclass, an
 instance of one, or a string/symbol name. Positional arguments after it are passed to the Activity's
@@ -208,12 +239,18 @@ To run it:
 
 1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
 2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
-3. Open a new terminal, navigate to the `samples-ruby` directory, and run:
+3. Open a new terminal, switch to the `ruby-sandbox` directory, and run:
     ```
-    bundle exec ruby standalone_activity/execute_activity.rb
+    bundle exec ruby activities/standalone-activity/execute_activity.rb
     ```
 
 Or use the Temporal CLI.
+
+You should see:
+
+```
+Activity result: Hello, World!
+```
 
 </SetupStep>
 

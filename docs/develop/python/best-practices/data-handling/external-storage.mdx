@@ -203,7 +203,7 @@ externalize all payloads regardless of size. Payloads smaller than the threshold
 compared against the threshold is that of the serialized Payload, which includes its metadata, not just your data.
 
 <!--SNIPSTART python-external-storage-threshold-->
-[features/snippets/external_storage/threshold/threshold_config.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/threshold/threshold_config.py)
+[python-sandbox/best_practices/external_storage/local_disk_driver.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/external_storage/local_disk_driver.py)
 ```py
 data_converter = dataclasses.replace(
     DataConverter.default,
@@ -234,12 +234,12 @@ The following example registers two drivers but always selects `preferred_driver
 is only registered so the Worker can retrieve payloads that were previously stored with it:
 
 <!--SNIPSTART python-external-storage-multiple-drivers-->
-[features/snippets/external_storage/multiple_drivers/multiple_drivers.py](https://github.com/temporalio/features/blob/main/features/snippets/external_storage/multiple_drivers/multiple_drivers.py)
+[python-sandbox/best_practices/external_storage/multiple_drivers.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/best_practices/external_storage/multiple_drivers.py)
 ```py
-preferred_driver = S3StorageDriver(client=s3_client, bucket="my-bucket")
+preferred_driver = S3StorageDriver(client=new_aioboto3_client(s3_client), bucket="my-bucket")
 legacy_driver = LegacyStorageDriver()
 
-ExternalStorage(
+external_storage = ExternalStorage(
     drivers=[preferred_driver, legacy_driver],
     driver_selector=lambda context, payload: preferred_driver,
 )

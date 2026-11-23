@@ -39,7 +39,7 @@ This page covers the following:
 :::note
 
 This documentation uses source code from the
-[standalone_activities](https://github.com/temporalio/sdk-rust/tree/main/crates/sdk/examples/standalone_activities)
+[Standalone Activities](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/rust-sandbox/activities/standalone-quickstart)
 sample.
 
 :::
@@ -63,9 +63,9 @@ your Activity job, without waiting for it to be executed by your Worker.
 Use [`Client::start_activity`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.Client.html#method.start_activity)
 to start a Standalone Activity and get a handle without waiting for the result:
 
-[start_activity.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/start_activity.rs)
-
-```rust
+<!--SNIPSTART rust-standalone-activities-start {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/standalone-quickstart/src/bin/start_activity.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/start_activity.rs)
+```rs
 let options = ActivityStartOptions::with_start_to_close_timeout(
     "standalone-activities",
     "standalone-activity-id",
@@ -88,6 +88,7 @@ println!(
     handle.run_id()
 );
 ```
+<!--SNIPEND-->
 
 The first argument identifies the Activity to run. Passing the Activity method itself, such as
 `GreetingActivities::compose_greeting`, gives you a typed
@@ -101,11 +102,11 @@ requires a Task Queue, an Activity ID, and a close timeout. The
 with that timeout already set; call `.build()` to finish, or set additional fields such as
 `retry_policy`, `heartbeat_timeout`, `id_reuse_policy`, or `priority` first.
 
-With the Temporal Server and Worker running, open a new terminal in the `crates/sdk` directory and
-run:
+With the Temporal Server and Worker running, open a new terminal in the
+`documentation-sdk-code-examples/rust-sandbox/activities/standalone-quickstart` directory and run:
 
 ```bash
-cargo run --features examples --example standalone-activities-start
+cargo run --bin start_activity
 ```
 
 Or use the Temporal CLI:
@@ -130,9 +131,9 @@ to create an
 [`ActivityHandle`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html)
 for a previously started Standalone Activity:
 
-[get_activity_handle.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/get_activity_handle.rs)
-
-```rust
+<!--SNIPSTART rust-standalone-activities-get-handle {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/standalone-quickstart/src/bin/get_activity_handle.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/get_activity_handle.rs)
+```rs
 // Passing `None` for the run ID targets the latest run with this activity ID.
 let handle = client.get_activity_handle(
     GreetingActivities::compose_greeting,
@@ -140,6 +141,7 @@ let handle = client.get_activity_handle(
     None,
 );
 ```
+<!--SNIPEND-->
 
 Pass `None` for the run ID to target the latest run of the given Activity ID, or pass
 `Some(run_id)` to target a specific run.
@@ -151,12 +153,15 @@ instead. You can still describe, cancel, and terminate through an untyped handle
 
 You can then use the handle to wait for the result, describe, cancel, or terminate the Activity:
 
-```rust
+<!--SNIPSTART rust-standalone-activities-handle-operations {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/standalone-quickstart/src/handle_operations.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/handle_operations.rs)
+```rs
 handle.result().await?;                            // block until the activity completes
 handle.describe(Default::default()).await?;        // status, timestamps, attempt, ...
 handle.cancel(Default::default()).await?;          // request cancellation
 handle.terminate(Default::default()).await?;       // force-close the activity
 ```
+<!--SNIPEND-->
 
 [`describe`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html#method.describe)
 takes an
@@ -165,7 +170,9 @@ Its `include_input`, `include_outcome`, `include_heartbeat_details`, and `includ
 fields are off by default, because those fields carry Payloads that can be arbitrarily large. Turn
 them on only when you need them:
 
-```rust
+<!--SNIPSTART rust-standalone-activities-describe {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/standalone-quickstart/src/bin/get_activity_handle.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/get_activity_handle.rs)
+```rs
 let description = handle
     .describe(
         ActivityDescribeOptions::builder()
@@ -178,6 +185,7 @@ println!("Status: {:?}", description.status());
 println!("Type: {}", description.activity_type());
 println!("Attempt: {}", description.attempt());
 ```
+<!--SNIPEND-->
 
 The accessors on the description (`status()`, `activity_type()`, `schedule_time()`, and so on)
 come from the
@@ -187,7 +195,7 @@ trait, so bring it into scope to use them.
 Run it, after executing an Activity with one of the samples above:
 
 ```bash
-cargo run --features examples --example standalone-activities-get-handle
+cargo run --bin get_activity_handle
 ```
 
 Or use the Temporal CLI to describe an Activity by ID:
@@ -203,9 +211,16 @@ The Rust SDK has no single call that both starts an Activity and waits for its r
 [`ActivityHandle::result`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityHandle.html#method.result)
 to block until it completes and return the result:
 
-[execute_activity.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/execute_activity.rs)
+<!--SNIPSTART rust-standalone-activities-quickstart-execute {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/standalone-quickstart/src/bin/execute_activity.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/execute_activity.rs)
+```rs
+let options = ActivityStartOptions::with_start_to_close_timeout(
+    "standalone-activities",
+    "standalone-activity-id",
+    Duration::from_secs(10),
+)
+.build();
 
-```rust
 // There is no single "execute" call: start the activity, then await its result.
 let handle = client
     .start_activity(
@@ -218,6 +233,7 @@ let handle = client
 let result = handle.result().await?;
 println!("Activity result: {result}");
 ```
+<!--SNIPEND-->
 
 Because the handle is typed, `result` returns the Activity's own output type, `String` in this
 case, with no downcasting. It fails with an
@@ -246,25 +262,39 @@ values that fetches pages from the server on demand as the stream is consumed.
 These APIs return only Standalone Activity Executions. Activities running inside Workflows are not
 included.
 
-[list_activities.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/list_activities.rs)
-
-```rust
+<!--SNIPSTART rust-standalone-activities-list-->
+[rust-sandbox/activities/standalone-quickstart/src/bin/list_activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/list_activities.rs)
+```rs
 use futures::StreamExt;
-use temporalio_client::ActivityExecutionInfoLike;
+use temporalio_client::{
+    ActivityExecutionInfoLike, Client, ClientOptions, Connection,
+    envconfig::LoadClientConfigProfileOptions,
+};
 
-let mut executions =
-    client.list_activities("TaskQueue = 'standalone-activities'", Default::default());
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let (conn_opts, client_opts) =
+        ClientOptions::load_from_config(LoadClientConfigProfileOptions::default())?;
+    let connection = Connection::connect(conn_opts).await?;
+    let client = Client::new(connection, client_opts)?;
 
-while let Some(execution) = executions.next().await {
-    let execution = execution?;
-    println!(
-        "{} {} {:?}",
-        execution.activity_id(),
-        execution.activity_type(),
-        execution.status()
-    );
+    let mut executions =
+        client.list_activities("TaskQueue = 'standalone-activities'", Default::default());
+
+    while let Some(execution) = executions.next().await {
+        let execution = execution?;
+        println!(
+            "{} {} {:?}",
+            execution.activity_id(),
+            execution.activity_type(),
+            execution.status()
+        );
+    }
+
+    Ok(())
 }
 ```
+<!--SNIPEND-->
 
 `list_activities` is not `async`. It returns the stream immediately, and the requests happen as you
 poll it. Each item is a `Result`, because a page fetch can fail partway through the
@@ -273,7 +303,7 @@ stream.
 Run it:
 
 ```bash
-cargo run --features examples --example standalone-activities-list
+cargo run --bin list_activities
 ```
 
 Or use the Temporal CLI:
@@ -293,9 +323,9 @@ to count Standalone Activity Executions that match a [List Filter](/list-filter)
 the total count of executions (running, completed, failed, etc.) — not the number of queued tasks.
 It works the same way as counting Workflow Executions.
 
-[count_activities.rs](https://github.com/temporalio/sdk-rust/blob/main/crates/sdk/examples/standalone_activities/count_activities.rs)
-
-```rust
+<!--SNIPSTART rust-standalone-activities-count {"enable_code_dedenting": true}-->
+[rust-sandbox/activities/standalone-quickstart/src/bin/count_activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/activities/standalone-quickstart/src/bin/count_activities.rs)
+```rs
 let count = client
     .count_activities("TaskQueue = 'standalone-activities'", Default::default())
     .await?;
@@ -306,6 +336,7 @@ for group in count.groups() {
     println!("  {:?} => {}", group.get::<String>(0), group.count());
 }
 ```
+<!--SNIPEND-->
 
 If the query has a `GROUP BY` clause,
 [`groups()`](https://docs.rs/temporalio-client/latest/temporalio_client/struct.ActivityExecutionCount.html#method.groups)
@@ -316,7 +347,7 @@ deserialization failure rather than get `None`.
 Run it:
 
 ```bash
-cargo run --features examples --example standalone-activities-count
+cargo run --bin count_activities
 ```
 
 Or use the Temporal CLI:
