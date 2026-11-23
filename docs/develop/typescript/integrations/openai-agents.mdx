@@ -219,6 +219,9 @@ To call another agent as a tool, use the OpenAI Agents SDK's `agent.asTool()`. T
 and its model calls run as model Activities with the runner's Activity options. The agent patterns sample uses
 `agent.asTool()` for an orchestrator that asks a specialist.
 
+Version 2.0.0 deprecates the integration's `agentAsTool(agent, options)`. It now calls `agent.asTool()` with the same
+`toolName`, `toolDescription`, and `customOutputExtractor`, so replace it with `agent.asTool()`.
+
 MCP servers run on the Worker, and Workflow code refers to them by name. Register a provider for each server in the
 plugin's `mcpServerProviders`, then add a handle with the same name to the agent's `mcpServers`:
 
