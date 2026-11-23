@@ -119,6 +119,10 @@ This approach respects the API's rate limit guidance while providing a sensible 
 
 #### Task Queue backlog and draining strategies
 
+If you deploy these Workers on AWS Lambda, configure scale-up to avoid extra invocations when dispatch reaches a Task
+Queue's rate limit. See
+[Configure scale-up for rate-limited Task Queues](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-rate-limited-scaling).
+
 During throttling events, Task Queues can grow significantly. Operators need to switch to **draining mitigation mode** when backlogs occur.
 
 **Critical considerations:**
