@@ -151,6 +151,17 @@ const developDotnetCategory = {
           },
         ],
       },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/integrations/index',
+        },
+        items: ['develop/dotnet/integrations/microsoft-agent-framework'],
+      },
     ],
 };
 const developGoCategory = {
@@ -1991,6 +2002,7 @@ module.exports = {
       },
       items: [
         'encyclopedia/temporal',
+        'encyclopedia/durable-execution',
         {
           type: 'category',
           label: 'Architecture',

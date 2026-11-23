@@ -1,0 +1,13 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 44px;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}

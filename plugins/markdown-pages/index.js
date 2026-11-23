@@ -104,6 +104,10 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
   // Mirrors the visually hidden AgentDirective rendered into the HTML. See
   // MARKDOWN_PIPELINE.md.
   //
+  // The endpoint URLs are code spans. As bare text, Markdown renderers that
+  // autolink URLs end the link at the first `<`, so crawlers followed
+  // /api/feedback?title= and /api/retrieve?q= with the parameter empty.
+  //
   // Applied only when writing the per-page .md files. llms-full.txt keeps the
   // undecorated markdown and carries the same pointer once in its own header,
   // rather than repeating it 720 times.
@@ -114,13 +118,13 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
       '> Any documentation page is available as raw Markdown by appending `.md` to its URL.\n' +
       // Agent search endpoint experiment. src=md-page tells the request log
       // which surface the caller found the URL on; see readme/AGENT-RETRIEVE.md.
-      `> For related questions, query ${siteUrl}/api/retrieve?q=<question>&jtb=<job-to-be-done>&src=md-page&agent=<your-name> ` +
+      `> For related questions, query \`${siteUrl}/api/retrieve?q=<question>&jtb=<job-to-be-done>&src=md-page&agent=<your-name>\` ` +
       '(no auth; returns JSON `{content, source_url, page_url}`, with `source_url` pointing to Markdown for docs pages). ' +
       "Don't include personal data or credentials.\n" +
       // Feedback endpoint. src=md-page tells the feedback store which surface
       // the caller found the URL on; see readme/FEEDBACK.md.
       '> If this page is wrong or missing something you needed, or Temporal behaves differently from what it says, report it with ' +
-      `${siteUrl}/api/feedback?title=<summary>&message=<what-happened>&category=documentation&page_url=${pagePath}&src=md-page&agent=<your-name> ` +
+      `\`${siteUrl}/api/feedback?title=<summary>&message=<what-happened>&category=documentation&page_url=${pagePath}&src=md-page&agent=<your-name>\` ` +
       '(use `category=product` when the product, not the page, is wrong). ' +
       "Report only a specific problem you hit, send it once, and don't include personal data or credentials.";
 

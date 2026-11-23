@@ -2,7 +2,7 @@
 id: terminate
 title: Terminate an Activity
 sidebar_label: Terminate
-description: Forcefully close a Standalone Activity Execution immediately, with no opportunity for your Activity code to clean up first.
+description: Terminate closes a Standalone Activity at once with no cleanup, and its record stays queryable until the Namespace Retention Period ends.
 slug: /activity-operations/terminate
 toc_max_heading_level: 4
 tags:
