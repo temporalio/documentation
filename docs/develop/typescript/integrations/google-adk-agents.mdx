@@ -47,7 +47,7 @@ Keep `@google/adk` within the package's supported peer dependency range. The Wor
 for that range. Install `@modelcontextprotocol/sdk` if you use `TemporalMCPToolset`.
 
 When migrating from `@temporalio/google-adk-agents`, follow the
-[upgrade guidance](https://github.com/temporalio/ai-integrations/tree/main/typescript/google-adk#upgrading-from-adk-15).
+[upgrade guidance](https://github.com/temporalio/ai-integrations/tree/main/typescript/google-adk#upgrading-adk).
 Complete existing Workflow Executions before switching, or keep them on separate Task Queues. The standalone integration
 cannot replay Workflow histories created with `@temporalio/google-adk-agents`.
 
@@ -117,8 +117,9 @@ Pass Activity options to `TemporalModel` to set timeouts, retries, a Task Queue,
 the model's `activity` option. The default `startToCloseTimeout` is one minute.
 
 The plugin disables retries in the underlying model SDK so that the Activity retry policy controls retries and backoff.
-Set `heartbeatTimeout` to detect a dead Worker and deliver cancellation to a long model call. The Activity heartbeats on
-a timer, so a Heartbeat Timeout doesn't detect a stalled call; `startToCloseTimeout` bounds a stalled call.
+`heartbeatTimeout` defaults to 10 seconds, which detects a dead Worker and delivers cancellation to a long model call.
+Set it to `0` to turn heartbeats off. The Activity heartbeats on a timer, so a Heartbeat Timeout doesn't detect a
+stalled call; `startToCloseTimeout` bounds a stalled call.
 
 Use ADK's `outputSchema` to constrain a model response, then validate the result in the Workflow before returning it.
 The [structured-output sample](https://github.com/temporalio/samples-typescript/tree/main/google-adk/src/structured-output)
@@ -224,18 +225,18 @@ Options under `activity` accept the standard TypeScript SDK `ActivityOptions` fi
 | API | Option | Default | Behavior |
 | --- | --- | --- | --- |
 | `GoogleAdkPlugin` | `modelProvider` | ADK `LLMRegistry` | Resolves model names in model Activities. Use it for another provider, proxy, or test double. |
-| `GoogleAdkPlugin` | `mcpToolsets` | `{}` | Maps names to MCP factories and registers `<name>-listTools` and `<name>-callTool` Activities. |
-| `TemporalModel` | `activity` | `startToCloseTimeout: '1 minute'` | Configures every model Activity. |
+| `GoogleAdkPlugin` | `mcpToolsets` | `{}` | Maps names to MCP factories and registers `<name>-listTools`, `<name>-callTool`, `<name>-listResources`, and `<name>-readResource` Activities. Another Activity with one of these names stops the Worker from starting. |
+| `TemporalModel` | `activity` | `startToCloseTimeout: '1 minute'`, `heartbeatTimeout: '10s'` | Configures every model Activity. |
 | `TemporalModel` | `summary` | ADK agent name, then `adk.invokeModel <model>` | Sets the Activity summary. A function receives the request and must be deterministic. This takes precedence over `activity.summary`. |
 | `TemporalModel` | `streamingTopic` | None | Publishes SSE response chunks to this Workflow streams topic when streaming is requested. |
 | `TemporalModel` | `streamingBatchInterval` | `'100 milliseconds'` | Sets how frequently response chunks are batched for publication. |
 
 | API | Option | Default | Behavior |
 | --- | --- | --- | --- |
-| `TemporalMCPToolset` | `name` | Required | Selects the Worker-registered factory and names its Activity pair. |
+| `TemporalMCPToolset` | `name` | Required | Selects the Worker-registered factory and names its Activities. |
 | `TemporalMCPToolset` | `toolFilter` | All tools | Advertises only listed tool names, matched after applying `prefix`. ADK `ToolPredicate` filters aren't supported. |
 | `TemporalMCPToolset` | `prefix` | None | Advertises each tool as `<prefix>_<name>` without changing its MCP server name. |
-| `TemporalMCPToolset` | `activity` | `startToCloseTimeout: '1 minute'` | Configures tool discovery and tool-call Activities. |
+| `TemporalMCPToolset` | `activity` | `startToCloseTimeout: '1 minute'`, `heartbeatTimeout: '10s'` | Configures tool discovery and tool-call Activities. |
 | `TemporalMCPToolset` | `connectionParams` | None | Creates a real MCP toolset only outside a Workflow. Worker-side configuration belongs in `mcpToolsets`. |
 | `activityAsTool` | `name` | Required | Names the tool and the registered Activity it calls. |
 | `activityAsTool` | `description` | Required | Describes the tool to the model. |

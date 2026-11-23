@@ -385,7 +385,9 @@ export async function mcpWorkflow(prompt: string): Promise<string> {
 
 Register the MCP client factory on the Worker via `mcpClients`, as shown in the
 [Worker](#run-a-strands-agent-with-durable-execution) above. Each factory returns a fully configured `McpClient`, so you
-can pass any options the `McpClient` constructor accepts (transport, URL, headers, and so on).
+can pass any options the `McpClient` constructor accepts (transport, URL, headers, and so on), except `prefix`. Set
+`prefix` on `TemporalMCPClient` instead. A `prefix` on the factory's `McpClient` fails the
+`{name}-listTools` Activity with an error that names the fix. The Activity retries under its Retry Policy.
 
 By default, `TemporalMCPClient` re-lists the server's tools on every agent turn, so an MCP server that is restarted or
 redeployed mid-Workflow — with tools added, removed, or renamed — is picked up. To list the tools just once at the
@@ -400,10 +402,10 @@ const echo = new TemporalMCPClient({
 });
 ```
 
-To amortize connection setup, the `{name}-listTools` and `{name}-callTool` Activities share one Worker-process MCP
-connection and reuse it across calls. The connection is disconnected after it sits idle for `mcpConnectionIdleTimeout`
-(default 5 minutes); the Timer resets on every reuse. `mcpConnectionIdleTimeout` accepts a millisecond number or a
-duration string (such as `'30 seconds'`), like `startToCloseTimeout`:
+To amortize connection setup, the `{name}-listTools` and `{name}-callTool` Activities share one MCP connection per
+server per `StrandsPlugin` instance and reuse it across calls. The connection is disconnected after it sits idle for
+`mcpConnectionIdleTimeout` (default 5 minutes); the Timer resets on every reuse. `mcpConnectionIdleTimeout` accepts a
+millisecond number or a duration string (such as `'30 seconds'`), like `startToCloseTimeout`:
 
 ```ts
 new StrandsPlugin({
@@ -500,9 +502,9 @@ export async function humanInTheLoop(prompt: string): Promise<string> {
 
 #### Interrupt from an Activity tool
 
-An `activityAsTool`-wrapped Activity can interrupt the agent by throwing an interrupt-shaped `ApplicationFailure`. The
-plugin's Failure Converter preserves the interrupt payload across the Activity boundary, so `AgentResult.interrupts` is
-populated the same way as for hooks.
+An `activityAsTool`-wrapped Activity can interrupt the agent by throwing an interrupt-shaped `ApplicationFailure`. An
+Activity Interceptor that the plugin adds to the Worker preserves the interrupt payload across the Activity boundary, so
+`AgentResult.interrupts` is populated the same way as for hooks.
 
 Define the Activity that raises the interrupt with the `STRANDS_INTERRUPT_TYPE` failure type:
 
@@ -600,13 +602,8 @@ export async function activityInterrupt(prompt: string): Promise<string> {
 
 :::caution
 
-Activity-tool interrupts rely on the plugin's Failure Converter, which is installed via the client's Data Converter.
-Attach `StrandsPlugin` to the **client** (not just the Worker) for Activity-tool interrupts to work. Workers built from
-that client pick up the plugin automatically.
-
-```ts
-const client = new Client({ connection, plugins: [new StrandsPlugin({ models })] });
-```
+The plugin's Activity Interceptor runs only on Workers that register `StrandsPlugin`. Register `StrandsPlugin` on every
+Worker that runs an `activityAsTool` Activity, including Activity-only Workers on other Task Queues.
 
 :::
 
@@ -860,10 +857,13 @@ const worker = await Worker.create({
 });
 ```
 
-### Snapshots are not supported
+### Snapshots
 
-`TemporalAgent.takeSnapshot()` and `TemporalAgent.loadSnapshot()` throw. Temporal's Event History already persists
-Workflow state durably at a finer granularity than Strands snapshots, so snapshots are redundant inside a Workflow.
+`TemporalAgent` inherits Strands' `takeSnapshot()` and `loadSnapshot()`. These capture and restore in-memory agent state
+without external I/O; Temporal's Event History still provides durability. Strands uses them to reset a subagent before
+each tool call made with `agent.asTool()` or automatic wrapping through `tools: [subagent]`. Each call starts from the
+state captured when the tool was created. To retain the subagent's context across calls, use
+`agent.asTool({ preserveContext: true })`.
 
 ### Samples
 
