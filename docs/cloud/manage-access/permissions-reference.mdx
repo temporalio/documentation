@@ -380,7 +380,7 @@ accounts depends on the scope of the service account and the caller's role.
 | Behavior                                         | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
 | ------------------------------------------------ | :-------: | :-------: | :-----------: | :----------: | :-----------: |
 | List all service accounts in the account         |     <RoleCheck role="Read-only" />     |     <RoleCheck role="Developer" />     |       <RoleCheck role="Finance Admin" />       |      <RoleCheck role="Global Admin" />       |       <RoleCheck role="Account Owner" />       |
-| Manage unscoped (account-level) service accounts |           |           |               |      <RoleCheck role="Global Admin" />       |       <RoleCheck role="Account Owner" />       |
+| Manage unscoped (account-level) service accounts |           |           |               |      <RoleCheck role="Global Admin" /> ‡     |       <RoleCheck role="Account Owner" />       |
 | Manage Namespace-scoped service accounts         |     §     |     §     |       §       |      <RoleCheck role="Global Admin" />       |       <RoleCheck role="Account Owner" />       |
 | Manage Project-scoped service accounts           |     †     |     †     |       †       |      <RoleCheck role="Global Admin" />       |       <RoleCheck role="Account Owner" />       |
 
@@ -389,6 +389,8 @@ they hold Namespace Admin on that Namespace.
 
 † Requires Project Admin permission on the target Project. Any role can manage Project-scoped service accounts if
 they hold Project Admin on that Project.
+
+‡ Global Admin can't assign the [Finance Admin](/cloud/manage-access/roles-and-permissions#account-level-roles) role to a service account. Only an Account Owner can.
 
 **Affected APIs:** CreateServiceAccount, GetServiceAccount, GetServiceAccounts, UpdateServiceAccount,
 DeleteServiceAccount

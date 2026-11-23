@@ -22,12 +22,6 @@ The `GoogleAdkPlugin` is what ties them together. It runs each model call and to
 configures the payload converter that serializes ADK objects, and makes ADK's runtime deterministic so the Workflow can
 replay. You add the same plugin to your Client and your Worker, and the rest of your agent code stays standard ADK.
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  type="prerelease"
-/>
-
 ## Prerequisites
 
 - This guide assumes you are already familiar with the Google ADK. If you aren't, refer to the
@@ -266,8 +260,8 @@ class MultiAgentWorkflow:
 ```
 {/* SNIPEND */}
 
-The `summary` you set on each `ActivityConfig` becomes the Activity name in the Event history, which makes it easy to see
-which agent ran and when.
+The `summary` you set on each `ActivityConfig` labels that agent's model Activities in the Web UI, which makes it easy to
+see which agent ran and when. The Activity type stays `invoke_model`.
 
 ## Use MCP tool servers
 
