@@ -11,8 +11,6 @@ description:
   Run LangGraph AI agent workflows with durable execution using the Temporal Python SDK and LangGraph plugin.
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
 Temporal's integration with [LangGraph](https://www.langchain.com/langgraph) gives your LangGraph AI agent workflows
 durable execution, automatic retries, and timeouts via the Temporal platform.
 
@@ -20,8 +18,6 @@ The plugin supports both the LangGraph **Graph API** (`StateGraph` with nodes an
 (`@entrypoint` / `@task` decorators). Each graph node and task must specify whether it runs as a Temporal Activity or
 directly inside the Workflow — Activity nodes get configurable timeouts and retry policies, while Workflow nodes run
 inline and must be deterministic.
-
-<ReleaseNoteHeader type="publicPreview" />
 
 Code snippets in this guide are taken from the
 [LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin). Refer to the
