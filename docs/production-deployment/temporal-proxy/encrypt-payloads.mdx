@@ -95,6 +95,8 @@ before sending it upstream. It does not fall back to plaintext.
 
 The proxy cannot enforce encryption for a Client, Worker, Web UI, or CLI that connects directly to the upstream Temporal
 Service. Restrict credentials and network paths when all application traffic must pass through the proxy.
+For Temporal Cloud upstreams, also use [Payload encryption validation](#validate-encryption-in-temporal-cloud) to detect
+or reject supported incoming Payloads that bypassed encryption.
 
 On responses, the proxy decrypts Payloads that carry its encryption metadata. It passes other Payloads through unchanged
 so data written before proxy adoption remains readable during a migration. This behavior continues until existing
@@ -492,3 +494,33 @@ it later if a payload still needs opening, whereas a deleted key is gone for goo
 while leaving decrypt in place also lets you stop new encryption without stranding existing payloads.
 
 :::
+
+## Validate encryption in Temporal Cloud {/* #validate-encryption-in-temporal-cloud */}
+
+Pair Proxy encryption with [Payload encryption validation](/cloud/payload-encryption-validation) to help catch Clients
+and Workers that send unencrypted Payloads directly to Temporal Cloud. This Namespace-level Cloud control
+checks incoming Payloads even when the request bypasses the proxy.
+
+The proxy marks the Payloads it encrypts with metadata key `encoding` and value `binary/encrypted`, which match the
+validation defaults. Configure validation on each upstream Temporal Cloud Namespace, using its name after
+[Namespace translation](/production-deployment/temporal-proxy/configure#translate-namespaces). Validation is configured
+in Cloud, separately from the proxy's `encryption` block.
+
+1. Ensure your account has access to [Payload encryption validation](/cloud/payload-encryption-validation).
+2. Follow [Configure a Namespace](/cloud/payload-encryption-validation#configure-a-namespace) to start in `warn` mode
+   with metadata key `encoding` and accepted value `binary/encrypted`. If you use `skipEncodings` to pass through
+   Payloads encrypted by an SDK codec, also accept the metadata values that codec uses for encrypted Payloads.
+3. Test representative Client and Worker traffic through the proxy. In a test Namespace, send synthetic, non-sensitive
+   Payloads directly to Cloud without a codec and confirm they produce warnings. `warn` allows those requests to be
+   processed and stored. Monitor [validation results](/cloud/payload-encryption-validation#monitor-validation-results)
+   to find encryption configuration gaps.
+4. Test optional Header and Failure inspection separately before enabling them. For Failure inspection, first set
+   [`encryption.failures: true`](#encrypt-failures) so the proxy encrypts failure messages and stack traces.
+5. Follow [Enable deny safely](/cloud/payload-encryption-validation#enable-deny-safely) after resolving warnings. In
+   `deny` mode, Cloud rejects a request containing an inspected Payload without accepted metadata. Confirm that
+   requests through the proxy succeed and that the direct, unencrypted test requests are rejected.
+
+Validation compares the configured metadata key and accepted values. It cannot prove a request passed through the proxy
+or detect plaintext labeled `binary/encrypted`. Keep credentials and network restrictions in place. Search Attributes
+and existing Event History are not checked; review the full
+[coverage and exclusions](/cloud/payload-encryption-validation#review-coverage-and-exclusions).
