@@ -506,6 +506,10 @@ export async function example(): Promise<SearchAttributes> {
 ```
 <!--SNIPEND-->
 
+Adding an upsert to a Workflow Definition that has open Workflow Executions is a [non-deterministic change](/workflow-definition#non-deterministic-change).
+The upsert produces an [UpsertWorkflowSearchAttributes](/references/commands#upsertworkflowsearchattributes) Command that the existing Event Histories don't contain.
+Roll out the change with [Worker Versioning](/production-deployment/worker-deployments/worker-versioning), or guard the new call with the [patching API](/develop/typescript/workflows/versioning#patching).
+
 ### How to remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
