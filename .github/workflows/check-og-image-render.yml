@@ -1,0 +1,40 @@
+name: Check OG Image Render
+
+# Renders real OG cards and fails when the layout is wrong, for example the
+# footer pushed off the card. A renderer upgrade can do that without any error:
+# the build still succeeds and still writes an image. Dependabot bumps of
+# satori, resvg or sharp are the main trigger. See plugins/og-image/render.test.js.
+
+on:
+  pull_request:
+    paths:
+      - "plugins/og-image/**"
+      - "src/fonts/**"
+      - "src/constants/ogImageColors.js"
+      - "static/img/assets/temporal-logo.svg"
+      - "package.json"
+      - "yarn.lock"
+      - ".github/workflows/check-og-image-render.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check-og-image-render:
+    name: Check OG card layout
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Test OG card rendering
+        run: node --test "plugins/og-image/*.test.js"
