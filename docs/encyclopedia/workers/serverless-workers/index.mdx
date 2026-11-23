@@ -158,6 +158,9 @@ Refer to the autoscaling section for your compute provider:
 - [AWS Lambda autoscaling](/serverless-workers/aws-lambda#autoscaling)
 - [GCP Cloud Run autoscaling](/serverless-workers/cloud-run#autoscaling)
 
+For how Task Queue rate limits affect Lambda Worker starts, see
+[Scale-up pauses on AWS Lambda](/serverless-workers/aws-lambda#rate-limited-task-queues).
+
 ## Scaling with long-lived Workers {/* #scaling-with-long-lived-workers */}
 
 Serverless Workers can share a Task Queue with long-lived Workers. What the WCI does with the Tasks the long-lived

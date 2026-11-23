@@ -59,6 +59,10 @@ temporal-consent-banner:not(:defined) {
    --ifm-color-primary-lighter: #BFDBFE; */
   /* --ifm-color-primary-lightest: #cae3fb; */
   --ifm-code-font-size: 95%;
+  /* Square corners across the theme chrome, to match the page feedback widget and callouts. Most Infima
+     radius variables derive from --ifm-global-radius; breadcrumbs set their own. */
+  --ifm-global-radius: 0;
+  --ifm-breadcrumb-border-radius: 0;
   /* --doc-sidebar-width: 275px !important;
    --ifm-link-hover-decoration: none;
    --ifm-link-hover-color: inherit; */
@@ -85,8 +89,34 @@ html[data-theme='dark']:root {
   --ifm-preview-text: #f9fafb;
   --ifm-link-color: #f9fafb;
   --ifm-link-hover-color: var(--ifm-color-primary);
-  --alert--competency-background: #00474a;
-  --alert--info-background: #353536;
+  /* Callouts: admonitions (src/theme/Admonition) and ReleaseNoteHeader */
+  --callout-hairline: #2e2e2e;
+  --callout-note-accent: #93c5fd;
+  --callout-tip-accent: #6ee7b7;
+  --callout-caution-accent: #fcd34d;
+  --callout-caution-border: #854d0e;
+  --callout-caution-background: #261c06;
+  --callout-warning-accent: #fca5a5;
+  --callout-warning-border: #991b1b;
+  --callout-warning-background: #2a1111;
+  --details-background: #353536;
+  --feedback-primary-color: #fff; /* submit button, accents */
+  --feedback-light-color: #2a2a2a; /* canvas/tool backgrounds */
+  --feedback-dark-color: #1a1a1a; /* modal background */
+  --feedback-text-color: #9ca3af; /* body text, footer, labels */
+  --feedback-white-color: #e8e8e8; /* header text, button text */
+  --feedback-modal-button-text-color: #d1d5db; /* screenshot/action button text */
+  --feedback-modal-button-icon-color: #d1d5db; /* button icons */
+  --feedback-modal-input-text-color: #d1d5db; /* input text */
+  --feedback-modal-input-border-color: rgba(255, 255, 255, 0.2); /* input borders */
+  --feedback-modal-input-border-color-hover: rgba(255, 255, 255, 0.35); /* input borders hover */
+  --feedback-modal-content-text-color: #d1d5db; /* placeholder and content text */
+  --feedback-modal-rating-button-color: #d1d5db; /* thumbs up/down */
+  --feedback-color-gray-400: #b0b5bd; /* placeholder text base color */
+  --feedback-modal-button-submit-text-color: #1a1a1a; /* dark text on white send button */
+  --feedback-button-light-bg-color: #0d0d0d; /* floating button background */
+  --feedback-button-light-text-color: #e8e8e8; /* floating button text */
+  --feedback-button-light-icon-color: #e8e8e8; /* floating button icon */
   --last-updated-color: #6280ad;
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
@@ -115,8 +145,17 @@ html[data-theme='light']:root {
   --ifm-link-color: #111827;
   --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-preview-text: #141414;
-  --alert--competency-background: #a8fcff;
-  --alert--info-background: #ebeded;
+  /* Callouts: admonitions (src/theme/Admonition) and ReleaseNoteHeader */
+  --callout-hairline: #e5e7eb;
+  --callout-note-accent: #1d4ed8;
+  --callout-tip-accent: #047857;
+  --callout-caution-accent: #b45309;
+  --callout-caution-border: #fcd34d;
+  --callout-caution-background: #fffbeb;
+  --callout-warning-accent: #b91c1c;
+  --callout-warning-border: #fca5a5;
+  --callout-warning-background: #fef2f2;
+  --details-background: #ebeded;
   --last-updated-color: #465a78;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary);
@@ -146,18 +185,26 @@ a:hover {
   text-underline-offset: 2px;
 }
 
-.alert {
-  border-radius: 3px !important;
+/* Docusaurus renders <details> with Infima's alert classes. Admonitions no longer use them, so these rules
+   apply only to <details>. :where() keeps them at single-class specificity, so per-page rules such as
+   .sdk-walkthrough-details still override them. */
+:where(details).alert {
+  border-radius: 0 !important;
   border-width: 1px;
   border-style: solid;
 }
 
-.alert--competency {
-  background-color: var(--alert--competency-background);
+/* Infima hard-codes these radii instead of reading --ifm-global-radius. */
+.menu__link,
+.menu__caret,
+.menu__list-item-collapsible,
+.dropdown__link,
+kbd {
+  border-radius: 0;
 }
 
-.alert--info {
-  background-color: var(--alert--info-background);
+:where(details).alert--info {
+  background-color: var(--details-background);
 }
 
 /* If we scope things with .tailwindcss we can attach to the tailwind styles on only the intro page */
