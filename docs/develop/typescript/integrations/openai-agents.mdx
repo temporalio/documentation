@@ -655,8 +655,9 @@ Workflow reach it as they are when they occur outside a tool call.
 A failed `activityAsTool` call ends the run, and so does a failed `nexusOperationAsTool` call, which builds its tool the
 same way. The failure reaches the Workflow as an `AgentsWorkflowError` whose `cause` is the Temporal failure: the
 `ActivityFailure` once an `activityAsTool` Activity stops retrying, or the `NexusOperationFailure` from
-`nexusOperationAsTool`. The `AgentsWorkflowError` is retryable unless that failure is a non-retryable
-`ApplicationFailure`. In a run with `stream: true`, iterating the result or awaiting `result.completed` throws it.
+`nexusOperationAsTool`. This `AgentsWorkflowError` is retryable, even when the Activity or Operation failed with a
+non-retryable error, so a Workflow Retry Policy retries the Workflow. In a run with `stream: true`, iterating the result
+or awaiting `result.completed` throws it.
 
 A failure inside an MCP tool call, an `agent.asTool()` nested run, or a sandbox tool, such as `exec_command`,
 `write_stdin`, `view_image`, or `apply_patch`, doesn't reach the Workflow. The OpenAI Agents SDK returns it to the model
@@ -668,7 +669,7 @@ underlying error, and the run continues. That includes the `DedicatedWorkerFailu
 | Failure type | Raised in | Meaning |
 | --- | --- | --- |
 | `ModelInvocationError`, and `ModelInvocationError.RateLimit`, `.Authentication`, `.BadRequest`, `.Timeout`, `.Conflict`, or `.ServerError` | Model Activity | The model call failed. HTTP 408, 409, 429, and 5xx responses are retryable, and other statuses aren't. An `x-should-retry` header overrides that, and `retry-after-ms` or `retry-after` sets the next retry delay. An `openai` `APIError` without an HTTP status, such as `APIConnectionError`, is non-retryable. Other errors are retryable. |
-| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, an `agent.asTool()` tool sets `runConfig.modelProvider` or a model object as `runConfig.model` or can't be traced to its agent, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call, in any run, also arrives this way, with the `ActivityFailure` or `NexusOperationFailure` as the `cause`, and is retryable unless that failure is a non-retryable `ApplicationFailure`. In a streaming run, any other error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
+| `AgentsWorkflowError` | Workflow | Non-retryable when an agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, an `agent.asTool()` tool sets `runConfig.modelProvider` or a model object as `runConfig.model` or can't be traced to its agent, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call, in any run, also arrives this way, with the `ActivityFailure` or `NexusOperationFailure` as the `cause`, and is retryable. In a streaming run, any other error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
 | `UnsafeSessionError` | Workflow | Non-retryable. `run()`, or an `agent.asTool()` tool's `runOptions.session`, received the SDK's `MemorySession`. |
 | `StreamingTopicNotConfigured` | Workflow | Non-retryable. A streaming run has no `streamingTopic`. |
 | `StreamingLocalActivityUnsupported` | Workflow | Non-retryable. A streaming run has `useLocalActivity: true`. |
