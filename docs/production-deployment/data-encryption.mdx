@@ -21,7 +21,14 @@ The following data is persisted in the Event History and can be encrypted:
 - Inputs and outputs/results in your [Workflow](/workflow-execution), [Activity](/activity-execution), and [Child Workflow](/child-workflows)
 - [Signal](/sending-messages#sending-signals) inputs
 - [Memo](/workflow-execution#memo)
-- Headers (verify if applicable to your SDK)
+- Headers, depending on your SDK:
+  - .NET and Ruby encode headers with your Payload Codec by default.
+  - Python 1.14.1 and later: set `header_codec_behavior=HeaderCodecBehavior.CODEC` on `Client.connect`.
+  - TypeScript 1.26.0 and later: set the `codecHeaders` Worker option. Headers passed through Client APIs aren't encoded.
+  - Go 1.51.0 and later: implement `workflow.CodecContextPropagator` on each context propagator whose headers you want
+    encoded.
+  - Java 1.41.0 and later: override `ContextPropagator.encodeHeaders()` on each context propagator whose headers you
+    want encoded.
 - [Query](/sending-messages#sending-queries) inputs and results
 - Results of [Local Activities](/local-activity) and [Side Effects](/workflow-execution/event#side-effect)
 - [Application errors and failures](/references/failures).
