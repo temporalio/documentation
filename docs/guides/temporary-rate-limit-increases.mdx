@@ -27,6 +27,8 @@ By completing this pattern, you will:
 - Guarantee the execution of cleanup operations using durable Timers.
 - Unblock client requests while long-running deprovisioning tasks continue in the background.
 
+This pattern covers one-off increases. To size capacity from usage across Namespaces and change it on a recurring schedule, see [Automate capacity changes on a schedule](#automate-capacity-changes-on-a-schedule).
+
 ## Background and best practices
 
 Temporal Cloud offers different capacity modes to accommodate varying workloads. When using provisioned capacity, you define the maximum throughput your Namespace can consume. Modifying this limit via an API call allows you to scale resources up for intensive tasks.
@@ -721,9 +723,28 @@ By following this guide, you have implemented a time-bound capacity provisioning
 - Using an asynchronous Child Workflow to decouple application responses from long-term cleanup tasks.
 - Using durable Timers to guarantee that capacity limits are strictly reverted after 60 minutes, ensuring you do not overpay for unused compute.
 
+## Automate capacity changes on a schedule
+
+The Go code in this guide handles one-off increases that a client requests. If your load peaks at predictable times, such as weekday business hours or a weekly batch window, you can size capacity from measured usage and apply the changes on a schedule instead.
+
+The [temporal-cloud-ops-capacity-modes](https://github.com/temporal-sa/temporal-cloud-ops-capacity-modes) Python sample provides two Workflows for this:
+
+- **Bulk capacity analysis** reads the Action limit and Action count for every Namespace in your account from the [Metrics API](/cloud/metrics/openmetrics/api-reference), reads each Namespace's current capacity mode from the [Cloud Ops API](/ops), and returns a recommended capacity mode and TRU count for each Namespace. It doesn't change any Namespace.
+- **Scheduled capacity change** sets one Namespace to Provisioned Capacity with the TRU count you choose and verifies the change. If you give it an end time, it waits until then, reverts the Namespace to On-Demand Capacity, and verifies the revert. It can send a Slack notification when a change or verification fails.
+
+To run the sample:
+
+1. Create the API keys the sample reads from its `.env` file: one for the Namespace where the Worker runs, a Cloud Ops API key from a Service Account with the Global Admin role, and a key from a Service Account with the [Metrics Read-Only role](/cloud/metrics/openmetrics#metrics-read-only-role).
+2. Start the Worker with `uv run python scripts/worker.py`.
+3. Run `scripts/run_bulk_analysis.py` to get TRU recommendations for each Namespace.
+4. Run `scripts/run_scheduled_capacity_change.py` with a Namespace, a TRU count, and optionally the number of minutes before it reverts, to apply a change once.
+5. To raise capacity before each known peak and revert it afterward, start the Scheduled capacity change Workflow from a [Temporal Schedule](/schedule). The sample's README shows an example.
+
+Set `DRY_RUN_MODE=true` in the `.env` file to test your configuration without changing any Namespace's capacity.
+
 ## Related resources
 
 - [Temporal Capacity Modes](/cloud/capacity-modes)
 - [Temporal Best Practices](/best-practices)
-- [Python Capacity Mode Sample](https://github.com/lainecsmith/temporal-cloud-ops-capacity-modes)
+- [Python Capacity Mode Sample](https://github.com/temporal-sa/temporal-cloud-ops-capacity-modes)
 - [Go Capacity Mode Sample](https://github.com/temporal-sa/temporary-rate-limit-increases)
