@@ -130,9 +130,11 @@ if __name__ == "__main__":
 <!--SNIPEND-->
 
 Use `model_activity_options` on the plugin to control the timeout and retry policy for each model call. API keys live on
-the Worker via the model provider (LangChain's `init_chat_model` by default), never in Workflow inputs or history —
-the Workflow ships only the model name, and the Worker builds the real client. LLM-SDK-side retries are disabled so that
-Temporal owns retries and timeouts.
+the Worker via the model provider (LangChain's `init_chat_model` by default), never in Workflow inputs or history — the
+Worker builds the real client. Model calls and wrapped tools pass the call's `RunnableConfig` (tags, metadata, and
+`configurable` values) to their Activity, so History records those values; keep credentials out of them. The default
+model provider disables the model SDK's retries so Temporal controls retries and timeouts. A custom `model_provider`
+keeps its own retry settings.
 
 Start the Workflow like any other:
 
@@ -421,9 +423,9 @@ state_snapshot=...)` snapshots state and continues into a fresh run when a turn 
 server recommends continuing (`workflow.info().is_continue_as_new_suggested()`, the default and recommended mode).
 Pass `continue_as_new_after=N` to trigger on a fixed history-event count instead.
 
-- **Carries forward:** the accumulated messages and the model/tool result cache, so an LLM or tool call completed before
-  the continue-as-new is *not* re-run afterward.
-- **Does not carry forward:** anything else — the snapshot is exactly the messages plus the result cache. Pending
+- **Carries forward:** the accumulated messages and the agent's state files (the graph's `files` state). Repeated
+  identical calls are not deduplicated: a call the agent makes again after the continue-as-new runs its own Activity.
+- **Does not carry forward:** anything else — the snapshot is exactly the messages plus the state files. Pending
   todos only gate *whether* to continue; the todo list itself (and any in-memory checkpointer state) starts fresh in
   the continued run and is re-derived by the agent from the carried conversation.
 
@@ -472,11 +474,12 @@ class LongResearchAgent:
 
 ## Streaming
 
-Constructing the plugin with `DeepAgentsPlugin(streaming_topic="...")` flips model dispatch from
-`deepagents.invoke_model` to `deepagents.invoke_model_streaming`: the streaming Activity coalesces chunk batches and
-publishes them to a [`WorkflowStream`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/workflow_streams)
-topic for external subscribers, while the aggregated final message is still returned to the Workflow. The durable result
-is identical to the non-streaming path.
+With `DeepAgentsPlugin(streaming_topic="...")`, a model call that LangChain streams runs in
+`deepagents.invoke_model_streaming` instead of `deepagents.invoke_model`. An `agent.ainvoke(...)` call still uses
+`deepagents.invoke_model`. The streaming Activity coalesces chunk batches and publishes them to a
+[`WorkflowStream`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/workflow_streams) topic for
+external subscribers, while the aggregated final message is still returned to the Workflow. The durable result is
+identical to the non-streaming path.
 
 Streaming is async-only, so the Workflow drives an explicit `TemporalModel.astream(...)` and hosts a `WorkflowStream`
 so external subscribers can attach by Workflow ID.
