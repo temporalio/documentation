@@ -88,7 +88,7 @@
     "@vercel/functions": "^3.10.5",
     "algoliasearch": "^5.61.0",
     "botid": "^1.5.12",
-    "chart.js": "^4.4.1",
+    "chart.js": "^4.6.1",
     "clsx": "^2.1.1",
     "comlink": "^4.4.2",
     "concurrently": "^10.0.7",
