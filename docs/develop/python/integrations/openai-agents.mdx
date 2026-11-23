@@ -106,9 +106,10 @@ client = await Client.connect(
 Workers built from that Client pick up the plugin automatically, so all a Worker has to do is register the Workflow.
 
 `ModelActivityParameters` controls how the model Activity is scheduled. Alongside `start_to_close_timeout`, which
-defaults to 60 seconds, it accepts `schedule_to_close_timeout`, `schedule_to_start_timeout`, `heartbeat_timeout`,
-`retry_policy`, `cancellation_type`, `versioning_intent`, `task_queue`, `priority`, `summary_override`,
-`use_local_activity`, `streaming_topic`, and `streaming_batch_interval`.
+defaults to 60 seconds, and `heartbeat_timeout`, which defaults to 10 seconds, it accepts `schedule_to_close_timeout`,
+`schedule_to_start_timeout`, `retry_policy`, `cancellation_type`, `versioning_intent`, `task_queue`, `priority`,
+`summary_override`, `use_local_activity`, `streaming_topic`, and `streaming_batch_interval`. Set `heartbeat_timeout=None`
+to turn heartbeats off. Local Activities don't heartbeat.
 
 You must ensure the Worker process has access to your model-provider credentials. Most provider SDKs read credentials
 from environment variables.
