@@ -57,7 +57,12 @@ import "go.temporal.io/googleadk"
 ```
 
 The module is versioned separately from the Temporal Go SDK. Its source and releases are maintained in
-[`temporalio/ai-integrations`](https://github.com/temporalio/ai-integrations/tree/main/go/googleadk).
+[`temporalio/ai-integrations`](https://github.com/temporalio/ai-integrations/tree/main/go/googleadk). It requires Go
+1.26.10 or later and ADK v2.6.0 or later.
+
+ADK's agent loop runs in your Workflow, so an ADK release can change what a History replays into. Treat an ADK upgrade
+as a Workflow code change: let open runs finish first, or keep them on their Workers with
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning).
 
 ## Run an agent with Durable Execution
 
@@ -535,6 +540,9 @@ Activity calls the model with `stream=true`, heartbeats, and publishes each chun
 [`workflowstreams`](https://pkg.go.dev/go.temporal.io/sdk/contrib/workflowstreams) topic for external (UI) consumers,
 then returns the aggregated final response into the Workflow so replay stays deterministic.
 
+Streaming is experimental: it builds on `workflowstreams`, a v0 module, and `WithStreaming` and `StreamServer` may
+change in a 1.x release.
+
 Call `googleadk.StreamServer(ctx)` once near the top of the Workflow that drives `r.Run`, and set
 `agent.RunConfig{StreamingMode: agent.StreamingModeSSE}`:
 
@@ -589,15 +597,16 @@ no real Worker and therefore run no plugins.
 ## Supported and not-yet-supported
 
 - **Supported:** single- and multi-agent (`SubAgents`) trees, in-workflow function tools, `ActivityAsTool`, stateless
-  MCP, remote A2A agents built with the plugin's providers, Gemini built-in tools (executed server-side inside `InvokeModel`), human-in-the-loop tool confirmation,
-  continue-as-new session-state carry, the in-memory session service, and SSE streaming.
+  MCP, remote A2A agents built with the plugin's providers, Gemini built-in tools (executed server-side inside
+  `InvokeModel`), human-in-the-loop tool confirmation, continue-as-new session-state carry, the in-memory session
+  service, and SSE streaming (experimental).
 - **Not yet:** `RunLive` (bidirectional streaming), sub-agent-as-child-workflow, live memory/artifact tools that require
   in-workflow network I/O, and database/Vertex session services. These raise or are documented rather than silently
   degrading. Also not supported yet:
   - Parallel agents (`parallelagent`), `ParallelWorker` nodes, and graph (`workflowagent`) fan-outs with two or more
     branches that use Temporal. The Worker process exits, each Worker that retries the Workflow Task exits too, and the
-    run stays open until you terminate it. Fan out with `agenttool` tools called in one model response, or use a
-    sequential agent (`sequentialagent`).
+    run stays open until you terminate it or its Workflow Execution Timeout expires. Fan out with `agenttool` tools
+    called in one model response, or use a sequential agent (`sequentialagent`).
   - Single-turn sub-agents (`llmagent.ModeSingleTurn`) called in the same model response as another tool or sub-agent:
     every Workflow Task fails. Pass `googleadk.WithSequentialToolFanout()` to `NewContext`, or wrap the agents with
     `agenttool.New`.
