@@ -393,7 +393,7 @@ export async function mcpWorkflow(prompt: string): Promise<string> {
 Register the MCP client factory on the Worker via `mcpClients`, as shown in the
 [Worker](#run-a-strands-agent-with-durable-execution) above. Each factory returns a fully configured `McpClient`, so you
 can pass any options the `McpClient` constructor accepts (transport, URL, headers, and so on), except `prefix`. Set
-`prefix` and `toolFilters` on `TemporalMCPClient` instead. A `prefix` on the factory's `McpClient` fails the
+`prefix` on `TemporalMCPClient` instead. A `prefix` on the factory's `McpClient` fails the
 `{name}-listTools` Activity, which retries until you fix the Worker.
 
 By default, `TemporalMCPClient` re-lists the server's tools on every agent turn, so an MCP server that is restarted or
