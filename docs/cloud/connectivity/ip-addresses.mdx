@@ -71,7 +71,7 @@ If you attach a public Connectivity Rule with Stable IPs to a Namespace that is 
 
 ### How to enable Stable IPs
 
-Stable IPs is a setting on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). You enable it by creating (or updating) a public Connectivity Rule with Stable IPs enabled, then attaching that rule to the Namespaces that should resolve to Stable IPs.
+Stable IPs is a setting on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). You enable it by creating a public Connectivity Rule with Stable IPs enabled, then attaching that rule to the Namespaces that should resolve to Stable IPs.
 
 You can have 1 public Connectivity Rule per Project, or per Account if Projects aren't enabled. Connectivity Rules can't be updated in place, so if the Namespace's Project already has a public rule without Stable IPs, delete that rule and create a new one with Stable IPs enabled. A public rule in another Project can stay. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules).
 
