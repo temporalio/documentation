@@ -170,10 +170,10 @@ Because the Web UI and the Codec Server are on different domains, the browser tr
 as a third-party cookie. Safari and Firefox block or partition third-party cookies by default, so this approach is most
 reliable in Chrome and Edge. Test it in the browsers your team uses.
 
-**Pass access token.** Enable **Pass access token** in the Web UI Codec Server settings. The Web UI includes the same
-JSON Web Token (JWT) the user used to log into the Temporal UI in the `Authorization` header of each request. Your Codec
-Server validates the token signature against the OpenID Connect (OIDC) provider's JSON Web Key Set (JWKS) endpoint. On
-Temporal Cloud, verify against the
+**Pass access token.** Enable **Pass access token** in the Web UI Codec Server settings. The Web UI includes an access
+token in the `Authorization` header of each request. On Temporal Cloud, this is a codec-scoped token, not the JWT the
+user used to log into the Temporal UI. Your Codec Server validates the token signature against the OpenID Connect
+(OIDC) provider's JSON Web Key Set (JWKS) endpoint. On Temporal Cloud, verify against the
 [Temporal Cloud JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json). On a self-hosted Temporal Service, the
 token comes from whatever auth provider you have [configured for the Web UI](/references/web-ui-configuration#auth).
 This approach requires less setup, but your Codec Server relies on the Temporal Web UI's identity provider instead of
