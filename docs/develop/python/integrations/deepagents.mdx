@@ -132,8 +132,9 @@ if __name__ == "__main__":
 Use `model_activity_options` on the plugin to control the timeout and retry policy for each model call. API keys live on
 the Worker via the model provider (LangChain's `init_chat_model` by default), never in Workflow inputs or history — the
 Worker builds the real client. Model calls and wrapped tools pass the call's `RunnableConfig` (tags, metadata, and
-`configurable` values) to their Activity, so History records those values; keep credentials out of them. LLM-SDK-side
-retries are disabled so that Temporal owns retries and timeouts.
+`configurable` values) to their Activity, so History records those values; keep credentials out of them. The default
+model provider disables the model SDK's retries so Temporal controls retries and timeouts. A custom `model_provider`
+keeps its own retry settings.
 
 Start the Workflow like any other:
 
@@ -474,7 +475,7 @@ class LongResearchAgent:
 ## Streaming
 
 With `DeepAgentsPlugin(streaming_topic="...")`, a model call that LangChain streams runs in
-`deepagents.invoke_model_streaming` instead of `deepagents.invoke_model`. An `ainvoke` call still uses
+`deepagents.invoke_model_streaming` instead of `deepagents.invoke_model`. An `agent.ainvoke(...)` call still uses
 `deepagents.invoke_model`. The streaming Activity coalesces chunk batches and publishes them to a
 [`WorkflowStream`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/workflow_streams) topic for
 external subscribers, while the aggregated final message is still returned to the Workflow. The durable result is

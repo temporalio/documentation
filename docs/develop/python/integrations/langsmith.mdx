@@ -106,7 +106,8 @@ Use the same `project_name` on both the Worker and the Client so their traces la
 
 `@traceable` functions on the Client side run outside the plugin's interceptor scope, so they don't pick up
 `project_name` from the plugin. Runs under a client-side `@traceable`, including the Worker's runs, go to that run's
-project. Pass `project_name` to it explicitly, or the whole trace goes to LangSmith's default project.
+project. Pass `project_name` to it explicitly, or the whole trace goes to the project LangSmith's settings pick,
+such as `LANGSMITH_PROJECT`.
 
 :::
 
