@@ -7,9 +7,10 @@
 //
 // The headline counts non-blank lines inside fenced code blocks tagged with an
 // SDK language (Python, TypeScript/JavaScript, Go, Java, C#, Ruby, PHP, Rust).
-// A second line counts every fenced block except mermaid diagrams, which
-// includes shell commands and configuration that would never come from a
-// sample repository.
+// Code written into a <CodeSnippet language="..."> element counts as a
+// hand-written block in that language. A second line counts every block except
+// mermaid diagrams, which includes shell commands and configuration that would
+// never come from a sample repository.
 //
 //   node bin/report-snipsync-coverage.js                   # the working tree
 //   node bin/report-snipsync-coverage.js --ref <ref>       # docs/ at a commit
@@ -469,7 +470,7 @@ function formatComparisonMarkdown(base, head, labels) {
     '',
     '</details>',
     '',
-    `Compared with \`${labels.base}\`. Counts non-blank lines in fenced code blocks tagged with an SDK language. Hand-written code isn't compiled anywhere; code Snipsync pulls from a sample repository is built in that repository's CI. See [UTILITIES.md](https://github.com/temporalio/documentation/blob/main/readme/UTILITIES.md#snipsync-coverage).`,
+    `Compared with \`${labels.base}\`. Counts non-blank lines in fenced code blocks and \`<CodeSnippet>\` elements tagged with an SDK language. Hand-written code isn't compiled anywhere; code Snipsync pulls from a sample repository is built in that repository's CI. See [UTILITIES.md](https://github.com/temporalio/documentation/blob/main/readme/UTILITIES.md#snipsync-coverage).`,
   ].join('\n');
 }
 
