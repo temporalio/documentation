@@ -213,6 +213,7 @@ yarn check:ts-samples    # hand-written TypeScript samples against the published
 yarn check:retrieve-links # /api/retrieve results whose docs links don't return 200; advisory, see AGENT-RETRIEVE.md
 yarn check:retrieve-health # /api/retrieve is up and returns custom Q&A and GitHub results; runs daily, see AGENT-RETRIEVE.md
 yarn report:retrieve-log  # summarize the /api/retrieve request log; needs BLOB_READ_WRITE_TOKEN, see AGENT-RETRIEVE.md
+yarn report:sdk-duplication # prose and link lists repeated per SDK; advisory, see UTILITIES.md
 yarn report:callouts      # admonition and ReleaseNoteHeader usage in docs/; --where lists every match, see UTILITIES.md
 ```
 

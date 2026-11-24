@@ -28,6 +28,7 @@
     "check:retrieve-health": "node ./bin/check-retrieve-health.js",
     "check:ts-samples": "node ./bin/check-typescript-samples.js",
     "report:retrieve-log": "node ./bin/report-retrieve-log.js",
+    "report:sdk-duplication": "node ./bin/report-sdk-duplication.js",
     "report:snipsync-coverage": "node ./bin/report-snipsync-coverage.js",
     "report:callouts": "node ./bin/report-callouts.js",
     "test": "node --test",
