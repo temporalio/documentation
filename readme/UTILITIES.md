@@ -2,6 +2,34 @@
 
 This file documents utilities meant to support repository health. These utilities are not meant for use by contributors.
 
+## sync-navigation
+
+`bin/sync-navigation.js` fetches `https://temporal.io/api/navigation` before a production build and saves the validated
+response to `src/data/navigation.json`. Commit the snapshot so offline builds have a fallback.
+Fetches time out after 10 seconds. Network failures, HTTP errors, and invalid responses produce a warning and leave
+the saved snapshot unchanged. If that snapshot is missing or invalid too, the build fails.
+Local write failures also fail the build.
+
+Run `yarn sync:navigation` to refresh the snapshot independently. A new production build fetches the latest navigation;
+there is no scheduled sync or browser-side fetch. The dev server uses the saved snapshot.
+
+`src/utils/navigation.js` adapts the shared logo, groups, section titles, links, and CTAs to the Docusaurus navbar.
+It appends Courses, SDKs, and Durable AI to the shared menu.
+Search, the theme toggle, Ask AI, and the documentation sidebar keep their existing implementations.
+`src/theme/NavbarItem/UniversalGroup` renders shared submenus in both the desktop bar and mobile primary menu.
+The navbar consumes the API's light and dark color tokens; layout and interaction styling are local to docs.
+This first pass uses basic styling, not a visual match of temporal.io.
+
+Follow-up considerations for the PoC:
+
+- Add upstream active-route metadata; docs currently identifies its own links by URL.
+- Consider an API extension slot for docs-only links, which are currently appended locally.
+- Add spacing, typography, breakpoint, and interaction tokens before matching the temporal.io design.
+- Version the API schema so incompatible contract changes can be handled explicitly.
+- Consider bundling logo assets locally; the current logo URLs load from temporal.io.
+
+Validate changes with `node --test bin/sync-navigation.test.js` and the navigation Playwright tests.
+
 ## check-orphan-pages
 
 [**Docusaurus**](https://docusaurus.io) serves all files, whether they are mentioned in sidebars.js or not.

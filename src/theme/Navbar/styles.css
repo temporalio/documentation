@@ -1,0 +1,125 @@
+.universal-nav-group {
+  position: relative;
+}
+
+.universal-nav-group > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.universal-nav-group > summary::-webkit-details-marker {
+  display: none;
+}
+
+.universal-nav-group > summary::after {
+  content: '';
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-left: 0.6rem;
+  border-right: 1px solid var(--universal-nav-icon);
+  border-bottom: 1px solid var(--universal-nav-icon);
+  transform: translateY(-0.15rem) rotate(45deg);
+}
+
+.universal-nav-group > summary:hover::after {
+  border-color: var(--universal-nav-icon-hover);
+}
+
+.universal-nav-submenu,
+.universal-nav-section {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.universal-nav-submenu {
+  min-width: 15rem;
+  padding: 0.5rem;
+  color: var(--ifm-navbar-link-color);
+  background: var(--ifm-navbar-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+}
+
+.universal-nav-submenu .dropdown__link {
+  color: inherit;
+}
+
+.universal-nav-submenu .dropdown__link:hover {
+  color: var(--ifm-navbar-link-hover-color);
+}
+
+.universal-nav-section-title {
+  display: block;
+  padding: 0.75rem 0.5rem 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.navbar .universal-nav-cta {
+  border: 1px solid currentColor;
+  border-radius: var(--ifm-global-radius);
+  margin: 0 0.25rem;
+}
+
+.navbar .universal-nav-cta--primary {
+  color: var(--ifm-navbar-background-color);
+  background: var(--ifm-navbar-link-hover-color);
+}
+
+@media (min-width: 997px) {
+  .universal-nav-desktop-group .universal-nav-submenu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    max-height: calc(100vh - var(--ifm-navbar-height) - 1rem);
+    overflow-y: auto;
+    box-shadow: var(--ifm-global-shadow-lw);
+  }
+
+  .navbar .navbar__inner {
+    flex-wrap: nowrap;
+  }
+
+  .navbar .navbar__items {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+
+  .navbar .navbar__items--right {
+    flex-direction: row;
+    flex-grow: 0;
+  }
+
+  .navbar .navbar__link {
+    display: block;
+  }
+}
+
+@media (min-width: 997px) and (max-width: 1599px) {
+  html:root {
+    --ifm-navbar-height: 7rem;
+  }
+
+  .navbar .navbar__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .navbar .navbar__items--right {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 996px) {
+  .universal-nav-desktop-group {
+    display: none;
+  }
+
+  .universal-nav-submenu {
+    min-width: 0;
+    margin-left: 0.75rem;
+  }
+}
