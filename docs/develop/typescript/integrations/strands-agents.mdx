@@ -520,11 +520,11 @@ export async function deleteThing(input: { name: string }): Promise<string> {
   if (!APPROVED.has(input.name)) {
     // First attempt: mark the name as approved on the way out (simulating the
     // human flipping a flag during the interrupt pause) and stop the agent by
-    // raising an interrupt-shaped failure. The plugin's `StrandsFailureConverter`
-    // would also recognize a thrown `{ interrupts: [{ toJSON: () => ... }] }`,
-    // but throwing `ApplicationFailure` directly avoids any chance of the
-    // converter being skipped (and keeps `nonRetryable: true` so the workflow
-    // sees the interrupt instead of a retry-then-success).
+    // raising an interrupt-shaped failure: a non-retryable `ApplicationFailure`
+    // of type `STRANDS_INTERRUPT_TYPE`, which the workflow turns into an agent
+    // interrupt instead of a retry. Throwing `{ interrupts: [{ toJSON: () => ... }] }`,
+    // the shape of Strands' `InterruptError`, also works: the `StrandsPlugin` on
+    // the Worker packages it into the same failure.
     APPROVED.add(input.name);
     throw ApplicationFailure.create({
       message: 'interrupt:approval',
@@ -763,7 +763,7 @@ carrying `agent.messages` as input:
 <!--SNIPSTART typescript-strands-continue-as-new-workflow -->
 [strands-agents/src/workflows/continue-as-new.ts](https://github.com/temporalio/samples-typescript/blob/main/strands-agents/src/workflows/continue-as-new.ts)
 ```ts
-import type { Message } from '@strands-agents/sdk';
+import type { JSONValue, Message } from '@strands-agents/sdk';
 import { TemporalAgent } from '@temporalio/strands-agents';
 import {
   allHandlersFinished,
@@ -778,6 +778,7 @@ import {
 
 export interface ChatInput {
   messages?: Message[];
+  modelState?: Record<string, JSONValue>;
 }
 
 export const chatTurn = defineUpdate<string, [string]>('turn');
@@ -813,6 +814,7 @@ export async function chatWorkflow(input: ChatInput = {}): Promise<void> {
   agent = new TemporalAgent({
     activityOptions: { startToCloseTimeout: '60 seconds', retry: { maximumAttempts: 3 } },
     messages: input.messages ?? [],
+    modelState: input.modelState,
   });
 
   await condition(() => done || workflowInfo().continueAsNewSuggested);
@@ -820,7 +822,9 @@ export async function chatWorkflow(input: ChatInput = {}): Promise<void> {
   await condition(allHandlersFinished);
 
   if (!done) {
-    await continueAsNew<typeof chatWorkflow>({ messages: agent.messages });
+    // A stateful model clears `messages` after each turn and keeps its context in
+    // `modelState`, so carry both.
+    await continueAsNew<typeof chatWorkflow>({ messages: agent.messages, modelState: agent.modelState.getAll() });
   }
 }
 ```
