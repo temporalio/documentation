@@ -225,6 +225,15 @@
     "href": "/develop/dotnet/integrations/microsoft-agent-framework"
   },
   {
+    "name": "Microsoft Agent Framework",
+    "description": "Run Microsoft Agent Framework agents as durable Temporal Workflows.",
+    "tags": [
+      "Agent framework"
+    ],
+    "sdk": "Python",
+    "href": "/develop/python/integrations/microsoft-agent-framework"
+  },
+  {
     "name": "Model Context Protocol (MCP)",
     "description": "Call MCP tools, prompts, and resources from Python Workflows as durable Temporal Activities.",
     "tags": [
