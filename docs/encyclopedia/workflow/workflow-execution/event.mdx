@@ -137,8 +137,9 @@ This is especially valuable for:
 - incident investigation and root cause analysis
 - access governance and internal accountability
 
-Principal Attribution is an audit record of who made each API call. It isn't an authorization check on work that runs later.
-The Temporal Service authorizes each API call with the credentials of the caller that made it, so when a Worker runs an Activity, the Temporal Service doesn't re-check the permissions of the user who started the Workflow.
+Principal Attribution records who made the API call that created each event. API calls that create no events, such as Queries, aren't recorded.
+It's an audit record, not an authorization check on work that runs later.
+When an Authorizer is configured, the Temporal Service authorizes each API call with the credentials of the caller that made it, so when a Worker runs an Activity, the Temporal Service doesn't re-check the permissions of the user who started the Workflow.
 If a side effect requires that user to still be authorized, check their current permissions in your application, for example in the Activity.
 To make the user's identity available to the Activity, use [Context Propagation](/encyclopedia/context-propagation).
 
