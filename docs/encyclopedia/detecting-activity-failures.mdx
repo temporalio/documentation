@@ -283,7 +283,7 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/encyclopedia/retry-policies) dictates it.
 The Temporal Service doesn't stop the Activity code that's running on the Worker. The Activity is notified on its next
-Heartbeat and stops only if it handles that notice. See
+Heartbeat, or sooner in some SDKs, and stops only if it handles that notice. See
 [What happens to an attempt that times out](#timed-out-attempt).
 
 #### What a Heartbeat Timeout of `0s` means {/* #heartbeat-timeout-zero */}
