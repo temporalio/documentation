@@ -1,7 +1,6 @@
 import React, { type ReactNode, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
-import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
+import { hasDocsAnalyticsConsent } from '@site/src/utils/analyticsConsent';
 import type { IconType } from 'react-icons';
 import { LuCheck, LuThumbsDown, LuThumbsUp } from 'react-icons/lu';
 import styles from './PageFeedback.module.css';
@@ -50,10 +49,8 @@ const COMMENT_MAX = 1000;
 
 const storageKey = (pathname: string) => `docs-page-feedback:${pathname}`;
 
-const hasConsent = () => ExecutionEnvironment.canUseDOM && hasAnalyticsConsent(readConsentFromDocumentCookie());
-
 function track(eventName: string, properties: Record<string, unknown>) {
-  if (hasConsent() && window.amplitude) window.amplitude.track(eventName, properties);
+  if (hasDocsAnalyticsConsent() && window.amplitude) window.amplitude.track(eventName, properties);
 }
 
 // BotID's fetch wrapper waits for its challenge script before sending, and

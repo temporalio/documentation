@@ -1,9 +1,7 @@
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
-import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
+import { hasDocsAnalyticsConsent } from '@site/src/utils/analyticsConsent';
 
 type SendEvent = (eventType: string, hit: any, eventName: string) => void;
-
-const hasConsent = () => ExecutionEnvironment.canUseDOM && hasAnalyticsConsent(readConsentFromDocumentCookie());
 
 // Fires the same click event to both Algolia insights (via InstantSearch's
 // sendEvent, so it carries queryID/position) and Amplitude, so the two
@@ -14,7 +12,7 @@ export function trackSearchClick(
   eventName = 'Search Result Clicked',
   extra?: Record<string, unknown>
 ): void {
-  if (!hasConsent()) return;
+  if (!hasDocsAnalyticsConsent()) return;
 
   sendEvent('click', hit, eventName);
 
@@ -31,7 +29,7 @@ export function trackSearchClick(
 // rate from the raw queries, so this is Amplitude-only — there's no
 // objectID for a zero-result search to attach an insights event to.
 export function trackNoResults(query: string): void {
-  if (hasConsent() && window.amplitude) {
+  if (hasDocsAnalyticsConsent() && window.amplitude) {
     window.amplitude.track('Search No Results', { query });
   }
 }

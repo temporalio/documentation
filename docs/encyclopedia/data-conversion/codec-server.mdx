@@ -163,15 +163,32 @@ Web UI supports two approaches:
 Server settings. The browser sends cookies scoped to the Codec Server's domain with each request. Your Codec Server must
 have its own authentication mechanism (its own login page and session cookies), so the user must have independently
 authenticated with the Codec Server. This is the recommended approach because the Codec Server maintains its own auth
-boundary, separate from the Temporal UI.
+boundary, separate from the Temporal UI. The [codec-cors-credentials sample](https://github.com/temporal-sa/codec-cors-credentials)
+shows this approach.
 
-**Pass access token.** Enable **Pass access token** in the Web UI Codec Server settings. The Web UI includes the same
-JSON Web Token (JWT) the user used to log into the Temporal UI in the `Authorization` header of each request. Your Codec
-Server validates the token signature against the OpenID Connect (OIDC) provider's JSON Web Key Set (JWKS) endpoint. On
-Temporal Cloud, verify against the
+Because the Web UI and the Codec Server are on different domains, the browser treats the Codec Server's session cookie
+as a third-party cookie. Safari and Firefox block or partition third-party cookies by default, so this approach is most
+reliable in Chrome and Edge. Test it in the browsers your team uses.
+
+**Pass access token.** Enable **Pass access token** in the Web UI Codec Server settings. The Web UI includes an access
+token in the `Authorization` header of each request. On Temporal Cloud, this is a codec-scoped token, not the JWT the
+user used to log into the Temporal UI. Your Codec Server validates the token signature against the OpenID Connect
+(OIDC) provider's JSON Web Key Set (JWKS) endpoint. On Temporal Cloud, verify against the
 [Temporal Cloud JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json). On a self-hosted Temporal Service, the
 token comes from whatever auth provider you have [configured for the Web UI](/references/web-ui-configuration#auth).
-This approach requires less setup but reuses the same token across the Temporal UI and the Codec Server.
+This approach requires less setup, but your Codec Server relies on the Temporal Web UI's identity provider instead of
+your own.
+
+On Temporal Cloud, the token the Web UI sends to your Codec Server carries the `temporal:codec` scope, and Temporal Cloud
+APIs reject tokens with that scope. Its signing keys and `aud` claim are the same as other Temporal Cloud user tokens.
+The token also includes these claims:
+
+- `https://saas-api.tmprl.cloud/user/email`: the email address of the user requesting the Payloads.
+- `https://saas-api.tmprl.cloud/context/accountID`: the user's Temporal Cloud account ID. Check it to confirm the user
+  belongs to your account.
+
+The Temporal CLI's `--codec-auth` option sends whatever value you pass it in the `Authorization` header. Don't pass a
+token that can call Temporal Cloud APIs to a Codec Server you don't control.
 
 :::note
 
@@ -191,6 +208,9 @@ Authentication identifies the caller, but does not confirm the caller is authori
 Namespace. Each request from the Web UI includes an `X-Namespace` header identifying the Namespace. To enforce
 Namespace-level access control, your Codec Server must enforce an additional check on whether the authenticated user has
 permissions for the requested Namespace. This applies regardless of which authentication approach you use.
+
+The Temporal Cloud token doesn't include Namespace permissions. To reuse the access you've granted in Temporal Cloud,
+look up the user's Namespace access with the [Cloud Ops API](/ops).
 
 ### Key management
 

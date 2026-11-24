@@ -264,7 +264,7 @@ Payload encryption validation applies to supported requests entering Temporal Cl
 
 ### Inspect headers
 
-Do not assume that configuring a Payload Codec also encrypts Headers. Header behavior differs across SDKs, and some paths require explicit configuration or a separate encryption implementation.
+Do not assume that configuring a Payload Codec also encrypts Headers. Header behavior differs across SDKs, and some paths require explicit configuration or a separate encryption implementation. For each SDK's default and the option that turns on Header encoding, see [Codecs and Encryption](/production-deployment/data-encryption).
 
 Before enabling Header inspection, test context propagation and the relevant Client and Worker paths in `warn`. With `deny` enabled, non-matching Header Payloads can cause request rejection even when Workflow and Activity Payloads are encrypted.
 

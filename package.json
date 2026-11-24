@@ -7,7 +7,7 @@
     "node": "24.x"
   },
   "scripts": {
-    "prebuild": "node ./bin/sync-ai-cookbook.js",
+    "prebuild": "node ./bin/sync-ai-cookbook.js && node ./bin/write-content-manifest.js",
     "build": "node --max-old-space-size=7168 ./node_modules/@docusaurus/core/bin/docusaurus.mjs build",
     "postbuild": "node ./bin/check-font-preload-hash.js",
     "clear": "docusaurus clear",
@@ -102,7 +102,7 @@
     "satori": "^0.63.2",
     "search-insights": "^2",
     "sharp": "^0.35.5",
-    "snipsync": "^1.13.1",
+    "snipsync": "~1.14.0",
     "uuid": "^14.0.3",
     "vercel-path-to-regexp": "npm:path-to-regexp@6.1.0",
     "wait-on": "^9.5.1",
