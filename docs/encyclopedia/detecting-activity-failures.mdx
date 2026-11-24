@@ -304,14 +304,15 @@ Temporal Service doesn't stop the Activity code that's already running on the Wo
 - **The attempt keeps running.** The Worker keeps executing the timed-out attempt, and the attempt holds its Activity
   Task slot until it returns.
 - **The Temporal Service tells the Activity on its next Heartbeat.** The first Heartbeat that reaches the Temporal
-  Service after the timeout is rejected, and the SDK reports the timeout to the Activity as a
-  [cancellation](/activity-execution#cancellation) or an error, depending on the SDK. SDKs throttle Heartbeats, so this
+  Service after the timeout is rejected. The Java SDK throws an `ActivityNotExistsException` from the Heartbeat call,
+  and the other SDKs report it as a [cancellation](/activity-execution#cancellation). SDKs throttle Heartbeats, so this
   can come later than the Heartbeat call itself. The attempt stops only if the Activity handles the cancellation or
   error, for example by letting it propagate.
-- **Some SDKs also notice the timeout on the Worker.** These SDKs tell the Activity when the timeout expires, even if it
-  doesn't Heartbeat. For example, in the Go SDK the Activity context has a deadline: the earlier of the Start-To-Close
-  and Schedule-To-Close Timeouts. Code that checks the context stops then without a Heartbeat. A Heartbeat Timeout
-  cancels the context only after the next Heartbeat.
+- **Most SDKs also notice the timeout on the Worker.** The TypeScript, Python, .NET, and Ruby SDKs time the
+  Start-To-Close and Heartbeat Timeouts on the Worker. About 5 seconds after either one expires, they cancel the
+  Activity even if it doesn't Heartbeat. They don't time the Schedule-To-Close Timeout. In the Go SDK, the Activity
+  context has a deadline: the earlier of the Start-To-Close and Schedule-To-Close Timeouts. Code that checks the
+  context stops then without a Heartbeat. A Heartbeat Timeout cancels the Go context only after the next Heartbeat.
 - **A result reported after the timeout is discarded.** The Temporal Service answers the completion with
   [`NOT_FOUND`](/troubleshooting/request-failures#not_found-on-respond-operations) and doesn't record the result.
 - **The next attempt can run at the same time.** A retry can start on any Worker while the timed-out attempt is still
