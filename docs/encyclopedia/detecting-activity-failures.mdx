@@ -354,9 +354,8 @@ The default Retry Policy has no limit on attempts, so an Activity whose Heartbea
 Consider setting [Maximum Attempts](/encyclopedia/retry-policies#maximum-attempts) or a Schedule-To-Close Timeout for Activities that Heartbeat.
 
 - **The timed-out attempt can keep running.**
-  The Temporal Service doesn't contact the Worker.
-  The Worker learns that the attempt timed out from the response to its next Heartbeat, or when the Temporal Service rejects the attempt's result.
-  Until then, the timed-out attempt and the next attempt can run at the same time, so make the Activity idempotent, and end it when the SDK signals that it was cancelled.
+  The Temporal Service doesn't stop it, so it can run at the same time as the next attempt.
+  Make the Activity idempotent, and end it when the SDK reports the timeout.
 - **Retries don't appear in Event History.**
   While the Activity is retried, the Web UI's Pending Activities view and `temporal workflow describe` show its attempt number, its last failure (`activity Heartbeat timeout`), and its last Heartbeat time and details.
   Event History records only the final attempt, when the Activity closes.
