@@ -14,19 +14,13 @@ description:
 Temporal's Google ADK integration lets you run [Google ADK](https://google.github.io/adk-docs/) agents inside Temporal
 Workflows, so an agent keeps its place across Worker restarts, deploys, and transient failures.
 
-Temporal gives your agent code [Durable Execution](/temporal#durable-execution). The Google ADK
+Temporal gives your agent code [Durable Execution](/durable-execution). The Google ADK
 gives you the agent itself: model calls, tools, multi-agent handoffs, and MCP. The integration connects the two so that
 you write an ordinary ADK agent and run it as a Workflow, without managing sessions, a database, or your own retry logic.
 
 The `GoogleAdkPlugin` is what ties them together. It runs each model call and tool call as a Temporal Activity,
 configures the payload converter that serializes ADK objects, and makes ADK's runtime deterministic so the Workflow can
 replay. You add the same plugin to your Client and your Worker, and the rest of your agent code stays standard ADK.
-
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  type="prerelease"
-/>
 
 ## Prerequisites
 
@@ -101,8 +95,6 @@ class HelloWorldAgentWorkflow:
                             final_text = part.text
 
         return final_text
-
-
 ```
 {/* SNIPEND */}
 
@@ -268,8 +260,8 @@ class MultiAgentWorkflow:
 ```
 {/* SNIPEND */}
 
-The `summary` you set on each `ActivityConfig` becomes the Activity name in the Event history, which makes it easy to see
-which agent ran and when.
+The `summary` you set on each `ActivityConfig` labels that agent's model Activities in the Web UI, which makes it easy to
+see which agent ran and when. The Activity type stays `invoke_model`.
 
 ## Use MCP tool servers
 

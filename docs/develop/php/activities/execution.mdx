@@ -3,7 +3,6 @@ id: execution
 title: Activity Execution
 description: Call an Activity from a PHP Workflow through a stub created with newActivityStub, set the required Timeout, and get the Activity result.
 sidebar_label: Activity Execution
-slug: /develop/php/activities/execution
 toc_max_heading_level: 3
 tags:
   - Activities
@@ -32,6 +31,8 @@ The following code example, uses a constructor that takes an Amazon S3 client an
 Then, the code uses a function to download a file from the S3 bucket passing a bucket name, remote name, and local name as arguments.
 Finally, it uses a function that takes a local file name as an argument and returns a string.
 
+<!--SNIPSTART php-activity-execution-implementation-->
+[php-sandbox/activities/execution/FileProcessingActivitiesImpl.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/execution/FileProcessingActivitiesImpl.php)
 ```php
 // An implementation of an Activity interface.
 class FileProcessingActivitiesImpl implements FileProcessingActivities {
@@ -48,40 +49,47 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
     // Uploading a file to S3.
     public function upload(string $bucketName, string $localName, string $targetName): void
     {
-        $this->s3Client->putObject(
-            $bucketName,
-            $targetName,
-            fopen($this->localDirectory . $localName, 'rb+')
-        );
+        $this->s3Client->putObject([
+            'Bucket' => $bucketName,
+            'Key' => $targetName,
+            'Body' => fopen($this->localDirectory . $localName, 'rb'),
+        ]);
     }
 
-// Downloading a file from S3.
+    // Downloading a file from S3.
     public function download(
         string $bucketName,
         string $remoteName,
         string $localName
     ): void
     {
-        $this->s3Client->downloadObject(
-            $bucketName,
-            $remoteName,
-            fopen($this->localDirectory .$localName, 'wb+')
-        );
+        $this->s3Client->getObject([
+            'Bucket' => $bucketName,
+            'Key' => $remoteName,
+            'SaveAs' => $this->localDirectory . $localName,
+        ]);
     }
 
-// A function that takes a local file name as an argument and returns a string.
+    // A function that takes a local file name as an argument and returns a string.
     public function processFile(string $localName): string
     {
-        // Implementation omitted for brevity.
-        return compressFile($this->localDirectory . $localName);
+        return $this->compressFile($this->localDirectory . $localName);
     }
 
     public function deleteLocalFile(string $fileName): void
     {
         unlink($this->localDirectory . $fileName);
     }
+
+    // Compresses a file with gzip and returns the path of the compressed file.
+    private function compressFile(string $path): string
+    {
+        file_put_contents($path . '.gz', gzencode(file_get_contents($path)));
+        return $path . '.gz';
+    }
 }
 ```
+<!--SNIPEND-->
 
 ### Set the required Activity Timeouts {/* #required-timeout */}
 
@@ -102,6 +110,8 @@ Even if Activity Execution takes a few months, the Workflow code still sees it a
 It doesn't matter what happens to the processes that host the Workflow.
 The business logic code just sees a single method call.
 
+<!--SNIPSTART php-activity-execution-get-result-->
+[php-sandbox/activities/execution/GreetingWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/execution/GreetingWorkflow.php)
 ```php
 class GreetingWorkflow implements GreetingWorkflowInterface
 {
@@ -122,17 +132,21 @@ class GreetingWorkflow implements GreetingWorkflowInterface
     }
 }
 ```
+<!--SNIPEND-->
 
 If different Activities need different options, like timeouts or a task queue, multiple client-side stubs can be created with different options.
 
+<!--SNIPSTART php-activity-execution-multiple-stubs {"enable_code_dedenting": true}-->
+[php-sandbox/activities/execution/MultipleStubsWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/activities/execution/MultipleStubsWorkflow.php)
 ```php
 $greetingActivity = Workflow::newActivityStub(
     GreetingActivityInterface::class,
     ActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 seconds'))
 );
 
-$greetingActivity = Workflow::newActivityStub(
+$slowGreetingActivity = Workflow::newActivityStub(
     GreetingActivityInterface::class,
     ActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 minutes'))
 );
 ```
+<!--SNIPEND-->

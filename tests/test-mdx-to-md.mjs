@@ -754,6 +754,13 @@ test("ToolTipTerm is replaced inline with the term text", () => {
   assertNotContains(markdown, "ToolTipTerm");
 });
 
+test("RoleCheck is replaced inline with a check mark and the role name", () => {
+  const input = `| Permission | Finance Admin |\n| --- | :-: |\n| CreateBillingReport | <RoleCheck role="Finance Admin" />\\* |`;
+  const { markdown } = transformMdx(input);
+  assertContains(markdown, "| CreateBillingReport | ✅ Finance Admin\\* |");
+  assertNotContains(markdown, "RoleCheck");
+});
+
 test("MDX comments are stripped", () => {
   const input = `Before\n{/* SNIPSTART foo */}\nAfter`;
   const { markdown } = transformMdx(input);
@@ -1639,7 +1646,7 @@ test("all registry strategies are valid strings", () => {
   const validStrategies = [
     "tabs", "tabitem", "transparent", "related-read",
     "related-read-container", "related-read-item",
-    "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term", "for-os",
+    "captioned-image", "video", "photo-carousel", "code-snippet", "sdk-tabs", "tooltip-term", "role-check", "for-os",
     "release-note-header", "call-to-action", "setup-steps", "setup-step",
     "json-table", "integrations-grid", "cookbook-preview", "cookbook-home", "sdk-overview-cards", "guides-grid", "hero-card", "hero-headline", "view-source-code-notice", "cards", "strip-tag", "strip-block", "details", "summary",
     "sdk-guide-links", "event-history-demo", "walkthrough-step", "walkthrough-entry",

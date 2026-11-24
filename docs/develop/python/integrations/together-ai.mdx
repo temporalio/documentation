@@ -125,8 +125,6 @@ class OpenAICompatibleModelProvider(ModelProvider):
         # Chat Completions is the API all of these providers serve. The Agents
         # SDK defaults to the Responses API, which not every provider offers.
         return OpenAIChatCompletionsModel(model=model, openai_client=client)
-
-
 ```
 <!--SNIPEND-->
 
@@ -138,12 +136,12 @@ SDK's default Responses API model, which Together AI's OpenAI compatibility guid
 
 ## Configure the Worker
 
-Pass the provider to the plugin. The Worker serves every provider whose key is set and prints which ones at startup. A
-custom model provider must set a model Activity timeout; the sample uses 60 seconds. Serverless performance on Together
-AI is best-effort, and a dedicated endpoint that was stopped or scaled down pays a cold start on its next request, so
-size the timeout for the slowest call you expect rather than the median. The Heartbeat Timeout lets Temporal notice a
-Worker that died mid-call within seconds instead of after the full Start-To-Close Timeout; the plugin heartbeats on its
-own.
+Pass the provider to the plugin. The Worker serves every provider whose key is set and prints which ones at startup. The
+model Activity's Start-To-Close Timeout defaults to 60 seconds; raise it for slow models. Serverless performance on
+Together AI is best-effort, and a dedicated endpoint that was stopped or scaled down pays a cold start on its next
+request, so size the timeout for the slowest call you expect rather than the median. The Heartbeat Timeout lets Temporal
+notice a Worker that died mid-call within seconds instead of after the full Start-To-Close Timeout; the plugin
+heartbeats on its own.
 
 <!--SNIPSTART python-openai-agents-openai-compatible-worker-->
 [openai_agents/model_providers/run_openai_compatible_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/model_providers/run_openai_compatible_worker.py)
@@ -222,19 +220,17 @@ class OpenAICompatibleAgentWorkflow:
 
         result = await Runner.run(agent, input.prompt)
         return result.final_output
-
-
 ```
 <!--SNIPEND-->
 
 Name the model on the agent, as the sample does. An agent that names no model inherits the Agents SDK's default settings
-for OpenAI's current default model, which include `verbosity` and a reasoning effort; `temporalio-openai-agents` 1.1.0
-forwards them to the provider unchanged, and Fireworks AI, for example, rejects `verbosity` with a 400. On that release,
+for OpenAI's current default model, which include `verbosity` and a reasoning effort; `temporalio-openai-agents` 1.x
+forwards them to the provider unchanged, and Fireworks AI, for example, rejects `verbosity` with a 400. On 1.x,
 give such an agent an explicit `model_settings=ModelSettings()`.
 
-Tools that run inside the Workflow must be `async`: the Agents SDK runs sync tools in a thread, which the Workflow
-sandbox does not allow. Tools that do I/O belong in Activities; see
-[Activity-backed tools](/develop/python/integrations/openai-agents#activity-backed-tools).
+Sync tools run in Workflow code, so keep them fast and deterministic: a tool that runs longer than about 2 seconds trips
+the deadlock detector. Tools that do I/O belong in Activities; see [Activity-backed
+tools](/develop/python/integrations/openai-agents#activity-backed-tools).
 
 ## Run the sample
 

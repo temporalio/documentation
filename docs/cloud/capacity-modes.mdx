@@ -89,7 +89,7 @@ Actions that are external to the core Temporal service do not contribute to your
 Using On-Demand Capacity, your rate limit grows automatically along with your usage.
 Each Namespace has an Actions per second (APS), Requests per second (RPS), and Operations per second (OPS) limit that scales automatically with usage. Your APS limit never falls below its [default limit](/evaluate/cloud/limits#actions-per-second). If Temporal Support has manually set your Namespace's limit, that value becomes your floor in place of the default, and it persists across capacity mode changes.
 
-Scaling automatically adjusts based on the lesser of 4 * APS Average or 2 * APS P90 over the past 7 days.
+Scaling up automatically adjusts based on the lesser of 4 * APS Average or 2 * APS P90 over the past 1 day. Scaling down is based on the same formula over 7 days.
 
 To see your Namespace's current APS, RPS, and OPS limits, track the `temporal_cloud_v1_action_limit`, `temporal_cloud_v1_service_request_limit`, and `temporal_cloud_v1_operations_limit` metrics. See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
 
@@ -100,12 +100,12 @@ You can also optimize your workload to remain under the On-Demand limits. See [B
 ### What kind of throughput can I get on Temporal Cloud with On-Demand Capacity?
 
 Each Namespace has a rate limit, which is measured in Actions per second (APS). 
-Your APS limit automatically adjusts based on a formula that compares your average usage over the last 7 days and your usage at the 90th percentile, or P90. 
+When scaling up, your APS limit is based on a formula that compares your average usage over the last day and your usage at the 90th percentile, or P90. When scaling down, the same formula uses the last seven days of usage.
 Your throughput limit will never fall below the [default limit](/evaluate/cloud/limits#actions-per-second) for your Namespace. 
 Under On-Demand capacity you are only charged for the Actions you use.
 To see your current limit, view it in the Temporal Cloud UI under the Namespace overview, retrieve it with the CLI by running [`temporal cloud namespace capacity get`](/cli/command-reference/cloud/namespace#capacity-get) or [`tcld namespace capacity get`](/cloud/tcld/namespace/#capacity), or track the `temporal_cloud_v1_action_limit` metric described in [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits).
 
-For example, if your average APS over the last 7 days was 200 and your P90 was 500, your limit would be the greater of:
+For example, when scaling up, if your average APS over the last day was 200 and your P90 was 500, your limit would be the greater of:
 * The [default limit](/evaluate/cloud/limits#actions-per-second)
 * The lesser of:
   * 4 * 200 APS Mean = 800 APS
@@ -146,13 +146,6 @@ Immediately available TRU inventory is not guaranteed in any region.
 Temporal will check available capacity at the time of your request and aims to provision requested capacity within two minutes. 
 If you need capacity beyond what is self-serviceable or available in a region, please [file a support ticket](/evaluate/cloud/support#ticketing) indicating the limit, region, and timeframe that the capacity is needed. 
 
-:::caution GCP capacity restriction
-
-Self-service TRU increases are disabled in [restricted GCP regions](/evaluate/cloud/regions#gcp-capacity-restriction).
-To request an increase in a restricted region, [create a support ticket](/evaluate/cloud/support#support-ticket) for Temporal Dev Success to coordinate a manual increase, subject to available capacity.
-
-:::
-
 
 ### When should I use Provisioned Capacity?
 
@@ -178,7 +171,7 @@ Capacity Modes and TRUs can be set via the Temporal Cloud UI, CLI, or API.
 Capacity modes can be set and adjusted by Global Admin and Namespace Admin. 
 
 When you switch to Provisioned Capacity, your limit is set by the number of TRUs you select.
-When you switch back to On-Demand, your limit is recalculated from the trailing 7-day usage formula and never falls below your floor.
+When you switch back to On-Demand, your limit is recalculated from the trailing 1-day usage formula and never falls below your floor.
 If Temporal Support has set a custom limit for your Namespace, that limit is your floor, so switching to Provisioned and back to On-Demand preserves it.
 
 ### Setting Capacity Modes from the UI
@@ -199,7 +192,7 @@ To switch to Provisioned capacity:
 1. Check the dialog acknowledging potential pricing implications.
 1. Click *Confirm*. 
 
-In addition to the Capacity Mode selections, a summary of APS usage over the last seven days is included to help you estimate your current usage. 
+In addition to the Capacity Mode selections, a summary of APS usage over the last one day is included to help you estimate your current usage. 
 For more detailed information, we recommend setting up metrics that track your APS and Limits. 
 See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) to track usage trends.
 

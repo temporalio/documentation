@@ -14,7 +14,7 @@ description:
 Temporal's Google GenAI integration lets you call [Gemini](https://ai.google.dev/gemini-api/docs) models from inside
 Temporal Workflows, so a sequence of model calls keeps its place across Worker restarts, deploys, and transient failures.
 
-Temporal gives your code [Durable Execution](/temporal#durable-execution). The
+Temporal gives your code [Durable Execution](/durable-execution). The
 [Google Gen AI SDK](https://googleapis.github.io/python-genai/) gives you the model API: content generation, automatic
 function calling, chat sessions, structured output, files, and MCP. The integration connects the two so that you write
 ordinary Gemini SDK code and run it as a Workflow, without writing your own retry loop or checkpointing.
@@ -23,12 +23,6 @@ ordinary Gemini SDK code and run it as a Workflow, without writing your own retr
 it to the plugin. Inside the Workflow you construct a `TemporalAsyncClient`, which has the same shape as the SDK's async
 client but routes every API call through a Temporal Activity. Each call gets its own timeout, retry policy, and Event
 History entry, and your credentials stay on the Worker.
-
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  type="publicPreview"
-/>
 
 Code snippets in this guide come from the
 [Google GenAI plugin samples](https://github.com/temporalio/samples-python/tree/main/google_genai). Refer to the
@@ -83,8 +77,6 @@ class HelloWorldWorkflow:
             contents=prompt,
         )
         return response.text or ""
-
-
 ```
 {/* SNIPEND */}
 
@@ -212,8 +204,6 @@ class ToolsWorkflow:
         if "sunny" in weather.lower():
             return "Go for a hike."
         return "Visit a museum."
-
-
 ```
 {/* SNIPEND */}
 
@@ -254,8 +244,6 @@ class ChatWorkflow:
             response = await chat.send_message(prompt)
             replies.append(response.text or "")
         return replies
-
-
 ```
 {/* SNIPEND */}
 
@@ -300,8 +288,6 @@ class StructuredOutputWorkflow:
                 non_retryable=True,
             )
         return recipe
-
-
 ```
 {/* SNIPEND */}
 
@@ -362,8 +348,6 @@ class McpWorkflow:
             config=types.GenerateContentConfig(tools=[session]),
         )
         return response.text or ""
-
-
 ```
 {/* SNIPEND */}
 
@@ -414,8 +398,6 @@ class StreamingWorkflow:
     @workflow.signal
     def finish(self) -> None:
         self._done = True
-
-
 ```
 {/* SNIPEND */}
 
@@ -480,8 +462,6 @@ class FilesWorkflow:
             contents=contents,
         )
         return response.text or ""
-
-
 ```
 {/* SNIPEND */}
 
@@ -512,8 +492,6 @@ class InteractionsWorkflow:
         await client.interactions.delete(interaction.id)
 
         return {"id": interaction.id, "status": str(fetched.status)}
-
-
 ```
 {/* SNIPEND */}
 
@@ -549,8 +527,6 @@ class VertexAIWorkflow:
             contents=prompt,
         )
         return response.text or ""
-
-
 ```
 {/* SNIPEND */}
 

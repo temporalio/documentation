@@ -23,13 +23,16 @@ Each Activity Timeout controls a different aspect of how long an Activity Execut
 
 At least one of `start_to_close_timeout` or `schedule_to_close_timeout` is required.
 
-```ruby
+<!--SNIPSTART ruby-activity-timeouts-start-to-close {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/timeouts/workflows.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/timeouts/workflows.rb)
+```rb
 Temporalio::Workflow.execute_activity(
   MyActivity,
   { greeting: 'Hello', name: },
   start_to_close_timeout: 5 * 60
 )
 ```
+<!--SNIPEND-->
 
 ### Activity Retry Policy {/* #activity-retries */}
 
@@ -38,7 +41,9 @@ You can override it by specifying a custom Retry Policy.
 
 To create an Activity Retry Policy in Ruby, set the `retry_policy` parameter when executing an activity.
 
-```ruby
+<!--SNIPSTART ruby-activity-timeouts-retry-policy {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/timeouts/workflows.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/timeouts/workflows.rb)
+```rb
 Temporalio::Workflow.execute_activity(
   MyActivity,
   { greeting: 'Hello', name: },
@@ -46,18 +51,22 @@ Temporalio::Workflow.execute_activity(
   retry_policy: Temporalio::RetryPolicy.new(max_interval: 10)
 )
 ```
+<!--SNIPEND-->
 
 ### Override the retry interval with `next_retry_delay` {/* #next-retry-delay */}
 
 If you raise an application-level error, you can override the Retry Policy's delay by specifying a new delay.
 
-```ruby
+<!--SNIPSTART ruby-activity-timeouts-next-retry-delay {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/timeouts/next_retry_delay_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/timeouts/next_retry_delay_activity.rb)
+```rb
 raise Temporalio::Error::ApplicationError.new(
   'Some error',
   type: 'SomeErrorType',
   next_retry_delay: 3 * Temporalio::Activity::Context.current.info.attempt
 )
 ```
+<!--SNIPEND-->
 
 ## Heartbeat an Activity {/* #activity-heartbeats */}
 
@@ -67,7 +76,9 @@ A Heartbeat is a periodic signal from the Worker to the Temporal Service indicat
 - Cancellations are delivered via Heartbeats.
 - Heartbeats may contain custom progress details.
 
-```ruby
+<!--SNIPSTART ruby-activity-timeouts-heartbeat {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/timeouts/heartbeat_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/timeouts/heartbeat_activity.rb)
+```rb
 class MyActivity < Temporalio::Activity::Definition
   def execute
     # This is a naive loop simulating work, but similar heartbeat logic
@@ -81,12 +92,15 @@ class MyActivity < Temporalio::Activity::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 ### Heartbeat Timeout {/* #heartbeat-timeout */}
 
 The Heartbeat Timeout sets the maximum duration between Heartbeats before the Temporal Service considers the Activity failed.
 
-```ruby
+<!--SNIPSTART ruby-activity-timeouts-heartbeat-timeout {"enable_code_dedenting": true}-->
+[ruby-sandbox/activities/timeouts/workflows.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/timeouts/workflows.rb)
+```rb
 Temporalio::Workflow.execute_activity(
   MyActivity,
   { greeting: 'Hello', name: },
@@ -94,3 +108,4 @@ Temporalio::Workflow.execute_activity(
   heartbeat_timeout: 5
 )
 ```
+<!--SNIPEND-->

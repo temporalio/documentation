@@ -19,6 +19,7 @@
  *   - <RelatedReadList>           → markdown link list from readList prop
  *   - <SdkGuideLinks>             → markdown link list, one per SDK (path/filter/title or links prop)
  *   - <ToolTipTerm term="x" />    → inline replacement with the term text
+ *   - <RoleCheck role="x" />    → "✅ x" (role name kept with each table row)
  *   - <ForOs os="x">              → every OS variant kept, each with a bold OS label
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
@@ -78,6 +79,7 @@ export const COMPONENT_REGISTRY = {
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
+  RoleCheck: "role-check",
   ForOs: "for-os",
   ReleaseNoteHeader: "release-note-header",
   CallToAction: "call-to-action",
@@ -150,7 +152,8 @@ const STRIP_TAG_COMPONENTS = COMPONENTS_BY_STRATEGY("strip-tag");
 const EVENT_HISTORY_DEMO_COMPONENTS = COMPONENTS_BY_STRATEGY("event-history-demo");
 
 // Availability labels for ReleaseNoteHeader resolved `type` values.
-// Mirrors ReleaseNoteHeader.BASE_RELEASE_STAGES labels in the React component.
+// Mirrors BASE_RELEASE_STAGES labels in src/components/elements/ReleaseNoteHeader/releaseStage.js;
+// tests/release-note-header.test.mjs checks they match.
 export const RELEASE_NOTE_LABELS = {
   prerelease: "Pre-release",
   publicPreview: "Public Preview",
@@ -159,7 +162,11 @@ export const RELEASE_NOTE_LABELS = {
   deprecated: "Deprecated",
 };
 
-/** Mirrors ReleaseNoteHeader.getResolvedType — featureName lookup, then type, then default. */
+/**
+ * Same order as resolveReleaseStage in ReleaseNoteHeader/releaseStage.js: featureName lookup, then type, then
+ * default. Unlike the component, which renders an unknown type as Public Preview, this keeps the type so
+ * releaseNoteLabelFromType can label it.
+ */
 function resolveReleaseNoteType(featureName, type) {
   return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
 }
@@ -375,6 +382,14 @@ export function applyInlineTransforms(line) {
     /<ToolTipTerm\b[^>]*>([\s\S]*?)<\/ToolTipTerm>/g,
     (m, inner) => extractProp(m, "term") || inner
   );
+
+  // Inline <RoleCheck role="x" /> → ✅ x. The role name stays in the text so a
+  // row of a long permissions grid still says which roles it covers once a
+  // chunker separates it from the header row.
+  out = out.replace(/<RoleCheck\b[^>]*\/>/g, (m) => {
+    const role = extractProp(m, "role");
+    return role ? `✅ ${role}` : "✅";
+  });
 
   // Inline <ForOs os="x">...</ForOs> → (**OS:** ...), keeping every variant
   out = forOsInlineToMarkdown(out);

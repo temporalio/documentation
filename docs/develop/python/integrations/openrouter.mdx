@@ -174,7 +174,6 @@ async def _send(self, request: OpenRouterRequest) -> OpenRouterResult:
         )
 
     return result
-
 ```
 <!--SNIPEND-->
 
@@ -294,7 +293,6 @@ def spend_report(self) -> SpendReport:
         paused=dict(self._paused),
         ledger=list(self._ledger),
     )
-
 ```
 <!--SNIPEND-->
 
@@ -347,7 +345,6 @@ async def _park(self, prompt: str, reason: str, until: Callable[[], bool]) -> bo
         return False
     finally:
         self._paused.pop(prompt, None)
-
 ```
 <!--SNIPEND-->
 
@@ -419,15 +416,13 @@ def openrouter_provider() -> OpenAIProvider:
     # These samples use Chat Completions, OpenRouter's primary endpoint; the
     # Agents SDK defaults to the Responses API, which OpenRouter also offers.
     return OpenAIProvider(openai_client=client, use_responses=False)
-
-
 ```
 <!--SNIPEND-->
 
 Pass the provider to `OpenAIAgentsPlugin(model_provider=...)` and set the agent's `model` to `openrouter/auto` or any
 OpenRouter model slug. The plugin runs each model call as an Activity, so the Activity Retry Policy applies to
-OpenRouter calls the same way it does to OpenAI calls. Tools that run inside the Workflow must be `async`: the Agents
-SDK runs sync tools in a thread, which the Workflow sandbox does not allow.
+OpenRouter calls the same way it does to OpenAI calls. Sync tools run in Workflow code, so keep them fast and
+deterministic: a tool that runs longer than about 2 seconds trips the deadlock detector.
 
 ## Samples
 
