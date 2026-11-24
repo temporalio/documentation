@@ -19,16 +19,18 @@ For the invocation lifecycle and scaling controls, see [Serverless Workers on Mo
 
 ## Prerequisites
 
-- A Temporal Namespace with the Modal compute provider enabled, and permission to configure Worker Deployments
-  and start Workflow Executions in that Namespace.
-- Authorization for Temporal to invoke functions in your Modal workspace. This is separate from the credentials
-  your Worker uses to connect to Temporal.
-- Access to deploy apps and create secrets in a Modal workspace and environment.
+- A Temporal Cloud Namespace where you can configure Worker Deployments and start Workflow Executions.
+- A Modal account with permission to deploy apps and create secrets in your target environment.
 - Python 3.12 and [uv](https://docs.astral.sh/uv/) for the example.
-- A Temporal CLI build that provides `temporal worker deployment version compute-config modal-function`.
-  Check that this command's `--help` works before continuing.
-- A configured [Temporal CLI connection](/cli/cloud#connect-to-temporal-cloud). Use the same Namespace for every
-  Temporal command in this guide.
+- Temporal CLI v1.10.0 or later.
+- A Workflow with a [versioning behavior](/worker-versioning#versioning-behaviors) and the Activities it uses.
+
+:::tip
+
+If you don't have a Workflow ready, use the Workflow and Activity files from the
+[Python Modal Worker sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/python-sandbox/workers/modal_worker).
+
+:::
 
 The Python integration is experimental. Availability of its package does not establish availability of the Modal
 compute provider in your Temporal environment. Confirm access with your administrator before deploying.
@@ -48,50 +50,8 @@ mkdir -p modal_worker
 touch modal_worker/__init__.py
 ```
 
-Create `modal_worker/activities.py` with an Activity that returns a greeting.
-
-<!--SNIPSTART python-modal-worker-activities-->
-[python-sandbox/workers/modal_worker/activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/activities.py)
-```py
-from temporalio import activity
-
-
-@activity.defn
-async def greet(name: str) -> str:
-    activity.logger.info("Processing greeting")
-    return f"Hello, {name}!"
-```
-<!--SNIPEND-->
-
-Create `modal_worker/workflows.py`. The Workflow calls the Activity and declares a
-[versioning behavior](/worker-versioning#versioning-behaviors).
-
-<!--SNIPSTART python-modal-worker-workflows-->
-[python-sandbox/workers/modal_worker/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/workflows.py)
-```py
-from datetime import timedelta
-
-from temporalio import workflow
-from temporalio.common import VersioningBehavior
-
-with workflow.unsafe.imports_passed_through():
-    from modal_worker.activities import greet
-
-
-@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
-class GreetingWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            greet,
-            name,
-            start_to_close_timeout=timedelta(seconds=30),
-        )
-```
-<!--SNIPEND-->
-
-Create `modal_worker/worker.py`. The `configure` callback sets the Task Queue and registers the Workflow and Activity.
-Temporal invokes the function without arguments. The Worker receives Workflow inputs when it polls the Task Queue.
+Create `modal_worker/worker.py`. Import your Workflow and Activity definitions and register them in the
+`configure` callback. The example registers `GreetingWorkflow` and `greet` on `my-task-queue`.
 
 <!--SNIPSTART python-modal-worker-worker-->
 [python-sandbox/workers/modal_worker/worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/worker.py)
@@ -209,6 +169,9 @@ Use the mode configured by your administrator; do not omit the workspace identif
 
 ## 4. Create Worker Deployment Version {/* #configure-the-worker-deployment-version */}
 
+Before running the Temporal CLI commands, set `TEMPORAL_ADDRESS` to your Namespace's gRPC endpoint and
+`TEMPORAL_NAMESPACE` to its name. Configure your credentials using the [Temporal Cloud CLI connection instructions](/cli/cloud#connect-to-temporal-cloud).
+
 Create the Worker Deployment if it does not already exist:
 
 ```bash
@@ -271,7 +234,8 @@ temporal worker deployment set-current-version \
 ## 6. Verify deployment {/* #verify-automatic-invocation */}
 
 After the initial Worker invocation exits, confirm that no Workers are polling the example Task Queue.
-Start a Workflow to check that Temporal requests a new Modal invocation:
+Start a Workflow to check that Temporal requests a new Modal invocation. Replace the Workflow Type and input if
+you registered your own Workflow.
 
 ```bash
 temporal workflow start \
@@ -288,7 +252,7 @@ Use a new Workflow ID for each test. Check the result:
 temporal workflow show --workflow-id modal-greeting-test-1
 ```
 
-The Workflow should complete with `"Hello, World!"`. Verify the deployment in both systems.
+The sample Workflow should complete with `"Hello, World!"`. Verify the deployment in both systems.
 
 - **Temporal UI** — Check the Workflow's Event History for completed Tasks and confirm that the intended Worker
   Deployment Version processed them.
