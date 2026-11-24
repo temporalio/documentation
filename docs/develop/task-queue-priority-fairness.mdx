@@ -93,6 +93,16 @@ await client.start_workflow(
 ```
 
 </SdkTabs.Python>
+<SdkTabs.Ruby>
+```ruby
+client.start_workflow(
+  MyWorkflow, "input-arg",
+  id: "my-workflow-id",
+  task_queue: "my-task-queue",
+  priority: Temporalio::Priority.new(priority_key: 1)
+)
+```
+</SdkTabs.Ruby>
 <SdkTabs.DotNet>
 ```csharp
 var handle = await Client.StartWorkflowAsync(
@@ -146,6 +156,20 @@ await workflow.execute_activity(
 ```
 
 </SdkTabs.Python>
+<SdkTabs.Ruby>
+This example starts a standalone Activity from a client.
+Set `start_to_close_timeout` or `schedule_to_close_timeout`.
+
+```ruby
+client.start_activity(
+  MyActivity, "input-arg",
+  id: "my-workflow-id",
+  task_queue: "my-task-queue",
+  start_to_close_timeout: 5,
+  priority: Temporalio::Priority.new(priority_key: 3)
+)
+```
+</SdkTabs.Ruby>
 <SdkTabs.TypeScript>
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
@@ -198,6 +222,18 @@ await workflow.execute_child_workflow(
 ```
 
 </SdkTabs.Python>
+<SdkTabs.Ruby>
+Run this example inside a Workflow Definition.
+
+```ruby
+Temporalio::Workflow.start_child_workflow(
+  MyChildWorkflow, "input-arg",
+  id: "my-child-workflow-id",
+  task_queue: "my-task-queue",
+  priority: Temporalio::Priority.new(priority_key: 1)
+)
+```
+</SdkTabs.Ruby>
 <SdkTabs.DotNet>
 ```csharp
 await Workflow.ExecuteChildWorkflowAsync(
