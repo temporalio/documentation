@@ -314,6 +314,7 @@ The `cause` field holds the reason for the failure.
 
 A Timeout Failure represents the timeout of an Activity or Workflow.
 When an Activity times out, the Timeout Failure includes the last Heartbeat details the Activity sent.
+Its timeout type says which timeout was reached, for example `HEARTBEAT` for a missed [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#after-a-heartbeat-timeout).
 
 - TypeScript: [TimeoutFailure](https://typescript.temporal.io/api/classes/common.TimeoutFailure)
 - Java: [TimeoutFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TimeoutFailure.html)

@@ -565,11 +565,13 @@ You gain visibility into Activity progress in real-time.
 Activities can handle cancellation gracefully and clean up resources.
 Completed work is not reprocessed, and Activities can move between Workers.
 
-The trade-offs to consider are that frequent heartbeats increase network traffic.
+The trade-offs to consider are that each heartbeat that reaches the Temporal Service adds a request and a write to the Workflow Execution.
+The SDK throttles heartbeats, so the heartbeat timeout sets how many are sent, not how often your code calls heartbeat.
 You must implement checkpointing logic and state management.
 You must handle partial reprocessing of the last checkpoint (idempotency).
-You need to balance heartbeat frequency between responsiveness and overhead.
-Heartbeat details have size limits, so you should avoid large objects.
+You need to balance the heartbeat timeout between detecting a failed Worker quickly and giving each heartbeat time to arrive.
+See [Choose a Heartbeat Timeout](/encyclopedia/detecting-activity-failures#choose-a-heartbeat-timeout).
+Heartbeat details count against the 2 MB [payload size limit](/troubleshooting/blob-size-limit-error#payload-size-limit), and every heartbeat writes them again, so store a small checkpoint such as an offset rather than large objects.
 
 ## Comparison with alternatives
 
@@ -583,7 +585,7 @@ Heartbeat details have size limits, so you should avoid large objects.
 ## Best practices
 
 - **Set heartbeat timeout.** Configure to 2-3x the expected heartbeat interval.
-- **Heartbeat at regular intervals.** Balance between responsiveness (every 10-30 seconds) and overhead.
+- **Heartbeat at regular intervals.** Call heartbeat at least once per throttle interval (80% of the heartbeat timeout). Calling more often adds no load, because the SDK sends at most one heartbeat per [throttle interval](/encyclopedia/detecting-activity-failures#throttling).
 - **Checkpoint strategically.** Save progress at meaningful boundaries (records, pages, chunks).
 - **Keep details small.** Store minimal state (IDs, offsets, counts), not full objects.
 - **Handle idempotency.** Ensure reprocessing the last checkpoint is safe.

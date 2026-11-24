@@ -202,12 +202,11 @@ Temporal SDKs control the rate at which Heartbeats are sent to the Temporal Serv
 
 Heartbeating is not required from [Local Activities](/local-activity), and does nothing.
 
-For _long-running_ Activities, we recommend using a relatively short Heartbeat Timeout and a frequent Heartbeat.
-That way if a Worker fails it can be handled in a timely manner.
+For _long-running_ Activities, set a Heartbeat Timeout much shorter than the Start-To-Close Timeout, and Heartbeat at least once per [throttle interval](#throttling).
+If the Worker fails, the Temporal Service then times out the attempt after one Heartbeat Timeout instead of waiting for the Start-To-Close Timeout.
+See [Choose a Heartbeat Timeout](#choose-a-heartbeat-timeout).
 
-A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
-If an [Activity Task Execution](/tasks#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
-To checkpoint progress in a Heartbeat, see the [Long-Running Activity](/design-patterns/long-running-activity) pattern.
+A Heartbeat can include [details](#heartbeat-details) that _save_ Activity Execution progress, so that the next attempt can continue where the last one stopped.
 
 Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
@@ -234,6 +233,31 @@ Throttling is implemented as follows:
 Throttling allows the Worker to reduce network traffic and load on the Temporal Service by suppressing Heartbeats that aren’t necessary to prevent a Heartbeat Timeout.
 Throttling does not apply to the final Heartbeat message in the case of Activity Failure.
 If an Activity fails just after recording progress information in a Heartbeat message, that progress information will be available during the next retry attempt, provided that the Worker itself did not crash before delivering it to the Temporal Service.
+
+Because the Worker sends at most one Heartbeat per throttle interval, how often Activity code calls Heartbeat doesn't change how many Heartbeats reach the Temporal Service.
+The Heartbeat Timeout sets that rate.
+For any Heartbeat Timeout above 75 seconds, the throttle interval is the 60-second maximum, so each Activity sends about one Heartbeat a minute.
+On Temporal Cloud, each Heartbeat that reaches the Temporal Service is an [Action](/evaluate/cloud/actions#activity).
+
+Raising `maxHeartbeatThrottleInterval` sends fewer Heartbeats, but it has two costs.
+The Activity learns about a Cancellation, Pause, or Reset later, because it learns about them only from the response to a Heartbeat.
+If the Worker crashes, it also loses the Heartbeat details it was holding back, up to one throttle interval of them.
+
+### Heartbeat details {/* #heartbeat-details */}
+
+A Heartbeat can carry details, a [Payload](/dataconversion#payload) that records the Activity's progress.
+When an attempt fails or times out, the next attempt receives the details from the last Heartbeat the Temporal Service recorded, and can continue from there.
+To checkpoint progress this way, see the [Long-Running Activity](/design-patterns/long-running-activity) pattern.
+
+- **The Temporal Service keeps only the latest details.**
+  Each recorded Heartbeat replaces the details from the one before.
+- **Details that the Worker hasn't sent yet are lost if the Worker crashes.**
+  The next attempt receives the last details that reached the Temporal Service, so it can repeat some work.
+  Make the work idempotent.
+- **Details count against the [payload size limit](/troubleshooting/blob-size-limit-error#payload-size-limit), 2 MB by default.**
+  Every recorded Heartbeat writes its details again in full.
+  Keep them small, such as the index of the last item processed, and store larger data in your own storage with only a reference in the details.
+- **[Resetting an Activity](/activity-operations/reset) keeps its details** unless you clear them with `--clear-heartbeat-details`.
 
 ### Which Activities should Heartbeat?
 
@@ -281,6 +305,66 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
     title="Heartbeat Timeout periods" />
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/encyclopedia/retry-policies) dictates it.
+
+Set a Heartbeat Timeout and Heartbeat from the Activity Definition together:
+
+- **A Heartbeat Timeout with no Heartbeat calls** times out every attempt one Heartbeat Timeout after it starts.
+- **Heartbeat calls with no Heartbeat Timeout** still deliver Cancellations, but the Temporal Service detects a failed Worker only when the Start-To-Close Timeout is reached.
+
+The first Heartbeat Timeout of an attempt counts from when the Temporal Service records the attempt as started.
+That happens before the Worker receives the Activity Task, so delivering the task and starting the Activity code count against it.
+After that, the Temporal Service times out the attempt when one Heartbeat Timeout passes after the last Heartbeat it recorded.
+
+#### Choose a Heartbeat Timeout {/* #choose-a-heartbeat-timeout */}
+
+A Heartbeat Timeout weighs how quickly the Temporal Service detects a failed Worker against how much time each Heartbeat has to arrive.
+
+- **Detection time.**
+  If the Worker crashes, the attempt times out one Heartbeat Timeout after the last Heartbeat the Temporal Service recorded.
+  If the Activity code hangs while the Worker keeps running, the Worker still sends the code's last Heartbeat when the throttle interval ends.
+  The attempt then times out between one and about 1.8 Heartbeat Timeouts after the code's last Heartbeat call.
+- **Time for each Heartbeat to arrive.**
+  The Worker sends a Heartbeat when each [throttle interval](#throttling) ends, at 80% of the Heartbeat Timeout.
+  That Heartbeat has the remaining 20% of the timeout to reach the Temporal Service and be recorded, so about 2 seconds for a 10-second Heartbeat Timeout.
+  For a Heartbeat Timeout above 75 seconds, the throttle interval stays at 60 seconds, and a Heartbeat has the Heartbeat Timeout minus 60 seconds.
+
+A Heartbeat can arrive late even though the Worker is healthy and the Activity code Heartbeats on time.
+The attempt then times out while it's still working.
+Common causes:
+
+- **The Worker is short of CPU** for the number of Activities it runs at once, so it sends Heartbeats late.
+  Lower the Worker's maximum number of concurrent Activity executions, or add Workers.
+  See [Worker performance](/develop/worker-performance).
+- **Many Activities Heartbeat at the same time in one Workflow Execution.**
+  Each Heartbeat updates the Workflow Execution, and the Temporal Service applies updates to one Workflow Execution one at a time, so the Heartbeats wait for each other.
+  Run fewer of these Activities at once, or spread them over [Child Workflows](/child-workflows).
+- **The Temporal Service rejects Heartbeats** with `RESOURCE_EXHAUSTED` because a rate limit was reached.
+  See [NOT_FOUND on Activity heartbeat](/troubleshooting/request-failures#not_found-on-activity-heartbeat) for how to check.
+
+When Heartbeats regularly take close to the time they have, a longer Heartbeat Timeout gives them more room, at the cost of detecting a failed Worker later.
+
+Don't set a Heartbeat Timeout under one second.
+The Temporal Service checks a timeout that short only about once a second, so it doesn't detect a failed Worker any sooner, and the Activity sends many more Heartbeats.
+
+#### What happens after a Heartbeat Timeout {/* #after-a-heartbeat-timeout */}
+
+When the Heartbeat Timeout is reached, the attempt fails with a [Timeout Failure](/references/failures#timeout-failure) of type `HEARTBEAT`.
+The Temporal Service retries the Activity as its Retry Policy allows.
+The default Retry Policy has no limit on attempts, so an Activity whose Heartbeats keep arriving late is retried until its [Schedule-To-Close Timeout](#schedule-to-close-timeout), or indefinitely if it has none.
+Consider setting [Maximum Attempts](/encyclopedia/retry-policies#maximum-attempts) or a Schedule-To-Close Timeout for Activities that Heartbeat.
+
+- **The timed-out attempt can keep running.**
+  The Temporal Service doesn't contact the Worker.
+  The Worker learns that the attempt timed out from the response to its next Heartbeat, or when the Temporal Service rejects the attempt's result.
+  Until then, the timed-out attempt and the next attempt can run at the same time, so make the Activity idempotent, and end it when the SDK signals that it was cancelled.
+- **Retries don't appear in Event History.**
+  While the Activity is retried, the Web UI's Pending Activities view and `temporal workflow describe` show its attempt number, its last failure (`activity Heartbeat timeout`), and its last Heartbeat time and details.
+  Event History records only the final attempt, when the Activity closes.
+  See [Failures in Event History](/encyclopedia/application-failures#event-history).
+  If the Workflow Execution is terminated while the Activity waits for its next attempt, the Event History keeps no record of the timeouts.
+- **[Pausing](/activity-operations/pause) stops the check, not the deadline.**
+  A Paused Activity doesn't time out on its Heartbeat Timeout, but its deadline stays at its last recorded Heartbeat plus the Heartbeat Timeout.
+  If that time has passed when you Unpause it, the running attempt times out at once and the next attempt starts.
 
 #### What a Heartbeat Timeout of `0s` means {/* #heartbeat-timeout-zero */}
 
