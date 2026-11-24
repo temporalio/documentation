@@ -60,6 +60,9 @@ See the [CLI reference for `temporal activity unpause`](/cli/command-reference/a
 - **A Paused Activity can time out before you Unpause it.** The
   [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) isn't stopped or
   extended while Paused. Use [`update-options`](/activity-operations/update-options) to extend the timeout before Unpausing if needed.
-- **Unpause doesn't interrupt or duplicate an in-flight execution.** If an Activity without Heartbeat is still running
-  when you Unpause, it continues to completion. The Temporal Service doesn't schedule a concurrent execution. If the
-  in-flight execution fails, the next retry proceeds normally.
+- **Unpause doesn't interrupt or duplicate an in-flight execution, unless its Heartbeat deadline has passed.** If an
+  Activity without Heartbeat is still running when you Unpause, it continues to completion. The Temporal Service
+  doesn't schedule a concurrent execution. If the in-flight execution fails, the next retry proceeds normally. If the
+  Activity has a Heartbeat Timeout and its Heartbeat deadline passed while it was Paused, Unpause times out the running
+  attempt and schedules the next one, which can overlap the old attempt. See
+  [Pause doesn't move the Heartbeat deadline](/activity-operations/pause#important-considerations).

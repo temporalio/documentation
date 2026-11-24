@@ -234,9 +234,9 @@ Throttling allows the Worker to reduce network traffic and load on the Temporal 
 Throttling does not apply to the final Heartbeat message in the case of Activity Failure.
 If an Activity fails just after recording progress information in a Heartbeat message, that progress information will be available during the next retry attempt, provided that the Worker itself did not crash before delivering it to the Temporal Service.
 
-Because the Worker sends at most one Heartbeat per throttle interval, how often Activity code calls Heartbeat doesn't change how many Heartbeats reach the Temporal Service.
-The Heartbeat Timeout sets that rate.
-For any Heartbeat Timeout above 75 seconds, the throttle interval is the 60-second maximum, so each Activity sends about one Heartbeat a minute.
+Because the Worker sends at most one Heartbeat per throttle interval, calling Heartbeat more often than that doesn't send more Heartbeats to the Temporal Service.
+As long as Activity code calls Heartbeat at least once per throttle interval, the Heartbeat Timeout sets the rate.
+With the default Worker options, any Heartbeat Timeout above 75 seconds gets the 60-second maximum throttle interval, so each Activity sends at most about one Heartbeat a minute.
 On Temporal Cloud, each Heartbeat that reaches the Temporal Service is an [Action](/evaluate/cloud/actions#activity).
 
 Raising `maxHeartbeatThrottleInterval` sends fewer Heartbeats, but it has two costs.

@@ -566,7 +566,7 @@ Activities can handle cancellation gracefully and clean up resources.
 Completed work is not reprocessed, and Activities can move between Workers.
 
 The trade-offs to consider are that each heartbeat that reaches the Temporal Service adds a request and a write to the Workflow Execution.
-The SDK throttles heartbeats, so the heartbeat timeout sets how many are sent, not how often your code calls heartbeat.
+The SDK sends at most one heartbeat per throttle interval, so calling heartbeat more often than that doesn't send more.
 You must implement checkpointing logic and state management.
 You must handle partial reprocessing of the last checkpoint (idempotency).
 You need to balance the heartbeat timeout between detecting a failed Worker quickly and giving each heartbeat time to arrive.
@@ -585,7 +585,7 @@ Heartbeat details count against the 2 MB [payload size limit](/troubleshooting/b
 ## Best practices
 
 - **Set heartbeat timeout.** Configure to 2-3x the expected heartbeat interval.
-- **Heartbeat at regular intervals.** Call heartbeat at least once per throttle interval (80% of the heartbeat timeout). Calling more often adds no load, because the SDK sends at most one heartbeat per [throttle interval](/encyclopedia/detecting-activity-failures#throttling).
+- **Heartbeat at regular intervals.** Call heartbeat at least once per throttle interval (by default, 80% of the heartbeat timeout, up to 60 seconds). Calling more often adds no load, because the SDK sends at most one heartbeat per [throttle interval](/encyclopedia/detecting-activity-failures#throttling).
 - **Checkpoint strategically.** Save progress at meaningful boundaries (records, pages, chunks).
 - **Keep details small.** Store minimal state (IDs, offsets, counts), not full objects.
 - **Handle idempotency.** Ensure reprocessing the last checkpoint is safe.
