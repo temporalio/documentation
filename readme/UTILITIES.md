@@ -136,6 +136,36 @@ yarn report:sdk-duplication --topic workflows/continue-as-new   # one topic, per
 
 It always exits 0. This is a report, not a check.
 
+## callouts
+
+`bin/report-callouts.js` (run via `yarn report:callouts`) reports how `docs/` uses callouts: admonitions such as
+`:::note` and `:::caution[Title]`, and the `<ReleaseNoteHeader>` component. It counts admonitions by keyword and by
+keyword and title, and counts which `ReleaseNoteHeader` props pages set and which release stage each one renders. Use
+it to find every instance of a callout before changing how it renders, and to confirm a migration moved all of them.
+
+Counts are source-level: an admonition in a partial counts once, however many pages import it. Callouts inside fenced
+code blocks and comments aren't counted. Pages under `docs/internal/` aren't counted either, because they exist to
+show how callouts render. Update them by hand when a migration changes callout syntax.
+
+The report reads only `docs/`. Two components in `src/` render admonitions through `<Admonition>` and need checking by
+hand when admonition styles change:
+`src/components/elements/Tables/JsonTable.js` and `src/components/Demos/ServerlessWorker/ServerlessWorkerDemo.js`.
+
+```bash
+yarn report:callouts                                         # the working tree
+yarn report:callouts --ref <ref>                             # docs/ at a commit, without a checkout
+yarn report:callouts --base origin/main                      # what this branch changes
+yarn report:callouts --where 'caution[Currently in: Pre-release]'   # file:line of every match
+```
+
+Add `--json` to any of them. `--where` takes a keyword (`note`), a keyword and title (`info[TLDR]`, matched without
+regard to case), or `ReleaseNoteHeader`. It's a report, not a check: it always exits 0 unless it can't run, and nothing
+is stored.
+
+The unlisted page at `/internal/callouts` (`docs/internal/callouts.mdx`) renders each callout type and syntax form, and
+`tests/playwright/callouts.spec.ts` screenshots it in both color modes at desktop and phone widths. See
+[visual-comparison](#visual-comparison).
+
 ## validate-redirects
 
 `bin/validate-redirects.js` (run via `yarn check:redirects`) checks the `redirects` in `vercel.json` for rules that
@@ -236,6 +266,11 @@ The `visual-comparison` label triggers the visual comparison workflow on the PR.
 2. Takes screenshots of every page of the docs. This is done in parallel with four shards.
 3. Compares the screenshots against a baseline, which is taken by the `screenshot-capture` workflow weekly on Sunday.
 4. Flags any significant deviation from the expected visual result using `playwright` snapshot testing.
+
+Pages left out of the sitemap, such as unlisted pages, aren't in step 2. `tests/playwright/callouts.spec.ts` covers the
+unlisted callout fixture at `/internal/callouts` separately, in light and dark mode at desktop and phone widths, so a
+change to callout styles shows up as four focused screenshots. A new spec has no baseline until Screenshot Capture runs
+on `main` after it merges. Run that workflow by hand when you need the baseline sooner.
 
 This is useful when you make a change to the docs site that touches the `yarn.lock` file, since changes in the
 dependencies may alter the CSS load order and cause unexpected changes even if you didn't make any specific CSS changes.

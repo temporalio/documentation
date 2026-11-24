@@ -1,0 +1,220 @@
+---
+id: callouts
+title: Callout rendering reference
+slug: /internal/callouts
+unlisted: true
+description:
+  Each admonition keyword and ReleaseNoteHeader variant that docs pages use, on one page, for checking how callouts
+  render in both color modes.
+llm_exclude:
+  This page is a rendering fixture for the documentation site's callout styles and has no product information.
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+This page renders each admonition keyword and `ReleaseNoteHeader` variant that docs pages use, in the syntax forms they
+use. Callout text is taken from real pages, except the nested example, which describes itself. The page is a fixture for
+`tests/playwright/callouts.spec.ts` and for reviewing callout styles. It isn't in the sidebar or the sitemap.
+
+To find every use of a callout across the docs, run `yarn report:callouts`.
+
+## Admonitions
+
+:::note
+
+Child Workflows do not carry over when the Parent uses [Continue-As-New](/workflow-execution/continue-as-new).
+
+:::
+
+:::info
+
+For metrics emitted by Temporal Cloud, see Cloud metrics. For metrics emitted by a self-hosted Temporal Service, see
+Temporal Service metrics.
+
+:::
+
+:::important
+
+`temporal_cloud_v1_billable_action_count` is a usage estimate, not your bill. It doesn't account for storage, support
+fees, pricing-tier calculations, some features (TRUs, Fairness), or rounding.
+
+:::
+
+:::tip
+
+We strongly recommend setting a Start-To-Close Timeout.
+
+:::
+
+:::caution
+
+This section is for a deprecated Worker Versioning API.
+
+:::
+
+:::warning
+
+When you start this Worker, it won't receive any Tasks until you set up assignment rules.
+
+:::
+
+:::danger
+
+Support for the experimental Worker Versioning method before 2025 was scheduled for removal from Temporal Server in
+March 2026.
+
+:::
+
+## Admonitions with titles
+
+:::info[TLDR]
+
+Used to **rate limit outbound requests to a downstream service**. Use this to limit the rate of requests, such as to a
+third-party API, or payment processor, or other external system, that concurrent Workflows would otherwise exceed.
+
+:::
+
+:::caution[Currently in: Pre-release]
+
+This feature guide includes pre-release APIs. These APIs are experimental and subject to change.
+
+:::
+
+:::note[Query availability]
+
+Querying a Workflow from an Operation handler is available in Temporal Cloud, and as a pre-release on a self-hosted
+Temporal Service in Server v1.33.0.
+
+:::
+
+A title can hold inline code:
+
+:::note Why `masterClusterName` and `clusterInformation` differ between the two files
+
+Each Temporal Service starts knowing only about itself, so each file names its own Temporal Service. You add the other
+Temporal Service in Step 3 with `temporal operator cluster upsert`, not in the configuration file.
+
+:::
+
+A title can also follow the keyword after a space:
+
+:::tip Prerequisites
+
+- Worker Versioning is enabled and the affected Workflows are pinned.
+- Your Worker fleet uses blue-green or rainbow deployments, not rolling upgrades.
+- You can run the `temporal` CLI against the affected Namespace.
+
+:::
+
+## Admonitions with longer content
+
+:::caution
+
+`NewPayloadHTTPHandler` runs the full encode-store-encode and decode-retrieve-decode pipeline. Do not use it as a target
+for a remote Data Converter or remote codec on your Workers. For remote codecs, use `NewPayloadCodecHTTPHandler`
+separately. If you need both, set up `NewPayloadHTTPHandler` for the Web UI and CLI alongside
+`NewPayloadCodecHTTPHandler` for your Workers, and configure both with the same codecs.
+
+:::
+
+:::tip Setting Schedules with Strings
+
+Temporal Workflow Schedule Cron strings follow this format:
+
+```
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+* * * * *
+```
+
+:::
+
+An admonition inside a list item:
+
+- **Invocation deadline > longest Activity runtime + shutdown deadline buffer.** Set on the compute provider to give
+  each invocation enough total runtime.
+
+  :::tip
+
+  If your longest-running Activity runs longer than half the maximum invocation deadline, this constraint may be
+  difficult or impossible to meet. In this case, use Activity Heartbeats to record the state of the Activity execution
+  so that the next retry can pick up where it left off.
+
+  :::
+
+::::warning
+
+An admonition can hold another admonition when the outer one uses a longer fence.
+
+:::note
+
+The inner callout renders inside the outer one.
+
+:::
+
+::::
+
+## Release stages
+
+Two headers in a row:
+
+<ReleaseNoteHeader type="publicPreview">
+  APIs and configuration may change before General Availability. Join the [#large-payloads Slack
+  channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
+</ReleaseNoteHeader>
+
+<ReleaseNoteHeader type="prerelease">
+  Workflow Pause is in Pre-release. APIs and behavior may change before the stable release.
+</ReleaseNoteHeader>
+
+A self-closing header shows the default text:
+
+<ReleaseNoteHeader type="publicPreview" />
+
+A header can take its stage from `featureName`. Here `projects` maps to Pre-release in `featureReleaseTypes.js`:
+
+<ReleaseNoteHeader featureName="projects" />
+
+A header with `languages` and `guidePath` links each SDK to its guide:
+
+<ReleaseNoteHeader
+  type="prerelease"
+  languages={['Go', 'Java', 'Python', 'TypeScript', '.NET']}
+  guidePath="nexus/feature-guide"
+>
+  APIs are experimental and may be subject to backwards-incompatible changes.
+</ReleaseNoteHeader>
+
+A header with `languages` and no `guidePath` shows the SDKs without links:
+
+<ReleaseNoteHeader type="publicPreview" languages={['Go', 'Java', 'Python', '.NET']}>
+  Eager Workflow Start is enabled for all Temporal Cloud users and self-hosted Temporal Server 1.29.0+.
+</ReleaseNoteHeader>
+
+## Expandable details
+
+Docusaurus renders `<details>` with the same Infima classes admonitions used to have, so it's here to catch style
+changes that leak into it.
+
+<details>
+<summary>More on memory, state, and authority</summary>
+
+- **Roles, not storage types.** The same data can play more than one role. An order row is domain state, owned by your
+  database. Once the agent looks it up, it is part of working memory, and a summary the agent keeps of it is long-term
+  memory. When they disagree, the order row still wins.
+
+</details>
+
+A page can restyle its own `<details>`. This one uses the class from the Temporal SDKs page, which has no box:
+
+<details className="sdk-walkthrough-details">
+<summary>How do the Temporal SDKs work with the Temporal Service?</summary>
+
+The Temporal Service functions more as a choreographer than a conductor. Rather than directly assigning tasks to
+Workers, the Temporal Service arranges the Tasks into a Task Queue while Workers poll the Task Queue.
+
+</details>
