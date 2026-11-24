@@ -9,6 +9,7 @@ import Link from '@docusaurus/Link';
 import SdkSvg from '../../SdkSvgs/SdkSvg';
 import { SDKS } from '../../../../constants/sdks';
 import sdkVersions from '../../../../data/sdk-versions.json';
+import { isExternalHref } from '@site/src/utils/links';
 import styles from './sdk-overview-cards.module.css';
 
 export const SdkOverviewCards = () => {
@@ -35,8 +36,8 @@ export const SdkOverviewCards = () => {
               <Link
                 to={apiReferenceHref}
                 className={styles.link}
-                target="_blank"
-                rel="noopener noreferrer"
+                target={isExternalHref(apiReferenceHref) ? '_blank' : undefined}
+                rel={isExternalHref(apiReferenceHref) ? 'noopener noreferrer' : undefined}
               >
                 API reference
               </Link>

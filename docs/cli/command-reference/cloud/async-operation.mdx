@@ -3,7 +3,7 @@ id: async-operation
 title: Temporal CLI cloud async-operation command reference
 sidebar_label: async-operation
 description: Async Operation Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - async-operations
 ---

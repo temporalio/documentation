@@ -12,7 +12,7 @@ tags:
 
 By default, Temporal Cloud resources use dynamic IP addresses that may change at any time. These IP addresses may be any IPs within the IP ranges published by the relevant cloud provider.
 
-If you need to limit outbound access from your client network, we recommend using [AWS PrivateLink or GCP Private Services Connect](/cloud/connectivity#private-network-connectivity-for-namespaces). Alternatively, you can enable [Stable IPs](#stable-ip-addresses) for your Namespace.
+If you need to limit outbound access from your client network, we recommend using [AWS PrivateLink, GCP Private Service Connect, or Azure Private Link](/cloud/connectivity#private-network-connectivity-for-namespaces). Alternatively, you can enable [Stable IPs](#stable-ip-addresses) for your Namespace.
 
 :::warning Do not rely on default dynamic public IP addresses
 
@@ -37,13 +37,13 @@ Stable IPs is an optional Namespace setting that provides a fixed, published set
 
 ### When to use Stable IPs
 
-Use Stable IPs when your security requirements mandate IP-based allowlisting for egress traffic, and you cannot use AWS PrivateLink or GCP Private Services Connect.
+Use Stable IPs when your security requirements mandate IP-based allowlisting for egress traffic, and you cannot use AWS PrivateLink, GCP Private Service Connect, or Azure Private Link.
 
 **Recommended options for secure connectivity** (in order):
 
-1. **AWS PrivateLink or GCP Private Services Connect** - Keep traffic within your cloud provider's private network
+1. **AWS PrivateLink, GCP Private Service Connect, or Azure Private Link** - Keep traffic within your cloud provider's private network
 2. **Stable IPs** - Use published, stable IP ranges for firewall allowlisting
-3. **Cloud provider IP ranges** - Allowlist all AWS or GCP IP ranges (overly permissive)
+3. **Cloud provider IP ranges** - Allowlist all AWS, GCP, or Azure IP ranges (overly permissive)
 
 Stable IPs provide enterprise-grade compliance for organizations that require IP-based security controls but cannot use private network connectivity options.
 
@@ -71,7 +71,9 @@ If you attach a public Connectivity Rule with Stable IPs to a Namespace that is 
 
 ### How to enable Stable IPs
 
-Stable IPs is a setting on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). You enable it by creating (or updating) a public Connectivity Rule with Stable IPs enabled, then attaching that rule to the Namespaces that should resolve to Stable IPs.
+Stable IPs is a setting on a public [Connectivity Rule](/cloud/connectivity#connectivity-rules). You enable it by creating a public Connectivity Rule with Stable IPs enabled, then attaching that rule to the Namespaces that should resolve to Stable IPs.
+
+You can have 1 public Connectivity Rule per Project, or per Account if Projects aren't enabled. Connectivity Rules can't be updated in place, so if the Namespace's Project already has a public rule without Stable IPs, delete that rule and create a new one with Stable IPs enabled. A public rule in another Project can stay. See [Connectivity Rule limits](/evaluate/cloud/limits#connectivity-rules).
 
 :::note Create Stable IPs rules with the Temporal CLI
 
@@ -91,7 +93,7 @@ After the rule exists, attach it to a Namespace with [`temporal cloud namespace 
 
 To enable Stable IPs:
 
-1. Create a public Connectivity Rule with Stable IPs enabled: `temporal cloud connectivity public create --enable-stable-ips`. Only one public Connectivity Rule exists per account, so if you already have one without Stable IPs enabled, delete and recreate it. See [How to enable Stable IPs with curl](#how-to-enable-stable-ips-with-curl) for a Cloud Ops API alternative.
+1. Create a public Connectivity Rule with Stable IPs enabled: `temporal cloud connectivity public create --enable-stable-ips`. If the Namespace's Project already has a public rule without Stable IPs, delete that rule first. To use the Cloud Ops API instead, see [How to enable Stable IPs with curl](#how-to-enable-stable-ips-with-curl).
 2. Attach the rule to your Namespace: `temporal cloud namespace connectivity attach --namespace <namespace>.<account> --connectivity-rule-id <rule-id>`.
 3. Retrieve the list of Stable IPs from the [public JSON file](/cloud/connectivity/ip-addresses#how-to-view-stable-ip-ranges).
 4. Configure your firewall to allowlist the Stable IP ranges for your Namespace's region.
@@ -127,7 +129,7 @@ H_AUTH="Authorization: Bearer $TEMPORAL_CLOUD_OPS_API_KEY"
 
 **Step 1. Create a public Connectivity Rule with Stable IPs enabled.**
 
-Only one public Connectivity Rule exists per account. If your account already has one, update or recreate that rule with Stable IPs enabled rather than creating a second.
+If the Namespace's Project already has a public rule without Stable IPs, delete that rule before you create this one.
 
 Creating the rule returns both the new rule's ID and an async operation that tracks activation:
 
@@ -163,7 +165,7 @@ curl -sS "https://saas-api.tmprl.cloud/cloud/connectivity-rules" \
   jq '.connectivityRules[] | {id, state, spec}'
 ```
 
-The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`. This also shows you whether the account already has a public rule, which matters because only one is allowed.
+The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`.
 
 **Step 2. Attach the rule to the Namespace.**
 
@@ -231,7 +233,7 @@ PROTO_FLAGS=(-import-path ./api-cloud -import-path ./proto -proto temporal/api/c
 
 **Step 1. Create a public Connectivity Rule with Stable IPs enabled.**
 
-Only one public Connectivity Rule exists per account. If your account already has one, update or recreate that rule with Stable IPs enabled rather than creating a second.
+If the Namespace's Project already has a public rule without Stable IPs, delete that rule before you create this one.
 
 Creating the rule returns both the new rule's ID and an async operation that tracks activation:
 
@@ -272,7 +274,7 @@ grpcurl "${PROTO_FLAGS[@]}" "${GRPC_HEADERS[@]}" \
   jq '.connectivityRules[] | {id, state, spec}'
 ```
 
-The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`. This also shows you whether the account already has a public rule, which matters because only one is allowed.
+The rule is ready when its `state` is `RESOURCE_STATE_ACTIVE`.
 
 **Step 2. Attach the rule to the Namespace.**
 
@@ -416,20 +418,20 @@ Two things do not change in this migration:
 **Prerequisites:**
 
 - Note your existing private (PrivateLink) Connectivity Rule ID — you'll keep it attached during the overlap window.
-- Check whether your account already has a public Connectivity Rule. Only one is allowed per account; if one exists without Stable IPs enabled, you'll need to delete and recreate it (see [Permissions and limits](/cloud/connectivity#permissions-and-limits)).
+- Check whether the Namespace's Project already has a public Connectivity Rule. If it has one without Stable IPs, you replace it in step 2.
 - Confirm that the VPCs and security groups that host your Workers and Temporal Clients allow egress to the Stable IP ranges on port `443`. If your egress is currently locked down to the PrivateLink VPC endpoint, you must expand it first.
 
 **Steps:**
 
 1. **Allowlist Stable IPs in your firewall first.** Fetch the IP ranges for your Namespace's region from [https://docs.temporal.io/json/stable-ip-ranges-prod.json](/json/stable-ip-ranges-prod.json) and add them to your egress allowlist before changing anything else. If you skip this step, traffic will be lost.
 
-2. **Create the account's public Connectivity Rule with Stable IPs enabled.** Use the Temporal CLI:
+2. **Create a public Connectivity Rule with Stable IPs enabled in the Namespace's Project.** Use the Temporal CLI:
 
    ```command
    temporal cloud connectivity public create --enable-stable-ips
    ```
 
-   If you already have a public Connectivity Rule without Stable IPs, delete and recreate it — there is no in-place update flag, and creating a second public rule returns an error. Wait for the rule to reach `ACTIVE` before continuing.
+   If that Project already has a public Connectivity Rule without Stable IPs, delete that rule before you run this command. There is no in-place update flag. Wait for the rule to reach `ACTIVE` before continuing.
 
 3. **Attach the public rule to the Namespace.** Keep the existing private rule attached during the overlap window, then add the public rule:
 
@@ -461,7 +463,7 @@ Two things do not change in this migration:
 
 Once a region's Stable IP ranges are published, Temporal avoids adding new ranges to that region's list, and Temporal has no plans to ever remove a published range.
 
-If an unforeseen event requires Temporal to add or remove a region's published ranges, Temporal will give at least three months, and preferably six months, advance notice through targeted communication to accounts that have Stable IPs enabled. Changes to IP Ranges are publicly announced in the [Temporal Cloud changelog](https://temporal.io/change-log).
+If an unforeseen event requires Temporal to add or remove a region's published ranges, Temporal follows the [Temporal Cloud deprecation policy](/cloud/deprecation-policy). Changes to IP Ranges are publicly announced in the [Temporal Cloud changelog](https://temporal.io/change-log).
 
 Temporal never redirects Namespace Endpoints with Stable IPs to IP addresses that are not on the published list.
 

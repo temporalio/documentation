@@ -4,3 +4,4 @@ export * from './Cookbook'
 export * from './Demos'
 export * from './Quickstart'
 export * from './ToolTipTerm';
+export * from './RoleCheck';

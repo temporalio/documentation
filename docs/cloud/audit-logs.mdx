@@ -1,7 +1,7 @@
 ---
 id: audit-logs
 title: Audit Logs
-description: Audit Logs in Temporal Cloud provide forensic information, integrating with a data streaming service for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
+description: See who did what and when in the Temporal Cloud control plane, then stream those events to AWS Kinesis or GCP Pub/Sub for compliance.
 slug: /cloud/audit-logs
 toc_max_heading_level: 4
 tags:
@@ -10,7 +10,7 @@ tags:
   - Temporal Cloud
 ---
 
-Audit Logs is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information for a variety of operations in the Temporal Cloud Control Plane.
+Audit Logs is a feature of [Temporal Cloud](/evaluate/cloud) that provides forensic access information for a variety of operations in the Temporal Cloud Control Plane.
 
 Audit Logs answers "who, when, and what" questions about Temporal Cloud resources.
 These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
@@ -19,7 +19,7 @@ You need the Account Owner or Global Administrator role to view Audit Logs via U
 
 :::info
 
-Audit Logs do NOT capture data plane events, like Workflow Start, Workflow Terminate, Schedule Create, etc.
+Audit Logs do not capture data plane events, such as Workflow Start, Workflow Terminate, and Schedule Create.
 Instead, explore the [Export](/cloud/export) feature, which does let you send closed Workflow Histories to external storage.
 
 :::
@@ -106,28 +106,43 @@ The `operation` field can contain the following event values:
 
 ### Audit log format
 
-:::info DEPRECATION NOTICE
+The audit log schema is defined in Protocol Buffers (protobuf).
+The public [`LogRecord` and `Principal` definitions](https://github.com/temporalio/cloud-api/blob/main/temporal/api/cloud/auditlog/v1/message.proto) specify the fields and types.
+The format you receive depends on how you access the logs:
 
-The `request_id` field is deprecated and is planned for removal on or after November 1 2026. Use `async_operation_id` instead.
+| Source | Format | Field names | Timestamp representation |
+| --- | --- | --- | --- |
+| AWS Kinesis or GCP Pub/Sub sink | Newline-separated JSON objects | `snake_case`, such as `log_id` | RFC 3339 string in `emit_time` |
+| Cloud Ops API over HTTP | JSON response containing a `logs` array | `camelCase`, such as `logId` | RFC 3339 string in `emitTime` |
+| Cloud Ops API over gRPC | Protobuf response containing repeated `LogRecord` messages | Defined by the generated client for your language | Protobuf `Timestamp` |
+| Temporal Cloud UI download | JSON array of the UI's protobuf objects | `camelCase`, such as `logId` | Object containing `seconds` and `nanos` in `emitTime` |
 
-:::
+For sink delivery and HTTP responses, Temporal converts protobuf messages to JSON internally using [ProtoJSON](https://protobuf.dev/programming-guides/json/).
+The sink serializer uses `protojson` with `UseProtoNames: true`, which preserves the original protobuf field names in `snake_case`.
+The HTTP API uses ProtoJSON's default `camelCase` field names; see the [`GetAuditLogs` HTTP reference](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/account/GET/cloud/audit-logs) and its [OpenAPI schema](https://saas-api.tmprl.cloud/spec.json).
+The UI download serializes the browser's protobuf objects directly, so its JSON representation differs from both sink delivery and the HTTP API.
 
-Audit Logs use the following JSON format:
+#### Consume sink JSON
 
-```json
-{
-  "operation":          // Operation that was performed
-  "principal":          // Information about who initiated the operation
-  "raw_details":        // Details about the request
-  "x_forwarded_for":    // The IP address(es) making the call
-  "emit_time":          // Time the operation was recorded
-  "log_id":             // Unique ID of the log entry
-  "async_operation_id": // Request or async operation identifier for correlation
-  "request_id":         // DEPRECATED, use async_operation_id
-  "status":             // Status, such as OK or ERROR
-  "version":            // Version of the log entry
-}
-```
+AWS Kinesis and GCP Pub/Sub use the same audit log JSON format.
+Each stream message can contain multiple events separated by newlines.
+Parse each line as a separate JSON object.
+
+The following table uses the sink's field names.
+Fields with default values can be omitted.
+The `raw_details` object contains request details whose keys depend on the operation; those keys are not renamed by the sink serializer.
+
+| Field | JSON type | Description |
+| --- | --- | --- |
+| `operation` | String | Operation that was performed. |
+| `principal` | Object | Who initiated the operation, with `type`, `id`, `name`, and `api_key_id` fields. |
+| `raw_details` | Object | Details about the request. |
+| `x_forwarded_for` | String | IP addresses making the call, in `X-Forwarded-For` format. |
+| `emit_time` | String | Time the operation was recorded, in RFC 3339 format. |
+| `log_id` | String | Unique identifier of the log entry. |
+| `async_operation_id` | String | Request or async operation identifier for correlation. |
+| `status` | String | Outcome of the API call, such as `OK` or `ERROR`. |
+| `version` | Integer | Internal version of the log entry. |
 
 #### How to interpret the status
 
@@ -155,51 +170,29 @@ Temporal provides the caller IP address in that format to allow customers to ide
 
 ### Example of an audit log
 
+The following example shows one JSON event delivered to an AWS Kinesis or GCP Pub/Sub sink.
+It uses `snake_case` field names and an RFC 3339 timestamp.
+
 ```json
-[
-  {
-    "operation": "UserLogin",
-    "status": "OK",
-    "version": 2,
-    "logId": "edb3aa3e-78c4-48fc-9c7e-2078c6989775",
-    "xForwardedFor": "10.1.2.3",
-    "asyncOperationId": "",
-    "emitTime": {
-      "$typeName": "google.protobuf.Timestamp",
-      "seconds": 1759436617,
-      "nanos": 48000000
-    },
-    "principal": {
-      "type": "user",
-      "id": "",
-      "name": "user@email.com",
-      "apiKeyId": ""
-    }
+{
+  "emit_time": "2025-10-02T20:23:37.048Z",
+  "operation": "UserLogin",
+  "status": "OK",
+  "version": 2,
+  "log_id": "edb3aa3e-78c4-48fc-9c7e-2078c6989775",
+  "principal": {
+    "type": "user",
+    "name": "user@example.com"
   },
-  {
-    "operation": "UserLogin",
-    "status": "OK",
-    "version": 2,
-    "logId": "5fe6a81e-8d3c-4f4d-88a5-52db864c9ea5",
-    "xForwardedFor": "10.1.2.3",
-    "asyncOperationId": "",
-    "emitTime": {
-      "seconds": 1759178573,
-      "nanos": 671000000
-    },
-    "principal": {
-      "type": "user",
-      "id": "",
-      "name": "user@email.com",
-      "apiKeyId": ""
-    }
-  }
-]
+  "x_forwarded_for": "10.1.2.3"
+}
 ```
 
 ## How to configure an audit log integration {/* #configure-audit-logs */}
 
 Audit Logs can be configured in AWS Kinesis or GCP Pub/Sub.
+All Azure audit events are included in existing Audit Logs, including AWS Kinesis and GCP Pub/Sub sinks.
+An Azure-native streaming sink is not available during the [Azure public preview](/evaluate/cloud/regions#azure-service-regions).
 
 - [AWS Kinesis Instructions](/cloud/audit-logs-aws)
 - [GCP Pub/Sub Instructions](/cloud/audit-logs-gcp)
@@ -238,7 +231,9 @@ An Audit Log can be viewed in the Temporal Cloud UI.
 1. In the Temporal Cloud UI, select **Settings**.
 1. On the **Settings** page, select **Audit Logs**.
 
-Up to 1,000 events can be downloaded from the Audit Log UI to a local file.
+Up to 1,000 events can be downloaded from the Audit Log UI to a local JSON file.
+The download contains an array with `camelCase` field names and `emitTime` objects containing `seconds` and `nanos`.
+See [Audit log format](#audit-log-format) to compare the download with sink delivery and Cloud Ops API responses.
 
 ## Access an audit log via API {/* #audit-log-api */}
 
@@ -246,6 +241,9 @@ An Audit Log can be accessed using the [Temporal Cloud Ops API](/ops). Use the A
 an Audit Log if you wish to make dashboards for viewing an Audit Log outside of Temporal Cloud.
 If your goal is to export an Audit Log, it is better to use an Audit Log sink and capture each 
 entry as it is generated.
+
+The gRPC API returns protobuf messages, and the HTTP API returns JSON with `camelCase` field names.
+See [Audit log format](#audit-log-format) for the differences between these representations.
 
 Audit Logs are accessible for the past 30 days using the API.
 

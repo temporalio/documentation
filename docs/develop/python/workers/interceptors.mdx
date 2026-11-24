@@ -1,6 +1,6 @@
 ---
 id: interceptors
-title: Interceptors - Python SDK
+title: Interceptors
 sidebar_label: Interceptors
 description:
   Implement Interceptors in the Temporal Python SDK to manage inbound and outbound SDK calls, enhance tracing, and add
@@ -28,7 +28,7 @@ Concretely, there are five categories of inbound and outbound calls that you can
 
 | | [Outbound Client](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) | [Inbound Workflow](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html) | [Outbound Workflow](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html) | [Inbound Activity](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) | [Outbound Activity](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html) |
 | --- | --- | --- | --- | --- | --- |
-| **Description** | Wraps calls from your application to the Temporal Client to start a Workflow or send [Messages](/encyclopedia/workflow-message-passing/) to it | Wraps calls arriving into a [Workflow Execution](/workflow-execution), such as executing the Workflow, handling [Messages](/encyclopedia/workflow-message-passing/) | Wraps calls a [Workflow](/workflow-definition) makes to the SDK, such as scheduling [Activities](/activities), starting [Child Workflows](/child-workflows), and invoking [Nexus Operations](/nexus) | Wraps calls arriving into an [Activity Execution](/activity-execution) | Wraps calls an [Activity](/activities) makes to the SDK, such as sending [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) and reading Activity info |
+| **Description** | Wraps calls from your application to the Temporal Client to start a Workflow or send [Messages](/encyclopedia/workflow-message-passing) to it | Wraps calls arriving into a [Workflow Execution](/workflow-execution), such as executing the Workflow, handling [Messages](/encyclopedia/workflow-message-passing) | Wraps calls a [Workflow](/workflow-definition) makes to the SDK, such as scheduling [Activities](/activities), starting [Child Workflows](/child-workflows), and invoking [Nexus Operations](/nexus) | Wraps calls arriving into an [Activity Execution](/activity-execution) | Wraps calls an [Activity](/activities) makes to the SDK, such as sending [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) and reading Activity info |
 | **Runs on** | Client | Worker (Workflow sandbox) | Worker (Workflow sandbox) | Worker (Activity context) | Worker (Activity context) |
 | **Example methods** | `start_workflow()`, `signal_workflow()`, `list_workflows()` | `execute_workflow()`, `handle_query()`, `handle_signal()`, `handle_update_handler()` | `start_activity()`, `start_child_workflow()`, `signal_child_workflow()`, `start_nexus_operation()` | `execute_activity()` | `info()`, `heartbeat()` |
 
@@ -56,12 +56,15 @@ request and response data.
 Pass interceptors in the `interceptors` argument of `Client.connect()`. Client interceptors modify outbound calls such
 as starting and signaling Workflows.
 
-```python
+<!--SNIPSTART python-interceptors-register-client-->
+[python-sandbox/workers/interceptors/register.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/interceptors/register.py)
+```py
 client = await Client.connect(
     "localhost:7233",
     interceptors=[TracingInterceptor()],
 )
 ```
+<!--SNIPEND-->
 
 The `interceptors` list can contain multiple interceptors.
 In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
@@ -75,14 +78,17 @@ If you're building a reusable library or want to bundle interceptors with other 
 If your interceptor doesn't affect the Client, you can pass interceptors in the `interceptors` argument of `Worker()`.
 Worker interceptors modify inbound and outbound Workflow and Activity calls.
 
-```python
+<!--SNIPSTART python-interceptors-register-worker-->
+[python-sandbox/workers/interceptors/register.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/interceptors/register.py)
+```py
 worker = Worker(
     client,
     task_queue="my-task-queue",
     interceptors=[SomeWorkerInterceptor()],
-    # ...
+    workflows=[GreetingWorkflow],
 )
 ```
+<!--SNIPEND-->
 
 :::note
 
@@ -108,7 +114,9 @@ subset of outbound Client calls that you wish to modify.
 This example implements an Interceptor on outbound Client calls that sets a certain key in the outbound `headers` field.
 A User ID is context-propagated by being sent in a header field with outbound requests:
 
-```python
+<!--SNIPSTART python-interceptors-context-propagation-->
+[python-sandbox/workers/interceptors/context_propagation.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/interceptors/context_propagation.py)
+```py
 class ContextPropagationInterceptor(
     temporalio.client.Interceptor, temporalio.worker.Interceptor
 ):
@@ -152,6 +160,7 @@ class _ContextPropagationClientOutboundInterceptor(
         set_header_from_context(input, self._payload_converter)
         return await super().start_workflow(input)
 ```
+<!--SNIPEND-->
 
 It often happens that your Worker and Client interceptors will share code because they implement closely related logic.
 In the Python SDK, you will typically want to create an interceptor class that inherits from _both_ `client.Interceptor`
@@ -174,15 +183,20 @@ configure interceptions of Activity and Workflow calls, respectively. `intercept
 This example demonstrates using an interceptor to measure [Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) and Schedule-To-Close latency.
 Notice how the interceptor wraps the call: it records Schedule-To-Start before `execute_activity`, then records Schedule-To-Close after it completes:
 
-```python
+<!--SNIPSTART python-interceptors-activity-metrics-->
+[python-sandbox/workers/interceptors/activity_metrics.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/interceptors/activity_metrics.py)
+```py
 from datetime import datetime, timezone
 from temporalio import activity
+from temporalio.client import Client
 from temporalio.worker import (
     ActivityInboundInterceptor,
     ExecuteActivityInput,
     Interceptor,
     Worker,
 )
+
+from interceptors.workflows import GreetingWorkflow, compose_greeting
 
 class SimpleWorkerInterceptor(Interceptor):
     def intercept_activity(
@@ -218,15 +232,20 @@ class ActivityMetricsInterceptor(ActivityInboundInterceptor):
 
         return result
 
-client = await Client.connect(
-    "localhost:7233",
-)
-worker = Worker(
-    client,
-    interceptors=[SimpleWorkerInterceptor()],
-    # ...
-)
+async def main():
+    client = await Client.connect(
+        "localhost:7233",
+    )
+    worker = Worker(
+        client,
+        task_queue="my-task-queue",
+        workflows=[GreetingWorkflow],
+        activities=[compose_greeting],
+        interceptors=[SimpleWorkerInterceptor()],
+    )
+    await worker.run()
 ```
+<!--SNIPEND-->
 
 The `workflow_interceptor_class` returns a `WorkflowInboundInterceptor` that works similarly to
 `ActivityInboundInterceptor`.

@@ -1,0 +1,4 @@
+{
+  "comment": "Redirect rules in vercel.json that bin/validate-redirects.js flags, and that we have decided to leave as they are. Each entry is a check name plus a rule source. An empty note means the entry has not been reviewed yet; either fix the rule or fill in the note explaining why it stays. Regenerate with: node bin/validate-redirects.js --update-baseline",
+  "exceptions": []
+}

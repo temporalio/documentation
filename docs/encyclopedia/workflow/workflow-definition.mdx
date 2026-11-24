@@ -181,6 +181,20 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
+### Workflow parameters {/* #workflow-parameters */}
+
+A Workflow Definition can accept more than one parameter, but give it a single parameter instead: an object, such as a `dataclass` in Python, a `struct` in Go, or a class in Java and .NET.
+Put all input fields on that object.
+
+- **You can add fields without breaking existing Workflows.**
+  Adding an optional field to the object doesn't change the Workflow Definition's signature, so Workflow Executions that are already running keep working.
+  Adding, removing, or retyping a separate parameter changes the signature.
+- **Type-safe Client calls need a single parameter.**
+  In several SDKs, the type-safe forms of starting a Workflow only accept a single argument.
+  With multiple parameters, you fall back to starting the Workflow by Workflow Type name without type checking.
+- **The Web UI sends one argument.**
+  You can't start a multi-parameter Workflow from the Web UI. See [Pass input from the Web UI](/web-ui#input).
+
 ### Deterministic constraints {/* #deterministic-constraints */}
 
 A critical aspect of developing Workflow Definitions is ensuring that they are deterministic.
@@ -189,13 +203,14 @@ Some changes to those API calls are safe to make.
 
 :::tip Note on determinism
 
-Workflow code must be deterministic to support replay. To handle non-deterministic operations like API calls, LLM/AI invocations, database queries, and other external interactions, put them in Activities. Activities execute outside the replay path and are automatically retried so they don't cause non-determinism errors.
+A Workflow Definition must be deterministic to support replay. To handle non-deterministic operations like API calls, LLM/AI invocations, database queries, and other external interactions, put them in Activities. Activities execute outside the replay path and are automatically retried so they don't cause non-determinism errors.
 
 :::
 
 For example, you can change:
 
-- The input parameters, return values, and execution timeouts of Child Workflows and Activities
+- The input parameters, return values, and execution timeouts of Child Workflows and Activities, and the Retry Policy
+  of an Activity. See [Changing Activity arguments and options](#activity-arguments-and-options).
   - However, it is not safe to change the types or IDs of Child Workflows or Activities
 - The input parameters used to Signal an external Workflow
 - The duration of Timers (although changing them to 0 is not safe in all SDKs)
@@ -220,7 +235,7 @@ More formally, the use of certain Workflow APIs in the function is what generate
 Commands tell the Temporal Service which Events to create and add to the Workflow Execution's [Event History](/workflow-execution/event#event-history).
 When the Workflow's code [replays](/workflow-execution#replay), the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that matches that command, then the Execution progresses.
-See [Event History](/encyclopedia/event-history/) for a detailed walkthrough of the process.
+See [Event History](/encyclopedia/event-history) for a detailed walkthrough of the process.
 
 For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
@@ -232,6 +247,24 @@ The following are the two reasons why a Command might be generated out of sequen
 
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
+
+#### Changing Activity arguments and options {/* #activity-arguments-and-options */}
+
+Replay matches a scheduled Activity by its Activity Type and Activity ID. It doesn't compare the Activity's arguments,
+its result, or its options, such as timeouts and the Retry Policy. Changing the arguments that a Workflow Definition
+passes to an Activity doesn't cause a non-determinism error in Workflow Executions that are already running.
+
+The change applies only to Activities scheduled after you deploy it:
+
+- **An Activity that already completed** doesn't run again during replay. The Workflow gets the result recorded in
+  Event History.
+- **An Activity that's already scheduled**, including one that's retrying, uses the arguments and options recorded
+  when it was scheduled, on every attempt.
+- **An Activity that isn't scheduled yet** gets the new arguments and options.
+
+If the new value also changes which Commands the Workflow produces, for example because a condition in the Workflow
+Definition depends on it, the change can cause a non-determinism error. Use [Versioning](#workflow-versioning) for that
+change, and test it with [replay](/workflow-execution#replay) before you deploy.
 
 ### Code changes can cause non-deterministic behavior {/* #non-deterministic-change */}
 
@@ -303,7 +336,7 @@ For SDK-specific replay-safe APIs and examples (logging, random numbers, time, r
 
 ### Versioning Workflows {/* #workflow-versioning */}
 
-The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
+The Temporal Platform requires that Workflow Definitions be deterministic.
 This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
 
 A versioning strategy is even more important if your Workflow Executions live long enough to run on multiple versions of your Worker. Temporal Platform provides Workflow Versioning APIs.
@@ -312,13 +345,13 @@ Temporal offers two Versioning strategies:
 
 - [Worker Versioning](#worker-versioning): keep Workers tied to specific code revisions, so that old Workers can run old code paths and new Workers can run new code paths.
 
-:::note
-Support for the experimental method of Worker Versioning prior to 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance.
-:::
-
 - [Versioning with patching](#workflow-patching): make sure your code changes are compatible across versions of your Workflow.
 
 You can use either strategy, or a combination.
+
+:::note
+Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance.
+:::
 
 #### Worker Versioning {/* #worker-versioning */}
 

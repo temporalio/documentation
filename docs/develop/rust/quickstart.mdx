@@ -1,6 +1,6 @@
 ---
 id: quickstart
-title: Quickstart - Rust SDK
+title: Quickstart
 sidebar_label: Quickstart
 description: Configure your local development environment to get started developing with Temporal and the Rust SDK
 tags:
@@ -93,7 +93,7 @@ Next, you'll configure a local Temporal Service for development.
 <SetupStep code={
 <>
 
-<Tabs>
+<Tabs groupId="os" queryString>
 <TabItem value="macos" label="macOS" default>
 <CodeSnippet language="bash">
 brew install temporal
@@ -164,7 +164,7 @@ Leave the local Temporal Service running as you work through tutorials and other
 </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation
+## Run Hello World: Test your installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
 
@@ -179,7 +179,9 @@ This test will confirm that:
 
 Create a `/src/activities.rs` file with the Activity definition:
 
-```rust
+<!--SNIPSTART rust-quickstart-activities-->
+[rust-sandbox/quickstart/src/activities.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/activities.rs)
+```rs
 use temporalio_macros::activities;
 use temporalio_sdk::activities::{ActivityContext, ActivityError};
 
@@ -193,12 +195,15 @@ impl MyActivities {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### 2. Define your Workflow
 
 Create a `/src/workflows.rs` file with the Workflow definition:
 
-```rust
+<!--SNIPSTART rust-quickstart-workflows-->
+[rust-sandbox/quickstart/src/workflows.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/workflows.rs)
+```rs
 use temporalio_macros::{workflow, workflow_methods};
 use temporalio_sdk::{ActivityOptions, WorkflowContext, WorkflowContextView, WorkflowResult};
 use std::time::Duration;
@@ -235,12 +240,15 @@ impl GreetingWorkflow {
     }
 }
 ```
+<!--SNIPEND-->
 
 ### 3. Create and Run a Worker
 
 Update your `/src/main.rs` file with the following:
 
-```rust
+<!--SNIPSTART rust-quickstart-main-->
+[rust-sandbox/quickstart/src/main.rs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/rust-sandbox/quickstart/src/main.rs)
+```rs
 use temporalio_client::{
     Client, ClientOptions, Connection,
     envconfig::LoadClientConfigProfileOptions,
@@ -276,6 +284,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+<!--SNIPEND-->
 
 Open a new terminal and run the Worker with:
 
@@ -300,7 +309,7 @@ Now that you have the basics working, explore the following resources to build m
 
 - [Develop a Workflow](/develop/rust/workflows/basics) - Learn how to write complex workflow logic
 - [Develop an Activity](/develop/rust/activities/basics) - Understand activity patterns and best practices
-- [Worker Processes](/develop/rust/workers/worker-process) - Configure and scale workers
+- [Run a Worker](/develop/rust/workers/worker-process) - Configure and scale workers
 - [Using the Temporal Client](/develop/rust/client/temporal-client) - Start workflows and interact with the Temporal Service
 
 <CallToAction href="https://learn.temporal.io/courses/">

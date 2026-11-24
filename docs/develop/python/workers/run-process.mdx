@@ -1,6 +1,6 @@
 ---
 id: run-worker-process
-title: Run a Worker - Python SDK
+title: Run a Worker
 description: Create and run a Temporal Worker using the Python SDK.
 sidebar_label: Run a Worker
 slug: /develop/python/workers/run-worker-process
@@ -8,7 +8,7 @@ toc_max_heading_level: 3
 tags:
   - Python SDK
   - Temporal SDKs
-  - Worker
+  - Workers
 ---
 
 This page covers long-lived Workers that you host and run as persistent processes.
@@ -19,8 +19,8 @@ For Workers that run on serverless compute like AWS Lambda, see [Serverless Work
 Create a `Worker` with a [Temporal Client](/develop/python/client/temporal-client), the Task Queue to poll, and the Workflows and Activities it can execute.
 Call `run()` to start polling.
 
-<!--SNIPSTART python-create-worker-->
-[features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)
+<!--SNIPSTART python-run-worker-create-->
+[python-sandbox/workers/run_worker/create_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/run_worker/create_worker.py)
 ```py
 client = await Client.connect("localhost:7233")
 
@@ -47,7 +47,9 @@ Pass a list of Workflows in `workflows`, a list of Activities in `activities`, o
 
 Activities defined with `async def` run on the Worker's event loop. Activities defined with a plain `def` are synchronous and require an executor, so pass one in `activity_executor`:
 
-```python
+<!--SNIPSTART python-run-worker-sync-activities-->
+[python-sandbox/workers/run_worker/sync_activity_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/run_worker/sync_activity_worker.py)
+```py
 worker = Worker(
     client,
     task_queue="my-task-queue",
@@ -56,6 +58,7 @@ worker = Worker(
     activity_executor=ThreadPoolExecutor(5),
 )
 ```
+<!--SNIPEND-->
 
 The same executor can be shared across multiple Workers.
 
@@ -75,8 +78,8 @@ To tune these values against real load, see [Worker performance](/develop/worker
 
 Set a Worker Deployment Version and enable versioning in `deployment_config`, then set a default versioning behavior for the Workflows on the Worker.
 
-<!--SNIPSTART python-versioned-worker-->
-[features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)
+<!--SNIPSTART python-run-worker-versioned-->
+[python-sandbox/workers/run_worker/versioned_worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/run_worker/versioned_worker.py)
 ```py
 worker = Worker(
     client,
@@ -105,7 +108,9 @@ To keep the Worker running until the process is interrupted, create an `asyncio.
 
 Set that event from the entry point that catches `KeyboardInterrupt`:
 
-```python
+<!--SNIPSTART python-run-worker-interrupt-entrypoint-->
+[python-sandbox/workers/run_worker/graceful_shutdown.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/run_worker/graceful_shutdown.py)
+```py
 interrupt_event = asyncio.Event()
 
 if __name__ == "__main__":
@@ -116,12 +121,13 @@ if __name__ == "__main__":
         interrupt_event.set()
         loop.run_until_complete(loop.shutdown_asyncgens())
 ```
+<!--SNIPEND-->
 
 Waiting on `interrupt_event` inside the block holds the Worker open.
 Once the event is set, the block exits, and the Worker stops polling for new Tasks and waits for in-flight Tasks to finish, up to `graceful_shutdown_timeout`.
 
-<!--SNIPSTART python-worker-graceful-shutdown-->
-[features/snippets/worker/worker.py](https://github.com/temporalio/features/blob/main/features/snippets/worker/worker.py)
+<!--SNIPSTART python-run-worker-graceful-shutdown-->
+[python-sandbox/workers/run_worker/graceful_shutdown.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/run_worker/graceful_shutdown.py)
 ```py
 worker = Worker(
     client,

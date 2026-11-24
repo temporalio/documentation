@@ -1,6 +1,6 @@
 ---
 id: standalone-activities-quickstart
-title: Standalone Activities TypeScript Quickstart
+title: Standalone Activities TypeScript quickstart
 sidebar_label: Quickstart
 description: Execute a Standalone Activity with the Temporal TypeScript SDK without writing a Workflow.
 tags:
@@ -26,7 +26,7 @@ Standalone Activity directly from your Temporal Client.
 
 :::note
 
-This documentation uses source code from the [standalone-activity](https://github.com/temporalio/samples-typescript/tree/main/standalone-activity) sample.
+This documentation uses source code from the [Standalone Activities quickstart](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/typescript-sandbox/src/activities/standalone/quickstart) sample.
 
 :::
 
@@ -50,9 +50,11 @@ This documentation uses source code from the [standalone-activity](https://githu
 
 Prerequisites:
 
-- **Temporal TypeScript SDK** (v1.17.0 or higher). See the [TypeScript Quickstart](/develop/typescript/set-up-your-local-typescript) for install instructions.
+- **[Node.js](https://nodejs.org/en/download/)** 20+
 
-- **Temporal CLI** v1.7.0 or higher. Install with Homebrew, or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms. Verify the installation with `temporal --version`.
+- **Temporal TypeScript SDK** (v1.24.0 or higher). See the [TypeScript Quickstart](/develop/typescript/set-up-your-local-typescript) for install instructions.
+
+- **Temporal CLI** v1.9.1 or higher. Install with Homebrew, or see the [Temporal CLI install guide](/cli/setup-cli) for other platforms. Verify the installation with `temporal --version`.
 
 Start the Temporal development server with `temporal server start-dev`.
 
@@ -68,39 +70,44 @@ Temporal Web UI will now be accessible at [http://localhost:8233](http://localho
 
 ## Clone the sample
 
-Clone the [samples-typescript](https://github.com/temporalio/samples-typescript) repository to follow along:
+Clone the [documentation-sdk-code-examples](https://github.com/temporalio/documentation-sdk-code-examples) repository and install the dependencies to follow along:
 
 ```
-git clone https://github.com/temporalio/samples-typescript.git
-cd samples-typescript
+git clone https://github.com/temporalio/documentation-sdk-code-examples.git
+cd documentation-sdk-code-examples/typescript-sandbox
+npm install
 ```
 
 The sample project is structured as follows:
 
 ```
-standalone-activity/src/
+src/activities/standalone/quickstart/
 ├── activities.ts
 ├── execute.ts
-├── list.ts
 └── worker.ts
 ```
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="typescript" title="activities.ts">
-{`import { ApplicationFailure } from '@temporalio/activity';
+<SetupStep>
+
+<CodeSnippet title="activities.ts">
+
+<!--SNIPSTART typescript-standalone-activities-quickstart-activity-->
+[typescript-sandbox/src/activities/standalone/quickstart/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/quickstart/activities.ts)
+```ts
+import { ApplicationFailure } from '@temporalio/activity';
 
 export async function greet(name: string): Promise<string> {
   if (typeof name !== 'string') {
     throw ApplicationFailure.create({ message: 'name must be a string', nonRetryable: true });
   }
-  return \`Hello, \${name}!\`;
-}`}
+  return `Hello, ${name}!`;
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-</>
-}>
 
 ## Write an Activity function {/* #write-activity */}
 
@@ -108,14 +115,16 @@ The way you write a Standalone Activity is identical to how you write an Activit
 by a Workflow. In fact, an Activity can be executed both as a Standalone Activity and as a Workflow
 Activity.
 
-[standalone-activity/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/activities.ts)
-
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="typescript" title="worker.ts">
-{`import { NativeConnection, Worker } from '@temporalio/worker';
+<SetupStep>
+
+<CodeSnippet title="worker.ts">
+
+<!--SNIPSTART typescript-standalone-activities-quickstart-worker-->
+[typescript-sandbox/src/activities/standalone/quickstart/worker.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/quickstart/worker.ts)
+```ts
+import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 
@@ -125,7 +134,7 @@ async function run() {
   try {
     const worker = await Worker.create({
       connection,
-      namespace: 'default',
+      namespace: config.namespace ?? 'default',
       taskQueue: 'hello-standalone-activities',
       activities,
     });
@@ -138,25 +147,25 @@ async function run() {
 run().catch((err) => {
   console.error(err);
   process.exit(1);
-});`}
+});
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
+
 <CodeSnippet language="bash">
-{`npm run start`}
+{`npm run standalone-activity.worker`}
 </CodeSnippet>
-</>
-}>
 
 ## Run a Worker with the Activity registered {/* #run-worker */}
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow Activities —
 you create a Worker, register the Activity, and run the Worker. The Worker doesn't need to know
-whether the Activity will be invoked from a Workflow or as a Standalone Activity. See [How to run a
-Worker](/develop/typescript/workers/run-worker-process#run-a-dev-worker) for more details on Worker setup and
-configuration options.
+whether the Activity will be invoked from a Workflow or as a Standalone Activity. See
+[Run a Worker](/develop/typescript/workers/run-worker-process#run-a-dev-worker) for more details on Worker setup
+and configuration options.
 
-[standalone-activity/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/worker.ts)
-
-Open a new terminal, navigate to the `samples-typescript/standalone-activity` directory, and run the Worker.
+Open a new terminal, navigate to the `documentation-sdk-code-examples/typescript-sandbox` directory, and run the Worker.
 Leave this terminal running - the Worker needs to stay up to process activities.
 
 </SetupStep>
@@ -164,44 +173,60 @@ Leave this terminal running - the Worker needs to stay up to process activities.
 <SetupStep code={
 <>
 <CodeSnippet language="bash">
-{`npm run execute`}
+{`npm run standalone-activity.execute`}
 </CodeSnippet>
 </>
 }>
 
 ## Run the sample client {/* #run-sample */}
 
-The sample file [standalone-activity/src/execute.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/execute.ts)
-contains a program demonstrating various ways to execute Standalone Activities and fetch results. The code in
-the following sections is copied from this file.
+The sample file [src/activities/standalone/quickstart/execute.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/quickstart/execute.ts)
+contains a program that executes a Standalone Activity with and without type checking. The code in
+the following sections comes from this file.
 
 To run it:
 
 1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
 2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
-3. Open a new terminal, navigate to the `samples-typescript/standalone-activity` directory, and run the execute command.
+3. Open a new terminal, navigate to the `documentation-sdk-code-examples/typescript-sandbox` directory, and run:
+    ```
+    npm run standalone-activity.execute
+    ```
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="typescript">
-{`import { Connection, Client, ActivityExecutionFailedError } from '@temporalio/client';
+<SetupStep>
+
+<CodeSnippet title="execute.ts">
+
+<!--SNIPSTART typescript-standalone-activities-quickstart-client-->
+[typescript-sandbox/src/activities/standalone/quickstart/execute.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/quickstart/execute.ts)
+```ts
+import { Connection, Client, ActivityExecutionFailedError } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import * as activities from './activities';
 import { nanoid } from 'nanoid';
 
-const config = loadClientConnectConfig();
-const connection = await Connection.connect(config.connectionOptions);
-const client = new Client({ connection });
+export async function run(): Promise<void> {
+  const config = loadClientConnectConfig();
+  const connection = await Connection.connect(config.connectionOptions);
+  const client = new Client({ connection, namespace: config.namespace });
 
-const activitiesClient = client.activity.typed<typeof activities>();`}
+  const activitiesClient = client.activity.typed<typeof activities>();
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-<CodeSnippet language="typescript">
-{`const taskQueue = 'hello-standalone-activities';
+
+<CodeSnippet title="execute.ts">
+
+<!--SNIPSTART typescript-standalone-activities-quickstart-execute-typed {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/activities/standalone/quickstart/execute.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/quickstart/execute.ts)
+```ts
+const taskQueue = 'hello-standalone-activities';
 const activityOptions = {
   taskQueue,
-  startToCloseTimeout: '10s',
+  startToCloseTimeout: '10s' as const,
 };
 
 // In practice, use a meaningful business identifier, like customer or transaction identifier
@@ -211,10 +236,11 @@ const result = await activitiesClient.execute('greet', {
   ...activityOptions,
   id: activityId,
   args: ['World'],
-});`}
+});
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-</>
-}>
 
 ## Execute a Standalone Activity with type checking {/* #execute-activity-type-checking */}
 
@@ -234,15 +260,29 @@ wrong argument types will cause compilation to fail.
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="typescript">
-{`await client.activity.execute('greet', {
-  ...activityOptions,
-  id: activityId,
-  args: [1],
-});`}
+<SetupStep>
+
+<CodeSnippet title="execute.ts">
+
+<!--SNIPSTART typescript-standalone-activities-quickstart-execute-untyped {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/activities/standalone/quickstart/execute.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/quickstart/execute.ts)
+```ts
+try {
+  await client.activity.execute('greet', {
+    ...activityOptions,
+    id: activityId + '-untyped',
+    args: [1],
+  });
+} catch (err) {
+  if (err instanceof ActivityExecutionFailedError) {
+    console.log('Oops!', err.cause?.message); // Oops! name must be a string
+  }
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
+
 <CodeSnippet language="bash">
 {`temporal activity execute \\
   --type greet \\
@@ -251,8 +291,6 @@ wrong argument types will cause compilation to fail.
   --start-to-close-timeout 10s \\
   --input '"World"'`}
 </CodeSnippet>
-</>
-}>
 
 ## Execute a Standalone Activity without type checking {/* #execute-activity-no-type-checking */}
 
@@ -260,7 +298,8 @@ Since Activity types are not always available, the [`start`](https://typescript.
 and [`execute`](https://typescript.temporal.io/api/classes/client.ActivityClient#execute) methods can be
 called on [`ActivityClient`](https://typescript.temporal.io/api/classes/client.ActivityClient) directly
 without using the typed interface. When called that way, neither the Activity name nor argument types are
-checked client-side.
+checked client-side. In this example, the Activity receives a number instead of a string, so it fails with a
+non-retryable error that the Client catches as an `ActivityExecutionFailedError`.
 
 Or use the Temporal CLI.
 
@@ -276,11 +315,11 @@ to configure the Temporal Client connection. It responds to [environment
 variables](/references/client-environment-configuration) and [TOML configuration
 files](/references/client-environment-configuration), so the same code works against a local dev
 server and Temporal Cloud without changes. See [Run Standalone Activities with Temporal
-Cloud](/develop/typescript/activities/standalone-activities#run-standalone-activities-temporal-cloud) in the Feature Guide
+Cloud](/develop/typescript/activities/standalone-activities#run-standalone-activities-temporal-cloud) in the feature guide
 for mTLS and API key setup.
 
 ## Next steps
 
-- **[Standalone Activities Feature Guide](/develop/typescript/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
+- **[Standalone Activities feature guide](/develop/typescript/activities/standalone-activities)**: Start without waiting, get handles, list and count Activities, and connect to Temporal Cloud.
 - **[Build a Job Queue with Standalone Activities](https://learn.temporal.io/tutorials/typescript/standalone-activities/)**: Tutorial that builds a durable job queue, with idempotency keys, server-side deduplication, throughput limits, [Priority and Fairness](/develop/task-queue-priority-fairness), and heartbeat checkpoints.
-- **[Activity basics](/develop/typescript/activities/basics)**: How to write and register Activities with the TypeScript SDK.
+- **[Activity basics](/develop/typescript/activities/basics)**: Write and register Activities with the TypeScript SDK.

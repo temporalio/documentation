@@ -1,10 +1,11 @@
 ---
 id: dynamic-activity
-title: Dynamic Activities - Ruby SDK
-sidebar_label: Dynamic Activities
-description: This section explains Dynamic Activities with the Ruby SDK
+title: Dynamic Activity
+sidebar_label: Dynamic Activity
+description: Register one Dynamic Activity per Worker with activity_dynamic to handle Activity Types that match no other registered Activity.
 toc_max_heading_level: 4
 tags:
+  - Activities
   - Ruby SDK
   - Temporal SDKs
 ---
@@ -19,7 +20,9 @@ Only one Dynamic Activity can be present on a Worker.
 Often, dynamic is used in conjunction with `activity_raw_args` which does not convert arguments but instead passes them
 through as a splatted array of `Temporalio::Converters::RawValue` instances.
 
-```ruby
+<!--SNIPSTART ruby-dynamic-activity-->
+[ruby-sandbox/activities/dynamic-activity/my_dynamic_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/activities/dynamic-activity/my_dynamic_activity.rb)
+```rb
 class MyDynamicActivity < Temporalio::Activity::Definition
   # Make this the dynamic activity and accept raw args
   activity_dynamic
@@ -34,3 +37,4 @@ class MyDynamicActivity < Temporalio::Activity::Definition
   end
 end
 ```
+<!--SNIPEND-->

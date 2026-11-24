@@ -1,0 +1,147 @@
+---
+id: sizing-and-performance
+title: Sizing and performance
+sidebar_label: Sizing and performance
+description: Size Temporal Proxy CPU, memory, connection pools, and replicas using reference measurements, then validate capacity with your workload.
+tags:
+  - Temporal Service
+  - Self-hosting
+  - Security
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader type="publicPreview">
+  Temporal Proxy is under active development. Validate capacity on the version you deploy; these measurements are
+  reference results, not throughput guarantees.
+</ReleaseNoteHeader>
+
+**Recommended starting size:** For a Temporal Proxy instance that applies payload encryption for all payload sizes,
+use **4 CPUs and 12 GiB of memory**, with `GOMEMLIMIT=11GiB`, and plan for each instance to handle up to
+**3,000 requests per second and 100 SDK Workers**. Scale beyond these limits by adding more Proxy replicas (instances)
+behind a gRPC-compatible load balancer.
+
+The 3,000-request planning target leaves 40% headroom below the measured ceiling for large encrypted payloads. The
+100-Worker target comes from small-payload tests; the report does not establish capacity for 100 Workers with large
+payloads. Load-test that combination before relying on it.
+
+For Kubernetes installation and configuration, see
+[Deploy to Kubernetes](/production-deployment/temporal-proxy/deploy-kubernetes).
+
+## Compare reference throughput
+
+The tests used one 4-CPU replica with a `12Gi` memory limit, `GOMEMLIMIT=11GiB`, and 32 upstream connections, running on
+AWS Graviton arm64 nodes. Traffic used Go SDK Workers, random-byte payloads, mutual TLS on both connections, and a
+Temporal Cloud upstream whose Namespace limits did not constrain throughput. Encryption tests enabled the decrypted
+key cache. The test report does not identify the pre-release proxy version or commit.
+
+| Workload | Measured throughput ceiling | CPU cores per 1,000 requests per second |
+| --- | --- | --- |
+| Small payloads, no encryption | About 12,900 requests per second | 0.29 to 0.31 |
+| Small payloads, encryption | About 10,500 to 11,400 requests per second | 0.33 to 0.36 |
+| Encrypted payloads averaging about 900 KB, up to 1.9 MB | About 5,000 requests per second | About 0.8 |
+
+CPU use depends on both request rate and the payload bytes processed per second, especially with encryption enabled.
+At the same request rate, larger payloads require more CPU. Compare requests-per-second figures only for similar
+payload sizes and request mixes.
+
+These tests were CPU-bound: beyond saturation, throughput fell. Payload size reduced throughput by more than half.
+Request mix matters too: long polls and Activity result polls dominated the reference workload, so a mix with more
+payload-carrying calls can have a lower ceiling. Compressible payloads can also increase CPU cost.
+
+Target 65% to 75% of your measured ceiling during normal operation. Do not assume throughput scales linearly with CPU;
+re-measure if you change replica size, hardware, or memory limits.
+
+## Choose memory limits
+
+Set `GOMEMLIMIT` to about 85% to 90% of the container memory limit as a starting point. The Go runtime does not derive
+this setting from the container limit. Without it, heap growth during a reconnect burst can cause an out-of-memory kill.
+
+| Workload | Provisional memory limit | `GOMEMLIMIT` |
+| --- | --- | --- |
+| Small payloads, few Workers per replica | `3Gi` | `2700MiB` |
+| Small payloads, many Workers per replica | `6Gi` | `5400MiB` |
+| Payloads near 1 MB | `12Gi` | `11GiB`, matching the test configuration |
+
+These are starting points, not validated minimums. The throughput tests used `12Gi`; lower limits were not validated
+with large Worker fleets. Under those test conditions, memory use ranged from about 1 GiB for small payloads with few
+Workers to 5 to 7 GiB for the large-payload workload.
+
+`GOMEMLIMIT` is a soft limit, not a cap on resident set size (RSS). Smaller limits increase garbage collection work and
+can reduce throughput. Measure CPU and memory again at the limit you choose, including during Client reconnects.
+
+For encryption, keep the decrypted data encryption key (DEK) cache enabled. A cache miss requires a KMS unwrap, so
+cache capacity affects KMS load and request latency. Each replica uses its own DEKs per Namespace. Size the cache for
+the keys actively being read across replicas and Namespaces, and monitor its hit and miss counters. See
+[encryption settings](/production-deployment/temporal-proxy/encrypt-payloads).
+
+## Size the connection pool
+
+Starting with v0.9.0, `connection.maxConnections` defaults to 32 per upstream target, the pool size the reference tests
+used. Each SDK long poll occupies an HTTP/2 stream. In the reference tests, pools of one to four connections exhausted
+available streams and caused calls to stall or time out. Increasing replicas does not fix a connection pool that is too
+small on each replica.
+
+Change the pool size in your
+[proxy configuration](/production-deployment/temporal-proxy/configure#tune-upstream-connections):
+
+```yaml
+upstreams:
+  - name: cloud
+    hostPort: '{{ .RemoteNamespace }}.tmprl.cloud:7233'
+    connection:
+      maxConnections: 32
+```
+
+This fragment sets the pool size; add your routing, Namespace translation, TLS, and credentials. A templated upstream
+creates a pool for each resolved target, often one per Namespace. Account for targets multiplied by replicas when
+estimating total connections.
+
+## Calculate replicas
+
+Use your peak request rate and measured per-replica ceiling. Reserve one extra replica for a failure or rollout:
+
+```text
+planned_requests_per_replica = measured_ceiling * target_utilization
+replicas = ceil(peak_requests_per_second / planned_requests_per_replica) + 1
+```
+
+For example, at 30,000 requests per second, a 10,500-request ceiling, and a 65% target, this calculation gives six
+replicas. This is a capacity estimate, not a measured fleet result.
+
+If you need to tolerate losing a zone, spread replicas evenly across zones and verify that the surviving replicas
+can handle peak traffic at no more than 75% of their measured ceiling. In the example above, six replicas across three
+zones leave four survivors, each handling 7,500 requests per second, about 71% of the ceiling.
+
+**Check load on each replica.** Long-lived Client connections do not redistribute automatically when you add a replica.
+One test left two replicas carrying 99.6% and 0.4% of requests after a rollout. A few high-traffic Clients can overload
+one replica while others remain idle. Provision for peak traffic rather than relying on autoscaling to relieve a hot
+replica.
+
+Adding proxy replicas does not increase [Temporal Cloud Namespace limits](/evaluate/cloud/limits).
+Likewise, a request exceeding the proxy's 4 MiB receive limit needs smaller payloads, not more replicas.
+
+## Measure your workload
+
+Scrape the proxy's [Prometheus metrics](/production-deployment/temporal-proxy#observability). Scope these queries to the
+same deployment; replace `job="temporal-proxy"` and the `pod` label with your scraper's labels.
+
+Measure requests per second for each replica to identify uneven traffic:
+
+```promql
+sum by (pod) (rate(tmprl_proxy_server_requests_total{job="temporal-proxy"}[5m]))
+```
+
+Calculate CPU cores per 1,000 requests per second to compare your workload with the reference results:
+
+```promql
+sum(rate(process_cpu_seconds_total{job="temporal-proxy"}[5m]))
+  / (sum(rate(tmprl_proxy_server_requests_total{job="temporal-proxy"}[5m])) / 1000)
+```
+
+Run the test with your production request mix, payload sizes, encryption, and resource limits. Increase concurrency
+until throughput stops rising, recording CPU, RSS, request errors, and latency. Exclude long-poll methods when measuring
+short-request latency, since long polls can wait about 60 seconds.
+
+Finally, test the full fleet through pod loss, a rollout, and Client reconnects. Check recovery time and per-replica
+load, not only aggregate throughput, before relying on the calculated capacity.

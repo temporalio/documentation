@@ -7,11 +7,11 @@ tags:
   - Google ADK
   - Go SDK
   - Temporal SDKs
-description: Run Google ADK agents with durable execution using the Temporal Go SDK and the googleadk contrib integration.
+description: Run Google ADK agents with durable execution using the Temporal Go SDK and the standalone googleadk module for model calls and tools.
 ---
 
 Temporal's integration with [Google ADK](https://google.github.io/adk-docs/) (`adk-go`) gives your agents
-[Durable Execution](/temporal#durable-execution): the agent's orchestration loop runs inside a Temporal Workflow, each
+[Durable Execution](/durable-execution): the agent's orchestration loop runs inside a Temporal Workflow, each
 LLM call becomes a durable Temporal Activity, and any tool that does I/O runs as an Activity too — so every step is
 retried, timed out, recorded in Workflow history, and replayable after crashes or restarts.
 
@@ -26,14 +26,6 @@ You keep building agents the native ADK way — `llmagent.New(...)` with a `mode
 Tools run **in-workflow by default** (the idiomatic Temporal model: the Workflow Definition is deterministic, and anything touching
 the network, clock, or disk goes through an Activity). Opt a tool into an Activity with `googleadk.ActivityAsTool`, or
 use `googleadk.NewMCPToolset` for MCP.
-
-:::info
-
-The `googleadk` contrib module is new. It depends on determinism seams (`platform.WithTimeProvider`,
-`WithUUIDProvider`, `WithTaskRunner`) that merged into `google.golang.org/adk/v2` after its latest tagged release, so
-`go.mod` pins `adk/v2` to a `main`-branch pseudo-version until a release ships that includes them.
-
-:::
 
 Code snippets in this guide are taken from the
 [Google ADK plugin samples](https://github.com/temporalio/samples-go/tree/main/googleadk). Refer to the samples for the
@@ -54,15 +46,18 @@ complete, runnable code.
 
 ## Install the plugin
 
-Install the `googleadk` contrib module:
+Install the standalone [`go.temporal.io/googleadk`](https://pkg.go.dev/go.temporal.io/googleadk) module:
 
 ```bash
-go get go.temporal.io/sdk/contrib/googleadk@latest
+go get go.temporal.io/googleadk@latest
 ```
 
 ```go
-import "go.temporal.io/sdk/contrib/googleadk"
+import "go.temporal.io/googleadk"
 ```
+
+The module is versioned separately from the Temporal Go SDK. Its source and releases are maintained in
+[`temporalio/ai-integrations`](https://github.com/temporalio/ai-integrations/tree/main/go/googleadk).
 
 ## Run an agent with Durable Execution
 
@@ -175,7 +170,6 @@ func AgentWorkflow(ctx workflow.Context, question string) (string, error) {
 	}
 	return answer, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -188,7 +182,6 @@ The tool itself is an ordinary Temporal Activity — register it on the worker a
 func GetWeather(ctx context.Context, in GetWeatherInput) (GetWeatherOutput, error) {
 	return GetWeatherOutput{City: in.City, Conditions: "sunny, 72°F"}, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -315,7 +308,6 @@ func MultiAgentWorkflow(ctx workflow.Context, question string) (string, error) {
 	}
 	return answer, nil
 }
-
 ```
 <!--SNIPEND-->
 
@@ -416,7 +408,6 @@ func ApprovalWorkflow(ctx workflow.Context, request string) (Result, error) {
 		msg = googleadk.ConfirmationResponse(decision)
 	}
 }
-
 ```
 <!--SNIPEND-->
 
@@ -534,7 +525,6 @@ func ChatWorkflow(ctx workflow.Context, in ChatInput) error {
 		MaxTurns: in.MaxTurns,
 	})
 }
-
 ```
 <!--SNIPEND-->
 

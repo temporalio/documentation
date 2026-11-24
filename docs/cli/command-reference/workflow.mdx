@@ -3,7 +3,7 @@ id: workflow
 title: Temporal CLI workflow command reference
 sidebar_label: workflow
 description: Temporal Workflow commands enable operations on Workflow Executions, such as cancel, count, delete, describe, execute, list, update-options, query, reset, reset-batch, show, signal, stack, start, terminate, trace, and update, enhancing efficiency and control.
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - Temporal CLI
   - Workflows
@@ -361,6 +361,21 @@ BuildId. Do not use Workflow IDs, run IDs, or event IDs with this command.
 Visit https://docs.temporal.io/visibility to read more about Search
 Attributes and Query creation.
 
+Use the following options to change the behavior of this command and all of its subcommands. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | No | **string** A Build ID. Use only with the BuildId `--type`. Resets the first Workflow task processed by this ID. By default, this reset may be in a prior run, earlier than a Continue as New point. |
+| `--event-id`, `-e` | No | **int** Event ID to reset to. Event must occur after `WorkflowTaskStarted`. `WorkflowTaskCompleted`, `WorkflowTaskFailed`, etc. are valid. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
+| `--reapply-exclude` | No | **string-enum[]** Exclude these event types from re-application. Accepted values: All, Signal, Update. |
+| `--reapply-type` | No | **string-enum** Types of events to re-apply after reset point. Accepted values: All, Signal, None. |
+| `--reason` | Yes | **string** Reason for reset. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--type`, `-t` | No | **string-enum** The event type for the reset. Accepted values: FirstWorkflowTask, LastWorkflowTask, LastContinuedAsNew, BuildId. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. Required for non-batch reset operations. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. Only allowed when `--query` is present. |
+
 ### with-workflow-update-options
 
 Run Workflow Update Options atomically after the Workflow is reset.
@@ -370,9 +385,9 @@ Use the following options to change the behavior of this command. You can also u
 
 | Flag | Required | Description |
 |------|----------|-------------|
-| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: pinned, auto_upgrade. |
-| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
-| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
+| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: pinned, one_time, auto_upgrade. |
+| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` or `one_time` behavior, specifies the Build ID of the version to target. |
+| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` or `one_time` behavior, specifies the Deployment Name of the version to target. |
 
 ## result
 
@@ -815,6 +830,17 @@ temporal workflow update-options \
     --versioning-override-build-id YourDeploymentBuildId
 ```
 
+or to move the workflow execution to a Worker Deployment Version until
+the next Workflow Task completes there, set behavior to `one_time`:
+
+```
+temporal workflow update-options \
+    --workflow-id YourWorkflowId \
+    --versioning-override-behavior one_time \
+    --versioning-override-deployment-name YourDeploymentName \
+    --versioning-override-build-id YourDeploymentBuildId
+```
+
 To remove any previous overrides, set the behavior to
 `unspecified`:
 
@@ -835,9 +861,9 @@ Use the following options to change the behavior of this command. You can also u
 | `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
 | `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
 | `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
-| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: unspecified, pinned, auto_upgrade. |
-| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
-| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
+| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: unspecified, pinned, one_time, auto_upgrade. |
+| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` or `one_time` behavior, specifies the Build ID of the version to target. |
+| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` or `one_time` behavior, specifies the Deployment Name of the version to target. |
 | `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
 | `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
@@ -868,7 +894,7 @@ The following options can be used with any command.
 | `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
 | `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
 | `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
-| `--profile` | No | **string** Profile to use for config file. |  |
+| `--profile` | No | **string** Configuration profile to use. Overrides the TEMPORAL_PROFILE environment variable and defaults to "default". |  |
 | `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
 | `--tls` | No | **bool** Enable base TLS encryption. Auto-enabled when api-key or TLS options are set. |  |
 | `--tls-ca-data` | No | **string** Inline server CA certificate data. |  |

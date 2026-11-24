@@ -2,7 +2,7 @@
 id: kubernetes-controller
 title: Temporal Worker Controller
 sidebar_label: Worker Controller
-description: Use Temporal's provided Kubernetes controller to programmatically scale your Worker deployments.
+description: Install the Temporal Worker Controller and configure rollouts, version cleanup, and per-version autoscaling for versioned Workers on Kubernetes.
 slug: /production-deployment/worker-deployments/kubernetes-controller
 toc_max_heading_level: 4
 tags:
@@ -10,39 +10,28 @@ tags:
   - Durable Execution
 ---
 
-The [Temporal Worker Controller](https://github.com/temporalio/temporal-worker-controller) provides automation to enable rainbow deployments of your Workers by simplifying the tracking of which versions still have active Workflows, managing the lifecycle of versioned Worker deployments, and calling Temporal APIs to update the routing config of Temporal Worker Deployments.
-The Temporal Worker Controller makes it simple and safe to deploy Temporal Workers on Kubernetes.
+The [Temporal Worker Controller](https://github.com/temporalio/temporal-worker-controller) is a Kubernetes controller that automates rainbow deployments of your Workers.
+It registers new Worker Deployment Versions, creates a Kubernetes Deployment for each version, updates the routing configuration through Temporal APIs, and removes the resources for drained versions.
+The Worker Controller is Generally Available, and its APIs are stable.
 
 If you run versioned Workers on Kubernetes, the Worker Controller is the recommended way to manage rollouts and autoscaling together.
+You don't need the Worker Controller to use [Worker Versioning](/production-deployment/worker-deployments/worker-versioning), and it integrates with the [Temporal CLI](/production-deployment/worker-deployments/worker-versioning/roll-out-and-pin#rolling-out-changes-with-the-cli).
 
-### Why adopt the Worker Controller?
+This page uses the following terms:
 
-The traditional approach to revising Temporal Workflows is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
-Over time these checks can become a source of technical debt, as safely removing them from a codebase is a careful process that often involves querying all running Workflows.
+- [**Worker Deployment**](/worker-versioning#deployments): A logical service that groups similar Workers together for unified management. Each Worker Deployment has a name, such as your service name, and a series of Worker Deployment Versions.
+- [**Worker Deployment Version**](/worker-versioning#deployment-versions): An iteration of a Worker Deployment. Each version consists of Workers that share the same code build and environment. When a Worker starts polling for Workflow and Activity Tasks, it reports its Worker Deployment Version to the Temporal Service.
+- **Deployment**: A Kubernetes Deployment resource. A Deployment is "versioned" if it runs Workers that report a Worker Deployment Version.
 
-[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is a Temporal feature that allows you to pin Workflows to individual versions of your Workers, which are called Worker Deployment Versions.
-Using pinning, you will not need to add branching to your Workflows to avoid non-determinism errors.
-This allows you to bypass the other Versioning APIs.
+## Features
 
-The Worker Controller gives you direct, programmatic control over your Worker deployments, and integrates with the [Temporal CLI](/production-deployment/worker-deployments/worker-versioning/roll-out-and-pin#rolling-out-changes-with-the-cli).
-You do not need to use the Worker Controller to use Worker Versioning, but when used together, Worker Versioning and the Worker Controller can provide more graceful deployments and upgrades, and less need to manually tune your Workers.
-
-Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deployment**, but since the Worker Controller makes significant references to Kubernetes Deployment resource, within this page we will stick to these terms:
-
-- [**Worker Deployment**](/worker-versioning#deployments): A Worker Deployment is a logical service that groups similar Workers together for unified management. Each Deployment has a name (such as your service name) and supports versioning through a series of Worker Deployment Versions.
-- [**Worker Deployment Version**](/worker-versioning#deployment-versions): A Worker Deployment Version represents an iteration of a Worker Deployment. Each Deployment Version consists of Workers that share the same code build and environment. When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
-- **Deployment**: A Kubernetes Deployment resource. A Deployment is "versioned" if it is running versioned Temporal workers/pollers.
-
-### Features
-
-- Registration of new Temporal Worker Deployment Versions
-- Creation of versioned Deployment resources (that manage the Pods that run your Temporal pollers)
+- Registration of new Worker Deployment Versions
+- Creation of versioned Deployment resources that manage the Pods running your Workers
 - Deletion of resources associated with drained Worker Deployment Versions
 - `Manual`, `AllAtOnce`, and `Progressive` rollouts of new versions
-- Ability to specify a "gate" Workflow that must succeed on the new version before routing real traffic to that version
+- Automatic rollback when you set the target version back to a recent previous build
+- A "gate" Workflow that must succeed on the new version before the Worker Controller routes real traffic to it
 - Autoscaling of versioned Deployments using Kubernetes HPA or KEDA
-
-Refer to the [Temporal Worker Controller repo](https://github.com/temporalio/temporal-worker-controller/) for usage details.
 
 ## Autoscaling versioned Workers
 
@@ -79,6 +68,11 @@ active Worker Deployment Version. This is useful for resources such as:
 The Worker Controller manages these resources alongside the versioned Deployments it creates, so they are updated and
 cleaned up as versions roll forward and drain.
 
+By default, the Worker Controller accepts only `HorizontalPodAutoscaler` resources in a `WorkerResourceTemplate`.
+To use other kinds, such as `PodDisruptionBudget` or a KEDA `ScaledObject`, add them to the `workerResourceTemplate.allowedResources` Helm value.
+The webhook also checks that you have permission to create the embedded resource yourself, so a user who creates a WRT needs the matching RBAC permissions in that namespace.
+For details, see the [WorkerResourceTemplate reference](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/worker-resource-templates.md#allowed-resource-kinds-and-rbac).
+
 ### Choosing a scaling strategy
 
 The Worker Controller supports two autoscaling strategies, each attached per Worker Deployment Version through a
@@ -93,47 +87,119 @@ For a full comparison and a decision matrix, see
 [Scaling recommendations](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/scaling-recommendations.md)
 in the Worker Controller repository.
 
-## Configuring Worker Lifecycles
+## Configuring Worker lifecycles
 
-To use the Temporal Worker Controller, tag your Workers following the guidance for using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning).
+Tag your Workers following the guidance for using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning).
+You then describe each Worker Deployment as a `WorkerDeployment` resource.
+The controller creates one Kubernetes Deployment for each build.
 
-Here is an example of a progressive rollout strategy gated on the success of the `HelloWorld` Workflow:
+The following example runs a Worker with a progressive rollout that is gated on the success of the `HelloWorld` Workflow:
 
+```yaml
+apiVersion: temporal.io/v1alpha1
+kind: WorkerDeployment
+metadata:
+  name: my-worker
+spec:
+  workerOptions:
+    connectionRef:
+      name: production-temporal
+    temporalNamespace: production
+  deployment:
+    replicas: 3
+    template:
+      spec:
+        containers:
+          - name: worker
+            image: my-worker:v2.0.0
+  rollout:
+    strategy: Progressive
+    steps:
+      - rampPercentage: 1
+        pauseDuration: 30s
+      - rampPercentage: 10
+        pauseDuration: 1m
+    gate:
+      workflowType: "HelloWorld"
+  sunset:
+    scaledownDelay: 1h
+    deleteDelay: 24h
 ```
-rollout:
-  strategy: Progressive
-  steps:
-    - rampPercentage: 1
-      pauseDuration: 30s
-    - rampPercentage: 10
-      pauseDuration: 1m
-  gate:
-    workflowType: "HelloWorld"
-```
 
-As you ship new deployment versions, the Worker Controller automatically detects them and gradually makes that version the new **Current Version** of the Worker deployment it is a part of.
-As older pinned Workflows finish executing and deprecated deployment versions become drained, the Worker Controller also frees up resources by sunsetting the `Deployment` resources polling those versions.
+The `connectionRef` points to a `Connection` resource that holds the Temporal Service address and either mTLS or API key credentials.
+A `Connection` uses either mTLS or an API key, not both.
+For Temporal Cloud, use the Namespace endpoint (`<namespace>.<account>.tmprl.cloud:7233`) as the `hostPort`.
+If a Namespace that also allows mTLS rejects your API key connection with a `tls: certificate required` error, switch `hostPort` to the Namespace's [Regional Endpoint](/cloud/connectivity), such as `us-east-1.aws.api.temporal.io:7233`.
+For examples, see the [Configuration reference](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/configuration.md#connection-configuration).
+
+When you ship a new image, the Worker Controller detects the new version and gradually makes it the **Current Version** of the Worker Deployment.
+Pinned Workflows stay on the version they started on.
+When older versions drain, the Worker Controller scales down their Deployments after `scaledownDelay` and deletes them after `deleteDelay`.
 
 When you use autoscaling with the Worker Controller, each active Worker Deployment Version can scale independently while
 it is serving traffic. This allows older versions to drain safely while newer versions scale based on live demand.
 
-## Running the Temporal Worker Controller
+### Roll back a version
 
-You can install the Temporal Worker Controller using our Helm chart:
+To roll back, set the Worker image back to a previous build.
+If that build was the Current Version within the last hour, the Worker Controller routes 100% of traffic to it at once, regardless of the configured rollout strategy.
+Rollback doesn't apply to the `Manual` strategy, which leaves routing entirely to you.
+
+## Install the Worker Controller
+
+### Prerequisites
+
+- Kubernetes 1.19 or later
+- Helm 3.0 or later
+- Temporal Cloud, or a self-hosted Temporal Service v1.29.1 or later
+- TLS for the validating webhook. The `WorkerResourceTemplate` webhook is always on, so the controller Pod always needs a certificate. The recommended option is [cert-manager](https://cert-manager.io/docs/installation/), installed before the controller. To manage certificates yourself, see [Webhook TLS](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/worker-resource-templates.md#webhook-tls).
+
+### Install the charts
+
+The Worker Controller ships as two Helm charts so you can upgrade the CRDs separately from the controller.
+Install the CRDs chart first.
+For the available chart versions, see the [Worker Controller releases](https://github.com/temporalio/temporal-worker-controller/releases).
 
 ```bash
-RELEASE=temporal-worker-controller
+VERSION=<chart-version>
 NAMESPACE=temporal-system
-VERSION=1.0.0
 
-helm install $RELEASE oci://docker.io/temporalio/helm-charts/temporal-worker-controller \
+helm install temporal-worker-controller-crds \
+  oci://docker.io/temporalio/temporal-worker-controller-crds \
   --version $VERSION \
   --namespace $NAMESPACE \
   --create-namespace
-  
-helm install temporal-worker-controller ./helm/temporal-worker-controller \
-  --namespace $NAMESPACE \
-  --create-namespace 
+
+helm install temporal-worker-controller \
+  oci://docker.io/temporalio/temporal-worker-controller \
+  --version $VERSION \
+  --namespace $NAMESPACE
 ```
 
-Refer to [GitHub](https://github.com/temporalio/temporal-worker-controller/tree/main/helm/temporal-worker-controller/templates) for other Worker Controller deployment templates.
+For other deployment templates, see the [Helm chart templates](https://github.com/temporalio/temporal-worker-controller/tree/main/helm/temporal-worker-controller/templates) on GitHub.
+
+### Migrate from the previous CRD names
+
+In Worker Controller v1.7.0, the Worker Controller renamed its CRDs.
+The controller no longer reconciles resources of the old kinds, and you can't create new ones.
+
+| Old name                                                  | New name                                      |
+| --------------------------------------------------------- | --------------------------------------------- |
+| `TemporalWorkerDeployment`                                | `WorkerDeployment`                            |
+| `TemporalConnection`                                      | `Connection`                                  |
+| `WorkerResourceTemplate.spec.temporalWorkerDeploymentRef` | `WorkerResourceTemplate.spec.workerDeploymentRef` |
+
+Keep the resource names the same, because the Worker Deployment name derives from the namespace and resource name.
+Don't roll back the CRDs chart after you migrate, because that can delete your Worker Deployments.
+For the upgrade steps, see the [CRD rename migration guide](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/migration-crd-rename.md).
+
+## Learn more
+
+The [Worker Controller repository](https://github.com/temporalio/temporal-worker-controller/tree/main/docs) maintains the detailed guides:
+
+- [Migrate from unversioned Workers](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/migration-to-versioned.md)
+- [CD rollouts with Helm, kubectl, Argo CD, and Flux](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/cd-rollouts.md)
+- [Configuration reference](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/configuration.md)
+- [Upgrade the Worker Controller](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/upgrade.md)
+- [Architecture](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/architecture.md)
+- [Limits](https://github.com/temporalio/temporal-worker-controller/blob/main/docs/limits.md), including name length constraints

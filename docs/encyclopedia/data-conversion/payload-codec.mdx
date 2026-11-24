@@ -23,7 +23,7 @@ When serializing to Payloads, the Payload Converter is applied first to convert 
 
 Use a custom Payload Codec to transform your Payloads; for example, implementing compression and/or encryption on your Workflow Execution data.
 
-### Operational Chain
+### Operational chain
 
 In practice, the [Payload Converter](/payload-converter) and Payload Codec operate in a chain to handle data securely. Incoming data first passes through a Payload Converter through the `toPayload` method, turning application objects into Payloads. These Payloads are then processed by the Payload Codec through the `encode` method, which adjusts the Payload according to the required security or efficiency needs before it is sent to the Temporal Cluster.
 
@@ -38,9 +38,13 @@ You maintain all the encryption keys, and the Temporal Server sees only encrypte
 
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control. For details, see [Securing your data](/production-deployment/data-encryption).
 
+On Temporal Cloud, [Payload encryption validation](/cloud/payload-encryption-validation) ([Pre-release](/evaluate/product-release-stages#pre-release), invite-only) checks that incoming Payloads carry the encryption metadata your Payload Codec sets, and can reject requests that don't. It doesn't encrypt Payloads; your Payload Codec still does.
+
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
+- [.NET sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption)
+- [Ruby sample](https://github.com/temporalio/samples-ruby/tree/main/encryption)

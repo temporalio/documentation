@@ -23,7 +23,7 @@ This page is a guide to monitoring a Temporal Worker fleet and covers the follow
 
 This page assumes you are monitoring both Worker-side SDK metrics and Cloud-side metrics. Use SDK metrics to understand
 what your Workers are doing, and Cloud metrics to understand what Temporal Cloud is seeing at the Task Queue and service
-level. For an overview of how these signals fit together, see [Temporal Cloud metrics](/cloud/metrics).
+level. For an overview of how these signals fit together, see [metric sources](/cloud/monitor#understand-metric-sources).
 
 :::tip
 
@@ -31,7 +31,7 @@ You can also inspect Workers and the Workers assigned to a Task Queue directly i
 
 :::
 
-## Minimal Observations {/* #minimal-observations */}
+## Minimal observations {/* #minimal-observations */}
 
 These alerts should be configured and understood first to gain intelligence into your application health and behaviors.
 
@@ -41,13 +41,13 @@ These alerts should be configured and understood first to gain intelligence into
 - Alert at >200ms for your p99 value
 - Plot >100ms for your p95 value
 
-2. Create a [Grafana](/cloud/metrics/prometheus-grafana) panel called Sync Match Rate.
+2. Create a [Grafana](/cloud/metrics/openmetrics/metrics-integrations#prometheus-grafana) panel called Sync Match Rate.
    See the [Sync Match Rate section](#sync-match-rate) to explore example queries and appropriate responses that accompany these values.
 
 - Alert at \<95% for your p99 value
 - Plot \<99% for your p95 value
 
-3. Create a [Grafana](/cloud/metrics/prometheus-grafana) panel called Poll Success Rate.
+3. Create a [Grafana](/cloud/metrics/openmetrics/metrics-integrations#prometheus-grafana) panel called Poll Success Rate.
    See the [Detect greedy Workers section](#detect-greedy-workers) for example queries and appropriate responses that accompany these values.
 
 - Alert at \<90% for your p99 value
@@ -76,7 +76,7 @@ The following alerts build on the above to dive deeper into specific potential c
 
 - Alert when the value is growing over time for a given Task Queue
 
-## Detect Task Backlog {/* #detect-task-backlog */}
+## Detect Task backlog {/* #detect-task-backlog */}
 
 ### Symptoms of high Task backlog
 
@@ -91,14 +91,15 @@ Metrics to monitor:
 - **Temporal Cloud metric**: [temporal_cloud_v1_poll_success_sync_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_success_sync_count)
 - **Temporal Cloud metric**: [temporal_cloud_v1_approximate_backlog_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_approximate_backlog_count)
 
-### Schedule To Start latency
+### Schedule-To-Start latency
 
 The Schedule To Start metric represents how long Tasks are staying unprocessed in the Task Queues.
 It is the time between when a Task is enqueued and when it is started by a Worker.
-This time being long (likely) means that your Workers can't keep up - either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
+This time being long (likely) means that your Workers can't keep up - either increase the number of Workers (if the host load is already high) or, if your Workers use fixed poller counts, increase the number of pollers per Worker.
+Workers that use [Poller Autoscaling](/develop/worker-performance/configuration#configuring-poller-options) adjust their poller count automatically.
 
 If your Schedule To Start latency alert triggers or is high, check the [Sync Match Rate](#sync-match-rate) to decide if you need to adjust your Worker or fleet, or contact Temporal Cloud support.
-If your Sync Match Rate is low, contact [Temporal Cloud support](/cloud/support#support-ticket).
+If your Sync Match Rate is low, contact [Temporal Cloud support](/evaluate/cloud/support#support-ticket).
 If your Sync Match Rate is low, you can contact Temporal Cloud support.
 
 The schedule_to_start_latency SDK metric for both [Workflow Executions](/references/sdk-metrics#workflow_task_schedule_to_start_latency) and [Activity Executions](/references/sdk-metrics#activity_schedule_to_start_latency) should have alerts.
@@ -138,7 +139,7 @@ sum(increase(temporal_activity_schedule_to_start_latency_seconds_count[5m])) by 
 This latency should be very low, close to zero.
 Any higher value indicates a bottleneck.
 
-### Sync Match Rate {/* #sync-match-rate */}
+### Sync match rate {/* #sync-match-rate */}
 
 The sync match rate measures the rate of Tasks that are delivered to workers without having to be persisted (workers are up and available to pick them up) to the rate of all delivered tasks.
 
@@ -174,7 +175,7 @@ The Sync Match Rate should be at least >95%, but preferably >99%.
 
 Once you have detected the condition of a high Task backlog, consider the scenarios below to take action.
 
-#### High Schedule To Start latency and high sync match rate
+#### High Schedule-To-Start latency and high sync match rate
 
 There are three typical causes for this:
 
@@ -186,10 +187,10 @@ Consider
 
 - Increasing either the number of available workers
 - Verifying that your worker hosts are appropriately resourced
-- Increasing the worker configuration value for concurrent pollers for workers/task executions (if your worker resources can accommodate the increased load)
+- Increasing the Worker's concurrent poller count, if your Workers use fixed poller counts and your Worker resources can accommodate the increased load
 - Doing some combination of these
 
-#### High Schedule To Start latency and low sync match rate
+#### High Schedule-To-Start latency and low sync match rate
 
 Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations and note that this timeout is non-retryable.
 
@@ -226,7 +227,7 @@ temporal_cloud_v1_approximate_backlog_count{temporal_namespace=~"$namespace", te
   - Check the system CPU usage against `task_slots` and adjust `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` settings as necessary.
   - Check the system memory usage against `sticky_cache_size` and adjust sticky cache size as necessary.
   - For a detailed explanation of settings, see the [Worker Performance](/develop/worker-performance/task-queues#task-queues-processing-tuning) section.
-- Increase the Worker config for concurrent pollers for Workflow or Activity `task_slots`, if your Worker resources can accommodate the increased load.
+- If your Workers use fixed poller counts, increase the concurrent poller count for Workflow or Activity Tasks, if your Worker resources can accommodate the increased load. Workers that use Poller Autoscaling adjust this count automatically.
   - Reference [Worker Performance > Poller Count](/develop/worker-performance/task-queues#poller-count).
 - Increase the number of available Workers.
 
@@ -278,7 +279,7 @@ If you see all of the following at the same time then you might have too many Wo
 Consider sizing down your Workers by either:
 
 - Reducing the number of Workers polling the impacted Task Queue, OR
-- Reducing the concurrent pollers per Worker, OR
+- Reducing the concurrent pollers per Worker (with fixed poller counts) or the maximum poller count (with Poller Autoscaling), OR
 - Both of the above
 
 ## Detect misconfigured Workers {/* #detect-misconfigured-workers */}

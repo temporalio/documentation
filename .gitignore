@@ -9,6 +9,7 @@ blob-report
 test-results
 
 # Generated files
+api/_content-manifest.json
 .docusaurus
 .cache-loader
 temp/
@@ -26,6 +27,7 @@ temp/
 .env.production.local
 .vs
 .claude/*
+!.claude/skills/
 .omc
 
 npm-debug.log*

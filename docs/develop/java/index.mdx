@@ -1,12 +1,10 @@
 ---
 id: index
 title: Java SDK developer guide
+slug: /develop/java
 sidebar_label: Java SDK
 description: Explore Temporal Java SDK feature guides to master developing Temporal Applications. Build Workflows, Activities, and Workers, connect to Temporal Services, set up a testing suite, handle failure detection, send messages, complete Activities asynchronously, implement Versioning, use Observability, debug applications, schedule Workflows
 toc_max_heading_level: 4
-tags:
-  - Java SDK
-  - Temporal SDKs
 ---
 
 import * as Components from '@site/src/components';
@@ -27,8 +25,8 @@ Once your local Temporal Service is set up, continue building with the following
 
 - [Develop a Workflow](/develop/java/workflows/basics)
 - [Develop an Activity](/develop/java/activities/basics)
-- [Start an Activity execution](/develop/java/activities/execution)
-- [Run Worker processes](/develop/java/workers/run-worker-process)
+- [Start an Activity Execution](/develop/java/activities/execution)
+- [Run a Worker](/develop/java/workers/run-worker-process)
 
 From there, you can dive deeper into any of the Temporal primitives to start building Workflows that fit your use cases.
 
@@ -49,7 +47,7 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 ## [Activities](/develop/java/activities)
 
 - [Activity basics](/develop/java/activities/basics)
-- [Activity execution](/develop/java/activities/execution)
+- [Activity Execution](/develop/java/activities/execution)
 - [Standalone Activities](/develop/java/activities/standalone-activities-quickstart)
 - [Timeouts](/develop/java/activities/timeouts)
 - [Asynchronous Activity Completion](/develop/java/activities/asynchronous-activity)
@@ -57,7 +55,8 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 
 ## [Workers](/develop/java/workers)
 
-- [Worker processes](/develop/java/workers/run-worker-process)
+- [Run a Worker](/develop/java/workers/run-worker-process)
+- [Serverless Workers](/develop/java/workers/serverless-workers)
 - [Observability](/develop/java/platform/observability)
 
 ## [Temporal Client](/develop/java/client)
@@ -70,6 +69,7 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 - [Quickstart](/develop/java/nexus/quickstart)
 - [Feature guide](/develop/java/nexus/feature-guide)
 - [Standalone Operations](/develop/java/nexus/standalone-operations)
+- [Microservice Development Walkthrough](/develop/java/nexus/development-walkthrough)
 
 ## [Platform](/develop/java/platform)
 
@@ -80,7 +80,7 @@ From there, you can dive deeper into any of the Temporal primitives to start bui
 
 - [Testing](/develop/java/best-practices/testing-suite)
 - [Debugging](/develop/java/best-practices/debugging)
-- [Converters and encryption](/develop/java/best-practices/data-handling)
+- [Data handling](/develop/java/best-practices/data-handling)
 
 ## [Integrations](/develop/java/integrations)
 

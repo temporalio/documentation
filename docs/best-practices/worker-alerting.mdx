@@ -2,7 +2,7 @@
 id: worker-alerting
 title: Alerting on Worker metrics
 sidebar_label: Worker alerting
-description: A recommended alert set for Temporal Workers, with tag filters, thresholds, and links to triage guidance
+description: Five starting alerts for Worker health, with thresholds, tag filters, and severity routing, for Temporal Cloud and self-hosted Temporal Services.
 toc_max_heading_level: 4
 tags:
   - Metrics
@@ -23,7 +23,7 @@ For Worker sizing and tuning, see [Worker performance](/develop/worker-performan
 
 None of this works until your Workers are emitting metrics and something is scraping them:
 
-- **Temporal Cloud:** [Set up SDK metrics](/cloud/metrics/sdk-metrics-setup), then [configure Prometheus and Grafana](/cloud/metrics/prometheus-grafana).
+- **Temporal Cloud:** [Set up SDK metrics](/cloud/metrics/sdk-metrics-setup) for your Workers, and [set up Cloud metrics](/cloud/metrics/openmetrics) with OpenMetrics.
 - **Self-hosted:** [Monitor Temporal Platform metrics](/self-hosted-guide/monitoring).
 
 ### Resolve the metric names for your setup {/* #resolve-metric-names */}

@@ -1,20 +1,20 @@
 ---
 id: standalone-operations
-title: Standalone Nexus Operations - Java SDK
+title: Standalone Nexus Operations
 sidebar_label: Standalone Operations
 toc_max_heading_level: 4
 tags:
   - Nexus
   - Temporal Client
-  - Java SDK
-  - Temporal SDKs
 description: Execute Nexus Operations independently without a Workflow using the Temporal Java SDK.
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <ReleaseNoteHeader featureName="standaloneNexusOperation">
-  Requires Java SDK `v1.36.1` or above. All APIs are experimental and may be subject to backwards-incompatible changes.
+  Requires Java SDK `v1.36.1` or above. API breaking changes are kept to a minimum before General Availability.
 </ReleaseNoteHeader>
 
 [Standalone Nexus Operations](/standalone-nexus-operation) let you run Nexus Operation Executions independently, without
@@ -37,65 +37,115 @@ This page focuses on the client-side APIs that are unique to Standalone Nexus Op
 - [Run Standalone Nexus Operations with Temporal Cloud](#run-standalone-nexus-operations-temporal-cloud)
 
 :::note
-This documentation uses source code from the
+The code on this page is in the
+[`java-sandbox/nexus/standalone-operations`](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/java-sandbox/nexus/standalone-operations)
+project, derived from the
 [Java Nexus Standalone sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexusstandalone).
+Run the commands on this page from that project's folder.
 
 :::
 
 ## Prerequisites {/* #prerequisites */}
 
-Standalone Nexus Operations are at Pre-release and require a special Temporal CLI build.
+Standalone Nexus Operations are a Public Preview feature and require Temporal CLI v1.9.0 or higher.
 
-### 1. Install and verify the Pre-release Temporal CLI {/* #install-cli */}
+### 1. Install and verify the Temporal CLI {/* #install-cli */}
 
-The `temporal nexus operation` commands require a Pre-release build of the Temporal CLI. See
-[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for the platform downloads,
+The `temporal nexus operation` commands require Temporal CLI v1.9.0 or higher. See
+[Temporal CLI support](/standalone-nexus-operation#temporal-cli-support) for install options,
 then verify:
 
 ```bash
-./temporal --version
-# temporal version 1.7.4-standalone-nexus-operations
+temporal --version
 ```
 
-Run it as `./temporal` from the directory where you extracted it. The standard `brew install temporal`
-build does not include Standalone Nexus Operation support during Pre-release.
+Which should output v1.9.0 or higher.
 
 ### 2. Start a local dev server {/* #enable-dev-server */}
 
-The Pre-release dev server enables Standalone Nexus Operations by default — no dynamic config is
-required. Start it with the caller and handler Namespaces pre-created:
+Start the dev server with Standalone Nexus Operations enabled and the caller and handler Namespaces pre-created:
 
 ```bash
-./temporal server start-dev \
+temporal server start-dev \
   --namespace my-caller-namespace \
-  --namespace my-handler-namespace
+  --namespace my-handler-namespace \
+  --dynamic-config-value nexusoperation.enableStandalone=true
 ```
+
+Without `nexusoperation.enableStandalone=true`, Temporal CLI v1.9.x dev servers reject Standalone Nexus Operations with
+`Standalone Nexus operation is disabled`.
 
 The starter and Worker connect to two different Namespaces (a caller Namespace and a handler
 Namespace), mirroring how Nexus crosses Namespace boundaries.
 
-To run the examples on this page against the [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexusstandalone),
-create a Nexus Endpoint that routes to the handler Namespace and the Worker's Task Queue:
+To run the examples on this page, create a Nexus Endpoint that routes to the handler Namespace and the Worker's Task Queue:
 
 ```bash
-./temporal operator nexus endpoint create \
+temporal operator nexus endpoint create \
   --name my-nexus-endpoint \
   --target-namespace my-handler-namespace \
   --target-task-queue nexus-handler-queue
 ```
 
-Start the sample handler Worker in the handler Namespace:
+Start the handler Worker in the handler Namespace:
+
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
 
 ```bash
 TEMPORAL_NAMESPACE=my-handler-namespace \
-  ./gradlew -q :core:execute -PmainClass=io.temporal.samples.nexusstandalone.handler.HandlerWorker
+  mvn compile exec:java -Dexec.mainClass=io.temporal.docs.nexus.standaloneoperations.handler.HandlerWorker
 ```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+TEMPORAL_NAMESPACE=my-handler-namespace \
+  gradle -q execute -PmainClass=io.temporal.docs.nexus.standaloneoperations.handler.HandlerWorker
+```
+
+</TabItem>
+</Tabs>
 
 Run the starter in the caller Namespace (from a separate terminal):
 
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
 ```bash
 TEMPORAL_NAMESPACE=my-caller-namespace \
-  ./gradlew -q :core:execute -PmainClass=io.temporal.samples.nexusstandalone.StandaloneClientStarter
+  mvn compile exec:java -Dexec.mainClass=io.temporal.docs.nexus.standaloneoperations.StandaloneClientStarter
+```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+TEMPORAL_NAMESPACE=my-caller-namespace \
+  gradle -q execute -PmainClass=io.temporal.docs.nexus.standaloneoperations.StandaloneClientStarter
+```
+
+</TabItem>
+</Tabs>
+
+The starter runs each example on this page in turn and logs output like the following. Operation IDs are fixed, so the
+list and count results grow across runs.
+
+```
+execute() returned: Hello, execute!
+executeAsync() returned: Hello, executeAsync!
+getHandle(id=execute-nexus) then getResult() returned: Hello, execute!
+start(id=start-nexus) then getResult() returned: Hello, start!
+Started 'to-cancel' id=start-and-cancel-nexus, requesting cancellation
+Operation id=start-and-cancel-nexus ended as expected after cancel: Nexus operation failed: operationId='start-and-cancel-nexus'
+OperationId: start-and-cancel-nexus, Operation: startGreeting, Status: NEXUS_OPERATION_EXECUTION_STATUS_CANCELED
+OperationId: start-nexus, Operation: greet, Status: NEXUS_OPERATION_EXECUTION_STATUS_COMPLETED
+OperationId: execute-async-nexus, Operation: greet, Status: NEXUS_OPERATION_EXECUTION_STATUS_COMPLETED
+OperationId: execute-nexus, Operation: greet, Status: NEXUS_OPERATION_EXECUTION_STATUS_COMPLETED
+Total Nexus operations: 4
+  group values=[[Canceled]] count=1
+  group values=[[Completed]] count=3
 ```
 
 ## Execute a Standalone Nexus Operation {/* #execute-operation */}
@@ -108,45 +158,69 @@ from it with `newNexusServiceClient()`, bound to a specific Nexus Endpoint and S
 pre-created on the server. Then call `start()` or `execute()` from application code (for example, a starter program),
 not from inside a Workflow Definition.
 
+<!--SNIPSTART java-nexus-standalone-operations-client-->
+[java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java)
+```java
+// A single NexusClient is the entry point: it serves Visibility queries (list/count) and
+// produces service-bound clients.
+NexusClient nexusClient =
+    NexusClient.newInstance(
+        stubs, NexusClientOptions.newBuilder().setNamespace(namespace).build());
+// Typed service client: dispatches operations by method reference on the service interface.
+NexusServiceClient<GreetingNexusService> greetingClient =
+    nexusClient.newNexusServiceClient(GreetingNexusService.class, ENDPOINT_NAME);
+```
+<!--SNIPEND-->
+
 `execute()` waits for the Operation to complete and returns the result.
 Both methods take a [`StartNexusOperationOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/StartNexusOperationOptions.html)
 whose `id` is required — the SDK never generates one for you. `scheduleToCloseTimeout` is optional and defaults to the
 maximum allowed by the Temporal server.
 
+<!--SNIPSTART java-nexus-standalone-operations-execute {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java)
 ```java
-NexusClient nexusClient = NexusClient.newInstance(stubs, options);
-NexusServiceClient<GreetingNexusService> greetingClient =
-    nexusClient.newNexusServiceClient(GreetingNexusService.class, ENDPOINT_NAME);
-
-// Block until the operation completes and return its result.
-GreetingOutput greeting =
+// execute(...) starts the operation and blocks until it completes, returning the result in one
+// call. Used here on the synchronous 'greet' operation.
+String operationId = "execute-nexus";
+GreetingOutput executed =
     greetingClient.execute(
         GreetingNexusService::greet,
         StartNexusOperationOptions.newBuilder()
-            .setId("greet-" + UUID.randomUUID())
+            .setId(operationId)
             .setScheduleToCloseTimeout(Duration.ofSeconds(10))
             .build(),
-        new GreetingInput("World"));
+        new GreetingInput("execute"));
+logger.info("execute() returned: {}", executed.getMessage());
 ```
+<!--SNIPEND-->
 
 `executeAsync()` is the same but returns a `CompletableFuture` instead of blocking.
 
+<!--SNIPSTART java-nexus-standalone-operations-execute-async {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java)
 ```java
+// executeAsync(...) is the same as execute(...), but returns a CompletableFuture instead of
+// blocking.
 CompletableFuture<GreetingOutput> future =
     greetingClient.executeAsync(
-        GreetingNexusService::greet, options, new GreetingInput("World"));
-GreetingOutput greeting = future.get();
+        GreetingNexusService::greet,
+        basicOptions("execute-async-nexus"),
+        new GreetingInput("executeAsync"));
+GreetingOutput executedAsync = future.get();
+logger.info("executeAsync() returned: {}", executedAsync.getMessage());
 ```
+<!--SNIPEND-->
 
 See the full
-[starter sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/nexusstandalone/StandaloneClientStarter.java)
-for a complete example that executes both synchronous and asynchronous Operations, gets their results, and lists and
-counts Operations.
+[starter](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java)
+for a complete example that executes, starts, and cancels Operations, gets their results, and lists and counts
+Operations.
 
 Or use the Temporal CLI to execute a Standalone Nexus Operation:
 
 ```bash
-./temporal nexus operation execute \
+temporal nexus operation execute \
   --namespace my-caller-namespace \
   --endpoint my-nexus-endpoint \
   --service GreetingNexusService \
@@ -162,15 +236,24 @@ Or use the Temporal CLI to execute a Standalone Nexus Operation:
 Use `NexusOperationHandle.getResult()` to wait until the Operation completes and retrieve its result. This works for
 both synchronous and asynchronous Operations.
 
+<!--SNIPSTART java-nexus-standalone-operations-start {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java)
 ```java
-// Start an operation and get a NexusOperationHandle.
+// start(...) returns a NexusOperationHandle as soon as the operation is started.
 NexusOperationHandle<GreetingOutput> handle =
     greetingClient.start(
-        GreetingNexusService::startGreeting, options, new GreetingInput("World"));
+        GreetingNexusService::greet,
+        basicOptions("start-nexus"),
+        new GreetingInput("start"));
 
-// Block until the operation completes and retrieve its result.
+// getResult() blocks until the operation completes and returns its result.
 GreetingOutput greeting = handle.getResult();
+logger.info(
+    "start(id={}) then getResult() returned: {}",
+    handle.getNexusOperationId(),
+    greeting.getMessage());
 ```
+<!--SNIPEND-->
 
 If the Operation completed successfully, the result is returned. If the Operation failed, the failure is thrown as a
 `NexusOperationException`. Use `getResultAsync()` for a non-blocking `CompletableFuture`, or
@@ -179,7 +262,7 @@ If the Operation completed successfully, the result is returned. If the Operatio
 Or use the Temporal CLI to wait for a result by Operation ID:
 
 ```bash
-./temporal nexus operation result --namespace my-caller-namespace --operation-id my-greet-op
+temporal nexus operation result --namespace my-caller-namespace --operation-id my-greet-op
 ```
 
 ## List Standalone Nexus Operations {/* #list-operations */}
@@ -190,16 +273,23 @@ of operation metadata entries.
 
 Note that `listNexusOperationExecutions()` is called on a `NexusClient`, not on the typed `NexusServiceClient`.
 
+<!--SNIPSTART java-nexus-standalone-operations-list {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java)
 ```java
-String query = "Endpoint = \"" + ENDPOINT_NAME + "\"";
-nexusClient
-    .listNexusOperationExecutions(query)
-    .forEach(
-        op ->
-            System.out.printf(
-                "OperationId: %s, Operation: %s, Status: %s%n",
-                op.getOperationId(), op.getOperation(), op.getStatus()));
+// listNexusOperationExecutions accepts a List Filter query. Here it filters by the built-in
+// Endpoint attribute. Query syntax is documented at https://docs.temporal.io/list-filter .
+String query = "Endpoint = \"" + endpointName + "\"";
+List<NexusOperationExecutionMetadata> operations =
+    nexusClient.listNexusOperationExecutions(query).collect(Collectors.toList());
+for (NexusOperationExecutionMetadata op : operations) {
+  logger.info(
+      "OperationId: {}, Operation: {}, Status: {}",
+      op.getOperationId(),
+      op.getOperation(),
+      op.getStatus());
+}
 ```
+<!--SNIPEND-->
 
 The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
 `"Endpoint = 'my-endpoint' AND ExecutionStatus = 'Running'"`.
@@ -207,7 +297,7 @@ The `query` parameter accepts [List Filter](/list-filter) syntax. For example,
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+temporal nexus operation list --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Count Standalone Nexus Operations {/* #count-operations */}
@@ -217,25 +307,35 @@ to count Standalone Nexus Operation Executions that match a [List Filter](/list-
 
 Note that `countNexusOperationExecutions()` is called on a `NexusClient`, not on the typed `NexusServiceClient`.
 
+<!--SNIPSTART java-nexus-standalone-operations-count {"enable_code_dedenting": true}-->
+[java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/nexus/standalone-operations/src/main/java/io/temporal/docs/nexus/standaloneoperations/StandaloneClientStarter.java)
 ```java
-String query = "Endpoint = \"" + ENDPOINT_NAME + "\"";
-NexusOperationExecutionCount count = nexusClient.countNexusOperationExecutions(query);
-System.out.println("Total Nexus operations: " + count.getCount());
-```
+// countNexusOperationExecutions accepts the same List Filter query.
+NexusOperationExecutionCount total = nexusClient.countNexusOperationExecutions(query);
+logger.info("Total Nexus operations: {}", total.getCount());
 
-Passing a `GROUP BY` query (for example, `"GROUP BY ExecutionStatus"`) returns a count per group, available through
-`NexusOperationExecutionCount.getGroups()`.
+// A GROUP BY query returns a count per group value.
+NexusOperationExecutionCount grouped =
+    nexusClient.countNexusOperationExecutions(query + " GROUP BY ExecutionStatus");
+for (NexusOperationExecutionCount.AggregationGroup group : grouped.getGroups()) {
+  logger.info("  group values={} count={}", group.getGroupValues(), group.getCount());
+}
+```
+<!--SNIPEND-->
+
+A query that ends in a `GROUP BY` clause (for example, `GROUP BY ExecutionStatus`) returns a count per group, available
+through `NexusOperationExecutionCount.getGroups()`.
 
 Or use the Temporal CLI:
 
 ```bash
-./temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
+temporal nexus operation count --namespace my-caller-namespace --query 'Endpoint = "my-nexus-endpoint"'
 ```
 
 ## Run Standalone Nexus Operations with Temporal Cloud {/* #run-standalone-nexus-operations-temporal-cloud */}
 
 The code samples referenced on this page build their client from a `ClientConfigProfile` loaded from a TOML profile, so
-the same code works against Temporal Cloud — just point the profile at your Cloud Namespace (or override the connection
+the same code works against Temporal Cloud. Point the profile at your Cloud Namespace (or override the connection
 via `TEMPORAL_*` environment variables). No code changes are needed.
 
 For full details on connecting to Temporal Cloud, including Namespace creation, Nexus Endpoint setup, certificate

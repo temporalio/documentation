@@ -1,21 +1,13 @@
 ---
 id: standalone-activities
-title: Standalone Activities Feature Guide
-sidebar_label: Feature Guide
+title: Standalone Activities feature guide
+sidebar_label: Feature guide
 toc_max_heading_level: 4
 tags:
   - Activities
   - Temporal Client
-  - Java SDK
-  - Temporal SDKs
 description: Execute Activities independently without a Workflow using the Temporal Java SDK.
 ---
-
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  featureName="standaloneActivity"
-/>
 
 [Standalone Activities](/standalone-activity) are Activities that run independently, without being orchestrated by a
 Workflow. Instead of starting an Activity from within a Workflow Definition, you start a Standalone
@@ -27,7 +19,7 @@ Activity directly from your Temporal Client.
 
 :::tip
 
-New to Standalone Activities? Start with the [Standalone Activities Quickstart](/develop/java/activities/standalone-activities-quickstart).
+New to Standalone Activities? Start with the [Standalone Activities quickstart](/develop/java/activities/standalone-activities-quickstart).
 
 :::
 
@@ -43,8 +35,8 @@ This page covers the following:
 :::note
 
 This documentation uses source code from the
-[standaloneactivities](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities)
-sample.
+[standalone-activities](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/java-sandbox/activities/standalone-activities)
+sample project, the same one the [quickstart](/develop/java/activities/standalone-activities-quickstart) uses.
 
 :::
 
@@ -57,8 +49,8 @@ Use
 [`ActivityClient.start()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityClient.html)
 to start a Standalone Activity and get a handle without waiting for the result:
 
-[StartActivity.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities/StartActivity.java)
-
+<!--SNIPSTART java-standalone-activities-start {"enable_code_dedenting": true}-->
+[java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/StartActivity.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/StartActivity.java)
 ```java
 ActivityHandle<String> handle =
     client.start(
@@ -73,18 +65,32 @@ System.out.println("Started activity ID: " + ACTIVITY_ID);
 String result = handle.getResult();
 System.out.println("Activity result: " + result);
 ```
+<!--SNIPEND-->
 
-With the Temporal Server and Worker running, open a new terminal in the `samples-java` directory and
-run:
+With the Temporal Server and Worker running, open a new terminal in the
+`java-sandbox/activities/standalone-activities` directory and run:
+
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
 
 ```bash
-./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.StartActivity
+mvn -q compile exec:java -Dexec.mainClass=io.temporal.docs.activities.standaloneactivities.StartActivity
 ```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+gradle -q execute -PmainClass=io.temporal.docs.activities.standaloneactivities.StartActivity
+```
+
+</TabItem>
+</Tabs>
 
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity start \
+temporal activity start \
   --type ComposeGreeting \
   --activity-id standalone-activity-id \
   --task-queue standalone-activity-task-queue \
@@ -97,10 +103,13 @@ Or use the Temporal CLI:
 
 Use `client.getHandle()` to create a typed handle to a previously started Standalone Activity:
 
+<!--SNIPSTART java-standalone-activities-get-handle {"enable_code_dedenting": true}-->
+[java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/GetActivityHandle.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/GetActivityHandle.java)
 ```java
 ActivityHandle<String> handle =
     client.getHandle("standalone-activity-id", null, String.class);
 ```
+<!--SNIPEND-->
 
 Pass `null` as the run ID to target the latest run of the given activity ID. You can then use the
 handle to wait for the result, describe, cancel, or terminate the Activity.
@@ -111,21 +120,27 @@ Under the hood, calling `client.execute()` is the same as calling `client.start(
 enqueue the Standalone Activity, and then calling `handle.getResult()` to block until the Activity
 completes and return the result:
 
+<!--SNIPSTART java-standalone-activities-get-result {"enable_code_dedenting": true}-->
+[java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/GetActivityHandle.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/GetActivityHandle.java)
 ```java
 String result = handle.getResult();
 ```
+<!--SNIPEND-->
 
 To wait asynchronously without blocking the calling thread, use `handle.getResultAsync()`, which
 returns a `CompletableFuture<R>`:
 
+<!--SNIPSTART java-standalone-activities-get-result-async {"enable_code_dedenting": true}-->
+[java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/GetActivityHandle.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/GetActivityHandle.java)
 ```java
 CompletableFuture<String> future = handle.getResultAsync();
 ```
+<!--SNIPEND-->
 
 Or use the Temporal CLI to wait for a result by Activity ID:
 
 ```bash
-./temporal activity result --activity-id standalone-activity-id
+temporal activity result --activity-id standalone-activity-id
 ```
 
 ## List Standalone Activities {/* #list-activities */}
@@ -139,32 +154,47 @@ consumed.
 These APIs return only Standalone Activity Executions. Activities running inside Workflows are not
 included.
 
-[ListActivities.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities/ListActivities.java)
-
+<!--SNIPSTART java-standalone-activities-list {"enable_code_dedenting": true}-->
+[java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/ListActivities.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/ListActivities.java)
 ```java
-client
-    .listExecutions("TaskQueue = '" + TASK_QUEUE + "'")
-    .forEach(
-        info ->
-            System.out.printf(
-                "ActivityID: %s, Type: %s, Status: %s%n",
-                info.getActivityId(), info.getActivityType(), info.getStatus()));
+try (Stream<ActivityExecutionMetadata> activities =
+    client.listExecutions("TaskQueue = '" + TASK_QUEUE + "'")) {
+  activities.forEach(
+      info ->
+          System.out.printf(
+              "ActivityID: %s, Type: %s, Status: %s%n",
+              info.getActivityId(), info.getActivityType(), info.getStatus()));
+}
 ```
+<!--SNIPEND-->
 
 Run it:
 
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
 ```bash
-./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.ListActivities
+mvn -q compile exec:java -Dexec.mainClass=io.temporal.docs.activities.standaloneactivities.ListActivities
 ```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+gradle -q execute -PmainClass=io.temporal.docs.activities.standaloneactivities.ListActivities
+```
+
+</TabItem>
+</Tabs>
 
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity list
+temporal activity list
 ```
 
 The query parameter accepts the same [List Filter](/list-filter) syntax used for [Workflow
-Visibility](/visibility). For example, `ActivityType = 'composeGreeting' AND Status = 'Running'`.
+Visibility](/visibility). For example, `ActivityType = 'ComposeGreeting' AND ExecutionStatus = 'Running'`.
 
 ## Count Standalone Activities {/* #count-activities */}
 
@@ -174,8 +204,8 @@ to count Standalone Activity Executions that match a [List Filter](/list-filter)
 the total count of executions (running, completed, failed, etc.) — not the number of queued tasks.
 It works the same way as counting Workflow Executions.
 
-[CountActivities.java](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/standaloneactivities/CountActivities.java)
-
+<!--SNIPSTART java-standalone-activities-count {"enable_code_dedenting": true}-->
+[java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/CountActivities.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/activities/standalone-activities/src/main/java/io/temporal/docs/activities/standaloneactivities/CountActivities.java)
 ```java
 ActivityExecutionCount resp = client.countExecutions("TaskQueue = '" + TASK_QUEUE + "'");
 System.out.println("Total activities: " + resp.getCount());
@@ -184,22 +214,36 @@ resp.getGroups()
         group ->
             System.out.println("Group " + group.getGroupValues() + ": " + group.getCount()));
 ```
+<!--SNIPEND-->
 
 Run it:
 
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
 ```bash
-./gradlew -q execute -PmainClass=io.temporal.samples.standaloneactivities.CountActivities
+mvn -q compile exec:java -Dexec.mainClass=io.temporal.docs.activities.standaloneactivities.CountActivities
 ```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+gradle -q execute -PmainClass=io.temporal.docs.activities.standaloneactivities.CountActivities
+```
+
+</TabItem>
+</Tabs>
 
 Or use the Temporal CLI:
 
 ```bash
-./temporal activity count
+temporal activity count
 ```
 
 ## Run Standalone Activities with Temporal Cloud {/* #run-standalone-activities-temporal-cloud */}
 
-The Worker and Client code in the [Standalone Activities Quickstart](/develop/java/activities/standalone-activities-quickstart)
+The Worker and Client code in the [Standalone Activities quickstart](/develop/java/activities/standalone-activities-quickstart)
 use `ClientConfigProfile.load()`, so the same code works against Temporal Cloud — configure the
 connection via environment variables or a TOML profile. No code changes are needed.
 
@@ -228,4 +272,4 @@ export TEMPORAL_NAMESPACE=<your-namespace>.<your-account-id>
 export TEMPORAL_API_KEY=<your-api-key>
 ```
 
-Then run the Worker and starter code as shown in the [Standalone Activities Quickstart](/develop/java/activities/standalone-activities-quickstart).
+Then run the Worker and starter code as shown in the [Standalone Activities quickstart](/develop/java/activities/standalone-activities-quickstart).

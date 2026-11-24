@@ -51,11 +51,11 @@ Prefer common, concrete verbs and nouns.
 
 #### Abbreviation of "identifier"
 
-Do not abbreviate the word "identifier" as "ID", "Id", or "id" unless it's part of a Temporal core term. For core terms, the correct abbreviation is "Id", such as in "Workflow Id" or "Activity Id".
+Do not abbreviate the word "identifier" as "ID", "Id", or "id" unless it's part of a Temporal core term. For core terms, the correct abbreviation is "ID", such as in "Workflow ID" or "Activity ID".
 
-- Correct: "You can provide an order identifier or customer identifier as a Workflow Id."
+- Correct: "You can provide an order identifier or customer identifier as a Workflow ID."
 
-- Incorrect: "You can provide an order ID or customer id as a Workflow Id."
+- Incorrect: "You can provide an order Id or customer id as a Workflow Id."
 
 In code (and when quoting or referring to code in text), follow the conventions of each language.
 

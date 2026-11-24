@@ -17,7 +17,7 @@ Use server metrics to estimate Actions per second (APS) and peak load.
 Use representative Workflow Execution Histories to understand how many Actions a typical Workflow Execution creates.
 Estimate storage separately from Actions.
 
-For details about which operations count as Actions in Temporal Cloud, see [Temporal Cloud Actions](/cloud/actions).
+For details about which operations count as Actions in Temporal Cloud, see [Temporal Cloud Actions](/evaluate/cloud/actions).
 
 ## Choose an estimation method
 
@@ -26,7 +26,7 @@ Use one or more of the following methods depending on what you need to estimate.
 | Method | Use it to estimate | Notes |
 | --- | --- | --- |
 | Self-hosted server metrics | APS, peak APS, and Action counts over a fixed time range | Best for sizing Namespace limits and understanding usage patterns. |
-| Workflow Execution History samples | Actions per representative Workflow Execution | Best for understanding workload shape by Workflow Type. Some [Actions do not appear](/cloud/actions) in Event History. |
+| Workflow Execution History samples | Actions per representative Workflow Execution | Best for understanding workload shape by Workflow Type. Some [Actions do not appear](/evaluate/cloud/actions) in Event History. |
 | Storage estimates | Event History storage | Storage is [priced separately](/cloud/pricing#pricing-model) from Actions. |
 
 ## Estimate APS from self-hosted server metrics
@@ -86,7 +86,7 @@ This method is useful when you need to understand how much Action usage a Workfl
 1. Choose representative Workflow Executions for each Workflow Type.
 2. Download the Event History for each Workflow Execution from the Web UI or API.
 3. Count the events that map to Temporal Cloud Actions.
-   For the list of Action types and corresponding History Event types, see [Temporal Cloud Actions](/cloud/actions).
+   For the list of Action types and corresponding History Event types, see [Temporal Cloud Actions](/evaluate/cloud/actions).
 4. Multiply the Action count by the expected number of Workflow Executions in the period you want to estimate.
 
 This method produces an estimate.

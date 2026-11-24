@@ -1,8 +1,8 @@
 ---
 id: benign-exceptions
-title: Benign exceptions - TypeScript SDK
+title: Benign exceptions
 sidebar_label: Benign exceptions
-description: Mark expected or non-severe Activity errors as benign to reduce noise in logs, metrics, and OpenTelemetry traces.
+description: Mark expected or non-severe Activity errors as benign in TypeScript to reduce noise in logs, metrics, and OpenTelemetry traces.
 toc_max_heading_level: 2
 tags:
   - Activities
@@ -22,7 +22,9 @@ Benign errors:
 - Do not emit Activity failure metrics
 - Do not set the OpenTelemetry failure status to ERROR
 
-```typescript
+<!--SNIPSTART typescript-benign-exceptions-activity-->
+[typescript-sandbox/src/activities/benign-exceptions/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/benign-exceptions/activities.ts)
+```ts
 import {
   ApplicationFailure,
   ApplicationFailureCategory,
@@ -41,5 +43,6 @@ export async function myActivity(): Promise<string> {
   }
 }
 ```
+<!--SNIPEND-->
 
 Use benign exceptions for Activity errors that occur regularly as part of normal operations, such as polling an external service that isn't ready yet, or handling expected transient failures that will be retried.

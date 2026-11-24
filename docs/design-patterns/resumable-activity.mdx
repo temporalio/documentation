@@ -83,7 +83,7 @@ The following describes each step:
 7. The Workflow transitions to `AWAITING_APPROVAL` and parks again, waiting for the client to approve the transfer.
 8. The client sends an `approve` Signal. The Workflow completes and returns the result.
 
-The key insight: **the Workflow never died**. It survived bad input, waited indefinitely without polling, accepted an external correction, and completed cleanly. Its entire state — status, corrected account, approval decision — is durable in Temporal throughout.
+The Workflow stays alive throughout: it waits indefinitely without polling, accepts an external correction, and completes without restarting. Its state — status, corrected account number, approval decision — is durable in Temporal the entire time.
 
 ## Implementation
 
@@ -569,3 +569,7 @@ stateDiagram-v2
 ### Guides
 
 - [Recover business processes without restarting](/guides/recover-without-restart): A `recoverableStep` implementation of this pattern in a six-step loan pipeline, with Search Attribute-based routing so operators can find and fix blocked cases.
+
+### References
+
+- [Temporal Retry Policies](/encyclopedia/retry-policies)

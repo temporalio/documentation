@@ -2,7 +2,7 @@
 id: managing-aps-limits
 title: Managing Actions per Second (APS) limits in Temporal Cloud
 sidebar_label: Managing APS limits
-description: Control how limits are assigned to a Namespace with Capacity Modes
+description: Why Namespaces hit Actions Per Second limits, how to design Workflows that use fewer Actions, and when Provisioned Capacity helps.
 slug: /best-practices/managing-aps-limits
 toc_max_heading_level: 4
 tags:
@@ -24,19 +24,19 @@ covers why workloads hit APS limits, how to design Workflows that use actions ef
 [Provisioned Capacity](#provisioned-capacity-and-trus) — Temporal Resource Units (TRUs) that reserve additional
 capacity for spiky or unpredictable workloads.
 
-## Understanding actions in Temporal
+## Understand actions in Temporal {/* #understanding-actions-in-temporal */}
 
 ### What counts as an action?
 
 Actions are the fundamental operations that drive your Workflows forward.
-The following is a partial list — see [the full list in our documentation](/cloud/actions).
+The following is a partial list — see [the full list in our documentation](/evaluate/cloud/actions).
 
 - Workflows: Starting, completing, resetting. Also starting Child Workflows, as well as Schedules and Timers
 - Activities: Starting, retrying, Heartbeating
 - Signals, Updates, and Queries 
 
 Actions that count toward an APS limit are, with a few exemptions, the same as actions that are billable. 
-The key insight here is that nearly everything that happens in Temporal--state changes, decision points, interactions--is counted as an action.
+Nearly everything that happens in Temporal (state changes, decision points, interactions) counts as an action.
 
 ### The action multiplier effect
 
@@ -49,7 +49,7 @@ These can all contribute to the multiplier effect.
 ### The effect of rate limiting
 
 In Temporal Cloud, the effect of rate limiting is increased latency, not lost work. 
-Workers [might take longer](/cloud/service-availability#throughput) to complete Workflows. 
+Workers [might take longer](/cloud/slo#throughput) to complete Workflows. 
 
 ## Common reasons customers hit APS limits
 
@@ -69,7 +69,7 @@ Common bursty patterns include:
 - Retry Storms: when a large number of Workflows get stuck on an Activity, and that Activity is failing, if retry delay is very short, this can cause a spike in Actions.
 - Timer Storms: a large number of Workflows all set a Timer for the exact same time--triggering a spike as those Timers fire and then Activities run, causing a lot of actions all at the same time.
 
-These types of processes can result in your Namespace averaging 200 APS over a day, but spiking to 800 APS or more during your peak hour/day/event/etc. 
+These types of processes can result in your Namespace averaging 200 APS over a day, but spiking to 800 APS or more during your peak hour, day, or event. 
 
 #### How to mitigate
 
@@ -151,7 +151,7 @@ Each separate Activity adds Action overhead.
 
 ### Multiple use cases in one Namespace
 Often when starting with Temporal, the first use case is implemented in a single Namespace, generally one per logical environment. 
-When the second Temporal use case is implemented, it runs in the same Namespace, the same for the third, fourth, etc. 
+When the second Temporal use case is implemented, it runs in the same Namespace, as do the third, fourth, and any later ones. 
 
 An APS limit is set per Namespace, so multiple use cases with multiple traffic patterns in the same Namespace can exhaust this limit quickly.
 
@@ -170,7 +170,7 @@ But sometimes you need more capacity than the on-demand model provides, especial
 
 Temporal Cloud offers two [Capacity Modes](/cloud/capacity-modes):
 
-- **On-Demand mode** (default): Your Namespace automatically scales based on your trailing 7-day usage. This works well for steady, predictable workloads.
+- **On-Demand mode** (default): Your Namespace scales up based on the trailing 1-day usage window and scales down based on the trailing 7-day usage window. This works well for steady, predictable workloads.
 - **Provisioned mode**: You reserve capacity by adding Temporal Resource Units (TRUs), giving you guaranteed headroom for traffic spikes.
 
 See [Capacity Modes](/cloud/capacity-modes) for complete details on TRUs, available increments, and how to manage capacity via UI, CLI, or API.
@@ -185,10 +185,10 @@ Use Provisioned capacity when the on-demand model can't respond quickly enough:
 | **Unplanned spikes** | Sudden traffic surges, viral events | React instantly via UI/CLI/API when you see throttling |
 | **Load testing** | Validating new services at scale | Provision TRUs for the test, deprovision after |
 | **Batch jobs** | Scheduled high-throughput jobs | Automate TRU scaling via API around job schedules |
-| **Migrations** | Onboarding a new workload faster than on-demand adjusts | Bridge with TRUs for approximately 7 days while the on-demand envelope catches up |
+| **Migrations** | Onboarding a new workload faster than on-demand adjusts | Bridge with TRUs for approximately 1 day while the on-demand envelope catches up |
 
 :::note
-When switching back to on-demand mode, your APS limit resets to the running average from the last 7 days.
+When switching back to on-demand mode, your APS limit is recalculated from the trailing 1-day usage formula.
 If Temporal Support has set a custom limit for your Namespace, that limit is preserved across the switch.
 Plan for this if your workload is sensitive to the transition.
 :::
@@ -210,18 +210,18 @@ Since you understand your workload patterns better than any auto-scaling system,
 - **Schedule capacity changes**: Use [Temporal Schedules](/schedule) or Workflows to increase TRUs before known events
 - **React to leading indicators**: If your application has upstream signals (incoming order queue depth, marketing campaign start), use those to trigger capacity changes proactively
 
-## Knowing if you're hitting APS limits
+## Know if you're hitting APS limits {/* #knowing-if-youre-hitting-aps-limits */}
 
 In addition to understanding the patterns that can affect APS limits on a Temporal Namespace, it's also important to know if you're approaching (or exceeding) these limits.
 Temporal Cloud provides several metrics that, if tracked, will tell you if you're being rate limited due to APS.
 See the documentation on [detecting resource exhaustion](/cloud/service-health#rps-aps-rate-limits) for an explanation of those metrics as well as a sample Grafana dashboard that shows how they could be viewed.
 
-### Monitoring for TRU decisions
+### Monitor for TRU decisions {/* #monitoring-for-tru-decisions */}
 
 If you're considering Provisioned capacity, set up monitoring to understand your usage patterns:
 
 - **Use [OpenMetrics](/cloud/metrics/openmetrics)**: For real-time visibility into APS consumption, integrate Temporal Cloud metrics with your observability stack
-- **Track APS usage vs. limits**: Monitor [`temporal_cloud_v1_total_action_throttled_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_throttled_count) to detect throttling events
+- **Track APS usage against limits**: Monitor [`temporal_cloud_v1_total_action_throttled_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_total_action_throttled_count) to detect throttling events
 - **Set alerts at 70-80% utilization**: This gives you time to provision TRUs before hitting limits
 - **Analyze historical patterns**: Understanding your traffic patterns helps you decide between reactive TRU provisioning and proactive automation
 
@@ -239,7 +239,7 @@ The following table recaps the main reasons customers hit APS limits and how to 
 | Planned traffic spikes        | Pre-provision TRUs before the event, then deprovision after. |
 | Unpredictable spikes <br />requiring instant response | Switch to Provisioned mode for self-service capacity scaling via UI, CLI, or API. |
 | Load testing at scale         | Provision TRUs for the test duration, deprovision when complete. |
-| New workload onboarding       | Bridge with TRUs while the on-demand envelope adjusts (approximately 7 days). |
+| New workload onboarding       | Bridge with TRUs while the on-demand envelope adjusts (approximately 1 day). |
 
 
 ## General guidance
