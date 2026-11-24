@@ -85,8 +85,13 @@ comes from Snipsync. Code that Snipsync pulls from a sample repository is built 
 into a page by hand isn't compiled anywhere, so the percentage is the share of SDK code we know builds.
 
 The headline counts non-blank lines inside fenced code blocks tagged with an SDK language: Python, TypeScript or
-JavaScript, Go, Java, C#, Ruby, PHP, and Rust. A second line counts every fenced block except mermaid diagrams. A block
+JavaScript, Go, Java, C#, Ruby, PHP, and Rust. A second line counts every block except mermaid diagrams. A block
 counts as synced when it sits between `SNIPSTART` and `SNIPEND` markers, in either the `<!-- -->` or the `{/* */}` form.
+
+Quickstart pages show code with the `<CodeSnippet>` component. When its children are a Snipsync block, the fenced block
+inside counts as synced. When the code is written into the element, as a template literal (`` {`...`} ``) or plain text,
+it counts as hand-written code in the element's `language`. Without this, moving a quickstart off Snipsync and back
+into a template literal wouldn't change the numbers.
 The source link Snipsync writes above a block isn't counted as code, but its URL is how the report attributes synced
 lines to a source repository.
 
