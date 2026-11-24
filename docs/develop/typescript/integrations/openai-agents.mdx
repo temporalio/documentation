@@ -220,6 +220,9 @@ To call another agent as a tool, use the OpenAI Agents SDK's `agent.asTool()`. T
 and its model calls run as model Activities with the runner's Activity options. The agent patterns sample uses
 `agent.asTool()` for an orchestrator that asks a specialist.
 
+Version 2.0.0 deprecates the integration's `agentAsTool(agent, options)`. It now calls `agent.asTool()` with the same
+`toolName`, `toolDescription`, and `customOutputExtractor`, so replace it with `agent.asTool()`.
+
 MCP servers run on the Worker, and Workflow code refers to them by name. Register a provider for each server in the
 plugin's `mcpServerProviders`, then add a handle with the same name to the agent's `mcpServers`:
 
@@ -634,12 +637,11 @@ Notes on `agent.asTool()` nested runs:
   `defaultModelParams`.
 - A nested tool that needs approval pauses the parent run, and the approval appears in the parent's
   `result.interruptions`.
-- Create `agent.asTool()` tools in Workflow code and pass them as they are. The plugin records each tool's agent when
+- Create `agent.asTool()` tools in Workflow code. The plugin records each tool's agent when
   the tool is made, and checks the nested agents and the tool's options before the run. It rejects a nested agent with a
   model object, a tool whose `runConfig` sets `modelProvider` or a model object as `model`, a `runConfig.sandbox` or
   `runOptions.sandbox` client not from `temporalSandboxClient()`, a `MemorySession` as `runOptions.session`, and a tool
-  it can't trace to its agent, such as a copy.
-- A `ModelSummaryProvider` gets `undefined` as the agent for nested model calls.
+  it can't trace to its agent, such as one made by a second copy of `@openai/agents-core`.
 
 Providers are matched to Workflow handles by name, and each provider on a plugin needs a unique name. The plugin adds a
 `-stateful` suffix to a stateful MCP provider's name, so a stateless and a stateful MCP provider can share a name.
