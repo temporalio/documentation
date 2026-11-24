@@ -38,7 +38,7 @@ You maintain all the encryption keys, and the Temporal Server sees only encrypte
 
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control. For details, see [Securing your data](/production-deployment/data-encryption).
 
-Temporal Cloud provides [Payload encryption validation](/cloud/payload-encryption-validation) to check that Payloads sent to Temporal Cloud carry the encryption metadata you configured for the Namespace, and can reject requests that do not.
+On Temporal Cloud, [Payload encryption validation](/cloud/payload-encryption-validation) ([Pre-release](/evaluate/product-release-stages#pre-release), invite-only) checks that incoming Payloads carry the encryption metadata your Payload Codec sets, and can reject requests that don't. It doesn't encrypt Payloads; your Payload Codec still does.
 
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 
@@ -46,3 +46,5 @@ The following samples use encryption (AES GCM with 256-bit key) in a custom Data
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
+- [.NET sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption)
+- [Ruby sample](https://github.com/temporalio/samples-ruby/tree/main/encryption)

@@ -46,6 +46,29 @@ backlog overshoot. The WCI can scale from zero with low latency.
 For AgentCore Runtime startup and session behavior, see
 [Lifecycle](/serverless-workers/agentcore#lifecycle).
 
+#### Scale-up pauses on AWS Lambda {/* #rate-limited-task-queues */}
+
+When a [Task Queue reaches its rate limit](/design-patterns/downstream-rate-limiting), it dispatches about the same
+number of Tasks per second even as Temporal invokes more Lambda Workers. The `scale_up_dispatch_rate_epsilon` setting
+lets Temporal pause scale-up when it observes a steady dispatch rate while Tasks are waiting.
+
+The setting defines how much the observed dispatch rate can vary and still count as flat. While Tasks are backlogged,
+the WCI pauses scale-up for the affected Task Queue type when its dispatch rate stays within that band for the
+confirmation period (90 seconds by default). The pause ends when the backlog clears or the dispatch rate moves outside
+the band. The scaler can still start a Worker when the maximum time between Worker starts elapses.
+
+| Value | Effect |
+| --- | --- |
+| `0` | Default. Disables the pause. |
+| `0.05` | Recommended for rate-limited Task Queues. Treats variations within 5% of the reference dispatch rate as flat. |
+| `0.1` | Maximum. Treats variations within 10% of the reference dispatch rate as flat. |
+
+A flat dispatch rate can also occur when the Worker pool stops growing before it reaches the Task Queue rate limit.
+In that case, pausing scale-up can make the backlog take longer to drain.
+
+For CLI instructions, see
+[Configure scale-up for rate-limited Task Queues](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-rate-limited-scaling).
+
 ### Scale-in {/* #scale-in */}
 
 The WCI does not maintain a target number of Workers or actively remove capacity. The provider and Worker lifecycle

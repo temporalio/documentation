@@ -207,6 +207,7 @@ That way if a Worker fails it can be handled in a timely manner.
 
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
 If an [Activity Task Execution](/tasks#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
+To checkpoint progress in a Heartbeat, see the [Long-Running Activity](/design-patterns/long-running-activity) pattern.
 
 Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.

@@ -165,7 +165,8 @@ const STRIP_TAG_COMPONENTS = COMPONENTS_BY_STRATEGY("strip-tag");
 const EVENT_HISTORY_DEMO_COMPONENTS = COMPONENTS_BY_STRATEGY("event-history-demo");
 
 // Availability labels for ReleaseNoteHeader resolved `type` values.
-// Mirrors ReleaseNoteHeader.BASE_RELEASE_STAGES labels in the React component.
+// Mirrors BASE_RELEASE_STAGES labels in src/components/elements/ReleaseNoteHeader/releaseStage.js;
+// tests/release-note-header.test.mjs checks they match.
 export const RELEASE_NOTE_LABELS = {
   prerelease: "Pre-release",
   publicPreview: "Public Preview",
@@ -174,7 +175,11 @@ export const RELEASE_NOTE_LABELS = {
   deprecated: "Deprecated",
 };
 
-/** Mirrors ReleaseNoteHeader.getResolvedType — featureName lookup, then type, then default. */
+/**
+ * Same order as resolveReleaseStage in ReleaseNoteHeader/releaseStage.js: featureName lookup, then type, then
+ * default. Unlike the component, which renders an unknown type as Public Preview, this keeps the type so
+ * releaseNoteLabelFromType can label it.
+ */
 function resolveReleaseNoteType(featureName, type) {
   return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
 }
