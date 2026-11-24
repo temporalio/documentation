@@ -1,5 +1,5 @@
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
-import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
+import { hasDocsAnalyticsConsent } from '@site/src/utils/analyticsConsent';
 import RemoteCommsClass from './remote-amplitude-class';
 
 let dev = process.env.NODE_ENV === 'development';
@@ -7,10 +7,8 @@ let url = dev ? 'http://localhost:5173/comms' : 'https://temporal.io/comms';
 
 let analytics = null;
 
-const hasConsent = () => ExecutionEnvironment.canUseDOM && hasAnalyticsConsent(readConsentFromDocumentCookie());
-
 const getAnalytics = () => {
-  if (!hasConsent()) return null;
+  if (!hasDocsAnalyticsConsent()) return null;
   analytics ??= new RemoteCommsClass(url, window.document);
   return analytics;
 };
