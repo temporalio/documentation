@@ -95,6 +95,93 @@ describe('extractCodeBlocks', () => {
   });
 });
 
+describe('extractCodeBlocks with <CodeSnippet>', () => {
+  it('reads a multi-line template literal as a hand-written block', () => {
+    const source = [
+      '<SetupStep code={',
+      '<CodeSnippet language="go" title="activity.go">',
+      '{`package standalone',
+      '',
+      'func Activity() {}',
+      '`}',
+      '</CodeSnippet>',
+      '}>',
+    ].join('\n');
+    const [block] = extractCodeBlocks(source);
+    assert.strictEqual(block.lang, 'go');
+    assert.strictEqual(block.line, 3);
+    assert.strictEqual(block.code, 'package standalone\n\nfunc Activity() {}');
+    assert.strictEqual(block.snipsync, false);
+    assert.strictEqual(block.component, 'CodeSnippet');
+  });
+
+  it('reads one-line children, with or without a template literal', () => {
+    const source = [
+      '<CodeSnippet language="bash">{`dotnet build`}</CodeSnippet>',
+      '<CodeSnippet language="bash">temporal server start-dev</CodeSnippet>',
+    ].join('\n');
+    const blocks = extractCodeBlocks(source);
+    assert.deepStrictEqual(
+      blocks.map((b) => [b.lang, b.line, b.code]),
+      [
+        ['bash', 1, 'dotnet build'],
+        ['bash', 2, 'temporal server start-dev'],
+      ]
+    );
+  });
+
+  it('removes shared indentation and template literal escapes', () => {
+    const source = [
+      '    <CodeSnippet language="ts">',
+      '    {`function f() {',
+      '      return \\`x\\${b}\\`;',
+      '    }`}',
+      '    </CodeSnippet>',
+    ].join('\n');
+    const [block] = extractCodeBlocks(source);
+    assert.strictEqual(block.code, 'function f() {\n  return `x${b}`;\n}');
+  });
+
+  it('leaves Snipsync children to the fence parser', () => {
+    const source = [
+      '<CodeSnippet title="worker.go">',
+      '<!--SNIPSTART go-worker-->',
+      '[worker.go](https://github.com/temporalio/samples-go/blob/main/worker.go)',
+      fence + 'go',
+      'package main',
+      fence,
+      '<!--SNIPEND-->',
+      '</CodeSnippet>',
+    ].join('\n');
+    const blocks = extractCodeBlocks(source);
+    assert.strictEqual(blocks.length, 1);
+    assert.strictEqual(blocks[0].snipsync, true);
+    assert.strictEqual(blocks[0].component, null);
+  });
+
+  it('ignores a <CodeSnippet> inside a fenced block or a comment', () => {
+    const source = [
+      fence + 'mdx',
+      '<CodeSnippet language="go">{`package a`}</CodeSnippet>',
+      fence,
+      '{/*',
+      '<CodeSnippet language="go">{`package b`}</CodeSnippet>',
+      '*/}',
+    ].join('\n');
+    const blocks = extractCodeBlocks(source);
+    assert.deepStrictEqual(
+      blocks.map((b) => b.lang),
+      ['mdx']
+    );
+  });
+
+  it('counts inline SDK code in a <CodeSnippet> against coverage', () => {
+    const page = '<CodeSnippet language="go">{`package a\nfunc A() {}`}</CodeSnippet>';
+    const result = tally([{ path: 'docs/develop/go/quickstart.mdx', source: page }]);
+    assert.deepStrictEqual(result.sdk, { synced: 0, inline: 2 });
+  });
+});
+
 describe('sdkLanguage', () => {
   it('normalizes SDK language tags', () => {
     assert.strictEqual(sdkLanguage('py'), 'Python');
