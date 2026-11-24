@@ -343,7 +343,7 @@ You can set Agent Framework's loop settings on `TemporalChatClient(function_invo
 By default, the tool calls of one response run concurrently 
 (`allow_concurrent_invocation=True`). A run makes at most `max_iterations` (40) model calls before one last call with
 `tool_choice="none"`. After three consecutive rounds of failing tools the loop stops calling tools and asks for a
-final answer. Set them on `TemporalChatClient(function_invocation_configuration={...})`.
+final answer.
 
 ### Connect to MCP servers
 
