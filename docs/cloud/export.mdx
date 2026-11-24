@@ -1,23 +1,15 @@
 ---
 id: export
 title: Workflow History Export
-sidebar_label: Workflow History Export
-description: Workflow History Export in Temporal Cloud lets users export Closed Workflow Histories to an object storage for compliance and analytics. Configure via Cloud UI or tcld.
+description: Export closed Workflow Histories from Temporal Cloud to S3, GCS, or Azure Blob Storage hourly in protobuf format for compliance and analytics.
 slug: /cloud/export
 toc_max_heading_level: 4
-keywords:
-  - archival
-  - export
-  - operations
-  - temporal cloud
-  - verify
-  - workflow history export
 tags:
   - Temporal Cloud
   - Export Workflow History
 ---
 
-Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage (AWS S3 or GCP GCS), enabling:
+Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage (AWS S3, GCP GCS, or Azure Blob Storage), enabling:
 
 - Compliance and audit trails of complete Event History data in [proto format](https://github.com/temporalio/api/blob/main/temporal/api/export/v1/message.proto)
 - Analytics on Event History when ingested to the data platform of your choice
@@ -25,9 +17,21 @@ Workflow History Export allows users to export closed Workflow Histories from Te
 Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a Self-Hosted Temporal Server. 
 Archival is not supported in Temporal Cloud.
 
-Exports run hourly, beginning 10 minutes after the hour. 
-Allow up to 24 hours for a closed Workflow to appear in the exported file.
-Delivery is guaranteed at least once.
+## Timing and delivery guarantees {/* #timing-and-delivery-guarantees */}
+
+Enable Workflow History Export before Workflow Executions close to ensure they are exported.
+Export does not guarantee backfill of previously closed Workflow Executions, even if their Event Histories are still within the Namespace's retention period.
+A Workflow Execution that closed before you enabled export may still be included if the hourly batch for the hour in which it closed has not run yet.
+Do not rely on this behavior to export previously closed Workflow Executions.
+The same considerations apply when you re-enable export after disabling it.
+
+Exports run in hourly batches, beginning 10 minutes after the hour.
+Allow up to 24 hours for an eligible closed Workflow Execution to appear in an exported file.
+
+Workflow History Export guarantees at-least-once delivery of eligible Workflow Executions.
+The same Workflow Execution may be exported more than once, so duplicates are possible.
+Handle duplicate Workflow Executions when processing exported data.
+Duplicate exports of the same Workflow Execution do not incur additional [Action charges](/evaluate/cloud/actions#export).
 
 ## What's in the exported data {/* #exported-data */}
 
@@ -143,6 +147,10 @@ To use Workflow History Export, you must have:
 
 [GCP GCS Export Configuration](/cloud/export/gcp-export-gcs)
 
+### Azure
+
+[Azure Blob Storage export configuration](/cloud/export/azure-export-blob-storage)
+
 ## Verify export setup {/* #verify */}
 
 From the Export configuration page, select **Verify**.
@@ -156,8 +164,9 @@ After Export has been configured, you can check that it's still working in sever
 
 1. **Object Storage**:
 
-   - File Delivery: After the initial hour of setting up, inspect your object storage.
-     You should see the exported Event History files.
+   - File Delivery: After enabling export and closing a Workflow Execution, inspect your object storage for exported Event History files.
+     Exports run in hourly batches, but allow up to 24 hours for the Workflow Execution to appear.
+     Workflow Executions that closed before export was enabled are not guaranteed to be exported.
    - Directory Structure: Your exported files will adhere to the following naming convention and path:
 
    ```bash
@@ -199,7 +208,7 @@ It can be useful to convert protos to another format to perform analytics on the
 
 ## Export and High Availability Namespaces {/* #export-ha */}
 
-### Export Region Persistence
+### Export region persistence
 
 When Export is configured for a [High Availability](/cloud/high-availability) Namespace, the export is tied to the specific region where it was initially set up. The export configuration does not automatically failover with the Namespace.
 
@@ -208,8 +217,8 @@ When Export is configured for a [High Availability](/cloud/high-availability) Na
 - The export process is independent of Namespace failover events
 - Export does not fail over automatically because we prioritize data completeness and consistency over real-time availability for exports. HA data replication has inherent latency, which could result in incomplete or inconsistent exports during a failover.
 
-### Failover Scenarios
+### Failover scenarios
 
 **Namespace Failover with Healthy Primary Region**: When a Namespace fails over to a secondary region but the primary region remains healthy (including its blob storage), the export job continues to operate from the primary region. It does not automatically switch to export data from the secondary region.
 
-**Primary Region Outage**: If the primary region (where Export was configured) experiences a complete outage including S3/GCS storage: Exports will be unavailable until the primary region recovers. Once the primary region recovers, export will resume and include any Workflow histories that occurred during the outage. There may be delays in export processing, but the complete dataset will eventually be available. It does not automatically switch to export data from the secondary region.
+**Primary Region Outage**: If the primary region (where Export was configured) experiences a complete outage including object storage: Exports will be unavailable until the primary region recovers. Once the primary region recovers, export will resume and include any Workflow histories that occurred during the outage. There may be delays in export processing, but the complete dataset will eventually be available. It does not automatically switch to export data from the secondary region.

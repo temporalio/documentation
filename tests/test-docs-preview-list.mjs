@@ -106,9 +106,24 @@ test("index file with no id drops the index segment", () => {
   assertEqual(slug, "cloud/connectivity");
 });
 
-test("index file with a custom id uses the id, not the folder", () => {
+test("index file with a custom id still serves at the folder URL", () => {
   const slug = relativeSlugFromPath(docPath("cloud", "connectivity", "index.mdx"), "overview");
-  assertEqual(slug, "cloud/connectivity/overview");
+  assertEqual(slug, "cloud/connectivity");
+});
+
+test("README file is treated as the folder index", () => {
+  const slug = relativeSlugFromPath(docPath("cloud", "connectivity", "README.mdx"), "overview");
+  assertEqual(slug, "cloud/connectivity");
+});
+
+test("file named after its folder is treated as the folder index", () => {
+  const slug = relativeSlugFromPath(docPath("cloud", "connectivity", "connectivity.mdx"), undefined);
+  assertEqual(slug, "cloud/connectivity");
+});
+
+test("an explicit slug still wins over the folder-index rule", () => {
+  const slug = normalizeSlug("/cloud/connect", docPath("cloud", "connectivity", "index.mdx"), "overview");
+  assertEqual(slug, "cloud/connect");
 });
 
 test("empty/whitespace id is treated as absent", () => {

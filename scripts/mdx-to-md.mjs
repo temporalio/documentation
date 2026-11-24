@@ -12,15 +12,19 @@
  *   - <Tabs> / <TabItem>          → flatten all tabs with bold label headers
  *   - <SdkTabs> / <SdkTabs.Lang>  → flatten SDK tabs with bold language headers
  *   - :::note/tip/caution/danger  → blockquote with bold type prefix
- *   - <CodeSnippet language="x">  → fenced code block
+ *   - <CodeSnippet language="x">  → fenced code block (Snipsync bodies pass through)
  *   - <CallToAction href>         → markdown link (h3 title + p description)
  *   - <ReleaseNoteHeader>         → availability blockquote + body
  *   - <RelatedReadContainer>      → markdown link list from <RelatedReadItem>s
  *   - <RelatedReadList>           → markdown link list from readList prop
  *   - <SdkGuideLinks>             → markdown link list, one per SDK (path/filter/title or links prop)
  *   - <ToolTipTerm term="x" />    → inline replacement with the term text
+ *   - <RoleCheck role="x" />    → "✅ x" (role name kept with each table row)
+ *   - <ForOs os="x">              → every OS variant kept, each with a bold OS label
  *   - <JsonTable filename=".." /> → markdown table resolved from static/ JSON
  *   - <SetupSteps>/<SetupStep>    → prose children + code from the `code={}` prop
+ *   - <WalkthroughDemo> + <WalkthroughStep>/<WalkthroughCommand>/
+ *     <WalkthroughEvent>           → fenced code passthrough + per-step Markdown
  *   - <ZoomPanPinch>              → transparent wrapper, pass inner content
  *   - <ViewSourceCodeNotice href> → plain markdown link line
  *   - YouTube/HTML embeds         → stripped (keep a markdown Watch link in prose for LLMs)
@@ -35,12 +39,19 @@
 
 import { jsonTableToMarkdown } from "./component-handlers/data-tables.mjs";
 import { integrationsGridToMarkdown } from "./component-handlers/integrations.mjs";
+import { cookbookPreviewToMarkdown, cookbookHomeToMarkdown } from "./component-handlers/cookbook-preview.mjs";
 import { heroCardToMarkdown, heroHeadlineToMarkdown } from "./component-handlers/hero.mjs";
 import { parseCardItems, cardsToMarkdown } from "./component-handlers/cards.mjs";
 import { sdkOverviewCardsToMarkdown } from "./component-handlers/sdk-overview-cards.mjs";
+import { guidesGridToMarkdown } from "./component-handlers/guides-grid.mjs";
+import { forOsInlineToMarkdown, forOsBlockLineToMarkdown } from "./component-handlers/for-os.mjs";
+import {
+  extractQuotedProp,
+  renderWalkthroughStep,
+} from "./component-handlers/event-history-walkthrough.mjs";
 import { FEATURE_RELEASE_TYPES } from "../src/constants/featureReleaseTypes.js";
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, resolve, dirname, relative } from "path";
 
 // ---------------------------------------------------------------------------
 // COMPONENT_REGISTRY
@@ -55,22 +66,31 @@ export const COMPONENT_REGISTRY = {
 
   // Temporal custom components — content-bearing
   ZoomPanPinch: "transparent",
+  // Wraps code blocks the reader is meant to run. The terminal-window styling is
+  // the whole component; the fenced blocks inside carry all the content.
+  RunThis: "transparent",
   RelatedReadList: "related-read",
   RelatedReadContainer: "related-read-container",
   RelatedReadItem: "related-read-item",
   SdkGuideLinks: "sdk-guide-links",
   CaptionedImage: "captioned-image",
   EnlargeImage: "captioned-image",
+  Video: "video",
   CodeSnippet: "code-snippet",
   SdkTabs: "sdk-tabs",
   ToolTipTerm: "tooltip-term",
+  RoleCheck: "role-check",
+  ForOs: "for-os",
   ReleaseNoteHeader: "release-note-header",
   CallToAction: "call-to-action",
   SetupSteps: "setup-steps",
   SetupStep: "setup-step",
   JsonTable: "json-table",
   IntegrationsGrid: "integrations-grid",
+  CookbookPreview: "cookbook-preview",
+  CookbookHome: "cookbook-home",
   SdkOverviewCards: "sdk-overview-cards",
+  GuidesGrid: "guides-grid",
   ViewSourceCodeNotice: "view-source-code-notice",
 
   // Homepage hero (docs/index.mdx). Copy is authored in the MDX and composed
@@ -90,6 +110,7 @@ export const COMPONENT_REGISTRY = {
   CommunityCard: "hero-card",
   DefinitionList: "strip-tag",
   DL: "strip-tag",
+  NoZoom: "strip-tag",
   DT: "strip-tag",
   DD: "strip-tag",
 
@@ -100,14 +121,16 @@ export const COMPONENT_REGISTRY = {
   ThemedImage: "strip-block",
   PatternCards: "cards",
   QuickstartCards: "cards",
+  GridCardList: "cards",
   SdkSvg: "strip-block",
   CloudRegionCount: "strip-block",
   RetrySimulator: "strip-block",
   ServerlessWorkerDemo: "strip-block",
-  CodeToCommandsDemo: "strip-block",
-  CommandsToEventsDemo: "strip-block",
-  HistoryReplayDemo: "strip-block",
-  NonDeterminismDemo: "strip-block",
+  WorkerTuningSimulator: "strip-block",
+  WalkthroughDemo: "event-history-demo",
+  WalkthroughStep: "walkthrough-step",
+  WalkthroughCommand: "walkthrough-entry",
+  WalkthroughEvent: "walkthrough-entry",
   OperationsTable: "strip-block",
   InvitationContent: "strip-block",
   AnnotatedCode: "strip-tag",
@@ -126,10 +149,12 @@ const COMPONENTS_BY_STRATEGY = (strategy) =>
 
 const STRIP_BLOCK_COMPONENTS = COMPONENTS_BY_STRATEGY("strip-block");
 const STRIP_TAG_COMPONENTS = COMPONENTS_BY_STRATEGY("strip-tag");
+const EVENT_HISTORY_DEMO_COMPONENTS = COMPONENTS_BY_STRATEGY("event-history-demo");
 
 // Availability labels for ReleaseNoteHeader resolved `type` values.
-// Mirrors ReleaseNoteHeader.BASE_RELEASE_STAGES labels in the React component.
-const RELEASE_NOTE_LABELS = {
+// Mirrors BASE_RELEASE_STAGES labels in src/components/elements/ReleaseNoteHeader/releaseStage.js;
+// tests/release-note-header.test.mjs checks they match.
+export const RELEASE_NOTE_LABELS = {
   prerelease: "Pre-release",
   publicPreview: "Public Preview",
   publicpreview: "Public Preview",
@@ -137,7 +162,11 @@ const RELEASE_NOTE_LABELS = {
   deprecated: "Deprecated",
 };
 
-/** Mirrors ReleaseNoteHeader.getResolvedType — featureName lookup, then type, then default. */
+/**
+ * Same order as resolveReleaseStage in ReleaseNoteHeader/releaseStage.js: featureName lookup, then type, then
+ * default. Unlike the component, which renders an unknown type as Public Preview, this keeps the type so
+ * releaseNoteLabelFromType can label it.
+ */
 function resolveReleaseNoteType(featureName, type) {
   return FEATURE_RELEASE_TYPES[featureName] || type || "publicPreview";
 }
@@ -209,6 +238,15 @@ export function extractProp(tagStr, propName) {
   if (mb) return mb[1];
 
   return null;
+}
+
+/**
+ * Extract a bare numeric JSX prop, e.g. extractNumberProp('<X limit={4} />', 'limit') => 4.
+ * Returns undefined if the prop isn't present or isn't a plain number literal.
+ */
+export function extractNumberProp(tagStr, propName) {
+  const m = tagStr.match(new RegExp(`${propName}=\\{(-?\\d+(?:\\.\\d+)?)\\}`));
+  return m ? Number(m[1]) : undefined;
 }
 
 /**
@@ -345,6 +383,17 @@ export function applyInlineTransforms(line) {
     (m, inner) => extractProp(m, "term") || inner
   );
 
+  // Inline <RoleCheck role="x" /> → ✅ x. The role name stays in the text so a
+  // row of a long permissions grid still says which roles it covers once a
+  // chunker separates it from the header row.
+  out = out.replace(/<RoleCheck\b[^>]*\/>/g, (m) => {
+    const role = extractProp(m, "role");
+    return role ? `✅ ${role}` : "✅";
+  });
+
+  // Inline <ForOs os="x">...</ForOs> → (**OS:** ...), keeping every variant
+  out = forOsInlineToMarkdown(out);
+
   // Collapse a line left whitespace-only (e.g. after a comment was stripped)
   // to a true blank line — an indented blank could otherwise read as code.
   if (/^\s+$/.test(out)) return "";
@@ -453,6 +502,8 @@ const State = {
   RELATED_READ_CONTAINER: "RELATED_READ_CONTAINER",
   SETUP_STEPS: "SETUP_STEPS",
   SETUP_STEP: "SETUP_STEP",
+  EVENT_HISTORY_DEMO: "EVENT_HISTORY_DEMO",
+  WALKTHROUGH_STEP: "WALKTHROUGH_STEP",
 };
 
 /**
@@ -493,6 +544,7 @@ export function findHtmlEmbedEnd(lines, i) {
  * @param {string} [options.projectRoot] - Docusaurus root (for data handlers / transclusion)
  * @param {string} [options.mdxDir]     - directory of the source file (for relative transclusion)
  * @param {number} [options._depth]     - internal recursion guard
+ * @param {object} [options._inheritedImports] - internal: enclosing page's partial imports
  * @returns {{ markdown: string, warnings: string[] }}
  */
 export function transformMdx(mdxContent, options = {}) {
@@ -505,7 +557,22 @@ export function transformMdx(mdxContent, options = {}) {
   const lines = content.split("\n");
 
   // Map of <Name /> components imported from .md(x) files, for transclusion.
-  const mdImports = scanMarkdownImports(mdxContent);
+  // A nested body (tab item, details, release note, ...) has no import lines
+  // of its own, so it inherits the enclosing page's map.
+  const mdImports = { ...(options._inheritedImports || {}), ...scanMarkdownImports(mdxContent) };
+
+  // Options for re-transforming a body nested inside this page. `suffix` tags
+  // the source file in warnings (e.g. "#tab"); dirname() still resolves to the
+  // page's own directory, so relative imports keep resolving correctly.
+  function childOptions(suffix) {
+    return {
+      sourceFile: sourceFile + suffix,
+      projectRoot,
+      mdxDir: options.mdxDir,
+      _depth: depth + 1,
+      _inheritedImports: mdImports,
+    };
+  }
 
   const outputLines = [];
 
@@ -570,6 +637,19 @@ export function transformMdx(mdxContent, options = {}) {
   let collectingSetupCode = false;
   let setupCodePropLines = [];
 
+  // --- Event History walkthrough demo state ---
+  let demoName = null;
+  let demoCommandsLabel = "Commands";
+  let demoEventsLabel = null;
+  let demoStepCounter = 0;
+  const demoRenderCtx = { previousPhase: null };
+  let stepTitle = "";
+  let stepKind = null;
+  let stepPhase = null;
+  let stepCommands = [];
+  let stepEvents = [];
+  let stepProseLines = [];
+
   // --- Code fence tracking ---
   let inCodeBlock = false;
   let codeBlockFence = null;
@@ -600,12 +680,7 @@ export function transformMdx(mdxContent, options = {}) {
     if (label === null || label === undefined) return;
     tabsOutputLines.push(`**${label}**`);
     tabsOutputLines.push("");
-    const inner = transformMdx(tabItemLines.join("\n"), {
-      sourceFile: sourceFile + "#tab",
-      projectRoot,
-      mdxDir: options.mdxDir,
-      _depth: depth + 1,
-    });
+    const inner = transformMdx(tabItemLines.join("\n"), childOptions("#tab"));
     warnings.push(...inner.warnings);
     tabsOutputLines.push(...inner.markdown.split("\n"));
     tabsOutputLines.push("");
@@ -617,7 +692,10 @@ export function transformMdx(mdxContent, options = {}) {
     if (!projectRoot) return null;
     let rel = importPath;
     if (rel.startsWith("@site/")) rel = rel.slice("@site/".length);
-    const full = join(projectRoot, rel);
+    // Relative imports (./_partial.mdx) resolve against the importing file.
+    const full = importPath.startsWith(".")
+      ? resolve(projectRoot, dirname(sourceFile), importPath)
+      : join(projectRoot, rel);
     if (!existsSync(full)) {
       warnings.push(`[${sourceFile}] transclusion target not found: ${importPath}`);
       return null;
@@ -625,7 +703,7 @@ export function transformMdx(mdxContent, options = {}) {
     try {
       const raw = readFileSync(full, "utf8");
       const inner = transformMdx(raw, {
-        sourceFile: importPath,
+        sourceFile: relative(projectRoot, full),
         projectRoot,
         mdxDir: options.mdxDir,
         _depth: depth + 1,
@@ -647,7 +725,12 @@ export function transformMdx(mdxContent, options = {}) {
     // ------------------------------------------------------------------
     if (!inCodeBlock) {
       const fenceMatch = trimmed.match(/^(`{3,}|~{3,})/);
-      if (fenceMatch && state !== State.SETUP_STEP) {
+      if (
+        fenceMatch &&
+        state !== State.SETUP_STEP &&
+        state !== State.WALKTHROUGH_STEP &&
+        state !== State.CODE_SNIPPET
+      ) {
         inCodeBlock = true;
         codeBlockFence = fenceMatch[1];
         pushLine(line);
@@ -687,12 +770,18 @@ export function transformMdx(mdxContent, options = {}) {
     // --- CodeSnippet block ---
     if (state === State.CODE_SNIPPET) {
       if (/<\/CodeSnippet>/.test(line)) {
-        const code = unwrapJsxString(
-          dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "")
-        );
-        outputLines.push("```" + codeSnippetLang);
-        outputLines.push(code);
-        outputLines.push("```");
+        const body = dedent(codeSnippetLines).join("\n").replace(/^\n+|\n+$/g, "");
+        const code = unwrapJsxString(body);
+        if (code === body && /^\s*(`{3,}|~{3,})/m.test(body)) {
+          // Snipsync body: a source link and a fenced code block in Markdown.
+          const inner = transformMdx(body, childOptions("#code-snippet"));
+          warnings.push(...inner.warnings);
+          outputLines.push(inner.markdown.trim());
+        } else {
+          outputLines.push("```" + codeSnippetLang);
+          outputLines.push(code);
+          outputLines.push("```");
+        }
         outputLines.push("");
         state = State.NORMAL;
         codeSnippetLines = [];
@@ -733,12 +822,7 @@ export function transformMdx(mdxContent, options = {}) {
         let note = `> **${releaseNoteLabel}**`;
         if (releaseNoteLangs) note += ` — ${releaseNoteLangs}`;
         outputLines.push(note);
-        const body = transformMdx(releaseNoteLines.join("\n"), {
-          sourceFile: sourceFile + "#release-note",
-          projectRoot,
-          mdxDir: options.mdxDir,
-          _depth: depth + 1,
-        });
+        const body = transformMdx(releaseNoteLines.join("\n"), childOptions("#release-note"));
         warnings.push(...body.warnings);
         const bodyLines = dedent(body.markdown.split("\n"));
         for (const bl of bodyLines) {
@@ -843,12 +927,7 @@ export function transformMdx(mdxContent, options = {}) {
         // code-only: it mixes prose, links, lists, tabs, and <CodeSnippet>
         // blocks. Convert its HTML to Markdown, then run it back through the
         // transformer so <Tabs>/<TabItem>/<CodeSnippet> are handled too.
-        const inner = transformMdx(setupChildLines.join("\n"), {
-          sourceFile: sourceFile + "#setup-step",
-          projectRoot,
-          mdxDir: options.mdxDir,
-          _depth: depth + 1,
-        });
+        const inner = transformMdx(setupChildLines.join("\n"), childOptions("#setup-step"));
         warnings.push(...inner.warnings);
         const childMd = inner.markdown.trim();
         if (childMd) {
@@ -857,12 +936,7 @@ export function transformMdx(mdxContent, options = {}) {
         }
         const prop = transformMdx(
           setupCodePropToMarkdown(setupCodePropLines).join("\n"),
-          {
-            sourceFile: sourceFile + "#setup-step-code",
-            projectRoot,
-            mdxDir: options.mdxDir,
-            _depth: depth + 1,
-          }
+          childOptions("#setup-step-code")
         );
         warnings.push(...prop.warnings);
         const propMd = prop.markdown.trim();
@@ -876,6 +950,82 @@ export function transformMdx(mdxContent, options = {}) {
         continue;
       }
       setupChildLines.push(line);
+      continue;
+    }
+
+    // --- Event History demo container: dispatch each <WalkthroughStep> ---
+    // (the code fence itself needs no handling here — it's captured by the
+    // top-level fence pass-through above and lands directly in outputLines,
+    // exactly where it appears, before any step.)
+    if (state === State.EVENT_HISTORY_DEMO) {
+      if (isCloseTag(line, demoName)) {
+        state = State.NORMAL;
+        demoName = null;
+        continue;
+      }
+      if (isOpenTag(line, "WalkthroughStep")) {
+        let tag = line;
+        while (!/>/.test(tag) && i + 1 < lines.length) {
+          i++;
+          tag += " " + lines[i].trim();
+        }
+        stepTitle = extractQuotedProp(tag, "title") || "";
+        stepKind = extractQuotedProp(tag, "kind");
+        stepPhase = extractQuotedProp(tag, "phase");
+        demoStepCounter++;
+        stepCommands = [];
+        stepEvents = [];
+        stepProseLines = [];
+        state = State.WALKTHROUGH_STEP;
+        continue;
+      }
+      continue; // blank lines between the fence and the first step, or between steps
+    }
+
+    // --- WalkthroughStep: collect <WalkthroughCommand>/<WalkthroughEvent>
+    // ledger entries, then the prose body, and render on close ---
+    if (state === State.WALKTHROUGH_STEP) {
+      if (isCloseTag(line, "WalkthroughStep")) {
+        const inner = transformMdx(stepProseLines.join("\n"), childOptions("#walkthrough-step"));
+        warnings.push(...inner.warnings);
+        const rendered = renderWalkthroughStep(
+          {
+            number: demoStepCounter,
+            title: stepTitle,
+            kind: stepKind,
+            phase: stepPhase,
+            body: inner.markdown.trim(),
+            commands: stepCommands,
+            events: stepEvents,
+          },
+          { commandsLabel: demoCommandsLabel, eventsLabel: demoEventsLabel },
+          demoRenderCtx
+        );
+        outputLines.push(rendered);
+        outputLines.push("");
+        state = State.EVENT_HISTORY_DEMO;
+        stepProseLines = [];
+        continue;
+      }
+      const entryMatch = trimmed.match(/^<Walkthrough(Command|Event)\b/);
+      if (entryMatch) {
+        let tag = line;
+        while (!/\/>/.test(tag) && i + 1 < lines.length) {
+          i++;
+          tag += " " + lines[i].trim();
+        }
+        const entry = {
+          label: extractQuotedProp(tag, "label"),
+          details: extractQuotedProp(tag, "details"),
+          tone: extractQuotedProp(tag, "tone"),
+          status: extractQuotedProp(tag, "status"),
+          expected: extractQuotedProp(tag, "expected"),
+          divider: extractQuotedProp(tag, "divider"),
+        };
+        (entryMatch[1] === "Command" ? stepCommands : stepEvents).push(entry);
+        continue;
+      }
+      stepProseLines.push(line);
       continue;
     }
 
@@ -938,7 +1088,8 @@ export function transformMdx(mdxContent, options = {}) {
         // since the title is what the rendered page shows.
         const icon = label.split(' ')[0];
         outputLines.push(admonitionTitle ? `> **${icon} ${admonitionTitle}:**` : `> **${label}:**`);
-        for (const al of admonitionLines) {
+        for (const raw of admonitionLines) {
+          const al = forOsBlockLineToMarkdown(raw) ?? raw;
           outputLines.push(al.trim() === "" ? ">" : `> ${applyInlineTransforms(al)}`);
         }
         outputLines.push("");
@@ -951,6 +1102,21 @@ export function transformMdx(mdxContent, options = {}) {
         const embedEnd = findHtmlEmbedEnd(lines, i);
         if (embedEnd !== null) {
           i = embedEnd;
+          continue;
+        }
+        // <Video videoId="..." title="..." /> inside a tip → Watch link, same
+        // as the Video strategy used outside admonitions.
+        if (/^\s*<Video\b/.test(line)) {
+          let tag = line;
+          while (!/\/>/.test(tag) && i + 1 < lines.length) {
+            i++;
+            tag += " " + lines[i].trim();
+          }
+          const videoId = extractProp(tag, "videoId");
+          const title = extractProp(tag, "title");
+          if (videoId && title) {
+            admonitionLines.push(`[Watch: ${title}](https://www.youtube.com/watch?v=${videoId})`);
+          }
           continue;
         }
         admonitionLines.push(line);
@@ -1162,6 +1328,40 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- Event History demo open (<WalkthroughDemo>) ---
+    let matchedEventHistoryDemo = null;
+    for (const comp of EVENT_HISTORY_DEMO_COMPONENTS) {
+      if (isOpenTag(line, comp)) {
+        matchedEventHistoryDemo = comp;
+        break;
+      }
+    }
+    if (state === State.NORMAL && matchedEventHistoryDemo) {
+      if (trimmed.endsWith("/>")) continue; // self-closing, no content to render
+      let tag = line;
+      while (!/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      state = State.EVENT_HISTORY_DEMO;
+      demoName = matchedEventHistoryDemo;
+      demoCommandsLabel = extractQuotedProp(tag, "commandsLabel") || "Commands";
+      demoEventsLabel = extractQuotedProp(tag, "eventsLabel");
+      demoStepCounter = 0;
+      demoRenderCtx.previousPhase = null;
+      continue;
+    }
+
+    // --- ForOs block wrapper → bold OS label, children pass through ---
+    if (state === State.NORMAL) {
+      const forOsLine = forOsBlockLineToMarkdown(line);
+      if (forOsLine !== null) {
+        outputLines.push(forOsLine);
+        outputLines.push("");
+        continue;
+      }
+    }
+
     // --- ZoomPanPinch / transparent wrappers — strip tags, keep content ---
     let transparentName = null;
     for (const name of COMPONENTS_BY_STRATEGY("transparent")) {
@@ -1209,6 +1409,23 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
+    // --- Video (self-closing, may span lines) ---
+    //     <Video videoId="..." title="..." /> → [Watch: Title](https://www.youtube.com/watch?v=ID)
+    if (state === State.NORMAL && /^\s*<Video\b/.test(line)) {
+      let tag = line;
+      while (!/\/>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const videoId = extractProp(tag, "videoId");
+      const title = extractProp(tag, "title");
+      if (videoId && title) {
+        outputLines.push(`[Watch: ${title}](https://www.youtube.com/watch?v=${videoId})`);
+        outputLines.push("");
+      }
+      continue;
+    }
+
     // --- JsonTable (self-closing data component) ---
     if (state === State.NORMAL && /^\s*<JsonTable\b/.test(line)) {
       let tag = line;
@@ -1231,7 +1448,35 @@ export function transformMdx(mdxContent, options = {}) {
         tag += " " + lines[i].trim();
       }
       const defaultSdks = parseStringArrayProp(tag, "defaultSdks");
-      const md = integrationsGridToMarkdown(defaultSdks, { projectRoot, warnings, sourceFile });
+      const defaultTags = parseStringArrayProp(tag, "defaultTags");
+      const md = integrationsGridToMarkdown(defaultSdks, defaultTags, { projectRoot, warnings, sourceFile });
+      outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
+    // --- CookbookPreview (self-closing) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<CookbookPreview\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const limit = extractNumberProp(tag, "limit") ?? 4;
+      const md = cookbookPreviewToMarkdown(limit, { projectRoot, warnings, sourceFile });
+      outputLines.push(md);
+      outputLines.push("");
+      continue;
+    }
+
+    // --- CookbookHome (self-closing, no props) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<CookbookHome\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const md = cookbookHomeToMarkdown({ projectRoot, warnings, sourceFile });
       outputLines.push(md);
       outputLines.push("");
       continue;
@@ -1250,8 +1495,23 @@ export function transformMdx(mdxContent, options = {}) {
       continue;
     }
 
-    // --- QuickstartCards / PatternCards → Markdown link list from items prop ---
-    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards)\b/.test(line)) {
+    // --- GuidesGrid (self-closing, no props) → resolved Markdown list ---
+    if (state === State.NORMAL && /^\s*<GuidesGrid\b/.test(line)) {
+      let tag = line;
+      while (!/\/?>/.test(tag) && i + 1 < lines.length) {
+        i++;
+        tag += " " + lines[i].trim();
+      }
+      const md = guidesGridToMarkdown({ projectRoot, warnings, sourceFile });
+      if (md) {
+        outputLines.push(md);
+        outputLines.push("");
+      }
+      continue;
+    }
+
+    // --- QuickstartCards / PatternCards / GridCardList → Markdown link list from items prop ---
+    if (state === State.NORMAL && /^\s*<(QuickstartCards|PatternCards|GridCardList)\b/.test(line)) {
       let tag = line;
       while (!/\/>/.test(tag) && i + 1 < lines.length) {
         i++;
@@ -1325,12 +1585,7 @@ export function transformMdx(mdxContent, options = {}) {
           outputLines.push(`#### ${detailsSummary}`);
           outputLines.push("");
         }
-        const inner = transformMdx(detailsLines.join("\n"), {
-          sourceFile,
-          projectRoot,
-          mdxDir: options.mdxDir,
-          _depth: depth + 1,
-        });
+        const inner = transformMdx(detailsLines.join("\n"), childOptions(""));
         warnings.push(...inner.warnings);
         outputLines.push(...inner.markdown.split("\n"));
         outputLines.push("");

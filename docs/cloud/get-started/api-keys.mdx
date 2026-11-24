@@ -1,24 +1,17 @@
 ---
 id: api-keys
 title: Manage API keys
-sidebar_label: Manage API keys
-description:
-  Temporal Cloud supports secure programmatic access through API key authentication, ensuring user-level and RBAC-based
-  authorization.
+description: Create, enable, rotate, and delete API keys for Users and Service Accounts, and use them to authenticate to Temporal Cloud and Namespaces.
 slug: /cloud/api-keys
 toc_max_heading_level: 4
-keywords:
-  - explanation
-  - feedback
-  - get started
-  - getting started
-  - how to
 tags:
   - Temporal Cloud
   - API Keys
   - API
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { CaptionedImage } from '@site/src/components';
 
 Temporal Cloud API keys offer industry-standard identity-based authentication for Temporal users and
@@ -32,7 +25,7 @@ Temporal Cloud API keys offer industry-standard identity-based authentication fo
 - [API keys for Namespace authentication](#namespace-authentication)
 - [Use API keys to authenticate](#using-apikeys)
 - [Troubleshoot your API key use](#troubleshooting)
-- [API keys: Frequently Asked Questions](#faqs)
+- [API keys: Frequently asked questions](#faqs)
 
 ## API key overview {/* #overview */}
 
@@ -53,9 +46,13 @@ The authentication process follows this pathway:
 - **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.[Email notifications](/cloud/notifications#admin-notifications) are sent at 30, 20, and 10 days before an API key expires.
 - **Design your code for key updates**: Use key management practices that retrieve your API keys without hard-coding
   them into your apps. This lets you restart your Workers to refresh your rotated keys without recompiling your code.
-- **Monitor API key usage**: Check usage metrics and logs regularly. Revoke the key immediately if you detect any
-  unexpected or unauthorized activity.
-- **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
+- **Monitor API key usage**: Check usage metrics and logs regularly. If you detect unexpected or unauthorized activity,
+  disable or delete the key. The Namespace endpoint can keep accepting that key briefly, usually for less than a minute.
+- **Allow time for a key change to reach the Namespace**: After you create, enable, disable, or delete a key, retry
+  Namespace authentication with backoff before you rely on the new state. The change usually takes effect within a
+  minute. During rotation, keep the previous key until the replacement succeeds. See
+  [Allow time for API key changes to propagate](#api-key-propagation).
+- **Use a Key Management System (KMS)**: Use a Key Management System to minimize the risk of key leaks.
 
 For guidance on which identities should own API keys, when to use Namespace-scoped Service Accounts, and how to align
 API keys with your Namespace topology, see [Managing Temporal Cloud access control](/best-practices/cloud-access-control).
@@ -65,7 +62,7 @@ API keys with your Namespace topology, see [Managing Temporal Cloud access contr
 API keys are used for the following scenarios:
 
 - _**Cloud operations automation**_: API keys work with Temporal Cloud operational tools, including
-  [`tcld`](/cloud/tcld), [Cloud Ops APIs](/ops), and
+  the [Temporal Cloud CLI extension](/cli/cloud), [`tcld`](/cloud/tcld), [Cloud Ops APIs](/ops), and
   [the Terraform provider](/cloud/terraform-provider). Use them to manage your Temporal Cloud
   account, Namespaces, certificates, and user identities.
 - _**Namespace authentication**_: API keys serve as an authentication mechanism for executing and managing Workflows via
@@ -75,7 +72,7 @@ API keys are used for the following scenarios:
 
 Use API keys to authenticate with:
 
-- [The Temporal CLI](/cli)
+- [The Temporal CLI](/cli), including the [Temporal Cloud extension](/cli/cloud)
 - [Temporal SDKs](/develop)
 - [`tcld`](/cloud/tcld/index.mdx)
 - [The Cloud Operations API](/cloud/operation-api.mdx)
@@ -85,7 +82,7 @@ Use API keys to authenticate with:
 
 API keys support both users and Service Accounts. Here are the differences in their permissions:
 
-- Any user can create, delete, and update their _own_ API key using the Cloud UI or `tcld`.
+- Any user can create, delete, and update their _own_ API key using the Cloud UI or the CLI.
 - Only Global Administrators and Account Owners can create, delete, and update access to API keys for all types of
   Service Accounts.
 - Namespace Admins can create, delete, and update access to API keys for the Namespace-scoped Service Accounts they
@@ -97,19 +94,18 @@ Check these setup details before using API keys:
 
 - The Global Administrator or Account Owner may need to [enable API keys access](#manage-api-keys) for your Temporal
   Account.
-- Have access to the [Temporal Cloud UI](https://cloud.temporal.io/) or Temporal Cloud CLI
-  ([tcld](/cloud/tcld/)) to create an API key.
+- Have access to the [Temporal Cloud UI](https://cloud.temporal.io/), the
+  [Temporal Cloud CLI extension](/cli/cloud), or [`tcld`](/cloud/tcld/) to create an API key.
 
-## Global Administrator and Account Owner API key management {/* #manage-api-keys */}
+## Global administrator and account owner API key management {/* #manage-api-keys */}
 
 Global Administrators and Account Owners can monitor, manage, disable, and delete API keys for any user or Service
 Account within their account. To manage your account’s API keys:
 
 1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
-1. Go to [Settings → API Keys](https://cloud.temporal.io/settings/api-keys)
+1. Go to [API Keys](https://cloud.temporal.io/keys)
 
-Administrators can disable the creation of new API keys using the **Disable Create API Keys** button on the **API Keys**
-Settings page. Existing API keys can still be used to authenticate into Temporal Cloud normally until they are either
+Administrators can disable the creation of new API keys using the **Disable Create API Keys** button on the **API Keys** page. Existing API keys can still be used to authenticate into Temporal Cloud normally until they are either
 disabled, deleted, or expired.
 
 Temporal Cloud automatically sends email notifications to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. For the full recipient list, see [Notifications](/cloud/notifications#admin-notifications).
@@ -120,15 +116,15 @@ To find an API key, you can filter by API key state and identity type (Global Ad
 
 :::caution DISABLED API KEYS
 
-Deleting or disabling a key removes its ability to authenticate into Temporal Cloud. If you delete or disable an API key
-being used by Workers to run a Workflow, those Workers will be unable to connect to Temporal until a new API key secret
-is created and configured.
+Deleting or disabling a key removes its ability to authenticate into Temporal Cloud once the change has propagated. If
+you delete or disable an API key being used by Workers to run a Workflow, those Workers will be unable to connect to
+Temporal until a new API key secret is created and configured.
 
 :::
 
 ## User API key management {/* #user-api-keys */}
 
-Manage your personal API keys with the Temporal Cloud UI or `tcld`. These sections show you how to generate, manage, and
+Manage your personal API keys with the Temporal Cloud UI or the CLI. These sections show you how to generate, manage, and
 remove API keys for a user.
 
 ### Generate an API key
@@ -153,9 +149,23 @@ following information:
 
 Finish by selecting **Generate API Key**.
 
-#### Generate API keys with tcld
+#### Generate API keys with the CLI
 
 To generate an API key, log into your account and issue the following command:
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey create-for-me \
+    --display-name <api-key-name> \
+    --description "<api-key-description>" \
+    --expiry-duration <api-key-duration>
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```command
 tcld login
@@ -165,11 +175,18 @@ tcld apikey create \
     --duration <api-key-duration>
 ```
 
-Duration specifies the time until the API key expires, for example: "30d", "4d12h", etc.
+</TabItem>
+</Tabs>
 
-### Enable or Disable an API key
+Duration specifies the time until the API key expires, for example, "30d" or "4d12h".
 
-You can enable or disable API keys. When disabled, an API key cannot authenticate with Temporal Cloud.
+A completed create command does not mean a Namespace endpoint will accept the key immediately. See
+[Allow time for API key changes to propagate](#api-key-propagation).
+
+### Enable or disable an API key {/* #enable-or-disable-an-api-key */}
+
+You can enable or disable API keys. After the change propagates, a disabled API key cannot authenticate to a Namespace
+endpoint. See [Allow time for API key changes to propagate](#api-key-propagation).
 
 #### Manage API key state with the Temporal Cloud UI
 
@@ -180,9 +197,21 @@ Follow these steps:
 1. Select the vertical ellipsis menu in the API key table row.
 1. Choose **Enable** or **Disable**.
 
-#### Manage API Key State with tcld
+#### Manage API key state with the CLI
 
 To manage an API key, log into your account and use one of the following commands to enable or disable it:
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey disable --key-id <api-key-id>
+temporal cloud apikey enable --key-id <api-key-id>
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```command
 tcld login
@@ -190,9 +219,13 @@ tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
 
+</TabItem>
+</Tabs>
+
 ### Delete an API key
 
-Deleting an API key stops it from authenticating with Temporal Cloud.
+Deleting an API key stops it from authenticating with Temporal Cloud once the change has propagated. See
+[Allow time for API key changes to propagate](#api-key-propagation).
 
 :::caution
 
@@ -210,21 +243,37 @@ Follow these steps to remove API keys:
 1. Select the vertical ellipsis menu in the API key table row.
 1. Choose **Delete**.
 
-#### Delete API keys with tcld
+#### Delete API keys with the CLI
 
 To delete an API key, log into your account and issue the following:
+
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey delete --key-id <api-key-id>
+```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
 
 ```command
 tcld login
 tcld apikey delete --id <api-key-id>
 ```
 
+</TabItem>
+</Tabs>
+
 ### Rotate an API key
 
 Temporal API keys automatically expire based on the specified expiration time. [Email notifications](/cloud/notifications#admin-notifications) will be sent from Temporal Cloud to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. Follow these steps to rotate API keys:
 
 1. Create a new key. You may reuse key names if that helps.
-1. Ensure that both the original key and new key function properly before moving to the next step.
+1. Ensure that both the original key and new key authenticate against the endpoint your clients use before moving to
+   the next step. For Namespace authentication, that is the Namespace endpoint. See
+   [Allow time for API key changes to propagate](#api-key-propagation).
 1. Switch clients to load the new key and start using it.
 1. Delete the old key after it is no longer in use.
 
@@ -238,7 +287,7 @@ Namespace Admins can manage and generate API keys for the Namespace-scoped Servi
 
 This is different for non-admin users, who manage and generate their own API keys.
 
-### Generate an API Key for a Service Account
+### Generate an API key for a Service Account
 
 Create API keys for Service Accounts using one of the following methods:
 
@@ -251,7 +300,7 @@ Create API keys for Service Accounts using one of the following methods:
 #### Generate API Keys with the Temporal Cloud UI
 
 [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI. Global Administrators or Account Owners can go to
-[Settings → API Keys](https://cloud.temporal.io/settings/api-keys). Namespace Admins can go to
+[API Keys](https://cloud.temporal.io/keys). Namespace Admins can go to
 [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys). Select **Create API Key**, then choose **Service
 Account** from the "Create an API key for" dropdown. In the "Mapped to identity" input box, select a Service Account and
 provide the following information:
@@ -262,11 +311,25 @@ provide the following information:
 
 Finish by selecting **Generate API Key**.
 
-#### Generate API keys with tcld
+#### Generate API keys with the CLI
 
-To create an API key for a Service Account, use `tcld apikey create` with the `--service-account-id` flag:
+Create an API key for a Service Account by passing the Service Account ID:
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud apikey create-for-service-account \
+    --display-name <api-key-name> \
+    --description "<api-key-description>" \
+    --expiry-duration <api-key-duration> \
+    --service-account-id <service-account-id>
 ```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
+```command
 tcld apikey create \
     --name <api-key-name> \
     --description "<api-key-description>" \
@@ -274,73 +337,110 @@ tcld apikey create \
     --service-account-id <service-account-id>
 ```
 
-### Enable or Disable an API key
+</TabItem>
+</Tabs>
+
+A completed create command does not mean a Namespace endpoint will accept the key immediately. See
+[Allow time for API key changes to propagate](#api-key-propagation).
+
+### Enable or disable an API key {/* #enable-or-disable-an-api-key-1 */}
 
 Global Administrators and Account Owners can manage API key access for any user in their account using the Temporal
-Cloud UI or `tcld`.
+Cloud UI or the CLI.
 
 #### Manage keys with Temporal Cloud UI
 
 Follow these steps:
 
 1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
-1. Global Administrators or Account Owners can go to [Settings → API Keys](https://cloud.temporal.io/settings/api-keys).
+1. Global Administrators or Account Owners can go to [API Keys](https://cloud.temporal.io/keys).
    Namespace Admins can go to [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 1. Find the API key. Use the vertical ellipsis menu in the table row and select the Disable/Enable option to perform the
-   action. There may be a delay after changing the status. Once successful, the updated API key status will be shown in
-   the row.
+   action. The table row may take a moment to show the new status. A Namespace endpoint applies the change separately.
 
-#### Manage keys with tcld
+#### Manage keys with the CLI
 
-Use the `tcld apikey disable` or `tcld apikey enable` command to disable or enable an API key:
+Use the disable or enable command to change the state of an API key:
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey disable --key-id <api-key-id>
+temporal cloud apikey enable --key-id <api-key-id>
 ```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
+```command
 tcld login
 tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
 
-This command is the same for users and Service Accounts.
+</TabItem>
+</Tabs>
+
+This command is the same for users and Service Accounts. A Namespace endpoint may not reflect the new state until
+propagation finishes. See [Allow time for API key changes to propagate](#api-key-propagation).
 
 ### Delete an API key for a Service Account
 
 Global Administrators and Account Owners can delete API keys for any user or Service Account in their account using the
-Temporal Cloud UI or `tcld`. Deleting a key removes its ability to authenticate with Temporal Cloud. If you delete an
-API key used by a Worker to run a Workflow, that Worker will fail to connect to Temporal server unless you rotate the
-API key with a new one.
+Temporal Cloud UI or the CLI. Deleting a key removes its ability to authenticate with Temporal Cloud once the change
+has propagated. If you delete an API key used by a Worker to run a Workflow, that Worker will fail to connect to
+Temporal server unless you rotate the API key with a new one.
 
 #### Delete a Service Account API key with Temporal Cloud UI
 
 Follow these steps:
 
-1. Go to [Settings → API Keys](https://cloud.temporal.io/settings/api-keys).
-1. Locate the API key. Use the vertical ellipsis menu in the table row and select the Delete option. There may be a
-   delay after deleting the API key.
-1. Once successful, the updated API key status will be reflected in the row.
+1. Go to [API Keys](https://cloud.temporal.io/keys).
+1. Locate the API key. Use the vertical ellipsis menu in the table row and select the Delete option.
+1. Once successful, the updated API key status will be reflected in the row. A Namespace endpoint applies the change
+   separately. See [Allow time for API key changes to propagate](#api-key-propagation).
 
-#### Delete a Service Account API key with tcld
+#### Delete a Service Account API key with the CLI
 
-Use the `tcld apikey delete` command to delete an API key. The process for deleting an API key is the same for a user or
-Service Account.
+Use the delete command to remove an API key. The process is the same for a user or Service Account.
 
+<Tabs groupId="cloud-cli" queryString>
+<TabItem value="temporal-cloud" label="Temporal CLI" default>
+
+```command
+temporal cloud login
+temporal cloud apikey delete --key-id <api-key-id>
 ```
+
+</TabItem>
+<TabItem value="tcld" label="tcld">
+
+```command
 tcld login
 tcld apikey delete --id <api-key-id>
 ```
+
+</TabItem>
+</Tabs>
 
 ### Rotate a Service Account API key
 
 Temporal API keys automatically expire based on the specified expiration time. [Email notifications](/cloud/notifications#admin-notifications) will be sent from Temporal Cloud to Global Administrators, Account Owners, and the key owner at **30, 20, and 10 days before** an API key expires. Follow these steps to rotate API keys:
 
 1. Create a new key. You may reuse key names if that helps.
-1. Ensure that both the original key and new key function properly before moving to the next step.
+1. Ensure that both the original key and new key authenticate against the endpoint your clients use before moving to
+   the next step. For Namespace authentication, that is the Namespace endpoint. See
+   [Allow time for API key changes to propagate](#api-key-propagation).
 1. Switch clients to load the new key and start using it.
 1. Delete the old key after it is no longer in use.
 
 :::tip
 
-Service Accounts can rotate their own API keys irrespective of their configured permissions. To use this feature, have
-your Service Account create a new API key using the [Cloud Ops APIs](/ops) or [`tcld`](/cloud/tcld) before the current
+Service Accounts can create replacement API keys for themselves regardless of their configured permissions, except for
+Service Accounts with the [Metrics Read-Only role](/cloud/metrics/openmetrics#metrics-read-only-role). To use this
+feature, have your Service Account create a new API key using the [Cloud Ops APIs](/ops) or the CLI before the current
 one expires. Service Accounts cannot delete their own API keys without the requisite permissions, which helps keep
 Workflow access secure.
 
@@ -355,13 +455,51 @@ Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This 
 Namespaces. For Namespaces with [High Availability](/cloud/high-availability), the Namespace endpoint automatically
 directs traffic to the active region, so Workers and Clients don't need to change endpoints during a failover.
 
+A Namespace created with API key authentication cannot later enable mTLS alongside API keys. See
+[How to access a Namespace](/cloud/namespaces#access-namespaces).
+
 See [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information on endpoint options.
+
+### Allow time for API key changes to propagate {/* #api-key-propagation */}
+
+After you create, enable, disable, or delete an API key, Temporal Cloud distributes that change asynchronously to the
+infrastructure that authenticates Namespace requests. A Cloud Ops API operation in `STATE_FULFILLED`, or a
+`temporal cloud` command that exits after waiting, means Temporal Cloud finished recording the change. The Namespace
+endpoint applies it afterward. Until then, a new or re-enabled key can receive `Request unauthorized`, and a disabled
+or deleted key can still be accepted.
+
+Follow these practices:
+
+- **Save the secret before you test the key.** The create response returns the secret once. Store it, then run the
+  checks below. You cannot retrieve the secret later.
+- **Retry Namespace authentication with backoff.** After you create or enable a key, call the Namespace with that key
+  and retry with backoff. A new key usually works within a minute. Listing Workflows is a sufficient check:
+
+  ```bash
+  export TEMPORAL_API_KEY=<key-secret>
+  temporal workflow list \
+      --address <namespace>.<account_id>.tmprl.cloud:7233 \
+      --namespace <namespace>.<account_id>
+  ```
+
+  `Request unauthorized` while you retry usually means the Namespace endpoint has not loaded the key yet. If retries
+  keep failing after a few minutes, check the key, the caller's permissions, and the target Namespace.
+
+- **Start Workers after a successful check.** Start or restart Workers only after a Namespace request with the new key
+  succeeds.
+- **Keep the previous key until the replacement works.** During rotation, leave the existing key in place until the
+  check above succeeds with the new key. Switch clients to the new key, then delete the old key.
+- **Don't treat disable or delete as immediate.** A disabled or deleted key can still authenticate to the Namespace
+  endpoint until that endpoint loads the change. The change usually takes effect within a minute after the operation
+  reaches `STATE_FULFILLED`. Confirm that the Namespace endpoint rejects the key before you rely on the revocation.
+- **On a High Availability Namespace, confirm the key works before a failover.** Retry against the Namespace endpoint
+  until a request succeeds. See [High Availability](/cloud/high-availability).
 
 ## Use API keys to authenticate {/* #using-apikeys */}
 
 Authenticate with Temporal Cloud using API keys with the following clients:
 
-- [Temporal CLI](/cli)
+- [Temporal CLI](/cli), including the [Temporal Cloud extension](/cli/cloud)
 - [SDKs](/develop)
 - [Temporal Cloud CLI `tcld`](/cloud/tcld/index.mdx)
 - [The Cloud Operations API](/cloud/operation-api.mdx)
@@ -410,9 +548,9 @@ To use your API key with a Temporal SDK, see the instructions in each SDK sectio
 
 [How to connect to Temporal Cloud using an API Key with the .NET SDK](/develop/dotnet/client/temporal-client#connect-to-temporal-cloud)
 
-### tcld
+### Temporal Cloud CLI
 
-To use an API key with `tcld`, choose one of these methods:
+To use an API key with the `temporal cloud` extension or `tcld`, choose one of these methods:
 
 - Use the `--api-key` flag.
 - Set the `TEMPORAL_API_KEY` environment variable in your shell.
@@ -429,16 +567,20 @@ To use an API key with the [Cloud Ops API](/ops), securely pass the API key in y
 see
 [Cloud Samples in Go](https://github.com/temporalio/cloud-samples-go/blob/main/client/api/client.go).
 
-### Terraform Provider
+### Terraform provider
 
 To use an API key with the [Temporal Terraform Provider](/cloud/terraform-provider), pass the API
 key as a provider argument.
 
 ## Troubleshoot your API key use {/* #troubleshooting */}
 
+**API key change still propagating**: A new, disabled, or deleted key can return `Request unauthorized`, or keep working,
+until Temporal Cloud finishes propagating the change. See
+[Allow time for API key changes to propagate](#api-key-propagation).
+
 **Invalid API key errors**: Check that you copied the key correctly and that it hasn't been revoked or expired.
 
-## API keys: Frequently Asked Questions {/* #faqs */}
+## API keys: Frequently asked questions {/* #faqs */}
 
 **Q: Can I issue and use multiple API keys for the same account?**
 

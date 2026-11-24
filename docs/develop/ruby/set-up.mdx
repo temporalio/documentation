@@ -1,12 +1,8 @@
 ---
 id: set-up-local-ruby
-title: Set up your local with the Ruby SDK
+title: Set up a local development environment with the Ruby SDK
 sidebar_label: Quickstart
 description: Configure your local development environment to get started developing with Temporal
-keywords:
-  - set up
-  - getting started
-  - ruby sdk
 tags:
   - Ruby SDK
   - Temporal SDKs
@@ -85,7 +81,7 @@ Follow the steps to create a directory, initialize the project with a `Gemfile`,
 
 <SetupStep code={
 <>
-<Tabs>
+<Tabs groupId="os" queryString>
 <TabItem value="macos" label="macOS" default>
 
         <p>Install the Temporal CLI using Homebrew:</p>
@@ -164,7 +160,7 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 </SetupStep>
 </SetupSteps>
 
-## Run Hello World: Test Your Installation
+## Run Hello World: Test your installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and
 Activity.
@@ -180,7 +176,9 @@ This test will confirm that:
 
 Create an Activity file (say_hello_activity.rb):
 
-```ruby
+<!--SNIPSTART ruby-quickstart-activity-->
+[ruby-sandbox/say_hello_activity.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/say_hello_activity.rb)
+```rb
 require 'temporalio/activity'
 
 # Implementation of a simple activity
@@ -190,12 +188,15 @@ class SayHelloActivity < Temporalio::Activity::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 ### 2. Create the Workflow
 
 Create a Workflow file (say_hello_workflow.rb):
 
-```ruby
+<!--SNIPSTART ruby-quickstart-workflow-->
+[ruby-sandbox/say_hello_workflow.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/say_hello_workflow.rb)
+```rb
 require 'temporalio/workflow'
 require_relative 'say_hello_activity'
 
@@ -209,6 +210,7 @@ class SayHelloWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+<!--SNIPEND-->
 
 ### 3. Create and Run the Worker
 
@@ -219,7 +221,9 @@ Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) 
 
 Create a Worker file (worker.rb):
 
-```ruby
+<!--SNIPSTART ruby-quickstart-worker-->
+[ruby-sandbox/worker.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/worker.rb)
+```rb
 require 'temporalio/client'
 require 'temporalio/worker'
 require_relative 'say_hello_activity'
@@ -240,6 +244,7 @@ worker = Temporalio::Worker.new(
 # Run the worker until SIGINT. This can be done in many ways, see "Workers" section for details.
 worker.run(shutdown_signals: ['SIGINT'])
 ```
+<!--SNIPEND-->
 
 Run the Worker:
 
@@ -253,7 +258,9 @@ Now that your Worker is running, it's time to start a Workflow Execution.
 
 Create a separate file called starter.rb:
 
-```ruby
+<!--SNIPSTART ruby-quickstart-starter-->
+[ruby-sandbox/starter.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/starter.rb)
+```rb
 require 'temporalio/client'
 require_relative 'say_hello_workflow'
 
@@ -269,6 +276,7 @@ result = client.execute_workflow(
 )
 puts "Result: #{result}"
 ```
+<!--SNIPEND-->
 
 Then run:
 
@@ -276,12 +284,12 @@ Then run:
 ruby starter.rb
 ```
 
-### Verify Success
+### Verify success
 
 If everything is working correctly, you should see:
 
 - Worker processing the workflow and activity
-- Output: `Workflow result: Hello, Temporal!`
+- Output: `Result: Hello, Temporal!`
 - Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
 <CallToAction href="https://learn.temporal.io/getting_started/ruby/first_program_in_ruby/">

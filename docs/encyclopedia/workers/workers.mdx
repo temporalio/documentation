@@ -5,9 +5,6 @@ sidebar_label: Workers
 description: Temporal Workers are tightly coupled with Task Queues and Worker Processes.
 slug: /workers
 toc_max_heading_level: 4
-keywords:
-  - workers
-  - versioning
 tags:
   - Workers
   - Concepts
@@ -98,7 +95,7 @@ Here are some approaches:
 - **Use environment-specific identifiers**: Choose an identifier that is specific to your execution environment. For example, when running Workers on Amazon ECS, you can set the Worker Identity to the ECS Task ID, which uniquely identifies the task running the Worker.
 - **Include relevant context**: Incorporate information that helps establish the context of the Worker, such as the deployment environment (`staging` or `production`), region, or any other relevant details.
 - **Ensure uniqueness**: Make sure that the Worker Identity is unique within your system to avoid ambiguity when debugging issues.
-- **Keep it concise**: While including relevant information is important, try to keep the Worker Identity concise and easily readable to facilitate quick identification and troubleshooting.
+- **Keep it concise**: While including relevant information is important, try to keep the Worker Identity concise and readable so you can identify and troubleshoot a Worker quickly.
 
 ## What is a Worker Process? {/* #worker-process */}
 

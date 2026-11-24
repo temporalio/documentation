@@ -7,7 +7,7 @@
 
 .setupStep {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 2rem;
   align-items: start;
 }
@@ -110,4 +110,9 @@
   code {
     background: rgba(0, 0, 0, 0.5);
   }
+}
+
+.sourceLink {
+  color: inherit;
+  text-decoration: underline;
 }

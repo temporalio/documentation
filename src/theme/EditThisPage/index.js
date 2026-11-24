@@ -1,24 +1,20 @@
-import React from "react";
+import React from 'react';
+import clsx from 'clsx';
+import { ThemeClassNames } from '@docusaurus/theme-common';
+import { LuGithub } from 'react-icons/lu';
+import styles from './styles.module.css';
 
-export default function EditThisPageWrapper({ editUrl }) {
+// Swizzled from @docusaurus/theme-classic. Rendered at the start of the page
+// feedback row by EditMetaRow.
+export default function EditThisPage({ editUrl }) {
   if (!editUrl) {
     return null;
   }
 
-  const feedbackStyle = {
-    marginTop: "20px",
-    padding: "10px 15px",
-
-    borderRadius: "8px",
-    borderLeft: "4px solid #007bff", // A blue accent to match the button
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-  };
-
   return (
-    <div style={feedbackStyle}>
-      <p style={{ margin: 0, fontWeight: "500" }}>Help us make Temporal better. <a href={editUrl}>View this page</a> on GitHub.</p>
-    </div>
+    <a href={editUrl} className={clsx(ThemeClassNames.common.editThisPage, styles.link)}>
+      <LuGithub className={styles.icon} aria-hidden="true" />
+      View this page on GitHub
+    </a>
   );
 }

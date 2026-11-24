@@ -1,12 +1,9 @@
 ---
 id: testing-suite
-title: Testing - PHP SDK
+title: Testing
 sidebar_label: Testing
 description: The Temporal Application Testing section explains frameworks for Workflow and integration testing, including end-to-end, integration, unit tests, and how to mock Activities in a PHP environment.
 toc_max_heading_level: 4
-keywords:
-  - php
-  - sdk
 tags:
   - Testing
   - PHP SDK
@@ -45,6 +42,8 @@ When integration testing Workflows with a Worker, you can mock Activities by pro
 
 To mock an Activity in PHP, use [RoadRunner Key-Value storage](https://github.com/spiral/roadrunner-kv) and add the following lines to your `tests/.rr.test.yaml` file.
 
+<!--SNIPSTART php-testing-rr-kv-->
+[php-sandbox/best-practices/testing-suite/tests/.rr.test.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/tests/.rr.test.yaml)
 ```yaml
 # tests/.rr.test.yaml
 kv:
@@ -53,10 +52,13 @@ kv:
     config:
       interval: 10
 ```
+<!--SNIPEND-->
 
 If you want to be able to mock Activities, use `WorkerFactory` from the `Temporal\Testing` Namespace
 in your PHP Worker:
 
+<!--SNIPSTART php-testing-mock-worker-->
+[php-sandbox/best-practices/testing-suite/tests/worker.test.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/tests/worker.test.php)
 ```php
 // worker.test.php
 use Temporal\Testing\WorkerFactory;
@@ -68,21 +70,36 @@ $worker->registerWorkflowTypes(MyWorkflow::class);
 $worker->registerActivity(MyActivity::class);
 $factory->run();
 ```
+<!--SNIPEND-->
 
 Then, in your tests to mock an Activity, use the`ActivityMocker` class.
 
 Assume we have the following Activity:
 
+<!--SNIPSTART php-testing-activity-interface-->
+[php-sandbox/best-practices/testing-suite/SimpleActivityInterface.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/SimpleActivityInterface.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\BestPractices\TestingSuite;
+
+use Temporal\Activity\ActivityInterface;
+use Temporal\Activity\ActivityMethod;
+
 #[ActivityInterface(prefix: "SimpleActivity.")]
 interface SimpleActivityInterface
 {
     #[ActivityMethod('doSomething')]
     public function doSomething(string $input): string;
+}
 ```
+<!--SNIPEND-->
 
 To mock it in the test, you can do this:
 
+<!--SNIPSTART php-testing-mock-activity-test-->
+[php-sandbox/best-practices/testing-suite/tests/SimpleWorkflowTestCase.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/tests/SimpleWorkflowTestCase.php)
 ```php
 final class SimpleWorkflowTestCase extends TestCase
 {
@@ -112,6 +129,7 @@ final class SimpleWorkflowTestCase extends TestCase
     }
 }
 ```
+<!--SNIPEND-->
 
 In the preceding test case, we do the following:
 
@@ -121,9 +139,12 @@ In the preceding test case, we do the following:
 
 To mock a failure, use the `expectFailure()` method:
 
+<!--SNIPSTART php-testing-mock-activity-failure {"enable_code_dedenting": true}-->
+[php-sandbox/best-practices/testing-suite/tests/SimpleWorkflowFailureTestCase.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/tests/SimpleWorkflowFailureTestCase.php)
 ```php
-$this->activityMocks->expectFailure('SimpleActivity.echo', new \LogicException('something went wrong'));
+$this->activityMocks->expectFailure('SimpleActivity.doSomething', new \LogicException('something went wrong'));
 ```
+<!--SNIPEND-->
 
 ### How to skip time {/* #skip-time */}
 
@@ -142,7 +163,10 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 1. In the `tests` folder, create `bootstrap.php` with the following contents:
 
+<!--SNIPSTART php-testing-bootstrap-->
+[php-sandbox/best-practices/testing-suite/tests/bootstrap.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/tests/bootstrap.php)
 ```php
+<?php
 declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -150,22 +174,30 @@ require __DIR__ . '/../vendor/autoload.php';
 use Temporal\Testing\Environment;
 
 $environment = Environment::create();
-$environment->start();
+$environment->startTemporalTestServer();
+$environment->startRoadRunner(['./rr', 'serve', '-c', '.rr.test.yaml', '-w', 'tests'], configFile: '.rr.test.yaml');
 register_shutdown_function(fn () => $environment->stop());
 ```
+<!--SNIPEND-->
 
 If you don't want to run the test server with all of your tests, you can add a condition to start a test only if the `RUN_TEMPORAL_TEST_SERVER` environment variable is present:
 
+<!--SNIPSTART php-testing-bootstrap-optional-server-->
+[php-sandbox/best-practices/testing-suite/tests/bootstrap-optional-server.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/tests/bootstrap-optional-server.php)
 ```php
 if (getenv('RUN_TEMPORAL_TEST_SERVER') !== false) {
     $environment = Environment::create();
-    $environment->start('./rr serve -c .rr.silent.yaml --workflow-id tests');
+    $environment->startTemporalTestServer();
+    $environment->startRoadRunner(['./rr', 'serve', '-c', '.rr.silent.yaml', '-w', 'tests'], configFile: '.rr.silent.yaml');
     register_shutdown_function(fn() => $environment->stop());
 }
 ```
+<!--SNIPEND-->
 
 2. Add `bootstrap.php` and the `TEMPORAL_ADDRESS` environment variable to `phpunit.xml`:
 
+<!--SNIPSTART php-testing-phpunit-xml-->
+[php-sandbox/best-practices/testing-suite/phpunit.xml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/phpunit.xml)
 ```xml
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
@@ -176,12 +208,16 @@ if (getenv('RUN_TEMPORAL_TEST_SERVER') !== false) {
     </php>
 </phpunit>
 ```
+<!--SNIPEND-->
 
 3. Add the test server executable to `.gitignore`:
 
+<!--SNIPSTART php-testing-gitignore-->
+[php-sandbox/best-practices/testing-suite/.gitignore](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/.gitignore)
 ```gitignore
 temporal-test-server
 ```
+<!--SNIPEND-->
 
 ## How to Replay a Workflow Execution {/* #replay */}
 
@@ -202,9 +238,11 @@ The following are examples of fetching and replaying Event Histories:
 To replay Workflow Executions, use the `\Temporal\Testing\Replay\WorkflowReplayer` class.
 
 In the following example, Event Histories are fetching from the Temporal, and then replayed.
-If the Workflow is non-deterministic, a `NonDeterministicWorkflowException` will be thrown.
+If the Workflow Definition is non-deterministic, a `NonDeterministicWorkflowException` will be thrown.
 Note that this requires [Advanced Visibility](/visibility#advanced-visibility) to be enabled.
 
+<!--SNIPSTART php-testing-replay-from-server {"enable_code_dedenting": true}-->
+[php-sandbox/best-practices/testing-suite/ReplayExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/ReplayExamples.php)
 ```php
 /**
  * We assume you already have a WorkflowClient and WorkflowReplayer in scope.
@@ -229,9 +267,13 @@ foreach ($executions as $executionInfo) {
     }
 }
 ```
+<!--SNIPEND-->
 
 In the next example, an Event History is loaded from a JSON file, and the maximum number of replayed Events is limited to 42.
+RoadRunner reads the file, so a relative path is resolved from RoadRunner's working directory.
 
+<!--SNIPSTART php-testing-replay-from-json {"enable_code_dedenting": true}-->
+[php-sandbox/best-practices/testing-suite/ReplayExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/ReplayExamples.php)
 ```php
 $replayer->replayFromJSON(
     workflowType: 'MyWorkflow',
@@ -239,9 +281,12 @@ $replayer->replayFromJSON(
     lastEventId: 42,  // optional
 );
 ```
+<!--SNIPEND-->
 
 You can download a Event History using PHP, and then replay it from a memorized History object:
 
+<!--SNIPSTART php-testing-replay-history {"enable_code_dedenting": true}-->
+[php-sandbox/best-practices/testing-suite/ReplayExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/best-practices/testing-suite/ReplayExamples.php)
 ```php
 $history = $this->workflowClient->getWorkflowHistory(
     execution: $run->getExecution(),
@@ -249,3 +294,4 @@ $history = $this->workflowClient->getWorkflowHistory(
 
 (new WorkflowReplayer())->replayHistory($history);
 ```
+<!--SNIPEND-->

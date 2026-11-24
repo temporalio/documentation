@@ -157,6 +157,7 @@ lines.push("| `captioned-image` | Renders `src` + `caption` as `![caption](src)`
 lines.push("| `strip-tag` | JSX tags stripped, text content preserved. |");
 lines.push("| `strip-block` | Entire component and all children removed. No content value. |");
 lines.push("| `details` | `<summary>` becomes a heading; body expanded inline. |");
+lines.push("| `for-os` | Every OS variant kept. Block: a **OS:** label line before the children. Inline: `(**OS:** text; **OS:** text)`. |");
 
 writeFileSync(registryPath, lines.join("\n") + "\n", "utf8");
 console.log(`\n📄 Written: ${relative(PROJECT_ROOT, registryPath)}`);

@@ -1,16 +1,9 @@
 ---
 id: list-filter
 title: List Filter
-sidebar_label: List Filter
 description: This guide on Temporal List Filters explains how to set up, configure, and use the List Filter API in Temporal Server versions. Filter and retrieve Workflow Executions, apply supported operators, and optimize queries for efficiency.
 slug: /list-filter
 toc_max_heading_level: 4
-keywords:
-  - explanation
-  - filtered-lists
-  - term
-  - visibility
-  - list filter
 tags:
   - Concepts
   - Visibility
@@ -34,7 +27,7 @@ A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch
 List Filters support the following operators:
 
 - **`=, !=, >, >=, <, <=`**
-- **`AND, OR, ()`**
+- **`AND, OR, NOT, ()`**
 - **`BETWEEN ... AND`**
 - **`IN`**
 - **STARTS_WITH**
@@ -46,6 +39,61 @@ The **ORDER BY** operator is currently not supported in Temporal Cloud.
 The default ordering is: `ClosedTime DESC NULL FIRST`, `StartTime DESC`. {/* `RunID DESC` depends on which visibility store is used. */}
 
 Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
+
+:::
+
+### Relative time {/* #relative-time */}
+
+`NOW()` resolves to the current time when the Temporal Service runs the List Filter.
+Use it in place of a timestamp for any Datetime Search Attribute, such as `StartTime`, `CloseTime`, `ExecutionTime`, or a custom Datetime attribute.
+
+Add or subtract a duration in single quotes to offset from `NOW()`:
+
+```sql
+StartTime > NOW() - '24h'
+```
+
+```sql
+ExecutionStatus = 'Failed' and CloseTime > NOW() - '5m'
+```
+
+```sql
+StartTime between NOW() - '1h' and NOW()
+```
+
+```sql
+CustomDatetimeField < NOW()
+```
+
+A duration uses the following units:
+
+| Unit         | Meaning                 |
+| ------------ | ----------------------- |
+| `ns`         | Nanoseconds             |
+| `us` or `µs` | Microseconds            |
+| `ms`         | Milliseconds            |
+| `s`          | Seconds                 |
+| `m`          | Minutes                 |
+| `h`          | Hours                   |
+| `d`          | Days (exactly 24 hours) |
+
+Combine units in one duration, such as `'1h30m'` or `'2d12h'`.
+Decimal values such as `'1.5h'` are supported.
+An integer without quotes is a duration in nanoseconds: `NOW() - 300000000000` is 5 minutes.
+
+The following rules apply:
+
+- `NOW()` is case-insensitive. Duration units are lowercase: `'5h'` is valid and `'5H'` is not.
+- Only `+` and `-` are supported with `NOW()`.
+- Quote the duration. `NOW() - 5h` is rejected.
+- `NOW()` inside a quoted string is literal text. `WorkflowType = 'NOW()'` matches a Workflow Type named `NOW()`.
+
+`NOW()` resolves once, when the first page of results is fetched.
+Every later page of the same List Filter uses that same time, so results do not shift between pages.
+
+:::info Server Version Requirement
+
+Relative time in List Filters requires Temporal Server version 1.33 and greater.
 
 :::
 
@@ -118,7 +166,7 @@ Broader tokenizer and matching improvements for `Text` Search Attributes are bei
 
 For Search Attributes of type `Keyword` like `WorkflowId`, perform partial string matching using STARTS_WITH for prefixes and BETWEEN for suffixes.
 
-- `WorkflowId STARTS_WITH "order-"` matches Workflow Ids with the "order-" prefix, regardless of the following text.
+- `WorkflowId STARTS_WITH "order-"` matches Workflow IDs with the "order-" prefix, regardless of the following text.
 
   ```
   order-
@@ -127,7 +175,7 @@ For Search Attributes of type `Keyword` like `WorkflowId`, perform partial strin
   order-~~~abracadabra
   ```
 
-- `WorkflowId BETWEEN "order-" AND "order-~"` matches Workflow Ids that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
+- `WorkflowId BETWEEN "order-" AND "order-~"` matches Workflow IDs that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
 
   ```
   order-
@@ -151,7 +199,7 @@ For Search Attributes of type `Keyword` like `WorkflowId`, perform partial strin
   - `BETWEEN value AND value`
   - `STARTS_WITH string`
   - `IS NULL`, `IS NOT NULL`
-  - `expr AND expr`, `expr OR expr`, `( expr )`
+  - `expr AND expr`, `expr OR expr`, `NOT expr`, `( expr )`
 - Array: `( comma-separated-values )`
 
 **Please note**
@@ -223,6 +271,40 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
+#### Standalone Activity Execution List Filter examples
+
+[Standalone Activity Executions](/standalone-activity) use the same List Filter syntax over their own Search Attributes.
+Pass these to `ListActivities` and `CountActivities`, or to [`temporal activity list`](/cli/command-reference/activity#list) and [`temporal activity count`](/cli/command-reference/activity#count).
+These APIs return Standalone Activity Executions only; Activities that run inside a Workflow are not included.
+
+Find every running Standalone Activity of one Activity Type:
+
+```sql
+ActivityType = '<activity-type>' and ExecutionStatus = 'Running'
+```
+
+Find the Standalone Activities an operator has [paused](/activity-operations):
+
+```sql
+ExecutionStatus = 'Paused'
+```
+
+```sql
+ExecutionStatus = 'Paused' and ActivityType = '<activity-type>'
+```
+
+Find delayed jobs, meaning Standalone Activities whose first Activity Task has not been dispatched yet because of a [Start Delay](/standalone-activity#start-delay):
+
+```sql
+ExecutionStatus = 'Running' and ExecutionTime > '2021-08-22T15:04:05+00:00'
+```
+
+Find one Standalone Activity by its business identifier:
+
+```sql
+ActivityId = '<activity-id>'
+```
+
 ### Search Attribute aliasing
 
 Temporal prefixes most [default Search Attributes](./search-attributes.mdx#default-search-attribute) with `Temporal` to avoid naming conflicts with custom Search Attributes.
@@ -266,5 +348,4 @@ TemporalSchedulePaused = true
 ```
 
 `SchedulePaused` will refer to your custom Search Attribute, while `TemporalSchedulePaused` will refer to the default Search Attribute.
-
 

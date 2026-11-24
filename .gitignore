@@ -9,6 +9,7 @@ blob-report
 test-results
 
 # Generated files
+api/_content-manifest.json
 .docusaurus
 .cache-loader
 temp/
@@ -26,6 +27,7 @@ temp/
 .env.production.local
 .vs
 .claude/*
+!.claude/skills/
 .omc
 
 npm-debug.log*
@@ -55,5 +57,6 @@ test-results/*
 # screenshots
 screenshots
 # Ignore cookbook recipes since they are synced from the remote repo
-ai-cookbook
+# (anchored to the root — fixtures/ai-cookbook/ is a real, tracked test fixture)
+/ai-cookbook
 scripts/mermaid-compare/*

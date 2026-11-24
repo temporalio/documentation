@@ -52,6 +52,28 @@ This document describes the purpose, audience, and content type for each top-lev
 - **Content type:** Mostly reference, and a few how-tos
 - **Description:** Covers installation, configuration, use with Temporal Cloud and the full command tree. Each command page lists subcommands, flags, and representative examples.
 
+## Design patterns
+
+- **Audience:** Developers who already know what they're building and need a proven, reusable technique for a specific
+  mechanical problem — fan out work across Child Workflows, rate-limit a downstream call, pick the right retry shape
+  for an error type.
+- **Content type:** Reference-style pattern catalog. Each leaf page follows a fixed template: Overview, Problem,
+  Solution, Implementation (with runnable code across multiple SDKs), When to use, Benefits and trade-offs, Comparison
+  with alternatives, Best practices, Common pitfalls, Related. Each sub-category has its own short "pattern selection
+  guide" index page.
+- **Description:** A catalog of Temporal-specific design patterns (`/design-patterns`), grouped by problem domain: task
+  orchestration, workflow messaging, entity lifecycle, external interaction, distributed transactions, error handling
+  and retry, batch processing, QoS and throughput, performance and latency, and worker configuration.
+
+    Distinct from Guides: a Guide is a full, use-case-specific implementation walkthrough; a Design Pattern is a
+    shorter, reusable building block that a Guide (or a reader's own application) builds on top of. Guides link out to
+    the relevant pattern page rather than re-explaining the underlying mechanism; pattern pages should link back to any
+    Guide that showcases a deeper, real-world implementation.
+
+    Distinct from Best Practices: Best Practices are operational and organizational recommendations (namespace
+    management, cost governance, worker tuning) for running Temporal at scale. Design Patterns are code-level
+    implementation techniques for a Workflow or Activity.
+
 ## References
 
 - **Audience:** Developers, operators, and architects looking up specific technical details.
@@ -90,11 +112,30 @@ This document describes the purpose, audience, and content type for each top-lev
 - **Content type:** Reference
 - **Description:** Alphabetical listing of Temporal-specific terms. Each entry should be a concise definition with a link to the page that covers the concept in depth.
 
+## Durable AI
+
+- **Audience:** Developers and architects building AI applications and agents on Temporal.
+- **Content type:** Explanation with curated links.
+- **Description:** Landing page (`/ai`) for building AI systems with Temporal — agents, processing pipelines,
+  internal agent platforms, and model training. Links out to the AI Cookbook (`/ai/cookbook`), relevant Design
+  Patterns, and SDK agent-framework integrations rather than duplicating their content.
+
+    Distinct from "Develop with AI" below: this section is about using Temporal to build AI products, not about using
+    AI tooling to write Temporal code. Don't merge the two.
+
 ## Develop with AI
 
 - **Audience:** Developers using AI coding assistants who want Temporal-aware tooling.
 - **Content type:** How-to
 - **Description:** Covers how to leverage AI to develop Temporal applications and deploy Temporal workloads.
+
+## Internal
+
+- **Audience:** Docs maintainers.
+- **Content type:** Rendering fixtures, such as `docs/internal/callouts.mdx`, which shows every callout type for visual
+  tests.
+- **Description:** Pages here are `unlisted: true` and set `llm_exclude`, so they're kept out of the sidebar, the
+  sitemap, and `llms.txt`. Don't put reader-facing content here.
 
 ---
 
@@ -156,6 +197,7 @@ These cross-cutting pages live outside any SDK folder:
 - `worker-tuning-reference.mdx` — Reference tables for worker config (sidebar: under Worker performance).
 - `task-queue-priority-fairness.mdx` — Task queue priority and fairness features.
 - `activity-retry-simulator.mdx` — Interactive tool for visualizing retry behavior.
+- `demos/worker-tuning-simulator.mdx` — Interactive simulator of Worker Pollers, Slots, cache, and resource limits (sidebar: Interactive Demos).
 - `run-a-development-server.mdx` — Installing and running the Temporal CLI dev server.
 
 ### Issues

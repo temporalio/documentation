@@ -1,17 +1,17 @@
 ---
 id: cancellation-scopes
-title: Cancellation scopes - TypeScript SDK
-description: Shows cancellation scopes with the TypeScript SDK
+title: Cancellation scopes
+description: Control cancellation in TypeScript Workflows with the CancellationScope tree, including nonCancellable, withTimeout, nesting, and shared promises.
 sidebar_label: Cancellation scopes
 slug: /develop/typescript/workflows/cancellation-scopes
 toc_max_heading_level: 3
 tags:
   - TypeScript SDK
   - Temporal SDKs
-  - Workflow
+  - Workflows
 ---
 
-## Cancellation scopes in Typescript {/* #cancellation-scopes */}
+## Cancellation scopes in TypeScript {/* #cancellation-scopes */}
 
 In the TypeScript SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation
 behaviors you can specify. By default, everything runs in the "root" scope.
@@ -63,8 +63,8 @@ To simplify checking for cancellation, use the
 
 ### Internal cancellation example
 
-<!--SNIPSTART typescript-cancel-a-timer-from-workflow-->
-[packages/test/src/workflows/cancel-timer-immediately.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately.ts)
+<!--SNIPSTART typescript-cancellation-scopes-cancel-timer-->
+[typescript-sandbox/src/workflows/cancellation-scopes/cancel-timer.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/cancel-timer.ts)
 ```ts
 import { CancelledFailure, CancellationScope, sleep } from '@temporalio/workflow';
 
@@ -89,8 +89,8 @@ export async function cancelTimer(): Promise<void> {
 
 Alternatively, the preceding can be written as the following.
 
-<!--SNIPSTART typescript-cancel-a-timer-from-workflow-alternative-impl-->
-[packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts)
+<!--SNIPSTART typescript-cancellation-scopes-cancel-timer-alt-->
+[typescript-sandbox/src/workflows/cancellation-scopes/cancel-timer-alt.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/cancel-timer-alt.ts)
 ```ts
 import { CancelledFailure, CancellationScope, sleep } from '@temporalio/workflow';
 
@@ -117,11 +117,11 @@ The following code shows how to handle Workflow cancellation by an external clie
 
 {/* TODO: add a sample here of how this Workflow could be cancelled using a WorkflowHandle */}
 
-<!--SNIPSTART typescript-handle-external-workflow-cancellation-while-activity-running-->
-[packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts)
+<!--SNIPSTART typescript-cancellation-scopes-external-cancellation-->
+[typescript-sandbox/src/workflows/cancellation-scopes/external-cancellation.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/external-cancellation.ts)
 ```ts
 import { CancellationScope, proxyActivities, isCancellation } from '@temporalio/workflow';
-import type * as activities from '../activities';
+import type * as activities from './activities';
 
 const { httpPostJSON, cleanup } = proxyActivities<typeof activities>({
   startToCloseTimeout: '10m',
@@ -144,12 +144,12 @@ export async function handleExternalWorkflowCancellationWhileActivityRunning(url
 ```
 <!--SNIPEND-->
 
-### nonCancellable example
+### `nonCancellable` example
 
 `CancellationScope.nonCancellable` prevents cancellation from propagating to children.
 
-<!--SNIPSTART typescript-non-cancellable-shields-children-->
-[activities-cancellation-heartbeating/src/cancellation-scopes.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts)
+<!--SNIPSTART typescript-cancellation-scopes-non-cancellable-->
+[typescript-sandbox/src/workflows/cancellation-scopes/shared-scopes.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/shared-scopes.ts)
 ```ts
 export async function nonCancellable(url: string): Promise<any> {
   // Prevent Activity from being cancelled and await completion.
@@ -164,11 +164,11 @@ export async function nonCancellable(url: string): Promise<any> {
 A common operation is to cancel one or more Activities if a deadline elapses. `withTimeout` creates a
 `CancellationScope` that is automatically cancelled after a timeout.
 
-<!--SNIPSTART typescript-multiple-activities-single-timeout-workflow-->
-[packages/test/src/workflows/multiple-activities-single-timeout.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/multiple-activities-single-timeout.ts)
+<!--SNIPSTART typescript-cancellation-scopes-with-timeout-->
+[typescript-sandbox/src/workflows/cancellation-scopes/with-timeout.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/with-timeout.ts)
 ```ts
 import { CancellationScope, proxyActivities } from '@temporalio/workflow';
-import type * as activities from '../activities';
+import type * as activities from './activities';
 
 export function multipleActivitiesSingleTimeout(urls: string[], timeoutMs: number): Promise<any> {
   const { httpGetJSON } = proxyActivities<typeof activities>({
@@ -182,15 +182,15 @@ export function multipleActivitiesSingleTimeout(urls: string[], timeoutMs: numbe
 ```
 <!--SNIPEND-->
 
-### scope.cancelRequested
+### `scope.cancelRequested`
 
 You can await `cancelRequested` to make a Workflow aware of cancellation while waiting on `nonCancellable` scopes.
 
-<!--SNIPSTART typescript-cancel-requested-with-non-cancellable-->
-[packages/test/src/workflows/cancel-requested-with-non-cancellable.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-requested-with-non-cancellable.ts)
+<!--SNIPSTART typescript-cancellation-scopes-cancel-requested-->
+[typescript-sandbox/src/workflows/cancellation-scopes/cancel-requested.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/cancel-requested.ts)
 ```ts
 import { CancellationScope, CancelledFailure, proxyActivities } from '@temporalio/workflow';
-import type * as activities from '../activities';
+import type * as activities from './activities';
 
 const { httpGetJSON } = proxyActivities<typeof activities>({
   startToCloseTimeout: '10m',
@@ -220,8 +220,8 @@ Callbacks are not particularly useful in Workflows because all meaningful asynch
 the rare case that code uses callbacks and needs to handle cancellation, a callback can consume the
 `CancellationScope.cancelRequested` promise.
 
-<!--SNIPSTART typescript-cancellation-scopes-with-callbacks-->
-[packages/test/src/workflows/cancellation-scopes-with-callbacks.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancellation-scopes-with-callbacks.ts)
+<!--SNIPSTART typescript-cancellation-scopes-callbacks-->
+[typescript-sandbox/src/workflows/cancellation-scopes/callbacks.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/callbacks.ts)
 ```ts
 import { CancellationScope } from '@temporalio/workflow';
 
@@ -242,12 +242,12 @@ export async function cancellationScopesWithCallbacks(): Promise<void> {
 
 You can achieve complex flows by nesting cancellation scopes.
 
-<!--SNIPSTART typescript-nested-cancellation-scopes-->
-[packages/test/src/workflows/nested-cancellation.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/nested-cancellation.ts)
+<!--SNIPSTART typescript-cancellation-scopes-nested-->
+[typescript-sandbox/src/workflows/cancellation-scopes/nested.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/nested.ts)
 ```ts
 import { CancellationScope, proxyActivities, isCancellation } from '@temporalio/workflow';
 
-import type * as activities from '../activities';
+import type * as activities from './activities';
 
 const { setup, httpPostJSON, cleanup } = proxyActivities<typeof activities>({
   startToCloseTimeout: '10m',
@@ -274,8 +274,8 @@ export async function nestedCancellation(url: string): Promise<void> {
 Operations like Timers and Activities are cancelled by the cancellation scope they were created in. Promises returned by
 these operations can be awaited in different scopes.
 
-<!--SNIPSTART typescript-shared-promise-scopes-->
-[activities-cancellation-heartbeating/src/cancellation-scopes.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts)
+<!--SNIPSTART typescript-cancellation-scopes-shared-promises-->
+[typescript-sandbox/src/workflows/cancellation-scopes/shared-scopes.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/shared-scopes.ts)
 ```ts
 export async function sharedScopes(): Promise<any> {
   // Start activities in the root scope
@@ -296,8 +296,8 @@ export async function sharedScopes(): Promise<any> {
 ```
 <!--SNIPEND-->
 
-<!--SNIPSTART typescript-shield-awaited-in-root-scope-->
-[activities-cancellation-heartbeating/src/cancellation-scopes.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts)
+<!--SNIPSTART typescript-cancellation-scopes-shield-awaited-in-root-->
+[typescript-sandbox/src/workflows/cancellation-scopes/shared-scopes.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/cancellation-scopes/shared-scopes.ts)
 ```ts
 export async function shieldAwaitedInRootScope(): Promise<any> {
   let p: Promise<any> | undefined = undefined;

@@ -4,12 +4,6 @@ title: Troubleshoot Workflow and Activity execution failures
 sidebar_label: Execution failures
 description: Diagnose non-determinism errors, oversized payloads, failing Workflow and Activity code, and Local Activity latency
 toc_max_heading_level: 3
-keywords:
-  - non determinism error
-  - workflow task failed
-  - activity execution failed
-  - local activity
-  - grpc message too large
 tags:
   - Metrics
   - Observability
@@ -19,16 +13,20 @@ tags:
 This guide covers failures that happen while your Workflow and Activity code is running on a Worker: replay mismatches, oversized responses, unhandled exceptions, and Local Activities that outrun the Workflow Task heartbeat timeout.
 It applies to Workers connected to Temporal Cloud and to a self-hosted Temporal Service.
 
-For alert thresholds and `for` durations, see [Worker alerting](/best-practices/worker-alerting).
+Every section on this page is one of the recommended alerts in [Worker alerting](/best-practices/worker-alerting).
+Each one opens with the alert definition, explains what the condition costs you, then walks through triage.
+If you got here from a firing alert, the section you landed on is the runbook for it.
+
 For metric definitions, see the [Temporal SDK metrics reference](/references/sdk-metrics).
 
 [`temporal_workflow_task_execution_failed`](/references/sdk-metrics#workflow_task_execution_failed) carries a `failure_reason` tag along with `namespace`, `task_queue`, and `workflow_type`.
-The reason decides what the Temporal Service does next, and the difference is worth knowing: two of the three retry forever, one terminates the Execution on the spot.
+The reason decides what the Temporal Service does next, and the difference is worth knowing: three of the four retry forever, one terminates the Execution on the spot.
 Alert on each `failure_reason` separately.
 
 ## Non-determinism error {/* #non-determinism-error */}
 
-**Metric:** `temporal_workflow_task_execution_failed` with `failure_reason=NonDeterminismError`
+**Recommended alert:** `temporal_workflow_task_execution_failed` with `failure_reason=NonDeterminismError`
+Fires on any occurrence, held for 1m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
 
 Replay produced a different sequence of commands than the one recorded in Event History.
 The Worker noticed that the Workflow code it is running no longer matches what the Execution has already done.
@@ -51,7 +49,8 @@ This will not clear up on its own.
 
 ## gRPC message too large {/* #grpc-message-too-large */}
 
-**Metric:** `temporal_workflow_task_execution_failed` with `failure_reason=GrpcMessageTooLarge`
+**Recommended alert:** `temporal_workflow_task_execution_failed` with `failure_reason=GrpcMessageTooLarge`
+Fires on any occurrence, held for 1m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
 
 The Workflow Task response was bigger than the gRPC message size limit.
 The Worker tried `RespondWorkflowTaskCompleted` and something rejected it: the gRPC library on the SDK side, a proxy or load balancer in the path, or the gRPC library on the Temporal Service side when it went to receive.
@@ -82,9 +81,36 @@ Check the Workflow terminate rate on your server dashboard. A spike alongside th
 
 :::
 
+## Request too large {/* #request-too-large */}
+
+**Recommended alert:** `temporal_workflow_task_execution_failed` with `failure_reason=RequestTooLarge`
+Fires on any occurrence, held for 1m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
+
+The whole Workflow Task completion was bigger than the Namespace limit on a single `RespondWorkflowTaskCompleted` request.
+This is not one oversized Payload, it is the total: every command, Payload, message, and piece of metadata the Worker produced for that one Workflow Task, added together.
+
+Workers that support command pagination split a large completion across several requests, but the recombined size still has to fit the limit.
+When it does not, the Worker fails the Workflow Task itself with cause `WORKFLOW_TASK_FAILED_CAUSE_REQUEST_TOO_LARGE` rather than sending pages the Temporal Service is going to reject.
+
+**Why it matters.**
+The Temporal Service retries the Workflow Task, so unlike [gRPC message too large](#grpc-message-too-large) the Execution is not terminated.
+Replay produces the same oversized completion every time, so affected Executions stop making progress and stay that way until the cause is fixed.
+The retries consume Workflow Worker capacity and can start affecting healthy Executions on the same Task Queue.
+
+**Triage.**
+
+1. **Identify the affected Executions.** Find the Workflow Id and Run Id in Worker logs because the metric does not carry a Workflow Id. In the Temporal UI, you can also find affected Executions by querying the `TemporalReportedProblems` Search Attribute, which the Temporal Service sets on Executions experiencing repeated Workflow Task failures.
+1. **Find and fix what made the completion large.** The limit applies to the sum. Identify what the Workflow produced in a single step, then change the Workflow to produce less in each Workflow Task:
+   - **A large fan-out.** Scheduling many Activities, Child Workflows, or Timers in one Workflow Task can make the completion too large. Break the fan-out into smaller batches across multiple Workflow Tasks.
+   - **Accumulated Signals or Updates.** Handling a large number of buffered Signals or Updates in one Workflow Task can make the completion too large. Limit how many senders send at once, or batch their requests.
+   - **Large Payloads in aggregate.** Payloads can each be under the Payload limit but make the completion too large when combined. Store the data in [External Storage](/external-storage) and pass a reference through Event History instead.
+1. **Check the Namespace limit.** The limit is a Namespace setting on the size of a single Workflow Task completion, separate from the Payload and gRPC message limits. On Temporal Cloud, contact support if the workload legitimately needs a higher limit. Self-hosted operators can adjust it in dynamic config.
+1. **Fix and redeploy.** Affected Executions resume on their next Workflow Task retry once the corrected Worker is running. They do not need to be restarted, because they were never terminated.
+
 ## Workflow Task execution failures elevated {/* #workflow-task-execution-failures-elevated */}
 
-**Metric:** `temporal_workflow_task_execution_failed` with `failure_reason=WorkflowError`
+**Recommended alert:** `temporal_workflow_task_execution_failed` with `failure_reason=WorkflowError`
+Fires when the rate goes above 10/s, held for 2m. Routed Warning by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
 
 Workflow Tasks are failing steadily from unhandled exceptions and panics in Workflow code that the SDK catches and reports.
 `WorkflowError` is the catch-all reason. It covers thread pool exhaustion, unhandled exceptions thrown inside the Workflow function, and Data Converter errors.
@@ -108,7 +134,8 @@ Unlike `GrpcMessageTooLarge`, the Temporal Service won't terminate the Execution
 
 ## Workflow Task execution latency high {/* #workflow-task-execution-latency-high */}
 
-**Metric:** [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency), tagged `namespace`, `task_queue`, and `workflow_type`
+**Recommended alert:** [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency), tagged `namespace`, `task_queue`, and `workflow_type`
+Fires when p99 goes above 10s, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
 
 Workflow Tasks are taking too long to execute on the Worker.
 The default Workflow Task timeout is 10 seconds, so at or above that value the Temporal Service is actively timing out Workflow Tasks.
@@ -135,9 +162,13 @@ At scale this compounds: more timeouts cause more cold replays, cold replays dri
 
 ## Activity execution failures elevated {/* #activity-execution-failures-elevated */}
 
-**Metric:** [`temporal_activity_execution_failed`](/references/sdk-metrics#activity_execution_failed), tagged `activity_type`
+**Recommended alert:** [`temporal_activity_execution_failed`](/references/sdk-metrics#activity_execution_failed) with `failure_reason=ActivityError`, tagged `activity_type`
+Fires when the rate goes above 10/s, held for 2m. Routed Warning by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
 
 Activities are failing outright at a sustained rate: returning failures, not timing out.
+
+Filter on `failure_reason=ActivityError` so this alert tracks Activity code and its dependencies.
+The other reasons on this metric are Worker-side size limits with different triage, covered in [Activity Payloads too large](#activity-payloads-too-large).
 
 `ApplicationFailure` instances marked with category `BENIGN` don't increment this counter, so how well this metric tracks only the unexpected failures depends on how consistently your application marks the expected ones.
 
@@ -156,9 +187,34 @@ At scale, sustained retry bursts put real pressure on Task matching and the data
 
 One caveat: internal failures increment this counter no matter what category you set. Those are things like a context propagation error or a context timeout, rather than an Activity returning a failure.
 
+## Activity Payloads too large {/* #activity-payloads-too-large */}
+
+**Recommended alert:** [`temporal_activity_execution_failed`](/references/sdk-metrics#activity_execution_failed) with `failure_reason=PayloadsTooLarge`, tagged `activity_type`
+Fires on any occurrence, held for 1m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
+
+A Payload in the Activity Task response was bigger than the Namespace Payload size limit.
+The Worker failed the Activity Task itself rather than send a completion the Temporal Service was going to reject, so the Activity fails with an explicit error instead of timing out silently.
+
+The Worker marks this failure retryable on purpose: the point of catching it on the Worker is to turn something the Temporal Service would hard-fail into an Activity failure you can fix and redeploy past.
+
+For the limits themselves and the ways to stay under them, see [Troubleshoot the BlobSizeLimitError](/troubleshooting/blob-size-limit-error#payload-size-limit).
+
+**Why it matters.**
+The Activity retries under its Retry Policy and produces the same oversized result every time, so it cannot succeed until the code changes.
+The Workflow Execution stays blocked on that Activity until its schedule-to-close timeout expires, and each attempt is wasted work on a Worker.
+This will not clear up on its own, which is why it is worth alerting on any occurrence rather than on a rate.
+
+**Triage.**
+
+1. **Identify which Activity is oversized.** The `activity_type` tag narrows it down. Worker logs for that type record the size and the limit that was exceeded.
+1. **Find which Payload is too large.** Usually the Activity result. Large collections, embedded files, and full API responses returned verbatim are the common causes.
+1. **Move the Payload out of band.** Store it and return a reference instead, using [External Storage](/external-storage) or a custom [Payload Codec](/payload-codec). Compression buys headroom but does not remove the ceiling.
+1. **Deploy the fix.** Because the failure is retryable, affected Activities succeed on their next attempt once the corrected Worker is running, as long as the Workflow has not already hit its schedule-to-close timeout.
+
 ## Unregistered Activity invocation {/* #unregistered-activity-invocation */}
 
-**Metric:** [`temporal_unregistered_activity_invocation`](/references/sdk-metrics#unregistered_activity_invocation), tagged `activity_type`, `task_queue`, and `workflow_type`
+**Recommended alert:** [`temporal_unregistered_activity_invocation`](/references/sdk-metrics#unregistered_activity_invocation), tagged `activity_type`, `task_queue`, and `workflow_type`
+Fires on any occurrence, held for 1m. Routed Critical by default. Go SDK only. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
 
 A Workflow scheduled an Activity that the Worker polling that Task Queue has no registered implementation for.
 
@@ -178,7 +234,8 @@ This is nearly always a deployment mistake rather than a runtime condition: Work
 
 ## Local Activity latency exceeds the heartbeat timeout {/* #local-activity-latency-exceeds-the-heartbeat-timeout */}
 
-**Metric:** [`temporal_local_activity_execution_latency`](/references/sdk-metrics#local_activity_execution_latency), tagged `activity_type`
+**Recommended alert:** [`temporal_local_activity_execution_latency`](/references/sdk-metrics#local_activity_execution_latency), tagged `activity_type`
+Fires when p99 goes above 30m, held for 5m. Routed Critical by default. [Tune the threshold](/best-practices/worker-alerting#execution-failures).
 
 A [Local Activity](/local-activity) is running past the Workflow Task heartbeat timeout, which defaults to 30 minutes.
 

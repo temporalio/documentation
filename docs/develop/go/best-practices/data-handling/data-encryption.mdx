@@ -1,6 +1,6 @@
 ---
 id: data-encryption
-title: Payload encryption - Go SDK
+title: Payload encryption
 sidebar_label: Payload encryption
 slug: /develop/go/data-handling/data-encryption
 toc_max_heading_level: 2
@@ -34,23 +34,28 @@ Create a custom [PayloadCodec](https://pkg.go.dev/go.temporal.io/sdk/converter#P
 The Payload Codec converts bytes to bytes.
 It must be used in an instance of [CodecDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CodecDataConverter) that wraps a Data Converter to do the [Payload](/dataconversion#payload) conversions, and applies the custom encoding and decoding in `PayloadCodec` to the converted Payloads.
 
-The following example from the [Data Converter sample](https://github.com/temporalio/samples-go/blob/main/codec-server/data_converter.go) shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
+The following example from the [Data Converter sample](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/mycodecpackage/data_converter.go) shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
 
+<!--SNIPSTART go-codec-data-converter-->
+[go-sandbox/bestpractices/mycodecpackage/data_converter.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/mycodecpackage/data_converter.go)
 ```go
 // Create an instance of Data Converter with your codec.
 var DataConverter = converter.NewCodecDataConverter(
 	converter.GetDefaultDataConverter(),
 	NewPayloadCodec(),
 )
-//...
+
 // Create an instance of PayloadCodec.
 func NewPayloadCodec() converter.PayloadCodec {
 	return &Codec{}
 }
 ```
+<!--SNIPEND-->
 
 Implement your encryption/compression logic in the `Encode` function and the decryption/decompression logic in the `Decode` function in your custom `PayloadCodec`, as shown in the following example.
 
+<!--SNIPSTART go-codec-payload-codec-->
+[go-sandbox/bestpractices/mycodecpackage/codec.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/mycodecpackage/codec.go)
 ```go
 // Codec implements converter.PayloadEncoder for snappy compression.
 type Codec struct{}
@@ -100,6 +105,18 @@ func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 	return result, nil
 }
 ```
+<!--SNIPEND-->
+
+### Handle Payload Codec failures
+
+Payload Codec methods can run during Workflow Task processing or in a Client or Activity context.
+Handle transient failures within the Payload Codec when possible, such as with bounded retries.
+
+During Workflow Task processing, the SDK handles an error returned by `Encode` or `Decode` according to the operation. Some operations convert the error to a panic and apply the Worker's configured [`WorkflowPanicPolicy`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowPanicPolicy); other returned errors can fail the Workflow Execution. To apply the policy consistently, panic from the Payload Codec instead of returning an error.
+With the default [`BlockWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/worker#BlockWorkflow) policy, the panic fails the current Workflow Task so that the Temporal Service can retry it.
+With the [`FailWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/worker#FailWorkflow) policy, the panic instead fails the Workflow Execution.
+
+Panicking outside Workflow Task processing does not request a Workflow Task retry.
 
 **Step 2: Set Data Converter to use custom Payload Codec.**
 
@@ -107,25 +124,26 @@ Set your custom `PayloadCodec` with an instance of `DataConverter` in your `Dial
 
 The following example shows how to set your custom Data Converter from a package called `mycodecpackage`.
 
+<!--SNIPSTART go-codec-client-->
+[go-sandbox/bestpractices/mycodecpackage/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/bestpractices/mycodecpackage/starter/main.go)
 ```go
-//...
 c, err := client.Dial(client.Options{
-		// Set DataConverter here to ensure that Workflow inputs and results are
-		// encoded as required.
-		DataConverter: mycodecpackage.DataConverter,
-	})
-//...
+	// Set DataConverter here to ensure that Workflow inputs and results are
+	// encoded as required.
+	DataConverter: mycodecpackage.DataConverter,
+})
 ```
+<!--SNIPEND-->
 
-- Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
-- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/command-reference/workflow#show) command or when browsing the Web UI to view output.
+- Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Service. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
+- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Service. Instead, they are stored encoded on the Temporal Service, and you need to provide an additional parameter when using the [temporal workflow show](/cli/command-reference/workflow#show) command or when browsing the Web UI to view output.
 
 For reference, see the [Encryption](https://github.com/temporalio/samples-go/tree/main/encryption) sample.
 
 ### Using a Codec Server
 
 A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
-The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.
+The Codec Server is independent of the Temporal Service and decodes your encrypted payloads through predefined endpoints.
 You create, operate, and manage access to your Codec Server in your own environment.
 The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
 Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.

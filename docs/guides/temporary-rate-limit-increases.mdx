@@ -1,7 +1,7 @@
 ---
 id: temporary-rate-limit-increases
-title: Orchestrate temporary rate limit increases on your Namespaces
-description: Handle temporary spikes in usage by dynamically provisioning extra capacity when you need it, and deprovision it when you don't.
+title: Temporarily increase Namespace capacity on Temporal Cloud
+description: Add provisioned capacity to a Namespace for a load spike and remove it after a set time, using a Go Workflow and a Child Workflow with a durable Timer.
 sidebar_label: Temporary rate limit increases
 toc_max_heading_level: 3
 author: Taylor Khan
@@ -721,7 +721,7 @@ By following this guide, you have implemented a time-bound capacity provisioning
 - Using an asynchronous Child Workflow to decouple application responses from long-term cleanup tasks.
 - Using durable Timers to guarantee that capacity limits are strictly reverted after 60 minutes, ensuring you do not overpay for unused compute.
 
-## Related Resources
+## Related resources
 
 - [Temporal Capacity Modes](/cloud/capacity-modes)
 - [Temporal Best Practices](/best-practices)

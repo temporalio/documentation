@@ -1,0 +1,273 @@
+---
+id: external-storage
+title: External Storage
+sidebar_label: External Storage
+slug: /develop/dotnet/best-practices/data-handling/external-storage
+description: External Storage in the .NET SDK offloads large payloads to Amazon S3, with examples for configuring the SDK driver and building a custom driver.
+toc_max_heading_level: 3
+tags:
+  - .NET SDK
+  - Temporal SDKs
+  - Data Converters
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+<ReleaseNoteHeader featureName="externalStorage">
+  APIs and configuration may change before General Availability. Join the
+  [#large-payloads Slack channel](https://temporalio.slack.com/archives/C09VA2DE15Y) to provide feedback or ask for help.
+</ReleaseNoteHeader>
+
+The Temporal Service enforces a 2 MB per-payload limit by default. This limit is configurable on self-hosted
+deployments. When your Workflows or Activities handle data larger than the limit, you can offload payloads to external
+storage, such as Amazon S3, and pass a small reference token through the Event History instead. This page shows you how
+to set up External Storage with Amazon S3 and how to implement a custom storage driver.
+
+For a conceptual overview of External Storage and its use cases, see [External Storage](/external-storage).
+
+## Store and retrieve large payloads with Amazon S3
+
+Use the SDK-provided `S3StorageDriver` from `Temporalio.Extensions.Aws.S3Driver` and the
+`AwsSdkS3StorageDriverClient` adapter from `Temporalio.Extensions.Aws.S3Driver.AwsSdk`.
+The adapter connects the driver to the AWS SDK for .NET.
+
+### Prerequisites
+
+- .NET SDK package `Temporalio` 1.22.0 or later and `Temporalio.Extensions.Aws.S3Driver.AwsSdk` 1.22.0 or later.
+- An S3 bucket that your Clients and Workers can access. Your Clients and Workers need `s3:PutObject` and `s3:GetObject`
+  permissions on the objects, and `s3:ListBucket` permission on the bucket.
+- AWS credentials and a Region configured for the AWS SDK for .NET, for example through an IAM role and `AWS_REGION`.
+
+Add the packages to your project:
+
+```shell
+dotnet add package Temporalio --version 1.22.0
+dotnet add package Temporalio.Extensions.Aws.S3Driver.AwsSdk --version 1.22.0
+```
+
+The adapter package includes the base driver and AWS S3 dependencies. If you use credentials from `aws login`,
+also add the [`AWSSDK.Signin` package](https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/creds-idc.html).
+The example project includes this package.
+
+### Create the storage driver
+
+Create an `AmazonS3Client`, wrap it in `AwsSdkS3StorageDriverClient`, and pass the adapter and your bucket name to
+`S3StorageDriver`. `AmazonS3Client` loads credentials and Region settings through the AWS SDK's default configuration
+chain. Set `bucket` to your bucket name before running this snippet.
+
+<!--SNIPSTART dotnet-external-storage-s3-create-->
+[dotnet-sandbox/bestpractices/ExternalStorage/Program.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/Program.cs)
+```cs
+using var s3Client = new AmazonS3Client();
+var driver = new S3StorageDriver(
+    new AwsSdkS3StorageDriverClient(s3Client),
+    bucket);
+```
+<!--SNIPEND-->
+
+:::note Payload retention
+
+Keep stored payloads available for the entire Workflow lifetime, including retries, replay, and retention.
+See [Lifecycle management](/external-storage#lifecycle) and
+[Durable External Storage](/external-storage#durable-external-storage) when planning retention and regional recovery.
+
+:::
+
+### Configure the Client and Worker
+
+Create `ExternalStorage` with the driver and assign it to `DataConverter.ExternalStorage`. Set the Data Converter on
+`TemporalClientConnectOptions` before calling `TemporalClient.ConnectAsync`.
+
+<!--SNIPSTART dotnet-external-storage-client-setup {"highlightedLines": "3,7"}-->
+[dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs)
+```cs {3,7}
+var dataConverter = DataConverter.Default with
+{
+    ExternalStorage = new ExternalStorage(driver),
+};
+var options = ClientEnvConfig.LoadClientConnectOptions();
+options.TargetHost ??= "localhost:7233";
+options.DataConverter = dataConverter;
+var client = await TemporalClient.ConnectAsync(options);
+```
+<!--SNIPEND-->
+
+Pass the Client to `TemporalWorker` and register your Workflow and Activities with `TemporalWorkerOptions`.
+The Worker uses the Client's Data Converter.
+
+<!--SNIPSTART dotnet-external-storage-worker-setup-->
+[dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/ExampleRunner.cs)
+```cs
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions(taskQueue)
+        .AddWorkflow<LargePayloadWorkflow>()
+        .AddActivity(LargePayloadActivities.Echo));
+```
+<!--SNIPEND-->
+
+Configure compatible drivers on every Client and Worker process that can send or receive an offloaded payload.
+Drivers run outside Workflow Definitions.
+
+By default, serialized Payloads that are 256 KiB or larger are offloaded. For other thresholds, see
+[Configure payload size threshold](#configure-payload-size-threshold).
+
+The S3 driver stores serialized Payloads under content-addressed keys derived from their SHA-256 hash and scoped to
+the execution context. It checks for an existing object before uploading, verifies the hash on retrieval, and rejects
+payloads larger than 50 MiB by default. Set `S3StorageDriver.MaxPayloadSize` in the object initializer to change that limit.
+
+### Run the example
+
+The [complete example](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/bestpractices/ExternalStorage)
+registers a Workflow and an echo Activity, starts a Worker, and sends a 3 MiB string through
+Workflow input, Activity input and result, and Workflow result. Start a
+[local Temporal Service](/develop/run-a-development-server), then run:
+
+```shell
+cd dotnet-sandbox/bestpractices/ExternalStorage
+S3_BUCKET=my-temporal-payloads AWS_REGION=us-east-1 dotnet run
+```
+
+The example loads Temporal connection settings through `ClientEnvConfig.LoadClientConnectOptions`.
+See [Environment configuration](/develop/environment-configuration) for connection settings.
+
+## Implement a custom storage driver
+
+Implement `IStorageDriver` from `Temporalio.Converters`. A driver must be thread safe and provide:
+
+- `Name`: a nonempty name unique among registered drivers. Keep it stable so existing reference tokens can route retrieval.
+- `Type`: a name that identifies the driver implementation.
+- `StoreAsync`: stores each protobuf `Payload` and returns one `StorageDriverClaim` per payload, in the same order.
+- `RetrieveAsync`: retrieves the original payloads for the supplied claims, in the same order.
+
+Serialize the entire `Payload`, including metadata, with `ToByteArray`. The SDK applies the Payload Converter and
+any Payload Codec before calling the driver. Return a `StorageDriverClaim` containing enough information to locate the
+stored bytes. Do not include credentials or other secrets in claims, which are recorded in Event History.
+
+In `RetrieveAsync`, read the stored bytes, verify their integrity, and reconstruct the payload with `Payload.Parser.ParseFrom`.
+Return an error for missing or corrupt data. Honor the supplied `CancellationToken` in both methods.
+
+### Use local disk for development
+
+This driver stores serialized payloads under SHA-256 keys and checks the hash before decoding retrieved bytes.
+The snippet uses C# 12 and requires .NET 8 or later. The complete example project targets .NET 10.
+These are sample requirements; the SDK packages also support older target frameworks.
+
+Use it only for local development. Every Client and Worker must share the same directory. The driver skips existing
+files and publishes new files with a move after writing completes, so readers do not see partial writes.
+It does not provide production storage durability.
+
+<!--SNIPSTART dotnet-external-storage-local-driver-->
+[dotnet-sandbox/bestpractices/ExternalStorage/LocalDiskStorageDriver.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/LocalDiskStorageDriver.cs)
+```cs
+// For local development only. All Clients and Workers must share this directory.
+public sealed class LocalDiskStorageDriver(string directory) : IStorageDriver
+{
+    public string Name => "local-disk";
+    public string Type => "example.local-disk";
+
+    public async Task<IReadOnlyCollection<StorageDriverClaim>> StoreAsync(
+        StorageDriverStoreContext context,
+        IReadOnlyCollection<Payload> payloads,
+        CancellationToken cancellationToken)
+    {
+        Directory.CreateDirectory(directory);
+        var claims = new List<StorageDriverClaim>(payloads.Count);
+        foreach (var payload in payloads)
+        {
+            var bytes = payload.ToByteArray();
+            var key = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+            var path = Path.Combine(directory, key);
+            if (!File.Exists(path))
+            {
+                // Publish only complete files; concurrent writers leave existing payloads intact.
+                var temporaryPath = Path.Combine(directory, $".{Guid.NewGuid():N}.tmp");
+                try
+                {
+                    await File.WriteAllBytesAsync(temporaryPath, bytes, cancellationToken);
+                    try
+                    {
+                        File.Move(temporaryPath, path, overwrite: false);
+                    }
+                    catch (IOException) when (File.Exists(path))
+                    {
+                        // Another writer published the same payload first.
+                    }
+                }
+                finally
+                {
+                    File.Delete(temporaryPath);
+                }
+            }
+            claims.Add(new StorageDriverClaim(new Dictionary<string, string> { ["key"] = key }));
+        }
+        return claims;
+    }
+
+    public async Task<IReadOnlyCollection<Payload>> RetrieveAsync(
+        StorageDriverRetrieveContext context,
+        IReadOnlyCollection<StorageDriverClaim> claims,
+        CancellationToken cancellationToken)
+    {
+        var payloads = new List<Payload>(claims.Count);
+        foreach (var claim in claims)
+        {
+            if (!claim.ClaimData.TryGetValue("key", out var key)
+                || key.Length != 64 || !key.All(Uri.IsHexDigit))
+                throw new InvalidDataException("Invalid payload key.");
+            var bytes = await File.ReadAllBytesAsync(Path.Combine(directory, key), cancellationToken);
+            var checksum = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+            if (checksum != key)
+                throw new InvalidDataException("Payload checksum mismatch.");
+            payloads.Add(Payload.Parser.ParseFrom(bytes));
+        }
+        return payloads;
+    }
+}
+```
+<!--SNIPEND-->
+
+Run the complete example with this driver by leaving `S3_BUCKET` unset:
+
+```shell
+cd dotnet-sandbox/bestpractices/ExternalStorage
+dotnet run
+```
+
+## Configure payload size threshold
+
+By default, the SDK offloads payloads whose encoded size is at least 256 KiB. The size includes Payload metadata and
+is measured after any Payload Codec has run. Smaller payloads stay inline in Event History.
+Set `ExternalStorage.PayloadSizeThreshold` to change the threshold, or set it to `0` to offload every payload.
+
+<!--SNIPSTART dotnet-external-storage-threshold {"highlightedLines": "5"}-->
+[dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs)
+```cs {5}
+var dataConverter = DataConverter.Default with
+{
+    ExternalStorage = new ExternalStorage(driver)
+    {
+        PayloadSizeThreshold = 256 * 1024,
+    },
+};
+```
+<!--SNIPEND-->
+
+## Use multiple storage drivers
+
+Pass a collection of drivers and a `StorageDriverSelector` delegate to `ExternalStorage`. The selector chooses the
+driver for new payloads that meet the size threshold. Return `null` to keep an eligible payload inline.
+
+During migration, select the preferred driver for new writes and keep the legacy driver registered for retrieval.
+Each driver must have a distinct, stable `Name`. The S3 driver defaults to `"aws.s3driver"`. When registering two S3
+drivers, set a distinct `Name` in the object initializer on at least one of them. Retain legacy drivers and their
+backing stores for as long as existing references can be read, including during replay.
+
+<!--SNIPSTART dotnet-external-storage-multiple-drivers-->
+[dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/bestpractices/ExternalStorage/StorageConfiguration.cs)
+```cs
+var storage = new ExternalStorage(
+    new IStorageDriver[] { preferred, legacy },
+    (context, payload) => preferred);
+```
+<!--SNIPEND-->

@@ -1,6 +1,6 @@
 ---
 id: data-conversion
-title: Payload conversion - Ruby SDK
+title: Payload conversion
 sidebar_label: Payload conversion
 toc_max_heading_level: 3
 tags:
@@ -34,13 +34,13 @@ Temporal's Converter architecture looks like this:
 
 Data converters are used to convert raw Temporal payloads to/from actual Ruby types.
 A custom data converter can be set via the `data_converter` keyword argument when creating a client. Data converters are a combination of payload converters, payload codecs, and failure converters.
-Payload converters convert Ruby values to/from serialized bytes. Payload codecs convert bytes to bytes (e.g. for compression or encryption). Failure converters convert exceptions to/from serialized failures.
+Payload converters convert Ruby values to/from serialized bytes. Payload codecs convert bytes to bytes (for example, for compression or encryption). Failure converters convert exceptions to/from serialized failures.
 
 Data converters are in the `Temporalio::Converters` module.
 The default data converter uses a default payload converter, which supports the following types:
 
 - `nil`
-- "bytes" (i.e. `String` with `Encoding::ASCII_8BIT` encoding)
+- "bytes" (that is, `String` with `Encoding::ASCII_8BIT` encoding)
 - `Google::Protobuf::MessageExts` instances
 - [JSON module](https://docs.ruby-lang.org/en/master/JSON.html) for everything else
 
@@ -65,7 +65,9 @@ See the next section on how to do this with ActiveModel objects.
 By default, ActiveModel objects do not natively support the `JSON` module.
 A mixin can be created to add this support for ActiveModel, for example:
 
-```ruby
+<!--SNIPSTART ruby-data-conversion-active-model-->
+[ruby-sandbox/best-practices/data-handling/data-conversion/active_model_json_support.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/best-practices/data-handling/data-conversion/active_model_json_support.rb)
+```rb
 module ActiveModelJSONSupport
   extend ActiveSupport::Concern
   include ActiveModel::Serializers::JSON
@@ -87,6 +89,7 @@ module ActiveModelJSONSupport
   end
 end
 ```
+<!--SNIPEND-->
 
 Now if `include ActiveModelJSONSupport` is present on any ActiveModel class, on serialization `to_json` will be used which will use `as_json` which calls the super `as_json` but also includes the fully qualified class name as the JSON
 `create_id` key.

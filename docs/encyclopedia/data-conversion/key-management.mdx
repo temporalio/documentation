@@ -1,18 +1,9 @@
 ---
 id: key-management
 title: Key management
-sidebar_label: Key management
 description: Learn about key management practices for securing encryption keys in Temporal applications.
 slug: /key-management
 toc_max_heading_level: 4
-keywords:
-  - encryption
-  - explanation
-  - keys
-  - payloads
-  - secrets
-  - data-converters
-  - key-management
 tags:
   - Concepts
   - Encryption
@@ -36,7 +27,7 @@ There are many computational and logistical aspects to generating and rotating k
 
 - Make sure you have a key rotation strategy in place in the event that your keys are compromised or need to be replaced for another reason. Consider using a dedicated secrets engine or a key management system (KMS). Note that when you rotate keys, you may also need to retain old keys to query old Workflows.
 
-### Key Rotation
+### Key rotation
 
 National Institute of Standards and Technology (NIST) guidance recommends periodic rotation of encryption keys. For AES-GCM keys, rotation should occur before approximately 2^32 encryptions have been performed by a key version, following the guidelines of NIST publication 800-38D.
 

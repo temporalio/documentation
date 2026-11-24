@@ -1,0 +1,22 @@
+# Extracted from errata-ai/Google (MIT). See NOTICE.
+#
+extends: existence
+message: "Ambiguous date format: '%s'."
+level: suggestion
+ignorecase: true
+nonword: true
+tokens:
+  - '\d{1,2}(?:\.|/)\d{1,2}(?:\.|/)\d{4}'
+  - '\d{1,2} (?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?) \d{4}'
+tests:
+  - name: fires
+    input: >
+      Support ends on 12/31/2026, which was announced on 5 January 2026.
+    want: |
+      1:17:Std.DateTime.DateFormat:Ambiguous date format: '12/31/2026'.
+      1:52:Std.DateTime.DateFormat:Ambiguous date format: '5 January 2026'.
+
+  - name: clean
+    input: >
+      Support ends on December 31, 2026.
+    want: ""

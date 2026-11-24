@@ -1,12 +1,9 @@
 ---
 id: worker-versioning-legacy
-title: Worker Versioning (Legacy) - Go SDK
+title: Worker Versioning (legacy)
 description: Learn the Go SDK's outdated Worker Versioning APIs.
 slug: /develop/go/worker-versioning-legacy
 toc_max_heading_level: 2
-keywords:
-  - deprecated
-  - go
 tags:
   - Deprecated
   - Go SDK
@@ -111,7 +108,7 @@ err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdC
    TaskQueue: "your_task_queue_name",
    Operation: &client.BuildIDOpAddNewCompatibleVersion{
       BuildID:                   "deadbeef",
-      ExistingCompatibleBuildId: "some-existing-build-id",
+      ExistingCompatibleBuildID: "some-existing-build-id",
    },
 })
 ```

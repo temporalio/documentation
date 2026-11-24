@@ -1,0 +1,68 @@
+# CloudFormation template for creating an IAM role that a self-hosted Temporal Service can assume to invoke AgentCore runtimes.
+AWSTemplateFormatVersion: '2010-09-09'
+Description:
+  Creates an IAM role that a self-hosted Temporal Service can assume to invoke Amazon Bedrock AgentCore runtimes.
+
+Parameters:
+  TemporalIamRoleArn:
+    Type: String
+    Description: The ARN of the IAM role or user that the Temporal Service runs as.
+
+  AssumeRoleExternalId:
+    Type: String
+    Description: A unique identifier to prevent confused deputy attacks.
+    AllowedPattern: '[a-zA-Z0-9_+=,.@-]*'
+    MinLength: 5
+    MaxLength: 45
+
+  AgentRuntimeARNs:
+    Type: CommaDelimitedList
+    Description: >-
+      Comma-separated list of AgentCore Runtime ARNs that Temporal may access. Append a wildcard to each Runtime ARN
+      to include its endpoints.
+
+  RoleName:
+    Type: String
+    Default: 'Temporal-AgentCore-Worker'
+
+Resources:
+  TemporalAgentCoreWorker:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: [!Ref TemporalIamRoleArn]
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                'sts:ExternalId': [!Ref AssumeRoleExternalId]
+      Description: The role the Temporal Service uses to invoke AgentCore runtimes for Serverless Workers
+      MaxSessionDuration: 3600
+
+  TemporalAgentCoreInvokePermissions:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: 'Temporal-AgentCore-Invoke-Permissions'
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - bedrock-agentcore:InvokeAgentRuntime
+              - bedrock-agentcore:GetAgentRuntimeEndpoint
+            Resource: !Ref AgentRuntimeARNs
+      Roles:
+        - !Ref TemporalAgentCoreWorker
+
+Outputs:
+  RoleARN:
+    Description: The ARN of the IAM role created for the Temporal Service
+    Value: !GetAtt TemporalAgentCoreWorker.Arn
+
+  AgentRuntimeARNs:
+    Description: The AgentCore Runtime ARNs that Temporal may access
+    Value: !Join [', ', !Ref AgentRuntimeARNs]

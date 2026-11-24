@@ -1,14 +1,21 @@
 //@ts-check
+const fs = require('fs');
+const path = require('path');
 const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 const mermaidTheme = require('./src/constants/mermaidTheme');
 const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/constants/preloadFonts');
 
+// Google Consent Mode bootstrap. Injected as a synchronous inline <head> script
+// (below) so it registers the denied consent default before the GTM container
+// loads. See static/scripts/googletag.js for why the ordering matters.
+const googleTagBootstrap = fs.readFileSync(path.join(__dirname, 'static/scripts/googletag.js'), 'utf8');
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
 module.exports = async function createConfigAsync() {
   return {
-    title: 'Temporal Platform Documentation',
+    title: 'Temporal Documentation',
     tagline: 'Build invincible applications',
     url: 'https://docs.temporal.io',
     baseUrl: '/',
@@ -22,6 +29,11 @@ module.exports = async function createConfigAsync() {
     // come from src/constants/preloadFonts.js — see that file and
     // bin/check-font-preload-hash.js for why they're hardcoded.
     headTags: [
+      {
+        tagName: 'script',
+        attributes: {},
+        innerHTML: googleTagBootstrap,
+      },
       {
         tagName: 'link',
         attributes: {
@@ -50,7 +62,12 @@ module.exports = async function createConfigAsync() {
     // src/theme/DocItem/StructuredData and src/constants/organizationSchema.
     // A single global block would put the full Organization property set on
     // every page, which is exactly the drift risk the JSON-LD audit flagged.
-    clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
+    clientModules: [
+      './src/client/remote-amplitude-analytics.js',
+      './src/client/scrollSidebarToActivePage.ts',
+      './src/client/detectOs.js',
+      './src/client/botid.ts',
+    ],
     themeConfig: {
       colorMode: {
         defaultMode: 'dark',
@@ -80,13 +97,6 @@ module.exports = async function createConfigAsync() {
       //   textColor: "#ffffff",
       //   isCloseable: true,
       // },
-      //      announcementBar: {
-      //        id: "new_feedback_widget",
-      //        content: "<b>How are we doing? Try our new on-page feedback.</b>",
-      //        backgroundColor: "#312e81",
-      //        textColor: "#ffffff",
-      //        isCloseable: true,
-      //      },
       navbar: {
         hideOnScroll: false,
         logo: {
@@ -113,9 +123,9 @@ module.exports = async function createConfigAsync() {
             right: 'left',
           },
           {
-            label: 'AI Cookbook',
-            to: '/ai-cookbook',
-            activeBasePath: 'ai-cookbook',
+            label: 'Durable AI',
+            to: '/ai',
+            activeBasePath: 'ai',
             position: 'left',
           },
           // hide this for now, making this a soft-launch
@@ -152,34 +162,27 @@ module.exports = async function createConfigAsync() {
         copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.`,
         links: [
           {
+            title: 'Resources',
             items: [
               {
-                label: 'GitHub',
-                href: 'https://github.com/temporalio',
+                label: 'Glossary',
+                to: '/glossary',
               },
               {
-                label: 'Twitter',
-                href: 'https://x.com/temporalio',
+                label: 'Learn Temporal',
+                href: 'https://learn.temporal.io',
+              },
+              {
+                label: 'Code Exchange',
+                href: 'https://temporal.io/code-exchange',
+              },
+              {
+                label: 'Blog',
+                href: 'https://temporal.io/blog',
               },
               {
                 label: 'YouTube',
                 href: 'https://www.youtube.com/c/Temporalio',
-              },
-              {
-                label: 'About the docs',
-                href: 'https://github.com/temporalio/documentation/blob/main/README.md',
-              },
-            ],
-          },
-          {
-            items: [
-              {
-                label: 'Temporal Cloud',
-                href: 'https://temporal.io/cloud',
-              },
-              {
-                label: 'Meetups',
-                href: 'https://temporal.io/community#events',
               },
               {
                 label: 'Support forum',
@@ -192,42 +195,40 @@ module.exports = async function createConfigAsync() {
             ],
           },
           {
+            title: 'Company',
             items: [
               {
-                label: 'Learn Temporal',
-                href: 'https://learn.temporal.io',
+                label: 'Temporal Cloud',
+                href: 'https://temporal.io/cloud',
               },
               {
-                label: 'Blog',
-                href: 'https://temporal.io/blog',
+                label: 'GitHub',
+                href: 'https://github.com/temporalio',
               },
               {
-                label: 'Use cases',
-                href: 'https://temporal.io/in-use',
+                label: 'Trust Center',
+                href: 'https://trust.temporal.io/',
               },
               {
-                label: 'Newsletter signup',
-                href: 'https://pages.temporal.io/newsletter-subscribe',
+                label: 'Security',
+                href: 'https://temporal.io/security',
+              },
+              {
+                label: 'Changelog',
+                href: 'https://temporal.io/changelog',
               },
             ],
           },
           {
+            title: 'For agents',
             items: [
               {
-                label: 'Security',
-                to: '/security',
+                label: 'Develop with AI',
+                to: '/with-ai',
               },
               {
-                label: 'Privacy policy',
-                href: 'https://temporal.io/global-privacy-policy',
-              },
-              {
-                label: 'Terms of service',
-                href: 'https://temporal.io/terms-of-service',
-              },
-              {
-                label: "We're hiring",
-                href: 'https://temporal.io/careers',
+                label: 'llms.txt',
+                href: 'https://docs.temporal.io/llms.txt',
               },
             ],
           },
@@ -251,6 +252,7 @@ module.exports = async function createConfigAsync() {
             'url_without_anchor',
             'type',
             'sdk_language',
+            'section_title',
           ],
         },
       },
@@ -272,12 +274,7 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve('./sidebars.js'),
             routeBasePath: '/',
-            exclude: [
-              '**/_*.{js,jsx,ts,tsx,md,mdx}',
-              '**/_*/**',
-              '**/clusters/**',
-              '**/ai-cookbook/**',
-            ], // partials (underscore-prefixed) + context content we don't render
+            exclude: ['**/_*.{js,jsx,ts,tsx,md,mdx}', '**/_*/**', '**/clusters/**', '**/ai-cookbook/**'], // partials (underscore-prefixed) + context content we don't render
             editUrl: 'https://github.com/temporalio/documentation/blob/main/',
             /**
              * Whether to display the author who last updated the doc.
@@ -294,10 +291,15 @@ module.exports = async function createConfigAsync() {
              */
             // excludeNextVersionDocs: false,
             includeCurrentVersion: true, // excludeNextVersionDocs is now deprecated
+            // docs/tags.yml declares explicit permalinks for a handful of tags whose
+            // auto-generated kebabCase slug is wrong; that file's mere existence makes
+            // Docusaurus treat every other page's inline `tags` frontmatter as "unknown"
+            // and warn. We don't have (or want) a fully closed tag vocabulary, so ignore.
+            onInlineTags: 'ignore',
             // // below remark plugin disabled until we can figure out why it is not transpiling to ESNext properly - swyx
             // // original PR https://github.com/temporalio/documentation/pull/496/files
             admonitions: {
-              keywords: ['note', 'tip', 'info', 'caution', 'danger', 'competency', 'copycode'],
+              keywords: ['note', 'tip', 'info', 'caution', 'danger'],
             },
             remarkPlugins: [require('./plugins/og-image/remarkPlugin')],
           },
@@ -327,11 +329,6 @@ module.exports = async function createConfigAsync() {
     ],
     scripts: [
       {
-        src: '/scripts/googletag.js',
-        async: true,
-        defer: true,
-      },
-      {
         src: 'https://widget.kapa.ai/kapa-widget.bundle.js',
         'data-button-hide': 'true',
         'data-website-id': '91a88508-9cdc-441f-b1df-37aa9329e6bc',
@@ -353,11 +350,6 @@ module.exports = async function createConfigAsync() {
         async: true,
         defer: true,
       },
-      {
-        src: '/scripts/copycode-notice.js',
-        async: true,
-        defer: true,
-      },
     ],
     plugins: [
       [
@@ -366,17 +358,8 @@ module.exports = async function createConfigAsync() {
           regionFiles: {
             aws: 'docs/cloud/references/regions/awsregions.md',
             gcp: 'docs/cloud/references/regions/gcpregions.md',
+            azure: 'docs/cloud/references/regions/azureregions.md',
           },
-        },
-      ],
-      [
-        'docusaurus-pushfeedback',
-        {
-          project: '6c1ptrxbky',
-          privacyPolicyText: 'false',
-          buttonPosition: 'center-right',
-          modalPosition: 'sidebar-right',
-          modalTitle: 'Feedback',
         },
       ],
       [
@@ -384,14 +367,13 @@ module.exports = async function createConfigAsync() {
         {
           id: 'ai-cookbook',
           path: 'ai-cookbook',
-          routeBasePath: 'ai-cookbook', // published at /ai-cookbook/* ✅
+          routeBasePath: 'ai/cookbook', // published at /ai/cookbook/* ✅
           sidebarPath: false, // no left nav for these pages ✅
           // optional polish:
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
           // use a custom item to center the content:
           docItemComponent: '@site/src/components/Cookbook/DocItem/CookbookDocItem',
-          docCategoryGeneratedIndexComponent: '@site/src/components/Cookbook/DocItem/CookbookCategoryIndex', // ⬅️ isolated override
           // Same remark plugin the main docs preset uses (see the `docs` preset
           // option above) — injects the generated og:image path as real front
           // matter during MDX compilation so it survives client hydration.
@@ -404,7 +386,7 @@ module.exports = async function createConfigAsync() {
         require.resolve('./plugins/cookbook-index'),
         {
           docsDir: 'ai-cookbook', // change if your folder differs
-          routeBasePath: 'ai-cookbook', // change if you use a different base
+          routeBasePath: 'ai/cookbook', // change if you use a different base
         },
       ],
       [
@@ -412,24 +394,67 @@ module.exports = async function createConfigAsync() {
         {
           targets: [
             { docsDir: 'docs', routeBasePath: '/' },
-            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai/cookbook' },
           ],
           llmsTxt: {
             siteUrl: 'https://docs.temporal.io',
             title: 'Temporal Platform Documentation',
-            description: 'This file is a structured index of Temporal\'s documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
-            fullDescription: 'This file is the complete text of Temporal\'s documentation, intended for bulk ingestion. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.',
+            description:
+              "This file is a structured index of Temporal's documentation, following the llmstxt.org standard. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.",
+            fullDescription:
+              "This file is the complete text of Temporal's documentation, intended for bulk ingestion. Temporal is an open-source platform for building crash-proof applications that resume exactly where they left off after failures.",
             rootContent:
               'To fetch any page as raw Markdown, append `.md` to its URL path (e.g., `https://docs.temporal.io/workflows.md`).\n\n' +
               'Every page concatenated into one file is available at `https://docs.temporal.io/llms-full.txt`. ' +
               'It is roughly 7 MB, which exceeds most context windows. Prefer the section indexes below and fetch individual `.md` pages; ' +
               'use the full text for bulk ingestion.\n\n' +
-              'This documentation reflects the latest Temporal SDK and Platform behavior. If you\'re working with an older SDK version, verify API compatibility before applying suggestions from this content.',
+              "This documentation reflects the latest Temporal SDK and Platform behavior. If you're working with an older SDK version, verify API compatibility before applying suggestions from this content.\n\n" +
+              // Agent search endpoint experiment. The src value tells the request
+              // log which surface the caller found the URL on; see readme/AGENT-RETRIEVE.md.
+              '## Agent instructions for querying Temporal documentation\n\n' +
+              'For questions about Temporal (Workflows, Activities, Workers, SDKs, Temporal Cloud, the CLI, self-hosting), you can query the documentation directly instead of relying on web search or training data. ' +
+              'The endpoint returns the passages that answer the question from the current docs, each with its source URL.\n\n' +
+              'Use this public endpoint. No authentication is required.\n\n' +
+              '```\nGET https://docs.temporal.io/api/retrieve?q=<question>&jtb=<job-to-be-done>&src=llms&agent=<your-name>\n```\n\n' +
+              'When querying:\n\n' +
+              '- **Ask a specific, complete question.** Name the SDK language and feature where relevant, for example "Python SDK" or "Temporal Cloud".\n' +
+              "- **Share the user's job-to-be-done (`jtb`).** One sentence on what the user is trying to accomplish and why, in the user's own words where possible. Include only known context. Omit `jtb` if the goal is unclear.\n" +
+              '- **Protect sensitive information.** Never include names, personal data, credentials, API keys, Namespace names, or confidential or proprietary code.\n' +
+              '- **Identify your agent.** Keep `src=llms` unchanged and set `agent` to your tool\'s name, for example `claude-code`, `cursor`, `codex`, or `chatgpt`.\n\n' +
+              'The endpoint returns a JSON array of `{content, source_url, page_url}`, most relevant first, with at most 15 results. ' +
+              'For docs pages, `source_url` is the raw Markdown version of the page; fetch it for full context. `page_url` is the regular web page, for citing to your user.\n\n' +
+              'Example:\n\n' +
+              "```\ncurl -sS 'https://docs.temporal.io/api/retrieve?q=How+do+I+safely+change+Workflow+code+while+executions+are+still+running+in+the+Python+SDK%3F&jtb=Rolling+out+a+fix+to+a+long-running+Workflow+without+breaking+in-flight+executions&src=llms&agent=claude-code'\n```\n\n" +
+              'If a specific question gets no useful results, you can report it with `category=docs_search`, as described in the next section.\n\n' +
+              // Feedback endpoint. src=llms tells the feedback store which
+              // surface the caller found the URL on; see readme/FEEDBACK.md.
+              '## Reporting problems\n\n' +
+              'If a page is wrong, out of date, or missing something you needed, or Temporal behaves differently from what the docs say, you can report it to the Temporal docs team. ' +
+              'Use this public endpoint. No authentication is required. Send a `GET` with query parameters, or a `POST` with the same fields as a JSON body.\n\n' +
+              '```\nGET https://docs.temporal.io/api/feedback?title=<summary>&message=<what-happened>&category=documentation&page_url=<docs-page-url>&src=llms&agent=<your-name>\n```\n\n' +
+              '- `title` (required, up to 120 characters): a one-line summary.\n' +
+              '- `message` (required, up to 2,000 characters): what happened. Quote what the page says and what you found instead.\n' +
+              '- `category`: `documentation` (a page is wrong, unclear, or missing), `docs_search` (search found nothing useful), `product` (Temporal behaved differently from the docs), or `other`. Pick by what you saw, not what you think caused it.\n' +
+              '- `severity`: `high` (blocked), `medium` (found a workaround, the default), or `low` (minor).\n' +
+              '- Optional: `expected` (what you expected), `context` (what you were trying to do), `page_url`, and `product_version` (for example `temporalio==1.9.0`).\n\n' +
+              'When reporting:\n\n' +
+              '- **Report a specific problem you hit.** Don\'t send a report when nothing went wrong.\n' +
+              '- **Send each report once.** A `202` response means it was stored.\n' +
+              '- **Protect sensitive information.** Never include names, personal data, credentials, API keys, Namespace names, or confidential or proprietary code.\n' +
+              "- **Identify your agent.** Keep `src=llms` unchanged and set `agent` to your tool's name.\n\n" +
+              'The same report as a `POST`:\n\n' +
+              "```\ncurl -sS -X POST 'https://docs.temporal.io/api/feedback' -H 'Content-Type: application/json' -d '{\"title\":\"<summary>\",\"message\":\"<what the page says and what you found>\",\"category\":\"documentation\",\"page_url\":\"<docs-page-url>\",\"src\":\"llms\",\"agent\":\"<your-name>\"}'\n```\n\n" +
+              '## Tools for agents\n\n' +
+              "- [Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer): An agent skill covering Temporal's programming model, including Workflow determinism rules, Activity patterns, Retry Policies, error handling, testing, Worker configuration, and versioning. Works with Claude Code, Codex, Cursor, and other agents that support Skills.\n" +
+              '- [Temporal Cloud Skill](https://github.com/temporalio/skill-temporal-cloud): An agent skill for troubleshooting Temporal Cloud connectivity, authentication, and configuration issues.\n' +
+              '- [Temporal Serverless Workers Skill](https://github.com/temporalio/skill-temporal-serverless): An agent skill for deploying and operating Temporal Serverless Workers. Covers Worker code, deployment configuration, packaging, and troubleshooting.\n' +
+              '- [Temporal Docs MCP Server](https://temporal.mcp.kapa.ai): Search this documentation over MCP. Sign-in is required through MCP OAuth with Google or GitHub, and anonymous requests are rejected. If your client can\'t complete an OAuth flow, use the search endpoint above or the `.md` URLs instead.',
             excludePaths: ['tctl-v1'],
             sections: [
               {
                 title: 'Core Primitives',
-                description: 'Fundamental building blocks of the Temporal Platform. Read this section first for foundational concepts referenced everywhere else.',
+                description:
+                  'Fundamental building blocks of the Temporal Platform. Read this section first for foundational concepts referenced everywhere else.',
                 inline: true,
                 autoDiscoverSubsections: 'encyclopedia',
               },
@@ -437,24 +462,62 @@ module.exports = async function createConfigAsync() {
                 title: 'Concepts',
                 description: 'What Temporal is and how it works.',
                 inline: true,
-                pages: [
-                  'temporal', 'glossary',
-                ],
+                pages: ['temporal', 'glossary'],
               },
-              { autoDiscover: 'develop', title: 'SDK Development Guides', description: 'Each SDK guide is organized by topic (e.g., workflows, activities, testing). All SDKs follow the same structure, with minor differences depending on language-specific features. Use these for language-specific implementation details.' },
-              { path: 'develop', title: 'Cross-SDK Development Guides', description: 'Development guidance that applies across SDKs (worker performance, safe deployments, plugins).' },
+              {
+                autoDiscover: 'develop',
+                title: 'SDK Development Guides',
+                description:
+                  'Each SDK guide is organized by topic (e.g., workflows, activities, testing). All SDKs follow the same structure, with minor differences depending on language-specific features. Use these for language-specific implementation details.',
+              },
+              {
+                path: 'develop',
+                title: 'Cross-SDK Development Guides',
+                description:
+                  'Development guidance that applies across SDKs (worker performance, safe deployments, plugins).',
+              },
               { path: 'cloud', title: 'Temporal Cloud', description: 'Deploy and manage Temporal Cloud' },
-              { path: 'evaluate', title: 'Evaluating Temporal', description: 'Background for deciding whether and how to adopt Temporal, including feature comparisons and use cases.' },
-              { path: 'production-deployment', title: 'Production Deployment', description: 'Deploy Temporal to production' },
-              { path: 'self-hosted-guide', title: 'Self-Hosted Service Guide', description: 'Deploy, configure, and operate a self-hosted Temporal Service.' },
+              {
+                path: 'evaluate',
+                title: 'Evaluating Temporal',
+                description:
+                  'Background for deciding whether and how to adopt Temporal, including feature comparisons and use cases.',
+              },
+              {
+                path: 'production-deployment',
+                title: 'Production Deployment',
+                description: 'Deploy Temporal to production',
+              },
+              {
+                path: 'self-hosted-guide',
+                title: 'Self-Hosted Service Guide',
+                description: 'Deploy, configure, and operate a self-hosted Temporal Service.',
+              },
               { path: 'cli', title: 'CLI Reference', description: 'Temporal CLI command reference' },
               { path: 'references', title: 'References', description: 'Configuration and API references' },
               { path: 'troubleshooting', title: 'Troubleshooting', description: 'Common issues and solutions' },
               { path: 'best-practices', title: 'Best Practices', description: 'Recommended patterns for Temporal' },
-              { path: 'design-patterns', title: 'Design Patterns', description: 'Reusable Workflow and Activity patterns for common orchestration problems.' },
-              { path: 'guides', title: 'Guides', description: 'End-to-end walkthroughs that solve a specific problem with Temporal.' },
-              { path: 'ai-cookbook', title: 'AI Cookbook', description: 'Runnable examples for building AI and agent applications with Temporal.' },
-              { path: 'demos', title: 'Interactive Demos', description: 'Browser-based interactive demos. These pages are visual tools rather than prose documentation.' },
+              {
+                path: 'design-patterns',
+                title: 'Design Patterns',
+                description: 'Reusable Workflow and Activity patterns for common orchestration problems.',
+              },
+              {
+                path: 'guides',
+                title: 'Guides',
+                description: 'End-to-end walkthroughs that solve a specific problem with Temporal.',
+              },
+              {
+                path: 'ai/cookbook',
+                title: 'AI Cookbook',
+                description: 'Runnable examples for building AI and agent applications with Temporal.',
+              },
+              {
+                path: 'demos',
+                title: 'Interactive Demos',
+                description:
+                  'Browser-based interactive demos. These pages are visual tools rather than prose documentation.',
+              },
             ],
           },
         },
@@ -464,7 +527,7 @@ module.exports = async function createConfigAsync() {
         {
           targets: [
             { docsDir: 'docs', routeBasePath: '/' },
-            { docsDir: 'ai-cookbook', routeBasePath: 'ai-cookbook', footerText: 'AI COOKBOOK' },
+            { docsDir: 'ai-cookbook', routeBasePath: 'ai/cookbook', footerText: 'AI COOKBOOK' },
           ],
         },
       ],
@@ -476,11 +539,45 @@ module.exports = async function createConfigAsync() {
         admonitions: true,
       },
       mermaid: true,
+      // Adds default frontmatter (currently `tags`) from `_frontmatter.yml` files in
+      // each page's folder and its ancestors. See plugins/shared/frontmatterDefaults.js.
+      parseFrontMatter: async (params) => {
+        const result = await params.defaultParseFrontMatter(params);
+        const { applyDefaults } = require('./plugins/shared/frontmatterDefaults');
+        return { ...result, frontMatter: applyDefaults(params.filePath, result.frontMatter, { rootDir: __dirname }) };
+      },
     },
     themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
-      faster: true,
+      // `faster: true` turns on every Faster flag (SWC loader/minifier,
+      // lightningcss, rspack, mdxCrossCompilerCache, worker threads, eager
+      // VCS) at once. rspackPersistentCache is carved out and forced off:
+      // Vercel restores node_modules/** (including rspack's persistent
+      // cache) between builds, keyed in part by git branch — a brand-new
+      // preview branch's first build inherits the *last production
+      // deployment's* cache. Since plugins/og-image/remarkPlugin.js bakes
+      // an environment-dependent absolute og:image URL into each page's
+      // compiled front matter (see resolveImageOrigin() in
+      // plugins/og-image/shared.js), and that persistent cache's key
+      // doesn't account for VERCEL_ENV/VERCEL_URL, an unchanged page could
+      // silently keep serving a stale environment's resolved URL baked in
+      // at a previous build. Every other Faster flag is content-hash-keyed
+      // in a way that's safe to cache across environments; only this one
+      // needed to go. Confirmed empirically: two back-to-back local builds
+      // with different VERCEL_ENV/VERCEL_URL only picked up the new value
+      // once node_modules/.cache/rspack and .docusaurus were cleared.
+      faster: {
+        swcJsLoader: true,
+        swcJsMinimizer: true,
+        swcHtmlMinimizer: true,
+        lightningCssMinimizer: true,
+        mdxCrossCompilerCache: true,
+        rspackBundler: true,
+        rspackPersistentCache: false,
+        ssgWorkerThreads: true,
+        gitEagerVcs: true,
+      },
     },
   };
 

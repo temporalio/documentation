@@ -1,13 +1,14 @@
 ---
 id: worker-configuration-patterns
 title: "Worker Configuration Patterns"
-sidebar_label: "Worker Configuration Patterns"
 description: "Pattern selection guide for configuring how Workers are set up, how work is routed, and how Activities access external dependencies."
+tags:
+  - Design Patterns
 ---
 
 import PatternCards from '@site/src/components/PatternCards';
 
-These patterns cover how you set up Workers, route work to them, and give Activities the external dependencies they need — while keeping Workflow code deterministic and testable.
+These patterns cover how you set up Workers, route work to them, and give Activities the external dependencies they need — while keeping Workflow Definitions deterministic and testable.
 
 ## Patterns in this section
 
@@ -22,7 +23,7 @@ These patterns cover how you set up Workers, route work to them, and give Activi
     href: "/design-patterns/activity-dependency-injection",
     icon: "activity-dependency-injection-icon.svg",
     title: "Activity Dependency Injection",
-    description: "Injects external dependencies — clients, connections, configuration — into Activities at Worker startup, keeping Workflow code deterministic and Activities testable.",
+    description: "Injects external dependencies — clients, connections, configuration — into Activities at Worker startup, keeping Workflow Definitions deterministic and Activities testable.",
   },
 ]} />
 

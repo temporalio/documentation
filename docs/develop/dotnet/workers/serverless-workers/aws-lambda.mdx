@@ -1,17 +1,10 @@
 ---
 id: aws-lambda
-title: Serverless Workers on AWS Lambda - .NET SDK
-sidebar_label: Serverless Workers on AWS Lambda
+title: Serverless Workers on AWS Lambda
+sidebar_label: AWS Lambda
 description: Write a Temporal Worker that runs on AWS Lambda using the .NET SDK Temporalio.Extensions.Aws.Lambda package.
 slug: /develop/dotnet/workers/serverless-workers/aws-lambda
 toc_max_heading_level: 4
-keywords:
-  - serverless
-  - lambda
-  - aws
-  - dotnet sdk
-  - worker
-  - serverless worker
 tags:
   - Workers
   - .NET SDK
@@ -42,36 +35,34 @@ Use `TemporalLambdaWorker.CreateHandler` to create a Lambda handler that runs a 
 Pass a `WorkerDeploymentVersion` and a configure callback that registers your Workflows and Activities.
 Assign the result to a static field so the handler is created once during Lambda cold start and reused across invocations.
 
-<!--SNIPSTART dotnet-lambda-worker {"selectedLines": ["1-5", "7-22", "24-25"], "highlightedLines": "10-15"}-->
-[src/LambdaWorker/Function.cs](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/Function.cs)
-```cs {10-15}
-namespace TemporalioSamples.LambdaWorker;
+<!--SNIPSTART dotnet-lambda-worker-handler {"highlightedLines": "10-17"}-->
+[dotnet-sandbox/workers/LambdaWorker/LambdaFunction.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/LambdaFunction.cs)
+```cs {10-17}
+namespace TemporalioDocs.Workers.LambdaWorker;
 
 using Amazon.Lambda.Core;
 using Temporalio.Common;
 using Temporalio.Extensions.Aws.Lambda;
-// ...
 
 public class LambdaFunction
 {
     private static readonly Func<object?, ILambdaContext, Task> WorkerHandler =
         TemporalLambdaWorker.CreateHandler(
-            new WorkerDeploymentVersion(
-                LambdaWorkerSample.DeploymentName,
-                LambdaWorkerSample.BuildId),
-            Configure);
+            new WorkerDeploymentVersion("my-app", "build-1"),
+            config =>
+            {
+                config.WorkerOptions.TaskQueue = "my-task-queue";
+                config.WorkerOptions.AddWorkflow<SampleWorkflow>();
+                config.WorkerOptions.AddActivity(Activities.HelloActivity);
+            });
 
     public Task HandlerAsync(Stream input, ILambdaContext context) =>
         WorkerHandler(input, context);
-
-    private static void Configure(LambdaWorkerConfig config)
-    {
-        LambdaWorkerSample.ConfigureWorkerOptions(config.WorkerOptions);
-// ...
-    }
 }
 ```
 <!--SNIPEND-->
+
+For a complete project, see the [Lambda Worker sample](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/workers/LambdaWorker).
 
 The `WorkerDeploymentVersion` is required.
 Worker Deployment Versioning is always enabled for Serverless Workers.
@@ -80,9 +71,9 @@ Set it per-Workflow with the `[Workflow]` attribute, or set a worker-level defau
 The default versioning behavior is `AutoUpgrade`.
 
 <!--SNIPSTART dotnet-lambda-worker-workflow {"highlightedLines": "7"}-->
-[src/LambdaWorker/SampleWorkflow.workflow.cs](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/SampleWorkflow.workflow.cs)
+[dotnet-sandbox/workers/LambdaWorker/SampleWorkflow.workflow.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/SampleWorkflow.workflow.cs)
 ```cs {7}
-namespace TemporalioSamples.LambdaWorker;
+namespace TemporalioDocs.Workers.LambdaWorker;
 
 using Microsoft.Extensions.Logging;
 using Temporalio.Common;
@@ -122,7 +113,7 @@ Encrypt sensitive values like TLS keys or API keys. Refer to [AWS documentation]
 ### TLS/CA loading on Lambda {/* #tls-ca-loading */}
 
 Some AWS Lambda .NET images override the `SSL_CERT_FILE` environment variable in a way that prevents the SDK's Rust-based runtime from loading system root CAs.
-If you encounter TLS certificate errors on Lambda, see the [AWS Lambda .NET CA loading workaround](https://github.com/temporalio/sdk-dotnet#aws-lambda-net-ca-loading-issues) in the SDK README.
+If you encounter TLS certificate errors on Lambda, see the [AWS Lambda .NET CA loading workaround](https://github.com/temporalio/sdk-dotnet/blob/main/src/Temporalio/README.md#aws-lambda-net-8-ca-loading-issues) in the SDK README.
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 
@@ -168,12 +159,12 @@ Add the OpenTelemetry extension package:
 dotnet add package Temporalio.Extensions.Aws.Lambda.OpenTelemetry
 ```
 
-Call `LambdaWorkerOpenTelemetry.ApplyDefaults` in the configure callback:
+Call `ApplyOpenTelemetryDefaults` on the options in the configure callback:
 
-<!--SNIPSTART dotnet-lambda-worker {"highlightedLines": "23"}-->
-[src/LambdaWorker/Function.cs](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/Function.cs)
-```cs {23}
-namespace TemporalioSamples.LambdaWorker;
+<!--SNIPSTART dotnet-lambda-worker-otel-handler {"highlightedLines": "17"}-->
+[dotnet-sandbox/workers/LambdaWorker/Observability/LambdaFunction.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/Observability/LambdaFunction.cs)
+```cs {17}
+namespace TemporalioDocs.Workers.LambdaWorker.Observability;
 
 using Amazon.Lambda.Core;
 using Temporalio.Common;
@@ -187,29 +178,28 @@ public class LambdaFunction
             new WorkerDeploymentVersion(
                 LambdaWorkerSample.DeploymentName,
                 LambdaWorkerSample.BuildId),
-            Configure);
+            config =>
+            {
+                config.ApplyOpenTelemetryDefaults();
+                LambdaWorkerSample.ConfigureWorkerOptions(config.WorkerOptions);
+            });
 
     public Task HandlerAsync(Stream input, ILambdaContext context) =>
         WorkerHandler(input, context);
-
-    private static void Configure(LambdaWorkerConfig config)
-    {
-        LambdaWorkerSample.ConfigureWorkerOptions(config.WorkerOptions);
-        LambdaWorkerOpenTelemetry.ApplyDefaults(config);
-    }
 }
 ```
 <!--SNIPEND-->
 
-`ApplyDefaults` configures Temporal tracing with `TracingInterceptor`, creates an OTLP trace exporter and tracer provider, configures Core SDK OTLP metrics, uses AWS X-Ray-compatible trace IDs, and registers a per-invocation shutdown hook that force-flushes traces.
+`ApplyOpenTelemetryDefaults` configures Temporal tracing with `TracingInterceptor`, creates an OTLP trace exporter and tracer provider, configures Core SDK OTLP metrics, uses AWS X-Ray-compatible trace IDs, and registers a per-invocation shutdown hook that force-flushes traces.
 By default, telemetry is sent to `localhost:4317`, which is the ADOT Lambda layer's default collector endpoint.
 The endpoint can be overridden with the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable.
 
 You can customize the defaults by passing a `LambdaWorkerOpenTelemetryOptions` object:
 
-```csharp
-LambdaWorkerOpenTelemetry.ApplyDefaults(
-    config,
+<!--SNIPSTART dotnet-lambda-worker-otel-custom-options-->
+[dotnet-sandbox/workers/LambdaWorker/Observability/TelemetryConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/Observability/TelemetryConfiguration.cs)
+```cs
+config.ApplyOpenTelemetryDefaults(
     new LambdaWorkerOpenTelemetryOptions
     {
         CollectorEndpoint = "http://localhost:4317",
@@ -217,6 +207,7 @@ LambdaWorkerOpenTelemetry.ApplyDefaults(
         MetricsExportInterval = TimeSpan.FromSeconds(5),
     });
 ```
+<!--SNIPEND-->
 
 Core SDK metrics export every 10 seconds by default. Set `MetricsExportInterval` shorter than your Lambda timeout to increase the chance that at least one metrics export happens during each invocation.
 
@@ -228,8 +219,8 @@ You must provide a custom Collector configuration that wires the OTLP receiver t
 Bundle the following `otel-collector-config.yaml` in your Lambda deployment package:
 
 <!--SNIPSTART dotnet-lambda-worker-otel-collector-config-->
-[src/LambdaWorker/otel-collector-config.yaml.sample](https://github.com/temporalio/samples-dotnet/blob/ea/aws-lambda/src/LambdaWorker/otel-collector-config.yaml.sample)
-```sample
+[dotnet-sandbox/workers/LambdaWorker/otel-collector-config.yaml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/otel-collector-config.yaml)
+```yaml
 receivers:
     otlp:
         protocols:
@@ -239,7 +230,6 @@ receivers:
                 endpoint: "localhost:4318"
 
 exporters:
-    debug:
     awsxray:
         region: ${env:AWS_REGION}
     awsemf:
@@ -254,13 +244,13 @@ service:
     pipelines:
         traces:
             receivers: [otlp]
-            exporters: [awsxray, debug]
+            exporters: [awsxray]
         metrics:
             receivers: [otlp]
             exporters: [awsemf]
     telemetry:
         logs:
-            level: debug
+            level: info
         metrics:
             address: localhost:8888
 ```
@@ -282,11 +272,11 @@ The Lambda execution role must have permissions to write to X-Ray and CloudWatch
 Add `xray:PutTraceSegments`, `xray:PutTelemetryRecords`, and `cloudwatch:PutMetricData` permissions to the execution role.
 Without these permissions, the Collector fails silently and no telemetry appears.
 
-You can also configure tracing and metrics manually using `TracingInterceptor` and `TemporalRuntime`:
+You can also configure tracing and metrics manually using `TracingInterceptor` from the `Temporalio.Extensions.OpenTelemetry` package and `TemporalRuntime` from `Temporalio.Runtime`:
 
-```csharp
-using Temporalio.Extensions.OpenTelemetry;
-
+<!--SNIPSTART dotnet-lambda-worker-manual-telemetry-->
+[dotnet-sandbox/workers/LambdaWorker/Observability/TelemetryConfiguration.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workers/LambdaWorker/Observability/TelemetryConfiguration.cs)
+```cs
 config.ClientOptions.Interceptors = new[] { new TracingInterceptor() };
 config.ClientOptions.Runtime = new TemporalRuntime(new TemporalRuntimeOptions
 {
@@ -296,3 +286,4 @@ config.ClientOptions.Runtime = new TemporalRuntime(new TemporalRuntimeOptions
     },
 });
 ```
+<!--SNIPEND-->

@@ -1,20 +1,17 @@
 ---
 id: index
 title: Worker Versioning
-sidebar_label: Worker Versioning
+slug: /production-deployment/worker-deployments/worker-versioning
 description:
   Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for
   patching to support multiple code paths.
 toc_max_heading_level: 4
-keywords:
-  - scaling
-  - workers
-  - versioning
-  - deploys
 tags:
   - Temporal Service
   - Durable Execution
 ---
+
+import { Video } from '@site/src/components';
 
 Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on
 your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
@@ -23,7 +20,7 @@ called [Worker Deployment Versions](/worker-versioning#deployment-versions).
 For most teams, Worker Versioning should be the default recommendation for deploying Workflow code changes in
 production. If you can run versioned worker deployments, prefer Worker Versioning over patching.
 
-Worker Versioning unlocks important benefits for users of [blue-green or rainbow deployments](#deployment-systems).
+Worker Versioning provides the following benefits for [blue-green or rainbow deployments](#deployment-systems):
 
 - Ramping traffic gradually to a new Worker Deployment Version.
 - Verifying a new Deployment Version with tests before sending production traffic to it.
@@ -40,18 +37,7 @@ To use Workflow Pinning, we recommend using [rainbow deployments](#deployment-sy
 
 Watch this Temporal Replay 2025 talk to learn more about Worker Versioning and see a demo.
 
-<div style={{ display: 'flex', justifyContent: 'center' }}>
-  <iframe
-    width="560"
-    height="315"
-    src="https://www.youtube.com/embed/rm4BlD9WXqc"
-    title="YouTube video player"
-    frameBorder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerPolicy="strict-origin-when-cross-origin"
-    allowFullScreen
-  ></iframe>
-</div>
+<Video videoId="rm4BlD9WXqc" title="Worker Versioning: a Temporal Replay 2025 talk and demo" />
 
 :::
 
@@ -86,7 +72,7 @@ To get started with Worker Versioning, you should understand some concepts aroun
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
   - An **Auto-Upgrade** Workflow will automatically move to a new code version as you roll it out, specifically its
     Target Worker Deployment Version (defined below). Therefore, Auto-Upgrade Workflows are not restricted to a single
-    Deployment Version and need to be kept replay-safe manually, i.e. with
+    Deployment Version and need to be kept replay-safe manually, that is with
     [patching](/workflow-definition#workflow-versioning).
   - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their
     Worker Deployment.
@@ -100,6 +86,14 @@ To get started with Worker Versioning, you should understand some concepts aroun
   configurable percentage of Workflows are routed to unless they were previously pinned on a different version.
 - For a given Workflow, its [**Target Worker Deployment Version**](/worker-versioning#versioning-definitions) is the
   version it will move to next.
+
+:::caution Before you enable Worker Versioning
+
+Worker Versioning has [limits](/evaluate/cloud/limits#worker-versioning-level) on the number of deployments, versions, and Task Queues. Review those limits before enabling versioning.
+
+In particular, do not enable Worker Versioning for worker-specific Task Queues — versioning is not relevant for such queues, and it will unnecessarily exhaust the [per-version Task Queue limit](/evaluate/cloud/limits#max-task-queues-in-deployment-version-limits).
+
+:::
 
 ## Setting up your deployment system {/* #deployment-systems */}
 
@@ -159,7 +153,7 @@ CaN boundary without patching. See [Upgrading on Continue-as-New](/production-de
 
 :::
 
-### Default Versioning Behavior Considerations
+### Default versioning behavior considerations
 
 If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning.
 Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
@@ -194,4 +188,3 @@ If you run [Serverless Workers](/serverless-workers), each Worker Deployment Ver
 specific Lambda function. In production, configure it with a qualified versioned ARN so Pinned Workflows remain truly
 pinned to the code they started against, regardless of whether your default behavior is Pinned or Auto-Upgrade. See
 [Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers).
-

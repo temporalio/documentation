@@ -1,17 +1,9 @@
 ---
 id: observability
-title: Observability - PHP SDK
+title: Observability
 sidebar_label: Observability
 description: Explore the Temporal Developer’s guide on observability to learn about Visibility APIs and Search Attributes, helping you manage Workflow Executions efficiently.
 toc_max_heading_level: 4
-keywords:
-  - guide-context
-  - php
-  - logging and metrics
-  - search attribute
-  - search attributes
-  - upsert search attributes
-  - workflow
 tags:
   - Observability
   - Search Attributes
@@ -39,14 +31,21 @@ You can find the log levels supported by `PSR-3` in [their official documentatio
 
 To get a PSR-3 compatible logger in your Workflow code, use the [`Workflow::getLogger()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_getLogger) method.
 
+<!--SNIPSTART php-observability-workflow-logger-->
+[php-sandbox/platform/observability/MyWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/observability/MyWorkflow.php)
 ```php
+<?php
+declare(strict_types=1);
+
+namespace App\Platform\Observability;
+
 use Temporal\Workflow;
 
 #[Workflow\WorkflowInterface]
 class MyWorkflow
 {
     #[Workflow\WorkflowMethod]
-    public function execute(string $param): \Generator
+    public function execute(string $param)
     {
         Workflow::getLogger()->info('Workflow started', ['parameter' => $param]);
 
@@ -57,19 +56,23 @@ class MyWorkflow
     }
 }
 ```
+<!--SNIPEND-->
 
 The Workflow logger automatically enriches log context with the current Task Queue name.
 
 Logs in replay mode are omitted unless the [`enableLoggingInReplay`](https://php.temporal.io/classes/Temporal-Worker-WorkerOptions.html#method_withEnableLoggingInReplay) Worker option is set to true.
 
+<!--SNIPSTART php-observability-logging-in-replay {"enable_code_dedenting": true}-->
+[php-sandbox/platform/observability/WorkerSetup.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/observability/WorkerSetup.php)
 ```php
 $factory = WorkerFactory::create();
 $worker = $factory->newWorker('your-task-queue', WorkerOptions::new()
     ->withEnableLoggingInReplay(true)
 );
 ```
+<!--SNIPEND-->
 
-### Default Logger
+### Default logger
 
 By default, PHP SDK uses a [`StderrLogger`](https://php.temporal.io/classes/Temporal-Worker-Logger-StderrLogger.html) that outputs log messages to the standard error stream.
 These messages are automatically captured by RoadRunner and incorporated into its logging system with the INFO level, ensuring proper log collection in both development and production environments.
@@ -79,15 +82,18 @@ For more details on RoadRunner's logging capabilities, see the [RoadRunner Logge
 
 You can set a custom PSR-3 compatible logger when creating a Worker:
 
+<!--SNIPSTART php-observability-custom-logger {"enable_code_dedenting": true}-->
+[php-sandbox/platform/observability/WorkerSetup.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/observability/WorkerSetup.php)
 ```php
 $myLogger = new MyLogger();
 
-$workerFactory = WorkerFactory::create(converter: $converter);
+$workerFactory = WorkerFactory::create();
 $worker = $workerFactory->newWorker(
     taskQueue: 'my-task-queue',
     logger: $myLogger,
 );
 ```
+<!--SNIPEND-->
 
 ## Visibility APIs {/* #visibility */}
 
@@ -122,6 +128,8 @@ Here is how to query Workflow Executions:
 Use the [listWorkflowExecutions()](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_listWorkflowExecutions) method on the Client and pass a [List Filter](/list-filter) as an argument to filter the listed Workflows.
 The result is an iterable paginator, so you can use the `foreach` loop to iterate over the results.
 
+<!--SNIPSTART php-observability-list-workflows {"enable_code_dedenting": true}-->
+[php-sandbox/platform/observability/ClientExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/observability/ClientExamples.php)
 ```php
 $paginator = $workflowClient->listWorkflowExecutions('WorkflowType="GreetingWorkflow"');
 
@@ -129,6 +137,7 @@ foreach ($paginator as $info) {
     echo "Workflow ID: {$info->execution->getID()}\n";
 }
 ```
+<!--SNIPEND-->
 
 ### How to set custom Search Attributes {/* #custom-search-attributes */}
 
@@ -137,6 +146,8 @@ After you've created custom Search Attributes in your Temporal Service (using `t
 To set custom Search Attributes, use the `withTypedSearchAttributes` method on `WorkflowOptions` for a Workflow stub.
 Typed search attributes are a `TypedSearchAttributes` collection.
 
+<!--SNIPSTART php-observability-set-search-attributes {"enable_code_dedenting": true}-->
+[php-sandbox/platform/observability/ClientExamples.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/observability/ClientExamples.php)
 ```php
 $keyDestinationTime = SearchAttributeKey::forDatetime('DestinationTime');
 $keyOrderId = SearchAttributeKey::forKeyword('OrderId');
@@ -152,15 +163,18 @@ $workflow = $workflowClient->newWorkflowStub(
         ),
 );
 ```
+<!--SNIPEND-->
 
 ### How to upsert Search Attributes {/* #upsert-search-attributes */}
 
 Within the Workflow code, you can dynamically add or update Search Attributes using [`upsertTypedSearchAttributes`](https://php.temporal.io/classes/Temporal-Workflow.html#method_upsertTypedSearchAttributes).
 This method is particularly useful for Workflows whose attributes need to change based on internal logic or external events.
 
+<!--SNIPSTART php-observability-upsert-search-attributes {"enable_code_dedenting": true}-->
+[php-sandbox/platform/observability/OrderWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/observability/OrderWorkflow.php)
 ```php
 #[Workflow\UpdateMethod]
-public function postponeDestinationTime(\DateInterval $interval)
+public function postponeDestinationTime(string $interval)
 {
     // Get the key for the DestinationTime attribute
     $keyDestinationTime = SearchAttributeKey::forDatetime('DestinationTime');
@@ -169,15 +183,24 @@ public function postponeDestinationTime(\DateInterval $interval)
     $destinationTime = Workflow::getInfo()->typedSearchAttributes->get($keyDestinationTime);
 
     Workflow::upsertTypedSearchAttributes(
-        $keyDestinationTime->valueSet($destinationTime->add($interval)),
+        // $interval is an ISO 8601 duration, such as "PT1H" for one hour.
+        $keyDestinationTime->valueSet($destinationTime->add(new \DateInterval($interval))),
     );
 }
 ```
+<!--SNIPEND-->
+
+Adding an upsert to a Workflow Definition that has open Workflow Executions is a [non-deterministic change](/workflow-definition#non-deterministic-change).
+The upsert produces an [UpsertWorkflowSearchAttributes](/references/commands#upsertworkflowsearchattributes) Command that the existing Event Histories don't contain.
+To roll out the change, use [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) with the [Pinned Versioning Behavior](/production-deployment/worker-deployments/worker-versioning#choosing-behavior), which keeps each open Execution on the code it started on.
+For Auto-Upgrade Workflows, and for Executions that started before you adopted Worker Versioning, guard the new call with the [patching API](/develop/php/workflows/versioning#php-sdk-patching-api).
 
 ### How to remove a Search Attribute from a Workflow {/* #remove-search-attribute */}
 
-To remove a Search Attribute that was previously set, set it to an empty Map.
+To remove a Search Attribute that was previously set, unset its value.
 
+<!--SNIPSTART php-observability-remove-search-attribute {"enable_code_dedenting": true}-->
+[php-sandbox/platform/observability/OrderWorkflow.php](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/php-sandbox/platform/observability/OrderWorkflow.php)
 ```php
 #[Workflow\UpdateMethod]
 public function unsetDestinationTime()
@@ -190,3 +213,4 @@ public function unsetDestinationTime()
     );
 }
 ```
+<!--SNIPEND-->

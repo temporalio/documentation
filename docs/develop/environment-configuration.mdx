@@ -1,7 +1,6 @@
 ---
 id: environment-configuration
 title: Environment configuration
-sidebar_label: Environment configuration
 description: Configure Temporal Clients using environment variables and TOML configuration files
 tags:
   - Temporal Client
@@ -99,7 +98,7 @@ Select a concept to highlight the matching connection settings in a Cloud profil
     {
       label: 'Address',
       description:
-        'Temporal Service host and port. For Temporal Cloud, use your Namespace endpoint (for example your-namespace.account.tmprl.cloud:7233).',
+        'Temporal Service host and port. For Temporal Cloud, use your Namespace endpoint (for example, your-namespace.account.tmprl.cloud:7233).',
       lines: [2],
     },
     {
@@ -315,11 +314,11 @@ end
   <SdkTabs.DotNet>
 
 To load the `default` profile along with any environment variables in .NET C#, use the
-`ClientEnvConfig.LoadClientConnectOptions()` method from the `Temporalio.Client.EnvConfig` package.
+`ClientEnvConfig.LoadClientConnectOptions()` method from the `Temporalio.Common.EnvConfig` namespace.
 
 ```csharp {22,27-30}
 using Temporalio.Client;
-using Temporalio.Client.EnvConfig;
+using Temporalio.Common.EnvConfig;
 
 namespace TemporalioSamples.EnvConfig;
 
@@ -674,7 +673,7 @@ After loading the connection options, you can override specific settings program
 
 ```csharp {18-19,25-28}
 using Temporalio.Client;
-using Temporalio.Client.EnvConfig;
+using Temporalio.Common.EnvConfig;
 
 namespace TemporalioSamples.EnvConfig;
 

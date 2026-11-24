@@ -1,19 +1,8 @@
 ---
 id: error-handling
 title: Error handling
-sidebar_label: Error handling
-description:
-  Learn how to categorize failures, decide when to use non-retryable errors, and implement compensation patterns in
-  Temporal applications.
+description: Sort failures into transient, intermittent, and permanent, mark permanent errors non-retryable, and design idempotent Activities and Sagas.
 toc_max_heading_level: 4
-keywords:
-  - error handling
-  - non-retryable errors
-  - saga pattern
-  - compensation
-  - rollback
-  - idempotence
-  - failure types
 tags:
   - Best Practices
   - Failures
@@ -21,7 +10,7 @@ tags:
 ---
 
 Temporal automatically retries failed Activities and recovers from infrastructure failures through
-[Durable Execution](/evaluate/why-temporal). But not all failures should be retried. This page covers how to categorize
+[Durable Execution](/durable-execution). But not all failures should be retried. This page covers how to categorize
 failures, when to mark errors as non-retryable, and how to handle failures that retries cannot resolve.
 
 For background on how Temporal represents and propagates failures, see

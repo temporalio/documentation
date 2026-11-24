@@ -7,6 +7,49 @@
 
 /* You can override the default Infima variables here. */
 
+/* Hide the cookie-consent web component until it's registered/upgraded, so the
+   undefined element never flashes before the client-side define runs. */
+temporal-consent-banner:not(:defined) {
+  display: none;
+}
+
+/* Footer/Copyright swizzle: pairs the copyright line with the "Your Privacy
+   Choices" control that reopens <temporal-consent-banner>. */
+.footer__bottom-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem 2rem;
+}
+
+.footer__privacy-choices {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.footer__social-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer__social-link {
+  display: inline-flex;
+  color: var(--ifm-footer-link-color);
+}
+
+.footer__social-link:hover {
+  color: var(--ifm-footer-link-hover-color);
+}
+
 :root {
   /* --ifm-color-primary: #f2633f;
    --ifm-color-primary-dark: #111827; */
@@ -16,6 +59,10 @@
    --ifm-color-primary-lighter: #BFDBFE; */
   /* --ifm-color-primary-lightest: #cae3fb; */
   --ifm-code-font-size: 95%;
+  /* Square corners across the theme chrome, to match the page feedback widget and callouts. Most Infima
+     radius variables derive from --ifm-global-radius; breadcrumbs set their own. */
+  --ifm-global-radius: 0;
+  --ifm-breadcrumb-border-radius: 0;
   /* --doc-sidebar-width: 275px !important;
    --ifm-link-hover-decoration: none;
    --ifm-link-hover-color: inherit; */
@@ -24,8 +71,6 @@
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
   --tag-text-color-dark: #ddd;
-  --feedback-primary-color: #000000;
-  --feedback-white-color: #fff;
   --space-black: #141414;
   --indigo-100: #cacbf9;
   --off-white: #f8fafc;
@@ -44,9 +89,17 @@ html[data-theme='dark']:root {
   --ifm-preview-text: #f9fafb;
   --ifm-link-color: #f9fafb;
   --ifm-link-hover-color: var(--ifm-color-primary);
-  --alert--competency-background: #00474a;
-  --alert--copycode-background: #29005e;
-  --alert--info-background: #353536;
+  /* Callouts: admonitions (src/theme/Admonition) and ReleaseNoteHeader */
+  --callout-hairline: #2e2e2e;
+  --callout-note-accent: #93c5fd;
+  --callout-tip-accent: #6ee7b7;
+  --callout-caution-accent: #fcd34d;
+  --callout-caution-border: #854d0e;
+  --callout-caution-background: #261c06;
+  --callout-warning-accent: #fca5a5;
+  --callout-warning-border: #991b1b;
+  --callout-warning-background: #2a1111;
+  --details-background: #353536;
   --feedback-primary-color: #fff; /* submit button, accents */
   --feedback-light-color: #2a2a2a; /* canvas/tool backgrounds */
   --feedback-dark-color: #1a1a1a; /* modal background */
@@ -83,7 +136,6 @@ html[data-theme='dark']:root {
   --tag-text-color: var(--tag-text-color-dark);
 }
 
-
 html[data-theme='light']:root {
   --ifm-color-primary: #1d4ed8;
   --ifm-background-color: #f9fafb;
@@ -93,9 +145,17 @@ html[data-theme='light']:root {
   --ifm-link-color: #111827;
   --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-preview-text: #141414;
-  --alert--competency-background: #a8fcff;
-  --alert--copycode-background: #e0cdfa;
-  --alert--info-background: #ebeded;
+  /* Callouts: admonitions (src/theme/Admonition) and ReleaseNoteHeader */
+  --callout-hairline: #e5e7eb;
+  --callout-note-accent: #1d4ed8;
+  --callout-tip-accent: #047857;
+  --callout-caution-accent: #b45309;
+  --callout-caution-border: #fcd34d;
+  --callout-caution-background: #fffbeb;
+  --callout-warning-accent: #b91c1c;
+  --callout-warning-border: #fca5a5;
+  --callout-warning-background: #fef2f2;
+  --details-background: #ebeded;
   --last-updated-color: #465a78;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary);
@@ -125,22 +185,26 @@ a:hover {
   text-underline-offset: 2px;
 }
 
-.alert {
-  border-radius: 3px !important;
+/* Docusaurus renders <details> with Infima's alert classes. Admonitions no longer use them, so these rules
+   apply only to <details>. :where() keeps them at single-class specificity, so per-page rules such as
+   .sdk-walkthrough-details still override them. */
+:where(details).alert {
+  border-radius: 0 !important;
   border-width: 1px;
   border-style: solid;
 }
 
-.alert--competency {
-  background-color: var(--alert--competency-background);
+/* Infima hard-codes these radii instead of reading --ifm-global-radius. */
+.menu__link,
+.menu__caret,
+.menu__list-item-collapsible,
+.dropdown__link,
+kbd {
+  border-radius: 0;
 }
 
-.alert--copycode {
-  background-color: var(--alert--copycode-background);
-}
-
-.alert--info {
-  background-color: var(--alert--info-background);
+:where(details).alert--info {
+  background-color: var(--details-background);
 }
 
 /* If we scope things with .tailwindcss we can attach to the tailwind styles on only the intro page */
@@ -928,6 +992,7 @@ a.tdlp:hover .tdlpc {
 
 code {
   vertical-align: baseline;
+  tab-size: 4;
 }
 
 @keyframes bounce {
@@ -977,6 +1042,15 @@ code {
   color: var(--ifm-color-primary);
 }
 
+/* Gradient-bordered variant for a "featured" section (e.g. Code Exchange
+   picks on /ai) that should visually stand out from a plain GridCard grid on
+   the same page. GridCard already swaps in this exact gradient as a
+   border-image on hover (GridCard.module.css); this just makes that
+   permanent instead of hover-only for cards inside a featured section. */
+.code-exchange-featured .grid-card {
+  border-image: linear-gradient(255deg, #444ce7 0%, #b664ff 100%) 1;
+}
+
 .pattern-card-header {
   display: flex;
   align-items: center;
@@ -989,6 +1063,18 @@ code {
   height: 36px;
   object-fit: contain;
   flex-shrink: 0;
+}
+
+.pattern-card-sdk-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.pattern-card-sdk-icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .pattern-card-header h3 {
@@ -1223,7 +1309,10 @@ code {
  * light-mode-only colors (same premise as the equivalent node-level fix),
  * so dark text is always correct here regardless of site theme.
  */
-.docusaurus-mermaid-container .cluster:has(rect[style*='fill:']):not(:has(rect[style*='stroke:'])) .cluster-label .nodeLabel {
+.docusaurus-mermaid-container
+  .cluster:has(rect[style*='fill:']):not(:has(rect[style*='stroke:']))
+  .cluster-label
+  .nodeLabel {
   background-color: transparent;
   color: #1c1e21 !important;
 }
@@ -1870,7 +1959,9 @@ code {
   display: none;
 }
 
-.sidebar-integrations:has(.menu__list > .menu__list-item .menu__link--active) > .menu__list-item-collapsible > .menu__caret {
+.sidebar-integrations:has(.menu__list > .menu__list-item .menu__link--active)
+  > .menu__list-item-collapsible
+  > .menu__caret {
   display: flex;
 }
 

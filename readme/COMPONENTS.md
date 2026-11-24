@@ -20,12 +20,15 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using Components in MDX Source Files](#using-components-in-mdx-source-files)
 - [Using IntegrationsGrid](#using-integrationsgrid)
 - [Using CaptionedImage](#using-captionedimage)
+- [Using Video](#using-video)
 - [Using DocsTable](#using-docstable)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
+- [Using RoleCheck](#using-rolecheck)
 - [Using SdkGuideLinks](#using-sdkguidelinks)
 - [Using AnnotatedCode](#using-annotatedcode)
 - [Using ReleaseNoteHeader](#using-release-note-header)
+- [Using ForOs](#using-foros)
 
 ## Finding Components
 
@@ -99,7 +102,7 @@ For example:
 
 ```
 <RelatedReadItem
-    path="/cloud/metrics/prometheus-grafana"
+    path="/cloud/metrics/openmetrics/metrics-integrations"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide"
 />
@@ -120,6 +123,38 @@ Components imported this way use the "Components." prefix before their name:
 ...Content that is folded away...
 </Components.RelatedRead>
 ```
+
+## Using SetupSteps and CodeSnippet
+
+`SetupSteps` lays out quickstart steps as prose on the left and code on the right. Each `SetupStep` takes its code
+column from either a `code={…}` prop or its `<CodeSnippet>` children.
+
+To keep a snippet in sync with a sample repository, put the `CodeSnippet` inside the `SetupStep` body instead of the
+`code={…}` prop. The prop is a JavaScript expression, so MDX doesn't parse Markdown or `<!--SNIPSTART-->` markers in
+it. Leave blank lines around the Snipsync markers:
+
+```mdx
+<SetupStep>
+
+<CodeSnippet title="service.go">
+
+<!--SNIPSTART go-nexus-quickstart-service-->
+<!--SNIPEND-->
+
+</CodeSnippet>
+
+## 1. Define the Nexus Service
+
+Create a file called `service.go`.
+
+</SetupStep>
+```
+
+After `yarn snipsync` fills the markers, `CodeSnippet` renders the synced code block with the source file as its title,
+linked to the sample repository. A `title` prop replaces the file path text. The fence's language is used unless you
+pass `language`.
+
+`CodeSnippet` still accepts a hand-written template literal: ``<CodeSnippet language="go">{`...`}</CodeSnippet>``.
 
 ## Using IntegrationsGrid
 
@@ -153,7 +188,7 @@ For example, the Python SDK integrations page pre-filters to Python:
 <IntegrationsGrid defaultSdks={["Python"]} />
 ```
 
-Valid SDK values are `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
+Valid SDK values are `".NET"`, `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
 
 ### Filter behavior
 
@@ -169,6 +204,8 @@ For example, selecting the "Python" SDK pill and the "Observability" tag pill sh
 ### Where the component is used
 
 - `/integrations` (top-level page, no default filters)
+- `/develop/dotnet/integrations` (pre-filtered to .NET)
+- `/develop/go/integrations` (pre-filtered to Go)
 - `/develop/java/integrations` (pre-filtered to Java)
 - `/develop/python/integrations` (pre-filtered to Python)
 - `/develop/ruby/integrations` (pre-filtered to Ruby)
@@ -176,16 +213,17 @@ For example, selecting the "Python" SDK pill and the "Observability" tag pill sh
 
 ### Adding a new integration
 
-Integration data lives in `src/components/IntegrationsGrid/integrations-data.ts`.
-Add a new entry to the `integrations` array with the following shape:
+Integration data lives in `src/components/IntegrationsGrid/integrations-data.json`
+(`integrations-data.ts` only types and re-exports it).
+Add a new entry to the JSON array with the following shape:
 
-```ts
+```json
 {
-  name: "Partner Name",
-  description: "One sentence describing what this integration does with Temporal.",
-  tags: ["Agent framework"],
-  sdk: "Python",
-  href: "/develop/python/integrations/partner-name",
+  "name": "Partner Name",
+  "description": "One sentence describing what this integration does with Temporal.",
+  "tags": ["Agent framework"],
+  "sdk": "Python",
+  "href": "/develop/python/integrations/partner-name"
 }
 ```
 
@@ -195,11 +233,11 @@ Add a new entry to the `integrations` array with the following shape:
 | --- | --- | --- | --- |
 | `name` | `string` | Yes | Display name of the integration. |
 | `description` | `string` | Yes | One-sentence summary shown on the card. |
-| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
+| `tags` | `string[]` | Yes | One or more category tags. Existing tags: `Agent framework`, `Agent memory`, `Agent observability`, `Framework`, `Governance`, `Observability`, `Temporal Cloud`. New tags appear in the filter row automatically. |
 | `sdk` | `SDK` | No | The language SDK this integration targets. Omit for language-agnostic integrations (such as Temporal Cloud metrics exporters). |
-| `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/braintrust`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
+| `href` | `string` | Yes | Link target. Use a relative path for internal docs (e.g. `/develop/python/integrations/langsmith`). Use a full URL for external partner docs (e.g. `https://docs.partner.com/temporal`). External links automatically get an external icon and open in a new tab. |
 
-**Multi-SDK integrations:** If an integration supports multiple SDKs with different guide pages, add a separate entry for each SDK. Both entries can share the same `name`. For example, Braintrust has one entry for Python and one for TypeScript, each with a different `href`.
+**Multi-SDK integrations:** If an integration supports multiple SDKs with different guide pages, add a separate entry for each SDK. Both entries can share the same `name`. For example, LangSmith has one entry for Python and one for TypeScript, each with a different `href`.
 
 **Language-agnostic integrations:** Omit the `sdk` field. These integrations appear when the "Language-agnostic" SDK filter is selected and do not display a language icon on the card.
 
@@ -251,6 +289,26 @@ One click will zoom out, another will zoom back.
 Most rendering will allow readers to pull the image around to view all parts of the image. 
 On non-mobile systems, cursors will change to interactive elements when hovered above zoomable items to indicate interaction.
 
+## Using Video
+
+Video embeds a YouTube video behind a click-to-play facade. It enforces a consistent, centered, width-constrained appearance across the site, always points at the `youtube-nocookie.com` embed domain, and defers loading the real iframe (and YouTube's tracking scripts) until the reader clicks the thumbnail.
+
+Usage:
+
+```
+<Video videoId="EwweiH2rd7M" title="What is the Temporal Platform?" />
+```
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `videoId` | `string` | Yes | The YouTube video ID (the `v=` value from a `youtube.com/watch` URL). |
+| `title` | `string` | Yes | A descriptive title. Used as the iframe's accessible title, the play button's `aria-label`, and the "Watch" link generated for the LLM Markdown pipeline (see [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md)). |
+| `maxWidth` | `string` | No | Escape hatch to override the default width for a documented one-off exception. Most pages should omit this and use the standard width. |
+
+Because `Video` generates the "Watch: {title}" link for the LLM Markdown feed automatically, you no longer need to hand-write a separate `Watch [Title](url)` sentence purely for that purpose. You can still add a short lead-in sentence for human readers (for example, "Watch a short overview:") above the component.
+
+**Not yet supported:** embedding a YouTube playlist (`videoseries?list=...`). The two pages that still embed a playlist ([`docs/develop/python/workflows/versioning.mdx`](../docs/develop/python/workflows/versioning.mdx) and [`docs/develop/dotnet/workflows/versioning.mdx`](../docs/develop/dotnet/workflows/versioning.mdx)) continue to use a raw `<iframe>` until playlist support is added.
+
 ## Using DocsTable
 
 In certain rare instances, standard Markdown tables won't work for our needs.
@@ -294,7 +352,7 @@ Usage:
 
 ```
 <RelatedReadContainer>
-  <RelatedReadItem path="/cloud/metrics/prometheus-grafana"
+  <RelatedReadItem path="/cloud/metrics/openmetrics/metrics-integrations"
     text="How to set up Grafana with Temporal Cloud observability"
     archetype="feature-guide" />
   <RelatedReadItem path="/cloud/worker-health"
@@ -362,6 +420,26 @@ Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
 ```
 <Components.ToolTipTerm term="your term" tooltip="any custom content you want to add" />
 ```
+
+## Using RoleCheck
+
+Role: Mark a cell in a role or permission grid, such as the tables in
+[`permissions-reference.mdx`](../docs/cloud/manage-access/permissions-reference.mdx).
+
+Usage:
+
+```
+import { RoleCheck } from '@site/src/components';
+
+| Permission          | Finance Admin                      |
+| ------------------- | :--------------------------------: |
+| CreateBillingReport | <RoleCheck role="Finance Admin" /> |
+```
+
+It renders a ✅ with the role name as visually hidden text. Screen readers read the role name instead of "check
+mark", and a scraper that splits a long table into chunks keeps the role name with each row. Without it, Kapa answered
+a question about `CreateBillingReport` with "the table's columns are flattened, so I can't tell with certainty which
+two" roles have it. In the Markdown pipeline it becomes `✅ Finance Admin`. Set `role` to the column header.
 
 ## Using SdkGuideLinks
 
@@ -494,6 +572,126 @@ Registered as `strip-tag` in the MDX → Markdown pipeline: wrapper tags are rem
 - Task Queue Priority and Fairness — priority / fairness options
 - Child Workflows design pattern — async start concepts
 
+## Using EventHistoryWalkthrough
+
+Role: Step-by-step interactive walkthrough of a Workflow Definition, showing which statements the Worker handles
+internally and which send a Command to the Temporal Service (and, for demos with an Events column, the Events those
+Commands produce). Used on the `docs/encyclopedia/event-history/*.mdx` pages — four walkthroughs per page (how code
+maps to Commands, how Commands map to Events, how History Replay works, and a non-determinism example), all built
+from the single `WalkthroughDemo` component parameterized by props.
+
+Content is authored directly in the MDX page, not in a data file: a Markdown code fence, followed by one
+`<WalkthroughStep>` per step. This keeps the code sample and the steps describing it in the same file, and lets the
+LLM markdown pipeline render real content instead of an opaque placeholder.
+
+How to import:
+
+```
+import { WalkthroughDemo, WalkthroughStep, WalkthroughCommand, WalkthroughEvent } from '@site/src/components';
+```
+
+`WalkthroughStep`/`WalkthroughCommand`/`WalkthroughEvent` never render anything themselves — they're read for their
+props/children by the parent `WalkthroughDemo`.
+
+### Usage
+
+```
+<WalkthroughDemo ariaLabel="How Workflow code maps to Commands" commandsLabel="Commands issued">
+
+```csharp
+[Workflow]
+public class PizzaWorkflow
+{
+    // ...
+}
+```
+
+<WalkthroughStep title="A basic Workflow Definition">
+
+Prose describing this step. Plain Markdown — paragraphs, lists, links, and inline code all work.
+
+- A bullet
+- Another bullet
+
+</WalkthroughStep>
+
+<WalkthroughStep title="Request the GetDistance Activity" kind="command" lines="10-12">
+
+The Worker issues a Command here.
+
+<WalkthroughCommand
+  label="ScheduleActivityTask"
+  details='("pizza-tasks", GetDistance, { Line1: "123 Oak St." })'
+  tone="command"
+/>
+
+</WalkthroughStep>
+
+</WalkthroughDemo>
+```
+
+A demo with an Events column also passes `eventsLabel`, e.g.
+`<WalkthroughDemo ariaLabel="..." commandsLabel="Commands" eventsLabel="Event History">` — omit `eventsLabel` for a
+Commands-only demo (no Events column renders). `commandsLabel`/`eventsLabel` are exactly the ledger column headers
+shown in the UI, so they're what differentiate one walkthrough from another; the four pages' walkthroughs use:
+
+| Walkthrough | `ariaLabel` | `commandsLabel` | `eventsLabel` |
+| --- | --- | --- | --- |
+| Code maps to Commands | How Workflow code maps to Commands | Commands issued | _(omitted)_ |
+| Commands map to Events | How Workflow Commands map to Events | Commands | Events |
+| History Replay | How History Replay provides Durable Execution | Commands | Event History |
+| Non-determinism example | Example of a non-deterministic Workflow | Commands created | Relevant History Events |
+
+`lines` is a comma-separated list of 1-based line numbers/ranges into the fence (`"7-8,14-17,21-25"`), highlighted
+while that step is active. Omit it for a step that highlights nothing.
+
+`kind` (optional) is one of `internal`, `command`, `service`, `crash`, `replay` — drives the step's badge.
+
+`phase` (optional, used by the History Replay and non-determinism walkthroughs) groups consecutive steps under a
+shared label, e.g. `phase="History Replay"`.
+
+A `<WalkthroughCommand>`/`<WalkthroughEvent>` value containing a `"` should use single quotes for the JSX attribute
+(`details='...'`), matching the example above — the transformer's prop parser tracks the specific quote character
+used, so a double quote inside a single-quoted value (or vice versa) is safe.
+
+### Props
+
+| `WalkthroughDemo` prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `ariaLabel` | `string` | Yes | Accessible label for the demo region. |
+| `commandsLabel` | `string` | No | Commands column header. Defaults to `Commands`. |
+| `eventsLabel` | `string` | No | Events column header. Omit for a Commands-only demo. |
+| `children` | Markdown + JSX | Yes | A code fence followed by `<WalkthroughStep>` elements. |
+
+| `WalkthroughStep` prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | Yes | Step heading. |
+| `kind` | `string` | No | `internal` \| `command` \| `service` \| `crash` \| `replay`. |
+| `phase` | `string` | No | Groups this step under a shared phase label. |
+| `lines` | `string` | No | Line numbers/ranges to highlight, e.g. `"7-8,14-17"`. |
+| `children` | Markdown | Yes | The step's prose body, plus any `WalkthroughCommand`/`WalkthroughEvent` entries. |
+
+| `WalkthroughCommand`/`WalkthroughEvent` prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | Yes\* | The Command/Event name. |
+| `details` | `string` | No | Extra detail shown after the label. |
+| `tone` | `string` | No | Visual tone (`command`, `direct`, `indirect`, `plain`). |
+| `status` | `string` | No | `matched` or `mismatch` (History Replay/non-determinism ledger). |
+| `expected` | `string` | No | What was expected instead, shown alongside a `mismatch` status. |
+| `divider` | `string` | No\* | Renders a labeled divider instead of an entry (\*`label` not required when set). |
+
+### LLM markdown
+
+Registered as `event-history-demo`/`walkthrough-step`/`walkthrough-entry` in the MDX → Markdown pipeline
+(`scripts/component-handlers/event-history-walkthrough.mjs`): the fence passes through verbatim, and each step
+renders as a `#### Step N: Title` heading with its kind, prose, and any Command/Event entries, using the enclosing
+tag's `commandsLabel`/`eventsLabel` as the ledger group headers.
+
+### Where the component is used
+
+- Event History walkthroughs (`docs/encyclopedia/event-history/{go,java,python,typescript,dotnet}.mdx`) — all four
+  walkthroughs on all five pages.
+
 ## Using ReleaseNoteHeader
 
 Role: To provide a consistent component for adding, updating, and removing release stages on different features.
@@ -526,17 +724,19 @@ Use the `type` prop to set a specific type if the release stage is only for one 
 Add `children` for more detailed messaging.
 ```js
 <ReleaseNoteHeader featureName="serverlessWorkers">
-  To request access during Pre-release, create a [support ticket](/cloud/support#support-ticket) or contact your account team.
+  To request access during Pre-release, create a [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team.
   APIs are experimental and may be subject to backwards-incompatible changes.
   [Sign up for updates](https://temporal.io/pages/serverless-workers-updates) to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
 ```
 
-Show the supported languages by using the `languages` prop.
+Show the supported SDKs by using the `languages` prop. They appear as chips below the text. Add `guidePath` to link
+each chip to `/develop/<sdk>/<guidePath>`.
 ```js
 <ReleaseNoteHeader
   type="prerelease"
   languages={["Go", "TypeScript", "Java", ".NET", "Python"]}
+  guidePath="nexus/feature-guide"
 />
 ```
 
@@ -549,3 +749,62 @@ Use the `href` prop to make the `children` content a link.
   Sign up for updates to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
 ```
+
+To see each variant that docs pages use, open the unlisted page at `/internal/callouts` (`docs/internal/callouts.mdx`).
+
+## Using ForOs
+
+Role: Show OS-specific wording outside a tab set, such as "open PowerShell" on Windows and "open a terminal" on macOS
+and Linux.
+
+`ForOs` shows its children only when the reader's selected OS is in its `os` list. The selected OS is the same one
+`<Tabs groupId="os" queryString>` uses: the `?os=` query string first, then the OS tab the reader last picked, then
+`macos`. On a reader's first visit, `src/client/detectOs.js` pre-selects their OS from the browser, so Windows and Linux
+readers start on their own tab.
+
+Only use `ForOs` on a page that also has a `<Tabs groupId="os" queryString>` set. Those tabs are the only way a reader
+can switch OS, so without them a reader sees one variant and has no way to change it.
+
+How to import:
+
+```
+import { ForOs } from '@site/src/components';
+```
+
+### Usage
+
+Inline, in a sentence. Put the variants next to each other so exactly one shows for each OS:
+
+```
+Open a new <ForOs os="windows">PowerShell</ForOs><ForOs os="macos linux">terminal</ForOs> window.
+```
+
+Around block content. Leave a blank line after the opening tag and before the closing tag so the children parse as
+Markdown:
+
+```
+<ForOs os="windows">
+
+Run the installer as an administrator.
+
+</ForOs>
+```
+
+The component renders no wrapper element, and it updates as soon as the reader clicks another OS tab on the page.
+
+### Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `os` | `string` | Yes | Space-separated OS values: `macos`, `windows`, `linux`, or `docker` (the CLI setup page's extra tab). |
+| `children` | Markdown or text | Yes | Content shown for those OS values. |
+
+### LLM markdown
+
+Registered as `for-os` in the MDX → Markdown pipeline. The `.md` output keeps every variant, each with a bold OS label.
+A block becomes a `**Windows:**` line before its children. Adjacent inline variants become one parenthetical, for
+example `open a new (**Windows:** PowerShell; **macOS and Linux:** terminal) window`.
+
+### Where the component is used
+
+- Python SDK set-up — "open a new terminal window" step

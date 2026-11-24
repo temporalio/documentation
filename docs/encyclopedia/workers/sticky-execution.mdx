@@ -1,12 +1,9 @@
 ---
 id: sticky-execution
 title: Sticky Execution
-sidebar_label: Sticky Execution
 description: Learn about Sticky Execution and how it optimizes Task processing in Temporal by caching Workflow state locally.
 slug: /sticky-execution
 toc_max_heading_level: 4
-keywords:
-  - sticky execution
 tags:
   - Workers
 ---
@@ -18,7 +15,7 @@ This page discusses [Sticky Execution](#sticky-execution).
 Workers cache the state of the Workflow they execute.
 To make this caching more effective, Temporal employs a performance optimization known as "Sticky Execution", which directs Workflow Tasks to the same Worker that previously processed tasks for a specific Workflow Execution.
 
-### How Sticky Execution Works
+### How Sticky Execution works
 
 Once Workflow Execution begins, the Temporal Service schedules a Workflow Task and puts it into a Task Queue with the name you specify.
 Any Worker that polls that Task Queue is eligible to accept the Task and begin executing the Workflow.

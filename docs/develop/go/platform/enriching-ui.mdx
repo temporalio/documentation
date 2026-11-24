@@ -1,16 +1,9 @@
 ---
 id: enriching-ui
-title: Enriching the user interface - Go SDK
+title: Enriching the user interface
 sidebar_label: Enriching the UI
 description: Add contextual information to workflows and events in the Temporal UI using the Go SDK.
 toc_max_heading_level: 3
-keywords:
-  - ui enrichment
-  - workflow context
-  - static summary
-  - static details
-  - activity summary
-  - timer summary
 tags:
   - UI Enrichment
   - Go SDK
@@ -20,41 +13,51 @@ tags:
 Temporal supports adding context to Workflows and Events with metadata. 
 This helps users identify and understand Workflows and their operations.
 
-## Adding Summary and Details to Workflows
+## Adding summary and details to Workflows
 
 ### Starting a Workflow
 
 When starting a Workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
+<!--SNIPSTART go-enrich-ui-static-summary-->
+[go-sandbox/platform/enrichui/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/enrichui/starter/main.go)
 ```go
+package main
+
 import (
-    "context"
-    "go.temporal.io/sdk/client"
+	"context"
+	"log"
+
+	"go.temporal.io/sdk/client"
+
+	"my-org/quickstart/platform/enrichui"
 )
 
 func main() {
-    // Create the client
-    c, err := client.Dial(client.Options{})
-    if err != nil {
-        // Handle error
-    }
-    defer c.Close()
+	// Create the client
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
 
-    // Start workflow options with static summary and details
-    workflowOptions := client.StartWorkflowOptions{
-        ID:        "your-workflow-id",
-        TaskQueue: "your-task-queue",
-        StaticSummary: "Order processing for customer #12345",
-        StaticDetails: "Processing premium order with expedited shipping",
-    }
+	// Start workflow options with static summary and details
+	workflowOptions := client.StartWorkflowOptions{
+		ID:            "your-workflow-id",
+		TaskQueue:     "your-task-queue",
+		StaticSummary: "Order processing for customer #12345",
+		StaticDetails: "Processing premium order with expedited shipping",
+	}
 
-    // Start the workflow
-    we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflow, "workflow input")
-    if err != nil {
-        // Handle error
-    }
+	// Start the workflow
+	we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, enrichui.YourWorkflow, "workflow input")
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
+	log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 }
 ```
+<!--SNIPEND-->
 
 `StaticSummary` is a single-line description that appears in the Workflow list view, limited to 200 bytes.
 `StaticDetails` can be multi-line and provides more comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
@@ -67,86 +70,97 @@ Within a Workflow, you can get and set the _current workflow details_.
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
 Current Workflow details also takes Markdown format (excluding images, HTML, and scripts) and can span multiple lines.
 
+<!--SNIPSTART go-enrich-ui-current-details-->
+[go-sandbox/platform/enrichui/details.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/enrichui/details.go)
 ```go
 import (
-    "go.temporal.io/sdk/workflow"
+	"go.temporal.io/sdk/workflow"
 )
 
 func YourWorkflow(ctx workflow.Context, input string) (string, error) {
-    // Get the current details
-    currentDetails := workflow.GetCurrentDetails(ctx)
-    workflow.GetLogger(ctx).Info("Current details", "details", currentDetails)
-    
-    // Set/update the current details
-    workflow.SetCurrentDetails(ctx, "Updated workflow details with new status")
-    
-    return "Workflow completed", nil
+	// Get the current details
+	currentDetails := workflow.GetCurrentDetails(ctx)
+	workflow.GetLogger(ctx).Info("Current details", "details", currentDetails)
+
+	// Set/update the current details
+	workflow.SetCurrentDetails(ctx, "Updated workflow details with new status")
+
+	return "Workflow completed", nil
 }
 ```
+<!--SNIPEND-->
 
 ### Adding Summary to Activities and Timers
 
 You can attach a metadata parameter `Summary` to Activities when starting them from within a Workflow:
 
+<!--SNIPSTART go-enrich-ui-activity-summary-->
+[go-sandbox/platform/enrichui/activity_summary.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/enrichui/activity_summary.go)
 ```go
 import (
-    "time"
-    "go.temporal.io/sdk/workflow"
+	"time"
+
+	"go.temporal.io/sdk/workflow"
 )
 
-func YourWorkflow(ctx workflow.Context, input string) (string, error) {
-    // Activity options with summary
-    ao := workflow.ActivityOptions{
-        StartToCloseTimeout: 10 * time.Second,
-        Summary: "Processing user data",
-    }
-    ctx = workflow.WithActivityOptions(ctx, ao)
+func ActivitySummaryWorkflow(ctx workflow.Context, input string) (string, error) {
+	// Activity options with summary
+	ao := workflow.ActivityOptions{
+		StartToCloseTimeout: 10 * time.Second,
+		Summary:             "Processing user data",
+	}
+	ctx = workflow.WithActivityOptions(ctx, ao)
 
-    // Execute the activity
-    var result string
-    err := workflow.ExecuteActivity(ctx, YourActivity, input).Get(ctx, &result)
-    if err != nil {
-        return "", err
-    }
-    
-    return result, nil
+	// Execute the activity
+	var result string
+	err := workflow.ExecuteActivity(ctx, YourActivity, input).Get(ctx, &result)
+	if err != nil {
+		return "", err
+	}
+
+	return result, nil
 }
 ```
+<!--SNIPEND-->
 
 Similarly, you can attach a `Summary` to timers within a Workflow:
 
+<!--SNIPSTART go-enrich-ui-timer-summary-->
+[go-sandbox/platform/enrichui/timer_summary.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/platform/enrichui/timer_summary.go)
 ```go
 import (
-    "time"
-    "go.temporal.io/sdk/workflow"
+	"time"
+
+	"go.temporal.io/sdk/workflow"
 )
 
-func YourWorkflow(ctx workflow.Context, input string) (string, error) {
-    // Create a timer with options including summary
-    timerFuture := workflow.NewTimerWithOptions(ctx, 5*time.Minute, workflow.TimerOptions{
-        Summary: "Waiting for payment confirmation",
-    })
-    
-    // Wait for the timer
-    err := timerFuture.Get(ctx, nil)
-    if err != nil {
-        return "", err
-    }
-    
-    return "Timer completed", nil
+func TimerSummaryWorkflow(ctx workflow.Context, input string) (string, error) {
+	// Create a timer with options including summary
+	timerFuture := workflow.NewTimerWithOptions(ctx, 5*time.Minute, workflow.TimerOptions{
+		Summary: "Waiting for payment confirmation",
+	})
+
+	// Wait for the timer
+	err := timerFuture.Get(ctx, nil)
+	if err != nil {
+		return "", err
+	}
+
+	return "Timer completed", nil
 }
 ```
+<!--SNIPEND-->
 
 The input format for `Summary` is a string, and limited to 200 bytes. 
 
-## Viewing Summary and Details in the UI
+## Viewing summary and details in the UI
 
 Once you've added summaries and details to your workflows, activities, and timers, you can view this enriched information in the Temporal Web UI. 
 Navigate to your Workflow's details page to see the metadata displayed in three key locations:
 
-### Workflow Overview Section
+### User Metadata
 
-At the top of the workflow details page, you'll find the workflow-level metadata:
+On the Workflow Details page, under the **User Metadata** tab, you'll find the workflow-level metadata:
 
 - **Summary & Details** - Displays the static summary and static details set when starting the workflow
 - **Current Details** - Displays the dynamic details that can be updated during workflow execution

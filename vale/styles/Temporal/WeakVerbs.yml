@@ -1,0 +1,14 @@
+# Ported from jdkato/voices' Voices.WeakVerbs rule
+# (https://github.com/jdkato/voices, MIT License), itself derived from
+# no-ai-slop (https://github.com/petergyang/no-ai-slop, MIT License).
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  'ma(?:ke|de) a decision': decided
+  'ha(?:s|ve|d) the ability to': can
+  'is able to': can
+  'in order to': to

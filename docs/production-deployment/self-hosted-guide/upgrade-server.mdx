@@ -3,12 +3,10 @@ id: upgrade-server
 title: Upgrade the Temporal Server
 sidebar_label: Upgrade server
 description:
-  Upgrade your Temporal Server effectively. Follow our step-by-step guide for seamless upgrades, ensuring data
-  compatibility and schema alignment.
+  Rolling, in-place Temporal Server upgrades one minor version at a time, with schema updates first, verification
+  metrics, rollback, and Multi-Cluster order.
 slug: /self-hosted-guide/upgrade-server
 toc_max_heading_level: 4
-keywords:
-  - how-to
 tags:
   - Temporal Service
   - Self-hosting
@@ -19,6 +17,16 @@ tags:
 If a newer version of the [Temporal Server](/temporal-service/temporal-server) is available, a notification appears in
 the Temporal Web UI.
 
+A Temporal Server upgrade is an in-place rolling upgrade with two parts: update the database schemas, then roll out the
+new server binary to each service a few instances at a time. Clients keep connecting to the same Frontend address, and
+running Workflow Executions keep running through the upgrade. Callers can see brief, retryable latency while History
+Service instances restart and Shards move between them.
+
+Run at least two instances of each service (Frontend, History, Matching, and Worker) so the others keep serving while
+one restarts. Don't split traffic between two Temporal Services on different versions, and don't use
+[Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) to upgrade. Upgrade each Temporal Service in
+place.
+
 :::info
 
 If you are using a version that is older than 1.0.0, reach out to us at
@@ -26,60 +34,61 @@ If you are using a version that is older than 1.0.0, reach out to us at
 
 :::
 
-First check to see if an upgrade to the database schema is required for the version you wish to upgrade to. If a
-database schema upgrade is required, it will be called out directly in the
-[release notes](https://github.com/temporalio/temporal/releases). Some releases require changes to the schema, and some
-do not. We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and
-system behavior; however there is no guarantee that there is compatibility between _any_ two non-consecutive versions.
+### Plan your upgrade path
 
-### Key considerations
+Upgrade one minor version at a time:
 
-When upgrading the Temporal Server, there are two key considerations to keep in mind:
+1. Upgrade to the latest patch release of your current minor version.
+2. Upgrade to the next minor version, at its latest patch release.
+3. Repeat until you reach your target version.
 
-1. **Sequential Upgrades:** Temporal Server should be upgraded sequentially, one minor version at a time. Before
-   bumping to the next minor version, first upgrade to the highest available patch version of your current minor
-   version. For example, if you're on \(v1.n.0\), upgrade to \(v1.n.latest\) first, then proceed to
-   \(v1.(n+1).latest\). Repeat this sequence until you reach your desired version.
+For example, to go from v1.20.0 to v1.22.0, upgrade `v1.20.0` → `v1.20.5` → `v1.21.6` → `v1.22.0`. v1.20.5 and v1.21.6
+are the latest patch releases of their minor versions. You skip the patch releases in between, but not the minor
+version in between.
 
-2. **Data Compatibility:** During an upgrade, the Temporal Server either updates or restructures the existing version
-   data to match the data format of the newer version. Temporal Server ensures backward compatibility only between two
-   successive minor versions. Consequently, skipping versions during an upgrade may lead to older data formats becoming
-   unreadable. If the previous data format cannot be interpreted and converted to the newer format, the upgrade process
-   will be unsuccessful.
+Each step on the path is a full upgrade: update the schemas, then roll out the binary. The Temporal Server doesn't
+enforce this path, but it's the tested and supported one. A version can run version-gated work at startup, such as
+background data migrations, that a jump across several minor versions would skip.
 
-### Step-by-Step Upgrade Procedure:
+Before you start, read the [release notes](https://github.com/temporalio/temporal/releases) for every version on your
+path, including the patch releases you skip. A release note can require an intermediate version or an extra step. If
+one does, follow it instead of this path.
 
-Upgrading the Temporal Server requires a methodical approach to ensure data integrity, compatibility, and seamless
-transition between versions. The following documentation outlines the step-by-step process to successfully upgrade your
-Temporal Server.
+If your Visibility store is PostgreSQL and your path crosses v1.30 or v1.31, plan for the
+[PostgreSQL Visibility table rebuild](#postgresql).
 
-When upgrading your Temporal Server version, ensure that you upgrade sequentially.
+### Before you upgrade
 
-1. **Upgrade Database Schema:** Before initiating the Temporal Server upgrade, use one of the recommended upgrade tools
-   to update your database schema. This ensures it is aligned with the version of Temporal Server you aim to upgrade to.
-2. **Upgrade Temporal Server:** Once the database schema is updated, proceed to upgrade the Temporal Server deployment
-   to the next sequential version.
-3. **Iterative Upgrades** (optional): Continue this process (steps 1 and 2) iteratively until you reach the desired
-   Temporal Server version.
+- Test the full upgrade on a staging Temporal Service first. Run representative load against it, update the schemas,
+  roll out the binary, and watch for unstable behavior from both the Temporal Service and your load before you upgrade
+  production.
+- Schedule the production upgrade for a low-traffic window, away from known peaks.
 
-By adhering to the above guidelines and following the step-by-step procedure, you can ensure a smooth and successful
-upgrade of your Temporal Server.
+### Run the upgrade
 
-The Temporal Server upgrade updates or rewrites the old version data with the format introduced in the newer version.
-Because Temporal Server guarantees backward compatibility between two consecutive minor versions, and because older
-versions of the code are eventually removed from the code base, skipping versions when upgrading might cause older
-formats to become unrecognizable. If the old format of the data can't be read to be rewritten to the new format, the
-upgrades fail.
+For each version on your upgrade path:
 
-Check the [Temporal Server releases](https://github.com/temporalio/temporal/releases) and follow these releases in
-order. Before upgrading to the next minor version, upgrade to the highest available patch version of your current minor
-version first.
+1. **Update the persistence schema.** Use the schema tool for your database, shown in the following sections, with the
+   tool and schema files from the version you're upgrading to. One run applies every intermediate schema version in
+   order. Run it on every upgrade, before you roll out the binary.
+2. **Update the Visibility schema** the same way.
+3. **Roll out the new binary, one service at a time.** Finish each service's rolling restart and confirm it's healthy
+   before you start the next. The Temporal Server doesn't require a service order. A common order is Frontend, Worker,
+   Matching, then History, because the History Service is the most disruptive to restart.
+4. **[Verify the upgrade](#verify-the-upgrade)** before you move to the next version on your path.
 
-Also, be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow
-approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
+Each service instance checks the schema version at startup. If the schema is older than the binary expects, the
+instance doesn't start and logs an error like the following. The prefix is `cassandra` or `sql`, depending on your
+database.
 
-Use one of the upgrade tools to upgrade your database schema to be compatible with the Temporal Server version being
-upgraded to.
+```text
+cassandra schema version compatibility check failed: version mismatch for keyspace/database: "temporal". Expected version: 1.13 cannot be greater than Actual version: 1.12
+```
+
+No data is affected. Update the schema and restart the instance.
+
+Keep `persistence.numHistoryShards` the same in your static configuration. The Shard count is fixed when the Temporal
+Service is first set up. If the configured value differs, the Temporal Server uses the stored count and logs a warning.
 
 ### Upgrade Cassandra schema
 
@@ -126,11 +135,11 @@ the schema.
 ```bash
 echo "Updating index mappings: $ES_VISIBILITY_INDEX"
 temporal-elasticsearch-tool \
-	--endpoint "$ES_SCHEME://$ES_HOST:$ES_PORT" \
-	--user "$ES_USER" \
-	--password "$ES_PWD" \
-	update-schema \
-	--index "$ES_VISIBILITY_INDEX"
+  --endpoint "$ES_SCHEME://$ES_HOST:$ES_PORT" \
+  --user "$ES_USER" \
+  --password "$ES_PWD" \
+  update-schema \
+  --index "$ES_VISIBILITY_INDEX"
 ```
 
 ### Upgrade PostgreSQL or MySQL schema
@@ -142,28 +151,44 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Make
 
 #### PostgreSQL
 
+:::caution PostgreSQL Visibility table rebuild in v1.30 and v1.31
+
+The v1.30 and v1.31 Visibility schema updates for PostgreSQL rebuild the whole `executions_visibility` table. On a table
+with tens of millions of rows, a rebuild can take hours and uses a lot of database CPU. The table is locked while it
+runs, so listing and searching Workflow Executions can be slow or fail. Running Workflow Executions continue, and no
+data is lost. Don't stop the update partway through, because it starts over.
+
+- Use the schema tool and files from v1.30.5 or later and from v1.31.3 or later. Earlier patch releases of v1.30 and
+  v1.31 run extra rebuilds. Upgrading from v1.29 or earlier to v1.31 still takes two rebuilds.
+- Run the update in a maintenance window, not during high traffic.
+- Make sure the database has free space of up to twice the size of the Visibility table before you start.
+
+MySQL doesn't rebuild the table for these changes.
+
+:::
+
 **Example default schema upgrade:**
 
 ```bash
 ./temporal-sql-tool \
-	--tls \
-	--tls-enable-host-verification \
-	--tls-cert-file <path to your client cert> \
-	--tls-key-file <path to your client key> \
-	--tls-ca-file <path to your CA> \
-	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal update-schema -d ./schema/postgresql/v96/temporal/versioned
+  --tls \
+  --tls-enable-host-verification \
+  --tls-cert-file <path to your client cert> \
+  --tls-key-file <path to your client key> \
+  --tls-ca-file <path to your CA> \
+  --ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal update-schema -d ./schema/postgresql/v96/temporal/versioned
 ```
 
 **Example visibility schema upgrade:**
 
 ```bash
 ./temporal-sql-tool \
-	--tls \
-	--tls-enable-host-verification \
-	--tls-cert-file <path to your client cert> \
-	--tls-key-file <path to your client key> \
-	--tls-ca-file <path to your CA> \
-	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned
+  --tls \
+  --tls-enable-host-verification \
+  --tls-cert-file <path to your client cert> \
+  --tls-key-file <path to your client key> \
+  --tls-ca-file <path to your CA> \
+  --ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned
 ```
 
 If you're upgrading PostgreSQL to v12 or later to enable advanced Visibility features with Temporal Server v1.20,
@@ -172,12 +197,12 @@ following example:
 
 ```bash
 ./temporal-sql-tool \
-	--tls \
-	--tls-enable-host-verification \
-	--tls-cert-file <path to your client cert> \
-	--tls-key-file <path to your client key> \
-	--tls-ca-file <path to your CA> \
-	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres12 --db temporal_visibility update-schema -d ./schema/postgresql/v12/visibility/versioned
+  --tls \
+  --tls-enable-host-verification \
+  --tls-cert-file <path to your client cert> \
+  --tls-key-file <path to your client key> \
+  --tls-ca-file <path to your CA> \
+  --ep localhost -p 5432 -u temporal -pw temporal --pl postgres12 --db temporal_visibility update-schema -d ./schema/postgresql/v12/visibility/versioned
 ```
 
 #### MySQL
@@ -186,24 +211,24 @@ following example:
 
 ```bash
 ./temporal-sql-tool \
-	--tls \
-	--tls-enable-host-verification \
-	--tls-cert-file <path to your client cert> \
-	--tls-key-file <path to your client key> \
-	--tls-ca-file <path to your CA> \
-	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal update-schema -d ./schema/mysql/v57/temporal/versioned/
+  --tls \
+  --tls-enable-host-verification \
+  --tls-cert-file <path to your client cert> \
+  --tls-key-file <path to your client key> \
+  --tls-ca-file <path to your CA> \
+  --ep localhost -p 3036 -u root -pw root --pl mysql --db temporal update-schema -d ./schema/mysql/v57/temporal/versioned/
 ```
 
 **Example visibility schema upgrade:**
 
 ```bash
 ./temporal-sql-tool \
-	--tls \
-	--tls-enable-host-verification \
-	--tls-cert-file <path to your client cert> \
-	--tls-key-file <path to your client key> \
-	--tls-ca-file <path to your CA> \
-	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
+  --tls \
+  --tls-enable-host-verification \
+  --tls-cert-file <path to your client cert> \
+  --tls-key-file <path to your client key> \
+  --tls-ca-file <path to your CA> \
+  --ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
 ```
 
 If you're upgrading MySQL to v8.0.17 or later to enable advanced Visibility features with Temporal Server v1.20, upgrade
@@ -211,21 +236,57 @@ your MySQL version first, and then run `temporal-sql-tool` with the `mysql8` plu
 
 ```bash
 ./temporal-sql-tool \
-	--tls \
-	--tls-enable-host-verification \
-	--tls-cert-file <path to your client cert> \
-	--tls-key-file <path to your client key> \
-	--tls-ca-file <path to your CA> \
-	--ep localhost -p 5432 -u temporal -pw temporal --pl mysql8 --db temporal_visibility update-schema -d ./schema/mysql/v8/visibility/versioned.
+  --tls \
+  --tls-enable-host-verification \
+  --tls-cert-file <path to your client cert> \
+  --tls-key-file <path to your client key> \
+  --tls-ca-file <path to your CA> \
+  --ep localhost -p 5432 -u temporal -pw temporal --pl mysql8 --db temporal_visibility update-schema -d ./schema/mysql/v8/visibility/versioned.
 ```
 
-### Roll-out technique
+### Verify the upgrade
 
-We recommend preparing a staging Temporal Service and then doing the following to verify the upgrade is successful:
+After each service's rollout, and again when the upgrade is complete, confirm that these
+[Temporal Service metrics](/references/service-metrics) settle. For counters, check the recent rate of increase, not
+the cumulative value, which stays above zero after a recovery.
 
-1. Create some simulation load on the staging Temporal Service.
-2. Upgrade the database schema in the staging Temporal Service.
-3. Wait and observe for a few minutes to verify that there is no unstable behavior from both the server and the
-   simulation load logic.
-4. Upgrade the server.
-5. Now do the same to the live environment Temporal Service.
+| Metric                                                                  | Type      | Healthy after the rollout                                                       |
+| ----------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------- |
+| `numshards_gauge`                                                       | Gauge     | Back to the full Shard count and steady                                         |
+| `service_errors_shard_ownership_lost`                                   | Counter   | Rate spikes briefly during the rollout, then drops to near zero                 |
+| [`service_latency`](/references/service-metrics#service_latency)       | Histogram | Back to the pre-upgrade baseline                                                |
+| `service_errors_resource_exhausted`                                     | Counter   | Rate near zero. A rising rate means the Temporal Service is throttling requests. |
+| [`persistence_errors`](/references/service-metrics#persistence_errors) | Counter   | Rate near zero                                                                  |
+| `task_schedule_to_start_latency`                                        | Histogram | Back to the pre-upgrade baseline                                                |
+| [`no_poller_tasks`](/references/service-metrics#no_poller_tasks)       | Counter   | Rate zero on active Task Queues. A rising rate means Workers haven't reconnected. |
+
+If any of these stays high, pause the rollout and investigate before you restart more instances. Don't start the
+next version on your path until they settle.
+
+### Roll back an upgrade
+
+If the new version has a problem after the rollout, roll back the binary, not the schema:
+
+- Leave the schema at its upgraded version. The schema tools only move forward. Don't reverse a schema update by hand.
+- Roll out the binary for the version you upgraded from. A binary starts against a schema that's newer than it
+  expects, and refuses to start only against an older one. Rolling back the binary doesn't change Workflow data.
+- Roll back one minor version at a time. Compatibility holds between adjacent minor versions.
+
+### Upgrade with Multi-Cluster Replication
+
+With [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication), each Temporal Service has its own
+database and binaries. Run the full upgrade, schemas and binary, on each Temporal Service separately.
+
+Upgrade the passive Temporal Service before the active one. A newer version can add replication task types that an
+older version doesn't recognize and drops, so keep the receiver at least as new as the sender:
+
+1. Upgrade the passive Temporal Service: schemas, then binary.
+2. Wait for replication lag to return to normal.
+3. Upgrade the active Temporal Service: schemas, then binary.
+
+This order assumes one Temporal Service is active for every Global Namespace. Active and passive are set per Global
+Namespace, so if your Global Namespaces are active on different Temporal Services, replication runs in both directions
+and neither order keeps every receiver at least as new as its sender.
+
+The Temporal Server doesn't enforce this order. Don't fail over or hand over a Global Namespace while an upgrade is in
+progress.

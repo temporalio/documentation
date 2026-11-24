@@ -4,10 +4,6 @@ title: Roll out and pin Workflows
 sidebar_label: Roll out and pin
 description: Roll out Worker Deployment Versions with the CLI, mark Workflow Types as Pinned, move pinned Workflows, and migrate to Auto-Upgrade.
 toc_max_heading_level: 4
-keywords:
-  - workers
-  - versioning
-  - deploys
 tags:
   - Temporal Service
   - Durable Execution
@@ -231,4 +227,3 @@ temporal workflow update-options \
 When you change the behavior to Auto-Upgrade, the Workflow will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the earlier Pinned Version, you should make sure you [patch](/patching#patching) the Workflow code.
 
 :::
-

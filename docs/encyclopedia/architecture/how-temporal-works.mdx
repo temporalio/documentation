@@ -1,14 +1,8 @@
 ---
 id: how-temporal-works
 title: How Temporal works
-sidebar_label: How Temporal works
 description: How the Temporal Client, Server, and Worker interact during a Workflow and Activity lifecycle, with a step-by-step walkthrough and interactive demo.
 toc_max_heading_level: 4
-keywords:
-  - architecture
-  - durable execution
-  - how temporal works
-  - temporal service
 tags:
   - Durable Execution
   - Temporal
@@ -115,17 +109,17 @@ For each `ActivityTaskScheduled` Event, a queue processor in History calls Match
 
 **Step 9: An Activity Worker polls and starts the Activity**
 
-A (possibly different) Worker is polling that Activity Task Queue using `PollActivityTask` via Frontend. Frontend asks Matching; Matching selects the Activity Task and notifies History that it has started. History appends `ActivityTaskStarted` and sets up any Activity timeout timers (for example, schedule-to-close). The Activity Task is then returned to the Worker via Frontend.
+A (possibly different) Worker is polling that Activity Task Queue using `PollActivityTask` via Frontend. Frontend asks Matching; Matching selects the Activity Task and notifies History that it has started. History records the started attempt and sets up any Activity timeout timers (for example, start-to-close). History doesn't append `ActivityTaskStarted` to the Event History yet; it writes that Event when the Activity Execution completes or fails for the last time. The Activity Task is then returned to the Worker via Frontend.
 
 **Step 10: Worker runs your Activity code**
 
-The Worker calls your Activity function/method with the inputs from the Task. This code can do I/O, call external services, etc., because it is not replayed the same way as Workflow code. 
+The Worker calls your Activity function/method with the inputs from the Task. This code can do I/O and call external services because it is not replayed the same way as Workflow code. 
 
 **Step 11: Activity reports success or failure**
 
-On success, the Worker sends `RespondActivityTaskCompleted` (with the result) to Frontend; Frontend forwards it to History. The History appends: `ActivityTaskCompleted` (including the result) and `WorkflowTaskScheduled` (to wake up the Workflow), and adds a Transfer Task to create the next Workflow Task.
+On success, the Worker sends `RespondActivityTaskCompleted` (with the result) to Frontend; Frontend forwards it to History. History appends `ActivityTaskStarted`, `ActivityTaskCompleted` (including the result), and `WorkflowTaskScheduled` (to wake up the Workflow), and adds a Transfer Task to create the next Workflow Task.
 
-On failure, the Worker sends `RespondActivityTaskFailed`; History appends `ActivityTaskFailed` and either will append a new `ActivityTaskScheduled` (for a retry), or leaves the failure to propagate to the Workflow, depending on retry settings.
+On failure, the Worker sends `RespondActivityTaskFailed`. If the [Retry Policy](/encyclopedia/retry-policies) allows another attempt, History schedules the retry without appending any Events, and the Activity Task returns to the Task Queue after the retry interval. When retries are exhausted or the failure is non-retryable, History appends `ActivityTaskStarted`, `ActivityTaskFailed`, and `WorkflowTaskScheduled`, and the failure propagates to the Workflow.
 
 ### Workflow resumes and finishes
 

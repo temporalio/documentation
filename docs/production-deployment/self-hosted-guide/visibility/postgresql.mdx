@@ -5,9 +5,6 @@ sidebar_label: PostgreSQL
 slug: /self-hosted-guide/visibility/postgresql
 description: How to set up a PostgreSQL Visibility store for a self-hosted Temporal Service.
 toc_max_heading_level: 4
-keywords:
-  - visibility
-  - self-hosting
 tags:
   - Temporal Service
   - Self-hosting
@@ -133,4 +130,3 @@ ALTER TABLE executions_visibility SET (
 ```
 
 Track sizes with `pg_relation_size('executions_visibility')` and `pg_indexes_size('executions_visibility')`, and use the [`pgstattuple`](https://www.postgresql.org/docs/current/pgstattuple.html) extension for precise bloat estimates. For sustained high-volume Visibility workloads, consider [Elasticsearch or OpenSearch](/self-hosted-guide/visibility/elasticsearch), which Temporal recommends for production at scale.
-
