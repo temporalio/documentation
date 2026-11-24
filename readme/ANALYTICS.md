@@ -12,7 +12,16 @@ The site records clicks in two ways:
   can't identify the action: a keyboard shortcut, an icon-only button, or a control whose result matters more than the
   click itself.
 
-Both kinds of tracking only run after the reader grants analytics consent in the consent banner.
+Both kinds of tracking only run when the reader has analytics consent. Amplitude itself loads through Google Tag
+Manager (container `GTM-TSXFPF2`), which `static/scripts/googletag.js` starts with the reader's consent state on every
+page load.
+
+Check consent with `hasDocsAnalyticsConsent()` from `src/utils/analyticsConsent.js` (`trackEvent()` already does), not
+by reading the `consent` cookie alone. In US states with an opt-out privacy law, the consent banner grants analytics by
+default but records that only in localStorage. The banner sends the `consent_granted` event that loads Amplitude only
+the first time, so `googletag.js` reads the same localStorage record to load Amplitude on return visits.
+`googletag.js` can't import the helper, so it repeats the rule. Tests in `src/utils/analyticsConsent.test.js` check
+that the two agree.
 
 ## Navbar
 

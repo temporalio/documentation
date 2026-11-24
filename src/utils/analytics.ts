@@ -1,5 +1,7 @@
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
-import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
+import { hasDocsAnalyticsConsent } from './analyticsConsent';
+
+export { hasDocsAnalyticsConsent };
 
 // Sends an Amplitude event when the reader has given analytics consent and
 // the Amplitude SDK has loaded. Tracking must never break the control that
@@ -7,7 +9,7 @@ import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-
 export function trackEvent(eventName: string, properties?: Record<string, unknown>): void {
   if (!ExecutionEnvironment.canUseDOM) return;
   try {
-    if (hasAnalyticsConsent(readConsentFromDocumentCookie()) && window.amplitude) {
+    if (hasDocsAnalyticsConsent() && window.amplitude) {
       window.amplitude.track(eventName, properties);
     }
   } catch {
