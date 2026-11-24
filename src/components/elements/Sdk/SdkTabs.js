@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory, useLocation } from '@docusaurus/router';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { SDK_LANGUAGES, LANGUAGE_TAB_GROUP } from '@site/src/constants/sdkLanguages';
+import { SDKS } from '@site/src/constants/sdks';
+
+const TAB_KEY_BY_SDK_ID = Object.fromEntries(SDKS.map(({ id, tabKey }) => [id, tabKey]));
+
+// Links such as /develop/python/set-up?language=python (from /api/recommend) use
+// the full SDK name, which is what the hand-written language tabs are keyed on.
+// These tabs are keyed on short codes (py, ts, rb, rs), so translate the
+// parameter to the code and let the tab group's own query-string handling
+// select the tab. Only SDK names with a different code are rewritten.
+function useSdkNameInQuery() {
+  const { search } = useLocation();
+  const history = useHistory();
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const tabKey = TAB_KEY_BY_SDK_ID[params.get(LANGUAGE_TAB_GROUP)];
+    if (!tabKey || tabKey === params.get(LANGUAGE_TAB_GROUP)) return;
+    params.set(LANGUAGE_TAB_GROUP, tabKey);
+    history.replace({ ...history.location, search: params.toString() });
+  }, [search, history]);
+}
 
 // Named components for language-specific slots
 export const Go = ({ children }) => children;
@@ -30,6 +51,7 @@ Rust.displayName = 'rs';
 
 // Main wrapper
 const SdkTabs = ({ children, hideUnsupportedLanguages = false }) => {
+  useSdkNameInQuery();
   const contentMap = {};
 
   React.Children.forEach(children, (child) => {
@@ -46,7 +68,7 @@ const SdkTabs = ({ children, hideUnsupportedLanguages = false }) => {
   const tabLanguages = languagesToRender.length > 0 ? languagesToRender : SDK_LANGUAGES;
 
   return (
-    <Tabs groupId={LANGUAGE_TAB_GROUP}>
+    <Tabs groupId={LANGUAGE_TAB_GROUP} queryString>
       {tabLanguages.map(({ key, icon: Icon, label }) => (
         <TabItem key={key} value={key} label={<Icon title={label} />}>
           {contentMap[key] || (
