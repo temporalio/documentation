@@ -1,6 +1,6 @@
 ---
 title: Worker deployment and performance
-description: Best practices for deploying and optimizing Temporal Workers for performance and reliability.
+description: Package, version, scale, and tune Workers, with a checklist and a reference Order Management System application that shows the practices.
 toc_max_heading_level: 4
 tags:
   - Best Practices
@@ -56,7 +56,7 @@ production-ready Worker image:
 {/* SNIPSTART oms-dockerfile-worker */}
 [Dockerfile](https://github.com/temporalio/reference-app-orders-go/blob/main/Dockerfile)
 ```Dockerfile
-FROM golang:1.25.4 AS oms-builder
+FROM golang:1.26.0 AS oms-builder
 
 WORKDIR /usr/src/oms
 

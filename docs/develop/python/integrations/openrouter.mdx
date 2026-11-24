@@ -421,8 +421,8 @@ def openrouter_provider() -> OpenAIProvider:
 
 Pass the provider to `OpenAIAgentsPlugin(model_provider=...)` and set the agent's `model` to `openrouter/auto` or any
 OpenRouter model slug. The plugin runs each model call as an Activity, so the Activity Retry Policy applies to
-OpenRouter calls the same way it does to OpenAI calls. Tools that run inside the Workflow must be `async`: the Agents
-SDK runs sync tools in a thread, which the Workflow sandbox does not allow.
+OpenRouter calls the same way it does to OpenAI calls. Sync tools run in Workflow code, so keep them fast and
+deterministic: a tool that runs longer than about 2 seconds trips the deadlock detector.
 
 ## Samples
 

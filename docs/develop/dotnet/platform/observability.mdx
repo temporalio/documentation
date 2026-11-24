@@ -307,3 +307,8 @@ Workflow.UpsertTypedSearchAttributes(
     myTextAttributeKey.ValueUnset());
 ```
 <!--SNIPEND-->
+
+Adding an upsert to a Workflow Definition that has open Workflow Executions is a [non-deterministic change](/workflow-definition#non-deterministic-change).
+The upsert produces an [UpsertWorkflowSearchAttributes](/references/commands#upsertworkflowsearchattributes) Command that the existing Event Histories don't contain.
+To roll out the change, use [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) with the [Pinned Versioning Behavior](/production-deployment/worker-deployments/worker-versioning#choosing-behavior), which keeps each open Execution on the code it started on.
+For Auto-Upgrade Workflows, and for Executions that started before you adopted Worker Versioning, guard the new call with the [patching API](/develop/dotnet/workflows/versioning#patching).

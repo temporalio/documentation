@@ -29,6 +29,11 @@ Temporal Proxy's encryption code and security model have been vetted by security
 penetration testing firms. See [Encrypt payloads](/production-deployment/temporal-proxy/encrypt-payloads) for the
 encryption design, configuration, and coverage limits.
 
+For Temporal Cloud upstreams, pair Proxy encryption with
+[Payload encryption validation](/cloud/payload-encryption-validation) to warn about or reject supported incoming Payloads
+that lack the expected encryption metadata, including requests sent directly to Cloud. See
+[Validate encryption in Temporal Cloud](/production-deployment/temporal-proxy/encrypt-payloads#validate-encryption-in-temporal-cloud).
+
 ## Why use it
 
 Without the proxy, connection details leak into your application code. Every Worker and Client has to know the
@@ -271,6 +276,10 @@ Update any dashboard or alert that names the old spelling.
 
 The `namespace` label reports a value only when `metrics.labels.namespace` is on. It is declared either way, so the
 series exist regardless.
+
+To detect supported Payloads sent to Temporal Cloud without the expected encryption metadata, also monitor
+[Payload encryption validation results](/cloud/payload-encryption-validation#monitor-validation-results). These Cloud
+metrics include inspected requests that bypass the proxy. Proxy metrics only describe traffic the proxy handles.
 
 The `encryption` metrics only move when [payload encryption](/production-deployment/temporal-proxy/encrypt-payloads) is
 configured. They are layered, so pick the one that matches the question you are asking:
