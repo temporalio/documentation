@@ -13024,10 +13024,10 @@ snake-case@^3.0.4:
     dot-case "^3.0.4"
     tslib "^2.0.3"
 
-snipsync@^1.13.1:
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.13.1.tgz#9c2c200beb2a8f49ae5957883b3956bbcf63f19f"
-  integrity sha512-0tqUtVhts4hoLdqGUobypu6upruRiCPR31dmZzpp+he8LoVJuGqUdViqaBYp96V3lnpUVRNKt8o+SEvviFFc0w==
+snipsync@~1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.14.0.tgz#4ebcc015a61ee33878b1a98432095e03e1fb84fe"
+  integrity sha512-HBsvIS0Qm+4A81yhr8tJCwMdGm1fACLpZHV5pU3DVgu+dXgscBvkvm8trJww4L/Lie6Kp3me9DlaKmiwGX0lJg==
   dependencies:
     "@octokit/rest" "^18.12.0"
     anzip "^0.2.0"
