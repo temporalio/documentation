@@ -9,6 +9,7 @@ blob-report
 test-results
 
 # Generated files
+api/_content-manifest.json
 .docusaurus
 .cache-loader
 temp/
