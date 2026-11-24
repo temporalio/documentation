@@ -17,6 +17,12 @@ export default function UniversalGroup({ label, sections, ctas, mobile = false, 
       ref={ref}
       name="universal-navigation"
       className="universal-nav-group"
+      onPointerEnter={(event) => {
+        if (!mobile && event.pointerType === 'mouse') ref.current.open = true;
+      }}
+      onPointerLeave={(event) => {
+        if (!mobile && event.pointerType === 'mouse') ref.current.open = false;
+      }}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) ref.current.open = false;
       }}

@@ -1,7 +1,8 @@
 import React from 'react';
-import Navbar from '@theme-original/Navbar';
+import NavbarLayout from '@theme/Navbar/Layout';
 import Head from '@docusaurus/Head';
 import navigation from '@site/src/data/navigation.json';
+import NavbarContent from './Content';
 import './styles.css';
 
 const tokenStyles = ['light', 'dark'].map((mode) => {
@@ -17,11 +18,13 @@ const tokenStyles = ['light', 'dark'].map((mode) => {
 `;
 }).join('\n');
 
-export default function NavbarWrapper(props) {
+export default function Navbar() {
   return (
     <>
       <Head><style>{tokenStyles}</style></Head>
-      <Navbar {...props} />
+      <NavbarLayout>
+        <NavbarContent />
+      </NavbarLayout>
     </>
   );
 } 
