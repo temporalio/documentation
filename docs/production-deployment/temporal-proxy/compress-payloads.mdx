@@ -134,8 +134,8 @@ Since the proxy restores every compressed Payload it receives, it bounds how muc
 - All restored Payloads across every response and codec server request in flight can't hold more than
   `compression.maxDecodedInFlight`, 512 MiB by default.
 
-A response that would pass a limit fails with `ResourceExhausted`, the same code a response over `maxResponseSize`
-already gets. Set `maxDecodedInFlight` to at least your largest upstream `maxResponseSize`, or the proxy refuses to
+A response that would pass the response or in-flight limit fails with `ResourceExhausted`, the same code a response
+over `maxResponseSize` already gets. Set `maxDecodedInFlight` to at least your largest upstream `maxResponseSize`, or the proxy refuses to
 start.
 
 :::note Version note

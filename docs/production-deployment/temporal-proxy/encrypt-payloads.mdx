@@ -471,12 +471,25 @@ encryption:
 
 The proxy does what the SDK's `EncodeCommonAttributes` option does: it moves the message and stack trace into the
 failure's encoded attributes, a Payload it then seals like any other, and leaves `Encoded failure` in their place. The
-format matches the SDK's, and SDK Clients always decode it on read, so Workers need no changes. Failures a Worker
-already encoded are left alone.
+format matches the SDK's, and SDK Clients always decode it on read, so Workers need no changes. A failure a Worker
+already encoded keeps its attributes.
 
 On responses, the proxy restores the original text after opening the attributes, so a client that doesn't decode them,
 such as the Web UI or the CLI, sees the message where it expects it. Restoring runs whenever keys are configured, so
 failures stay readable after you turn `failures` off.
+
+Whenever keys are configured, even with `failures` off, the proxy also resets the message to `Encoded failure` and
+clears the stack trace of any failure it sends upstream that has encoded attributes. This stops text it restored on a
+response from going back upstream in plaintext, such as when an Activity failure returns as the cause of a Workflow
+failure. If you use a custom Failure Converter that sends a readable message beside its own encoded attributes, that
+message doesn't reach the upstream.
+
+:::note Version note
+
+Clearing the text of failures that already have encoded attributes is new in v1.2.1, v1.1.2, and v1.0.2. Earlier
+releases forward that text unchanged.
+
+:::
 
 ## Pass through payloads that are already encrypted {/* #skip-encodings */}
 
