@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 import { ReleaseNoteHeader, CaptionedImage } from '@site/src/components';
 
 <ReleaseNoteHeader featureName="projects">
-Features in pre-release are experimental. While Project-specific APIs and functionality may evolve, enabling Projects is designed to be backward compatible with existing resources, permissions, and workflows through the Default Project.
+Project-specific APIs and functionality may evolve during Public Preview. Enabling Projects is designed to be backward compatible with existing resources, permissions, and workflows through the Default Project.
 </ReleaseNoteHeader>
 
 Projects are an organizational layer within a Temporal Cloud Account that groups related resources into a single operational boundary. With Projects, you can organize [Namespaces](/cloud/namespaces), [Nexus endpoints](/nexus/endpoints), and [Connectivity Rules](/cloud/connectivity#connectivity-rules) around how your organization operates: by team, environment, service, or business unit.
@@ -35,7 +35,8 @@ They also don't restrict which Namespaces can call a Nexus Endpoint. See [Use Ne
 
 ## Enable Projects on your Account
 
-While Projects are in pre-release, they are not enabled by default. [Contact Support](/evaluate/cloud/support#support-ticket) to request enabling Projects for your account.
+Projects are enabled by default for new Accounts. No action is required.
+For existing Accounts, [contact Support](/evaluate/cloud/support#support-ticket) to request enabling Projects for your Account.
 
 Once Projects are enabled, existing Accounts receive a Default Project, and new Accounts are created with one automatically. For existing Accounts, all existing resources are automatically placed in the Default Project. Existing role assignments and effective permissions remain unchanged. For new Accounts, the Default Project is created automatically. New resources are automatically placed in the Default Project unless you specify otherwise.
 
@@ -60,7 +61,7 @@ Create a Project when a set of resources has a distinct owner or access model, s
 
 Start with one Project for a team or application with clear ownership. Add more only when needed.
 
-<Tabs groupID="create-project">
+<Tabs groupId="create-project">
   <TabItem value="cloud-ui" label="Cloud UI">
 
 To create a Project using the Temporal Cloud UI:
@@ -104,7 +105,7 @@ After creating the Project, add new Namespaces and other supported resources wit
 
 After creating a Project, you can create Project-scoped resources such as Namespaces, Nexus Endpoints, or Connectivity Rules within it.
 
-<Tabs groupID="create-project">
+<Tabs groupId="create-project">
   <TabItem value="cloud-ui" label="Cloud UI">
 
 In Temporal Cloud UI:
@@ -213,7 +214,7 @@ You can move a Namespace to another Project in the same Temporal Cloud Account. 
 A move changes which Project contains the Namespace and recalculates Project-level access:
 
 - Explicit Namespace-level role assignments and Namespace-scoped Service Accounts stay with the Namespace.
-- Access that comes only from the source Project does not carry over. A role on the destination Project applies after the move.
+- Roles on the source Project no longer grant access to the Namespace. Before the move, grant the destination-Project roles that users and Service Accounts need.
 - Project-scoped Service Accounts remain in their Project. A Service Account scoped to the source Project does not move with the Namespace.
 
 Running Workflows continue, but subsequent requests from workers or clients that relied on source-Project access can fail authorization. Review the identities used by your workers, clients, and automation before moving a production Namespace. See [Manage Project access](#manage-project-access).
@@ -230,11 +231,11 @@ If **Move to Project** is not available, [contact Support](/evaluate/cloud/suppo
 4. Identify users who will have Project Admin on the destination Project and an explicit role on the Namespace. Plan to remove those Namespace roles immediately after the move completes. Keep them in place until then so existing automations retain their access.
 5. Check the Namespace's [Connectivity Rules](/cloud/connectivity). A rule belongs to a Project and does not move with the Namespace. Create the replacement rules in the destination Project before the move.
 
-A Namespace with no Connectivity Rules accepts connections without rule-based network restrictions. Detach rules only when that is the intended result.
+A Namespace with no Connectivity Rules accepts connections without rule-based network restrictions. If the Namespace needs network restrictions after the move, attach destination-Project rules during the move instead of detaching its rules.
 
 The Cloud UI blocks the move when the Namespace has Connectivity Rules attached. To keep rule-based network restrictions, use the CLI or the Cloud Operations API and name rules that already exist in the destination Project.
 
-<Tabs groupID="move-namespace">
+<Tabs groupId="move-namespace">
   <TabItem value="cloud-ui" label="Cloud UI">
 
 1. Open the Project and select **Namespaces**.
@@ -276,7 +277,7 @@ To leave the Namespace with no rules, send `"unrestricted": {}` instead of `rule
   </TabItem>
   <TabItem value="cli" label="CLI">
 
-Install a Temporal Cloud CLI release that supports `namespace move-to-project`, then sign in with `temporal cloud login`. Use `temporal cloud whoami` to confirm the account.
+Install version 0.1.1 or later of the [Temporal Cloud extension](/cli/setup-cli#install-the-temporal-cloud-extension) for the Temporal CLI, then sign in with `temporal cloud login`. Use `temporal cloud whoami` to confirm the account.
 
 Check the Namespace's current rules and the rules available in the destination Project:
 
@@ -336,7 +337,7 @@ A user who can only list Endpoints in `checkout` will not see the Endpoint in `p
 
 Users, groups, and Account-scoped Service Accounts can be granted Project-level roles. Each [Project role](#project-roles) applies to the Project and, depending on the role, may grant inherited access to resources within it.
 
-<Tabs groupID="manage-project-access">
+<Tabs groupId="manage-project-access">
   <TabItem value="cloud-ui" label="Cloud UI">
 
 To manage Project access in the Temporal Cloud UI:
@@ -372,7 +373,7 @@ Use the `role` attribute to set the role for the User or Group. See [Project rol
 
 Similar to [Namespace-scoped Service Accounts](/cloud/manage-access/service-accounts#scoped), a Project-scoped Service Account is an identity bound (or scoped) to a single Project. Use it for workers, CI/CD pipelines, Terraform, or operational automation that should not access resources outside that Project. Project-scoped Service Accounts are not created automatically with Project creation. Create them only when needed. 
 
-<Tabs groupID="manage-project-service-account">
+<Tabs groupId="manage-project-service-account">
   <TabItem value="cloud-ui" label="Cloud UI">
 
 To create a Project-scoped service account in this Project, click **Project Identities** in the left navigation. Then click the  **Service Accounts** tab to create a Project-scoped service account.
@@ -457,7 +458,7 @@ The Cloud UI removes redundant Namespace roles when you upgrade an Account role.
 
 ## Modify an existing Project
 
-<Tabs groupID="modify-project">
+<Tabs groupId="modify-project">
   <TabItem value="cloud-ui" label="Cloud UI">
 
 To modify an existing Project, click **Project Settings** in the left navigation. The Project Settings page appears, with the General tab selected by default. Here, you can change the name or description of your Project. You can also access your Project's unique ID. You can copy the ID, but you can't change it.
@@ -503,7 +504,7 @@ A Project must be empty, meaning it contains zero Namespaces, Nexus Endpoints, C
 An Account must always contain at least one Project. If the Account contains two or more Projects, you can delete the Default Project. If the Default Project is deleted, Temporal does not automatically designate a new Default Project. If the Default Project is deleted, API calls that do not specify a Project (by providing a Project ID) will fail. 
 
 
-<Tabs groupID="modify-project">
+<Tabs groupId="modify-project">
   <TabItem value="cloud-ui" label="Cloud UI">
 
 To delete a Project, click **Project Settings** in the left navigation and then click the **Delete Project** tab. Click the **Delete** button to permanently delete the Project.

@@ -1,9 +1,7 @@
 ---
 id: index
 title: Temporal CLI
-description:
-  The Temporal CLI provides terminal access to Temporal Services for managing, monitoring, and debugging Workflows and
-  Activities, plus embedded development support.
+description: Manage, monitor, and debug Workflows from the terminal, run a local development server, or use the Cloud extension to manage Temporal Cloud.
 slug: /cli
 toc_max_heading_level: 4
 tags:
