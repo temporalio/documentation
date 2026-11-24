@@ -20,11 +20,9 @@ unchanged. Keep the PR as a draft and do not merge it until the publication bloc
 
 - [Modal WCI provider PR #154](https://github.com/temporalio/temporal-auto-scaled-workers/pull/154) remains open.
   Confirm the merged implementation, released WCI and Server requirements, and Temporal Cloud rollout before publishing.
-- Confirm the customer OAuth connection procedure and UI labels. The deployment page reserves a commented location
-  for this procedure. Current draft instructions require an administrator-provisioned connection; they are not an
-  end-to-end OAuth setup guide.
-- Confirm the provider feature stage separately from the Python package's experimental stage. Do not infer Cloud
-  availability from CLI flags or a published Python wheel.
+- Verify the workspace connection, version creation, and validation steps in the released Temporal Cloud UI. The draft
+  follows the proposed UI in [cloud-ui PR #3545](https://github.com/temporalio/cloud-ui/pull/3545) and
+  [UI PR #4079](https://github.com/temporalio/ui/pull/4079).
 - Confirm supported Namespace locations, region selection, high availability, and self-hosted setup before adding
   those claims. Lambda's AWS-specific restrictions and IAM setup were not copied to Modal.
 - Run the deployment and automatic-registration flow in an authorized environment. The previous smoke test validated
