@@ -56,7 +56,7 @@ production-ready Worker image:
 {/* SNIPSTART oms-dockerfile-worker */}
 [Dockerfile](https://github.com/temporalio/reference-app-orders-go/blob/main/Dockerfile)
 ```Dockerfile
-FROM golang:1.25.4 AS oms-builder
+FROM golang:1.26.0 AS oms-builder
 
 WORKDIR /usr/src/oms
 

@@ -288,7 +288,7 @@ On the Worker, wrap a sandbox backend's client in a `SandboxClientProvider` unde
 plugins: [
   new OpenAIAgentsPlugin({
     modelProvider: new OpenAIProvider({ apiKey }),
-    sandboxClientProviders: [new SandboxClientProvider('local', new UnixLocalSandboxClient())],
+    sandboxClientProviders: [new OnHostSandboxClientProvider('local', new UnixLocalSandboxClient())],
     resolvableWorkerEnvVars: ['SANDBOX_SERVICE_TOKEN'],
   }),
 ],
