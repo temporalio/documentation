@@ -59,7 +59,7 @@ Task Queues in Temporal are dynamically created when first referenced. Rate limi
 
 The Python SDK provides three rate limiting controls:
 
-1. **max_task_queue_activities_per_second** (global): Limits how many Activity Tasks the Temporal Service dispatches per second across ALL Workers on this queue. Each retry attempt counts as a new dispatch. Best for API rate limits. Last value wins. It doesn't limit how many Activities run at once.
+1. **max_task_queue_activities_per_second** (global): Limits how many Activity Tasks the Temporal Service dispatches per second across ALL Workers on this queue. Each retry attempt counts as a new dispatch. Best for API rate limits. The last Worker value wins, unless an operator set the rate with `temporal task-queue config set` (see [CLI commands for operators](#cli-commands-for-operators)). It doesn't limit how many Activities run at once.
 
 2. **max_activities_per_second** (per-worker): Limits Activities per Worker. Can be combined with global limit for finer control.
 
@@ -118,6 +118,10 @@ This approach respects the API's rate limit guidance while providing a sensible 
 - **Multiple environments:** Use separate API keys and Task Queues for dev/staging/prod
 
 #### Task Queue backlog and draining strategies
+
+If you deploy these Workers on AWS Lambda, configure scale-up to avoid extra invocations when dispatch reaches a Task
+Queue's rate limit. See
+[Configure scale-up for rate-limited Task Queues](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-rate-limited-scaling).
 
 During throttling events, Task Queues can grow significantly. Operators need to switch to **draining mitigation mode** when backlogs occur.
 

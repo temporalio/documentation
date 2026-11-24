@@ -1,6 +1,9 @@
+import { trackEvent } from '@site/src/utils/analytics';
+
 function AskAIButton({ query, closeDocSearch }) {
   // Handle button click by opening Kapa with the query
   const handleClick = () => {
+    trackEvent('Docs Ask AI Opened', { surface: 'search', query });
     closeDocSearch();
     window.Kapa.open({ query, submit: true });
   };

@@ -23,6 +23,7 @@ import type { FacetFilters } from 'algoliasearch/lite';
 import AskAIButton from './AskAIButton';
 import { getInitialLanguageFilter, SDK_LANGUAGE_STORAGE_KEY } from './SDKLanguageFilter';
 import { CustomSearchModal } from './CustomSearchModal';
+import { trackEvent } from '@site/src/utils/analytics';
 
 type DocSearchProps = Omit<DocSearchModalProps, 'onClose' | 'initialScrollY'> & {
   contextualSearch?: string;
@@ -156,9 +157,14 @@ function DocSearch({ externalUrlRegex, appId, apiKey, indexName, ...props }: Doc
   const searchButtonRef = useRef<HTMLButtonElement>(null as any);
   const [isOpen, setIsOpen] = useState(false);
 
-  const openModal = useCallback(() => {
+  // Autocapture only sees clicks on the search button, not the keyboard
+  // shortcuts, so record every way the modal opens with one explicit event.
+  const openModal = useCallback((method: 'button' | 'shortcut', shortcut?: string) => {
+    trackEvent('Docs Search Opened', { method, ...(shortcut && { shortcut }) });
     setIsOpen(true);
   }, []);
+
+  const openModalFromButton = useCallback(() => openModal('button'), [openModal]);
 
   const closeModal = useCallback(() => {
     setIsOpen(false);
@@ -183,7 +189,7 @@ function DocSearch({ externalUrlRegex, appId, apiKey, indexName, ...props }: Doc
       // Cmd+K or Ctrl+K
       if (event.key === 'k' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
-        openModal();
+        openModal('shortcut', 'mod+k');
         return;
       }
 
@@ -193,7 +199,7 @@ function DocSearch({ externalUrlRegex, appId, apiKey, indexName, ...props }: Doc
           !(event.target instanceof HTMLTextAreaElement) &&
           !(event.target as HTMLElement)?.isContentEditable) {
         event.preventDefault();
-        openModal();
+        openModal('shortcut', '/');
         return;
       }
     };
@@ -212,7 +218,7 @@ function DocSearch({ externalUrlRegex, appId, apiKey, indexName, ...props }: Doc
       </Head>
 
       <DocSearchButton
-        onClick={openModal}
+        onClick={openModalFromButton}
         ref={searchButtonRef}
         translations={props.translations?.button ?? translations.button}
       />

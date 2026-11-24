@@ -1,7 +1,7 @@
 ---
 id: index
 title: Activity Operations
-description: Learn how to manage a running Activity Execution with commands to Pause, Unpause, Reset, Update Options, Request Cancel, Terminate, and Delete.
+description: Pause, Unpause, Reset, Update Options, Request Cancel, Terminate, or Delete an Activity Execution, and what each operation guarantees.
 slug: /activity-operations
 toc_max_heading_level: 4
 tags:

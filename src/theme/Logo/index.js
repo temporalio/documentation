@@ -13,9 +13,13 @@ export default function Logo(props) {
     navbar: { logo },
   } = useThemeConfig();
 
+  // The logo is an image link with no text, so give Amplitude autocapture a
+  // name for it, matching the nav-item attribute on the other navbar links.
+  const trackedProps = { 'data-amp-track-nav-item': 'Logo', ...props };
+
   return isExternalHref(logo?.href) ? (
-    <OriginalLogo {...props} />
+    <OriginalLogo {...trackedProps} />
   ) : (
-    <OriginalLogo {...props} target={undefined} rel={undefined} />
+    <OriginalLogo {...trackedProps} target={undefined} rel={undefined} />
   );
 }

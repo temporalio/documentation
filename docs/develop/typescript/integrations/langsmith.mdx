@@ -10,14 +10,10 @@ tags:
 description: Add LangSmith tracing to TypeScript Workflows using the Temporal TypeScript SDK.
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader type="publicPreview" />
-
 Temporal's LangSmith integration lets you trace AI agent Workflows in [LangSmith](https://smith.langchain.com/)
 alongside every LLM call, tool execution, and Temporal operation.
 
-Temporal gives your agent code [durable execution](/temporal#durable-execution). LangSmith adds
+Temporal gives your agent code [durable execution](/durable-execution). LangSmith adds
 the observability side, so you can inspect LLM inputs and outputs, follow a request from the Client through to the
 model, and compare runs over time.
 
@@ -87,7 +83,7 @@ Follow the steps below to configure your Worker.
    ```
 
    Tracing is **off by default**, matching the `langsmith` library. With no tracing flag set to `true`, the plugin
-   emits nothing.
+   starts no new traces, but a trace that arrives in Temporal headers from a traced caller continues.
 
    The plugin reads the same flags `langsmith` itself uses — `LANGSMITH_TRACING` (or `LANGSMITH_TRACING_V2`) and their
    `LANGCHAIN_` aliases.
@@ -172,15 +168,6 @@ export async function SummarizeWorkflow(text: string): Promise<string> {
 }
 ```
 <!--SNIPEND-->
-
-:::note
-
-Inside a Workflow body, sequential `await inner(...)` nesting is exact. Under `Promise.all(...)` fan-out, or for
-`traceable` calls made after an `await` in the same scope, parenting falls back to the Workflow run. This affects only
-the visual shape of the trace, never Workflow history or control flow. Activity-side and client-side `traceable` are
-unaffected.
-
-:::
 
 ## Trace Signal and Update handlers
 
@@ -297,9 +284,9 @@ user_pipeline
 | ----------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `client`          | `new Client()`    | The LangSmith `Client` that runs are emitted to.                                                                                               |
 | `addTemporalRuns` | `false`           | Emit first-class runs for Temporal operations (`StartWorkflow:`, `RunActivity:`, `HandleSignal:`, …) in addition to your `traceable` runs.     |
-| `projectName`     | LangSmith default | Target LangSmith project for emitted runs.                                                                                                     |
+| `projectName`     | LangSmith default | Default LangSmith project for new root traces. An inherited destination takes precedence.                                                      |
 | `tags`            | —                 | Tags attached to every run the plugin emits.                                                                                                   |
-| `metadata`        | —                 | Metadata merged into every run the plugin emits. Credential-looking keys are scrubbed before emission.                                         |
+| `metadata`        | —                 | Metadata merged into every run the plugin emits. It is sent unchanged and travels in Temporal headers, so keep secrets out of it.              |
 
 The LangSmith API key is never accepted as a plugin option and never crosses a Temporal boundary. Supply a
 pre-constructed `Client` (which reads `LANGSMITH_API_KEY` from the process environment) or let the plugin build a

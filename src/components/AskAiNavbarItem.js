@@ -1,8 +1,16 @@
 import React from 'react';
+import { trackEvent } from '@site/src/utils/analytics';
 
 export default function AskAiNavbarItem() {
   const handleAskAI = () => {
     if (typeof window !== 'undefined') {
+      // widget_loaded is false when the Kapa script hasn't loaded (for example,
+      // blocked by an ad blocker), so the click didn't open anything.
+      trackEvent('Docs Ask AI Opened', {
+        surface: 'navbar',
+        widget_loaded: Boolean(window.kapa?.open || window.Kapa?.open),
+      });
+
       // Try global Kapa functions
       if (window.kapa && typeof window.kapa.open === 'function') {
         window.kapa.open();
