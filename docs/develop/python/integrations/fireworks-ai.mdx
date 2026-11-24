@@ -134,8 +134,8 @@ provider in the sample serves.
 
 ## Configure the Worker
 
-Pass the provider to the plugin. The Worker serves every provider whose key is set and prints which ones at startup. A
-custom model provider must set a model Activity timeout; the sample uses 60 seconds. Fireworks AI answers a
+Pass the provider to the plugin. The Worker serves every provider whose key is set and prints which ones at startup. The
+model Activity's Start-To-Close Timeout defaults to 60 seconds; raise it for slow models. Fireworks AI answers a
 scaled-to-zero on-demand deployment with an immediate 503 rather than a slow first response, so the Retry Policy covers
 scale-up and the timeout only has to cover your longest generation. The Heartbeat Timeout lets Temporal notice a Worker
 that died mid-call within seconds instead of after the full Start-To-Close Timeout; the plugin heartbeats on its own.
@@ -221,13 +221,13 @@ class OpenAICompatibleAgentWorkflow:
 <!--SNIPEND-->
 
 Name the model on the agent, as the sample does. An agent that names no model inherits the Agents SDK's default settings
-for OpenAI's current default model, which include `verbosity` and a reasoning effort; `temporalio-openai-agents` 1.1.0
-forwards them to the provider unchanged, and Fireworks AI, for example, rejects `verbosity` with a 400. On that release,
+for OpenAI's current default model, which include `verbosity` and a reasoning effort; `temporalio-openai-agents` 1.x
+forwards them to the provider unchanged, and Fireworks AI, for example, rejects `verbosity` with a 400. On 1.x,
 give such an agent an explicit `model_settings=ModelSettings()`.
 
-Tools that run inside the Workflow must be `async`: the Agents SDK runs sync tools in a thread, which the Workflow
-sandbox does not allow. Tools that do I/O belong in Activities; see
-[Activity-backed tools](/develop/python/integrations/openai-agents#activity-backed-tools).
+Sync tools run in Workflow code, so keep them fast and deterministic: a tool that runs longer than about 2 seconds trips
+the deadlock detector. Tools that do I/O belong in Activities; see [Activity-backed
+tools](/develop/python/integrations/openai-agents#activity-backed-tools).
 
 ## Run the sample
 
