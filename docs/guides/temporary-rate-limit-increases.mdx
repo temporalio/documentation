@@ -729,7 +729,7 @@ The Go code in this guide handles one-off increases that a client requests. If y
 
 The [temporal-cloud-ops-capacity-modes](https://github.com/temporal-sa/temporal-cloud-ops-capacity-modes) Python sample provides two Workflows for this:
 
-- **Bulk capacity analysis** reads the Action limit and Action count for every Namespace in your account from the [Metrics API](/cloud/metrics/openmetrics/api-reference), reads each Namespace's current capacity mode from the [Cloud Ops API](/ops), and returns a recommended capacity mode and TRU count for each Namespace. It doesn't change any Namespace.
+- **Bulk capacity analysis** reads the Action limit and Action count for every Namespace in your account from the [Metrics API](/cloud/metrics/openmetrics/api-reference), reads each Namespace's current capacity mode from the [Cloud Ops API](/ops), and returns a recommended capacity mode and TRU count for each Namespace. It doesn't make any changes.
 - **Scheduled capacity change** sets one Namespace to Provisioned Capacity with the TRU count you choose and verifies the change. If you give it an end time and the first verification passes, it waits until then, reverts the Namespace to On-Demand Capacity, and verifies the revert. It can send a Slack notification when a change or verification fails. If the first verification fails, the Workflow ends without reverting, so check the Namespace's capacity and restore it yourself.
 
 To run the sample:
