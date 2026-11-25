@@ -11,122 +11,118 @@ tags:
   - Serverless
 ---
 
-When a Task Queue needs Worker capacity, Temporal invokes a deployed Modal function. Each invocation starts a
-Worker that polls for Tasks until its execution budget expires. Modal provides the containers that run these
-invocations and can reuse a container for later invocations.
+import { CaptionedImage } from '@site/src/components';
+
+When a Task Queue needs more Worker capacity, Temporal invokes a deployed Modal function. Each invocation starts a
+Worker that polls for Tasks and shuts down before the function times out. Modal can reuse the container for a later
+invocation.
 
 For setup, see [Deploy a Serverless Worker on Modal](/production-deployment/worker-deployments/serverless-workers/modal).
-For the Python entry point and configuration, see [Serverless Workers on Modal with Python](/develop/python/workers/serverless-workers/modal).
-
-## Invocation and container lifetimes {/* #lifecycle */}
-
-A Modal function invocation and its container have separate lifetimes:
-
-| Phase | Function invocation | Container |
-| --- | --- | --- |
-| Start | Temporal requests a function invocation. | Modal assigns available capacity or starts a container from the app's image. |
-| Initialize | The integration configures a fresh Client and Worker and connects to Temporal. | The container supplies the packaged code, dependencies, and configured secrets. |
-| Process | The Worker polls the Task Queue and executes Tasks. | The container hosts the active invocation. |
-| Shut down | The integration stops polling, allows time for Activity shutdown, runs cleanup hooks, and exits. | Modal can keep the container for another invocation. |
-| Idle | No Worker is running after the invocation exits. | Modal can remove idle containers according to its autoscaling configuration. |
-
-An invocation can process Tasks from multiple Workflow Executions. Completing a Workflow, or temporarily emptying
-the Task Queue, does not by itself end the invocation. The integration continues polling within its execution budget.
-
-Sequential invocations can reuse a container, but each invocation creates a fresh Temporal Client and Worker.
-Do not rely on a previous invocation's in-memory Workflow cache. A Worker can reconstruct Workflow state from
-[Event History](/workflow-execution/event) when it receives a Workflow Task.
-
-The Modal function timeout bounds one invocation, not the entire Workflow Execution. A Workflow can wait between
-Tasks and continue on another invocation. In-flight Activities still need enough time to finish or respond to
-cancellation; use [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) to record progress
-when a retry must resume work.
-
-## Shutdown budget {/* #shutdown-budget */}
-
-The Python integration reserves 15 seconds before the configured Modal function timeout. Configuration, connection
-setup, polling, Worker shutdown, and cleanup hooks must fit in the remaining execution budget.
-
-With a five-minute function timeout and the default five-second graceful shutdown timeout, the approximate timeline
-from the start of `run_worker` is:
-
-| Time | Action |
-| --- | --- |
-| 0:00 | Begin configuration and connection setup. |
-| 4:38 | Stop polling and begin Worker shutdown. |
-| 4:43 | End the default graceful Activity shutdown period. |
-| 4:45 | Target completion, including the two-second cleanup reserve. |
-| 5:00 | Reach the configured Modal function deadline. |
-
-Setup time consumes the budget, so the Worker may spend less than 4 minutes 38 seconds polling. These times describe
-the configured budget, not a guarantee that arbitrary user cleanup code completes before the deadline.
-
-Increasing `graceful_shutdown_timeout` also increases the default shutdown reserve and moves the stop-polling time
-earlier. If you override `shutdown_deadline_buffer`, leave enough time for Activity shutdown and cleanup hooks.
-Pass the same function timeout to Modal and to the integration.
+For Python configuration and defaults, see [Serverless Workers on Modal with Python](/develop/python/workers/serverless-workers/modal).
 
 ## Autoscaling {/* #autoscaling */}
 
-Temporal decides when to request another Worker invocation. Modal decides how to provide container capacity for
-those invocations. Modal does not inspect the Temporal Task Queue directly.
+Temporal uses the same [event-driven scaling algorithm as AWS Lambda](/serverless-workers/aws-lambda#autoscaling).
+The [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) requests Modal function
+invocations based on demand on the Task Queue. Modal supplies container capacity for those invocations.
 
-| Controller | Input | Action |
-| --- | --- | --- |
-| Temporal's [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) | Task arrival signals and Task Queue metrics for the Worker Deployment Version. | Request another invocation of the configured Modal function. |
-| Modal's autoscaler | Function inputs and available container capacity. | Start containers for inputs and remove idle containers, within the function's configured limits. |
+### Scale-out {/* #scale-out */}
 
-The Modal compute provider uses the no-sync scaler. A Task that cannot be immediately matched to an available
-Worker can trigger another invocation, subject to the scale-up cooldown. Periodic Task Queue metrics checks can also
-trigger an invocation when backlog exceeds the configured threshold.
+When a Task cannot be matched to an available Worker, the WCI can request a new function invocation. Periodic checks
+can also trigger an invocation when backlog exceeds the configured threshold. Each scale-out action requests a Worker
+invocation.
 
-Each scale-up action requests one new function invocation. It does not set a desired number of containers.
-The WCI submits the invocation without waiting for the function to finish.
+Modal can serve the invocation in an available container or start a new one. Set warm capacity and container limits
+in [Modal](#instance-model). Set Temporal's scaling thresholds with the
+[Modal compute-config commands](/cli/command-reference/worker#modal-function).
 
-The WCI does not actively terminate Modal Workers to scale in. Invocations exit according to their Worker lifetime,
-and Modal manages the containers afterward. While a Worker is polling, its invocation is active even if the Temporal
-Task Queue is empty. Modal's idle-container scale-down settings do not shorten that invocation.
+#### Scale-up pauses for rate-limited Task Queues {/* #rate-limited-task-queues */}
 
-### Controls in Temporal
+If the dispatch rate stays flat while Tasks are waiting, the scaler can pause demand-driven Worker starts. This can
+avoid starting Workers that cannot increase throughput on a [rate-limited Task Queue](/design-patterns/downstream-rate-limiting).
+Worker replacement starts governed by `--max-worker-lifetime-ms` can still occur. See
+[Configure scale-up for rate-limited Task Queues](/production-deployment/worker-deployments/serverless-workers/modal#configure-rate-limited-scaling).
 
-Configure scaling through the
-[Modal compute-config commands](/cli/command-reference/worker#modal-function). The controls include the scale-up
-cooldown, backlog threshold, and metrics polling interval. Keep defaults initially and tune them after measuring
-startup time, Task latency, and invocation volume.
+### Scale-in {/* #scale-in */}
 
-`--max-worker-lifetime-ms` tells the scaler to request replacement capacity periodically while backlog remains.
-It does not set the Modal function timeout or terminate an existing Worker. Configure the invocation timeout
-separately in the Modal function and the Python integration.
+Worker shutdown and Modal's idle container policy determine when capacity goes away. Each Worker polls until it nears
+its execution deadline, even if the Task Queue is empty. When the invocation exits, Modal can keep the container ready
+for a later invocation or remove it.
 
-### Container pool controls
+### Instance model {/* #instance-model */}
 
-Set these options on `@app.function` to control the container pool:
+Each invocation creates a fresh Client and Worker. A Worker can process Tasks from multiple Workflow Executions during
+one invocation. If Modal reuses the container, the next invocation initializes a new Worker.
 
-| Option | Effect |
-| --- | --- |
-| `max_containers` | Caps the number of containers that can run the function. |
-| `min_containers` | Keeps a minimum number of containers warm, including while the function is inactive. |
-| `buffer_containers` | Maintains spare container capacity while the function is active. |
-| `scaledown_window` | Controls how long containers can remain idle during scale-down. |
+Configure container capacity on the Modal function:
 
-By default, Modal can scale the container pool to zero when there are no inputs to process. Keeping containers warm
-can reduce cold starts, but does not start a Temporal Worker until the function is invoked. A low container cap can
-limit how quickly requested invocations begin. Account for Modal workspace limits as well.
+- `min_containers` keeps a minimum number of containers warm. The Worker starts when Modal invokes the function.
+- `buffer_containers` keeps spare container capacity while the function is active.
+- `max_containers` caps the number of containers available for invocations.
+- `scaledown_window` controls how long Modal keeps idle containers during scale-down.
 
-Do not enable concurrent Modal inputs for the Worker function. Configure concurrency within the Temporal Worker
-instead. See [Modal autoscaling](https://modal.com/docs/guide/scale).
+By default, Modal can scale the container pool to zero. Configure Task concurrency in the Temporal Worker and allow
+one active Modal input per container. See [Modal autoscaling](https://modal.com/docs/guide/scale).
+
+### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
+
+Modal Workers can provide extra capacity on a Task Queue served by a fixed-size fleet of long-lived Workers. Temporal
+starts Modal Workers when the existing Workers cannot keep up and the scaler detects unmet demand. Keep the long-lived
+fleet at a fixed size so one scaler responds to demand on the shared Task Queue.
 
 ## Worker Versioning {/* #worker-versioning */}
 
-Associate each Worker Deployment Version with a stable copy of the Worker code. The deployment name and Build ID
-reported by the Worker must match the Worker Deployment Version whose compute configuration invokes it.
+[Worker Versioning](/worker-versioning) uses two identifiers on Modal:
 
-Modal's app version and Temporal's Build ID are separate identifiers. The compute configuration selects a Modal
-app, function, environment, and optionally a numeric app version. A positive `--app-version` selects a particular
-deployed app version; omitting it or setting it to `0` selects the current deployed version.
+- **Temporal Worker Deployment Version.** The deployment name and Build ID identify the Worker build and determine
+  Workflow routing.
+- **Modal App version.** The numeric version identifies the deployed code that Modal runs when Temporal invokes
+  the function.
 
-For production configuration, pin the Modal app version so redeploying the app does not change the code invoked for
-an existing Worker Deployment Version. Pinned Workflows remain on their Temporal version, but that routing alone
-does not protect them from changes to an unpinned Modal target.
+For production, associate each Worker Deployment Version with a specific Modal App version. Set `--app-version` to that
+number when configuring the provider. Omitting the value or using `0` targets the current deployed App version. A
+redeploy can then change the function code invoked for an existing Worker Deployment Version.
 
-Choose Pinned or Auto-Upgrade for each Workflow according to your rollout requirements. See
-[Worker Versioning](/worker-versioning) for routing behavior and rollout strategies.
+### How the versioning behavior changes rollout {/* #rollout-by-behavior */}
+
+Pinned and Auto-Upgrade control how Workflow Executions move between Temporal Worker Deployment Versions. The Modal
+App version in the compute configuration determines what code each Worker Deployment Version runs.
+
+| Versioning behavior | With a specific Modal App version | With the current Modal App version |
+| --- | --- | --- |
+| **Pinned** | Existing Workflows stay on their assigned Worker Deployment Version and its Modal App version. | Existing Workflows stay on their assigned Worker Deployment Version, but a Modal redeploy can change the code they run. |
+| **Auto-Upgrade** | Existing Workflows can move to the Current Version and its Modal App version on their next Workflow Task. | A Modal redeploy can change the code that an existing Worker Deployment Version invokes before you change the Current Version. |
+
+For setup, see [Record the app version](/production-deployment/worker-deployments/serverless-workers/modal#record-app-version).
+
+## Lifecycle {/* #lifecycle */}
+
+Each Modal Worker invocation has three phases:
+
+- **Init.** The integration creates a Client and Worker and connects to Temporal.
+- **Work.** The Worker polls the Task Queue and processes Tasks.
+- **Shutdown.** The Worker stops polling, gives in-flight Activities time to finish, and runs shutdown hooks.
+
+<CaptionedImage
+  src="/diagrams/serverless-worker-lifecycle.svg"
+  srcDark="/diagrams/serverless-worker-lifecycle-dark.svg"
+  alt="Serverless Worker lifecycle showing initialization, polling, and shutdown"
+  title="The shutdown deadline buffer gives the Worker time to shut down. The Modal integration also leaves a safety margin before the function timeout."
+/>
+
+The Modal integration uses the function timeout you pass to `run_worker` and sets its default execution deadline
+15 seconds earlier. It starts shutting down before that deadline, with time for the configured graceful shutdown
+period (five seconds by default) plus two seconds for cleanup. Pass the same timeout to the Modal function and the
+integration. See
+[Python Worker configuration](/develop/python/workers/serverless-workers/modal#configure-the-invocation-lifetime).
+
+### Tuning for long-running Activities {/* #shutdown-budget */}
+
+Size the graceful shutdown timeout for the longest Activity attempt the Worker needs to finish after polling stops.
+The default shutdown deadline buffer grows with that timeout. If you set the buffer explicitly, include the graceful
+shutdown timeout and time for shutdown hooks.
+
+Set the Modal function timeout high enough for connection setup, Activity processing, the shutdown deadline buffer,
+and the 15-second safety margin. A Workflow Execution can continue on another Worker invocation. For Activities that
+need to resume after an interruption, record progress with
+[Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
