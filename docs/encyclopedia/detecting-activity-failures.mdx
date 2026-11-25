@@ -337,6 +337,7 @@ The attempt then times out while it's still working, usually for one of these re
 - **The Temporal Service rejects Heartbeats** with `RESOURCE_EXHAUSTED` because a rate limit was reached.
   See [NOT_FOUND on Activity heartbeat](/troubleshooting/request-failures#not_found-on-activity-heartbeat) for how to check.
 
+To find which of these is delaying your Heartbeats, see [Troubleshoot Activity Heartbeat Timeouts](/troubleshooting/activity-heartbeat-timeouts).
 If Heartbeats regularly arrive near the deadline, lengthen the Heartbeat Timeout.
 
 Don't set a Heartbeat Timeout under one second.

@@ -90,6 +90,7 @@ The Activity runs again from the start on the next attempt, so a non-idempotent 
 
 A sustained rate means the Worker keeps missing its heartbeat window.
 The Activity will time out on every attempt until you fix the cause, holding Task slots and generating retry tasks the whole time.
+To find where the Heartbeats are delayed, see [Troubleshoot Activity Heartbeat Timeouts](/troubleshooting/activity-heartbeat-timeouts).
 
 **Triage.**
 

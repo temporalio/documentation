@@ -1947,6 +1947,7 @@ module.exports = {
         id: 'troubleshooting/index',
       },
       items: [
+        'troubleshooting/activity-heartbeat-timeouts',
         'troubleshooting/blob-size-limit-error',
         'troubleshooting/deadline-exceeded-error',
         'troubleshooting/last-connection-error',
