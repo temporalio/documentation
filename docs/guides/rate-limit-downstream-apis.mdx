@@ -17,7 +17,7 @@ Third-party APIs such as SendGrid, Stripe, OpenAI, and Twilio let you add email,
 
 A more reliable approach is to keep the requests from exceeding the limit in the first place. Give each rate-limited API its own Task Queue, and configure the Workers that poll it with a queue-wide Activity rate limit. The Temporal Server enforces that limit across every Worker on the queue, so you can add Workers without sending the API more requests than it allows. Per-Worker and concurrency limits add finer control where an API needs it, and when an occasional 429 still gets through, your Activities wait as long as the API's `Retry-After` header asks.
 
-With this guide, you'll build a notification system that calls SendGrid, OpenAI, and Stripe through rate-limited Task Queues, with:
+With this guide, you'll build a notification system that calls SendGrid and OpenAI through rate-limited Task Queues, with:
 
 - **Rate limit compliance:** Activities respect API rate limits, eliminating 429 errors and preventing account suspension
 - **Improved reliability:** Workflows complete successfully without failures caused by rate limits
@@ -722,7 +722,7 @@ With these tools, operators can work through a backlog without redeploying anyth
 
 ## Outcomes
 
-You've built a notification system that stays within the rate limits of every API it calls. Each API has its own Task Queue, the Temporal Server enforces a queue-wide dispatch rate across all of that queue's Workers, per-Worker and concurrency limits add finer control, and Activities wait for the API's `Retry-After` interval when a 429 slips through. Because the limit belongs to the queue rather than to any one Worker, you can scale Workers for fault tolerance without putting your standing with an API provider at risk. The same approach works for any shared resource with a fixed capacity: database connection pools, internal services with quotas, SMS gateways, or LLM providers with token budgets.
+You've built a notification system that routes API calls through rate-limited Task Queues. Each API has its own Task Queue, the Temporal Server enforces a queue-wide dispatch rate across all of that queue's Workers, per-Worker and concurrency limits add finer control, and Activities wait for the API's `Retry-After` interval when a 429 slips through. You can scale Workers for fault tolerance without increasing the configured queue-wide dispatch rate. The same routing pattern can help manage request-rate quotas for internal services and SMS gateways, or concurrent connections to a database. LLM token budgets require additional token-aware limiting; the queue-wide rate limit counts Activity dispatches, not tokens.
 
 ## Related resources
 
