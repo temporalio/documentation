@@ -1,0 +1,237 @@
+---
+id: activity-heartbeat-timeouts
+title: Troubleshoot Activity Heartbeat Timeouts
+sidebar_label: Activity Heartbeat Timeouts
+description: >-
+  Trace why Activities hit their Heartbeat Timeout while still running, from Worker CPU and rate-limit rejections to
+  Workflow lock contention and slow writes.
+toc_max_heading_level: 3
+tags:
+  - Activities
+  - Metrics
+  - Troubleshooting
+---
+
+Use this guide when Activities time out on their
+[Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) even though their Workers are running and
+their code calls Heartbeat.
+A Heartbeat counts only once the Temporal Service records it, so a Heartbeat that's delayed anywhere between the Activity
+code and the Temporal Service's database can time out the attempt.
+Work through the sections in order.
+Each one checks one place a Heartbeat can be delayed and tells you what to change.
+
+For Heartbeat Timeouts up to 75 seconds, each Heartbeat has 20% of the timeout to arrive.
+[Choose a Heartbeat Timeout](/encyclopedia/detecting-activity-failures#choose-a-heartbeat-timeout) explains why.
+Compare the latencies in this guide against that budget.
+
+Queries that use Temporal Service metrics apply to a self-hosted Temporal Service.
+On Temporal Cloud, use the equivalent [OpenMetrics](/cloud/metrics/openmetrics/metrics-reference) metric where this guide
+names one, and the SDK metrics, which work the same on both.
+
+## Confirm that the Activity timed out on its Heartbeat Timeout {/* #confirm */}
+
+Open an affected Workflow Execution in the Web UI's Pending Activities view, or run `temporal workflow describe`.
+A last failure of `activity Heartbeat timeout` confirms a Heartbeat Timeout rather than a Start-To-Close Timeout.
+A rising attempt number means it keeps happening.
+If the last Heartbeat time is older than the last started time, the current attempt hasn't recorded a Heartbeat yet.
+
+To see how often it happens, count timeouts by Activity Type.
+On a self-hosted Temporal Service v1.29.0 or later, `activity_task_timeout` counts every timed-out attempt, including
+those that are retried:
+
+```
+sum by (activityType) (rate(activity_task_timeout{namespace="$namespace", timeout_type="Heartbeat"}[5m]))
+```
+
+On Temporal Cloud, use
+[`temporal_cloud_v1_activity_task_timeout_count`](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_activity_task_timeout_count)
+filtered by its `timeout_type` label.
+
+Don't rely on metrics that count only Activities that closed, such as the self-hosted `heartbeat_timeout` metric.
+With the default Retry Policy, every Heartbeat Timeout is retried, so those metrics can stay at zero while many attempts
+time out.
+
+If only one Activity Type times out, start with its code and the Workers that run it.
+If many Activity Types time out at once, start with what they share: the Namespace's rate limits, the History Service,
+or the database.
+
+## Rule out a crashed Worker {/* #crashed-worker */}
+
+Check whether the timeouts line up with a Worker restart or network loss.
+A crashed Worker's SDK metrics stop, and each of its Activities times out once and then runs on another Worker.
+If that matches, find out why the Worker stopped from your host or container monitoring, and leave the Heartbeat
+settings alone.
+If the timeouts keep repeating, Heartbeats are arriving late, so continue to the next section.
+
+## Check whether the Temporal Service rejected Heartbeats {/* #rejected */}
+
+Query the SDK's [`temporal_request_failure`](/references/sdk-metrics#request_failure) for `RESOURCE_EXHAUSTED` on
+`RecordActivityTaskHeartbeat`:
+
+```
+sum by (status_code) (rate(temporal_request_failure{operation="RecordActivityTaskHeartbeat"}[5m]))
+```
+
+The SDK retries a rejected Heartbeat, so rejections matter only when they rise at the same time as the timeouts.
+If they don't line up, go to the [next section](#slow-in-service).
+
+On a self-hosted Temporal Service, find which limit rejected them:
+
+```
+sum by (service_name, resource_exhausted_cause) (rate(service_errors_resource_exhausted{operation="RecordActivityTaskHeartbeat", namespace="$namespace"}[5m]))
+```
+
+The Frontend Service also counts each rejection it passes back from the History Service, so a `frontend` series with
+the same cause as a `history` series shows the same rejections.
+Act on each series as follows:
+
+| Series | What rejected the Heartbeats | What to do |
+| --- | --- | --- |
+| `frontend` `RpsLimit`, with no `history` `RpsLimit` at the same time | The Namespace rate limit, `frontend.namespaceRPS` or `frontend.globalNamespaceRPS` | Raise the limit for the Namespace, or reduce the Namespace's calls. See [Reduce Heartbeat load](#reduce-load). |
+| `history` `RpsLimit` | The History Service rate limit, `history.rps`, which all Namespaces share | Check which Namespaces use up `history.rps`. On v1.32.0 and later, set `history.namespaceRPS` for a Namespace with many heartbeating Activities so it can't starve the others. |
+| `history` `BusyWorkflow` | Heartbeats waited too long for a Workflow Execution's lock | See [Check whether Heartbeats were slow](#slow-in-service). |
+| `history` `PersistenceLimit` | The History Service's [persistence QPS limits](/references/dynamic-configuration#qps-limits-for-persistence-store) | Raise the limit if the database has headroom, or reduce the History Service's writes. |
+
+See [Service-level RPS limits](/references/dynamic-configuration#service-level-rps-limits) for the dynamic configuration
+keys.
+
+If the SDK reports `RESOURCE_EXHAUSTED` but no Temporal Service series does, the Heartbeat was probably larger than the
+4 MB gRPC message limit, which rejects it before the Temporal Service counts it.
+Keep Heartbeat details small; see [Heartbeat details](/encyclopedia/detecting-activity-failures#heartbeat-details).
+
+On Temporal Cloud, check [throttling against your Namespace limits](/cloud/service-health#rps-aps-rate-limits) and the
+`RecordActivityTaskHeartbeat` operation on
+[`temporal_cloud_v1_resource_exhausted_error_count`](/cloud/service-health#detecting-resource-exhaustion).
+
+## Check whether Heartbeats were slow in the Temporal Service {/* #slow-in-service */}
+
+On a self-hosted Temporal Service, compare Heartbeat latency in each service against the time a Heartbeat has:
+
+```
+histogram_quantile(0.99, sum by (service_name, le) (rate(service_latency_bucket{operation="RecordActivityTaskHeartbeat", namespace="$namespace"}[5m])))
+```
+
+The `frontend` series includes the time spent in the History Service.
+If both series are low while timeouts happen, the Temporal Service isn't the cause, so go to
+[Check whether the Worker sent Heartbeats late](#worker-late).
+If `frontend` is high and `history` is low, the Frontend Service is retrying calls the History Service rejected; see the
+`history` `RpsLimit` row in the [previous section](#rejected).
+
+If `history` is high, find out whether the Workflow lock or the database slowed it.
+
+### Workflow lock contention {/* #lock-contention */}
+
+Spread heartbeating Activities across Workflow Executions: run fewer at once, or move them into
+[Child Workflows](/child-workflows).
+Heartbeats in one Workflow Execution wait for its lock; see
+[Choose a Heartbeat Timeout](/encyclopedia/detecting-activity-failures#choose-a-heartbeat-timeout).
+
+Lock contention shows as high Workflow lock latency, together with timer tasks the History Service throttled because
+the Workflow was busy:
+
+```
+histogram_quantile(0.99, sum by (le) (rate(cache_latency_bucket{operation="HistoryCacheGetOrCreate"}[5m])))
+```
+
+```
+sum by (operation) (rate(task_errors_throttled{operation=~"TimerActive.*", resource_exhausted_cause="BusyWorkflow", namespace="$namespace"}[5m]))
+```
+
+The throttled timer tasks rise before any Heartbeat is late, so they're an early warning.
+On Temporal Cloud, see [Workflow lock contention](/cloud/service-health#workflow-lock-contention-busyworkflow).
+
+### Slow or failing database writes {/* #slow-persistence */}
+
+Each recorded Heartbeat is an `UpdateWorkflowExecution` write.
+Check [`persistence_latency`](/references/service-metrics#persistence_latency) and
+[`persistence_errors`](/references/service-metrics#persistence_errors) for that operation.
+If writes are slow or failing, the database is the cause, not the Heartbeat settings.
+
+## Check whether the Worker sent Heartbeats late {/* #worker-late */}
+
+Compare the SDK's [`temporal_request_latency`](/references/sdk-metrics#request_latency) for
+`RecordActivityTaskHeartbeat` with the Temporal Service latency from the previous section.
+If the SDK sees slow calls that the Temporal Service handled quickly, the time was lost in the Worker or on the network.
+
+Lower the number of Activities each Worker runs at once if the Worker is short of CPU.
+A Worker short of CPU starts Activities and sends their Heartbeats late.
+Check host CPU in your own monitoring, and compare it with
+[`temporal_worker_task_slots_used`](/references/sdk-metrics#worker_task_slots_used) for Activity Workers.
+Lower the Worker's maximum concurrent Activity executions or add Workers; see
+[Worker performance](/develop/worker-performance).
+
+On the Java SDK, also lower the number of Activities per Worker when Heartbeat calls are slow.
+All Activities on a Java Worker share 4 threads for sending throttled Heartbeats, and each slow call holds a thread
+until the Temporal Service answers.
+When the calls take long enough, Heartbeats queue for a free thread and arrive late.
+
+Don't shorten retry backoff for these Activities, because each retry adds load to an already busy Worker.
+See [What happens after a Heartbeat Timeout](/encyclopedia/detecting-activity-failures#after-a-heartbeat-timeout).
+
+If CPU, and on Java the Heartbeat threads, don't explain the delay, check the network and any load balancer or proxy
+between the Workers and the Frontend Service.
+
+## Give Heartbeats more time {/* #lengthen-timeout */}
+
+If Heartbeat calls regularly take close to the time they have, lengthen the Heartbeat Timeout.
+This gives each Heartbeat more time but detects a failed Worker later.
+
+1. Change the Heartbeat Timeout in the Workflow code, so Activities scheduled after you deploy get it.
+   If the new value is longer than the Start-To-Close Timeout, raise that too
+   ([why](/encyclopedia/detecting-activity-failures#heartbeat-timeout-zero)).
+2. Raise it on Activities that are already pending with
+   [`temporal activity update-options --heartbeat-timeout`](/cli/command-reference/activity#update-options).
+   Code changes don't reach them.
+
+Don't shorten the Heartbeat Timeout of a running Activity.
+Its Worker keeps sending Heartbeats at the throttle interval of the original timeout, so a shorter timeout times out the
+attempt.
+With `--query`, the command changes every pending Activity in every matching Workflow Execution, not only the ones that
+time out.
+
+## Reduce Heartbeat load {/* #reduce-load */}
+
+Each Activity that heartbeats adds load to the Temporal Service, even when no Heartbeat is late.
+On Temporal Cloud, each recorded Heartbeat is also an [Action](/evaluate/cloud/actions#activity).
+In each [throttle interval](/encyclopedia/detecting-activity-failures#throttling), a steadily heartbeating Activity
+sends one `RecordActivityTaskHeartbeat` request and causes two `UpdateWorkflowExecution` writes: one for the Heartbeat
+and one when the History Service moves the Heartbeat deadline.
+On a Namespace replicated to other clusters, each Heartbeat also adds a replication task.
+
+For example, 1,000 Activities with a 10-second Heartbeat Timeout have an 8-second throttle interval, so they cost
+125 requests and 250 writes a second.
+On a self-hosted Temporal Service, this query shows the Heartbeat requests a Namespace sends:
+
+```
+sum(rate(service_requests{service_name="history", operation="RecordActivityTaskHeartbeat", namespace="$namespace"}[5m]))
+```
+
+Reduce the load with these changes, from least to most effect on how the Activities behave:
+
+1. Heartbeat only from Activities that need it, meaning long-running Activities that must detect a failed Worker
+   before the Start-To-Close Timeout or receive Cancellation while they run.
+   An Activity that calls Heartbeat with no Heartbeat Timeout still sends Heartbeats at the
+   [default throttle interval](/encyclopedia/detecting-activity-failures#throttling).
+2. Keep Heartbeat details small.
+   This shrinks each write but doesn't reduce how many there are.
+3. Lengthen the Heartbeat Timeout where the Activity can tolerate detecting a failed Worker later.
+4. Raise `maxHeartbeatThrottleInterval` in the Worker options for Activities with Heartbeat Timeouts above 75 seconds
+   ([trade-offs](/encyclopedia/detecting-activity-failures#throttling)).
+
+## Alert on Heartbeat Timeouts {/* #alert */}
+
+Alert when Heartbeat Timeouts continue for 10 minutes or more, using the per-attempt query from
+[Confirm that the Activity timed out](#confirm).
+A crashed Worker causes one timeout per Activity it was running, so sustained timeouts mean Heartbeats keep arriving
+late.
+
+Add the SDK alert for [NOT_FOUND on Activity heartbeat](/troubleshooting/request-failures#not_found-on-activity-heartbeat).
+It shows Workers still running attempts that the Temporal Service already timed out, but it misses attempts that never
+Heartbeat again, such as those on a crashed Worker.
+
+Don't alert on rejected Heartbeats or Heartbeat load alone.
+They cause problems only when they lead to Heartbeat Timeouts, and the Heartbeat Timeout alert catches those.
+
+For a deeper walkthrough of how a self-hosted Temporal Service records and checks Heartbeats, with test results, see the
+[Activity Heartbeat Timeouts playbook](https://github.com/tsurdilo/temporal-server-operations/blob/main/playbooks/activity-heartbeat-timeouts.md)
+in the Temporal server operations repository.
