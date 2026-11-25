@@ -356,10 +356,13 @@ cd publish && zip -r ../function.zip . && cd ..
 
 ### 2.2 Deploy Lambda function {/* #deploy-lambda-function-step */}
 
-The commands below pass the API key directly in the Lambda environment. For production deployments, we recommend
-[loading credentials from AWS Secrets Manager](#use-aws-secrets-manager). To load your API key from a secret, remove
-`TEMPORAL_API_KEY` from the deployment command and configure the secret ID as described in your SDK guide. Replace the
-placeholders and run the command for your SDK.
+Choose how to supply the API key before you create the Lambda function.
+
+- To supply the key directly, set `TEMPORAL_API_KEY` as shown in the command.
+- To load the key from [AWS Secrets Manager](#use-aws-secrets-manager), configure the API key secret ID for your SDK
+  and remove `TEMPORAL_API_KEY` from the command's `--environment` argument. We recommend this option for production.
+
+Replace the placeholders and run the command for your SDK.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
