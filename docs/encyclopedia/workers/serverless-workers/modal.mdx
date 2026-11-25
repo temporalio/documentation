@@ -48,23 +48,32 @@ Worker shutdown and Modal's idle container policy determine when capacity goes a
 its execution deadline, even if the Task Queue is empty. When the invocation exits, Modal can keep the container ready
 for a later invocation or remove it.
 
-### Container capacity {/* #instance-model */}
-
-Configure container capacity on the Modal function:
-
-- `min_containers` keeps a minimum number of containers warm. The Worker starts when Modal invokes the function.
-- `buffer_containers` keeps spare container capacity while the function is active.
-- `max_containers` caps the number of containers available for invocations.
-- `scaledown_window` controls how long Modal keeps idle containers during scale-down.
-
-By default, Modal can scale the container pool to zero. Configure Task concurrency in the Temporal Worker and allow
-one active Modal input per container. See [Modal autoscaling](https://modal.com/docs/guide/scale).
-
 ### Sharing a Task Queue with long-lived Workers {/* #sharing-a-task-queue */}
 
 Modal Workers can provide extra capacity on a Task Queue served by a fixed-size fleet of long-lived Workers. Temporal
 starts Modal Workers when the existing Workers cannot keep up and the scaler detects unmet demand. Keep the long-lived
 fleet at a fixed size so one scaler responds to demand on the shared Task Queue.
+
+## Container capacity {/* #instance-model */}
+
+Modal manages a container pool for the Worker function. When Temporal requests an invocation, Modal assigns it to an
+available container or starts a new one. By default, the pool can scale to zero after all invocations finish.
+
+Set these options on `@app.function` to control when containers are available and how many Modal can run.
+
+| Setting | What it changes | When to adjust it |
+| --- | --- | --- |
+| `min_containers` | Keeps a minimum number of containers warm, including between invocations. | Raise it when the first invocation after a quiet period needs a container ready. |
+| `buffer_containers` | Keeps spare containers ready while the function is active. | Raise it when bursts of invocations arrive while other Workers are already running. |
+| `max_containers` | Limits the total number of containers for the function. If all containers are busy at this limit, additional invocations wait for capacity. | Set a ceiling on simultaneous Workers, for example to bound GPU use. |
+| `scaledown_window` | Sets the maximum time in seconds that Modal can keep a container idle during scale-down. Modal can remove a container sooner. | Increase it when invocations tend to arrive in short bursts separated by gaps and can benefit from reusing recently active containers. |
+
+For example, with `max_containers=4` and one active invocation per container, a fifth invocation waits if all four
+containers are busy. A warm container can reduce startup time. The Client and Worker start when the invocation
+begins, and the Worker controls how many Temporal Tasks it processes concurrently.
+
+Keeping containers warm can increase the cost of idle capacity. See [Modal autoscaling](https://modal.com/docs/guide/scale)
+and [Modal cold start performance](https://modal.com/docs/guide/cold-start).
 
 ## Worker Versioning {/* #worker-versioning */}
 
