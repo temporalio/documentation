@@ -89,7 +89,8 @@ Compared with long-lived Workers, the location of the config file is resolved di
 
 The file is optional. If absent, only environment variables are used.
 
-Encrypt sensitive values like TLS keys or API keys. Refer to [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
+For production deployments, see
+[Load credentials from AWS Secrets Manager](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 
