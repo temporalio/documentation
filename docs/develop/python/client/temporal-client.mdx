@@ -25,6 +25,7 @@ This page shows you how to do the following using the Python SDK with the Tempor
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Start a Workflow Execution](#start-workflow-execution)
 - [Get Workflow results](#get-workflow-results)
+- [Call the Temporal Client from synchronous code](#call-client-from-sync-code)
 
 A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a
 Temporal Client inside an Activity to communicate with a Temporal Service.
@@ -676,3 +677,120 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 <!--SNIPEND-->
+
+## Call the Temporal Client from synchronous code {/* #call-client-from-sync-code */}
+
+Most Temporal Client methods, such as `Client.connect` and `start_workflow`, are coroutines. To call them from a function
+that isn't `async`, run them on an [asyncio](https://docs.python.org/3/library/asyncio.html) event loop.
+
+### Run a one-off call with `asyncio.run` {/* #asyncio-run */}
+
+For a script, a command-line tool, or other code that makes a few calls and exits, put the Client calls in an `async`
+function and pass it to [`asyncio.run()`](https://docs.python.org/3/library/asyncio-runner.html#asyncio.run).
+`asyncio.run()` creates an event loop, runs the coroutine to completion, and closes the loop.
+
+<!--SNIPSTART python-client-sync-asyncio-run-->
+[python-sandbox/client/temporal_client/sync_asyncio_run.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/sync_asyncio_run.py)
+```py
+import asyncio
+
+from temporalio.client import Client
+
+from temporal_client.your_workflows import YourWorkflow
+
+
+async def start_your_workflow(name: str) -> str:
+    client = await Client.connect("localhost:7233")
+    handle = await client.start_workflow(
+        YourWorkflow.run,
+        name,
+        id=f"your-workflow-{name}",
+        task_queue="your-task-queue",
+    )
+    return handle.id
+
+
+def start_from_sync_code(name: str) -> None:
+    workflow_id = asyncio.run(start_your_workflow(name))
+    print(f"Started Workflow {workflow_id}")
+```
+<!--SNIPEND-->
+
+Each call to `asyncio.run()` creates a new event loop, so connect the Client inside the coroutine you pass to it. Don't
+keep a Client and reuse it in a later `asyncio.run()` call: use a Client only on the event loop it was created on.
+Connecting on every call adds a connection round trip each time, which is fine for a script. For an application that
+calls the Client often, [reuse one Client](#reuse-client-from-sync-code) instead.
+
+`asyncio.run()` raises `RuntimeError: asyncio.run() cannot be called from a running event loop` when the current thread
+is already running an event loop. That happens when a synchronous function like `start_from_sync_code` is called from
+async code, such as an `async def` endpoint in FastAPI, an async Activity, or a Jupyter notebook cell. In async code,
+`await` the Client methods directly instead of going through a synchronous wrapper.
+
+### Reuse one Client in a long-running synchronous application {/* #reuse-client-from-sync-code */}
+
+A long-running synchronous application, such as a Flask or Django web server, should connect once and reuse the Client.
+Run one event loop in a background thread for the life of the process, connect the Client on that loop, and submit each
+call to it with
+[`asyncio.run_coroutine_threadsafe()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.run_coroutine_threadsafe).
+That function returns a `concurrent.futures.Future`, and its `result()` method blocks the calling thread until the call
+finishes. Any number of threads can submit calls this way.
+
+<!--SNIPSTART python-client-sync-background-loop-->
+[python-sandbox/client/temporal_client/sync_background_loop.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/client/temporal_client/sync_background_loop.py)
+```py
+import asyncio
+import threading
+from typing import Any, Coroutine, TypeVar
+
+from temporalio.client import Client
+
+from temporal_client.your_workflows import YourWorkflow
+
+T = TypeVar("T")
+
+
+class TemporalClientThread:
+    """Runs a Temporal Client on an event loop in a background thread."""
+
+    def __init__(self, target_host: str) -> None:
+        self._loop = asyncio.new_event_loop()
+        threading.Thread(target=self._loop.run_forever, daemon=True).start()
+        # Connect on the background loop so that the Client belongs to it.
+        self.client = self.run(Client.connect(target_host))
+
+    def run(self, coro: Coroutine[Any, Any, T]) -> T:
+        """Runs a coroutine on the background loop and waits for its result."""
+        return asyncio.run_coroutine_threadsafe(coro, self._loop).result()
+
+
+def start_from_sync_code(temporal: TemporalClientThread, name: str) -> str:
+    handle = temporal.run(
+        temporal.client.start_workflow(
+            YourWorkflow.run,
+            name,
+            id=f"your-workflow-{name}",
+            task_queue="your-task-queue",
+        )
+    )
+    return handle.id
+
+
+def main() -> None:
+    # Create one TemporalClientThread per process and share it.
+    temporal = TemporalClientThread("localhost:7233")
+    for name in ["alice", "bob"]:
+        workflow_id = start_from_sync_code(temporal, name)
+        print(f"Started Workflow {workflow_id}")
+```
+<!--SNIPEND-->
+
+Create one `TemporalClientThread` per process and share it with the code that calls Temporal. Pass each Client
+coroutine, such as `start_workflow()` or `handle.result()`, to `temporal.run()` so that it runs on the loop the Client
+was created on. `temporal.run()` accepts only coroutines:
+
+- Call methods that aren't coroutines, such as `get_workflow_handle()`, directly.
+- To use an async iterator, such as the one `list_workflows()` returns, iterate over it in an `async` function and pass
+  that function's coroutine to `temporal.run()`.
+
+A Client doesn't work across a process fork. If your server forks worker processes, as Gunicorn does, create the
+`TemporalClientThread` in each worker process after the fork, not at import time in the parent process.

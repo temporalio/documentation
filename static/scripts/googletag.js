@@ -31,18 +31,55 @@
     ad_personalization: 'denied',
   });
 
-  // The consent cookie is written on the shared `.temporal.io` apex domain, so a
-  // decision made on temporal.io (or a prior docs.temporal.io visit) is already
-  // readable here. Synchronously upgrade the denied default before GTM loads, and
-  // do it within the same script block, so there's no race with the container.
+  // Synchronously upgrade the denied default before GTM loads, and do it within
+  // the same script block, so there's no race with the container. Two places can
+  // hold the reader's consent, checked in the consent banner's own order:
+  //
+  // - The `consent` cookie on the shared `.temporal.io` apex domain, so a
+  //   decision made on temporal.io (or a prior docs.temporal.io visit) is already
+  //   readable here. A cookie that records a decision wins.
+  // - localStorage `consent`, which the banner writes on every load. In the
+  //   us_opt_out regime (US states with an opt-out privacy law) the banner grants
+  //   by default but leaves the choice undecided and writes no cookie, so this is
+  //   the only record of that grant. Without it, GTM starts denied on every
+  //   return visit. The banner's later consent update doesn't help tags that only
+  //   fire on page load or on `consent_granted`, which the banner sends only for
+  //   the first grant, so Amplitude never loaded on those visits.
+  //
+  // Keep this in sync with src/utils/analyticsConsent.js.
   (function () {
+    var parse = function (raw) {
+      try {
+        var record = JSON.parse(raw);
+        if (record && typeof record.analytics === 'boolean' && typeof record.advertising === 'boolean') {
+          return record;
+        }
+      } catch (e) {
+        // Malformed or legacy value: treat as no record.
+      }
+      return null;
+    };
+
+    var consent = null;
     var match = document.cookie.match(/(?:^|;\s*)consent=([^;]*)/);
-    if (!match) return;
+    if (match) {
+      try {
+        consent = parse(decodeURIComponent(match[1]));
+      } catch (e) {
+        // Undecodable cookie: treat as no record.
+      }
+    }
+    if (!consent || consent.decided !== true) {
+      try {
+        consent = parse(localStorage.getItem('consent'));
+      } catch (e) {
+        // localStorage unavailable (e.g. blocked storage): no fallback record.
+        consent = null;
+      }
+    }
+    if (!consent) return;
 
     try {
-      var consent = JSON.parse(decodeURIComponent(match[1]));
-      if (typeof consent.analytics !== 'boolean' || typeof consent.advertising !== 'boolean') return;
-
       // Do Not Sell (us_opt_out) is stored separately and overrides advertising.
       var doNotSell = false;
       try {
@@ -59,7 +96,7 @@
         ad_personalization: adState,
       });
     } catch (e) {
-      // Malformed cookie value: leave the denied defaults above in place.
+      // Unexpected error: leave the denied defaults above in place.
     }
   })();
 

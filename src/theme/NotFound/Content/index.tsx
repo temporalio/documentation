@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { useLocation } from '@docusaurus/router';
-import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
+import { hasDocsAnalyticsConsent } from '@site/src/utils/analyticsConsent';
 import NotFoundContent from '@theme-original/NotFound/Content';
 import type NotFoundContentType from '@theme/NotFound/Content';
 import type { WrapperProps } from '@docusaurus/types';
 
 type Props = WrapperProps<typeof NotFoundContentType>;
-
-const hasConsent = () => ExecutionEnvironment.canUseDOM && hasAnalyticsConsent(readConsentFromDocumentCookie());
 
 // Remembers the last URL we reloaded for, so a URL the server answers
 // differently than the client router can't send the reader into a reload loop.
@@ -90,7 +87,7 @@ export default function NotFoundContentWrapper(props: Props): JSX.Element {
           return;
         }
         // Track only the 404s a full page load would also produce.
-        if (hasConsent() && window.amplitude) {
+        if (hasDocsAnalyticsConsent() && window.amplitude) {
           window.amplitude.track('Docs Page Not Found', {
             url: window.location.href,
             referrer: document.referrer,
