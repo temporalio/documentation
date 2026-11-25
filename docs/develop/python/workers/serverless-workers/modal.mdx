@@ -1,0 +1,208 @@
+---
+id: modal
+title: Serverless Workers on Modal
+sidebar_label: Modal
+description: Run versioned Python Workers inside Modal function invocations, configure the Temporal connection, and allow time for graceful shutdown.
+slug: /develop/python/workers/serverless-workers/modal
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Python SDK
+  - Serverless
+---
+
+A Modal function can run a Temporal Worker for the duration of an invocation. The
+`temporalio-modal-function-worker` integration creates a fresh Temporal Client and Worker for each invocation,
+polls for Tasks, and shuts down before the function timeout.
+
+For the deployment steps, see [Deploy a Serverless Worker on Modal](/production-deployment/worker-deployments/serverless-workers/modal).
+For invocation and scaling behavior, see [Serverless Workers on Modal](/serverless-workers/modal).
+
+## Install the integration
+
+Use Python 3.12 for this example. The integration requires Python 3.10 or later, Temporal Python SDK
+`1.34.0` or later within major version 1, and Modal Python SDK major version 1. Your chosen SDK releases must also
+support your Python version.
+
+```bash
+uv init --python 3.12 modal-worker
+cd modal-worker
+uv add temporalio-modal-function-worker==0.0.1
+mkdir -p modal_worker
+touch modal_worker/__init__.py
+```
+
+The package installs the Temporal and Modal SDKs as dependencies. It is an
+[experimental integration](https://github.com/temporalio/worker-integrations/tree/main/python/modal_function_worker).
+Install it in the same Python environment as `temporalio`; an editable installation cannot reliably extend the
+SDK-owned `temporalio` package.
+
+## Define a Workflow and Activity
+
+Create `modal_worker/activities.py`:
+
+<!--SNIPSTART python-modal-worker-activities-->
+[python-sandbox/workers/modal_worker/activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/activities.py)
+```py
+from temporalio import activity
+
+
+@activity.defn
+async def greet(name: str) -> str:
+    activity.logger.info("Processing greeting")
+    return f"Hello, {name}!"
+```
+<!--SNIPEND-->
+
+Create `modal_worker/workflows.py`. Serverless Workers require Worker Versioning, so declare a
+[versioning behavior](/worker-versioning#versioning-behaviors) for the Workflow:
+
+<!--SNIPSTART python-modal-worker-workflows-->
+[python-sandbox/workers/modal_worker/workflows.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/workflows.py)
+```py
+from datetime import timedelta
+
+from temporalio import workflow
+from temporalio.common import VersioningBehavior
+
+with workflow.unsafe.imports_passed_through():
+    from modal_worker.activities import greet
+
+
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class GreetingWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            greet,
+            name,
+            start_to_close_timeout=timedelta(seconds=30),
+        )
+```
+<!--SNIPEND-->
+
+## Create the Worker entry point
+
+Create `modal_worker/worker.py` alongside the other files:
+
+<!--SNIPSTART python-modal-worker-worker-->
+[python-sandbox/workers/modal_worker/worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/modal_worker/worker.py)
+```py
+from datetime import timedelta
+
+import modal
+from temporalio.common import WorkerDeploymentVersion
+from temporalio.worker_integrations.modal.function import ModalWorkerConfig, run_worker
+
+from modal_worker.activities import greet
+from modal_worker.workflows import GreetingWorkflow
+
+FUNCTION_TIMEOUT = timedelta(minutes=5)
+VERSION = WorkerDeploymentVersion(deployment_name="my-app", build_id="build-1")
+
+image = (
+    modal.Image.debian_slim(python_version="3.12")
+    .pip_install("temporalio-modal-function-worker==0.0.1")
+    .add_local_python_source("modal_worker")
+)
+app = modal.App("temporal-worker", image=image)
+
+
+def configure(config: ModalWorkerConfig) -> None:
+    config.client_connect_config["tls"] = True
+    config.worker_config["task_queue"] = "my-task-queue"
+    config.worker_config["workflows"] = [GreetingWorkflow]
+    config.worker_config["activities"] = [greet]
+
+
+@app.function(
+    timeout=int(FUNCTION_TIMEOUT.total_seconds()),
+    secrets=[modal.Secret.from_name("temporal-cloud-credentials")],
+)
+async def temporal_worker() -> None:
+    await run_worker(
+        VERSION,
+        configure,
+        modal_function_timeout=FUNCTION_TIMEOUT,
+    )
+```
+<!--SNIPEND-->
+
+Modal builds the image from this definition when you deploy the app. You do not need to build and push an image to
+a separate registry. Include both Workflow and Activity modules in the image.
+
+Call `run_worker` once from a top-level async Modal function. Unlike the Lambda integration, it runs the Worker
+directly rather than returning a handler. Do not enable concurrent Modal inputs for this function. One invocation
+owns one Client and Worker, but that Worker can process multiple Temporal Tasks concurrently.
+
+Keep the deployment name and Build ID consistent with the compute configuration in Temporal. The Modal app name
+and function name identify the code that Temporal invokes; they do not need to match the Worker Deployment name.
+
+## Configure the Temporal connection
+
+Create the `temporal-cloud-credentials` secret in the Modal environment where you deploy the function. Include these values:
+
+| Variable | Value |
+| --- | --- |
+| `TEMPORAL_ADDRESS` | Your Namespace's Temporal Service gRPC endpoint. |
+| `TEMPORAL_NAMESPACE` | Your Namespace name. |
+| `TEMPORAL_API_KEY` | An API key authorized to access that Namespace. |
+
+The example explicitly enables TLS. Use the gRPC endpoint from your Namespace's connection settings, rather than
+the address of the Temporal Web UI. Attach the secret to the function through `secrets`, as in the example above.
+
+The integration uses [environment configuration](/develop/environment-configuration) to load Client settings.
+It looks for a TOML file at `TEMPORAL_CONFIG_FILE`, if set, or `temporal.toml` in the current working directory.
+The file is optional; environment variables can supply the connection settings. The configure callback can override
+Client options through `client_connect_config`.
+
+For other authentication methods, configure the corresponding Client options and make the required files or secrets
+available inside the container. See [Connect to Temporal Cloud](/develop/python/client/temporal-client#connect-to-temporal-cloud).
+
+## Configure the invocation lifetime
+
+Pass the same timeout to Modal's `@app.function(timeout=...)` and the integration's `modal_function_timeout`.
+The integration cannot query the remaining invocation time from Modal.
+
+The default execution budget is the function timeout minus 15 seconds. This budget includes configuration,
+connection setup, polling, Worker shutdown, and shutdown hooks. Set `execution_timeout` in the configure callback
+to shorten the budget; it cannot extend into the reserved 15 seconds.
+
+By default, polling stops early enough to reserve `graceful_shutdown_timeout` plus two seconds for cleanup.
+Increase `graceful_shutdown_timeout` if Activities need more time to finish, and increase the Modal function timeout
+to leave enough time for processing and shutdown. Override `shutdown_deadline_buffer` only when you need a different
+cleanup reserve. See [Invocation lifetime](/serverless-workers/modal#lifecycle).
+
+## Adjust Worker concurrency
+
+The integration applies these defaults. Override the configurable Worker settings through `worker_config` in the
+configure callback:
+
+| Setting | Default |
+| --- | --- |
+| `max_concurrent_activities` | 2 |
+| `max_concurrent_workflow_tasks` | 10 |
+| `max_concurrent_local_activities` | 2 |
+| `max_concurrent_nexus_tasks` | 5 |
+| `workflow_task_poller_behavior` | `SimpleMaximum(2)` |
+| `activity_task_poller_behavior` | `SimpleMaximum(1)` |
+| `nexus_task_poller_behavior` | `SimpleMaximum(1)` |
+| `graceful_shutdown_timeout` | 5 seconds |
+| `max_cached_workflows` | 30 |
+| `disable_eager_activity_execution` | Always `True` |
+
+Worker Versioning stays enabled and eager Activity Execution stays disabled. Modal's container limits control how
+many containers can run; these Worker settings control how much work each Worker accepts.
+
+## Add logs and shutdown hooks
+
+Use [Python SDK logging](/develop/python/platform/observability#logging) for Workflow and Activity logs, and inspect container
+output in Modal. The integration's default Worker identity includes the Modal function call and container identifiers,
+which helps correlate Temporal Worker information with Modal invocations.
+
+Register cleanup functions in `config.shutdown_hooks` to flush telemetry or close invocation-scoped resources after
+the Worker stops. Hooks can be synchronous or asynchronous. Keep their runtime within the shutdown budget.
+
+The configure callback may also be an async function, an async generator, or an async context manager. Each invocation
+runs configuration again, even when Modal reuses the container. Create invocation-scoped SDK objects rather than
+keeping a Client or Worker in a module-level variable.

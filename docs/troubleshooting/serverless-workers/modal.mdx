@@ -1,0 +1,105 @@
+---
+id: modal
+title: Troubleshoot Serverless Workers on Modal
+sidebar_label: Modal
+description: Check invocation history, credentials, Task Queue routing, and shutdown budgets when a Modal Worker does not process Temporal Tasks.
+slug: /troubleshooting/serverless-workers/modal
+toc_max_heading_level: 4
+tags:
+  - Workers
+  - Serverless
+  - Troubleshooting
+---
+
+Check the Modal function's invocation history first when a Workflow is not progressing. If there is no invocation,
+check the compute configuration and permission for Temporal to invoke Modal. If the function runs, inspect its logs
+for connection, registration, and Task processing errors.
+
+For setup, see [Deploy a Serverless Worker on Modal](/production-deployment/worker-deployments/serverless-workers/modal).
+For scaling and shutdown behavior, see [Serverless Workers on Modal](/serverless-workers/modal).
+
+## Check whether Modal received an invocation
+
+Select the configured workspace, environment, app, and function in Modal. Check its invocation history around the
+time the Workflow Task was queued. A connected badge in Temporal is not evidence that your Worker processed a Task.
+
+Inspect the compute configuration saved for the Worker Deployment Version:
+
+```bash
+temporal worker deployment version compute-config describe \
+  --deployment-name my-app \
+  --build-id build-1
+```
+
+Compare the app name, function name, environment, workspace identifier, and numeric app version with Modal.
+An app or secret in another environment does not satisfy the configuration for this environment.
+
+## Check invocation permission and routing
+
+In Temporal Cloud, go to **Settings** > **Connections** and check whether the workspace appears under **Modal**.
+If it is missing, follow the steps to [authorize Temporal to invoke the function](/production-deployment/worker-deployments/serverless-workers/modal#authorize-temporal-to-invoke-modal).
+
+Check that the Workflow uses the Task Queue registered by the intended Worker Deployment Version and that new
+Workflows route to the Current Version:
+
+```bash
+temporal worker deployment describe --name my-app
+temporal worker deployment version describe \
+  --deployment-name my-app \
+  --build-id build-1
+```
+
+Pinned Workflow Executions remain on their original Worker Deployment Version. Changing the Current Version does
+not move those executions to the new version.
+
+If a Temporal UI action returns `403 Forbidden` or `Request unauthorized`, resolve access to the Namespace or use
+an authorized Client. A rejected start request does not create a Workflow Execution or trigger Modal.
+
+## Check Worker startup logs
+
+When the function is invoked but Tasks do not complete, inspect the Modal logs for the invocation. Check these items:
+
+- The image contains the integration and all Workflow and Activity modules.
+- The function takes no required arguments and calls `run_worker` from an async entry point.
+- The Worker registers the requested Workflow Type and Activity Types.
+- The deployment name, Build ID, and Task Queue match the configuration in Temporal.
+- Each Workflow declares a versioning behavior, or the Worker supplies a default.
+- The Temporal secret is attached to the function and exists in its Modal environment.
+- The gRPC endpoint, Namespace, API key, and TLS settings allow the Worker to connect to Temporal.
+
+Use the integration's Worker identity to correlate Temporal Worker information with Modal function call and container
+identifiers. The [Python integration guide](/develop/python/workers/serverless-workers/modal) shows the entry point and
+connection setup.
+
+## Check invocation timeouts
+
+Match Modal's function timeout to the integration's `modal_function_timeout`. Connection and configuration time
+consume the integration's execution budget, so slow setup leaves less time for polling and processing Tasks.
+
+If Activities are interrupted during shutdown, increase `graceful_shutdown_timeout` and leave enough time in the
+function timeout for processing and cleanup. If you override `shutdown_deadline_buffer`, include the full graceful
+shutdown period and cleanup-hook time. See [Shutdown budget](/serverless-workers/modal#shutdown-budget).
+
+Do not use the scaler's `--max-worker-lifetime-ms` flag to change the function timeout. It controls when the scaler
+requests another invocation while backlog remains; it does not stop an existing Worker.
+
+## Check container limits and warm capacity
+
+Check Modal's container limit and pending function inputs if Temporal requests invocations but Tasks still wait.
+`max_containers` caps the function's container capacity, and workspace limits can constrain it further.
+
+Do not enable concurrent Modal inputs as a workaround. One invocation owns one Temporal Client and Worker.
+Increase appropriate container limits or tune concurrency within the Worker after checking the available resources.
+
+An empty Temporal Task Queue does not make an active Worker invocation idle from Modal's perspective. The Worker
+can keep polling until its execution budget ends. `scaledown_window` controls idle containers after invocations
+finish; it does not force a polling Worker to exit.
+
+## Check app versions after a redeployment
+
+Compare the numeric Modal app version in the compute configuration with Deployment History. A deployment tag is not
+the same value as the numeric app version. Omitting `--app-version`, or setting it to `0`, selects the current deployed
+app version and can change which code an existing Worker Deployment Version invokes.
+
+Keep each Temporal Build ID associated with a stable Worker build. For replay-incompatible changes, deploy a new
+Build ID and configure its Modal app version rather than changing the target of an existing pinned version.
