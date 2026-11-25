@@ -13,6 +13,7 @@ tags:
 ---
 
 import { ReleaseNoteHeader, SdkTabs } from '@site/src/components';
+import LambdaWorkerSecretIdSettings from '@site/docs/_shared/lambda-worker-secret-id-settings.mdx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -359,7 +360,7 @@ cd publish && zip -r ../function.zip . && cd ..
 Choose how to supply the API key before you create the Lambda function.
 
 - To supply the key directly, set `TEMPORAL_API_KEY` as shown in the command.
-- To load the key from [AWS Secrets Manager](#use-aws-secrets-manager), configure the API key secret ID for your SDK
+- To load the key from [AWS Secrets Manager](#use-aws-secrets-manager), configure the API key secret ID
   and remove `TEMPORAL_API_KEY` from the command's `--environment` argument. We recommend this option for production.
 
 Replace the placeholders and run the command for your SDK.
@@ -518,8 +519,10 @@ See [Step 2.3](#publish-lambda-version) for details.
 
 #### Load credentials from AWS Secrets Manager (optional) {/* #use-aws-secrets-manager */}
 
-When you configure secret names or ARNs, the Lambda Worker fetches those credentials from AWS Secrets Manager at
-startup.
+When you configure any of the following Lambda environment variables or TOML settings, the Lambda Worker loads the
+corresponding credentials from AWS Secrets Manager at startup.
+
+<LambdaWorkerSecretIdSettings />
 
 Grant the **Lambda execution role** `secretsmanager:GetSecretValue` on the configured secrets. When a secret uses a
 customer-managed KMS key, also grant `kms:Decrypt` on that key. See
