@@ -34,6 +34,9 @@ export default function DocItemStructuredData(): JSX.Element {
   }
 
   const pageUrl = `${siteConfig.url}${metadata.permalink}`;
+  // The page's last significant change, the same date as its sitemap
+  // <lastmod>. See plugins/shared/lastModified.js.
+  const dateModified = metadata.lastUpdatedAt ? new Date(metadata.lastUpdatedAt).toISOString().split('T')[0] : undefined;
 
   return (
     <Head>
@@ -44,6 +47,7 @@ export default function DocItemStructuredData(): JSX.Element {
           '@id': `${pageUrl}#webpage`,
           url: pageUrl,
           name: metadata.title,
+          ...(dateModified && { dateModified }),
           publisher: organizationReference,
         })}
       </script>

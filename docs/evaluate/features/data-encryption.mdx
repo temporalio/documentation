@@ -23,12 +23,14 @@ Encrypted Payloads are unreadable in the Web UI and CLI, which is what a [Codec 
 It's an HTTP server you run that holds the same decode logic as your codec.
 The Web UI and CLI send Payloads to it and display what it returns, so decrypted values reach the browser and the terminal only. The copy on the Temporal Service stays encrypted.
 
-You can also use [Temporal Proxy](/production-deployment/temporal-proxy) to encrypt payloads without changing Worker or
+You can also use [Temporal Proxy](/production-deployment/temporal-proxy)
+([Public Preview](/evaluate/product-release-stages#public-preview)) to encrypt payloads without changing Worker or
 Client code. You run the proxy in your environment, where it has access to plaintext payloads and your KMS. See the
 proxy's [encryption guide](/production-deployment/temporal-proxy/encrypt-payloads) for its encryption design and coverage
 limits.
 
-Temporal Cloud provides [Payload encryption validation](/cloud/payload-encryption-validation) to check that Payloads sent to Temporal Cloud carry the encryption metadata you configured for the Namespace, and can reject requests that do not.
+To catch Clients or Workers that send unencrypted Payloads, Temporal Cloud offers [Payload encryption validation](/cloud/payload-encryption-validation) ([Pre-release](/evaluate/product-release-stages#pre-release), invite-only).
+It checks the encryption metadata on incoming Payloads and can reject requests that don't match what you configured for the Namespace.
 
 ## What you operate
 

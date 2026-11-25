@@ -100,7 +100,8 @@ In Temporal Cloud, Nexus Registry respects RBAC permissions, and restricts funct
 | Action                     | Required permissions                                      |
 |---------------------------|-----------------------------------------------------------|
 | View or search Endpoints  | Read-only role (or higher) at the Account level           |
-| Manage Endpoints          | Account Developer (or higher), or Project Contribute (or higher) on the Endpoint's Project, **and** Namespace Admin on the target Namespace. Effective Namespace Admin on the target Namespace is required separately. Changing an Endpoint's target Namespace requires Namespace Admin on both the current target Namespace and the new target Namespace. |
+| Create, update, or delete Endpoints | Account Developer (or higher), or Project Contribute (or higher) on the Endpoint's Project, **and** Namespace Admin on the target Namespace. Effective Namespace Admin on the target Namespace is required separately. Changing an Endpoint's target Namespace requires Namespace Admin on both the current target Namespace and the new target Namespace. |
+| Move an Endpoint to another Project | Project Admin on both the source and the destination Project. Account Owners and Global Admins have Project Admin on every Project. See [Move a Nexus Endpoint to another Project](/cloud/projects#move-a-nexus-endpoint). |
 
 See [Nexus security in Temporal Cloud](/cloud/nexus/security).
 
