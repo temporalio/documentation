@@ -565,13 +565,11 @@ You gain visibility into Activity progress in real-time.
 Activities can handle cancellation gracefully and clean up resources.
 Completed work is not reprocessed, and Activities can move between Workers.
 
-The trade-offs to consider are that each heartbeat that reaches the Temporal Service adds a request and a write to the Workflow Execution.
-The SDK sends at most one heartbeat per throttle interval, so calling heartbeat more often than that doesn't send more.
+Each heartbeat that reaches the Temporal Service adds a request and a write to the Workflow Execution.
 You must implement checkpointing logic and state management.
 You must handle partial reprocessing of the last checkpoint (idempotency).
-You need to balance the heartbeat timeout between detecting a failed Worker quickly and giving each heartbeat time to arrive.
+A shorter heartbeat timeout detects a failed Worker sooner but gives each heartbeat less time to arrive.
 See [Choose a Heartbeat Timeout](/encyclopedia/detecting-activity-failures#choose-a-heartbeat-timeout).
-Heartbeat details count against the 2 MB [payload size limit](/troubleshooting/blob-size-limit-error#payload-size-limit), and every heartbeat writes them again, so store a small checkpoint such as an offset rather than large objects.
 
 ## Comparison with alternatives
 
@@ -585,9 +583,9 @@ Heartbeat details count against the 2 MB [payload size limit](/troubleshooting/b
 ## Best practices
 
 - **Set heartbeat timeout.** Configure to 2-3x the expected heartbeat interval.
-- **Heartbeat at regular intervals.** Call heartbeat at least once per throttle interval (by default, 80% of the heartbeat timeout, up to 60 seconds). Calling more often adds no load, because the SDK sends at most one heartbeat per [throttle interval](/encyclopedia/detecting-activity-failures#throttling).
+- **Heartbeat at regular intervals.** Call heartbeat at least once per [throttle interval](/encyclopedia/detecting-activity-failures#throttling) (by default, 80% of the heartbeat timeout, up to 60 seconds). The SDK sends at most one heartbeat per interval.
 - **Checkpoint strategically.** Save progress at meaningful boundaries (records, pages, chunks).
-- **Keep details small.** Store minimal state (IDs, offsets, counts), not full objects.
+- **Keep details small.** Store minimal state (IDs, offsets, counts), not full objects. Details count against the 2 MB [payload size limit](/troubleshooting/blob-size-limit-error#payload-size-limit), and every heartbeat writes them again.
 - **Handle idempotency.** Ensure reprocessing the last checkpoint is safe.
 - **Check cancellation.** Heartbeat regularly to detect cancellation quickly.
 - **Clean up on cancel.** Handle cancellation errors appropriately: catch `ActivityCompletionException` (Java), `CancelledFailure` (TypeScript), `asyncio.CancelledError` (Python), or check `ctx.Done()` (Go).

@@ -118,8 +118,8 @@ its total might also differ from the total across all Action types.
   [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat), so each running Activity sends at
   most one Heartbeat per [throttle interval](/encyclopedia/detecting-activity-failures#throttling), however often its
   code calls Heartbeat. By default, the throttle interval is 80% of the
-  [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), up to 60 seconds, or 30 seconds when
-  no Heartbeat Timeout is set. Heartbeats don't apply to Local Activities.
+  [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), capped at 60 seconds. With no
+  Heartbeat Timeout, it's 30 seconds. Heartbeats don't apply to Local Activities.
 
 | Usage Name                                 | Metric Name                                  | History Event Type                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ------------------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
