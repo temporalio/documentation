@@ -56,16 +56,8 @@ webhook events, updating DynamoDB, or running scheduled integrations. If the app
 Runtime**, deploy the Worker there to use the same runtime environment. Factor in the Runtime HTTP contract and the
 idle and shutdown behavior your handler must implement.
 
-Choose **Modal** for Python workloads that benefit from its GPU selection or image tooling, such as bursty batch
-inference or GPU-backed media processing. Check how the Worker will reach your data and private services from Modal,
-and confirm that your Temporal Cloud account can authorize the Modal workspace. If the data already lives in GCP,
-also check whether the [GPUs available for Cloud Run Worker Pools](https://docs.cloud.google.com/run/docs/configuring/workerpools/gpu)
-meet your needs.
-
-For any provider, check availability in your Namespace and compute region, and confirm that the Worker can reach
-both the Temporal Service and the services its Activities call. If you already have Worker code, check the SDK
-before choosing. Cloud Run runs standard Temporal Workers. The Lambda deployment guide covers Go, Python, TypeScript,
-Java, and .NET. The Modal integration uses Python, and the AgentCore guide shows a Python Runtime handler.
+Narrow your options to providers available in your Namespace and compute region. If a provider runs in a different
+cloud from your Activity dependencies, factor in network access and data transfer costs.
 
 :::caution Multi-cloud Replication for AWS and GCP compute
 
@@ -75,18 +67,28 @@ cloud provider prevents Temporal from starting new Workers on the original provi
 
 :::
 
+### Compare hardware and SDK support
+
+Choose **Modal** for Python workloads that benefit from its GPU selection or Python-defined images, such as batch
+inference or GPU-backed media processing. If your data and deployment tooling are already in GCP, compare Modal's GPU
+options with the [GPUs available for Cloud Run Worker Pools](https://docs.cloud.google.com/run/docs/configuring/workerpools/gpu).
+Modal also requires an authorized workspace connection to the Temporal Cloud account.
+
+Your existing Worker code can narrow the choice. Cloud Run runs standard Temporal Workers. The Lambda deployment guide
+covers Go, Python, TypeScript, Java, and .NET. The Modal integration uses Python, and the AgentCore guide shows a Python
+Runtime handler.
+
 ### Match the Worker lifetime to your Activities
 
-A Workflow Execution can span many Worker lifetimes. Size the compute for the longest **Activity attempt** you expect
-a Worker to run, including the time needed to start the Worker and shut it down gracefully.
+A Workflow Execution can span many Worker lifetimes. Compare providers using the longest **Activity attempt** you expect
+a Worker to run.
 
-- **For short Activities**, Lambda and Modal can start Workers on demand. Leave room for initialization and draining
-  in the function timeout. An Activity that starts late in an invocation has less time before the Worker shuts down.
-- **For longer Activities**, a Cloud Run Worker Pool has no function invocation deadline. Scale-in can still interrupt
-  a running Activity. AgentCore can be a fit for longer AWS workloads that already use its Runtime. Account for both
-  the session's maximum lifetime and its idle timeout. Polling Temporal does not reset the AgentCore idle timeout.
-- **For expensive work that can resume**, use [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat)
-  to record progress and have the next attempt read the last checkpoint after a Worker shuts down.
+- **Lambda and Modal** fit Activities that can finish within the time left in a function invocation after Worker
+  startup and before shutdown. An Activity that starts late in an invocation has less time to finish.
+- **Cloud Run** fits longer Activity attempts that would exceed a function deadline. A Worker Pool has no per-invocation
+  timeout, though scale-in can still interrupt an Activity.
+- **AgentCore Runtime** can suit longer Activity attempts in an existing AgentCore application. Both the maximum
+  lifetime and the idle timeout can end the session. Polling Temporal does not reset the AgentCore idle timeout.
 
 ### Balance startup latency and cost
 
@@ -102,14 +104,9 @@ Estimate cost using the time Workers actually run. A Lambda invocation can keep 
 and Cloud Run charges for running pool instances even when they have no Tasks to process. Include the compute you
 keep warm, any GPU capacity you reserve, and data transfers between regions or providers.
 
-### Verify your choice under load
-
-Test with your actual Worker code and expected traffic.
-
-1. Start from idle and measure how long it takes for the first Task to start.
-2. Send a representative burst and check whether capacity arrives fast enough to drain the backlog. Check the
-   provider's concurrency or instance limits and GPU availability if your Worker needs an accelerator.
-3. Run a long Activity attempt and check how it behaves when compute scales in or reaches its runtime limit.
+If you're choosing between providers that meet your requirements, compare the time to pick up the first Task from idle
+and how quickly each provider clears a representative burst. Those measurements tell you whether you need to pay for
+warm capacity to meet your latency target.
 
 ## Try it locally {/* #try-it-locally */}
 
