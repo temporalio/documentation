@@ -45,11 +45,9 @@ Task Queue can have different needs for compute and startup latency.
 
 ### Start with the cloud your Activities use
 
-If most of the systems your Activities call already run in **GCP**, start with **Cloud Run**. For example, a Worker
-that reads from Cloud Storage and writes to a private Cloud SQL database can use your existing GCP identity and
-deployment tooling, and reach private resources through [Direct VPC egress](https://docs.cloud.google.com/run/docs/configuring/vpc-direct-vpc#direct-vpc-workerpool).
-Running the Worker in GCP can also avoid cross-cloud data transfers. You can deploy an existing containerized
-Temporal Worker to a Worker Pool without adding a function handler.
+If most of the systems your Activities call already run in **GCP**, start with **Cloud Run**. Running the Worker in GCP
+can simplify access to those systems, let you reuse your deployment tooling, and reduce cross-cloud data transfers.
+You can deploy an existing containerized Temporal Worker directly to a Worker Pool.
 
 If your dependencies are mainly in **AWS**, start with **Lambda** for short, intermittent work such as processing
 webhook events, updating DynamoDB, or running scheduled integrations. If the application already runs on **AgentCore
