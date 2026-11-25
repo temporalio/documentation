@@ -117,7 +117,7 @@ def configure(config: ModalWorkerConfig) -> None:
 
 @app.function(
     timeout=int(FUNCTION_TIMEOUT.total_seconds()),
-    secrets=[modal.Secret.from_name("temporal")],
+    secrets=[modal.Secret.from_name("temporal-cloud-credentials")],
 )
 async def temporal_worker() -> None:
     await run_worker(
@@ -140,7 +140,7 @@ and function name identify the code that Temporal invokes; they do not need to m
 
 ## Configure the Temporal connection
 
-Create the `temporal` secret in the Modal environment where you deploy the function. Include these values:
+Create the `temporal-cloud-credentials` secret in the Modal environment where you deploy the function. Include these values:
 
 | Variable | Value |
 | --- | --- |

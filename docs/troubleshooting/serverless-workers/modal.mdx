@@ -36,9 +36,8 @@ An app or secret in another environment does not satisfy the configuration for t
 
 ## Check invocation permission and routing
 
-Confirm with your administrator that Temporal has an authorized connection to the workspace. The Temporal API key
-stored in the Modal function's secret authorizes the Worker to connect back to Temporal; it does not authorize
-Temporal to invoke Modal.
+In Temporal Cloud, go to **Settings** > **Connections** and check whether the workspace appears under **Modal**.
+If it is missing, follow the steps to [authorize Temporal to invoke the function](/production-deployment/worker-deployments/serverless-workers/modal#authorize-temporal-to-invoke-modal).
 
 Check that the Workflow uses the Task Queue registered by the intended Worker Deployment Version and that new
 Workflows route to the Current Version:
