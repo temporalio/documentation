@@ -32,8 +32,8 @@ When a Task cannot be matched to an available Worker, the WCI can request a new 
 can also trigger an invocation when backlog exceeds the configured threshold. Each scale-out action requests a Worker
 invocation.
 
-Modal can serve the invocation in an available container or start a new one. Set warm capacity and container limits
-in [Modal](#instance-model). Set Temporal's scaling thresholds with the
+Modal can serve the invocation in an available container or start a new one. For warm capacity and container limits,
+see [Container reuse and capacity](#instance-model). Set Temporal's scaling thresholds with the
 [Modal compute-config commands](/cli/command-reference/worker#modal-function).
 
 #### Scale-up pauses for rate-limited Task Queues {/* #rate-limited-task-queues */}
@@ -49,7 +49,7 @@ Worker shutdown and Modal's idle container policy determine when capacity goes a
 its execution deadline, even if the Task Queue is empty. When the invocation exits, Modal can keep the container ready
 for a later invocation or remove it.
 
-### Instance model {/* #instance-model */}
+### Container reuse and capacity {/* #instance-model */}
 
 Each invocation creates a fresh Client and Worker. A Worker can process Tasks from multiple Workflow Executions during
 one invocation. If Modal reuses the container, the next invocation initializes a new Worker.
