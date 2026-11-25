@@ -13,6 +13,7 @@ tags:
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
+import LambdaWorkerSecretIds from '@site/docs/develop/_shared/lambda-worker-secret-ids.mdx';
 
 <ReleaseNoteHeader featureName="serverlessWorkersLambda" />
 
@@ -100,22 +101,18 @@ public class SampleWorkflow
 
 The `Temporalio.Extensions.Aws.Lambda` package automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
 
-Compared with long-lived Workers, the location of the config file is resolved differently, in the following order:
+The package selects the path in `TEMPORAL_CONFIG_FILE` when set. Otherwise, it looks for `temporal.toml` in
+`$LAMBDA_TASK_ROOT` (typically `/var/task`). If `LAMBDA_TASK_ROOT` is unset, it looks in the current working directory.
+The file is optional.
 
-1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
-2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).
-3. `temporal.toml` in the current working directory.
+### Load credentials from a secret {/* #configure-secret-ids */}
 
-The file is optional. If absent, only environment variables are used.
-
-### Configure secret IDs {/* #configure-secret-ids */}
+<LambdaWorkerSecretIds />
 
 The Lambda Worker package includes the AWS SDK dependency for Secrets Manager. If you add client plugins in your
 `configure` callback, preserve the plugins already in `ClientOptions.Plugins`. See the
 [`Temporalio.Extensions.Aws.Lambda` README](https://github.com/temporalio/sdk-dotnet/blob/main/src/Temporalio.Extensions.Aws.Lambda/README.md#credentials-from-aws-secrets-manager)
-for the secret ID settings.
-
-Grant the Lambda execution role [permission to read the secrets](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
+for mTLS settings.
 
 ### TLS/CA loading on Lambda {/* #tls-ca-loading */}
 

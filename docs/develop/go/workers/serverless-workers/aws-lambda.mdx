@@ -13,6 +13,7 @@ tags:
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
+import LambdaWorkerSecretIds from '@site/docs/develop/_shared/lambda-worker-secret-ids.mdx';
 
 <ReleaseNoteHeader featureName="serverlessWorkersLambda" />
 
@@ -73,22 +74,18 @@ The `Options` callback gives you access to the same registration methods you use
 
 The `lambdaworker` package automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
 
-Compared with long-lived Workers, the location of the config file is resolved differently, in the following order:
+The package selects the path in `TEMPORAL_CONFIG_FILE` when set. Otherwise, it looks for `temporal.toml` in
+`$LAMBDA_TASK_ROOT` (typically `/var/task`). If `LAMBDA_TASK_ROOT` is unset, it looks in the current working directory.
+The file is optional.
 
-1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
-2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).
-3. `temporal.toml` in the current working directory.
+### Load credentials from a secret {/* #configure-secret-ids */}
 
-The file is optional. If absent, only environment variables are used.
-
-### Configure secret IDs {/* #configure-secret-ids */}
+<LambdaWorkerSecretIds />
 
 Use `lambdaworker` v0.2.0 or later. The package uses the AWS Parameters and Secrets Lambda Extension when it's
 available and the AWS SDK for Go otherwise. See the
 [`lambdaworker` README](https://github.com/temporalio/sdk-go/blob/contrib/aws/lambdaworker/v0.2.0/contrib/aws/lambdaworker/README.md#credentials-from-aws-secrets-manager)
-for API key and mTLS settings in environment variables and TOML.
-
-Grant the Lambda execution role [permission to read the secrets](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
+for mTLS settings.
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 

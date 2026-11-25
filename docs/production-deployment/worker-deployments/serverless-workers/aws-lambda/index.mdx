@@ -356,8 +356,10 @@ cd publish && zip -r ../function.zip . && cd ..
 
 ### 2.2 Deploy Lambda function {/* #deploy-lambda-function-step */}
 
-For production deployments, [configure AWS Secrets Manager](#use-aws-secrets-manager) before running the command for
-your SDK. Replace the placeholders and run the command to create the Lambda function.
+The commands below pass the API key directly in the Lambda environment. For production deployments, we recommend
+[loading credentials from AWS Secrets Manager](#use-aws-secrets-manager). To load your API key from a secret, remove
+`TEMPORAL_API_KEY` from the deployment command and configure the secret ID as described in your SDK guide. Replace the
+placeholders and run the command for your SDK.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Go>
@@ -511,11 +513,10 @@ aws lambda update-function-code \
 After updating, increment the Build ID in your Worker code and publish a new Lambda function version.
 See [Step 2.3](#publish-lambda-version) for details.
 
-#### Load credentials from AWS Secrets Manager {/* #use-aws-secrets-manager */}
+#### Load credentials from AWS Secrets Manager (optional) {/* #use-aws-secrets-manager */}
 
-The Lambda Worker fetches Temporal credentials from AWS Secrets Manager at startup using the secret names or ARNs you
-configure. For an API key, set `TEMPORAL_EXT_AWS_SECRETS_MANAGER_API_KEY_ID` and remove any direct key from
-`TEMPORAL_API_KEY` or your TOML profile's `api_key` field.
+When you configure secret names or ARNs, the Lambda Worker fetches those credentials from AWS Secrets Manager at
+startup.
 
 Grant the **Lambda execution role** `secretsmanager:GetSecretValue` on the configured secrets. When a secret uses a
 customer-managed KMS key, also grant `kms:Decrypt` on that key. See
