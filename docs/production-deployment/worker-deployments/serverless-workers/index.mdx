@@ -92,23 +92,20 @@ a Worker to run.
 - **AgentCore Runtime** can suit longer Activity attempts in an existing AgentCore application. Both the maximum
   lifetime and the idle timeout can end the session. Polling Temporal does not reset the AgentCore idle timeout.
 
-### Balance startup latency and cost
+### Decide how much capacity to keep ready
 
-For a queue that's idle for hours at a time, start with on-demand invocations or a Cloud Run pool that can scale to
-zero. The first Task after an idle period may wait for compute to start and the Worker to connect. For a GCP queue
-with steady traffic or a tight Task pickup target, keep a minimum number of Cloud Run instances polling. In Modal,
-keeping containers warm can reduce container startup time. Each invocation still starts and connects a new Worker.
+Consider who waits for the first Task after a quiet period. A nightly import can usually wait for compute to start.
+A customer waiting for a result may need a Worker already polling.
 
-If an existing fixed-size AWS Worker fleet handles most traffic, you can add [Lambda Workers on the same Task
-Queue](/serverless-workers/aws-lambda#sharing-a-task-queue) to handle bursts.
-
-Estimate cost using the time Workers actually run. A Lambda invocation can keep polling after it finishes a Task,
-and Cloud Run charges for running pool instances even when they have no Tasks to process. Include the compute you
-keep warm, any GPU capacity you reserve, and data transfers between regions or providers.
-
-If you're choosing between providers that meet your requirements, compare the time to pick up the first Task from idle
-and how quickly each provider clears a representative burst. Those measurements tell you whether you need to pay for
-warm capacity to meet your latency target.
+- **Intermittent work that can wait.** Use on-demand Workers or set the Cloud Run pool minimum to zero. Lambda fits
+  sporadic AWS work that finishes within an invocation. Modal fits intermittent GPU work where you can let the
+  containers scale down between batches.
+- **Steady traffic or a tight pickup target.** If you run on GCP, keep a minimum number of Cloud Run Workers polling.
+  You pay for those instances during quiet periods to keep Workers ready to pick up Tasks. A warm Modal container
+  can shorten container startup. Each invocation still starts and connects a new Worker.
+- **A steady baseline with occasional spikes in AWS.** If a fixed-size Worker fleet handles normal traffic, use
+  [Lambda Workers on the same Task Queue](/serverless-workers/aws-lambda#sharing-a-task-queue) for the excess. This
+  lets you size the standing fleet for normal traffic and invoke additional Workers during bursts.
 
 ## Try it locally {/* #try-it-locally */}
 
