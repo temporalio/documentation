@@ -114,6 +114,18 @@ As a latency optimization, Activity and Workflow Tasks may be started eagerly in
 Eager Activity Start may happen automatically if the Worker processing a Workflow Task has also registered the Activity Definition being called.
 If it does, it may try to reserve an Activity Slot for the execution of the Activity, and the server may respond to the Workflow Task completion with the Activity Task for the worker to execute immediately.
 
+#### Eager Standalone Activity Start
+
+<ReleaseNoteHeader type="publicPreview" />
+
+Eager Standalone Activity Start reduces the time to dispatch the first Task of a [Standalone Activity](/standalone-activity).
+Unlike Eager Activity Start for an Activity scheduled by a Workflow, it must be requested when starting the Standalone Activity.
+
+When an eager start is requested and accepted, the Temporal Service persists the new Activity Execution and returns its first Activity Task in the start response for a local Worker to execute.
+This avoids the initial Task Queue dispatch and polling round trip.
+Eager delivery is not guaranteed: if the request is not eligible or the Service does not accept it, the Activity is dispatched through the Task Queue as usual.
+For example, an Activity with a start delay is dispatched normally.
+
 #### Eager Workflow Start
 
 <ReleaseNoteHeader type="publicPreview" languages={["Go", "Java", "Python", ".NET"]}>
