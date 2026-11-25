@@ -26,7 +26,8 @@ These matter more than any individual structural change, because breaking them m
 3. Rewrite the implementation steps using the Code Sandwich rules.
 4. Run the code check (see "Verifying the code") if the draft was provided as a file.
 5. Re-read the result once as a reader would: does every step open by saying what it does and close by saying what was accomplished and what comes next?
-6. Deliver the revised guide and the editor's notes (see "Output").
+6. Run the [Tone pass](../../../AGENTS.md#tone-pass) from AGENTS.md on the revised guide, giving the reviewing agent the revised file's path. The ground rules above still apply: don't change code to fix tone.
+7. Deliver the revised guide and the editor's notes (see "Output").
 
 ## Section rules
 

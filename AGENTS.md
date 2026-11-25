@@ -84,14 +84,43 @@ In code blocks, follow each language's conventions.
 ### Writing style
 
 Follow [STYLE.md](./readme/STYLE.md) and the [Google developer documentation style guide](https://developers.google.com/style)
-for tone (conversational, second person, active voice) and structure (short paragraphs, one idea per sentence). A few
-additions specific to model output:
+for tone (conversational, second person, active voice) and structure (short paragraphs, one idea per sentence). Apply
+the generated-register list in [Text tone](#3-text-tone) while drafting, not only when reviewing. In addition:
 
 - Cut filler that adds no information: "it's worth noting that," "in order to," "simply," "easily," "just."
 - Avoid vague intensifiers doing the work a specific fact should do: "powerful," "robust," "seamless," "cutting-edge,"
   "leverage" (use "use"), "unlock," "elevate," "streamline." Replace with what the thing actually does.
 - Don't pad a page to look thorough. Prefer brevity over overly-verbose paragraphs.
 - Do not add emojis to documentation prose and use em-dashes sparingly.
+- State each fact once. When a fact belongs on several pages, explain it on one and link to it from the others. Within
+  a page, don't repeat a point in the intro, a section, and a later list.
+- In explanatory prose, write list items as sentences. Don't open a bullet with a bold label that isn't a sentence,
+  such as "**Detection time.**", and don't introduce a list with a bare fragment like "Common causes:". Fold the setup
+  into the sentence before the list instead. Reference lists, link lists, and index pages keep their established
+  format.
+- Use at most one hedge per claim. Write "no more than one a minute," not "no more than about one a minute." Drop
+  "about" from exact numbers.
+- State the concrete effect, not an abstract trade-off. Write "A shorter Heartbeat Timeout detects a failed Worker
+  sooner but gives each Heartbeat less time to arrive," not "A Heartbeat Timeout weighs detection against arrival
+  time."
+- When you adapt source material such as a playbook or design doc, match the target page's voice, not the source's.
+  Source documents often bold every lead sentence or use their own register.
+
+### Tone pass
+
+Before finishing a docs change that adds or rewrites prose, get a second read from an agent with no context from your
+session. Writers miss these patterns in their own text.
+
+1. Start a subagent with no conversation context. Give it the command that shows the change, such as
+   `git diff origin/main...HEAD -- docs/`, or the file path if the text isn't committed. Point it at
+   [Writing style](#writing-style) and [Word choice](#word-choice) above and at [Text tone](#3-text-tone) in the Code
+   Review Rules, and ask it to search the rest of `docs/` for pages that already state the same facts. Ask for
+   findings ordered by importance, each with the file, the quoted text, the problem in one sentence, and a rewrite.
+   Tell it not to edit files or judge technical accuracy. Don't pass it your own opinion of the text.
+2. Apply each finding unless it misreads the text or would change a technical claim.
+3. Run `vale --config .vale-ci.ini` on the files you changed.
+
+If you can't start a subagent, reread the whole diff yourself against the lists above before finishing.
 
 ### Word choice
 
