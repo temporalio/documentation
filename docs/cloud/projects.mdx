@@ -98,7 +98,7 @@ In this call, `description` is a string description of the Project, `displayName
   </TabItem>
 </Tabs>
 
-After creating the Project, add new Namespaces and other supported resources within it. A Namespace can be moved to another Project. See [Move a Namespace to another Project](#move-a-namespace). Other resources cannot yet be moved from one Project to another.
+After creating the Project, add new Namespaces and other supported resources within it. You can move a Namespace or a Nexus Endpoint to another Project. See [Move a Namespace to another Project](#move-a-namespace) and [Move a Nexus Endpoint to another Project](#move-a-nexus-endpoint). Connectivity Rules and Project-scoped Service Accounts can't be moved between Projects.
 
 
 ## Add Resources to a Project {/* #add-resources-to-a-project */}
@@ -332,6 +332,61 @@ Projects group Nexus Endpoints for organization and authorization. They do not c
 Example: an Endpoint in Project `payments`, a target Namespace in `payments`, and a caller Namespace in `checkout`.
 That call is allowed when the `checkout` Namespace is on the Endpoint allowlist.
 A user who can only list Endpoints in `checkout` will not see the Endpoint in `payments`.
+
+## Move a Nexus Endpoint to another Project {/* #move-a-nexus-endpoint */}
+
+You can move a Nexus Endpoint to another Project in the same Temporal Cloud Account. The Endpoint keeps its ID, name, target, allowed caller Namespaces, and routing, so Nexus calls through it continue without interruption.
+
+A move changes only which Project controls who can manage the Endpoint. Roles on the source Project no longer let users and Service Accounts view or manage the Endpoint. Before the move, grant the destination-Project roles they need. The target Namespace and caller Namespaces stay in their own Projects. See [Use Nexus across Projects](#use-nexus-across-projects).
+
+You need Project Admin on both the source and the destination Project. Account Owners and Global Admins have Project Admin on every Project. The destination Project must be operational and under its [Nexus Endpoint limit](/evaluate/cloud/limits#nexus-endpoints).
+
+The Account setting that enables [Namespace moves](#move-a-namespace) also enables Nexus Endpoint moves. If the move returns an error saying it isn't enabled for your Account, [contact Support](/evaluate/cloud/support#support-ticket).
+
+The Cloud UI doesn't support moving a Nexus Endpoint. Use the CLI or the Cloud Operations API.
+
+<Tabs groupId="move-nexus-endpoint">
+  <TabItem value="cli" label="CLI">
+
+Install version 0.2.1 or later of the [Temporal Cloud extension](/cli/setup-cli#install-the-temporal-cloud-extension) for the Temporal CLI, then sign in with `temporal cloud login`.
+
+Identify the Endpoint with `--name` or `--id`:
+
+```bash
+temporal cloud nexus endpoint move-to-project \
+  --name <endpoint-name> \
+  --source-project-id <source-project-id> \
+  --destination-project-id <destination-project-id>
+```
+
+The move fails when the Endpoint is no longer in the source Project. The CLI waits until the move finishes. Add `--async` to return an operation ID instead, then wait with `temporal cloud async-operation await --async-operation-id <operation-id>`.
+
+See [`temporal cloud nexus endpoint move-to-project`](/cli/command-reference/cloud/nexus#endpoint-move-to-project) for all options.
+
+  </TabItem>
+  <TabItem value="cloud-api" label="Cloud Operations API">
+
+Call
+[`MoveNexusEndpointToProject`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/POST/cloud/nexus/endpoints/{endpointId}/move-to-project).
+Read the Endpoint's current `resourceVersion` from
+[`GetNexusEndpoint`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/nexus/GET/cloud/nexus/endpoints/{endpointId}).
+
+```
+curl -sS -X POST "$BASE/cloud/nexus/endpoints/<endpoint-id>/move-to-project" \
+  -H "$H_AUTH" -H "$H_VER" -H "Content-Type: application/json" \
+  -d '{
+    "destinationProjectId": "<destination-project-id>",
+    "expectedSourceProjectId": "<source-project-id>",
+    "resourceVersion": "<current-endpoint-resource-version>"
+  }'
+```
+
+For authentication headers and API versioning, see [Cloud Ops API](/ops).
+
+The response contains an async operation. Wait for that operation to finish before you treat the move as complete.
+
+  </TabItem>
+</Tabs>
 
 ## Manage Project access
 

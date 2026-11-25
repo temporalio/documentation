@@ -1,6 +1,6 @@
 import React, { useEffect, type ReactNode } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
-import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
+import { hasDocsAnalyticsConsent } from '@site/src/utils/analyticsConsent';
 
 // Importing the package registers <temporal-consent-banner> (client-side only;
 // the element itself no-ops under SSR, but customElements isn't defined there).
@@ -19,7 +19,7 @@ function trackSuggestionFollowed(): void {
   const params = new URLSearchParams(window.location.search);
   if (params.get('utm_source') !== 'docs-404') return;
 
-  if (hasAnalyticsConsent(readConsentFromDocumentCookie()) && window.amplitude) {
+  if (hasDocsAnalyticsConsent() && window.amplitude) {
     window.amplitude.track('Docs 404 Suggestion Followed', {
       url: window.location.origin + window.location.pathname,
       rank: Number(params.get('utm_content')) || null,

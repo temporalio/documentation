@@ -24,13 +24,13 @@ use the [OpenAI Agents SDK integration](/develop/python/integrations/openai-agen
 
 ## Install the integration
 
-Use Python 3.10 or later and install the package:
+Use Python 3.11 or later and install the package:
 
 ```bash
 uv add temporalio-mcp
 ```
 
-The package installs the Temporal Python SDK (version 1.32.0 or later), MCP Python SDK v2, and Pydantic dependencies.
+The package installs the Temporal Python SDK (version 1.36.0 or later), MCP Python SDK v2, and Pydantic dependencies.
 
 Before running the example, follow the [Python development environment setup](/develop/python/set-up-your-local-python)
 and leave the Temporal Development Server running at `localhost:7233`.
@@ -224,7 +224,8 @@ mcp = TemporalMCPClient(
 ```
 
 By default, each operation has a one-minute Start-To-Close Timeout. The integration adds this default only when you
-omit both `start_to_close_timeout` and `schedule_to_close_timeout`, or set both to `None`.
+omit both `start_to_close_timeout` and `schedule_to_close_timeout`, or set both to `None`. It also adds a 10-second
+`heartbeat_timeout` when you leave that key out; see [heartbeats](#heartbeats-and-cancellation) below.
 Set a Schedule-To-Close Timeout to bound the total time, including retries. Retryable errors can retry indefinitely
 with the default Retry Policy and no Schedule-To-Close Timeout.
 
@@ -241,9 +242,18 @@ Handle errors according to how the MCP server reports them:
 Make tools with side effects [idempotent](/activity-definition#idempotency). An Activity can execute more than
 once, such as when a Worker loses the response after the MCP server has completed a tool call.
 
-MCP Activities do not heartbeat. Setting `heartbeat_timeout` does not add heartbeats or enable cancellation delivery.
-An Activity timeout also does not cancel an MCP request already running on the Worker. Configure the MCP client's
-`read_timeout_seconds` to bound the request itself.
+### Heartbeats and cancellation
+
+MCP Activities send a Heartbeat at half the `heartbeat_timeout` while a request runs. A cancel reaches a running
+Activity only in a Heartbeat's response, so Heartbeats let a cancelled Workflow stop an MCP request already running on
+the Worker, and the Temporal Service notices a lost Worker within the Heartbeat Timeout instead of at the Start-To-Close
+Timeout. Heartbeats go out at a fixed interval, not with the request's progress, so a slow request is not mistaken for a
+lost Worker. In Temporal Cloud each Heartbeat that reaches the Temporal Service is an Action, at most one every 8
+seconds of a running request. Set `heartbeat_timeout` to `None` to turn Heartbeats off; a cancel then does not reach a
+running request. Configure the MCP client's `read_timeout_seconds` to bound the request itself.
+
+Versions before 0.4 do not send Heartbeats. Upgrade the Workers that run MCP operations before the Workflows that call
+them: a Worker on 0.3 or earlier fails an operation from a 0.4 Workflow once it runs for 10 seconds.
 
 ## Manage connections and credentials
 
