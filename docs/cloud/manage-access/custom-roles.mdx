@@ -420,27 +420,12 @@ groups and service accounts, use `cloud.namespace.getUserGroupNamespaceAssignmen
 
 ## Control which service accounts appear in the list
 
-`cloud.serviceaccount.get` authorizes the
-[GetServiceAccount](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts/%7BserviceAccountId%7D)
-call. Grant it on the `service-accounts` resource type with `allow_all: true`. It covers every service account in the
-account. You can't grant it on specific service account IDs.
+To list service accounts, a principal needs two permissions:
 
-`cloud.serviceaccount.list` authorizes the calls that list service accounts. Grant it on the resource whose service
-accounts you want to list:
+- `cloud.serviceaccount.list` on the account, Project, or Namespace whose service accounts you want to list
+- `cloud.serviceaccount.get` on all service accounts
 
-- The account, for
-  [GetServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/service-accounts/GET/cloud/service-accounts)
-- A Project, for
-  [GetProjectScopedServiceAccounts](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/projects/GET/cloud/projects/%7BprojectId%7D/service-accounts)
-- A Namespace, for GetNamespaceScopedServiceAccounts
+With `cloud.serviceaccount.list` alone, the list comes back empty.
 
-A list includes a service account only when the caller also has `cloud.serviceaccount.get` on it. Granting only
-`cloud.serviceaccount.list` returns an empty list.
-
-`cloud.serviceaccount.list` on a Project doesn't cover the Project's Namespaces. To list the service accounts scoped to
-those Namespaces, also grant `cloud.serviceaccount.list` on the Namespaces.
-
-For example, to let a principal view every service account in the account, grant:
-
-- `cloud.serviceaccount.get`, scoped to all service account resources
-- `cloud.serviceaccount.list`, scoped to the Cloud Account
+Granting `cloud.serviceaccount.list` on a Project doesn't let the principal list the service accounts in that
+Project's Namespaces. To list those, grant it on each Namespace as well.
