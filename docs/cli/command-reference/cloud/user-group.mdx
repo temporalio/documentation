@@ -3,7 +3,7 @@ id: user-group
 title: Temporal CLI cloud user-group command reference
 sidebar_label: user-group
 description: User Group Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - user-groups
 ---

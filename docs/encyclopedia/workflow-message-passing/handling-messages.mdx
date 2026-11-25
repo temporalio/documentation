@@ -45,8 +45,11 @@ The message handler runs first in several scenarios, such as:
 - When your Worker experiences delays, such as when the Task Queue it polls gets backlogged.
 - When messages arrive immediately after a Workflow continues as new but before it resumes.
 
-For all languages except Go and TypeScript, use your constructor to set up state.
+For all languages except Go, Rust, and TypeScript, use your constructor to set up state.
 Annotate your constructor as a Workflow Initializer and take the same arguments as your Workflow's main method.
+
+In Rust, the Workflow input is passed to either the `#[init]` method or `#[run]`, not both.
+If `#[init]` takes an input parameter, don't declare one on `#[run]`.
 
 Note that you can't make blocking calls from your constructor.
 If you need to block, make your Signal or Update handler [wait](#waiting) for an initialization flag.
@@ -87,6 +90,19 @@ This option is advanced, but it lets you control exactly when each message is pr
 You should generally finish running all handlers before the Workflow run completes or continues as new. For some Workflows, this means you should explicitly check to make sure that all the handlers have completed before finishing. You can await a condition called All Handlers Finished at the end of your Workflow.
 
 If you don’t need to ensure that your handlers complete, you may specify your handler’s Handler Unfinished Policy as Abandon to turn off the warnings. However, note that clients waiting for Updates will get Not Found errors if they're waiting for Updates that never complete before the Workflow run completes.
+
+The Temporal Service doesn't drop a Signal that arrives while the Workflow is closing. If it receives a Signal while
+the Worker is completing the Workflow Task that would complete, fail, or Continue-As-New the Workflow, it rejects that
+Workflow Task's completion with an [Unhandled Command](/references/workflow-task-errors#unhandled-command) error and
+discards the Task's Commands. The Worker then gets a
+new Workflow Task that includes the Signal, which gives the Workflow a chance to process it before closing. In SDKs that
+register a Signal handler, the handler runs in that Workflow Task. In the Go SDK, the Signal goes to the Signal Channel,
+and the Workflow must drain the channel before it returns or the Signal is lost. An Update that arrives at that point
+gets the same treatment, with an [Unhandled Update](/references/workflow-task-errors#cause-unhandled-update) error.
+
+If the main Workflow processes Signals from a queue or channel, check that it's empty in the same Workflow Task that
+closes the Workflow. Don't wait on anything, such as a Timer or an Activity, between that check and the return. A Signal
+that arrives during the wait is delivered, but the Workflow has already decided to close and doesn't process it.
 
 See the links below for how to ensure handlers are finished in your SDK.
 

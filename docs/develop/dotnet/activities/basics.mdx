@@ -27,7 +27,9 @@ Otherwise, the activity name is the unqualified method name (sans an "Async" suf
 
 Activities can be asynchronous or synchronous.
 
-```csharp
+<!--SNIPSTART dotnet-activity-basics-define-->
+[dotnet-sandbox/workflows/WorkflowBasics/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/workflows/WorkflowBasics/MyActivities.cs)
+```cs
 using Temporalio.Activities;
 
 public class MyActivities
@@ -39,6 +41,7 @@ public class MyActivities
         $"{input.Greeting}, {input.Name}!";
 }
 ```
+<!--SNIPEND-->
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.

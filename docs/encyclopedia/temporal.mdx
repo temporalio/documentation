@@ -28,9 +28,12 @@ The Temporal Platform handles these types of problems, allowing you to focus on 
 
 ## Durable Execution {/* #durable-execution */}
 
-Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and progress even in the face of failures, crashes, or server outages.
-This is achieved through Temporal's use of an [Event History](/workflow-execution/event#event-history), which records the state of a Workflow Execution at each step.
-If a failure occurs, the Workflow Execution can resume from the last recorded event, ensuring that progress isn't lost.
+Durable Execution preserves the state and progress of a Workflow Execution as it runs, so that after a failure the Workflow Execution resumes where it left off.
+Temporal records each step in an [Event History](/workflow-execution/event#event-history) and replays it to restore state.
+Transient failures, such as crashes and network outages, are retried until they succeed.
+Permanent failures, such as bugs and bad data, need an intervention, but the Workflow Execution keeps its progress so it can resume after the fix.
+
+For details, see [What is Durable Execution?](/durable-execution)
 
 ## What is the Temporal Platform? {/* #temporal-platform */}
 

@@ -3,7 +3,7 @@ id: service-account
 title: Temporal CLI cloud service-account command reference
 sidebar_label: service-account
 description: Service Account Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - service-accounts
 ---

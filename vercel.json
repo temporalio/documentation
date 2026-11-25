@@ -3,6 +3,33 @@
   "github": {
     "silent": true
   },
+  "functions": {
+    "api/retrieve.js": {
+      "maxDuration": 15
+    },
+    "api/recommend.js": {
+      "maxDuration": 15,
+      "includeFiles": "api/_{content-manifest,external-content}.json"
+    },
+    "api/not-found.js": {
+      "maxDuration": 10
+    },
+    "api/markdown-not-found.js": {
+      "maxDuration": 10
+    },
+    "api/feedback.js": {
+      "maxDuration": 10
+    },
+    "api/feedback-digest.js": {
+      "maxDuration": 60
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/feedback-digest",
+      "schedule": "0 15 * * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/img/og/:path*",
@@ -22,6 +49,10 @@
         }
       ],
       "destination": "/api/markdown-not-found"
+    },
+    {
+      "source": "/:path((?!api/)[^.]*)",
+      "destination": "/api/not-found"
     }
   ],
   "headers": [
@@ -54,6 +85,11 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/develop/rust/data-handling/external-storage",
+      "destination": "/develop/rust/best-practices/data-handling/external-storage",
+      "permanent": true
+    },
     {
       "source": "/:path*/null",
       "destination": "/:path*",
@@ -2485,12 +2521,12 @@
     },
     {
       "source": "/cloud/sla",
-      "destination": "/cloud/slo#uptime",
+      "destination": "/cloud/slo#availability",
       "permanent": true
     },
     {
       "source": "/evaluate/cloud/sla",
-      "destination": "/cloud/slo#uptime",
+      "destination": "/cloud/slo#availability",
       "permanent": true
     },
     {
@@ -2540,12 +2576,7 @@
     },
     {
       "source": "/encyclopedia/durable-execution",
-      "destination": "/temporal#durable-execution",
-      "permanent": true
-    },
-    {
-      "source": "/durable-execution",
-      "destination": "/temporal#durable-execution",
+      "destination": "/durable-execution",
       "permanent": true
     },
     {
@@ -2576,6 +2607,21 @@
     {
       "source": "/schedules",
       "destination": "/schedule",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosting-guide/:path*",
+      "destination": "/self-hosted-guide/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/checklist",
+      "destination": "/self-hosted-guide/production-checklist",
+      "permanent": true
+    },
+    {
+      "source": "/self-hosted-guide/nexus",
+      "destination": "/production-deployment/self-hosted-guide/nexus",
       "permanent": true
     },
     {

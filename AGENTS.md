@@ -15,6 +15,11 @@ repository.
 | CI jobs and scheduled jobs   | [AUTOMATIONS.md](./readme/AUTOMATIONS.md)                                  |
 | AI research sources for content review | [AI-KNOWLEDGE-SOURCES.md](./readme/AI-KNOWLEDGE-SOURCES.md)       |
 | Readability check tool       | [READABILITY.md](./readme/READABILITY.md)                           |
+| Agent search endpoint (`/api/retrieve`) | [AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md)           |
+| Recommendations endpoint (`/api/recommend`) | [RECOMMEND.md](./readme/RECOMMEND.md)                 |
+| Feedback endpoint (`/api/feedback`) | [FEEDBACK.md](./readme/FEEDBACK.md)                           |
+| 404 suggested pages          | [NOT-FOUND-SUGGESTIONS.md](./readme/NOT-FOUND-SUGGESTIONS.md)        |
+| Amplitude events and click tracking | [ANALYTICS.md](./readme/ANALYTICS.md)                        |
 
 ## Repository overview
 
@@ -49,6 +54,18 @@ In body prose, use **Temporal Service**, not **Cluster** or **Temporal Cluster**
 
 Exceptions: **Multi-Cluster Replication**, code/config identifiers, and CLI command names.
 
+### Determinism applies to the Workflow Definition
+
+A [Workflow Definition](/workflow-definition) must be deterministic. Don't say "the Workflow" or "Workflow code" must be
+deterministic: "Workflow code" is ambiguous with Activity code, which can be non-deterministic.
+
+- Correct: "A Workflow Definition must be deterministic."
+- Incorrect: "Workflow code must be deterministic."
+
+"Workflow code" is fine when the sentence isn't about determinism, for example "Don't do I/O in Workflow code."
+The advisory Vale rule `Temporal.DeterminismScope` flags the incorrect phrasings. See
+`vale/styles/Temporal/DeterminismScope.yml`.
+
 ### Identifier abbreviation
 
 Outside Temporal core terms, spell out "identifier." For core terms, use `ID` (not `Id` or `id`).
@@ -67,14 +84,43 @@ In code blocks, follow each language's conventions.
 ### Writing style
 
 Follow [STYLE.md](./readme/STYLE.md) and the [Google developer documentation style guide](https://developers.google.com/style)
-for tone (conversational, second person, active voice) and structure (short paragraphs, one idea per sentence). A few
-additions specific to model output:
+for tone (conversational, second person, active voice) and structure (short paragraphs, one idea per sentence). Apply
+the generated-register list in [Text tone](#3-text-tone) while drafting, not only when reviewing. In addition:
 
 - Cut filler that adds no information: "it's worth noting that," "in order to," "simply," "easily," "just."
 - Avoid vague intensifiers doing the work a specific fact should do: "powerful," "robust," "seamless," "cutting-edge,"
   "leverage" (use "use"), "unlock," "elevate," "streamline." Replace with what the thing actually does.
 - Don't pad a page to look thorough. Prefer brevity over overly-verbose paragraphs.
 - Do not add emojis to documentation prose and use em-dashes sparingly.
+- State each fact once. When a fact belongs on several pages, explain it on one and link to it from the others. Within
+  a page, don't repeat a point in the intro, a section, and a later list.
+- In explanatory prose, write list items as sentences. Don't open a bullet with a bold label that isn't a sentence,
+  such as "**Detection time.**", and don't introduce a list with a bare fragment like "Common causes:". Fold the setup
+  into the sentence before the list instead. Reference lists, link lists, and index pages keep their established
+  format.
+- Use at most one hedge per claim. Write "no more than one a minute," not "no more than about one a minute." Drop
+  "about" from exact numbers.
+- State the concrete effect, not an abstract trade-off. Write "A shorter Heartbeat Timeout detects a failed Worker
+  sooner but gives each Heartbeat less time to arrive," not "A Heartbeat Timeout weighs detection against arrival
+  time."
+- When you adapt source material such as a playbook or design doc, match the target page's voice, not the source's.
+  Source documents often bold every lead sentence or use their own register.
+
+### Tone pass
+
+Before finishing a docs change that adds or rewrites prose, get a second read from an agent with no context from your
+session. Writers miss these patterns in their own text.
+
+1. Start a subagent with no conversation context. Give it the command that shows the change, such as
+   `git diff origin/main...HEAD -- docs/`, or the file path if the text isn't committed. Point it at
+   [Writing style](#writing-style) and [Word choice](#word-choice) above and at [Text tone](#3-text-tone) in the Code
+   Review Rules, and ask it to search the rest of `docs/` for pages that already state the same facts. Ask for
+   findings ordered by importance, each with the file, the quoted text, the problem in one sentence, and a rewrite.
+   Tell it not to edit files or judge technical accuracy. Don't pass it your own opinion of the text.
+2. Apply each finding unless it misreads the text or would change a technical claim.
+3. Run `vale --config .vale-ci.ini` on the files you changed.
+
+If you can't start a subagent, reread the whole diff yourself against the lists above before finishing.
 
 ### Word choice
 
@@ -194,6 +240,10 @@ yarn check:cloud-links   # links into cloud.temporal.io that return 404; runs we
 yarn check:redirects     # vercel.json redirect rules that can't work as written; runs in CI on PRs
 yarn check:py-samples    # hand-written Python samples against the published SDK package; advisory
 yarn check:ts-samples    # hand-written TypeScript samples against the published SDK packages; advisory
+yarn check:retrieve-links # /api/retrieve results whose docs links don't return 200; advisory, see AGENT-RETRIEVE.md
+yarn check:retrieve-health # /api/retrieve is up and returns custom Q&A and GitHub results; runs daily, see AGENT-RETRIEVE.md
+yarn report:retrieve-log  # summarize the /api/retrieve request log; needs BLOB_READ_WRITE_TOKEN, see AGENT-RETRIEVE.md
+yarn report:callouts      # admonition and ReleaseNoteHeader usage in docs/; --where lists every match, see UTILITIES.md
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
@@ -218,6 +268,11 @@ uses `{/* */}`.
 `yarn check:redirects` reports `vercel.json` redirects that can't work as written, such as a source ending in `/` or
 containing `#`, a `:param` with no `/` before it, a rule shadowed by an earlier one, or a destination the site doesn't
 serve. Fix the rule. A known, accepted exception belongs in `bin/redirect-baseline.json` with a note.
+
+`yarn check:retrieve-links [baseUrl]` asks the `/api/retrieve` endpoint 20 sample questions and reports docs links in the
+results that don't return 200. Pass a preview deployment URL to check a branch. It sends one request every few seconds to
+stay under the endpoint's rate limit, so a run takes about two minutes. See
+[AGENT-RETRIEVE.md](./readme/AGENT-RETRIEVE.md).
 
 `yarn check:ts-samples` and `yarn check:py-samples` type-check the TypeScript and Python code blocks that aren't
 synced by Snipsync against the latest SDK release, and report classes, methods, exports, and arguments the SDK doesn't

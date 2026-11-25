@@ -11,8 +11,6 @@ tags:
   - Temporal Cloud
 ---
 
-import { CaptionedImage, JsonTable } from '@site/src/components';
-
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud.
 This one-way connection means Temporal cannot establish a connection back to your service.
@@ -47,7 +45,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
 4. Click the _Create endpoint_ button to the right of the _Actions_ pulldown menu.
 5. Under _Type_ category, select _Endpoint services that use NLBs and GWLBs_.
    This option lets you find services shared with you by service name.
-6. Under _Service settings_, fill in the _Service name_ with the PrivateLink Service Name for the region you’re trying to connect from:
+6. Under _Service settings_, fill in the _Service name_ with the PrivateLink Service Name for the region you're trying to connect from. See [Available AWS regions, PrivateLink endpoints, and DNS record overrides](#available-aws-regions-privatelink-endpoints-and-dns-record-overrides) for the list of available services.
 
 :::tip
 
@@ -55,8 +53,6 @@ PrivateLink endpoint services are regional.
 Individual Namespaces do not use separate services.
 
 :::
-
-<JsonTable filename="/json/privatelink_services_aws.json" />
 
 7. Confirm your service by clicking on the _Verify service_ button. AWS should respond "Service name verified."
 

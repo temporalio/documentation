@@ -22,18 +22,22 @@ import { ReleaseNoteHeader } from '@site/src/components';
 
 The library ships as `@temporalio/workflow-streams` and you can import the Workflow-side interface from `@temporalio/workflow-streams/workflow`. Enable streaming by constructing a `WorkflowStream` at the top of your Workflow function, before any `await`. Construction must happen there because the stream's handlers have to be registered before the first publish Signal arrives. Doing it after an `await` would miss any publishes that arrived before the run body resumed.
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-order-workflow {"selectedLines": ["1-2", "9-14", "27"]}-->
+[typescript-sandbox/src/workflows/workflow-streams/order/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/order/workflows.ts)
+```ts
 import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
 
+// ...
 export interface OrderInput {
   orderId: string;
 }
 
 export async function orderWorkflow(input: OrderInput): Promise<void> {
   const stream = new WorkflowStream();
-  // ... rest of the workflow
+// ...
 }
 ```
+<!--SNIPEND-->
 
 Construct exactly one `WorkflowStream` at the top of the Workflow function. Constructing `WorkflowStream` creates the in-memory event log and registers the publish Signal, subscribe Update, and offset Query handlers on the current Workflow. If you have more than one `WorkflowStream` on the same Workflow silently replaces the handlers. The TypeScript Workflow runtime doesn't expose an inspection API for existing handlers, so the library can't raise an exception on a duplicate the way the Python SDK does.
 
@@ -43,7 +47,9 @@ If your Workflow is long-running, see [Stream from long-running Workflows](#cont
 
 Bind a topic name to its event type once via `stream.topic<T>(name)`, then call `publish()` on the returned handle to append events. The handle carries the topic name and the type `T` so call sites don't have to repeat them on every publish, and so subscribers reading the same handle decode to the matching type. Repeated calls with the same name return the same handle instance.
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-order-workflow-->
+[typescript-sandbox/src/workflows/workflow-streams/order/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/order/workflows.ts)
+```ts
 import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
 
 export interface StatusEvent {
@@ -72,6 +78,7 @@ export async function orderWorkflow(input: OrderInput): Promise<void> {
   status.publish({ state: 'completed', progress: 100 });
 }
 ```
+<!--SNIPEND-->
 
 `publish()` runs the default payload converter to encode each value. The codec chain (encryption, compression, etc.) runs once on the Signal or Update envelope that carries the batch, never per item, so encryption and compression are applied exactly once each direction.
 
@@ -91,12 +98,14 @@ Then use it the same way you would the Workflow-side handle: bind a topic, publi
 
 When events originate in an Activity, publish from the Activity directly rather than returning them for the Workflow to forward. The Workflow hosts the stream but doesn't read its own stream; it processes the Activity's return value and emits its own lifecycle events. Keeping Workflow state independent of streamed output is what lets retried Activity attempts surface to subscribers without polluting the Workflow's durable state. See [How events are delivered](/workflow-streams#how-events-are-delivered).
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-publish-from-client-->
+[typescript-sandbox/src/workflows/workflow-streams/order/publish-status.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/order/publish-status.ts)
+```ts
 import { Client } from '@temporalio/client';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
+import type { StatusEvent } from './workflows';
 
-export async function publishStatus(workflowId: string): Promise<void> {
-  const temporalClient = new Client();
+export async function publishStatus(temporalClient: Client, workflowId: string): Promise<void> {
   await using streamClient = WorkflowStreamClient.create(temporalClient, workflowId, {
     batchInterval: '200 milliseconds',
   });
@@ -107,12 +116,15 @@ export async function publishStatus(workflowId: string): Promise<void> {
   // Buffer is flushed automatically on `await using` scope exit.
 }
 ```
+<!--SNIPEND-->
 
 The `await using` declaration relies on TypeScript `5.2+` and Node `20.11+`. On older runtimes, call `await streamClient[Symbol.asyncDispose]()` explicitly at the end of the publishing scope.
 
 Inside an Activity scheduled by a Workflow, `WorkflowStreamClient.fromWithinActivity()` is used to infer the Temporal Client and the parent Workflow Id from the Activity context, so you don't have to thread them through the Activity's input:
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-from-within-activity-->
+[typescript-sandbox/src/workflows/workflow-streams/deltas/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/deltas/activities.ts)
+```ts
 import { Context } from '@temporalio/activity';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
 
@@ -131,6 +143,7 @@ export async function streamDeltas(orderId: string): Promise<void> {
   // Buffer is flushed automatically on scope exit.
 }
 ```
+<!--SNIPEND-->
 
 For a standalone Activity (one started directly via `Client.activity.start` rather than from a Workflow), there is no parent Workflow context to infer, so `fromWithinActivity()` throws. Fall back to the general pattern with `Context.current().client` and the target Workflow Id threaded through the Activity's input.
 
@@ -138,15 +151,20 @@ Two operations give the application explicit control over when batches ship: `fo
 
 Pass `{ forceFlush: true }` on a publish to wake the background flusher so the current buffer ships without waiting for the next interval. The flusher only runs while the client is alive (between first `publish()` and `Symbol.asyncDispose`). Otherwise, `forceFlush: true` queues the wake event but nothing ships until a flush or dispose occurs. The call returns immediately after appending to the buffer and signaling the flusher. It doesn't wait for delivery to the Workflow or to subscribers:
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-force-flush {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/workflow-streams/deltas/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/deltas/activities.ts)
+```ts
 deltas.publish(delta, { forceFlush: true });
 ```
+<!--SNIPEND-->
 
 Use it for latency-sensitive events: the first delta of a response so the user sees something fast, or punctuated events like `RETRY` and `STATUS_CHANGE`. See [Tuning](/workflow-streams#tuning) for the trade-off against history pressure.
 
 Use `await client.flush()` when you need a mid-stream barrier. Successful completion of the flush is proof that the Temporal server has received all prior publications, so subsequent work that depends on those events being durable can proceed. The client stays open for further publishing afterward. Exiting `await using` already flushes on its way out, so the explicit call is only for barriers in the middle:
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-flush {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/workflows/workflow-streams/deltas/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/deltas/activities.ts)
+```ts
 await using client = WorkflowStreamClient.fromWithinActivity();
 const deltas = client.topic<Delta>('delta');
 
@@ -161,6 +179,7 @@ for (const delta of secondPhase(checkpointId)) {
   deltas.publish(delta);
 }
 ```
+<!--SNIPEND-->
 
 `publish()` is non-blocking and applies no backpressure. From an Activity or other client, it appends to the client's in-memory buffer and returns. From inside a Workflow, it appends synchronously to the in-memory log (no buffer, nothing to flush). [Subscribers](/workflow-streams#subscribing) pull from the Workflow's log on their own schedule, so a slow subscriber doesn't slow down [publishers](/workflow-streams#publishing). If a publisher emits faster than batches can ship to the server, the buffer grows: the process uses more memory, the stream falls further behind real time, and at the limit Signals can't keep up.
 
@@ -172,12 +191,14 @@ If your application needs to bound this (to cap memory, to keep the stream close
 
 Once you have a client, iterate a topic handle's `subscribe()`, the counterpart to `publish()`. The handle's bound type drives decoding, so each `item.data` arrives as `T` via the client's payload converter. The codec chain is applied once at the Update envelope, not per item.
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-subscribe-->
+[typescript-sandbox/src/workflows/workflow-streams/order/watch-order.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/order/watch-order.ts)
+```ts
 import { Client } from '@temporalio/client';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
+import type { StatusEvent } from './workflows';
 
-export async function watchOrder(orderId: string): Promise<void> {
-  const temporalClient = new Client();
+export async function watchOrder(temporalClient: Client, orderId: string): Promise<void> {
   const stream = WorkflowStreamClient.create(temporalClient, orderId);
 
   const status = stream.topic<StatusEvent>('status');
@@ -188,6 +209,7 @@ export async function watchOrder(orderId: string): Promise<void> {
   }
 }
 ```
+<!--SNIPEND-->
 
 The iterator handles re-polling, pagination when a poll response hits the ~1 MB cap, and Workflow-side log truncation transparently. Callers don't need to wrap the iterator for the common cases.
 
@@ -202,19 +224,26 @@ A subscriber that doesn't need flushing can skip `await using` because the backg
 
 A topic handle binds one name to one type, so it only fits a single-type subscription. To consume multiple topics whose payload types differ, call `client.subscribe()` directly with a list of names (or `subscribe()` with no arguments for every topic). The default overload yields `WorkflowStreamItem<Payload>`, so each item arrives as the raw `Payload` carrying encoding metadata. Dispatch on `item.topic` and decode the payload with `defaultPayloadConverter.fromPayload<T>(item.data)`:
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-heterogeneous-topics-->
+[typescript-sandbox/src/workflows/workflow-streams/order/watch-topics.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/order/watch-topics.ts)
+```ts
 import { defaultPayloadConverter } from '@temporalio/common';
 
-for await (const item of stream.subscribe(['status', 'progress'])) {
-  if (item.topic === 'status') {
-    const evt = defaultPayloadConverter.fromPayload<StatusEvent>(item.data);
-    console.log(`[status] ${evt.state}: ${evt.detail ?? ''}`);
-  } else if (item.topic === 'progress') {
-    const evt = defaultPayloadConverter.fromPayload<ProgressEvent>(item.data);
-    console.log(`[progress] ${evt.message}`);
+export async function watchStatusAndProgress(temporalClient: Client, workflowId: string): Promise<void> {
+  const stream = WorkflowStreamClient.create(temporalClient, workflowId);
+
+  for await (const item of stream.subscribe(['status', 'progress'])) {
+    if (item.topic === 'status') {
+      const evt = defaultPayloadConverter.fromPayload<StatusEvent>(item.data);
+      console.log(`[status] ${evt.state}: ${evt.detail ?? ''}`);
+    } else if (item.topic === 'progress') {
+      const evt = defaultPayloadConverter.fromPayload<ProgressEvent>(item.data);
+      console.log(`[progress] ${evt.message}`);
+    }
   }
 }
 ```
+<!--SNIPEND-->
 
 A single iterator over multiple topics also avoids the cancellation race that two concurrent subscribers would create. The raw `Payload` is also the right shape when you want to forward the bytes through to another system without decoding them.
 
@@ -229,23 +258,28 @@ There are two ways to provide that overlap.
 
 - [Fixed sleep](/workflow-streams#fixed-sleep). Sleep between the terminator and the return so any in-flight poll has time to fetch the terminator before the Workflow exits:
 
-  ```typescript
+  <!--SNIPSTART typescript-workflow-streams-fixed-sleep {"selectedLines": ["1", "16-19"]}-->
+  [typescript-sandbox/src/workflows/workflow-streams/order/fixed-sleep.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/order/fixed-sleep.ts)
+  ```ts
   import { sleep } from '@temporalio/workflow';
-
-  // at the end of the workflow function
-  status.publish({ state: 'completed', progress: 100 });
-  await sleep('30 seconds');
-  return result;
+  // ...
+    // at the end of the workflow function
+    status.publish({ state: 'completed', progress: 100 });
+    await sleep('30 seconds');
+    return result;
   ```
+  <!--SNIPEND-->
 
 - [Acknowledgment handshake](/workflow-streams#acknowledgment-handshake). The subscriber sends a Signal once it has the terminator; the Workflow waits up to a timeout, returning as soon as the ack arrives:
 
-  ```typescript
-  import { condition, defineSignal, setHandler } from '@temporalio/workflow';
+  <!--SNIPSTART typescript-workflow-streams-llm-workflow {"selectedLines": ["1-2", "9", "15-21", "27-30"]}-->
+  [typescript-sandbox/src/workflows/workflow-streams/chat/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/chat/workflows.ts)
+  ```ts
+  import { condition, defineSignal, proxyActivities, setHandler } from '@temporalio/workflow';
   import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
-
+  // ...
   export const subscriberAcknowledgedTerminator = defineSignal('subscriberAcknowledgedTerminator');
-
+  // ...
   export async function chatWorkflow(input: ChatInput): Promise<string> {
     const stream = new WorkflowStream();
     let subscriberDone = false;
@@ -253,13 +287,13 @@ There are two ways to provide that overlap.
       subscriberDone = true;
     });
 
-    // ... do work and publish events ...
-
+  // ...
     await condition(() => subscriberDone, '30 seconds');
     // Returns true if the ack arrived, false on timeout. Either way, fall through.
     return result;
   }
   ```
+  <!--SNIPEND-->
 
 The full pattern is wired into the [Stream LLM output](#stream-llm-output) example below.
 
@@ -269,7 +303,9 @@ You can [inspect the terminal status](/workflow-streams#inspecting-terminal-stat
 
 Workflows that run for hours or accumulate thousands of events need to periodically roll over via [Continue-As-New](/workflow-streams#stream-from-long-running-workflows) to keep history bounded. Subscribers automatically follow these rollovers, but the client retained from `WorkflowStreamClient.create()` or `fromWithinActivity()` is required (clients constructed directly from a single `WorkflowHandle` can't re-target the new run). To keep a stream running across rollovers without subscribers seeing a gap, carry both your application state and the stream state across the boundary. Add an optional `streamState?: WorkflowStreamState` field to your Workflow input, pass it to the constructor, and call `stream.continueAsNew(buildArgs)` to invoke the rollover. The helper drains waiting subscribers, waits for in-flight handlers to finish, then calls `continueAsNew` with the args produced by `buildArgs(postDrainState)`:
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-continue-as-new-->
+[typescript-sandbox/src/workflows/workflow-streams/long-running/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/long-running/workflows.ts)
+```ts
 import { workflowInfo } from '@temporalio/workflow';
 import { WorkflowStream, type WorkflowStreamState } from '@temporalio/workflow-streams/workflow';
 
@@ -297,24 +333,28 @@ export async function longRunningWorkflow(input: WorkflowInput): Promise<void> {
   }
 }
 ```
+<!--SNIPEND-->
 
 The optional `streamState?` on the input field is required: `priorState` is `undefined` on a fresh start and a `WorkflowStreamState` after a rollover. The `buildArgs` lambda receives the post-detach `WorkflowStreamState` as its only argument so the snapshot is guaranteed to happen *after* pollers detach.
 
 To pass other Continue-As-New parameters such as `taskQueue`, `searchAttributes`, or `workflowRunTimeout`, use the explicit recipe with `makeContinueAsNewFunc` instead:
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-continue-as-new-options {"selectedLines": ["1", "12-20"]}-->
+[typescript-sandbox/src/workflows/workflow-streams/long-running/with-options.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/long-running/with-options.ts)
+```ts
 import { allHandlersFinished, condition, makeContinueAsNewFunc } from '@temporalio/workflow';
-
-stream.detachPollers();
-await condition(allHandlersFinished);
-const continueWithOptions = makeContinueAsNewFunc<typeof longRunningWorkflow>({
-  taskQueue: 'other-tq',
-});
-await continueWithOptions({
-  itemsProcessed,
-  streamState: stream.getState(),
-});
+// ...
+      stream.detachPollers();
+      await condition(allHandlersFinished);
+      const continueWithOptions = makeContinueAsNewFunc<typeof longRunningWorkflow>({
+        taskQueue: 'other-tq',
+      });
+      await continueWithOptions({
+        itemsProcessed,
+        streamState: stream.getState(),
+      });
 ```
+<!--SNIPEND-->
 
 The carried `WorkflowStreamState` includes the entire in-memory log of the previous run, so streams that carry large items can hit Temporal's per-payload size limit at the rollover. Offload the bytes via [External Storage](/external-storage) so each item is a small reference rather than the full payload, and combine that with `truncate()` to keep the carried log itself small.
 
@@ -355,7 +395,9 @@ If your Activity can retry, the consumer side has to account for it. A retried a
 <Tabs>
 <TabItem value="activity" label="activities.ts">
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-llm-activity-->
+[typescript-sandbox/src/workflows/workflow-streams/chat/activities.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/chat/activities.ts)
+```ts
 import { Context } from '@temporalio/activity';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
 import OpenAI from 'openai';
@@ -406,11 +448,14 @@ export async function streamCompletion(prompt: string): Promise<string> {
   return full.join('');
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="workflow" label="workflows.ts">
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-llm-workflow-->
+[typescript-sandbox/src/workflows/workflow-streams/chat/workflows.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/chat/workflows.ts)
+```ts
 import { condition, defineSignal, proxyActivities, setHandler } from '@temporalio/workflow';
 import { WorkflowStream } from '@temporalio/workflow-streams/workflow';
 import type * as activities from './activities';
@@ -438,21 +483,25 @@ export async function chatWorkflow(input: ChatInput): Promise<string> {
   // is a fallback for when no subscriber is attached; with the ack, the
   // typical case exits as soon as the subscriber confirms.
   await condition(() => subscriberDone, '30 seconds');
+  // Returns true if the ack arrived, false on timeout. Either way, fall through.
   return result;
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="consumer" label="consumer.ts">
 
-```typescript
+<!--SNIPSTART typescript-workflow-streams-llm-consumer-->
+[typescript-sandbox/src/workflows/workflow-streams/chat/consumer.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/workflow-streams/chat/consumer.ts)
+```ts
 import { Client } from '@temporalio/client';
 import { defaultPayloadConverter } from '@temporalio/common';
 import { WorkflowStreamClient } from '@temporalio/workflow-streams/client';
+import type { TextDelta } from './activities';
 import { subscriberAcknowledgedTerminator } from './workflows';
 
-export async function streamChat(chatId: string): Promise<string> {
-  const temporalClient = new Client();
+export async function streamChat(temporalClient: Client, chatId: string): Promise<string> {
   // Subscribe-only; no `await using` needed because the flusher only runs for publishers.
   const stream = WorkflowStreamClient.create(temporalClient, chatId);
   const output: string[] = [];
@@ -480,6 +529,7 @@ export async function streamChat(chatId: string): Promise<string> {
   return output.join('');
 }
 ```
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -493,7 +543,7 @@ A few choices in this shape are deliberate:
 
 ## See also
 
-- [Workflow Streams samples (samples-typescript)](https://github.com/temporalio/samples-typescript/tree/main/workflow-streams): runnable scenarios covering basic publish/subscribe, reconnecting subscribers, external publishers, bounded logs, and LLM streaming.
+- [Workflow Streams samples (documentation-sdk-code-examples)](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/typescript-sandbox/src/workflows/workflow-streams): the code on this page, covering publishing from Workflows, Activities, and Clients, subscribing, Continue-As-New, and LLM streaming, with tests.
 - [`@temporalio/workflow-streams/workflow` API reference](https://typescript.temporal.io/api/namespaces/workflowStreams).
 - [`@temporalio/workflow-streams/client` API reference](https://typescript.temporal.io/api/namespaces/workflowStreamsClient).
 - [Workflow message passing](/develop/typescript/workflows/message-passing): Signals, Updates, and Queries that Workflow Streams is built on.

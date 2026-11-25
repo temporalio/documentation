@@ -2,7 +2,7 @@
 id: reset
 title: Reset an Activity
 sidebar_label: Reset
-description: Clear an Activity's retry state and schedule a fresh attempt, including what happens when an attempt is already running.
+description: Reset returns an Activity to attempt 1, keeps Heartbeat details, discards retry backoff, and Unpauses it unless you pass --keep-paused.
 slug: /activity-operations/reset
 toc_max_heading_level: 4
 tags:
@@ -85,13 +85,13 @@ Activities with Heartbeat can detect that an interruption was caused by Reset ra
 Cancellation. A Reset Activity is retried from attempt 1. A Cancelled Activity isn't. Your Activity code may need to
 handle these cases differently, for example saving partial progress on Reset while discarding it on Cancellation.
 
-| SDK        | How to detect Reset                                                                |
-| ---------- | ---------------------------------------------------------------------------------- |
-| Go         | `activity.GetCancellationDetails(ctx).Cause()` returns `activity.ErrActivityReset` |
-| Java       | Catch `ActivityResetException`                                                     |
-| TypeScript | Catch `ApplicationFailure` with `error.type === "ActivityReset"`                   |
-| Python     | Check `cancellation_details().reset` on `asyncio.CancelledError`                   |
-| .NET       | Check `CancellationDetails.IsReset` on `OperationCanceledException`                |
+| SDK        | How to detect Reset                                                 |
+| ---------- | ------------------------------------------------------------------- |
+| Go         | `context.Cause(ctx)` returns `activity.ErrActivityReset`            |
+| Java       | Catch `ActivityResetException`                                      |
+| TypeScript | Check `cancellationDetails.reset === true`                          |
+| Python     | Check `cancellation_details().reset` on `asyncio.CancelledError`    |
+| .NET       | Check `CancellationDetails.IsReset` on `OperationCanceledException` |
 
 ## Important considerations
 

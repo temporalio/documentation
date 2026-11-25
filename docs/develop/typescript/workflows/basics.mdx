@@ -19,7 +19,9 @@ In the Temporal TypeScript SDK programming model, Workflow Definitions are _just
 
 A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
 
-```typescript
+<!--SNIPSTART typescript-workflow-basics-develop-->
+[typescript-sandbox/src/workflows/basics/develop-workflow.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/develop-workflow.ts)
+```ts
 type ExampleArgs = {
   name: string;
 };
@@ -29,6 +31,7 @@ export async function example(args: ExampleArgs): Promise<{ greeting: string }> 
   return { greeting };
 }
 ```
+<!--SNIPEND-->
 
 ## Define Workflow parameters {/* #workflow-parameters */}
 
@@ -38,30 +41,46 @@ All Workflow Definition parameters must be serializable. For more reasons, see
 [Workflow parameters](/workflow-definition#workflow-parameters).
 
 You can define and pass parameters in your Workflow. In this example, you define your arguments in your `client.ts` file
-and pass those parameters to `workflow.ts` through your Workflow function.
+and pass those parameters to `parameters.ts` through your Workflow function.
 
 Start a Workflow with the parameters that are in the `client.ts` file. In this example we set the `name` parameter to
 `Temporal` and `born` to `2019`. Then set the Task Queue and Workflow Id.
 
 `client.ts`
 
-```typescript
-import { example } from './workflows';
+<!--SNIPSTART typescript-workflow-basics-client-->
+[typescript-sandbox/src/workflows/basics/client.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/client.ts)
+```ts
+import { Client, Connection } from '@temporalio/client';
+import { example } from './parameters';
 
-...
-await client.workflow.start(example, {
-  args: [{ name: 'Temporal', born: 2019 }],
-  taskQueue: 'your-queue',
-  workflowId: 'business-meaningful-id',
+async function run() {
+  const connection = await Connection.connect({ address: 'localhost:7233' });
+  const client = new Client({ connection });
+
+  const handle = await client.workflow.start(example, {
+    args: [{ name: 'Temporal', born: 2019 }],
+    taskQueue: 'your-queue',
+    workflowId: 'business-meaningful-id',
+  });
+  console.log(await handle.result());
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
 });
 ```
+<!--SNIPEND-->
 
-In `workflows.ts` define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is
+In `parameters.ts`, define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is
 a name we can now use to describe the requirement in the previous example. It still represents having the two properties
 called `name` and `born` that is of the type `string`. Then define a function that takes in a parameter of the type
 `ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of
 `await client.workflow.start()` and its resulting value.
 
+<!--SNIPSTART typescript-workflow-basics-parameters-->
+[typescript-sandbox/src/workflows/basics/parameters.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/parameters.ts)
 ```ts
 interface ExampleParam {
   name: string;
@@ -71,6 +90,7 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
   return `Hello ${name}, you were born in ${born}.`;
 }
 ```
+<!--SNIPEND-->
 
 ## Define Workflow return parameters {/* #workflow-return-values */}
 
@@ -83,7 +103,9 @@ and comes with guarantees.
 
 The following example uses a `Promise<string>` to eventually return a `name` and `born` parameter.
 
-```typescript
+<!--SNIPSTART typescript-workflow-basics-parameters-->
+[typescript-sandbox/src/workflows/basics/parameters.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/parameters.ts)
+```ts
 interface ExampleParam {
   name: string;
   born: number;
@@ -92,6 +114,7 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
   return `Hello ${name}, you were born in ${born}.`;
 }
 ```
+<!--SNIPEND-->
 
 ## Customize your Workflow Type {/* #workflow-type */}
 
@@ -104,8 +127,8 @@ Type.
 
 In the following example, the Workflow Type is the name of the function, `helloWorld`.
 
-<!--SNIPSTART typescript-workflow-type -->
-[snippets/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/workflows.ts)
+<!--SNIPSTART typescript-workflow-basics-type-->
+[typescript-sandbox/src/workflows/basics/workflow-type.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/workflow-type.ts)
 ```ts
 export async function helloWorld(): Promise<string> {
   return '👋 Hello World!';
@@ -146,14 +169,17 @@ The following sections describe the replay-safe APIs available in the sandbox.
 
 Use [`log`](https://typescript.temporal.io/api/namespaces/workflow#log) from `@temporalio/workflow` instead of `console.log`. The SDK logger automatically suppresses messages during replay to avoid duplicates:
 
+<!--SNIPSTART typescript-workflow-basics-logging-->
+[typescript-sandbox/src/workflows/basics/logging.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/logging.ts)
 ```ts
 import { log } from '@temporalio/workflow';
 
 export async function myWorkflow(name: string): Promise<string> {
   log.info('Starting workflow', { name });
-  // ...
+  return `Hello, ${name}!`;
 }
 ```
+<!--SNIPEND-->
 
 For logger configuration, see [Observability: Log from a Workflow](/develop/typescript/platform/observability#logging).
 
@@ -163,12 +189,18 @@ For logger configuration, see [Observability: Log from a Workflow](/develop/type
 
 For UUIDs, use [`uuid4()`](https://typescript.temporal.io/api/namespaces/workflow#uuid4) from `@temporalio/workflow`. It draws from the sandbox's deterministic random source, so it needs no extra dependency. Avoid `crypto.randomUUID()`, which is not available in the sandbox:
 
+<!--SNIPSTART typescript-workflow-basics-random-->
+[typescript-sandbox/src/workflows/basics/random.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/random.ts)
 ```ts
 import { uuid4 } from '@temporalio/workflow';
 
-const value = Math.random();
-const id = uuid4();
+export async function randomValues(): Promise<{ value: number; id: string }> {
+  const value = Math.random();
+  const id = uuid4();
+  return { value, id };
+}
 ```
+<!--SNIPEND-->
 
 Third-party UUID libraries that rely on `Math.random()` (such as the `uuid` package) are also safe, but the built-in avoids the dependency.
 
@@ -176,20 +208,25 @@ Third-party UUID libraries that rely on `Math.random()` (such as the `uuid` pack
 
 `Date.now()` and `new Date()` are replaced by deterministic versions that return the time of the last Workflow Task completion. The value only advances when you `await` something (like `sleep()`):
 
+<!--SNIPSTART typescript-workflow-basics-current-time-->
+[typescript-sandbox/src/workflows/basics/current-time.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/current-time.ts)
 ```ts
 import { sleep } from '@temporalio/workflow';
 
-// Prints the *exact* same timestamp on every iteration
-for (let x = 0; x < 10; ++x) {
-  console.log(Date.now());
-}
+export async function currentTime(): Promise<void> {
+  // Prints the *exact* same timestamp on every iteration
+  for (let x = 0; x < 10; ++x) {
+    console.log(Date.now());
+  }
 
-// Prints timestamps increasing roughly 1s each iteration
-for (let x = 0; x < 10; ++x) {
-  await sleep('1 second');
-  console.log(Date.now());
+  // Prints timestamps increasing roughly 1s each iteration
+  for (let x = 0; x < 10; ++x) {
+    await sleep('1 second');
+    console.log(Date.now());
+  }
 }
 ```
+<!--SNIPEND-->
 
 #### Detecting replay (advanced)
 
@@ -200,12 +237,24 @@ Never use this to affect Workflow business logic — branching on replay status 
 
 :::
 
+<!--SNIPSTART typescript-workflow-basics-replay-->
+[typescript-sandbox/src/workflows/basics/replay.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/workflows/basics/replay.ts)
 ```ts
-import { workflowInfo } from '@temporalio/workflow';
+import { log, workflowInfo } from '@temporalio/workflow';
 
-if (!workflowInfo().unsafe.isReplaying) {
-  metrics.emit('workflow_started', 1);
+// Stand-in for your own metrics client
+const metrics = {
+  emit(name: string, value: number): void {
+    log.info('Emitting metric', { name, value });
+  },
+};
+
+export async function replayAwareWorkflow(): Promise<void> {
+  if (!workflowInfo().unsafe.isReplaying) {
+    metrics.emit('workflow_started', 1);
+  }
 }
 ```
+<!--SNIPEND-->
 
 If your goal is to always take action when something new is happening, check that `workflowInfo().unsafe.isReplayingHistoryEvents` is false instead. This will be false during read-only operations like queries and update validators. This is what the SDK's built-in logger uses internally.

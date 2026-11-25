@@ -125,7 +125,7 @@ There are five places where the name of the Task Queue can be set by the develop
    - [How to start a Child Workflow Execution using the Java SDK](/develop/java/workflows/child-workflows)
    - [How to start a Child Workflow Execution using the PHP SDK](/develop/php/workflows/child-workflows)
    - [How to start a Child Workflow Execution using the Python SDK](/develop/python/workflows/child-workflows)
-   - [How to start a Child Workflow Execution using the Python SDK](/develop/ruby/workflows/child-workflows)
+   - [How to start a Child Workflow Execution using the Ruby SDK](/develop/ruby/workflows/child-workflows)
    - [How to start a Child Workflow Execution using the Rust SDK](/develop/rust/workflows/child-workflows)
    - [How to start a Child Workflow Execution using the TypeScript SDK](/develop/typescript/workflows/child-workflows)
 

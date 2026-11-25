@@ -3,7 +3,7 @@ id: apikey
 title: Temporal CLI cloud apikey command reference
 sidebar_label: apikey
 description: API Key Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - apikeys
 ---

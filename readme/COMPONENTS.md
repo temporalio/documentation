@@ -24,9 +24,11 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using DocsTable](#using-docstable)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
+- [Using RoleCheck](#using-rolecheck)
 - [Using SdkGuideLinks](#using-sdkguidelinks)
 - [Using AnnotatedCode](#using-annotatedcode)
 - [Using ReleaseNoteHeader](#using-release-note-header)
+- [Using ForOs](#using-foros)
 
 ## Finding Components
 
@@ -122,6 +124,38 @@ Components imported this way use the "Components." prefix before their name:
 </Components.RelatedRead>
 ```
 
+## Using SetupSteps and CodeSnippet
+
+`SetupSteps` lays out quickstart steps as prose on the left and code on the right. Each `SetupStep` takes its code
+column from either a `code={…}` prop or its `<CodeSnippet>` children.
+
+To keep a snippet in sync with a sample repository, put the `CodeSnippet` inside the `SetupStep` body instead of the
+`code={…}` prop. The prop is a JavaScript expression, so MDX doesn't parse Markdown or `<!--SNIPSTART-->` markers in
+it. Leave blank lines around the Snipsync markers:
+
+```mdx
+<SetupStep>
+
+<CodeSnippet title="service.go">
+
+<!--SNIPSTART go-nexus-quickstart-service-->
+<!--SNIPEND-->
+
+</CodeSnippet>
+
+## 1. Define the Nexus Service
+
+Create a file called `service.go`.
+
+</SetupStep>
+```
+
+After `yarn snipsync` fills the markers, `CodeSnippet` renders the synced code block with the source file as its title,
+linked to the sample repository. A `title` prop replaces the file path text. The fence's language is used unless you
+pass `language`.
+
+`CodeSnippet` still accepts a hand-written template literal: ``<CodeSnippet language="go">{`...`}</CodeSnippet>``.
+
 ## Using IntegrationsGrid
 
 Role: Display a searchable, filterable grid of Temporal integrations with partner tools and services.
@@ -154,7 +188,7 @@ For example, the Python SDK integrations page pre-filters to Python:
 <IntegrationsGrid defaultSdks={["Python"]} />
 ```
 
-Valid SDK values are `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
+Valid SDK values are `".NET"`, `"Go"`, `"Java"`, `"Python"`, `"TypeScript"`, and `"Ruby"`.
 
 ### Filter behavior
 
@@ -170,6 +204,8 @@ For example, selecting the "Python" SDK pill and the "Observability" tag pill sh
 ### Where the component is used
 
 - `/integrations` (top-level page, no default filters)
+- `/develop/dotnet/integrations` (pre-filtered to .NET)
+- `/develop/go/integrations` (pre-filtered to Go)
 - `/develop/java/integrations` (pre-filtered to Java)
 - `/develop/python/integrations` (pre-filtered to Python)
 - `/develop/ruby/integrations` (pre-filtered to Ruby)
@@ -177,16 +213,17 @@ For example, selecting the "Python" SDK pill and the "Observability" tag pill sh
 
 ### Adding a new integration
 
-Integration data lives in `src/components/IntegrationsGrid/integrations-data.ts`.
-Add a new entry to the `integrations` array with the following shape:
+Integration data lives in `src/components/IntegrationsGrid/integrations-data.json`
+(`integrations-data.ts` only types and re-exports it).
+Add a new entry to the JSON array with the following shape:
 
-```ts
+```json
 {
-  name: "Partner Name",
-  description: "One sentence describing what this integration does with Temporal.",
-  tags: ["Agent framework"],
-  sdk: "Python",
-  href: "/develop/python/integrations/partner-name",
+  "name": "Partner Name",
+  "description": "One sentence describing what this integration does with Temporal.",
+  "tags": ["Agent framework"],
+  "sdk": "Python",
+  "href": "/develop/python/integrations/partner-name"
 }
 ```
 
@@ -383,6 +420,26 @@ Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
 ```
 <Components.ToolTipTerm term="your term" tooltip="any custom content you want to add" />
 ```
+
+## Using RoleCheck
+
+Role: Mark a cell in a role or permission grid, such as the tables in
+[`permissions-reference.mdx`](../docs/cloud/manage-access/permissions-reference.mdx).
+
+Usage:
+
+```
+import { RoleCheck } from '@site/src/components';
+
+| Permission          | Finance Admin                      |
+| ------------------- | :--------------------------------: |
+| CreateBillingReport | <RoleCheck role="Finance Admin" /> |
+```
+
+It renders a ✅ with the role name as visually hidden text. Screen readers read the role name instead of "check
+mark", and a scraper that splits a long table into chunks keeps the role name with each row. Without it, Kapa answered
+a question about `CreateBillingReport` with "the table's columns are flattened, so I can't tell with certainty which
+two" roles have it. In the Markdown pipeline it becomes `✅ Finance Admin`. Set `role` to the column header.
 
 ## Using SdkGuideLinks
 
@@ -673,11 +730,13 @@ Add `children` for more detailed messaging.
 </ReleaseNoteHeader>
 ```
 
-Show the supported languages by using the `languages` prop.
+Show the supported SDKs by using the `languages` prop. They appear as chips below the text. Add `guidePath` to link
+each chip to `/develop/<sdk>/<guidePath>`.
 ```js
 <ReleaseNoteHeader
   type="prerelease"
   languages={["Go", "TypeScript", "Java", ".NET", "Python"]}
+  guidePath="nexus/feature-guide"
 />
 ```
 
@@ -690,3 +749,62 @@ Use the `href` prop to make the `children` content a link.
   Sign up for updates to be notified when Serverless Workers reach Public Preview.
 </ReleaseNoteHeader>
 ```
+
+To see each variant that docs pages use, open the unlisted page at `/internal/callouts` (`docs/internal/callouts.mdx`).
+
+## Using ForOs
+
+Role: Show OS-specific wording outside a tab set, such as "open PowerShell" on Windows and "open a terminal" on macOS
+and Linux.
+
+`ForOs` shows its children only when the reader's selected OS is in its `os` list. The selected OS is the same one
+`<Tabs groupId="os" queryString>` uses: the `?os=` query string first, then the OS tab the reader last picked, then
+`macos`. On a reader's first visit, `src/client/detectOs.js` pre-selects their OS from the browser, so Windows and Linux
+readers start on their own tab.
+
+Only use `ForOs` on a page that also has a `<Tabs groupId="os" queryString>` set. Those tabs are the only way a reader
+can switch OS, so without them a reader sees one variant and has no way to change it.
+
+How to import:
+
+```
+import { ForOs } from '@site/src/components';
+```
+
+### Usage
+
+Inline, in a sentence. Put the variants next to each other so exactly one shows for each OS:
+
+```
+Open a new <ForOs os="windows">PowerShell</ForOs><ForOs os="macos linux">terminal</ForOs> window.
+```
+
+Around block content. Leave a blank line after the opening tag and before the closing tag so the children parse as
+Markdown:
+
+```
+<ForOs os="windows">
+
+Run the installer as an administrator.
+
+</ForOs>
+```
+
+The component renders no wrapper element, and it updates as soon as the reader clicks another OS tab on the page.
+
+### Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `os` | `string` | Yes | Space-separated OS values: `macos`, `windows`, `linux`, or `docker` (the CLI setup page's extra tab). |
+| `children` | Markdown or text | Yes | Content shown for those OS values. |
+
+### LLM markdown
+
+Registered as `for-os` in the MDX → Markdown pipeline. The `.md` output keeps every variant, each with a bold OS label.
+A block becomes a `**Windows:**` line before its children. Adjacent inline variants become one parenthetical, for
+example `open a new (**Windows:** PowerShell; **macOS and Linux:** terminal) window`.
+
+### Where the component is used
+
+- Python SDK set-up — "open a new terminal window" step

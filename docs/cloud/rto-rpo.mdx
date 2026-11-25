@@ -60,6 +60,45 @@ provider's outage.
 All Namespaces are backed up every 4 hours. If an outage causes data loss on a Namespace that was not protected by High
 Availability, Temporal uses the backup to restore as much data as feasible.
 
+## Recovery time achieved from automatic failover in past incidents
+
+The following table shows the Recovery Time that Temporal achieved via
+[automatic failover](/cloud/high-availability/failovers#automatic-failover) in incidents and outages since September 1, 2026.
+Recovery time is the window during which Namespaces with [High Availability](/cloud/high-availability) experienced
+Namespace service disruption.
+
+| Date | Average recovery time | Worst recovery time | Region | Incident type | Temporal Status Page |
+| --- | --- | --- | --- | --- | --- |
+| October 14, 2026 | 3 minutes 15 seconds | 4 minutes 30 seconds | GCP us-west1 | Elevated Temporal Cloud error rates and latency | [Incident details](https://status.temporal.io/incidents/wl12nmqsy9p6) |
+| October 9, 2026 | 15 minutes 30 seconds | 18 minutes | AWS us-east-1 | Elevated Temporal Cloud error rates and latency | [Incident details](https://status.temporal.io/incidents/vx437s5b5myq) |
+| October 8, 2026 | N/A (no Namespace service disruption) | N/A | GCP us-central1 | Proactive failover due to a [cloud provider incident](https://status.cloud.google.com/incidents/mSFVt6PiP557bjRyYsut) | [Incident details](https://status.temporal.io/incidents/2sjs76m14wss) |
+| September 3, 2026 | N/A (no Namespace service disruption) | N/A | AWS us-west-2 | Proactive failover due to a [cloud provider incident](https://health.aws.amazon.com/health/status?eventID=arn:aws:health:us-west-2::event/MULTIPLE_SERVICES/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE/AWS_MULTIPLE_SERVICES_OPERATIONAL_ISSUE_926DB_F0036494EA4) | [Incident details](https://status.temporal.io/incidents/vn2t29t2xr5t) |
+| September 1, 2026 | 0 minutes (prevented Namespace service disruption) | 0 minutes (prevented Namespace service disruption) | GCP us-central1 | [Cloud provider outage](https://status.cloud.google.com/incidents/J5ia5t9p3g9Q5Wi7r8Ev) | [Incident details](https://status.temporal.io/incidents/yj8d6hqcn0h4) |
+
+### Recovery time methodology
+
+For each Namespace, recovery time is measured from when Namespace service disruption is first observable in Temporal's metrics
+to when the Namespace has completed failover and is active on a healthy replica.
+Temporal Cloud has a 20-minute RTO, so the goal is a recovery time of less than 20 minutes for each incident.
+A lower recovery time is better. A recovery time of **0 minutes** means failover completed before Namespace service disruption
+began, preventing outage-related Namespace service disruption.
+
+Namespace service disruption means Workers and gRPC Clients could not reliably use the Namespace to process Workflows and run
+applications. It includes abnormally high error rates, request latency above the
+[service-level objective (SLO)](/cloud/slo#latency), or full Namespace unavailability. Recovery time includes only
+Namespace service disruption that a failover could have avoided. Disruptions to Temporal Cloud metrics or the
+[Cloud Ops API](/ops) do not count as Namespace service disruption because they do not directly affect the Namespace or its Workflows.
+**N/A** means there was no Namespace service disruption in the incident.
+
+Because some Namespaces take longer to fail over than others, the table includes the average and worst recovery times
+across all Namespaces that were automatically failed over.
+The table includes incidents from September and October 2026 in which the
+[Temporal Status Page](https://status.temporal.io/) reported that Temporal failed over Namespaces.
+The table is not a comprehensive list of all automatic failovers.
+
+[User-triggered (manual) failovers](/cloud/high-availability/failovers#manual-failover) and Namespaces with
+[automatic failover disabled](/cloud/high-availability/enable#automatic-failovers) are excluded.
+
 ## Outage types and their RTO/RPO
 
 The following sections explain each type of outage in more detail, including the blast radius, Temporal Cloud features
@@ -249,6 +288,8 @@ moment. Temporal recommends monitoring the replication lag and alerting if it ri
 The Recovery Time for a given incident is measured from the moment the incident begins to cause abnormal Namespace
 operation — for example, when unavailability or error rates rise above an acceptable level — to the moment the Namespace
 is restored to full functionality.
+Recovery time does not include DNS propagation. Temporal Cloud can forward requests to the active replica, restoring
+operations before DNS changes take effect, and DNS propagation time can vary with your architecture.
 
 For most incidents, the vast majority of the Recovery Time is spent detecting the incident, determining the affected
 boundary (a single cell, a region, or an entire cloud), and deciding to fail Namespaces over to their replicas. The
