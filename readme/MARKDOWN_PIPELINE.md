@@ -152,6 +152,7 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 | `RelatedReadContainer` / `RelatedReadItem` | `related-read-container` / `related-read-item` | `**Related:**` Markdown link list |
 | `RelatedReadList` | `related-read` | Link list from the `readList` prop |
 | `ToolTipTerm` | `tooltip-term` | Inline: replaced with the bare `term` text |
+| `ForOs` | `for-os` | Every OS variant kept. Block: a `**Windows:**` label line before the children. Inline: adjacent variants grouped as `(**Windows:** PowerShell; **macOS and Linux:** terminal)` |
 | `SetupSteps` / `SetupStep` | `setup-steps` / `setup-step` | Prose children plus code extracted from the `code={…}` JSX prop or `<CodeSnippet>` children |
 | `JsonTable` | `json-table` | Markdown table resolved from the referenced `static/json/*.json` |
 | `IntegrationsGrid` | `integrations-grid` | Markdown list resolved from `integrations-data.json`, filtered by the `defaultSdks` prop |
@@ -166,8 +167,11 @@ Each component maps to a strategy in `COMPONENT_REGISTRY` (in `scripts/mdx-to-md
 
 **Transclusion.** Components imported from a Markdown file
 (`import AWSRegions from '@site/docs/.../awsregions.md'`) are inlined: when `<AWSRegions />` is
-encountered, the referenced file is read and transformed in place. These show as `transclude`
-in the audit.
+encountered on a line of its own, the referenced file is read and transformed in place. That
+works at the top level and inside nested bodies (tab items, `<details>`, release notes), which
+inherit the page's imports. These show as `transclude` in the audit. Underscore-prefixed files
+and folders (`_partial.mdx`, `docs/develop/_shared/**`) are partials: like Docusaurus, the
+plugin doesn't publish them as pages of their own (`plugins/shared/docsRouting.js`).
 
 **Audit false positives.** `scripts/audit-components.mjs` may list non-components (type
 generics in code examples like `SayHelloWorkflow`, CLI placeholders like `<ID>`). The
@@ -252,6 +256,88 @@ reader output and `data-nosnippet` to stay out of search result snippets.
 **Algolia:** the DocSearch crawler config is managed in the Algolia Crawler dashboard, not in
 this repo. If directive text ever shows up in search results, add `.agentDirective` to the
 crawler's `excludeSelectors` (or narrow the `recordExtractor` content selectors) and recrawl.
+
+### Search endpoint
+
+Three of these channels also advertise the `/api/retrieve` search endpoint, as part of an
+experiment in whether agents find and use it. Each carries a different `src` value, so the
+endpoint's request log shows which channel a caller found the URL on:
+
+| Channel | `src` | Where it lives |
+| --- | --- | --- |
+| `## Agent instructions for querying Temporal documentation` in `/llms.txt` | `llms` | `llmsTxt.rootContent` in `docusaurus.config.js` |
+| Visually hidden body text | `docs-page` | `AgentDirective.tsx` |
+| Blockquote under the H1 | `md-page` | `withAgentDirective()` in the `markdown-pages` plugin |
+
+Don't change this copy mid-experiment unless it's broken, so results from before and after a
+change stay comparable. See [AGENT-RETRIEVE.md](./AGENT-RETRIEVE.md) for the endpoint and its log.
+
+On 2026-11-20 the `md-page` URL became a code span, with no change to the wording. As bare text,
+renderers that autolink URLs linked only `/api/retrieve?q=`, so requests with an empty `q` before
+that date likely came from crawlers following that link, not from agents.
+
+### Feedback endpoint
+
+The same three channels, plus the `.md` 404 page, tell agents how to report a problem to
+`/api/feedback`. Each carries its own `src` value, which is stored with the report:
+
+| Channel | `src` | Where it lives |
+| --- | --- | --- |
+| `## Reporting problems` in `/llms.txt` | `llms` | `llmsTxt.rootContent` in `docusaurus.config.js` |
+| Visually hidden body text | `docs-page` | `AgentDirective.tsx`, with `page_url` filled in |
+| Blockquote under the H1 | `md-page` | `withAgentDirective()` in the `markdown-pages` plugin, with `page_url` filled in |
+| Body of a `.md` URL that doesn't exist | `md-404` | `api/markdown-not-found.js` |
+
+The `/llms.txt` copy also points from the search endpoint section to `category=docs_search`, for
+a question that gets no useful results. The 404 body is static and never repeats the requested
+path, so a crafted URL can't put its own text in front of an agent. See
+[FEEDBACK.md](./FEEDBACK.md) for the endpoint and the daily digest.
+
+Show an endpoint URL as code on every channel: a fenced block, a code span, or `<code>`. Never
+leave it as bare text. Markdown renderers that autolink URLs end the link at the first `<`, so a
+bare `/api/feedback?title=<summary>&...` becomes a link to `/api/feedback?title=`, and crawlers that
+follow it get a 400 for the empty `title`.
+
+## Last updated dates
+
+Each docs page has one last-updated date, published in three places:
+
+| Channel | Where it lives |
+| --- | --- |
+| `<lastmod>` in `/sitemap.xml` | sitemap options in `docusaurus.config.js` |
+| `dateModified` in the page's `WebPage` JSON-LD | `src/theme/DocItem/StructuredData` |
+| `> Last updated: YYYY-MM-DD.` leading the `.md` blockquote | `withAgentDirective()` in the `markdown-pages` plugin |
+
+HTML pages don't show the date. All three read `future.experimental_vcs`, which
+`plugins/shared/lastModified.js` sets up for `docs/`, so they can't disagree.
+
+The date is the page's last **significant** change, not its last commit. Search engines stop
+trusting `lastmod` when it moves without a real content change, and bulk frontmatter edits
+(`keywords`, `section_title`, `sidebar_label`, `description`) would otherwise make every page look
+modified within the last few months.
+
+- Only the page body counts. Frontmatter edits never move the date.
+- Only words count: letters and digits. Punctuation, Markdown formatting, whitespace, and reflowed
+  lines count as zero.
+- A commit moves the date when the body is at least `SIGNIFICANT_WORDS` (20) words added plus
+  removed away from the version at the current date. Small edits accumulate: a typo fix doesn't
+  move it, but several small edits to the same page eventually do.
+- History follows renames, and dates are when a change landed on `main` (first-parent history).
+
+**Mechanical sweeps.** When a sweep is large enough to pass the threshold but changes no meaning,
+such as a site-wide rename or a reorganization that only moves text, add its commit SHA to
+`.lastmod-ignore-revs` with a comment. Those commits never set a date. Their text becomes the
+new baseline, so later edits aren't credited with the sweep's changes.
+
+**Git history.** The computation needs full history. Vercel clones shallow by default, so the
+project sets `VERCEL_DEEP_CLONE=true`. The build log shows
+`[lastmod] is-shallow-repository: false, N commits; dated N docs/ files in Ns`. In a shallow
+clone (for example, GitHub Actions with the default `fetch-depth: 1`), it logs a warning and
+omits the dates instead of reporting the shallow boundary's date for every page. `yarn start`
+uses Docusaurus's placeholder dates and skips the computation.
+
+The `Last updated` line was added to the `.md` blockquote on 2026-11-20. The endpoint copy
+below it didn't change.
 
 ## Page actions (the buttons)
 

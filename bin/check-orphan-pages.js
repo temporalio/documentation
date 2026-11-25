@@ -26,6 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { isExcludedDocPath } = require('../plugins/shared/docsRouting');
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
 const SIDEBARS_FILE = path.join(process.cwd(), 'sidebars.js');
@@ -41,20 +42,6 @@ const DEFAULT_COMMENT =
 // ---------------------------------------------------------------------------
 // Doc discovery
 // ---------------------------------------------------------------------------
-
-// Mirrors docs.exclude in docusaurus.config.js: '**/_*.{js,jsx,ts,tsx,md,mdx}',
-// '**/_*/**', '**/clusters/**'. (ai-cookbook is a separate docs plugin
-// instance rooted outside docs/, so it never appears in this walk.)
-function isExcludedDocPath(relativePath) {
-  const segments = relativePath.split(path.sep);
-  const basename = segments[segments.length - 1];
-
-  if (/^_[^.]/.test(basename) && /\.(mdx?|md)$/.test(basename)) return true;
-  if (segments.slice(0, -1).some((segment) => segment.startsWith('_'))) return true;
-  if (segments.includes('clusters')) return true;
-
-  return false;
-}
 
 function walkDocFiles(dir) {
   const results = [];

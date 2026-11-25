@@ -46,19 +46,24 @@ pip install bedrock-agentcore
 Serverless Workers require [Worker Versioning](/worker-versioning). Create the Worker as you would any long-lived
 Python Worker, then set `deployment_config` to declare its Worker Deployment Version and enable versioning:
 
-```python
-worker = Worker(
-    # ...
-    deployment_config=WorkerDeploymentConfig(
-        version=WorkerDeploymentVersion(
-            deployment_name=DEPLOYMENT_NAME,
-            build_id=BUILD_ID,
+<!--SNIPSTART python-agentcore-sandbox-runtime-handler {"selectedLines": ["13", "19-26", "28"]}-->
+[python-sandbox/workers/agentcore_worker/worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/agentcore_worker/worker.py)
+```py
+# ...
+    worker = Worker(
+# ...
+        deployment_config=WorkerDeploymentConfig(
+            version=WorkerDeploymentVersion(
+                deployment_name=DEPLOYMENT_NAME,
+                build_id=BUILD_ID,
+            ),
+            use_worker_versioning=True,
+            default_versioning_behavior=VersioningBehavior.PINNED,
         ),
-        use_worker_versioning=True,
-        default_versioning_behavior=VersioningBehavior.PINNED,
-    ),
-)
+# ...
+    )
 ```
+<!--SNIPEND-->
 
 `TEMPORAL_DEPLOYMENT_NAME` and `TEMPORAL_BUILD_ID` must match the Worker Deployment Version that you create with
 `temporal worker deployment create-version`. Configure that Worker Deployment Version with the AgentCore Runtime
@@ -76,8 +81,8 @@ asynchronous AgentCore task, then return an acknowledgment while the Worker cont
 sample stores the background task in `_worker` and uses it to prevent another invocation from starting a duplicate
 Worker in the same Runtime session:
 
-<!--SNIPSTART python-agentcore-runtime-handler-->
-[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/main/bedrock_agentcore/strands_agent/agentcore_worker.py)
+<!--SNIPSTART python-agentcore-sandbox-runtime-handler-->
+[python-sandbox/workers/agentcore_worker/worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/agentcore_worker/worker.py)
 ```py
 async def run_worker() -> None:
     """Poll until idle, then drain."""
@@ -87,31 +92,28 @@ async def run_worker() -> None:
         namespace=os.environ.get("TEMPORAL_NAMESPACE", "default"),
         api_key=api_key,
         tls=bool(api_key),
-        plugins=[StrandsPlugin()],
     )
 
     tracker = ActivityTracker()
     log.info("polling %s as %s/%s", TASK_QUEUE, DEPLOYMENT_NAME, BUILD_ID)
-    # execute_code is a sync Activity, so it needs an executor to block on.
-    with ThreadPoolExecutor(max_workers=4) as activity_executor:
-        worker = Worker(
-            client,
-            task_queue=TASK_QUEUE,
-            workflows=[workflows.StrandsAgentWorkflow],
-            activities=[execute_code],
-            activity_executor=activity_executor,
-            interceptors=[tracker],
-            deployment_config=WorkerDeploymentConfig(
-                version=WorkerDeploymentVersion(
-                    deployment_name=DEPLOYMENT_NAME, build_id=BUILD_ID
-                ),
-                use_worker_versioning=True,
-                default_versioning_behavior=VersioningBehavior.PINNED,
+    worker = Worker(
+        client,
+        task_queue=TASK_QUEUE,
+        workflows=[workflows.ProcessItemsWorkflow],
+        activities=[my_activity],
+        interceptors=[tracker],
+        deployment_config=WorkerDeploymentConfig(
+            version=WorkerDeploymentVersion(
+                deployment_name=DEPLOYMENT_NAME,
+                build_id=BUILD_ID,
             ),
-            graceful_shutdown_timeout=DRAIN,
-        )
-        async with worker:
-            await tracker.wait_until_idle(DEBOUNCE)
+            use_worker_versioning=True,
+            default_versioning_behavior=VersioningBehavior.PINNED,
+        ),
+        graceful_shutdown_timeout=DRAIN,
+    )
+    async with worker:
+        await tracker.wait_until_idle(DEBOUNCE)
     log.info("worker idle for %ss; drained", DEBOUNCE)
 
 
@@ -140,8 +142,6 @@ async def invoke(payload: dict) -> dict:
     _worker = asyncio.create_task(_run_until_idle(task_id))
 
     return {"message": "worker starting", "task_queue": TASK_QUEUE}
-
-
 ```
 <!--SNIPEND-->
 
@@ -170,16 +170,16 @@ When the condition remains true for an idle period, leave the `async with worker
 new Tasks and gives in-flight Activities time to complete before the Runtime handler returns.
 
 The following example from the
-[AgentCore sample Worker](https://github.com/temporalio/samples-python/blob/9d5c46bed0f0f6f8a726fa91f371c4c83f232ba2/bedrock_agentcore/strands_agent/agentcore_worker.py)
+[AgentCore sample Worker](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/agentcore_worker/worker.py)
 defines an `ActivityTracker`. It uses an [Activity inbound Interceptor](/develop/python/workers/interceptors) to count
 running Activities.
 
-<!--SNIPSTART python-agentcore-activity-tracker-->
-[bedrock_agentcore/strands_agent/agentcore_worker.py](https://github.com/temporalio/samples-python/blob/main/bedrock_agentcore/strands_agent/agentcore_worker.py)
+<!--SNIPSTART python-agentcore-sandbox-activity-tracker-->
+[python-sandbox/workers/agentcore_worker/worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/agentcore_worker/worker.py)
 ```py
 # How long the Worker keeps polling after it goes idle.
 DEBOUNCE = float(os.environ.get("AGENTCORE_DEBOUNCE_SECONDS", "60"))
-# How long the drain waits for in-flight Activities (a model or tool call).
+# How long the drain waits for in-flight Activities.
 DRAIN = timedelta(seconds=120)
 
 
@@ -224,25 +224,28 @@ class _TrackedActivity(ActivityInboundInterceptor):
         finally:
             self._tracker.inflight -= 1
             self._tracker.changed.set()
-
-
 ```
 <!--SNIPEND-->
 
 Register the tracker as a Worker Interceptor and wait for it inside the Worker context:
 
-```python
-tracker = ActivityTracker()
-worker = Worker(
-    client,
-    # ...
-    interceptors=[tracker],
-    graceful_shutdown_timeout=DRAIN,
-)
-
-async with worker:
-    await tracker.wait_until_idle(DEBOUNCE)
+<!--SNIPSTART python-agentcore-sandbox-runtime-handler {"selectedLines": ["11", "13-14", "18", "27-30"]}-->
+[python-sandbox/workers/agentcore_worker/worker.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/agentcore_worker/worker.py)
+```py
+# ...
+    tracker = ActivityTracker()
+# ...
+    worker = Worker(
+        client,
+# ...
+        interceptors=[tracker],
+# ...
+        graceful_shutdown_timeout=DRAIN,
+    )
+    async with worker:
+        await tracker.wait_until_idle(DEBOUNCE)
 ```
+<!--SNIPEND-->
 
 `ActivityTracker` retires the Worker only after 60 seconds without an Activity starting or completing and with no
 Activity running. A long-running Activity keeps the count above zero, so the idle policy does not interrupt it. The
@@ -264,17 +267,23 @@ AgentCore can end the compute that runs a Worker. An Activity running at that ti
 Use [Activity Heartbeats](/develop/python/activities/timeouts#activity-heartbeats) so a retry resumes from its last
 recorded progress instead of starting over:
 
-```python
+<!--SNIPSTART python-agentcore-heartbeat-activity-->
+[python-sandbox/workers/agentcore_worker/activities.py](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/python-sandbox/workers/agentcore_worker/activities.py)
+```py
 from temporalio import activity
 
 
 @activity.defn
 async def my_activity(items: list[str]) -> str:
-    for i, item in enumerate(items):
+    # Resume after the last item a previous attempt recorded, if there was one.
+    details = activity.info().heartbeat_details
+    start = details[0] + 1 if details else 0
+    for i, item in enumerate(items[start:], start=start):
         activity.heartbeat(i)
         # ... process item
     return "done"
 ```
+<!--SNIPEND-->
 
 ## Add observability {/* #add-observability */}
 

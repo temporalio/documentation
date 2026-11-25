@@ -554,6 +554,8 @@ flowchart LR
 
 Here's how each component behaves during normal operation and after a failover:
 
+The automatic Namespace Endpoint failover described below applies to public connectivity and correctly configured AWS PrivateLink. GCP Private Service Connect does not support automatic DNS failover; see [GCP PSC guidance](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect) for manual DNS or endpoint updates, or use [Active/Hot-Passive](#active-hot) so each Worker fleet connects to its local replica.
+
 | Component | Normal operation | On failover |
 | --- | --- | --- |
 | **Workers** | Run in as many regions as you want — fleets don't have to match the Namespace's regions. Every fleet connects through the Namespace Endpoint. | Fleets in unaffected regions keep processing with no cold-start gap. Scale them up if needed to carry the full load. |
@@ -569,7 +571,7 @@ Because surviving regions keep processing without a cold start, recovery time de
 Active/Active spreads capacity across regions instead of parking it in a standby fleet:
 
 - **Hands-off Worker failover.**
-   - With the Namespace Endpoint, Workers in every region follow the Namespace to the new active region automatically — there's no Worker failover step to run.
+   - With public connectivity or correctly configured AWS PrivateLink, Workers in every region follow the Namespace Endpoint to the new active region automatically — there's no Worker failover step to run.
 - **Lowest recovery time, no standby fleet.**
    - Surviving regions keep processing, so there's no cold start, giving the same low recovery time as Active/Hot-Passive while spreading capacity across regions instead of parking it in a dedicated standby fleet. Surviving regions may need to scale up to absorb the failed region's load.
 - **Resilient to losing a region.**
@@ -587,7 +589,7 @@ Running Workers active in multiple regions introduces new considerations:
 Keep these in mind when setting up Active/Active:
 
 - **Default to the Namespace Endpoint.**
-   - All fleets, in any region, connect through the single Namespace Endpoint. It always routes to the active region and follows failovers automatically, so every fleet keeps reaching the active Namespace with no reconfiguration — it "just works," and Workers in all regions fail over automatically. One endpoint everywhere also keeps configuration and management simple.
+   - With public connectivity or correctly configured AWS PrivateLink, all fleets in any region can connect through the single Namespace Endpoint, which routes to the active region and follows failovers automatically. For GCP PSC, see the [manual-update or local-replica options](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect).
 - **Use a Regional Endpoint only when you need the lowest recovery time.**
    - Connecting each fleet to its region's [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) (or VPC Endpoint) removes the DNS step from the connection path, which can shave time off failover for the lowest possible RTO. The tradeoffs: more setup, and a real risk of misconfiguration (such as routing a fleet to the wrong region). Reach for it only when you absolutely need low recovery time. With Regional Endpoints, keep forwarding enabled so passive-region polls still reach the active replica.
 
@@ -619,7 +621,7 @@ flowchart LR
 
 The Worker deployment pattern sets the approach; the supporting pieces follow it.
 
-- **Workflow starters and Clients.** Deploy these with the same regional pattern as the Workers, since a starter or Client often shares the same in-region dependencies (databases, queues, upstream services) and should fail over alongside them. Point Clients at the Namespace Endpoint so they follow the active region automatically with no configuration change on failover, and use a [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) only when a Client must be pinned to a region.
+- **Workflow starters and Clients.** Deploy these with the same regional pattern as the Workers, since a starter or Client often shares the same in-region dependencies (databases, queues, upstream services) and should fail over alongside them. With public connectivity or correctly configured AWS PrivateLink, point Clients at the Namespace Endpoint so they follow the active region automatically with no configuration change on failover. For GCP PSC, see the [manual-update or local-replica options](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect). Use a [Regional Endpoint](/cloud/high-availability/ha-connectivity#regional-endpoint) only when a Client must be pinned to a region.
 - **Codec Servers and proxies.** Anything in the connection path between Workers and Temporal Cloud must be reachable from every region where Workers connect. In Active/Passive, scale them up in the secondary region as part of a failover; in the Active/Hot-Passive and Active/Active patterns, run them in both regions at all times.
 - **Databases and queues.** These remain the application's responsibility, and the right approach depends on the Worker deployment pattern: a single-region-active datastore pairs naturally with the Active/Passive and Active/Hot-Passive patterns, while running Workers active in both regions (as in Active/Active) raises consistency questions that must be designed for. Detailed guidance is out of scope for this page.
 

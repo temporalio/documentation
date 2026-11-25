@@ -180,9 +180,9 @@ With a named queue for each API, you're ready to start the Workers that poll tho
 
 Rate limiting is configured on the Worker, and the limit that matters most is enforced by the Temporal Server across every Worker on the queue. You'll create one Worker program per API. The Python SDK gives you three controls:
 
-- **`max_task_queue_activities_per_second`** (global): Limits Activity dispatch across all Workers on the queue. The Temporal Server enforces it, which makes it the best fit for API rate limits. If Workers on the same queue set different values, the last value wins.
+- **`max_task_queue_activities_per_second`** (global): Limits Activity Task dispatch across all Workers on the queue. Each retry attempt counts as a new dispatch. The Temporal Server enforces this rate, which makes it the best fit for API rate limits, but it doesn't limit how many Activities run at once. If Workers on the same queue set different values, the last Worker value wins, unless an operator sets the rate with [`temporal task-queue config set`](#adjust-limits-and-reset-activities-from-the-cli).
 - **`max_activities_per_second`** (per-Worker): Limits the Activities a single Worker runs. You can combine it with the global limit for finer control.
-- **`max_concurrent_activities`** (concurrency): Limits concurrent executions. Use it when an API or resource limits concurrent connections, such as a database connection pool.
+- **`max_concurrent_activities`** (concurrency): Limits concurrent executions on each Worker. Use it when an API or resource limits concurrent connections, such as a database connection pool. Temporal has no queue-wide concurrency limit, so the total for the queue is this value multiplied by the number of Workers.
 
 Start with SendGrid. Create a file named `worker_sendgrid.py` and add the imports:
 
@@ -688,6 +688,10 @@ You now have the full pipeline: a queue per API, Workers that enforce each API's
 ## Step 6: Drain backlogs and adjust limits
 
 Rate limits protect the APIs, but they also mean that work waits its turn. During throttling events, Task Queues can grow significantly, and operators need to switch to draining mitigation mode when backlogs occur.
+
+If you deploy these Workers on AWS Lambda, configure scale-up to avoid extra invocations when dispatch reaches a Task
+Queue's rate limit. See
+[Configure scale-up for rate-limited Task Queues](/production-deployment/worker-deployments/serverless-workers/aws-lambda#configure-rate-limited-scaling).
 
 ### Plan for draining
 

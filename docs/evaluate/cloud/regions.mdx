@@ -3,10 +3,12 @@ id: regions
 title: Service regions
 sidebar_label: Service regions
 toc_max_heading_level: 3
-description: Supported AWS and GCP regions for Temporal Cloud Namespaces, any current restrictions on creating them, and how region choice affects latency to your Workers.
+description: Supported AWS, GCP, and Azure regions for Temporal Cloud Namespaces, with access restrictions, replica options, and guidance on Worker latency.
 tags:
   - Temporal Cloud
 ---
+
+import { ReleaseNoteHeader } from '@site/src/components';
 
 You can reach Temporal Cloud from anywhere with Internet connectivity, wherever your Namespaces are located, and your applications can run in the cloud environment or data center of your choice.
 Create Namespaces in a region close to where you host your Workers to reduce latency.
@@ -20,30 +22,6 @@ Subscribe there to get an email whenever Temporal creates, updates, or resolves 
 
 :::
 
-## GCP capacity restriction {/* #gcp-capacity-restriction */}
-
-:::caution
-
-New Temporal Cloud Namespace provisioning is temporarily restricted in Iowa (`us-central1`), Northern Virginia (`us-east4`), and Frankfurt (`europe-west3`) due to limited GCP compute capacity.
-Provisioning is available to all accounts in Mumbai (`asia-south1`), Jakarta (`asia-southeast2`), and Oregon (`us-west1`).
-
-:::
-
-Existing GCP Namespaces continue to operate as normal.
-For Namespaces using [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity), additional Temporal Resource Units (TRUs) are limited and may be unavailable, depending on the region.
-
-If your new Namespace must be in a restricted GCP region, [create a support ticket](/evaluate/cloud/support#support-ticket) to request an exception for your account.
-Include the required GCP regions, expected Action volume, and business requirements for your workload.
-
-Multi-Cloud Replication to Mumbai (`asia-south1`) and Oregon (`us-west1`) is available for the [supported region pairs](#gcp-service-regions) without an account exception.
-Jakarta (`asia-southeast2`) does not support High Availability features.
-To add a replica in a restricted GCP region using Multi-Region Replication or Multi-Cloud Replication, [create a support ticket](/evaluate/cloud/support#support-ticket), even if your account already has an approved exception.
-In restricted regions, an approved exception enables self-service creation of single-region GCP Namespaces only; adding a GCP replica still requires assistance from Temporal Dev Success.
-You can still add an AWS replica to an existing GCP Namespace without an exception, where that replication option is [supported](#gcp-service-regions).
-See [Enable and manage High Availability](/cloud/high-availability/enable) for instructions.
-
-You can also deploy new workloads in an [AWS region](#aws-service-regions).
-
 ## AWS service regions
 
 Temporal Cloud operates in the following Amazon Web Services (AWS) regions:
@@ -56,15 +34,33 @@ import AWSRegions from '@site/docs/cloud/references/regions/awsregions.md';
 
 Temporal Cloud operates in the following Google Cloud (GCP) regions:
 
-:::caution GCP capacity restriction
-
-Provisioning is available in Mumbai (`asia-south1`), Jakarta (`asia-southeast2`), and Oregon (`us-west1`).
-New Namespaces in Iowa (`us-central1`), Northern Virginia (`us-east4`), and Frankfurt (`europe-west3`) require an approved account exception.
-Adding a replica in a restricted region also requires assistance from Temporal Dev Success, even with an approved exception.
-See [GCP capacity restriction](#gcp-capacity-restriction).
-
-:::
-
 import GCPRegions from '@site/docs/cloud/references/regions/gcpregions.md';
 
 <GCPRegions />
+
+## Azure service regions
+
+<ReleaseNoteHeader featureName="azure">
+  Temporal Cloud on Azure is available with rolling access for production workloads.
+  The [Temporal Cloud SLA](https://temporal.io/sla) applies during Azure Public Preview.
+</ReleaseNoteHeader>
+
+To create Azure Namespaces or add Azure replicas, request access by [creating a support ticket](/evaluate/cloud/support#support-ticket) with Temporal Dev Success.
+Include your required regions, expected Actions per second (APS), number of Namespaces, and workload requirements.
+Temporal reviews your capacity needs before enabling Azure regions for your account.
+Azure regions do not appear in your account until access is enabled.
+Access and capacity increases are subject to available capacity.
+After access is enabled, create and manage Azure Namespaces in the Temporal Cloud Web UI, the [Temporal CLI Cloud extension](/cli/cloud), the [Cloud Ops API](/ops), or the [Terraform provider](/cloud/terraform-provider).
+[Pricing](/cloud/pricing) for Azure Namespaces is the same as for AWS and GCP.
+
+Unlike the standard [Public Preview](/evaluate/product-release-stages#public-preview) stage, Azure access is gated: Temporal enables Azure regions per account after a capacity review.
+
+### Azure functionality differences
+
+- **CLI:** `tcld` does not support Azure Namespace management. Use the [Temporal CLI Cloud extension](/cli/cloud) instead.
+- **Private Link service aliases:** Aliases are account-specific and provided by Temporal Dev Success. They are not published and cannot be retrieved programmatically through the Cloud Ops API, Temporal CLI, or Terraform. See [Azure Private Link](/cloud/connectivity/azure-connectivity).
+- **Audit Logs:** An Azure-native streaming sink is not available. Audit events for Azure are included in the overall audit log, and can be accessed via the [Web UI](/cloud/audit-logs), [Cloud Ops API](/ops), or streamed to your existing [AWS Kinesis or GCP Pub/Sub sink](/cloud/audit-logs#configure-audit-logs).
+
+import AzureRegions from '@site/docs/cloud/references/regions/azureregions.md';
+
+<AzureRegions />

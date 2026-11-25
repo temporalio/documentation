@@ -3,7 +3,7 @@ id: activity
 title: Temporal CLI activity command reference
 sidebar_label: activity
 description: Learn how to use Temporal Activity commands to perform operations on Activity Executions.
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - Activities
   - Temporal CLI

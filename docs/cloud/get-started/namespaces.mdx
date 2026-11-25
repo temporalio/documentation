@@ -14,7 +14,7 @@ tags:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import { CaptionedImage, EnlargeImage } from '@site/src/components';
+import { CaptionedImage, EnlargeImage, ReleaseNoteHeader } from '@site/src/components';
 
 :::info Temporal Cloud
 This page covers namespace operations in **Temporal Cloud**.
@@ -184,14 +184,6 @@ different gRPC endpoint types and how to access them.
 
 ## How to create a Namespace in Temporal Cloud {/* #create-a-namespace */}
 
-:::caution GCP capacity restriction
-
-You can create GCP Namespaces in Mumbai (`asia-south1`), Jakarta (`asia-southeast2`), and Oregon (`us-west1`) without an account exception.
-New Namespaces in Iowa (`us-central1`), Northern Virginia (`us-east4`), and Frankfurt (`europe-west3`) require an approved account exception.
-See [GCP capacity restriction](/evaluate/cloud/regions#gcp-capacity-restriction) for details and how to request an exception through Temporal Dev Success.
-
-:::
-
 :::info
 
 The user who creates a [Namespace](/namespaces) is automatically granted
@@ -212,7 +204,7 @@ By default, each account starts with 10 Namespaces. This limit increases automat
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- [Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name), region, and Cloud Provider
+- [Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name), region, and Cloud Provider. Azure regions are available after [access is enabled](/evaluate/cloud/regions#azure-service-regions) for your account.
 - Optional [Namespace description](#describe-a-namespace)
 - [Retention Period](/temporal-service/temporal-server#retention-period) for the
   [Event History](/workflow-execution/event#event-history) of closed [Workflow Executions](/workflow-execution).
@@ -222,6 +214,14 @@ To create a Namespace in Temporal Cloud, gather the following information:
   show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see
   [Securing your data](/production-deployment/data-encryption).
 - [Permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) for each user.
+
+<ReleaseNoteHeader featureName="azure">
+
+Before creating an Azure Namespace, [request account access](/evaluate/cloud/regions#azure-service-regions) through Temporal Dev Success.
+For API and CLI requests, use `azure-centralus` or `azure-australiaeast` as the region identifier.
+Use the [Temporal CLI Cloud extension](/cli/cloud) for Azure Namespace management; `tcld` is not supported.
+
+</ReleaseNoteHeader>
 
 <Tabs>
 
@@ -339,7 +339,7 @@ In general, the IP addresses that Temporal Cloud endpoints resolve to are subjec
 Temporal Cloud guarantees the DNS resolution behavior of the Namespace Endpoint in two cases:
 
 1. **Stable IPs enabled.** The Namespace Endpoint resolves to one of the [Stable IPs](/cloud/connectivity/ip-addresses) for the Namespace's active region.
-2. **High Availability features with Private Connectivity.** The Namespace Endpoint resolves to a regional intermediary (`<provider>-<region>.region.tmprl.cloud`) that you can override in a Route 53 private hosted zone or GCP private DNS zone to point at your VPC Endpoint. See [Connectivity for High Availability](/cloud/high-availability/ha-connectivity) for setup details.
+2. **High Availability features with AWS PrivateLink.** The Namespace Endpoint resolves to a regional intermediary (`aws-<region>.region.tmprl.cloud`) that you can override in a Route 53 private hosted zone to point at your VPC Endpoint. This DNS override does not provide automatic failover with GCP Private Service Connect; see [Connectivity for High Availability](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect) for GCP PSC options.
 
 :::
 
@@ -586,7 +586,7 @@ For an existing Namespace, open its overview and select Add description or the d
 Create: include `spec.description` when calling
 [`CreateNamespace`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces).
 
-Update: UpdateNamespace replaces the complete Namespace specification. Call [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D), preserve the returned spec and resourceVersion, change spec.description, and submit the complete specification to [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D). Omitting description from the updated specification clears the existing description.
+Update: UpdateNamespace replaces the complete Namespace specification. Call [GetNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/GET/cloud/namespaces/%7Bnamespace%7D), preserve the returned spec and `resourceVersion`, change spec.description, and submit the complete specification to [UpdateNamespace](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/namespaces/POST/cloud/namespaces/%7Bnamespace%7D). Omitting description from the updated specification clears the existing description.
 Read: `GET /cloud/namespaces/{namespace}` returns `spec.description`.
 
 Namespace descriptions require Cloud Operations API version v0.21.0 or later. See [Cloud Operations API](/ops).

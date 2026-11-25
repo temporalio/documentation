@@ -26,7 +26,7 @@ Standalone Activity directly from your Temporal Client.
 
 :::note
 
-This documentation uses source code from the [StandaloneActivity](https://github.com/temporalio/samples-dotnet/tree/main/src/StandaloneActivity) sample project.
+This documentation uses source code from the [StandaloneActivities](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/dotnet-sandbox/activities/StandaloneActivities) sample project.
 
 :::
 
@@ -71,29 +71,35 @@ Temporal Web UI will now be accessible at [http://localhost:8233](http://localho
 
 ## Clone the sample
 
-Clone the [samples-dotnet](https://github.com/temporalio/samples-dotnet) repository to follow along:
+Clone the [documentation-sdk-code-examples](https://github.com/temporalio/documentation-sdk-code-examples) repository to follow along:
 
 ```
-git clone https://github.com/temporalio/samples-dotnet.git
-cd samples-dotnet
+git clone https://github.com/temporalio/documentation-sdk-code-examples.git
+cd documentation-sdk-code-examples/dotnet-sandbox
 ```
 
 The sample project is structured as follows:
 
 ```
-src/StandaloneActivity/
+activities/StandaloneActivities/
+├── ExecuteActivityExamples.cs
 ├── MyActivities.cs
 ├── Program.cs
-├── README.md
-└── TemporalioSamples.StandaloneActivity.csproj
+├── StandaloneActivities.csproj
+├── StandaloneClient.cs
+└── StandaloneWorker.cs
 ```
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="csharp" title="MyActivities.cs">
-{`namespace TemporalioSamples.StandaloneActivity;
+<SetupStep>
+
+<CodeSnippet title="MyActivities.cs">
+
+<!--SNIPSTART dotnet-standalone-activities-define-->
+[dotnet-sandbox/activities/StandaloneActivities/MyActivities.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/MyActivities.cs)
+```cs
+namespace TemporalioDocs.Activities.StandaloneActivities;
 
 using Temporalio.Activities;
 
@@ -104,10 +110,11 @@ public static class MyActivities
         Task.FromResult($"{input.Greeting}, {input.Name}!");
 }
 
-public record ComposeGreetingInput(string Greeting, string Name);`}
+public record ComposeGreetingInput(string Greeting, string Name);
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-</>
-}>
 
 ## Define your Activity {/* #define-activity */}
 
@@ -115,48 +122,57 @@ An Activity in the Temporal .NET SDK is a method decorated with the `[Activity]`
 you write a Standalone Activity is identical to how you write an Activity orchestrated by a Workflow.
 In fact, the same Activity can be executed both as a Standalone Activity and as a Workflow Activity.
 
-[src/StandaloneActivity/MyActivities.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/MyActivities.cs)
-
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="csharp" title="Program.cs">
-{`using Microsoft.Extensions.Logging;
+<SetupStep>
+
+<CodeSnippet title="StandaloneWorker.cs">
+
+<!--SNIPSTART dotnet-standalone-activities-worker-->
+[dotnet-sandbox/activities/StandaloneActivities/StandaloneWorker.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/StandaloneWorker.cs)
+```cs
+using Microsoft.Extensions.Logging;
 using Temporalio.Client;
 using Temporalio.Common.EnvConfig;
 using Temporalio.Worker;
-using TemporalioSamples.StandaloneActivity;
 
-var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
-connectOptions.TargetHost ??= "localhost:7233";
-connectOptions.LoggerFactory = LoggerFactory.Create(builder =>
-    builder.
-        AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
-        SetMinimumLevel(LogLevel.Information));
-var client = await TemporalClient.ConnectAsync(connectOptions);
-
-const string taskQueue = "standalone-activity-sample";
-
-using var tokenSource = new CancellationTokenSource();
-Console.CancelKeyPress += (_, eventArgs) =>
+public static class StandaloneWorker
 {
-    tokenSource.Cancel();
-    eventArgs.Cancel = true;
-};
+    public static async Task RunAsync()
+    {
+        var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+        connectOptions.TargetHost ??= "localhost:7233";
+        connectOptions.LoggerFactory = LoggerFactory.Create(builder =>
+            builder.
+                AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
+                SetMinimumLevel(LogLevel.Information));
+        var client = await TemporalClient.ConnectAsync(connectOptions);
 
-using var worker = new TemporalWorker(
-    client,
-    new TemporalWorkerOptions(taskQueue).
-        AddActivity(MyActivities.ComposeGreetingAsync));
+        const string taskQueue = "standalone-activity-sample";
 
-await worker.ExecuteAsync(tokenSource.Token);`}
+        using var tokenSource = new CancellationTokenSource();
+        Console.CancelKeyPress += (_, eventArgs) =>
+        {
+            tokenSource.Cancel();
+            eventArgs.Cancel = true;
+        };
+
+        using var worker = new TemporalWorker(
+            client,
+            new TemporalWorkerOptions(taskQueue).
+                AddActivity(MyActivities.ComposeGreetingAsync));
+
+        await worker.ExecuteAsync(tokenSource.Token);
+    }
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
+
 <CodeSnippet language="bash">
-{`dotnet run --project src/StandaloneActivity worker`}
+{`dotnet run --project activities/StandaloneActivities worker`}
 </CodeSnippet>
-</>
-}>
 
 ## Run a Worker with the Activity registered {/* #run-worker */}
 
@@ -166,34 +182,49 @@ whether the Activity will be invoked from a Workflow or as a Standalone Activity
 [Develop a Worker](/develop/dotnet/workers/run-worker-process) for more details on Worker setup and configuration
 options.
 
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
-
-Open a new terminal, navigate to the `samples-dotnet` directory, and run the Worker.
+Open a new terminal, navigate to the `dotnet-sandbox` directory, and run the Worker.
 Leave this terminal running - the Worker needs to stay up to process activities.
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="csharp" title="Program.cs">
-{`using Temporalio.Client;
+<SetupStep>
+
+<CodeSnippet title="StandaloneClient.cs">
+
+<!--SNIPSTART dotnet-standalone-activities-execute-->
+[dotnet-sandbox/activities/StandaloneActivities/StandaloneClient.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/StandaloneClient.cs)
+```cs
+using Temporalio.Client;
 using Temporalio.Common.EnvConfig;
-using TemporalioSamples.StandaloneActivity;
 
-var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
-connectOptions.TargetHost ??= "localhost:7233";
-var client = await TemporalClient.ConnectAsync(connectOptions);
-
-var result = await client.ExecuteActivityAsync(
-    () => MyActivities.ComposeGreetingAsync(new ComposeGreetingInput("Hello", "World")),
-    new("standalone-activity-id", "standalone-activity-sample")
+public static class StandaloneClient
+{
+    public static async Task RunAsync()
     {
-        ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
-    });
-Console.WriteLine($"Activity result: {result}");`}
+        var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+        connectOptions.TargetHost ??= "localhost:7233";
+        var client = await TemporalClient.ConnectAsync(connectOptions);
+
+        var result = await client.ExecuteActivityAsync(
+            () => MyActivities.ComposeGreetingAsync(new ComposeGreetingInput("Hello", "World")),
+            new("standalone-activity-id", "standalone-activity-sample")
+            {
+                ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
+            });
+        Console.WriteLine($"Activity result: {result}");
+    }
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-<CodeSnippet language="csharp">
-{`// Using a lambda expression (type-safe)
+
+<CodeSnippet>
+
+<!--SNIPSTART dotnet-standalone-activities-execute-options-->
+[dotnet-sandbox/activities/StandaloneActivities/ExecuteActivityExamples.cs](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/dotnet-sandbox/activities/StandaloneActivities/ExecuteActivityExamples.cs)
+```cs
+// Using a lambda expression (type-safe)
 var result = await client.ExecuteActivityAsync(
     () => MyActivities.ComposeGreetingAsync(new ComposeGreetingInput("Hello", "World")),
     new("standalone-activity-id", "standalone-activity-sample")
@@ -202,17 +233,22 @@ var result = await client.ExecuteActivityAsync(
     });
 
 // Using a string type name
-var result = await client.ExecuteActivityAsync<string>(
+var resultByName = await client.ExecuteActivityAsync<string>(
     "ComposeGreeting",
     new object?[] { new ComposeGreetingInput("Hello", "World") },
     new("standalone-activity-id", "standalone-activity-sample")
     {
         ScheduleToCloseTimeout = TimeSpan.FromSeconds(10),
-    });`}
+    });
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
+
 <CodeSnippet language="bash">
-{`dotnet run --project src/StandaloneActivity execute-activity`}
+{`dotnet run --project activities/StandaloneActivities execute-activity`}
 </CodeSnippet>
+
 <CodeSnippet language="bash">
 {`temporal activity execute \\
   --type ComposeGreeting \\
@@ -221,8 +257,6 @@ var result = await client.ExecuteActivityAsync<string>(
   --schedule-to-close-timeout 10s \\
   --input '{"Greeting": "Hello", "Name": "World"}'`}
 </CodeSnippet>
-</>
-}>
 
 ## Execute a Standalone Activity {/* #execute-activity */}
 
@@ -231,8 +265,6 @@ Use
 to execute a Standalone Activity and wait for the result. Call this from your application code, not
 from inside a Workflow Definition. This durably enqueues your Standalone Activity in the Temporal
 Server, waits for it to be executed on your Worker, and then returns the result.
-
-[src/StandaloneActivity/Program.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/StandaloneActivity/Program.cs)
 
 You can pass the Activity as either a lambda expression or a string Activity type name.
 
@@ -245,9 +277,9 @@ To run it:
 
 1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
 2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
-3. Open a new terminal, navigate to the `samples-dotnet` directory, and run:
+3. Open a new terminal, navigate to the `dotnet-sandbox` directory, and run:
     ```
-    dotnet run --project src/StandaloneActivity execute-activity
+    dotnet run --project activities/StandaloneActivities execute-activity
     ```
 
 Or use the Temporal CLI.

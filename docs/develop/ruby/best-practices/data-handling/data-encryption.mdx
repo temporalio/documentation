@@ -34,7 +34,9 @@ These should convert the given payloads as needed into new payloads, using the `
 Do not mutate the existing payloads.
 Here is an example of an encryption codec that just uses base64 in each direction:
 
-```ruby
+<!--SNIPSTART ruby-data-encryption-codec-->
+[ruby-sandbox/best-practices/data-handling/data-encryption/base64_codec.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/best-practices/data-handling/data-encryption/base64_codec.rb)
+```rb
 class Base64Codec < Temporalio::Converters::PayloadCodec
   def encode(payloads)
     payloads.map do |p|
@@ -59,18 +61,22 @@ class Base64Codec < Temporalio::Converters::PayloadCodec
   end
 end
 ```
+<!--SNIPEND-->
 
 ### Set Data Converter to use custom Payload Codec
 
 When creating a client, the default `DataConverter` can be updated with the payload codec like so:
 
-```ruby
+<!--SNIPSTART ruby-data-encryption-client-->
+[ruby-sandbox/best-practices/data-handling/data-encryption/connect.rb](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/ruby-sandbox/best-practices/data-handling/data-encryption/connect.rb)
+```rb
 my_client = Temporalio::Client.connect(
   'localhost:7233',
   'my-namespace',
   data_converter: Temporalio::Converters::DataConverter.new(payload_codec: Base64Codec.new)
 )
 ```
+<!--SNIPEND-->
 
 - Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
 - Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster.

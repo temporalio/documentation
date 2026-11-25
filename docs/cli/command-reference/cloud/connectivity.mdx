@@ -3,7 +3,7 @@ id: connectivity
 title: Temporal CLI cloud connectivity command reference
 sidebar_label: connectivity
 description: Connectivity Management Commands
-toc_max_heading_level: 4
+toc_max_heading_level: 6
 tags:
   - connectivity
 ---

@@ -37,7 +37,7 @@ This page covers the following:
 
 :::note
 
-This documentation uses source code from the [standalone-activity](https://github.com/temporalio/samples-typescript/tree/main/standalone-activity) sample.
+This documentation uses source code from the [Standalone Activities](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/typescript-sandbox/src/activities/standalone) samples in the `typescript-sandbox` folder of the documentation-sdk-code-examples repository. Run the commands on this page from that folder, with the Worker from the [quickstart](/develop/typescript/activities/standalone-activities-quickstart#run-worker) running.
 
 :::
 
@@ -61,8 +61,8 @@ Use
 [`start`](https://typescript.temporal.io/api/interfaces/client.TypedActivityClient#start) method of
 the client or the typed interface to start your Standalone Activity and get a handle:
 
-<!--SNIPSTART typescript-standalone-activity-start-->
-[standalone-activity/src/execute.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/execute.ts)
+<!--SNIPSTART typescript-standalone-activities-start {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/activities/standalone/start.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/start.ts)
 ```ts
 const handle = await activitiesClient.start('greet', {
   ...activityOptions,
@@ -91,8 +91,8 @@ how the Activity was started, this method is not available in the typed interfac
 takes an optional type argument to constrain the Activity result type, but correctness of this argument
 is not verified.
 
-<!--SNIPSTART typescript-standalone-activity-get-handle-->
-[standalone-activity/src/execute.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/execute.ts)
+<!--SNIPSTART typescript-standalone-activities-get-handle {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/activities/standalone/start.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/start.ts)
 ```ts
 const newHandle = client.activity.getHandle<string>(activityId);
 ```
@@ -107,8 +107,8 @@ is the same as calling [`start`](https://typescript.temporal.io/api/interfaces/c
 to durably enqueue the Standalone Activity, and then calling `await handle.result()` to
 wait for the Activity to be executed and fetch the result:
 
-<!--SNIPSTART typescript-standalone-activity-result-->
-[standalone-activity/src/execute.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/execute.ts)
+<!--SNIPSTART typescript-standalone-activities-result {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/activities/standalone/start.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/start.ts)
 ```ts
 console.log(await handle.result()); // Hello, Temporal!
 ```
@@ -130,7 +130,9 @@ entries.
 
 These APIs return only Standalone Activity Executions. Activities running inside Workflows are not included.
 
-```typescript
+<!--SNIPSTART typescript-standalone-activities-list {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/activities/standalone/list.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/list.ts)
+```ts
 const query = 'TaskQueue="hello-standalone-activities"';
 
 for await (const a of client.activity.list(query)) {
@@ -139,15 +141,16 @@ for await (const a of client.activity.list(query)) {
   );
 }
 ```
+<!--SNIPEND-->
 
-The sample file 
-[standalone-activity/src/list.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/list.ts)
+The sample file
+[src/activities/standalone/list.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/list.ts)
 lists and counts activities.
 
 Run it:
 
 ```bash
-npm run list
+npm run standalone-activity.list
 ```
 
 Or use the Temporal CLI:
@@ -169,22 +172,22 @@ the total count of executions (running, completed, failed, etc.) - not the numbe
 works the same way as counting Workflow Executions. The same query will work for both listing and
 counting.
 
-<!--SNIPSTART typescript-standalone-activity-count-->
-[standalone-activity/src/list.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/list.ts)
+<!--SNIPSTART typescript-standalone-activities-count {"enable_code_dedenting": true}-->
+[typescript-sandbox/src/activities/standalone/list.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/list.ts)
 ```ts
 const { count } = await client.activity.count(query);
 console.log(`Total activities: ${count}`);
 ```
 <!--SNIPEND-->
 
-The sample file 
-[standalone-activity/src/list.ts](https://github.com/temporalio/samples-typescript/blob/main/standalone-activity/src/list.ts)
+The sample file
+[src/activities/standalone/list.ts](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/typescript-sandbox/src/activities/standalone/list.ts)
 lists and counts activities.
 
 Run it:
 
 ```bash
-npm run list
+npm run standalone-activity.list
 ```
 
 Or use the Temporal CLI:

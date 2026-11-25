@@ -99,17 +99,39 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
   }
 
   // Agents that fetch a .md page directly have no way to discover the rest of
-  // the docs from it. A blockquote directive under the H1 gives them the index
-  // and the .md convention. Mirrors the visually hidden AgentDirective rendered
-  // into the HTML. See MARKDOWN_PIPELINE.md.
+  // the docs from it. A blockquote directive under the H1 gives them the index,
+  // the .md convention, the search endpoint, and the feedback endpoint.
+  // Mirrors the visually hidden AgentDirective rendered into the HTML. See
+  // MARKDOWN_PIPELINE.md.
+  //
+  // The endpoint URLs are code spans. As bare text, Markdown renderers that
+  // autolink URLs end the link at the first `<`, so crawlers followed
+  // /api/feedback?title= and /api/retrieve?q= with the parameter empty.
   //
   // Applied only when writing the per-page .md files. llms-full.txt keeps the
   // undecorated markdown and carries the same pointer once in its own header,
   // rather than repeating it 720 times.
-  function withAgentDirective(markdown, siteUrl) {
+  //
+  // `lastUpdated` (YYYY-MM-DD or null) leads the block so an agent can judge
+  // freshness before reading on. It's the page's last significant change, the
+  // same date as the sitemap's <lastmod>; see plugins/shared/lastModified.js.
+  function withAgentDirective(markdown, siteUrl, urlPath, lastUpdated) {
+    const pagePath = urlPath === 'index' ? '/' : `/${urlPath}`;
     const directive =
+      (lastUpdated ? `> Last updated: ${lastUpdated}.\n` : '') +
       `> For the complete documentation index, see [llms.txt](${siteUrl}/llms.txt).\n` +
-      '> Any documentation page is available as raw Markdown by appending `.md` to its URL.';
+      '> Any documentation page is available as raw Markdown by appending `.md` to its URL.\n' +
+      // Agent search endpoint experiment. src=md-page tells the request log
+      // which surface the caller found the URL on; see readme/AGENT-RETRIEVE.md.
+      `> For related questions, query \`${siteUrl}/api/retrieve?q=<question>&jtb=<job-to-be-done>&src=md-page&agent=<your-name>\` ` +
+      '(no auth; returns JSON `{content, source_url, page_url}`, with `source_url` pointing to Markdown for docs pages). ' +
+      "Don't include personal data or credentials.\n" +
+      // Feedback endpoint. src=md-page tells the feedback store which surface
+      // the caller found the URL on; see readme/FEEDBACK.md.
+      '> If this page is wrong or missing something you needed, or Temporal behaves differently from what it says, report it with ' +
+      `\`${siteUrl}/api/feedback?title=<summary>&message=<what-happened>&category=documentation&page_url=${pagePath}&src=md-page&agent=<your-name>\` ` +
+      '(use `category=product` when the product, not the page, is wrong). ' +
+      "Report only a specific problem you hit, send it once, and don't include personal data or credentials.";
 
     // Keep the H1 as the first line so title extraction keeps working; the
     // directive slots in just below it. Pages without an H1 get it up top.
@@ -339,6 +361,9 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
         pathToFileURL(path.join(__dirname, '../../scripts/mdx-to-md.mjs')).href
       );
 
+      // Same date source as the sitemap and the JSON-LD dateModified.
+      const vcs = context.siteConfig.future.experimental_vcs;
+
       let generated = 0;
       let excluded = 0;
       let totalWarnings = 0;
@@ -378,7 +403,9 @@ module.exports = function markdownPagesPlugin(context, options = {}) {
                 fs.copyFileSync(from, dest);
               },
             });
-            fs.writeFileSync(outputPath, withAgentDirective(withImages, siteUrl) + '\n');
+            const lastUpdate = await vcs.getFileLastUpdateInfo(filePath);
+            const lastUpdated = lastUpdate ? new Date(lastUpdate.timestamp).toISOString().split('T')[0] : null;
+            fs.writeFileSync(outputPath, withAgentDirective(withImages, siteUrl, urlPath, lastUpdated) + '\n');
             totalWarnings += warnings.length;
             generated++;
 

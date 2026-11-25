@@ -1,0 +1,7 @@
+/* Adapted from @docusaurus/theme-classic 3.10.2's EditMetaRow styles. */
+
+@media print {
+  .noPrint {
+    display: none;
+  }
+}

@@ -1,0 +1,7 @@
+# Commits that never set a docs page's last-updated date (sitemap <lastmod>,
+# JSON-LD dateModified, and the .md "Last updated" line).
+#
+# Add a mechanical sweep here when it changes enough words to pass the
+# significance threshold but no meaning: a site-wide rename, or a
+# reorganization that only moves text. One full SHA per line, with a comment
+# saying what it was. See readme/MARKDOWN_PIPELINE.md#last-updated-dates.

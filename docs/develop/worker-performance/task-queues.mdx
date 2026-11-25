@@ -160,6 +160,7 @@ You can adjust the number of Workers to enhance Workflow Execution performance a
 For instance, a large backlog of Tasks with too few Workers will slow down Workflow Execution completions and decrease processing efficiency.
 Adding more Workers boosts speeds up completion rates and improves throughput.
 An empty backlog indicates low Worker utilization, allowing you to reduce your fleet and associated costs.
+Keep at least two Workers polling each Task Queue when you reduce your fleet. See [Run at least two Workers per Task Queue](/best-practices/worker#run-at-least-two-workers-per-task-queue).
 
 The values provided by `temporal task-queue describe` can help you manage your Worker fleet deployment:
 
@@ -214,9 +215,12 @@ Alternatively, consider using a resource-based slot supplier as described [here]
 
 Sometimes, it can be appropriate to increase the number of task pollers.
 This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
-You can use automated poller tuning to handle this.
 
-Consider manual adjustment if:
+Workers that use [Poller Autoscaling](/develop/worker-performance/configuration#configuring-poller-options) adjust their poller count automatically, between 1 and 100 pollers per poller type by default.
+Temporal Cloud is enabling Poller Autoscaling by default for Workers on supported SDK versions that leave their poller options unset.
+If your Workers use Poller Autoscaling and `schedule_to_start` stays high, check Task slots and [rate limiting](#rate-limiting) before changing poller settings.
+
+If your Workers use fixed poller counts, consider manual adjustment if:
 
 1. The Worker hosts are underutilized, for example, there are no bottlenecks on CPU or load average.
 2. `worker_task_slots_available` metric from the corresponding Worker type shows that a significant percentage of Worker slots are available on a regular basis.
@@ -225,6 +229,8 @@ Consider manual adjustment if:
 Then consider increasing the number of pollers by adjusting `maxConcurrentWorkflowTaskPollers` or `maxConcurrentActivityTaskPollers`, depending on which type of `schedule_to_start` metric is elevated.
 
 ### Rate limiting
+
+Poller Autoscaling respects task queue rate limits. When a rate limit is the bottleneck, Poller Autoscaling does not add unnecessary additional pollers.
 
 If, after adjusting the poller and executors count as specified earlier, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you might want to check the following:
 
