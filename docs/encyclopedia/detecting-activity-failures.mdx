@@ -232,7 +232,7 @@ Throttling allows the Worker to reduce network traffic and load on the Temporal 
 Throttling does not apply to the final Heartbeat message in the case of Activity Failure.
 If an Activity fails just after recording progress information in a Heartbeat message, that progress information will be available during the next retry attempt, provided that the Worker itself did not crash before delivering it to the Temporal Service.
 
-Because the Worker sends at most one Heartbeat per throttle interval, calling Heartbeat more often than that doesn't send more Heartbeats to the Temporal Service.
+Because the Worker sends at most one Heartbeat per throttle interval while the attempt runs, calling Heartbeat more often than that doesn't send more Heartbeats to the Temporal Service.
 As long as Activity code calls Heartbeat at least once per throttle interval, the Heartbeat Timeout sets the rate.
 With the default Worker options, any Heartbeat Timeout above 75 seconds gets the 60-second maximum throttle interval, so each Activity sends at most one Heartbeat a minute.
 On Temporal Cloud, each Heartbeat that reaches the Temporal Service is an [Action](/evaluate/cloud/actions#activity).
@@ -267,8 +267,9 @@ However, checking the progress and status of Activity Executions that run over l
 Consider the following when setting Activity Heartbeats:
 
 - Your underlying task must be able to report definite progress.
-  Note that the caller cannot read this progress information while the Activity is still executing (or it would have to store it in Event History).
-  You can report progress to external sources if you need it exposed to the user.
+  Workflow code can't read this progress while the Activity is still executing, because it isn't stored in Event History.
+  Clients can see the latest recorded details in the Web UI's Pending Activities view or with `temporal workflow describe`.
+  To expose progress to your own users, report it to an external system.
 
 - Your Activity Execution is long-running, and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
 

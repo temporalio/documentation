@@ -583,7 +583,7 @@ See [Choose a Heartbeat Timeout](/encyclopedia/detecting-activity-failures#choos
 ## Best practices
 
 - **Set heartbeat timeout.** Configure to 2-3x the expected heartbeat interval.
-- **Heartbeat at regular intervals.** Call heartbeat at least once per [throttle interval](/encyclopedia/detecting-activity-failures#throttling) (by default, 80% of the heartbeat timeout, up to 60 seconds). The SDK sends at most one heartbeat per interval.
+- **Heartbeat at regular intervals.** Call heartbeat at least once per [throttle interval](/encyclopedia/detecting-activity-failures#throttling) (by default, 80% of the heartbeat timeout, up to 60 seconds). While the Activity runs, the SDK sends at most one heartbeat per interval.
 - **Checkpoint strategically.** Save progress at meaningful boundaries (records, pages, chunks).
 - **Keep details small.** Store minimal state (IDs, offsets, counts), not full objects. Details count against the 2 MB [payload size limit](/troubleshooting/blob-size-limit-error#payload-size-limit), and every heartbeat writes them again.
 - **Handle idempotency.** Ensure reprocessing the last checkpoint is safe.

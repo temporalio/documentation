@@ -70,7 +70,8 @@ Similarly, removing [Heartbeats](/encyclopedia/detecting-activity-failures#activ
 
 ### Excessive Activity Heartbeats
 
-Each Heartbeat counts as one Action.
+Each Heartbeat that reaches the Temporal Service counts as one Action.
+The SDK [throttles](/encyclopedia/detecting-activity-failures#throttling) Heartbeats, so extra calls from Activity code within a throttle interval don't add Actions. The Heartbeat Timeout sets how many are sent.
 Only use Heartbeats for long-running Activities (10+ minutes) where you need to detect Worker failures and track progress.
 Short-running Activities that complete in seconds or minutes don't need Heartbeats.
 See [Activity Heartbeat documentation](/encyclopedia/detecting-activity-failures#which-activities-should-heartbeat) for guidance.
