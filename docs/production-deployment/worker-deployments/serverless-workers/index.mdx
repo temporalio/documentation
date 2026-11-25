@@ -15,10 +15,10 @@ tags:
 import { ReleaseNoteHeader } from '@site/src/components';
 
 <ReleaseNoteHeader type="publicPreview">
-  AWS Lambda and GCP Cloud Run support are in Public Preview. Amazon Bedrock AgentCore Runtime support is in
-  Pre-release. To request AgentCore Runtime access on Temporal Cloud, create a
+  AWS Lambda and GCP Cloud Run support are in Public Preview. Amazon Bedrock AgentCore Runtime and Modal support are in
+  Pre-release. To request Pre-release access on Temporal Cloud, create a
   [support ticket](/evaluate/cloud/support#support-ticket) or contact your account team. You can also
-  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) or try them through self-hosting.
+  [sign up for updates](https://temporal.io/pages/serverless-workers-updates) or try AgentCore Runtime through self-hosting.
 </ReleaseNoteHeader>
 
 Serverless Workers let you run Temporal Workers on serverless compute. Deploy your Worker code to a serverless provider,
@@ -27,27 +27,28 @@ work on the Task Queue. There is no always-on Worker fleet to provision or scale
 
 Temporal monitors Task Queues that have a compute provider configured. When a Task arrives and no Worker is free to take
 it, the [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) starts compute. How it starts
-compute is where the providers differ. On AWS Lambda and AgentCore Runtime, the WCI invokes compute in response to
+compute is where the providers differ. On AWS Lambda, AgentCore Runtime, and Modal, the WCI invokes compute in response to
 unmet Task Queue demand. On GCP Cloud Run, it resizes a Worker Pool of long-lived instances that poll continuously.
 
-:::caution Multi-cloud Replication is not supported
+:::caution Multi-cloud Replication for AWS and GCP compute
 
-Serverless Workers do not support [Multi-cloud Replication](/cloud/high-availability#multi-cloud-replication).
-They must be invoked from the same cloud provider where the Namespace is currently active. After a failover to a
-different cloud provider, Serverless Workers can no longer be invoked. This is a temporary restriction during Public Preview.
+AWS Lambda, AgentCore Runtime, and GCP Cloud Run require the Namespace to be active in the same cloud provider as the
+compute. With [Multi-cloud Replication](/cloud/high-availability#multi-cloud-replication), a failover to a different
+cloud provider prevents Temporal from starting new Workers on the original provider.
 
 :::
 
-## Supported providers
+## Choose a compute provider {/* #supported-providers */}
 
-- [**AWS Lambda**](/production-deployment/worker-deployments/serverless-workers/aws-lambda) - Deploy a Serverless Worker
-  as a Lambda function. Temporal assumes an IAM role in your AWS account to invoke the function when Tasks arrive.
-- [**GCP Cloud Run**](/production-deployment/worker-deployments/serverless-workers/cloud-run) - Deploy a Serverless
-  Worker to a Cloud Run Worker Pool. Temporal impersonates a service account in your GCP project to scale the pool as
-  Tasks arrive and drain.
-- [**Amazon Bedrock AgentCore Runtime**](/production-deployment/worker-deployments/serverless-workers/agentcore) -
-  Deploy a Serverless Worker to AgentCore Runtime. Temporal assumes an IAM role in your AWS account to invoke the
-  Runtime endpoint as Tasks arrive.
+Choose based on how often Tasks arrive, how long Activities need to run, and what compute your Worker needs. An invocation
+timeout limits the lifetime of one Worker. A Workflow Execution can continue across multiple Worker invocations.
+
+| Compute provider | Choose it when | Trade-offs |
+| --- | --- | --- |
+| [AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda) | Tasks arrive in bursts or at intervals, and Activities are short. Examples include webhook processing and scheduled integrations in AWS. | Temporal invokes a function on demand, so you can run without a standing Worker fleet. The first Task may wait for a cold start, and startup, Activity processing, and shutdown must fit within the function timeout. |
+| [GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run) | You have a containerized Worker in GCP, steady Task Queue traffic, or Activities that need more time than a function invocation allows. | Long-lived Workers poll continuously, and the pool can scale to zero if its minimum is zero. Keeping instances polling an idle Task Queue adds compute cost. You deploy a pool for each Worker Deployment Version and compute region. |
+| [Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore) | Your Python agent already runs on AgentCore, and you want its Temporal Worker to run there too. | An AgentCore microVM session can run for up to eight hours. Your entry point must implement AgentCore's HTTP contract, and the session lifetime bounds the Worker. |
+| [Modal](/production-deployment/worker-deployments/serverless-workers/modal) | Your Python Activities need GPUs, for example for batch inference or media processing. | Modal builds the container image from your Python definition and lets you configure compute resources and the function timeout. Worker startup depends on available container capacity. You need Pre-release access on Temporal Cloud and an authorized Modal workspace connection. |
 
 ## Try it locally {/* #try-it-locally */}
 
