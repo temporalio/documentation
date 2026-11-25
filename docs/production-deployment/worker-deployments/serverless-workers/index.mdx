@@ -40,6 +40,9 @@ the size of a Worker Pool whose instances poll continuously while they run.
 
 ## Choose a compute provider {/* #supported-providers */}
 
+Choose for the workload your Worker serves. Even within one application, a nightly batch and a customer-facing
+Task Queue can have different needs for compute and startup latency.
+
 ### Start with the cloud your Activities use
 
 If most of the systems your Activities call already run in **GCP**, start with **Cloud Run**. For example, a Worker
