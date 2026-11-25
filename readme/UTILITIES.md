@@ -14,7 +14,7 @@ Run `yarn sync:navigation` to refresh the snapshot independently. A new producti
 there is no scheduled sync or browser-side fetch. The dev server uses the saved snapshot.
 
 `src/utils/navigation.js` adapts the shared logo, groups, section titles, links, and CTAs to the Docusaurus navbar.
-It appends Courses, SDKs, and Durable AI to the shared menu.
+Top-level links come only from the API; docs does not append Courses, SDKs, or Durable AI.
 Search, the theme toggle, Ask AI, and the documentation sidebar keep their existing implementations.
 Desktop controls appear in visual and keyboard order as Search, theme, Ask AI, Try Free, and Log In.
 On a single-row desktop header, the top-level links are centered in the space between the logo and these controls.
@@ -22,13 +22,13 @@ On a single-row desktop header, the top-level links are centered in the space be
 The navbar consumes the API's light and dark color tokens; layout and interaction styling are local to docs.
 Local styles follow temporal.io's Aeonik navigation text, monospace labels, square gradient CTAs, and translucent
 dropdowns. Desktop submenus open on mouse hover or keyboard/click activation; mobile groups open on tap.
-The header uses two rows between 997px and 1439px to fit the additional docs links and controls.
+The header uses two rows between 997px and 1439px to fit the shared menu and docs controls.
 Its height updates the Docusaurus layout variable so sticky sidebars and anchor offsets stay aligned.
 
 Follow-up considerations for the PoC:
 
 - Add upstream active-route metadata; docs currently identifies its own links by URL.
-- Consider an API extension slot for docs-only links, which are currently appended locally.
+- Consider an API extension slot if property-specific navigation is needed later; docs currently adds no local links.
 - Consider upstream spacing, typography, breakpoint, and interaction tokens to replace the locally maintained styles.
 - Version the API schema so incompatible contract changes can be handled explicitly.
 - Consider bundling logo assets locally; the current logo URLs load from temporal.io.

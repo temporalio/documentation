@@ -42,9 +42,6 @@ function createNavbar(navigation) {
             }
           : { ...navigationLink(item), position: 'left' },
       ),
-      { label: 'Courses', href: 'https://learn.temporal.io/getting_started/', position: 'left' },
-      { label: 'SDKs', to: '/develop', activeBasePath: '/develop', position: 'left' },
-      { label: 'Durable AI', to: '/ai', activeBasePath: '/ai', position: 'left' },
       ...navigation.ctas.map((cta) => ({ ...navigationCta(cta), position: 'right' })),
       { type: 'custom-askAI', position: 'right' },
     ],

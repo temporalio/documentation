@@ -88,8 +88,8 @@ describe('createNavbar', () => {
     assert.equal(navbar.items[1].to, '/');
     assert.equal(navbar.items[1].activeBasePath, '/');
     assert.equal(navbar.items[3].sections[1].title, 'By Industry');
-    assert.deepEqual(navbar.items.slice(data.items.length, data.items.length + 3).map((item) => item.label),
-      ['Courses', 'SDKs', 'Durable AI']);
+    assert.deepEqual(navbar.items.filter((item) => item.position === 'left').map((item) => item.label),
+      data.items.map((item) => item.label));
     assert.deepEqual(navbar.items.filter((item) => item.position === 'right').map((item) => item.label ?? item.type),
       ['Try Free', 'Log In', 'custom-askAI']);
   });

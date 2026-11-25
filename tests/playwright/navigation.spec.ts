@@ -1,12 +1,15 @@
 import { test, expect } from './fixtures';
 
-test('shared navigation includes docs links, submenus and existing controls', async ({ page }) => {
+test('shared navigation includes only API links, submenus and existing controls', async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
   await page.goto('/workflows');
   const nav = page.getByRole('navigation', { name: 'Main', exact: true });
   await expect(nav.getByRole('link', { name: 'Docs', exact: true })).toHaveAttribute('aria-current', 'page');
-  for (const name of ['Courses', 'SDKs', 'Durable AI', 'Try Free', 'Log In']) {
+  for (const name of ['Pricing', 'Try Free', 'Log In']) {
     await expect(nav.getByRole('link', { name, exact: true })).toBeVisible();
+  }
+  for (const name of ['Courses', 'SDKs', 'Durable AI']) {
+    await expect(nav.locator('.universal-nav-links').getByRole('link', { name, exact: true })).toHaveCount(0);
   }
   const askAi = nav.getByRole('button', { name: 'Ask AI', exact: true });
   await expect(askAi).toBeVisible();
@@ -56,7 +59,10 @@ test('shared groups remain available in the mobile primary menu', async ({ page 
   });
   await group.locator('summary').click();
   await expect(group.getByRole('link', { name: 'How Temporal Works', exact: true })).toBeVisible();
-  await expect(sidebar.getByRole('link', { name: 'SDKs', exact: true })).toBeVisible();
+  const primaryMenu = sidebar.locator('.navbar-sidebar__item').first();
+  for (const name of ['Courses', 'SDKs', 'Durable AI']) {
+    await expect(primaryMenu.getByRole('link', { name, exact: true })).toHaveCount(0);
+  }
   await expect(sidebar.getByRole('link', { name: 'Log In', exact: true })).toBeVisible();
 });
 
@@ -72,7 +78,7 @@ test('desktop hover menus stay open while moving into the submenu', async ({ pag
   const triggerBox = await group.locator('summary').boundingBox();
   const panelBox = await group.locator('.universal-nav-submenu').boundingBox();
   expect(panelBox!.y).toBeCloseTo(triggerBox!.y + triggerBox!.height, 0);
-  await page.locator('h1').hover();
+  await page.locator('.navbar__inner .navbar__brand').hover();
   await expect(link).not.toBeVisible();
 });
 
@@ -83,7 +89,7 @@ for (const theme of ['light', 'dark'] as const) {
     for (const width of [1920, 1600, 1440, 1439, 1280, 1024, 997]) {
       await page.setViewportSize({ width, height: 900 });
       const nav = page.getByRole('navigation', { name: 'Main', exact: true });
-      await expect(nav.getByRole('link', { name: 'Durable AI', exact: true })).toBeVisible();
+      await expect(nav.locator('.universal-nav-links > :last-child')).toBeVisible();
       await expect.poll(() => nav.evaluate((element) => {
         const height = parseFloat(getComputedStyle(document.documentElement)
           .getPropertyValue('--ifm-navbar-height')) * parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -91,7 +97,7 @@ for (const theme of ['light', 'dark'] as const) {
       })).toBeLessThan(1);
       await expect(page.locator('body')).toHaveJSProperty('scrollWidth', width);
       await expect(nav).toHaveCSS('background-color', theme === 'dark' ? 'rgb(20, 20, 20)' : 'rgb(255, 255, 255)');
-      const lastLink = await nav.getByRole('link', { name: 'Durable AI', exact: true }).boundingBox();
+      const lastLink = await nav.locator('.universal-nav-links > :last-child').boundingBox();
       const firstAction = await nav.getByRole('button', { name: /Search/ }).first().boundingBox();
       expect(lastLink!.x + lastLink!.width <= firstAction!.x || lastLink!.y + lastLink!.height <= firstAction!.y)
         .toBeTruthy();
