@@ -793,7 +793,8 @@ When you create a version through the UI, the version is automatically set as cu
 </TabItem>
 <TabItem value="cli" label="Temporal CLI">
 
-Use the CLI for manual setup, shell scripts, and CI/CD pipelines. When you create a version through the CLI, you must
+Use [Temporal CLI](/cli) v1.10.0 or later for the commands in this guide. The
+`worker deployment version` commands are Experimental. When you create a version through the CLI, you must
 [set the version as current](#set-current-version) as a separate step.
 
 First, create the Worker Deployment if it does not already exist:
@@ -807,22 +808,43 @@ temporal worker deployment create \
 Then create the version with the compute provider configuration:
 
 ```bash
-temporal worker deployment create-version \
+temporal worker deployment version compute-config aws-lambda create \
   --namespace <YOUR_NAMESPACE> \
   --deployment-name my-app \
   --build-id build-1 \
-  --aws-lambda-function-arn <LAMBDA_FUNCTION_ARN> \
-  --aws-lambda-assume-role-arn <INVOCATION_ROLE_ARN> \
-  --aws-lambda-assume-role-external-id <EXTERNAL_ID>
+  --function-arn <LAMBDA_FUNCTION_ARN> \
+  --assume-role-arn <INVOCATION_ROLE_ARN> \
+  --assume-role-external-id <EXTERNAL_ID>
 ```
 
 | Flag                                   | Description                                                                                                                                                                                                                                       |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--deployment-name`                    | Worker Deployment name. Must match `DeploymentName` in your Worker code.                                                                                                                                                                          |
 | `--build-id`                           | Worker Deployment Version build ID. Must match `BuildID` in your Worker code.                                                                                                                                                                     |
-| `--aws-lambda-function-arn`            | Qualified versioned ARN of the Lambda function Temporal invokes for this version (for example, `function:my-worker:5`). See [Step 2.3](#publish-lambda-version).                                                                                  |
-| `--aws-lambda-assume-role-arn`         | IAM role Temporal assumes to invoke the function. This is the `RoleARN` output from the CloudFormation stack in [Step 3](#configure-iam). This is not the Lambda execution role from [Step 2](#deploy-lambda-function) or your own IAM user/role. |
-| `--aws-lambda-assume-role-external-id` | External ID configured in the IAM role trust policy.                                                                                                                                                                                              |
+| `--function-arn`            | Qualified versioned ARN of the Lambda function Temporal invokes for this version (for example, `function:my-worker:5`). See [Step 2.3](#publish-lambda-version).                                                                                  |
+| `--assume-role-arn`         | IAM role Temporal assumes to invoke the function. This is the `RoleARN` output from the CloudFormation stack in [Step 3](#configure-iam). This is not the Lambda execution role from [Step 2](#deploy-lambda-function) or your own IAM user/role. |
+| `--assume-role-external-id` | External ID configured in the IAM role trust policy.                                                                                                                                                                                              |
+
+:::note Migrate existing CLI commands
+
+The existing commands still work. To migrate scripts to the commands used in this guide, replace the command paths
+below. In AWS Lambda provider flags, drop the `aws-lambda-` prefix: for example, `--aws-lambda-function-arn` becomes
+`--function-arn`.
+
+All command paths below follow `temporal worker deployment`.
+
+| Existing | Replacement |
+| --- | --- |
+| `create-version --aws-lambda-*` | `version compute-config aws-lambda create` |
+| `update-version-compute-config --aws-lambda-*` | `version compute-config aws-lambda update` |
+| `update-version-compute-config --remove` | `version compute-config remove --scaling-group default` |
+| `describe-version` | `version describe` |
+| `delete-version` | `version delete` |
+
+When updating the Lambda provider, pass `--function-arn`, `--assume-role-arn`, and `--assume-role-external-id`
+together. Changing the provider also resets scaler settings; pass any custom scaler settings again to retain them.
+
+:::
 
 </TabItem>
 </Tabs>
