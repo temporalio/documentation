@@ -74,8 +74,9 @@ that each fail the Workflow uncaught). So after reconstructing the project, the 
 Four checks run, all on by default:
 
 - **`unused_imports`** — an imported name the file never references. Handles `import a.b` / `as` aliases / `from m import
-  x`, treats `__all__` entries as used, and skips `from __future__` and star-imported files. Blind spot: a name used only
-  inside a *string* annotation reads as unused, so a purely type-checking import can be a false positive.
+  x`, treats `__all__` entries and names inside quoted annotations (`client: "Client"`, the usual use of an
+  `if TYPE_CHECKING:` import) as used, and skips `from __future__` and star-imported files. Blind spot: a name used only
+  in a string outside an annotation, such as `typing.cast("Client", x)`, reads as unused.
 - **`unhandled_failures`** — two Temporal-specific smells: a `workflow.wait_condition(..., timeout=...)` with no enclosing
   `try`/`except` for `asyncio.TimeoutError`, and an `execute_activity*` call with no surrounding `try`/`except` when the
   file builds a `RetryPolicy(maximum_attempts=...)` (a bounded policy is what makes an exhausted retry terminal). The list

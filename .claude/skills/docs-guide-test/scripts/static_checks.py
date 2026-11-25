@@ -116,14 +116,51 @@ def _dunder_all(tree: ast.Module) -> set[str]:
 # --------------------------------------------------------------------------- #
 # check: unused imports
 # --------------------------------------------------------------------------- #
+def _annotation_nodes(tree: ast.Module) -> list[ast.expr]:
+    """Every annotation expression in the file: arguments, returns, and annotated assignments."""
+    nodes: list[ast.expr] = []
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            a = node.args
+            for arg in [*a.posonlyargs, *a.args, *a.kwonlyargs, a.vararg, a.kwarg]:
+                if arg is not None and arg.annotation is not None:
+                    nodes.append(arg.annotation)
+            if node.returns is not None:
+                nodes.append(node.returns)
+        elif isinstance(node, ast.AnnAssign):
+            nodes.append(node.annotation)
+    return nodes
+
+
+def _string_annotation_names(tree: ast.Module) -> set[str]:
+    """Names referenced inside quoted annotations, such as `client: "Client"` or `list["Client"]`.
+
+    A forward reference is a string, so `ast` sees a constant rather than a name. This is
+    the usual way to use an import guarded by `if TYPE_CHECKING:`. Each string is parsed
+    as an expression and its names collected; a string that doesn't parse is ignored.
+    """
+    names: set[str] = set()
+    for annotation in _annotation_nodes(tree):
+        for node in ast.walk(annotation):
+            if isinstance(node, ast.Constant) and isinstance(node.value, str):
+                try:
+                    parsed = ast.parse(node.value.strip(), mode="eval")
+                except SyntaxError:
+                    continue
+                names |= {n.id for n in ast.walk(parsed) if isinstance(n, ast.Name)}
+    return names
+
+
 def check_unused_imports(filename: str, tree: ast.Module) -> list[dict]:
     """Flag imports whose bound name is never referenced in the file.
 
     Handles the common cases: `import a.b` binds `a`; `import a.b as c` binds `c`;
-    `from m import x as y` binds `y`; names in `__all__` count as used. A star
-    import (`from m import *`) makes tracking impossible, so the file is skipped.
-    Known blind spot: a name used only inside a string annotation is not seen as
-    used, so a purely type-checking import can be a false positive.
+    `from m import x as y` binds `y`; names in `__all__` count as used. A name used
+    only in a quoted annotation (`client: "Client"`, the usual way to use an import
+    guarded by `if TYPE_CHECKING:`) counts as used. A star import (`from m import *`)
+    makes tracking impossible, so the file is skipped. Known blind spot: a name used
+    only in a string outside an annotation, such as `typing.cast("Client", x)`, is
+    not seen as used.
     """
     imported: dict[str, tuple[int, str]] = {}  # bound name -> (lineno, display)
     for node in ast.walk(tree):
@@ -143,6 +180,7 @@ def check_unused_imports(filename: str, tree: ast.Module) -> list[dict]:
 
     used: set[str] = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
     used |= _dunder_all(tree)
+    used |= _string_annotation_names(tree)
 
     findings = []
     for bound, (lineno, display) in sorted(imported.items(), key=lambda kv: kv[1][0]):
