@@ -14,8 +14,7 @@ tags:
 import { CaptionedImage } from '@site/src/components';
 
 When a Task Queue needs more Worker capacity, Temporal invokes a deployed Modal function. Each invocation starts a
-Worker that polls for Tasks and shuts down before the function times out. Modal can reuse the container for a later
-invocation.
+Worker that polls for Tasks and shuts down before the function times out.
 
 For setup, see [Deploy a Serverless Worker on Modal](/production-deployment/worker-deployments/serverless-workers/modal).
 For Python configuration and defaults, see [Serverless Workers on Modal with Python](/develop/python/workers/serverless-workers/modal).
@@ -33,7 +32,7 @@ can also trigger an invocation when backlog exceeds the configured threshold. Ea
 invocation.
 
 Modal can serve the invocation in an available container or start a new one. For warm capacity and container limits,
-see [Container reuse and capacity](#instance-model). Set Temporal's scaling thresholds with the
+see [Container capacity](#instance-model). Set Temporal's scaling thresholds with the
 [Modal compute-config commands](/cli/command-reference/worker#modal-function).
 
 #### Scale-up pauses for rate-limited Task Queues {/* #rate-limited-task-queues */}
@@ -49,10 +48,7 @@ Worker shutdown and Modal's idle container policy determine when capacity goes a
 its execution deadline, even if the Task Queue is empty. When the invocation exits, Modal can keep the container ready
 for a later invocation or remove it.
 
-### Container reuse and capacity {/* #instance-model */}
-
-Each invocation creates a fresh Client and Worker. A Worker can process Tasks from multiple Workflow Executions during
-one invocation. If Modal reuses the container, the next invocation initializes a new Worker.
+### Container capacity {/* #instance-model */}
 
 Configure container capacity on the Modal function:
 
@@ -97,9 +93,12 @@ For setup, see [Record the app version](/production-deployment/worker-deployment
 
 ## Lifecycle {/* #lifecycle */}
 
-Each Modal Worker invocation has three phases:
+Modal can reuse a container across invocations. Each invocation creates a fresh Client and Worker, and the Worker can
+process Tasks from multiple Workflow Executions during that invocation.
 
-- **Init.** The integration creates a Client and Worker and connects to Temporal.
+The Worker goes through three phases:
+
+- **Init.** The integration initializes the Worker and connects to Temporal.
 - **Work.** The Worker polls the Task Queue and processes Tasks.
 - **Shutdown.** The Worker stops polling, gives in-flight Activities time to finish, and runs shutdown hooks.
 
