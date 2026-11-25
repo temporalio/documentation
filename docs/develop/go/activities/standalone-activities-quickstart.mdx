@@ -26,7 +26,8 @@ differs.
 :::note
 
 This documentation uses source code from the
-[standalone-activity/helloworld](https://github.com/temporalio/samples-go/tree/main/standalone-activity/helloworld).
+[go-sandbox/activities/standalone](https://github.com/temporalio/documentation-sdk-code-examples/tree/main/go-sandbox/activities/standalone)
+sample.
 
 :::
 
@@ -50,7 +51,7 @@ This documentation uses source code from the
 
 Prerequisites:
 
-- **[Go](https://go.dev/dl/)** 1.24+
+- **[Go](https://go.dev/dl/)** 1.26+, the version the sample's `go.mod` requires
 
 - **[Temporal Go SDK](/develop/go/set-up-your-local-go#install-the-temporal-go-sdk)** (v1.49.0 or higher)
 
@@ -70,17 +71,19 @@ Temporal Web UI should now be accessible at [http://localhost:8233](http://local
 
 ## Clone the sample
 
-Clone the [samples-go](https://github.com/temporalio/samples-go) repository to follow along:
+Clone the [documentation-sdk-code-examples](https://github.com/temporalio/documentation-sdk-code-examples) repository
+and switch to the `go-sandbox` directory to follow along.
+Run every command on this page from that directory.
+
+```bash
+git clone https://github.com/temporalio/documentation-sdk-code-examples.git
+cd documentation-sdk-code-examples/go-sandbox
+```
+
+The sample is structured as follows:
 
 ```
-git clone https://github.com/temporalio/samples-go.git
-cd samples-go
-```
-
-The sample project is structured as follows:
-
-```
-standalone-activity/helloworld/
+activities/standalone/
 ├── activity.go
 ├── worker/
 │   └── main.go
@@ -90,44 +93,57 @@ standalone-activity/helloworld/
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="go" title="activity.go">
-{`package helloworld
+<SetupStep>
+
+<CodeSnippet title="activity.go">
+
+<!--SNIPSTART go-standalone-activity-quickstart-activity-->
+[go-sandbox/activities/standalone/activity.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/activity.go)
+```go
+package standalone
 
 import (
 	"context"
-	"go.temporal.io/sdk/activity"
+	"fmt"
+)
+
+const (
+	TaskQueue  = "standalone-activity-helloworld"
+	ActivityID = "standalone_activity_helloworld_ActivityID"
 )
 
 func Activity(ctx context.Context, name string) (string, error) {
-	logger := activity.GetLogger(ctx)
-	logger.Info("Activity", "name", name)
-	return "Hello " + name + "!", nil
-}`}
+	return fmt.Sprintf("Hello %s!", name), nil
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
-</>
-}>
 
 ## Define your Activity {/* #define-activity */}
 
-Define your Activity in a shared file so that both the Worker and starter can reference it.
-
-[standalone-activity/helloworld/activity.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/activity.go)
+Define your Activity in a shared package so that both the Worker and the starter can reference it.
+The package also holds the Task Queue name and Activity ID that the Worker and the starter use.
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="go" title="worker/main.go">
-{`package main
+<SetupStep>
+
+<CodeSnippet title="worker/main.go">
+
+<!--SNIPSTART go-standalone-activity-quickstart-worker-->
+[go-sandbox/activities/standalone/worker/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/worker/main.go)
+```go
+package main
 
 import (
-	"github.com/temporalio/samples-go/standalone-activity/helloworld"
+	"log"
+
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/contrib/envconfig"
 	"go.temporal.io/sdk/worker"
-	"log"
+
+	"my-org/quickstart/activities/standalone"
 )
 
 func main() {
@@ -137,21 +153,22 @@ func main() {
 	}
 	defer c.Close()
 
-	w := worker.New(c, "standalone-activity-helloworld", worker.Options{})
+	// Registering a Standalone Activity is the same as registering any other Activity.
+	w := worker.New(c, standalone.TaskQueue, worker.Options{})
+	w.RegisterActivity(standalone.Activity)
 
-	w.RegisterActivity(helloworld.Activity)
-
-	err = w.Run(worker.InterruptCh())
-	if err != nil {
-		log.Fatalln("Unable to start worker", err)
+	if err := w.Run(worker.InterruptCh()); err != nil {
+		log.Fatalln("Unable to start Worker", err)
 	}
-}`}
+}
+```
+<!--SNIPEND-->
+
 </CodeSnippet>
+
 <CodeSnippet language="bash">
-{`go run standalone-activity/helloworld/worker/main.go`}
+{`go run ./activities/standalone/worker`}
 </CodeSnippet>
-</>
-}>
 
 ## Run a Worker with the Activity registered {/* #run-worker */}
 
@@ -162,93 +179,62 @@ from a Workflow or as a Standalone Activity.
 See [Develop a Worker in Go](/develop/go/workers/run-worker-process#develop-worker) for more details on Worker setup and
 configuration options.
 
-[standalone-activity/helloworld/worker/main.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/worker/main.go)
-
-Open a new terminal, navigate to the `samples-go` directory, and run the Worker.
-Leave this terminal running - the Worker needs to stay up to process activities.
+Open a new terminal, switch to the `go-sandbox` directory, and run the Worker.
+Leave this terminal running - the Worker needs to stay up to process Activities.
 
 </SetupStep>
 
-<SetupStep code={
-<>
-<CodeSnippet language="go" title="starter/main.go">
-{`package main
+<SetupStep>
 
-import (
-	"context"
-	"github.com/temporalio/samples-go/standalone-activity/helloworld"
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/envconfig"
-	"log"
-	"time"
-)
+<CodeSnippet title="starter/main.go">
 
-func main() {
-	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
-	if err != nil {
-		log.Fatalln("Unable to create client", err)
-	}
-	defer c.Close()
+<!--SNIPSTART go-standalone-activity-quickstart-execute-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
+```go
+options := client.StartActivityOptions{
+	ID:                  standalone.ActivityID,
+	TaskQueue:           standalone.TaskQueue,
+	StartToCloseTimeout: 10 * time.Second,
+}
 
-	activityOptions := client.StartActivityOptions{
-		ID:                     "standalone_activity_helloworld_ActivityID",
-		TaskQueue:              "standalone-activity-helloworld",
-		ScheduleToCloseTimeout: 10 * time.Second,
-	}
+handle, err := c.ExecuteActivity(context.Background(), options, standalone.Activity, "Temporal")
+if err != nil {
+	log.Fatalln("Unable to execute activity", err)
+}
+log.Println("Started Standalone Activity", "ActivityID", handle.GetID(), "RunID", handle.GetRunID())
+```
+<!--SNIPEND-->
 
-	handle, err := c.ExecuteActivity(context.Background(), activityOptions, helloworld.Activity, "Temporal")
-	if err != nil {
-		log.Fatalln("Unable to execute activity", err)
-	}
-
-	log.Println("Started standalone activity", "ActivityID", handle.GetID(), "RunID", handle.GetRunID())
-
-	var result string
-	err = handle.Get(context.Background(), &result)
-	if err != nil {
-		log.Fatalln("Unable get standalone activity result", err)
-	}
-	log.Println("Activity result:", result)
-
-	resp, err := c.ListActivities(context.Background(), client.ListActivitiesOptions{
-		Query: "TaskQueue = 'standalone-activity-helloworld'",
-	})
-	if err != nil {
-		log.Fatalln("Unable to list activities", err)
-	}
-
-	log.Println("ListActivity results")
-	for info, err := range resp.Results {
-		if err != nil {
-			log.Fatalln("Error iterating activities", err)
-		}
-		log.Printf("\tActivityID: %s, Type: %s, Status: %v\n",
-			info.ActivityID, info.ActivityType, info.Status)
-	}
-
-	resp1, err := c.CountActivities(context.Background(), client.CountActivitiesOptions{
-		Query: "TaskQueue = 'standalone-activity-helloworld'",
-	})
-	if err != nil {
-		log.Fatalln("Unable to count activities", err)
-	}
-
-	log.Println("Total activities:", resp1.Count)
-}`}
 </CodeSnippet>
+
+<CodeSnippet title="starter/main.go">
+
+<!--SNIPSTART go-standalone-activity-get-result-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
+```go
+var result string
+err = handle.Get(context.Background(), &result)
+if err != nil {
+	log.Fatalln("Activity failed", err)
+}
+log.Println("Activity result:", result)
+```
+<!--SNIPEND-->
+
+</CodeSnippet>
+
 <CodeSnippet language="bash">
-{`go run standalone-activity/helloworld/starter/main.go`}
+{`go run ./activities/standalone/starter`}
 </CodeSnippet>
+
 <CodeSnippet language="bash">
 {`temporal activity execute \\
   --type Activity \\
   --activity-id standalone_activity_helloworld_ActivityID \\
   --task-queue standalone-activity-helloworld \\
-  --schedule-to-close-timeout 10s \\
+  --start-to-close-timeout 10s \\
   --input '"Temporal"'`}
 </CodeSnippet>
-</>
-}>
 
 ## Execute a Standalone Activity {/* #execute-activity */}
 
@@ -257,20 +243,7 @@ Execution. This is called from application code (for example, a starter program)
 
 `ExecuteActivity` returns an [`ActivityHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#ActivityHandle) that you
 can use to get the result, describe, cancel, or terminate the Activity.
-
-The following starter program executes a Standalone Activity, gets its result, lists activities, and counts
-activities:
-
-Create [standalone-activity/helloworld/starter/main.go](https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/starter/main.go).
-
-You can pass the Activity as either a function reference or a string Activity type name:
-
-```go
-handle, err := c.ExecuteActivity(ctx, options, helloworld.Activity, "arg1")
-
-// Using a string type name
-handle, err := c.ExecuteActivity(ctx, options, "Activity", "arg1")
-```
+The starter calls `handle.Get()` to wait for the Activity to finish and read its result.
 
 `client.StartActivityOptions` requires `ID`, `TaskQueue`, and at least one of `ScheduleToCloseTimeout` or
 `StartToCloseTimeout`. See [`StartActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartActivityOptions)
@@ -280,12 +253,112 @@ To run the starter:
 
 1. Make sure the Temporal Server is running (from the [Get Started](#get-started) step above).
 2. Make sure the Worker is running (from the [Run a Worker](#run-worker) step above).
-3. Open a new terminal, navigate to the `samples-go` directory, and run:
+3. Open a new terminal, switch to the `go-sandbox` directory, and run:
     ```
-    go run standalone-activity/helloworld/starter/main.go
+    go run ./activities/standalone/starter
     ```
 
+The last line of output shows the result:
+
+```
+Activity result: Hello Temporal!
+```
+
 Or use the Temporal CLI to execute a Standalone Activity.
+
+</SetupStep>
+
+<SetupStep>
+
+<CodeSnippet title="starter/main.go">
+
+<!--SNIPSTART go-standalone-activity-quickstart-execute-by-name-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
+```go
+handle, err := c.ExecuteActivity(context.Background(), options, "Activity", "Temporal")
+```
+<!--SNIPEND-->
+
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+{`go run ./activities/standalone/starter -command start-by-name`}
+</CodeSnippet>
+
+## Execute a Standalone Activity by type name {/* #execute-activity-by-name */}
+
+You can pass the Activity to `ExecuteActivity` as a function reference, as in the previous step, or as a string
+Activity type name.
+Use the type name when the code that starts the Activity can't import the Activity function, for example when the
+Activity is written in another language.
+
+The type name of a Go Activity registered with `RegisterActivity` is the function name, `Activity` in this sample.
+
+</SetupStep>
+
+<SetupStep>
+
+<CodeSnippet title="starter/main.go">
+
+<!--SNIPSTART go-standalone-activity-list-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
+```go
+resp, err := c.ListActivities(context.Background(), client.ListActivitiesOptions{
+	Query: "TaskQueue = 'standalone-activity-helloworld'",
+})
+if err != nil {
+	log.Fatalln("Unable to list activities", err)
+}
+
+for info, err := range resp.Results {
+	if err != nil {
+		log.Fatalln("Error iterating activities", err)
+	}
+	log.Printf("ActivityID: %s, Type: %s, Status: %v\n",
+		info.ActivityID, info.ActivityType, info.Status)
+}
+```
+<!--SNIPEND-->
+
+</CodeSnippet>
+
+<CodeSnippet title="starter/main.go">
+
+<!--SNIPSTART go-standalone-activity-count-->
+[go-sandbox/activities/standalone/starter/main.go](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/go-sandbox/activities/standalone/starter/main.go)
+```go
+resp, err := c.CountActivities(context.Background(), client.CountActivitiesOptions{
+	Query: "TaskQueue = 'standalone-activity-helloworld'",
+})
+if err != nil {
+	log.Fatalln("Unable to count activities", err)
+}
+
+log.Println("Total activities:", resp.Count)
+```
+<!--SNIPEND-->
+
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+{`go run ./activities/standalone/starter -command list`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+{`go run ./activities/standalone/starter -command count`}
+</CodeSnippet>
+
+## List and count Standalone Activities {/* #list-activities */}
+
+Use [`client.ListActivities()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) and
+[`client.CountActivities()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to find and count the Standalone
+Activity Executions that match a [List Filter](/list-filter) query.
+These APIs return only Standalone Activity Executions. Activities running inside Workflows are not included.
+
+Run the starter with `-command list` to list the Activities on the sample's Task Queue, and with `-command count` to
+count them.
+See [List Standalone Activities](/develop/go/activities/standalone-activities#list-activities) in the feature guide for
+more about the query syntax.
 
 </SetupStep>
 

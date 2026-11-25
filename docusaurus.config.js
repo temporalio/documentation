@@ -5,6 +5,7 @@ const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 const mermaidTheme = require('./src/constants/mermaidTheme');
 const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/constants/preloadFonts');
+const { createDocsVcs } = require('./plugins/shared/lastModified');
 
 // Google Consent Mode bootstrap. Injected as a synchronous inline <head> script
 // (below) so it registers the denied consent default before the GTM container
@@ -281,9 +282,11 @@ module.exports = async function createConfigAsync() {
              */
             showLastUpdateAuthor: false,
             /**
-             * Whether to display the last date the doc was updated.
+             * Computes each page's lastUpdatedAt (from future.experimental_vcs)
+             * for the JSON-LD dateModified. It isn't displayed:
+             * src/theme/EditMetaRow leaves out the visible line.
              */
-            showLastUpdateTime: false,
+            showLastUpdateTime: true,
             /**
              * Skip the next release docs when versioning is enabled.
              * This will not generate HTML files in the production build for documents
@@ -317,12 +320,15 @@ module.exports = async function createConfigAsync() {
           // },
           // Will be passed to @docusaurus/plugin-content-sitemap
           sitemap: {
-            // Per v2.0.0-alpha.72 cacheTime is now deprecated
-            //cacheTime: 600 * 1000, // 600 sec - cache purge period
-            changefreq: 'daily',
-            priority: 0.5,
+            // lastmod comes from future.experimental_vcs below: the last commit
+            // that changed a page's body by 20+ words, not its last commit.
+            // Google ignores changefreq and priority, and identical values on
+            // every URL tell other crawlers nothing, so they're omitted.
+            lastmod: 'date',
+            changefreq: null,
+            priority: null,
             filename: 'sitemap.xml',
-            ignorePatterns: ['/getting-started', '/changelog', '/blog', '/blog/**'],
+            ignorePatterns: ['/getting-started', '/changelog', '/blog', '/blog/**', '/search'],
           },
         },
       ],
@@ -550,6 +556,10 @@ module.exports = async function createConfigAsync() {
     themes: ['@docusaurus/theme-mermaid'],
     future: {
       v4: true,
+      // Significant-change dates for docs/ pages; see plugins/shared/lastModified.js.
+      // Feeds the sitemap's <lastmod>, the JSON-LD dateModified, and the .md
+      // "Last updated" line. Needs full git history: VERCEL_DEEP_CLONE=true on Vercel.
+      experimental_vcs: createDocsVcs({ siteDir: __dirname }),
       // `faster: true` turns on every Faster flag (SWC loader/minifier,
       // lightningcss, rspack, mdxCrossCompilerCache, worker threads, eager
       // VCS) at once. rspackPersistentCache is carved out and forced off:

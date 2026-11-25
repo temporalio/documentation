@@ -298,6 +298,47 @@ leave it as bare text. Markdown renderers that autolink URLs end the link at the
 bare `/api/feedback?title=<summary>&...` becomes a link to `/api/feedback?title=`, and crawlers that
 follow it get a 400 for the empty `title`.
 
+## Last updated dates
+
+Each docs page has one last-updated date, published in three places:
+
+| Channel | Where it lives |
+| --- | --- |
+| `<lastmod>` in `/sitemap.xml` | sitemap options in `docusaurus.config.js` |
+| `dateModified` in the page's `WebPage` JSON-LD | `src/theme/DocItem/StructuredData` |
+| `> Last updated: YYYY-MM-DD.` leading the `.md` blockquote | `withAgentDirective()` in the `markdown-pages` plugin |
+
+HTML pages don't show the date. All three read `future.experimental_vcs`, which
+`plugins/shared/lastModified.js` sets up for `docs/`, so they can't disagree.
+
+The date is the page's last **significant** change, not its last commit. Search engines stop
+trusting `lastmod` when it moves without a real content change, and bulk frontmatter edits
+(`keywords`, `section_title`, `sidebar_label`, `description`) would otherwise make every page look
+modified within the last few months.
+
+- Only the page body counts. Frontmatter edits never move the date.
+- Only words count: letters and digits. Punctuation, Markdown formatting, whitespace, and reflowed
+  lines count as zero.
+- A commit moves the date when the body is at least `SIGNIFICANT_WORDS` (20) words added plus
+  removed away from the version at the current date. Small edits accumulate: a typo fix doesn't
+  move it, but several small edits to the same page eventually do.
+- History follows renames, and dates are when a change landed on `main` (first-parent history).
+
+**Mechanical sweeps.** When a sweep is large enough to pass the threshold but changes no meaning,
+such as a site-wide rename or a reorganization that only moves text, add its commit SHA to
+`.lastmod-ignore-revs` with a comment. Those commits never set a date. Their text becomes the
+new baseline, so later edits aren't credited with the sweep's changes.
+
+**Git history.** The computation needs full history. Vercel clones shallow by default, so the
+project sets `VERCEL_DEEP_CLONE=true`. The build log shows
+`[lastmod] is-shallow-repository: false, N commits; dated N docs/ files in Ns`. In a shallow
+clone (for example, GitHub Actions with the default `fetch-depth: 1`), it logs a warning and
+omits the dates instead of reporting the shallow boundary's date for every page. `yarn start`
+uses Docusaurus's placeholder dates and skips the computation.
+
+The `Last updated` line was added to the `.md` blockquote on 2026-11-20. The endpoint copy
+below it didn't change.
+
 ## Page actions (the buttons)
 
 `src/components/LLMActions/LLMActions.tsx` renders the on-page action group — a **Copy**

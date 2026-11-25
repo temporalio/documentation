@@ -19,6 +19,7 @@ repository.
 | Recommendations endpoint (`/api/recommend`) | [RECOMMEND.md](./readme/RECOMMEND.md)                 |
 | Feedback endpoint (`/api/feedback`) | [FEEDBACK.md](./readme/FEEDBACK.md)                           |
 | 404 suggested pages          | [NOT-FOUND-SUGGESTIONS.md](./readme/NOT-FOUND-SUGGESTIONS.md)        |
+| Amplitude events and click tracking | [ANALYTICS.md](./readme/ANALYTICS.md)                        |
 
 ## Repository overview
 
