@@ -92,21 +92,6 @@ a Worker to run.
 - **AgentCore Runtime** can suit longer Activity attempts in an existing AgentCore application. Both the maximum
   lifetime and the idle timeout can end the session. Polling Temporal does not reset the AgentCore idle timeout.
 
-### Decide how much capacity to keep ready
-
-Consider who waits for the first Task after a quiet period. A nightly import can usually wait for compute to start.
-A customer waiting for a result may need a Worker already polling.
-
-- **Intermittent work that can wait.** Use on-demand Workers or set the Cloud Run pool minimum to zero. Lambda fits
-  sporadic AWS work that finishes within an invocation. Modal fits intermittent GPU work where you can let the
-  containers scale down between batches.
-- **Steady traffic or a tight pickup target.** If you run on GCP, keep a minimum number of Cloud Run Workers polling.
-  You pay for those instances during quiet periods to keep Workers ready to pick up Tasks. A warm Modal container
-  can shorten container startup. Each invocation still starts and connects a new Worker.
-- **A steady baseline with occasional spikes in AWS.** If a fixed-size Worker fleet handles normal traffic, use
-  [Lambda Workers on the same Task Queue](/serverless-workers/aws-lambda#sharing-a-task-queue) for the excess. This
-  lets you size the standing fleet for normal traffic and invoke additional Workers during bursts.
-
 ## Try it locally {/* #try-it-locally */}
 
 To evaluate Serverless Workers on AWS Lambda without an AWS account, you can run the entire loop on your machine with
