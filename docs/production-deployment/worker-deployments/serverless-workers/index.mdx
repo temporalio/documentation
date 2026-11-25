@@ -2,8 +2,8 @@
 id: index
 title: Serverless Workers
 description:
-  Deploy Temporal Workers on serverless compute providers. Temporal starts and stops your Workers in response to work on
-  a Task Queue.
+  Compare Serverless Worker compute providers and choose where to deploy based on your cloud, Task Queue traffic, and
+  Activity requirements.
 slug: /production-deployment/worker-deployments/serverless-workers
 toc_max_heading_level: 4
 tags:
@@ -21,14 +21,48 @@ import { ReleaseNoteHeader } from '@site/src/components';
   [sign up for updates](https://temporal.io/pages/serverless-workers-updates) or try AgentCore Runtime through self-hosting.
 </ReleaseNoteHeader>
 
-Serverless Workers let you run Temporal Workers on serverless compute. Deploy your Worker code to a serverless provider,
-configure a compute provider for the Worker Deployment Version, and Temporal starts and stops Workers in response to
-work on the Task Queue. There is no always-on Worker fleet to provision or scale.
+When a Task Queue needs more Worker capacity, Temporal starts Workers on the compute provider you configure for the
+Worker Deployment Version. The compute provider determines how the Workers start, how long they can run, and what
+resources they can use.
 
-Temporal monitors Task Queues that have a compute provider configured. When a Task arrives and no Worker is free to take
-it, the [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) starts compute. How it starts
-compute is where the providers differ. On AWS Lambda, AgentCore Runtime, and Modal, the WCI invokes compute in response to
-unmet Task Queue demand. On GCP Cloud Run, it resizes a Worker Pool of long-lived instances that poll continuously.
+## How the compute providers differ
+
+The [Worker Controller Instance (WCI)](/serverless-workers#how-invocation-works) monitors Task Queue demand. On AWS
+Lambda, Amazon Bedrock AgentCore Runtime, and Modal, it invokes compute to start a Worker. On GCP Cloud Run, it adjusts
+the size of a Worker Pool whose instances poll continuously while they run.
+
+| Compute provider | What you deploy | How the Worker runs |
+| --- | --- | --- |
+| [AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda) | A Lambda function with a Temporal Lambda Worker integration. | Each invocation runs a Worker that starts up, polls for Tasks, and shuts down within the function timeout. |
+| [GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run) | A container image with a standard Temporal Worker and a Worker Pool for each Worker Deployment Version and compute region. | Long-lived Workers poll as long as their instances are running. The pool can scale to zero if you set its minimum to zero. |
+| [Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore) | An AgentCore Runtime endpoint whose handler starts a Temporal Worker. | The Worker runs in the background. Your handler controls idle shutdown and drain, subject to the Runtime session's lifecycle limits. A microVM session can run for up to eight hours. |
+| [Modal](/production-deployment/worker-deployments/serverless-workers/modal) | A Python function in a Modal App, with its image and compute resources defined in Python. | Each invocation starts a fresh Worker with a configured timeout. Modal supplies container capacity and can reuse a container for later invocations. |
+
+## Choose a compute provider {/* #supported-providers */}
+
+### Start with the cloud your Activities use
+
+If most of the systems your Activities call already run in **GCP**, start with **Cloud Run**. For example, a Worker
+that reads from Cloud Storage and writes to a private Cloud SQL database can use your existing GCP identity and
+deployment tooling, and reach private resources through [Direct VPC egress](https://docs.cloud.google.com/run/docs/configuring/vpc-direct-vpc#direct-vpc-workerpool).
+Running the Worker in GCP can also avoid cross-cloud data transfers. You can deploy an existing containerized
+Temporal Worker to a Worker Pool without adding a function handler.
+
+If your dependencies are mainly in **AWS**, start with **Lambda** for short, intermittent work such as processing
+webhook events, updating DynamoDB, or running scheduled integrations. If the application already runs on **AgentCore
+Runtime**, deploy the Worker there to use the same runtime environment. Factor in the Runtime HTTP contract and the
+idle and shutdown behavior your handler must implement.
+
+Choose **Modal** for Python workloads that benefit from its GPU selection or image tooling, such as bursty batch
+inference or GPU-backed media processing. Check how the Worker will reach your data and private services from Modal,
+and confirm that your Temporal Cloud account can authorize the Modal workspace. If the data already lives in GCP,
+also check whether the [GPUs available for Cloud Run Worker Pools](https://docs.cloud.google.com/run/docs/configuring/workerpools/gpu)
+meet your needs.
+
+For any provider, check availability in your Namespace and compute region, and confirm that the Worker can reach
+both the Temporal Service and the services its Activities call. If you already have Worker code, check the SDK
+before choosing. Cloud Run runs standard Temporal Workers. The Lambda deployment guide covers Go, Python, TypeScript,
+Java, and .NET. The Modal integration uses Python, and the AgentCore guide shows a Python Runtime handler.
 
 :::caution Multi-cloud Replication for AWS and GCP compute
 
@@ -38,17 +72,41 @@ cloud provider prevents Temporal from starting new Workers on the original provi
 
 :::
 
-## Choose a compute provider {/* #supported-providers */}
+### Match the Worker lifetime to your Activities
 
-Choose based on how often Tasks arrive, how long Activities need to run, and what compute your Worker needs. An invocation
-timeout limits the lifetime of one Worker. A Workflow Execution can continue across multiple Worker invocations.
+A Workflow Execution can span many Worker lifetimes. Size the compute for the longest **Activity attempt** you expect
+a Worker to run, including the time needed to start the Worker and shut it down gracefully.
 
-| Compute provider | Choose it when | Trade-offs |
-| --- | --- | --- |
-| [AWS Lambda](/production-deployment/worker-deployments/serverless-workers/aws-lambda) | Tasks arrive in bursts or at intervals, and Activities are short. Examples include webhook processing and scheduled integrations in AWS. | Temporal invokes a function on demand, so you can run without a standing Worker fleet. The first Task may wait for a cold start, and startup, Activity processing, and shutdown must fit within the function timeout. |
-| [GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run) | You have a containerized Worker in GCP, steady Task Queue traffic, or Activities that need more time than a function invocation allows. | Long-lived Workers poll continuously, and the pool can scale to zero if its minimum is zero. Keeping instances polling an idle Task Queue adds compute cost. You deploy a pool for each Worker Deployment Version and compute region. |
-| [Amazon Bedrock AgentCore Runtime](/production-deployment/worker-deployments/serverless-workers/agentcore) | Your Python agent already runs on AgentCore, and you want its Temporal Worker to run there too. | An AgentCore microVM session can run for up to eight hours. Your entry point must implement AgentCore's HTTP contract, and the session lifetime bounds the Worker. |
-| [Modal](/production-deployment/worker-deployments/serverless-workers/modal) | Your Python Activities need GPUs, for example for batch inference or media processing. | Modal builds the container image from your Python definition and lets you configure compute resources and the function timeout. Worker startup depends on available container capacity. You need Pre-release access on Temporal Cloud and an authorized Modal workspace connection. |
+- **For short Activities**, Lambda and Modal can start Workers on demand. Leave room for initialization and draining
+  in the function timeout. An Activity that starts late in an invocation has less time before the Worker shuts down.
+- **For longer Activities**, a Cloud Run Worker Pool has no function invocation deadline. Scale-in can still interrupt
+  a running Activity. AgentCore can be a fit for longer AWS workloads that already use its Runtime. Account for both
+  the session's maximum lifetime and its idle timeout. Polling Temporal does not reset the AgentCore idle timeout.
+- **For expensive work that can resume**, use [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat)
+  to record progress and have the next attempt read the last checkpoint after a Worker shuts down.
+
+### Balance startup latency and cost
+
+For a queue that's idle for hours at a time, start with on-demand invocations or a Cloud Run pool that can scale to
+zero. The first Task after an idle period may wait for compute to start and the Worker to connect. For a GCP queue
+with steady traffic or a tight Task pickup target, keep a minimum number of Cloud Run instances polling. In Modal,
+keeping containers warm can reduce container startup time. Each invocation still starts and connects a new Worker.
+
+If an existing fixed-size AWS Worker fleet handles most traffic, you can add [Lambda Workers on the same Task
+Queue](/serverless-workers/aws-lambda#sharing-a-task-queue) to handle bursts.
+
+Estimate cost using the time Workers actually run. A Lambda invocation can keep polling after it finishes a Task,
+and Cloud Run charges for running pool instances even when they have no Tasks to process. Include the compute you
+keep warm, any GPU capacity you reserve, and data transfers between regions or providers.
+
+### Verify your choice under load
+
+Test with your actual Worker code and expected traffic.
+
+1. Start from idle and measure how long it takes for the first Task to start.
+2. Send a representative burst and check whether capacity arrives fast enough to drain the backlog. Check the
+   provider's concurrency or instance limits and GPU availability if your Worker needs an accelerator.
+3. Run a long Activity attempt and check how it behaves when compute scales in or reaches its runtime limit.
 
 ## Try it locally {/* #try-it-locally */}
 
