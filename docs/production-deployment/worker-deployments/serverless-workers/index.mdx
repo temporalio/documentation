@@ -72,7 +72,6 @@ cloud provider prevents Temporal from starting new Workers on the original provi
 Choose **Modal** for Python workloads that benefit from its GPU selection or Python-defined images, such as batch
 inference or GPU-backed media processing. If your data and deployment tooling are already in GCP, compare Modal's GPU
 options with the [GPUs available for Cloud Run Worker Pools](https://docs.cloud.google.com/run/docs/configuring/workerpools/gpu).
-Modal also requires an authorized workspace connection to the Temporal Cloud account.
 
 Your existing Worker code can narrow the choice. Cloud Run runs standard Temporal Workers. The Lambda deployment guide
 covers Go, Python, TypeScript, Java, and .NET. The Modal integration uses Python, and the AgentCore guide shows a Python
