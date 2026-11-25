@@ -116,10 +116,8 @@ package uses the [default configuration path](/develop/environment-configuration
 
 <LambdaWorkerSecretIds />
 
-For direct retrieval through the AWS SDK for Java, include `software.amazon.awssdk:secretsmanager` in the function's
-dependencies. If you use mTLS, supply a PKCS#8 client key. See the
-[`temporal-aws-lambda` README](https://github.com/temporalio/sdk-java/blob/main/contrib/temporal-aws-lambda/README.md#credentials-from-aws-secrets-manager)
-for mTLS settings.
+To retrieve secrets through the AWS SDK for Java, include `software.amazon.awssdk:secretsmanager` in the function's
+dependencies. For mTLS, store the client private key in PKCS#8 format.
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 
