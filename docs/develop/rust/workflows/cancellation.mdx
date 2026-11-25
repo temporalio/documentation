@@ -57,11 +57,13 @@ handle
 
 ### Cancel an Activity from a Workflow {/* #cancel-activity */}
 
-Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat
-Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. When any non-immediate
-Activity is executed, the Activity Execution should send Heartbeats and set a
-[Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) to ensure that the server knows it is
-still working.
+Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats. The Activity
+receives the cancellation request in the response to a Heartbeat, so an Activity that doesn't Heartbeat can't receive
+it. For any non-immediate Activity, also set a
+[Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) so the Temporal Service can detect a
+failed Worker. The Heartbeat Timeout also sets the
+[throttle interval](/encyclopedia/detecting-activity-failures#throttling), which affects how soon the Activity receives
+the cancellation.
 
 When an Activity is canceled, an error is returned in the Activity at the next available opportunity. If cleanup logic
 needs to be performed, it can be done when handling the cancellation error. However, for the Activity to appear canceled

@@ -149,7 +149,7 @@ func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourA
 ```
 <!--SNIPEND-->
 
-When an Activity Task Execution times out due to a missed Heartbeat, the last value of the `details` variable above is returned to the calling Workflow in the `details` field of `TimeoutError` with `TimeoutType` set to `Heartbeat`.
+When an Activity Task Execution times out due to a missed Heartbeat, the calling Workflow receives a `TimeoutError` with `TimeoutType` set to `Heartbeat`. Its `details` field holds the details from the last Heartbeat the Temporal Service recorded. If the Worker crashed before sending the latest value of `details`, they're from an earlier Heartbeat. See [Heartbeat details](/encyclopedia/detecting-activity-failures#heartbeat-details).
 
 You can also Heartbeat an Activity from an external source:
 
