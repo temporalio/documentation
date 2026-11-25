@@ -50,9 +50,14 @@ can simplify access to those systems, let you reuse your deployment tooling, and
 You can deploy an existing containerized Temporal Worker directly to a Worker Pool.
 
 If your dependencies are mainly in **AWS**, start with **Lambda** for short, intermittent work such as processing
-webhook events, updating DynamoDB, or running scheduled integrations. If the application already runs on **AgentCore
-Runtime**, deploy the Worker there to use the same runtime environment. Factor in the Runtime HTTP contract and the
-idle and shutdown behavior your handler must implement.
+webhook events or running scheduled integrations. Lambda is also a fit for an agent whose Activities make short calls
+to Amazon Bedrock for model inference.
+
+Choose **AgentCore Runtime** when you already deploy agents on AgentCore and want to manage the Worker through the same
+deployment and monitoring tooling. For example, an agent's Activities might use AgentCore to access managed tools or run
+code in a sandbox. A Worker can reuse initialized clients and caches across Tasks within its Runtime session. Adopting
+AgentCore for the Worker also means maintaining a Runtime handler and its shutdown behavior. See the
+[AgentCore and Lambda comparison](/serverless-workers/agentcore#choose-agentcore-or-lambda).
 
 Narrow your options to providers available in your Namespace and compute region. If a provider runs in a different
 cloud from your Activity dependencies, factor in network access and data transfer costs.
