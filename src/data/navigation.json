@@ -1,0 +1,214 @@
+{
+  "logo": {
+    "alt": "Temporal Logo",
+    "href": "https://temporal.io/",
+    "light": "https://temporal.io/images/logos/logo-temporal-with-copy.svg",
+    "dark": "https://temporal.io/images/logos/logo-temporal-with-copy-white-text.svg"
+  },
+  "items": [
+    {
+      "type": "group",
+      "id": "1rq371AgLqwEnh8eclWZ4z",
+      "label": "Platform",
+      "sections": [
+        {
+          "links": [
+            {
+              "id": "5d7x2oU3GnKl2PwRHfFMuR",
+              "label": "Overview",
+              "href": "https://temporal.io/product"
+            }
+          ]
+        },
+        {
+          "links": [
+            {
+              "id": "3MXMlddUcrW8nOsJCpEDUx",
+              "label": "How Temporal Works",
+              "href": "https://temporal.io/how-it-works"
+            }
+          ]
+        },
+        {
+          "links": [
+            {
+              "id": "2JeJYErsmcssv06hMrfwiF",
+              "label": "Temporal Cloud",
+              "href": "https://temporal.io/cloud"
+            }
+          ]
+        },
+        {
+          "links": [
+            {
+              "id": "4meokZHNYwid3e236uZKIJ",
+              "label": "Security",
+              "href": "https://temporal.io/security"
+            }
+          ]
+        }
+      ],
+      "ctas": []
+    },
+    {
+      "type": "link",
+      "id": "5GIUmSUc4tuKTWmFIx7iJb",
+      "label": "Docs",
+      "href": "https://docs.temporal.io"
+    },
+    {
+      "type": "link",
+      "id": "4mAmb12lsMPKYsVZhppKwL",
+      "label": "Pricing",
+      "href": "https://temporal.io/pricing"
+    },
+    {
+      "type": "group",
+      "id": "1e95s28bgM2FkcA50IHhyo",
+      "label": "Use Cases",
+      "sections": [
+        {
+          "links": [
+            {
+              "id": "5NHM0cToFOIOfWEKhILN5K",
+              "label": "Customer Stories",
+              "href": "https://temporal.io/in-use"
+            }
+          ]
+        },
+        {
+          "title": "By Industry",
+          "links": [
+            {
+              "id": "3TlMgadJMFwa4WE2jYMXjZ",
+              "label": "AI",
+              "href": "https://temporal.io/solutions/ai"
+            },
+            {
+              "id": "2aD760BTctiSuChV74SVwl",
+              "label": "Financial Services",
+              "href": "https://temporal.io/solutions/financial-services"
+            }
+          ]
+        },
+        {
+          "title": "By Audience",
+          "links": [
+            {
+              "id": "3H3pNmqq7jm9FQ6UK4100V",
+              "label": "Platform Engineering",
+              "href": "https://temporal.io/solutions/platform-engineering"
+            },
+            {
+              "id": "4xqwrRciKtVF6u7s1H09QE",
+              "label": "Startups",
+              "href": "https://temporal.io/startup"
+            },
+            {
+              "id": "22Jz9PiLUIpO3te9ZZm2mb",
+              "label": "Partners",
+              "href": "https://temporal.io/partners"
+            }
+          ]
+        }
+      ],
+      "ctas": []
+    },
+    {
+      "type": "group",
+      "id": "5MBgd98sk9VXlbqC9UhGJS",
+      "label": "Resources",
+      "sections": [
+        {
+          "links": [
+            {
+              "id": "2jjwhzfbZvR90Zd1ylRlgS",
+              "label": "Resource Library",
+              "href": "https://temporal.io/resources"
+            }
+          ]
+        },
+        {
+          "links": [
+            {
+              "id": "6AG3qtWngBbv7iyqhZfUZv",
+              "label": "Learn Temporal",
+              "href": "https://learn.temporal.io"
+            }
+          ]
+        },
+        {
+          "links": [
+            {
+              "id": "2ZOhNmQn108V8jKiPBQ1QD",
+              "label": "Community",
+              "href": "https://temporal.io/community"
+            }
+          ]
+        },
+        {
+          "links": [
+            {
+              "id": "4E03OqVVyu2407sYn3Cmb3",
+              "label": "Code Exchange",
+              "href": "https://temporal.io/code-exchange"
+            }
+          ]
+        },
+        {
+          "links": [
+            {
+              "id": "48YgmuEOMCfyNiOG6fKuIi",
+              "label": "Blog",
+              "href": "https://temporal.io/blog"
+            }
+          ]
+        },
+        {
+          "links": [
+            {
+              "id": "6D5newtErYVln01crlUkJ3",
+              "label": "Changelog",
+              "href": "https://temporal.io/changelog"
+            }
+          ]
+        }
+      ],
+      "ctas": []
+    }
+  ],
+  "ctas": [
+    {
+      "id": "79w1QMsJg2MTAVGlu2jdss",
+      "label": "Try Free",
+      "href": "https://temporal.io/get-cloud",
+      "variant": "primary",
+      "theme": "ultraviolet",
+      "size": "small"
+    },
+    {
+      "id": "KAPnScSjIJkz74RbczQ2F",
+      "label": "Log In",
+      "href": "https://cloud.temporal.io/",
+      "variant": "secondary",
+      "theme": "ultraviolet",
+      "size": "small"
+    }
+  ],
+  "tokens": {
+    "dark": {
+      "background": "#141414",
+      "text": "#ffffff99",
+      "textHover": "#fff",
+      "icon": "#f8fafc",
+      "iconHover": "#a5a9f5"
+    },
+    "light": {
+      "background": "#fff",
+      "text": "#14141499",
+      "textHover": "#141414",
+      "icon": "#14141499",
+      "iconHover": "#1d4ed8"
+    }
+  }
+}

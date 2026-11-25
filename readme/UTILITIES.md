@@ -2,6 +2,39 @@
 
 This file documents utilities meant to support repository health. These utilities are not meant for use by contributors.
 
+## sync-navigation
+
+`bin/sync-navigation.js` fetches `https://temporal.io/api/navigation` before a production build and saves the validated
+response to `src/data/navigation.json`. Commit the snapshot so offline builds have a fallback.
+Fetches time out after 10 seconds. Network failures, HTTP errors, and invalid responses produce a warning and leave
+the saved snapshot unchanged. If that snapshot is missing or invalid too, the build fails.
+Local write failures also fail the build.
+
+Run `yarn sync:navigation` to refresh the snapshot independently. A new production build fetches the latest navigation;
+there is no scheduled sync or browser-side fetch. The dev server uses the saved snapshot.
+
+`src/utils/navigation.js` adapts the shared logo, groups, section titles, links, and CTAs to the Docusaurus navbar.
+Top-level links come only from the API; docs does not append Courses, SDKs, or Durable AI.
+Search, the theme toggle, Ask AI, and the documentation sidebar keep their existing implementations.
+Desktop controls appear in visual and keyboard order as Search, theme, Ask AI, Try Free, and Log In.
+On a single-row desktop header, the top-level links are centered in the space between the logo and these controls.
+`src/theme/NavbarItem/UniversalGroup` renders shared submenus in both the desktop bar and mobile primary menu.
+The navbar consumes the API's light and dark color tokens; layout and interaction styling are local to docs.
+Local styles follow temporal.io's Aeonik navigation text, monospace labels, square gradient CTAs, and translucent
+dropdowns. Desktop submenus open on mouse hover or keyboard/click activation; mobile groups open on tap.
+The header uses two rows between 997px and 1439px to fit the shared menu and docs controls.
+Its height updates the Docusaurus layout variable so sticky sidebars and anchor offsets stay aligned.
+
+Follow-up considerations for the PoC:
+
+- Add upstream active-route metadata; docs currently identifies its own links by URL.
+- Consider an API extension slot if property-specific navigation is needed later; docs currently adds no local links.
+- Consider upstream spacing, typography, breakpoint, and interaction tokens to replace the locally maintained styles.
+- Version the API schema so incompatible contract changes can be handled explicitly.
+- Consider bundling logo assets locally; the current logo URLs load from temporal.io.
+
+Validate changes with `node --test bin/sync-navigation.test.js` and the navigation Playwright tests.
+
 ## check-orphan-pages
 
 [**Docusaurus**](https://docusaurus.io) serves all files, whether they are mentioned in sidebars.js or not.

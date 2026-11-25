@@ -5,6 +5,9 @@ const { prismDarkTheme, prismLightTheme } = require('./src/prismThemes');
 const { ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, ALGOLIA_INDEX_NAME } = require('./src/constants/algolia');
 const mermaidTheme = require('./src/constants/mermaidTheme');
 const { AEONIK_LIGHT_FILENAME, AEONIK_REGULAR_FILENAME } = require('./src/constants/preloadFonts');
+const { validateNavigation } = require('./bin/sync-navigation');
+const { createNavbar } = require('./src/utils/navigation');
+const navigation = validateNavigation(require('./src/data/navigation.json'));
 
 // Google Consent Mode bootstrap. Injected as a synchronous inline <head> script
 // (below) so it registers the denied consent default before the GTM container
@@ -97,61 +100,7 @@ module.exports = async function createConfigAsync() {
       //   textColor: "#ffffff",
       //   isCloseable: true,
       // },
-      navbar: {
-        hideOnScroll: false,
-        logo: {
-          alt: 'Temporal logo',
-          src: 'img/assets/temporal-logo-dark.svg',
-          srcDark: 'img/assets/temporal-logo.svg',
-          href: 'https://temporal.io',
-        },
-        items: [
-          {
-            label: 'Home',
-            to: '/',
-            position: 'left',
-            activeBasePath: 'none',
-          },
-          {
-            label: 'Courses',
-            href: 'https://learn.temporal.io/getting_started/',
-            right: 'left',
-          },
-          {
-            label: 'SDKs',
-            href: '/develop',
-            right: 'left',
-          },
-          {
-            label: 'Durable AI',
-            to: '/ai',
-            activeBasePath: 'ai',
-            position: 'left',
-          },
-          // hide this for now, making this a soft-launch
-          // {
-          //   label: 'Design Patterns',
-          //   to: '/design-patterns',
-          //   activeBasePath: 'design-patterns',
-          //   position: 'left',
-          // },
-          {
-            label: 'Code Exchange',
-            href: 'https://temporal.io/code-exchange',
-            position: 'left',
-          },
-          {
-            label: 'Temporal Cloud',
-            to: '/cloud',
-            activeBasePath: 'cloud',
-            position: 'left',
-          },
-          {
-            type: 'custom-askAI',
-            position: 'right',
-          },
-        ],
-      },
+      navbar: createNavbar(navigation),
       footer: {
         logo: {
           alt: 'Temporal logo',

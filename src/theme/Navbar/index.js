@@ -1,6 +1,30 @@
 import React from 'react';
-import Navbar from '@theme-original/Navbar';
+import NavbarLayout from '@theme/Navbar/Layout';
+import Head from '@docusaurus/Head';
+import navigation from '@site/src/data/navigation.json';
+import NavbarContent from './Content';
+import './styles.css';
 
-export default function NavbarWrapper(props) {
-  return <Navbar {...props} />;
+const tokenStyles = ['light', 'dark'].map((mode) => {
+  const tokens = navigation.tokens[mode];
+  return `
+  html[data-theme='${mode}'] .navbar {
+    --ifm-navbar-background-color: ${tokens.background};
+    --ifm-navbar-link-color: ${tokens.text};
+    --ifm-navbar-link-hover-color: ${tokens.textHover};
+    --universal-nav-icon: ${tokens.icon};
+    --universal-nav-icon-hover: ${tokens.iconHover};
+  }
+`;
+}).join('\n');
+
+export default function Navbar() {
+  return (
+    <>
+      <Head><style>{tokenStyles}</style></Head>
+      <NavbarLayout>
+        <NavbarContent />
+      </NavbarLayout>
+    </>
+  );
 } 
