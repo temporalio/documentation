@@ -1,8 +1,6 @@
 import React, { type ReactNode } from 'react';
-import clsx from 'clsx';
 import { useLocation } from '@docusaurus/router';
 import EditThisPage from '@theme/EditThisPage';
-import LastUpdated from '@theme/LastUpdated';
 import type { Props } from '@theme/EditMetaRow';
 import PageFeedback from '@site/src/components/PageFeedback/PageFeedback';
 import styles from './styles.module.css';
@@ -11,11 +9,13 @@ import styles from './styles.module.css';
 // the "View this page on GitHub" link share one row. Differences from upstream:
 // - The edit link renders inside PageFeedback's row instead of a half-width
 //   column, and the widget is added.
-// - The last-updated line moves under that row. The main docs instance sets
-//   showLastUpdateTime and showLastUpdateAuthor to false, so it doesn't show.
+// - No visible last-updated line. The main docs instance computes
+//   lastUpdatedAt (showLastUpdateTime) only for metadata: the sitemap and the
+//   JSON-LD dateModified in DocItem/StructuredData. See
+//   plugins/shared/lastModified.js. The AI Cookbook shows its own date.
 // DocItem/Footer renders this row only when a page has an editUrl or
 // last-updated data. Every docs page has an editUrl from docusaurus.config.js.
-export default function EditMetaRow({ className, editUrl, lastUpdatedAt, lastUpdatedBy }: Props): ReactNode {
+export default function EditMetaRow({ className, editUrl }: Props): ReactNode {
   const { pathname } = useLocation();
   return (
     <div className={className}>
@@ -25,11 +25,6 @@ export default function EditMetaRow({ className, editUrl, lastUpdatedAt, lastUpd
           {editUrl && <EditThisPage editUrl={editUrl} />}
         </PageFeedback>
       </div>
-      {(lastUpdatedAt || lastUpdatedBy) && (
-        <div className={clsx('margin-top--sm', styles.lastUpdated)}>
-          <LastUpdated lastUpdatedAt={lastUpdatedAt} lastUpdatedBy={lastUpdatedBy} />
-        </div>
-      )}
     </div>
   );
 }

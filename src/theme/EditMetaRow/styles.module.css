@@ -1,16 +1,5 @@
 /* Adapted from @docusaurus/theme-classic 3.10.2's EditMetaRow styles. */
 
-.lastUpdated {
-  font-size: smaller;
-  font-style: italic;
-}
-
-@media (min-width: 997px) {
-  .lastUpdated {
-    text-align: right;
-  }
-}
-
 @media print {
   .noPrint {
     display: none;
