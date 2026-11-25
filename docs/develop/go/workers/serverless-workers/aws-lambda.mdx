@@ -81,8 +81,14 @@ Compared with long-lived Workers, the location of the config file is resolved di
 
 The file is optional. If absent, only environment variables are used.
 
-For production deployments, see
-[Load credentials from AWS Secrets Manager](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
+### Configure secret IDs {/* #configure-secret-ids */}
+
+Use `lambdaworker` v0.2.0 or later. The package uses the AWS Parameters and Secrets Lambda Extension when it's
+available and the AWS SDK for Go otherwise. See the
+[`lambdaworker` README](https://github.com/temporalio/sdk-go/blob/contrib/aws/lambdaworker/v0.2.0/contrib/aws/lambdaworker/README.md#credentials-from-aws-secrets-manager)
+for API key and mTLS settings in environment variables and TOML.
+
+Grant the Lambda execution role [permission to read the secrets](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 

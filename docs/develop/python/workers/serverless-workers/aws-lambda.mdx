@@ -102,8 +102,14 @@ Compared with long-lived Workers, the location of the config file is resolved di
 
 The file is optional. If absent, only environment variables are used.
 
-For production deployments, see
-[Load credentials from AWS Secrets Manager](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
+### Configure secret IDs {/* #configure-secret-ids */}
+
+For direct retrieval with boto3, install `temporalio[boto3]` when packaging the Lambda function. If you add client
+plugins in the configure callback, preserve the plugins already in `client_connect_config["plugins"]`.
+See the [`lambda_worker` README](https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/aws/lambda_worker/README.md#credentials-from-aws-secrets-manager)
+for the secret ID settings.
+
+Grant the Lambda execution role [permission to read the secrets](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 

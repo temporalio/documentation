@@ -513,34 +513,19 @@ See [Step 2.3](#publish-lambda-version) for details.
 
 #### Load credentials from AWS Secrets Manager {/* #use-aws-secrets-manager */}
 
-When you configure an API key secret ID, the Lambda Worker fetches the key from AWS Secrets Manager at startup. Use a
-Lambda Worker package version that supports Secrets Manager. Follow its README for required dependencies, mTLS
-credentials, TOML configuration, and the optional AWS Parameters and Secrets Lambda Extension.
+The Lambda Worker fetches Temporal credentials from AWS Secrets Manager at startup using the secret names or ARNs you
+configure. For an API key, set `TEMPORAL_EXT_AWS_SECRETS_MANAGER_API_KEY_ID` and remove any direct key from
+`TEMPORAL_API_KEY` or your TOML profile's `api_key` field.
 
-| SDK | Package README |
-| --- | --- |
-| Go | [`lambdaworker`](https://github.com/temporalio/sdk-go/blob/contrib/aws/lambdaworker/v0.2.0/contrib/aws/lambdaworker/README.md#credentials-from-aws-secrets-manager) v0.2.0 or later |
-| Java | [`temporal-aws-lambda`](https://github.com/temporalio/sdk-java/blob/main/contrib/temporal-aws-lambda/README.md#credentials-from-aws-secrets-manager) |
-| Python | [`lambda_worker`](https://github.com/temporalio/sdk-python/blob/main/temporalio/contrib/aws/lambda_worker/README.md#credentials-from-aws-secrets-manager) |
-| TypeScript | [`@temporalio/lambda-worker`](https://github.com/temporalio/sdk-typescript/blob/v1.27.0/packages/lambda-worker/README.md#credentials-from-aws-secrets-manager) v1.27.0 or later |
-| .NET | [`Temporalio.Extensions.Aws.Lambda`](https://github.com/temporalio/sdk-dotnet/blob/main/src/Temporalio.Extensions.Aws.Lambda/README.md#credentials-from-aws-secrets-manager) |
+Grant the **Lambda execution role** `secretsmanager:GetSecretValue` on the configured secrets. When a secret uses a
+customer-managed KMS key, also grant `kms:Decrypt` on that key. See
+[AWS Secrets Manager permissions](https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html).
 
-1. Create a secret in AWS Secrets Manager and store the Temporal API key as a plain string.
-2. Grant the Lambda execution role `secretsmanager:GetSecretValue` on the secret. If you encrypt the secret with a
-   customer-managed KMS key, grant the execution role `kms:Decrypt` on that key. See
-   [AWS Secrets Manager permissions](https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html).
-3. In the `Variables` object in the deployment command's `--environment` argument, replace `TEMPORAL_API_KEY` with
-   `TEMPORAL_EXT_AWS_SECRETS_MANAGER_API_KEY_ID`. Set it to the secret name or full ARN and keep the other variables
-   from your SDK's deployment example.
-
-   ```json
-   {
-     "TEMPORAL_EXT_AWS_SECRETS_MANAGER_API_KEY_ID": "my-temporal-api-key"
-   }
-   ```
-
-   If your function uses a `temporal.toml` profile, remove its direct `api_key` setting. The Worker fails to start
-   when you configure both a direct API key and a secret ID.
+For SDK configuration, see [Go](/develop/go/workers/serverless-workers/aws-lambda#configure-secret-ids),
+[Java](/develop/java/workers/serverless-workers/aws-lambda#configure-secret-ids),
+[Python](/develop/python/workers/serverless-workers/aws-lambda#configure-secret-ids),
+[TypeScript](/develop/typescript/workers/serverless-workers/aws-lambda#configure-secret-ids), or
+[.NET](/develop/dotnet/workers/serverless-workers/aws-lambda#configure-secret-ids).
 
 ### 2.3 Publish a Lambda function version {/* #publish-lambda-version */}
 

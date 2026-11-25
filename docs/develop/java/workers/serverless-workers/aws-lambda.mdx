@@ -115,8 +115,14 @@ Compared with long-lived Workers, the location of the config file is resolved di
 
 The file is optional. If absent, only environment variables are used.
 
-For production deployments, see
-[Load credentials from AWS Secrets Manager](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
+### Configure secret IDs {/* #configure-secret-ids */}
+
+For direct retrieval through the AWS SDK for Java, include `software.amazon.awssdk:secretsmanager` in the function's
+dependencies. If you use mTLS, supply a PKCS#8 client key. See the
+[`temporal-aws-lambda` README](https://github.com/temporalio/sdk-java/blob/main/contrib/temporal-aws-lambda/README.md#credentials-from-aws-secrets-manager)
+for the secret ID settings.
+
+Grant the Lambda execution role [permission to read the secrets](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 
