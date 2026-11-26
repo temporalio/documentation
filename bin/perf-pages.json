@@ -1,0 +1,15 @@
+{
+  "_note": "Sample pages for yarn perf:run and yarn perf:field. Each one stands for a kind of page. Changing the list makes later runs hard to compare with earlier ones, so add pages rather than swapping them, and record why. See readme/UTILITIES.md#perf.",
+  "pages": [
+    { "path": "/", "kind": "Home page" },
+    { "path": "/workflows", "kind": "Encyclopedia concept page" },
+    { "path": "/develop/go/workflows/basics", "kind": "Develop page, heavy on code" },
+    { "path": "/develop/python/set-up-your-local-python", "kind": "Develop page with tabs" },
+    { "path": "/local-activity", "kind": "Page with zoomable images and diagrams" },
+    { "path": "/cli/command-reference/workflow", "kind": "Generated CLI reference" },
+    { "path": "/references/sdk-metrics", "kind": "Reference page with a large table" },
+    { "path": "/cloud/get-started", "kind": "Cloud page" },
+    { "path": "/guides/entity-pattern-loyalty-points", "kind": "Long guide" },
+    { "path": "/evaluate", "kind": "Evaluate landing page" }
+  ]
+}

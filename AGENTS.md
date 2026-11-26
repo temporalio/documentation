@@ -213,6 +213,9 @@ yarn check:retrieve-links # /api/retrieve results whose docs links don't return 
 yarn check:retrieve-health # /api/retrieve is up and returns custom Q&A and GitHub results; runs daily, see AGENT-RETRIEVE.md
 yarn report:retrieve-log  # summarize the /api/retrieve request log; needs BLOB_READ_WRITE_TOKEN, see AGENT-RETRIEVE.md
 yarn report:callouts      # admonition and ReleaseNoteHeader usage in docs/; --where lists every match, see UTILITIES.md
+yarn perf:run --label X   # Lighthouse via PageSpeed on the sample pages, saved to perf/runs; needs PSI_API_KEY, see UTILITIES.md
+yarn perf:compare         # changes between two saved perf runs beyond run-to-run noise
+yarn perf:field           # Chrome real-user data (CrUX) for the site and sample pages; --change DATE for before/after
 ```
 
 `yarn check:metrics:sdks` reports metrics an SDK defines but the page omits. When one is deliberately left undocumented,
