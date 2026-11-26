@@ -32,6 +32,10 @@ Accounts are the top-level container for access control. Each account has at lea
 role, which has full administrative permissions across the account, including users, billing and usage. An account is
 **not** an access principal itself.
 
+If [Projects](/cloud/projects) are enabled on your Account, Projects sit between the account and its Namespaces. Each
+Namespace belongs to one Project, and you can assign [Project roles](/cloud/manage-access/roles-and-permissions#project-level-roles)
+to grant access to all the resources in a Project.
+
 When you sign up for Temporal Cloud without joining an existing account, you are automatically assigned the Account
 Owner role for a new account. You can then invite other users to join the account and assign them roles. If your
 organization has an IdP, we recommend using [a SAML integration](/cloud/manage-access/saml) for enterprise identity management.
