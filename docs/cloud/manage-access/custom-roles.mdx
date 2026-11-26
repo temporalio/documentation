@@ -24,7 +24,8 @@ perform specific actions within your account.
 
 Custom Roles are user-defined collections of permissions that grant access to specific Temporal Cloud resources
 ([Account](/cloud/manage-access#temporal-cloud-accounts), [Namespace](/namespaces), [Nexus Endpoint](/nexus/endpoints),
-or [Connectivity Rule](/cloud/connectivity#connectivity-rules)). They allow you to define custom permission sets that
+[Connectivity Rule](/cloud/connectivity#connectivity-rules), or [Service Account](/cloud/manage-access/service-accounts)).
+They allow you to define custom permission sets that
 are more granular than the predefined roles, and assign them to any principal (user, group, service account).
 
 ## Why use Custom Roles?
@@ -183,7 +184,7 @@ For a list of available actions, see
 [the list of Custom Role permissions](/cloud/manage-access/permissions-reference#custom-role-permissions-reference). -
 Account-scoped actions (resource_type: "accounts") - Namespace-scoped actions (resource_type: "namespaces") - Nexus
 endpoint-scoped actions (resource_type: "nexus_endpoints") - Connectivity rule-scoped actions (resource_type:
-"connectivity_rules")
+"connectivity_rules") - Service account-scoped actions (resource_type: "service-accounts")
 
 The following example allows read access to specific Namespaces. The action is `cloud.namespace.get`, the resource type
 is `namespaces`, and the list of resource IDs is specified.
@@ -290,7 +291,7 @@ For a list of available actions, see
 [the list of Custom Role permissions](/cloud/manage-access/permissions-reference#custom-role-permissions-reference). -
 Account-scoped actions (resource_type: "accounts") - Namespace-scoped actions (resource_type: "namespaces") - Nexus
 endpoint-scoped actions (resource_type: "nexus_endpoints") - Connectivity rule-scoped actions (resource_type:
-"connectivity_rules")
+"connectivity_rules") - Service account-scoped actions (resource_type: "service-accounts")
 
 To create a custom role:
 
