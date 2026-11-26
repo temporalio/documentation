@@ -96,6 +96,15 @@
     "tags": ["Migration"],
     "sdk": "Python",
     "href": "/guides/celery-to-standalone-activity"
+  },
+
+  {
+    "name": "Migrate from a custom codec",
+    "description":
+      "Move payload encryption from a custom Payload Codec and Codec Server to Temporal Proxy.",
+    "tags": ["Migration"],
+    "sdk": "Go",
+    "href": "/guides/codec-to-temporal-proxy"
   }
 
 
