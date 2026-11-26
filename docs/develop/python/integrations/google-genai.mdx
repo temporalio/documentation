@@ -24,12 +24,6 @@ it to the plugin. Inside the Workflow you construct a `TemporalAsyncClient`, whi
 client but routes every API call through a Temporal Activity. Each call gets its own timeout, retry policy, and Event
 History entry, and your credentials stay on the Worker.
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
-<ReleaseNoteHeader
-  type="publicPreview"
-/>
-
 Code snippets in this guide come from the
 [Google GenAI plugin samples](https://github.com/temporalio/samples-python/tree/main/google_genai). Refer to the
 samples for the complete code.

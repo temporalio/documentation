@@ -76,8 +76,11 @@ Give file:line for every item in both tiers.
 ## 6. If applying changes
 
 Apply Tier A in one batch once approved. Hold Tier B for the user to pick through individually — don't bundle a
-judgment call into the same pass as the mechanical fixes. After edits, run `vale --config .vale-ci.ini` against
-every changed file per AGENTS.md's [Commands](../../../AGENTS.md#commands) section.
+judgment call into the same pass as the mechanical fixes. After edits, run AGENTS.md's
+[Tone pass](../../../AGENTS.md#tone-pass) on the changed pages, then run `vale --config .vale-ci.ini` against every
+changed file per AGENTS.md's [Commands](../../../AGENTS.md#commands) section. Tell the tone-pass agent to skip
+cross-page repetition of the swept fact, since a sweep restates it on every affected page on purpose, and to flag
+repetition within a page.
 
 Ask how the user wants the fixes grouped into PRs before opening any — a sweep like this has shipped as several
 PRs split by risk tier before (Tier A separate from Tier B), not always one PR per sweep. Don't assume.

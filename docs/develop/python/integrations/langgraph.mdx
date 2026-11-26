@@ -11,8 +11,6 @@ description:
   Run LangGraph AI agent workflows with durable execution using the Temporal Python SDK and LangGraph plugin.
 ---
 
-import { ReleaseNoteHeader } from '@site/src/components';
-
 Temporal's integration with [LangGraph](https://www.langchain.com/langgraph) gives your LangGraph AI agent workflows
 durable execution, automatic retries, and timeouts via the Temporal platform.
 
@@ -20,8 +18,6 @@ The plugin supports both the LangGraph **Graph API** (`StateGraph` with nodes an
 (`@entrypoint` / `@task` decorators). Each graph node and task must specify whether it runs as a Temporal Activity or
 directly inside the Workflow — Activity nodes get configurable timeouts and retry policies, while Workflow nodes run
 inline and must be deterministic.
-
-<ReleaseNoteHeader type="publicPreview" />
 
 Code snippets in this guide are taken from the
 [LangGraph plugin samples](https://github.com/temporalio/samples-python/tree/main/langgraph_plugin). Refer to the
@@ -309,7 +305,9 @@ Long-running graphs can hit Temporal's per-Event history size limit. Use Tempora
 and tasks that have already completed.
 
 The `cache()` helper returns the current task-result cache as a serializable dict. Pass it to `graph(name, cache=...)`
-or `entrypoint(name, cache=...)` in the new run to skip re-executing nodes that already produced a result.
+or `entrypoint(name, cache=...)` in the new run. A call with the same input as a call in the cache gets the cached
+result instead of running its Activity again. After continue-as-new, only the first of several identical calls gets its
+cached result, and the others run again.
 
 ```python
 from temporalio import workflow
@@ -421,8 +419,8 @@ values written through `get_stream_writer()`. The other modes (`"messages"`, `"v
 `"updates"`, and `"debug"`) are **not** captured by `streaming_topic`, because they aren't
 produced by node-side writers; LangGraph's orchestrator emits them as it walks the graph.
 
-To stream one of those modes, bridge `astream()` in the Workflow and republish each yielded
-chunk to a `WorkflowStream` topic yourself:
+To stream `"updates"`, `"values"`, or `"debug"`, bridge `astream()` in the Workflow and republish each yielded chunk to
+a `WorkflowStream` topic yourself. In Workflow code, `astream()` yields nothing for `"messages"`.
 
 ```python
 @workflow.defn
@@ -434,7 +432,7 @@ class AstreamBridge:
     @workflow.run
     async def run(self) -> None:
         topic = self.stream.topic("astream")
-        async for chunk in self.app.astream({...}, stream_mode="messages"):
+        async for chunk in self.app.astream({...}, stream_mode="updates"):
             topic.publish(chunk)
         topic.publish({"done": True})
 ```
@@ -515,27 +513,10 @@ Not all LangGraph primitives are node functions. Some run in the Workflow contex
 | --- | --- | --- |
 | Node functions | Activity or Workflow | Controlled by `execute_in` in node `metadata` (required) |
 | `@task` functions | Activity or Workflow | Controlled by `execute_in` in `activity_options` (required) |
-| Conditional edge functions (`add_conditional_edges`) | Workflow | Always runs in the Workflow. Must be **deterministic** and **async** (sync functions trigger `run_in_executor`, which is not allowed in the Temporal sandbox). |
+| Conditional edge functions (`add_conditional_edges`) | Workflow | Always runs in the Workflow. Must be **deterministic**. Can be `def` or `async def`. |
 | `interrupt()` | Activity | Call `interrupt()` inside Activity nodes. The plugin serializes the interrupt and propagates it to the Workflow. |
 | `Command(resume=...)` | Workflow | Used from Workflow code to resume after an interrupt. |
 | `InMemorySaver` checkpointer | Workflow | Runs in-process. Temporal handles durability — external checkpointers are not needed. |
-
-:::tip
-
-Conditional edge functions like `should_continue` must be `async def`, not plain `def`. Synchronous functions cause
-LangGraph to use `run_in_executor`, which is not supported inside Temporal's Workflow sandbox.
-
-```python
-# ✅ Correct: async conditional edge function
-async def should_continue(state: AgentState) -> str:
-    if state["messages"][-1].startswith("[Agent]") and "Calling" in state["messages"][-1]:
-        return "tools"
-    return END
-
-g.add_conditional_edges("agent", should_continue)
-```
-
-:::
 
 ### Syntax
 

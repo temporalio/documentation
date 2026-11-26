@@ -44,6 +44,15 @@ export default function TemporalNavbarLink({
   const resolvedActiveClassName =
     activeClassName ?? (mobile ? 'menu__link--active' : 'navbar__link--active');
 
+  // Amplitude autocapture reports data-amp-track-* attributes as
+  // "[Amplitude] Element Attributes.<name>" on the Element Clicked event.
+  // The label comes from the config, so it stays in English when a browser
+  // translates the page, and the surface separates desktop from mobile clicks.
+  const trackingAttributes = {
+    'data-amp-track-nav-item': label,
+    'data-amp-track-nav-surface': isDropdownItem ? 'dropdown' : mobile ? 'mobile-menu' : 'navbar',
+  };
+
   const content = html ? (
     <span dangerouslySetInnerHTML={{ __html: html }} />
   ) : (
@@ -57,6 +66,7 @@ export default function TemporalNavbarLink({
     <Link
       className={linkClassName}
       href={prependBaseUrlToHref ? normalizedHref : href}
+      {...trackingAttributes}
       {...props}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
@@ -75,6 +85,7 @@ export default function TemporalNavbarLink({
             ? isRegexpStringMatch(activeBaseRegex, location.pathname)
             : location.pathname.startsWith(activeBaseUrl),
       })}
+      {...trackingAttributes}
       {...props}
     >
       {content}

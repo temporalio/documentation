@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
-import { hasAnalyticsConsent, readConsentFromDocumentCookie } from '@temporalio-web/consent-banner/core';
+import { hasDocsAnalyticsConsent } from '@site/src/utils/analyticsConsent';
 
 const CONSENT_CHANGE_EVENT = 'temporal:consentchange';
 
-// The consent cookie is shared across the `.temporal.io` apex domain, so a decision
-// made on temporal.io (or another docs.temporal.io session) already applies
-// here. Read it directly rather than waiting on this page's own banner.
-const readConsent = () =>
-  ExecutionEnvironment.canUseDOM ? hasAnalyticsConsent(readConsentFromDocumentCookie()) : false;
+// Reads the shared `.temporal.io` consent cookie, falling back to the banner's
+// localStorage record for opt-out regions that never write the cookie. See
+// src/utils/analyticsConsent.js.
+const readConsent = () => (ExecutionEnvironment.canUseDOM ? hasDocsAnalyticsConsent() : false);
 
 // Whether the visitor currently grants analytics consent, kept in sync with
 // the consent-banner element's CONSENT_CHANGE_EVENT so Algolia Insights turns

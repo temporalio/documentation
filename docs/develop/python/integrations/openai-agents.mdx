@@ -36,7 +36,7 @@ uv add temporalio-openai-agents
 ```
 
 The `temporalio-openai-agents` package installs the Temporal Python SDK and OpenAI Agents SDK dependencies. It requires
-Python 3.10 or later and Temporal Python SDK 1.33.0 or later.
+Python 3.11 or later and Temporal Python SDK 1.36.0 or later.
 
 Two import paths cover most applications. `temporalio.openai_agents` holds what you configure on the Worker and
 Client—including `OpenAIAgentsPlugin`, `ModelActivityParameters`, and sandbox providers.
@@ -45,11 +45,11 @@ server proxies.
 
 Version 1.0.0 moves the integration out of the Temporal Python SDK. If you used the earlier contrib module, replace the
 `temporalio[openai-agents]` dependency with `temporalio-openai-agents` and change imports from
-`temporalio.contrib.openai_agents` to `temporalio.openai_agents`.
-
-With Temporal Python SDK 1.33, install both distributions into the same physical `site-packages/temporalio` directory,
-as a standard non-editable virtual environment does. Editable installs, layered deployments, `--target` installs, and
-other split-directory installations require Temporal Python SDK 1.34 or later.
+`temporalio.contrib.openai_agents` to `temporalio.openai_agents`. Both this change and upgrading
+`temporalio[openai-agents]` to 1.36.0 or later install version 2.0.0 or later, which has breaking changes. Before you
+upgrade, follow the [2.0.0 upgrade
+steps](https://github.com/temporalio/ai-integrations/releases/tag/python/openai_agents/v2.0.0#how-to-upgrade): let open
+runs finish, or deploy with Worker Versioning.
 
 ## Run your first durable agent
 
@@ -106,9 +106,10 @@ client = await Client.connect(
 Workers built from that Client pick up the plugin automatically, so all a Worker has to do is register the Workflow.
 
 `ModelActivityParameters` controls how the model Activity is scheduled. Alongside `start_to_close_timeout`, which
-defaults to 60 seconds, it accepts `schedule_to_close_timeout`, `schedule_to_start_timeout`, `heartbeat_timeout`,
-`retry_policy`, `cancellation_type`, `versioning_intent`, `task_queue`, `priority`, `summary_override`,
-`use_local_activity`, `streaming_topic`, and `streaming_batch_interval`.
+defaults to 60 seconds, and `heartbeat_timeout`, which defaults to 10 seconds, it accepts `schedule_to_close_timeout`,
+`schedule_to_start_timeout`, `retry_policy`, `cancellation_type`, `versioning_intent`, `task_queue`, `priority`,
+`summary_override`, `use_local_activity`, `streaming_topic`, and `streaming_batch_interval`. Set `heartbeat_timeout=None`
+to turn heartbeats off. Local Activities don't heartbeat.
 
 You must ensure the Worker process has access to your model-provider credentials. Most provider SDKs read credentials
 from environment variables.
@@ -518,8 +519,9 @@ Sandbox support is pre-release and may change before general availability.
 `SandboxAgent` gives an agent a machine to work on: a shell to run commands in and a filesystem to read and write. The
 plugin dispatches every sandbox operation—creating the session, each command, each read and write, PTY interaction, and
 teardown—as its own Temporal Activity. Each one is individually retryable and visible in Workflow history, and the
-session state is serialized with the Workflow, so a Worker restart part-way through a run resumes against the same
-session.
+session state is serialized with the Workflow. On a hosted backend, a Worker restart part-way through a run resumes
+against the same session. On the Docker and Unix-local backends, a Worker restart in the middle of a step loses the
+sandbox, and the step's next operation fails with the non-retryable `ApplicationError` type `SandboxLost`.
 
 Register a `SandboxClientProvider` for each backend you want to reach, under a unique name:
 

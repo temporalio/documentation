@@ -151,6 +151,17 @@ const developDotnetCategory = {
           },
         ],
       },
+      {
+        type: 'category',
+        label: 'Integrations',
+        className: 'sidebar-integrations',
+        collapsed: true,
+        link: {
+          type: 'doc',
+          id: 'develop/dotnet/integrations/index',
+        },
+        items: ['develop/dotnet/integrations/microsoft-agent-framework'],
+      },
     ],
 };
 const developGoCategory = {
@@ -755,6 +766,7 @@ const developPythonCategory = {
           'develop/python/integrations/langgraph',
           'develop/python/integrations/langsmith',
           'develop/python/integrations/mcp',
+          'develop/python/integrations/microsoft-agent-framework',
           'develop/python/integrations/openai-agents',
           'develop/python/integrations/openrouter',
           'develop/python/integrations/strands-agents',
