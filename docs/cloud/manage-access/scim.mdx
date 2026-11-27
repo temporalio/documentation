@@ -48,8 +48,7 @@ After completing these steps, you're ready to submit your [support ticket](/eval
 
 :::tip Adding and removing users
 
-When SCIM is enabled for user management, you can still add and remove users outside of SCIM using the Temporal Cloud interface, until you disable user lifecycle management.
-You can always change a user's or group's Account Role from the Temporal Cloud interface.
+To make SCIM the only way to add and remove users, [restrict user management to SCIM](#restrict-user-management-to-scim).
 
 :::
 
@@ -65,6 +64,18 @@ You can always change a user's or group's Account Role from the Temporal Cloud i
 Some points to note:
 
 - User and group change events are applied within 10 minutes of them being made in Okta.
-- User lifecycle management with SCIM also allows user roles to be derived from group membership.
-- Once a group has been synced in Temporal Cloud, you can use `tcld` to assign roles to the group.
+- After a group syncs to Temporal Cloud, assign roles to it with `tcld`, and its members get those roles.
   For instructions, see the [User Group Management](https://github.com/temporalio/tcld?tab=readme-ov-file#user-group-management) page.
+
+## Restrict user management to SCIM {/* #restrict-user-management-to-scim */}
+
+By default, Account Owners and Global Admins can still invite and remove users in Temporal Cloud after SCIM is enabled.
+They can use the Temporal Cloud UI, the `temporal cloud` CLI, `tcld`, the Cloud Ops API, or the Terraform provider.
+
+To make your IdP the only way to add and remove users, open a [support ticket](/evaluate/cloud/support#support-ticket).
+Temporal Support calls this disabling user lifecycle management.
+After the change, only SCIM can add and remove users.
+Requests to invite or remove users from the Temporal Cloud UI, `tcld`, or Terraform fail.
+
+This setting doesn't restrict role assignment.
+You can still change a user's or group's Account Role in the Temporal Cloud UI, and [assign roles to SCIM groups](/cloud/manage-access/user-groups#scim-groups) with the `temporal cloud` CLI or `tcld`.
