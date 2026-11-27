@@ -57,7 +57,17 @@ import "go.temporal.io/googleadk"
 ```
 
 The module is versioned separately from the Temporal Go SDK. Its source and releases are maintained in
-[`temporalio/ai-integrations`](https://github.com/temporalio/ai-integrations/tree/main/go/googleadk).
+[`temporalio/ai-integrations`](https://github.com/temporalio/ai-integrations/tree/main/go/googleadk). It requires Go
+1.26.10 or later and ADK v2.6.0 or later.
+
+ADK's agent loop runs in your Workflow, so ADK and `googleadk` releases can change how Event History replays. Treat
+upgrades to either as Workflow Definition changes: let open runs finish first, or keep them on their Workers with
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning).
+
+Upgrading `googleadk` to v1.0.0 breaks replay of some open runs, including those that used `NewMCPToolset` directly in
+an agent's `Toolsets` or made a model call that the new A2A validation rejects. Follow the
+[README's upgrade steps](https://github.com/temporalio/ai-integrations/blob/go/googleadk/v1.0.0/go/googleadk/README.md#what-you-get)
+before deploying or rolling back.
 
 ## Run an agent with Durable Execution
 
@@ -66,8 +76,8 @@ builds a vanilla ADK agent and drives it.
 
 ### Configure the Worker
 
-Configure the Worker with the integration's plugin, which registers the model and MCP Activities at Worker start (and
-closes any cached MCP toolsets at Worker stop). The real Gemini model lives in the plugin's config, behind the Activity
+Configure the Worker with the integration's plugin, which registers the model, MCP, and A2A Activities at Worker start
+(and closes any cached MCP toolsets at Worker stop). The real Gemini model lives in the plugin's config, behind the Activity
 boundary; the API key is read worker-side. Disable the model SDK's own retries so Temporal's `RetryPolicy` is the
 single source of truth.
 
@@ -535,6 +545,9 @@ Activity calls the model with `stream=true`, heartbeats, and publishes each chun
 [`workflowstreams`](https://pkg.go.dev/go.temporal.io/sdk/contrib/workflowstreams) topic for external (UI) consumers,
 then returns the aggregated final response into the Workflow so replay stays deterministic.
 
+Streaming is experimental: it builds on `workflowstreams`, a v0 module, and `WithStreaming` and `StreamServer` may
+change in a 1.x release.
+
 Call `googleadk.StreamServer(ctx)` once near the top of the Workflow that drives `r.Run`, and set
 `agent.RunConfig{StreamingMode: agent.StreamingModeSSE}`:
 
@@ -557,9 +570,33 @@ External consumers read chunks with `workflowstreams.NewClient(c, workflowID, ..
 
 ## Error handling
 
-Model, tool, and MCP failures surface as Temporal `ApplicationError`s tagged `googleadk.ModelError`, `.ToolError`, and
-`.McpError`. Classify them with `googleadk.IsNonRetryable(err)` rather than string-matching. For model calls, the
-upstream HTTP status drives retryability (`408`/`409`/`429`/`5xx` are retryable; other `4xx` are not).
+The plugin reports failures as Temporal `ApplicationError`s. Use these Go constants to check `ApplicationError.Type()`:
+
+| Go constant | Type string | Failure |
+| --- | --- | --- |
+| `googleadk.ErrorTypeModel` | `"googleadk.ModelError"` | Model call |
+| `googleadk.ErrorTypeMCP` | `"googleadk.McpError"` | MCP list or call |
+| `googleadk.ErrorTypeA2A` | `"googleadk.A2AError"` | A2A card fetch, message, or cancellation |
+| `googleadk.ErrorTypeTool` | `"googleadk.ToolError"` | MCP tool misuse of its read-only Activity context |
+| `googleadk.ErrorTypeStream` | `"googleadk.StreamError"` | Streamed model chunks could not all be published |
+
+`ErrorTypeTool` covers attempts to write session state, search memory, or request a confirmation without a function
+call ID. An `ActivityAsTool` Activity fails with the error your Activity returned.
+
+An MCP tool's own error wraps no other error and isn't an `ApplicationError`. `CallMcpTool` succeeds without a retry,
+and ADK, its tool-error callbacks, and the model receive an error with only the tool's message. The original
+Go type and identity don't cross the Activity boundary: `errors.Is` and `errors.As` can't match the original error,
+and `googleadk.IsNonRetryable` can't classify it. A wrapped MCP request error instead fails the Activity with a
+retryable `ErrorTypeMCP` error.
+
+For plugin `ApplicationError`s, classify retryability with `googleadk.IsNonRetryable(err)` rather than matching error
+messages. For model and A2A calls, the upstream HTTP status drives retryability (`408`/`409`/`429`/`5xx` are retryable;
+other `4xx` are not).
+
+On ADK v2.6.0 to v2.7.1, a remote A2A call that fails for good becomes an event with an `ErrorMessage`, and `r.Run` returns no error.
+Inspect those events: `IsNonRetryable(err)` cannot see the failure. Sequential and loop agents continue after it.
+From ADK v2.8.0, the remote agent returns the error and the run ends there. On every release, an `agenttool` around
+the remote agent passes the error to the model as a failed tool call instead.
 
 :::tip
 
@@ -585,11 +622,43 @@ no real Worker and therefore run no plugins.
 ## Supported and not-yet-supported
 
 - **Supported:** single- and multi-agent (`SubAgents`) trees, in-workflow function tools, `ActivityAsTool`, stateless
-  MCP, Gemini built-in tools (executed server-side inside `InvokeModel`), human-in-the-loop tool confirmation,
-  continue-as-new session-state carry, the in-memory session service, and SSE streaming.
+  MCP, remote A2A agents built with the plugin's providers, Gemini built-in tools (executed server-side inside
+  `InvokeModel`), human-in-the-loop tool confirmation, continue-as-new session-state carry, the in-memory session
+  service, and SSE streaming (experimental).
+  Build remote A2A agents with `remoteagent.NewA2A` from `google.golang.org/adk/v2/agent/remoteagent/v2`, setting
+  `AgentCardProvider` to `googleadk.NewA2AAgentCardProvider(cardURL, activityOptions)` and `ClientProvider` to
+  `googleadk.NewA2AClientProvider(activityOptions)`. A static `AgentCard` can replace the card provider.
+  Set `StartToCloseTimeout` longer than the remote agent takes to answer: a timed-out send is retried and starts
+  another remote task.
 - **Not yet:** `RunLive` (bidirectional streaming), sub-agent-as-child-workflow, live memory/artifact tools that require
   in-workflow network I/O, and database/Vertex session services. These raise or are documented rather than silently
-  degrading.
+  degrading. Also not supported yet:
+  - Parallel agents (`parallelagent`), `ParallelWorker` nodes, and graph (`workflowagent`) fan-outs with two or more
+    branches that make a `NewModel` call, use an `ActivityAsTool` tool or MCP toolset, or call an A2A agent built with
+    the plugin's providers. The Worker process exits, each Worker that retries the Workflow Task exits too, and the
+    run stays open until you terminate it or its Workflow Execution Timeout expires. A graph fan-out can instead
+    fail the run with a node panic. Fan out with `agenttool` tools called in one model response, or use a sequential
+    agent (`sequentialagent`).
+  - Single-turn sub-agents (`llmagent.ModeSingleTurn`) called in the same model response as another tool or sub-agent:
+    every Workflow Task fails. Pass `googleadk.WithSequentialToolFanout()` to `NewContext`, or wrap the agents with
+    `agenttool.New`.
+  - Graph node `RetryConfig` delays and `NodeConfig.Timeout`, which use the wall clock. Leave both unset.
+  - Graph input requests without an `InterruptID` on ADK v2.6.0 to v2.7.1. Set a replay-stable `InterruptID`.
+  - `toolsearch.New` around `NewMCPToolset`: every MCP tool is still declared to the model and callable.
+  - Per-user MCP credentials (`mcptoolset.Config.Auth` with a provider that reads the acting user):
+    `agent.IdentityFromContext` finds no user in the MCP Activities.
+  - `GenerateContentConfig.HTTPOptions.ExtrasRequestProvider` is dropped without an error and doesn't reach the
+    Worker model. Use `Headers` or `ExtraBody`, which do reach it.
+- **Rejected:** ADK's remote A2A agents built without `NewA2AClientProvider`, or that fetch their card without
+  `NewA2AAgentCardProvider`, including every agent from the deprecated `agent/remoteagent` package. They would send
+  their requests again on every replay. A model call from an agent with such a remote agent below it returns an error.
+  Add `googleadk.NewRunnerPlugin(root)` to the runner's plugins to also catch a remote root agent, agents reached by
+  transfer, and other cases the model-call check misses. Neither check walks `workflowagent` graph nodes or looks
+  below agents wrapped with `agenttool`. An agent using `NewModel` inside a wrapped agent still checks its own
+  descendants. The runner plugin also misses agents wrapped with `agenttool` in `Toolsets`. Unchecked remote agents
+  can still send requests again on replay. The
+  [plugin README](https://github.com/temporalio/ai-integrations/tree/main/go/googleadk#supported--not-yet-supported)
+  lists the exact rules.
 
 ## Samples
 
