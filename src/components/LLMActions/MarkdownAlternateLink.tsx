@@ -15,7 +15,7 @@ import { getMarkdownPath } from './markdownPath';
 export default function MarkdownAlternateLink(): JSX.Element | null {
   const { metadata, frontMatter } = useDoc();
 
-  if (!metadata.permalink || frontMatter.llm_exclude) {
+  if (!metadata.permalink || (frontMatter as { llm_exclude?: string }).llm_exclude) {
     return null;
   }
 

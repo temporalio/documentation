@@ -42,7 +42,7 @@ export default function CookbookDocItem({ content, tags }: CookbookDocItemProps)
   );
 }
 
-function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
+function InnerCookbookDocItem({ content, tags }: Pick<CookbookDocItemProps, 'content' | 'tags'>) {
   const DocContent = content;
 
   // Now we're under <DocProvider>, so useDoc() is safe:

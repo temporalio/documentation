@@ -38,7 +38,7 @@ function importDocSearchModalIfNeeded() {
     return Promise.resolve();
   }
   return Promise.all([
-    import('@docsearch/react/modal') as Promise<typeof import('@docsearch/react')>,
+    import('@docsearch/react/modal'),
     import('@docsearch/react/style'),
     import('./styles.css'),
   ]).then(([{ DocSearchModal: Modal }]) => {

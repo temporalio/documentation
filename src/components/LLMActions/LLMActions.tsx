@@ -59,7 +59,7 @@ export default function LLMActions() {
     }
   }, [mdPath, pageUrl]);
 
-  if (!permalink || frontMatter.llm_exclude) {
+  if (!permalink || (frontMatter as { llm_exclude?: string }).llm_exclude) {
     return null;
   }
 
