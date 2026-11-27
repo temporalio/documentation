@@ -24,7 +24,8 @@ perform specific actions within your account.
 
 Custom Roles are user-defined collections of permissions that grant access to specific Temporal Cloud resources
 ([Account](/cloud/manage-access#temporal-cloud-accounts), [Namespace](/namespaces), [Nexus Endpoint](/nexus/endpoints),
-or [Connectivity Rule](/cloud/connectivity#connectivity-rules)). They allow you to define custom permission sets that
+[Connectivity Rule](/cloud/connectivity#connectivity-rules), or [Service Account](/cloud/manage-access/service-accounts)).
+They allow you to define custom permission sets that
 are more granular than the predefined roles, and assign them to any principal (user, group, service account).
 
 ## Why use Custom Roles?
@@ -173,6 +174,7 @@ Each permission has two parts: actions and resources.
 | Namespaces         | Scoped to specific Namespace IDs, or `allow_all: true` for all Namespaces                 |
 | Nexus endpoints    | Scoped to specific Nexus endpoint IDs, or `allow_all: true` for all Nexus endpoints       |
 | connectivity rules | Scoped to specific connectivity rule IDs, or `allow_all: true` for all connectivity rules |
+| service accounts   | `allow_all: true` only, for all service accounts                                          |
 
 Resource IDs must exist in your account. Specifying an unknown resource ID will return an error.
 
@@ -182,7 +184,7 @@ For a list of available actions, see
 [the list of Custom Role permissions](/cloud/manage-access/permissions-reference#custom-role-permissions-reference). -
 Account-scoped actions (resource_type: "accounts") - Namespace-scoped actions (resource_type: "namespaces") - Nexus
 endpoint-scoped actions (resource_type: "nexus_endpoints") - Connectivity rule-scoped actions (resource_type:
-"connectivity_rules")
+"connectivity_rules") - Service account-scoped actions (resource_type: "service-accounts")
 
 The following example allows read access to specific Namespaces. The action is `cloud.namespace.get`, the resource type
 is `namespaces`, and the list of resource IDs is specified.
@@ -279,6 +281,7 @@ Each permission has two parts: actions and resources.
 | Namespaces         | Scoped to specific Namespace IDs, or `allow_all: true` for all Namespaces                 |
 | Nexus endpoints    | Scoped to specific Nexus endpoint IDs, or `allow_all: true` for all Nexus endpoints       |
 | connectivity rules | Scoped to specific connectivity rule IDs, or `allow_all: true` for all connectivity rules |
+| service accounts   | `allow_all: true` only, for all service accounts                                          |
 
 Resource IDs must exist in your account. Specifying an unknown resource ID will return an error.
 
@@ -288,7 +291,7 @@ For a list of available actions, see
 [the list of Custom Role permissions](/cloud/manage-access/permissions-reference#custom-role-permissions-reference). -
 Account-scoped actions (resource_type: "accounts") - Namespace-scoped actions (resource_type: "namespaces") - Nexus
 endpoint-scoped actions (resource_type: "nexus_endpoints") - Connectivity rule-scoped actions (resource_type:
-"connectivity_rules")
+"connectivity_rules") - Service account-scoped actions (resource_type: "service-accounts")
 
 To create a custom role:
 
@@ -415,3 +418,15 @@ To read which users have access to each Namespace, grant `cloud.namespace.getUse
 `cloud.namespace.get` on those Namespaces. The assignments permission alone doesn't add Namespaces to the list. For
 groups and service accounts, use `cloud.namespace.getUserGroupNamespaceAssignments` and
 `cloud.namespace.getServiceAccountNamespaceAssignments`.
+
+## Control which service accounts appear in the list
+
+To list service accounts, a principal needs two permissions:
+
+- `cloud.serviceaccount.list` on the account, Project, or Namespace whose service accounts you want to list
+- `cloud.serviceaccount.get` on all service accounts
+
+With `cloud.serviceaccount.list` alone, the list comes back empty.
+
+Granting `cloud.serviceaccount.list` on a Project doesn't let the principal list the service accounts in that
+Project's Namespaces. To list those, grant it on each Namespace as well.
