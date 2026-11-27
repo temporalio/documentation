@@ -54,13 +54,17 @@ All Temporal Server releases abide by the [Semantic Versioning Specification](ht
 We support upgrade paths from every version beginning with Temporal v1.7.0.
 For details on upgrading your Temporal Service, see [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server).
 
-We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
-
 We aim to publish incremental upgrade guides for each minor and major version, which include specifics about dependency upgrades that we have tested for (such as Cassandra 3.0 -> 3.11).
 
-We offer maintenance support of the last three **minor** versions after a release and do not plan to "backport" patches beyond that.
+We provide maintenance support for the three most recent **minor** versions, including the latest release.
+Maintenance support means we release patches for critical bugs, such as security, data-loss, or reliability bugs.
+We don't backport fixes to older minor versions.
 
-We offer maintenance support of **major** versions for at least 12 months after a GA release, and we provide at least 6 months' notice before EOL/deprecating support.
+When we release a new minor version, the oldest supported minor version leaves maintenance support.
+For example, while v1.32 is the latest minor version, v1.30, v1.31, and v1.32 receive patches and v1.29 doesn't.
+Minor versions don't ship on a fixed schedule, so support for a minor version doesn't end on a fixed date.
+
+We provide maintenance support for **major** versions for at least 12 months after a GA release, and we give at least 6 months' notice before support ends.
 
 **Dependencies**
 
