@@ -126,6 +126,14 @@ For SigNoz-side details, see the [SigNoz integration page](https://signoz.io/doc
 Parseable uses an OpenTelemetry Collector to scrape Temporal Cloud's OpenMetrics endpoint and export metrics to Parseable over OTLP/HTTP.
 Follow the [Parseable Temporal Cloud metrics guide](https://www.parseable.com/docs/ingest-data/ai-agents/temporal?tab=temporal-cloud-metrics) to configure the Collector and verify that metrics appear in Parseable.
 
+### CtrlB
+
+CtrlB uses an OpenTelemetry Collector to scrape Temporal Cloud's OpenMetrics endpoint and export metrics to CtrlB over OTLP/HTTP.
+
+1. Configure an OpenTelemetry Collector with a Prometheus receiver against `metrics.temporal.io` using Bearer token auth with your Temporal Cloud API key, and an OTLP/HTTP exporter that sends to your CtrlB instance with your CtrlB API token. Copy the full configuration from the [CtrlB Temporal Cloud guide](https://docs.ctrlb.ai/integrations/temporal).
+2. Run one Collector per Temporal Cloud account and confirm that `temporal_cloud_v1_*` metrics appear on the CtrlB **Metrics** page, typically within 5 minutes.
+3. Build dashboards and alerts with PromQL. The CtrlB guide includes example queries for Workflow outcomes, Task Queue backlog, throttled requests, and request latency.
+
 ### Prometheus \+ Grafana {/* #prometheus-grafana */}
 
 Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.

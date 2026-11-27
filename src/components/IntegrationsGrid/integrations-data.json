@@ -72,6 +72,15 @@
     "href": "https://clickhouse.com/docs/use-cases/observability/clickstack/integrations/temporal-metrics"
   },
   {
+    "name": "CtrlB",
+    "description": "Export Temporal Cloud metrics to CtrlB via an OpenTelemetry Collector and query them with PromQL in dashboards and alerts.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://docs.ctrlb.ai/integrations/temporal"
+  },
+  {
     "name": "Datadog (Metrics)",
     "description": "Export Temporal Cloud metrics to Datadog with a serverless integration and pre-built dashboard.",
     "tags": [
