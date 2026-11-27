@@ -1,0 +1,4 @@
+{
+  "guide": "docs/guides/lock-shared-resources.mdx",
+  "skip": "No inline runnable scenario. The guide builds a library (config.py/workflow.py/semaphore.py + a Worker) in a `distributed_lock/` package and shows two example Workflows, but inlines no starter and the Worker registers only PermitSlotWorkflow (not the example Workflows or their Activities). The code also uses package-relative imports (`from distributed_lock.config import ...`) that the flat extractor can't reproduce. It directs readers to the external reference repo temporal-sa/temporal-workflow-throttler to actually run it."
+}

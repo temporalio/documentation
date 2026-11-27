@@ -1,0 +1,4 @@
+{
+  "guide": "docs/guides/temporary-rate-limit-increases.mdx",
+  "skip": "Go guide and Temporal Cloud-bound (adjusts Namespace capacity via the Cloud Ops API). Out of scope twice over: the harness is Python-only, and Cloud guides are not run locally."
+}
