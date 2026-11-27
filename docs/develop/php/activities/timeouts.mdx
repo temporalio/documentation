@@ -121,7 +121,8 @@ To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()
 This acts as a periodic checkpoint mechanism for the progress of an Activity.
 
 You can piggyback `details` on an Activity Heartbeat.
-If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
+If an Activity times out, the `TimeoutFailure` delivered to the Workflow includes the details from the last Heartbeat the Temporal Service recorded, which can be older than the last value of `details` if the Worker crashed before sending it.
+See [Heartbeat details](/encyclopedia/detecting-activity-failures#heartbeat-details).
 Then the Workflow can pass the details to the next Activity invocation.
 Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
 When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
@@ -173,7 +174,8 @@ To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()
 This acts as a periodic checkpoint mechanism for the progress of an Activity.
 
 You can piggyback `details` on an Activity Heartbeat.
-If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
+If an Activity times out, the `TimeoutFailure` delivered to the Workflow includes the details from the last Heartbeat the Temporal Service recorded, which can be older than the last value of `details` if the Worker crashed before sending it.
+See [Heartbeat details](/encyclopedia/detecting-activity-failures#heartbeat-details).
 Then the Workflow can pass the details to the next Activity invocation.
 Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
 When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.

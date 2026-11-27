@@ -87,6 +87,10 @@ but they must be Unpaused separately.
   [`update-options`](/activity-operations/update-options) to adjust the timeout if needed.
 - **Pause won't interrupt an Activity that doesn't Heartbeat.** The current execution runs to completion, which could
   take up to the full [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+- **Pause doesn't move the Heartbeat deadline.** A Paused Activity doesn't time out on its
+  [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#after-a-heartbeat-timeout), but the deadline stays at its
+  last recorded Heartbeat plus the Heartbeat Timeout. If an attempt is still running and that time has passed when you
+  Unpause, the attempt times out at once and the next attempt starts.
 
 ## Limitations
 

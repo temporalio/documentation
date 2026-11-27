@@ -63,3 +63,6 @@ See the [CLI reference for `temporal activity unpause`](/cli/command-reference/a
 - **Unpause doesn't interrupt or duplicate an in-flight execution.** If an Activity without Heartbeat is still running
   when you Unpause, it continues to completion. The Temporal Service doesn't schedule a concurrent execution. If the
   in-flight execution fails, the next retry proceeds normally.
+- **Unpause can time out an attempt whose Heartbeat deadline passed.** If the deadline passed while the Activity was
+  Paused, Unpause times out the running attempt and schedules the next one, which can run alongside it. See
+  [Pause doesn't move the Heartbeat deadline](/activity-operations/pause#important-considerations).
