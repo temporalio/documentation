@@ -36,7 +36,9 @@ The database stores the following types of data:
   - History table: An append-only log of Workflow Execution History Events.
 - Namespace metadata: Metadata of each Namespace in the Temporal Service.
 - [Visibility](/temporal-service/visibility) data: Enables operations like "show all running Workflow Executions".
-  For production environments, we recommend using Elasticsearch as your Visibility store.
+  For high-volume production environments, we recommend Elasticsearch or OpenSearch as your Visibility store.
+  A small deployment can keep Visibility in the same PostgreSQL or MySQL server as its other data. See
+  [Run a small self-hosted Temporal Service](/self-hosted-guide/small-deployment).
 
 An Elasticsearch database must be configured in a self-hosted Temporal Service to enable [advanced Visibility](/visibility#advanced-visibility) on Temporal Server versions 1.19.1 and earlier.
 
