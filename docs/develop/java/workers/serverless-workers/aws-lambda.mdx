@@ -12,6 +12,7 @@ tags:
 ---
 
 import { ReleaseNoteHeader } from '@site/src/components';
+import LambdaWorkerSecretIds from '@site/docs/develop/_shared/lambda-worker-secret-ids.mdx';
 
 <ReleaseNoteHeader featureName="serverlessWorkersLambda" />
 
@@ -107,15 +108,16 @@ If you need to assemble options outside the callback, call `LambdaWorkerOptions.
 
 The `temporal-aws-lambda` module automatically loads Temporal client configuration from a TOML config file and environment variables. Refer to [Environment Configuration](/develop/environment-configuration) for more details.
 
-Compared with long-lived Workers, the location of the config file is resolved differently, in the following order:
+The package uses the path in `TEMPORAL_CONFIG_FILE` when set. Otherwise, it looks for a readable `temporal.toml` in
+`$LAMBDA_TASK_ROOT` (typically `/var/task`), then in the current working directory. If neither has a readable file, the
+package uses the [default configuration path](/develop/environment-configuration#configuration-methods). The file is optional.
 
-1. `TEMPORAL_CONFIG_FILE` environment variable, if set.
-2. `temporal.toml` in `$LAMBDA_TASK_ROOT` (typically `/var/task`).
-3. `temporal.toml` in the current working directory.
+### Load credentials from a secret {/* #configure-secret-ids */}
 
-The file is optional. If absent, only environment variables are used.
+<LambdaWorkerSecretIds />
 
-Encrypt sensitive values like TLS keys or API keys. Refer to [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html) for options.
+To retrieve secrets through the AWS SDK for Java, include `software.amazon.awssdk:secretsmanager` in the function's
+dependencies. For mTLS, store the client private key in PKCS#8 format.
 
 ## Adjust Worker defaults for Lambda {/* #lambda-tuned-defaults */}
 

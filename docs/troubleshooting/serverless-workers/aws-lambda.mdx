@@ -123,12 +123,14 @@ Check CloudWatch logs for errors during Worker startup. In the AWS Console, go t
 
 Common errors include:
 
-- **Connection failures**: The Worker cannot reach the Temporal Service. Check that the `TEMPORAL_ADDRESS` and
-  `TEMPORAL_API_KEY` environment variables (or `temporal.toml` config file) are correctly set on the Lambda function.
+- **Connection failures**: The Worker cannot reach the Temporal Service. Check the Temporal address in
+  `TEMPORAL_ADDRESS` or `temporal.toml`.
   For self-hosted deployments, verify
   [network reachability](/production-deployment/worker-deployments/serverless-workers/aws-lambda/self-hosted-setup#ensure-network-reachability).
 - **TLS errors**: The TLS certificate or key is missing, expired, or does not match the Namespace.
 - **Authentication errors**: The API key is invalid or does not have access to the Namespace.
+- **Secret lookup errors**: Check the secret ID and the Lambda execution role's permissions.
+  See [Load credentials from AWS Secrets Manager](/production-deployment/worker-deployments/serverless-workers/aws-lambda#use-aws-secrets-manager).
 
 ### Check for Lambda timeout {/* #check-lambda-timeout */}
 
