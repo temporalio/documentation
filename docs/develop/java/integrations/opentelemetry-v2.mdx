@@ -1,0 +1,345 @@
+---
+id: opentelemetry-v2
+title: OpenTelemetry v2 integration
+sidebar_label: OpenTelemetry v2
+slug: /develop/java/integrations/opentelemetry-v2
+toc_max_heading_level: 3
+description: Configure trace propagation, automatic tracing, custom traces, metrics, and logs with the Temporal Java SDK OpenTelemetry v2 plugin.
+tags:
+  - Java SDK
+  - Temporal SDKs
+  - Integrations
+  - Observability
+---
+
+import { ReleaseNoteHeader } from '@site/src/components';
+
+Temporal's OpenTelemetry integration lets you understand the internal state
+of Temporal applications across Clients, Workflows, Activities, and Nexus
+Operations by instrumenting them with
+[OpenTelemetry](https://opentelemetry.io/docs/what-is-opentelemetry/).
+
+With OpenTelemetry, you instrument your applications to gain insight into your
+deployed environments. Temporal Workflows complicate that picture in two ways.
+First, a Workflow's work is spread across many Workers, so its trace can break
+into disconnected fragments. Second, Workers replay Workflow
+code to rebuild its state, which would emit the same spans, metrics, and logs
+again. This integration solves both by propagating OpenTelemetry context across
+Temporal boundaries, keeping the trace whole, and by providing replay-safe
+Tracer, Meter, and Logger Providers that prevent duplicates.
+
+All code snippets in this guide are based on the
+[OpenTelemetry v2 sample](https://github.com/temporalio/samples-java/tree/main/opentelemetry-v2).
+Refer to the sample for complete code.
+
+<ReleaseNoteHeader type="prerelease" />
+
+## Prerequisites
+
+- This guide assumes you are already familiar with OpenTelemetry. If you aren't, refer to the
+  [OpenTelemetry documentation](https://opentelemetry.io/docs/) for more details.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking the
+  [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local development environment](/develop/java/set-up-your-local-java) guide. When you're done, leave the
+  Temporal Development Server running if you want to test your code locally.
+
+## Install
+
+Add the OpenTelemetry v2 integration with the same version as your other
+Temporal Java SDK dependencies.
+
+Gradle:
+
+```groovy
+implementation 'io.temporal:temporal-opentelemetry-v2:<temporal-java-sdk-version>'
+```
+
+Maven:
+
+```xml
+<dependency>
+  <groupId>io.temporal</groupId>
+  <artifactId>temporal-opentelemetry-v2</artifactId>
+  <version>TEMPORAL_JAVA_SDK_VERSION</version>
+</dependency>
+```
+
+Also add the exporters your backend requires, such as
+`io.opentelemetry:opentelemetry-exporter-otlp`.
+
+## Set up the replay-safe providers
+
+A [Tracer Provider](https://opentelemetry.io/docs/concepts/signals/traces/#tracer-provider),
+[Meter Provider](https://opentelemetry.io/docs/concepts/signals/metrics/#meter-provider),
+and [Logger Provider](https://opentelemetry.io/docs/concepts/signals/logs/#logger-provider)
+are factories for the Tracers, Meters, and Loggers your code uses to emit
+telemetry. Standard providers don't know about replay. When a Workflow replays,
+re-executing the same code, they would create the same span again with a new
+random ID, count the same event twice, and emit the same log record again.
+
+`ReplaySafeOpenTelemetry` wraps the OpenTelemetry SDK providers so that
+Workflow code is replay-safe:
+
+- Workflow spans get IDs from a deterministic source tied to the Workflow, so
+  the same span gets the same ID on every replay.
+- Workflow spans are stamped with `Workflow.currentTimeMillis()`, Temporal's
+  replay-safe clock, so a replayed span keeps the time from its original
+  execution rather than the time of the replay.
+- Workflow spans, metrics, and log records aren't exported again while the
+  Workflow replays.
+
+Build it from the OpenTelemetry SDK provider builders you would normally use, then register
+it as the OpenTelemetry global before you create the plugin:
+
+<!--SNIPSTART java-opentelemetry-v2-setup-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java)
+```java
+// Batch processors perform exporter I/O outside the Workflow thread.
+ReplaySafeOpenTelemetry openTelemetry =
+    ReplaySafeOpenTelemetry.newBuilder()
+        .setTracerProviderBuilder(
+            SdkTracerProvider.builder()
+                .addSpanProcessor(
+                    BatchSpanProcessor.builder(OtlpGrpcSpanExporter.builder().build()).build()))
+        .setMeterProviderBuilder(
+            SdkMeterProvider.builder()
+                .registerMetricReader(
+                    PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build())
+                        .build()))
+        .setLoggerProviderBuilder(
+            SdkLoggerProvider.builder()
+                .addLogRecordProcessor(
+                    BatchLogRecordProcessor.builder(
+                            OtlpGrpcLogRecordExporter.builder().build())
+                        .build()))
+        .build();
+GlobalOpenTelemetry.set(openTelemetry);
+```
+<!--SNIPEND-->
+
+Every provider is optional. Set only the ones for the signals you emit.
+
+Build `ReplaySafeOpenTelemetry` before anything else uses the OpenTelemetry
+`Context`. If the global isn't a `ReplaySafeOpenTelemetry` when you build the
+plugin, `build()` throws `IllegalStateException`.
+
+The providers live as long as your application. Close them after your Workers
+and Clients stop, so remaining telemetry can be sent through your exporters:
+
+<!--SNIPSTART java-opentelemetry-v2-shutdown-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java)
+```java
+factory.shutdown();
+openTelemetry.close();
+```
+<!--SNIPEND-->
+
+## Add the plugin
+
+Pass the plugin to your service stubs. Clients and Workers created from those
+stubs get the plugin automatically. You can also set it directly on
+`WorkflowClientOptions`.
+
+<!--SNIPSTART java-opentelemetry-v2-plugin-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java)
+```java
+OpenTelemetryPlugin plugin = OpenTelemetryPlugin.newBuilder().build();
+
+WorkflowServiceStubs service =
+    WorkflowServiceStubs.newServiceStubs(
+        WorkflowServiceStubsOptions.newBuilder().setPlugins(plugin).build());
+WorkflowClient client = WorkflowClient.newInstance(service);
+WorkerFactory factory = WorkerFactory.newInstance(client);
+```
+<!--SNIPEND-->
+
+By default the plugin only performs
+[context propagation](https://opentelemetry.io/docs/concepts/context-propagation/)
+so [Span Context](https://opentelemetry.io/docs/concepts/signals/traces/#span-context)
+can cross Temporal boundaries.
+
+## Traces
+
+A [Tracer](https://opentelemetry.io/docs/concepts/signals/traces/#tracer)
+creates spans that capture information about an operation. Workflows,
+Activities, Clients, and other code all create spans with the same standard
+OpenTelemetry API. In Workflows, the replay-safe providers you registered
+handle replay for you.
+
+The plugin uses [context propagation](#context-propagation) to carry the
+current span across Temporal boundaries, such as a
+Workflow calling an Activity or a Client starting a Workflow. Spans created on
+the other side of the boundary nest under the current span, even when a
+different Worker or process runs that code. In this example, spans the Activity
+creates nest under `request-greeting`:
+
+<!--SNIPSTART java-opentelemetry-v2-workflow-span-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/GreetingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/GreetingWorkflowImpl.java)
+```java
+Span span =
+    GlobalOpenTelemetry.getTracer(INSTRUMENTATION_NAME)
+        .spanBuilder("request-greeting")
+        .startSpan();
+try (Scope ignored = span.makeCurrent()) {
+  return activities.composeGreeting(name);
+} finally {
+  span.end();
+}
+```
+<!--SNIPEND-->
+
+**Enable Temporal SDK spans**
+
+Set `setAddTemporalSpans(true)` to create spans for Temporal SDK operations,
+such as `StartWorkflow`, `RunWorkflow`, `RunActivity`, and `ContinueAsNew`,
+across Clients, Workflows, Activities, and Nexus Operations.
+
+<!--SNIPSTART java-opentelemetry-v2-temporal-spans-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java)
+```java
+OpenTelemetryPlugin plugin = OpenTelemetryPlugin.newBuilder().setAddTemporalSpans(true).build();
+```
+<!--SNIPEND-->
+
+## Metrics
+
+A [Meter](https://opentelemetry.io/docs/concepts/signals/metrics/#meter)
+creates instruments, such as a
+[Counter](https://opentelemetry.io/docs/concepts/signals/metrics/#counter),
+that record measurements. Workflows, Activities, Clients, and other code all
+record measurements with the same standard OpenTelemetry API. In Workflows, the
+replay-safe providers you registered skip measurements while the Workflow
+replays, so each event is counted once:
+
+<!--SNIPSTART java-opentelemetry-v2-workflow-counter-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/GreetingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/GreetingWorkflowImpl.java)
+```java
+GlobalOpenTelemetry.getMeter(INSTRUMENTATION_NAME)
+    .counterBuilder("greeting.workflow.runs")
+    .build()
+    .add(1);
+```
+<!--SNIPEND-->
+
+In Workflows, use synchronous instruments, such as Counters and Histograms.
+Asynchronous instruments aren't supported in Workflows because the
+OpenTelemetry SDK runs their callbacks on its own thread, outside the Workflow.
+
+**Enable Temporal SDK metrics**
+
+The Temporal Java SDK automatically emits
+[Temporal SDK metrics](/references/sdk-metrics) for Clients and Workers using
+[Tally](https://github.com/uber-java/tally), which already handles replay. To
+record them with your Meter Provider, connect Tally to it through
+[Micrometer](/develop/java/platform/observability#metrics)
+(Tally → Micrometer → Meter Provider).
+
+1. Create an `OpenTelemetryMeterRegistry` from the
+   [OpenTelemetry Micrometer instrumentation](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/micrometer/micrometer-1.5/library).
+   It records Micrometer metrics with your Meter Provider.
+2. Create a Tally scope that reports to that registry through
+   `MicrometerClientStatsReporter`.
+3. Set the scope on your service stubs.
+
+<!--SNIPSTART java-opentelemetry-v2-sdk-metrics-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java)
+```java
+MeterRegistry registry = OpenTelemetryMeterRegistry.builder(openTelemetry).build();
+Scope scope =
+    new RootScopeBuilder()
+        .reporter(new MicrometerClientStatsReporter(registry))
+        .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
+
+WorkflowServiceStubs service =
+    WorkflowServiceStubs.newServiceStubs(
+        WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build());
+```
+<!--SNIPEND-->
+
+Close the scope before `ReplaySafeOpenTelemetry`, so its last report is sent.
+
+## Logs
+
+OpenTelemetry [logs](https://opentelemetry.io/docs/concepts/signals/logs/) work
+with your existing logging library rather than replacing it. A log appender,
+such as the
+[OpenTelemetry Logback appender](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/logback/logback-appender-1.0/library),
+passes the records your library produces to your Logger Provider. Each log record
+carries the trace ID and span ID of the span that was current when it was
+logged, so you can find the trace and span a log record belongs to.
+
+This example uses the Logback appender. Install it with your
+`ReplaySafeOpenTelemetry`.
+
+<!--SNIPSTART java-opentelemetry-v2-log-appender-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/OpenTelemetrySetupExamples.java)
+```java
+OpenTelemetryAppender.install(openTelemetry);
+```
+<!--SNIPEND-->
+
+Then add it to your Logback configuration.
+
+<!--SNIPSTART java-opentelemetry-v2-logback-config-->
+[java-sandbox/opentelemetry-v2/src/main/resources/logback.xml](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/resources/logback.xml)
+```xml
+<appender name="OpenTelemetry"
+          class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender"/>
+
+<root level="INFO">
+    <appender-ref ref="OpenTelemetry"/>
+</root>
+```
+<!--SNIPEND-->
+
+Then log with SLF4J as usual. In Workflows, get the logger from
+[`Workflow.getLogger`](/develop/java/platform/observability#logging). Everywhere else,
+including Activities and Clients, use `LoggerFactory.getLogger`.
+
+<!--SNIPSTART java-opentelemetry-v2-workflow-logger-->
+[java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/GreetingWorkflowImpl.java](https://github.com/temporalio/documentation-sdk-code-examples/blob/main/java-sandbox/opentelemetry-v2/src/main/java/io/temporal/docs/opentelemetryv2/GreetingWorkflowImpl.java)
+```java
+private static final Logger logger = Workflow.getLogger(GreetingWorkflowImpl.class);
+```
+<!--SNIPEND-->
+
+## Context propagation
+
+[Context propagation](https://opentelemetry.io/docs/concepts/context-propagation/)
+moves OpenTelemetry context across process boundaries, injecting it on the way
+out and extracting it on the way in. The plugin performs this
+propagation for you across Temporal boundaries, carrying
+[Span Context](https://opentelemetry.io/docs/concepts/signals/traces/#span-context),
+which keeps spans linked into one trace, and
+[baggage](https://opentelemetry.io/docs/concepts/signals/baggage/), optional
+key-value data that travels with the context.
+
+Do not put credentials, tokens, or personal data in baggage since the
+plugin serializes it into Temporal headers that can be persisted in
+Workflow Event History.
+
+**Change the propagators**
+
+The plugin injects and extracts both with the propagators of the global
+OpenTelemetry instance. By default those support
+[W3C Trace Context](https://www.w3.org/TR/trace-context/) and
+[W3C Baggage](https://www.w3.org/TR/baggage/). Set
+`ReplaySafeOpenTelemetry.Builder.setPropagators` to override them.
+
+**Change the header key**
+
+Propagated values are stored in the Temporal header under `_tracer-data`. Set
+`OpenTelemetryPlugin.Builder.setHeaderKey` to use a different key. Workers and
+Clients that use a different key don't continue each other's traces.
+
+## Resources
+
+- [OpenTelemetry v2 samples](https://github.com/temporalio/samples-java/tree/main/opentelemetry-v2)
+- [OpenTelemetry v2 Java module](https://github.com/temporalio/sdk-java/tree/master/contrib/temporal-opentelemetry-v2)
+- [Traces](https://opentelemetry.io/docs/concepts/signals/traces/)
+- [Metrics](https://opentelemetry.io/docs/concepts/signals/metrics/)
+- [Logs](https://opentelemetry.io/docs/concepts/signals/logs/)
+- [Baggage](https://opentelemetry.io/docs/concepts/signals/baggage/)
+- [Context propagation](https://opentelemetry.io/docs/concepts/context-propagation/)
+- [Java SDK observability guide](/develop/java/platform/observability)
