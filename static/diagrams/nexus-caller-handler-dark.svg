@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 792 282" width="792" height="282" role="img" aria-label="The caller, the checkout team, knows the contract: the Endpoint name, the Service, the Operation, and its input and output types. The Endpoint accepts calls only from Namespaces on its allowlist. The handler, the payments team, owns its Namespace, Task Queue, Workers, language, and the Workflow, Activity, or other code behind the Operation, and can change them while the contract stays the same.">
+  <defs><marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#a5b4fc"/></marker><style>text { font-family: Inter, 'Helvetica Neue', Arial, sans-serif; }</style><filter id="glow" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1000" height="500"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#818cf8" flood-opacity="0.35"/></filter><filter id="glow-soft" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1000" height="500"><feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#a5b4fc" flood-opacity="0.4"/></filter></defs>
+  
+  <rect x="0" y="0" width="250" height="250" fill="#25252b" stroke="#4b5563"/>
+  <text x="16" y="28" fill="#f3f4f6" font-size="14" font-weight="600">Checkout team</text>
+  <text x="234" y="28" text-anchor="end" fill="#a5b4fc" font-size="12" font-weight="600">Caller</text>
+  <text x="16" y="58" fill="#9ca3af" font-size="11.5" font-weight="600">Knows the contract</text>
+  <rect x="16" y="75" width="7" height="7" fill="#a5b4fc"/>
+  <text x="32" y="84" fill="#f3f4f6" font-size="12">Endpoint: payments-endpoint</text>
+  <rect x="16" y="103" width="7" height="7" fill="#a5b4fc"/>
+  <text x="32" y="112" fill="#f3f4f6" font-size="12">Service: PaymentService</text>
+  <rect x="16" y="131" width="7" height="7" fill="#a5b4fc"/>
+  <text x="32" y="140" fill="#f3f4f6" font-size="12">Operation: processPayment</text>
+  <rect x="16" y="159" width="7" height="7" fill="#a5b4fc"/>
+  <text x="32" y="168" fill="#f3f4f6" font-size="12">Input and output types</text>
+  <text x="16" y="208" fill="#9ca3af" font-size="11">Doesn't need to know anything</text>
+  <text x="16" y="225" fill="#9ca3af" font-size="11">the handler owns.</text>
+  <rect x="510" y="0" width="250" height="250" fill="#25252b" stroke="#4b5563"/>
+  <text x="526" y="28" fill="#f3f4f6" font-size="14" font-weight="600">Payments team</text>
+  <text x="744" y="28" text-anchor="end" fill="#a5b4fc" font-size="12" font-weight="600">Handler</text>
+  <text x="526" y="58" fill="#9ca3af" font-size="11.5" font-weight="600">Owns the implementation</text>
+  <rect x="526" y="75" width="7" height="7" fill="#a5b4fc"/>
+  <text x="542" y="84" fill="#f3f4f6" font-size="12">Namespace and Task Queue</text>
+  <rect x="526" y="103" width="7" height="7" fill="#a5b4fc"/>
+  <text x="542" y="112" fill="#f3f4f6" font-size="12">Workers and language</text>
+  <rect x="526" y="131" width="7" height="7" fill="#a5b4fc"/>
+  <text x="542" y="140" fill="#f3f4f6" font-size="12">Workflow, Activity, or other code</text>
+  <rect x="526" y="159" width="7" height="7" fill="#a5b4fc"/>
+  <text x="542" y="168" fill="#f3f4f6" font-size="12">How the work gets done</text>
+  <text x="526" y="208" fill="#9ca3af" font-size="11">Can change any of this while</text>
+  <text x="526" y="225" fill="#9ca3af" font-size="11">the contract stays the same.</text>
+  <rect x="290" y="0" width="180" height="62" fill="#25252b" stroke="#4b5563"/>
+  <text x="380" y="26" text-anchor="middle" fill="#f3f4f6" font-size="13" font-weight="600">Registry</text>
+  <text x="380" y="45" text-anchor="middle" fill="#9ca3af" font-size="11">Where teams find Endpoints</text>
+  <line x1="380" y1="62" x2="380" y2="104" stroke="#a5b4fc" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <rect x="290" y="104" width="180" height="74" fill="#2a2c6b" stroke="#a5b4fc" stroke-width="1.5" filter="url(#glow)"/>
+  <text x="380" y="128" text-anchor="middle" fill="#f3f4f6" font-size="13" font-weight="600">payments-endpoint</text>
+  <text x="380" y="147" text-anchor="middle" fill="#9ca3af" font-size="11">Endpoint</text>
+  <text x="380" y="166" text-anchor="middle" fill="#a5b4fc" font-size="10.5" font-weight="600">Allowlist: checkout Namespace</text>
+  <line x1="252" y1="133" x2="286" y2="133" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arr)" filter="url(#glow-soft)"/>
+  <line x1="472" y1="133" x2="506" y2="133" stroke="#a5b4fc" stroke-width="2" marker-end="url(#arr)" filter="url(#glow-soft)"/>
+  <text x="380" y="206" text-anchor="middle" fill="#f3f4f6" font-size="12" font-weight="600">Callers only need</text>
+  <text x="380" y="223" text-anchor="middle" fill="#f3f4f6" font-size="12" font-weight="600">the Endpoint name</text>
+</svg>

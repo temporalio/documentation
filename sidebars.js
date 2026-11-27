@@ -2228,6 +2228,7 @@ module.exports = {
           },
           items: [
             'encyclopedia/nexus/choosing-a-nexus-approach',
+            'encyclopedia/nexus/how-nexus-works',
             'encyclopedia/nexus/nexus-services',
             'encyclopedia/nexus/nexus-operations',
             'encyclopedia/nexus/nexus-endpoints',
