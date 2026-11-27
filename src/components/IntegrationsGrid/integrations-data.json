@@ -81,6 +81,42 @@
     "href": "https://docs.ctrlb.ai/integrations/temporal"
   },
   {
+    "name": "CtrlB",
+    "description": "Trace Temporal Workflows, Activities, and the LLM calls they make in CtrlB AI Observability.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Go",
+    "href": "https://docs.ctrlb.ai/integrations/temporal-agents#go"
+  },
+  {
+    "name": "CtrlB",
+    "description": "Trace Temporal Workflows, Activities, and the LLM calls they make in CtrlB AI Observability.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Java",
+    "href": "https://docs.ctrlb.ai/integrations/temporal-agents#java"
+  },
+  {
+    "name": "CtrlB",
+    "description": "Trace Temporal Workflows, Activities, and the LLM calls they make in CtrlB AI Observability.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "Python",
+    "href": "https://docs.ctrlb.ai/integrations/temporal-agents#python"
+  },
+  {
+    "name": "CtrlB",
+    "description": "Trace Temporal Workflows, Activities, and the LLM calls they make in CtrlB AI Observability.",
+    "tags": [
+      "Agent observability"
+    ],
+    "sdk": "TypeScript",
+    "href": "https://docs.ctrlb.ai/integrations/temporal-agents#typescript"
+  },
+  {
     "name": "Datadog (Metrics)",
     "description": "Export Temporal Cloud metrics to Datadog with a serverless integration and pre-built dashboard.",
     "tags": [
