@@ -18,6 +18,15 @@
     "href": "/develop/python/integrations/arize"
   },
   {
+    "name": "Axiom",
+    "description": "Export Temporal Cloud metrics to Axiom via an OpenTelemetry Collector.",
+    "tags": [
+      "Observability",
+      "Temporal Cloud"
+    ],
+    "href": "https://axiom.co/docs/send-data/temporal#send-temporal-cloud-metrics"
+  },
+  {
     "name": "Braintrust",
     "description": "Monitor and evaluate AI application performance with Braintrust observability.",
     "tags": [
