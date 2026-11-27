@@ -254,3 +254,66 @@ on `main` after it merges. Run that workflow by hand when you need the baseline 
 
 This is useful when you make a change to the docs site that touches the `yarn.lock` file, since changes in the
 dependencies may alter the CSS load order and cause unexpected changes even if you didn't make any specific CSS changes.
+
+## perf
+
+`bin/perf.js` runs before-and-after performance tests on a fixed sample of docs pages and keeps the results in the
+repository, so a change can be checked against an earlier run and later regressions show up against the same baseline.
+It has three commands:
+
+- `yarn perf:run` runs Lighthouse through the
+  [PageSpeed Insights API](https://developers.google.com/speed/docs/insights/v5/get-started) on every page in
+  `bin/perf-pages.json`, mobile and desktop, five times each. It writes the medians, every run's key numbers, and the
+  main-thread time of each third party to `perf/runs/<date>-<label>.json`.
+- `yarn perf:compare` compares two saved runs and prints the changes that are bigger than run-to-run noise as Markdown.
+- `yarn perf:field` reads up to 25 weeks of Chrome real-user data from the
+  [CrUX History API](https://developer.chrome.com/docs/crux/history-api) for the whole site and each sample page, and
+  writes it to `perf/field/<date>.json`.
+
+Lab runs show what a change does to page weight, blocking time, and third-party cost right away. Real-user data shows
+whether readers noticed. It's the only source for interaction delay (INP), but each value covers the previous 28 days,
+so a change takes about four weeks to show in full.
+
+### Set up
+
+Both APIs use one Google Cloud API key with the **PageSpeed Insights API** and the **Chrome UX Report API** enabled.
+Neither needs billing. Create the key under **APIs & Services → Credentials**, restrict it to those two APIs, and export
+it as `PSI_API_KEY`. Don't commit it.
+
+### Usage
+
+```bash
+yarn perf:run --label before-gtm                       # all sample pages on production (about 20 minutes)
+yarn perf:run --label after-gtm
+yarn perf:compare                                      # the two most recent runs
+yarn perf:compare perf/runs/A.json perf/runs/B.json    # two specific runs; --all shows every metric
+yarn perf:field                                        # latest real-user values and a whole-site trend
+yarn perf:field --change 2026-12-01                    # averages before and after a change shipped
+```
+
+`perf:run` also takes `--base <url>` to test a preview deployment, `--pages /a,/b` to test some of the sample,
+`--runs N`, and `--form-factors mobile`. PageSpeed loads pages from Google's servers in the US, so the URL must be
+public: a preview behind Vercel deployment protection can't be tested. Because the test runs as a US visitor, the
+consent banner applies its opt-out default and the marketing tags load, as they do for most readers.
+
+`perf:compare` counts a change only when it clears a size threshold for that metric (for example, blocking time must
+move by at least 100 ms and 20%) and the two sets of runs don't overlap. Lab timings swing widely between loads of the
+same page, mostly because third-party tags do different amounts of work each time: the Reddit pixel took anywhere from
+70 ms to 1.9 s. So paint times, blocking time, and main-thread work also need at least five runs on each side. With
+fewer, compare lists them as possible changes and doesn't count them. Byte and request counts are steadier and need no
+minimum. Compare also lists third parties that appeared on more or fewer pages, which is the clearest signal after a
+Tag Manager change.
+
+Compare warns when the runs used different Lighthouse versions, because PageSpeed upgrades Lighthouse from time to time
+and that alone moves the numbers. `--fail-on-worse` exits 1 when any metric got worse. Don't start two runs of the same
+pages at once: PageSpeed returns its cached result for a URL it tested moments earlier, so the runs would share
+samples.
+
+### Work
+
+- Take a run with a descriptive label before a change that could affect performance, and another after it ships. Commit
+  both run files with the change, or in a follow-up pull request.
+- Run `yarn perf:field --change <date>` about four weeks after a change ships to see its effect on real readers.
+- Keep the page list stable. Add pages rather than swapping them, because a run only compares with runs of the same
+  pages. Most sample pages don't get enough traffic for page-level real-user data, so `perf:field` reports the whole
+  site and the busiest pages only.

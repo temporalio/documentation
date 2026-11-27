@@ -64,9 +64,11 @@ different.
 4. Add a `vercel.json` redirect only if this page replaces or moves an existing URL — not needed for a genuinely new
    page.
 
-## 7. Verify before finishing
+## 7. Run a tone pass and verify
 
-Run `vale --config .vale-ci.ini docs/` against the new/changed files and resolve every result, per AGENTS.md's
+Follow AGENTS.md's [Tone pass](../../../AGENTS.md#tone-pass) on the new page and the index change. Tell the reviewing
+agent to look especially for formatting and voice carried over from the source. The pass ends with
+`vale --config .vale-ci.ini`. Resolve every result it reports, per AGENTS.md's
 [Commands](../../../AGENTS.md#commands) section.
 
 ## 8. Summarize

@@ -108,16 +108,44 @@ IP changes counts more than once. A cache hit never reaches Kapa, so it isn't co
 
 The `Retrieve health check` workflow (`.github/workflows/check-retrieve-health.yml`) runs `bin/check-retrieve-health.js`
 against production daily at 14:00 UTC and on demand. A failed run posts to Slack through
-`notify-automation-failures.yml`. It asks two questions, so each run spends two Kapa queries:
+`notify-automation-failures.yml`. It asks two fixed questions and two freshness questions, so each run spends four
+Kapa queries:
 
 | Question | Fails when |
 | --- | --- |
 | free credits temporal cloud | The response isn't 200, has fewer than 5 results, or has no custom Q&A answer |
 | rust sdk workflow determinism | The response isn't 200, has fewer than 5 results, or has no file from a `github.com/temporalio` repository |
+| Title of the newest temporal.io blog post at least 3 days old | No result is that post |
+| Title of the newest docs page at least 3 days old | No result is that page |
 
 Changes on the Kapa side have broken the endpoint with no deploy here, which no pull request check sees. On
 2026-10-30 every request returned 502, and once that was fixed, results came only from web crawl sources. The check
 catches both.
+
+The freshness questions catch a Kapa web crawl source that has stopped ingesting new pages. From 2026-03-03 to
+2026-11-20, a temporal.io redesign removed the element the blog source's selectors required, so every daily refresh
+accepted 0 pages and Kapa kept serving its March snapshot. Kapa held each refresh for review, which shows only as a
+"Needs review" badge in the dashboard, with no email or Slack alert. The fixed questions passed the whole time. A
+freshness failure usually means one of these:
+
+- The site markup changed and the source's selectors no longer match, so each refresh accepts 0 pages.
+- A refresh is waiting in Kapa's review queue.
+
+Open the source named in the failure in the Kapa dashboard, and look for the "Needs review" badge or a recent refresh
+that accepted 0 pages. Kapa's `ingested_at` field doesn't help: it shows the same date for every web crawl source,
+healthy or not.
+
+How the page is picked:
+
+- **Blog.** The newest `temporal.io/blog/<slug>` post in `https://temporal.io/sitemap.xml`, by the JSON-LD
+  `datePublished` on the post. The question is its `<title>` without ` | Temporal`.
+- **Docs.** The docs sitemap has no `<lastmod>`, so the script reads git history for the newest page added under
+  `docs/`. It skips index pages, unlisted and draft pages, pages missing from the live sitemap, and pages whose title
+  another page shares, such as one per SDK. The question is the frontmatter `title`. The workflow checks out full
+  history for this, without old file contents (`fetch-depth: 0`, `filter: blob:none`).
+
+Three days gives Kapa's daily refresh at least two chances to pick the page up. A result counts when its `source_url`
+or `page_url`, without the heading anchor or `.md` suffix, is the page.
 
 Its requests carry `src=healthcheck`, which the log report leaves out, and an `agent` value unique to the run, so the
 CDN can't answer them from cache. If the custom Q&A pricing answer is retired, or the Rust SDK leaves the allowlist on
