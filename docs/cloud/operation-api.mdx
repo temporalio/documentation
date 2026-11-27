@@ -14,6 +14,8 @@ The Temporal Cloud Operations API, or the Cloud Ops API, is an open source, publ
 ## Develop applications with the Cloud Ops API
 
 You can use the HTTP API or the gRPC API depending on how you need to integrate with your platform.
+For every operation and message, see the [HTTP API reference](https://saas-api.tmprl.cloud/docs/httpapi.html) and the
+[gRPC API reference](https://saas-api.tmprl.cloud/docs/grpcapi/).
 
 - HTTP: `https://saas-api.tmprl.cloud`
 - gRPC: `saas-api.tmprl.cloud:443`
@@ -56,7 +58,7 @@ This *does not* allow interaction with individual Workflows or Activities via HT
 - [Protocol Buffers](https://github.com/protocolbuffers/protobuf/releases)
 - [gRPC](https://grpc.io/docs/languages/) in your preferred programming language
 
-You can use the provided proto files to generate client libraries in your desired programming language, and then use that client to access the gRPC API. You can also find the [full gRPC docs on Buf](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CloudService).
+You can use the provided proto files to generate client libraries in your desired programming language, and then use that client to access the gRPC API. The API definitions are also [published on Buf](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CloudService).
 
 #### Using the Go SDK
 

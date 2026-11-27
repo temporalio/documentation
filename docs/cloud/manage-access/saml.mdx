@@ -213,3 +213,18 @@ domains.
 When you receive confirmation from us that we have finished configuration, log in to Temporal Cloud. This time, though,
 enter your email address in **Enterprise identity** and select **Continue**. Do not select **Continue with Google** or
 **Continue with Microsoft**. You will be redirected to the authentication page of your IdP.
+
+## How to use SAML with multiple accounts {/* #multiple-accounts */}
+
+Several Temporal Cloud accounts can use the same email domain, and each account can have its own SAML connection to the
+same IdP. Set up each account's connection separately by following
+[Integrate SAML with your Temporal Cloud account](#integrate-saml-with-your-temporal-cloud-account) with that account's
+Account ID. When you [finish the configuration](#finish-saml-configuration), give the same IdP domain for each
+connection.
+
+Each email address belongs to one Temporal Cloud account. When an existing user signs in with **Enterprise identity**,
+Temporal Cloud finds their account by their full email address, not by the domain, and sends them to that account's IdP
+application. To access two accounts, a person needs a different email address for each.
+
+To send users to the right account, create one IdP application per account and have users sign in from that
+application's tile in your IdP portal (IdP-initiated SSO).
