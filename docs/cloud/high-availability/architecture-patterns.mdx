@@ -172,7 +172,7 @@ These patterns work across two cloud regions, which could be in the same cloud p
 
 | Pattern | Where Workers run | Best for and benefits | Major tradeoffs |
 | --- | --- | --- | --- |
-| **[Active/Passive](#active-cold)** | One region at a time | Easy initial deployment; acts like a single region with no special setup | Failing over Workers is your responsibility; highest recovery time of the three |
+| **[Active/Passive](#active-cold)** | One region at a time | Easy initial deployment; acts like a single region with no special setup | Operator-managed Worker failover is your responsibility, with the highest recovery time of the three patterns. Regional Serverless Worker configurations can start recovery compute automatically after Namespace failover. |
 | **[Active/Hot-Passive](#active-hot)** | Both regions; secondary on warm standby | Low RTO with all task processing in the active region; fast Worker failover with no cold start | More configuration and the cost of a full standby fleet |
 | **[Active/Active](#active-active)** | All regions, all processing Workflows | Low RTO with Workers active in every region; fast failover that uses fleet capacity instead of a standby fleet | Cross-region requests add Workflow latency; external systems need a cross-region consistency story |
 
@@ -280,7 +280,7 @@ That simplicity comes at the cost of recovery time:
 
 Keep these in mind when setting up Active/Passive:
 
-- **Failing over the Workers is the operator's responsibility.** The Namespace fails over automatically, but bringing up the Workers in the secondary region is up to you. Plan for these sub-considerations:
+- **Failing over operator-managed Workers is the operator's responsibility.** The Namespace fails over automatically, but you must bring up Workers in the secondary region. With regional compute configured, Serverless Workers can start new Workers automatically after Namespace failover; see [Serverless Workers and High Availability](/serverless-workers/high-availability). Plan for these sub-considerations:
    - **How do you detect an outage and decide to fail over?** Define the failover conditions and the signals (alerts, health checks) that trigger them. Because Workflows make no progress until you detect the outage and respond, detection is on the critical path of your recovery time. To monitor for an outage and a failover, see [Detect a failover or an outage](/cloud/high-availability/monitoring#detect-failover-or-outage).
    - **How do you scale up the Workers?** Bring up the secondary-region fleet, ideally with tested automation, and scale down the primary region's fleet so Workers run in only one region at a time.
    - **Do you need to enforce single-region task processing?** This pattern relies on the operator to keep Workers in one region. To have Temporal enforce that Workflow and Activity Tasks are processed only in the active region, use the [Active/Hot-Passive](#active-hot) pattern.
@@ -633,7 +633,7 @@ Both **Active/Passive** and **Active/Hot-Passive** keep Workflows processing in 
 
 ### How do I fail over Workers to another region? {/* #faq-fail-over-workers */}
 
-A Namespace with High Availability fails over automatically, but bringing up or activating Workers in the secondary region is your responsibility. The exact steps depend on your pattern; see [Active/Passive](#active-cold), [Active/Hot-Passive](#active-hot), and [Active/Active](#active-active).
+A Namespace with High Availability fails over automatically, but bringing up or activating operator-managed Workers in the secondary region is your responsibility. Regional Serverless Worker configurations can start new Workers automatically after Namespace failover. The exact steps depend on your pattern; see [Active/Passive](#active-cold), [Active/Hot-Passive](#active-hot), and [Active/Active](#active-active).
 
 ### Which pattern has the lowest recovery time (RTO)? {/* #faq-lowest-rto */}
 

@@ -667,9 +667,9 @@ gcloud builds submit \
 Create an empty Worker Pool. Start it at zero instances: the WCI raises the instance count once the Worker Deployment
 Version is current and Tasks arrive.
 
-Create one Worker Pool per Worker Deployment Version. A pool runs a single container image, and a Worker Deployment
-Version pins a single build, so each new build needs its own pool. Include the build ID in the pool name to keep that
-mapping visible.
+Create a separate Worker Pool for each Worker Deployment Version in each compute region. A pool runs a single
+container image, and all regional pools for a version must run the same Worker build. Each new build needs its own
+pools. Include the Build ID in each pool name to keep that mapping visible.
 
 #### Choose a runner service account {/* #runner-service-account */}
 
@@ -784,8 +784,11 @@ Worker Deployment Version in [Step 4](#create-worker-deployment-version).
 ## 4. Create Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) whose compute
-configuration points at your Worker Pool. The compute configuration tells Temporal where the pool lives and which
-service account to impersonate to manage it. The deployment name and build ID must match the values in your Worker code.
+configuration points at your Worker Pool. The [compute configuration](/serverless-workers#scaling-groups) tells
+Temporal where the pool lives and which service account to impersonate to manage it. The single-region setup creates
+one scaling group named `default` without a Namespace-region restriction. The pool's region determines where the Workers
+run, regardless of the Namespace's active region. The deployment name and Build ID must match the values in your
+Worker code.
 
 A Namespace runs at most 100 Worker Deployment Versions with a compute configuration by default. Creating a version
 past that limit fails with `reached maximum worker controller instances in namespace`. See

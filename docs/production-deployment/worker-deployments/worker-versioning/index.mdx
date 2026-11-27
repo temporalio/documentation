@@ -62,11 +62,13 @@ To get started with Worker Versioning, you should understand some concepts aroun
 
 - A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deployment, more than two
   active Deployment Versions can run at once.
-- A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers polling on
-  multiple Task Queues, but they all run the same build.
+- A **Worker Deployment Version** represents one build of the Workers in a deployment or service. Configure each Worker
+  with its Task Queue, Worker Deployment name, and Build ID. When the Worker polls, Temporal associates the queue with
+  that version. All Workers in the version run the same build. Temporal tracks its Task Queues, rollout and
+  drainage status, and user-provided metadata. For Serverless Workers, it also has a
+  [compute configuration](/serverless-workers#compute-configuration) that tells Temporal how to start and scale compute.
 - A **Build ID**, in combination with a Worker Deployment name, identifies a single Worker Deployment Version.
-- When a versioned worker polls on a task queue, that task queue becomes part of that Worker's version. That version's
-  Worker Deployment controls how the task queue matches Workflow Tasks with Workers.
+- The Worker Deployment controls how its registered Task Queues match Workflow Tasks with Workers across versions.
 - Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or
   Auto-Upgrade.
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
@@ -184,7 +186,9 @@ You also want to make sure you understand how your Activities are going to work 
 Versions. Refer to the [Worker Versioning Activity behavior docs](/worker-versioning#activity-behavior-across-versions)
 for more details.
 
-If you run [Serverless Workers](/serverless-workers), each Worker Deployment Version's compute provider points at a
-specific Lambda function. In production, configure it with a qualified versioned ARN so Pinned Workflows remain truly
-pinned to the code they started against, regardless of whether your default behavior is Pinned or Auto-Upgrade. See
-[Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers).
+For [Serverless Workers on AWS Lambda](/serverless-workers/aws-lambda), configure each
+[scaling group's](/serverless-workers#scaling-groups) compute provider with a qualified versioned function ARN. All
+regional targets for a Worker Deployment Version must contain the same immutable Worker build, so Pinned Workflows
+keep running the code they started with. See
+[Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers) for other
+compute providers.

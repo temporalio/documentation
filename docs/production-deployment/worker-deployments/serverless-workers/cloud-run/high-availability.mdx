@@ -1,0 +1,232 @@
+---
+id: high-availability
+title: Configure high availability for Serverless Workers on GCP Cloud Run
+sidebar_label: Configure High Availability
+description: Deploy matching Cloud Run Worker Pools in two GCP regions, configure regional Worker compute, and test Temporal Cloud Namespace failover.
+tags:
+  - Workers
+  - Deploy
+  - Serverless
+  - GCP Cloud Run
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Deploy a Cloud Run Worker Pool in each of your Temporal Cloud Namespace's regions, then configure both pools on the same
+Worker Deployment Version. After Namespace failover, Temporal can scale the pool configured for the replica region.
+
+For details about compute selection and Worker behavior during failover, see
+[Serverless Workers and High Availability](/serverless-workers/high-availability).
+
+## Prerequisites {/* #prerequisites */}
+
+Prepare the Namespace and the resources your Workers need in both GCP regions.
+
+- A Temporal Cloud Namespace with [Multi-region Replication](/cloud/high-availability/enable) between two GCP regions.
+- Credentials, databases, external storage, and any Codec Server or network proxy available to Workers in both
+  regions. Check that both pools can reach the Namespace after failover. If you use private connectivity, review
+  [GCP Private Service Connect failover requirements](/cloud/high-availability/ha-connectivity#single-cloud-ha-on-gcp-private-service-connect).
+
+## Create a highly available Serverless Worker Deployment {/* #create */}
+
+Configure a Worker Deployment Version with one Worker Pool for each Namespace region so Temporal can scale the
+pool in the newly active region after failover.
+
+### Deploy a Worker Pool in each region
+
+Follow [Deploy a Serverless Worker on GCP Cloud Run](/production-deployment/worker-deployments/serverless-workers/cloud-run)
+through **Grant Temporal permission to manage the Worker Pool**. Deploy the same Worker image in both Namespace regions
+with the same Worker Deployment name, Build ID, and Task Queues. Have the project ID, Worker Pool name, region, and
+invoker service account email for each pool ready before creating the Worker Deployment.
+
+### Create the deployment with regional compute
+
+Configure both regional Worker Pools before routing new work to the version.
+
+<Tabs groupId="create-version-approach">
+<TabItem value="ui" label="Temporal Cloud UI">
+
+1. In your Namespace, go to **Workers** > **Deployments** and select **Create Worker Deployment**.
+2. Enter the name and Build ID that match your Worker code, then select **Google Cloud Run** as the compute provider.
+3. Under **Regions**, for the primary region, enter the pool's **Project ID**, **Region**, and **Worker Pool**.
+   Under **Access**, enter the invoker service account email as **Service Account**.
+4. Turn on **Serverless** for the replica region and enter the replica pool's **Region** and **Worker Pool**.
+   Change **Project ID** if the replica pool is in a different project.
+5. The replica inherits the primary's **Access** and **Scaling and Lifecycle** settings by default. Select **Customize**
+   to change them. If you changed the replica's **Project ID**, those settings are already editable.
+6. Select **Create**. The UI sets the version as current.
+
+</TabItem>
+<TabItem value="cli" label="Temporal CLI">
+
+Replace the example region IDs with your Namespace's region IDs. `--region-id` identifies the Namespace region
+where the scaling group applies. `--worker-pool-region` identifies the GCP region where the Worker Pool runs.
+
+1. Create the Worker Deployment.
+
+   ```bash
+   temporal worker deployment create \
+     --namespace <YOUR_NAMESPACE> \
+     --name my-app
+   ```
+
+2. Create a Worker Deployment Version with a [scaling group](/serverless-workers#scaling-groups) for the primary
+   region.
+
+   ```bash
+   temporal worker deployment version compute-config gcp-cloud-run create \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1 \
+     --scaling-group gcp-us-central1 \
+     --region-id gcp-us-central1 \
+     --project <PRIMARY_GCP_PROJECT> \
+     --worker-pool-region us-central1 \
+     --worker-pool <PRIMARY_WORKER_POOL> \
+     --service-account <PRIMARY_INVOKER_SERVICE_ACCOUNT>
+   ```
+
+3. Add a scaling group for the replica region to the same version.
+
+   ```bash
+   temporal worker deployment version compute-config gcp-cloud-run update \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1 \
+     --scaling-group gcp-us-west1 \
+     --region-id gcp-us-west1 \
+     --project <REPLICA_GCP_PROJECT> \
+     --worker-pool-region us-west1 \
+     --worker-pool <REPLICA_WORKER_POOL> \
+     --service-account <REPLICA_INVOKER_SERVICE_ACCOUNT>
+   ```
+
+4. Set the version as current so it receives new work.
+
+   ```bash
+   temporal worker deployment set-current-version \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1
+   ```
+
+</TabItem>
+</Tabs>
+
+## Add high availability to an existing Serverless Worker Deployment {/* #upgrade */}
+
+Add replica compute to each Worker Deployment Version that must serve work after failover, including older versions
+that still serve pinned Workflows.
+
+### Deploy the replica Worker Pool {/* #deploy-replica-worker-pool */}
+
+Follow [Create the Worker Pool](/production-deployment/worker-deployments/serverless-workers/cloud-run#create-worker-pool)
+to deploy the existing Worker image in the replica region. Use the same Worker Deployment name, Build ID, and Task
+Queues as the primary pool. [Grant Temporal permission to manage the new pool](/production-deployment/worker-deployments/serverless-workers/cloud-run#configure-iam)
+and record the invoker service account email.
+
+### Update the version's regional compute {/* #configure-regional-compute */}
+
+Configure the replica region to use the Worker Pool you deployed there.
+
+<Tabs groupId="create-version-approach">
+<TabItem value="ui" label="Temporal Cloud UI">
+
+1. In your Namespace, go to **Workers** > **Deployments** and select your deployment.
+2. Open the version's **Actions** menu and select **Edit**.
+3. Under **Regions**, turn on **Serverless** for the replica region.
+4. Enter the replica pool's **Region** and **Worker Pool**. Change **Project ID** if the replica pool is in a
+   different project.
+5. The replica inherits the primary's **Access** and **Scaling and Lifecycle** settings by default. Select **Customize**
+   to change them. If you changed the replica's **Project ID**, those settings are already editable.
+6. Select **Save** and confirm that both regions have compute configured.
+
+</TabItem>
+<TabItem value="cli" label="Temporal CLI">
+
+Replace the example region IDs with your Namespace's region IDs and the example pool region with your replica pool's
+GCP region.
+
+1. Describe the existing version's compute configuration to find its [scaling group](/serverless-workers#scaling-groups)
+   names.
+
+   ```bash
+   temporal worker deployment version compute-config describe \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1
+   ```
+
+2. Add a scaling group for the replica region using the Worker Pool you deployed there. The group uses the default
+   Cloud Run scaling settings unless you pass scaling options. To customize them, pass `--min-instances`,
+   `--max-instances`, `--initial-instances`, `--utilization-target`, `--scale-down-stabilization-ms`,
+   `--scale-up-cooldown-ms`, and `--scale-down-cooldown-ms` together.
+
+   ```bash
+   temporal worker deployment version compute-config gcp-cloud-run update \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1 \
+     --scaling-group gcp-us-west1 \
+     --region-id gcp-us-west1 \
+     --project <REPLICA_GCP_PROJECT> \
+     --worker-pool-region us-west1 \
+     --worker-pool <REPLICA_WORKER_POOL> \
+     --service-account <REPLICA_INVOKER_SERVICE_ACCOUNT>
+   ```
+
+3. Scope the existing group to the primary region. Passing only `--region-id` preserves its provider and scaling
+   settings. Replace `default` with your existing group name if it differs.
+
+   ```bash
+   temporal worker deployment version compute-config gcp-cloud-run update \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1 \
+     --scaling-group default \
+     --region-id gcp-us-central1
+   ```
+
+4. Describe the compute configuration again and confirm that both groups show the expected region and provider.
+
+   ```bash
+   temporal worker deployment version compute-config describe \
+     --namespace <YOUR_NAMESPACE> \
+     --deployment-name my-app \
+     --build-id build-1
+   ```
+
+</TabItem>
+</Tabs>
+
+Keep the replica pools available while their versions serve work.
+
+## Verify failover and failback {/* #verify-failover-and-failback */}
+
+Use a staging Namespace to verify the configuration:
+
+1. Run a Workflow and confirm in Cloud Run logs that the primary pool processes its Tasks.
+2. [Manually fail over the Namespace](/cloud/high-availability/failovers/manage#trigger-failover).
+3. Confirm that Temporal scales the primary pool to zero. Submit more work and verify that Temporal scales up the
+   replica pool, its Workers start polling, and Workflows make progress.
+4. Check the serving pool's region in Cloud Run logs. Verify that the application can run without the primary region's
+   compute or dependencies.
+5. Fail the Namespace back. Confirm that the replica pool scales to zero and new demand causes Workers in the primary
+   pool to process Tasks.
+
+Scaling changes are not immediate, so allow time for controller metrics polls and Cloud Run operations. Workflow
+completion alone does not prove that the replica pool served the work. Include Workflows pinned to older versions in
+this test.
+
+## Recover from a Cloud Run outage {/* #recover-from-cloud-run-outage */}
+
+Automatic Namespace failover monitors Temporal Cloud health. It does not respond to an outage limited to Cloud Run, and
+Serverless Workers do not automatically switch Worker Pools when Cloud Run is unavailable.
+
+First, check [Worker Pool scaling errors](/troubleshooting/serverless-workers/cloud-run) to determine whether you can
+restore the existing pool, or monitor Task Queue backlog while waiting for Cloud Run to recover.
+
+If your recovery plan also calls for moving the Namespace, verify the replica pool and its dependencies, then
+[manually trigger Namespace failover](/cloud/high-availability/failovers#manual-failover). This affects all workloads
+in the Namespace, so include your other Workers and Clients in the recovery procedure.

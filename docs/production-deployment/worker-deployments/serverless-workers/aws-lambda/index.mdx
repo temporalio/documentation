@@ -527,7 +527,8 @@ The command prints the `FunctionArn` for the new version, for example
 `arn:aws:lambda:us-east-1:123456789012:function:my-temporal-worker:5`.
 Use this qualified versioned ARN later when you create the Worker Deployment Version in [Step 4](#create-worker-deployment-version).
 
-For production, maintain a one-to-one mapping between each Lambda function version and each Temporal Worker Deployment Version Build ID.
+For production, configure each regional function target with a qualified Lambda version ARN. All function targets for
+the same Worker Deployment Version Build ID must contain the same immutable Worker build.
 For development or non-critical workloads, you can skip `publish-version` and use an unqualified ARN to iterate faster.
 See [Worker Versioning with Serverless Workers](/serverless-workers#worker-versioning-with-serverless-workers) for the trade-offs.
 
@@ -761,9 +762,11 @@ administrator to confirm that no RCP denies `sts:AssumeRole` to the Temporal pri
 ## 4. Create Worker Deployment Version {/* #create-worker-deployment-version */}
 
 Create a [Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) with a compute
-provider that points to your Lambda function. The compute configuration tells Temporal how to invoke your Worker: the
-provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume. The deployment name and build ID must
-match the values in your Worker code.
+provider that points to your Lambda function. The [compute configuration](/serverless-workers#scaling-groups) tells
+Temporal how to invoke your Worker: the provider type (`aws-lambda`), the Lambda function ARN, and the IAM role to assume.
+The single-region setup creates one scaling group named `default` without a Namespace-region restriction. The function
+ARN determines where the Worker runs, regardless of the Namespace's active region. The deployment name and Build ID
+must match the values in your Worker code.
 
 A Namespace runs at most 100 Worker Deployment Versions with a compute configuration by default. Creating a version
 past that limit fails with `reached maximum worker controller instances in namespace`. See

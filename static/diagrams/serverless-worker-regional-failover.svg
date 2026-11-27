@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="652" viewBox="0 0 720 652" role="img" aria-labelledby="diagram-title diagram-description">
+  <title id="diagram-title">How the active Namespace region selects a scaling group</title>
+  <desc id="diagram-description">The east scaling group has region_ids set to aws-us-east-1 and points to Lambda in us-east-1. The west group has region_ids set to aws-us-west-2 and points to Lambda in us-west-2. Before failover the Worker Controller Instance matches the active region to the east group and invokes its Lambda for new Workers. After failover it matches the west group and invokes that Lambda. An X marks the group that does not match.</desc>
+  <defs>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #17243A; }
+      .heading { font-size: 21px; font-weight: 700; }
+      .label { font-size: 17px; font-weight: 600; }
+      .muted { fill: #4D5C71; }
+      .code, .scope { font-family: ui-monospace, Menlo, monospace; }
+      .code { font-size: 17px; }
+      .scope { font-size: 15px; }
+      .caption { font-size: 16px; font-weight: 650; }
+      .active-label { fill: #234EAD; }
+      .inactive-label { fill: #A52B3A; }
+      .panel { fill: #FFFFFF; stroke: #CBD5E1; }
+      .label-background { fill: #FFFFFF; }
+      .selected { fill: #EBF2FF; stroke: #85A7EE; }
+      .unmatched { fill: #EDF1F6; stroke: #CBD5E1; }
+      .active-path { fill: none; stroke: #3060C7; stroke-width: 3.5; }
+      .inactive-path { fill: none; stroke: #69778B; stroke-width: 2.5; stroke-dasharray: 6 6; }
+    </style>
+    <marker id="active-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#3060C7"/>
+    </marker>
+    <marker id="inactive-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#69778B"/>
+    </marker>
+    <g id="inactive-mark">
+      <rect x="-10" y="-10" width="20" height="20" fill="#FFF0F1" stroke="#A52B3A" stroke-width="1.5"/>
+      <path d="M -4 -4 L 4 4 M 4 -4 L -4 4" fill="none" stroke="#A52B3A" stroke-width="2.4" stroke-linecap="square"/>
+    </g>
+  </defs>
+
+  <g aria-label="Saved compute configuration">
+    <rect x="10" y="10" width="700" height="180" fill="#F4F7FC" stroke="#CBD5E1"/>
+    <text x="30" y="43" class="heading">Saved compute configuration</text>
+    <text x="42" y="72" class="label muted">Scaling group</text>
+    <text x="171" y="72" class="label muted">Namespace scope <tspan class="code">(region_ids)</tspan></text>
+    <text x="514" y="72" class="label muted">Lambda region</text>
+
+    <rect x="28" y="83" width="664" height="41" class="panel"/>
+    <path d="M 153 83 V 124 M 497 83 V 124" fill="none" stroke="#CBD5E1"/>
+    <text x="42" y="109" class="code">east</text>
+    <text x="171" y="109" class="code">["aws-us-east-1"]</text>
+    <text x="514" y="109" class="code">us-east-1</text>
+
+    <rect x="28" y="133" width="664" height="41" class="panel"/>
+    <path d="M 153 133 V 174 M 497 133 V 174" fill="none" stroke="#CBD5E1"/>
+    <text x="42" y="159" class="code">west</text>
+    <text x="171" y="159" class="code">["aws-us-west-2"]</text>
+    <text x="514" y="159" class="code">us-west-2</text>
+  </g>
+
+  <g transform="translate(0)" aria-label="Before failover">
+    <rect x="10" y="206" width="342" height="436" class="panel"/>
+    <text x="30" y="241" class="heading">Before failover</text>
+    <rect x="28" y="255" width="306" height="74" class="selected"/>
+    <text x="181" y="282" text-anchor="middle" class="label active-label">Active Namespace region</text>
+    <text x="181" y="308" text-anchor="middle" class="code">aws-us-east-1</text>
+
+    <path d="M 181 329 V 387 H 260 V 447" class="inactive-path" marker-end="url(#inactive-arrow)"/>
+    <path d="M 181 329 V 387 H 102 V 447" class="active-path" marker-end="url(#active-arrow)"/>
+    <rect x="74" y="344" width="214" height="26" class="label-background"/>
+    <text x="181" y="362" text-anchor="middle" class="caption active-label">WCI checks <tspan class="scope">region_ids</tspan></text>
+    <use href="#inactive-mark" x="260" y="414"/>
+
+    <rect x="28" y="453" width="148" height="77" class="selected"/>
+    <text x="102" y="479" text-anchor="middle" class="label">east group</text>
+    <text x="102" y="500" text-anchor="middle" class="scope">aws-us-east-1</text>
+    <text x="102" y="520" text-anchor="middle" class="caption active-label">Selected</text>
+
+    <rect x="186" y="453" width="148" height="77" class="unmatched"/>
+    <text x="260" y="479" text-anchor="middle" class="label">west group</text>
+    <text x="260" y="500" text-anchor="middle" class="scope">aws-us-west-2</text>
+    <text x="260" y="520" text-anchor="middle" class="caption inactive-label">No match</text>
+
+    <path d="M 102 530 V 565" class="active-path" marker-end="url(#active-arrow)"/>
+    <text x="116" y="553" class="caption active-label">Invokes</text>
+    <rect x="28" y="572" width="148" height="54" class="selected"/>
+    <text x="102" y="595" text-anchor="middle" class="label">Lambda</text>
+    <text x="102" y="616" text-anchor="middle" class="scope">us-east-1</text>
+  </g>
+
+  <g transform="translate(358)" aria-label="After failover">
+    <rect x="10" y="206" width="342" height="436" class="panel"/>
+    <text x="30" y="241" class="heading">After failover</text>
+    <rect x="28" y="255" width="306" height="74" class="selected"/>
+    <text x="181" y="282" text-anchor="middle" class="label active-label">Active Namespace region</text>
+    <text x="181" y="308" text-anchor="middle" class="code">aws-us-west-2</text>
+
+    <path d="M 181 329 V 387 H 102 V 447" class="inactive-path" marker-end="url(#inactive-arrow)"/>
+    <path d="M 181 329 V 387 H 260 V 447" class="active-path" marker-end="url(#active-arrow)"/>
+    <rect x="74" y="344" width="214" height="26" class="label-background"/>
+    <text x="181" y="362" text-anchor="middle" class="caption active-label">WCI checks <tspan class="scope">region_ids</tspan></text>
+    <use href="#inactive-mark" x="102" y="414"/>
+
+    <rect x="28" y="453" width="148" height="77" class="unmatched"/>
+    <text x="102" y="479" text-anchor="middle" class="label">east group</text>
+    <text x="102" y="500" text-anchor="middle" class="scope">aws-us-east-1</text>
+    <text x="102" y="520" text-anchor="middle" class="caption inactive-label">No match</text>
+
+    <rect x="186" y="453" width="148" height="77" class="selected"/>
+    <text x="260" y="479" text-anchor="middle" class="label">west group</text>
+    <text x="260" y="500" text-anchor="middle" class="scope">aws-us-west-2</text>
+    <text x="260" y="520" text-anchor="middle" class="caption active-label">Selected</text>
+
+    <path d="M 260 530 V 565" class="active-path" marker-end="url(#active-arrow)"/>
+    <text x="274" y="553" class="caption active-label">Invokes</text>
+    <rect x="186" y="572" width="148" height="54" class="selected"/>
+    <text x="260" y="595" text-anchor="middle" class="label">Lambda</text>
+    <text x="260" y="616" text-anchor="middle" class="scope">us-west-2</text>
+  </g>
+</svg>

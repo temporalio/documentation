@@ -1,0 +1,94 @@
+---
+id: serverless-workers-high-availability
+title: High Availability for Serverless Workers
+sidebar_label: High availability
+description: Serverless Workers select regional compute after Namespace failover, while existing Workers and application dependencies have separate recovery behavior.
+slug: /serverless-workers/high-availability
+tags:
+  - Workers
+  - Concepts
+  - Serverless
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+[Temporal Cloud High Availability](/cloud/high-availability) replicates a Namespace and manages its failover.
+By default, when a Namespace fails over to another region in the same cloud provider, Temporal still uses your original
+Serverless Worker compute. To let Serverless Workers follow Namespace failover, configure compute in both regions.
+After failover, Temporal starts new Workers using the compute configured for the newly active region.
+
+## Compute selection after failover
+
+The [Worker Controller Instance (WCI)](/serverless-workers#worker-controller-instance) runs where the Namespace is
+active. To start new Workers, the WCI looks for a [scaling group](/serverless-workers#scaling-groups) whose `region_ids`
+contains the active Namespace region. The matching group's compute target determines which resource the WCI uses.
+
+The compute target specifies where the resource runs, through the region in the Lambda ARN or the Cloud Run Worker
+Pool's region setting.
+
+## Regional and default compute configurations
+
+For the configurations in the provider setup guides, regional selection works as follows:
+
+| Configuration | Behavior |
+| --- | --- |
+| A scaling group matches the active region. | The WCI uses that region's group. |
+| No regional group matches, but an unscoped group exists. | The WCI uses the unscoped group's compute target, even if that target is in another region. |
+| Neither a matching group nor an unscoped group exists. | The WCI starts no compute for that region. Tasks wait for Workers that can serve the version. |
+
+The standard setup creates one unscoped scaling group named `default`. If your version uses only that group, Temporal
+continues to use the same compute target after Namespace failover. An outage in the compute region can still make that
+target unavailable.
+
+Regional selection also supports traditional Workers in the primary region and Serverless Workers only in the recovery
+region. Both use the same Worker Deployment Version. A group scoped only to the recovery region starts Serverless
+Workers when the Namespace becomes active there.
+
+### Example of regional compute selection
+
+A Worker Deployment Version has two scaling groups, `east` and `west`, each pointing to a Lambda function that runs
+the same Worker build. While the Namespace is active in `aws-us-east-1`, the WCI selects `east` because its
+`region_ids` contains `aws-us-east-1`. After the Namespace fails over to `aws-us-west-2`, the WCI selects `west` and
+starts new Workers using the Lambda function configured for that group.
+
+<div style={{textAlign: 'center'}}>
+  <CaptionedImage
+    src="/diagrams/serverless-worker-regional-failover.svg"
+    srcDark="/diagrams/serverless-worker-regional-failover-dark.svg"
+    alt="The east scaling group matches aws-us-east-1 and points to a Lambda function in us-east-1. The west group matches aws-us-west-2 and points to a Lambda function in us-west-2. Before failover, the WCI selects east and invokes its Lambda. After failover, the WCI selects west and invokes its Lambda. An X marks the unmatched group in each state."
+    title="The WCI matches the active Namespace region to a scaling group and invokes that group's Lambda to start new Workers."
+  />
+</div>
+
+If the `west` scaling group instead points to a Lambda ARN in `us-east-1`, the WCI selects `west` after failover and
+still invokes a function in `us-east-1`.
+
+## Existing Workers after failover
+
+Regional compute selection changes where new Workers start. It does not immediately prevent Workers already running
+in the original region from receiving Tasks. A Worker using a Namespace Endpoint such as `payments.abcde.tmprl.cloud:7233`
+follows the active Namespace region. A Worker using a Regional Endpoint such as `aws-us-west-2.region.tmprl.cloud:7233`
+connects to the replica in that region. By default, the passive replica
+[forwards poll requests to the active replica](/cloud/high-availability#request-forwarding).
+
+Those Workers also need access to their application dependencies. A Worker might still reach Temporal Cloud while its
+regional database is unavailable. If you
+[disable passive poller forwarding](/cloud/high-availability/enable#change-forwarding-behavior), Workers connected through
+a passive region's Regional Endpoint stop receiving new Tasks through that replica. Running Activities can continue.
+
+How existing compute stops depends on the provider:
+
+- [AWS Lambda](/serverless-workers/aws-lambda#high-availability): existing invocations finish on their own.
+- [GCP Cloud Run](/serverless-workers/cloud-run#high-availability): the WCI scales pools that no longer serve the active
+  region to zero.
+
+## Compute-only outages
+
+An outage limited to Lambda, Cloud Run, or your application does not trigger automatic Namespace failover. Temporal
+Cloud monitors its own health to decide when to fail over a Namespace. When the Namespace fails over, Temporal selects
+compute for new Serverless Workers based on the newly active region.
+
+For recovery options during a compute provider outage, use the provider guide.
+
+- [Recover from a Lambda outage](/production-deployment/worker-deployments/serverless-workers/aws-lambda/high-availability#recover-from-lambda-outage)
+- [Recover from a Cloud Run outage](/production-deployment/worker-deployments/serverless-workers/cloud-run/high-availability#recover-from-cloud-run-outage)
