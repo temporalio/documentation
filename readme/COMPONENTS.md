@@ -304,6 +304,13 @@ Usage:
 | `videoId` | `string` | Yes | The YouTube video ID (the `v=` value from a `youtube.com/watch` URL). |
 | `title` | `string` | Yes | A descriptive title. Used as the iframe's accessible title, the play button's `aria-label`, and the "Watch" link generated for the LLM Markdown pipeline (see [MARKDOWN_PIPELINE.md](./MARKDOWN_PIPELINE.md)). |
 | `maxWidth` | `string` | No | Escape hatch to override the default width for a documented one-off exception. Most pages should omit this and use the standard width. |
+| `priority` | `boolean` | No | Loads the thumbnail eagerly with `fetchpriority="high"` and preconnects to `i.ytimg.com`. Set it only when the video is visible without scrolling on a phone, where its thumbnail is likely the page's Largest Contentful Paint element. Without it, the thumbnail uses `loading="lazy"`, which delays LCP when the video is at the top of the page. Use it on at most one video per page. |
+
+For example, a video at the top of a page:
+
+```
+<Video videoId="cXKQkrgn-TE" title="Temporal & AI Series: Agent Memory & State" priority />
+```
 
 Because `Video` generates the "Watch: {title}" link for the LLM Markdown feed automatically, you no longer need to hand-write a separate `Watch [Title](url)` sentence purely for that purpose. You can still add a short lead-in sentence for human readers (for example, "Watch a short overview:") above the component.
 
