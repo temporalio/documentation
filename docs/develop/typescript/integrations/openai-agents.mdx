@@ -16,7 +16,8 @@ Workflow and runs each model call, MCP operation, and sandbox operation as an [A
 itself.
 
 Activities retry on failure. Completed ones are recorded in Event History and aren't repeated when the Workflow replays,
-so an agent survives Worker restarts and can run for as long as it needs.
+so the agent loop survives Worker restarts. Unix-local and Docker [sandboxes](#run-sandbox-agents) are lost when their
+Worker restarts.
 
 Code snippets on this page come from the
 [OpenAI Agents samples directory](https://github.com/temporalio/samples-typescript/tree/main/openai-agents).
@@ -32,6 +33,7 @@ Before you start:
 - Set up your local environment by following
   [Set up a local development environment with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript),
   and leave the Temporal development server running to try your code locally.
+- Use Node.js 22.12 or later.
 
 Install the [`@temporalio/openai-agents`](https://www.npmjs.com/package/@temporalio/openai-agents) package along with
 the OpenAI Agents SDK packages it uses as peer dependencies,
@@ -44,8 +46,9 @@ npm install @temporalio/openai-agents @openai/agents-core @openai/agents-openai 
 ```
 
 The integration supports a single minor version of the OpenAI Agents SDK packages, so install them in the same command
-and npm picks versions that match. Keep every `@temporalio/*` package in your application on the same version, since the
-integration depends on exact versions of them.
+and npm picks versions that match. Keep the core Temporal TypeScript SDK packages in your application on the same
+version. Use SDK version 1.25.0 or later within 1.x to match the samples. `@temporalio/openai-agents` is versioned
+separately.
 
 Import Worker and Client APIs from `@temporalio/openai-agents`, and Workflow APIs from
 `@temporalio/openai-agents/workflow`, which is safe to load in the Workflow sandbox. [Configuration](#configuration)
@@ -239,6 +242,10 @@ Hosted tools from `@openai/agents-openai`, such as `webSearchTool()`, `imageGene
 callback runs in the Workflow and can wait for a Signal, as in the
 [hosted MCP sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/hosted-mcp).
 
+When importing hosted tools from `@openai/agents-openai`, set `bundlerOptions.ignoreModules: ['openai']` on the Worker,
+as the hosted tools sample does. The `openai` 7 client creates a `FinalizationRegistry` when loaded, which the Workflow
+sandbox doesn't allow. The model Activity uses the client outside that sandbox.
+
 Tool declarations are part of the model Activity's input, so a credential written into one, such as a hosted MCP tool's
 `authorization`, is recorded in Event History. Supply it from the Worker with the plugin's `hostedToolCredentials`
 instead, which keeps it out of that input, as described in [Configuration](#configuration).
@@ -280,8 +287,9 @@ integration runs each sandbox operation as an Activity, including creating the s
 operation, and the teardown. Sandbox support is experimental. For manifests, capabilities, and backends, see OpenAI's
 [sandbox agents concepts guide](https://openai.github.io/openai-agents-js/guides/sandbox-agents/concepts/).
 
-On the Worker, wrap a sandbox backend's client in a `SandboxClientProvider` under a name, and pass it to the plugin's
-`sandboxClientProviders`:
+On the Worker, wrap a Unix-local or Docker client in an `OnHostSandboxClientProvider` under a name, and pass it to the
+plugin's `sandboxClientProviders`. For a hosted backend, such as E2B or Daytona, use `SandboxClientProvider` instead.
+`SandboxClientProvider` refuses Unix-local and Docker clients.
 
 <!--SNIPSTART typescript-openai-agents-sandboxes-worker-configuration-->
 [openai-agents/src/sandboxes/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/openai-agents/src/sandboxes/worker.ts)
@@ -359,16 +367,20 @@ same `runConfig.sandbox` to that `run()` call.
 Canceling, terminating, or timing out the Workflow skips the teardown, as does never resuming a paused run. Remove
 those sessions through your backend, for example by deleting the Docker container or the hosted sandbox.
 
-Unix-local and Docker sessions stay on the machine that created them, so a Worker on another machine can't reach them.
-With those backends, send sandbox Activities to a Task Queue that only one host's Workers poll, by passing Activity
-options with that `taskQueue` as the second argument to `temporalSandboxClient()`. The options replace the default
-five-minute Start-To-Close Timeout instead of merging with it, so include a `startToCloseTimeout`.
+`OnHostSandboxClientProvider` sends every operation after sandbox creation to the Worker process that created it. The
+plugin polls a dedicated Task Queue for that process. Its `workerName` option defaults to the hostname. Processes on
+the same machine serving the same Task Queue need different names, and the old process must exit before its replacement
+starts with the same name.
 
-With Unix-local, let a single Worker process handle sandbox Activities and don't restart it during a run. A Unix-local
-session that another Worker process reconnects to, including the same Worker after a restart, goes back to the snapshot
-taken when the session was created or last paused and loses later changes. Neither Unix-local nor Docker can reconnect
-a process that's still running, which is why the Workflow above tells the agent to finish each command in one call.
-[Failure behavior](#failure-behavior) covers reconnects in detail, and the
+If that Worker restarts, the next operation on its sandbox fails with the non-retryable `ApplicationFailure` type
+`SandboxLost`, and the run fails. The plugin doesn't restore the sandbox, create a replacement, or clean up the
+containers and workspaces left behind. If the Worker never returns, operations wait on its queue. Set
+`scheduleToStartTimeout` in the second argument to `temporalSandboxClient()` to bound that wait. These options replace
+the default five-minute Start-To-Close Timeout, so include `startToCloseTimeout` too.
+
+Before switching a provider to `OnHostSandboxClientProvider`, upgrade every Worker running these Workflows to a plugin
+version that supports it. Switching providers loses open runs' sandboxes, like a restart.
+[Failure behavior](#failure-behavior) covers sandbox lifecycles in detail, and the
 [sandboxes sample](https://github.com/temporalio/samples-typescript/tree/main/openai-agents/src/sandboxes) shows this
 Worker and Workflow with the Client that starts them.
 
@@ -385,9 +397,10 @@ Workflow, iterate the result to drive the run to completion. That iteration yiel
 call finishes, so subscribe from outside the Workflow to see them live. A retried model call publishes its events again
 from the start, so a subscriber can see a call's events more than once.
 
-Catch errors from iterating the result and from awaiting `result.completed`, since the OpenAI Agents SDK's errors
-arrive there as its own errors rather than as `AgentsWorkflowError`. An uncaught one doesn't fail the Workflow but fails
-the Workflow Task, which retries.
+Catch errors from iterating the result and from awaiting `result.completed`, since the OpenAI Agents SDK's errors arrive
+there as its own errors rather than as `AgentsWorkflowError`. An uncaught one doesn't fail the Workflow but fails the
+Workflow Task, which retries. A tool or guardrail whose Activity or Nexus Operation failed is the exception: it arrives
+as an `AgentsWorkflowError`, which fails the Workflow if uncaught.
 
 Subscribe with `WorkflowStreamClient`, as described in
 [Subscribe](/develop/typescript/workflows/workflow-streams#subscribe), and keep the Workflow open until the subscriber
@@ -407,6 +420,15 @@ To send traces to OpenAI's dashboard, register OpenAI's exporter with
 `addTraceProcessor` too. Don't call `setDefaultOpenAITracingExporter()` after constructing the plugin, because it
 replaces every trace processor, including the one the plugin uses for OpenTelemetry.
 
+To choose a tracing export key per run, set `tracingApiKey` on the Worker's plugin. This synchronous callback receives
+`{ traceId, traceName?, workflowId?, workflowType? }`, with strings for the fields that are available. It returns a key
+or `undefined` to use the exporter's default key. Workflow fields aren't available in Nexus handlers. The key stays
+on the Worker and out of Event History. Traces and spans created on the Client keep the Client's default key. Passing
+`tracing: { apiKey }` to `run()` throws.
+
+The callback runs often, so keep it fast. If it throws, it fails the Activity or Nexus Operation, or drops a Workflow
+span with a warning.
+
 By default, OpenAI Agents SDK spans include model and tool inputs and outputs, and
 `runConfig.traceIncludeSensitiveData: false` leaves them out, as described in
 [Sensitive data](https://openai.github.io/openai-agents-js/guides/tracing/#sensitive-data) in OpenAI's tracing guide.
@@ -417,9 +439,9 @@ To export OpenAI Agents SDK spans through OpenTelemetry, install the optional pe
 [`@opentelemetry/sdk-trace-base`](https://www.npmjs.com/package/@opentelemetry/sdk-trace-base), then do the following
 in both the Worker and the Client process:
 
-1. Create a tracer provider with `createTracerProvider()` from `@temporalio/openai-agents/otel`, and add your
-   exporter's span processor to it with `addSpanProcessor()`. The provider starts with no span processor, so it exports
-   nothing until you add one.
+1. Create a tracer provider with `createTracerProvider({ spanProcessors: [...] })` from
+   `@temporalio/openai-agents/otel`, passing your exporter's span processor. Without a span processor, the provider
+   exports nothing.
 2. Before constructing the plugin, register the provider with `trace.setGlobalTracerProvider()`.
 3. Set `useOtelInstrumentation: true` in the plugin's `interceptorOptions`.
 
@@ -455,9 +477,9 @@ processor, OpenAI's exporter, and OpenTelemetry.
 | Stateless MCP servers | Supported | One connection per tool listing or tool call. |
 | Stateful MCP servers | Supported | A dedicated Worker holds the server for each Workflow run. |
 | MCP prompts | Not supported through MCP handles | Fetch prompts in your own Activity. |
-| Sandbox agents | Supported (experimental) | Unix-local and Docker sessions are tied to one host. |
-| Reconnecting to a sandbox process that's still running | Not supported on Unix-local or Docker | Have the agent finish each command in one `exec_command` call. See [Failure behavior](#failure-behavior). |
-| Sandbox runs paused for approval | Supported on backends with `resume()` | Every paused-run resume calls the backend's `resume()`. See [Failure behavior](#failure-behavior). |
+| Sandbox agents | Supported (experimental) | Unix-local and Docker sessions are tied to the Worker process that created them. |
+| Sandbox processes across Worker restarts | Not supported on Unix-local or Docker | The sandbox is lost. Hosted backends depend on their `resume()` support. See [Failure behavior](#failure-behavior). |
+| Sandbox runs paused for approval | Supported | Unix-local and Docker keep their live session while its Worker stays alive. Hosted backends need `resume()`. See [Failure behavior](#failure-behavior). |
 | Sessions | Supported | `WorkflowSafeMemorySession`. The SDK's `MemorySession` is rejected. |
 | Run state and approvals | Supported | Serialize `RunState` to resume across Continue-As-New. |
 | Guardrails | Supported | Run in the Workflow. Without `stream: true`, a tripwire arrives as the `cause` of an `AgentsWorkflowError`. |
@@ -479,6 +501,9 @@ processor, OpenAI's exporter, and OpenTelemetry.
 `OpenAIAgentsPlugin` adds its Activities and interceptors to the ones already on the Worker and Client, so it works
 alongside other plugins. Register one instance per Client. When several are registered, the last one's `modelParams` and
 `interceptorOptions` reach the Workflow.
+
+With `OnHostSandboxClientProvider`, register other Worker plugins on `Worker.create`, rather than on `NativeConnection`.
+The plugin starts a dedicated Worker for sandbox operations, and `Worker.create` rejects other plugins on its connection.
 
 The plugin's bundler hook puts its polyfills first in the Workflow bundle, ahead of every other module, so plugin order
 doesn't affect them. When you prebuild the bundle with `bundleWorkflowCode`, pass the plugin to `bundleWorkflowCode` as
@@ -521,8 +546,8 @@ carry over to the new run and to child Workflows.
 
 | Entry point | Use from | APIs |
 | --- | --- | --- |
-| `@temporalio/openai-agents` | Worker and Client code | `OpenAIAgentsPlugin`, `StatelessMCPServerProvider`, `StatefulMCPServerProvider`, `SandboxClientProvider`, `OpenAIAgentsTraceClientInterceptor` for wiring a Client by hand, `DEDICATED_WORKER_FAILURE_TYPE`, and option types |
-| `@temporalio/openai-agents/workflow` | Workflow code | `TemporalOpenAIRunner`, `activityAsTool`, `nexusOperationAsTool`, `statelessMcpServer`, `statefulMcpServer`, `WorkflowSafeMemorySession`, `temporalSandboxClient`, `workerEnvValue`, `ToolSerializationError`, and `DEDICATED_WORKER_FAILURE_TYPE` |
+| `@temporalio/openai-agents` | Worker and Client code | `OpenAIAgentsPlugin`, `StatelessMCPServerProvider`, `StatefulMCPServerProvider`, `SandboxClientProvider`, `OnHostSandboxClientProvider`, `OpenAIAgentsTraceClientInterceptor` for wiring a Client by hand, `DEDICATED_WORKER_FAILURE_TYPE`, `SANDBOX_LOST_FAILURE_TYPE`, and option types |
+| `@temporalio/openai-agents/workflow` | Workflow code | `TemporalOpenAIRunner`, `activityAsTool`, `nexusOperationAsTool`, `statelessMcpServer`, `statefulMcpServer`, `WorkflowSafeMemorySession`, `temporalSandboxClient`, `workerEnvValue`, `ToolSerializationError`, `DEDICATED_WORKER_FAILURE_TYPE`, and `SANDBOX_LOST_FAILURE_TYPE` |
 | `@temporalio/openai-agents/otel` | Worker and Client code | `createTracerProvider`, `TemporalIdGenerator`, `markReplaySafeTracerProvider`, and `isReplaySafeTracerProvider`. Requires `@opentelemetry/sdk-trace-base`. |
 | `@temporalio/openai-agents/workflow-interceptor` | Worker bundling | The Workflow interceptor module, for listing by hand in `interceptors.workflowModules` on `Worker.create`, or in `workflowInterceptorModules` for `bundleWorkflowCode` |
 
@@ -538,6 +563,7 @@ carry over to the new run and to child Workflows.
 | `sandboxClientProviders` | Worker | `[]` | Registers each sandbox provider's Activities. Experimental. |
 | `resolvableWorkerEnvVars` | Worker | `[]` | Worker environment variable names that a `workerEnvValue()` may read. `'*'` allows every name. A listed variable that isn't set reads as an empty string. Experimental. |
 | `hostedToolCredentials` | Worker | None | A function that takes a hosted tool's identity and returns, or resolves to, its credentials. Returning `undefined` leaves the tool as the Workflow declared it. Experimental. See the notes below this table. |
+| `tracingApiKey` | Worker | None | A synchronous callback that receives `{ traceId, traceName?, workflowId?, workflowType? }` and returns a tracing export key, or `undefined` to use the exporter's default key. Workflow fields aren't available in Nexus handlers. See [Trace agent runs](#trace-agent-runs). |
 
 Notes on `addTemporalSpans`:
 
@@ -571,7 +597,7 @@ Model Activity options, in the Client's `modelParams` or the runner's `defaultMo
 
 | Option | Default | Behavior |
 | --- | --- | --- |
-| `ActivityOptions` fields, such as `startToCloseTimeout`, `scheduleToCloseTimeout`, `retry`, `taskQueue`, and `heartbeatTimeout` | `startToCloseTimeout: '60s'` | Apply to every model Activity. With a `heartbeatTimeout`, the model Activity heartbeats on a timer at half that interval, which detects a lost Worker but not a stalled call. |
+| `ActivityOptions` fields, such as `startToCloseTimeout`, `scheduleToCloseTimeout`, `retry`, `taskQueue`, and `heartbeatTimeout` | `startToCloseTimeout: '60s'`, `heartbeatTimeout: '10s'` | Apply to every model Activity. Set `heartbeatTimeout: 0` to turn heartbeats off. With a `heartbeatTimeout`, the model Activity heartbeats on a timer at half that interval, which detects a lost Worker but not a stalled call. |
 | `useLocalActivity` | `false` | Runs model calls as [Local Activities](/local-activity). Only `startToCloseTimeout`, `scheduleToCloseTimeout`, `retry`, `cancellationType`, and `summary` apply then. |
 | `summary` | None | The Activity summary shown in the Temporal UI. A string works anywhere. A `ModelSummaryProvider`, whose `provide(agent, instructions, input)` runs in the Workflow and must be deterministic, works only in `defaultModelParams`. |
 | `streamingTopic` | None | The Workflow Stream topic for streaming runs. Required with `{ stream: true }`. Experimental. |
@@ -582,7 +608,7 @@ Model Activity options, in the Client's `modelParams` or the runner's `defaultMo
 | API | Option | Default | Behavior |
 | --- | --- | --- | --- |
 | Constructor | `defaultModelParams` | None | Model Activity options set in Workflow code, which also reach Workflows started without the plugin, such as by a Schedule or the Temporal CLI. The Client's `modelParams` take precedence for each field they set. `agent.asTool()` nested runs use the same options. |
-| `run()` | `context`, `maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, `tracing` | SDK defaults | As in the SDK's run options. `session` can't be the SDK's `MemorySession`. Other SDK run options, such as `signal`, `errorHandlers`, `toolErrorFormatter`, and `toolExecution`, aren't accepted. |
+| `run()` | `context`, `maxTurns`, `previousResponseId`, `conversationId`, `session`, `sessionInputCallback`, `callModelInputFilter`, `tracing` | SDK defaults | As in the SDK's run options, except that `tracing: { apiKey }` throws. Resolve a per-run tracing key on the Worker with the plugin's [`tracingApiKey`](#trace-agent-runs) option. `session` can't be the SDK's `MemorySession`. Other SDK run options, such as `signal`, `errorHandlers`, `toolErrorFormatter`, and `toolExecution`, aren't accepted. |
 | `run()` | `stream` | `false` | Streams model events over a Workflow Stream. Experimental. |
 | `run()` | `runConfig.model` | Each agent's model | A model name for the agents in the run that set none, nested `agent.asTool()` runs included. An agent's own model wins, as in the SDK. |
 | `run()` | `runConfig.modelSettings`, `handoffInputFilter`, `inputGuardrails`, `outputGuardrails`, `tracingDisabled`, `traceIncludeSensitiveData`, `workflowName`, `traceId`, `groupId`, `traceMetadata` | SDK defaults | As in the SDK's run config. Guardrails and filters run in the Workflow. |
@@ -616,7 +642,8 @@ Tool, MCP, session, and sandbox APIs:
 | `StatefulMCPServerProvider(name, factory, connection)` | Arguments | Required | `factory` returns a new server for each Workflow run. The dedicated Worker connects through `connection`, runs in the Worker process that ran the server session Activity, and handles one tool operation at a time, so parallel tool calls to one stateful server run one after another. |
 | `WorkflowSafeMemorySession(options)` | `sessionId` | The Workflow ID | The session identifier. |
 | `WorkflowSafeMemorySession` | `initialItems` | `[]` | History to start from, such as the previous run's items. |
-| `SandboxClientProvider(name, client)` | Arguments | Required | Wraps an SDK sandbox client. Its Activities are named after `name`. |
+| `SandboxClientProvider(name, client)` | Arguments | Required | Wraps a hosted sandbox client. Its Activities are named after `name`. Refuses Unix-local and Docker. |
+| `OnHostSandboxClientProvider(name, client, options)` | `workerName` | The hostname | Wraps a Unix-local or Docker client and sends each sandbox's operations to the Worker process that created it. Processes serving the same Task Queue need unique names. Experimental. |
 | `temporalSandboxClient(name, options)` | `options` | `{ startToCloseTimeout: '5 minutes' }` | Activity options for every sandbox operation. They replace the default instead of merging with it. |
 | `workerEnvValue(name)` | Arguments | Required | A manifest environment value that the Worker reads from its environment variable `name`. |
 
@@ -647,24 +674,24 @@ call ends the run with an `AgentsWorkflowError`, as described next. Failures tha
 Workflow reach it as they are when they occur outside a tool call.
 
 A failed `activityAsTool` call ends the run, and so does a failed `nexusOperationAsTool` call, which builds its tool the
-same way. In a run without `stream: true`, the failure reaches the Workflow as a non-retryable `AgentsWorkflowError`
-whose `cause` is the OpenAI Agents SDK's `ToolCallError`. The original failure is on that `ToolCallError`'s `error`
-property, not on the cause chain, so read it from `cause.error`. It's the `ActivityFailure` once an `activityAsTool`
-Activity stops retrying, or the `NexusOperationFailure` from `nexusOperationAsTool`. The Workflow failure recorded in
-Event History keeps only the message text, so an `activityAsTool` Activity's own error appears only in that Activity's
-failure event.
+same way. The failure reaches the Workflow as an `AgentsWorkflowError` whose `cause` is the Temporal failure: the
+`ActivityFailure` once an `activityAsTool` Activity stops retrying, or the `NexusOperationFailure` from
+`nexusOperationAsTool`. This `AgentsWorkflowError` is retryable, even when the Activity or Operation failed with a
+non-retryable error, so a Workflow Retry Policy retries the Workflow. In a run with `stream: true`, iterating the result
+or awaiting `result.completed` throws it.
 
 A failure inside an MCP tool call, an `agent.asTool()` nested run, or a sandbox tool, such as `exec_command`,
 `write_stdin`, `view_image`, or `apply_patch`, doesn't reach the Workflow. The OpenAI Agents SDK returns it to the model
 as the tool's output, such as
 `An error occurred while running the tool. Please try again. Error: ActivityFailure: Activity task failed`, without the
 underlying error, and the run continues. That includes the `DedicatedWorkerFailure`, `StatefulMCPServerNotFound`, and
-`SandboxOperationUnsupported` errors below when an MCP or sandbox tool call raises them.
+`SandboxOperationUnsupported` errors below when an MCP or sandbox tool call raises them. `SandboxLost` is an exception:
+it ends the run instead of returning an error to the model.
 
 | Failure type | Raised in | Meaning |
 | --- | --- | --- |
 | `ModelInvocationError`, and `ModelInvocationError.RateLimit`, `.Authentication`, `.BadRequest`, `.Timeout`, `.Conflict`, or `.ServerError` | Model Activity | The model call failed. HTTP 408, 409, 429, and 5xx responses are retryable, and other statuses aren't. An `x-should-retry` header overrides that, and `retry-after-ms` or `retry-after` sets the next retry delay. An `openai` `APIError` without an HTTP status, such as `APIConnectionError`, is non-retryable. Other errors are retryable. |
-| `AgentsWorkflowError` | Workflow | Non-retryable. An agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, an `agent.asTool()` tool sets `runConfig.modelProvider` or a model object as `runConfig.model` or can't be traced to its agent, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call in such a run also arrives this way, with the SDK's `ToolCallError` as the `cause` and the original failure on `cause.error`. In a streaming run, an error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
+| `AgentsWorkflowError` | Workflow | Non-retryable when an agent names its model with a model object instead of a string, an agent's `tools` holds a raw function, an `agent.asTool()` tool sets `runConfig.modelProvider` or a model object as `runConfig.model` or can't be traced to its agent, or the OpenAI Agents SDK threw during a run without `stream: true`, with its error as the `cause`. A failed `activityAsTool` or `nexusOperationAsTool` call, in any run, also arrives this way, with the `ActivityFailure` or `NexusOperationFailure` as the `cause`, and is retryable. In a streaming run, any other error the SDK throws after `run()` returns isn't wrapped, and iterating the result or awaiting `result.completed` throws it as it is, so an uncaught one fails the Workflow Task instead of the Workflow. |
 | `UnsafeSessionError` | Workflow | Non-retryable. `run()`, or an `agent.asTool()` tool's `runOptions.session`, received the SDK's `MemorySession`. |
 | `StreamingTopicNotConfigured` | Workflow | Non-retryable. A streaming run has no `streamingTopic`. |
 | `StreamingLocalActivityUnsupported` | Workflow | Non-retryable. A streaming run has `useLocalActivity: true`. |
@@ -672,7 +699,8 @@ underlying error, and the run continues. That includes the `DedicatedWorkerFailu
 | `StatefulMCPServerAlreadyRunning` | Server session Activity | Non-retryable. Two stateful handles with the same name connected in one Workflow run. |
 | `StatefulMCPServerNotFound` | Dedicated Worker | Non-retryable. A tool operation reached a Worker that doesn't hold the server. |
 | `SandboxConfigurationError` | Workflow | Non-retryable. A `SandboxAgent` is reachable but `runConfig.sandbox` is missing, or its `client`, or the `client` of an `agent.asTool()` tool's `runConfig.sandbox` or `runOptions.sandbox`, didn't come from `temporalSandboxClient()`. It's also raised when a manifest environment value uses a resolver function, directly or through `resolve`, or is an `EnvValueReference` that can't be serialized, since neither can travel in a sandbox Activity's input. Use `workerEnvValue()` for a value the Worker supplies. |
-| `SandboxOperationUnsupported` | Sandbox Activity | Non-retryable. The backend lacks the operation. A Worker that doesn't hold the session calls `resume()` before handling one of its operations, and every paused-run resume calls it too, so on a backend without `resume()`, the `run()` call that resumes a paused sandbox run fails. |
+| `SandboxLost`, exported as `SANDBOX_LOST_FAILURE_TYPE` | Sandbox Activity | Non-retryable. An `OnHostSandboxClientProvider` no longer holds the session, such as after a Worker restart. The run fails. Deleting a lost session does nothing. |
+| `SandboxOperationUnsupported` | Sandbox Activity | Non-retryable. The backend lacks the operation. With `SandboxClientProvider`, a Worker that doesn't hold the session calls the backend's `resume()`, and every paused-run resume calls it too. A hosted backend without `resume()` can't resume a paused run. |
 | `WorkerEnvValueError` | Sandbox Activity | Non-retryable. A `workerEnvValue()` names a variable that isn't in `resolvableWorkerEnvVars`. |
 | `SandboxSessionStateInvalid` | Workflow | Non-retryable. Sandbox session state being resumed wasn't produced by a Temporal sandbox client. |
 | The sandbox error's `code` | Sandbox Activity | Non-retryable. The OpenAI Agents SDK marked the sandbox error as not retryable. Other sandbox errors are retried. |
@@ -684,7 +712,7 @@ Approving it sends the model a parse error instead of running the tool.
 
 Calling a stateful MCP handle's tools before `connect()` throws an `ApplicationFailure` that fails the Workflow. The
 plugin constructor throws if two of its providers share a name, if `useOtelInstrumentation` is set without a
-replay-safe global tracer provider, or if one `SandboxClientProvider` is passed to plugins with different
+replay-safe global tracer provider, or if one sandbox provider is passed to plugins with different
 `resolvableWorkerEnvVars`.
 
 **Sandbox session lifecycle.** Creating a session isn't idempotent, so a create Activity retried after the backend made
@@ -694,24 +722,22 @@ teardown even if the Workflow then completes normally. Remove those sessions thr
 calls the session's `stop()`, `shutdown()`, and `delete()`, each as an Activity, but only for a session it created or
 resumed, so a session passed in `runConfig.sandbox.session` stays open after the run completes or fails.
 
-**Sandbox reconnects.** Any Worker polling the Task Queue can receive a sandbox operation. A Worker that doesn't hold
-the session, such as a restarted Worker, reconnects to it with the backend's `resume()`, and resuming a paused run
-reconnects the same way, even on the Worker that ran it before the pause. What `resume()` restores depends on the
-backend, as described in
+**Sandbox reconnects.** With `SandboxClientProvider`, any Worker polling the Task Queue can receive a hosted sandbox
+operation. A Worker that doesn't hold the session reconnects to it with the backend's `resume()`. Resuming a paused
+run calls `resume()` too, even on the Worker that ran it before the pause. What it restores depends on the backend,
+as described in
 [Resume and snapshots](https://openai.github.io/openai-agents-js/guides/sandbox-agents/clients/#resume-and-snapshots) in
 OpenAI's sandbox clients guide.
 
-With Unix-local and Docker, an operation that reaches a Worker on another machine fails, and Temporal retries it. A
-Docker session keeps its workspace across a reconnect while its container is running. On both backends, resuming a
-paused run keeps the workspace as it was at the pause.
+With `OnHostSandboxClientProvider`, operations stay on the Worker process that created the sandbox. Resuming a paused
+run reuses its live session while that Worker stays alive. After a restart, the next operation fails with `SandboxLost`,
+even for a run paused for approval. The plugin doesn't reconstruct the session from a snapshot.
 
 **Sandbox processes.** If a command is still running when `exec_command` returns, the agent gets a process identifier
-to pass to `write_stdin` later. On Unix-local and Docker, process identifiers start over after a reconnect, including
-when a paused run resumes. A `write_stdin` with an earlier identifier either reports `session not found` or reaches a
-different process that the agent started after the reconnect. A process started before a pause keeps running, on
-Unix-local even after the session is torn down. `exec_command` returns when the command finishes or when
-`yield_time_ms` passes, so tell the agent to raise it for slower commands, up to a limit below the sandbox Activity's
-Start-To-Close Timeout.
+to pass to `write_stdin` later. For Unix-local and Docker, that identifier works only while the Worker holds the live
+sandbox. After a Worker restart, the sandbox is lost. For hosted backends, whether a running process survives a
+reconnect depends on the backend. `exec_command` returns when the command finishes or when `yield_time_ms` passes, so
+tell the agent to raise it for slower commands, up to a limit below the sandbox Activity's Start-To-Close Timeout.
 
 ## Resources
 
