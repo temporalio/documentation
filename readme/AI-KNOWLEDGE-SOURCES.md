@@ -5,10 +5,10 @@ pages — checking whether prose is technically accurate, current, and not missi
 is for the sources; the [Style guide](../AGENTS.md#style-guide) and
 [INFORMATION-ARCHITECTURE.md](./INFORMATION-ARCHITECTURE.md) still own wording and placement.
 
-## Temporal knowledge base MCP server
+## Temporal Docs MCP Server
 
 The authoritative setup, auth, and connection instructions live on the
-[Develop with AI](../docs/with-ai.mdx#temporal-knowledge-base-mcp-server) page — don't duplicate them here, since
+[Develop with AI](../docs/with-ai.mdx#temporal-docs-mcp-server) page — don't duplicate them here, since
 that page is what site readers see and this file would drift out of sync with it.
 
 In short: it's a Kapa-powered server (`https://temporal.mcp.kapa.ai`) that answers questions against current Temporal
