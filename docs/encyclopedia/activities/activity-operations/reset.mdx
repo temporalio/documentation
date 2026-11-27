@@ -98,7 +98,7 @@ handle these cases differently, for example saving partial progress on Reset whi
 - **A Reset Activity can still time out.** Reset doesn't restart the
   [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout). The deadline is
   calculated from when the Activity was originally scheduled. Use [`update-options`](/activity-operations/update-options) to extend the
-  timeout before or after Reset.
+  timeout before or after Reset. Raising it doesn't raise the Start-To-Close Timeout, so [change both](/activity-operations/update-options#timeouts-are-resolved-again-after-every-update) if the next attempt also needs more time.
 - **Heartbeat details survive a Reset.** If your Activity uses Heartbeat details for progress tracking, the new attempt
   still has the last recorded details, so your code can use a checkpoint it previously saved in them. Pass
   `--clear-heartbeat-details` when you want the new attempt to start over from the beginning.

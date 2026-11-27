@@ -84,7 +84,7 @@ but they must be Unpaused separately.
 
 - **A Paused Activity can still time out.** Pause doesn't stop or extend the
   [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout). Use
-  [`update-options`](/activity-operations/update-options) to adjust the timeout if needed.
+  [`update-options`](/activity-operations/update-options) to adjust the timeout if needed. Raising it doesn't raise the Start-To-Close Timeout, so [change both](/activity-operations/update-options#timeouts-are-resolved-again-after-every-update) if the next attempt also needs more time.
 - **Pause won't interrupt an Activity that doesn't Heartbeat.** The current execution runs to completion, which could
   take up to the full [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 
