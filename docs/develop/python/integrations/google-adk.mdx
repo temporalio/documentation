@@ -20,7 +20,7 @@ you write an ordinary ADK agent and run it as a Workflow, without managing sessi
 
 The `GoogleAdkPlugin` is what ties them together. It runs each model call and tool call as a Temporal Activity,
 configures the payload converter that serializes ADK objects, and makes ADK's runtime deterministic so the Workflow can
-replay. You add the same plugin to your Client and your Worker, and the rest of your agent code stays standard ADK.
+replay. You add the plugin to your Client, and the rest of your agent code stays standard ADK.
 
 ## Prerequisites
 
@@ -101,10 +101,9 @@ class HelloWorldAgentWorkflow:
 Everything other than `TemporalModel` is normal ADK. You build an `Agent`, drive it with a runner, and read the events
 it produces.
 
-## Add the plugin to your Worker and Client
+## Add the plugin to your Client
 
-Build one `GoogleAdkPlugin` and pass the same instance to both the Client and the Worker. The Client side links the code
-that starts a Workflow to the Workflow itself, and the Worker side runs the agent.
+Pass `GoogleAdkPlugin` to the Client. Workers built from that Client inherit the plugin.
 
 {/* SNIPSTART google-adk-agents-basic-worker */}
 [google_adk_agents/basic/run_worker.py](https://github.com/temporalio/samples-python/blob/main/google_adk_agents/basic/run_worker.py)
@@ -119,7 +118,6 @@ worker = Worker(
     client,
     task_queue="google-adk-agents-basic",
     workflows=[HelloWorldAgentWorkflow],
-    plugins=[plugin],
 )
 await worker.run()
 ```
@@ -200,7 +198,6 @@ worker = Worker(
     task_queue="google-adk-agents-tools",
     workflows=[WeatherAgentWorkflow],
     activities=[get_weather],
-    plugins=[plugin],
 )
 await worker.run()
 ```

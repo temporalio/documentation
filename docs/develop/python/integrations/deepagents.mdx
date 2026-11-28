@@ -178,6 +178,8 @@ Activity:
 - `tool_as_activity(tool, ...)` wraps a LangChain tool whose body does I/O so its execution runs as a
   `deepagents.invoke_tool` Activity.
 
+Call `tool_as_activity` at module level. Options set on a plugin created later do not change an existing wrapper.
+
 An unwrapped, non-builtin tool runs in-Workflow, and the plugin emits a best-effort warning at agent construction
 (the warning fires through the plugin's `create_deep_agent` seam, so code paths that bypass that seam construct
 without it).
@@ -187,19 +189,23 @@ This sample wraps an existing activity and an I/O tool, and builds the agent wit
 which wraps the model name in a durable `TemporalModel` and scopes `activity_options` to this agent's model calls:
 
 <!--SNIPSTART python-deepagents-react-agent-activity-->
-[deepagents_plugin/react_agent/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/react_agent/workflow.py)
+[deepagents_plugin/react_agent/tools.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/react_agent/tools.py)
 ```py
+from datetime import timedelta
+
+from langchain_core.tools import tool
+from temporalio import activity
+from temporalio.deepagents import activity_as_tool, tool_as_activity
+from temporalio.workflow import ActivityConfig
+
+
 @activity.defn
 async def get_weather(city: str) -> str:
     """Return the current weather for a city."""
     # A real implementation would call a weather API here; this is a stand-in.
     return f"It is sunny and 22C in {city}."
-```
-<!--SNIPEND-->
 
-<!--SNIPSTART python-deepagents-react-agent-workflow-->
-[deepagents_plugin/react_agent/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/react_agent/workflow.py)
-```py
+
 @tool
 def web_search(query: str) -> str:
     """Search the web for a query and return a short result."""
@@ -208,18 +214,30 @@ def web_search(query: str) -> str:
     return f"Top result for {query!r}: Temporal makes code durable."
 
 
+# An existing Temporal activity, exposed to the agent as a tool.
+weather_tool = activity_as_tool(
+    get_weather,
+    activity_options=ActivityConfig(start_to_close_timeout=timedelta(seconds=30)),
+)
+# A LangChain tool whose body does I/O, moved into an activity.
+search_tool = tool_as_activity(web_search, start_to_close_timeout=timedelta(seconds=30))
+```
+<!--SNIPEND-->
+
+<!--SNIPSTART python-deepagents-react-agent-workflow-->
+[deepagents_plugin/react_agent/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/react_agent/workflow.py)
+```py
+# The tools module calls tool_as_activity(...) at import, which registers the
+# tool in the worker process. Pass it through the sandbox so that registration
+# happens once and the activity runs the real tool.
+with workflow.unsafe.imports_passed_through():
+    from deepagents_plugin.react_agent.tools import search_tool, weather_tool
+
+
 @workflow.defn
 class ReactAgent:
     @workflow.run
     async def run(self, question: str) -> str:
-        weather_tool = activity_as_tool(
-            get_weather,
-            start_to_close_timeout=timedelta(seconds=30),
-        )
-        search_tool = tool_as_activity(
-            web_search,
-            start_to_close_timeout=timedelta(seconds=30),
-        )
         agent = create_temporal_deep_agent(
             model="anthropic:claude-sonnet-4-5",
             tools=[weather_tool, search_tool],
@@ -343,14 +361,16 @@ memory, rehydrated by deterministic replay, and the stable Workflow ID is used a
 <!--SNIPSTART python-deepagents-human-in-the-loop-workflow-->
 [deepagents_plugin/human_in_the_loop/workflow.py](https://github.com/temporalio/samples-python/blob/main/deepagents_plugin/human_in_the_loop/workflow.py)
 ```py
-from datetime import timedelta
-
 from deepagents import create_deep_agent
 from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
 from temporalio import workflow
-from temporalio.deepagents import tool_as_activity
+
+# tools.py calls tool_as_activity(...) at module level, so the worker registers
+# the tool once, at import.
+with workflow.unsafe.imports_passed_through():
+    from deepagents_plugin.human_in_the_loop.tools import trip_tool
 
 
 @workflow.defn
@@ -362,13 +382,6 @@ class HumanInTheLoopAgent:
 
     @workflow.run
     async def run(self, city: str) -> str:
-        def book_trip(city: str) -> str:
-            """Book a trip to a city (requires human approval)."""
-            return f"Booked a trip to {city}."
-
-        trip_tool = tool_as_activity(
-            book_trip, start_to_close_timeout=timedelta(seconds=30)
-        )
         agent = create_deep_agent(
             model="anthropic:claude-sonnet-4-5",
             tools=[trip_tool],
@@ -422,6 +435,7 @@ Long conversations bloat Workflow history until it hits Temporal's limits. `run_
 state_snapshot=...)` snapshots state and continues into a fresh run when a turn ends with pending todos and the
 server recommends continuing (`workflow.info().is_continue_as_new_suggested()`, the default and recommended mode).
 Pass `continue_as_new_after=N` to trigger on a fixed history-event count instead.
+Add `TodoListMiddleware` to record the pending todos that `run_deep_agent` checks.
 
 - **Carries forward:** the accumulated messages and the agent's state files (the graph's `files` state). Repeated
   identical calls are not deduplicated: a call the agent makes again after the continue-as-new runs its own Activity.
@@ -439,6 +453,7 @@ straight through, not re-wrapped, or the carried conversation is corrupted.
 from typing import Any
 
 from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 from temporalio import workflow
 from temporalio.deepagents import run_deep_agent
 
@@ -455,6 +470,9 @@ class LongResearchAgent:
                 "You are a research agent. Break large tasks into todos and work "
                 "through them until the research is complete."
             ),
+            # run_deep_agent continues as new only while todos are pending, and
+            # this middleware is what records them.
+            middleware=[TodoListMiddleware()],
         )
         result = await run_deep_agent(
             agent,

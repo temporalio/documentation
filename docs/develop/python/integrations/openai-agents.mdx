@@ -520,10 +520,12 @@ Sandbox support is pre-release and may change before general availability.
 plugin dispatches every sandbox operation—creating the session, each command, each read and write, PTY interaction, and
 teardown—as its own Temporal Activity. Each one is individually retryable and visible in Workflow history, and the
 session state is serialized with the Workflow. On a hosted backend, a Worker restart part-way through a run resumes
-against the same session. On the Docker and Unix-local backends, a Worker restart in the middle of a step loses the
-sandbox, and the step's next operation fails with the non-retryable `ApplicationError` type `SandboxLost`.
+against the same session. A Docker or Unix-local sandbox stays on the Worker that created it. This sample sets a
+schedule-to-start timeout so an operation fails if that Worker is unavailable. If a Worker receives an operation for a
+sandbox it no longer has, it raises the non-retryable `ApplicationError` type `SandboxLost`.
 
-Register a `SandboxClientProvider` for each backend you want to reach, under a unique name:
+Register an `OnHostSandboxClientProvider` for Docker and Unix-local backends, with a unique `worker_name` per Worker
+process. Use `SandboxClientProvider` for hosted backends:
 
 <!--SNIPSTART python-openai-agents-sandbox-worker-->
 [openai_agents/sandbox/run_worker.py](https://github.com/temporalio/samples-python/blob/main/openai_agents/sandbox/run_worker.py)
@@ -538,8 +540,16 @@ client = await Client.connect(
             # The plugin registers one set of sandbox activities per
             # provider, prefixed with the provider name. Register several
             # providers to let one worker serve several backends.
+            # Unix-local and Docker sandboxes live on this machine, so they
+            # use OnHostSandboxClientProvider, which sends every operation
+            # on a sandbox to the worker that created it. Hosted backends
+            # such as Daytona use SandboxClientProvider.
             sandbox_clients=[
-                SandboxClientProvider(SANDBOX_PROVIDER, UnixLocalSandboxClient()),
+                OnHostSandboxClientProvider(
+                    SANDBOX_PROVIDER,
+                    UnixLocalSandboxClient(),
+                    worker_name=str(uuid.uuid4()),
+                ),
             ],
         ),
     ],
@@ -573,7 +583,13 @@ class LocalSandboxWorkflow:
             run_config=RunConfig(
                 sandbox=SandboxRunConfig(
                     # Must match the name registered on the worker.
-                    client=temporal_sandbox_client(SANDBOX_PROVIDER),
+                    client=temporal_sandbox_client(
+                        SANDBOX_PROVIDER,
+                        config=ActivityConfig(
+                            start_to_close_timeout=timedelta(minutes=5),
+                            schedule_to_start_timeout=timedelta(seconds=30),
+                        ),
+                    ),
                     options=UnixLocalSandboxClientOptions(),
                 ),
             ),

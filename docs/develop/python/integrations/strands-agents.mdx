@@ -373,7 +373,7 @@ dataclass or Pydantic model for multiple values. This is needed because hook eve
 If your agent needs access to tools provided by an [MCP](https://modelcontextprotocol.io/) server, configure the MCP
 clients on the Worker and reference them by name in the Workflow.
 
-`StrandsPlugin(mcp_clients=...)` takes a mapping of `name` to `MCPClient` factory, mirroring the `models` pattern. The
+`StrandsPlugin(mcp_clients=...)` takes a mapping of `name` to `mcp.Client` factory, mirroring the `models` pattern. The
 plugin registers a per-server Activity. In the Workflow, `TemporalMCPClient(server="name")` is a handle that references
 the server by name and carries per-call Activity options.
 
@@ -409,23 +409,20 @@ class MCPWorkflow:
 
 Register the MCP client factory on the Worker:
 
-<!--SNIPSTART python-strands-mcp-worker {"selectedLines": ["6-10", "17-25", "28-41"]}-->
+<!--SNIPSTART python-strands-mcp-worker {"selectedLines": ["6-9", "18-24", "27-40"]}-->
 [strands_plugin/mcp/run_worker.py](https://github.com/temporalio/samples-python/blob/main/strands_plugin/mcp/run_worker.py)
 ```py
 # ...
-from mcp import StdioServerParameters, stdio_client
-from strands.tools.mcp.mcp_client import MCPClient
+import mcp
 from temporalio.client import Client
 from temporalio.strands_agents import StrandsPlugin
 from temporalio.worker import Worker
 # ...
-def _make_echo_client() -> MCPClient:
-    return MCPClient(
-        lambda: stdio_client(
-            StdioServerParameters(
-                command=sys.executable,
-                args=[str(ECHO_SERVER)],
-            )
+def _make_echo_client() -> mcp.Client:
+    return mcp.Client(
+        mcp.StdioServerParameters(
+            command=sys.executable,
+            args=[str(ECHO_SERVER)],
         )
     )
 # ...
@@ -446,8 +443,7 @@ async def main() -> None:
 ```
 <!--SNIPEND-->
 
-Each factory returns a fully configured `MCPClient`, so you can pass options like `tool_filters`, `prefix`,
-`elicitation_callback`, or `tasks_config` to it.
+Each factory returns a new `mcp.Client`. Set `prefix` and `tool_filters` on `TemporalMCPClient`.
 
 :::info
 
